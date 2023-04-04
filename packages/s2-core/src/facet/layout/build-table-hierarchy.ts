@@ -8,13 +8,16 @@ export const buildTableHierarchy = (params: HeaderParams) => {
   const { columns = [] } = spreadsheet.dataSet.fields;
   const { showSeriesNumber, seriesNumberText } = spreadsheet.options;
 
-  const fieldValues = columns.map((field) =>
-    spreadsheet.dataSet.getFieldName(field),
-  );
+  const seriesNumberNodeValue = getDefaultSeriesNumberText(seriesNumberText);
+  const fieldValues = columns.map((field) => {
+    return field === SERIES_NUMBER_FIELD
+      ? seriesNumberNodeValue
+      : spreadsheet.dataSet.getFieldName(field);
+  });
 
-  if (showSeriesNumber) {
+  if (showSeriesNumber && !fields.includes(SERIES_NUMBER_FIELD)) {
     fields.unshift(SERIES_NUMBER_FIELD);
-    fieldValues.unshift(getDefaultSeriesNumberText(seriesNumberText));
+    fieldValues.unshift(seriesNumberNodeValue);
   }
 
   generateHeaderNodes({

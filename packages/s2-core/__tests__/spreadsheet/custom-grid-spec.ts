@@ -250,7 +250,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should enable valueInCols', () => {
@@ -421,6 +421,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(groups?.childNodes.length).toEqual(8);
     });
 
+    // https://github.com/antvis/S2/issues/2017
     test('should format custom columns', () => {
       s2.setDataCfg({
         ...customColDataCfg,

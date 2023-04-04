@@ -91,11 +91,11 @@ export const s2Options: SheetComponentOptions = {
   width: 1000,
   height: 400,
   hierarchyType: 'grid',
-  showSeriesNumber: true,
+  // showSeriesNumber: true,
   frozen: {
     rowHeader: true,
     // colCount: 1,
-    // trailingColCount: 1,
+    trailingColCount: 1,
   },
   cornerText: '测试',
   interaction: {

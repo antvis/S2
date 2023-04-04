@@ -62,9 +62,8 @@ export class TableColCell extends ColCell {
       return true;
     }
 
-    const { x, y, width, height } = this.getBBoxByType();
     const { scrollX, scrollY, width: headerWidth } = this.headerConfig;
-
+    const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -75,7 +74,7 @@ export class TableColCell extends ColCell {
     };
 
     const frozenWidth = getFrozenColWidth(
-      this.spreadsheet.facet.layoutResult.colLeafNodes,
+      this.spreadsheet.getColumnLeafNodes(),
       this.spreadsheet.options.frozen!,
     );
     const resizeClipAreaBBox: SimpleBBox = {

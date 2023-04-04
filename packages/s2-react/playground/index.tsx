@@ -109,7 +109,7 @@ function MainLayout() {
   );
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
-  >('multiple');
+  >('single');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);

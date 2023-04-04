@@ -349,7 +349,9 @@ const processTableColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
-  const { columns = [] } = spreadsheet.dataCfg.fields;
+  const columns = spreadsheet.dataCfg.fields.columns?.filter(
+    (field) => field !== SERIES_NUMBER_FIELD,
+  )!;
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const selectedFields = selectedCols.length
     ? selectedCols.map((e) => {
@@ -564,7 +566,7 @@ export function getCopyData(
   copyType: CopyType,
   copyFormat: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
 ): string[] | string | undefined {
-  const cells = spreadsheet.interaction.getState().cells || [];
+  const cells = spreadsheet.interaction.getCells();
 
   if (copyType === CopyType.ALL) {
     return pickDataFromCopyable(
@@ -841,7 +843,8 @@ function getDataCellCopyable(
 
 export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   const interaction = spreadsheet.interaction;
-  const cells = interaction.getState().cells || [];
+  const cells = interaction.getCells();
+
   let data: Copyable | undefined;
   // 通过判断当前存在交互的单元格，来区分圈选行/列头 还是 点选行/列头
   const interactedCells = interaction.getInteractedCells() ?? [];

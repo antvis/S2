@@ -32,6 +32,7 @@ import type {
   ViewMetaData,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
+import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils/cell/data-cell';
@@ -334,6 +335,7 @@ export class TableFacet extends BaseFacet {
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
 
+      // TODO: 向下取整, 导致单元格未撑满 canvas, 在冻结情况下会有问题, 代冻结重构后解决
       return Math.max(
         dataCell?.width!,
         Math.floor(canvasW / Math.max(1, colHeaderColSize)),
@@ -1134,7 +1136,7 @@ export class TableFacet extends BaseFacet {
       trailingRowCount: frozenTrailingRowCount = 0,
     } = this.getFrozenOptions();
 
-    const finalViewport = {
+    const finalViewport: SimpleBBox = {
       width,
       height,
       x: 0,

@@ -36,10 +36,10 @@ describe('TableSheet Export Test', () => {
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 6列数据 包括序列号
-    rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(6);
+    rows.forEach((row) => {
+      expect(row.split('\t')).toHaveLength(6);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
+    expect(headers.map((header) => JSON.parse(header))).toEqual([
       '序号',
       'province',
       'city',

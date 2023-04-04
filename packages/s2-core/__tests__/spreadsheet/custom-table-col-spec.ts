@@ -198,6 +198,15 @@ describe('TableSheet Custom Tests', () => {
     ).toBeTruthy();
   });
 
+  test('should render default series number text', () => {
+    s2.setOptions({
+      showSeriesNumber: true,
+    });
+    s2.render(false);
+
+    expect(s2.getColumnNodes()[0].value).toEqual('序号');
+  });
+
   test('should render custom series number text', () => {
     const seriesNumberText = '牛';
 

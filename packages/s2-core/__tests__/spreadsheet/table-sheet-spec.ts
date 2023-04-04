@@ -1,11 +1,9 @@
-import { get, last } from 'lodash';
+import { last } from 'lodash';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import type { TableFacet } from '@/facet';
 import {
   ColCell,
   DeviceType,
   ResizeType,
-  TableDataCell,
   TableSheet,
   type RawData,
   type S2DataConfig,
@@ -251,11 +249,11 @@ describe('TableSheet normal spec', () => {
 
     s2.render();
 
-    const orderIdDataCell = (
-      (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
-    ).find((cell) => cell.getMeta().valueField === 'order_id');
+    const orderIdDataCell = s2.interaction
+      .getPanelGroupAllDataCells()
+      .find((cell) => cell.getMeta().valueField === 'order_id');
 
-    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+    expect(orderIdDataCell?.getLinkFieldShape()).toBeDefined();
 
     s2.destroy();
   });

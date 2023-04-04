@@ -19,6 +19,7 @@ import {
   NODE_ID_SEPARATOR,
   ROOT_BEGINNING_REGEX,
   ROOT_NODE_ID,
+  SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import {
   CornerNodeType,
@@ -162,7 +163,9 @@ const processValueInDetail = (
   isFormat?: boolean,
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
-  const { columns } = sheetInstance.dataCfg?.fields;
+  const columns = sheetInstance.dataCfg?.fields.columns?.filter(
+    (field) => field !== SERIES_NUMBER_FIELD,
+  );
   const leafColumns = getLeafColumnsWithKey(columns || []);
   const res = [];
 
