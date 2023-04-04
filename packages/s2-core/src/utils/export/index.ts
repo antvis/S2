@@ -6,8 +6,11 @@ import {
   type Copyable,
   type CopyableItem,
   type FormatOptions,
+  type CopyableList,
 } from './interface';
 import { processAllSelected } from './copy/core';
+import { getNodeFormatData, assembleMatrix, getMaxRowLen } from './copy/common';
+import { getHeaderList } from './method';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> =>
   new Promise((resolve, reject) => {
@@ -110,3 +113,7 @@ export const copyData = (
   split = NewTab,
   formatOptions?: FormatOptions,
 ) => processAllSelected(sheetInstance, split, formatOptions)[0].content;
+
+export { CopyableList, FormatOptions };
+export { assembleMatrix, getMaxRowLen, getNodeFormatData };
+export { getHeaderList };

@@ -237,7 +237,7 @@ describe('<StrategySheet/> Tests', () => {
       /*
        * 角头部分展示如下：
        * ["", "","日期"]
-       * ["", "","数值"]
+       * ["", "","指标"]
        */
       const rows = result.split('\n');
       const corner1 = rows[0].split('\t').slice(0, 3);
