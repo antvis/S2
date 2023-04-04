@@ -20,16 +20,12 @@ describe('export', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
 
     s2.render();
-    const data = copyData(s2, '\t', true);
+    const data = copyData(s2, '\t');
 
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(4);
-    expect(data.split('\n')[0].split('\t')[0]).toEqual('序号');
-    expect(data).toMatchInlineSnapshot(`
-      "序号	col0	col1	col2
-      1	col0-0	col1-0	col2-0
-      2	col0-1	col1-1	col2-1"
-    `);
+    expect(data.split('\n')[0].split('\t')[0]).toEqual('"序号"');
+    expect(data.length).toEqual(89);
   });
 
   test('should export correct data without showSeriesNumber', () => {
@@ -43,11 +39,7 @@ describe('export', () => {
 
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(3);
-    expect(data.split('\n')[0].split('\t')[0]).toEqual('col0');
-    expect(data).toMatchInlineSnapshot(`
-      "col0	col1	col2
-      col0-0	col1-0	col2-0
-      col0-1	col1-1	col2-1"
-    `);
+    expect(data.split('\n')[0].split('\t')[0]).toEqual('"col0"');
+    expect(data.length).toEqual(76);
   });
 });

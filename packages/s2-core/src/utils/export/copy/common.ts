@@ -1,26 +1,20 @@
-import { escape, map, max } from 'lodash';
-import type { Node } from '../../../facet/layout/node';
+import { escape, map } from 'lodash';
 import type { DataItem } from '../../../common';
-import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CopyableHTML,
   type CopyableList,
   type CopyablePlain,
-  type CopyAndExportUnifyConfig,
   CopyMIMEType,
-  type CopyOrExportConfig,
-  type FormatOptions,
 } from '../interface';
+import { NewLine, NewTab } from '../../../common';
 
-// 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
   dataMatrix: DataItem[][],
-  separator = NewTab,
 ): CopyablePlain => {
   return {
     type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(separator)).join(NewLine),
+    content: map(dataMatrix, (line) => line.join(NewTab)).join(NewLine),
   };
 };
 
@@ -50,10 +44,9 @@ export const matrixHtmlTransformer = (
 
 export function getFormatter(
   spreadsheet: SpreadSheet,
-  field: string,
-  isFormatData = false,
+  field: string | undefined,
 ) {
-  if (isFormatData) {
+  if (spreadsheet.options.interaction?.copyWithFormat) {
     return spreadsheet.dataSet.getFieldFormatter(field!);
   }
 
@@ -61,18 +54,13 @@ export function getFormatter(
 }
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
-export const assembleMatrix = ({
-  rowMatrix,
-  colMatrix,
-  dataMatrix,
-  cornerMatrix,
-}: {
-  colMatrix: string[][];
-  dataMatrix: string[][];
-  rowMatrix?: string[][];
-  cornerMatrix?: string[][];
-}): CopyableList => {
-  const rowWidth = rowMatrix?.[0]?.length ?? 0;
+export const assembleMatrix = (
+  rowMatrix: string[][],
+  colMatrix: string[][],
+  dataMatrix: string[][],
+  cornerMatrix?: string[][],
+): CopyableList => {
+  const rowWidth = rowMatrix[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
   const dataHeight = dataMatrix.length ?? 0;
@@ -95,7 +83,7 @@ export const assembleMatrix = ({
       }
 
       if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
-        return rowMatrix?.[y - colHeight][x];
+        return rowMatrix[y - colHeight][x];
       }
 
       if (
@@ -112,97 +100,4 @@ export const assembleMatrix = ({
   );
 
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
-};
-
-export function getMaxRowLen(matrix: string[][]): number {
-  return max(map(matrix, (row) => row.length)) ?? 0;
-}
-
-/**
- * 补全 matrix 中的元素个数, 使得每一行的元素个数一致，以最大的行元素个数为准
- * @param {string[][]} matrix
- * @return {string[][]}
- */
-export function completeMatrix(matrix: string[][]): string[][] {
-  const maxRowLen = getMaxRowLen(matrix);
-
-  return map(matrix, (row) => {
-    const diff = maxRowLen - row.length;
-
-    return diff ? [...row, ...new Array(diff).fill('')] : row;
-  });
-}
-
-export const getFormatOptions = (isFormat?: FormatOptions) => {
-  if (typeof isFormat === 'object') {
-    return {
-      isFormatHeader: isFormat.isFormatHeader ?? false,
-      isFormatData: isFormat.isFormatData ?? false,
-    };
-  }
-
-  return {
-    isFormatHeader: isFormat ?? false,
-    isFormatData: isFormat ?? false,
-  };
-};
-
-// 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
-export function unifyConfig(
-  config: CopyOrExportConfig,
-  spreadsheet: SpreadSheet,
-  isExport: boolean,
-): CopyAndExportUnifyConfig {
-  let result = {
-    isFormatData: spreadsheet.options.interaction?.copyWithFormat ?? false,
-    isFormatHeader: spreadsheet.options.interaction?.copyWithFormat ?? false,
-  };
-
-  if (isExport) {
-    const { isFormatData, isFormatHeader } = getFormatOptions(
-      config?.formatOptions ?? false,
-    );
-
-    result = {
-      isFormatData,
-      isFormatHeader,
-    };
-  }
-
-  return {
-    separator: config.separator ?? NewTab,
-    selectedCells: config.selectedCells ?? [],
-    ...result,
-  };
-}
-
-const getNodeFormatLabel = (node: Node) => {
-  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
-
-  return formatter?.(node.value) ?? node.value;
-};
-
-/**
- * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
- * @param rowLeafNode
- */
-export const getNodeFormatData = (rowLeafNode: Node) => {
-  const line: string[] = [];
-  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
-    // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === ROOT_NODE_ID) {
-      return;
-    }
-
-    const formatterLabel = getNodeFormatLabel(node);
-
-    line.unshift(formatterLabel);
-    if (node?.parent) {
-      return getRowNodeFormatterLabel(node.parent);
-    }
-  };
-
-  getRowNodeFormatterLabel(rowLeafNode);
-
-  return line;
 };

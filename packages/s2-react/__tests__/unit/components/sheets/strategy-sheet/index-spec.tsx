@@ -1,5 +1,6 @@
 import {
   CellTypes,
+  copyData,
   customMerge,
   getCellMeta,
   InteractionStateName,
@@ -17,7 +18,6 @@ import {
   StrategyOptions,
 } from '../../../../data/strategy-data';
 import { SheetComponent, type SheetComponentOptions } from '@/components';
-import { strategyCopy } from '@/components/export/strategy-copy';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -46,7 +46,6 @@ describe('<StrategySheet/> Tests', () => {
               height: 200,
             },
             options,
-            { debug: true },
           )}
           dataCfg={dataCfg as S2DataConfig}
           onMounted={(instance) => {
@@ -232,33 +231,20 @@ describe('<StrategySheet/> Tests', () => {
     });
 
     test('should export correct data', () => {
-      const result = strategyCopy(s2, '\t', true);
-
       /*
        * 角头部分展示如下：
        * ["", "","日期"]
-       * ["", "","指标"]
+       * ["", "","数值"]
        */
+      const result = copyData(s2, '\t');
+
       const rows = result.split('\n');
       const corner1 = rows[0].split('\t').slice(0, 3);
       const corner2 = rows[1].split('\t').slice(0, 3);
 
-      expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-      `);
-      expect(corner1).toEqual(['', '', '日期']);
-      expect(corner2).toEqual(['', '', '指标']);
+      expect(result).toMatchSnapshot();
+      expect(corner1).toEqual(['', '', `"日期"`]);
+      expect(corner2).toEqual(['', '', `"数值"`]);
     });
 
     test('should export correct data for multi different cycle compare data', () => {
@@ -268,35 +254,22 @@ describe('<StrategySheet/> Tests', () => {
        * 2022-10 包含 [数值，环比]
        * 它们都应和各自的列头数值一栏对齐
        */
-      const result = strategyCopy(s2, '\t', true);
+      const result = copyData(s2, '\t');
 
       const rows = result.split('\n');
       const col1: string[] = rows[0].split('\t').slice(3);
       const col2: string[] = rows[1].split('\t').slice(3);
 
-      expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-      `);
+      expect(result).toMatchSnapshot();
       expect(col1.length).toEqual(col2.length);
       // 2022-09 对齐其数值
-      const idx1 = col1.findIndex((col) => col === '2022-09');
+      const idx1 = col1.findIndex((col) => col === `"2022-09"`);
 
-      expect(col2[idx1]).toEqual('数值');
+      expect(col2[idx1]).toEqual(`"数值"`);
       // 2022-10 对齐其数值
-      const idx2 = col1.findIndex((col) => col === '2022-10');
+      const idx2 = col1.findIndex((col) => col === `"2022-10"`);
 
-      expect(col2[idx2]).toEqual('数值');
+      expect(col2[idx2]).toEqual(`"数值"`);
     });
 
     test('should export correct data for empty cell', () => {
@@ -304,43 +277,30 @@ describe('<StrategySheet/> Tests', () => {
        * 2022-09 包含 [数值，环比，同比], 但是数值均为空
        * 对应数据应该空三格
        */
-      const result = strategyCopy(s2, '\t', true);
+      const result = copyData(s2, '\t');
 
       const rows = result.split('\n');
       // 自定义节点A - 指标A
       const detailRow: string[] = rows[3].split('\t').slice(0, 5);
 
-      expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-      `);
-      expect(detailRow).toEqual(['自定义节点A', '指标A', '', '', '']);
+      expect(result).toMatchSnapshot();
+      expect(detailRow).toEqual([`"自定义节点A"`, `"指标A"`, '', '', '']);
     });
 
     test('should export correct headers when label have array and string', () => {
-      const result = strategyCopy(s2, '\t', true);
+      const result = copyData(s2, '\t');
       const rows = result.split('\n');
 
-      expect(rows[0].split('\t')[8]).toEqual('2022-11');
-      expect(rows[0].split('\t')[11]).toEqual('2021年净增完成度');
-      expect(rows[0].split('\t')[12]).toEqual('趋势');
-      expect(rows[0].split('\t')[13]).toEqual('2022');
-      expect(rows[1].split('\t')[8]).toEqual('数值');
-      expect(rows[1].split('\t')[9]).toEqual('环比');
-      expect(rows[1].split('\t')[10]).toEqual('同比');
-      expect(rows[1].split('\t')[11]).toEqual('净增完成度');
-      expect(rows[1].split('\t')[12]).toEqual('趋势');
-      expect(rows[1].split('\t')[13]).toEqual('数值');
+      expect(rows[0].split('\t')[8]).toEqual('"2022-11"');
+      expect(rows[0].split('\t')[11]).toEqual('"2021年净增完成度"');
+      expect(rows[0].split('\t')[12]).toEqual('"趋势"');
+      expect(rows[0].split('\t')[13]).toEqual('"2022"');
+      expect(rows[1].split('\t')[8]).toEqual('"数值"');
+      expect(rows[1].split('\t')[9]).toEqual('"环比"');
+      expect(rows[1].split('\t')[10]).toEqual('"同比"');
+      expect(rows[1].split('\t')[11]).toEqual('"净增完成度"');
+      expect(rows[1].split('\t')[12]).toEqual('"趋势"');
+      expect(rows[1].split('\t')[13]).toEqual('"数值"');
     });
   });
 

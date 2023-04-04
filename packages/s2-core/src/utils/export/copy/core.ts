@@ -1,42 +1,110 @@
-import { concat, every, isEmpty } from 'lodash';
+import { every, isEmpty, map, zip } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
+  type Data,
   EMPTY_PLACEHOLDER,
+  EXTRA_FIELD,
   InteractionStateName,
   type S2CellType,
+  VALUE_FIELD,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import { copyToClipboard } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
-import { getSelectedCols, getSelectedRows } from '../method';
 import {
-  type CopyableList,
-  CopyMIMEType,
-  type FormatOptions,
-} from '../interface';
+  convertString,
+  getColNodeFieldFromNode,
+  getHeaderList,
+  getSelectedCols,
+  getSelectedRows,
+} from '../method';
+import { type CopyableList, CopyMIMEType } from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
+import { processPivotSelected } from './pivot-data-cell-copy';
+import { processTableColSelected, processTableRowSelected } from './table-copy';
 import {
-  processSelectedAllPivot,
-  processSelectedPivotByDataCell,
-  processSelectedPivotByHeader,
-} from './pivot-data-cell-copy';
-import {
-  processSelectedAllTable,
-  processSelectedTableByDataCell,
-  processSelectedTableByHeader,
-} from './table-copy';
+  assembleMatrix,
+  getFormatter,
+  matrixHtmlTransformer,
+  matrixPlainTextTransformer,
+} from './common';
 
-export const getHeaderNodeFromMeta = (
-  meta: CellMeta,
-  spreadsheet: SpreadSheet,
-) => {
+const getFiledFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
+  const colNode = spreadsheet
+    .getColumnNodes()
+    .find((col) => col.colIndex === colIndex);
+
+  return getColNodeFieldFromNode(spreadsheet.isPivotMode, colNode);
+};
+
+const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   const { rowIndex, colIndex } = meta;
 
   return [
     spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
     spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
   ];
+};
+
+/**
+ * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
+ * https://github.com/antvis/S2/issues/1955
+ * @param spreadsheet
+ */
+const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
+  const isHideValue =
+    spreadsheet.options?.style?.colCell?.hideValue &&
+    spreadsheet.isValueInCols();
+
+  // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
+  return isHideValue
+    ? {
+        [EXTRA_FIELD]: spreadsheet.dataCfg.fields.values?.[0],
+      }
+    : {};
+};
+
+const getValueFromMeta = (
+  meta: CellMeta,
+  displayData: Data[],
+  spreadsheet: SpreadSheet,
+) => {
+  if (spreadsheet.isPivotMode()) {
+    const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const measureQuery = compatibleHideMeasureColumn(spreadsheet);
+
+    const cell = spreadsheet.dataSet.getCellData({
+      query: {
+        ...rowNode?.query,
+        ...colNode?.query,
+        ...measureQuery,
+      },
+      rowNode,
+      isTotals:
+        rowNode?.isTotals ||
+        rowNode?.isTotalMeasure ||
+        colNode?.isTotals ||
+        colNode?.isTotalMeasure,
+    });
+
+    return cell?.[VALUE_FIELD] ?? '';
+  }
+
+  const fieldKey = getFiledFromMeta(meta.colIndex, spreadsheet);
+
+  return displayData[meta.rowIndex]?.[fieldKey!];
+};
+
+const format = (
+  meta: CellMeta,
+  displayData: Data[],
+  spreadsheet: SpreadSheet,
+) => {
+  const field = getFiledFromMeta(meta.colIndex!, spreadsheet);
+  const formatter = getFormatter(spreadsheet, field);
+
+  return formatter(getValueFromMeta(meta, displayData, spreadsheet)!);
 };
 
 /**
@@ -81,15 +149,76 @@ const getSelectedCellsMeta = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
-const processSelectedByHeader = (
+/**
+ * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
+ * https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
+ * @param cellMetaMatrix
+ * @param displayData
+ * @param spreadsheet
+ */
+const getDataMatrixByDataCell = (
+  cellMetaMatrix: CellMeta[][],
+  displayData: Data[],
+  spreadsheet: SpreadSheet,
+): CopyableList => {
+  const { copyWithHeader } = spreadsheet.options.interaction!;
+
+  const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
+    map(cellsMeta, (it) => {
+      if (!it) {
+        return '';
+      }
+
+      return convertString(format(it, displayData, spreadsheet));
+    }),
+  ) as string[][];
+
+  if (!copyWithHeader) {
+    return [
+      matrixPlainTextTransformer(dataMatrix),
+      matrixHtmlTransformer(dataMatrix),
+    ];
+  }
+
+  // 通过第一行来获取列头信息
+  const colMatrix = zip(
+    ...map(cellMetaMatrix[0], (cellMeta) => {
+      const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+
+      return getHeaderList(colId);
+    }),
+  ) as string[][];
+
+  // 通过第一列来获取行头信息
+  const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
+    const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+
+    return getHeaderList(rowId);
+  });
+
+  return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
+};
+
+const processColSelected = (
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
+): CopyableList => {
+  if (spreadsheet.isPivotMode()) {
+    return processPivotSelected(spreadsheet, selectedCols);
+  }
+
+  return processTableColSelected(spreadsheet, selectedCols);
+};
+
+const processRowSelected = (
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ): CopyableList => {
   if (spreadsheet.isPivotMode()) {
-    return processSelectedPivotByHeader(spreadsheet, selectedRows);
+    return processPivotSelected(spreadsheet, selectedRows);
   }
 
-  return processSelectedTableByHeader(spreadsheet, selectedRows);
+  return processTableRowSelected(spreadsheet, selectedRows);
 };
 
 function getIsBrushHeader(interactedCells: S2CellType[]) {
@@ -112,17 +241,17 @@ function getDataCellCopyable(
   const selectedCols = getSelectedCols(cells);
   const selectedRows = getSelectedRows(cells);
 
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
+
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
   ) {
-    data = processSelectedByHeader(spreadsheet, []);
+    data = processColSelected(spreadsheet, []);
   } else if (selectedCols.length) {
-    // 选中某列
-    data = processSelectedByHeader(spreadsheet, selectedCols);
+    data = processColSelected(spreadsheet, selectedCols);
   } else if (selectedRows.length) {
-    // 选中某行
-    data = processSelectedByHeader(spreadsheet, selectedRows);
+    data = processRowSelected(spreadsheet, selectedRows);
   } else {
     if (!cells.length) {
       return [
@@ -138,36 +267,13 @@ function getDataCellCopyable(
     }
 
     // normal selected
-    const selectedCellsMeta = getSelectedCellsMeta(cells) as CellMeta[][];
+    const selectedCellsMeta = getSelectedCellsMeta(cells);
 
-    const selectedColMetas = selectedCellsMeta[0].map((cellMeta) => {
-      return {
-        ...cellMeta,
-        id: cellMeta?.id?.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
-        type: CellTypes.COL_CELL,
-      };
-    });
-    const selectedRowMetas = selectedCellsMeta.map((cellMeta) => {
-      return {
-        ...cellMeta[0],
-        id: cellMeta[0]?.id?.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
-        type: CellTypes.ROW_CELL,
-      };
-    });
-
-    if (spreadsheet.isPivotMode()) {
-      data = processSelectedPivotByDataCell({
-        spreadsheet,
-        selectedCells: selectedCellsMeta,
-        headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
-      });
-    } else {
-      data = processSelectedTableByDataCell({
-        spreadsheet,
-        selectedCells: selectedCellsMeta,
-        headerSelectedCells: selectedColMetas,
-      });
-    }
+    data = getDataMatrixByDataCell(
+      selectedCellsMeta,
+      displayData as Data[],
+      spreadsheet,
+    );
   }
 
   return data;
@@ -194,17 +300,4 @@ export const getSelectedData = (spreadsheet: SpreadSheet): CopyableList => {
   }
 
   return data!;
-};
-
-// 全量导出使用
-export const processAllSelected = (
-  spreadsheet: SpreadSheet,
-  split: string,
-  formatOptions?: FormatOptions,
-): CopyableList => {
-  if (spreadsheet.isPivotMode()) {
-    return processSelectedAllPivot(spreadsheet, split, formatOptions);
-  }
-
-  return processSelectedAllTable(spreadsheet, split, formatOptions);
 };
