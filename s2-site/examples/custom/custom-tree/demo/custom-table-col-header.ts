@@ -36,11 +36,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       meta: [
         {
           field: 'area',
-          name: '地区1',
+          formatter: (value) => '当前节点自定义名称1',
         },
         {
           field: 'number',
-          formatter: (v) => '1',
+          formatter: (value) => '1',
         },
       ],
     };
@@ -49,7 +49,6 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       width: 600,
       height: 480,
       showSeriesNumber: true,
-      hierarchyType: 'grid',
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);

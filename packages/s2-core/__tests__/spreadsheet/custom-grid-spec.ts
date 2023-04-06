@@ -182,18 +182,17 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (s2.facet as any)
-        .getCornerHeader()
-        .getChildren()
-        .map((cell: HeaderCell) => {
-          const value = cell.getActualText();
-          const meta = cell.getMeta();
+      const cornerCellLabels = (
+        s2.facet.cornerHeader.children as HeaderCell[]
+      ).map((cell: HeaderCell) => {
+        const value = cell.getActualText();
+        const meta = cell.getMeta();
 
-          return {
-            value,
-            field: meta.field,
-          };
-        });
+        return {
+          value,
+          field: meta.field,
+        };
+      });
 
       expect(cornerCellLabels).toMatchSnapshot();
     });
@@ -204,27 +203,22 @@ describe('SpreadSheet Custom Grid Tests', () => {
         meta: [
           {
             field: 'measure-1',
-            name: '哈哈',
             formatter: (value) => `#-${value}`,
           },
           {
             field: 'a-1',
-            name: '吱吱',
             formatter: (value) => `%-${value}`,
           },
           {
             field: 'a-1-1',
-            name: '嘻嘻',
             formatter: (value) => `@-${value}`,
           },
           {
             field: 'a-1-2',
-            name: '默默',
             formatter: (value) => `&-${value}`,
           },
           {
             field: 'a-2',
-            name: '哒哒',
             formatter: (value) => `*-${value}`,
           },
         ],
@@ -364,18 +358,17 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (s2.facet as any)
-        .getCornerHeader()
-        .getChildren()
-        .map((cell: HeaderCell) => {
-          const value = cell.getActualText();
-          const meta = cell.getMeta();
+      const cornerCellLabels = (
+        s2.facet.cornerHeader.children as HeaderCell[]
+      ).map((cell: HeaderCell) => {
+        const value = cell.getActualText();
+        const meta = cell.getMeta();
 
-          return {
-            value,
-            field: meta.field,
-          };
-        });
+        return {
+          value,
+          field: meta.field,
+        };
+      });
 
       expect(cornerCellLabels).toMatchSnapshot();
     });

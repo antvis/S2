@@ -3,9 +3,9 @@ title: 自定义行列头
 order: 2
 ---
 
-`S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种**行头**布局方式
+`S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种**行头**单元格布局方式
 
-默认通过**交叉之后得到的数据生成层级结构**, 如果都不满足的话，可以通过自定义行列头，来定制你的目录结构，同样支持这两种布局方式
+默认通过**分组之后得到的数据生成层级结构**, 如果都不满足的话，可以通过自定义行列头，来定制你的目录结构，同样兼容平铺和树状这两种布局方式
 
 ## 数据结构
 
@@ -173,7 +173,7 @@ const s2Options = {
 
 #### 平铺模式
 
-对于平铺模式，角头对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `key` 值
+对于平铺模式，角头显示的文本默认对应**行头每一列的第一个单元格**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，此时 `field` 对应 [CustomTreeNode](#customtreenode) 的 `field` 值
 
 ```ts
 const meta = [
@@ -200,7 +200,7 @@ const meta = [
 
 #### 树状模式
 
-对于树状模式，角头对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/S2Options) 来自定义角头文本
+对于树状模式，角头默认显示的文本对应**所有的一级节点和数值**，可以和普通字段一样，配置 [meta](/zh/docs/api/general/S2DataConfig#meta) 来对单元格文本进行格式化，也可以配置 [s2Options.cornerText](/zh/docs/api/general/S2Options) 来自定义角头文本
 
 ```ts
 const meta = [
@@ -264,11 +264,11 @@ const s2DataConfig: S2DataConfig = {
   meta: [
     {
       field: 'a-1',
-      name: '名称 1',
+      formatter: (value) => '名称 1'
     },
     {
       field: 'a-1-1',
-      name: '名称 2',
+      formatter: (value) => '名称 2'
     },
   ],
 };

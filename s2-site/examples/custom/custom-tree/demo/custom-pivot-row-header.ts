@@ -103,15 +103,18 @@ function render() {
       {
         field: 'a-1',
         name: '角头名称1',
+        formatter: (value) => '当前节点自定义名称1',
       },
       {
         field: 'a-1-1',
         name: '角头名称2',
+        formatter: (value) => '当前节点自定义名称2',
       },
-      {
-        field: 'measure-1',
-        name: '指标',
-      },
+      // 自定义格式化数值
+      // {
+      //   field: 'measure-1',
+      //   formatter: (value) => `指标: ${value}`,
+      // },
     ],
   };
 

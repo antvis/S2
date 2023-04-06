@@ -71,11 +71,11 @@ function render() {
     meta: [
       {
         field: 'type',
-        name: '商品类别',
+        formatter: (value) => '商品类别',
       },
       {
         field: 'sub_type',
-        name: '商品子类别',
+        formatter: (value) => '商品子类别',
       },
       {
         field: 'a-1',
@@ -85,6 +85,11 @@ function render() {
         field: 'a-1-1',
         name: '角头2',
       },
+      // 自定义格式化数值
+      // {
+      //   field: 'measure-1',
+      //   formatter: (value) => `指标: ${value}`,
+      // },
     ],
   };
 
