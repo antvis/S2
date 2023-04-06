@@ -1276,7 +1276,7 @@ export class TableFacet extends BaseFacet {
   }
 
   public getTopLevelColNodes() {
-    return this.spreadsheet.getColumnNodes().filter(isTopLevelNode);
+    return this.layoutResult.colNodes.filter(isTopLevelNode);
   }
 
   public updatePanelScrollGroup() {

@@ -163,53 +163,6 @@ Array [
 ]
 `;
 
-exports[`TableSheet Custom Tests should not sample series node1 1`] = `
-Array [
-  Object {
-    "description": undefined,
-    "height": 30,
-    "value": "地区",
-    "width": 238,
-  },
-  Object {
-    "description": undefined,
-    "height": 30,
-    "value": "省份",
-    "width": 119,
-  },
-  Object {
-    "description": undefined,
-    "height": 30,
-    "value": "城市",
-    "width": 119,
-  },
-  Object {
-    "description": undefined,
-    "height": 60,
-    "value": "类型",
-    "width": 119,
-  },
-  Object {
-    "description": undefined,
-    "height": 30,
-    "value": "金额",
-    "width": 238,
-  },
-  Object {
-    "description": "价格描述",
-    "height": 30,
-    "value": "价格",
-    "width": 119,
-  },
-  Object {
-    "description": undefined,
-    "height": 30,
-    "value": "数量",
-    "width": 119,
-  },
-]
-`;
-
 exports[`TableSheet Custom Tests should render custom layout column nodes 1`] = `
 Array [
   Object {

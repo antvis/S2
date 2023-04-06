@@ -5,7 +5,7 @@ import { Canvas, Group } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
-import { FrozenGroupType } from '@/common/constant';
+import { ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
@@ -316,24 +316,39 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroupType.FROZEN_COL]: {
-        range: [0, 1],
-        width: 238,
-      },
-      [FrozenGroupType.FROZEN_ROW]: {
-        height: 60,
-        range: [0, 1],
-      },
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {
-        range: [3, 4],
-        width: 238,
-      },
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
-        height: 60,
-        range: [30, 31],
-      },
-    });
+
+    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
+      Object {
+        "frozenCol": Object {
+          "range": Array [
+            0,
+            1,
+          ],
+          "width": 238,
+        },
+        "frozenRow": Object {
+          "height": 60,
+          "range": Array [
+            0,
+            1,
+          ],
+        },
+        "frozenTrailingCol": Object {
+          "range": Array [
+            3,
+            4,
+          ],
+          "width": 238,
+        },
+        "frozenTrailingRow": Object {
+          "height": 60,
+          "range": Array [
+            30,
+            31,
+          ],
+        },
+      }
+    `);
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -627,30 +642,46 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroupType.FROZEN_COL]: {
-        range: [0, 0],
-        width: 238,
-      },
-      [FrozenGroupType.FROZEN_ROW]: {
-        height: 60,
-        range: [0, 1],
-      },
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {
-        range: [2, 2],
-        width: 238,
-      },
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
-        height: 60,
-        range: [30, 31],
-      },
-    });
+    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
+      Object {
+        "frozenCol": Object {
+          "range": Array [
+            0,
+            0,
+          ],
+          "width": 199,
+        },
+        "frozenRow": Object {
+          "height": 60,
+          "range": Array [
+            0,
+            1,
+          ],
+        },
+        "frozenTrailingCol": Object {
+          "range": Array [
+            2,
+            2,
+          ],
+          "width": 199,
+        },
+        "frozenTrailingRow": Object {
+          "height": 60,
+          "range": Array [
+            30,
+            31,
+          ],
+        },
+      }
+    `);
   });
 
   test('should get correct col layout with frozen col', () => {
     const { colCount } = s2.options.frozen!;
     const { colNodes } = facet.layoutResult;
-    const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
+    const topLevelNodes = colNodes.filter(
+      (node) => node.parent!.id === ROOT_NODE_ID,
+    );
 
     expect(
       topLevelNodes.slice(0, colCount).map((node) => node.x),
@@ -660,7 +691,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   test('should get correct cell layout with frozenTrailingCol', () => {
     const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
     const { colNodes, colLeafNodes } = s2.facet.layoutResult;
-    const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
+    const topLevelNodes = colNodes.filter(
+      (node) => node.parent!.id === ROOT_NODE_ID,
+    );
     const { trailingColCount } = getFrozenLeafNodesCount(
       topLevelNodes,
       0,
@@ -672,7 +705,11 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingColCount)
         .reverse()
         .map((node) => node.x),
-    ).toEqual([481, 362]);
+    ).toMatchInlineSnapshot(`
+      Array [
+        401,
+      ]
+    `);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -685,7 +722,12 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([502, 472]);
+    ).toMatchInlineSnapshot(`
+      Array [
+        532,
+        502,
+      ]
+    `);
   });
 
   test('should get correct viewCellHeights result', () => {
@@ -714,13 +756,40 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const originHeight = facet.panelBBox.viewportHeight;
 
     facet.panelBBox.viewportHeight = 10;
-    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-      center: [2, 2, 2, 0],
-      frozenCol: [0, 1, 2, 0],
-      frozenRow: [2, 2, 0, 1],
-      frozenTrailingCol: [3, 4, 2, 0],
-      frozenTrailingRow: [2, 2, 30, 31],
-    });
+    expect(facet.calculateXYIndexes(0, 0)).toMatchInlineSnapshot(`
+      Object {
+        "center": Array [
+          1,
+          1,
+          2,
+          0,
+        ],
+        "frozenCol": Array [
+          0,
+          0,
+          2,
+          0,
+        ],
+        "frozenRow": Array [
+          1,
+          1,
+          0,
+          1,
+        ],
+        "frozenTrailingCol": Array [
+          2,
+          2,
+          2,
+          0,
+        ],
+        "frozenTrailingRow": Array [
+          1,
+          1,
+          30,
+          31,
+        ],
+      }
+    `);
     // reset
     facet.panelBBox.viewportHeight = originHeight;
   });

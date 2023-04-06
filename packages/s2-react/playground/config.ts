@@ -94,6 +94,8 @@ export const s2Options: SheetComponentOptions = {
   // showSeriesNumber: true,
   frozen: {
     rowHeader: true,
+    // rowCount: 1,
+    // trailingRowCount: 1,
     // colCount: 1,
     // trailingColCount: 1,
   },

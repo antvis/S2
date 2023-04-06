@@ -1,9 +1,8 @@
-import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
-import * as mockPivotDataConfig from 'tests/data/simple-data.json';
+import { difference, pick } from 'lodash';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
+import * as mockPivotDataConfig from 'tests/data/simple-data.json';
+import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { difference, get, pick } from 'lodash';
-import type { Node } from '@/facet/layout/node';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { HiddenColumnsInfo, S2Options } from '@/common';
 
@@ -449,12 +448,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
         sheet.interaction.hideColumns(nodeIds);
 
-        const cornerNodes = get(
-          sheet.facet.cornerHeader,
-          'headerConfig.data',
-          [],
-        ) as Node[];
-
+        const cornerNodes = sheet.facet.getCornerNodes();
         const colCornerNodesMeta = cornerNodes.map((node) =>
           pick(node, ['x', 'y', 'width', 'height']),
         );
