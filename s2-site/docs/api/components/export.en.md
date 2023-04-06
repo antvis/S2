@@ -16,7 +16,7 @@ order: 5
 ### ExportCfgProps
 
 | Attributes           | illustrate                                                                              | type                                                            | Defaults | required |
-| :------------------- | :-------------------------------------------------------------------------------------- | :-------------------------------------------------------------- | :------- | :------- |
+| -------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------- | -------- |
 | open                 | open component                                                                          | `boolean`                                                       | `false`  | ✓        |
 | className            | class name                                                                              | `string`                                                        |          |          |
 | icon                 | display icon                                                                            | `ReactNode`                                                     |          |          |
@@ -30,7 +30,7 @@ order: 5
 | syncCopy             | Copy data synchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
 | drop down            | Dropdown menu configuration, transparently passed to the `Dropdown` component of `antd` | [DropdownProps](https://ant.design/components/dropdown-cn/#API) |          |          |
 
-<embed src="@/docs/common/export.zh.md"></embed>
+<embed src="@/docs/common/export.en.md"></embed>
 
 ## Vue export component
 

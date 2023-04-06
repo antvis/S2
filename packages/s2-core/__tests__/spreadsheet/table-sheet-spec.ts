@@ -46,7 +46,8 @@ const meta: S2DataConfig['meta'] = [
   },
 ];
 
-const newLineText = `1\t\n2`;
+const newLineText = `"### 问题摘要
+- **会话地址**："`;
 
 const dataCfg: S2DataConfig = {
   fields: {

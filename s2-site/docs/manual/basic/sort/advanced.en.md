@@ -3,16 +3,13 @@ title: Advanced Sort
 order: 1
 ---
 
-The `React` version provides an advanced sorting component, optionally
-available. [example](/examples/analysis/sort#advanced)
+The `React` version provides an advanced sorting component, optionally available. [view example](/examples/analysis/sort#advanced)
 
 > Note: state is not maintained internally
 
 ## Get started quickly
 
-Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSortCfg` for the `header` . For
-configuration details,
-see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSortCfg` for the `header` . For configuration details, see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
@@ -44,7 +41,6 @@ const AdvancedSortDemo = () => {
 };
 
 ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
-
 ```
 
 ## configuration
@@ -52,26 +48,24 @@ ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
 ### show
 
 ```ts
- advancedSortCfg: {
+advancedSortCfg: {
   open: true,
 }
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
 ### submit
 
-Through the `onSortConfirm` function, the selected rule data `ruleValues` and the data `sortParams` that can be
-processed into a table can be directly used
+Through the `onSortConfirm` function, the selected rule data `ruleValues` and the data `sortParams` that can be processed into a table can be directly used
 
 ```ts
- advancedSortCfg: {
+advancedSortCfg: {
   open: true,
-    onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
+  onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
     console.log(ruleValues, sortParams)
   },
-}
-,
+},
 ```
 
 ### Customization
@@ -87,9 +81,9 @@ processed into a table can be directly used
 | text      | sort button name | `ReactNode`       | -        |          |
 | ruleText  | Rule description | `string`          | -        |          |
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*myN3SYxjPXsAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*myN3SYxjPXsAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
 #### dimension list
 
@@ -101,11 +95,11 @@ Support custom dimension list `dimension` , if not configured, the default is:`�
 | name      | dimension name | `string`   | -        | ✓        |
 | list      | dimension list | `string[]` | -        | ✓        |
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
 `list` for manual sorting
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rPkKQJo8ln4AAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rPkKQJo8ln4AAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
 #### rule list
 
@@ -113,15 +107,14 @@ Support custom rule configuration list, if not configured, the default is:`首�
 
 > Note: If you customize here, you need to customize sortParams through ruleValues in onSortConfirm
 
-| Attributes | type | required | Defaults | Functional description | | |
-| :--------- | :------------- | :------- | :---------------- | :--------------------- | - | ---------- |
-| label | `string`       | | ✓ | rule name | | |
-| value | \`'sortMethod' | 'sortBy' | 'sortByMeasure'\` | ✓ | | rule value |
-| children | `RuleOption[]` | | ✓ | rule sublist | | |
+| Attributes | type           | required | Defaults          | Functional description |
+| ---------- | -------------- | -------- | ----------------- | ---------------------- |
+| label      | `string`       |          | ✓                 | rule name              |
+| value      | \`'sortMethod' | 'sortBy' | 'sortByMeasure'\` | ✓                      |
+| children   | `RuleOption[]` |          | ✓                 | rule sublist           |
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
 
 #### Open sort popup
 
-The `onSortOpen: () => void` callback can be used to support custom opening sorting pop-up windows, which are generally
-used to obtain pop-up frame data in advance
+The `onSortOpen: () => void` callback can be used to support custom opening sorting pop-up windows, which are generally used to obtain pop-up frame data in advance

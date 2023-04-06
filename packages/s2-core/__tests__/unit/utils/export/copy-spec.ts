@@ -3,24 +3,19 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
-import { CopyMIMEType } from '@/utils/export/interface';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import {
-  convertString,
-  getCopyData,
-  getSelectedData,
-} from '@/utils/export/copy';
+import { getSelectedData } from '@/utils/export/copy';
+import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import { CopyType, S2Event } from '@/common/constant';
+import { S2Event, NewLine, NewTab } from '@/common/constant';
 import { TableSeriesCell } from '@/cell';
 
-const newLineTest = `"### 问题摘要
-- **会话地址**："`;
+const newLineTest = `### 问题摘要 ${NewLine}- **会话地址**：`;
 
 const testData = originalData.map((item, i) => {
   if (i === 0) {
@@ -29,6 +24,12 @@ const testData = originalData.map((item, i) => {
 
   return { ...item };
 });
+
+const getCopyPlainContent = (sheet: TableSheet | PivotSheet): string => {
+  const data = getSelectedData(sheet);
+
+  return data[0].content;
+};
 
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
@@ -60,7 +61,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual('');
+    expect(getCopyPlainContent(s2)).toEqual('');
   });
 
   it('should copy normal data', () => {
@@ -72,7 +73,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual('浙江省');
+    expect(getCopyPlainContent(s2)).toEqual('浙江省');
   });
 
   it('should copy col data', () => {
@@ -84,7 +85,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(32);
+    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(32);
   });
 
   it('should copy row data', () => {
@@ -96,15 +97,18 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2).split('\t').length).toBe(5);
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
   });
 
   it('should copy all data', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(33);
-    expect(getSelectedData(s2).split('\n')[2].split('\t').length).toBe(5);
+
+    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
+    expect(getCopyPlainContent(s2).split(NewLine)[2].split(NewTab).length).toBe(
+      5,
+    );
   });
 
   it('should copy normal data with header in table mode', () => {
@@ -124,7 +128,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual('province\r\n浙江省');
+    expect(getCopyPlainContent(s2)).toEqual('province\r\n浙江省');
   });
 
   it('should copy format data', () => {
@@ -158,7 +162,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(ss)).toEqual('浙江省元');
+    expect(getCopyPlainContent(ss)).toEqual('浙江省元');
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -191,9 +195,9 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    const data = getSelectedData(ss);
+    const data = getCopyPlainContent(ss);
 
-    expect(data).toBe('2367\t浙江省_formatted\t绍兴市\t家具\t桌子');
+    expect(data).toBe('浙江省_formatted	绍兴市	家具	桌子	2367');
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -226,9 +230,36 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    const data = getSelectedData(ss);
+    const data = getCopyPlainContent(ss);
 
     expect(data.split('_formatted').length).toEqual(33);
+  });
+
+  it('should copy correct data when selected diagonal cells', () => {
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cells[21]), getCellMeta(cells[48])],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const dataContent = getCopyPlainContent(s2);
+
+    expect(dataContent).toMatchInlineSnapshot(`
+      "浙江省	
+      	
+      	
+      	
+      	
+      	
+      	
+      	
+      	宁波市"
+    `);
   });
 
   it('should copy correct data with data filtered', () => {
@@ -252,14 +283,14 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getCopyPlainContent(s2);
 
-    expect(data).toBe('2330\t四川省\t乐山市\t家具\t桌子');
+    expect(data).toBe('四川省	乐山市	家具	桌子	2330');
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(16);
+    expect(getCopyPlainContent(s2).split('\n').length).toEqual(16);
     // clear filter condition
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey: 'province',
@@ -283,13 +314,13 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getCopyPlainContent(s2);
 
-    expect(data).toBe('7234\t浙江省\t宁波市\t家具\t沙发');
+    expect(data).toBe('浙江省	宁波市	家具	沙发	7234');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(33);
+    expect(getCopyPlainContent(s2).split('\n').length).toEqual(33);
   });
 
   it('should copy correct data with \n data', () => {
@@ -328,7 +359,44 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(sss);
+    const data = getCopyPlainContent(sss);
+
+    expect(data).toBe(convertString(newLineText));
+  });
+
+  it('should not transform double quotes to single quotes when newline char is in data', () => {
+    const newLineText = `"1
+    2"`;
+    const sss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => `${v}元` }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: originalData.map((e) => {
+          return { ...e, city: newLineText };
+        }),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+
+    sss.render();
+
+    const cell = sss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[40];
+
+    sss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getCopyPlainContent(sss);
 
     expect(data).toBe(convertString(newLineText));
   });
@@ -351,7 +419,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2).split('\t').length).toBe(5);
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
   });
 });
 
@@ -396,7 +464,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual('');
+    expect(getCopyPlainContent(s2)).toEqual('');
   });
 
   it('should copy normal data in grid mode', () => {
@@ -412,14 +480,14 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(hangzhouDeskCell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual(`${originalData[0].number}`);
+    expect(getCopyPlainContent(s2)).toEqual(`${originalData[0].number}`);
 
     // 小计节点
     s2.interaction.changeState({
       cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual(
+    expect(getCopyPlainContent(s2)).toEqual(
       `${
         totalData.find(
           (data) => data.province === '浙江省' && data.sub_type === '桌子',
@@ -437,7 +505,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(COL_COUNT);
+    expect(getCopyPlainContent(s2).split('\n').length).toBe(COL_COUNT);
   });
 
   it('should copy row data in grid mode', () => {
@@ -462,15 +530,15 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell!)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(ss).split('\t').length).toBe(4);
+    expect(getCopyPlainContent(ss).split(NewTab).length).toBe(4);
   });
 
   it('should copy all data in grid mode', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(COL_COUNT);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(
+    expect(getCopyPlainContent(s2).split('\n').length).toBe(COL_COUNT);
+    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
       ROW_COUNT,
     );
   });
@@ -504,7 +572,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(ss)).toEqual(`${originalData[0].number}元`);
+    expect(getCopyPlainContent(ss)).toEqual(`${originalData[0].number}元`);
   });
 
   it('should copy normal data with header in grid mode', () => {
@@ -528,7 +596,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual(
+    expect(getCopyPlainContent(s2)).toEqual(
       `\t\t家具\r\n\t\t桌子\r\n\t\tnumber\r\n浙江省\t杭州市\t7789`,
     );
 
@@ -537,7 +605,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual(
+    expect(getCopyPlainContent(s2)).toEqual(
       `\t\t家具\r\n\t\t桌子\r\n\t\tnumber\r\n浙江省\t小计\t18375`,
     );
   });
@@ -561,11 +629,13 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     // 复制的数据高度 = 列头高度 + 数据高度
-    expect(getSelectedData(s2).split('\n')).toHaveLength(
+    expect(getCopyPlainContent(s2).split('\n')).toHaveLength(
       COL_COUNT + COL_HEADER_HEIGHT,
     );
     // 复制的数据宽度 = 行头宽度 + 数据宽度
-    expect(getSelectedData(s2).split('\n')[0].split('\t')).toHaveLength(5);
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
+      5,
+    );
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/q3mBlV9Ii/1d68499a-b529-4594-93ce-8b04f8b4c4bc.png
@@ -590,8 +660,10 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2).split('\n')).toHaveLength(4);
-    expect(getSelectedData(s2).split('\n')[0].split('\t')).toHaveLength(9);
+    expect(getCopyPlainContent(s2).split('\n')).toHaveLength(4);
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
+      9,
+    );
 
     // 选择某几行，province 维度
     s2.interaction.changeState({
@@ -599,8 +671,10 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2).split('\n')).toHaveLength(8);
-    expect(getSelectedData(s2).split('\n')[0].split('\t')).toHaveLength(9);
+    expect(getCopyPlainContent(s2).split('\n')).toHaveLength(8);
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
+      9,
+    );
   });
 
   it('should copy all data with header in grid mode', () => {
@@ -615,10 +689,10 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
-    expect(getSelectedData(s2).split('\n').length).toBe(
+    expect(getCopyPlainContent(s2).split('\n').length).toBe(
       COL_COUNT + COL_HEADER_HEIGHT,
     );
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(
+    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
       ROW_COUNT + ROW_HEADER_WIDTH,
     );
   });
@@ -644,13 +718,13 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getCopyPlainContent(s2);
 
     expect(data).toBe('2367\t632\t2999\t1304\t1354\t2658\t5657');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(COL_COUNT);
+    expect(getCopyPlainContent(s2).split('\n').length).toEqual(COL_COUNT);
   });
 
   it('should copy correct data with \n data in grid mode', () => {
@@ -683,7 +757,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(sss);
+    const data = getCopyPlainContent(sss);
 
     expect(data).toBe(convertString(`7789\n元`));
   });
@@ -723,7 +797,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2New);
+    const data = getCopyPlainContent(s2New);
 
     expect(data).toBe(convertString(`7789\n元`));
   });
@@ -758,7 +832,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2New);
+    const data = getCopyPlainContent(s2New);
 
     expect(data).toBe(convertString(`7789\n元`));
   });
@@ -782,7 +856,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(ss);
+    const data = getCopyPlainContent(ss);
 
     expect(data).toMatchInlineSnapshot(`
       "7789	5343	13132	945	1343
@@ -824,7 +898,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(ss);
+    const data = getCopyPlainContent(ss);
 
     expect(data).toMatchInlineSnapshot(`
       "		家具	家具	家具	办公用品
@@ -885,7 +959,7 @@ describe('Tree Table Core Data Process', () => {
       cells: [],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getCopyPlainContent(s2);
 
     expect(data).toBe('');
   });
@@ -893,7 +967,7 @@ describe('Tree Table Core Data Process', () => {
   it('should copy normal data in tree mode', () => {
     setSelectedVisibleCell();
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "18375	14043	32418	4826	5854
       7789	5343	13132	945	1343
       2367	632	2999	1304	1354
@@ -918,7 +992,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "18375	14043	32418
       7789	5343	13132
       2367	632	2999
@@ -943,7 +1017,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "18375	14043	32418	4826	5854	10680	43098
       7789	5343	13132	945	1343	2288	15420
       2367	632	2999	1304	1354	2658	5657
@@ -957,7 +1031,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "18375	14043	32418	4826	5854	10680	43098
       7789	5343	13132	945	1343	2288	15420
       2367	632	2999	1304	1354	2658	5657
@@ -990,7 +1064,7 @@ describe('Tree Table Core Data Process', () => {
 
     setSelectedVisibleCell();
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "18375元	14043元	32418	4826元	5854元
       7789元	5343元	13132	945元	1343元
       2367元	632元	2999	1304元	1354元
@@ -1015,7 +1089,7 @@ describe('Tree Table Core Data Process', () => {
 
     setSelectedVisibleCell();
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "	家具	家具	家具	办公用品	办公用品
       	桌子	沙发	小计	笔	纸张
       	number	number		number	number
@@ -1031,65 +1105,6 @@ describe('Tree Table Core Data Process', () => {
       四川省	2330	2445	4775	2458	352
       总计	26193	23516	49709	12321	16838"
     `);
-  });
-});
-
-describe('List Table getCopyData', () => {
-  let s2: TableSheet;
-
-  beforeEach(() => {
-    s2 = new TableSheet(
-      getContainer(),
-      assembleDataCfg({
-        meta: [],
-        fields: {
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
-        },
-        data: testData,
-      }),
-      assembleOptions({
-        showSeriesNumber: true,
-      }),
-    );
-    s2.render();
-    const cell = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
-
-    s2.interaction.changeState({
-      cells: [getCellMeta(cell)],
-      stateName: InteractionStateName.SELECTED,
-    });
-  });
-
-  it('should get correct data in CopyType.ALL', () => {
-    const data = getCopyData(s2, CopyType.ALL);
-
-    expect(data.split('\n').length).toBe(33);
-    expect(data.split('\n')[2].split('\t').length).toBe(5);
-  });
-
-  it('should get correct data in CopyType.COL', () => {
-    const data = getCopyData(s2, CopyType.COL);
-
-    expect(data.split('\n').length).toBe(32);
-    expect(data.split('\n')[2].split('\t').length).toBe(1);
-  });
-
-  it('should get correct data in CopyType.ROW', () => {
-    const data = getCopyData(s2, CopyType.ROW);
-
-    expect(data.split('\n').length).toBe(2);
-    expect(data.split('\t').length).toBe(5);
-  });
-
-  it('should copy in multiple format', () => {
-    const data = getCopyData(s2, CopyType.ROW, [
-      CopyMIMEType.PLAIN,
-      CopyMIMEType.HTML,
-    ]) as string[];
-
-    expect(data.length).toBe(2);
   });
 });
 
@@ -1127,7 +1142,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "浙江省	杭州市
       浙江省	绍兴市
       浙江省	宁波市
@@ -1151,7 +1166,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     });
     // 列头高度
 
-    expect(getSelectedData(s2)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "家具	家具	办公用品	办公用品
       桌子	沙发	笔	纸张
       number	number	number	number"
@@ -1188,7 +1203,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
       "家具	桌子
       家具	沙发
       办公用品	笔
@@ -1212,7 +1227,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
       "浙江省	杭州市
       浙江省	绍兴市"
     `);
@@ -1248,7 +1263,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
       "桌子	沙发	笔	纸张	桌子
       number	number	number	number	number"
     `);
@@ -1266,7 +1281,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         root.updateCells(root.getAllColHeaderCells());
       },
     });
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
       "浙江省	浙江省
       杭州市	绍兴市"
     `);
@@ -1298,7 +1313,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
       "浙江省	杭州市
       浙江省	绍兴市
       浙江省	宁波市
@@ -1339,10 +1354,16 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getSelectedData(ss)).toMatchInlineSnapshot(`
+    const copyableList = getSelectedData(ss);
+
+    expect(copyableList[0].content).toMatchInlineSnapshot(`
       "家具	家具	家具	办公用品	办公用品
       桌子	沙发	小计	笔	纸张
       number	number	小计	number	number"
     `);
+
+    expect(copyableList[1].content).toMatchInlineSnapshot(
+      `"<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>小计</td><td>number</td><td>number</td></tr></tbody></table>"`,
+    );
   });
 });

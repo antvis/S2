@@ -1,4 +1,5 @@
-import { CORNER_MAX_WIDTH_RATIO } from '../../common/constant';
+import { clamp, isBoolean } from 'lodash';
+import { DEFAULT_CORNER_MAX_WIDTH_RATIO } from '../../common/constant';
 import { BaseBBox } from './baseBBox';
 
 export class CornerBBox extends BaseBBox {
@@ -41,19 +42,24 @@ export class CornerBBox extends BaseBBox {
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
     );
 
-    // 在行头不固定时，无需对角头 BBox 进行裁剪
-    if (this.spreadsheet.isScrollContainsRowHeader()) {
-      return this.originalWidth;
+    // 在行头固定时，需对角头 BBox 进行裁剪
+    if (this.spreadsheet.isFrozenRowHeader()) {
+      return this.adjustCornerBBoxWidth();
     }
 
-    return this.adjustCornerBBoxWidth();
+    return this.originalWidth;
   }
 
   private adjustCornerBBoxWidth() {
     const { colsHierarchy } = this.layoutResult;
-    const { width: canvasWidth } = this.spreadsheet.options;
+    const { width: canvasWidth, frozen } = this.spreadsheet.options;
 
-    const maxCornerBBoxWidth = canvasWidth! * CORNER_MAX_WIDTH_RATIO;
+    const rowHeader = frozen?.rowHeader!;
+    const ratio = isBoolean(rowHeader)
+      ? DEFAULT_CORNER_MAX_WIDTH_RATIO
+      : clamp(rowHeader, 0, 1);
+
+    const maxCornerBBoxWidth = canvasWidth! * ratio;
     const colsHierarchyWidth = colsHierarchy?.width;
     const panelWidthWidthUnClippedCorner = canvasWidth! - this.originalWidth;
 

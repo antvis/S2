@@ -12,7 +12,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 Function description: custom cell
 
 | parameter   | type                        | required | Defaults | Functional description                                               |
-| ----------- | --------------------------- | :------: | -------- | -------------------------------------------------------------------- |
-| node        | [node](#node)               |     ✓    |          | The currently rendered node node                                     |
-| spreadsheet | [SpreadSheet](#spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
+| ----------- | --------------------------- | -------- | -------- | -------------------------------------------------------------------- |
+| node        | [node](#node)               | ✓        |          | The currently rendered node node                                     |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓        |          | Table class instance, which can access any configuration information |
 | restOptions | `unknown[]`                 |          |          | Indeterminate parameters, pass additional information                |

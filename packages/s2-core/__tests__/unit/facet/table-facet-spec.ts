@@ -48,7 +48,6 @@ jest.mock('@/sheet-type', () => {
         getTotalsConfig: jest.fn(),
         getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
-        isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         getColumnNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
@@ -59,6 +58,9 @@ jest.mock('@/sheet-type', () => {
           clearHoverTimer: jest.fn(),
         },
         enableFrozenHeaders() {
+          return false;
+        },
+        isFrozenRowHeader() {
           return false;
         },
         isValueInCols: jest.fn(),

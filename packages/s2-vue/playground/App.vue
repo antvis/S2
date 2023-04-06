@@ -1,6 +1,13 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import { CellTypes, DataType, S2DataConfig, S2Options } from '@antv/s2';
+import {
+  CellTypes,
+  type S2DataConfig,
+  type S2Options,
+  type Query,
+  type Data,
+  type RawData,
+} from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
@@ -537,20 +544,22 @@ const partDrillDown: PartDrillDown = {
         meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
-      const rowData = dataSet
-        .getMultiData(meta?.query as DataType, true, true, [preDrillDownfield])
-        .filter(
-          (item) => item.sub_type && item.type && item[preDrillDownfield],
-        );
+      const rowData = (
+        dataSet.getMultiData(meta?.query as Query, undefined, [
+          preDrillDownfield,
+        ]) as Data[]
+      ).filter(
+        (item) => item!.sub_type && item!.type && item![preDrillDownfield],
+      );
 
       console.log(rowData);
-      const drillDownData: DataType[] = [];
+      const drillDownData: RawData[] = [];
 
-      forEach(rowData, (data: DataType) => {
-        const { number, sub_type: subType, type } = data;
-        const number0 = random(50, number);
-        const number1 = number - number0;
-        const dataItem0 = {
+      forEach(rowData, (data: any) => {
+        const { number: num, sub_type: subType, type } = data;
+        const number0 = random(50, !!num);
+        const number1 = (num as number) - number0;
+        const dataItem0: RawData = {
           ...meta.query,
           number: number0,
           sub_type: subType,

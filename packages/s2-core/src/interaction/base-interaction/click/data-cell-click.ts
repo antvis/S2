@@ -12,7 +12,6 @@ import type {
 } from '../../../common/interface';
 import {
   getCellMeta,
-  getInteractionCells,
   afterSelectDataCells,
 } from '../../../utils/interaction/select-event';
 import {
@@ -80,7 +79,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       }
 
       interaction.changeState({
-        cells: getInteractionCells(getCellMeta(cell), this.spreadsheet),
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
         onUpdateCells: afterSelectDataCells,
       });

@@ -7,217 +7,206 @@ order: 7
 
 Expose table information and some analysis functions through table interaction
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/tnuTdq%24b2/1a076d70-e836-41be-bd1b-ab0ec0916ea7.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/tnuTdq%24b2/1a076d70-e836-41be-bd1b-ab0ec0916ea7.png" width = "600" alt="preview" />
 
 ## Precautions
 
-`@antv/s2` only retains the core display and hidden logic of `tooltip` , provides corresponding data, and **does not
-render content**
+`@antv/s2` only retains the core display logic of `tooltip`, provides corresponding data, **does not render content**
 
-In the `React` version and `Vue3` version, the content of the `tooltip` is rendered
-by [customizing the Tooltip class](#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E7%B1%BB) , including the`Sort drop-down menu`
-, `Cell selection information summary`
-,`Column header hide button`, etc.
+In `React` version and `Vue3` version, the content of `tooltip` is rendered by means of [custom Tooltip class](#custom-tooltip-class), including `sort drop-down menu`, `cell selection information summary`, `Column header hide button` etc.
 
-View the specific implementation of the `React` version and
-the [specific](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts) [implementation](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
-of the `Vue3` version
+View `React`
+Version [specific implementation](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+and the `Vue3` version [concrete implementation](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
 
-* If you need a `tooltip` , you can directly use the out-of-the-box `@antv/s2-react` `@antv/s2-vue` , which saves you
-  secondary packaging and is more convenient to use
-* If you don't want to depend on the framework, or want to use `tooltip` in `Vue` , `Angular` framework, please refer to
-  the chapter [of custom Tooltip class](#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E7%B1%BB)
-* Don't forget to import styles
+- If you need `tooltip`, you can directly use the out-of-the-box `@antv/s2-react` `@antv/s2-vue`, which saves you secondary packaging and is more convenient to use
+- If you don't want to depend on the framework, or want to use `tooltip` in `Vue`, `Angular` framework, please refer to [Custom Tooltip Class](#Custom-tooltip-class) chapter
+- Don't forget to import styles
 
 ```ts
- import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/style.min.css";
 ```
 
 ## use
 
-Configure the [tooltip](/docs/api/general/S2Options#tooltip) field in `s2Options` , which acts on **all** cells by
-default
+Configure the [tooltip](/docs/api/general/S2Options#tooltip) field in `s2Options`, which works on **all** cells by default
 
 ```ts
- const s2Options = {
-  tooltip: {}
+const s2Options = {
+   tooltip: {}
 };
 ```
 
 Different types of cells can also be configured separately:
 
-* `corner` : corner head
-* `row` : row head
-* `col` : column header
-* `data` : value
+- `cornerCell`: corner cell
+- `rowCell`: row header cell
+- `colCell`: column header cell
+- `dataCell`: Numerical cell
 
 ```ts
- const s2Options = {
-  tooltip: {
-    corner: {},
-    row: {},
-    col: {},
-    data: {},
-  }
+const s2Options = {
+   tooltip: {
+     cornerCell: {},
+     rowCell: {},
+     colCell: {},
+     dataCell: {},
+   }
 };
 ```
 
-### Show configuration items
+### Display configuration items
 
 Control the display of `Tooltip` by configuring the `showTooltip` field, the default is `false`
 
 ```ts
- const s2Options = {
-  tooltip: {
-    showTooltip: true,
-    row: {
-      // 单独设置行头不显示
-      showTooltip: false,
-    }
-  }
+const s2Options = {
+   tooltip: {
+     showTooltip: true,
+     rowCell: {
+       // Set the line header separately to not display
+       showTooltip: false,
+     }
+   }
 };
 ```
 
-### Operation configuration item
+### Operation configuration items
 
-Add [operation items](/docs/api/general/S2Options#tooltipoperation) on `Tooltip` by configuring the `operation`
-field, which supports [customization](#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E6%93%8D%E4%BD%9C%E9%A1%B9) .
+Add [operation item](/docs/api/general/S2Options#tooltipoperation) on `Tooltip` by configuring `operation` field, support [custom](#custom-tooltip-operation item).
 
 ```ts
- const s2Options = {
-  tooltip: {
-    operation: {
-      hiddenColumns: true, //开启隐藏列（叶子节点有效）
-    },
-  }
+const s2Options = {
+   tooltip: {
+     operation: {
+       hiddenColumns: true, //Enable hidden columns (leaf nodes are valid)
+     },
+   }
 };
+
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9MaTR51tXi0AAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9MaTR51tXi0AAAAAAAAAAAAAARQnAQ" width = "600" alt="row" />
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*mcvMTr1Sa8MAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*mcvMTr1Sa8MAAAAAAAAAAAAAARQnAQ" width = "600" alt="row" />
 
 ### Automatically adjust the position beyond the specified area
 
-Enable by configuring `autoAdjustBoundary` field:
+Enabled by configuring the `autoAdjustBoundary` field:
 
-* `container` : When the tooltip exceeds the range of the **table container** , it will automatically adjust its
-  position and always display it in the table
-* `body` : When the tooltip exceeds the visible range of the **browser window** , it automatically adjusts its position
-  and always displays it within the visible range
-* `null` : turn off autofit
+- `container` : When the tooltip exceeds the range of the **table container**, it will automatically adjust its position and always display it in the table
+- `body` : When the tooltip exceeds the visible range of the **browser window**, it will automatically adjust its position and always display within the visible range
+- `null` : turn off autofit
 
 ```ts
- const s2Options = {
-  tooltip: {
-    autoAdjustBoundary: "container" // 默认"body"
-  }
+const s2Options = {
+   tooltip: {
+     autoAdjustBoundary: "container" // default "body"
+   }
 };
+
 ```
 
 ### customize
 
 #### Customize Tooltip content
 
-For the use of `@antv/s2` class: tooltip content can be any `dom` node or`string`
+For the use of `@antv/s2` class: tooltip content can be any `dom` node or `string`
 
 ```ts
-const content = document.createElement('div')
-content.innerHTML = '我是自定义内容'
+const content = document. createElement('div')
+content.innerHTML = 'I am custom content'
 
 const s2Options = {
-  tooltip: {
-    content,
-    // content: '我是字符串'
-  },
+   tooltip: {
+     content,
+     // content: 'I am a string'
+   },
 };
 ```
 
 For the use of `@antv/s2-react` components: tooltip content can be any `jsx` element
 
 ```ts
- const content = (
-  <div>
-    <span>我是自定义内容 < /span>
-  < /div>
+const content = (
+   <div>
+     <span>I am custom content</span>
+   </div>
 )
 
 const s2Options = {
-  tooltip: {
-    content,
-  },
+   tooltip: {
+     content,
+   },
 };
 ```
 
-At the same time, `content` also supports the way of callback, which can flexibly customize the content according
-to [the current cell information](/docs/api/basic-class/interaction) and the detailed information of the
-default `tooltip`
+At the same time, `content` also supports the method of callback, which can flexibly customize the content according to [current cell information](/docs/api/basic-class/interaction) and the default `tooltip` details
 
 ```ts
- const TooltipContent = (props) => <div>
+const TooltipContent = (props) => <div>
 ...
 </div>
 
 const s2Options = {
-  tooltip: {
-    content: (cell, defaultTooltipShowOptions) => {
-      console.log('当前单元格：', cell)
-      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
-      return <TooltipContent cell = { cell }
-      detail = { detail }
-      />
-    },
-  },
+   tooltip: {
+     content: (cell, defaultTooltipShowOptions) => {
+       console.log('Current cell:', cell)
+       console.log('Default tooltip details:', defaultTooltipShowOptions)
+       return <TooltipContent cell = { cell }
+       detail = {detail}
+       />
+     },
+   },
 };
 ```
 
 If you need to use the default Tooltip, just return `null`
 
 ```ts
- const s2Options = {
-  tooltip: {
-    content: () => {
-      return null
-    },
-  },
+const s2Options = {
+   tooltip: {
+     content: () => {
+       return null
+     },
+   },
 };
 ```
 
 ##### 1. Configuration level
 
-When configuring different cells, the priority of `tooltip.content` is lower than `row.content` , `col.content`
-, `data.content` , `corner.content`
+When configuring different cells, `tooltip.content` has lower priority than `rowCell.content`, `colCell.content`, `dataCell.content`, `cornerCell.content`
 
 ```tsx
- const TooltipContent = (
-  <div>content</div>
+const TooltipContent = (
+   <div>content</div>
 );
 
-const RowTooltipContent = (
-  <div>rowTooltip</div>
+const RowCellTooltipContent = (
+   <div>rowCellTooltip</div>
 );
 
-const ColTooltipContent = (
-  <div>colTooltip</div>
+const ColCellTooltipContent = (
+   <div>colCellTooltip</div>
 );
 
-const DataTooltipContent = (
-  <div>dataTooltip</div>
+const DataCellTooltipContent = (
+   <div>dataTooltip</div>
 );
 
 const s2Options = {
-  tooltip: {
-    content: TooltipContent,
-    row: {
-      content: RowTooltipContent,
-    },
-    col: {
-      content: ColTooltipContent
-    }
-    data: {
-      content: DataTooltipContent
-    }
-  },
+   tooltip: {
+     content: TooltipContent,
+     rowCell: {
+       content: RowCellTooltipContent,
+     },
+     colCell: {
+       content: ColCellTooltipContent
+     },
+     dataCell: {
+       content: DataCellTooltipContent
+     }
+   },
 };
 ```
 
@@ -226,129 +215,155 @@ const s2Options = {
 The `tooltip` can be displayed manually through the table instance
 
 ```ts
- const TooltipContent = (
-  <div>content < /div>
+const TooltipContent = (
+   <div>content</div>
 );
 
-s2.showTooltip({
-  content: TooltipContent
+s2. showTooltip({
+   content: TooltipContent
 })
 
-// 或者 s2.tooltip.show({ content: TooltipContent })
+// or s2.tooltip.show({ content: TooltipContent })
 ```
 
-<Playground data-mdast="html" path="react-component/tooltip/demo/custom-content.tsx" rid="container-1" height="300"></playground>
+<Playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></Playground>
 
 ##### 3. Content display priority
 
 `Method Call` > `Cell Configuration` > `Basic Configuration`
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
-#### Custom Tooltip Action Items
+#### Customize Tooltip action items
 
-In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items
-support nesting, and listen to their respective `onClick` click events to get
-the [cell information](/api/basic-class/base-cell) corresponding to the current `tooltip`
+In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items, which support nesting, and you can also listen to their respective `onClick` click events, and you can get the current `tooltip`
+Corresponding [cell information](/docs/api/basic-class/base-cell)
 
 ```ts
- const s2Options = {
-  tooltip: {
-    operation: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          onClick: (cell) => {
-            console.log('操作 1 点击');
-            console.log('tooltip 对应的单元格：', cell)
-          },
-          children: [ {
-            key: 'custom-a-a',
-            text: '操作 1-1',
-            icon: 'Trend',
-            onClick: (cell) => {
-              console.log('操作 1-1 点击');
-            },
-          } ]
-        },
-        {
-          key: 'custom-b',
-          text: '操作 2',
-          icon: 'EyeOutlined',
-          onClick: (cell) => {
-            console.log('操作 2 点击');
-          },
-        },
-      ],
-    },
-  },
+const s2Options = {
+   tooltip: {
+     operation: {
+       menus: [
+         {
+           key: 'custom-a',
+           text: 'Operation 1',
+           icon: 'Trend',
+           onClick: (cell) => {
+             console.log('operation 1 click');
+             console.log('The cell corresponding to the tooltip:', cell)
+           },
+           children: [ {
+             key: 'custom-a-a',
+             text: 'Operation 1-1',
+             icon: 'Trend',
+             onClick: (cell) => {
+               console.log('operation 1-1 click');
+             },
+           }]
+         },
+         {
+           key: 'custom-b',
+           text: 'Operation 2',
+           icon: 'EyeOutlined',
+           onClick: (cell) => {
+             console.log('operation 2 click');
+           },
+         },
+       ],
+     },
+   },
 };
 ```
 
-You can also control whether the current operation item is displayed through the `visible` parameter, and support
-passing in a callback, which can be dynamically displayed according to the
-current [cell information](/api/basic-class/base-cell)
+You can also control whether the current operation item is displayed through the `visible` parameter, and support passing in a callback, which can be dynamically displayed according to the current [cell information](/docs/api/basic-class/base-cell)
 
 ```ts
- const s2Options = {
-  tooltip: {
-    operation: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          visible: false,
-        },
-        {
-          key: 'custom-b',
-          text: '操作 2',
-          icon: 'EyeOutlined',
-          visible: (cell) => {
-            // 叶子节点不显示
-            const meta = cell.getMeta()
-            return meta.isLeaf
-          },
-        },
-      ],
-    },
-  },
+const s2Options = {
+   tooltip: {
+     operation: {
+       menus: [
+         {
+           key: 'custom-a',
+           text: 'Operation 1',
+           icon: 'Trend',
+           visible: false,
+         },
+         {
+           key: 'custom-b',
+           text: 'Operation 2',
+           icon: 'EyeOutlined',
+           visible: (cell) => {
+             // Display dynamically according to cell information, such as: leaf nodes are not displayed
+             const meta = cell. getMeta()
+             return meta.isLeaf
+           },
+         },
+       ],
+     },
+   },
 };
 ```
 
-<Playground data-mdast="html" path="react-component/tooltip/demo/custom-operation.tsx" rid="container-custom-operations" height="300"></playground>
+<br/>
+
+<Playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></Playground>
+
+<br/>
+
+If you are using `@antv/s2-react`, then `text` and `icon` also support any `ReactNode`
+
+```tsx
+import { StarOutlined } from '@ant-design/icons';
+
+const s2Options = {
+   tooltip: {
+     operation: {
+       menus: [
+         {
+           key: 'custom-a',
+           text: <div>Operation 1</div>,
+           icon: <StarOutlined/>,
+         }
+     },
+   },
+};
+```
+
+<br/>
 
 #### Customize Tooltip mount node
 
-Mounted on the `body` by default, you can customize the mount location
+Mounted on `body` by default, you can customize the mount location
 
 ```html
 
 <div class="container"/>
 ```
 
+<br/>
+
 ```ts
- const s2Options = {
-  tooltip: {
-    getContainer: () => document.querySelector('.container')
-  }
+const s2Options = {
+   tooltip: {
+     getContainer: () => document. querySelector('.container')
+   }
 }
 ```
 
-#### Custom Tooltip container style
+<br/>
 
-Adding additional `style` styles and `class` names in the `tooltip` container makes it easier to override styles
+#### Customize Tooltip container style
+
+Add additional `style` styles and `class` class names in the `tooltip` container to make it easier to override styles
 
 ```ts
- const s2Options = {
-  tooltip: {
-    style: {
-      fontSize: '20px'
-    },
-    className: 'test'
-  }
+const s2Options = {
+   tooltip: {
+     style: {
+       fontSize: '20px'
+     },
+     className: 'test'
+   }
 };
 ```
 
@@ -358,144 +373,140 @@ Adding additional `style` styles and `class` names in the `tooltip` container ma
 
 #### Custom Tooltip class
 
-In addition to the `Custom Tooltip Content` mentioned above, you can also `Custom Tooltip class` to combine with any
-framework ( `Vue`
-, `Angular` , `React` )
+In addition to the `custom Tooltip content` mentioned above, you can also `custom Tooltip class` combined with any framework (`Vue`, `Angular`, `React`)
 
-Inherit the `BaseTooltip` base class, rewrite`show (show)`, `hide (hide)`, `destroy (destroy)` and other methods,
-combine `this.spreadsheet` instance to realize the `tooltip` that meets your business, and also rewrite
-the `renderContent` method to render your package any component
+Inherit `BaseTooltip` base class, you can rewrite `show (hide)`, `destroy (destroy)` and other methods, combined with `this.spreadsheet` instance, to achieve `tooltip` that meets your business ,
+You can also override the `renderContent` method to render any component you encapsulate
 
-* [View BaseTooltip base class](/api/basic-class/base-tooltip)
-* [Check out the React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
-* [Check out the Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
+- [View BaseTooltip base class](/api/basic-class/base-tooltip)
+- [View React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+- [View Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
 ```ts
- import { BaseTooltip, SpreadSheet } from '@antv/s2';
-// 引入`tooltip` 样式文件
+import { BaseTooltip, SpreadSheet } from '@antv/s2';
+// import `tooltip` style file
 import "@antv/s2/dist/style.min.css";
 
 export class CustomTooltip extends BaseTooltip {
-  constructor(spreadsheet: SpreadSheet) {
-    super(spreadsheet);
-  }
+   constructor(spreadsheet: SpreadSheet) {
+     super(spreadsheet);
+   }
 
-  renderContent() {
-  }
+   renderContent() {
+   }
 
-  clearContent() {
-  }
+   clearContent() {
+   }
 
-  show(showOptions) {
-    console.log(this.spreadsheet)
-  }
+   show(showOptions) {
+     console.log(this.spreadsheet)
+   }
 
-  hide() {
-  }
+   hide() {
+   }
 
-  destroy() {
-  }
+   destroy() {
+   }
 }
 ```
 
 Override the default and use your custom `Tooltip`
 
 ```ts
- const s2Options = {
-  tooltip: {
-    showTooltip: true,
-    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
-  },
+const s2Options = {
+   tooltip: {
+     showTooltip: true,
+     renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+   },
 }
 ```
 
-<Playground data-mdast="html" path="react-component/tooltip/demo/custom-tooltip.tsx" rid="container-2" height="300"></playground>
+<Playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></Playground>
 
-#### Custom Tooltip display timing
+#### Customize Tooltip display timing
 
-The default situation under the premise that `tooltip` is enabled:
+The default when `tooltip` is enabled:
 
-* The `tooltip` is displayed when the column header is **clicked** , and the `tooltip` is displayed when the cell
-  text **is omitted**
-* The `tooltip` is displayed when the value cell hovers for more than **800ms**
+- Show `tooltip` when row and column headers **click**, and show `tooltip` when hovering cell text **omitted**
+- value cell hover over **800ms** shows `tooltip`
 
-For example, if you want to customize the `tooltip` to be displayed when the mouse hovers over the row header, you can
-monitor
-the [interaction event](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
-of the row header cell by customizing the interaction [details](/docs/manual/advanced/interaction/custom)
+For example, if you want to customize it to display `tooltip` when the mouse hovers over the line header, you can use custom interaction [details](/docs/manual/advanced/interaction/custom),
+Listen to the [interaction event](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
 . [Example](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
- import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
+import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
 
 class RowHoverInteraction extends BaseEvent {
-  bindEvents() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event) => {
-      this.spreadsheet.tooltip.show({
-        position: { x: 0, y: 0 },
-        content: "..."
-      })
-    })
-  }
+   bindEvents() {
+     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event) => {
+       this.spreadsheet.tooltip.show({
+         position: { x: 0, y: 0 },
+         content: "..."
+       })
+     })
+   }
 }
 
 const s2Options = {
-  tooltip: {
-    showTooltip: true,
-  }
-  interaction: {
-    customInteractions: [
-      {
-        key: 'RowHoverInteraction',
-        interaction: RowHoverInteraction,
-      },
-    ],
-  }
+   tooltip: {
+     showTooltip: true,
+   },
+   interaction: {
+     customInteractions: [
+       {
+         key: 'RowHoverInteraction',
+         interaction: RowHoverInteraction,
+       },
+     ],
+   }
 };
+
 ```
 
-If you are using `React` components, you can also use [cell callback functions](/api/components/sheet-component)
-for customization. [example](/examples/react-component/tooltip#custom-hover-show-tooltip)
+If you are using `React` components, you can also use [cell callback function](/docs/api/components/sheet-component)
+to customize. [Example](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
- const CustomColCellTooltip = () => <div>col cell tooltip</div>;
+const CustomColCellTooltip = () => <div>col cell tooltip</div>;
 
 const onRowCellHover = ({ event, viewMeta }) => {
-  viewMeta.spreadsheet.tooltip.show({
-    position: {
-      x: event.clientX,
-      y: event.clientY,
-    },
-    content: <CustomRowCellTooltip/>,
-  });
+   viewMeta.spreadsheet.tooltip.show({
+     position: {
+       x: event.clientX,
+       y: event.clientY,
+     },
+     content: <CustomRowCellTooltip/>,
+   });
 };
 
 <SheetComponent onRowCellHover={ onRowCellHover }/>
 ```
 
-#### Customize in Vue3
+#### Customizing in Vue3
 
-There are two ways to customize content in `Vue3` .
+There are two ways to customize content in `Vue3`.
 
-[![Edit @antv/s2 Vue3 Tooltip Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1\&fontsize=14\&hidenavigation=1\&theme=dark)
+[![Edit @antv/s2 Vue3 Tooltip Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](<https://codesandbox.io/s/antv-s2-vue3-tooltip> -demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600" alt="preview" />
 
-##### The way to `createVNode` custom class (recommended)
+##### `createVNode` custom class method (recommended)
 
-```ts
- // TooltipContent.vue
+```typescript
+// TooltipContent.vue
 
 <template>
-  <div>我是自定义 Tooltip
-内容 < /div>
-< p > 当前值：{
-  {
-    meta?.label ?? meta?.fieldValue
-  }
+   <div>I am custom
+Tooltips
+content </div>
+<p> current value: {
+   {
+     meta?.label??meta?.fieldValue
+   }
 }
 </p>
-< /template>
+</template>
 
 < script
 lang = "ts"
@@ -503,32 +514,33 @@ setup >
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'TooltipContent',
-  props: [ 'meta' ]
+   name: 'TooltipContent',
+   props: ['meta']
 });
 </script>
+
 ```
 
 ```ts
- import { defineCustomElement, render, createVNode } from "vue";
+import { defineCustomElement, render, createVNode } from "vue";
 import { BaseTooltip, PivotSheet } from "@antv/s2";
 import TooltipContent from "./TooltipContent.vue";
 import "@antv/s2/dist/style.min.css";
 
 class CustomTooltip extends BaseTooltip {
-  constructor(spreadsheet) {
-    super(spreadsheet);
-  }
+   constructor(spreadsheet) {
+     super(spreadsheet);
+   }
 
-  renderContent() {
-    const cell = this.spreadsheet.getCell(this.options.event?.target);
-    const meta = cell?.getMeta();
+   renderContent() {
+     const cell = this.spreadsheet.getCell(this.options.event?.target);
+     const meta = cell?. getMeta();
 
-    // 使用 Vue 提供的`createVNode` 方法将组件渲染成虚拟 DOM
-    const tooltipVNode = createVNode(TooltipContent, { meta });
-    // 使用`render` 函数将其挂载在 tooltip 容器上
-    render(tooltipVNode, this.container);
-  }
+     // Use the `createVNode` method provided by Vue to render the component into a virtual DOM
+     const tooltipVNode = createVNode(TooltipContent, { meta });
+     // Mount it on the tooltip container using the `render` function
+     render(tooltipVNode, this. container);
+   }
 }
 ```
 
@@ -537,194 +549,195 @@ class CustomTooltip extends BaseTooltip {
 > Note that customElements cannot be registered repeatedly, otherwise the browser will report an error
 
 ```ts
- import { defineCustomElement } from "vue";
+import { defineCustomElement } from "vue";
 
-// 将 Vue 组件解析成 Web Component
+// Parse Vue components into Web Components
 const VueTooltipContent = defineCustomElement({
-  props: [ "meta" ],
-  template: `
- <div>我是自定义 Tooltip 内容</div>
- <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
- `
+   props: [ "meta" ],
+   template:`
+     <div>I am custom Tooltip content</div>
+     <p>Current value: {{ meta?.label ?? meta?.fieldValue }}</p>
+   `
 });
 
-// 注册一个 Web Component
+// Register a Web Component
 customElements.define("vue-tooltip-content", VueTooltipContent);
 
 const s2Options = {
-  tooltip: {
-    content: (cell, defaultTooltipShowOptions) => {
-      const meta = cell.getMeta();
-      // 替换 Tooltip 内容
-      return new VueTooltipContent({ meta });
-    },
-  },
+   tooltip: {
+     content: (cell, defaultTooltipShowOptions) => {
+       const meta = cell. getMeta();
+       // Replace Tooltip content
+       return new VueTooltipContent({ meta });
+     },
+   },
 };
 ```
 
-[@antv/s2 Vue3 Tooltip Demo](https://codesandbox.io/embed/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1\&fontsize=14\&hidenavigation=1\&theme=dark)
+<iframe
+src="https://codesandbox.io/embed/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark"
+style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+title="@antv/s2 Vue3 Tooltip Demo"
+allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi;
+payment; usb; vr; xr-spatial-tracking"
+sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+> </iframe>
 
-#### Override display method
+#### Rewrite display method
 
-In addition to the custom display method of the`自定义 Tooltip 类`mentioned above, the method `spreadsheet.showTooltip()` of
-the `Tooltip` on the [table instance](/api/basic-class/spreadsheet) can also be
-modified. [How to get table instance?](/manual/advanced/get-instance)
+In addition to the custom display method of `custom Tooltip class` mentioned above, you can also modify the method `spreadsheet.showTooltip()` of `Tooltip` on [table instance](/api/basic-class/spreadsheet)
+. [See how to get table instance?](/manual/advanced/get-instance)
 
 ```ts
- // options 配置 tooltip 显示
+// options configure tooltip display
 tooltip: {
-  showTooltip: true,
+   showTooltip: true,
 }
 ```
 
 ```tsx
- <SheetComponent
-  onMounted={ (instance) => {
-    instance.showTooltip = (tooltipOptions) => {
-      // 可自定义这里的 tooltipOptions
-      instance.tooltip.show(tooltipOptions);
-    };
-  } }
- ...
+<SheetComponent
+   onMounted={ (instance) => {
+     instance.showTooltip = (tooltipOptions) => {
+       // You can customize the tooltipOptions here
+       instance.tooltip.show(tooltipOptions);
+     };
+   } }
+   ...
 />;
+
 ```
 
-##### Display content can be customized
+##### Customizable display content
 
-All of the following displays can cover all cells and events. For details on custom data,
-see [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
+All the following displayed content can cover all cells and events. For details of custom data, please refer to [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
 
-* display position
+- display position (position)
 
-  ```tsx
-   instance.showTooltip = (tooltipOptions) => {
-   const { position } = tooltipOptions;
-   instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
-   };
-  ```
+   ```tsx
+     instance.showTooltip = (tooltipOptions) => {
+       const { position } = tooltipOptions;
+       instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
+     };
+   ```
 
-* Presentation layer data (data)
+- presentation layer data (data)
 
-  * name
+  - name
 
       The name of the current cell, generally only displayed if the text in the cell is omitted
 
       ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const name = `${data.name} - 测试`;
-       instance.tooltip.show({ ...tooltipOptions, data: { ...data, name: data.name ? name : '' } });
+      instance.showTooltip = (tooltipOptions) => {
+        const { data } = tooltipOptions;
+        const name = `${data.name} - test`;
+        instance.tooltip.show({ ...tooltipOptions, data: { ...data, name: data.name ? name : '' } });
       };
       ```
 
-  * hint
+  - hint
 
       Current cell prompt information
 
       ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const tips = '说明：这是个说明';
-       instance.tooltip.show({ ...tooltipOptions, data: { ...data, tips } });
+      instance.showTooltip = (tooltipOptions) => {
+        const { data } = tooltipOptions;
+        const tips = 'Note: This is a note';
+        instance.tooltip.show({ ...tooltipOptions, data: { ...data, tips } });
       };
       ```
 
-  * List of selected item statistics ( summaries )
+  - List of selected item statistics ( summaries )
 
-      The statistical list of selected items is mainly distinguished by measurement value. For details, please refer
-      to [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
+      The statistical list of selected options is mainly distinguished by measurement value. For details, please refer to [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
 
       ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const customSummaries = (data.summaries || []).map((item) => {
-       return { ...item, name: `${item.name} - 测试` };
-       });
-       instance.tooltip.show({ ...tooltipOptions, data: { ...data, summaries: customSummaries } });
+      instance.showTooltip = (tooltipOptions) => {
+        const { data } = tooltipOptions;
+        const customSummaries = (data.summaries || []).map((item) => {
+          return { ...item, name: `${item.name} - Test` };
+        });
+        instance.tooltip.show({ ...tooltipOptions, data: { ...data, summaries: customSummaries } });
       };
       ```
 
-* list of axes ( headInfo )
+  - list of axes ( headInfo )
 
-      Axis list, display`row/column headers`names in data cells,
-      see [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo)
-      for details
+Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo) for details
 
-      ```tsx
+       ```tsx
        instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const { cols = [], rows = [] } = data.headInfo || {};
-       const customCols = cols.map(item=> {
-       return {...item, value: `${item.value} - 测试`}
-       });
-       instance.tooltip.show({
-       ...tooltipOptions,
-       data: {
-       ...data,
-       headInfo: { rows, cols: customCols }
-       }
-       });
-      };
-      ```
-
-* Data point details ( details )
-
-      Data point details, that is, the data information of the current cell, for details, please refer
-      to [ListItem](/api/general/s2options#tooltipoptions#listitem)
-
-      ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const customDetails = (data.details || []).map((item) => {
-       return { name: `${item.name} - 测试`, value: `${item.value} - w` };
-       });
-       instance.tooltip.show({ ...tooltipOptions, data: { ...data, details: customDetails } });
-      };
-      ```
-
-* Tip information at the bottom ( infos )
-
-      Bottom prompt information, generally used for shortcut key operation prompts
-
-      ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { data } = tooltipOptions;
-       const infos = 'Hold Cmd/Ctrl or marquee to view multiple data points';
-       instance.tooltip.show({ ...tooltipOptions, data: { ...data, infos } });
-      };
-      ```
-
-  <img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width="600" alt="row">
-
-* Partial configuration ( options )
-
-  [Tooltip part configuration, see TooltipOptions](/api/general/s2options#tooltipoptions#tooltipoptions) `tooltip` details
-
-* Operation Bar ( operator )
-
-      Operable configuration, refer to [TooltipOperatorOptions](/api/general/s2options#tooltipoptions#tooltipoperatoroptions)
-      for details
-
-      ```tsx
-       instance.showTooltip = (tooltipOptions) => {
-       const { options } = tooltipOptions;
-       const customOperator = {
-       onClick: ({ key }) => {
-          console.log('任意菜单项点击', key);
-       },
-       menus: [
-       {
-       key: 'trend',
-       icon: 'trend',
-       text: '趋势',
-       onClick: () => {
-       console.log('当前菜单项点击')
-       }
-       },
-       ],
+         const { data } = tooltipOptions;
+         const { cols = [], rows = [] } = data.headInfo || {};
+         const customCols = cols. map(item => {
+           return {...item, value: `${item.value} - test`}
+         });
+         instance.tooltip.show({
+           ...tooltipOptions,
+           data: {
+             ...data,
+             headInfo: { rows, cols: customCols }
+           }
+         });
        };
-       instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
+       ```
+
+     - Data point details (details)
+
+       Data point details, that is, the data information of the current cell, for details, please refer to [ListItem](/api/general/s2options#tooltipoptions#listitem)
+
+       ```tsx
+       instance.showTooltip = (tooltipOptions) => {
+         const { data } = tooltipOptions;
+         const customDetails = (data.details || []).map((item) => {
+           return { name: `${item.name} - test`, value: `${item.value} - w` };
+         });
+         instance.tooltip.show({ ...tooltipOptions, data: { ...data, details: customDetails } });
+       };
+       ```
+
+     - Bottom prompt information ( infos )
+
+       Bottom prompt information, generally used for shortcut key operation prompts
+
+       ```tsx
+       instance.showTooltip = (tooltipOptions) => {
+         const { data } = tooltipOptions;
+         const infos = 'Press and hold Cmd/Ctrl or box selection to view multiple data points';
+         instance.tooltip.show({ ...tooltipOptions, data: { ...data, infos } });
+       };
+       ```
+
+   <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width = "600" alt="row" />
+
+- partial configuration ( options )
+
+  `tooltip` part configuration, details can be found in [TooltipOptions](/api/general/s2options#tooltipoptions)
+
+  - Operation bar ( operator )
+
+      Operable configuration, see [TooltipOperatorOptions](/api/general/s2options#tooltipoperatoroptions) for details
+
+      ```tsx
+      instance.showTooltip = (tooltipOptions) => {
+        const { options } = tooltipOptions;
+        const customOperator = {
+          onClick: ({ key }) => {
+            console.log('click any menu item', key);
+          },
+          menus: [
+            {
+              key: 'trend',
+              icon: 'trend',
+              text: 'Trend',
+              onClick: () => {
+                console.log('Current menu item clicked')
+              }
+            },
+          ],
+        };
+        instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
       };
       ```
 
-<Playground data-mdast="html" path="react-component/tooltip/demo/custom-show-tooltip.tsx" rid="container-3" height="300"></playground>
+<Playground path='react-component/tooltip/demo/custom-show-tooltip.tsx' rid='container-3' height='300'></Playground>

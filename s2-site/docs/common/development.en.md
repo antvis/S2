@@ -1,30 +1,33 @@
-> S2 use pnpm as package manager
+Eager to contribute? [View contribution guidelines](https://s2.antv.antgroup.com/manual/contribution)
+
+> S2 uses pnpm as package manager
 
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
-pnpm install # or pnpm bootstrap
+# 安装依赖
+pnpm install # 或者 pnpm bootstrap
 
-# build all
+# 打包
 pnpm build
 
-# debug s2-core
+# 调试 s2-core
 pnpm core:start
 
-# debug s2-react
-pnpm react:playground
+# 调试 s2-react
+pnpm react:Playground
 
-# debug s2-vue
-pnpm vue:playground
+# 调试 s2-vue
+pnpm vue:Playground
 
-# unit test
+# 单元测试
 pnpm test
 
-# check the code style and the type definition
+# 代码风格和类型检测
 pnpm lint
 
-# start the website
+# 本地启动官网
 pnpm site:start
 ```

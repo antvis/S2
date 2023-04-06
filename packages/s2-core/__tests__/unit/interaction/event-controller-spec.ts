@@ -7,6 +7,7 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import { Renderer } from '@antv/g-canvas';
+import type { CanvasConfig } from '@antv/g-lite';
 import { GEventType, GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
@@ -106,7 +107,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-      renderer: new Renderer(),
+      renderer: new Renderer() as CanvasConfig['renderer'],
     });
     spreadsheet.facet = {
       panelBBox: {

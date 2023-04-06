@@ -5,13 +5,13 @@ order: 2
 
 When you want to reduce the interference of unimportant information, you can hide the column header so that you can view the data more intuitively. There are three ways to hide the column header
 
-<Playground data-mdast="html" path="interaction/advanced/demo/pivot-hide-columns.ts" rid="pivot-hide-columns" height="400"></playground>
+<Playground path="interaction/advanced/demo/pivot-hide-columns.ts" rid="pivot-hide-columns" height="400"></Playground>
 
 ## 1. Manual Hide - by clicking
 
-Click the column header in the pop-up `tooltip` , click the`隐藏`button
+Click the column header and click the`隐藏`button in the pop-up `tooltip`
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview">
 
 Turn off interactive hiding
 
@@ -53,13 +53,10 @@ const s2Options = {
 
 There are multiple column headers in the pivot table, and the [node id](/docs/api/basic-class/node) corresponding to the column header needs to be specified
 
-How to get column header Id?
-
-```ts
-  // /docs/api/basic-class/spreadsheet
-  const s2 = new PivotSheet()
-  console.log(s2.getColumnNodes())
-```
+<details><summary>How to get column header Id?</summary><pre> <code class="language-ts">//&#x26;nbsp;/docs/api/basic-class/spreadsheet
+const&#x26;nbsp;s2&#x26;nbsp;=&#x26;nbsp;new&#x26;nbsp;PivotSheet()
+console.log(s2.getColumnNodes())
+</code></pre></details>
 
 ```ts
 const s2DataConfig = {
@@ -81,7 +78,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&] 家具 [&] 沙发 [&]number'],
+    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
   }
 }
 ```
@@ -109,7 +106,7 @@ In this way, **two** hidden buttons are rendered, and the buttons work independe
 
 You can also integrate the analysis component, and realize dynamic hiding of column headers by changing the configuration method. For details, please refer to the [analysis component](/docs/manual/basic/analysis/switcher/)
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview">
 
 ## 3. Manual hiding - via instance method
 
@@ -127,6 +124,8 @@ s2.interaction.hideColumns(hiddenColumnFields)
 `COL_CELL_EXPANDED` and `COL_CELL_HIDDEN` that can be exposed through `S2Event` monitor the expansion and hiding of the column header respectively
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 const s2 = new PivotSheet(...);
 
 s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {

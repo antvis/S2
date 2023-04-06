@@ -339,12 +339,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail | null {
-    const { theme } = this.spreadsheet;
-    const { padding: rowCellPadding } = theme.rowCell!.cell!;
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
-    const height =
-      displayHeight! - rowCellPadding!.top! - rowCellPadding!.bottom!;
+    const height = displayHeight!;
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:

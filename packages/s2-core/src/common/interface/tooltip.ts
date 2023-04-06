@@ -9,7 +9,6 @@ import type {
   SortParam,
 } from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
-import type { CellData } from '../../data-set';
 
 export type TooltipDataItem = Data;
 
@@ -59,10 +58,13 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   forceRender?: boolean;
 }
 
+export type TooltipSummaryOptionsValue = number | string | undefined | null;
+
 export interface TooltipSummaryOptions {
   name: string | null;
-  value: number | string | undefined | null;
-  selectedData: Data[] | CellData[];
+  selectedData: TooltipDataItem[];
+  value: TooltipSummaryOptionsValue;
+  originValue?: TooltipSummaryOptionsValue;
 }
 
 export interface TooltipNameTipsOptions {
