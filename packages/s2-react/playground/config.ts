@@ -88,14 +88,14 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 
 export const s2Options: SheetComponentOptions = {
   debug: false,
-  width: 1000,
+  width: 600,
   height: 400,
   hierarchyType: 'grid',
   // showSeriesNumber: true,
   frozen: {
     rowHeader: true,
     // colCount: 1,
-    trailingColCount: 1,
+    // trailingColCount: 1,
   },
   cornerText: '测试',
   interaction: {
@@ -135,7 +135,7 @@ export const s2Options: SheetComponentOptions = {
       height: 50,
     },
     colCell: {
-      hideValue: true,
+      hideValue: false,
     },
     dataCell: {
       height: 50,

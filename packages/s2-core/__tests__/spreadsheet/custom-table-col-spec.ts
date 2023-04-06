@@ -1,7 +1,10 @@
 import type { Group } from '@antv/g';
 import { getContainer } from 'tests/util/helpers';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
-import { customColSimpleColumns } from '../data/custom-table-col-fields';
+import {
+  customColMultipleColumns,
+  customColSimpleColumns,
+} from '../data/custom-table-col-fields';
 import { data } from '../data/mock-dataset.json';
 import {
   expectHighlightActiveNodes,
@@ -57,7 +60,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   test('should render custom layout column nodes', () => {
@@ -248,5 +251,27 @@ describe('TableSheet Custom Tests', () => {
     expect(
       sampleNodesForAllLevels.every((node) => !node.isSeriesNumberNode()),
     ).toBeTruthy();
+  });
+
+  test('should render custom multiple column nodes', () => {
+    s2.setDataCfg({
+      ...baseDataConfig,
+      fields: {
+        columns: customColMultipleColumns,
+      },
+    });
+    s2.render();
+
+    const colNodes = s2.getColumnNodes().map((node) => {
+      return {
+        value: node.value,
+        width: node.width,
+        height: node.height,
+        description: node.extra?.['description'],
+      };
+    });
+
+    expect(colNodes).toHaveLength(6);
+    expect(colNodes).toMatchSnapshot();
   });
 });

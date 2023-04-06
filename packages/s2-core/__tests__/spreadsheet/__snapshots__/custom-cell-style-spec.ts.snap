@@ -407,6 +407,46 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by field for multiple columns 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]地区",
+    "width": 180,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]地区[&]省份",
+    "width": 100,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]地区[&]城市",
+    "width": 80,
+  },
+  Object {
+    "height": 60,
+    "id": "root[&]类型",
+    "width": 119,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额",
+    "width": 210,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额[&]价格",
+    "width": 90,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额[&]数量",
+    "width": 120,
+  },
+]
+`;
+
 exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by field id 1`] = `
 Array [
   Object {
@@ -418,6 +458,46 @@ Array [
     "height": 30,
     "id": "root[&]子类别",
     "width": 200,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by field1 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]地区",
+    "width": 238,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]地区[&]省份",
+    "width": 119,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]地区[&]城市",
+    "width": 119,
+  },
+  Object {
+    "height": 60,
+    "id": "root[&]类型",
+    "width": 50,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额",
+    "width": 238,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额[&]价格",
+    "width": 119,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]金额[&]数量",
+    "width": 119,
   },
 ]
 `;

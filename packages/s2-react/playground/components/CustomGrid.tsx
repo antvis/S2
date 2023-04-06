@@ -87,6 +87,8 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
       name: 'default',
     });
+    const [sheetType, setSheetType] =
+      React.useState<SheetComponentsProps['sheetType']>('pivot');
 
     const logHandler =
       (name: string) =>
@@ -134,6 +136,15 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
               });
             }}
           />
+          <Switch
+            checkedChildren="透视表"
+            unCheckedChildren="明细表"
+            checked={sheetType === 'pivot'}
+            disabled={customType !== CustomType.Col}
+            onChange={(checked) => {
+              setSheetType(checked ? 'pivot' : 'table');
+            }}
+          />
         </Space>
         <Space style={{ marginBottom: 20 }}>
           <ResizeConfig
@@ -145,6 +156,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
 
         <SheetComponent
           {...props}
+          sheetType={sheetType}
           dataCfg={dataCfg}
           options={options}
           themeCfg={themeCfg}

@@ -443,7 +443,7 @@ export class TableFacet extends BaseFacet {
         parent.x = parent.children[0].x;
         // parent's width = all children's width
         parent.width = parent.children
-          .map((value: Node) => value.width)
+          .map((childNode) => childNode.width)
           .reduce((sum, current) => sum + current, 0);
         prevColParent = parent;
       }

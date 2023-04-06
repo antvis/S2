@@ -163,6 +163,53 @@ Array [
 ]
 `;
 
+exports[`TableSheet Custom Tests should not sample series node1 1`] = `
+Array [
+  Object {
+    "description": undefined,
+    "height": 30,
+    "value": "地区",
+    "width": 238,
+  },
+  Object {
+    "description": undefined,
+    "height": 30,
+    "value": "省份",
+    "width": 119,
+  },
+  Object {
+    "description": undefined,
+    "height": 30,
+    "value": "城市",
+    "width": 119,
+  },
+  Object {
+    "description": undefined,
+    "height": 60,
+    "value": "类型",
+    "width": 119,
+  },
+  Object {
+    "description": undefined,
+    "height": 30,
+    "value": "金额",
+    "width": 238,
+  },
+  Object {
+    "description": "价格描述",
+    "height": 30,
+    "value": "价格",
+    "width": 119,
+  },
+  Object {
+    "description": undefined,
+    "height": 30,
+    "value": "数量",
+    "width": 119,
+  },
+]
+`;
+
 exports[`TableSheet Custom Tests should render custom layout column nodes 1`] = `
 Array [
   Object {
@@ -206,6 +253,47 @@ Array [
     "height": 30,
     "value": "数量",
     "width": 119,
+  },
+]
+`;
+
+exports[`TableSheet Custom Tests should render custom multiple column nodes 1`] = `
+Array [
+  Object {
+    "description": "a-1 描述",
+    "height": 30,
+    "value": "自定义节点 a-1",
+    "width": 447,
+  },
+  Object {
+    "description": "a-1-1 描述",
+    "height": 30,
+    "value": "自定义节点 a-1-1",
+    "width": 298,
+  },
+  Object {
+    "description": "指标1描述",
+    "height": 30,
+    "value": "指标1",
+    "width": 149,
+  },
+  Object {
+    "description": "指标2描述",
+    "height": 30,
+    "value": "指标2",
+    "width": 149,
+  },
+  Object {
+    "description": "a-1-2 描述",
+    "height": 60,
+    "value": "自定义节点 a-1-2",
+    "width": 149,
+  },
+  Object {
+    "description": "a-2 描述",
+    "height": 90,
+    "value": "自定义节点 a-2",
+    "width": 149,
   },
 ]
 `;
