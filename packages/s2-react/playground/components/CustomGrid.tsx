@@ -38,10 +38,14 @@ export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
       field: 'a-1-1',
       name: '层级2',
     },
-
     {
       field: 'measure-1',
       name: '层级3',
+    },
+    {
+      field: 'measure-1',
+      name: '哈哈',
+      formatter: (value) => `#-${value}`,
     },
   ],
   fields: customRowGridFields,
@@ -56,11 +60,17 @@ export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
     ...meta,
     {
       field: 'a-1',
-      name: '层级1',
+      name: '指标1',
+      formatter: (value) => `#-${value}`,
     },
     {
       field: 'a-1-1',
       name: '层级2',
+    },
+    {
+      field: 'measure-1',
+      name: '指标1',
+      formatter: (value) => `#-${value}`,
     },
   ],
   fields: customColGridFields,

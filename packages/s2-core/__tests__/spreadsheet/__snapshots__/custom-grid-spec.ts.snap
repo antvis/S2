@@ -63,12 +63,12 @@ Array [
     "value": "自定义节点 a-1-1",
   },
   Object {
-    "actualText": "#-指标1",
+    "actualText": "指标1",
     "id": "measure-1",
     "value": "指标1",
   },
   Object {
-    "actualText": "666-指标2",
+    "actualText": "指标2",
     "id": "measure-2",
     "value": "指标2",
   },

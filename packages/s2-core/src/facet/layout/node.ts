@@ -131,7 +131,11 @@ export class Node {
 
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
 
-  public extra?: Record<string, any>;
+  public extra?: {
+    description?: string;
+    isCustomNode?: boolean;
+    [key: string]: any;
+  };
 
   [key: string]: any;
 

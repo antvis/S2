@@ -428,17 +428,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
         meta: [
           {
             field: 'measure-1',
-            name: '哈哈',
             formatter: (value) => `#-${value}`,
           },
           {
             field: 'measure-2',
-            name: '我是指标2',
             formatter: (value) => `666-${value}`,
           },
           {
             field: 'a-1',
-            name: '吱吱',
             formatter: (value) => `%-${value}`,
           },
         ],
@@ -450,9 +447,13 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(colNodes).toMatchSnapshot();
       expect(dataCellTexts).toMatchSnapshot();
 
-      // 列头不应该按 formatter 格式化
+      // 列头数值名称不应该按 formatter 格式化
+      const measureNodes = colNodes.filter((node) =>
+        node.id.startsWith('measure-'),
+      );
+
       expect(
-        colNodes.every((node) => node.actualText === node.value),
+        measureNodes.every((node) => node.actualText === node.value),
       ).toBeTruthy();
     });
   });

@@ -59,8 +59,11 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hierarchy,
       query: valueQuery,
       spreadsheet,
-      extra: rest,
       isLeaf,
+      extra: {
+        ...rest,
+        isCustomNode: true,
+      },
     });
 
     if (level > hierarchy.maxLevel && !node.isSeriesNumberNode()) {

@@ -1,7 +1,7 @@
-import { filter, map, reduce } from 'lodash';
-import type { SpreadSheet } from '../../../sheet-type';
-import { type CellMeta, SERIES_NUMBER_FIELD } from '../../../common';
+import { map, reduce } from 'lodash';
+import { SERIES_NUMBER_FIELD, type CellMeta } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type';
 import type { CopyableList } from '../interface';
 import { convertString } from '../method';
 import {
@@ -20,10 +20,10 @@ export const processTableColSelected = (
     (colNode) => colNode.field !== SERIES_NUMBER_FIELD,
   );
 
-  const selectedColNodes: Node[] = selectedCols.length
-    ? (filter(columnNodes, (node) =>
+  const selectedColNodes = selectedCols.length
+    ? columnNodes.filter((node) =>
         selectedCols.find((col) => col.id === node.id),
-      ) as Node[])
+      )
     : columnNodes;
 
   const dataMatrix = displayData.map((row) =>

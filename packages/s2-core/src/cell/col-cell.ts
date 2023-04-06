@@ -11,7 +11,11 @@ import {
   S2Event,
   SPLIT_LINE_WIDTH,
 } from '../common/constant';
-import type { DefaultCellTheme, IconTheme } from '../common/interface';
+import type {
+  DefaultCellTheme,
+  FormatResult,
+  IconTheme,
+} from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
@@ -65,6 +69,24 @@ export class ColCell extends HeaderCell {
     this.drawResizeArea();
     this.addExpandColumnIconShapes();
     this.update();
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
+    const { extra, value, field } = this.meta;
+    const { fields } = this.spreadsheet.dataSet;
+
+    // 列头对应的数值标题不应该格式化
+    const isCustomValueFieldNode =
+      extra?.isCustomNode && fields?.values?.includes(field);
+
+    if (isCustomValueFieldNode) {
+      return {
+        formattedValue: value,
+        value,
+      };
+    }
+
+    return super.getFormattedFieldValue();
   }
 
   protected getMaxTextWidth(): number {
