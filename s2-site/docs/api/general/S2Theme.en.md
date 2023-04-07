@@ -149,6 +149,7 @@ Function Description: Text Theme
 | fill         | font color                                                    | `string`                      | -                                                                                  |          |
 | linkTextFill | link text color                                               | `string`                      | -                                                                                  |          |
 | opacity      | font transparency                                             | `number`                      | 1                                                                                  |          |
+| oddFill    | Odd rows font color                                               | `string`                  | -
 
 #### Cell Theme
 

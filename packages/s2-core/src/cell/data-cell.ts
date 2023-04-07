@@ -223,11 +223,16 @@ export class DataCell extends BaseCell<ViewMeta> {
     const textStyle = isTotals
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
-
+    const { oddFill } = this.getStyle().text;
+    let textFill = this.getDefaultTextFill(textStyle);
+    if (oddFill && this.meta.rowIndex % 2 === 0) {
+      // 隔行文字颜色
+      textFill = oddFill;
+    }
     // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
     const fill = this.getTextConditionFill({
       ...textStyle,
-      fill: this.getDefaultTextFill(textStyle),
+      fill: textFill,
     });
 
     return { ...textStyle, fill };

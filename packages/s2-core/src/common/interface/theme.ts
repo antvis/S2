@@ -110,6 +110,8 @@ export interface TextTheme extends TextAlignCfg {
   linkTextFill?: string;
   /* 字体透明度 */
   opacity?: number;
+  /* 奇数行字体颜色 */
+  oddFill?: string;
 }
 
 export interface CellTheme {

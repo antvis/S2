@@ -151,6 +151,7 @@ s2.setTheme({
 | fill         | 字体颜色                                                                       | `string`                      | -                                                                                                 |      |
 | linkTextFill | 链接文本颜色                                                                   | `string`                      | -                                                                                                 |      |
 | opacity      | 字体透明度                                                                     | `number`                      | 1                                                                                                 |      |
+| oddFill    | 奇数行字体颜色                                                                     | `string`                   | -
 
 #### CellTheme
 
