@@ -96,7 +96,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
       name: 'default',
     });
     const [sheetType, setSheetType] =
-      React.useState<SheetComponentsProps['sheetType']>('pivot');
+      React.useState<SheetComponentsProps['sheetType']>('table');
 
     const logHandler =
       (name: string) =>

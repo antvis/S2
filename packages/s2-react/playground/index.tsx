@@ -109,7 +109,7 @@ function MainLayout() {
   );
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
-  >('single');
+  >('multiple');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -237,6 +237,10 @@ function MainLayout() {
   }, [sheetType]);
 
   React.useEffect(() => {
+    if (sheetType !== 'table') {
+      return;
+    }
+
     setDataCfg(
       customMerge(tableSheetDataCfg, {
         fields: {
@@ -247,7 +251,7 @@ function MainLayout() {
         },
       }),
     );
-  }, [tableSheetColumnType]);
+  }, [sheetType, tableSheetColumnType]);
 
   //  ================== Config ========================
 

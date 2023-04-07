@@ -185,11 +185,11 @@ export const hideColumns = (
 export const getColumns = (spreadsheet: SpreadSheet) => {
   const { columns = [] } = spreadsheet.dataCfg.fields;
 
-  if (spreadsheet.isTableMode()) {
-    return columns;
+  if (spreadsheet.isPivotMode() || spreadsheet.isCustomColumnFields()) {
+    return spreadsheet.getInitColumnLeafNodes().map(({ id }) => id);
   }
 
-  return spreadsheet.getInitColumnLeafNodes().map(({ id }) => id);
+  return columns;
 };
 
 /**
