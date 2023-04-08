@@ -23,11 +23,11 @@ export const usePagination = (
   );
   const total = ref(0);
 
-  const change = (nextCurrent: number) => {
+  const change = (nextCurrent: number, nextPageSize: number) => {
     current.value = nextCurrent;
   };
 
-  const showSizeChange = (nextPageSize: number) => {
+  const showSizeChange = (nextCurrent: number, nextPageSize: number) => {
     pageSize.value = nextPageSize;
   };
 

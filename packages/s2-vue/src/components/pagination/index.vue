@@ -27,8 +27,8 @@ export default defineComponent({
     },
   },
   emits: ['change', 'showSizeChange'] as unknown as {
-    change: (current: number) => void;
-    showSizeChange: (size: number) => void;
+    change: (pagination: { current: number; pageSize: number }) => void;
+    showSizeChange: (pagination: { current: number; pageSize: number }) => void;
   },
   setup: (props) => {
     // only show the pagination when the pageSize > 5
@@ -56,10 +56,12 @@ export default defineComponent({
       :total="total"
       :pageSize="pageSize"
       :showSizeChanger="true"
-      @showSizeChange="(_, size) => $emit('showSizeChange', size)"
+      @showSizeChange="
+        (current, pageSize) => $emit('showSizeChange', { current, pageSize })
+      "
       size="small"
       :showQuickJumper="showQuickJumper"
-      @change="(current) => $emit('change', current)"
+      @change="(current, pageSize) => $emit('change', { current, pageSize })"
     />
     <span :class="`${PRE_CLASS}-count`">
       {{ i18n('共计') }} {{ total || ' - ' }} {{ i18n('条') }}

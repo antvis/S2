@@ -24,18 +24,33 @@ export default defineComponent({
       },
     });
 
-    const handlePageChange = (nextCurrent: number) => {
+    const handlePageChange = (nextPagination: {
+      current: number;
+      pageSize: number;
+    }) => {
       if (props.showPagination && !isBoolean(props.showPagination)) {
-        props.showPagination.onChange?.(nextCurrent);
+        props.showPagination.onChange?.(
+          nextPagination.current,
+          nextPagination.pageSize,
+        );
       }
-      pagination.change(nextCurrent);
+      pagination.change(nextPagination.current, nextPagination.pageSize);
     };
 
-    const handlePageSizeChange = (nextSize: number) => {
+    const handlePageSizeChange = (nextPagination: {
+      current: number;
+      pageSize: number;
+    }) => {
       if (props.showPagination && !isBoolean(props.showPagination)) {
-        props.showPagination.onShowSizeChange?.(nextSize);
+        props.showPagination.onShowSizeChange?.(
+          nextPagination.current,
+          nextPagination.pageSize,
+        );
       }
-      pagination.showSizeChange(nextSize);
+      pagination.showSizeChange(
+        nextPagination.current,
+        nextPagination.pageSize,
+      );
     };
 
     return {

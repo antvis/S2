@@ -649,10 +649,10 @@ export default defineComponent({
       console.log('onMounted: ', params);
     };
 
-    const handlePageChange = (current: number) =>
+    const handlePageChange = (current: number, pageSize: number) =>
       console.log('page changed:', current);
 
-    const handlePageSizeChange = (pageSize: number) =>
+    const handlePageSizeChange = (current: number, pageSize: number) =>
       console.log('pageSize changed:', pageSize);
 
     const togglePagination = () => {

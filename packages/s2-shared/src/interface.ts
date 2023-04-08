@@ -64,8 +64,8 @@ export interface BaseSheetComponentProps<
   showPagination?:
     | boolean
     | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
+        onShowSizeChange?: (current: number, pageSize: number) => void;
+        onChange?: (current: number, pageSize: number) => void;
       };
   themeCfg?: ThemeCfg;
   header?: Header;
