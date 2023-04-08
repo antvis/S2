@@ -4,8 +4,10 @@ import {
   isBoolean,
   isNil,
   isNumber,
+  isString,
   last,
   maxBy,
+  omit,
   set,
   values,
 } from 'lodash';
@@ -23,6 +25,7 @@ import {
 import { FrozenCellGroupMap } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  Columns,
   FilterParam,
   LayoutResult,
   ResizeInteractionOptions,
@@ -289,11 +292,68 @@ export class TableFacet extends BaseFacet {
     return cellCfg?.width;
   }
 
+  /** 扁平化树形 columns */
+  private flattenTree(tree: Columns): Columns {
+    return tree.reduce((prev, curr) => {
+      if (isString(curr)) {
+        prev = prev.concat(curr);
+      } else {
+        prev = prev.concat(omit(curr, 'children'));
+        if (curr.children?.length) {
+          prev = prev.concat(this.flattenTree(curr.children));
+        }
+      }
+      return prev;
+    }, []);
+  }
+
+  /** 当前节点所在列是否配置了 rowSpan */
+  private hasRowSpanInBranch(tree: Columns, field: string): boolean {
+    const columns = tree.map((item) => this.flattenTree([item]));
+    const branch = columns.find((items) => {
+      return items.some((item) => {
+        if (isString(item)) {
+          return item === field;
+        }
+        if (item.key === field) {
+          return true;
+        }
+        return false;
+      });
+    });
+    return branch?.some((item) => !isString(item) && Boolean(item?.rowSpan));
+  }
+
+  /** 当前节点的 rowSpan */
+  private findRowSpanInCurrentNode(
+    columns: Columns,
+    field: string,
+  ): number | void {
+    const flattedColumns = this.flattenTree(columns);
+    const column = flattedColumns.find((item) => {
+      return !isString(item) && item.key === field;
+    });
+    return !isString(column) && column.rowSpan;
+  }
+
+  /** TIP: 获取列头 Node 高度 */
   private getColNodeHeight(col: Node, totalHeight?: number) {
-    const { colCfg } = this.cfg;
+    const { colCfg, columns } = this.cfg;
+
     // 明细表所有列节点高度保持一致
     const userDragHeight = values(colCfg?.heightByField)[0];
+
+    const hasRowSpanInBranch = this.hasRowSpanInBranch(columns, col.field);
+    const currentRowSpan = this.findRowSpanInCurrentNode(columns, col.field);
+
+    /** 用户拖拽高度 > 配置高度 */
     const height = userDragHeight || colCfg?.height;
+
+    // 如果当前列任意 leaf 设置了 rowSpan, 按照 rowSpan 划分列头单元格高度
+    if (hasRowSpanInBranch) {
+      return height * (currentRowSpan || 1);
+    }
+
     if (!totalHeight) {
       return height;
     }
