@@ -33,11 +33,19 @@ import type {
 import type { BaseHeaderConfig } from '../facet/header';
 import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
-import { getActionIconConfig } from '../utils/cell/header-cell';
+import {
+  getActionIconConfig,
+  getActionIconTotalWidth,
+  type HeaderActionIconWithFullyActionIconName,
+} from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
+
+  protected actionIconConfig:
+    | HeaderActionIconWithFullyActionIconName
+    | undefined;
 
   protected treeIcon: GuiIcon | undefined;
 
@@ -69,6 +77,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
       ...(sortParam || { query }),
       type,
     };
+
+    this.actionIconConfig = getActionIconConfig(
+      this.spreadsheet.options.headerActionIcons,
+      this.meta,
+      this.cellType,
+    );
   }
 
   protected initCell() {
@@ -97,17 +111,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     };
   }
 
-  /**
-   * 获取操作 icons
-   */
-  protected getActionIconCfg() {
-    return getActionIconConfig(
-      this.spreadsheet.options.headerActionIcons,
-      this.meta,
-      this.cellType,
-    );
-  }
-
   protected showSortIcon() {
     const { options, dataCfg } = this.spreadsheet;
     const isEmptyValues = isEmpty(dataCfg.fields.values);
@@ -133,21 +136,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return 1;
     }
 
-    const actionIconCfg = this.getActionIconCfg();
-
-    if (actionIconCfg) {
-      const iconNames = actionIconCfg.iconNames;
-
-      return iconNames.length;
-    }
-
-    return 0;
+    return this.actionIconConfig?.iconNames?.length ?? 0;
   }
 
   protected getActionIconsWidth() {
-    const { size, margin } = this.getStyle()!.icon!;
-
-    return (size! + margin!.left!) * this.getActionIconsCount();
+    return getActionIconTotalWidth(
+      this.actionIconConfig,
+      this.getStyle()!.icon!,
+    );
   }
 
   // 绘制排序icon
@@ -237,13 +233,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return;
     }
 
-    const actionIconCfg = this.getActionIconCfg();
-
-    if (!actionIconCfg) {
+    if (!this.actionIconConfig) {
       return;
     }
 
-    const { iconNames, onClick, onHover, defaultHide } = actionIconCfg;
+    const { iconNames, onClick, onHover, defaultHide } = this.actionIconConfig;
 
     const position = this.getIconPosition(iconNames.length);
 
@@ -255,7 +249,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
       const iconDefaultHide =
         typeof defaultHide === 'function'
-          ? defaultHide(this.meta, iconName)
+          ? defaultHide(this.meta, iconName.name)
           : defaultHide;
 
       if (iconDefaultHide) {
@@ -263,7 +257,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       }
 
       this.addActionIcon({
-        iconName,
+        iconName: iconName.name,
         x,
         y,
         defaultHide: iconDefaultHide,

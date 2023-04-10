@@ -1,13 +1,39 @@
 import { find, isEmpty, isEqual } from 'lodash';
+import type { IconPosition, IconTheme } from '../../common/interface';
 import { CellTypes, EXTRA_FIELD } from '../../common/constant';
 import type {
+  ActionIconName,
   FormatResult,
   HeaderActionIcon,
 } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
-export const shouldShowActionIcons = (
-  actionIconCfg: HeaderActionIcon,
+const normalizeIconNames = (
+  iconNames: ActionIconName[],
+  position: IconPosition = 'right',
+) =>
+  iconNames.map((iconName) => {
+    if (typeof iconName === 'string') {
+      return { name: iconName, position };
+    }
+
+    return iconName;
+  });
+
+const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
+  actionIconList.map((actionIcon) => {
+    return {
+      ...actionIcon,
+      iconNames: normalizeIconNames(actionIcon.iconNames),
+    };
+  });
+
+export type HeaderActionIconWithFullyActionIconName = ReturnType<
+  typeof normalizeActionIconCfg
+>[number];
+
+const shouldShowActionIcons = (
+  actionIconCfg: HeaderActionIconWithFullyActionIconName,
   meta: Node,
   cellType: CellTypes,
 ) => {
@@ -31,7 +57,7 @@ export const shouldShowActionIcons = (
   }
 
   // 有任意 iconName 命中展示，则使用当前 headerActionIcon config
-  return iconNames.some((iconName) => displayCondition(meta, iconName));
+  return iconNames.some((iconName) => displayCondition(meta, iconName.name));
 };
 
 /**
@@ -45,8 +71,10 @@ export const getActionIconConfig = (
   actionIconCfgList: HeaderActionIcon[] = [],
   meta: Node,
   cellType: CellTypes,
-): HeaderActionIcon | undefined => {
-  const iconConfig = find(actionIconCfgList, (cfg) =>
+): HeaderActionIconWithFullyActionIconName | undefined => {
+  const normalizedList = normalizeActionIconCfg(actionIconCfgList);
+
+  const iconConfig = find(normalizedList, (cfg) =>
     shouldShowActionIcons(cfg, meta, cellType),
   );
 
@@ -59,7 +87,7 @@ export const getActionIconConfig = (
 
   if (iconConfig.displayCondition) {
     nextIconNames = nextIconNames.filter((iconName) =>
-      iconConfig.displayCondition?.(meta, iconName),
+      iconConfig.displayCondition?.(meta, iconName.name),
     );
   }
 
@@ -67,6 +95,24 @@ export const getActionIconConfig = (
     ...iconConfig,
     iconNames: nextIconNames,
   };
+};
+
+export const getActionIconTotalWidth = (
+  iconCfg: HeaderActionIconWithFullyActionIconName | undefined,
+  iconTheme: IconTheme,
+): number => {
+  if (!iconCfg) {
+    return 0;
+  }
+
+  const { iconNames = [] } = iconCfg;
+  const { margin, size } = iconTheme;
+
+  return iconNames.reduce(
+    (acc, { position }) =>
+      acc + size! + (position === 'left' ? margin!.right! : margin!.left!),
+    0,
+  );
 };
 
 /**
