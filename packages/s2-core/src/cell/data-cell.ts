@@ -1,5 +1,5 @@
 import type { PointLike } from '@antv/g';
-import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import { find, findLast, first, get, isEmpty, isEqual, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -31,11 +31,6 @@ import { getIconPosition } from '../utils/condition/condition';
 import { updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
-import {
-  DEFAULT_FONT_COLOR,
-  REVERSE_FONT_COLOR,
-} from '../common/constant/condition';
-import { shouldReverseFontColor } from '../utils/color';
 import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import type { RawData } from './../common/interface/s2DataConfig';
 
@@ -207,28 +202,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.update();
   }
 
-  /**
-   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
-   * @param textStyle
-   * @private
-   */
-  private getDefaultTextFill(textStyle: TextTheme) {
-    let textFill = textStyle.fill;
-    const { backgroundColor, intelligentReverseTextColor } =
-      this.getBackgroundColor();
-
-    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
-    if (
-      shouldReverseFontColor(backgroundColor as string) &&
-      textStyle.fill === DEFAULT_FONT_COLOR &&
-      intelligentReverseTextColor
-    ) {
-      textFill = REVERSE_FONT_COLOR;
-    }
-
-    return textFill;
-  }
-
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
     const textStyle = isTotals
@@ -236,10 +209,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       : this.theme.dataCell?.text;
 
     // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
-    const fill = this.getTextConditionFill({
-      ...textStyle,
-      fill: this.getDefaultTextFill(textStyle!),
-    });
+    const fill = this.getTextConditionFill(
+      this.getDefaultTextFill(textStyle!.fill!),
+    );
 
     return { ...textStyle, fill };
   }
@@ -330,27 +302,17 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     if (this.shouldHideRowSubtotalData()) {
-      return { backgroundColor, backgroundColorOpacity };
+      return {
+        backgroundColor,
+        backgroundColorOpacity,
+        intelligentReverseTextColor: false,
+      };
     }
 
-    // get background condition fill color
-    const bgCondition = this.findFieldCondition(this.conditions?.background!);
-    let intelligentReverseTextColor = false;
-
-    if (bgCondition?.mapping!) {
-      const attrs = this.mappingValue(bgCondition);
-
-      if (attrs) {
-        backgroundColor = attrs.fill;
-        intelligentReverseTextColor = attrs.intelligentReverseTextColor!;
-      }
-    }
-
-    return {
-      backgroundColor,
-      backgroundColorOpacity,
-      intelligentReverseTextColor,
-    };
+    return merge(
+      { backgroundColor, backgroundColorOpacity },
+      this.getBackgroundConditionFill(),
+    );
   }
 
   // dataCell根据state 改变当前样式，

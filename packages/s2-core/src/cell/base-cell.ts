@@ -22,7 +22,9 @@ import {
 import type { SimpleBBox } from '../engine';
 import {
   CellTypes,
+  DEFAULT_FONT_COLOR,
   InteractionStateName,
+  REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
@@ -60,6 +62,7 @@ import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
+import { shouldReverseFontColor } from '../utils/color';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -282,6 +285,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected abstract getBackgroundColor(): {
     backgroundColor: string | undefined;
     backgroundColorOpacity: number | undefined;
+    intelligentReverseTextColor: boolean;
   };
 
   protected drawBackgroundShape() {
@@ -532,15 +536,58 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
   }
 
-  public getTextConditionFill(textStyle: TextTheme) {
+  public getTextConditionFill(textFill: string) {
     // get text condition's fill result
-    let fillResult = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
 
     if (textCondition?.mapping) {
-      fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
+      textFill = this.mappingValue(textCondition)?.fill || textFill;
     }
 
-    return fillResult;
+    return textFill;
   }
+
+  /**
+   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
+   * @param textStyle
+   * @private
+   */
+  protected getDefaultTextFill(textFill: string) {
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
+
+    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    if (
+      shouldReverseFontColor(backgroundColor as string) &&
+      textFill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
+    ) {
+      textFill = REVERSE_FONT_COLOR;
+    }
+
+    return textFill;
+  }
+
+  public getBackgroundConditionFill() {
+    // get background condition fill color
+    const bgCondition = this.findFieldCondition(this.conditions?.background!);
+
+    if (bgCondition?.mapping!) {
+      const attrs = this.mappingValue(bgCondition);
+
+      if (attrs) {
+        return {
+          backgroundColor: attrs.fill,
+          intelligentReverseTextColor:
+            attrs.intelligentReverseTextColor || false,
+        };
+      }
+    }
+
+    return {
+      intelligentReverseTextColor: false,
+    };
+  }
+
+  public getIconConditionMappingResult() {}
 }

@@ -12,6 +12,7 @@ import {
   isEmpty,
   isEqual,
   map,
+  merge,
 } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
@@ -79,8 +80,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.generateIconConfig();
   }
 
+  protected initCell() {
+    this.resetTextAndConditionIconShapes();
+    this.actionIcons = [];
+    this.hasDefaultHiddenIcon = false;
+  }
+
   protected generateIconConfig() {
     const { sortParam } = this.headerConfig;
+    // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
 
     if (this.showSortIcon()) {
       this.actionIconConfig = {
@@ -99,12 +107,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.meta,
       this.cellType,
     );
-  }
-
-  protected initCell() {
-    this.resetTextAndConditionIconShapes();
-    this.actionIcons = [];
-    this.hasDefaultHiddenIcon = false;
   }
 
   protected getFormattedFieldValue(): FormatResult {
@@ -160,7 +162,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected getActionIconStyle() {
     const { icon } = this.getStyle()!;
-    const fill = this.getTextConditionFill(this.getTextStyle());
+    const fill = this.getTextConditionFill(this.getTextStyle().fill!);
 
     return {
       width: icon?.size,
@@ -339,7 +341,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
       style = text;
     }
 
-    const fill = this.getTextConditionFill(style!);
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill(
+      this.getDefaultTextFill(style!.fill!),
+    );
 
     return { ...style, fill };
   }
@@ -347,19 +352,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
-    let fill = backgroundColor;
-    // get background condition fill color
-    const bgCondition = this.findFieldCondition(this.conditions?.background!);
 
-    if (bgCondition?.mapping!) {
-      const attrs = this.mappingValue(bgCondition);
-
-      if (attrs) {
-        fill = attrs.fill;
-      }
-    }
-
-    return { backgroundColor: fill, backgroundColorOpacity };
+    return merge(
+      { backgroundColor, backgroundColorOpacity },
+      this.getBackgroundConditionFill(),
+    );
   }
 
   public toggleActionIcon(id: string) {

@@ -318,7 +318,7 @@ export class CornerCell extends HeaderCell {
   protected getTextStyle(): TextTheme {
     const { text, bolderText } = this.getStyle()!;
     const cornerTextStyle = this.isBolderText() ? text : bolderText;
-    const fill = this.getTextConditionFill(cornerTextStyle!);
+    const fill = this.getTextConditionFill(cornerTextStyle!.fill!);
 
     return {
       ...cornerTextStyle,
