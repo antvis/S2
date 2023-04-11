@@ -109,7 +109,7 @@ function MainLayout() {
   );
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
-  >('single');
+  >('multiple');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -236,7 +236,11 @@ function MainLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
+    if (sheetType !== 'table') {
+      return;
+    }
+
     setDataCfg(
       customMerge(tableSheetDataCfg, {
         fields: {
@@ -247,7 +251,7 @@ function MainLayout() {
         },
       }),
     );
-  }, [tableSheetColumnType]);
+  }, [sheetType, tableSheetColumnType]);
 
   //  ================== Config ========================
 
@@ -495,7 +499,7 @@ function MainLayout() {
                     disabled={sheetType === 'table'}
                   />
                 </Tooltip>
-                <Tooltip title="透视表有效">
+                <Tooltip title="明细表有效">
                   <Switch
                     checkedChildren="冻结列头开"
                     unCheckedChildren="冻结列头关"

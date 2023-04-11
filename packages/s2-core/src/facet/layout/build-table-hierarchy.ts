@@ -1,50 +1,35 @@
-import { DFSGenerateHeaderNodes } from '../../utils/layout/generate-header-nodes';
-import { getDisplayedColumnsTree, getLeafColumnsWithKey } from '../utils';
+import { getDefaultSeriesNumberText } from '../../common';
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
-import type { TableHeaderParams } from '../layout/interface';
-import type { CustomTreeNode } from '../../common';
+import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
+import type { HeaderParams } from './interface';
 
-export const buildTableHierarchy = (params: TableHeaderParams) => {
-  const { spreadsheet } = params;
+export const buildTableHierarchy = (params: HeaderParams) => {
+  const { spreadsheet, rootNode, fields, hierarchy } = params;
   const { columns = [] } = spreadsheet.dataSet.fields;
+  const { showSeriesNumber, seriesNumberText } = spreadsheet.options;
 
-  const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
-  const showSeriesNumber = spreadsheet.options?.showSeriesNumber;
-  // 获取所有叶子结点
-  const leafs = getLeafColumnsWithKey(columns);
-  const displayedColumns = leafs.filter((column) => {
-    if (!hiddenColumnsDetail) {
-      return true;
-    }
-
-    return hiddenColumnsDetail.every((detail) =>
-      detail.hideColumnNodes.every((node) => node.field !== column),
-    );
+  const seriesNumberNodeValue = getDefaultSeriesNumberText(seriesNumberText);
+  const fieldValues = columns.map((field) => {
+    return field === SERIES_NUMBER_FIELD
+      ? seriesNumberNodeValue
+      : spreadsheet.dataSet.getFieldName(field);
   });
-  const fields = [...displayedColumns] as string[];
 
-  const tree = [...columns];
-  const fieldsMap: Record<string, boolean> = {};
-
-  if (showSeriesNumber) {
-    tree.unshift({
-      field: SERIES_NUMBER_FIELD,
-    } as CustomTreeNode);
-    // @ts-ignore
-    fieldsMap[SERIES_NUMBER_FIELD] = true;
+  if (showSeriesNumber && !fields.includes(SERIES_NUMBER_FIELD)) {
+    fields.unshift(SERIES_NUMBER_FIELD);
+    fieldValues.unshift(seriesNumberNodeValue);
   }
 
-  fields.reduce((prev, field) => {
-    // @ts-ignore
-    prev[field] = true;
-
-    return prev;
-  }, fieldsMap);
-
-  DFSGenerateHeaderNodes(
-    getDisplayedColumnsTree(tree, fieldsMap),
-    params,
-    0,
-    null,
-  );
+  generateHeaderNodes({
+    spreadsheet,
+    currentField: fields[0] as string,
+    fields: fields as string[],
+    fieldValues,
+    hierarchy,
+    parentNode: rootNode,
+    level: 0,
+    query: {},
+    addMeasureInTotalQuery: false,
+    addTotalMeasureInTotal: false,
+  });
 };

@@ -1,19 +1,19 @@
 import type { Group } from '@antv/g';
 import { findIndex, isNil } from 'lodash';
-import type { SimpleBBox } from '../engine';
-import { FrozenCellType } from '../common/constant/frozen';
+import { ROOT_NODE_ID } from '../common';
 import type { FrozenCellIndex } from '../common/constant/frozen';
+import { FrozenCellType } from '../common/constant/frozen';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
   CustomHeaderFields,
-  CustomTreeNode,
   Pagination,
   S2TableSheetFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
+import type { SimpleBBox } from '../engine';
 import type { Indexes } from '../utils/indexes';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
-import type { Node } from './layout/node';
 import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) =>
   frozenCount > 0 && colIndex < frozenCount;
@@ -80,16 +80,6 @@ export const calculateInViewIndexes = (options: {
     scrollY + viewport.y,
     viewport.height + scrollY + viewport.y,
   );
-
-  /*
-   * use direction
-   * const halfWidthSize = Math.ceil(xMax - xMin / 4);
-   * const halfHeightSize = Math.ceil(yMax - yMin / 4);
-   * xMin = Math.max(0, xMin - halfWidthSize)
-   * xMax = xMax + halfWidthSize;
-   * yMin = Math.max(0, yMin - halfHeightSize);
-   * yMax = yMax + halfHeightSize;
-   */
 
   return [xMin, xMax, yMin, yMax];
 };
@@ -415,48 +405,11 @@ export const getFrozenLeafNodesCount = (
 };
 
 /**
- * 根据列配置树和已显示的字段，返回深拷贝过的过滤掉隐藏列的配置结构
- * @param columnsTree
- * @param fieldsMap
- * @returns {ColumnNode} 配置结构
- */
-export const getDisplayedColumnsTree = (
-  columnsTree: CustomHeaderFields,
-  fieldsMap: Record<string, boolean>,
-): CustomTreeNode[] =>
-  columnsTree.reduce<CustomTreeNode[]>((tree, column) => {
-    if (typeof column === 'string') {
-      column = { field: column } as CustomTreeNode;
-    }
-
-    const copyColumn = { ...column };
-
-    // 分支节点显示
-    if (copyColumn.children) {
-      copyColumn.children = getDisplayedColumnsTree(
-        copyColumn.children,
-        fieldsMap,
-      );
-      tree.push(copyColumn);
-
-      return tree;
-    }
-
-    // 非分支节点判断是否显示
-    if (fieldsMap[copyColumn.field]) {
-      tree.push(copyColumn);
-    }
-
-    return tree;
-  }, []);
-
-/**
  * 明细表多级表头判断一个 node 是不是顶层节点
  * @param node
  * @returns {boolean}
  */
-export const isTopLevelNode = (node: Node): boolean =>
-  node?.parent?.id === 'root';
+export const isTopLevelNode = (node: Node) => node?.parent?.id === ROOT_NODE_ID;
 
 /**
  * 明细表多级表头根据一个 node 返回其所属顶层节点

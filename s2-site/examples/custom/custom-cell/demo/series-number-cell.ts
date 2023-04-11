@@ -2,11 +2,13 @@ import {
   PivotSheet,
   SeriesNumberCell,
   Node,
+  S2DataConfig,
+  S2Options,
 } from '@antv/s2';
 
 /**
- * 自定义 RowCell，给行头添加背景图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ * 自定义 SeriesNumberCell，改变背景色
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/series-number-cell.ts
  */
 class CustomSeriesCell extends SeriesNumberCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
@@ -32,10 +34,12 @@ const layoutSeriesNumberNodes = (
       rowIndex: idx,
       value: `${String.fromCharCode(97 + idx)}`, // 序号从 a 开始递增，在大量数据下，需要更完善的处理
     });
+
     sNode.x = 0;
     sNode.y = node.y;
     sNode.width = seriesNumberWidth;
     sNode.height = node.height;
+
     return sNode;
   });
 };
@@ -46,7 +50,7 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -55,7 +59,7 @@ fetch(
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       hierarchyType: 'tree', // 切换到 grid 模式试试看

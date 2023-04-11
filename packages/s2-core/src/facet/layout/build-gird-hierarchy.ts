@@ -44,7 +44,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   const { values = [] } = spreadsheet.dataSet.fields;
   const fieldValues: FieldValue[] = [];
 
-  let query = {};
+  let query: Record<string, string> = {};
 
   if (parentNode.isTotals) {
     // add total measures

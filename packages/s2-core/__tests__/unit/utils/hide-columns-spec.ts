@@ -17,7 +17,7 @@ import {
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
 
-describe('hide-columns test', () => {
+describe('Hide Columns Tests', () => {
   let sheet: SpreadSheet;
   let mockSpreadSheetInstance: PivotSheet;
 
@@ -54,6 +54,8 @@ describe('hide-columns test', () => {
       reset: jest.fn(),
     } as unknown as RootInteraction;
     mockSpreadSheetInstance.isTableMode = () => true;
+    mockSpreadSheetInstance.isPivotMode = () => false;
+    mockSpreadSheetInstance.isCustomColumnFields = () => false;
   });
 
   test('should return empty list when there is not init columns', () => {
@@ -89,6 +91,10 @@ describe('hide-columns test', () => {
     jest
       .spyOn(mockSpreadSheetInstance, 'isTableMode')
       .mockImplementationOnce(() => false);
+
+    jest
+      .spyOn(mockSpreadSheetInstance, 'isPivotMode')
+      .mockImplementationOnce(() => true);
 
     expect(getColumns(mockSpreadSheetInstance)).toEqual([
       'id-1',

@@ -1,4 +1,5 @@
 import { head, isEmpty, isEqual } from 'lodash';
+import { SERIES_NUMBER_FIELD } from '../../common';
 import { ROOT_NODE_ID } from '../../common/constant/node';
 import type {
   CornerNodeType,
@@ -130,7 +131,11 @@ export class Node {
 
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
 
-  public extra?: Record<string, any>;
+  public extra?: {
+    description?: string;
+    isCustomNode?: boolean;
+    [key: string]: any;
+  };
 
   [key: string]: any;
 
@@ -350,5 +355,9 @@ export class Node {
       (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
       this.height,
     );
+  }
+
+  public isSeriesNumberNode() {
+    return this.field === SERIES_NUMBER_FIELD;
   }
 }

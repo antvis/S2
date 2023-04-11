@@ -15,6 +15,7 @@ import {
   isFunction,
   isString,
   memoize,
+  some,
   values,
 } from 'lodash';
 import { runtime } from '@antv/g-lite';
@@ -136,6 +137,25 @@ export abstract class SpreadSheet extends EE {
     this.setOverscrollBehavior();
   }
 
+  public isCustomHeaderFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean {
+    const { fields } = this.dataCfg;
+
+    if (!fieldType) {
+      return some(
+        [...fields?.rows!, ...fields?.columns!],
+        (field) => !isString(field),
+      );
+    }
+
+    return some(fields?.[fieldType], (field) => !isString(field));
+  }
+
+  public isCustomColumnFields(): boolean {
+    return this.isCustomHeaderFields('columns');
+  }
+
   private setOverscrollBehavior() {
     const { overscrollBehavior } = this.options.interaction!;
     // 行内样式 + css 样式
@@ -223,13 +243,7 @@ export abstract class SpreadSheet extends EE {
    */
   public abstract isPivotMode(): boolean;
 
-  public abstract isCustomHeaderFields(
-    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
-  ): boolean;
-
   public abstract isCustomRowFields(): boolean;
-
-  public abstract isCustomColumnFields(): boolean;
 
   /**
    * tree type must be in strategy mode
