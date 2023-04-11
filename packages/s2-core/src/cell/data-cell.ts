@@ -27,7 +27,7 @@ import {
   shouldUpdateBySelectedCellsHighlight,
   updateBySelectedCellsHighlight,
 } from '../utils/cell/data-cell';
-import { getIconPositionCfg } from '../utils/condition/condition';
+import { getIconPosition } from '../utils/condition/condition';
 import { updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
@@ -252,7 +252,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       iconCondition.mapping! && {
         size,
         margin,
-        position: getIconPositionCfg(iconCondition),
+        position: getIconPosition(iconCondition),
       };
 
     return iconCfg as IconStyle;

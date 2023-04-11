@@ -253,11 +253,13 @@ export interface HeaderActionIconOptions {
   y: number;
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
+  isSortIcon?: boolean;
   defaultHide?: boolean;
 }
 
 export type FullyActionIconName = { name: string; position: IconPosition };
 export type ActionIconName = string | FullyActionIconName;
+
 export interface HeaderActionIcon {
   /*
    * 已注册的 icon 类型或自定义的 icon 类型名
@@ -274,6 +276,11 @@ export interface HeaderActionIcon {
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
   // hover 回调函数
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
+}
+
+export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
+  iconNames: FullyActionIconName[];
+  isSortIcon?: boolean;
 }
 
 export type CellCallback<T extends BaseHeaderConfig> = (

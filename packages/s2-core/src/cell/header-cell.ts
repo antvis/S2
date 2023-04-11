@@ -27,6 +27,7 @@ import type {
   Condition,
   FormatResult,
   HeaderActionIconOptions,
+  InternalFullyHeaderActionIcon,
   MappingResult,
   TextTheme,
 } from '../common/interface';
@@ -36,16 +37,13 @@ import { includeCell } from '../utils/cell/data-cell';
 import {
   getActionIconConfig,
   getActionIconTotalWidth,
-  type HeaderActionIconWithFullyActionIconName,
 } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
 
-  protected actionIconConfig:
-    | HeaderActionIconWithFullyActionIconName
-    | undefined;
+  protected actionIconConfig: InternalFullyHeaderActionIcon | undefined;
 
   protected treeIcon: GuiIcon | undefined;
 
@@ -77,6 +75,24 @@ export abstract class HeaderCell extends BaseCell<Node> {
       ...(sortParam || { query }),
       type,
     };
+
+    this.generateIconConfig();
+  }
+
+  protected generateIconConfig() {
+    const { sortParam } = this.headerConfig;
+
+    if (this.showSortIcon()) {
+      this.actionIconConfig = {
+        iconNames: [
+          { name: get(sortParam, 'type', 'none'), position: 'right' },
+        ],
+        belongsCell: this.cellType,
+        isSortIcon: true,
+      };
+
+      return;
+    }
 
     this.actionIconConfig = getActionIconConfig(
       this.spreadsheet.options.headerActionIcons,
@@ -132,10 +148,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconsCount() {
-    if (this.showSortIcon()) {
-      return 1;
-    }
-
     return this.actionIconConfig?.iconNames?.length ?? 0;
   }
 
@@ -158,35 +170,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
     };
   }
 
-  // 绘制排序icon
-  protected drawSortIcons() {
-    if (!this.showSortIcon()) {
-      return;
-    }
-
-    const { sortParam } = this.headerConfig;
-    const position = this.getIconPosition();
-    const sortIcon = new GuiIcon({
-      name: get(sortParam, 'type', 'none'),
-      ...position,
-      ...this.getActionIconStyle(),
-    });
-
-    sortIcon.addEventListener('click', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      this.spreadsheet.handleGroupSort(event, this.meta);
-    });
-    this.appendChild(sortIcon);
-    this.actionIcons.push(sortIcon);
-  }
-
   // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
   protected hasDefaultHideActionIcon() {
     return this.hasDefaultHiddenIcon;
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, iconName, defaultHide, onClick, onHover } = options;
+    const { x, y, iconName, defaultHide, onClick, onHover, isSortIcon } =
+      options;
 
     const icon = new GuiIcon({
       name: iconName,
@@ -197,49 +188,55 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     // 默认隐藏，hover 可见
     icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
-    icon.addEventListener('mouseover', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
-      onHover?.({
-        hovering: true,
-        iconName,
-        meta: this.meta,
-        event,
+    if (onHover) {
+      icon.addEventListener('mouseover', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+        onHover({
+          hovering: true,
+          iconName,
+          meta: this.meta,
+          event,
+        });
       });
-    });
-    icon.addEventListener('mouseleave', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
-      onHover?.({
-        hovering: false,
-        iconName,
-        meta: this.meta,
-        event,
+
+      icon.addEventListener('mouseleave', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
+        onHover({
+          hovering: false,
+          iconName,
+          meta: this.meta,
+          event,
+        });
       });
-    });
-    icon.addEventListener('click', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      onClick?.({
-        iconName,
-        meta: this.meta,
-        event,
+    }
+
+    if (isSortIcon) {
+      icon.addEventListener('click', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+        this.spreadsheet.handleGroupSort(event, this.meta);
       });
-    });
+    } else if (onClick) {
+      icon.addEventListener('click', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+        onClick({
+          iconName,
+          meta: this.meta,
+          event,
+        });
+      });
+    }
 
     this.actionIcons.push(icon);
     this.appendChild(icon);
   }
 
   protected drawActionIcons() {
-    if (this.showSortIcon()) {
-      this.drawSortIcons();
-
-      return;
-    }
-
     if (!this.actionIconConfig) {
       return;
     }
 
-    const { iconNames, onClick, onHover, defaultHide } = this.actionIconConfig;
+    const { iconNames, onClick, onHover, defaultHide, isSortIcon } =
+      this.actionIconConfig;
 
     const position = this.getIconPosition(iconNames.length);
 
@@ -265,6 +262,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         defaultHide: iconDefaultHide,
         onClick,
         onHover,
+        isSortIcon,
       });
     });
   }

@@ -1,5 +1,9 @@
 import { find, isEmpty, isEqual } from 'lodash';
-import type { IconPosition, IconTheme } from '../../common/interface';
+import type {
+  IconPosition,
+  IconTheme,
+  InternalFullyHeaderActionIcon,
+} from '../../common/interface';
 import { CellTypes, EXTRA_FIELD } from '../../common/constant';
 import type {
   ActionIconName,
@@ -21,19 +25,16 @@ const normalizeIconNames = (
   });
 
 const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
-  actionIconList.map((actionIcon) => {
-    return {
-      ...actionIcon,
-      iconNames: normalizeIconNames(actionIcon.iconNames),
-    };
-  });
-
-export type HeaderActionIconWithFullyActionIconName = ReturnType<
-  typeof normalizeActionIconCfg
->[number];
+  actionIconList.map(
+    (actionIcon) =>
+      ({
+        ...actionIcon,
+        iconNames: normalizeIconNames(actionIcon.iconNames),
+      } as InternalFullyHeaderActionIcon),
+  );
 
 const shouldShowActionIcons = (
-  actionIconCfg: HeaderActionIconWithFullyActionIconName,
+  actionIconCfg: InternalFullyHeaderActionIcon,
   meta: Node,
   cellType: CellTypes,
 ) => {
@@ -71,7 +72,7 @@ export const getActionIconConfig = (
   actionIconCfgList: HeaderActionIcon[] = [],
   meta: Node,
   cellType: CellTypes,
-): HeaderActionIconWithFullyActionIconName | undefined => {
+): InternalFullyHeaderActionIcon | undefined => {
   const normalizedList = normalizeActionIconCfg(actionIconCfgList);
 
   const iconConfig = find(normalizedList, (cfg) =>
@@ -98,7 +99,7 @@ export const getActionIconConfig = (
 };
 
 export const getActionIconTotalWidth = (
-  iconCfg: HeaderActionIconWithFullyActionIconName | undefined,
+  iconCfg: InternalFullyHeaderActionIcon | undefined,
   iconTheme: IconTheme,
 ): number => {
   if (!iconCfg) {
