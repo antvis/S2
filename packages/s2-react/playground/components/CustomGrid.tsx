@@ -94,6 +94,11 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     });
     const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
       name: 'default',
+      theme: {
+        resizeArea: {
+          backgroundOpacity: 1,
+        },
+      },
     });
     const [sheetType, setSheetType] =
       React.useState<SheetComponentsProps['sheetType']>('table');

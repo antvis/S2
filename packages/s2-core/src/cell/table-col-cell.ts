@@ -62,7 +62,12 @@ export class TableColCell extends ColCell {
       return true;
     }
 
-    const { scrollX, scrollY, width: headerWidth } = this.headerConfig;
+    const {
+      scrollX,
+      scrollY,
+      width: headerWidth,
+      height: headerHeight,
+    } = this.headerConfig;
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
 
@@ -84,7 +89,7 @@ export class TableColCell extends ColCell {
         headerWidth -
         frozenWidth.frozenColWidth -
         frozenWidth.frozenTrailingColWidth,
-      height,
+      height: headerHeight,
     };
 
     return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
