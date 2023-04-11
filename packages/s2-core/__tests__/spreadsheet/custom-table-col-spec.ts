@@ -12,6 +12,7 @@ import {
 } from '../util/interaction';
 import { SpreadSheet, TableSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common/interface';
+import type { CustomRect } from '@/engine';
 
 const s2Options: S2Options = {
   width: 600,
@@ -136,7 +137,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should hide columns', () => {
-    const hiddenColumns = ['price'];
+    const hiddenColumns = ['root[&]金额[&]价格'];
 
     s2.interaction.hideColumns(hiddenColumns);
 
@@ -273,5 +274,27 @@ describe('TableSheet Custom Tests', () => {
 
     expect(colNodes).toHaveLength(6);
     expect(colNodes).toMatchSnapshot();
+  });
+
+  test('should render correctly resize area handler', () => {
+    s2.setDataCfg({
+      ...baseDataConfig,
+      fields: {
+        columns: customColMultipleColumns,
+      },
+    });
+    s2.setTheme({
+      resizeArea: {
+        backgroundOpacity: 1,
+      },
+    });
+    s2.render();
+
+    const resizeArea = s2.facet.foregroundGroup.getElementById<Group>(
+      KEY_GROUP_COL_RESIZE_AREA,
+    )!;
+    const resizeAreaList = resizeArea.children as CustomRect[];
+
+    expect(resizeAreaList.length).toEqual(8);
   });
 });

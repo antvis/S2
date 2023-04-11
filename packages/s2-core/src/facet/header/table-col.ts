@@ -106,7 +106,6 @@ export class TableColHeader extends ColHeader {
     const { colCount = 0, trailingColCount = 0 } = spreadsheet.options.frozen!;
 
     const leftLeafNode = getLeftLeafNode(node);
-    // const colLength = spreadsheet.getColumnLeafNodes().length;
     const topLevelNodes = spreadsheet.getColumnNodes().filter(isTopLevelNode);
 
     const {
