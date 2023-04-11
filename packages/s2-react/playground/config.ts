@@ -29,13 +29,18 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
     field: 'area',
     title: '地区',
     children: [
-      { field: 'province', title: '省份' },
+      {
+        field: 'province',
+        title: '省份',
+        children: [
+          {
+            field: 'type',
+            title: '类型',
+          },
+        ],
+      },
       { field: 'city', title: '城市' },
     ],
-  },
-  {
-    field: 'type',
-    title: '类型',
   },
   {
     field: 'money',
