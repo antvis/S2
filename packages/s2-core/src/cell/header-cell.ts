@@ -146,22 +146,30 @@ export abstract class HeaderCell extends BaseCell<Node> {
     );
   }
 
+  protected getActionIconStyle() {
+    const { icon } = this.getStyle()!;
+    const fill = this.getTextConditionFill(this.getTextStyle());
+
+    return {
+      width: icon?.size,
+      height: icon?.size,
+      // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
+      fill: icon?.fill || fill,
+    };
+  }
+
   // 绘制排序icon
   protected drawSortIcons() {
     if (!this.showSortIcon()) {
       return;
     }
 
-    const { icon, text } = this.getStyle()!;
-    const fill = this.getTextConditionFill(text!);
     const { sortParam } = this.headerConfig;
     const position = this.getIconPosition();
     const sortIcon = new GuiIcon({
       name: get(sortParam, 'type', 'none'),
       ...position,
-      width: icon!.size,
-      height: icon!.size,
-      fill,
+      ...this.getActionIconStyle(),
     });
 
     sortIcon.addEventListener('click', (event: CanvasEvent) => {
@@ -179,18 +187,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected addActionIcon(options: HeaderActionIconOptions) {
     const { x, y, iconName, defaultHide, onClick, onHover } = options;
-    const { icon: iconTheme, text: textTheme } = this.getStyle()!;
-    const fill = this.getTextConditionFill(textTheme!);
-    // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
-    const actionIconColor = iconTheme?.fill || fill;
 
     const icon = new GuiIcon({
       name: iconName,
       x,
       y,
-      width: iconTheme?.size,
-      height: iconTheme?.size,
-      fill: actionIconColor,
+      ...this.getActionIconStyle(),
     });
 
     // 默认隐藏，hover 可见
