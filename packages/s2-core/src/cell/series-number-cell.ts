@@ -10,7 +10,7 @@ import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellTypes } from '../common/constant/interaction';
 import type { Node } from '../facet/layout/node';
 import type { BaseHeaderConfig } from '../facet/header/interface';
-import { getFixedTextIconPosition } from '../utils/cell/cell';
+import { getTextIconPosition } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
 import { BaseCell } from './base-cell';
@@ -100,7 +100,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
       },
     );
 
-    const textX = getFixedTextIconPosition({
+    const textX = getTextIconPosition({
       bbox: textArea,
       textStyle,
       textWidth: this.actualTextWidth,

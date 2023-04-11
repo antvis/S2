@@ -17,7 +17,7 @@ import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
 import { Frame, type ColHeaderConfig } from '../facet/header';
 import {
-  getFixedTextIconPosition,
+  getTextIconPosition,
   getVerticalIconPositionByText,
   getVerticalPosition,
 } from '../utils/cell/cell';
@@ -94,7 +94,7 @@ export class ColCell extends HeaderCell {
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
-      const { text, icon } = getFixedTextIconPosition({
+      const { text, icon } = getTextIconPosition({
         bbox: contentBox,
         textStyle,
         textWidth: this.actualTextWidth,

@@ -49,7 +49,7 @@ import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
-  getFixedTextIconPosition,
+  getTextIconPosition,
 } from '../utils/cell/cell';
 import {
   renderIcon,
@@ -134,7 +134,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const textTheme = this.getTextStyle();
     const iconTheme = this.getIconStyle();
 
-    return getFixedTextIconPosition({
+    return getTextIconPosition({
       bbox: this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textStyle: textTheme,
       textWidth: this.actualTextWidth,

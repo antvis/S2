@@ -77,7 +77,7 @@ export const getVerticalIconPositionByText = (
 };
 
 // 获取text及其跟随icon的位置坐标
-export const getFixedTextIconPosition = (options: {
+export const getTextIconPosition = (options: {
   bbox: SimpleBBox;
   textStyle: TextAlignStyle | undefined;
   textWidth?: number;
@@ -178,7 +178,7 @@ export const getTextPosition = (
   contentBox: SimpleBBox,
   textCfg: TextAlignStyle,
 ) =>
-  getFixedTextIconPosition({
+  getTextIconPosition({
     bbox: contentBox,
     textStyle: textCfg,
   }).text;

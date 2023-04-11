@@ -31,7 +31,7 @@ import {
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
 import { renderMiniChart } from './g-mini-charts';
-import { getMaxTextWidth, getFixedTextIconPosition } from './cell/cell';
+import { getMaxTextWidth, getTextIconPosition } from './cell/cell';
 
 /**
  * 获取文本的 ... 文本。
@@ -515,7 +515,7 @@ export const drawObjectText = (
       });
       const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
 
-      const position = getFixedTextIconPosition({
+      const position = getTextIconPosition({
         bbox: contentBoxes[i][j],
         textStyle,
         textWidth: actualTextWidth,

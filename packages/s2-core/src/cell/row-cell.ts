@@ -15,7 +15,7 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import {
-  getFixedTextIconPosition,
+  getTextIconPosition,
   getVerticalIconPositionByText,
 } from '../utils/cell/cell';
 import { renderCircle, renderTreeIcon } from '../utils/g-renders';
@@ -405,7 +405,7 @@ export class RowCell extends HeaderCell {
       },
     );
 
-    const { text, icon } = getFixedTextIconPosition({
+    const { text, icon } = getTextIconPosition({
       bbox: textArea,
       textStyle,
       textWidth: this.actualTextWidth,

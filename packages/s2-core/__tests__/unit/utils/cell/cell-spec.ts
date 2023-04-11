@@ -3,7 +3,7 @@ import type { SimpleBBox } from '@/engine';
 import {
   getCellBoxByType,
   getMaxTextWidth,
-  getFixedTextIconPosition,
+  getTextIconPosition,
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
@@ -96,7 +96,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when there is no icon cfg', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -118,7 +118,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is right', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -143,7 +143,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -171,7 +171,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is left', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -196,7 +196,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -224,7 +224,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is left', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -249,7 +249,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -277,7 +277,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is right', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -302,7 +302,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -330,7 +330,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is left', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -355,7 +355,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -383,7 +383,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is right', () => {
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -407,7 +407,7 @@ describe('Text and Icon area Test', () => {
       },
     });
     expect(
-      getFixedTextIconPosition({
+      getTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
