@@ -53,7 +53,7 @@ describe('List Table Core Data Process', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   it('should copy no data', () => {
@@ -67,12 +67,8 @@ describe('List Table Core Data Process', () => {
 
   it('should copy normal data', () => {
     const cell = s2.interaction
-      .getAllCells()
-      .filter(
-        (cell) =>
-          cell.cellType === CellTypes.DATA_CELL &&
-          !(cell instanceof TableSeriesCell),
-      )[0];
+      .getPanelGroupAllDataCells()
+      .find((cell) => !(cell instanceof TableSeriesCell))!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -124,16 +120,13 @@ describe('List Table Core Data Process', () => {
       interaction: {
         copyWithHeader: true,
       },
+      showSeriesNumber: false,
     });
     s2.render();
 
     const cell = s2.interaction
-      .getAllCells()
-      .filter(
-        (cell) =>
-          cell.cellType === CellTypes.DATA_CELL &&
-          !(cell instanceof TableSeriesCell),
-      )[0];
+      .getPanelGroupAllDataCells()
+      .find((cell) => !(cell instanceof TableSeriesCell))!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],

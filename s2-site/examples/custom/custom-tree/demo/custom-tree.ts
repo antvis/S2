@@ -31,5 +31,6 @@ fetch(
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
     s2.render();
   });

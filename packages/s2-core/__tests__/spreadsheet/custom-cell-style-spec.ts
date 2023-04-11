@@ -1,9 +1,15 @@
-import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
-import { EXTRA_FIELD } from '@/common';
+import {
+  createPivotSheet,
+  createTableSheet,
+  getContainer,
+} from 'tests/util/helpers';
+import * as dataConfig from 'tests/data/mock-dataset.json';
+import { customColSimpleColumns } from '../data/custom-table-col-fields';
+import { EXTRA_FIELD, type S2DataConfig } from '@/common';
 import type { ViewMeta } from '@/common/interface/basic';
 import type { Node } from '@/facet/layout/node';
 import type { S2Options } from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
+import { TableSheet, type SpreadSheet } from '@/sheet-type';
 
 describe('SpreadSheet Custom Cell Style Tests', () => {
   let s2: SpreadSheet;
@@ -514,6 +520,62 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             widthByField: {
               'root[&]类别': 100,
               'root[&]子类别': 200,
+            },
+          },
+        },
+      });
+      sheet.render();
+
+      expect(mapNodeSize(sheet.getColumnNodes())).toMatchSnapshot();
+    });
+
+    test('should not set top level col cell style by field', () => {
+      const customColDataCfg: S2DataConfig = {
+        ...dataConfig,
+        fields: {
+          columns: customColSimpleColumns,
+        },
+      };
+      const sheet = new TableSheet(getContainer(), customColDataCfg, s2Options);
+
+      sheet.setOptions({
+        style: {
+          colCell: {
+            widthByField: {
+              area: 100,
+              money: 100,
+            },
+          },
+        },
+      });
+      sheet.render();
+
+      const nodes = sheet.getColumnNodes();
+
+      const areaNode = nodes.find((node) => node.field === 'area');
+      const moneyNode = nodes.find((node) => node.field === 'money');
+
+      expect(areaNode?.width).not.toEqual(100);
+      expect(moneyNode?.width).not.toEqual(100);
+    });
+
+    test('should set col cell style by field for multiple columns', () => {
+      const customColDataCfg: S2DataConfig = {
+        ...dataConfig,
+        fields: {
+          columns: customColSimpleColumns,
+        },
+      };
+      const sheet = new TableSheet(getContainer(), customColDataCfg, s2Options);
+
+      sheet.setOptions({
+        style: {
+          colCell: {
+            widthByField: {
+              province: 100,
+              city: 80,
+              price: 90,
+              number: 120,
             },
           },
         },

@@ -55,42 +55,32 @@ export class GridGroup extends Group {
     const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
 
     this.gridInfo.cols.forEach((x) => {
-      renderLine(
-        this.gridGroup,
-        {
-          x1: x - halfVerticalBorderWidthBorderWidth,
-          x2: x - halfVerticalBorderWidthBorderWidth,
-          y1: halfVerticalBorderWidthBorderWidth,
-          y2: Math.floor(bbox.height - halfVerticalBorderWidthBorderWidth),
-        },
-        {
-          stroke: style!.verticalBorderColor,
-          strokeOpacity: style!.verticalBorderColorOpacity,
-          lineWidth: verticalBorderWidth,
-          lineCap: SQUARE_LINE_CAP,
-        },
-      );
+      renderLine(this.gridGroup, {
+        x1: x - halfVerticalBorderWidthBorderWidth,
+        x2: x - halfVerticalBorderWidthBorderWidth,
+        y1: halfVerticalBorderWidthBorderWidth,
+        y2: Math.floor(bbox.height - halfVerticalBorderWidthBorderWidth),
+        stroke: style!.verticalBorderColor,
+        strokeOpacity: style!.verticalBorderColorOpacity,
+        lineWidth: verticalBorderWidth,
+        lineCap: SQUARE_LINE_CAP,
+      });
     });
 
     const horizontalBorderWidth = style?.horizontalBorderWidth;
     const halfHorizontalBorderWidth = horizontalBorderWidth! / 2;
 
     this.gridInfo.rows.forEach((y) => {
-      renderLine(
-        this.gridGroup,
-        {
-          x1: halfHorizontalBorderWidth,
-          x2: Math.floor(bbox.width - halfHorizontalBorderWidth),
-          y1: y - halfHorizontalBorderWidth,
-          y2: y - halfHorizontalBorderWidth,
-        },
-        {
-          stroke: style!.horizontalBorderColor,
-          strokeOpacity: style!.horizontalBorderColorOpacity,
-          lineWidth: horizontalBorderWidth,
-          lineCap: SQUARE_LINE_CAP,
-        },
-      );
+      renderLine(this.gridGroup, {
+        x1: halfHorizontalBorderWidth,
+        x2: Math.floor(bbox.width - halfHorizontalBorderWidth),
+        y1: y - halfHorizontalBorderWidth,
+        y2: y - halfHorizontalBorderWidth,
+        stroke: style!.horizontalBorderColor,
+        strokeOpacity: style!.horizontalBorderColorOpacity,
+        lineWidth: horizontalBorderWidth,
+        lineCap: SQUARE_LINE_CAP,
+      });
     });
 
     this.gridGroup.toFront();

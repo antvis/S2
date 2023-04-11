@@ -185,7 +185,7 @@ export const hideColumns = (
 export const getColumns = (spreadsheet: SpreadSheet) => {
   const { columns = [] } = spreadsheet.dataCfg.fields;
 
-  if (spreadsheet.isTableMode()) {
+  if (spreadsheet.isTableMode() && !spreadsheet.isCustomColumnFields()) {
     return columns;
   }
 

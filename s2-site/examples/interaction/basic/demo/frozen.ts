@@ -39,10 +39,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       height: 480,
       showSeriesNumber: true,
       frozen: {
-        frozenRowCount: 1, // 行头冻结数量
-        frozenColCount: 1, // 列头冻结数量
-        frozenTrailingRowCount: 1, // 列尾冻结数量
-        frozenTrailingColCount: 1, // 列尾冻结数量
+        rowCount: 1, // 行头冻结数量
+        colCount: 1, // 列头冻结数量
+        trailingRowCount: 1, // 列尾冻结数量
+        trailingColCount: 1, // 列尾冻结数量
       },
     };
 

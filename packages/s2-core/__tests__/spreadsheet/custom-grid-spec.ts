@@ -1,3 +1,4 @@
+import type { Group } from '@antv/g';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
 import type { HeaderCell } from '../../src/cell/header-cell';
@@ -12,6 +13,7 @@ import {
   getSelectedCount,
   getSelectedSum,
   getTestTooltipData,
+  mapCellNodeValues,
 } from '../util/interaction';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common/interface';
@@ -25,7 +27,7 @@ const s2Options: S2Options = {
 describe('SpreadSheet Custom Grid Tests', () => {
   let s2: SpreadSheet;
 
-  const baseDataConfig = {
+  const baseDataConfig: Pick<S2DataConfig, 'data' | 'meta'> = {
     data: CustomGridData,
     meta: [
       {
@@ -125,7 +127,6 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
 
       expect(rowLeafNodes).toMatchSnapshot();
-
       expect(colLeafNodes).toMatchSnapshot();
     });
 
@@ -181,20 +182,53 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (s2.facet as any)
-        .getCornerHeader()
-        .getChildren()
-        .map((cell: HeaderCell) => {
-          const value = cell.getActualText();
-          const meta = cell.getMeta();
+      const cornerCellLabels = (
+        s2.facet.cornerHeader.children as HeaderCell[]
+      ).map((cell: HeaderCell) => {
+        const value = cell.getActualText();
+        const meta = cell.getMeta();
 
-          return {
-            value,
-            field: meta.field,
-          };
-        });
+        return {
+          value,
+          field: meta.field,
+        };
+      });
 
       expect(cornerCellLabels).toMatchSnapshot();
+    });
+
+    test('should format custom rows', () => {
+      s2.setDataCfg({
+        ...customRowDataCfg,
+        meta: [
+          {
+            field: 'measure-1',
+            formatter: (value) => `#-${value}`,
+          },
+          {
+            field: 'a-1',
+            formatter: (value) => `%-${value}`,
+          },
+          {
+            field: 'a-1-1',
+            formatter: (value) => `@-${value}`,
+          },
+          {
+            field: 'a-1-2',
+            formatter: (value) => `&-${value}`,
+          },
+          {
+            field: 'a-2',
+            formatter: (value) => `*-${value}`,
+          },
+        ],
+      });
+      s2.render();
+
+      const { rowNodes, dataCellTexts } = mapCellNodeValues(s2);
+
+      expect(rowNodes).toMatchSnapshot();
+      expect(dataCellTexts).toMatchSnapshot();
     });
   });
 
@@ -210,7 +244,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should enable valueInCols', () => {
@@ -324,18 +358,17 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (s2.facet as any)
-        .getCornerHeader()
-        .getChildren()
-        .map((cell: HeaderCell) => {
-          const value = cell.getActualText();
-          const meta = cell.getMeta();
+      const cornerCellLabels = (
+        s2.facet.cornerHeader.children as HeaderCell[]
+      ).map((cell: HeaderCell) => {
+        const value = cell.getActualText();
+        const meta = cell.getMeta();
 
-          return {
-            value,
-            field: meta.field,
-          };
-        });
+        return {
+          value,
+          field: meta.field,
+        };
+      });
 
       expect(cornerCellLabels).toMatchSnapshot();
     });
@@ -374,11 +407,47 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
       s2.render(false);
 
-      const groups = s2.facet.foregroundGroup.getElementById(
+      const groups = s2.facet.foregroundGroup.getElementById<Group>(
         KEY_GROUP_COL_RESIZE_AREA,
       );
 
-      expect(groups?.childNodes).toHaveLength(8);
+      expect(groups?.childNodes.length).toEqual(8);
+    });
+
+    // https://github.com/antvis/S2/issues/2017
+    test('should format custom columns', () => {
+      s2.setDataCfg({
+        ...customColDataCfg,
+        meta: [
+          {
+            field: 'measure-1',
+            formatter: (value) => `#-${value}`,
+          },
+          {
+            field: 'measure-2',
+            formatter: (value) => `666-${value}`,
+          },
+          {
+            field: 'a-1',
+            formatter: (value) => `%-${value}`,
+          },
+        ],
+      });
+      s2.render();
+
+      const { colNodes, dataCellTexts } = mapCellNodeValues(s2);
+
+      expect(colNodes).toMatchSnapshot();
+      expect(dataCellTexts).toMatchSnapshot();
+
+      // 列头数值名称不应该按 formatter 格式化
+      const measureNodes = colNodes.filter((node) =>
+        node.id.startsWith('measure-'),
+      );
+
+      expect(
+        measureNodes.every((node) => node.actualText === node.value),
+      ).toBeTruthy();
     });
   });
 });

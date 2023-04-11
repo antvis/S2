@@ -160,8 +160,13 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getHideColumnField = (node: Node | ViewMeta) =>
-    this.spreadsheet.isTableMode() ? node.field : node.id;
+  private getHideColumnField = (node: Node | ViewMeta) => {
+    if ((node as Node).extra?.isCustomNode) {
+      return node.id;
+    }
+
+    return this.spreadsheet.isTableMode() ? node.field : node.id;
+  };
 
   /**
    * 隐藏选中的列
