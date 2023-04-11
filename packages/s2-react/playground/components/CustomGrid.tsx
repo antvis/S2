@@ -38,10 +38,13 @@ export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
       field: 'a-1-1',
       name: '层级2',
     },
-
     {
       field: 'measure-1',
       name: '层级3',
+    },
+    {
+      field: 'measure-1',
+      formatter: (value) => `#-${value}`,
     },
   ],
   fields: customRowGridFields,
@@ -56,11 +59,16 @@ export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
     ...meta,
     {
       field: 'a-1',
-      name: '层级1',
+      name: '指标1',
+      formatter: (value) => `#-${value}`,
     },
     {
       field: 'a-1-1',
       name: '层级2',
+    },
+    {
+      field: 'measure-1',
+      formatter: (value) => `#-${value}`,
     },
   ],
   fields: customColGridFields,
@@ -86,7 +94,14 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     });
     const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
       name: 'default',
+      theme: {
+        resizeArea: {
+          backgroundOpacity: 1,
+        },
+      },
     });
+    const [sheetType, setSheetType] =
+      React.useState<SheetComponentsProps['sheetType']>('table');
 
     const logHandler =
       (name: string) =>
@@ -124,6 +139,25 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
               });
             }}
           />
+          <Switch
+            checkedChildren="序号开"
+            unCheckedChildren="序号关"
+            checked={options.showSeriesNumber}
+            onChange={(checked) => {
+              setOptions({
+                showSeriesNumber: checked,
+              });
+            }}
+          />
+          <Switch
+            checkedChildren="透视表"
+            unCheckedChildren="明细表"
+            checked={sheetType === 'pivot'}
+            disabled={customType !== CustomType.Col}
+            onChange={(checked) => {
+              setSheetType(checked ? 'pivot' : 'table');
+            }}
+          />
         </Space>
         <Space style={{ marginBottom: 20 }}>
           <ResizeConfig
@@ -135,6 +169,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
 
         <SheetComponent
           {...props}
+          sheetType={sheetType}
           dataCfg={dataCfg}
           options={options}
           themeCfg={themeCfg}

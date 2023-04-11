@@ -1,9 +1,10 @@
-import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
-import * as mockPivotDataConfig from 'tests/data/simple-data.json';
+import { difference, pick } from 'lodash';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
+import * as mockPivotDataConfig from 'tests/data/simple-data.json';
+import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { difference, get, pick } from 'lodash';
-import type { Node } from '@/facet/layout/node';
+import { customColMultipleColumns } from '../data/custom-table-col-fields';
+import { customColGridSimpleFields } from '../data/custom-grid-simple-fields';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { HiddenColumnsInfo, S2Options } from '@/common';
 
@@ -153,6 +154,46 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(costDetail.displaySiblingNode.next?.field).toEqual('province');
       expect(costDetail.hideColumnNodes).toHaveLength(1);
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
+    });
+
+    test('should hide columns for multiple columns', () => {
+      const hiddenColumns = [
+        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
+      ];
+
+      tableSheet.setDataCfg({
+        ...mockTableDataConfig,
+        fields: {
+          columns: customColMultipleColumns,
+        },
+      });
+      tableSheet.render();
+
+      tableSheet.interaction.hideColumns(hiddenColumns);
+
+      const hiddenColumnsDetail = tableSheet.store.get(
+        'hiddenColumnsDetail',
+        [],
+      );
+      const [detail] = hiddenColumnsDetail;
+
+      expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(tableSheet.getColumnNodes().map((node) => node.field))
+        .toMatchInlineSnapshot(`
+        Array [
+          "a-1",
+          "a-1-1",
+          "city",
+          "a-1-2",
+          "a-2",
+        ]
+      `);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(detail.displaySiblingNode.prev?.field).toBeFalsy();
+      expect(detail.displaySiblingNode.next?.field).toEqual('city');
+      expect(detail.hideColumnNodes).toHaveLength(1);
     });
   });
 
@@ -363,6 +404,44 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
+    test('should hide columns for multiple columns', () => {
+      const hiddenColumns = [
+        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
+      ];
+
+      pivotSheet.setDataCfg({
+        ...mockPivotDataConfig,
+        fields: customColGridSimpleFields,
+      });
+      pivotSheet.render();
+
+      pivotSheet.interaction.hideColumns(hiddenColumns);
+
+      const hiddenColumnsDetail = pivotSheet.store.get(
+        'hiddenColumnsDetail',
+        [],
+      );
+      const [detail] = hiddenColumnsDetail;
+
+      expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(pivotSheet.getColumnNodes().map((node) => node.field))
+        .toMatchInlineSnapshot(`
+        Array [
+          "a-1",
+          "a-1-1",
+          "measure-2",
+          "a-1-2",
+          "a-2",
+        ]
+      `);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(detail.displaySiblingNode.prev?.field).toBeFalsy();
+      expect(detail.displaySiblingNode.next?.field).toEqual('measure-2');
+      expect(detail.hideColumnNodes).toHaveLength(1);
+    });
+
     describe('Multiple Values Tests', () => {
       let sheet: PivotSheet;
 
@@ -449,12 +528,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
         sheet.interaction.hideColumns(nodeIds);
 
-        const cornerNodes = get(
-          sheet.facet.cornerHeader,
-          'headerConfig.data',
-          [],
-        ) as Node[];
-
+        const cornerNodes = sheet.facet.getCornerNodes();
         const colCornerNodesMeta = cornerNodes.map((node) =>
           pick(node, ['x', 'y', 'width', 'height']),
         );

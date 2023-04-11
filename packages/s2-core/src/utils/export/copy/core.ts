@@ -283,17 +283,14 @@ function getDataCellCopyable(
 export const getSelectedData = (spreadsheet: SpreadSheet): CopyableList => {
   const interaction = spreadsheet.interaction;
   const cells = interaction.getState().cells || [];
-  let data: CopyableList;
   // 通过判断当前存在交互的单元格，来区分圈选行/列头 还是 点选行/列头
   const interactedCells = interaction.getInteractedCells() ?? [];
   const isBrushHeader = getIsBrushHeader(interactedCells);
 
   // 行列头圈选复制 和 单元格复制不同
-  if (isBrushHeader) {
-    data = getBrushHeaderCopyable(interactedCells as RowCell[] | ColCell[]);
-  } else {
-    data = getDataCellCopyable(spreadsheet, cells);
-  }
+  const data = isBrushHeader
+    ? getBrushHeaderCopyable(interactedCells as RowCell[] | ColCell[])
+    : getDataCellCopyable(spreadsheet, cells);
 
   if (data) {
     copyToClipboard(data);

@@ -51,10 +51,10 @@ describe('TableSheet Export Test', () => {
       ]
     `);
     // 6列数据 包括序列号
-    rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(6);
+    rows.forEach((row) => {
+      expect(row.split('\t')).toHaveLength(6);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
+    expect(headers.map((header) => JSON.parse(header))).toEqual([
       '序号',
       'province',
       'city',

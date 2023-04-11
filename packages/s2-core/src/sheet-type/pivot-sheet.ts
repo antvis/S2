@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import { clone, isString, last, some } from 'lodash';
+import { clone, isString, last } from 'lodash';
 import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
@@ -8,7 +8,6 @@ import {
   S2Event,
 } from '../common/constant';
 import type {
-  Fields,
   RowCellCollapsedParams,
   RowCellStyle,
   SortMethod,
@@ -23,27 +22,8 @@ import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
-  public isCustomHeaderFields(
-    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
-  ): boolean {
-    const { fields } = this.dataCfg;
-
-    if (!fieldType) {
-      return some(
-        [...fields?.rows!, ...fields?.columns!],
-        (field) => !isString(field),
-      );
-    }
-
-    return some(fields?.[fieldType], (field) => !isString(field));
-  }
-
   public isCustomRowFields(): boolean {
     return this.isCustomHeaderFields('rows');
-  }
-
-  public isCustomColumnFields(): boolean {
-    return this.isCustomHeaderFields('columns');
   }
 
   public getDataSet(): BaseDataSet {

@@ -78,18 +78,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { value } = this.meta;
+    const { value, field } = this.meta;
 
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-
-    const isTableMode = this.spreadsheet.isTableMode();
-    // 如果是 table mode，列头不需要被格式化
-    const formattedValue =
-      formatter! && !isTableMode
-        ? formatter(value, undefined, this.meta)
-        : value;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(field);
+    // TODO: formatter 简化成两个参数 formatter(value, this,meta)
+    const formattedValue = formatter!
+      ? formatter(value, undefined, this.meta)
+      : value;
 
     return {
       formattedValue,

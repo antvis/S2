@@ -12,10 +12,10 @@ const symbol = '// ============== Auto 自动生成的 ================';
 const insertEventIntoFile = (filePath, template) => {
   const content = readFileSync(filePath, { encoding: 'utf-8' });
   const lastBracket = content.lastIndexOf(symbol) + symbol.length;
-  const newContent =
-    content.slice(0, lastBracket) +
-    `\n  ${template}` +
-    content.slice(lastBracket);
+  const newContent = `${content.slice(
+    0,
+    lastBracket,
+  )}\n  ${template}${content.slice(lastBracket)}`;
 
   writeFileSync(filePath, newContent);
 };
@@ -25,18 +25,20 @@ const getVueEventName = (eventName) => {
 };
 
 const getReactEventName = (eventName) => {
-  return (
-    'on' + eventName.charAt(0).toUpperCase() + _.camelCase(eventName.slice(1))
-  );
+  return `on${eventName.charAt(0).toUpperCase()}${_.camelCase(
+    eventName.slice(1),
+  )}`;
 };
 
 const vueEventTemplate = (eventName, eventHookName) => {
   const vueEventName = getVueEventName(eventName);
+
   return `${eventHookName}(s2Ref, emit, S2Event.${eventName}, '${vueEventName}');`;
 };
 
 const reactEventTemplate = (eventName, eventHookName) => {
   const reactEventName = getReactEventName(eventName);
+
   return `${eventHookName}(S2Event.${eventName}, props.${reactEventName}, s2);`;
 };
 
@@ -84,18 +86,21 @@ const COMMON_INTERFACE_PATH = 'packages/s2-shared/src/interface.ts';
 function insertVueUseEvent(eventName, eventHookName) {
   const vueStr = vueEventTemplate(eventName, eventHookName);
   const vuePath = resolve(process.cwd(), `../../${VUE_USE_EVENTS_PATH}`);
+
   insertEventIntoFile(vuePath, vueStr);
 }
 
 function insertReactUseEvent(eventName, eventHookName) {
   const reactStr = reactEventTemplate(eventName, eventHookName);
   const reactPath = resolve(process.cwd(), `../../${REACT_USE_EVENTS_PATH}`);
+
   insertEventIntoFile(reactPath, reactStr);
 }
 
 function insertVueInterface(eventName) {
   const vueEventName = getVueEventName(eventName);
   const vuePath = resolve(process.cwd(), `../../${VUE_INTERFACE_PATH}`);
+
   insertEventIntoFile(vuePath, `'${vueEventName}',`);
 }
 
@@ -106,6 +111,7 @@ function insertCommonInterface(eventName, eventHookName) {
     commonEventName,
   );
   const reactPath = resolve(process.cwd(), `../../${COMMON_INTERFACE_PATH}`);
+
   insertEventIntoFile(reactPath, `${commonInterfaceTemplate}`);
 }
 

@@ -4,6 +4,7 @@ import {
   type S2TableSheetFrozenOptions,
   type CustomHeaderField,
   type S2DataConfig,
+  type CustomTreeNode,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -23,15 +24,31 @@ export const tableSheetSingleColumns: CustomHeaderField[] = [
   'number',
 ];
 
-export const tableSheetMultipleColumns: CustomHeaderField[] = [
+export const tableSheetMultipleColumns: CustomTreeNode[] = [
   {
     field: 'area',
-    children: [{ field: 'province' }, { field: 'city' }],
+    title: '地区',
+    children: [
+      {
+        field: 'province',
+        title: '省份',
+        children: [
+          {
+            field: 'type',
+            title: '类型',
+          },
+        ],
+      },
+      { field: 'city', title: '城市' },
+    ],
   },
-  'type',
   {
     field: 'money',
-    children: [{ field: 'price' }, { field: 'number' }],
+    title: '金额',
+    children: [
+      { field: 'price', title: '价格', description: '价格描述' },
+      { field: 'number', title: '数量' },
+    ],
   },
 ];
 
@@ -75,12 +92,17 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: true,
+  debug: false,
   width: 600,
   height: 400,
-  showSeriesNumber: false,
+  hierarchyType: 'grid',
+  // showSeriesNumber: true,
   frozen: {
     rowHeader: true,
+    // rowCount: 1,
+    // trailingRowCount: 1,
+    // colCount: 1,
+    // trailingColCount: 1,
   },
   cornerText: '测试',
   interaction: {
@@ -93,8 +115,8 @@ export const s2Options: SheetComponentOptions = {
       row: true,
     },
     resize: {
-      rowResizeType: ResizeType.ALL,
-      colResizeType: ResizeType.ALL,
+      rowResizeType: ResizeType.CURRENT,
+      colResizeType: ResizeType.CURRENT,
     },
   },
   tooltip: {
@@ -115,19 +137,15 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   conditions: s2ConditionsOptions,
-  hierarchyType: 'grid',
   style: {
     rowCell: {
       height: 50,
     },
     colCell: {
-      hideValue: true,
-      width: 140,
-      height: 30,
+      hideValue: false,
     },
     dataCell: {
-      width: 100,
-      height: 40,
+      height: 50,
     },
   },
 };
