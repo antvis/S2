@@ -174,15 +174,6 @@ export const getTextIconPosition = (options: {
   };
 };
 
-export const getTextPosition = (
-  contentBox: SimpleBBox,
-  textCfg: TextAlignStyle,
-) =>
-  getTextIconPosition({
-    bbox: contentBox,
-    textStyle: textCfg,
-  }).text;
-
 /**
  * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
  * 分为三种类型：

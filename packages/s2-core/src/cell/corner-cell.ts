@@ -11,7 +11,7 @@ import {
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
-import { getTextPosition, getVerticalPosition } from '../utils/cell/cell';
+import { getTextIconPosition, getVerticalPosition } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderText, renderTreeIcon } from '../utils/g-renders';
 import {
@@ -103,15 +103,15 @@ export class CornerCell extends HeaderCell {
       });
     }
 
-    const { x: textX } = getTextPosition(
-      {
+    const { x: textX } = getTextIconPosition({
+      bbox: {
         x: x + this.getTreeIconWidth(),
         y,
         width: maxWidth,
         height,
       },
       textStyle,
-    );
+    }).text;
 
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
 
