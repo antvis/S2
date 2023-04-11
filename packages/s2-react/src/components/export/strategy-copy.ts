@@ -111,8 +111,7 @@ class StrategyCopyData extends PivotDataCellCopy {
       ? getMaxRowLen(rowMatrix ?? [])
       : rows.length;
     const sheetInstance = this.spreadsheet;
-    const { data: cornerNodes } =
-      sheetInstance.facet.cornerHeader.getHeaderConfig();
+    const cornerNodes = sheetInstance.facet.cornerHeader.getNodes();
 
     // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
     const sortedCornerNodes = sortBy(cornerNodes, (node) => {
