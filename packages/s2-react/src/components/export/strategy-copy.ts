@@ -34,10 +34,10 @@ const processObjectValueInRow = (
   isFormat = false,
 ) => {
   if (!isFormat) {
-    return get(data?.['originalValues'], 0) ?? get(data?.['values'], 0);
+    return get('data.originalValues', 0) ?? get('data.values', 0);
   }
 
-  return get(data?.['values'], 0);
+  return get('data.values', 0);
 };
 const getHeaderLabel = (val: string) => {
   const label = safeJsonParse(val);
@@ -80,7 +80,7 @@ class StrategyCopyData extends PivotDataCellCopy {
       tempCells = processObjectValueInRow(
         fieldValue,
         this.config.isFormatHeader,
-      );
+      ) as unknown as string[];
 
       return tempCells ?? placeholder;
     }
