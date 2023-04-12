@@ -60,7 +60,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams || [];
-    // 改单元格是否为需要展示排序 icon 单元格
+    // 该单元格是否为需要展示排序 icon 单元格
     const isSortCell = this.isSortCell();
     const sortParam = find(
       [...sortParams].reverse(),

@@ -13,7 +13,6 @@ import {
   includes,
   isArray,
   isBoolean,
-  isEmpty,
   isFunction,
   isNumber,
   keys,
@@ -63,6 +62,7 @@ import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
 import { shouldReverseFontColor } from '../utils/color';
+import { getIconPosition } from '../utils/condition/condition';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -514,23 +514,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public drawConditionIconShapes() {
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const attrs = this.getIconConditionResult();
 
-    if (iconCondition?.mapping!) {
-      const attrs = this.mappingValue(iconCondition);
+    if (attrs) {
       const position = this.getIconPosition();
-      const { size } = this.theme.dataCell!.icon!;
+      const { size } = this.getStyle()!.icon!;
 
-      if (!isEmpty(attrs?.icon)) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs?.icon!,
-          width: size,
-          height: size,
-          fill: attrs?.fill,
-        });
-        this.addConditionIconShape(this.conditionIconShape);
-      }
+      this.conditionIconShape = renderIcon(this, {
+        ...position,
+        name: attrs?.icon!,
+        width: size,
+        height: size,
+        fill: attrs?.fill,
+      });
+      this.addConditionIconShape(this.conditionIconShape);
     }
   }
 
@@ -587,5 +584,19 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     };
   }
 
-  public getIconConditionMappingResult() {}
+  public getIconConditionResult() {
+    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+
+    if (iconCondition?.mapping!) {
+      const attrs = this.mappingValue(iconCondition);
+
+      if (attrs && attrs.icon) {
+        return {
+          icon: attrs.icon,
+          fill: attrs.fill,
+          position: getIconPosition(iconCondition),
+        };
+      }
+    }
+  }
 }
