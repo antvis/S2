@@ -87,7 +87,7 @@ export class EventController {
       window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
-        this.resetSheetStyle(event);
+        this.resetSheetStyle(event, true);
         this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
@@ -153,7 +153,7 @@ export class EventController {
     }
   }
 
-  private resetSheetStyle(event: Event) {
+  private resetSheetStyle(event: Event, isClick = false) {
     if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
       return;
     }
@@ -178,8 +178,9 @@ export class EventController {
     }
 
     if (
-      this.isMouseOnTheTooltip(event) ||
-      this.isMouseOnTheCanvasContainer(event)
+      isClick &&
+      (this.isMouseOnTheTooltip(event as MouseEvent) ||
+        this.isMouseOnTheCanvasContainer(event as MouseEvent))
     ) {
       return;
     }
@@ -188,25 +189,22 @@ export class EventController {
     interaction.reset();
   }
 
-  private isMouseOnTheCanvasContainer(event: Event) {
-    if (event instanceof MouseEvent) {
-      const canvas = this.spreadsheet.getCanvasElement();
-      if (!canvas) {
-        return false;
-      }
-
-      const { x, y } = canvas.getBoundingClientRect() || {};
-      // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
-      // 比如实际 400 * 300 => hd (800 * 600)
-      // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
-      const { width, height } = this.getContainerRect();
-      return (
-        canvas.contains(event.target as HTMLElement) &&
-        event.clientX <= x + width &&
-        event.clientY <= y + height
-      );
+  private isMouseOnTheCanvasContainer(event: MouseEvent) {
+    const canvas = this.spreadsheet.getCanvasElement();
+    if (!canvas) {
+      return false;
     }
-    return false;
+
+    const { x, y } = canvas.getBoundingClientRect() || {};
+    // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
+    // 比如实际 400 * 300 => hd (800 * 600)
+    // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
+    const { width, height } = this.getContainerRect();
+    return (
+      canvas.contains(event.target as HTMLElement) &&
+      event.clientX <= x + width &&
+      event.clientY <= y + height
+    );
   }
 
   private getContainerRect() {
