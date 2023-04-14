@@ -1,9 +1,12 @@
-import { CellBorderPosition, CellClipBox } from '@/common/interface';
+import {
+  CellBorderPosition,
+  CellClipBox,
+  type IconTheme,
+} from '@/common/interface';
 import type { SimpleBBox } from '@/engine';
 import {
   getCellBoxByType,
-  getMaxTextWidth,
-  getTextIconPosition,
+  getHorizontalTextIconPosition,
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
@@ -71,21 +74,6 @@ describe('Cell Content Test', () => {
   });
 });
 
-describe('Max Text Width Calculation Test', () => {
-  test('should  return max text width without icon', () => {
-    expect(getMaxTextWidth(100)).toEqual(100);
-  });
-
-  test('should  return max text width with icon', () => {
-    expect(
-      getMaxTextWidth(100, {
-        size: 10,
-        margin: { left: 10, right: 8 },
-      }),
-    ).toEqual(72);
-  });
-});
-
 describe('Text and Icon area Test', () => {
   const contentBBox: SimpleBBox = {
     x: 0,
@@ -94,342 +82,180 @@ describe('Text and Icon area Test', () => {
     height: 100,
   };
 
-  test('should return text when there is no icon cfg', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'left',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-      }),
-    ).toEqual({
-      text: {
-        x: 0,
-        y: 0,
-      },
-      icon: {
-        x: 50,
-        y: 0,
-      },
-    });
-  });
+  const iconStyle: IconTheme = {
+    margin: {
+      left: 10,
+      right: 10,
+    },
+    size: 10,
+  };
 
-  test('should return text when text is right and icon is right', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'right',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 72,
-        y: 0,
+  test.each([
+    {
+      textAlign: 'left',
+      result: {
+        leftIconX: 0,
+        textX: 0,
+        rightIconX: 50,
       },
-      icon: {
-        x: 82,
-        y: 0,
+    },
+    {
+      textAlign: 'center',
+      result: {
+        leftIconX: 25,
+        textX: 50,
+        rightIconX: 75,
       },
-    });
+    },
+    {
+      textAlign: 'right',
+      result: {
+        leftIconX: 50,
+        textX: 100,
+        rightIconX: 100,
+      },
+    },
+  ])(
+    'should return correct coordinates when textAlign is %s without icon',
+    ({ textAlign, result }) => {
+      expect(
+        getHorizontalTextIconPosition({
+          bbox: contentBBox,
+          textAlign: textAlign as any,
+          textWidth: 50,
+          iconStyle,
+          groupedIconNames: { left: [], right: [] },
+        }),
+      ).toEqual(result);
+    },
+  );
 
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'right',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 52,
-        y: 0,
+  test.each([
+    {
+      textAlign: 'left',
+      result: {
+        leftIconX: 0,
+        textX: 20,
+        rightIconX: 70,
       },
-      icon: {
-        x: 62,
-        y: 0,
+    },
+    {
+      textAlign: 'center',
+      result: {
+        leftIconX: 15,
+        textX: 60,
+        rightIconX: 85,
       },
-    });
-  });
+    },
+    {
+      textAlign: 'right',
+      result: {
+        leftIconX: 30,
+        textX: 100,
+        rightIconX: 100,
+      },
+    },
+  ])(
+    'should return correct coordinates when textAlign is %s with left icons',
+    ({ textAlign, result }) => {
+      expect(
+        getHorizontalTextIconPosition({
+          bbox: contentBBox,
+          textAlign: textAlign as any,
+          textWidth: 50,
+          iconStyle,
+          groupedIconNames: {
+            left: [{ name: 'left', position: 'left' }],
+            right: [],
+          },
+        }),
+      ).toEqual(result);
+    },
+  );
 
-  test('should return text when text is right and icon is left', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'right',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 100,
-        y: 0,
+  test.each([
+    {
+      textAlign: 'left',
+      result: {
+        leftIconX: 0,
+        textX: 0,
+        rightIconX: 60,
       },
-      icon: {
-        x: 32,
-        y: 0,
+    },
+    {
+      textAlign: 'center',
+      result: {
+        leftIconX: 15,
+        textX: 40,
+        rightIconX: 75,
       },
-    });
+    },
+    {
+      textAlign: 'right',
+      result: {
+        leftIconX: 30,
+        textX: 80,
+        rightIconX: 90,
+      },
+    },
+  ])(
+    'should return correct coordinates when textAlign is %s with right icons',
+    ({ textAlign, result }) => {
+      expect(
+        getHorizontalTextIconPosition({
+          bbox: contentBBox,
+          textAlign: textAlign as any,
+          textWidth: 50,
+          iconStyle,
+          groupedIconNames: {
+            left: [],
+            right: [{ name: 'right', position: 'right' }],
+          },
+        }),
+      ).toEqual(result);
+    },
+  );
 
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'right',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 100,
-        y: 0,
+  test.each([
+    {
+      textAlign: 'left',
+      result: {
+        leftIconX: 0,
+        textX: 20,
+        rightIconX: 80,
       },
-      icon: {
-        x: 12,
-        y: 0,
+    },
+    {
+      textAlign: 'center',
+      result: {
+        leftIconX: 5,
+        textX: 50,
+        rightIconX: 85,
       },
-    });
-  });
-
-  test('should return text when text is center and icon is left', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'center',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 59,
-        y: 0,
+    },
+    {
+      textAlign: 'right',
+      result: {
+        leftIconX: 10,
+        textX: 80,
+        rightIconX: 90,
       },
-      icon: {
-        x: 16,
-        y: 0,
-      },
-    });
-
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'center',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 69,
-        y: 0,
-      },
-      icon: {
-        x: 6,
-        y: 0,
-      },
-    });
-  });
-
-  test('should return text when text is center and icon is right', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'center',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 40,
-        y: 0,
-      },
-      icon: {
-        x: 75,
-        y: 0,
-      },
-    });
-
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'center',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 30,
-        y: 0,
-      },
-      icon: {
-        x: 65,
-        y: 0,
-      },
-    });
-  });
-
-  test('should return text when text is left and icon is left', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'left',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 28,
-        y: 0,
-      },
-      icon: {
-        x: 10,
-        y: 0,
-      },
-    });
-
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'left',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'left',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 48,
-        y: 0,
-      },
-      icon: {
-        x: 10,
-        y: 0,
-      },
-    });
-  });
-
-  test('should return text when text is left and icon is right', () => {
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'left',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-      }),
-    ).toEqual({
-      text: {
-        x: 0,
-        y: 0,
-      },
-      icon: {
-        x: 60,
-        y: 0,
-      },
-    });
-    expect(
-      getTextIconPosition({
-        bbox: contentBBox,
-        textStyle: {
-          textAlign: 'left',
-          textBaseline: 'top',
-        },
-        textWidth: 50,
-        iconStyle: {
-          position: 'right',
-          size: 10,
-          margin: { left: 10, right: 8 },
-        },
-        iconCount: 2,
-      }),
-    ).toEqual({
-      text: {
-        x: 0,
-        y: 0,
-      },
-      icon: {
-        x: 60,
-        y: 0,
-      },
-    });
-  });
+    },
+  ])(
+    'should return correct coordinates when textAlign is %s with left and right icons',
+    ({ textAlign, result }) => {
+      expect(
+        getHorizontalTextIconPosition({
+          bbox: contentBBox,
+          textAlign: textAlign as any,
+          textWidth: 50,
+          iconStyle,
+          groupedIconNames: {
+            left: [{ name: 'left', position: 'left' }],
+            right: [{ name: 'right', position: 'right' }],
+          },
+        }),
+      ).toEqual(result);
+    },
+  );
 });

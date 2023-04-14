@@ -23,7 +23,10 @@ export const adjustTextIconPositionWhileScrolling = (
 ) => {
   const { align, size, padding } = style;
   const { textSize, iconStartSize = 0, iconEndSize = 0 } = size;
-  const { betweenTextAndEndIcon = 0 } = padding;
+  let { betweenTextAndEndIcon = 0 } = padding;
+
+  betweenTextAndEndIcon = iconEndSize ? betweenTextAndEndIcon : 0;
+
   const totalSize = textSize + iconStartSize + iconEndSize;
 
   const paddingArea: AreaRange = {
@@ -149,13 +152,11 @@ export const adjustTextIconPositionWhileScrolling = (
   };
 
   /**
-   * 这种情况下需要考虑文本内容超级长，超过了可视区域范围的情况，在这情况下，文字的对齐方式无论是啥都没有意义，
-   * 为了使内容能随着滚动完全被显示出来（以向左滚动为例）：
+   * 这种情况下需要考虑文本内容超级长，超过了可视区域范围的情况，在这情况下，文字的对齐方式无论是啥都没有意义，为了使内容能随着滚动完全被显示出来（以向左滚动为例）：
    *   1. 将文字和 icon 在单元格内居中对齐，以对齐后的文字和 icon 内容的起始点做作为左边界，结束点作为右边界
    *   2. 如果当前左边界还在可视范围内，则以内容左边界贴边显示
    *   3. 如果左边界滚出可视范围，则内容以左边界为界限，文字也跟随一起滚动
    *   4. 直到右边界进入可以范围内，则以内容右边界贴边显示
-   *
    *     +----------------------+
    *     |      viewport        |
    *  +--|----------------------|----------------------+

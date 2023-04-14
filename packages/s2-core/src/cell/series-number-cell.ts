@@ -117,4 +117,8 @@ export class SeriesNumberCell extends BaseCell<Node> {
   protected mappingValue(): MappingResult | undefined {
     return undefined;
   }
+
+  protected getIconPosition(): PointLike {
+    return { x: 0, y: 0 };
+  }
 }

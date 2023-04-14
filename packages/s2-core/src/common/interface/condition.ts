@@ -1,5 +1,4 @@
 import type { RawData } from './s2DataConfig';
-import type { IconTheme } from './theme';
 
 export interface ValueRange {
   minValue?: number;
@@ -54,6 +53,3 @@ export interface Conditions {
   interval?: Condition[];
   icon?: IconCondition[];
 }
-
-export type IconStyle = Pick<IconTheme, 'size' | 'margin'> &
-  Pick<IconCondition, 'position'>;

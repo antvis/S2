@@ -50,7 +50,6 @@ import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
-  getTextIconPosition,
 } from '../utils/cell/cell';
 import {
   renderIcon,
@@ -139,19 +138,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType]?.icon;
   }
 
-  public getTextIconPosition(iconCount = 1) {
-    const textTheme = this.getTextStyle();
-    const iconTheme = this.getIconStyle();
-
-    return getTextIconPosition({
-      bbox: this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textStyle: textTheme,
-      textWidth: this.actualTextWidth,
-      iconStyle: iconTheme,
-      iconCount,
-    });
-  }
-
   public getActualText() {
     return this.actualText;
   }
@@ -197,6 +183,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected abstract getMaxTextWidth(): number;
 
   protected abstract getTextPosition(): PointLike;
+
+  protected abstract getIconPosition(): PointLike;
 
   protected abstract findFieldCondition(
     conditions: Condition[] | undefined,
@@ -319,10 +307,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         visibility: 'hidden',
       }),
     );
-  }
-
-  protected getIconPosition(iconCount = 1) {
-    return this.getTextIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {
