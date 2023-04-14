@@ -9,19 +9,23 @@ import {
 import {
   CellBorderPosition,
   CellClipBox,
+  type FullyIconName,
   type InteractionStateTheme,
 } from '../common/interface';
 import type {
   CellMeta,
   Condition,
   FormatResult,
-  IconStyle,
   MappingResult,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
 } from '../common/interface';
-import { getMaxTextWidth } from '../utils/cell/cell';
+import {
+  getHorizontalTextIconPosition,
+  getVerticalIconPosition,
+  getVerticalTextPosition,
+} from '../utils/cell/cell';
 import {
   includeCell,
   shouldUpdateBySelectedCellsHighlight,
@@ -32,6 +36,7 @@ import { updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { groupIconsByPosition } from '../utils/cell/header-cell';
 import type { RawData } from './../common/interface/s2DataConfig';
 
 /**
@@ -47,6 +52,9 @@ import type { RawData } from './../common/interface/s2DataConfig';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
+  // condition icon 坐标
+  iconPosition: PointLike;
+
   public get cellType() {
     return CellTypes.DATA_CELL;
   }
@@ -185,6 +193,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected initCell() {
     this.resetTextAndConditionIconShapes();
+    this.generateIconConfig();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     if (!this.shouldHideRowSubtotalData()) {
@@ -202,6 +211,24 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.update();
   }
 
+  protected generateIconConfig() {
+    // data cell 只包含 condition icon
+    // 并且为了保证格式的统一，只要有 condition icon 配置，就提供 icon 的占位，不过 mapping 结果是否为 null
+    // 比如在 icon position 为 right 时，如果根据实际的 mappingResult 来决定是否提供 icon 占位，文字本身对齐效果就不太好，
+
+    const iconCondition = this.findFieldCondition(this.conditions?.icon!);
+    const iconCfg =
+      iconCondition &&
+      iconCondition.mapping! &&
+      ({
+        // 此时 name 是什么值都无所谓，因为后面会根据 mappingResult 来决定
+        name: '',
+        position: getIconPosition(iconCondition),
+      } as FullyIconName);
+
+    this.groupedIconNames = groupIconsByPosition([], iconCfg);
+  }
+
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
     const textStyle = isTotals
@@ -214,20 +241,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     return { ...textStyle, fill };
-  }
-
-  public getIconStyle(): IconStyle | undefined {
-    const { size, margin } = this.theme.dataCell!.icon!;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon!);
-
-    const iconCfg = iconCondition &&
-      iconCondition.mapping! && {
-        size,
-        margin,
-        position: getIconPosition(iconCondition),
-      };
-
-    return iconCfg as IconStyle;
   }
 
   protected drawConditionIntervalShape() {
@@ -280,11 +293,42 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
-    return getMaxTextWidth(width, this.getIconStyle());
+    return width - this.getActionAndConditionIconWidth();
   }
 
   protected getTextPosition(): PointLike {
-    return this.getTextIconPosition().text;
+    const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const textStyle = this.getTextStyle();
+    const iconStyle = this.getIconStyle()!;
+
+    const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
+      bbox: contentBox,
+      iconStyle,
+      textWidth: this.actualTextWidth,
+      textAlign: textStyle.textAlign!,
+      groupedIconNames: this.groupedIconNames,
+    });
+    const y = getVerticalTextPosition(contentBox, textStyle.textBaseline!);
+    const iconY = getVerticalIconPosition(
+      iconStyle.size!,
+      y,
+      textStyle.fontSize!,
+      textStyle.textBaseline!,
+    );
+
+    this.iconPosition = {
+      x: !isEmpty(this.groupedIconNames.left) ? leftIconX : rightIconX,
+      y: iconY,
+    };
+
+    return {
+      x: textX,
+      y,
+    };
+  }
+
+  protected getIconPosition() {
+    return this.iconPosition;
   }
 
   public getBackgroundColor() {

@@ -44,6 +44,7 @@ import {
   CellBorderPosition,
   type InteractionStateTheme,
   type FullyIconName,
+  type IconPosition,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -64,6 +65,10 @@ import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
 import { shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
+import {
+  getIconTotalWidth,
+  type GroupedIconNames,
+} from '../utils/cell/header-cell';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -100,6 +105,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditionIconShapes: GuiIcon[] = [];
 
+  protected groupedIconNames: GroupedIconNames;
+
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
 
@@ -113,6 +120,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
     this.conditions = this.spreadsheet.options.conditions!;
+    this.groupedIconNames = { left: [], right: [] };
     this.handleRestOptions(...restOptions);
     if (this.shouldInit()) {
       this.initCell();
@@ -600,5 +608,18 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         };
       }
     }
+  }
+
+  protected getActionAndConditionIconWidth(position?: IconPosition) {
+    const { left, right } = this.groupedIconNames;
+    const iconStyle = this.getStyle()!.icon!;
+
+    if (!position) {
+      return (
+        getIconTotalWidth(left, iconStyle) + getIconTotalWidth(right, iconStyle)
+      );
+    }
+
+    return getIconTotalWidth(this.groupedIconNames[position], iconStyle);
   }
 }

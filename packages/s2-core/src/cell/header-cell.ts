@@ -31,7 +31,6 @@ import type {
   FormatResult,
   FullyIconName,
   HeaderActionIconOptions,
-  IconPosition,
   InternalFullyHeaderActionIcon,
   MappingResult,
   TextTheme,
@@ -41,9 +40,7 @@ import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import {
   getActionIconConfig,
-  getIconTotalWidth,
   groupIconsByPosition,
-  type GroupedIconNames,
 } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
 
@@ -61,8 +58,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected hasDefaultHiddenIcon: boolean;
 
   protected conditionIconMappingResult: FullyIconName | undefined;
-
-  protected groupedIconNames: GroupedIconNames;
 
   /** left icon 绘制起始坐标 */
   protected leftIconPosition: PointLike;
@@ -168,19 +163,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return (
       this.groupedIconNames.left.length + this.groupedIconNames.right.length
     );
-  }
-
-  protected getActionAndConditionIconWidth(position?: IconPosition) {
-    const { left, right } = this.groupedIconNames;
-    const iconStyle = this.getStyle()!.icon!;
-
-    if (!position) {
-      return (
-        getIconTotalWidth(left, iconStyle) + getIconTotalWidth(right, iconStyle)
-      );
-    }
-
-    return getIconTotalWidth(this.groupedIconNames[position], iconStyle);
   }
 
   protected getActionIconStyle() {

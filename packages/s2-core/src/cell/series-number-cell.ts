@@ -10,7 +10,7 @@ import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellTypes } from '../common/constant/interaction';
 import type { Node } from '../facet/layout/node';
 import type { BaseHeaderConfig } from '../facet/header/interface';
-import { getTextIconPosition } from '../utils/cell/cell';
+import { getHorizontalTextIconPosition } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
 import { BaseCell } from './base-cell';
@@ -36,14 +36,15 @@ export class SeriesNumberCell extends BaseCell<Node> {
     this.drawTextShape();
   }
 
-  protected getBackgroundColor(): {
-    backgroundColor: string | undefined;
-    backgroundColorOpacity: number | undefined;
-  } {
+  protected getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
 
-    return { backgroundColor, backgroundColorOpacity };
+    return {
+      backgroundColor,
+      backgroundColorOpacity,
+      intelligentReverseTextColor: false,
+    };
   }
 
   public update(): void {
@@ -90,23 +91,21 @@ export class SeriesNumberCell extends BaseCell<Node> {
         align: normalizeTextAlign(textStyle.textBaseline!),
         size: {
           textSize: textStyle.fontSize!,
-          iconSize: 0,
         },
         padding: {
           start: cell?.padding?.top!,
           end: cell?.padding?.bottom!,
-          betweenTextIcon: 0,
         },
       },
     );
 
-    const textX = getTextIconPosition({
+    const { textX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textStyle,
+      textAlign: textStyle.textAlign!,
       textWidth: this.actualTextWidth,
-      iconStyle: this.getIconStyle(),
-      iconCount: 0,
-    }).text.x;
+      iconStyle: this.getIconStyle()!,
+      groupedIconNames: this.groupedIconNames,
+    });
 
     return { x: textX, y: textStart };
   }
