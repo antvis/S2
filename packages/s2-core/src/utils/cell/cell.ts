@@ -4,10 +4,12 @@ import {
   CellClipBox,
   type CellTheme,
   type IconStyle,
+  type TextAlign,
   type TextAlignStyle,
   type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
+import { getIconTotalWidth, type GroupedIconNames } from './header-cell';
 
 /**
  * text 和 icon 之间布局关系：
@@ -41,10 +43,9 @@ export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconStyle) => {
   );
 };
 
-export const getVerticalPosition = (
+export const getVerticalTextPosition = (
   bbox: SimpleBBox,
   textBaseline: TextBaseline,
-  size = 0,
 ) => {
   const { y, height } = bbox;
 
@@ -52,13 +53,13 @@ export const getVerticalPosition = (
     case 'top':
       return y;
     case 'middle':
-      return y + height / 2 - size / 2;
+      return y + height / 2;
     default:
-      return y + height - size;
+      return y + height;
   }
 };
 
-export const getVerticalIconPositionByText = (
+export const getVerticalIconPosition = (
   iconSize: number,
   textY: number,
   textFontSize: number,
@@ -79,7 +80,7 @@ export const getVerticalIconPositionByText = (
 // 获取text及其跟随icon的位置坐标
 export const getTextIconPosition = (options: {
   bbox: SimpleBBox;
-  textStyle: TextAlignStyle | undefined;
+  textStyle: TextAlignStyle;
   textWidth?: number;
   iconStyle?: IconStyle;
   iconCount?: number;
@@ -165,12 +166,60 @@ export const getTextIconPosition = (options: {
     }
   }
 
-  const textY = getVerticalPosition(bbox, textBaseline!, 0);
-  const iconY = getVerticalPosition(bbox, textBaseline!, size);
+  const textY = getVerticalTextPosition(bbox, textBaseline!, 0);
+  const iconY = getVerticalTextPosition(bbox, textBaseline!, size);
 
   return {
     text: { x: textX, y: textY },
     icon: { x: iconX, y: iconY },
+  };
+};
+
+// 获取text及其跟随icon的位置坐标
+export const getHorizontalTextIconPosition = (options: {
+  bbox: SimpleBBox;
+  textWidth: number;
+  textAlign: TextAlign;
+  groupedIconNames: GroupedIconNames;
+  iconStyle: IconStyle;
+}) => {
+  const { bbox, textWidth, textAlign, groupedIconNames, iconStyle } = options;
+  const { x, width } = bbox;
+
+  const leftIconWidth = getIconTotalWidth(groupedIconNames.left, iconStyle);
+  const rightIconWidth = getIconTotalWidth(groupedIconNames.right, iconStyle);
+
+  let textX: number;
+  let leftIconX: number;
+  let rightIconX: number;
+
+  switch (textAlign) {
+    case 'left':
+      leftIconX = x;
+      textX = x + leftIconWidth;
+      rightIconX = textX + textWidth + iconStyle.margin!.left!;
+
+      break;
+    case 'right':
+      textX = x + width - rightIconWidth;
+      leftIconX = textX - textWidth - leftIconWidth;
+      rightIconX = x + width - rightIconWidth + iconStyle.margin!.left!;
+      break;
+
+    default:
+      const totalWidth = leftIconWidth + textWidth + rightIconWidth;
+
+      leftIconX = x + width / 2 - totalWidth / 2;
+      textX = leftIconX + leftIconWidth + textWidth / 2;
+      rightIconX =
+        leftIconX + leftIconWidth + textWidth + iconStyle.margin!.left!;
+      break;
+  }
+
+  return {
+    textX,
+    leftIconX,
+    rightIconX,
   };
 };
 

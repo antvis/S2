@@ -1,6 +1,7 @@
 import type {
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
+  PointLike,
 } from '@antv/g';
 import {
   find,
@@ -14,6 +15,7 @@ import {
   map,
   merge,
 } from 'lodash';
+import { renderIcon } from '../utils/g-renders';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -27,7 +29,9 @@ import type {
   CellMeta,
   Condition,
   FormatResult,
+  FullyIconName,
   HeaderActionIconOptions,
+  IconPosition,
   InternalFullyHeaderActionIcon,
   MappingResult,
   TextTheme,
@@ -37,7 +41,9 @@ import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import {
   getActionIconConfig,
-  getActionIconTotalWidth,
+  getIconTotalWidth,
+  groupIconsByPosition,
+  type GroupedIconNames,
 } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
 
@@ -53,6 +59,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected actionIcons: GuiIcon[];
 
   protected hasDefaultHiddenIcon: boolean;
+
+  protected conditionIconMappingResult: FullyIconName | undefined;
+
+  protected groupedIconNames: GroupedIconNames;
+
+  /** left icon 绘制起始坐标 */
+  protected leftIconPosition: PointLike;
+
+  /** left icon 绘制起始坐标 */
+  protected rightIconPosition: PointLike;
 
   protected abstract isBolderText(): boolean;
 
@@ -76,17 +92,18 @@ export abstract class HeaderCell extends BaseCell<Node> {
       ...(sortParam || { query }),
       type,
     };
-
-    this.generateIconConfig();
   }
 
   protected initCell() {
     this.resetTextAndConditionIconShapes();
     this.actionIcons = [];
     this.hasDefaultHiddenIcon = false;
+    this.generateIconConfig();
   }
 
   protected generateIconConfig() {
+    this.conditionIconMappingResult = this.getIconConditionResult();
+
     const { sortParam } = this.headerConfig;
     // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
 
@@ -98,14 +115,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
         belongsCell: this.cellType,
         isSortIcon: true,
       };
-
-      return;
+    } else {
+      this.actionIconConfig = getActionIconConfig(
+        this.spreadsheet.options.headerActionIcons,
+        this.meta,
+        this.cellType,
+      );
     }
 
-    this.actionIconConfig = getActionIconConfig(
-      this.spreadsheet.options.headerActionIcons,
-      this.meta,
-      this.cellType,
+    this.groupedIconNames = groupIconsByPosition(
+      this.actionIconConfig?.iconNames ?? [],
+      this.conditionIconMappingResult,
     );
   }
 
@@ -145,14 +165,22 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconsCount() {
-    return this.actionIconConfig?.iconNames?.length ?? 0;
+    return (
+      this.groupedIconNames.left.length + this.groupedIconNames.right.length
+    );
   }
 
-  protected getActionIconsWidth() {
-    return getActionIconTotalWidth(
-      this.actionIconConfig,
-      this.getStyle()!.icon!,
-    );
+  protected getActionAndConditionIconWidth(position?: IconPosition) {
+    const { left, right } = this.groupedIconNames;
+    const iconStyle = this.getStyle()!.icon!;
+
+    if (!position) {
+      return (
+        getIconTotalWidth(left, iconStyle) + getIconTotalWidth(right, iconStyle)
+      );
+    }
+
+    return getIconTotalWidth(this.groupedIconNames[position], iconStyle);
   }
 
   protected getActionIconStyle() {
@@ -227,39 +255,64 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.appendChild(icon);
   }
 
-  protected drawActionIcons() {
-    if (!this.actionIconConfig) {
+  protected drawActionAndConditionIcons() {
+    if (
+      isEmpty(this.groupedIconNames.left) &&
+      isEmpty(this.groupedIconNames.right)
+    ) {
       return;
     }
 
-    const { iconNames, onClick, onHover, defaultHide, isSortIcon } =
-      this.actionIconConfig;
+    if (!this.leftIconPosition || !this.rightIconPosition) {
+      return;
+    }
 
-    const position = this.getIconPosition(iconNames.length);
+    forEach(this.groupedIconNames, (icons, position) => {
+      const { size, margin } = this.getStyle()!.icon!;
 
-    const { size, margin } = this.getStyle()!.icon!;
+      const iconMargin = position === 'left' ? margin!.right! : margin!.right!;
+      const iconPosition =
+        position === 'left' ? this.leftIconPosition : this.rightIconPosition;
 
-    forEach(iconNames, (iconName, i) => {
-      const x = position.x + i * size! + i * margin!.left!;
-      const y = position.y;
+      forEach(icons, (icon, i) => {
+        const x = iconPosition.x + (size! + iconMargin) * i;
+        const y = iconPosition.y;
 
-      const iconDefaultHide =
-        typeof defaultHide === 'function'
-          ? defaultHide(this.meta, iconName.name)
-          : defaultHide;
+        if (icon.isConditionIcon) {
+          this.conditionIconShape = renderIcon(this, {
+            x,
+            y,
+            name: icon?.name!,
+            width: size,
+            height: size,
+            fill: icon?.fill,
+          });
+          this.addConditionIconShape(this.conditionIconShape);
 
-      if (iconDefaultHide) {
-        this.hasDefaultHiddenIcon = true;
-      }
+          return;
+        }
 
-      this.addActionIcon({
-        iconName: iconName.name,
-        x,
-        y,
-        defaultHide: iconDefaultHide,
-        onClick,
-        onHover,
-        isSortIcon,
+        const { onClick, onHover, defaultHide, isSortIcon } =
+          this.actionIconConfig!;
+
+        const iconDefaultHide =
+          typeof defaultHide === 'function'
+            ? defaultHide(this.meta, icon.name)
+            : defaultHide;
+
+        if (iconDefaultHide) {
+          this.hasDefaultHiddenIcon = true;
+        }
+
+        this.addActionIcon({
+          iconName: icon.name,
+          x,
+          y,
+          defaultHide: iconDefaultHide,
+          onClick,
+          onHover,
+          isSortIcon,
+        });
       });
     });
   }
@@ -367,6 +420,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
       });
       this.spreadsheet.store.set('visibleActionIcons', visibleActionIcons);
     }
+  }
+
+  protected getIconPosition(): PointLike {
+    return this.leftIconPosition || this.rightIconPosition;
   }
 
   public update() {

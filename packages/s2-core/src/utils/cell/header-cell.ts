@@ -1,5 +1,6 @@
-import { find, isEmpty, isEqual } from 'lodash';
+import { find, groupBy, isEmpty, isEqual, merge } from 'lodash';
 import type {
+  FullyIconName,
   IconPosition,
   IconTheme,
   InternalFullyHeaderActionIcon,
@@ -98,15 +99,14 @@ export const getActionIconConfig = (
   };
 };
 
-export const getActionIconTotalWidth = (
-  iconCfg: InternalFullyHeaderActionIcon | undefined,
+export const getIconTotalWidth = (
+  iconNames: FullyIconName[] = [],
   iconTheme: IconTheme,
 ): number => {
-  if (!iconCfg) {
+  if (isEmpty(iconNames)) {
     return 0;
   }
 
-  const { iconNames = [] } = iconCfg;
   const { margin, size } = iconTheme;
 
   return iconNames.reduce(
@@ -114,6 +114,34 @@ export const getActionIconTotalWidth = (
       acc + size! + (position === 'left' ? margin!.right! : margin!.left!),
     0,
   );
+};
+
+export type GroupedIconNames = {
+  [key in IconPosition]: FullyIconName[];
+};
+
+export const groupIconsByPosition = (
+  iconNames: FullyIconName[] = [],
+  conditionIcon?: FullyIconName,
+) => {
+  const groupedIcons = merge(
+    {
+      left: [],
+      right: [],
+    },
+    groupBy(iconNames, 'position'),
+  ) as GroupedIconNames;
+
+  // 基于 condition icon 和 value 是强关联的，所以最好将 condition icon 放在 value 的左右侧
+  if (conditionIcon) {
+    if (conditionIcon.position === 'left') {
+      groupedIcons.left.push(conditionIcon);
+    } else {
+      groupedIcons.right.unshift(conditionIcon);
+    }
+  }
+
+  return groupedIcons;
 };
 
 /**

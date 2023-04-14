@@ -257,8 +257,13 @@ export interface HeaderActionIconOptions {
   defaultHide?: boolean;
 }
 
-export type FullyActionIconName = { name: string; position: IconPosition };
-export type ActionIconName = string | FullyActionIconName;
+export type FullyIconName = {
+  name: string;
+  position: IconPosition;
+  fill?: string;
+  isConditionIcon?: boolean;
+};
+export type ActionIconName = string | FullyIconName;
 
 export interface HeaderActionIcon {
   /*
@@ -279,7 +284,7 @@ export interface HeaderActionIcon {
 }
 
 export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
-  iconNames: FullyActionIconName[];
+  iconNames: FullyIconName[];
   isSortIcon?: boolean;
 }
 

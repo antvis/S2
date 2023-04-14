@@ -43,6 +43,7 @@ import {
   CellClipBox,
   CellBorderPosition,
   type InteractionStateTheme,
+  type FullyIconName,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -522,7 +523,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
       this.conditionIconShape = renderIcon(this, {
         ...position,
-        name: attrs?.icon!,
+        name: attrs?.name!,
         width: size,
         height: size,
         fill: attrs?.fill,
@@ -584,7 +585,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     };
   }
 
-  public getIconConditionResult() {
+  public getIconConditionResult(): FullyIconName | undefined {
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
 
     if (iconCondition?.mapping!) {
@@ -592,9 +593,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
       if (attrs && attrs.icon) {
         return {
-          icon: attrs.icon,
-          fill: attrs.fill,
+          name: attrs.icon,
           position: getIconPosition(iconCondition),
+          fill: attrs.fill,
+          isConditionIcon: true,
         };
       }
     }
