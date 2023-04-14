@@ -25,7 +25,10 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
 
-      expect(rowConfig).toEqual(actionConfig[0]);
+      expect(rowConfig?.iconNames).toEqual([
+        { name: 'SortUp', position: 'right' },
+        { name: 'SortDown', position: 'right' },
+      ]);
       expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
         rowMeta,
         'SortUp',
@@ -42,7 +45,13 @@ describe('Header Cell Utils Tests', () => {
           null as unknown as Node,
           CellTypes.COL_CELL,
         ),
-      ).toEqual(actionConfig[1]);
+      ).toEqual({
+        iconNames: [
+          { name: 'DrillDown', position: 'right' },
+          { name: 'Star', position: 'right' },
+        ],
+        belongsCell: 'colCell',
+      });
 
       // 未命中
       expect(
@@ -69,7 +78,9 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
 
-      expect(rowConfig!.iconNames).toEqual(['SortDown']);
+      expect(rowConfig!.iconNames).toEqual([
+        { name: 'SortDown', position: 'right' },
+      ]);
     });
   });
 });
