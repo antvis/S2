@@ -36,7 +36,7 @@ fetch(
           },
         },
         {
-          iconNames: ['Filter'],
+          iconNames: ['Filter', { name: 'CellUp', position: 'left' }],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.id === 'root[&]家具',
           onClick: (props) => {
