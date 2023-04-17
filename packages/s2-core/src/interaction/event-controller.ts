@@ -5,7 +5,7 @@ import {
   type LooseObject,
   Shape,
 } from '@antv/g-canvas';
-import { each, get, isEmpty, isNil } from 'lodash';
+import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
   CellTypes,
@@ -87,7 +87,7 @@ export class EventController {
       window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
-        this.resetSheetStyle(event, true);
+        this.resetSheetStyle(event);
         this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
@@ -153,7 +153,7 @@ export class EventController {
     }
   }
 
-  private resetSheetStyle(event: Event, isClick = false) {
+  private resetSheetStyle(event: Event) {
     if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
       return;
     }
@@ -178,9 +178,8 @@ export class EventController {
     }
 
     if (
-      isClick &&
-      (this.isMouseOnTheTooltip(event as MouseEvent) ||
-        this.isMouseOnTheCanvasContainer(event as MouseEvent))
+      this.isMouseOnTheTooltip(event) ||
+      this.isMouseOnTheCanvasContainer(event)
     ) {
       return;
     }
@@ -189,7 +188,22 @@ export class EventController {
     interaction.reset();
   }
 
-  private isMouseOnTheCanvasContainer(event: MouseEvent) {
+  private isMouseEvent(event: Event) {
+    if (event instanceof MouseEvent) {
+      return true;
+    }
+    // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
+    if (hasIn(event, 'clientX') && hasIn(event, 'clientY')) {
+      return true;
+    }
+    return false;
+  }
+
+  private isMouseOnTheCanvasContainer(event: Event) {
+    if (!this.isMouseEvent(event)) {
+      return;
+    }
+    const e = event as MouseEvent;
     const canvas = this.spreadsheet.getCanvasElement();
     if (!canvas) {
       return false;
@@ -201,9 +215,9 @@ export class EventController {
     // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
     const { width, height } = this.getContainerRect();
     return (
-      canvas.contains(event.target as HTMLElement) &&
-      event.clientX <= x + width &&
-      event.clientY <= y + height
+      canvas.contains(e.target as HTMLElement) &&
+      e.clientX <= x + width &&
+      e.clientY <= y + height
     );
   }
 
