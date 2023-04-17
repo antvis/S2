@@ -175,6 +175,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
+  // draw text
+  protected drawTextShape() {
+    super.drawTextShape();
+    this.drawLinkField(this.meta);
+  }
+
   protected initCell() {
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();

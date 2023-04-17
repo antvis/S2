@@ -283,4 +283,37 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       ]
     `);
   });
+
+  // https://github.com/antvis/S2/issues/2106
+  test('should prepare brush selection mask does not exceed the data cell when auto scroll', async () => {
+    const s2 = createPivotSheet(
+      {
+        width: 400,
+        height: 400,
+        style: {
+          cellCfg: {
+            width: 100,
+            height: 100,
+          },
+        },
+      },
+      { useSimpleData: false },
+    );
+    s2.render();
+
+    const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
+    await expectScrollBrush(s2, dataCell);
+
+    const brushSelection = s2.interaction.interactions.get(
+      InteractionName.BRUSH_SELECTION,
+    ) as BaseBrushSelection;
+
+    expect(brushSelection.prepareSelectMaskShape.attr('x')).toEqual(
+      s2.facet.panelBBox.minX,
+    );
+    expect(brushSelection.prepareSelectMaskShape.attr('y')).toEqual(
+      s2.facet.panelBBox.minY,
+    );
+  });
 });
