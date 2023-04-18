@@ -1,10 +1,7 @@
 import type { Group, Point } from '@antv/g-canvas';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import {
-  getDefaultCornerText,
-  KEY_SERIES_NUMBER_NODE,
-} from '../../common/constant';
+import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import type {
   LayoutResult,
@@ -214,11 +211,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       .map((field): string => s2.dataSet.getFieldName(field))
       .join('/');
 
-    if (treeLabel) {
-      return treeLabel;
-    }
-
-    return getDefaultCornerText();
+    return treeLabel;
   }
 
   constructor(cfg: CornerHeaderConfig) {

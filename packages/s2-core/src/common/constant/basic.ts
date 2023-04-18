@@ -1,5 +1,3 @@
-import { i18n } from '../i18n';
-
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
@@ -94,5 +92,3 @@ export const SQUARE_LINE_CAP = 'square';
 
 // 省略号
 export const ELLIPSIS_SYMBOL = '...';
-
-export const getDefaultCornerText = () => i18n('指标');

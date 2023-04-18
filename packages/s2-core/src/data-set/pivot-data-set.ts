@@ -50,6 +50,7 @@ import {
 } from '../utils/data-set-operate';
 import {
   deleteMetaById,
+  generateExtraFieldMeta,
   getDataPath,
   getDimensionsWithoutPathPre,
   getQueryDimValues,
@@ -299,7 +300,7 @@ export class PivotDataSet extends BaseDataSet {
         : uniq([...rows, EXTRA_FIELD]);
     }
 
-    const newMeta: Meta[] = this.processMeta(dataCfg);
+    const newMeta: Meta[] = this.processMeta(meta, i18n('数值'));
     const newData = this.standardTransform(data, values);
     const newTotalData = this.standardTransform(totalData, values);
 

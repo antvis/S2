@@ -102,14 +102,13 @@ export abstract class BaseDataSet {
     this.indexesData = [];
   }
 
-  public processMeta(dataCfg: S2DataConfig) {
-    const { meta = [] } = dataCfg;
-
+  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
     const newMeta: Meta[] = [
       ...meta,
       generateExtraFieldMeta(
         meta,
         this.spreadsheet?.options?.cornerExtraFieldText,
+        defaultExtraFieldText,
       ),
     ];
     return newMeta;

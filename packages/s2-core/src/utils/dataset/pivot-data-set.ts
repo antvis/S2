@@ -326,14 +326,15 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
 
 export function generateExtraFieldMeta(
   meta: Meta[],
-  cornerExtraFieldText?: string,
+  cornerExtraFieldText: string,
+  defaultText: string,
 ) {
   const valueFormatter = (value: string) => {
     const currentMeta = find(meta, ({ field }: Meta) => field === value);
     return get(currentMeta, 'name', value);
   };
   // 虚拟列字段，为文本分类字段
-  const extraFieldName = cornerExtraFieldText || i18n('数值');
+  const extraFieldName = cornerExtraFieldText || defaultText;
 
   const extraFieldMeta: Meta = {
     field: EXTRA_FIELD,
