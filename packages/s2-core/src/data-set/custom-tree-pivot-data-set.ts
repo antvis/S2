@@ -1,6 +1,6 @@
 import { forEach, get, has, intersection, isEmpty, keys, uniq } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
-import type { S2DataConfig } from '../common/interface';
+import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   getQueryDimValues,
@@ -87,9 +87,12 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       }
     });
 
+    const newMeta: Meta[] = this.processMeta(dataCfg);
+
     return {
-      data: uniq(transformedData),
       ...restCfg,
+      meta: newMeta,
+      data: uniq(transformedData),
     };
   }
 }

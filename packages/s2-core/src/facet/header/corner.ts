@@ -1,7 +1,10 @@
 import type { Group, Point } from '@antv/g-canvas';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
+import {
+  getDefaultCornerText,
+  KEY_SERIES_NUMBER_NODE,
+} from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import type {
   LayoutResult,
@@ -131,17 +134,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
     // spreadsheet type tree mode
     if (s2.isHierarchyTreeType()) {
-      const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
-      const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
+      const cornerText = this.getTreeCornerText(s2);
 
       const cNode: Node = new Node({
         key: '',
         id: '',
-        // 角头过滤下钻的维度
-        value: rows
-          .filter((value) => !includes(drillFields, value))
-          .map((key: string): string => dataSet.getFieldName(key))
-          .join('/'),
+        value: cornerText,
       });
       cNode.x = position.x + seriesNumberWidth;
       cNode.y = cornerNodeY;
@@ -196,6 +194,31 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
     });
     return cornerNodes;
+  }
+
+  public static getTreeCornerText(s2: SpreadSheet) {
+    const { rows = [] } = s2.dataSet.fields;
+
+    const { cornerText: defaultCornerText } = s2.options;
+
+    if (defaultCornerText) {
+      return defaultCornerText;
+    }
+
+    const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
+    const drillFields = drillDownFieldInLevel.map((field) => field.drillField);
+
+    // 角头过滤下钻的维度
+    const treeLabel = rows
+      .filter((value) => !includes(drillFields, value))
+      .map((field): string => s2.dataSet.getFieldName(field))
+      .join('/');
+
+    if (treeLabel) {
+      return treeLabel;
+    }
+
+    return getDefaultCornerText();
   }
 
   constructor(cfg: CornerHeaderConfig) {

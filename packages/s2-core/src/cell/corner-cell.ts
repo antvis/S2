@@ -364,10 +364,6 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getCornerText(): string {
-    if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText || i18n('指标');
-    }
-
     const { formattedValue } = this.getFormattedFieldValue();
     return formattedValue;
   }
