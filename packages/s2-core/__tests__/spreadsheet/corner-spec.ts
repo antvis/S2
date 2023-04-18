@@ -1,6 +1,8 @@
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import {
+  CornerNodeType,
   DEFAULT_STYLE,
+  EXTRA_FIELD,
   GEvent,
   S2Event,
   type S2CellType,
@@ -237,5 +239,57 @@ describe('PivotSheet Corner Tests', () => {
         ],
       },
     });
+  });
+
+  test('should get custom corner text when hierarchy type is tree', () => {
+    const cornerText = '自定义 cornerText';
+
+    s2.setOptions({
+      hierarchyType: 'tree',
+      cornerText,
+      frozenRowHeader: false,
+      style: {
+        treeRowsWidth: 300,
+      },
+    });
+    s2.changeSheetSize(600, 600);
+    s2.render();
+
+    const cornerNode = s2.facet
+      .getCornerNodes()
+      .find((node) => node.cornerType === CornerNodeType.Row);
+
+    expect(cornerNode.label).toEqual(cornerText);
+
+    const cell = s2.facet.cornerHeader.getChildByIndex(0);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(cell.actualText).toEqual(cornerText);
+  });
+
+  test('should get custom corner extra text when hierarchy type is tree', () => {
+    const cornerExtraFieldText = '自定义';
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    s2.setDataCfg({
+      fields: {
+        valueInCols: false,
+      },
+    });
+    s2.setOptions({
+      cornerExtraFieldText,
+    });
+    s2.render();
+
+    const cornerNode = s2.facet
+      .getCornerNodes()
+      .find((node) => node.field === EXTRA_FIELD);
+
+    expect(cornerNode.label).toEqual(cornerExtraFieldText);
+
+    const cell = s2.facet.cornerHeader.getChildByIndex(2);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(cell.actualText).toEqual(cornerExtraFieldText);
   });
 });
