@@ -535,7 +535,7 @@ export class PivotFacet extends BaseFacet {
     if (isRowHeader) {
       // 填充行总单元格宽度
       grandTotalNode.width = hierarchy.width;
-      // 调整其叶子结点位置和宽度
+      // 调整其叶子节点位置和宽度
       forEach(grandTotalChildren, (node: Node) => {
         const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
         node.x = maxLevelNode.x;
