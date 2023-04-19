@@ -188,7 +188,7 @@ export class EventController {
     interaction.reset();
   }
 
-  private isMouseEvent(event: Event) {
+  private isMouseEvent(event: Event): event is MouseEvent {
     if (event instanceof MouseEvent) {
       return true;
     }
@@ -201,7 +201,6 @@ export class EventController {
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (this.isMouseEvent(event)) {
-      const e = event as MouseEvent;
       const canvas = this.spreadsheet.getCanvasElement();
       if (!canvas) {
         return false;
@@ -213,9 +212,9 @@ export class EventController {
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
       const { width, height } = this.getContainerRect();
       return (
-        canvas.contains(e.target as HTMLElement) &&
-        e.clientX <= x + width &&
-        e.clientY <= y + height
+        canvas.contains(event.target as HTMLElement) &&
+        event.clientX <= x + width &&
+        event.clientY <= y + height
       );
     }
   }
