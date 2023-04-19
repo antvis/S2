@@ -30,6 +30,7 @@ import type {
   EmitterType,
   Fields,
   InteractionOptions,
+  InternalFullyTheme,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -76,7 +77,7 @@ runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
   // theme config
-  public theme: S2Theme;
+  public theme: InternalFullyTheme;
 
   // store some temporary data
   public store = new Store();

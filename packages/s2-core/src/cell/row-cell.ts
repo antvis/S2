@@ -369,7 +369,7 @@ export class RowCell extends HeaderCell {
     const { scrollY, viewportHeight } = this.headerConfig;
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
-    const { cell, icon: iconStyle } = this.getStyle()!;
+    const { cell, icon: iconStyle } = this.getStyle();
 
     const viewport: AreaRange = {
       start: scrollY!,
@@ -388,8 +388,8 @@ export class RowCell extends HeaderCell {
           textSize: textStyle.fontSize!,
         },
         padding: {
-          start: cell?.padding?.top!,
-          end: cell?.padding?.bottom!,
+          start: cell.padding.top,
+          end: cell.padding.bottom,
         },
       },
     );

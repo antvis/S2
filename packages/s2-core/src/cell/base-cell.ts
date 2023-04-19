@@ -34,7 +34,6 @@ import {
   type ResizeInteractionOptions,
   type ResizeArea,
   type S2CellType,
-  type S2Theme,
   type StateShapeLayer,
   type TextTheme,
   type Conditions,
@@ -45,6 +44,7 @@ import {
   type InteractionStateTheme,
   type FullyIconName,
   type IconPosition,
+  type InternalFullyTheme,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -77,7 +77,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected spreadsheet: SpreadSheet;
 
   // spreadsheet's theme
-  protected theme: S2Theme;
+  protected theme: InternalFullyTheme;
 
   // background control shape
   protected backgroundShape: Rect | Polygon;
@@ -204,9 +204,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return width > 0 && height > 0;
   }
 
-  public getStyle<K extends keyof S2Theme = keyof CellThemes>(
+  public getStyle<K extends keyof InternalFullyTheme = keyof CellThemes>(
     name?: K,
-  ): DefaultCellTheme | S2Theme[K] {
+  ): InternalFullyTheme[K] {
     return get(this.theme, name || this.cellType);
   }
 
