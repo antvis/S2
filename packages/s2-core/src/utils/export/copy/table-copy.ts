@@ -1,85 +1,234 @@
-import { map, reduce } from 'lodash';
-import { SERIES_NUMBER_FIELD, type CellMeta } from '../../../common';
-import type { Node } from '../../../facet/layout/node';
+import { map } from 'lodash';
 import type { SpreadSheet } from '../../../sheet-type';
-import type { CopyableList } from '../interface';
-import { convertString } from '../method';
 import {
+  type CellMeta,
+  type RawData,
+  getDefaultSeriesNumberText,
+  SERIES_NUMBER_FIELD,
+} from '../../../common';
+import type { Node } from '../../../facet/layout/node';
+import type {
+  CopyableList,
+  CopyAndExportUnifyConfig,
+  CopyOrExportConfig,
+  FormatOptions,
+} from '../interface';
+import {
+  convertString,
+  getColNodeFieldFromNode,
+  getSelectedCols,
+  getSelectedRows,
+} from '../method';
+import {
+  assembleMatrix,
   getFormatter,
   matrixHtmlTransformer,
   matrixPlainTextTransformer,
+  unifyConfig,
 } from './common';
+import { getHeaderNodeFromMeta } from './core';
 
-export const processTableColSelected = (
-  spreadsheet: SpreadSheet,
-  selectedCols: CellMeta[],
-): CopyableList => {
-  const displayData = spreadsheet.dataSet.getDisplayDataSet();
-  const columnNodes = (spreadsheet.getColumnNodes() || []).filter(
-    // 滤过掉序号，序号不需要复制
-    (colNode) => colNode.field !== SERIES_NUMBER_FIELD,
-  );
+class TableDataCellCopy {
+  private readonly spreadsheet: SpreadSheet;
 
-  const selectedColNodes = selectedCols.length
-    ? columnNodes.filter((node) =>
-        selectedCols.find((col) => col.id === node.id),
-      )
-    : columnNodes;
+  private config: CopyAndExportUnifyConfig;
 
-  const dataMatrix = displayData.map((row) =>
-    selectedColNodes.map((node) => {
-      const field = node.field;
-      const formatter = getFormatter(spreadsheet, field);
-      const value = row[field];
+  private displayData: RawData[];
 
-      return formatter(value);
-    }),
-  );
+  private columnNodes: Node[];
 
-  return [
-    matrixPlainTextTransformer(dataMatrix),
-    matrixHtmlTransformer(dataMatrix),
-  ];
-};
+  constructor(params: {
+    spreadsheet: SpreadSheet;
+    config: CopyOrExportConfig;
+    isExport?: boolean;
+  }) {
+    const { spreadsheet, isExport = false, config } = params;
+
+    this.spreadsheet = spreadsheet;
+    this.config = unifyConfig(config, spreadsheet, isExport);
+    this.displayData = this.getSelectedDisplayData();
+    this.columnNodes = this.getSelectedColNodes();
+  }
+
+  private getSelectedColNodes(): Node[] {
+    const selectedCols = getSelectedCols(this.config.selectedCells);
+    const allColNodes = this.spreadsheet.getColumnNodes();
+
+    if (selectedCols.length === 0) {
+      return allColNodes;
+    }
+
+    return map(selectedCols, (meta) => allColNodes[meta.colIndex]);
+  }
+
+  private getSelectedDisplayData(): RawData[] {
+    const selectedRows = getSelectedRows(this.config.selectedCells);
+    const originDisplayData = this.spreadsheet.dataSet.getDisplayDataSet();
+
+    if (selectedRows.length === 0) {
+      return originDisplayData;
+    }
+
+    return map(selectedRows, (cell) => originDisplayData[cell.rowIndex]);
+  }
+
+  private getDataMatrix(): string[][] {
+    const { showSeriesNumber } = this.spreadsheet.options;
+
+    return this.displayData.map((row, i) =>
+      this.columnNodes.map((node) => {
+        const field = node.field;
+
+        if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+          return (i + 1).toString();
+        }
+
+        const formatter = getFormatter(
+          this.spreadsheet,
+          field,
+          this.config.isFormatData,
+        );
+        const value = row[field];
+
+        return formatter(value);
+      }),
+    ) as string[][];
+  }
+
+  private getColMatrix(): string[] {
+    const { isFormatHeader } = this.config;
+    const { showSeriesNumber } = this.spreadsheet.options;
+
+    // 明细表的表头，没有格式化
+    return this.columnNodes.map((node) => {
+      const field: string = node.field;
+
+      if (!isFormatHeader) {
+        return field;
+      }
+
+      return SERIES_NUMBER_FIELD === field && showSeriesNumber
+        ? getDefaultSeriesNumberText()
+        : this.spreadsheet.dataSet.getFieldName(field);
+    }) as string[];
+  }
+
+  private getValueFromMeta = (meta: CellMeta) => {
+    const [, colNode] = getHeaderNodeFromMeta(meta, this.spreadsheet);
+
+    const fieldKey = getColNodeFieldFromNode(
+      this.spreadsheet.isPivotMode,
+      colNode,
+    );
+    const value = this.displayData[meta.rowIndex]?.[fieldKey!];
+
+    const formatter = getFormatter(
+      this.spreadsheet,
+      fieldKey!,
+      this.config.isFormatData,
+    );
+
+    return formatter(value);
+  };
+
+  getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
+    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+
+    // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
+    const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
+      map(cellsMeta, (it) => convertString(this.getValueFromMeta(it))),
+    ) as string[][];
+
+    if (!copyWithHeader) {
+      return [
+        matrixPlainTextTransformer(dataMatrix),
+        matrixHtmlTransformer(dataMatrix),
+      ];
+    }
+
+    const colMatrix = this.getColMatrix();
+
+    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix });
+  }
+
+  /**
+   * allSelected: false 时，明细表点击 行头/列头 进行复制逻辑
+   * allSelected: true 时，明细表点击 全选 进行复制逻辑
+   * @param {boolean} allSelected
+   * @return {CopyableList}
+   */
+  processSelectedTable(allSelected = false): CopyableList {
+    const matrix = this.getDataMatrix();
+
+    if (!allSelected) {
+      return [
+        matrixPlainTextTransformer(matrix),
+        matrixHtmlTransformer(matrix),
+      ];
+    }
+
+    const colMatrix = this.getColMatrix();
+
+    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix });
+  }
+}
 
 /**
  * 明细表点击行头进行复制逻辑
  * @param {SpreadSheet} spreadsheet
- * @param {CellMeta[]} selectedRows
+ * @param {CellMeta[]} selectedRowsOrCols
  * @return {CopyableList}
  */
-export const processTableRowSelected = (
+export const processSelectedTableByHeader = (
   spreadsheet: SpreadSheet,
-  selectedRows: CellMeta[],
+  selectedRowsOrCols: CellMeta[],
 ): CopyableList => {
-  const displayData = spreadsheet.dataSet.getDisplayDataSet();
-  const columnNodes = spreadsheet.getColumnNodes();
-  const matrix = map(selectedRows, (row) => {
-    const rowData = displayData[row.rowIndex];
-
-    // 对行内的每条数据进行格式化
-    return reduce(
-      columnNodes,
-      (acc: string[], colNode: Node) => {
-        const key = colNode?.field;
-        const value = rowData[key];
-        const noFormatting = !colNode || key === SERIES_NUMBER_FIELD;
-
-        if (noFormatting) {
-          return acc;
-        }
-
-        const formatterVal = convertString(
-          getFormatter(spreadsheet, colNode?.field)(value),
-        ) as string;
-
-        acc.push(formatterVal);
-
-        return acc;
-      },
-      [],
-    );
+  const tableDataCellCopy = new TableDataCellCopy({
+    spreadsheet,
+    config: {
+      selectedCells: selectedRowsOrCols,
+    },
   });
 
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+  return tableDataCellCopy.processSelectedTable();
+};
+
+// 导出全部数据
+export const processSelectedAllTable = (
+  spreadsheet: SpreadSheet,
+  split: string,
+  formatOptions?: FormatOptions,
+): CopyableList => {
+  const tableDataCellCopy = new TableDataCellCopy({
+    spreadsheet,
+    config: {
+      selectedCells: [],
+      separator: split,
+      formatOptions,
+    },
+    isExport: true,
+  });
+
+  return tableDataCellCopy.processSelectedTable(true);
+};
+
+// 通过选中数据单元格进行复制
+export const processSelectedTableByDataCell = ({
+  spreadsheet,
+  selectedCells,
+  headerSelectedCells,
+}: {
+  spreadsheet: SpreadSheet;
+  selectedCells: CellMeta[][];
+  headerSelectedCells: CellMeta[];
+}): CopyableList => {
+  const tableDataCellCopy = new TableDataCellCopy({
+    spreadsheet,
+    config: {
+      selectedCells: headerSelectedCells,
+      formatOptions: true,
+    },
+  });
+
+  return tableDataCellCopy.getDataMatrixByDataCell(selectedCells);
 };
