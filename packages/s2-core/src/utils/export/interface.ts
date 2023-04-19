@@ -1,4 +1,4 @@
-import type { DataItem } from '../../common';
+import type { DataItem, CellMeta } from '../../common';
 
 export type MatrixTransformer = (data: DataItem[][]) => CopyableItem;
 
@@ -25,3 +25,23 @@ export type CopyableHTML = {
 export type CopyableList = [CopyablePlain, CopyableHTML];
 
 export type Copyable = CopyableItem | CopyableItem[];
+
+export type FormatOptions =
+  | boolean
+  | {
+      isFormatHeader?: boolean;
+      isFormatData?: boolean;
+    };
+
+export interface CopyOrExportConfig {
+  selectedCells?: CellMeta[];
+  formatOptions?: FormatOptions;
+  separator?: string;
+}
+
+export interface CopyAndExportUnifyConfig {
+  separator: string;
+  isFormatHeader: boolean;
+  isFormatData: boolean;
+  selectedCells: CellMeta[];
+}
