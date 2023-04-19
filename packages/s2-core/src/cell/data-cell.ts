@@ -11,6 +11,7 @@ import {
   CellClipBox,
   type FullyIconName,
   type InteractionStateTheme,
+  type ThemedCellTypes,
 } from '../common/interface';
 import type {
   CellMeta,
@@ -56,7 +57,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   iconPosition: PointLike;
 
   public get cellType() {
-    return CellTypes.DATA_CELL;
+    return CellTypes.DATA_CELL as ThemedCellTypes;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

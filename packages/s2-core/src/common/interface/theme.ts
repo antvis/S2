@@ -300,8 +300,11 @@ export interface GridAnalysisCellTheme {
   };
 }
 
+// 具有 theme 配置的单元格类型， headerCell 只是内部使用，不需要配置
+export type ThemedCellTypes = Exclude<CellTypes, CellTypes.HEADER_CELL>;
+
 export type CellThemes = {
-  [K in Exclude<CellTypes, CellTypes.HEADER_CELL>]?: DefaultCellTheme;
+  [K in ThemedCellTypes]?: DefaultCellTheme;
 };
 
 export interface S2Theme extends CellThemes {
@@ -414,4 +417,5 @@ export interface MiniChartTheme {
   interval?: IntervalTheme;
 }
 
+export type InternalFullyCellTheme = DeepRequired<DefaultCellTheme>;
 export type InternalFullyTheme = DeepRequired<S2Theme>;

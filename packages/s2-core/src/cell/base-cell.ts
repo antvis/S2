@@ -20,7 +20,6 @@ import {
 } from 'lodash';
 import type { SimpleBBox } from '../engine';
 import {
-  CellTypes,
   DEFAULT_FONT_COLOR,
   InteractionStateName,
   REVERSE_FONT_COLOR,
@@ -28,7 +27,6 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant';
 import {
-  type CellThemes,
   type DefaultCellTheme,
   type FormatResult,
   type ResizeInteractionOptions,
@@ -45,6 +43,8 @@ import {
   type FullyIconName,
   type IconPosition,
   type InternalFullyTheme,
+  type ThemedCellTypes,
+  type InternalFullyCellTheme,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -162,7 +162,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /**
    * Return the type of the cell
    */
-  public abstract get cellType(): CellTypes;
+  public abstract get cellType(): ThemedCellTypes;
 
   /**
    * Determine how to render this cell area
@@ -204,9 +204,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return width > 0 && height > 0;
   }
 
-  public getStyle<K extends keyof InternalFullyTheme = keyof CellThemes>(
+  public getStyle<K extends keyof InternalFullyTheme = ThemedCellTypes>(
     name?: K,
-  ): InternalFullyTheme[K] {
+  ): InternalFullyTheme[K] | InternalFullyCellTheme {
     return get(this.theme, name || this.cellType);
   }
 

@@ -12,6 +12,7 @@ import {
   CellBorderPosition,
   CellClipBox,
   type AreaRange,
+  type ThemedCellTypes,
   type ViewMeta,
 } from '../common/interface';
 import {
@@ -37,7 +38,7 @@ export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
 
   public get cellType() {
-    return CellTypes.ROW_CELL;
+    return CellTypes.ROW_CELL as ThemedCellTypes;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

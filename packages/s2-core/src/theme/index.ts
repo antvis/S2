@@ -480,5 +480,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  };
+  } as InternalFullyTheme;
 };

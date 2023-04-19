@@ -8,7 +8,7 @@ import {
 } from 'tests/util/helpers';
 import { Renderer } from '@antv/g-canvas';
 import type { CanvasConfig } from '@antv/g-lite';
-import { GEventType, GuiIcon } from '@/common';
+import { GEventType, GuiIcon, type ThemedCellTypes } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
@@ -71,7 +71,7 @@ describe('Interaction Event Controller Tests', () => {
     (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
 
-      spreadsheet.getCellType = () => type;
+      spreadsheet.getCellType = () => type as ThemedCellTypes;
       spreadsheet.getCell = () =>
         ({
           cellType: type,
