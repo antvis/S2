@@ -189,14 +189,8 @@ export class EventController {
   }
 
   private isMouseEvent(event: Event): event is MouseEvent {
-    if (event instanceof MouseEvent) {
-      return true;
-    }
     // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
-    if (hasIn(event, 'clientX') && hasIn(event, 'clientY')) {
-      return true;
-    }
-    return false;
+    return hasIn(event, 'clientX') && hasIn(event, 'clientY');
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
