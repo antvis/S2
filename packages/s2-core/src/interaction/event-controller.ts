@@ -217,6 +217,7 @@ export class EventController {
         event.clientY <= y + height
       );
     }
+    return false;
   }
 
   private getContainerRect() {
