@@ -3,15 +3,18 @@ title: 获取单元格数据
 order: 9
 ---
 
-> **阅读本章前，请确保已经阅读过 基础教程，数据流处理，布局等章节**
+:::warning{title='提示'}
+阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot)等章节
+:::
 
-在实际的业务场景中，往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
+在实际的业务场景中，我们往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
 
 - 点击某一个行头/列头单元格，获取**当前行/列**所有数据
 - 监听鼠标 `click` `hover` 事件 获取当前对应单元格数据
+- 点击数据单元格，获取当前单元格数据，或者整行数据
 - 自定义 `tooltip` 内容，需要根据当前单元格信息来渲染不同的操作项，或者显示不同的提示信息
 
-`S2` 的表格由 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组数据结构，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/docs/api/basic-class/base-cell)
+`S2` 的表格使用 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组**数据结构**，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/docs/api/basic-class/base-cell)
 
 `S2` 提供了一系列获取数据的 [API](/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景
 
@@ -34,16 +37,25 @@ console.log(s2.facet.layoutResult)
 - `rowLeafNodes` 行头叶子节点
 - `rowNodes` 行头节点
 - `rowsHierarchy` 行头层级信息
-- `getCellMeta` 根据行列索引获取执行单元格信息
+- `getCellMeta` [根据行列索引获取指定单元格信息](#根据行列索引获取数值单元格信息)
 
-对于数值单元格，由于虚拟滚动的特性，需要动态获取，更多请查看 [interaction API](/docs/api/basic-class/interaction)
+<br/>
+
+#### 获取数值单元格
+
+对于数值单元格 (dataCell)，由于虚拟滚动的特性，需要动态获取，更多请查看 [interaction API](/docs/api/basic-class/interaction)
 
 ```ts
-
 // 当前可视范围内的数值单元格
 s2.interaction.getPanelGroupAllDataCells()
 // 当前可视范围内未选中的数值单元格
 s2.interaction.getPanelGroupAllUnSelectedDataCells()
+```
+
+#### 获取角头单元格
+
+```ts
+s2.facet.cornerHeader.getNodes()
 ```
 
 ### 监听点击事件获取对应单元格
@@ -120,19 +132,26 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   console.log('当前行头维值：', dimensionValues)
 })
 
+
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/5KTuqpLdy/cf26a185-2a1d-41f3-9caf-aa9343529cd5.png" width="600" alt="preview"/>
 
 ### 点击数值单元格获取数据
 
+#### 透视表
+
 ```ts
 s2.on(S2Event.DATA_CELL_CLICK, (event) => {
-  // 首先拿到单元格当前信息
+  // 获取当前单元格
   const cell = s2.getCell(event.target)
+  // 获取当前单元格元数据
   const meta = cell.getMeta()
+  // 获取当前行数据
+  const rowData = s2.dataSet.getMultiData(meta.query)
 
-  console.log(meta.data)
+  console.log('当前行数据', rowData)
+  console.log('当前单元格数据', meta.data)
   /**
     {
     "number": 834,
@@ -144,6 +163,26 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
     "$$value$$": 834
   }
   */
+})
+```
+
+#### 明细表
+
+```ts
+s2.on(S2Event.DATA_CELL_CLICK, (event) => {
+  // 获取当前单元格
+  const cell = s2.getCell(event.target)
+  // 获取当前单元格元数据
+  const meta = cell.getMeta()
+  // 获取当前行数据
+  const rowData = s2.dataSet.getCellData({
+    query: {
+      rowIndex: meta.rowIndex
+    }
+  })
+
+  console.log('当前行数据', rowData) // { province: '吉林', city: '长春', type: '笔', price: 8 }
+  console.log('当前单元格数据', meta.data) // { city: '长春' }
 })
 ```
 
@@ -159,9 +198,9 @@ const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江�
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
 const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
-const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
+const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query})
 
-  /**
+/**
   [
     {
       "number": 1634,
@@ -173,7 +212,7 @@ const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query}
       "$$value$$": 1634
     }
   ]
-  */
+*/
 ```
 
 ### 根据行列索引获取数值单元格信息

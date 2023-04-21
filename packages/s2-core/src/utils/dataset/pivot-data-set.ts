@@ -1,19 +1,22 @@
 import {
+  find,
   forEach,
+  get,
   intersection,
   isUndefined,
-  keys,
   last,
   reduce,
   set,
 } from 'lodash';
-import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import { i18n } from '../../common/i18n';
+import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
+import type { Meta } from '../../common/interface/basic';
 
 interface Param {
   rows: string[];
@@ -319,4 +322,25 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     // exit iteration early when pathMeta not exists
     return idx === 0 && path === ROOT_ID;
   });
+}
+
+export function generateExtraFieldMeta(
+  meta: Meta[],
+  cornerExtraFieldText: string,
+  defaultText: string,
+) {
+  const valueFormatter = (value: string) => {
+    const currentMeta = find(meta, ({ field }: Meta) => field === value);
+    return get(currentMeta, 'name', value);
+  };
+  // 虚拟列字段，为文本分类字段
+  const extraFieldName = cornerExtraFieldText || defaultText;
+
+  const extraFieldMeta: Meta = {
+    field: EXTRA_FIELD,
+    name: extraFieldName,
+    formatter: (value: string) => valueFormatter(value),
+  };
+
+  return extraFieldMeta;
 }

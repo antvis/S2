@@ -24,6 +24,7 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import type { CellMeta, RowData } from '../common';
+import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -99,6 +100,18 @@ export abstract class BaseDataSet {
     this.filterParams = filterParams;
     this.displayData = this.originData;
     this.indexesData = [];
+  }
+
+  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
+    const newMeta: Meta[] = [
+      ...meta,
+      generateExtraFieldMeta(
+        meta,
+        this.spreadsheet?.options?.cornerExtraFieldText,
+        defaultExtraFieldText,
+      ),
+    ];
+    return newMeta;
   }
 
   public getDisplayDataSet() {

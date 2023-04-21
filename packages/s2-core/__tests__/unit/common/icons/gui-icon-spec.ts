@@ -82,4 +82,22 @@ describe('GuiIcon Tests', () => {
     expect(icon.isOnlineLink('://www.test.png')).toBeFalsy();
     expect(icon.isOnlineLink('')).toBeFalsy();
   });
+
+  test('should be able to update image with setImageAttr function.', () => {
+    registerIcon('test', 'SortUp');
+
+    const icon = new GuiIcon({
+      name: 'test',
+      x: 0,
+      y: 0,
+      width: 20,
+      height: 20,
+    });
+
+    const spy = jest.spyOn(icon, 'getImage');
+    const oldVal = icon.iconImageShape.attrs.img;
+    expect(oldVal).toBeDefined();
+    icon.setImageAttrs({ fill: 'red' });
+    expect(spy).toHaveBeenCalled();
+  });
 });
