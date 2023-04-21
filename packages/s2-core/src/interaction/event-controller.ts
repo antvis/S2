@@ -238,7 +238,7 @@ export class EventController {
       );
     }
 
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       return (
         event.clientX >= x &&
         event.clientX <= x + width &&
