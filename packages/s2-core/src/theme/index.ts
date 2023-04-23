@@ -30,6 +30,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
+        linkTextFill: basicColors[6],
       },
       text: {
         fontFamily: FONT_FAMILY,

@@ -1,3 +1,18 @@
+# [@antv/s2-v1.45.0](https://github.com/antvis/S2/compare/@antv/s2-v1.44.0...@antv/s2-v1.45.0) (2023-04-21)
+
+
+### Bug Fixes
+
+* 修复 cornerText 配置对树状模式的适配 ([#2167](https://github.com/antvis/S2/issues/2167)) ([e9efcea](https://github.com/antvis/S2/commit/e9efcea944f5d0793d4a1250362e6b6f6b492c52))
+* 修复总计小计 linkField 样式问题 ([#2169](https://github.com/antvis/S2/issues/2169)) ([4450278](https://github.com/antvis/S2/commit/4450278d82888c117e5bd9d31874b88ecdb33d99))
+* 多指标行头总计节点宽度计算错误 ([#2165](https://github.com/antvis/S2/issues/2165)) ([08ef330](https://github.com/antvis/S2/commit/08ef330a02a1fbf11f49090f4fd7f5d2b0cc1093))
+* 微应用环境识别mouseEvent失效 ([bddbe34](https://github.com/antvis/S2/commit/bddbe34104355ac0087bc9f72377889a8f444d7a)), closes [#2162](https://github.com/antvis/S2/issues/2162)
+
+
+### Features
+
+* icon支持更新name与fill ([#2138](https://github.com/antvis/S2/issues/2138)) ([d000aea](https://github.com/antvis/S2/commit/d000aeac332676cfa15d9986ec7f4be948c565d0))
+
 # [@antv/s2-v1.44.0](https://github.com/antvis/S2/compare/@antv/s2-v1.43.0...@antv/s2-v1.44.0) (2023-03-24)
 
 

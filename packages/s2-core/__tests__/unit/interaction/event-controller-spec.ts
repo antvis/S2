@@ -44,6 +44,15 @@ const s2Options: S2Options = {
   },
 };
 
+// 定义一个变量来存储原始 MouseEvent
+let OriginalMouseEvent: typeof MouseEvent;
+
+class CustomMouseEvent extends MouseEvent {
+  constructor(eventType: string, eventInitDict?: MouseEventInit) {
+    super(eventType, eventInitDict);
+  }
+}
+
 describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
   let spreadsheet: SpreadSheet;
@@ -110,6 +119,8 @@ describe('Interaction Event Controller Tests', () => {
     Object.defineProperty(eventController, 'isCanvasEffect', {
       value: true,
     });
+    OriginalMouseEvent = MouseEvent;
+    (global as any).MouseEvent = CustomMouseEvent;
   });
 
   afterEach(() => {
@@ -118,6 +129,7 @@ describe('Interaction Event Controller Tests', () => {
         autoResetSheetStyle: true,
       },
     });
+    (global as any).MouseEvent = OriginalMouseEvent;
   });
 
   test('should bind events', () => {
@@ -902,7 +914,20 @@ describe('Interaction Event Controller Tests', () => {
         }),
       );
     });
+  });
 
+  // https://github.com/antvis/S2/pull/2163
+  test('should not reset if Mouse Event is Proxy', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    window.dispatchEvent(
+      new PointerEvent('click', {
+        clientX: 100,
+        clientY: 100,
+      }),
+    );
+    expect(eventController.isCanvasEffect).toBe(true);
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
