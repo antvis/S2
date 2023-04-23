@@ -1,3 +1,15 @@
+# [@antv/s2-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.5...@antv/s2-v2.0.0-next.6) (2023-04-23)
+
+
+### Bug Fixes
+
+* 传入g的supportCSSTransform改为supportsCSSTransform ([7531aab](https://github.com/antvis/S2/commit/7531aab7fd12a35533d95267a818dfd3f821ece0))
+
+
+### Features
+
+* 统一导出和复制逻辑，优化导出和复制性能 ([#2152](https://github.com/antvis/S2/issues/2152)) ([df88455](https://github.com/antvis/S2/commit/df884557756e4374e95687cf4c99d575bc2cb6fc))
+
 # [@antv/s2-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.4...@antv/s2-v2.0.0-next.5) (2023-02-22)
 
 
