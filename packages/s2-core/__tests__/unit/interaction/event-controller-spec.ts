@@ -529,6 +529,7 @@ describe('Interaction Event Controller Tests', () => {
   test('should not reset if current mouse on the tooltip and outside the canvas container', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.tooltip.visible = true;
     spreadsheet.tooltip.container.getBoundingClientRect = () =>
       ({
         x: 200,
@@ -867,4 +868,42 @@ describe('Interaction Event Controller Tests', () => {
       expect(handler).toHaveBeenCalledTimes(1);
     },
   );
+
+  // https://github.com/antvis/S2/issues/2170
+  test('should not reset if tooltip content clicked', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.options.tooltip = {
+      showTooltip: false,
+      data: {
+        showTooltip: true,
+      },
+      col: {
+        showTooltip: true,
+      },
+      row: {
+        showTooltip: true,
+      },
+    };
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+      ({
+        x: 200,
+        y: 200,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    Array.from({ length: 3 }).forEach(() => {
+      window.dispatchEvent(
+        new PointerEvent('click', {
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+    });
+
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
 });

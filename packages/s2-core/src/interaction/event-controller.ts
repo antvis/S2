@@ -219,14 +219,15 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
+    const { tooltip } = this.spreadsheet;
+    if (!tooltip?.visible) {
       return false;
     }
 
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
-    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+    if (event.target instanceof Node) {
       return verifyTheElementInTooltip(
         this.spreadsheet.tooltip?.container,
         event.target,
