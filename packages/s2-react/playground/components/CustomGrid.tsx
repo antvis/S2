@@ -91,17 +91,15 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     const [options, setOptions] = React.useState<SheetComponentOptions>({
       ...customRowGridOptions,
       hierarchyType: 'grid',
+      interaction: {
+        overscrollBehavior: 'none',
+      },
     });
     const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
       name: 'default',
-      theme: {
-        resizeArea: {
-          backgroundOpacity: 1,
-        },
-      },
     });
     const [sheetType, setSheetType] =
-      React.useState<SheetComponentsProps['sheetType']>('table');
+      React.useState<SheetComponentsProps['sheetType']>('pivot');
 
     const logHandler =
       (name: string) =>
@@ -120,6 +118,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
           <Radio.Group
             value={customType}
             onChange={(e) => {
+              setSheetType('pivot');
               setCustomType(e.target.value);
             }}
           >
@@ -133,6 +132,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
             checkedChildren="树状模式"
             unCheckedChildren="平铺模式"
             checked={options.hierarchyType === 'tree'}
+            disabled={sheetType === 'table'}
             onChange={(checked) => {
               setOptions({
                 hierarchyType: checked ? 'tree' : 'grid',
@@ -159,7 +159,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
             }}
           />
         </Space>
-        <Space style={{ marginBottom: 20 }}>
+        <Space style={{ marginBottom: 20, display: 'flex' }}>
           <ResizeConfig
             options={options}
             setOptions={setOptions}
