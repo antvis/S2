@@ -109,8 +109,13 @@ export enum ScrollbarPositionType {
 }
 
 export enum ScrollDirection {
-  LEADING = 'leading',
-  TRAILING = 'trailing',
+  SCROLL_UP = 'scrollUp',
+  SCROLL_DOWN = 'scrollDown',
+}
+
+export enum ScrollDirectionRowIndexDiff {
+  SCROLL_UP = -1,
+  SCROLL_DOWN = 1,
 }
 
 export interface InteractionCellSelectedHighlightType {

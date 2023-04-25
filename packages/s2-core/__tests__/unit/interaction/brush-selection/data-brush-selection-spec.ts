@@ -282,7 +282,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     // show prepare brush selection mask
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
-      y: 20,
+      y: 30,
       width: 90,
       height: 180,
     });
@@ -442,13 +442,21 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       1, 8, 1, 8,
     ];
 
-    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
+      8,
+    );
+    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.SCROLL_UP)).toBe(1);
+    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.SCROLL_DOWN)).toBe(
+      7,
+    );
 
-    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
+      8,
+    );
+    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.SCROLL_UP)).toBe(1);
+    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.SCROLL_DOWN)).toBe(
+      7,
+    );
   });
 
   test('should get correct scroll offset for row and col', () => {
@@ -457,14 +465,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(202);
@@ -487,14 +495,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(302);
@@ -508,14 +516,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(320);
@@ -537,14 +545,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(420);

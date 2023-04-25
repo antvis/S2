@@ -56,6 +56,8 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   enableFormat?: boolean;
   // 是否强制清空 dom
   forceRender?: boolean;
+  // 自定义数据
+  data?: TooltipData;
 }
 
 export type TooltipSummaryOptionsValue = number | string | undefined | null;

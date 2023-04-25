@@ -546,9 +546,12 @@ export class PivotFacet extends BaseFacet {
     if (isRowHeader) {
       // 填充行总单元格宽度
       grandTotalNode.width = hierarchy.width;
-      // 调整其叶子结点位置
+      // 调整其叶子节点位置和宽度
       forEach(grandTotalChildren, (node: Node) => {
-        node.x = hierarchy.getNodes(maxLevel)[0].x;
+        const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
+
+        node.x = maxLevelNode.x;
+        node.width = maxLevelNode.width;
       });
     } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
       /*

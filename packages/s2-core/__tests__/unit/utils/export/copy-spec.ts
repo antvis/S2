@@ -3,15 +3,17 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
-import { TableDataCell } from '@antv/s2';
+import { TableDataCell } from '@/cell';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
+
 import { getSelectedData } from '@/utils/export/copy';
 import { convertString } from '@/utils/export/method';
+
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event, NewLine, NewTab } from '@/common/constant';
 import { TableSeriesCell } from '@/cell';
