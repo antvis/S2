@@ -259,7 +259,8 @@ export class RowCell extends HeaderCell {
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,
         scrollY,
-      })
+      }) ||
+      !position
     ) {
       return;
     }

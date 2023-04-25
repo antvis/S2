@@ -123,6 +123,9 @@ const expectScrollBrush = async (
   s2.on(S2Event.GLOBAL_SELECTED, selectedFn);
   s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, dataCellBrushSelectionFn);
 
+  // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
+  await sleep(50);
+
   s2.emit(mouseDownEventType, {
     target: targetCell,
     x: 1,
@@ -220,6 +223,9 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     s2.render();
 
+    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
+    await sleep(50);
+
     const rowCell = s2.interaction.getAllRowHeaderCells()[0];
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
@@ -257,6 +263,9 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     );
 
     s2.render();
+
+    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
+    await sleep(50);
 
     const rowCell = s2.interaction.getAllRowHeaderCells()[0];
 

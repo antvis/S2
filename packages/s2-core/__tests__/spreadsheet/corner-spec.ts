@@ -309,7 +309,7 @@ describe('PivotSheet Corner Tests', () => {
       .getCornerNodes()
       .find((node) => node.cornerType === CornerNodeType.Row)!;
 
-    expect(cornerNode['label']).toEqual(cornerText);
+    expect(cornerNode.value).toEqual(cornerText);
 
     const cell = s2.facet.cornerHeader.children[0];
 
@@ -337,7 +337,7 @@ describe('PivotSheet Corner Tests', () => {
       .getCornerNodes()
       .find((node) => node.field === EXTRA_FIELD)!;
 
-    expect(cornerNode['label']).toEqual(cornerExtraFieldText);
+    expect(cornerNode.value).toEqual(cornerExtraFieldText);
 
     const cell = s2.facet.cornerHeader.children[2];
 

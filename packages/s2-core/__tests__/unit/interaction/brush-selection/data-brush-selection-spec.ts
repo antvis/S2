@@ -282,7 +282,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     // show prepare brush selection mask
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
-      y: 30,
+      y: 32,
       width: 90,
       height: 180,
     });

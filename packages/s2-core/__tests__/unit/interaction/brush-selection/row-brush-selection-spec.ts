@@ -292,7 +292,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       brushSelectionInstance.prepareSelectMaskShape.parsedStyle,
     ).toMatchObject({
       x: 100,
-      y: 90,
+      y: 92,
       width: 50,
       height: 310,
     });

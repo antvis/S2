@@ -55,9 +55,9 @@ describe('Data Cell Tests', () => {
     });
 
     test.each([
-      ['left', 10.783203125],
-      ['center', 75],
-      ['right', 139.216796875],
+      ['left', 311],
+      ['center', 375],
+      ['right', 438],
     ] as const)(
       'should align link shape with text',
       (textAlign: TextAlign, textCenterX: number) => {
@@ -75,11 +75,12 @@ describe('Data Cell Tests', () => {
         });
         s2.render();
 
-        const panelBBoxInstance = s2.facet.panelGroup.getChildByIndex(0);
-        const dataCell = (panelBBoxInstance as any).getChildByIndex(
-          0,
+        const panelBBoxInstance = s2.facet.panelGroup.children[0];
+        const dataCell = panelBBoxInstance.children.find(
+          (item) => item instanceof DataCell,
         ) as DataCell;
-        const { minX, maxX } = (dataCell as any).linkFieldShape.getBBox();
+        const { left: minX, right: maxX } =
+          dataCell['linkFieldShape'].getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;
@@ -91,7 +92,7 @@ describe('Data Cell Tests', () => {
         // link shape 的中点坐标与 text 中点对齐
         const linkCenterX = minX + linkLength / 2;
 
-        expect(linkCenterX).toEqual(textCenterX);
+        expect(Math.round(linkCenterX)).toEqual(textCenterX);
       },
     );
   });
