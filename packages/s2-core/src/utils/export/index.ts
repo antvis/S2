@@ -105,9 +105,10 @@ export const download = (str: string, fileName: string) => {
 /**
  * Copy data
  * @param sheetInstance
- * @param formatOptions 是否格式化数据
  * @param split
+ * @param formatOptions 是否格式化数据
  */
+// TODO: 改名
 export const copyData = (
   sheetInstance: SpreadSheet,
   split = NewTab,

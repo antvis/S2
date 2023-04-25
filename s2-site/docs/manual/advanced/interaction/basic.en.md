@@ -49,17 +49,17 @@ import { ColCell, DataCell, PivotSheet, RowCell, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells: DataCell[]) => {
-  // 此事件默认打开，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值单元格刷选
+  // 此事件默认打开，配置 options: { interaction: { brushSelection : { dataCell: true } } } 开启数值单元格刷选
   console.log('刷选的单元格', cells)
 })
 
 s2.on(S2Event.ROW_BRUSH_SELECTION, (cells: RowCell[]) => {
-  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值行头单元格刷选
+  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { rowCell: true } } } 开启数值行头单元格刷选
   console.log('刷选的行头单元格：', cells)
 })
 
 s2.on(S2Event.COL_BRUSH_SELECTION, (cells: ColCell[]) => {
-  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值列头单元格刷选
+  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { colCell: true } } } 开启数值列头单元格刷选
   console.log('刷选的列头单元格：', cells)
 })
 
@@ -187,7 +187,7 @@ When the mouse selects a cell or brushes a selected cell, the row and column hea
 // 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader (兼容未拓展类型前的设计)
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader （兼容未拓展类型前的设计）
   }
 };
 
@@ -197,7 +197,7 @@ const S2Options = {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      rowCells: false,  // 选中单元格时，高亮当前行 
+      rowCells: false,  // 选中单元格时，高亮当前行
       colCells: false,  // 选中单元格时，高亮当前列
     },
   },
@@ -244,7 +244,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        row: true // 默认 false
+        rowCell: true // 默认 false
     }
   }
 };
@@ -258,7 +258,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        col: true // 默认 false
+        colCell: true // 默认 false
     }
   }
 };

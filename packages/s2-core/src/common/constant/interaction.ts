@@ -5,10 +5,9 @@ export enum InteractionName {
   ROW_COLUMN_CLICK = 'rowColumnClick',
   ROW_TEXT_CLICK = 'rowTextClick',
   HOVER = 'hover',
-  // options brushSelection 控制 BRUSH_SELECTION, ROW_BRUSH_SELECTION,COL_BRUSH_SELECTION
-  BRUSH_SELECTION = 'brushSelection',
-  ROW_BRUSH_SELECTION = 'rowBrushSelection',
-  COL_BRUSH_SELECTION = 'colBrushSelection',
+  DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
+  ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
+  COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   RANGE_SELECTION = 'rangeSelection',
@@ -85,9 +84,9 @@ export enum SortMethodType {
 export enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
-  BRUSH_SELECTION = 'brushSelection',
-  ROW_BRUSH_SELECTION = 'rowBrushSelection',
-  COL_BRUSH_SELECTION = 'colBrushSelection',
+  DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
+  ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
+  COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
 }
@@ -111,15 +110,4 @@ export enum ScrollbarPositionType {
 export enum ScrollDirection {
   LEADING = 'leading',
   TRAILING = 'trailing',
-}
-
-export interface InteractionCellSelectedHighlightType {
-  // 高亮行头
-  rowHeader?: boolean;
-  // 高亮列头
-  colHeader?: boolean;
-  // 高亮选中单元格所在行
-  currentRow?: boolean;
-  // 高亮选中单元格所在列
-  currentCol?: boolean;
 }

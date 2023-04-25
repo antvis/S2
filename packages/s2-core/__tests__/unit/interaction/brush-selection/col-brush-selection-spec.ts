@@ -78,7 +78,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
         height: 400,
         interaction: {
           brushSelection: {
-            col: true,
+            colCell: true,
           },
         },
         style: {

@@ -110,7 +110,7 @@ describe('Brush selection scroll spec', () => {
 
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     const brushInteraction = s2.interaction.interactions.get(
-      InteractionName.BRUSH_SELECTION,
+      InteractionName.DATA_CELL_BRUSH_SELECTION,
     ) as BaseBrushSelection;
 
     const brushRange = brushInteraction.getBrushRange();

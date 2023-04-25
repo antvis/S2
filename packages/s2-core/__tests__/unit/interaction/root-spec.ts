@@ -495,7 +495,9 @@ describe('RootInteraction Tests', () => {
         ]),
       ).toBeTruthy();
       expect(
-        rootInteraction.hasIntercepts([InterceptType.BRUSH_SELECTION]),
+        rootInteraction.hasIntercepts([
+          InterceptType.DATA_CELL_BRUSH_SELECTION,
+        ]),
       ).toBeFalsy();
     });
 
@@ -559,9 +561,9 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.ROW_TEXT_CLICK}            | ${RowTextClick}
     ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
     ${InteractionName.HOVER}                     | ${HoverEvent}
-    ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
-    ${InteractionName.COL_BRUSH_SELECTION}       | ${ColBrushSelection}
-    ${InteractionName.ROW_BRUSH_SELECTION}       | ${RowBrushSelection}
+    ${InteractionName.DATA_CELL_BRUSH_SELECTION} | ${DataCellBrushSelection}
+    ${InteractionName.COL_CELL_BRUSH_SELECTION}  | ${ColBrushSelection}
+    ${InteractionName.ROW_CELL_BRUSH_SELECTION}  | ${RowBrushSelection}
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
@@ -642,13 +644,19 @@ describe('RootInteraction Tests', () => {
       defaultInteractionSize - 3,
     );
     expect(
-      rootInteraction.interactions.has(InteractionName.BRUSH_SELECTION),
+      rootInteraction.interactions.has(
+        InteractionName.DATA_CELL_BRUSH_SELECTION,
+      ),
     ).toBeFalsy();
     expect(
-      rootInteraction.interactions.has(InteractionName.COL_BRUSH_SELECTION),
+      rootInteraction.interactions.has(
+        InteractionName.COL_CELL_BRUSH_SELECTION,
+      ),
     ).toBeFalsy();
     expect(
-      rootInteraction.interactions.has(InteractionName.ROW_BRUSH_SELECTION),
+      rootInteraction.interactions.has(
+        InteractionName.ROW_CELL_BRUSH_SELECTION,
+      ),
     ).toBeFalsy();
     [...rootInteraction.interactions.values()].forEach((interaction) => {
       expect(interaction).not.toBeInstanceOf(DataCellBrushSelection);

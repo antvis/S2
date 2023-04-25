@@ -460,7 +460,9 @@ describe('Interaction Event Controller Tests', () => {
   });
 
   test('should not reset if current interaction has brush selection', () => {
-    spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+    spreadsheet.interaction.addIntercepts([
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+    ]);
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);

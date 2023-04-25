@@ -632,7 +632,9 @@ export class BaseBrushSelection
   }
 
   protected addBrushIntercepts() {
-    this.spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+    this.spreadsheet.interaction.addIntercepts([
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+    ]);
   }
 
   protected bindMouseUp(enableScroll = false) {

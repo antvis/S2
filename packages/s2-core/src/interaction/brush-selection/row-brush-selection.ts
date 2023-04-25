@@ -118,7 +118,7 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   protected addBrushIntercepts() {
     this.spreadsheet.interaction.addIntercepts([
-      InterceptType.ROW_BRUSH_SELECTION,
+      InterceptType.ROW_CELL_BRUSH_SELECTION,
     ]);
   }
 

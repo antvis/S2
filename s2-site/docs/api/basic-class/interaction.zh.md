@@ -84,10 +84,11 @@ export abstract class BaseEvent {
 enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
-  BRUSH_SELECTION = 'brushSelection',
-  ROW_BRUSH_SELECTION = 'rowBrushSelection',
-  COL_BRUSH_SELECTION = 'colBrushSelection',
+  DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
+  ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
+  COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
   MULTI_SELECTION = 'multiSelection',
+  RESIZE = 'resize',
 }
 ```
 

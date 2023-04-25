@@ -110,9 +110,9 @@ export const s2Options: SheetComponentOptions = {
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
-      data: true,
-      col: true,
-      row: true,
+      dataCell: true,
+      colCell: true,
+      rowCell: true,
     },
     resize: {
       rowResizeType: ResizeType.CURRENT,

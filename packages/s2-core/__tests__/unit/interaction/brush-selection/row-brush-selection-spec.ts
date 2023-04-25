@@ -77,7 +77,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         height: 400,
         interaction: {
           brushSelection: {
-            row: true,
+            rowCell: true,
           },
         },
         style: {

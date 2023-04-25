@@ -61,6 +61,6 @@ interface ScrollSpeedRatio {
 
 | parameter | illustrate                                                                 | type      | Defaults | required |
 | --------- | -------------------------------------------------------------------------- | --------- | -------- | -------- |
-| data      | Whether to allow numerical cell selection                                  | `boolean` | true     |          |
-| row       | Whether to allow row header cell selection (only supports pivot tables)    | `boolean` | false    |          |
-| col       | Whether to allow column header cell selection (only supports pivot tables) | `boolean` | false    |          |
+| dataCell      | Whether to allow numerical cell selection                                  | `boolean` | true     |          |
+| rowCell       | Whether to allow row header cell selection (only supports pivot tables)    | `boolean` | false    |          |
+| colCell       | Whether to allow column header cell selection (only supports pivot tables) | `boolean` | false    |          |

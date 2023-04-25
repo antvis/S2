@@ -17,7 +17,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
   DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightType,
+  type InteractionCellSelectedHighlightOptions,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -974,7 +974,7 @@ function MainLayout() {
                     onChange={(type) => {
                       let selectedCellHighlight:
                         | boolean
-                        | InteractionCellSelectedHighlightType = false;
+                        | InteractionCellSelectedHighlightOptions = false;
                       const oldIdx = type.findIndex((typeItem: any) =>
                         isBoolean(typeItem),
                       );
