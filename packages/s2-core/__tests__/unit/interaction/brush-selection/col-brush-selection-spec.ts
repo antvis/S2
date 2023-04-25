@@ -2,7 +2,7 @@ import { map } from 'lodash';
 import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
 import {
-  ColBrushSelection,
+  ColCellBrushSelection,
   S2Event,
   SpreadSheet,
   RootInteraction,
@@ -24,7 +24,7 @@ const MockRootInteraction =
 
 // ColHeader: start: { x: 200, y: 0}, end: {x: 600, y: 90}
 describe('Interaction Col Cell Brush Selection Tests', () => {
-  let brushSelectionInstance: ColBrushSelection;
+  let brushSelectionInstance: ColCellBrushSelection;
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
@@ -99,7 +99,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
       allColHeaderCells as unknown as ColCell[];
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
-    brushSelectionInstance = new ColBrushSelection(mockSpreadSheetInstance);
+    brushSelectionInstance = new ColCellBrushSelection(mockSpreadSheetInstance);
 
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;

@@ -13,10 +13,7 @@ import type { OnUpdateCells } from '../../common/interface';
 import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush selection interaction
- */
-export class RowBrushSelection extends BaseBrushSelection {
+export class RowCellBrushSelection extends BaseBrushSelection {
   public displayedCells: RowCell[] = [];
 
   public brushRangeCells: RowCell[] = [];

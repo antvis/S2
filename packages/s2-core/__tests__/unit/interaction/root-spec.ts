@@ -25,8 +25,8 @@ import {
   SpreadSheet,
   Node,
   DataCellBrushSelection,
-  ColBrushSelection,
-  RowBrushSelection,
+  ColCellBrushSelection,
+  RowCellBrushSelection,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -562,8 +562,8 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
     ${InteractionName.HOVER}                     | ${HoverEvent}
     ${InteractionName.DATA_CELL_BRUSH_SELECTION} | ${DataCellBrushSelection}
-    ${InteractionName.COL_CELL_BRUSH_SELECTION}  | ${ColBrushSelection}
-    ${InteractionName.ROW_CELL_BRUSH_SELECTION}  | ${RowBrushSelection}
+    ${InteractionName.COL_CELL_BRUSH_SELECTION}  | ${ColCellBrushSelection}
+    ${InteractionName.ROW_CELL_BRUSH_SELECTION}  | ${RowCellBrushSelection}
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
@@ -660,8 +660,8 @@ describe('RootInteraction Tests', () => {
     ).toBeFalsy();
     [...rootInteraction.interactions.values()].forEach((interaction) => {
       expect(interaction).not.toBeInstanceOf(DataCellBrushSelection);
-      expect(interaction).not.toBeInstanceOf(ColBrushSelection);
-      expect(interaction).not.toBeInstanceOf(RowBrushSelection);
+      expect(interaction).not.toBeInstanceOf(ColCellBrushSelection);
+      expect(interaction).not.toBeInstanceOf(RowCellBrushSelection);
     });
   });
 

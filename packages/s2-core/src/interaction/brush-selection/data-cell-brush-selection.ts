@@ -11,9 +11,6 @@ import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush data cell selection interaction
- */
 export class DataCellBrushSelection extends BaseBrushSelection {
   public displayedCells: DataCell[] = [];
 

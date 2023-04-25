@@ -42,8 +42,8 @@ import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
-import { ColBrushSelection } from './brush-selection/col-brush-selection';
-import { RowBrushSelection } from './brush-selection/row-brush-selection';
+import { ColCellBrushSelection } from './brush-selection/col-brush-selection';
+import { RowCellBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -440,12 +440,12 @@ export class RootInteraction {
       },
       {
         key: InteractionName.ROW_CELL_BRUSH_SELECTION,
-        interaction: RowBrushSelection,
+        interaction: RowCellBrushSelection,
         enable: !isMobile() && rowCellBrushSelection,
       },
       {
         key: InteractionName.COL_CELL_BRUSH_SELECTION,
-        interaction: ColBrushSelection,
+        interaction: ColCellBrushSelection,
         enable: !isMobile() && colCellBrushSelection,
       },
       {

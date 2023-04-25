@@ -44,10 +44,6 @@ import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
 
-/**
- * Panel area's brush selection interaction
- * 只有 data cell 存在滚动刷选
- */
 export class BaseBrushSelection
   extends BaseEvent
   implements BaseEventImplement

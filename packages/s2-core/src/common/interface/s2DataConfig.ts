@@ -43,7 +43,8 @@ export interface BulletValue {
 export type MiniChartData = BaseChartData | BulletValue;
 
 /**
- * use for gridAnalysisSheet
+ * 单个单元格, 显示一组数据
+ * 适用于 (网格分析表, 趋势分析表) 和其他自定义场景
   {
     label: '余额女',
     values: [
