@@ -207,7 +207,7 @@ export abstract class BaseFacet {
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
       s2: this.spreadsheet,
     });
-    this.panelGroup.add(this.panelScrollGroup);
+    this.panelGroup.appendChild(this.panelScrollGroup);
   }
 
   protected getCellCustomSize(node: Node | null, size: CellCustomSize) {
@@ -454,7 +454,7 @@ export abstract class BaseFacet {
   };
 
   public resetRowScrollX = () => {
-    this.setScrollOffset({ hRowScrollX: 0 });
+    this.setScrollOffset({ rowHeaderScrollX: 0 });
   };
 
   public resetScrollY = () => {
@@ -462,7 +462,7 @@ export abstract class BaseFacet {
   };
 
   public resetScrollOffset = () => {
-    this.setScrollOffset({ scrollX: 0, scrollY: 0, hRowScrollX: 0 });
+    this.setScrollOffset({ scrollX: 0, scrollY: 0, rowHeaderScrollX: 0 });
   };
 
   emitPaginationEvent = () => {
@@ -731,7 +731,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(
+      this.hRowScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset }: ScrollChangeParams) => {
           const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
@@ -743,7 +743,7 @@ export abstract class BaseFacet {
             rowHeaderScrollX,
             KEY_GROUP_ROW_RESIZE_AREA,
           );
-          this.rowIndexHeader?.onRowScrollX(
+          this.seriesNumberHeader?.onRowScrollX(
             rowHeaderScrollX,
             KEY_GROUP_ROW_INDEX_RESIZE_AREA,
           );

@@ -57,7 +57,7 @@ describe('Interaction Corner Cell Click Tests', () => {
           colIndex: -1,
           rowIndex: -1,
           type: CellTypes.ROW_CELL,
-          id: mockCellInfo.mockCellMeta.id,
+          id: mockCellInfo.mockCellMeta['id'],
         },
       ],
       stateName: InteractionStateName.SELECTED,

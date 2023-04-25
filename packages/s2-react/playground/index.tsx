@@ -823,7 +823,7 @@ function MainLayout() {
                   size="small"
                   onClick={() => {
                     clearInterval(scrollTimer.current);
-                    s2Ref.current.updateScrollOffset({
+                    s2Ref.current?.updateScrollOffset({
                       rowHeaderOffsetX: {
                         value: 100,
                         animate: true,
@@ -1232,7 +1232,7 @@ function MainLayout() {
                   return;
                 }
 
-                s2Ref.current.showTooltip({
+                s2Ref.current?.showTooltip({
                   position: {
                     x: cellInfo.event.clientX,
                     y: cellInfo.event.clientY,

@@ -20,7 +20,7 @@ import {
 } from '@antv/g';
 import { forEach, isArray, isEmpty, isFunction } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
-import { CustomText } from '@/engine/CustomText';
+import { CustomText } from '../engine/CustomText';
 
 export function renderRect(group: Group, style: RectStyleProps): Rect {
   return group?.appendChild(

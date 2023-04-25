@@ -137,7 +137,7 @@ describe('SpreadSheet Tests', () => {
       const s2 = new PivotSheet(container, mockDataConfig, {
         ...s2Options,
         style: {
-          cellCfg: {
+          dataCell: {
             height: 200,
           },
         },
@@ -161,9 +161,9 @@ describe('SpreadSheet Tests', () => {
     test('should update row header scroll offset x immediately', () => {
       const s2 = new PivotSheet(container, mockDataConfig, {
         ...s2Options,
-        frozenRowHeader: true,
+        frozen: { rowHeader: true },
         style: {
-          rowCfg: {
+          rowCell: {
             width: 400,
           },
         },
@@ -197,10 +197,10 @@ describe('SpreadSheet Tests', () => {
       const s2 = new PivotSheet(container, mockDataConfig, {
         ...s2Options,
         style: {
-          rowCfg: {
+          rowCell: {
             width: 400,
           },
-          cellCfg: {
+          dataCell: {
             height: 200,
           },
         },

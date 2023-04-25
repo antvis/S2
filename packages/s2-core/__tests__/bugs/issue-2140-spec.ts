@@ -12,9 +12,9 @@ import { PivotSheet } from '@/sheet-type';
 const s2Options: S2Options = {
   width: 400,
   height: 400,
-  frozenRowHeader: false,
+  frozen: { rowHeader: false },
   style: {
-    rowCfg: {
+    rowCell: {
       widthByField: {
         province: 300,
         city: 300,
@@ -31,6 +31,6 @@ describe('Horizontal Scroll Bar Tests', () => {
   test('should render correctly when row header wider than canvas', () => {
     const { hScrollBar } = s2.facet;
 
-    expect(hScrollBar.trackLen).toEqual(s2.facet.getCanvasHW().width);
+    expect(hScrollBar.trackLen).toEqual(s2.facet.getCanvasSize().width);
   });
 });

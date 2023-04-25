@@ -96,7 +96,7 @@ describe('GuiIcon Tests', () => {
     });
 
     const spy = jest.spyOn(icon, 'getImage');
-    const oldVal = icon.iconImageShape.attrs.img;
+    const oldVal = icon.iconImageShape.style.img;
 
     expect(oldVal).toBeDefined();
     icon.setImageAttrs({ fill: 'red' });

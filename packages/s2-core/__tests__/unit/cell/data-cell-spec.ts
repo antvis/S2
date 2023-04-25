@@ -58,7 +58,7 @@ describe('Data Cell Tests', () => {
       ['left', 10.783203125],
       ['center', 75],
       ['right', 139.216796875],
-    ])(
+    ] as const)(
       'should align link shape with text',
       (textAlign: TextAlign, textCenterX: number) => {
         s2.setOptions({
