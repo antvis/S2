@@ -7,7 +7,10 @@ import {
 
 describe('merge test', () => {
   beforeEach(() => {
-    window.devicePixelRatio = 2;
+    Object.defineProperty(window, 'devicePixelRatio', {
+      value: 2,
+      configurable: true,
+    });
   });
 
   test('should replace old array with new one', () => {
