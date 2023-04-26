@@ -36,7 +36,7 @@ We are sorry to push bugs. And we would appreciate that if you could report them
 ## Pull Request
 
 1. Fork the project and clone it (or use GitHub's Codespace function, which is very convenient).
-2. Installation dependency: `yarn bootstrap` or `yarn`.
+2. Installation dependency: `pnpm install`.
 3. Commit your changes, and please follow [AngularJS Git Commit Message Conventions] (<https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w>).
 4. If your change is a bug fix, you can add `close #issue number` after the submission information so that after the pr merge, the related issue could be closed automatically. eg: `fix: render bug close #123`.
 5. Make sure to add the related unit test.
@@ -46,19 +46,19 @@ We are sorry to push bugs. And we would appreciate that if you could report them
 
 ## Development Process
 
-We use `yarn@v1` as package management.
+We use `pnpm@v7` as package management.
 
 ```bash
-npm i -g yarn
+npm i -g pnpm
 ```
 
-1. `yarn bootstrap`: Installation dependency.
-2. `yarn site:bootstrap`: Install site related dependencies.
-3. `yarn site:start`: Starts the local `S2` website.
-4. `yarn core:start`:  Debug and test local `@antv/s2`（Based on jest-electron）.
-5. `yarn react:start` Debug and test local `@antv/s2-react` (Based on jest-electron).
-6. `yarn vue:start` Debug and test local `@antv/s2-vue` (Based on jest-electron).
-7. `yarn react:playground` Starts the local `@antv/s2-react` playground (Based on vite).
-8. `yarn vue:playground` Starts the local `@antv/s2-vue` playground (Based on vite).
-9. `yarn build`: Builds `@antv/s2` and `@antv/s2-react` and `@antv/s2-vue` , outputs are `umd`, `esm` and `lib` directories.
-10. `yarn test`:  Run unit tests.
+1. `pnpm install`: Installation dependency.
+2. `pnpm site:bootstrap`: Install site related dependencies.
+3. `pnpm site:start`: Starts the local `S2` website.
+4. `pnpm core:start`:  Debug and test local `@antv/s2`（Based on jest-electron）.
+5. `pnpm react:start` Debug and test local `@antv/s2-react` (Based on jest-electron).
+6. `pnpm vue:start` Debug and test local `@antv/s2-vue` (Based on jest-electron).
+7. `pnpm react:playground` Starts the local `@antv/s2-react` playground (Based on vite).
+8. `pnpm vue:playground` Starts the local `@antv/s2-vue` playground (Based on vite).
+9. `pnpm build`: Builds `@antv/s2` and `@antv/s2-react` and `@antv/s2-vue` , outputs are `umd`, `esm` and `lib` directories.
+10. `pnpm test`:  Run unit tests.
