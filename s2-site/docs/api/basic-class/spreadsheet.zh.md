@@ -77,6 +77,10 @@ type S2MountContainer = string | HTMLElement;
 
 ```ts
 interface OffsetConfig {
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
   offsetX?: {
     value: number | undefined;
     animate?: boolean;

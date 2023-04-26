@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
-import type { S2DataConfig } from '../common/interface';
+import type { Meta, S2DataConfig } from '../common/interface';
+import { i18n } from '../common/i18n';
 import {
   getDataPath,
   transformDimensionsValues,
@@ -44,9 +45,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
      */
 
     const updatedDataCfg = super.processDataCfg(dataCfg);
+    const newMeta: Meta[] = this.processMeta(dataCfg.meta, i18n('指标'));
 
     return {
       ...updatedDataCfg,
+      meta: newMeta,
       fields: {
         ...updatedDataCfg.fields,
         rows: [EXTRA_FIELD],

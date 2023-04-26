@@ -8,24 +8,10 @@ on:
       - opened
 
 jobs:
-  add-issue-to-project:
+  add-to-project:
     runs-on: ubuntu-latest
-    if: "github.event_name == 'issues'"
     steps:
-      - uses: alex-page/github-project-automation-plus@v0.8.1
+      - uses: actions/add-to-project@v0.4.1
         with:
-          project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
-          column: Pending Issues
-          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
-          action: add
- 
-  add-pr-to-project:
-    runs-on: ubuntu-latest
-    if: "github.event_name == 'pull_request_target'"
-    steps:
-      - uses: alex-page/github-project-automation-plus@v0.8.1
-        with:
-          project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
-          column: Pending PRs
-          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
-          action: add
+          project-url: https://github.com/orgs/antvis/projects/17
+          github-token: ${{ secrets.GH_PROJECT_TOKEN }}

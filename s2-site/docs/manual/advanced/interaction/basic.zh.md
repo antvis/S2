@@ -19,8 +19,8 @@ order: 0
 
 ## 内置交互
 
-| 名称         | 事件名                                                           | 描述                                                                                                                    |
-|-----------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| 名称         | 事件名     | 描述   |
+|-------------|-----------|--------|
 | 单选         | `S2Event.GLOBAL_SELECTED`                                     | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                                 |
 | 多选         | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                     |
 | 行/列头快捷多选   | `S2Event.GLOBAL_SELECTED`                                     | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                                            |
@@ -189,17 +189,17 @@ const s2Options = {
 // 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader (兼容未拓展类型前的设计)
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader （兼容未拓展类型前的设计）
   }
 };
 
 // 同时还可以分别配置 selectedCellHighlight 中 header 和 cells 的高亮
-const S2Options = {
+const s2Options = {
   interaction: {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      rowCells: false,  // 选中单元格时，高亮当前行 
+      rowCells: false,  // 选中单元格时，高亮当前行
       colCells: false,  // 选中单元格时，高亮当前列
     },
   },
@@ -222,9 +222,9 @@ const s2Options = {
 };
 ```
 
-### 圈选高亮
+### 圈选
 
-圈选高亮又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，默认开启，可配置 `brushSelection` 关闭：
+圈选又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，支持对 `数据单元格 (dataCell)`, `行头单元格 (rowCell)`, `列头单元格 (colCell)` 进行圈选，同时支持 `滚动圈选`, 可以用来做 `统计数据总和`, `单元格个数`, `复制选定数据` 等操作，默认开启 `数据单元格`，可配置 `brushSelection` 关闭：
 
 #### 数据单元格圈选
 
@@ -233,7 +233,13 @@ const s2Options = {
 ```ts
 const s2Options = {
   interaction: {
-    brushSelection: false // 默认 true
+    brushSelection: false
+    // 等同于：
+    // brushSelection:  {
+    //   row: false,
+    //   col: false,
+    //   data: false,
+    // }
   }
 };
 ```
@@ -246,7 +252,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        row: true // 默认 false
+      row: true // 默认 false
     }
   }
 };
@@ -260,11 +266,27 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        col: true // 默认 false
+      col: true // 默认 false
     }
   }
 };
 ```
+
+#### 滚动圈选
+
+##### 数值滚动圈选
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pmskQL_WvMIAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
+
+##### 行头滚动圈选 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*r8fFQ6ySwScAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
+
+### 角头选中 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
+
+单击行头所对应的角头，可以快捷选中当前列
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TNjTS7HzcgUAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 ### 快捷键多选
 

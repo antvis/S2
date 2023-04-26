@@ -179,7 +179,7 @@ describe('<StrategySheet/> Tests', () => {
       get(element, 'actualText'),
     );
 
-    expect(textList).toEqual(['自定义节点A/指标E/数值', '日期']);
+    expect(textList).toEqual(['自定义节点A/指标E/指标', '日期']);
   });
 
   test('should format corner date field for custom corner text', () => {

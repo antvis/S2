@@ -26,6 +26,7 @@
 ```bash
 $ npm install @antv/s2-vue
 # yarn add @antv/s2-vue
+# pnpm add @antv/s2-vue
 ```
 
 ## 🔨 使用

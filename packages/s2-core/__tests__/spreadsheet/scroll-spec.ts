@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
+import { ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
@@ -134,6 +134,7 @@ describe('Scroll Tests', () => {
 
   test('should scroll if scroll over the row cell', async () => {
     const position: CellScrollPosition = {
+      rowHeaderScrollX: 0,
       scrollX: 20,
       scrollY: 0,
     };
@@ -446,22 +447,21 @@ describe('Scroll Tests', () => {
       name: 'vScrollBar',
       key: 'height',
     },
-  ] as Array<{
-    name: string;
-    key: keyof DOMRect;
-  }>)('should render scroll bar real size by canvas BBox', ({ name, key }) => {
-    s2.changeSheetSize(200, 200); // 显示横/竖滚动条
-    s2.render(false);
+  ] as const)(
+    'should render scroll bar real size by canvas BBox',
+    ({ name, key }) => {
+      s2.changeSheetSize(200, 200); // 显示横/竖滚动条
+      s2.render(false);
 
-    // @ts-ignore
-    const scrollBar = s2.facet[name] as ScrollBar;
-    // @ts-ignore
-    const positon = scrollBar.getCoordinatesWithBBoxExtraPadding();
+      const scrollBar = s2.facet[name];
 
-    expect(
-      Math.round(scrollBar.thumbShape.getBBox()[key] as number),
-    ).toStrictEqual(Math.round(positon.end - positon.start));
-  });
+      const positon = scrollBar['getCoordinatesWithBBoxExtraPadding']();
+
+      expect(
+        Math.round(scrollBar.thumbShape.getBBox()[key] as number),
+      ).toStrictEqual(Math.round(positon.end - positon.start));
+    },
+  );
 
   test('should render scroll bar does not appear outside the canvas', () => {
     s2.changeSheetSize(200, 200); // 显示横/竖滚动条
@@ -652,8 +652,9 @@ describe('Scroll Tests', () => {
         },
       });
 
-      const onRowCellScroll = jest.fn((...args) => {
-        expect(args[0].scrollX).toBeGreaterThan(0);
+      const onScroll = jest.fn((...args) => {
+        expect(args[0].rowHeaderScrollX).toBeGreaterThan(0);
+        expect(args[0].scrollX).toBe(0);
         expect(args[0].scrollY).toBe(0);
       });
 
@@ -667,7 +668,7 @@ describe('Scroll Tests', () => {
         .spyOn(s2.facet, 'isScrollOverTheViewport')
         .mockImplementationOnce(() => true);
 
-      s2.on(S2Event.ROW_CELL_SCROLL, onRowCellScroll);
+      s2.on(S2Event.GLOBAL_SCROLL, onScroll);
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: 0,
@@ -679,7 +680,7 @@ describe('Scroll Tests', () => {
 
       await sleep(200);
 
-      expect(onRowCellScroll).toHaveBeenCalled();
+      expect(onScroll).toHaveBeenCalled();
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', () => {

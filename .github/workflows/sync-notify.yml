@@ -43,6 +43,6 @@ jobs:
                 "title": "🚨 🔁 同步 Changelog 失败",
                 "text": "🔗 请点击链接查看具体原因, 点击右上角 [Re-run all jobs] 手动同步 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/sync-site-lock-changelog-with-pr.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*RXmkQrNYxqoAAAAAAAAAAAAADmJ7AQ/original"
               }
             }

@@ -1,4 +1,4 @@
-import { forEach, has, intersection, last, set } from 'lodash';
+import { forEach, has, intersection, last, set, find, get } from 'lodash';
 import type { CellData } from '../../data-set/cell-data';
 import {
   EXTRA_FIELD,
@@ -14,6 +14,7 @@ import type {
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
+import type { Meta } from '../../common/interface/basic';
 
 export function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
@@ -316,4 +317,26 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     // exit iteration early when pathMeta not exists
     return idx === 0 && path === ROOT_NODE_ID;
   });
+}
+
+export function generateExtraFieldMeta(
+  meta: Meta[],
+  cornerExtraFieldText: string | undefined,
+  defaultText: string,
+) {
+  const valueFormatter = (value: string) => {
+    const currentMeta = find(meta, ({ field }: Meta) => field === value);
+
+    return get(currentMeta, 'name', value);
+  };
+  // 虚拟列字段，为文本分类字段
+  const extraFieldName = cornerExtraFieldText || defaultText;
+
+  const extraFieldMeta: Meta = {
+    field: EXTRA_FIELD,
+    name: extraFieldName,
+    formatter: (value: unknown) => valueFormatter(value as string),
+  };
+
+  return extraFieldMeta;
 }
