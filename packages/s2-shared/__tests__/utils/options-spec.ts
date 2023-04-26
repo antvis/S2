@@ -1,20 +1,13 @@
 import { DEFAULT_MOBILE_OPTIONS, DeviceType, LayoutWidthTypes } from '@antv/s2';
-import { pick } from 'lodash';
+import { omit, pick } from 'lodash';
 import {
   getBaseSheetComponentOptions,
   getMobileSheetComponentOptions,
 } from '../../src';
 
 describe('Options Tests', () => {
-  beforeEach(() => {
-    Object.defineProperty(window, 'devicePixelRatio', {
-      value: 2,
-      configurable: true,
-    });
-  });
-
   test('should get safety options', () => {
-    const options = getBaseSheetComponentOptions();
+    const options = omit(getBaseSheetComponentOptions(), ['devicePixelRatio']);
 
     expect(options).toMatchInlineSnapshot(`
       Object {
@@ -24,7 +17,6 @@ describe('Options Tests', () => {
         "customSVGIcons": Array [],
         "debug": false,
         "device": "pc",
-        "devicePixelRatio": 2,
         "frozen": Object {
           "colCount": 0,
           "rowCount": 0,

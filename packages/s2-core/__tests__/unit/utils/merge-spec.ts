@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import type { S2DataConfig } from '@/common';
 import {
   customMerge,
@@ -6,13 +7,6 @@ import {
 } from '@/utils/merge';
 
 describe('merge test', () => {
-  beforeEach(() => {
-    Object.defineProperty(window, 'devicePixelRatio', {
-      value: 2,
-      configurable: true,
-    });
-  });
-
   test('should replace old array with new one', () => {
     expect(customMerge({ arr: [1, 2, 3] }, { arr: [4, 5, 6] })).toEqual({
       arr: [4, 5, 6],
@@ -183,7 +177,8 @@ describe('merge test', () => {
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑demo 修改了默认配置 直接提交
-    expect(getSafetyOptions(null)).toMatchInlineSnapshot(`
+    expect(omit(getSafetyOptions(null), ['devicePixelRatio']))
+      .toMatchInlineSnapshot(`
       Object {
         "conditions": Object {},
         "cornerExtraFieldText": "",
@@ -191,7 +186,6 @@ describe('merge test', () => {
         "customSVGIcons": Array [],
         "debug": false,
         "device": "pc",
-        "devicePixelRatio": 2,
         "frozen": Object {
           "colCount": 0,
           "rowCount": 0,
