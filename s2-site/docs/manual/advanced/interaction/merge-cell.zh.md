@@ -289,12 +289,14 @@ const s2Options = {
   },
   // 表格渲染后，会展示一个合并单元格
   mergedCellsInfo: [
-    { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-    { colIndex: 1, rowIndex: 7 },
-    { colIndex: 2, rowIndex: 6 },
-    { colIndex: 2, rowIndex: 7 },
-    { colIndex: 3, rowIndex: 6 },
-    { colIndex: 3, rowIndex: 7 },
+    [
+      { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
+      { colIndex: 1, rowIndex: 7 },
+      { colIndex: 2, rowIndex: 6 },
+      { colIndex: 2, rowIndex: 7 },
+      { colIndex: 3, rowIndex: 6 },
+      { colIndex: 3, rowIndex: 7 },
+    ]
   ]
 }
 

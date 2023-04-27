@@ -33,12 +33,13 @@ const s2Options = {
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter) |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder |  `string \| (meta: Record<string, any>) => string` |    |  | 空单元格的填充内容 |
-| cornerText | string |    |  | 自定义角头文本 （自定义树 `hierarchyType: customTree` 时有效） |
+| cornerText | string |    |  | 自定义角头文本 （仅在树状模式有效） |
 | cornerExtraFieldText | string |    |  | 自定义角头虚拟数值字段文本 （数值挂行头时有效，替换 "数值" 这两个字） |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |
 | colCell | [CellCallback](#cellcallback) |  |  |   自定义列头 cell |
+| mergedCell | [MergedCellCallback](#mergedcellcallback) |  |  |   自定义合并单元格 |
 | cornerHeader | [CornerHeaderCallback](#cornerheadercallback) |    |  | 自定义角头 |
 | layoutHierarchy | [LayoutHierarchy](#layouthierarchy) |  |    | 自定义层级结构 |
 | layoutArrange | [LayoutArrange](#layoutarrange) |  |  |   自定义排列顺序 |
@@ -89,6 +90,16 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 | node        | 当前渲染的 node 节点             | [Node](/docs/api/basic-class/node)               | -      | ✓    |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | -      | ✓    |
 | restOptions | 不定参数，传递额外的信息         | `unknown[]`                                      | -      |      |
+
+## MergedCellCallback
+
+```js
+DataCellCallback = (s2: Spreadsheet, cells: S2CellType[],viewMeta: ViewMeta) => MergedCell;
+```
+
+功能描述：自定义合并单元格，[ViewMeta](#viewmeta)
+
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CornerHeaderCallback
 

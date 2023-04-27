@@ -32,6 +32,7 @@ import {
 } from '../utils/condition/state-controller';
 import { CellTypes } from '../common';
 import type { CellMeta, RowData, CustomHeaderField } from '../common';
+import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -190,6 +191,19 @@ export abstract class BaseDataSet {
     this.filterParams = filterParams;
     this.displayData = this.originData;
     this.indexesData = [];
+  }
+
+  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
+    const newMeta: Meta[] = [
+      ...meta,
+      generateExtraFieldMeta(
+        meta,
+        this.spreadsheet?.options?.cornerExtraFieldText,
+        defaultExtraFieldText,
+      ),
+    ];
+
+    return newMeta;
   }
 
   public getDisplayDataSet() {

@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.5...@antv/s2-vue-v2.0.0-next.6) (2023-04-23)
+
+
+### Bug Fixes
+
+*  修复 vue playground 启动失败 ([#2104](https://github.com/antvis/S2/issues/2104)) ([a62974d](https://github.com/antvis/S2/commit/a62974d88e1e3f6d3dcc16daf936a95236e9d6d3))
+
 # [@antv/s2-vue-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.4...@antv/s2-vue-v2.0.0-next.5) (2023-02-22)
 
 # [@antv/s2-vue-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v1.5.0) (2022-12-09)

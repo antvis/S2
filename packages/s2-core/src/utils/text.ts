@@ -525,7 +525,7 @@ export const drawObjectText = (
         fontParam: curStyle,
         placeholder: emptyPlaceholder,
       });
-      const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+      const actualTextWidth = measureTextWidth(ellipsisText, curStyle);
 
       const groupedIconNames: GroupedIconNames = {
         left: [],
@@ -546,7 +546,7 @@ export const drawObjectText = (
 
       const textY = getVerticalTextPosition(
         contentBoxes[i][j],
-        textStyle!.textBaseline!,
+        curStyle!.textBaseline!,
       );
       const iconY = getVerticalIconPosition(
         iconStyle.size!,
@@ -555,12 +555,19 @@ export const drawObjectText = (
         curStyle.textBaseline!,
       );
 
-      const textShape = renderText(cell, [], {
-        x: textX,
-        y: textY,
-        text: ellipsisText,
-        ...curStyle,
-      });
+      const textShape = renderText(
+        cell,
+        [],
+        {
+          x: textX,
+          y: textY,
+          text: ellipsisText,
+          ...curStyle,
+        },
+        {
+          originalText: curText,
+        },
+      );
 
       cell.addTextShape(textShape);
 

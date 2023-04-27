@@ -10,11 +10,11 @@ s2.store.get('key') // 获取
 s2.store.set('key', value) // 存储
 ```
 
-| parameter                | illustrate                                                          | type                                                          |
-| ------------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------- |
-| scrollX                  | horizontal scroll offset                                            | `number`                                                      |
-| scrollX                  | vertical scroll offset                                              | `number`                                                      |
-| hRowScrollX              | vertical header scroll offset                                       | `number`                                                      |
+| parameter                | illustrate                                                          | type                                                             |
+| ------------------------ | ------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| scrollX                  | horizontal scroll offset                                            | `number`                                                         |
+| scrollY                  | vertical scroll offset                                              | `number`                                                         |
+| rowHeaderScrollX              | vertical header scroll offset                                       | `number`                                                         |
 | sortParam                | Column header sorting configuration                                 | [SortParam](/docs/api/components/sheet-component/#sortparams) |
 | drillDownIdPathMap       | Drill down node id and corresponding generated path addressing path | `Map<string, number[][]>`                                     |
 | drillDownNode            | current drill-down node                                             | [node](/docs/api/basic-class/node)                            |

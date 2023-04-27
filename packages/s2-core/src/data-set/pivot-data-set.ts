@@ -296,7 +296,7 @@ export class PivotDataSet extends BaseDataSet {
         : uniq([...rows, EXTRA_FIELD]);
     }
 
-    const newMeta: Meta[] = this.processMeta(meta);
+    const newMeta: Meta[] = this.processMeta(meta, i18n('数值'));
 
     return {
       data,
@@ -309,26 +309,6 @@ export class PivotDataSet extends BaseDataSet {
       },
       sortParams,
     };
-  }
-
-  public processMeta(meta: Meta[]) {
-    const valueFormatter = (value: string) => {
-      const currentMeta = find(meta, ({ field }: Meta) => field === value);
-
-      return get(currentMeta, 'name', value);
-    };
-
-    // 虚拟列字段，为文本分类字段
-    const extraFieldName =
-      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
-
-    const extraFieldMeta: Meta = {
-      field: EXTRA_FIELD,
-      name: extraFieldName,
-      formatter: (value: string) => valueFormatter(value),
-    } as Meta;
-
-    return [...meta, extraFieldMeta];
   }
 
   public getDimensionValues(field: string, query?: Query): string[] {

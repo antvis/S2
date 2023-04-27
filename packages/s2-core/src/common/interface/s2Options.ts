@@ -3,6 +3,7 @@ import type {
   CornerHeaderCallback,
   DataCellCallback,
   FrameCallback,
+  MergedCellCallback,
   MergedCellInfo,
   Pagination,
   Totals,
@@ -149,6 +150,11 @@ export interface S2BasicOptions<
    * 自定义列头单元格
    */
   colCell?: CellCallback<ColHeaderConfig>;
+
+  /**
+   * 自定义合并单元格
+   */
+  mergedCell?: MergedCellCallback;
 
   /**
    * 自定义表格框架/边框

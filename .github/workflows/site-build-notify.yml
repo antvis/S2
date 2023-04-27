@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Site Build Success Notify
+      - name: Old Site Build Success Notify
         uses: zcong1993/actions-ding@master
         with:
           dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
@@ -16,9 +16,25 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "✅ 官网部署成功",
-                "text": "点击访问",
-                "messageUrl": "https://s2.antv.antgroup.com",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+                "title": "✅ 旧官网(https://s2.antv.vision) 部署成功",
+                "text": "点击访问 https://s2.antv.vision/",
+                "messageUrl": "https://s2.antv.vision/",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eel8Rp5jlAkAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
+
+      - name: New Site Build Notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "📢 请发布值班手动部署新官网 (https://s2.antv.antgroup.com) 📢",
+                "text": "点击查看部署教程",
+                "messageUrl": "https://yuque.antfin-inc.com/spreadsheet/garqs6/hednl5#RfuD9",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*RXmkQrNYxqoAAAAAAAAAAAAADmJ7AQ/original"
               }
             }

@@ -68,6 +68,9 @@ import {
   getIconTotalWidth,
   type GroupedIconNames,
 } from '../utils/cell/header-cell';
+import { checkIsLinkField } from '../utils/interaction/link-field';
+import type { Node } from '../facet/layout/node';
+import type { ViewMeta } from '../common/interface/basic';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -383,6 +386,19 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       isLinkFieldText: true,
       cellData: this.meta,
     };
+  }
+
+  // 要被子类覆写，返回颜色字符串
+  protected getLinkFieldStyle(): string {
+    return this.getTextStyle().linkTextFill!;
+  }
+
+  protected drawLinkField(meta: Node | ViewMeta) {
+    const { linkFields = [] } = this.spreadsheet.options.interaction!;
+    const linkTextFill = this.getLinkFieldStyle();
+    const isLinkField = checkIsLinkField(linkFields, meta);
+
+    this.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
   // 根据当前state来更新cell的样式

@@ -58,11 +58,11 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
 
   /**
    * Only call when hRowScrollBar scrolls
-   * @param rowScrollX  hRowScrollbar horizontal offset
+   * @param rowHeaderScrollX  hRowScrollbar horizontal offset
    * @param type
    */
-  public onRowScrollX(rowScrollX: number, type: string): void {
-    this.headerConfig.scrollX = rowScrollX;
+  public onRowScrollX(rowHeaderScrollX: number, type: string): void {
+    this.headerConfig.scrollX = rowHeaderScrollX;
     this.render(type);
   }
 
