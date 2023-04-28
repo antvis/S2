@@ -1,3 +1,11 @@
+# [@antv/s2-v1.45.1](https://github.com/antvis/S2/compare/@antv/s2-v1.45.0...@antv/s2-v1.45.1) (2023-04-28)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复特定配置下点击 tooltip 内容后 tooltip 关闭 close [#2170](https://github.com/antvis/S2/issues/2170) ([#2172](https://github.com/antvis/S2/issues/2172)) ([6219e57](https://github.com/antvis/S2/commit/6219e579364cfb7ac3a8b3db4ae01c5672d7f2d4))
+* 行头过宽且不冻结时滚动条渲染错误 ([#2173](https://github.com/antvis/S2/issues/2173)) ([ab79ea0](https://github.com/antvis/S2/commit/ab79ea0664046bc6479a717d7b3b0ee7efe05b31))
+
 # [@antv/s2-v1.45.0](https://github.com/antvis/S2/compare/@antv/s2-v1.44.0...@antv/s2-v1.45.0) (2023-04-21)
 
 
