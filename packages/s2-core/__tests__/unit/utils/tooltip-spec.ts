@@ -473,7 +473,7 @@ describe('Tooltip Utils Tests', () => {
     };
 
     const getTotalInfo = (isTotalCell: boolean, count: number) => {
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const dataCells = s2.facet.getDataCells();
       const selectedCells = isTotalCell
         ? [
             dataCells.find((cell) => {
@@ -647,7 +647,7 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells().find((cell) => {
+        const rowCell = s2.facet.getRowCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -697,7 +697,7 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells().find((cell) => {
+        const colCell = s2.facet.getColCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -721,13 +721,11 @@ describe('Tooltip Utils Tests', () => {
       });
       s2.render();
 
-      const grandTotalRowCell = s2.interaction
-        .getAllRowHeaderCells()
-        .find((cell) => {
-          const meta = cell.getMeta();
+      const grandTotalRowCell = s2.facet.getRowCells().find((cell) => {
+        const meta = cell.getMeta();
 
-          return meta.isGrandTotals;
-        });
+        return meta.isGrandTotals;
+      });
 
       const tooltipData = getMockTooltipData(grandTotalRowCell!);
 
@@ -746,15 +744,11 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const colLeafCell = s2.interaction
-          .getAllColHeaderCells()
-          .find((cell) => {
-            const meta = cell.getMeta();
+        const colLeafCell = s2.facet.getColCells().find((cell) => {
+          const meta = cell.getMeta();
 
-            return (
-              (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf
-            );
-          });
+          return (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf;
+        });
 
         const tooltipData = getMockTooltipData(colLeafCell!);
 
@@ -775,7 +769,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+        const rowCell = s2.facet.getRowCells()[0];
 
         const tooltipData = getMockTooltipData(rowCell);
 
@@ -786,7 +780,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells()[0];
+        const colCell = s2.facet.getColCells()[0];
 
         const tooltipData = getMockTooltipData(colCell);
 
@@ -797,7 +791,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+        const dataCell = s2.facet.getDataCells()[0];
 
         const tooltipData = getMockTooltipData(dataCell);
 
@@ -813,21 +807,17 @@ describe('Tooltip Utils Tests', () => {
           });
           s2.render();
 
-          const colTotalCell = s2.interaction
-            .getAllColHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const colTotalCell = s2.facet.getColCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
-          const rowTotalCell = s2.interaction
-            .getAllRowHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const rowTotalCell = s2.facet.getRowCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
           expect(getMockTooltipData(colTotalCell!).description).toBeUndefined();
           expect(getMockTooltipData(rowTotalCell!).description).toBeUndefined();

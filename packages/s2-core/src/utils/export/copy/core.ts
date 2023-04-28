@@ -34,8 +34,8 @@ export const getHeaderNodeFromMeta = (
   const { rowIndex, colIndex } = meta;
 
   return [
-    spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
-    spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
+    spreadsheet.facet.getRowNodes().find((row) => row.rowIndex === rowIndex),
+    spreadsheet.facet.getColNodes().find((col) => col.colIndex === colIndex),
   ];
 };
 

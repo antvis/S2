@@ -211,7 +211,7 @@ describe('Merge Cells Test', () => {
   });
 
   test('should get cells in the outside of visible area through mergeCellInfo', () => {
-    mockInstance.facet.layoutResult.getCellMeta = jest
+    mockInstance.facet.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
 
@@ -244,7 +244,7 @@ describe('Merge Cells Test', () => {
   });
 
   test('should get the data cell and meta that make up the mergedCell. (getTempMergedCell)', () => {
-    mockInstance.facet.layoutResult.getCellMeta = jest
+    mockInstance.facet.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
 

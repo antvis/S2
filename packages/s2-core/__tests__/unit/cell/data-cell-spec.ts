@@ -481,7 +481,7 @@ describe('Data Cell Tests', () => {
     };
 
     test('should be highlight entire row data cells when the row header is clicked', () => {
-      const allRowCells = s2.interaction.getAllRowHeaderCells();
+      const allRowCells = s2.facet.getRowCells();
       const mockCell = allRowCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);
@@ -502,7 +502,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should be highlight entire column data cells when the column header is clicked', () => {
-      const allColumnCells = s2.interaction.getAllColHeaderCells();
+      const allColumnCells = s2.facet.getColCells();
       const mockCell = allColumnCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);
@@ -523,7 +523,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should be highlight data cell when the data cell is clicked', () => {
-      const allDataCells = s2.interaction.getAllCells();
+      const allDataCells = s2.facet.getDataCells();
       const mockCell = allDataCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);

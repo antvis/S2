@@ -19,7 +19,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
   private bindCornerCellClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (event) => {
-      const { interaction } = this.spreadsheet;
+      const { interaction, facet } = this.spreadsheet;
       const cornerCell = this.spreadsheet.getCell(event.target);
 
       if (!cornerCell) {
@@ -29,7 +29,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
       // 获取当前角头所对应那一列的行头单元格节点
       const cornerCellMeta = cornerCell.getMeta();
       const rowNodes = cornerCellMeta?.field
-        ? this.getRowNodesByField(cornerCellMeta?.field)
+        ? facet.getRowNodesByField(cornerCellMeta?.field)
         : [];
       const sample = rowNodes[0]?.belongsCell;
       const cells = this.getRowCells(rowNodes);
@@ -48,7 +48,6 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      // TODO: next 版本统一梳理下对外暴露的 api, 也可以新增一些 交互方法, 减少模板代码: eg. `selectRowCells`, `selectColCells`, `getRowNodesByField`
       interaction.addIntercepts([InterceptType.HOVER]);
       interaction.changeState({
         cells,
@@ -62,12 +61,6 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
         interaction.getActiveCells(),
       );
     });
-  }
-
-  private getRowNodesByField(field: string): Node[] {
-    return this.spreadsheet
-      .getRowNodes()
-      .filter((node) => node.field === field);
   }
 
   private getRowCells(nodes: Node[]): CellMeta[] {

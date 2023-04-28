@@ -65,7 +65,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should render custom layout column nodes', () => {
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,
@@ -79,7 +79,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should calc correctly col index of leaf nodes', () => {
-    const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+    const colLeafNodes = s2.facet.getColLeafNodes().map((node) => {
       return {
         value: node.value,
         colIndex: node.colIndex,
@@ -102,7 +102,7 @@ describe('TableSheet Custom Tests', () => {
     });
     s2.render(false);
 
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         height: node.height,
@@ -114,7 +114,7 @@ describe('TableSheet Custom Tests', () => {
 
   test('should select custom col header cell', () => {
     // 地区
-    const colNode = s2.getColumnNodes()[0];
+    const colNode = s2.facet.getColNodes()[0];
 
     // 选中地区
     s2.interaction.selectHeaderCell({
@@ -145,7 +145,7 @@ describe('TableSheet Custom Tests', () => {
     const [measureDetail] = hiddenColumnsDetail;
 
     expect(s2.options.interaction?.hiddenColumnFields).toEqual(hiddenColumns);
-    expect(s2.getColumnNodes().map((node) => node.field)).toEqual([
+    expect(s2.facet.getColNodes().map((node) => node.field)).toEqual([
       'area',
       'province',
       'city',
@@ -208,7 +208,7 @@ describe('TableSheet Custom Tests', () => {
     });
     s2.render(false);
 
-    expect(s2.getColumnNodes()[0].value).toEqual('序号');
+    expect(s2.facet.getColNodes()[0].value).toEqual('序号');
   });
 
   test('should render custom series number text', () => {
@@ -220,7 +220,7 @@ describe('TableSheet Custom Tests', () => {
     });
     s2.render(false);
 
-    expect(s2.getColumnNodes()[0].value).toEqual(seriesNumberText);
+    expect(s2.facet.getColNodes()[0].value).toEqual(seriesNumberText);
   });
 
   test('should render correctly column height if enable series number', () => {
@@ -229,8 +229,8 @@ describe('TableSheet Custom Tests', () => {
     });
     s2.render(false);
 
-    const nodes = s2
-      .getColumnNodes()
+    const nodes = s2.facet
+      .getColNodes()
       .filter((node) => node.level === 0 && node.isLeaf);
 
     const cellHeight = s2.facet.layoutResult.colsHierarchy.height;
@@ -263,7 +263,7 @@ describe('TableSheet Custom Tests', () => {
     });
     s2.render();
 
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,

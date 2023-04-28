@@ -120,8 +120,10 @@ export const createMockCellInfo = (
       options: {
         style: {},
       },
-      getRowNodes: jest.fn(),
-      getColumnNodes: jest.fn(),
+      facet: {
+        getRowNodes: jest.fn(),
+        getColNodes: jest.fn(),
+      },
       dataCfg: {
         meta: null,
         data: [],

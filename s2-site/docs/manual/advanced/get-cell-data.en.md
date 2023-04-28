@@ -41,7 +41,7 @@ For numerical cells, due to the characteristics of virtual scrolling, it needs t
 ```ts
 
 // 当前可视范围内的数值单元格
-s2.interaction.getPanelGroupAllDataCells()
+s2.facet.getDataCells()
 // 当前可视范围内未选中的数值单元格
 s2.interaction.getPanelGroupAllUnSelectedDataCells()
 ```
@@ -154,9 +154,9 @@ As shown in the figure, for example, we want to obtain the number of office supp
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
 

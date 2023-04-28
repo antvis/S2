@@ -31,8 +31,10 @@ describe('Hide Columns Tests', () => {
 
   beforeEach(() => {
     sheet = {
-      getInitColumnLeafNodes: () => initColumnNodes,
-      getColumnNodes: () => initColumnNodes,
+      facet: {
+        getInitColLeafNodes: () => initColumnNodes,
+        getColNodes: () => initColumnNodes,
+      },
     } as PivotSheet;
 
     mockSpreadSheetInstance = new PivotSheet(
@@ -47,7 +49,7 @@ describe('Hide Columns Tests', () => {
       },
       null,
     );
-    mockSpreadSheetInstance.getInitColumnLeafNodes = () =>
+    mockSpreadSheetInstance.facet.getInitColLeafNodes = () =>
       initColumnNodes as Node[];
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
@@ -59,7 +61,7 @@ describe('Hide Columns Tests', () => {
   });
 
   test('should return empty list when there is not init columns', () => {
-    sheet.getInitColumnLeafNodes = function fn() {
+    sheet.facet.getInitColLeafNodes = function fn() {
       return [];
     };
     expect(getHiddenColumnNodes(sheet, ['1', '2', '3'])).toEqual([]);
@@ -199,7 +201,8 @@ describe('Hide Columns Tests', () => {
 
   test('should get correct last column when default last column has been hidden', () => {
     // hidden last column
-    sheet.getInitColumnLeafNodes = () => initColumnNodes.slice(0, -1) as Node[];
+    sheet.facet.getInitColLeafNodes = () =>
+      initColumnNodes.slice(0, -1) as Node[];
     expect(isLastColumnAfterHidden(sheet, '5')).toBeTruthy();
     expect(isLastColumnAfterHidden(sheet, '4')).toBeFalsy();
   });

@@ -223,8 +223,8 @@ describe('SpreadSheet Theme Tests', () => {
         containsDataCells = false,
         customNodes,
       } = options;
-      const targetNodes = customNodes || s2.getColumnLeafNodes();
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const targetNodes = customNodes || s2.facet.getColLeafNodes();
+      const dataCells = s2.facet.getDataCells();
 
       expect(targetNodes).not.toHaveLength(0);
 
@@ -274,7 +274,7 @@ describe('SpreadSheet Theme Tests', () => {
 
       s2.render();
 
-      const rowMeasureFields = s2
+      const rowMeasureFields = s2.facet
         .getRowNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
@@ -295,8 +295,8 @@ describe('SpreadSheet Theme Tests', () => {
 
       s2.render();
 
-      const colMeasureFields = s2
-        .getColumnNodes()
+      const colMeasureFields = s2.facet
+        .getColNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
       expectTextAlign({
@@ -371,10 +371,12 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.render();
 
-        const rowTotalNodes = s2.getRowNodes().filter((node) => node.isTotals);
+        const rowTotalNodes = s2.facet
+          .getRowNodes()
+          .filter((node) => node.isTotals);
 
-        const colTotalNodes = s2
-          .getColumnNodes()
+        const colTotalNodes = s2.facet
+          .getColNodes()
           .filter((node) => node.isTotals);
 
         expectTextAlign({

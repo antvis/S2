@@ -25,7 +25,7 @@ s2.store.set('key', value) // 存储
 | panelBBox                | Visual area wrapping box model                                      | [BBox](/docs/api/basic-class/spreadsheet/#bbox)               |
 | activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.vision/zh/docs/api/group)              |
 | valueRanges              | conditional format value range                                      | [ValueRanges](#valueranges)                                   |
-| initColumnLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/docs/api/basic-class/node)                        |
+| initColLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/docs/api/basic-class/node)                        |
 | hiddenColumnsDetail      | Hidden column header details                                        | [HiddenColumnsInfo\[\]](#hiddencolumnsinfo)                   |
 | lastRenderedColumnFields | The column header configuration of the last render                  | `string[]`                                                    |
 | resized                  | Whether to manually adjust the width and height                     | `boolean`                                                     |

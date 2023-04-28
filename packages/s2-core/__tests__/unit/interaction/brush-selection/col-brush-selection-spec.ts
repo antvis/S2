@@ -95,7 +95,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushColCell) as any;
-    mockRootInteraction.getAllColHeaderCells = () =>
+    mockSpreadSheetInstance.facet.getColCells = () =>
       allColHeaderCells as unknown as ColCell[];
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
@@ -129,7 +129,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
       x: 210,
       y: 60,
     });
-    expect(mockSpreadSheetInstance.interaction.getAllColHeaderCells()).toEqual(
+    expect(mockSpreadSheetInstance.facet.getColCells()).toEqual(
       allColHeaderCells,
     );
   });

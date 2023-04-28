@@ -381,8 +381,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.isCustomColumnFields() ||
       this.spreadsheet.isTableMode()
     ) {
-      return this.spreadsheet
-        .getColumnNodes()
+      return this.spreadsheet.facet
+        .getColNodes()
         .filter(
           (node) =>
             node.level === resizeInfo.meta?.level &&

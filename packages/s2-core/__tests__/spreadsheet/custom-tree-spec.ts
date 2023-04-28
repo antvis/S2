@@ -34,7 +34,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       .map((cell: HeaderCell) => cell.getActualText());
 
   const mapRowNodes = (spreadsheet: SpreadSheet) =>
-    spreadsheet.getRowLeafNodes().map((node) => {
+    spreadsheet.facet.getRowLeafNodes().map((node) => {
       const iconName = (node.belongsCell as HeaderCell).getTreeIcon()?.config
         .name;
 
@@ -86,7 +86,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should render custom layout row nodes', () => {
-    const rowNodes = s2.getRowNodes().map((node) => {
+    const rowNodes = s2.facet.getRowNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,
@@ -99,7 +99,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should calc correctly row index of leaf nodes', () => {
-    const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+    const rowLeafNodes = s2.facet.getRowLeafNodes().map((node) => {
       return {
         value: node.value,
         rowIndex: node.rowIndex,
@@ -111,7 +111,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should select custom row header cell', () => {
     // a-1
-    const rowNode = s2.getRowNodes()[0];
+    const rowNode = s2.facet.getRowNodes()[0];
 
     // 选中 a-1
     s2.interaction.selectHeaderCell({
@@ -140,7 +140,9 @@ describe('SpreadSheet Custom Tree Tests', () => {
   ])(
     'should get selected cell summary infos for %o',
     ({ field, count, sum }) => {
-      const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
+      const rowNode = s2.facet
+        .getRowNodes()
+        .find((node) => node.field === field)!;
 
       // 选中
       s2.interaction.selectHeaderCell({

@@ -68,8 +68,8 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy normal data', () => {
-    const cell = s2.interaction
-      .getPanelGroupAllDataCells()
+    const cell = s2.facet
+      .getDataCells()
       .find((cell) => !(cell instanceof TableSeriesCell))!;
 
     s2.interaction.changeState({
@@ -80,8 +80,8 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy col data', () => {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[3];
 
     s2.interaction.changeState({
@@ -92,8 +92,8 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy row data', () => {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter((cell) => cell instanceof TableSeriesCell)[3];
 
     s2.interaction.changeState({
@@ -126,8 +126,8 @@ describe('List Table Core Data Process', () => {
     });
     s2.render();
 
-    const cell = s2.interaction
-      .getPanelGroupAllDataCells()
+    const cell = s2.facet
+      .getDataCells()
       .find((cell) => !(cell instanceof TableSeriesCell))!;
 
     s2.interaction.changeState({
@@ -156,8 +156,8 @@ describe('List Table Core Data Process', () => {
     );
 
     ss.render();
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(
         (cell) =>
           cell.cellType === CellTypes.DATA_CELL &&
@@ -192,8 +192,8 @@ describe('List Table Core Data Process', () => {
 
     ss.render();
 
-    const cell = ss.interaction
-      .getAllCells()
+    const cell = ss.facet
+      .getCells()
       .filter((cell) => cell instanceof TableDataCell)[0];
 
     ss.interaction.changeState({
@@ -227,8 +227,8 @@ describe('List Table Core Data Process', () => {
 
     ss.render();
 
-    const cell = ss.interaction
-      .getAllCells()
+    const cell = ss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[1];
 
     ss.interaction.changeState({
@@ -244,8 +244,8 @@ describe('List Table Core Data Process', () => {
   it('should copy correct data when selected diagonal cells', () => {
     s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
+    const cells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     s2.interaction.changeState({
@@ -256,14 +256,14 @@ describe('List Table Core Data Process', () => {
     const dataContent = getCopyPlainContent(s2);
 
     expect(dataContent).toMatchInlineSnapshot(`
-      "浙江省	
-      	
-      	
-      	
-      	
-      	
-      	
-      	
+      "浙江省
+
+
+
+
+
+
+
       	宁波市"
     `);
   });
@@ -281,8 +281,8 @@ describe('List Table Core Data Process', () => {
       filteredValues: ['浙江省'],
     });
 
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter((cell) => cell instanceof TableSeriesCell)[3];
 
     s2.interaction.changeState({
@@ -312,8 +312,8 @@ describe('List Table Core Data Process', () => {
       },
     ]);
 
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter((cell) => cell instanceof TableSeriesCell)[1];
 
     s2.interaction.changeState({
@@ -353,8 +353,8 @@ describe('List Table Core Data Process', () => {
 
     sss.render();
 
-    const cell = sss.interaction
-      .getAllCells()
+    const cell = sss.facet
+      .getCells()
       .filter(
         (cell) =>
           cell.cellType === CellTypes.DATA_CELL &&
@@ -394,8 +394,8 @@ describe('List Table Core Data Process', () => {
 
     sss.render();
 
-    const cell = sss.interaction
-      .getAllCells()
+    const cell = sss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[40];
 
     sss.interaction.changeState({
@@ -418,8 +418,8 @@ describe('List Table Core Data Process', () => {
 
     s2.render();
 
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     s2.interaction.changeState({
@@ -428,7 +428,7 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "1	浙江省	杭州市	家具	### 问题摘要 
+      "1	浙江省	杭州市	家具	### 问题摘要
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
@@ -483,8 +483,8 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   it('should copy normal data in grid mode', () => {
-    const allDataCells = s2.interaction
-      .getAllCells()
+    const allDataCells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     const hangzhouDeskCell = allDataCells[0];
@@ -512,8 +512,8 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   it('should copy col data in grid mode', () => {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[0];
 
     s2.interaction.changeState({
@@ -536,8 +536,8 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     ss.render();
-    const cell = ss.interaction
-      .getAllCells()
+    const cell = ss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)
       .pop();
 
@@ -579,8 +579,8 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     ss.render();
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     ss.interaction.changeState({
@@ -598,8 +598,8 @@ describe('Pivot Table Core Data Process', () => {
     });
     s2.render();
 
-    const allDataCells = s2.interaction
-      .getAllCells()
+    const allDataCells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     const hangzhouDeskCell = allDataCells[0];
@@ -646,8 +646,8 @@ describe('Pivot Table Core Data Process', () => {
 
     s2.render();
 
-    const allDataCells = s2.interaction
-      .getAllCells()
+    const allDataCells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     const hangzhouDeskCell = allDataCells[0];
@@ -690,8 +690,8 @@ describe('Pivot Table Core Data Process', () => {
     });
     s2.render();
 
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[0];
 
     s2.interaction.changeState({
@@ -718,8 +718,8 @@ describe('Pivot Table Core Data Process', () => {
     });
     s2.render();
 
-    const allRowCells = s2.interaction
-      .getAllCells()
+    const allRowCells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.ROW_CELL);
 
     const hangzhouDeskCell = allRowCells[1];
@@ -775,7 +775,7 @@ describe('Pivot Table Core Data Process', () => {
     } as S2DataConfig);
     s2.render();
 
-    const allColCells = s2.interaction.getAllColHeaderCells();
+    const allColCells = s2.facet.getColCells();
 
     const zhejiangColCell = allColCells[0];
 
@@ -824,14 +824,14 @@ describe('Pivot Table Core Data Process', () => {
         copyWithHeader: false,
       },
     });
-    const node = s2.getColumnNodes().find((node) => node.isLeaf)!;
+    const node = s2.facet.getColNodes().find((node) => node.isLeaf)!;
 
     s2.groupSortByMethod('ASC' as SortMethodType, node);
     s2.setDataCfg(s2.dataCfg);
     s2.render();
 
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)
       .find((e) => e.getMeta().isLeaf)!;
 
@@ -870,8 +870,8 @@ describe('Pivot Table Core Data Process', () => {
 
     sss.render();
 
-    const cell = sss.interaction
-      .getAllCells()
+    const cell = sss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     sss.interaction.changeState({
@@ -910,8 +910,8 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     s2New.render();
-    const cell = s2New.interaction
-      .getAllCells()
+    const cell = s2New.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     s2New.interaction.changeState({
@@ -945,8 +945,8 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     s2New.render();
-    const cell = s2New.interaction
-      .getAllCells()
+    const cell = s2New.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     s2New.interaction.changeState({
@@ -969,8 +969,8 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
     ss.render();
-    const cells = ss.interaction
-      .getAllCells()
+    const cells = ss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     ss.interaction.changeState({
@@ -1011,8 +1011,8 @@ describe('Pivot Table Core Data Process', () => {
       showSeriesNumber: true,
     });
     ss.render();
-    const cells = ss.interaction
-      .getAllCells()
+    const cells = ss.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     ss.interaction.changeState({
@@ -1043,8 +1043,8 @@ describe('Tree Table Core Data Process', () => {
   let s2: PivotSheet;
 
   function setSelectedVisibleCell() {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     s2.interaction.changeState({
@@ -1104,8 +1104,8 @@ describe('Tree Table Core Data Process', () => {
   });
 
   it('should copy col data in grid tree', () => {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[0];
 
     s2.interaction.changeState({
@@ -1129,8 +1129,8 @@ describe('Tree Table Core Data Process', () => {
   });
 
   it('should copy row data in grid tree', () => {
-    const cell = s2.interaction
-      .getAllCells()
+    const cell = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[0];
 
     s2.interaction.changeState({
@@ -1250,13 +1250,13 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   });
 
   test('should copy all row data in grid mode', () => {
-    const cells = s2.interaction.getAllRowHeaderCells();
+    const cells = s2.facet.getRowCells();
 
     s2.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
+        root.updateCells(cells);
       },
     });
 
@@ -1273,13 +1273,13 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   });
 
   test('should copy all col data in grid mode', () => {
-    const cells = s2.interaction.getAllColHeaderCells();
+    const cells = s2.facet.getColCells();
 
     s2.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(cells);
       },
     });
     // 列头高度
@@ -1307,7 +1307,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     ss.render();
 
-    const cells = ss.interaction.getAllRowHeaderCells().filter((c) => {
+    const cells = ss.facet.getRowCells().filter((c) => {
       const meta = c.getMeta();
 
       return (meta.level === 2 || meta.level === 3) && meta.y < 180;
@@ -1317,7 +1317,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
+        root.updateCells(s2.facet.getRowCells());
       },
     });
 
@@ -1331,7 +1331,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
 
     // 圈选行头前两列 中 y < 180 的区域
-    const cells2 = ss.interaction.getAllRowHeaderCells().filter((c) => {
+    const cells2 = ss.facet.getRowCells().filter((c) => {
       const meta = c.getMeta();
 
       return (meta.level === 0 || meta.level === 1) && meta.y < 180;
@@ -1341,7 +1341,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
+        root.updateCells(ss.facet.getRowCells());
       },
     });
 
@@ -1367,7 +1367,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     ss.render();
 
-    const cells = ss.interaction.getAllColHeaderCells().filter((c) => {
+    const cells = ss.facet.getColCells().filter((c) => {
       const meta = c.getMeta();
 
       return (meta.level === 3 || meta.level === 4) && meta.x < 480;
@@ -1377,7 +1377,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(ss.facet.getColCells());
       },
     });
 
@@ -1386,7 +1386,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       number	number	number	number	number"
     `);
 
-    const cells2 = ss.interaction.getAllColHeaderCells().filter((c) => {
+    const cells2 = ss.facet.getColCells().filter((c) => {
       const meta = c.getMeta();
 
       return (meta.level === 0 || meta.level === 1) && meta.x < 480;
@@ -1396,7 +1396,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(ss.facet.getColCells());
       },
     });
     expect(getCopyPlainContent(ss)).toMatchInlineSnapshot(`
@@ -1421,13 +1421,13 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     ss.render();
 
-    const cells = ss.interaction.getAllRowHeaderCells();
+    const cells = ss.facet.getRowCells();
 
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
+        root.updateCells(ss.facet.getRowCells());
       },
     });
 
@@ -1462,13 +1462,13 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     ss.render();
 
-    const cells = ss.interaction.getAllColHeaderCells();
+    const cells = ss.facet.getColCells();
 
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(cells);
       },
     });
 

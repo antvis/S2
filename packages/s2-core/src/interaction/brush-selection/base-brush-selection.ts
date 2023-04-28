@@ -539,8 +539,7 @@ export class BaseBrushSelection
   }
 
   protected setDisplayedCells() {
-    this.displayedCells =
-      this.spreadsheet.interaction.getPanelGroupAllDataCells();
+    this.displayedCells = this.spreadsheet.facet.getDataCells();
   }
 
   protected updatePrepareSelectMask() {

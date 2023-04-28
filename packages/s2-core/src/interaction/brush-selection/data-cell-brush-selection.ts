@@ -131,7 +131,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         return visibleCell;
       }
 
-      const viewMeta = this.spreadsheet.facet.layoutResult.getCellMeta(
+      const viewMeta = this.spreadsheet.facet.getCellMeta(
         meta.rowIndex,
         meta.colIndex,
       )!;

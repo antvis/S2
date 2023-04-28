@@ -64,10 +64,10 @@ jest.mock('@/sheet-type', () => {
         getTotalsConfig: jest.fn().mockReturnValue({}),
         getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
-        getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
+          getColLeafNodes: jest.fn().mockReturnValue([]),
           layoutResult: {
             rowLeafNodes: [],
           },
@@ -198,7 +198,7 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct cell meta', () => {
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
 
     test('should get correct cell meta', () => {
       expect(

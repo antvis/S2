@@ -22,7 +22,6 @@ import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
   FilterParam,
-  GetCellMeta,
   LayoutResult,
   ResizeInteractionOptions,
   S2CellType,
@@ -242,86 +241,93 @@ export class TableFacet extends BaseFacet {
 
   protected doLayout(): LayoutResult {
     const rowsHierarchy = new Hierarchy();
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        spreadsheet: this.spreadsheet,
-      });
+    const { colLeafNodes, colsHierarchy } = this.buildColHeaderHierarchy();
 
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
-    const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
-      const colNode = colLeafNodes[colIndex];
-
-      if (!colNode) {
-        return null;
-      }
-
-      const { showSeriesNumber } = this.spreadsheet.options;
-      const cellHeight = this.getCellHeightByRowIndex(rowIndex);
-      const cellRange = this.getCellRange();
-      const { trailingRowCount: frozenTrailingRowCount = 0 } =
-        getValidFrozenOptions(
-          this.spreadsheet.options.frozen!,
-          colLeafNodes.length,
-          cellRange.end - cellRange.start + 1,
-        );
-
-      let data: ViewMetaData | number;
-
-      const x = colNode.x;
-      let y = this.viewCellHeights.getCellOffsetY(rowIndex);
-
-      if (
-        isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
-      ) {
-        y =
-          this.panelBBox.height -
-          this.getTotalHeightForRange(rowIndex, cellRange.end);
-      }
-
-      if (showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
-        data = rowIndex + 1;
-      } else {
-        data = this.spreadsheet.dataSet.getCellData({
-          query: {
-            col: colNode.field,
-            rowIndex,
-          },
-        });
-      }
-
-      return {
-        spreadsheet: this.spreadsheet,
-        x,
-        y,
-        width: colNode.width,
-        height: cellHeight,
-        data: {
-          [colNode.field]: data,
-        },
-        rowIndex,
-        colIndex,
-        isTotals: false,
-        colId: colNode.id,
-        rowId: String(rowIndex),
-        valueField: colNode.field,
-        fieldValue: data,
-        id: getDataCellId(String(rowIndex), colNode.id),
-      } as ViewMeta;
-    };
-
     return {
       colNodes: colsHierarchy.getNodes(),
-      colsHierarchy,
-      rowNodes: rowsHierarchy.getNodes(),
-      rowsHierarchy,
-      rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
-      getCellMeta,
-      spreadsheet: this.spreadsheet,
+      colsHierarchy,
+      rowNodes: [],
+      rowsHierarchy,
+      rowLeafNodes: [],
+      cornerNodes: [],
+      getCellMeta: this.getCellMeta,
     };
   }
+
+  private buildColHeaderHierarchy() {
+    const colHierarchy = buildHeaderHierarchy({
+      isRowHeader: false,
+      spreadsheet: this.spreadsheet,
+    });
+
+    return {
+      colLeafNodes: colHierarchy.leafNodes,
+      colsHierarchy: colHierarchy.hierarchy,
+    };
+  }
+
+  public getCellMeta = (rowIndex = 0, colIndex = 0) => {
+    const { colLeafNodes } = this.layoutResult;
+    const colNode = colLeafNodes[colIndex];
+
+    if (!colNode) {
+      return null;
+    }
+
+    const { showSeriesNumber } = this.spreadsheet.options;
+    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
+    const cellRange = this.getCellRange();
+    const { trailingRowCount: frozenTrailingRowCount = 0 } =
+      getValidFrozenOptions(
+        this.spreadsheet.options.frozen!,
+        colLeafNodes.length,
+        cellRange.end - cellRange.start + 1,
+      );
+
+    let data: ViewMetaData | number;
+
+    const x = colNode.x;
+    let y = this.viewCellHeights.getCellOffsetY(rowIndex);
+
+    if (isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)) {
+      y =
+        this.panelBBox.height -
+        this.getTotalHeightForRange(rowIndex, cellRange.end);
+    }
+
+    if (showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
+      data = rowIndex + 1;
+    } else {
+      data = this.spreadsheet.dataSet.getCellData({
+        query: {
+          col: colNode.field,
+          rowIndex,
+        },
+      });
+    }
+
+    return {
+      spreadsheet: this.spreadsheet,
+      x,
+      y,
+      width: colNode.width,
+      height: cellHeight,
+      data: {
+        [colNode.field]: data,
+      },
+      rowIndex,
+      colIndex,
+      isTotals: false,
+      colId: colNode.id,
+      rowId: String(rowIndex),
+      valueField: colNode.field,
+      fieldValue: data,
+      id: getDataCellId(String(rowIndex), colNode.id),
+    } as ViewMeta;
+  };
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { dataCell } = this.spreadsheet.options.style!;
@@ -910,7 +916,7 @@ export class TableFacet extends BaseFacet {
   };
 
   addFrozenCell = (colIndex: number, rowIndex: number, group: Group) => {
-    const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
+    const viewMeta = this.getCellMeta(rowIndex, colIndex);
 
     if (viewMeta) {
       viewMeta.isFrozenCorner = true;
@@ -948,7 +954,7 @@ export class TableFacet extends BaseFacet {
       trailingColCount: frozenTrailingColCount = 0,
     } = this.spreadsheet.options.frozen!;
 
-    const colLength = this.spreadsheet.getColumnLeafNodes().length;
+    const colLength = this.getColNodes().length;
     const cellRange = this.getCellRange();
     const { colCount, trailingColCount } = this.getRealFrozenColumns(
       frozenColCount,

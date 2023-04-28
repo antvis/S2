@@ -124,7 +124,7 @@ export const getInvisibleInfo = (
   let viewMeta: ViewMeta | undefined;
 
   forEach(invisibleCellInfo, (cellInfo) => {
-    const meta = sheet?.facet?.layoutResult?.getCellMeta(
+    const meta = sheet?.facet?.getCellMeta(
       cellInfo.rowIndex!,
       cellInfo.colIndex!,
     );
@@ -284,7 +284,7 @@ export const mergeCell = (
     return;
   }
 
-  const allVisibleCells = sheet.interaction.getPanelGroupAllDataCells();
+  const allVisibleCells = sheet.facet.getDataCells();
   const { cells, viewMeta } = getTempMergedCell(
     allVisibleCells,
     sheet,
@@ -425,7 +425,7 @@ export const updateMergedCells = (
   }
 
   // 可见区域的所有cells
-  const allCells = sheet.interaction.getPanelGroupAllDataCells();
+  const allCells = sheet.facet.getDataCells();
 
   if (isEmpty(allCells)) {
     return;

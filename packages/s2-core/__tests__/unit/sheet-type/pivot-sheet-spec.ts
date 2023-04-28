@@ -528,11 +528,11 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get row nodes', () => {
-    expect(s2.getRowNodes()).toHaveLength(3);
+    expect(s2.facet.getRowNodes()).toHaveLength(3);
   });
 
   test('should get column nodes', () => {
-    expect(s2.getColumnNodes()).toHaveLength(3);
+    expect(s2.facet.getColNodes()).toHaveLength(3);
   });
 
   test('should change sheet container size', () => {
@@ -621,15 +621,15 @@ describe('PivotSheet Tests', () => {
 
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
-    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
+    expect(s2.facet.getInitColLeafNodes()).toHaveLength(2);
   });
 
   test('should clear init column nodes', () => {
-    s2.store.set('initColumnLeafNodes', [null, null] as unknown as Node[]);
+    s2.store.set('initColLeafNodes', [null, null] as unknown as Node[]);
 
-    s2.clearColumnLeafNodes();
+    s2.facet.clearInitColLeafNodes();
 
-    expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
+    expect(s2.store.get('initColLeafNodes')).toBeFalsy();
   });
 
   test('should get pivot mode', () => {
@@ -1191,7 +1191,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      sheet.getRowLeafNodes().forEach((node) => {
+      sheet.facet.getRowLeafNodes().forEach((node) => {
         const rowCell = node.belongsCell;
 
         expect(get(rowCell, 'actionIcons')).toHaveLength(0);

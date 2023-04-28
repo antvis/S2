@@ -375,7 +375,7 @@ export const getSelectedCellsData = (
   targetCell: S2CellType,
   showSingleTips?: boolean,
 ): ViewMetaData[] => {
-  const layoutResult = spreadsheet.facet?.layoutResult;
+  const { layoutResult, getCellMeta } = spreadsheet.facet;
 
   /**
    * 当开启小计/总计后
@@ -437,8 +437,8 @@ export const getSelectedCellsData = (
     );
 
     return compact(
-      map(selectedCellIndexes, ([i, j]) => {
-        const currentCellMeta = layoutResult.getCellMeta(i, j);
+      map(selectedCellIndexes, ([rowIndex, colIndex]) => {
+        const currentCellMeta = getCellMeta(rowIndex, colIndex);
 
         if (isBelongTotalCell(currentCellMeta)) {
           return;
@@ -454,18 +454,12 @@ export const getSelectedCellsData = (
 
   return cells
     .filter((cellMeta) => {
-      const meta = layoutResult.getCellMeta(
-        cellMeta.rowIndex,
-        cellMeta.colIndex,
-      );
+      const meta = getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
 
       return !isBelongTotalCell(meta);
     })
     .map((cellMeta) => {
-      const meta = layoutResult.getCellMeta(
-        cellMeta.rowIndex,
-        cellMeta.colIndex,
-      );
+      const meta = getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
 
       return meta?.data || getMergedQuery(meta);
     }) as ViewMetaData[];
@@ -652,7 +646,7 @@ export const getCellsTooltipData = (
   return spreadsheet.interaction
     .getCells()
     .reduce<TooltipData[]>((tooltipData, cellMeta) => {
-      const meta = spreadsheet.facet.layoutResult.getCellMeta(
+      const meta = spreadsheet.facet.getCellMeta(
         cellMeta?.rowIndex,
         cellMeta?.colIndex,
       );

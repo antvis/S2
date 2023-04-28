@@ -357,8 +357,8 @@ describe('drawInterval Test', () => {
     });
     s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
+    const cells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     const allIntervalWidth = map(
@@ -389,8 +389,8 @@ describe('drawInterval Test', () => {
     });
     s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
+    const cells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     const firstIntervalInfo = drawInterval(cells[0] as DataCell);
@@ -421,8 +421,8 @@ describe('drawInterval Test', () => {
     });
     s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
+    const cells = s2.facet
+      .getCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     forEach(cells, (cell) => {

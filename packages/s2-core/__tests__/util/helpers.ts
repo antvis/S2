@@ -125,7 +125,7 @@ export const createFakeSpreadSheet = () => {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
-  s2.getRowNodes = jest.fn().mockReturnValue([]);
+  s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
   s2.isCustomHeaderFields = jest.fn(() => false);

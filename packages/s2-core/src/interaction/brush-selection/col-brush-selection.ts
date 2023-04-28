@@ -64,7 +64,7 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected setDisplayedCells() {
-    this.displayedCells = this.spreadsheet.interaction.getAllColHeaderCells();
+    this.displayedCells = this.spreadsheet.facet.getColCells();
   }
 
   /**
@@ -98,13 +98,13 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const { interaction, facet } = this.spreadsheet;
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(facet.getColCells());
       },
     });
 
@@ -126,5 +126,5 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected onUpdateCells: OnUpdateCells = (root) =>
-    root.updateCells(root.getAllColHeaderCells());
+    root.updateCells(this.spreadsheet.facet.getColCells());
 }

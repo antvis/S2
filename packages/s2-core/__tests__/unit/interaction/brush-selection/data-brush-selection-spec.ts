@@ -99,8 +99,6 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
-    mockRootInteraction.getPanelGroupAllDataCells = () =>
-      panelGroupAllDataCells;
     mockRootInteraction.getSelectedCellHighlight = () => {
       return {
         rowHeader: false,
@@ -111,6 +109,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     };
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
+    mockSpreadSheetInstance.facet.getDataCells = () => panelGroupAllDataCells;
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
@@ -180,15 +179,15 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (brushSelectionInstance as any).updateSelectedCells();
 
-    (mockRootInteraction.getAllColHeaderCells() || [])
+    (mockSpreadSheetInstance.facet.getColCells() || [])
       .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
 
-    mockRootInteraction.getAllCells();
+    mockSpreadSheetInstance.facet.getCells();
 
-    (mockRootInteraction.getAllRowHeaderCells() || [])
+    (mockSpreadSheetInstance.facet.getRowCells() || [])
       .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();

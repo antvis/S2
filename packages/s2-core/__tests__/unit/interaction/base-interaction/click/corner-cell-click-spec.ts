@@ -32,7 +32,7 @@ describe('Interaction Corner Cell Click Tests', () => {
     } as S2Options;
     s2.isTableMode = jest.fn(() => true);
     s2.interaction.reset = jest.fn();
-    s2.getRowNodes = () => [mockCellInfo.mockCell.getMeta() as Node];
+    s2.facet.getRowNodes = () => [mockCellInfo.mockCell.getMeta() as Node];
     cornerCellClick = new CornerCellClick(s2);
   });
 

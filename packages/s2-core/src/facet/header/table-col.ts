@@ -67,7 +67,7 @@ export class TableColHeader extends ColHeader {
       trailingColCount: frozenTrailingColCount = 0,
     } = spreadsheet.options.frozen!;
     const { colIndex } = meta;
-    const colLeafNodes = spreadsheet.getColumnLeafNodes();
+    const colLeafNodes = spreadsheet.facet.getColLeafNodes;
 
     return (
       isFrozenCol(colIndex, frozenColCount) ||
@@ -106,7 +106,9 @@ export class TableColHeader extends ColHeader {
     const { colCount = 0, trailingColCount = 0 } = spreadsheet.options.frozen!;
 
     const leftLeafNode = getLeftLeafNode(node);
-    const topLevelNodes = spreadsheet.getColumnNodes().filter(isTopLevelNode);
+    const topLevelNodes = spreadsheet.facet
+      .getColNodes()
+      .filter(isTopLevelNode);
 
     const {
       colCount: frozenColCount,
@@ -170,7 +172,9 @@ export class TableColHeader extends ColHeader {
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
     const { width, height, spreadsheet } = this.headerConfig;
-    const topLevelNodes = spreadsheet.getColumnNodes().filter(isTopLevelNode);
+    const topLevelNodes = spreadsheet.facet
+      .getColNodes()
+      .filter(isTopLevelNode);
     const { frozenColWidth, frozenTrailingColWidth } = getFrozenColWidth(
       topLevelNodes,
       spreadsheet.options.frozen!,

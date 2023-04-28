@@ -48,8 +48,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell as any;
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
-    s2.interaction.getRowColActiveCells = () =>
-      [mockCell] as unknown as S2CellType[];
+    s2.facet.getHeaderCells = () => [mockCell] as unknown as S2CellType[];
     rowColumnClick = new RowColumnClick(s2 as unknown as SpreadSheet);
     s2.isHierarchyTreeType = () => false;
     s2.dataCfg = {
@@ -58,9 +57,9 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       },
       data: [],
     };
-    s2.getInitColumnLeafNodes = () => initColumnNodes as Node[];
-    s2.getColumnNodes = () => initColumnNodes as Node[];
-    s2.getColumnLeafNodes = () => initColumnNodes as Node[];
+    s2.facet.getInitColLeafNodes = () => initColumnNodes as Node[];
+    s2.facet.getColNodes = () => initColumnNodes as Node[];
+    s2.facet.getColLeafNodes = () => initColumnNodes as Node[];
     s2.options = {
       interaction: {
         hiddenColumnFields: ['a'],

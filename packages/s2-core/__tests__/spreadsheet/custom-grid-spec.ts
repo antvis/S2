@@ -77,7 +77,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should render custom layout row nodes', () => {
-      const rowNodes = s2.getRowNodes().map((node) => {
+      const rowNodes = s2.facet.getRowNodes().map((node) => {
         return {
           value: node.value,
           width: node.width,
@@ -90,7 +90,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should calc correctly row index of leaf nodes', () => {
-      const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+      const rowLeafNodes = s2.facet.getRowLeafNodes().map((node) => {
         return {
           value: node.value,
           rowIndex: node.rowIndex,
@@ -112,14 +112,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
       s2.render(false);
 
-      const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+      const rowLeafNodes = s2.facet.getRowLeafNodes().map((node) => {
         return {
           field: node.field,
           width: node.width,
         };
       });
 
-      const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+      const colLeafNodes = s2.facet.getColLeafNodes().map((node) => {
         return {
           field: node.field,
           width: node.width,
@@ -132,7 +132,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should select custom row header cell', () => {
       // a-1
-      const rowNode = s2.getRowNodes()[0];
+      const rowNode = s2.facet.getRowNodes()[0];
 
       // 选中 a-1
       s2.interaction.selectHeaderCell({
@@ -165,7 +165,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
     ])(
       'should get selected cell summary infos for %o',
       ({ field, count, sum }) => {
-        const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
+        const rowNode = s2.facet
+          .getRowNodes()
+          .find((node) => node.field === field)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
@@ -259,7 +261,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
      */
 
     test('should render custom layout column nodes', () => {
-      const colNodes = s2.getColumnNodes().map((node) => {
+      const colNodes = s2.facet.getColNodes().map((node) => {
         return {
           value: node.value,
           width: node.width,
@@ -272,7 +274,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should calc correctly col index of leaf nodes', () => {
-      const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+      const colLeafNodes = s2.facet.getColLeafNodes().map((node) => {
         return {
           value: node.value,
           colIndex: node.colIndex,
@@ -294,7 +296,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
       s2.render(false);
 
-      const colNodes = s2.getColumnNodes().map((node) => {
+      const colNodes = s2.facet.getColNodes().map((node) => {
         return {
           value: node.value,
           height: node.height,
@@ -306,7 +308,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should select custom col header cell', () => {
       // a-1
-      const colNode = s2.getColumnNodes()[0];
+      const colNode = s2.facet.getColNodes()[0];
 
       // 选中 a-1
       s2.interaction.selectHeaderCell({
@@ -339,8 +341,8 @@ describe('SpreadSheet Custom Grid Tests', () => {
     ])(
       'should get selected cell summary infos for %o',
       ({ field, count, sum }) => {
-        const colNode = s2
-          .getColumnNodes()
+        const colNode = s2.facet
+          .getColNodes()
           .find((node) => node.field === field)!;
 
         // 选中
@@ -384,7 +386,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       const [measureDetail] = hiddenColumnsDetail;
 
       expect(s2.options.interaction?.hiddenColumnFields).toEqual(hiddenColumns);
-      expect(s2.getColumnNodes().map((node) => node.field)).toEqual([
+      expect(s2.facet.getColNodes().map((node) => node.field)).toEqual([
         'a-1',
         'a-1-1',
         'measure-1',

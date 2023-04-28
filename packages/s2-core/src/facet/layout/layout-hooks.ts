@@ -122,8 +122,10 @@ export const layoutDataPosition = (
   const dataPosition = spreadsheet.options?.layoutDataPosition;
 
   if (dataPosition) {
-    const { getCellMeta } = layoutResult;
-    const handledGetCellMeta = dataPosition(spreadsheet, getCellMeta);
+    const handledGetCellMeta = dataPosition(
+      spreadsheet,
+      layoutResult.getCellMeta,
+    );
 
     return {
       ...layoutResult,

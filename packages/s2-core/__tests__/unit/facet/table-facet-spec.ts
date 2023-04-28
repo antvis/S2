@@ -48,8 +48,10 @@ jest.mock('@/sheet-type', () => {
         getTotalsConfig: jest.fn(),
         getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
-        getColumnLeafNodes: jest.fn().mockReturnValue([]),
-        getColumnNodes: jest.fn().mockReturnValue([]),
+        facet: {
+          getColLeafNodes: jest.fn().mockReturnValue([]),
+          getColNodes: jest.fn().mockReturnValue([]),
+        },
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -395,7 +397,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
@@ -714,7 +716,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(

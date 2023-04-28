@@ -126,7 +126,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
 
   private handleColClick = (event: Event) => {
     event.stopPropagation();
-    const { interaction } = this.spreadsheet;
+    const { interaction, facet } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
     const meta = cell?.getMeta() as Node;
 
@@ -143,8 +143,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         lastCell.getMeta().level === meta.level
       ) {
         const [rowMaxLevel, colMaxLevel] = [
-          this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
-          this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
+          facet.layoutResult.rowsHierarchy.maxLevel,
+          facet.layoutResult.colsHierarchy.maxLevel,
         ];
         const { start, end } = getRangeIndex(lastCell.getMeta(), meta);
 
@@ -189,9 +189,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       const selectedCellIds = selectedCells.map(({ id }) => id);
 
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(
-        interaction.getRowColActiveCells(selectedCellIds),
-      );
+      interaction.updateCells(facet.getHeaderCells(selectedCellIds));
 
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,

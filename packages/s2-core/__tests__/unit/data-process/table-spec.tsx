@@ -49,7 +49,7 @@ describe('List Table Core Data Process', () => {
   });
 
   describe('2、Calculate overlapped data cell info', () => {
-    const { getCellMeta } = s2.facet.layoutResult;
+    const { getCellMeta } = s2.facet;
 
     test('should get correct data value', () => {
       // 第一行

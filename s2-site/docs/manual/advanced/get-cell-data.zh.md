@@ -47,7 +47,7 @@ console.log(s2.facet.layoutResult)
 
 ```ts
 // 当前可视范围内的数值单元格
-s2.interaction.getPanelGroupAllDataCells()
+s2.facet.getDataCells()
 // 当前可视范围内未选中的数值单元格
 s2.interaction.getPanelGroupAllUnSelectedDataCells()
 ```
@@ -194,9 +194,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query})
 
@@ -218,7 +218,7 @@ const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query
 ### 根据行列索引获取数值单元格信息
 
 ```ts
-s2.facet.layoutResult.getCellMeta(rowIndex, colIndex)
+s2.facet.getCellMeta(rowIndex, colIndex)
 ```
 
 ### 获取隐藏列数据

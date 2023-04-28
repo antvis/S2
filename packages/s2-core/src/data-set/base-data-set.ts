@@ -112,7 +112,7 @@ export abstract class BaseDataSet {
 
     // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
     if (cell.cellType === CellTypes.DATA_CELL) {
-      const row = find(this.spreadsheet.getRowNodes(), {
+      const row = find(this.spreadsheet.facet.getRowNodes(), {
         rowIndex: meta?.rowIndex,
       });
 

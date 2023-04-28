@@ -41,7 +41,9 @@ export class TableColCell extends ColCell {
   protected isFrozenCell() {
     const { colCount = 0, trailingColCount = 0 } =
       this.spreadsheet.options.frozen!;
-    const colNodes = this.spreadsheet.getColumnNodes().filter(isTopLevelNode);
+    const colNodes = this.spreadsheet.facet
+      .getColNodes()
+      .filter(isTopLevelNode);
     const { colIndex } = getNodeRoot(this.meta);
 
     return (
@@ -79,7 +81,7 @@ export class TableColCell extends ColCell {
     };
 
     const frozenWidth = getFrozenColWidth(
-      this.spreadsheet.getColumnLeafNodes(),
+      this.spreadsheet.facet.getColLeafNodes(),
       this.spreadsheet.options.frozen!,
     );
     const resizeClipAreaBBox: SimpleBBox = {

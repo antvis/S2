@@ -74,7 +74,7 @@ export interface StoreKey {
   // interval condition
   valueRanges: ValueRanges;
   // 初次渲染时的列头叶子节点
-  initColumnLeafNodes: Node[] | undefined;
+  initColLeafNodes: Node[] | undefined;
 
   /**
    * 隐藏列详情

@@ -99,6 +99,7 @@ export class TableSheet extends SpreadSheet {
       dataCell: this.options.dataCell ?? defaultCell,
     });
     this.facet?.destroy();
+    // TODO: 自定义 facet
     this.facet = new TableFacet(this);
     this.facet.render();
   }

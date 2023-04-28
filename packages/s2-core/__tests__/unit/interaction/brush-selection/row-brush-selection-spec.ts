@@ -94,7 +94,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;
-    mockRootInteraction.getAllRowHeaderCells = () => allRowHeaderCells;
+    mockSpreadSheetInstance.facet.getRowCells = () => allRowHeaderCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     brushSelectionInstance = new RowBrushSelection(mockSpreadSheetInstance);
@@ -127,7 +127,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       x: 10,
       y: 260,
     });
-    expect(mockSpreadSheetInstance.interaction.getAllRowHeaderCells()).toEqual(
+    expect(mockSpreadSheetInstance.facet.getRowCells()).toEqual(
       allRowHeaderCells,
     );
   });
@@ -263,7 +263,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       } as RowCell;
     });
 
-    mockRootInteraction.getAllRowHeaderCells = () => currentRow;
+    mockSpreadSheetInstance.facet.getRowCells = () => currentRow;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.facet.setScrollOffset({
       rowHeaderScrollX: 100,

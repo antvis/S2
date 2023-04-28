@@ -302,7 +302,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('4、Calculate data cell info', () => {
-    const { getCellMeta } = s2.facet.layoutResult;
+    const { getCellMeta } = s2.facet;
 
     test('should get correct data value', () => {
       const getData = (meta: ViewMeta | null) => meta?.data?.[VALUE_FIELD];

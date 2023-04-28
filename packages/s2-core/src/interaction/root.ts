@@ -1,10 +1,10 @@
 import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
-import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
+import type { MergedCell } from '../cell';
 import {
   CellTypes,
-  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
+  INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
   type InteractionCellSelectedHighlightType,
@@ -20,10 +20,8 @@ import type {
   S2CellType,
   SelectHeaderCellInfo,
 } from '../common/interface';
-import { ColHeader, RowHeader } from '../facet/header';
-import { Node } from '../facet/layout/node';
+import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
-import { getAllChildCells } from '../utils/get-all-child-cells';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import { getCellMeta } from '../utils/interaction/select-event';
@@ -38,14 +36,14 @@ import {
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
-import { EventController } from './event-controller';
-import { RangeSelection } from './range-selection';
-import { SelectedCellMove } from './selected-cell-move';
-import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { RowBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
 import { RowColumnResize } from './row-column-resize';
+import { SelectedCellMove } from './selected-cell-move';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -186,7 +184,7 @@ export class RootInteraction {
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
-    const allCells = this.getAllCells();
+    const allCells = this.spreadsheet.facet.getCells();
 
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     return map(ids, (id) =>
@@ -203,79 +201,21 @@ export class RootInteraction {
       return;
     }
 
-    this.getPanelGroupAllDataCells().forEach((cell) => {
+    this.spreadsheet.facet.getDataCells().forEach((cell) => {
       cell.hideInteractionShape();
     });
   }
 
   public getPanelGroupAllUnSelectedDataCells() {
-    return this.getPanelGroupAllDataCells().filter(
-      (cell) => !this.isActiveCell(cell),
-    );
-  }
-
-  public getPanelGroupAllDataCells(): DataCell[] {
-    return getAllChildCells(
-      this.spreadsheet.facet.panelGroup?.children as DataCell[],
-      DataCell,
-    );
-  }
-
-  public getAllRowHeaderCells(): RowCell[] {
-    const children = this.spreadsheet.facet?.foregroundGroup?.children || [];
-    const rowHeader = children.find((group) => group instanceof RowHeader);
-    const headerChildren = rowHeader?.children || [];
-
-    return getAllChildCells(headerChildren as RowCell[], RowCell).filter(
-      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
-    );
-  }
-
-  public getAllColHeaderCells(): ColCell[] {
-    const children = this.spreadsheet.facet?.foregroundGroup?.children || [];
-    const colHeader = children.find((group) => group instanceof ColHeader);
-    const headerChildren = colHeader?.children || [];
-
-    return getAllChildCells(headerChildren as ColCell[], ColCell).filter(
-      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
-    );
-  }
-
-  public getRowColActiveCells(ids: string[]) {
-    return concat<S2CellType>(
-      this.getAllRowHeaderCells(),
-      this.getAllColHeaderCells(),
-    ).filter((item) => ids.includes(item.getMeta().id));
-  }
-
-  public getAllCells() {
-    return concat<S2CellType>(
-      this.getPanelGroupAllDataCells(),
-      this.getAllRowHeaderCells(),
-      this.getAllColHeaderCells(),
-    );
+    return this.spreadsheet.facet
+      .getDataCells()
+      .filter((cell) => !this.isActiveCell(cell));
   }
 
   public selectAll = () => {
     this.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-  };
-
-  public getCellChildrenNodes = (cell: S2CellType): Node[] => {
-    const selectNode = cell?.getMeta?.() as Node;
-    const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
-    const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
-
-    // 树状模式的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
-    if (isHierarchyTree && isRowCell) {
-      return Node.getAllLeaveNodes(selectNode).filter(
-        (node) => node.rowIndex === selectNode.rowIndex,
-      );
-    }
-
-    // 平铺模式 或 树状模式的列头点击遍历所有子节点
-    return Node.getAllChildrenNodes(selectNode);
   };
 
   public selectHeaderCell = (
@@ -303,7 +243,9 @@ export class RootInteraction {
       selectHeaderCellInfo?.isMultiSelection && this.isSelectedState();
 
     // 如果是已选中的单元格, 则取消选中, 兼容行列多选 (含叶子节点)
-    let childrenNodes = isSelectedCell ? [] : this.getCellChildrenNodes(cell);
+    let childrenNodes = isSelectedCell
+      ? []
+      : this.spreadsheet.facet.getCellChildrenNodes(cell);
     let selectedCells = isSelectedCell ? [] : [getCellMeta(cell)];
 
     if (isMultiSelected) {
@@ -342,7 +284,7 @@ export class RootInteraction {
 
     const selectedCellIds = selectedCells.map(({ id }) => id);
 
-    this.updateCells(this.getRowColActiveCells(selectedCellIds));
+    this.updateCells(this.spreadsheet.facet.getHeaderCells(selectedCellIds));
 
     // 平铺模式或者是树状模式下的列头单元格, 高亮子节点
     if (!isHierarchyTree || isColCell) {
@@ -551,7 +493,7 @@ export class RootInteraction {
   }
 
   public updatePanelGroupAllDataCells() {
-    this.updateCells(this.getPanelGroupAllDataCells());
+    this.updateCells(this.spreadsheet.facet.getDataCells());
   }
 
   public updateCells(cells: S2CellType[] = []) {

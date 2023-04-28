@@ -112,6 +112,8 @@ export function DragCopyPoint() {
     }
 
     if (spreadsheet && cell) {
+      const sampleColNode = spreadsheet.facet.getColNodes()[0];
+      const sampleColNodeHeight = sampleColNode?.height || 0;
       const cellMeta = pick(cell.getMeta(), [
         'x',
         'y',
@@ -121,9 +123,7 @@ export function DragCopyPoint() {
       ]);
 
       cellMeta.x -= scroll?.scrollX!;
-      cellMeta.y -=
-        scroll?.scrollY! -
-        (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
+      cellMeta.y -= scroll?.scrollY! - sampleColNodeHeight;
       setPosition({
         left: cellMeta.x + cellMeta.width - 4,
         top: cellMeta.y + cellMeta.height - 4,

@@ -8,20 +8,24 @@ import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
   clamp,
+  concat,
   debounce,
   each,
+  filter,
   find,
   get,
   isEmpty,
   isFunction,
+  isNil,
   isUndefined,
   last,
   reduce,
   sumBy,
 } from 'lodash';
-import { DataCell } from '../cell';
+import { ColCell, CornerCell, DataCell, RowCell } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  CellTypes,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -79,7 +83,7 @@ import {
   SeriesNumberHeader,
 } from './header';
 import type { ViewCellHeights } from './layout/interface';
-import type { Node } from './layout/node';
+import { Node } from './layout/node';
 import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import {
   calculateInViewIndexes,
@@ -154,6 +158,11 @@ export abstract class BaseFacet {
   public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
+
+  public abstract getCellMeta(
+    rowIndex: number,
+    colIndex: number,
+  ): ViewMeta | null;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
@@ -1210,7 +1219,7 @@ export abstract class BaseFacet {
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       each(add, ([i, j]) => {
-        const viewMeta = this.layoutResult.getCellMeta(j, i);
+        const viewMeta = this.getCellMeta(j, i);
 
         if (viewMeta) {
           const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
@@ -1494,10 +1503,10 @@ export abstract class BaseFacet {
     // 当前显示的 + 被隐藏的
     const originalColumnsLength =
       columnNodes.length + hiddenColumnFields.length;
-    const initColumnLeafNodes = store.get('initColumnLeafNodes', []);
+    const initColLeafNodes = this.getInitColLeafNodes();
 
-    if (originalColumnsLength !== initColumnLeafNodes?.length) {
-      store.set('initColumnLeafNodes', columnNodes);
+    if (originalColumnsLength !== initColLeafNodes?.length) {
+      store.set('initColLeafNodes', columnNodes);
     }
   }
 
@@ -1514,10 +1523,6 @@ export abstract class BaseFacet {
     return hiddenColumnsDetail.find((detail) =>
       detail.hideColumnNodes.some((node) => node.id === columnNode.id),
     );
-  }
-
-  public getCornerNodes(): Node[] {
-    return this.cornerHeader?.getNodes() || [];
   }
 
   /**
@@ -1574,5 +1579,204 @@ export abstract class BaseFacet {
         node[type] = leafNodeSize;
       });
     };
+  }
+
+  /**
+   * 获取角头节点
+   */
+  public getCornerNodes(): Node[] {
+    return this.cornerHeader?.getNodes() || [];
+  }
+
+  /**
+   * 获取列头节点 (含非可视区域)
+   * @description 获取列头单元格 (可视区域内) facet.getColCells()
+   * @example 获取全部: facet.getColNodes()
+   * @example 指定层级: facet.getColNodes(2)
+   */
+  public getColNodes(level?: number): Node[] {
+    const { colNodes = [] } = this.layoutResult;
+
+    if (isNil(level)) {
+      return colNodes;
+    }
+
+    return colNodes.filter((node) => node.level === level);
+  }
+
+  /**
+   * 根据 id 获取指定列头节点
+   * @example facet.getColNodeById('root[&]节点1[&]数值')
+   */
+  public getColNodeById(nodeId: string): Node | undefined {
+    return this.getColNodes().find((node) => node.id === nodeId);
+  }
+
+  /**
+   * 根据 field 获取指定列头节点
+   * @example facet.getColCellNodeByField('number')
+   */
+  public getColNodesByField(nodeField: string): Node[] {
+    return this.getColNodes().filter((node) => node.field === nodeField);
+  }
+
+  /**
+   * 获取列头叶子节点节点 (含非可视区域)
+   */
+  public getColLeafNodes(): Node[] {
+    return this.layoutResult.colLeafNodes || [];
+  }
+
+  /**
+   * 获取行头节点 (含非可视区域)
+   * @description 获取行头单元格 (可视区域内) facet.getRowCells()
+   * @example 获取全部: facet.getRowNodes()
+   * @example 指定层级: facet.getRowNodes(2)
+   */
+  public getRowNodes(level?: number): Node[] {
+    const { rowNodes = [] } = this.layoutResult;
+
+    if (isNil(level)) {
+      return rowNodes;
+    }
+
+    return rowNodes.filter((node) => node.level === level);
+  }
+
+  /**
+   * 根据 id 获取单个行头节点
+   * @example facet.getRowNodeById('root[&]节点1[&]数值')
+   */
+  public getRowNodeById(nodeId: string): Node | undefined {
+    return this.getRowNodes().find((node) => node.id === nodeId);
+  }
+
+  /**
+   * 根据 field 获取行头节点
+   * @example facet.getRowNodeByField('number')
+   */
+  public getRowNodesByField(nodeField: string): Node[] {
+    return this.getColNodes().filter((node) => node.field === nodeField);
+  }
+
+  /**
+   * 获取行头叶子节点节点 (含非可视区域)
+   */
+  public getRowLeafNodes(): Node[] {
+    return this.layoutResult.rowLeafNodes || [];
+  }
+
+  /**
+   * 获取单元格的所有子节点 (含非可视区域)
+   * @example
+   * const rowCell = facet.getRowCell()[0]
+   * facet.getCellChildrenNodes(rowCell)
+   */
+  public getCellChildrenNodes = (cell: S2CellType): Node[] => {
+    const selectNode = cell?.getMeta?.() as Node;
+    const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
+    const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
+
+    // 树状模式的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
+    if (isHierarchyTree && isRowCell) {
+      return Node.getAllLeaveNodes(selectNode).filter(
+        (node) => node.rowIndex === selectNode.rowIndex,
+      );
+    }
+
+    // 平铺模式 或 树状模式的列头点击遍历所有子节点
+    return Node.getAllChildrenNodes(selectNode);
+  };
+
+  /**
+   * 获取数值单元格 (不含可视区域)
+   * @description 由于虚拟滚动, 按需加载的特性, 非可视区域的单元格未被实例化
+   * @example 获取非可视区域的数值节点 facet.getCellMeta(rowIndex, colIndex)
+   */
+  public getDataCells(): DataCell[] {
+    return getAllChildCells(this.panelGroup?.children as DataCell[], DataCell);
+  }
+
+  /**
+   * 获取行头单元格 (不含可视区域)
+   */
+  public getRowCells(): RowCell[] {
+    const children = this.foregroundGroup?.children || [];
+    const rowHeader = children.find((group) => group instanceof RowHeader);
+    const headerChildren = rowHeader?.children || [];
+
+    return getAllChildCells(headerChildren as RowCell[], RowCell).filter(
+      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+    );
+  }
+
+  /**
+   * 获取列头单元格 (不含可视区域)
+   */
+  public getColCells(): ColCell[] {
+    const children = this.foregroundGroup?.children || [];
+    const colHeader = children.find((group) => group instanceof ColHeader);
+    const headerChildren = colHeader?.children || [];
+
+    return getAllChildCells(headerChildren as ColCell[], ColCell).filter(
+      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+    );
+  }
+
+  public getCornerCells(): CornerCell[] {
+    return filter(
+      this.getCornerHeader().children as CornerCell[],
+      (element) => element instanceof CornerCell,
+    ) as unknown[] as CornerCell[];
+  }
+
+  /**
+   * 获取表头单元格 (角头,行头,列头) (不含可视区域)
+   * @example 获取全部: facet.getHeaderCells()
+   * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
+   */
+  public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+    const headerCells = concat<S2CellType>(
+      this.getCornerCells(),
+      this.getRowCells(),
+      this.getColCells(),
+    );
+
+    if (!cellIds) {
+      return headerCells;
+    }
+
+    return headerCells.filter((cell) => cellIds.includes(cell.getMeta().id));
+  }
+
+  /**
+   * 根据单元格 id 获取指定单元格 (不含可视区域)
+   * @example facet.getCellById('root[&]浙江省[&]宁波市')
+   */
+  public getCellById(cellId: string): S2CellType<ViewMeta> | undefined {
+    return this.getCells().find((cell) => cell.getMeta().id === cellId);
+  }
+
+  /**
+   * 根据单元格 field 获取指定单元格 (不含可视区域)
+   * @example facet.getCellByField('city')
+   */
+  public getCellsByField(cellField: string): S2CellType<ViewMeta>[] {
+    return this.getCells().filter((cell) => cell.getMeta().field === cellField);
+  }
+
+  /**
+   * 获取所有单元格 (角头,行头,列头,数值) (不含可视区域)
+   */
+  public getCells(): S2CellType<ViewMeta>[] {
+    return concat<S2CellType>(this.getHeaderCells(), this.getDataCells());
+  }
+
+  public getInitColLeafNodes(): Node[] {
+    return this.spreadsheet.store.get('initColLeafNodes', [])!;
+  }
+
+  public clearInitColLeafNodes() {
+    this.spreadsheet.store.set('initColLeafNodes', undefined);
   }
 }

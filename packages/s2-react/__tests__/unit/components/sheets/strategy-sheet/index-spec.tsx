@@ -133,13 +133,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     // 当前测试数据, 第 4 列是子弹图
-    const dataCell = s2.interaction
-      .getPanelGroupAllDataCells()
-      .filter((cell) => {
-        const meta = cell.getMeta();
+    const dataCell = s2.facet.getDataCells().filter((cell) => {
+      const meta = cell.getMeta();
 
-        return meta.colIndex === 3 && meta.fieldValue;
-      });
+      return meta.colIndex === 3 && meta.fieldValue;
+    });
 
     const bulletMeasureTextList = dataCell.map((cell) => {
       const textShape = cell.children.find(
@@ -244,17 +242,17 @@ describe('<StrategySheet/> Tests', () => {
       const corner2 = rows[1].split('\t').slice(0, 3);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(corner1).toEqual(['', '', '日期']);
@@ -275,17 +273,17 @@ describe('<StrategySheet/> Tests', () => {
       const col2: string[] = rows[1].split('\t').slice(3);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(col1.length).toEqual(col2.length);
@@ -311,17 +309,17 @@ describe('<StrategySheet/> Tests', () => {
       const detailRow: string[] = rows[3].split('\t').slice(0, 5);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(detailRow).toEqual(['自定义节点A', '指标A', '', '', '']);
@@ -361,8 +359,8 @@ describe('<StrategySheet/> Tests', () => {
     it('should selected cell and update spotlight style', () => {
       const dataCellId = `root[&]自定义节点A[&]指标A-root[&]2022-11[&]["数值","环比","同比"]`;
 
-      const selectedDataCell = s2.interaction
-        .getPanelGroupAllDataCells()
+      const selectedDataCell = s2.facet
+        .getDataCells()
         .find((cell) => cell.getMeta().id === dataCellId)!;
 
       s2.interaction.changeState({
@@ -370,7 +368,7 @@ describe('<StrategySheet/> Tests', () => {
         stateName: InteractionStateName.SELECTED,
       });
 
-      const allDataCells = s2.interaction.getPanelGroupAllDataCells();
+      const allDataCells = s2.facet.getDataCells();
       const unSelectedDataCells =
         s2.interaction.getPanelGroupAllUnSelectedDataCells();
 
