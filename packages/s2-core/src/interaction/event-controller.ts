@@ -1,8 +1,8 @@
 import {
   Canvas,
+  DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
   type Group,
-  DisplayObject,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
@@ -22,9 +22,9 @@ import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
-import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
 import { isMobile } from '../utils/is-mobile';
+import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -230,14 +230,16 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event)?.showTooltip) {
+    const { tooltip } = this.spreadsheet;
+
+    if (!tooltip?.visible) {
       return false;
     }
 
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
-    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+    if (event.target instanceof Node) {
       return verifyTheElementInTooltip(
         this.spreadsheet.tooltip?.container,
         event.target,

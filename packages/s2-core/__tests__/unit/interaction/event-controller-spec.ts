@@ -593,6 +593,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.tooltip.visible = true;
     spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
         x: 200,
@@ -944,6 +945,42 @@ describe('Interaction Event Controller Tests', () => {
       expect(handler).toHaveBeenCalledTimes(1);
     },
   );
+
+  // https://github.com/antvis/S2/issues/2170
+  test('should not reset if tooltip content clicked', () => {
+    const reset = jest.fn();
+
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.options.tooltip = {
+      showTooltip: false,
+      dataCell: {
+        showTooltip: true,
+      },
+      colCell: {
+        showTooltip: true,
+      },
+      rowCell: {
+        showTooltip: true,
+      },
+    };
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container!.getBoundingClientRect = () =>
+      ({
+        x: 200,
+        y: 200,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    Array.from({ length: 3 }).forEach(() => {
+      window.dispatchEvent(
+        new PointerEvent('click', {
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+    });
+  });
 
   // https://github.com/antvis/S2/pull/2163
   test('should not reset if Mouse Event is Proxy', () => {
