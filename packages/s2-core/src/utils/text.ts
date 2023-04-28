@@ -523,12 +523,19 @@ export const drawObjectText = (
         iconCount: iconCondition ? 1 : 0,
       });
 
-      const textShape = renderText(cell, [], {
-        x: position.text.x,
-        y: position.text.y,
-        text: ellipsisText,
-        ...curStyle,
-      });
+      const textShape = renderText(
+        cell,
+        [],
+        {
+          x: position.text.x,
+          y: position.text.y,
+          text: ellipsisText,
+          ...curStyle,
+        },
+        {
+          originalText: curText,
+        },
+      );
 
       cell.addTextShape(textShape);
 

@@ -303,7 +303,7 @@ s2.render(false);
             行头单元格图标颜色</br>
         </td>
         <td style="text-align: left;">
-            rowCell.cell.icon.fill</br>
+            rowCell.icon.fill</br>
         </td>
     </tr>
     <tr>
@@ -365,7 +365,7 @@ s2.render(false);
             行头单元格鼠标悬停态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            rowCell.interactionState.hover.backgroundColor</br>
+            rowCell.cell.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -373,7 +373,7 @@ s2.render(false);
             行头单元格鼠标选中态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            rowCell.interactionState.selected.backgroundColor</br>
+            rowCell.cell.interactionState.selected.backgroundColor</br>
         </td>
     </tr>
  <tr>
@@ -381,7 +381,7 @@ s2.render(false);
             数据单元格鼠标悬停态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hover.backgroundColor</br>
+            dataCell.cell.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -389,7 +389,7 @@ s2.render(false);
             数据单元格鼠标悬停聚焦态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hoverFocus.backgroundColor</br>
+            dataCell.cell.interactionState.hoverFocus.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -397,7 +397,7 @@ s2.render(false);
             数据单元格鼠标选中态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.selected.backgroundColor</br>
+            dataCell.cell.interactionState.selected.backgroundColor</br>
         </td>
     </tr>
     <tr>
@@ -450,14 +450,22 @@ s2.render(false);
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #326EF4; color:white;"> #326EF4</td>
-        <td style="text-align: center; background: #565C64; color:white; "> #565C64</td>
-        <td style="text-align: center;  background: #2C60D4; color:white;"> #2C60D4</td>
+        <td rowspan=2 style="text-align: center; background: #326EF4; color:white;"> #326EF4</td>
+        <td rowspan=2 style="text-align: center; background: #565C64; color:white; "> #565C64</td>
+        <td rowspan=2 style="text-align: center;  background: #2C60D4; color:white;"> #2C60D4</td>
         <td style="text-align: left;">
             行头单元格链接文本颜色 </br>
         </td>
         <td style="text-align: left;">
             rowCell.text.linkTextFill</br>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+            行头单元格链接粗体文本颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            rowCell.bolderText.linkTextFill</br>
         </td>
     </tr>
     <tr>
@@ -468,7 +476,7 @@ s2.render(false);
             数据单元格柱状图填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.cell.miniBarChartFillColor</br>
+            miniChart.bar.fill</br>
         </td>
     </tr>
        <tr>
@@ -492,7 +500,7 @@ s2.render(false);
             resize 热区悬停态背景颜色 </br>
         </td>
         <td style="text-align: left;">
-            resizeArea.interactionState.hover。backgroundColor</br>
+            resizeArea.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
     <tr>
@@ -626,9 +634,9 @@ s2.render(false);
         </td>
     </tr>
     <tr>
-        <td rowspan=5 style="text-align: center; background: #000000; color: white; "> #000000</td>
-        <td rowspan=5 style="text-align: center; background: #000000; color: white;"> #000000</td>
-        <td rowspan=5 style="text-align: center;  background: #000000; color: white;"> #000000</td>
+        <td rowspan=4 style="text-align: center; background: #000000; color: white; "> #000000</td>
+        <td rowspan=4 style="text-align: center; background: #000000; color: white;"> #000000</td>
+        <td rowspan=4 style="text-align: center;  background: #000000; color: white;"> #000000</td>
         <td style="text-align: left;">
            行头单元格粗体文本颜色 </br>
         </td>
@@ -638,26 +646,10 @@ s2.render(false);
     </tr>
      <tr>
         <td style="text-align: left;">
-           行头单元格粗体链接文本颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            rowCell.bolderText.linkTextFill</br>
-        </td>
-    </tr>
-      <tr>
-        <td style="text-align: left;">
-           行头单元格链接文本颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            rowCell.text.linkTextFill</br>
-        </td>
-    </tr>
-     <tr>
-        <td style="text-align: left;">
            数据单元格鼠标悬停聚焦态边框颜色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hoverFocus.borderColor</br>
+            dataCell.cell.interactionState.hoverFocus.borderColor</br>
         </td>
     </tr>
      <tr>
@@ -665,7 +657,7 @@ s2.render(false);
            数据单元格鼠标刷选预中态边框颜色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.prepareSelect.borderColor</br>
+            dataCell.cell.interactionState.prepareSelect.borderColor</br>
         </td>
     </tr>
     <tr>

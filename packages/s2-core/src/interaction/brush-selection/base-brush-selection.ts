@@ -4,7 +4,7 @@ import {
   type PointLike,
   Rect,
 } from '@antv/g';
-import { cloneDeep, isNil, map, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
@@ -16,12 +16,15 @@ import {
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
+  ScrollDirectionRowIndexDiff,
 } from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
+  OffsetConfig,
   OnUpdateCells,
+  Point,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
@@ -108,7 +111,7 @@ export class BaseBrushSelection
   }
 
   // 默认是 Data cell 的绘制区
-  protected isPointInCanvas(point: { x: number; y: number }): boolean {
+  protected isPointInCanvas(point: Point): boolean {
     const { height, width } = this.spreadsheet.facet.getCanvasSize();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
@@ -138,13 +141,15 @@ export class BaseBrushSelection
       }
     }
 
-    this.mouseMoveDistanceFromCanvas = deltaVal;
+    this.mouseMoveDistanceFromCanvas = Math.abs(deltaVal);
   };
 
-  public formatBrushPointForScroll = (delta: { x: number; y: number }) => {
+  public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
-    const { minX, minY, maxX, maxY } = facet.panelBBox;
+    const { minX, maxX } = isRowHeader ? facet.cornerBBox : facet.panelBBox;
+    const { minY, maxY } = facet.panelBBox;
+
     let newX = this.endBrushPoint?.x + x;
     let newY = this.endBrushPoint?.y + y;
     let needScrollForX = true;
@@ -268,7 +273,7 @@ export class BaseBrushSelection
 
     if (
       frozenTrailingColCount! > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingCol(colIndex, frozenTrailingColCount!, colLength)
     ) {
       return panelIndexes[1];
@@ -276,7 +281,7 @@ export class BaseBrushSelection
 
     if (
       frozenColCount! > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenCol(colIndex, frozenColCount!)
     ) {
       return panelIndexes[0];
@@ -302,7 +307,7 @@ export class BaseBrushSelection
 
     if (
       frozenTrailingRowCount! > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount!)
     ) {
       return panelIndexes[3];
@@ -310,13 +315,33 @@ export class BaseBrushSelection
 
     if (
       frozenRowCount! > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenRow(rowIndex, cellRange.start, frozenRowCount!)
     ) {
       return panelIndexes[2];
     }
 
     return rowIndex;
+  };
+
+  public getWillScrollRowIndexDiff = (dir: ScrollDirection): number => {
+    return dir === ScrollDirection.SCROLL_DOWN
+      ? ScrollDirectionRowIndexDiff.SCROLL_DOWN
+      : ScrollDirectionRowIndexDiff.SCROLL_UP;
+  };
+
+  public getDefaultWillScrollToRowIndex = (dir: ScrollDirection) => {
+    const rowIndex = this.adjustNextRowIndexWithFrozen(
+      this.endBrushPoint.rowIndex,
+      dir,
+    );
+    const nextRowIndex = rowIndex + this.getWillScrollRowIndexDiff(dir);
+
+    return this.validateYIndex(nextRowIndex);
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number | null => {
+    return this.getDefaultWillScrollToRowIndex(dir);
   };
 
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
@@ -328,23 +353,30 @@ export class BaseBrushSelection
 
     if (config.y.scroll) {
       const dir =
-        config.y.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
-      const rowIndex = this.adjustNextRowIndexWithFrozen(
-        this.endBrushPoint.rowIndex,
-        dir,
-      );
-      const nextIndex = this.validateYIndex(
-        rowIndex + (config.y.value > 0 ? 1 : -1),
-      );
+        config.y.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
 
-      y = isNil(nextIndex)
-        ? 0
-        : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
+      const willScrollToRowIndex = this.getWillScrollToRowIndex(dir);
+
+      if (isNil(willScrollToRowIndex)) {
+        y = 0;
+      } else {
+        const scrollOffsetY =
+          getScrollOffsetForRow(willScrollToRowIndex, dir, this.spreadsheet) -
+          scrollY;
+        const isInvalidScroll =
+          isNil(scrollOffsetY) || Number.isNaN(scrollOffsetY);
+
+        y = isInvalidScroll ? 0 : scrollOffsetY;
+      }
     }
 
     if (config.x.scroll) {
       const dir =
-        config.x.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
+        config.x.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
       const colIndex = this.adjustNextColIndexWithFrozen(
         this.endBrushPoint.colIndex,
         dir,
@@ -373,7 +405,7 @@ export class BaseBrushSelection
     }
   };
 
-  private autoScroll = () => {
+  private autoScroll = (isRowHeader = false) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED ||
       !this.scrollAnimationComplete
@@ -383,7 +415,15 @@ export class BaseBrushSelection
 
     const config = this.autoScrollConfig;
     const scrollOffset = this.spreadsheet.facet.getScrollOffset();
-    const offsetCfg = {
+    const key: keyof OffsetConfig = isRowHeader
+      ? 'rowHeaderOffsetX'
+      : 'offsetX';
+
+    const offsetCfg: OffsetConfig = {
+      rowHeaderOffsetX: {
+        value: scrollOffset.rowHeaderScrollX,
+        animate: true,
+      },
       offsetX: {
         value: scrollOffset.scrollX,
         animate: true,
@@ -403,68 +443,75 @@ export class BaseBrushSelection
     }
 
     if (config.y.scroll) {
-      offsetCfg.offsetY.value! += deltaY;
+      offsetCfg.offsetY!.value! += deltaY;
     }
 
     if (config.x.scroll) {
-      offsetCfg.offsetX.value! += deltaX;
-      if (offsetCfg.offsetX.value! < 0) {
-        offsetCfg.offsetX.value = 0;
+      const offset = offsetCfg[key]!;
+
+      offset.value! += deltaX;
+      if (offset.value! < 0) {
+        offset.value = 0;
       }
     }
 
     this.scrollAnimationComplete = false;
-    let ratio = 3;
 
     // x 轴滚动速度慢
-    if (config.x.scroll) {
-      ratio = 1;
-    }
+    const ratio = config.x.scroll ? 1 : 3;
+    const duration = Math.max(
+      16,
+      300 - this.mouseMoveDistanceFromCanvas * ratio,
+    );
 
     this.spreadsheet.facet.scrollWithAnimation(
       offsetCfg,
-      Math.max(16, 300 - this.mouseMoveDistanceFromCanvas * ratio),
+      duration,
       this.onScrollAnimationComplete,
     );
   };
 
-  protected handleScroll = throttle((x: number, y: number) => {
-    if (
-      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
-    ) {
-      return;
-    }
+  protected handleScroll = throttle(
+    (x: number, y: number, isRowHeader = false) => {
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
+        return;
+      }
 
-    const {
-      x: { value: newX, needScroll: needScrollForX },
-      y: { value: newY, needScroll: needScrollForY },
-    } = this.formatBrushPointForScroll({ x, y });
+      const {
+        x: { value: newX, needScroll: needScrollForX },
+        y: { value: newY, needScroll: needScrollForY },
+      } = this.formatBrushPointForScroll({ x, y }, isRowHeader);
 
-    const config = this.autoScrollConfig;
+      const config = this.autoScrollConfig;
 
-    if (needScrollForY) {
-      config.y.value = y;
-      config.y.scroll = true;
-    }
+      if (needScrollForY) {
+        config.y.value = y;
+        config.y.scroll = true;
+      }
 
-    if (needScrollForX) {
-      config.x.value = x;
-      config.x.scroll = true;
-    }
+      if (needScrollForX) {
+        config.x.value = x;
+        config.x.scroll = true;
+      }
 
-    this.setMoveDistanceFromCanvas({ x, y }, needScrollForX, needScrollForY);
+      this.setMoveDistanceFromCanvas({ x, y }, needScrollForX, needScrollForY);
+      this.renderPrepareSelected({
+        x: newX,
+        y: newY,
+      });
 
-    this.renderPrepareSelected({
-      x: newX,
-      y: newY,
-    });
-
-    if (needScrollForY || needScrollForX) {
-      this.clearAutoScroll();
-      this.autoScroll();
-      this.autoScrollIntervalId = setInterval(this.autoScroll, 16);
-    }
-  }, 30);
+      if (needScrollForY || needScrollForX) {
+        this.clearAutoScroll();
+        this.autoScroll(isRowHeader);
+        this.autoScrollIntervalId = setInterval(() => {
+          this.autoScroll(isRowHeader);
+        }, 16);
+      }
+    },
+    30,
+  );
 
   protected clearAutoScroll = () => {
     if (this.autoScrollIntervalId) {
@@ -495,10 +542,11 @@ export class BaseBrushSelection
 
   protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
+    const { x, y } = this.getPrepareSelectMaskPosition(brushRange);
 
     this.prepareSelectMaskShape.attr({
-      x: brushRange.start.x,
-      y: brushRange.start.y,
+      x,
+      y,
       width: brushRange.width,
       height: brushRange.height,
     });
@@ -680,7 +728,6 @@ export class BaseBrushSelection
 
   protected renderPrepareSelected = (point: PointLike) => {
     const { x, y } = point;
-
     const elements = this.spreadsheet.container.document.elementsFromPointSync(
       x,
       y,
@@ -689,6 +736,7 @@ export class BaseBrushSelection
     const cell = elements
       .map((element) => this.spreadsheet.getCell(element))
       .find(Boolean);
+
     // 只有行头，列头，单元格可以刷选
     const isBrushCellType =
       cell instanceof DataCell ||
@@ -718,6 +766,42 @@ export class BaseBrushSelection
     }
   };
 
+  public autoBrushScroll(point: Point, isRowHeader = false) {
+    this.clearAutoScroll();
+
+    if (!this.isPointInCanvas(point)) {
+      const deltaX = point?.x - this.endBrushPoint?.x;
+      const deltaY = point?.y - this.endBrushPoint?.y;
+
+      this.handleScroll(deltaX, deltaY, isRowHeader);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  public emitBrushSelectionEvent(
+    event: S2Event,
+    scrollBrushRangeCells: S2CellType[],
+  ) {
+    this.spreadsheet.emit(event, scrollBrushRangeCells);
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
+
+    // 未刷选到有效单元格, 允许 hover
+    if (isEmpty(scrollBrushRangeCells)) {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
+  }
+
+  public getVisibleBrushRangeCells(nodeId: string) {
+    return this.brushRangeCells.find((cell) => {
+      const visibleCellMeta = cell.getMeta();
+
+      return visibleCellMeta?.id === nodeId;
+    });
+  }
+
   // 需要查看继承他的父类是如何定义的
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isInBrushRange(node: ViewMeta | Node): boolean {
@@ -728,8 +812,12 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected getSelectedCellMetas(brushRange: BrushRange) {}
-
   protected updateSelectedCells() {}
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    return {
+      x: brushRange.start.x,
+      y: brushRange.start.y,
+    };
+  }
 }

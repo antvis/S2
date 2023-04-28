@@ -1,11 +1,14 @@
 import {
-  type Canvas,
+  Canvas,
   type FederatedPointerEvent as CanvasEvent,
   type Group,
   DisplayObject,
 } from '@antv/g';
-import { get, each, isEmpty, isNil } from 'lodash';
+import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
+
+import { GuiIcon } from '../common';
+
 import {
   CellTypes,
   GEventType,
@@ -21,7 +24,7 @@ import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
-import { GuiIcon, isMobile } from '..';
+import { isMobile } from '../utils/is-mobile';
 
 interface EventListener {
   target: EventTarget;
@@ -178,8 +181,13 @@ export class EventController {
     interaction.reset();
   }
 
+  private isMouseEvent(event: Event): event is MouseEvent {
+    // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
+    return hasIn(event, 'clientX') && hasIn(event, 'clientY');
+  }
+
   private isMouseOnTheCanvasContainer(event: Event) {
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       const canvas = this.spreadsheet.getCanvasElement();
 
       if (!canvas) {
@@ -195,10 +203,16 @@ export class EventController {
        */
       const { width, height } = this.getContainerRect();
 
+      const { target: eventTarget, clientX, clientY } = event;
+
       return (
-        canvas.contains(event.target as HTMLElement) &&
-        event.clientX <= x + width &&
-        event.clientY <= y + height
+        (eventTarget === canvas ||
+          eventTarget instanceof DisplayObject ||
+          eventTarget instanceof Canvas) &&
+        clientX <= x + width &&
+        clientX >= x &&
+        clientY <= y + height &&
+        clientY >= y
       );
     }
 
@@ -230,7 +244,7 @@ export class EventController {
       );
     }
 
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       return (
         event.clientX >= x! &&
         event.clientX <= x! + width! &&
@@ -536,7 +550,10 @@ export class EventController {
   };
 
   private onCanvasMouseout = (event: CanvasEvent) => {
-    if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
+    if (
+      !this.isAutoResetSheetStyle ||
+      this.isMouseOnTheCanvasContainer(event as Event)
+    ) {
       return;
     }
 

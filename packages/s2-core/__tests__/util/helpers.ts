@@ -125,6 +125,7 @@ export const createFakeSpreadSheet = () => {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
+  s2.getRowNodes = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
   s2.isCustomHeaderFields = jest.fn(() => false);
@@ -201,6 +202,7 @@ export const createMockCellInfo = (
     'level',
     'field',
     'colId',
+    'field',
   ]);
   const mockCell = {
     ...mockCellViewMeta,
@@ -285,3 +287,26 @@ export const createTableSheet = (
       ...s2Options,
     },
   );
+
+/**
+ * 获取基于 canvas 坐标系的真实 clientX/Y 坐标
+ * @param canvas g canvas 实例
+ * @param x 相对于 canvas 左上角的 x 坐标
+ * @param y 相对于 canvas 左上角的 y 坐标
+ * @returns 全局 clientX/Y 坐标
+ */
+export const getClientPointOnCanvas = (
+  canvas: Canvas,
+  x: number,
+  y: number,
+) => {
+  const point = canvas.viewport2Client({
+    x,
+    y,
+  });
+
+  return {
+    clientX: point.x,
+    clientY: point.y,
+  };
+};

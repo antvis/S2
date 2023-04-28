@@ -26,7 +26,6 @@ import {
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
 import { CustomRect } from '../engine';
-import { checkIsLinkField } from '../utils';
 import type { SimpleBBox } from './../engine/interface';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
@@ -212,15 +211,7 @@ export class RowCell extends HeaderCell {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShape();
-  }
-
-  protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction!;
-    const { linkTextFill } = this.getTextStyle();
-    const isLinkField = checkIsLinkField(linkFields, this.meta);
-
-    super.drawLinkFieldShape(isLinkField, linkTextFill!);
+    this.drawLinkField(this.meta);
   }
 
   protected drawResizeAreaInLeaf() {
@@ -268,7 +259,8 @@ export class RowCell extends HeaderCell {
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,
         scrollY,
-      })
+      }) ||
+      !position
     ) {
       return;
     }

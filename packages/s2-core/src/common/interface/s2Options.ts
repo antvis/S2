@@ -3,6 +3,7 @@ import type {
   CornerHeaderCallback,
   DataCellCallback,
   FrameCallback,
+  MergedCellCallback,
   MergedCellInfo,
   Pagination,
   Totals,
@@ -161,6 +162,11 @@ export interface S2BasicOptions<
    * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#col-cell
    */
   colCell?: CellCallback<ColHeaderConfig>;
+
+  /**
+   * 自定义合并单元格
+   */
+  mergedCell?: MergedCellCallback;
 
   /**
    * 自定义表格框架/边框

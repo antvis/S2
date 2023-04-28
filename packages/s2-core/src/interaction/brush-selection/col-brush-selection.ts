@@ -25,10 +25,8 @@ export class ColCellBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseDown() {
-    [S2Event.COL_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
-      this.spreadsheet.on(e, (event: CanvasEvent) => {
-        super.mouseDown(event);
-      });
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_DOWN, (event) => {
+      super.mouseDown(event);
     });
   }
 

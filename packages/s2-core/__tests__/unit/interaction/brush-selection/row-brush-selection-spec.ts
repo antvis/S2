@@ -28,7 +28,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
-  const allRowHeaderCells = map(new Array(8), (a, i) => {
+  const allRowHeaderCells = map(new Array(8), (_, i) => {
     const customY = 30 * i + 30;
 
     return {
@@ -143,7 +143,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       .getCanvasElement()
       .getBoundingClientRect();
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientY: canvasRect.top + 330,
       clientX: canvasRect.left + 160,
     });
@@ -201,12 +201,11 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: canvasRect.left + 180,
       clientY: canvasRect.top + 400,
     });
@@ -267,7 +266,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     mockRootInteraction.getAllRowHeaderCells = () => currentRow;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.facet.setScrollOffset({
-      hRowScrollX: 100,
+      rowHeaderScrollX: 100,
       scrollY: 0,
     });
     mockSpreadSheetInstance.render();
@@ -280,7 +279,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       .getCanvasElement()
       .getBoundingClientRect();
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: canvasRect.left + 150,
       clientY: canvasRect.top + 400,
     });
@@ -293,7 +292,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       brushSelectionInstance.prepareSelectMaskShape.parsedStyle,
     ).toMatchObject({
       x: 100,
-      y: 90,
+      y: 92,
       width: 50,
       height: 310,
     });

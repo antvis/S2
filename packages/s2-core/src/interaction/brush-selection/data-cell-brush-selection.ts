@@ -1,13 +1,17 @@
-import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty, range } from 'lodash';
-import { DataCell } from '../../cell/data-cell';
-import { InterceptType, S2Event } from '../../common/constant';
+import type { DataCell } from '../../cell/data-cell';
+import { S2Event } from '../../common/constant';
 import {
   CellTypes,
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
+import type {
+  BrushRange,
+  CellMeta,
+  Point,
+  ViewMeta,
+} from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
@@ -17,7 +21,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   public brushRangeCells: DataCell[] = [];
 
   protected bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
       super.mouseDown(event);
       this.resetScrollDelta();
     });
@@ -37,13 +41,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         y: event.clientY,
       });
 
-      this.clearAutoScroll();
-      if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas?.x - this.endBrushPoint?.x;
-        const deltaY = pointInCanvas?.y - this.endBrushPoint?.y;
-
-        this.handleScroll(deltaX, deltaY);
-
+      if (this.autoBrushScroll(pointInCanvas)) {
         return;
       }
 
@@ -102,12 +100,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
-
     const brushRange = this.getBrushRange();
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
-    interaction.changeState({
+    this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: afterSelectDataCells,
@@ -116,16 +112,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedCellMetas);
 
-    this.spreadsheet.emit(
+    this.emitBrushSelectionEvent(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
-
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
   }
 
   /**
@@ -135,11 +125,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
    */
   private getScrollBrushRangeCells(selectedCellMetas: CellMeta[]) {
     return selectedCellMetas.map((meta) => {
-      const visibleCell = this.brushRangeCells.find((cell) => {
-        const visibleCellMeta = cell.getMeta();
-
-        return visibleCellMeta?.id === meta.id;
-      });
+      const visibleCell = this.getVisibleBrushRangeCells(meta.id);
 
       if (visibleCell) {
         return visibleCell;
@@ -150,11 +136,22 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         meta.colIndex,
       )!;
 
-      return new DataCell(viewMeta, this.spreadsheet);
+      return this.spreadsheet.options.dataCell!(viewMeta);
     });
   }
 
   protected bindMouseUp() {
     super.bindMouseUp(true);
+  }
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    const { minX, minY } = this.spreadsheet.facet.panelBBox;
+    const x = Math.max(brushRange.start.x, minX);
+    const y = Math.max(brushRange.start.y, minY);
+
+    return {
+      x,
+      y,
+    };
   }
 }

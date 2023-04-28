@@ -44,7 +44,7 @@ export interface StoreKey {
   /**
    * 行头水平滚动偏移
    */
-  hRowScrollX: number;
+  rowHeaderScrollX: number;
 
   /**
    * 列头点击排序配置
