@@ -642,7 +642,7 @@ export abstract class BaseFacet {
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
-          ? this.cornerBBox.width
+          ? Math.min(this.cornerBBox.width, this.getCanvasHW().width)
           : 0);
       const finalPosition = {
         x:
