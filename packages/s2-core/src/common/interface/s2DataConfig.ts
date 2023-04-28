@@ -43,20 +43,25 @@ export interface BulletValue {
 export type MiniChartData = BaseChartData | BulletValue;
 
 /**
- * use for gridAnalysisSheet
- *  eg. { label: '余额女',
- *      values: [
- *        ['最近7天登端天数', 1, 3423423, 323],
- *        ['自然月新登用户数', 1, 3423423, 323],
- *        ['最近7天登端天数', 1, 3423423, 323],
- *        ['自然月新登用户数', 1, 3423423, 323],
- *      ],
- *    }
+ * 单个单元格, 显示一组数据
+ * 适用于 (网格分析表, 趋势分析表) 和其他自定义场景
+  {
+    label: '余额女',
+    values: [
+      ['最近7天登端天数', 1, 3423423, 323],
+      ['自然月新登用户数', 1, 3423423, 323],
+      ['最近7天登端天数', 1, 3423423, 323],
+      ['自然月新登用户数', 1, 3423423, 323],
+    ],
+  }
  */
+
 export interface MultiData<T = SimpleData[][] | MiniChartData> {
+  /** 数值 */
   values: T;
+  /** 原始值 */
   originalValues?: T;
-  // the title of one cell of the gridAnalysisSheet
+  /** 单元格标题 */
   label?: string;
   [key: string]: unknown;
 }

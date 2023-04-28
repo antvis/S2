@@ -1,5 +1,5 @@
 ---
-title: Mobile Component 
+title: Mobile Component
 order: 10
 ---
 
@@ -49,9 +49,9 @@ export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
     hoverHighlight: false,
     hoverFocus: false,
     brushSelection: {
-      data: false,
-      row: false,
-      col: false,
+      dataCell: false,
+      rowCell: false,
+      colCell: false,
     },
     multiSelection: false,
     rangeSelection: false,

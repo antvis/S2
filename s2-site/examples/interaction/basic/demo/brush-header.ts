@@ -12,11 +12,11 @@ fetch(
       height: 480,
       interaction: {
         hoverHighlight: true,
-        // 设置行头，列头，单元格都可以进行圈选 (行头,列头默认关闭)
+        // 设置行头，列头，数值单元格都可以进行圈选 (行头,列头默认关闭)
         brushSelection: {
-          data: true,
-          row: true,
-          col: true,
+          dataCell: true,
+          rowCell: true,
+          colCell: true,
         },
         // 圈选功能 + 复制功能开启后，可以通过使用快捷键 `command/ctrl + c` 即可复制选中区域（局部复制）
         enableCopy: true,

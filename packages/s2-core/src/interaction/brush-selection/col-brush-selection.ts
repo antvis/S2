@@ -13,7 +13,7 @@ import type { OnUpdateCells } from '../../common/interface';
 import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
-export class ColBrushSelection extends BaseBrushSelection {
+export class ColCellBrushSelection extends BaseBrushSelection {
   public displayedCells: ColCell[] = [];
 
   public brushRangeCells: ColCell[] = [];
@@ -121,7 +121,7 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   protected addBrushIntercepts() {
     this.spreadsheet.interaction.addIntercepts([
-      InterceptType.COL_BRUSH_SELECTION,
+      InterceptType.COL_CELL_BRUSH_SELECTION,
     ]);
   }
 

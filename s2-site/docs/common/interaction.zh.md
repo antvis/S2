@@ -61,6 +61,6 @@ interface ScrollSpeedRatio {
 
 | 参数              | 说明                  | 类型              | 默认值   | 必选  |
 | ----------------- | --------------------- | ----------------- | ------- | --- |
-| data            | 是否允许数值单元格刷选         | `boolean`         | true  |       |
-| row             | 是否允许行头单元格刷选（仅支持透视表） | `boolean`         | false |       |
-| col             | 是否允许列头单元格刷选（仅支持透视表） | `boolean`         | false |       |
+| dataCell            | 是否允许数值单元格刷选         | `boolean`         | true  |       |
+| rowCell             | 是否允许行头单元格刷选（仅支持透视表） | `boolean`         | false |       |
+| colCell             | 是否允许列头单元格刷选（仅支持透视表） | `boolean`         | false |       |

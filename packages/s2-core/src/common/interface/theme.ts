@@ -288,9 +288,9 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
 }
 
 export interface GridAnalysisCellTheme {
-  // 次级文本，如副指标
+  /* 次级文本，如副指标 */
   minorText?: TextTheme;
-  // 衍生指标
+  /* 衍生指标 */
   derivedMeasureText?: {
     mainUp: string;
     mainDown: string;

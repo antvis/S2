@@ -38,18 +38,31 @@ export interface BaseCellStyle {
 }
 
 export interface DataCellStyle {
+  /**
+   * 宽度
+   */
   width?: number;
+  /**
+   * 高度
+   */
   height?: number;
 
   /**
    * 多列数值配置
    */
   valuesCfg?: {
-    // 原始值字段
+    /**
+     * 原始值字段
+     */
     originalValueField?: string;
-    // 每一列数值占单元格宽度百分比 Map
+    /**
+     * 每一列数值占单元格宽度百分比
+     * @example [0.1, 0.3, 0.6]
+     */
     widthPercent?: number[];
-    // 是否显示原始值
+    /**
+     * 是否显示原始值 (tooltip 中显示)
+     */
     showOriginalValue?: boolean;
   };
 }

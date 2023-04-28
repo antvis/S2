@@ -156,15 +156,15 @@ export class EventController {
 
     if (
       interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
-        InterceptType.COL_BRUSH_SELECTION,
-        InterceptType.ROW_BRUSH_SELECTION,
+        InterceptType.DATA_CELL_BRUSH_SELECTION,
+        InterceptType.COL_CELL_BRUSH_SELECTION,
+        InterceptType.ROW_CELL_BRUSH_SELECTION,
       ])
     ) {
       interaction.removeIntercepts([
-        InterceptType.BRUSH_SELECTION,
-        InterceptType.ROW_BRUSH_SELECTION,
-        InterceptType.COL_BRUSH_SELECTION,
+        InterceptType.DATA_CELL_BRUSH_SELECTION,
+        InterceptType.ROW_CELL_BRUSH_SELECTION,
+        InterceptType.COL_CELL_BRUSH_SELECTION,
       ]);
 
       return;
@@ -419,9 +419,9 @@ export class EventController {
   private hasBrushSelectionIntercepts() {
     return this.spreadsheet.interaction.hasIntercepts([
       InterceptType.HOVER,
-      InterceptType.BRUSH_SELECTION,
-      InterceptType.ROW_BRUSH_SELECTION,
-      InterceptType.COL_BRUSH_SELECTION,
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+      InterceptType.ROW_CELL_BRUSH_SELECTION,
+      InterceptType.COL_CELL_BRUSH_SELECTION,
     ]);
   }
 
