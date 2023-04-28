@@ -369,8 +369,7 @@ describe('<StrategySheet/> Tests', () => {
       });
 
       const allDataCells = s2.facet.getDataCells();
-      const unSelectedDataCells =
-        s2.interaction.getPanelGroupAllUnSelectedDataCells();
+      const unSelectedDataCells = s2.interaction.getUnSelectedDataCells();
 
       expect(allDataCells).toHaveLength(30);
       // 选中一个

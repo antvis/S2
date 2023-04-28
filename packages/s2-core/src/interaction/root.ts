@@ -206,7 +206,7 @@ export class RootInteraction {
     });
   }
 
-  public getPanelGroupAllUnSelectedDataCells() {
+  public getUnSelectedDataCells() {
     return this.spreadsheet.facet
       .getDataCells()
       .filter((cell) => !this.isActiveCell(cell));

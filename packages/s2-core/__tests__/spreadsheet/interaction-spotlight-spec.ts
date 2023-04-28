@@ -37,8 +37,7 @@ describe('Interaction SelectedCellsSpotlight Tests', () => {
     });
 
     const allDataCells = s2.facet.getDataCells();
-    const unSelectedDataCells =
-      s2.interaction.getPanelGroupAllUnSelectedDataCells();
+    const unSelectedDataCells = s2.interaction.getUnSelectedDataCells();
 
     expect(allDataCells).toHaveLength(4);
     // 选中一个
