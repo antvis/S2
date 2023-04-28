@@ -1,3 +1,37 @@
+# [@antv/s2-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.6...@antv/s2-v2.0.0-next.7) (2023-04-28)
+
+
+### Bug Fixes
+
+* canvas mouseout 判断错误 ([#2181](https://github.com/antvis/S2/issues/2181)) ([16c0b82](https://github.com/antvis/S2/commit/16c0b824aef16d109e8db8d2fe6b3a25a413dcfa))
+* fix lint error ([f3eba69](https://github.com/antvis/S2/commit/f3eba69a17f2febd7e3adc1ae0c2069295ba0ae6))
+* **interaction:** 修复从下往上滚动刷选速度缓慢 & 优化滚动刷选蒙层显示 ([#2119](https://github.com/antvis/S2/issues/2119)) ([8131d80](https://github.com/antvis/S2/commit/8131d8034ce255e05273c1792ecb11cd3e5aece2))
+* **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
+* **layout:** 修复自定义列头采样错误导致行角头不显示 close [#2117](https://github.com/antvis/S2/issues/2117) ([#2175](https://github.com/antvis/S2/issues/2175)) ([2266272](https://github.com/antvis/S2/commit/22662721739b45fbe5c00c1157ad00071d8f5f0d))
+* **tooltip:** 修复特定配置下点击 tooltip 内容后 tooltip 关闭 close [#2170](https://github.com/antvis/S2/issues/2170) ([#2172](https://github.com/antvis/S2/issues/2172)) ([6219e57](https://github.com/antvis/S2/commit/6219e579364cfb7ac3a8b3db4ae01c5672d7f2d4))
+* 修复 cornerText 配置对树状模式的适配 ([#2167](https://github.com/antvis/S2/issues/2167)) ([e9efcea](https://github.com/antvis/S2/commit/e9efcea944f5d0793d4a1250362e6b6f6b492c52))
+* 修复总计小计 linkField 样式问题 ([#2169](https://github.com/antvis/S2/issues/2169)) ([4450278](https://github.com/antvis/S2/commit/4450278d82888c117e5bd9d31874b88ecdb33d99))
+* 修改DataCell类 drawLinkFieldShape 方法名为 drawLinkFieldShapeOwn ([d5e14b2](https://github.com/antvis/S2/commit/d5e14b25abba5bfaf74dddb17d9f5b44c74bc29b))
+* 多指标行头总计节点宽度计算错误 ([#2165](https://github.com/antvis/S2/issues/2165)) ([08ef330](https://github.com/antvis/S2/commit/08ef330a02a1fbf11f49090f4fd7f5d2b0cc1093))
+* 微应用环境识别mouseEvent失效 ([bddbe34](https://github.com/antvis/S2/commit/bddbe34104355ac0087bc9f72377889a8f444d7a)), closes [#2162](https://github.com/antvis/S2/issues/2162)
+* 统一风格、删除冗余代码 ([7b4ef0e](https://github.com/antvis/S2/commit/7b4ef0edf72e059b427c54e6ea881c4c8e347aed))
+* 行头过宽且不冻结时滚动条渲染错误 ([#2173](https://github.com/antvis/S2/issues/2173)) ([ab79ea0](https://github.com/antvis/S2/commit/ab79ea0664046bc6479a717d7b3b0ee7efe05b31))
+* 避免s2实例被污染 ([8c44a85](https://github.com/antvis/S2/commit/8c44a85a678eadaab3fb2a66b5b02a123f74c9bb))
+
+
+### Features
+
+* icon支持更新name与fill ([#2138](https://github.com/antvis/S2/issues/2138)) ([d000aea](https://github.com/antvis/S2/commit/d000aeac332676cfa15d9986ec7f4be948c565d0))
+* **interaction:** 点击角头后支持选中所对应那一列的行头 close [#2073](https://github.com/antvis/S2/issues/2073) ([#2081](https://github.com/antvis/S2/issues/2081)) ([ad2b5d8](https://github.com/antvis/S2/commit/ad2b5d87edf4c529d7c9a5e1348e893e14547ef3))
+* **interaction:** 行头支持滚动刷选 ([#2087](https://github.com/antvis/S2/issues/2087)) ([65c3f3b](https://github.com/antvis/S2/commit/65c3f3b6a37709c0fa684b0f5717d3b349251e48))
+* 修改文档、添加用例演示、修改方法名drawLinkFieldShapLogic -> drawLinkField ([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
+* 在 shape 中添加文本的原始值 ([#2109](https://github.com/antvis/S2/issues/2109)) ([4d81e72](https://github.com/antvis/S2/commit/4d81e72440d797fd7a06179794c342f009fc39c3))
+* 增加dataCell 下划线测试用例及demo ([a5efe17](https://github.com/antvis/S2/commit/a5efe17bda06cc8eba633cbea9c56ceb8b8c703e))
+* 增加自定义merged-cell ([534cc15](https://github.com/antvis/S2/commit/534cc15da9f766f95be3c622e65e45d8796ff020))
+* 复制支持自定义transformer ([#2090](https://github.com/antvis/S2/issues/2090)) ([250eecd](https://github.com/antvis/S2/commit/250eecd32ed4f48b95ed7c4e480fa3c75d4bb5d7))
+* 提取跳转链接下划线 公共逻辑 到 BaseCell 类 ([34dbbb3](https://github.com/antvis/S2/commit/34dbbb3bdf028cb96508dcead724d9ac9bcc1ab9))
+* 数据单元格DataCell类中增加链接跳转渲染 ([bb5a964](https://github.com/antvis/S2/commit/bb5a964787a80843515b4d552adb3fdb59393e3d))
+
 # [@antv/s2-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.5...@antv/s2-v2.0.0-next.6) (2023-04-23)
 
 ### Bug Fixes
