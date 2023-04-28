@@ -1,5 +1,5 @@
 import {
-  type Canvas,
+  Canvas,
   type FederatedPointerEvent as CanvasEvent,
   type Group,
   DisplayObject,
@@ -203,10 +203,16 @@ export class EventController {
        */
       const { width, height } = this.getContainerRect();
 
+      const { target: eventTarget, clientX, clientY } = event;
+
       return (
-        canvas.contains(event.target as HTMLElement) &&
-        event.clientX <= x + width &&
-        event.clientY <= y + height
+        (eventTarget === canvas ||
+          eventTarget instanceof DisplayObject ||
+          eventTarget instanceof Canvas) &&
+        clientX <= x + width &&
+        clientX >= x &&
+        clientY <= y + height &&
+        clientY >= y
       );
     }
 
@@ -544,7 +550,10 @@ export class EventController {
   };
 
   private onCanvasMouseout = (event: CanvasEvent) => {
-    if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
+    if (
+      !this.isAutoResetSheetStyle ||
+      this.isMouseOnTheCanvasContainer(event as Event)
+    ) {
       return;
     }
 
