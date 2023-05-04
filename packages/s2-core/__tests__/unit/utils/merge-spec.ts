@@ -1,10 +1,10 @@
-import { DEFAULT_STYLE } from '@/common/constant/options';
+import { omit } from 'lodash';
+import type { S2DataConfig } from '@/common';
 import {
   customMerge,
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import { DeviceType, HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -28,18 +28,20 @@ describe('merge test', () => {
   });
 
   test('should get safety data config', () => {
-    expect(getSafetyDataConfig(null)).toStrictEqual({
-      data: [],
-      fields: {
-        rows: [],
-        columns: [],
-        values: [],
-        valueInCols: false,
-      },
-      meta: [],
-      sortParams: [],
-      filterParams: [],
-    });
+    expect(getSafetyDataConfig(null)).toMatchInlineSnapshot(`
+      Object {
+        "data": Array [],
+        "fields": Object {
+          "columns": Array [],
+          "rows": Array [],
+          "valueInCols": false,
+          "values": Array [],
+        },
+        "filterParams": Array [],
+        "meta": Array [],
+        "sortParams": Array [],
+      }
+    `);
   });
 
   test('should unique dataConfig fields', () => {
@@ -52,18 +54,28 @@ describe('merge test', () => {
           valueInCols: false,
         },
       }),
-    ).toStrictEqual({
-      data: [],
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['count', 'cost'],
-        valueInCols: false,
-      },
-      meta: [],
-      sortParams: [],
-      filterParams: [],
-    });
+    ).toMatchInlineSnapshot(`
+      Object {
+        "data": Array [],
+        "fields": Object {
+          "columns": Array [
+            "type",
+          ],
+          "rows": Array [
+            "province",
+            "city",
+          ],
+          "valueInCols": false,
+          "values": Array [
+            "count",
+            "cost",
+          ],
+        },
+        "filterParams": Array [],
+        "meta": Array [],
+        "sortParams": Array [],
+      }
+    `);
   });
 
   test('should cancel valueInCols if custom rows is not empty by get safety data config', () => {
@@ -78,19 +90,27 @@ describe('merge test', () => {
       getSafetyDataConfig({
         fields,
       }),
-    ).toStrictEqual({
-      data: [],
-      fields: {
-        ...fields,
-        rows,
-        columns: [],
-        values: ['1'],
-        valueInCols: false,
-      },
-      meta: [],
-      sortParams: [],
-      filterParams: [],
-    });
+    ).toMatchInlineSnapshot(`
+      Object {
+        "data": Array [],
+        "fields": Object {
+          "columns": Array [],
+          "rows": Array [
+            Object {
+              "field": "1",
+              "title": "test",
+            },
+          ],
+          "valueInCols": false,
+          "values": Array [
+            "1",
+          ],
+        },
+        "filterParams": Array [],
+        "meta": Array [],
+        "sortParams": Array [],
+      }
+    `);
   });
 
   test('should cancel valueInCols if value is empty by get safety data config', () => {
@@ -103,18 +123,20 @@ describe('merge test', () => {
       getSafetyDataConfig({
         fields,
       }),
-    ).toStrictEqual({
-      data: [],
-      fields: {
-        ...fields,
-        rows: [],
-        columns: [],
-        valueInCols: false,
-      },
-      meta: [],
-      sortParams: [],
-      filterParams: [],
-    });
+    ).toMatchInlineSnapshot(`
+      Object {
+        "data": Array [],
+        "fields": Object {
+          "columns": Array [],
+          "rows": Array [],
+          "valueInCols": false,
+          "values": Array [],
+        },
+        "filterParams": Array [],
+        "meta": Array [],
+        "sortParams": Array [],
+      }
+    `);
   });
 
   test('should merge old dataCfg', () => {
@@ -130,89 +152,118 @@ describe('merge test', () => {
       getSafetyDataConfig(oldDataCfg, {
         fields,
       }),
-    ).toStrictEqual({
-      data: [{ value: 1 }, { value: 2 }],
-      fields: {
-        ...fields,
-        rows: [],
-        columns: [],
-        valueInCols: false,
-      },
-      meta: [],
-      sortParams: [],
-      filterParams: [],
-    });
+    ).toMatchInlineSnapshot(`
+      Object {
+        "data": Array [
+          Object {
+            "value": 1,
+          },
+          Object {
+            "value": 2,
+          },
+        ],
+        "fields": Object {
+          "columns": Array [],
+          "rows": Array [],
+          "valueInCols": false,
+          "values": Array [],
+        },
+        "filterParams": Array [],
+        "meta": Array [],
+        "sortParams": Array [],
+      }
+    `);
   });
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑demo 修改了默认配置 直接提交
-    expect(getSafetyOptions(null)).toStrictEqual({
-      width: 600,
-      height: 480,
-      debug: false,
-      hierarchyType: 'grid',
-      device: DeviceType.PC,
-      conditions: {},
-      cornerText: '',
-      cornerExtraFieldText: '',
-      totals: {},
-      tooltip: {
-        showTooltip: false,
-        autoAdjustBoundary: 'body',
-        operation: {
-          hiddenColumns: false,
-          sort: false,
-          menus: [],
+    expect(omit(getSafetyOptions(null), ['devicePixelRatio']))
+      .toMatchInlineSnapshot(`
+      Object {
+        "conditions": Object {},
+        "cornerExtraFieldText": "",
+        "cornerText": "",
+        "customSVGIcons": Array [],
+        "debug": false,
+        "device": "pc",
+        "frozen": Object {
+          "colCount": 0,
+          "rowCount": 0,
+          "rowHeader": true,
+          "trailingColCount": 0,
+          "trailingRowCount": 0,
         },
-      },
-      interaction: {
-        linkFields: [],
-        hiddenColumnFields: [],
-        selectedCellHighlight: false,
-        selectedCellsSpotlight: false,
-        hoverHighlight: true,
-        hoverFocus: { duration: HOVER_FOCUS_DURATION },
-        scrollSpeedRatio: {
-          horizontal: 1,
-          vertical: 1,
+        "hdAdapter": true,
+        "headerActionIcons": Array [],
+        "height": 480,
+        "hierarchyType": "grid",
+        "interaction": Object {
+          "autoResetSheetStyle": true,
+          "brushSelection": Object {
+            "colCell": false,
+            "dataCell": true,
+            "rowCell": false,
+          },
+          "eventListenerOptions": false,
+          "hiddenColumnFields": Array [],
+          "hoverFocus": Object {
+            "duration": 800,
+          },
+          "hoverHighlight": true,
+          "linkFields": Array [],
+          "multiSelection": true,
+          "overscrollBehavior": "auto",
+          "rangeSelection": true,
+          "resize": Object {
+            "colCellHorizontal": true,
+            "colCellVertical": true,
+            "colResizeType": "current",
+            "cornerCellHorizontal": true,
+            "rowCellVertical": true,
+            "rowResizeType": "current",
+          },
+          "scrollSpeedRatio": Object {
+            "horizontal": 1,
+            "vertical": 1,
+          },
+          "scrollbarPosition": "content",
+          "selectedCellHighlight": false,
+          "selectedCellsSpotlight": false,
         },
-        autoResetSheetStyle: true,
-        brushSelection: {
-          data: true,
-          row: false,
-          col: false,
+        "placeholder": "-",
+        "showDefaultHeaderActionIcon": false,
+        "showSeriesNumber": false,
+        "style": Object {
+          "colCell": Object {
+            "height": 30,
+            "heightByField": null,
+            "widthByField": null,
+          },
+          "dataCell": Object {
+            "height": 30,
+            "width": 96,
+          },
+          "layoutWidthType": "adaptive",
+          "rowCell": Object {
+            "heightByField": null,
+            "showTreeLeafNodeAlignDot": false,
+            "widthByField": null,
+          },
         },
-        multiSelection: true,
-        rangeSelection: true,
-        resize: {
-          colCellHorizontal: true,
-          colCellVertical: true,
-          cornerCellHorizontal: true,
-          rowCellVertical: true,
-          rowResizeType: 'current',
-          colResizeType: 'current',
+        "supportCSSTransform": false,
+        "tooltip": Object {
+          "autoAdjustBoundary": "body",
+          "operation": Object {
+            "hiddenColumns": false,
+            "menus": Array [],
+            "sort": false,
+          },
+          "showTooltip": false,
         },
-        scrollbarPosition: 'content',
-        eventListenerOptions: false,
-        overscrollBehavior: 'auto',
-      },
-      frozen: {
-        rowHeader: true,
-        rowCount: 0,
-        colCount: 0,
-        trailingRowCount: 0,
-        trailingColCount: 0,
-      },
-      showSeriesNumber: false,
-      customSVGIcons: [],
-      showDefaultHeaderActionIcon: false,
-      headerActionIcons: [],
-      style: DEFAULT_STYLE,
-      hdAdapter: true,
-      placeholder: '-',
-      supportCSSTransform: false,
-      devicePixelRatio: window.devicePixelRatio,
-    });
+        "totals": Object {},
+        "width": 600,
+      }
+    `);
   });
 
   test('should get custom options', () => {
@@ -231,20 +282,22 @@ describe('merge test', () => {
       },
     });
 
-    expect(options.tooltip).toStrictEqual({
-      autoAdjustBoundary: 'body',
-      operation: {
-        hiddenColumns: false,
-        sort: false,
-        menus: [
-          {
-            key: 'custom',
-            text: 'custom',
-          },
-        ],
-      },
-      showTooltip: false,
-    });
+    expect(options.tooltip).toMatchInlineSnapshot(`
+      Object {
+        "autoAdjustBoundary": "body",
+        "operation": Object {
+          "hiddenColumns": false,
+          "menus": Array [
+            Object {
+              "key": "custom",
+              "text": "custom",
+            },
+          ],
+          "sort": false,
+        },
+        "showTooltip": false,
+      }
+    `);
   });
 
   test('should get custom data config', () => {

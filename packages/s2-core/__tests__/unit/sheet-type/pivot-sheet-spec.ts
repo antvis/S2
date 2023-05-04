@@ -684,7 +684,7 @@ describe('PivotSheet Tests', () => {
   test('should clear drill down data', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
-    s2.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+    s2.interaction.addIntercepts([InterceptType.DATA_CELL_BRUSH_SELECTION]);
 
     const clearDrillDownDataSpy = jest
       .spyOn(s2.dataSet, 'clearDrillDownData' as any)
@@ -698,7 +698,7 @@ describe('PivotSheet Tests', () => {
     expect(renderSpy).toHaveBeenCalledTimes(1);
     // reset interaction
     expect(
-      s2.interaction.hasIntercepts([InterceptType.BRUSH_SELECTION]),
+      s2.interaction.hasIntercepts([InterceptType.DATA_CELL_BRUSH_SELECTION]),
     ).toBeFalsy();
 
     renderSpy.mockRestore();

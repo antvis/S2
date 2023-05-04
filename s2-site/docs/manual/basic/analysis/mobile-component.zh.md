@@ -1,6 +1,6 @@
 ---
-title: 移动端组件 
-order: 10 
+title: 移动端组件
+order: 10
 ---
 
 为了满足移动端的使用场景，`s2-react` 中的分析组件进行了移动的适配。帮助用户在移动端更加便利、高效的看数。
@@ -50,9 +50,9 @@ export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
     hoverHighlight: false,
     hoverFocus: false,
     brushSelection: {
-      data: false,
-      row: false,
-      col: false,
+      dataCell: false,
+      rowCell: false,
+      colCell: false,
     },
     multiSelection: false,
     rangeSelection: false,

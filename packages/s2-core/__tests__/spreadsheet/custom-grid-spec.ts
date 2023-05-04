@@ -1,6 +1,7 @@
 import type { Group } from '@antv/g';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
+import { pick } from 'lodash';
 import type { HeaderCell } from '../../src/cell/header-cell';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
@@ -233,6 +234,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
   });
 
   describe('Custom Col Grid Tests', () => {
+    const mapColNodes = (nodes = s2.getColumnNodes()) => {
+      return nodes.map((node) => {
+        return {
+          ...pick(node, ['field', 'value', 'x', 'y', 'width', 'height']),
+          description: node.extra?.['description'],
+        };
+      });
+    };
     const customColDataCfg: S2DataConfig = {
       ...baseDataConfig,
       fields: customColGridSimpleFields,
@@ -259,14 +268,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
      */
 
     test('should render custom layout column nodes', () => {
-      const colNodes = s2.getColumnNodes().map((node) => {
-        return {
-          value: node.value,
-          width: node.width,
-          height: node.height,
-          description: node.extra?.['description'],
-        };
-      });
+      const colNodes = mapColNodes();
 
       expect(colNodes).toMatchSnapshot();
     });
@@ -448,6 +450,44 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(
         measureNodes.every((node) => node.actualText === node.value),
       ).toBeTruthy();
+    });
+
+    // https://github.com/antvis/S2/issues/2117
+    test('should calc correctly leaf nodes height and corner nodes', () => {
+      s2.setDataCfg({
+        ...customColDataCfg,
+        fields: {
+          ...customColGridSimpleFields,
+          columns: [
+            {
+              field: 'a-0',
+              title: '测试-0',
+              children: [
+                {
+                  field: 'a-0-1',
+                  title: '测试-0-1',
+                },
+                {
+                  field: 'a-0-2',
+                  title: '测试-0-2',
+                },
+              ],
+            },
+            ...customColGridSimpleFields.columns!,
+          ],
+        },
+      });
+      s2.render();
+
+      const colNodes = mapColNodes();
+      const cornerNodes = mapColNodes(s2.facet.getCornerNodes());
+      const node1 = s2.getColumnNodes().find(({ field }) => field === 'a-0-1');
+      const node2 = s2.getColumnNodes().find(({ field }) => field === 'a-0-2');
+
+      expect(node1?.height).toEqual(60);
+      expect(node1?.height).toEqual(node2?.height);
+      expect(colNodes).toMatchSnapshot();
+      expect(cornerNodes).toMatchSnapshot();
     });
   });
 });

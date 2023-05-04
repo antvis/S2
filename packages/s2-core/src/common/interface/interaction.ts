@@ -4,7 +4,6 @@ import type {
   CellTypes,
   InterceptType,
   ScrollbarPositionType,
-  InteractionCellSelectedHighlightType,
 } from '../constant';
 import type {
   BaseCell,
@@ -52,23 +51,34 @@ export type OnUpdateCells = (
 ) => void;
 
 export interface InteractionStateInfo {
-  // current state name
+  /**
+   * 交互状态名
+   */
   stateName?: InteractionStateName;
-  // all the active cells for this interaction (save meta data for recording offscreen cells)
+  /**
+   * 单元格元数据 (包含不在可视范围内的)
+   */
   cells?: CellMeta[];
-  // all the cells changed the state style
+  /**
+   * 交互状态发生改变的单元格实例
+   */
   interactedCells?: S2CellType[];
-  // all the active nodes, including rendered and not rendered cells
+  /**
+   * 选中的单元格节点
+   */
   nodes?: Node[];
-  // for empty cells, updates are ignored, use `force` to skip ignore
+  /**
+   * 如果单元格为空, 是否强制更新 (适用于反选等场景)
+   */
   force?: boolean;
 
-  /** 交互行为改变后，会被更新和重绘的单元格回调 */
+  /**
+   * 交互行为改变后，会被更新和重绘的单元格回调
+   */
   onUpdateCells?: OnUpdateCells;
 }
 
 export interface SelectHeaderCellInfo {
-  // target header cell
   cell: S2CellType<ViewMeta>;
   isMultiSelection?: boolean;
 }
@@ -115,6 +125,7 @@ export interface BrushAutoScrollConfig {
   x: BrushAutoScrollConfigItem;
   y: BrushAutoScrollConfigItem;
 }
+
 export interface ScrollSpeedRatio {
   horizontal?: number;
   vertical?: number;
@@ -125,61 +136,134 @@ export interface HoverFocusOptions {
 }
 
 export interface BrushSelection {
-  data?: boolean;
-  row?: boolean;
-  col?: boolean;
+  dataCell?: boolean;
+  rowCell?: boolean;
+  colCell?: boolean;
 }
 
 export interface BrushSelectionInfo {
-  dataBrushSelection: boolean;
-  rowBrushSelection: boolean;
-  colBrushSelection: boolean;
+  dataCellBrushSelection: boolean;
+  rowCellBrushSelection: boolean;
+  colCellBrushSelection: boolean;
 }
 
 export interface InteractionOptions {
-  // record which row/col field need extra link info
+  /**
+   * 链接跳转
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/link-jump
+   */
   linkFields?: string[] | ((meta: Node | ViewMeta) => boolean);
-  // focus selected cell, like the spotlight
+
+  /**
+   * 选中单元格高亮聚焦
+   */
   selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
+
+  /**
+   * 十字器高亮效果
+   */
   hoverHighlight?: boolean;
-  // keep cell hovered after 800ms duration
+
+  /**
+   * 悬停聚焦, 800ms 后会显示其对应 tooltip, 可以自定义 duration
+   */
   hoverFocus?: HoverFocusOptions | boolean;
-  // enable Command + C to copy spread data
+
+  /**
+   * 开启复制 Command/Ctrl + C
+   */
   enableCopy?: boolean;
-  // copy with filed format
+
+  /**
+   * 复制带格式的数据
+   */
   copyWithFormat?: boolean;
-  // copy with header info
+
+  /**
+   * 复制包含其对应行列头的数据
+   */
   copyWithHeader?: boolean;
-  // auto reset sheet style when click outside or press ecs key, default true
+
+  /**
+   * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态)
+   */
   autoResetSheetStyle?: boolean;
+
+  /**
+   * 隐藏列头配置, 支持维度 (S2DataConfig.fields) 和具体维值 (id)
+   * @example hiddenColumnFields: ['type', 'subType'];
+   * @example hiddenColumnFields: ['root[&]家具[&]桌子[&]number']
+   */
   hiddenColumnFields?: string[];
-  // the ratio to control scroll speed, default set to 1
+
+  /**
+   * 自定义滚动速率, 默认 1
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/scroll
+   */
   scrollSpeedRatio?: ScrollSpeedRatio;
-  // enable resize area, default set to all enable
+
+  /**
+   * 宽高调整
+   */
   resize?: ResizeInteractionOptions | boolean;
-  // enable mouse drag brush selection on data cell, row cell, col cell
+
+  /**
+   * 刷选
+   */
   brushSelection?: BrushSelection | boolean;
-  // enable Command / Ctrl + click multi selection
+
+  /**
+   * 多选 Command/Ctrl + click
+   */
   multiSelection?: boolean;
-  // enable Shift + click multi selection
+
+  /**
+   * 区间快捷多选 Shift + click
+   */
   rangeSelection?: boolean;
-  // use arrow keyboard to move selected cell
+
+  /**
+   * 键盘方向键移动选中单元格
+   */
   selectedCellMove?: boolean;
-  // controls scrollbar's position type
+
+  /**
+   * 滚动条位置 (可用于表格内容未撑满 Canvas 的场景)
+   */
   scrollbarPosition?: ScrollbarPositionType;
 
-  /*
-   * An object that specifies characteristics about the event listener
-   * https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+  /**
+   * 透传 listener 属性的可选参数对象
+   * @see https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
    */
   eventListenerOptions?: boolean | AddEventListenerOptions;
-  // highlight col and row header for selected cell
-  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType;
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+
+  /**
+   * 选中单元格高亮联动 (高亮所对应行头/列头, 高亮当前行/当前列)
+   */
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightOptions;
+
+  /**
+   * 滚动到边界的行为
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/scroll
+   * @see https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+   */
   overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
 
-  /** ***********CUSTOM INTERACTION HOOKS**************** */
-  // register custom interactions
+  /**
+   * 自定义交互
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/custom
+   */
   customInteractions?: CustomInteraction[];
+}
+
+export interface InteractionCellSelectedHighlightOptions {
+  /** 高亮行头 */
+  rowHeader?: boolean;
+  /** 高亮列头 */
+  colHeader?: boolean;
+  /** 高亮选中单元格所在行 */
+  currentRow?: boolean;
+  /** 高亮选中单元格所在列 */
+  currentCol?: boolean;
 }

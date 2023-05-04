@@ -6,6 +6,7 @@ import {
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
+  type S2Options,
 } from '@/common';
 
 jest.mock('@/interaction/event-controller');
@@ -292,20 +293,22 @@ describe('Tooltip Tests', () => {
   });
 
   test('should display custom string content by call method and ignore all option config', () => {
-    Object.defineProperty(s2.options, 'tooltip', {
-      value: {
-        ...s2.options.tooltip,
-        content: 'text',
-        row: {
-          content: 'row content',
-        },
-        col: {
-          content: 'col content',
-        },
-        cell: {
-          content: 'cell content',
-        },
+    const config: S2Options['tooltip'] = {
+      ...s2.options.tooltip,
+      content: 'text',
+      rowCell: {
+        content: 'row content',
       },
+      colCell: {
+        content: 'col content',
+      },
+      dataCell: {
+        content: 'cell content',
+      },
+    };
+
+    Object.defineProperty(s2.options, 'tooltip', {
+      value: config,
       configurable: true,
     });
 
