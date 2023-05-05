@@ -1,11 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable prefer-named-capture-group */
 import path from 'path';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import react from '@vitejs/plugin-react';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 import svgr from 'vite-plugin-svgr';
-import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
+import {
+  defineConfig,
+  type LibraryFormats,
+  type PluginOption,
+  type Alias,
+} from 'vite';
 
 const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',
@@ -21,6 +27,21 @@ const isAnalysisMode = process.env.ANALYSIS;
 const isDevMode = process.env.PLAYGROUND;
 const root = path.join(__dirname, isDevMode ? 'playground' : '');
 
+const alias: Alias[] = [
+  {
+    find: 'lodash',
+    replacement: 'lodash-es',
+  },
+];
+
+if (isDevMode) {
+  // 防止开发模式下直接加载s2-core中的主题less
+  alias.push({
+    find: /^(.*)\/theme\/(.*)\.less$/,
+    replacement: '$1/theme/$2.less?inline',
+  });
+}
+
 // eslint-disable-next-line import/no-default-export
 export default defineConfig({
   // 开发配置
@@ -33,9 +54,7 @@ export default defineConfig({
   // 打包配置
   resolve: {
     mainFields: ['src', 'module', 'main'],
-    alias: {
-      lodash: 'lodash-es',
-    },
+    alias,
   },
 
   define: {
