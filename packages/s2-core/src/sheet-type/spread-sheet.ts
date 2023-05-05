@@ -17,7 +17,7 @@ import {
   memoize,
   values,
 } from 'lodash';
-import { injectThemeVars } from '..';
+import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
