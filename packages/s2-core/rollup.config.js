@@ -8,7 +8,6 @@ import terser from '@rollup/plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import less from 'rollup-plugin-less';
 
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
@@ -50,7 +49,7 @@ const plugins = [
     },
   }),
   postcss({
-    exclude: ['**/theme/*.less'],
+    exclude: ['**/styles/theme/*.less'],
     minimize: isUmdFormat,
     use: {
       sass: null,
@@ -59,10 +58,16 @@ const plugins = [
     },
     extract: `style${isUmdFormat ? '.min' : ''}.css`,
   }),
-  less({
-    include: ['**/theme/*.less'],
-    output: false,
+  /** 主题变量 less 不需要 extract&inject */
+  postcss({
+    include: ['**/styles/theme/*.less'],
+    use: {
+      sass: null,
+      stylus: null,
+      less: { javascriptEnabled: true },
+    },
     inject: false,
+    extract: false,
   }),
 ];
 
