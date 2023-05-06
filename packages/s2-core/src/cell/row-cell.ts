@@ -390,7 +390,7 @@ export class RowCell extends HeaderCell {
       bbox: textArea,
       textWidth: this.actualTextWidth,
       textAlign: textStyle.textAlign!,
-      groupedIconNames: this.groupedIconNames,
+      groupedIcons: this.groupedIcons,
       iconStyle: iconStyle!,
     });
 

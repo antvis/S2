@@ -7,12 +7,12 @@ describe('Header Cell Utils Tests', () => {
     test('should return config', () => {
       const actionConfig: HeaderActionIcon[] = [
         {
-          iconNames: ['SortUp', 'SortDown'],
+          icons: ['SortUp', 'SortDown'],
           belongsCell: 'rowCell',
           displayCondition: jest.fn().mockReturnValue(true),
         },
         {
-          iconNames: ['DrillDown', 'Star'],
+          icons: ['DrillDown', 'Star'],
           belongsCell: 'colCell',
         },
       ];
@@ -25,7 +25,7 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
 
-      expect(rowConfig?.iconNames).toEqual([
+      expect(rowConfig?.icons).toEqual([
         { name: 'SortUp', position: 'right' },
         { name: 'SortDown', position: 'right' },
       ]);
@@ -46,7 +46,7 @@ describe('Header Cell Utils Tests', () => {
           CellTypes.COL_CELL,
         ),
       ).toEqual({
-        iconNames: [
+        icons: [
           { name: 'DrillDown', position: 'right' },
           { name: 'Star', position: 'right' },
         ],
@@ -66,7 +66,7 @@ describe('Header Cell Utils Tests', () => {
     test('should filter invisible icons', () => {
       const actionConfig: HeaderActionIcon[] = [
         {
-          iconNames: ['SortUp', 'SortDown'],
+          icons: ['SortUp', 'SortDown'],
           belongsCell: 'rowCell',
           displayCondition: (_, iconName) => iconName === 'SortDown',
         },
@@ -78,7 +78,7 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
 
-      expect(rowConfig!.iconNames).toEqual([
+      expect(rowConfig!.icons).toEqual([
         { name: 'SortDown', position: 'right' },
       ]);
     });

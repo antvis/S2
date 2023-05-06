@@ -50,7 +50,7 @@ describe('Table col cell util test', () => {
         showDefaultHeaderActionIcon: false,
         headerActionIcons: [
           {
-            iconNames: ['foo', 'bar'],
+            icons: ['foo', 'bar'],
             belongsCell: 'colCell',
           },
         ],

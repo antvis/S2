@@ -104,7 +104,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
       textAlign: textStyle.textAlign!,
       textWidth: this.actualTextWidth,
       iconStyle: this.getIconStyle()!,
-      groupedIconNames: this.groupedIconNames,
+      groupedIcons: this.groupedIcons,
     });
 
     return { x: textX, y: textStart };

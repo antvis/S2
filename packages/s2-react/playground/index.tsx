@@ -289,7 +289,7 @@ function MainLayout() {
       ],
       headerActionIcons: !options.showDefaultHeaderActionIcon && [
         {
-          iconNames: ['Filter'],
+          icons: ['Filter'],
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id !== 'root[&]家具[&]桌子[&]number',
@@ -301,7 +301,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['SortDown'],
+          icons: ['SortDown'],
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id === 'root[&]家具[&]桌子[&]number',
@@ -313,7 +313,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['FilterAsc'],
+          icons: ['FilterAsc'],
           belongsCell: 'cornerCell',
           onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
@@ -323,7 +323,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['SortDown', 'Filter'],
+          icons: ['SortDown', 'Filter'],
           belongsCell: 'rowCell',
           onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({

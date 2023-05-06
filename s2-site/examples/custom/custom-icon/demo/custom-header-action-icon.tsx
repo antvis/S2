@@ -26,7 +26,7 @@ fetch(
       showDefaultHeaderActionIcon: false,
       headerActionIcons: [
         {
-          iconNames: ['SortDown'],
+          icons: ['SortDown'],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.level > 0,
           onClick: (props) => {
@@ -36,7 +36,7 @@ fetch(
           },
         },
         {
-          iconNames: ['Filter', { name: 'CellUp', position: 'left' }],
+          icons: ['Filter', { name: 'CellUp', position: 'left' }],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.id === 'root[&]家具',
           onClick: (props) => {
@@ -48,7 +48,7 @@ fetch(
           },
         },
         {
-          iconNames: ['SortUp'],
+          icons: ['SortUp'],
           belongsCell: 'cornerCell',
           onClick: (props) => {
             const { meta, event } = props;
@@ -59,7 +59,7 @@ fetch(
           },
         },
         {
-          iconNames: ['DrillDownIcon'],
+          icons: ['DrillDownIcon'],
           belongsCell: 'rowCell',
           onClick: (props) => {
             const { meta, event } = props;

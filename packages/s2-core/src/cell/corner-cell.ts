@@ -117,7 +117,7 @@ export class CornerCell extends HeaderCell {
       },
       textAlign: textStyle.textAlign!,
       textWidth: this.actualTextWidth,
-      groupedIconNames: this.groupedIconNames,
+      groupedIcons: this.groupedIcons,
       iconStyle: this.getIconStyle()!,
     });
 

@@ -13,16 +13,16 @@ import type {
 } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
-const normalizeIconNames = (
-  iconNames: ActionIconName[],
+const normalizeIcons = (
+  icons: ActionIconName[],
   position: IconPosition = 'right',
 ) =>
-  iconNames.map((iconName) => {
-    if (typeof iconName === 'string') {
-      return { name: iconName, position };
+  icons.map((icon) => {
+    if (typeof icon === 'string') {
+      return { name: icon, position };
     }
 
-    return iconName;
+    return icon;
   });
 
 const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
@@ -30,7 +30,7 @@ const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
     (actionIcon) =>
       ({
         ...actionIcon,
-        iconNames: normalizeIconNames(actionIcon.iconNames),
+        icons: normalizeIcons(actionIcon.icons),
       } as InternalFullyHeaderActionIcon),
   );
 
@@ -43,9 +43,9 @@ const shouldShowActionIcons = (
     return false;
   }
 
-  const { iconNames, displayCondition, belongsCell } = actionIconCfg;
+  const { icons, displayCondition, belongsCell } = actionIconCfg;
 
-  if (isEmpty(iconNames)) {
+  if (isEmpty(icons)) {
     return false;
   }
 
@@ -59,7 +59,7 @@ const shouldShowActionIcons = (
   }
 
   // 有任意 iconName 命中展示，则使用当前 headerActionIcon config
-  return iconNames.some((iconName) => displayCondition(meta, iconName.name));
+  return icons.some((icon) => displayCondition(meta, icon.name));
 };
 
 /**
@@ -85,43 +85,43 @@ export const getActionIconConfig = (
   }
 
   // 使用配置的 displayCondition 进一步筛选需要展示的 icon
-  let nextIconNames = iconConfig.iconNames;
+  let nextIcons = iconConfig.icons;
 
   if (iconConfig.displayCondition) {
-    nextIconNames = nextIconNames.filter((iconName) =>
+    nextIcons = nextIcons.filter((iconName) =>
       iconConfig.displayCondition?.(meta, iconName.name),
     );
   }
 
   return {
     ...iconConfig,
-    iconNames: nextIconNames,
+    icons: nextIcons,
   };
 };
 
 export const getIconTotalWidth = (
-  iconNames: FullyIconName[] = [],
+  icons: FullyIconName[] = [],
   iconTheme: IconTheme,
 ): number => {
-  if (isEmpty(iconNames)) {
+  if (isEmpty(icons)) {
     return 0;
   }
 
   const { margin, size } = iconTheme;
 
-  return iconNames.reduce(
+  return icons.reduce(
     (acc, { position }) =>
       acc + size! + (position === 'left' ? margin!.right! : margin!.left!),
     0,
   );
 };
 
-export type GroupedIconNames = {
+export type GroupedIcons = {
   [key in IconPosition]: FullyIconName[];
 };
 
 export const groupIconsByPosition = (
-  iconNames: FullyIconName[] = [],
+  icons: FullyIconName[] = [],
   conditionIcon?: FullyIconName,
 ) => {
   const groupedIcons = merge(
@@ -129,8 +129,8 @@ export const groupIconsByPosition = (
       left: [],
       right: [],
     },
-    groupBy(iconNames, 'position'),
-  ) as GroupedIconNames;
+    groupBy(icons, 'position'),
+  ) as GroupedIcons;
 
   // 基于 condition icon 和 value 是强关联的，所以最好将 condition icon 放在 value 的左右侧
   if (conditionIcon) {

@@ -27,7 +27,7 @@ describe('SpreadSheet Theme Tests', () => {
       {
         headerActionIcons: [
           {
-            iconNames: ['DrillDownIcon'],
+            icons: ['DrillDownIcon'],
             belongsCell: 'rowCell',
             displayCondition: () => true,
             onClick: () => {},
@@ -141,7 +141,7 @@ describe('SpreadSheet Theme Tests', () => {
         ],
         headerActionIcons: [
           {
-            iconNames: [iconInfo.name],
+            icons: [iconInfo.name],
             belongsCell: 'rowCell',
           },
         ],

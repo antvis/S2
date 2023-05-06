@@ -13,7 +13,7 @@ order: 3
 const s2Options = {
   headerActionIcons: [
     {
-      iconNames: ['SortDown'],
+      icons: ['SortDown'],
       belongsCell: 'colCell',
     },
   ],
@@ -26,7 +26,7 @@ const s2Options = {
 const s2Options = {
   headerActionIcons: [
     {
-      iconNames: [{ name: 'SortDown', position: 'left' }],
+      icons: [{ name: 'SortDown', position: 'left' }],
       belongsCell: 'colCell',
     },
   ],

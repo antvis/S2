@@ -232,7 +232,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         position: getIconPosition(iconCondition),
       } as FullyIconName);
 
-    this.groupedIconNames = groupIconsByPosition([], iconCfg);
+    this.groupedIcons = groupIconsByPosition([], iconCfg);
   }
 
   protected getTextStyle(): TextTheme {
@@ -312,7 +312,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       iconStyle,
       textWidth: this.actualTextWidth,
       textAlign: textStyle.textAlign!,
-      groupedIconNames: this.groupedIconNames,
+      groupedIcons: this.groupedIcons,
     });
     const y = getVerticalTextPosition(contentBox, textStyle.textBaseline!);
     const iconY = getVerticalIconPosition(
@@ -323,7 +323,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     this.iconPosition = {
-      x: !isEmpty(this.groupedIconNames.left) ? leftIconX : rightIconX,
+      x: !isEmpty(this.groupedIcons.left) ? leftIconX : rightIconX,
       y: iconY,
     };
 

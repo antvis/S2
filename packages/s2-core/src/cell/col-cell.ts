@@ -123,7 +123,7 @@ export class ColCell extends HeaderCell {
         bbox: contentBox,
         textWidth: this.actualTextWidth,
         textAlign: textStyle.textAlign!,
-        groupedIconNames: this.groupedIconNames,
+        groupedIcons: this.groupedIcons,
         iconStyle,
       });
 

@@ -228,7 +228,6 @@ describe('Tooltip Utils Tests', () => {
         [CellTypes.DATA_CELL]: 'dataCell',
         [CellTypes.CORNER_CELL]: 'cornerCell',
         [CellTypes.MERGED_CELL]: 'merge',
-        [CellTypes.HEADER_CELL]: 'header',
       }[cellType] || '');
 
     test.each([

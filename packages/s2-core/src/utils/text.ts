@@ -36,7 +36,7 @@ import {
   getVerticalIconPosition,
   getVerticalTextPosition,
 } from './cell/cell';
-import type { GroupedIconNames } from './cell/header-cell';
+import type { GroupedIcons } from './cell/header-cell';
 import { getIconPosition } from './condition/condition';
 
 /**
@@ -527,13 +527,13 @@ export const drawObjectText = (
       });
       const actualTextWidth = measureTextWidth(ellipsisText, curStyle);
 
-      const groupedIconNames: GroupedIconNames = {
+      const groupedIcons: GroupedIcons = {
         left: [],
         right: [],
       };
 
       if (iconCfg) {
-        groupedIconNames[iconCfg.position].push(iconCfg as any);
+        groupedIcons[iconCfg.position].push(iconCfg as any);
       }
 
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
@@ -541,7 +541,7 @@ export const drawObjectText = (
         textAlign: curStyle.textAlign!,
         textWidth: actualTextWidth,
         iconStyle,
-        groupedIconNames,
+        groupedIcons,
       });
 
       const textY = getVerticalTextPosition(

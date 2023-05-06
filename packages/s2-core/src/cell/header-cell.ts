@@ -104,9 +104,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     if (this.showSortIcon()) {
       this.actionIconConfig = {
-        iconNames: [
-          { name: get(sortParam, 'type', 'none'), position: 'right' },
-        ],
+        icons: [{ name: get(sortParam, 'type', 'none'), position: 'right' }],
         belongsCell: this.cellType,
         isSortIcon: true,
       };
@@ -118,8 +116,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
       );
     }
 
-    this.groupedIconNames = groupIconsByPosition(
-      this.actionIconConfig?.iconNames ?? [],
+    this.groupedIcons = groupIconsByPosition(
+      this.actionIconConfig?.icons ?? [],
       this.conditionIconMappingResult,
     );
   }
@@ -160,9 +158,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconsCount() {
-    return (
-      this.groupedIconNames.left.length + this.groupedIconNames.right.length
-    );
+    return this.groupedIcons.left.length + this.groupedIcons.right.length;
   }
 
   protected getActionIconStyle() {
@@ -238,10 +234,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected drawActionAndConditionIcons() {
-    if (
-      isEmpty(this.groupedIconNames.left) &&
-      isEmpty(this.groupedIconNames.right)
-    ) {
+    if (isEmpty(this.groupedIcons.left) && isEmpty(this.groupedIcons.right)) {
       return;
     }
 
@@ -249,7 +242,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return;
     }
 
-    forEach(this.groupedIconNames, (icons, position) => {
+    forEach(this.groupedIcons, (icons, position) => {
       const { size, margin } = this.getStyle()!.icon!;
 
       const iconMargin = position === 'left' ? margin!.right! : margin!.right!;

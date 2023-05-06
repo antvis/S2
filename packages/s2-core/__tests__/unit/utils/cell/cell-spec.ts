@@ -124,7 +124,7 @@ describe('Text and Icon area Test', () => {
           textAlign: textAlign as any,
           textWidth: 50,
           iconStyle,
-          groupedIconNames: { left: [], right: [] },
+          groupedIcons: { left: [], right: [] },
         }),
       ).toEqual(result);
     },
@@ -164,7 +164,7 @@ describe('Text and Icon area Test', () => {
           textAlign: textAlign as any,
           textWidth: 50,
           iconStyle,
-          groupedIconNames: {
+          groupedIcons: {
             left: [{ name: 'left', position: 'left' }],
             right: [],
           },
@@ -207,7 +207,7 @@ describe('Text and Icon area Test', () => {
           textAlign: textAlign as any,
           textWidth: 50,
           iconStyle,
-          groupedIconNames: {
+          groupedIcons: {
             left: [],
             right: [{ name: 'right', position: 'right' }],
           },
@@ -250,7 +250,7 @@ describe('Text and Icon area Test', () => {
           textAlign: textAlign as any,
           textWidth: 50,
           iconStyle,
-          groupedIconNames: {
+          groupedIcons: {
             left: [{ name: 'left', position: 'left' }],
             right: [{ name: 'right', position: 'right' }],
           },

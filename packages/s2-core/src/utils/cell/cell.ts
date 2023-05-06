@@ -7,7 +7,7 @@ import {
   type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
-import { getIconTotalWidth, type GroupedIconNames } from './header-cell';
+import { getIconTotalWidth, type GroupedIcons } from './header-cell';
 
 /**
  * text 和 icon 之间布局关系：
@@ -56,14 +56,14 @@ export const getHorizontalTextIconPosition = (options: {
   bbox: SimpleBBox;
   textWidth: number;
   textAlign: TextAlign;
-  groupedIconNames: GroupedIconNames;
+  groupedIcons: GroupedIcons;
   iconStyle: IconTheme;
 }) => {
-  const { bbox, textWidth, textAlign, groupedIconNames, iconStyle } = options;
+  const { bbox, textWidth, textAlign, groupedIcons, iconStyle } = options;
   const { x, width } = bbox;
 
-  const leftIconWidth = getIconTotalWidth(groupedIconNames.left, iconStyle);
-  const rightIconWidth = getIconTotalWidth(groupedIconNames.right, iconStyle);
+  const leftIconWidth = getIconTotalWidth(groupedIcons.left, iconStyle);
+  const rightIconWidth = getIconTotalWidth(groupedIcons.right, iconStyle);
 
   let textX: number;
   let leftIconX: number;

@@ -66,7 +66,7 @@ import { shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
 import {
   getIconTotalWidth,
-  type GroupedIconNames,
+  type GroupedIcons,
 } from '../utils/cell/header-cell';
 import { checkIsLinkField } from '../utils/interaction/link-field';
 import type { Node } from '../facet/layout/node';
@@ -107,7 +107,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditionIconShapes: GuiIcon[] = [];
 
-  protected groupedIconNames: GroupedIconNames;
+  protected groupedIcons: GroupedIcons;
 
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
@@ -122,7 +122,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
     this.conditions = this.spreadsheet.options.conditions!;
-    this.groupedIconNames = { left: [], right: [] };
+    this.groupedIcons = { left: [], right: [] };
     this.handleRestOptions(...restOptions);
     if (this.shouldInit()) {
       this.initCell();
@@ -611,7 +611,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected getActionAndConditionIconWidth(position?: IconPosition) {
-    const { left, right } = this.groupedIconNames;
+    const { left, right } = this.groupedIcons;
     const iconStyle = this.getStyle()!.icon!;
 
     if (!position) {
@@ -620,6 +620,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       );
     }
 
-    return getIconTotalWidth(this.groupedIconNames[position], iconStyle);
+    return getIconTotalWidth(this.groupedIcons[position], iconStyle);
   }
 }

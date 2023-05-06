@@ -274,7 +274,7 @@ export interface HeaderActionIcon {
    * 已注册的 icon 类型或自定义的 icon 类型名
    * 如果是 string[], 则默认 icon 位置为右侧
    */
-  iconNames: ActionIconName[];
+  icons: ActionIconName[];
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   /** 是否默认隐藏， true 为 hover后显示, false 为一直显示 */
@@ -288,7 +288,7 @@ export interface HeaderActionIcon {
 }
 
 export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
-  iconNames: FullyIconName[];
+  icons: FullyIconName[];
   isSortIcon?: boolean;
 }
 
