@@ -191,37 +191,36 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     // 默认隐藏，hover 可见
     icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
-    if (onHover) {
-      icon.addEventListener('mouseover', (event: CanvasEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
-        onHover({
-          hovering: true,
-          iconName,
-          meta: this.meta,
-          event,
-        });
-      });
 
-      icon.addEventListener('mouseleave', (event: CanvasEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
-        onHover({
-          hovering: false,
-          iconName,
-          meta: this.meta,
-          event,
-        });
+    icon.addEventListener('mouseover', (event: CanvasEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+      onHover?.({
+        hovering: true,
+        iconName,
+        meta: this.meta,
+        event,
       });
-    }
+    });
+
+    icon.addEventListener('mouseleave', (event: CanvasEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
+      onHover?.({
+        hovering: false,
+        iconName,
+        meta: this.meta,
+        event,
+      });
+    });
 
     if (isSortIcon) {
       icon.addEventListener('click', (event: CanvasEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
         this.spreadsheet.handleGroupSort(event, this.meta);
       });
-    } else if (onClick) {
+    } else {
       icon.addEventListener('click', (event: CanvasEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-        onClick({
+        onClick?.({
           iconName,
           meta: this.meta,
           event,
