@@ -54,9 +54,20 @@ describe('Interaction Range Selection Tests', () => {
   });
 
   test('should remove click intercept when shift keyup', () => {
+    s2.interaction.addIntercepts([InterceptType.CLICK]);
     s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
       key: InteractionKeyboardKey.SHIFT,
     } as KeyboardEvent);
+
+    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+  });
+
+  test('should remove click intercept when shift released', () => {
+    Object.defineProperty(rangeSelection, 'isRangeSelection', {
+      value: true,
+    });
+    s2.interaction.addIntercepts([InterceptType.CLICK]);
+    s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {} as MouseEvent);
 
     expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
   });
