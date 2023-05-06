@@ -15,7 +15,6 @@ import type {
   DefaultCellTheme,
   FormatResult,
   IconTheme,
-  ThemedCellTypes,
 } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
@@ -40,7 +39,7 @@ export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
 
   public get cellType() {
-    return CellTypes.COL_CELL as ThemedCellTypes;
+    return CellTypes.COL_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

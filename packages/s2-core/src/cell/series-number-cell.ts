@@ -5,7 +5,6 @@ import type {
   Condition,
   MappingResult,
   AreaRange,
-  ThemedCellTypes,
 } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellTypes } from '../common/constant/interaction';
@@ -24,7 +23,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
   }
 
   public get cellType() {
-    return CellTypes.ROW_CELL as ThemedCellTypes;
+    return CellTypes.ROW_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

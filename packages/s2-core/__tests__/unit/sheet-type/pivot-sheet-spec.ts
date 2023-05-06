@@ -22,7 +22,6 @@ import {
   type LangType,
   type HiddenColumnsInfo,
   type RowCellCollapsedParams,
-  type ThemedCellTypes,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -80,7 +79,6 @@ describe('PivotSheet Tests', () => {
         [CellTypes.COL_CELL]: 'colCell',
         [CellTypes.DATA_CELL]: 'dataCell',
         [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.HEADER_CELL]: 'header',
         [CellTypes.MERGED_CELL]: 'merged',
       }[cellType]);
 
@@ -218,7 +216,7 @@ describe('PivotSheet Tests', () => {
 
         jest
           .spyOn(SpreadSheet.prototype, 'getCellType')
-          .mockImplementation(() => cellType as ThemedCellTypes);
+          .mockImplementation(() => cellType);
 
         const sheet = new PivotSheet(
           container,
@@ -251,7 +249,7 @@ describe('PivotSheet Tests', () => {
 
         jest
           .spyOn(SpreadSheet.prototype, 'getCellType')
-          .mockImplementation(() => cellType as ThemedCellTypes);
+          .mockImplementation(() => cellType);
 
         const sheet = new PivotSheet(
           container,
@@ -288,7 +286,7 @@ describe('PivotSheet Tests', () => {
 
         jest
           .spyOn(SpreadSheet.prototype, 'getCellType')
-          .mockImplementation(() => cellType as ThemedCellTypes);
+          .mockImplementation(() => cellType);
 
         const sheet = new PivotSheet(
           container,
@@ -324,7 +322,7 @@ describe('PivotSheet Tests', () => {
 
         jest
           .spyOn(SpreadSheet.prototype, 'getCellType')
-          .mockImplementation(() => cellType as ThemedCellTypes);
+          .mockImplementation(() => cellType);
 
         const sheet = new PivotSheet(
           container,

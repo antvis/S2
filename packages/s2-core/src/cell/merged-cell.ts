@@ -1,6 +1,6 @@
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
-import type { ThemedCellTypes, ViewMeta } from '../common/interface';
+import type { ViewMeta } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type { SpreadSheet } from '../sheet-type';
 import { renderPolygon } from '../utils/g-renders';
@@ -27,7 +27,7 @@ export class MergedCell extends DataCell {
   }
 
   public get cellType() {
-    return CellTypes.MERGED_CELL as ThemedCellTypes;
+    return CellTypes.MERGED_CELL;
   }
 
   public update() {}

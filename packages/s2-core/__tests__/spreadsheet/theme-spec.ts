@@ -15,7 +15,6 @@ import {
   GuiIcon,
   type S2DataConfig,
   type TextAlign,
-  type ThemedCellTypes,
 } from '@/common';
 import type { RowCell } from '@/cell';
 import type { Node } from '@/facet/layout/node';
@@ -46,7 +45,7 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Theme Default Value Tests', () => {
-    const CELL_TYPES: ThemedCellTypes[] = [
+    const CELL_TYPES: CellTypes[] = [
       CellTypes.DATA_CELL,
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
@@ -60,7 +59,7 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
-      (cellType: ThemedCellTypes) => {
+      (cellType: CellTypes) => {
         s2.setThemeCfg({
           name: 'colorful',
         });
@@ -73,18 +72,15 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    test.each(CELL_TYPES)(
-      'should set cell for %s',
-      (cellType: ThemedCellTypes) => {
-        s2.setThemeCfg({
-          name: 'colorful',
-        });
-        s2.render();
-        const cellTheme = s2.theme[cellType];
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+      s2.setThemeCfg({
+        name: 'colorful',
+      });
+      s2.render();
+      const cellTheme = s2.theme[cellType];
 
-        expect(cellTheme!.cell).toBeTruthy();
-      },
-    );
+      expect(cellTheme!.cell).toBeTruthy();
+    });
 
     test('should set theme correctly', () => {
       s2.setTheme({

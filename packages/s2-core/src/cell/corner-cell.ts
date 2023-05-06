@@ -8,11 +8,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
-  CellClipBox,
-  type ThemedCellTypes,
-} from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import {
@@ -45,7 +41,7 @@ export class CornerCell extends HeaderCell {
   }
 
   public get cellType() {
-    return CellTypes.CORNER_CELL as ThemedCellTypes;
+    return CellTypes.CORNER_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
