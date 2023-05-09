@@ -1,10 +1,12 @@
 import type { SpreadSheet } from '../../sheet-type';
 import type { DataItem, CellMeta } from '../../common';
 
-export type MatrixTransformer = (
+export type MatrixPlainTransformer = (
   data: DataItem[][],
   separator?: string,
-) => CopyableItem;
+) => CopyablePlain;
+
+export type MatrixHTMLTransformer = (data: DataItem[][]) => CopyableHTML;
 
 export enum CopyMIMEType {
   PLAIN = 'text/plain',
@@ -38,15 +40,14 @@ export type FormatOptions =
     };
 
 export interface Transformer {
-  [CopyMIMEType.PLAIN]: MatrixTransformer;
-  [CopyMIMEType.HTML]: MatrixTransformer;
+  [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
+  [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 }
-
 export interface CopyOrExportConfig {
   selectedCells?: CellMeta[];
   formatOptions?: FormatOptions;
   separator?: string;
-  customTransformer?: (copyableList: Transformer) => Transformer;
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
 }
 
 export interface CopyAndExportUnifyConfig {
@@ -61,7 +62,7 @@ export interface CopyAllDataParams {
   sheetInstance: SpreadSheet;
   split?: string;
   formatOptions?: FormatOptions;
-  customTransformer?: (transformer: Transformer) => Transformer;
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
 }
 
 export interface SheetCopyConstructorParams {
