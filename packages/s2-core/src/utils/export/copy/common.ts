@@ -8,9 +8,11 @@ import {
   type CopyableList,
   type CopyablePlain,
   type CopyAndExportUnifyConfig,
-  CopyMIMEType,
-  type CopyOrExportConfig,
   type FormatOptions,
+  type MatrixTransformer,
+  type SheetCopyConstructorParams,
+  type Transformer,
+  CopyMIMEType,
 } from '../interface';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
@@ -47,6 +49,21 @@ export const matrixHtmlTransformer = (
     content: `<meta charset="utf-8"><table><tbody>${body}</tbody></table>`,
   };
 };
+
+export const transformers: {
+  [key in CopyMIMEType]: MatrixTransformer;
+} = {
+  [CopyMIMEType.PLAIN]: matrixPlainTextTransformer,
+  [CopyMIMEType.HTML]: matrixHtmlTransformer,
+};
+
+// todo: 用户想自定义方法，比如限制最大导出行数，可以通过这个方法来实现
+export function registerTransformer(
+  type: CopyMIMEType,
+  transformer: MatrixTransformer,
+) {
+  transformers[type] = transformer;
+}
 
 export function getFormatter(
   spreadsheet: SpreadSheet,
@@ -148,31 +165,45 @@ export const getFormatOptions = (isFormat?: FormatOptions) => {
 };
 
 // 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
-export function unifyConfig(
-  config: CopyOrExportConfig,
-  spreadsheet: SpreadSheet,
-  isExport: boolean,
-): CopyAndExportUnifyConfig {
-  let result = {
-    isFormatData: spreadsheet.options.interaction?.copyWithFormat ?? false,
-    isFormatHeader: spreadsheet.options.interaction?.copyWithFormat ?? false,
-  };
+export function unifyConfig({
+  spreadsheet,
+  config,
+  isExport,
+}: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
+  const {
+    formatOptions = false,
+    separator = NewTab,
+    selectedCells = [],
+    customTransformer,
+  } = config;
+
+  let isFormatData = spreadsheet.options.interaction?.copyWithFormat ?? false;
+  let isFormatHeader = spreadsheet.options.interaction?.copyWithFormat ?? false;
+  let customTransformers: Transformer = transformers;
 
   if (isExport) {
-    const { isFormatData, isFormatHeader } = getFormatOptions(
-      config?.formatOptions ?? false,
-    );
+    ({ isFormatData, isFormatHeader } = getFormatOptions(formatOptions));
 
-    result = {
-      isFormatData,
-      isFormatHeader,
-    };
+    if (customTransformer) {
+      const customTransformersTemp = customTransformer(transformers);
+
+      customTransformers = {
+        [CopyMIMEType.PLAIN]:
+          customTransformersTemp[CopyMIMEType.PLAIN] ||
+          transformers[CopyMIMEType.PLAIN],
+        [CopyMIMEType.HTML]:
+          customTransformersTemp[CopyMIMEType.HTML] ||
+          transformers[CopyMIMEType.HTML],
+      };
+    }
   }
 
   return {
-    separator: config.separator ?? NewTab,
-    selectedCells: config.selectedCells ?? [],
-    ...result,
+    separator,
+    selectedCells,
+    transformers: customTransformers,
+    isFormatData,
+    isFormatHeader,
   };
 }
 
