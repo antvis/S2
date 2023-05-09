@@ -3,15 +3,20 @@ import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CellMeta,
   type RawData,
+  type DataItem,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
+  NewTab,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
+import { CopyMIMEType } from '../interface';
 import type {
   CopyableList,
   CopyAndExportUnifyConfig,
-  CopyOrExportConfig,
-  FormatOptions,
+  CopyableHTML,
+  CopyablePlain,
+  CopyAllDataParams,
+  SheetCopyConstructorParams,
 } from '../interface';
 import {
   convertString,
@@ -19,13 +24,7 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import {
-  assembleMatrix,
-  getFormatter,
-  matrixHtmlTransformer,
-  matrixPlainTextTransformer,
-  unifyConfig,
-} from './common';
+import { assembleMatrix, getFormatter, unifyConfig } from './common';
 import { getHeaderNodeFromMeta } from './core';
 
 class TableDataCellCopy {
@@ -37,15 +36,11 @@ class TableDataCellCopy {
 
   private columnNodes: Node[];
 
-  constructor(params: {
-    spreadsheet: SpreadSheet;
-    config: CopyOrExportConfig;
-    isExport?: boolean;
-  }) {
+  constructor(params: SheetCopyConstructorParams) {
     const { spreadsheet, isExport = false, config } = params;
 
     this.spreadsheet = spreadsheet;
-    this.config = unifyConfig(config, spreadsheet, isExport);
+    this.config = unifyConfig({ config, spreadsheet, isExport });
     this.displayData = this.getSelectedDisplayData();
     this.columnNodes = this.getSelectedColNodes();
   }
@@ -141,8 +136,8 @@ class TableDataCellCopy {
 
     if (!copyWithHeader) {
       return [
-        matrixPlainTextTransformer(dataMatrix),
-        matrixHtmlTransformer(dataMatrix),
+        this.matrixPlainTextTransformer(dataMatrix),
+        this.matrixHtmlTransformer(dataMatrix),
       ];
     }
 
@@ -162,8 +157,8 @@ class TableDataCellCopy {
 
     if (!allSelected) {
       return [
-        matrixPlainTextTransformer(matrix),
-        matrixHtmlTransformer(matrix),
+        this.matrixPlainTextTransformer(matrix),
+        this.matrixHtmlTransformer(matrix),
       ];
     }
 
@@ -171,6 +166,22 @@ class TableDataCellCopy {
 
     return assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix });
   }
+
+  private matrixPlainTextTransformer(
+    dataMatrix: string[][],
+    separator = NewTab,
+  ): CopyablePlain {
+    return this.config.transformers[CopyMIMEType.PLAIN](
+      dataMatrix,
+      separator,
+    ) as CopyablePlain;
+  }
+
+  private matrixHtmlTransformer = (dataMatrix: DataItem[][]): CopyableHTML => {
+    return this.config.transformers[CopyMIMEType.HTML](
+      dataMatrix,
+    ) as CopyableHTML;
+  };
 }
 
 /**
@@ -195,16 +206,16 @@ export const processSelectedTableByHeader = (
 
 // 导出全部数据
 export const processSelectedAllTable = (
-  spreadsheet: SpreadSheet,
-  split: string,
-  formatOptions?: FormatOptions,
+  params: CopyAllDataParams,
 ): CopyableList => {
+  const { sheetInstance, split, formatOptions, customTransformer } = params;
   const tableDataCellCopy = new TableDataCellCopy({
-    spreadsheet,
+    spreadsheet: sheetInstance,
     config: {
       selectedCells: [],
       separator: split,
       formatOptions,
+      customTransformer,
     },
     isExport: true,
   });

@@ -3,16 +3,20 @@ import {
   type CellMeta,
   type DataItem,
   EXTRA_FIELD,
+  NewTab,
   VALUE_FIELD,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import type {
   CopyableList,
+  CopyableHTML,
+  CopyablePlain,
+  CopyAllDataParams,
   CopyAndExportUnifyConfig,
-  CopyOrExportConfig,
-  FormatOptions,
+  SheetCopyConstructorParams,
 } from '../interface';
+import { CopyMIMEType } from '../interface';
 import {
   convertString,
   getColNodeFieldFromNode,
@@ -26,17 +30,9 @@ import {
   getFormatter,
   getMaxRowLen,
   getNodeFormatData,
-  matrixHtmlTransformer,
-  matrixPlainTextTransformer,
   unifyConfig,
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
-
-export interface CopyConstructorParams {
-  spreadsheet: SpreadSheet;
-  config: CopyOrExportConfig;
-  isExport?: boolean;
-}
 
 export class PivotDataCellCopy {
   protected spreadsheet: SpreadSheet;
@@ -54,11 +50,11 @@ export class PivotDataCellCopy {
    * formatOptions?: FormatOptions,
    * }} params
    */
-  constructor(params: CopyConstructorParams) {
+  constructor(params: SheetCopyConstructorParams) {
     const { spreadsheet, isExport = false, config } = params;
 
     this.spreadsheet = spreadsheet;
-    this.config = unifyConfig(config, spreadsheet, isExport);
+    this.config = unifyConfig({ config, spreadsheet, isExport });
 
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
@@ -227,8 +223,8 @@ export class PivotDataCellCopy {
     // 不带表头复制
     if (!copyWithHeader) {
       return [
-        matrixPlainTextTransformer(dataMatrix, this.config.separator),
-        matrixHtmlTransformer(dataMatrix),
+        this.matrixPlainTextTransformer(dataMatrix, this.config.separator),
+        this.matrixHtmlTransformer(dataMatrix),
       ];
     }
 
@@ -250,8 +246,8 @@ export class PivotDataCellCopy {
     // 不带表头复制
     if (!copyWithHeader) {
       return [
-        matrixPlainTextTransformer(dataMatrix, this.config.separator),
-        matrixHtmlTransformer(dataMatrix),
+        this.matrixPlainTextTransformer(dataMatrix),
+        this.matrixHtmlTransformer(dataMatrix),
       ];
     }
 
@@ -273,6 +269,22 @@ export class PivotDataCellCopy {
 
     return assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix });
   };
+
+  private matrixPlainTextTransformer(
+    dataMatrix: string[][],
+    separator = NewTab,
+  ): CopyablePlain {
+    return this.config.transformers[CopyMIMEType.PLAIN](
+      dataMatrix,
+      separator,
+    ) as CopyablePlain;
+  }
+
+  private matrixHtmlTransformer = (dataMatrix: DataItem[][]): CopyableHTML => {
+    return this.config.transformers[CopyMIMEType.HTML](
+      dataMatrix,
+    ) as CopyableHTML;
+  };
 }
 
 export function processSelectedPivotByHeader(
@@ -290,16 +302,16 @@ export function processSelectedPivotByHeader(
 }
 
 export const processSelectedAllPivot = (
-  spreadsheet: SpreadSheet,
-  split: string,
-  formatOptions?: FormatOptions,
+  params: CopyAllDataParams,
 ): CopyableList => {
+  const { sheetInstance, split, formatOptions, customTransformer } = params;
   const pivotDataCellCopy = new PivotDataCellCopy({
-    spreadsheet,
+    spreadsheet: sheetInstance,
     isExport: true,
     config: {
       separator: split,
       formatOptions,
+      customTransformer,
     },
   });
 
