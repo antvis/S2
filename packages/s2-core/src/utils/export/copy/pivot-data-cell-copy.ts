@@ -3,20 +3,15 @@ import {
   type CellMeta,
   type DataItem,
   EXTRA_FIELD,
-  NewTab,
   VALUE_FIELD,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import type {
   CopyableList,
-  CopyableHTML,
-  CopyablePlain,
   CopyAllDataParams,
-  CopyAndExportUnifyConfig,
   SheetCopyConstructorParams,
 } from '../interface';
-import { CopyMIMEType } from '../interface';
 import {
   convertString,
   getColNodeFieldFromNode,
@@ -30,18 +25,14 @@ import {
   getFormatter,
   getMaxRowLen,
   getNodeFormatData,
-  unifyConfig,
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
+import { BaseDataCellCopy } from './base-data-cell-copy';
 
-export class PivotDataCellCopy {
-  protected spreadsheet: SpreadSheet;
-
+export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
 
   protected leafColNodes: Node[] = [];
-
-  protected config: CopyAndExportUnifyConfig;
 
   /**
    * @param {{
@@ -51,11 +42,7 @@ export class PivotDataCellCopy {
    * }} params
    */
   constructor(params: SheetCopyConstructorParams) {
-    const { spreadsheet, isExport = false, config } = params;
-
-    this.spreadsheet = spreadsheet;
-    this.config = unifyConfig({ config, spreadsheet, isExport });
-
+    super(params);
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
   }
@@ -222,10 +209,7 @@ export class PivotDataCellCopy {
 
     // 不带表头复制
     if (!copyWithHeader) {
-      return [
-        this.matrixPlainTextTransformer(dataMatrix, this.config.separator),
-        this.matrixHtmlTransformer(dataMatrix),
-      ];
+      return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
@@ -235,7 +219,9 @@ export class PivotDataCellCopy {
 
     const colMatrix = this.getColMatrix();
 
-    return assembleMatrix({ rowMatrix, colMatrix, dataMatrix });
+    return this.matrixTransformer(
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+    );
   };
 
   getPivotCopyData(): CopyableList {
@@ -245,10 +231,7 @@ export class PivotDataCellCopy {
 
     // 不带表头复制
     if (!copyWithHeader) {
-      return [
-        this.matrixPlainTextTransformer(dataMatrix),
-        this.matrixHtmlTransformer(dataMatrix),
-      ];
+      return this.matrixTransformer(dataMatrix);
     }
 
     // 带表头复制
@@ -256,7 +239,9 @@ export class PivotDataCellCopy {
 
     const colMatrix = this.getColMatrix();
 
-    return assembleMatrix({ rowMatrix, colMatrix, dataMatrix });
+    return this.matrixTransformer(
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+    );
   }
 
   getPivotAllCopyData = (): CopyableList => {
@@ -267,23 +252,9 @@ export class PivotDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    return assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix });
-  };
-
-  private matrixPlainTextTransformer(
-    dataMatrix: string[][],
-    separator = NewTab,
-  ): CopyablePlain {
-    return this.config.transformers[CopyMIMEType.PLAIN](
-      dataMatrix,
-      separator,
-    ) as CopyablePlain;
-  }
-
-  private matrixHtmlTransformer = (dataMatrix: DataItem[][]): CopyableHTML => {
-    return this.config.transformers[CopyMIMEType.HTML](
-      dataMatrix,
-    ) as CopyableHTML;
+    return this.matrixTransformer(
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
+    );
   };
 }
 

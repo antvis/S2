@@ -3,18 +3,12 @@ import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CellMeta,
   type RawData,
-  type DataItem,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
-  NewTab,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
-import { CopyMIMEType } from '../interface';
 import type {
   CopyableList,
-  CopyAndExportUnifyConfig,
-  CopyableHTML,
-  CopyablePlain,
   CopyAllDataParams,
   SheetCopyConstructorParams,
 } from '../interface';
@@ -24,23 +18,18 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import { assembleMatrix, getFormatter, unifyConfig } from './common';
+import { assembleMatrix, getFormatter } from './common';
 import { getHeaderNodeFromMeta } from './core';
+import { BaseDataCellCopy } from './base-data-cell-copy';
 
-class TableDataCellCopy {
-  private readonly spreadsheet: SpreadSheet;
-
-  private config: CopyAndExportUnifyConfig;
-
+class TableDataCellCopy extends BaseDataCellCopy {
   private displayData: RawData[];
 
   private columnNodes: Node[];
 
   constructor(params: SheetCopyConstructorParams) {
-    const { spreadsheet, isExport = false, config } = params;
+    super(params);
 
-    this.spreadsheet = spreadsheet;
-    this.config = unifyConfig({ config, spreadsheet, isExport });
     this.displayData = this.getSelectedDisplayData();
     this.columnNodes = this.getSelectedColNodes();
   }
@@ -135,15 +124,14 @@ class TableDataCellCopy {
     ) as string[][];
 
     if (!copyWithHeader) {
-      return [
-        this.matrixPlainTextTransformer(dataMatrix),
-        this.matrixHtmlTransformer(dataMatrix),
-      ];
+      return this.matrixTransformer(dataMatrix);
     }
 
     const colMatrix = this.getColMatrix();
 
-    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix });
+    return this.matrixTransformer(
+      assembleMatrix({ colMatrix: [colMatrix], dataMatrix }),
+    );
   }
 
   /**
@@ -156,32 +144,15 @@ class TableDataCellCopy {
     const matrix = this.getDataMatrix();
 
     if (!allSelected) {
-      return [
-        this.matrixPlainTextTransformer(matrix),
-        this.matrixHtmlTransformer(matrix),
-      ];
+      return this.matrixTransformer(matrix);
     }
 
     const colMatrix = this.getColMatrix();
 
-    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix });
+    return this.matrixTransformer(
+      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+    );
   }
-
-  private matrixPlainTextTransformer(
-    dataMatrix: string[][],
-    separator = NewTab,
-  ): CopyablePlain {
-    return this.config.transformers[CopyMIMEType.PLAIN](
-      dataMatrix,
-      separator,
-    ) as CopyablePlain;
-  }
-
-  private matrixHtmlTransformer = (dataMatrix: DataItem[][]): CopyableHTML => {
-    return this.config.transformers[CopyMIMEType.HTML](
-      dataMatrix,
-    ) as CopyableHTML;
-  };
 }
 
 /**

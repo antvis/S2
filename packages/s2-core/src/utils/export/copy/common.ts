@@ -5,13 +5,13 @@ import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CopyableHTML,
-  type CopyableList,
   type CopyablePlain,
   type CopyAndExportUnifyConfig,
   type FormatOptions,
-  type MatrixTransformer,
   type SheetCopyConstructorParams,
   type Transformer,
+  type MatrixPlainTransformer,
+  type MatrixHTMLTransformer,
   CopyMIMEType,
 } from '../interface';
 
@@ -51,19 +51,12 @@ export const matrixHtmlTransformer = (
 };
 
 export const transformers: {
-  [key in CopyMIMEType]: MatrixTransformer;
+  [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
+  [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 } = {
   [CopyMIMEType.PLAIN]: matrixPlainTextTransformer,
   [CopyMIMEType.HTML]: matrixHtmlTransformer,
 };
-
-// todo: 用户想自定义方法，比如限制最大导出行数，可以通过这个方法来实现
-export function registerTransformer(
-  type: CopyMIMEType,
-  transformer: MatrixTransformer,
-) {
-  transformers[type] = transformer;
-}
 
 export function getFormatter(
   spreadsheet: SpreadSheet,
@@ -88,7 +81,7 @@ export const assembleMatrix = ({
   dataMatrix: string[][];
   rowMatrix?: string[][];
   cornerMatrix?: string[][];
-}): CopyableList => {
+}): string[][] => {
   const rowWidth = rowMatrix?.[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
@@ -128,7 +121,7 @@ export const assembleMatrix = ({
     }),
   );
 
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+  return matrix as string[][];
 };
 
 export function getMaxRowLen(matrix: string[][]): number {
