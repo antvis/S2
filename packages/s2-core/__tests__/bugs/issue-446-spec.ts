@@ -20,7 +20,11 @@ describe('export', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
 
     s2.render();
-    const data = copyData(s2, '\t', true);
+    const data = copyData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
 
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(4);
@@ -39,7 +43,10 @@ describe('export', () => {
     });
 
     s2.render();
-    const data = copyData(s2, '\t');
+    const data = copyData({
+      sheetInstance: s2,
+      split: '\t',
+    });
 
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(3);

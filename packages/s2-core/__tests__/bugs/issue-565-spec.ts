@@ -20,7 +20,10 @@ describe('Export data in pivot tree mode', () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
     s2.render();
-    const data = copyData(s2, '\t');
+    const data = copyData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
 
     expect(rows.length).toEqual(9);
