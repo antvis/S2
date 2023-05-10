@@ -202,7 +202,7 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
-    this.handleViewport(viewport);
+    // this.handleViewport(viewport);
 
     const { textAlign } = this.getTextStyle();
     const adjustedViewport = adjustColHeaderScrollingViewport(
