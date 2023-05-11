@@ -136,7 +136,7 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	沙发	5343"
     `);
   });
-  it('should support custom copy matrix transformer', () => {
+  it('should support custom export matrix transformer', () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -606,7 +606,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[1].split(NewTab)[1]).toEqual('city');
   });
 
-  it('should support custom copy matrix transformer', () => {
+  it('should support custom export matrix transformer', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
