@@ -104,6 +104,18 @@ export const createFakeSpreadSheet = () => {
       getCellMeta: jest.fn(),
       rowLeafNodes: [],
     },
+    getCellMeta: jest.fn(),
+    getCellById: jest.fn(),
+    getCellChildrenNodes: jest.fn(),
+    getCells: jest.fn(),
+    getColCells: jest.fn(),
+    getRowCells: jest.fn(),
+    getDataCells: jest.fn(),
+    getRowNodes: jest.fn(),
+    getRowLeafNodes: jest.fn(),
+    getColNodes: jest.fn(),
+    getColLeafNodes: jest.fn(),
+    getInitColLeafNodes: jest.fn(),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();

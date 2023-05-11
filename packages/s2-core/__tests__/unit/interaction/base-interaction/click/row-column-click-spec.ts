@@ -57,6 +57,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       },
       data: [],
     };
+    s2.facet.getCellChildrenNodes = () => [];
     s2.facet.getInitColLeafNodes = () => initColumnNodes as Node[];
     s2.facet.getColNodes = () => initColumnNodes as Node[];
     s2.facet.getColLeafNodes = () => initColumnNodes as Node[];

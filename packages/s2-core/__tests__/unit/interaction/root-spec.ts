@@ -1,6 +1,7 @@
 import type { Canvas } from '@antv/g';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { get } from 'lodash';
+import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
@@ -88,9 +89,14 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.isTableMode = jest.fn();
     mockSpreadSheetInstance.isHierarchyTreeType = () => false;
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.facet.getDataCells = () => panelGroupAllDataCells;
-    mockSpreadSheetInstance.facet.getColCells = () => [];
-    mockSpreadSheetInstance.facet.getRowCells = () => [];
+    mockSpreadSheetInstance.facet = {
+      getDataCells: () => panelGroupAllDataCells,
+      getColCells: () => [],
+      getRowCells: () => [],
+      getCells: () => panelGroupAllDataCells,
+      getCellChildrenNodes: () => [],
+      getHeaderCells: () => [],
+    } as unknown as PivotFacet;
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 

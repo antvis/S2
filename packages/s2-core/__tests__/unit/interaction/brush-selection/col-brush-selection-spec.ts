@@ -1,6 +1,7 @@
 import { map } from 'lodash';
 import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
+import type { PivotFacet } from '../../../../src/facet';
 import {
   ColCellBrushSelection,
   S2Event,
@@ -95,8 +96,12 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushColCell) as any;
-    mockSpreadSheetInstance.facet.getColCells = () =>
-      allColHeaderCells as unknown as ColCell[];
+    mockSpreadSheetInstance.facet = {
+      getColCells: () => allColHeaderCells,
+      destroy: jest.fn(),
+      render: jest.fn(),
+      getHiddenColumnsInfo: jest.fn(),
+    } as unknown as PivotFacet;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     brushSelectionInstance = new ColCellBrushSelection(mockSpreadSheetInstance);
@@ -235,7 +240,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
-    expect(brushSelectionInstance.brushRangeCells).toHaveLength(
+    expect(brushSelectionInstance.brushRangeCells.length).toEqual(
       allColHeaderCells.length,
     );
     // emit event

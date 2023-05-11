@@ -16,6 +16,7 @@ import type {
   LayoutSeriesNumberNodes,
 } from '../../common/interface/hooks';
 import type { BaseDataSet } from '../../data-set';
+import type { BaseFacet } from '../../facet';
 import type {
   BaseHeaderConfig,
   ColHeaderConfig,
@@ -215,6 +216,11 @@ export interface S2BasicOptions<
    * 自定义数据集
    */
   dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+
+  /**
+   * 自定义分面
+   */
+  facet?: (spreadsheet: SpreadSheet) => BaseFacet;
 }
 
 // 设备，pc || mobile

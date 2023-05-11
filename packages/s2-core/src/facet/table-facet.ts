@@ -252,7 +252,6 @@ export class TableFacet extends BaseFacet {
       rowNodes: [],
       rowsHierarchy,
       rowLeafNodes: [],
-      cornerNodes: [],
       getCellMeta: this.getCellMeta,
     };
   }

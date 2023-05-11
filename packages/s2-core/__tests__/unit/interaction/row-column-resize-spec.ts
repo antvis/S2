@@ -151,6 +151,7 @@ describe('Interaction Row Column Resize Tests', () => {
       } as BBox,
       destroy: jest.fn(),
       render: jest.fn(),
+      getColNodes: () => [],
     } as unknown as BaseFacet;
     s2.interaction = mockRootInteraction;
     rowColumnResizeInstance = new RowColumnResize(s2);

@@ -375,7 +375,7 @@ export const getSelectedCellsData = (
   targetCell: S2CellType,
   showSingleTips?: boolean,
 ): ViewMetaData[] => {
-  const { layoutResult, getCellMeta } = spreadsheet.facet;
+  const { layoutResult, getCellMeta } = spreadsheet.facet || {};
 
   /**
    * 当开启小计/总计后

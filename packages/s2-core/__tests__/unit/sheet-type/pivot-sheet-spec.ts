@@ -1,32 +1,33 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
-import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
-import { PivotDataSet } from '../../../src/data-set';
+import dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 import type { BaseEvent } from '../../../src';
-import type { GEvent } from '@/index';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotDataSet } from '../../../src/data-set';
+import { PivotFacet } from '../../../src/facet';
+import type { CornerCell } from '@/cell/corner-cell';
 import {
   CellTypes,
-  type CustomSVGIcon,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  type S2DataConfig,
   S2Event,
+  setLang,
+  TOOLTIP_CONTAINER_CLS,
+  type CustomSVGIcon,
+  type HiddenColumnsInfo,
+  type LangType,
+  type RowCellCollapsedParams,
+  type S2DataConfig,
   type S2Options,
   type TooltipShowOptions,
-  TOOLTIP_CONTAINER_CLS,
-  setLang,
-  type LangType,
-  type HiddenColumnsInfo,
-  type RowCellCollapsedParams,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import type { GEvent } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/utils/hide-columns');
 
@@ -1226,5 +1227,28 @@ describe('PivotSheet Tests', () => {
     expect(s2.isCustomHeaderFields()).toBeTruthy();
     expect(s2.isCustomRowFields()).toBeTruthy();
     expect(s2.isCustomColumnFields()).toBeTruthy();
+  });
+
+  test('should render custom pivot facet', () => {
+    const mockRender = jest.fn();
+
+    class CustomFacet extends PivotFacet {
+      render() {
+        super.render();
+        mockRender();
+      }
+    }
+
+    const sheet = new PivotSheet(getContainer(), originalDataCfg, {
+      facet: (spreadsheet) => new CustomFacet(spreadsheet),
+      tooltip: {
+        showTooltip: false,
+      },
+    });
+
+    sheet.render();
+
+    expect(sheet.facet).toBeInstanceOf(PivotFacet);
+    expect(mockRender).toHaveBeenCalledTimes(1);
   });
 });

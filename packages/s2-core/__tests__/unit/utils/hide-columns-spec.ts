@@ -1,4 +1,5 @@
 import { getContainer } from 'tests/util/helpers';
+import type { PivotFacet } from '../../../src/facet';
 import type { HiddenColumnsInfo } from './../../../src/common/interface/store';
 import type { RootInteraction } from '@/interaction/root';
 import type { Node } from '@/facet/layout/node';
@@ -49,8 +50,9 @@ describe('Hide Columns Tests', () => {
       },
       null,
     );
-    mockSpreadSheetInstance.facet.getInitColLeafNodes = () =>
-      initColumnNodes as Node[];
+    mockSpreadSheetInstance.facet = {
+      getInitColLeafNodes: () => initColumnNodes as Node[],
+    } as unknown as PivotFacet;
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
       reset: jest.fn(),

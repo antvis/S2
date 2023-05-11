@@ -1,6 +1,7 @@
 import { map } from 'lodash';
 import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
+import type { PivotFacet } from '../../../../src/facet';
 import {
   RowCellBrushSelection,
   S2Event,
@@ -92,9 +93,16 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
 
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
-    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;
-    mockSpreadSheetInstance.facet.getRowCells = () => allRowHeaderCells;
+    mockSpreadSheetInstance.facet = {
+      getRowCells: () => allRowHeaderCells,
+      destroy: jest.fn(),
+      render: jest.fn(),
+      setScrollOffset: jest.fn(),
+      getHiddenColumnsInfo: jest.fn(),
+    } as unknown as PivotFacet;
+
+    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     brushSelectionInstance = new RowCellBrushSelection(mockSpreadSheetInstance);
@@ -230,7 +238,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
-    expect(brushSelectionInstance.brushRangeCells).toHaveLength(
+    expect(brushSelectionInstance.brushRangeCells.length).toEqual(
       allRowHeaderCells.length,
     );
     // emit event
@@ -304,7 +312,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
-    expect(brushSelectionInstance.brushRangeCells).toHaveLength(
+    expect(brushSelectionInstance.brushRangeCells.length).toEqual(
       currentRow.length / 2,
     );
   });

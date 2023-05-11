@@ -63,7 +63,6 @@ export class PivotFacet extends BaseFacet {
       rowsHierarchy,
       rowLeafNodes,
       colLeafNodes,
-      cornerNodes: this.getCornerNodes(),
       getCellMeta: this.getCellMeta,
     };
 

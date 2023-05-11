@@ -49,9 +49,8 @@ describe('Merge Cells Test', () => {
       cfg: {
         dataCell: jest.fn(),
       },
-      layoutResult: {
-        getCellMeta: jest.fn(),
-      },
+      getCellMeta: jest.fn(),
+      getDataCells: jest.fn(() => mockAllVisibleCells),
     } as unknown as BaseFacet;
 
     mockOneCellEdges = [
@@ -310,11 +309,6 @@ describe('Merge Cells Test', () => {
         height: 100,
         mergedCellsInfo: [mockMergeCellInfo],
       };
-      mockInstance.interaction = {
-        getPanelGroupAllDataCells() {
-          return [];
-        },
-      } as unknown as RootInteraction;
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),

@@ -129,7 +129,9 @@ describe('Interaction Event Controller Tests', () => {
         maxX: s2Options.width,
         maxY: s2Options.height,
       } as BBox,
-    } as BaseFacet;
+      getDataCells: jest.fn(),
+      getCells: jest.fn(),
+    } as unknown as BaseFacet;
     spreadsheet.interaction = new RootInteraction(
       spreadsheet as unknown as SpreadSheet,
     );

@@ -63,6 +63,7 @@ describe('Select Event Utils Tests', () => {
                   },
                 ],
               },
+              getCellById: () => cell,
             },
             isTableMode: () => true,
           } as unknown as SpreadSheet,

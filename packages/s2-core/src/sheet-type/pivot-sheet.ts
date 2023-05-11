@@ -88,8 +88,7 @@ export class PivotSheet extends SpreadSheet {
       dataCell: this.options.dataCell ?? defaultCell,
     });
     this.facet?.destroy();
-    // TODO: 自定义 facet
-    this.facet = new PivotFacet(this);
+    this.facet = this.options.facet?.(this) ?? new PivotFacet(this);
     this.facet.render();
   }
 

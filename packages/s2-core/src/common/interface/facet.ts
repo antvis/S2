@@ -43,10 +43,6 @@ export interface LayoutResult {
    */
   rowLeafNodes: Node[];
   /**
-   * 角头节点, 对应 cornerCell
-   */
-  cornerNodes: Node[];
-  /**
    * 根据行列索引获取单元格元数据
    * @ref facet.getCellMeta
    * @example layoutResult.getCellMeta(rowIndex, colIndex)

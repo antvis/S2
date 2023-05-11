@@ -677,7 +677,7 @@ export abstract class BaseFacet {
     this.dynamicRenderCell(skipScrollEvent);
   };
 
-  getRendererHeight = () => {
+  private getRendererHeight = () => {
     const { start, end } = this.getCellRange();
 
     return (
@@ -709,7 +709,7 @@ export abstract class BaseFacet {
     };
   };
 
-  renderRowScrollBar = (rowHeaderScrollX: number) => {
+  private renderRowScrollBar = (rowHeaderScrollX: number) => {
     if (
       this.spreadsheet.isFrozenRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
@@ -1587,6 +1587,25 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取表头节点 (角头,行头,列头) (含可视区域)
+   * @example 获取全部: facet.getHeaderNodes()
+   * @example 获取一组 facet.getHeaderNodes(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
+   */
+  public getHeaderNodes(nodeIds?: string[]): Node[] {
+    const headerNodes = concat<Node>(
+      this.getCornerNodes(),
+      this.getRowNodes(),
+      this.getColNodes(),
+    );
+
+    if (!nodeIds) {
+      return headerNodes;
+    }
+
+    return headerNodes.filter((node) => nodeIds.includes(node.id));
+  }
+
+  /**
    * 获取角头节点
    */
   public getCornerNodes(): Node[] {
@@ -1661,7 +1680,7 @@ export abstract class BaseFacet {
    * @example facet.getRowNodeByField('number')
    */
   public getRowNodesByField(nodeField: string): Node[] {
-    return this.getColNodes().filter((node) => node.field === nodeField);
+    return this.getRowNodes().filter((node) => node.field === nodeField);
   }
 
   /**
@@ -1772,9 +1791,20 @@ export abstract class BaseFacet {
 
   /**
    * 获取所有单元格 (角头,行头,列头,数值) (不含可视区域)
+   * @example 获取全部: facet.getCells()
+   * @example 获取一组 facet.getCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
-  public getCells(): S2CellType<ViewMeta>[] {
-    return concat<S2CellType>(this.getHeaderCells(), this.getDataCells());
+  public getCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+    const cells = concat<S2CellType>(
+      this.getHeaderCells(),
+      this.getDataCells(),
+    );
+
+    if (!cellIds) {
+      return cells;
+    }
+
+    return cells.filter((cell) => cellIds.includes(cell.getMeta().id));
   }
 
   public getInitColLeafNodes(): Node[] {
