@@ -334,7 +334,7 @@ export class TableFacet extends BaseFacet {
     const column = flattedColumns.find((item) => {
       return !isString(item) && item.key === field;
     });
-    return !isString(column) && column.rowSpan;
+    return !isString(column) && column?.rowSpan;
   }
 
   /** TIP: 获取列头 Node 高度 */
