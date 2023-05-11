@@ -25,6 +25,7 @@ import {
 import { FrozenCellGroupMap } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  ColumnNode,
   Columns,
   FilterParam,
   LayoutResult,
@@ -368,13 +369,61 @@ export class TableFacet extends BaseFacet {
     return totalHeight;
   }
 
+  /** 判断 columns 中是否配置了 rowSpan */
+  private isRowSpanConfiged(columns: Columns) {
+    return columns.some((item) => {
+      if (isString(item)) {
+        return false;
+      }
+      if (item.rowSpan) {
+        return true;
+      }
+      if (item.children?.length) {
+        const res = this.isRowSpanConfiged(item.children);
+        if (res) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+  private getTreeDepth(column: string | ColumnNode) {
+    if (!column) {
+      return 0;
+    }
+    let maxDepth = 0;
+    if (!isString(column)) {
+      column?.children?.slice(0, 1)?.forEach((child) => {
+        const depth = this.getTreeDepth(child);
+        if (depth > maxDepth) {
+          maxDepth = depth;
+        }
+      });
+    }
+    return maxDepth + 1;
+  }
+
   private calculateColNodesCoordinate(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    const { columns } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
+
+    // 一旦设置了 rowSpan 则只根据第一列行数计算列头高度, 避免出现空白行
+    const isRowSpanConfiged = this.isRowSpanConfiged(columns);
+    const countLines = this.getTreeDepth(columns?.[0]);
+    let end = colsHierarchy.sampleNodesForAllLevels.length + 1;
+    if (isRowSpanConfiged) {
+      end = countLines;
+    }
+
+    for (const levelSample of colsHierarchy.sampleNodesForAllLevels.slice(
+      0,
+      end,
+    )) {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
