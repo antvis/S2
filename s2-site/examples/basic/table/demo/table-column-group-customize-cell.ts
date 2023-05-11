@@ -9,14 +9,15 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         columns: [
           {
             key: 'area',
+            rowSpan: 1,
             children: [
               {
-                rowSpan: 2,
                 key: 'province',
+                rowSpan: 2,
               },
               {
-                rowSpan: 2,
                 key: 'city',
+                rowSpan: 2,
               },
             ],
           },
@@ -27,6 +28,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
             children: [
               {
                 key: 'price',
+                rowSpan: 1,
               },
             ],
           },
