@@ -47,9 +47,6 @@ import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
 
-/**
- * 刷选基类, dataCell, rowCell, colCell 支持滚动刷选
- */
 export class BaseBrushSelection
   extends BaseEvent
   implements BaseEventImplement
@@ -678,7 +675,9 @@ export class BaseBrushSelection
   }
 
   protected addBrushIntercepts() {
-    this.spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+    this.spreadsheet.interaction.addIntercepts([
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+    ]);
   }
 
   protected bindMouseUp(enableScroll = false) {

@@ -424,6 +424,7 @@ export class TableFacet extends BaseFacet {
       }
     }
 
+    this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustColLeafNodesHeight({
       leafNodes: colLeafNodes,
       hierarchy: colsHierarchy,

@@ -7,7 +7,6 @@ import {
   INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
-  type InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type {
   BrushSelection,
@@ -19,6 +18,7 @@ import type {
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
+  InteractionCellSelectedHighlightOptions,
 } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
@@ -36,25 +36,25 @@ import {
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
-import { ColBrushSelection } from './brush-selection/col-brush-selection';
-import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
-import { RowBrushSelection } from './brush-selection/row-brush-selection';
-import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
-import { RowColumnResize } from './row-column-resize';
 import { SelectedCellMove } from './selected-cell-move';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
+import { ColCellBrushSelection } from './brush-selection/col-brush-selection';
+import { RowCellBrushSelection } from './brush-selection/row-brush-selection';
+import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { RowColumnResize } from './row-column-resize';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
 
   public interactions = new Map<string, BaseEvent>();
 
-  // 用来标记需要拦截的交互，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
+  // 用来标记需要拦截的交互，interaction 和本身的 hover 等事件可能会有冲突，有冲突时在此屏蔽
   public intercepts = new Set<Intercept>();
 
   /*
-   * hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
+   * hover有 keep-hover 态，是个计时器，hover后 800毫秒还在当前 cell 的情况下，该 cell 进入 keep-hover 状态
    * 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
    */
   private hoverTimer: number | null = null;
@@ -322,16 +322,16 @@ export class RootInteraction {
   ): BrushSelectionInfo {
     if (isBoolean(brushSelection)) {
       return {
-        dataBrushSelection: brushSelection,
-        rowBrushSelection: brushSelection,
-        colBrushSelection: brushSelection,
+        dataCellBrushSelection: brushSelection,
+        rowCellBrushSelection: brushSelection,
+        colCellBrushSelection: brushSelection,
       };
     }
 
     return {
-      dataBrushSelection: brushSelection?.data ?? false,
-      rowBrushSelection: brushSelection?.row ?? false,
-      colBrushSelection: brushSelection?.col ?? false,
+      dataCellBrushSelection: brushSelection?.dataCell ?? false,
+      rowCellBrushSelection: brushSelection?.rowCell ?? false,
+      colCellBrushSelection: brushSelection?.colCell ?? false,
     };
   }
 
@@ -343,8 +343,11 @@ export class RootInteraction {
       rangeSelection,
       selectedCellMove,
     } = this.spreadsheet.options.interaction!;
-    const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
-      this.getBrushSelectionInfo(brushSelection);
+    const {
+      dataCellBrushSelection,
+      rowCellBrushSelection,
+      colCellBrushSelection,
+    } = this.getBrushSelectionInfo(brushSelection);
 
     return [
       {
@@ -373,19 +376,19 @@ export class RootInteraction {
         enable: !isMobile(),
       },
       {
-        key: InteractionName.BRUSH_SELECTION,
+        key: InteractionName.DATA_CELL_BRUSH_SELECTION,
         interaction: DataCellBrushSelection,
-        enable: !isMobile() && dataBrushSelection,
+        enable: !isMobile() && dataCellBrushSelection,
       },
       {
-        key: InteractionName.ROW_BRUSH_SELECTION,
-        interaction: RowBrushSelection,
-        enable: !isMobile() && rowBrushSelection,
+        key: InteractionName.ROW_CELL_BRUSH_SELECTION,
+        interaction: RowCellBrushSelection,
+        enable: !isMobile() && rowCellBrushSelection,
       },
       {
-        key: InteractionName.COL_BRUSH_SELECTION,
-        interaction: ColBrushSelection,
-        enable: !isMobile() && colBrushSelection,
+        key: InteractionName.COL_CELL_BRUSH_SELECTION,
+        interaction: ColCellBrushSelection,
+        enable: !isMobile() && colCellBrushSelection,
       },
       {
         key: InteractionName.COL_ROW_RESIZE,
@@ -532,7 +535,7 @@ export class RootInteraction {
     return this.hoverTimer;
   }
 
-  public getSelectedCellHighlight(): InteractionCellSelectedHighlightType {
+  public getSelectedCellHighlight(): InteractionCellSelectedHighlightOptions {
     const { selectedCellHighlight } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(selectedCellHighlight)) {
@@ -549,7 +552,7 @@ export class RootInteraction {
       colHeader = false,
       currentRow = false,
       currentCol = false,
-    } = (selectedCellHighlight as unknown as InteractionCellSelectedHighlightType) ??
+    } = (selectedCellHighlight as unknown as InteractionCellSelectedHighlightOptions) ??
     {};
 
     return {

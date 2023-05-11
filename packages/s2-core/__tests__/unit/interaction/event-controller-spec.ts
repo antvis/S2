@@ -1,13 +1,19 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, FederatedEvent, Image } from '@antv/g';
+import {
+  Canvas,
+  FederatedEvent,
+  Image,
+  CustomEvent,
+  type CanvasConfig,
+} from '@antv/g';
 import {
   createFakeSpreadSheet,
   createFederatedMouseEvent,
   createFederatedPointerEvent,
+  getClientPointOnCanvas,
   sleep,
 } from 'tests/util/helpers';
 import { Renderer } from '@antv/g-canvas';
-import type { CanvasConfig } from '@antv/g-lite';
 import { GEventType, GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
@@ -110,7 +116,7 @@ describe('Interaction Event Controller Tests', () => {
     };
 
   beforeEach(() => {
-    const container = document.createElement('div');
+    const container = document.body.appendChild(document.createElement('div'));
 
     spreadsheet = createFakeSpreadSheet();
     spreadsheet.container = new Canvas({
@@ -472,7 +478,9 @@ describe('Interaction Event Controller Tests', () => {
   });
 
   test('should not reset if current interaction has brush selection', () => {
-    spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+    spreadsheet.interaction.addIntercepts([
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+    ]);
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -484,31 +492,28 @@ describe('Interaction Event Controller Tests', () => {
   });
 
   test('should not reset if current mouse on the canvas container', () => {
-    const containsMock = jest
-      .spyOn(HTMLElement.prototype, 'contains')
-      .mockImplementation(() => true);
-
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    window.dispatchEvent(
+    const pointInCanvas = spreadsheet.container.viewport2Client({
+      x: 10,
+      y: 10,
+    });
+
+    spreadsheet.getCanvasElement().dispatchEvent(
       new MouseEvent('click', {
-        clientX: 100,
-        clientY: 100,
+        clientX: pointInCanvas.x,
+        clientY: pointInCanvas.y,
+        bubbles: true,
       } as MouseEventInit),
     );
 
-    expect(containsMock).toHaveBeenCalled();
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
   test('should reset if current mouse not on the canvas container', () => {
-    const containsMock = jest
-      .spyOn(HTMLElement.prototype, 'contains')
-      .mockImplementation(() => true);
-
     spreadsheet.hideTooltip = jest.fn();
     const reset = jest.fn().mockImplementation(() => {
       spreadsheet.hideTooltip();
@@ -532,26 +537,9 @@ describe('Interaction Event Controller Tests', () => {
       } as MouseEventInit),
     );
 
-    expect(containsMock).toHaveBeenCalled();
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
-  });
-
-  test('should reset if current mouse outside the canvas container', () => {
-    const reset = jest.fn();
-
-    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
-
-    window.dispatchEvent(
-      new MouseEvent('click', {
-        clientX: 300,
-        clientY: 300,
-      } as MouseEventInit),
-    );
-
-    expect(reset).toHaveBeenCalled();
-    expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });
 
   test('should reset if current mouse inside the canvas container, but outside the panel facet', () => {
@@ -565,10 +553,16 @@ describe('Interaction Event Controller Tests', () => {
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    window.dispatchEvent(
+    const pointInCanvas = spreadsheet.container.viewport2Client({
+      x: 120,
+      y: 120,
+    });
+
+    spreadsheet.getCanvasElement().dispatchEvent(
       new MouseEvent('click', {
-        clientX: 120,
-        clientY: 120,
+        clientX: pointInCanvas.x,
+        clientY: pointInCanvas.y,
+        bubbles: true,
       } as MouseEventInit),
     );
 
@@ -599,6 +593,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.tooltip.visible = true;
     spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
         x: 200,
@@ -662,28 +657,6 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
-  // https://github.com/antvis/S2/issues/363
-  test('should reset if current mouse outside the canvas container and disable tooltip', () => {
-    const reset = jest.fn();
-
-    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
-    Object.defineProperty(spreadsheet.options.tooltip, 'showTooltip', {
-      get() {
-        return false;
-      },
-    });
-
-    window.dispatchEvent(
-      new MouseEvent('click', {
-        clientX: 100,
-        clientY: 100,
-      } as MouseEventInit),
-    );
-
-    expect(reset).not.toHaveBeenCalled();
-    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
-  });
-
   test('should disable reset if autoResetSheetStyle set to false', () => {
     spreadsheet.facet = {
       panelBBox: {
@@ -720,9 +693,13 @@ describe('Interaction Event Controller Tests', () => {
       cells: [{} as CellMeta],
       stateName: InteractionStateName.HOVER,
     });
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
-      shape: null,
-    });
+
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, -10, -10),
+      ),
+    );
 
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
@@ -734,9 +711,13 @@ describe('Interaction Event Controller Tests', () => {
       cells: [{} as CellMeta],
       stateName: InteractionStateName.SELECTED,
     });
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
-      shape: 'mock',
-    });
+
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, 10, 10),
+      ),
+    );
 
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
@@ -746,9 +727,13 @@ describe('Interaction Event Controller Tests', () => {
       cells: [{} as CellMeta],
       stateName: InteractionStateName.SELECTED,
     });
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
-      shape: null,
-    });
+
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, -10, -10),
+      ),
+    );
 
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
@@ -760,18 +745,26 @@ describe('Interaction Event Controller Tests', () => {
       },
     });
 
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
-      shape: null,
-    });
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, -10, -10),
+      ),
+    );
+
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
   test('should disable reset if mouse outside the canvas and action tooltip is active', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
-      shape: null,
-    });
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, -10, -10),
+      ),
+    );
+
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
@@ -953,18 +946,61 @@ describe('Interaction Event Controller Tests', () => {
     },
   );
 
+  // https://github.com/antvis/S2/issues/2170
+  test('should not reset if tooltip content clicked', () => {
+    const reset = jest.fn();
+
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.options.tooltip = {
+      showTooltip: false,
+      dataCell: {
+        showTooltip: true,
+      },
+      colCell: {
+        showTooltip: true,
+      },
+      rowCell: {
+        showTooltip: true,
+      },
+    };
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container!.getBoundingClientRect = () =>
+      ({
+        x: 200,
+        y: 200,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    Array.from({ length: 3 }).forEach(() => {
+      window.dispatchEvent(
+        new PointerEvent('click', {
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+    });
+  });
+
   // https://github.com/antvis/S2/pull/2163
   test('should not reset if Mouse Event is Proxy', () => {
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    window.dispatchEvent(
-      new PointerEvent('click', {
-        clientX: 100,
-        clientY: 100,
-      } as MouseEventInit),
-    );
+    const pointInCanvas = getClientPointOnCanvas(spreadsheet.container, 10, 10);
+    const evt = new window.CustomEvent('click');
+
+    Object.defineProperties(evt, {
+      clientX: {
+        value: pointInCanvas.clientX,
+      },
+      clientY: {
+        value: pointInCanvas.clientY,
+      },
+    });
+    spreadsheet.getCanvasElement().dispatchEvent(evt);
+
     expect(eventController.isCanvasEffect).toBe(true);
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();

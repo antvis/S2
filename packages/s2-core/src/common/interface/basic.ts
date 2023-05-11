@@ -91,7 +91,7 @@ export interface Meta {
    */
   description?: string;
 
-  /*
+  /**
    * 格式化
    * 数值字段：一般用于格式化数字单位
    * 文本字段：一般用于做字段枚举值的别名
@@ -104,18 +104,20 @@ export type CustomHeaderField = CustomTreeNode | string;
 export type CustomHeaderFields = CustomHeaderField[];
 
 export interface BaseFields {
-  // row fields
+  /** 行头字段 */
   rows?: CustomHeaderFields;
-  // columns fields
+  /** 列头字段 */
   columns?: CustomHeaderFields;
-  // value fields
+  /** 数值字段 */
   values?: string[];
-  // measure values in cols as new col, only works for PivotSheet
+  /** 数值是否置于列头 (透视表有效) */
   valueInCols?: boolean;
 }
 
 export interface Fields extends BaseFields {
-  // the order of the measure values in rows or cols, only works for PivotSheet
+  /**
+   * 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始
+   */
   customValueOrder?: number;
 }
 
@@ -134,8 +136,9 @@ export enum Aggregation {
 }
 
 export interface CalcTotals {
-  // 聚合方式
+  /** 聚合方式 */
   aggregation?: Aggregation;
+  /** 自定义计算 */
   calcFunc?: (query: Query, arr: CellData[]) => number;
 }
 
@@ -202,7 +205,7 @@ export interface SortFuncParam extends Sort {
 }
 
 export interface SortParam extends Sort {
-  /** 自定义func */
+  /** 自定义排序 */
   sortFunc?: (param: SortFuncParam) => Array<string | Record<string, any>>;
 }
 
@@ -215,22 +218,22 @@ export interface FilterParam {
 export type SortParams = SortParam[];
 
 export interface Pagination {
-  // 每页数量
+  /** 每页数量 */
   pageSize: number;
-  // 当前页 (从 1 开始)
+  /** 当前页 (从 1 开始) */
   current: number;
-  // 数据总条数
+  /** 数据总条数 */
   total?: number;
 }
 
 export interface CustomSVGIcon {
-  // icon 类型名
+  /** icon 名称 */
   name: string;
 
-  /*
+  /**
    * 1、base 64
    * 2、svg本地文件（兼容老方式，可以改颜色）
-   * 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
+   * 3、线上支持的图片地址
    */
   svg: string;
 }
@@ -257,17 +260,17 @@ export interface HeaderActionIconOptions {
 }
 
 export interface HeaderActionIcon {
-  // 已注册的 icon 类型或自定义的 icon 类型名
+  /** 已注册的 icon 类型或自定义的 icon 名称 */
   iconNames: string[];
-  // 所属的 cell 类型
+  /** 所属的 cell 类型 */
   belongsCell: Omit<CellTypes, 'dataCell'>;
-  // 是否默认隐藏， true 为 hover后显示, false 为一直显示
+  /** 是否默认隐藏， true 为 hover后显示, false 为一直显示 */
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
-  // 是否展示当前 iconNames 配置的 icon
+  /** 是否展示当前 iconNames 配置的 icon */
   displayCondition?: (mete: Node, iconName: string) => boolean;
-  // 点击回调函数
+  /** 点击回调函数 */
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
-  // hover 回调函数
+  /** 悬停回调函数 */
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
 }
 
@@ -293,18 +296,12 @@ export type CornerHeaderCallback = (
   ...restOptions: unknown[]
 ) => void;
 
-/**
- * the index of rows or columns.
- */
 export interface MergedCellInfo {
   colIndex?: number;
   rowIndex?: number;
   showText?: boolean;
 }
 
-/**
- * the data cell and meta that make up the mergedCell, temporary use
- */
 export type TempMergedCell = {
   cells: S2CellType[];
   viewMeta: ViewMeta;

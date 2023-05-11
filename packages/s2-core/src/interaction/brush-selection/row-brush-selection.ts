@@ -18,7 +18,11 @@ import { getCellMeta } from '../../utils/interaction/select-event';
 import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
-export class RowBrushSelection extends BaseBrushSelection {
+export class RowCellBrushSelection extends BaseBrushSelection {
+  public displayedCells: RowCell[] = [];
+
+  public brushRangeCells: RowCell[] = [];
+
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
       super.mouseDown(event);
@@ -110,7 +114,7 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   protected addBrushIntercepts() {
     this.spreadsheet.interaction.addIntercepts([
-      InterceptType.ROW_BRUSH_SELECTION,
+      InterceptType.ROW_CELL_BRUSH_SELECTION,
     ]);
   }
 

@@ -166,7 +166,7 @@ export class PivotFacet extends BaseFacet {
       layoutResult;
 
     let preLeafNode = Node.blankNode();
-    const allNodes = colsHierarchy.getNodes();
+    const colNodes = colsHierarchy.getNodes();
 
     colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
       levelSampleNode.height = this.getColNodeHeight(levelSampleNode);
@@ -175,8 +175,8 @@ export class PivotFacet extends BaseFacet {
 
     let currentCollIndex = 0;
 
-    for (let i = 0; i < allNodes.length; i++) {
-      const currentNode = allNodes[i];
+    for (let i = 0; i < colNodes.length; i++) {
+      const currentNode = colNodes[i];
 
       if (currentNode.isLeaf) {
         currentNode.colIndex = currentCollIndex;
@@ -210,11 +210,13 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.spreadsheet, null, currentNode);
     }
 
+    this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustColLeafNodesHeight({
       leafNodes: colLeafNodes,
       hierarchy: colsHierarchy,
     });
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
+
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);

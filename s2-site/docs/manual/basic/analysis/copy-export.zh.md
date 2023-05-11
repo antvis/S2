@@ -35,9 +35,9 @@ const s2Options = {
     enableCopy: true,
     // 圈选复制前，需要开启圈选功能
     brushSelection: {
-      data: true, // 默认开启
-      row: true,
-      col: true,
+      dataCell: true, // 默认开启
+      rowCell: true,
+      colCell: true,
     }
   }
 };

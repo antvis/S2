@@ -44,9 +44,6 @@ export class PivotSheet extends SpreadSheet {
     return false;
   }
 
-  /**
-   * Check if is pivot mode
-   */
   public isPivotMode(): boolean {
     return true;
   }

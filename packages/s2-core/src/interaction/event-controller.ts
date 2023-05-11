@@ -1,8 +1,8 @@
 import {
-  type Canvas,
+  Canvas,
+  DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
   type Group,
-  DisplayObject,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
@@ -22,9 +22,9 @@ import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
-import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
 import { isMobile } from '../utils/is-mobile';
+import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -156,15 +156,15 @@ export class EventController {
 
     if (
       interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
-        InterceptType.COL_BRUSH_SELECTION,
-        InterceptType.ROW_BRUSH_SELECTION,
+        InterceptType.DATA_CELL_BRUSH_SELECTION,
+        InterceptType.COL_CELL_BRUSH_SELECTION,
+        InterceptType.ROW_CELL_BRUSH_SELECTION,
       ])
     ) {
       interaction.removeIntercepts([
-        InterceptType.BRUSH_SELECTION,
-        InterceptType.ROW_BRUSH_SELECTION,
-        InterceptType.COL_BRUSH_SELECTION,
+        InterceptType.DATA_CELL_BRUSH_SELECTION,
+        InterceptType.ROW_CELL_BRUSH_SELECTION,
+        InterceptType.COL_CELL_BRUSH_SELECTION,
       ]);
 
       return;
@@ -203,10 +203,16 @@ export class EventController {
        */
       const { width, height } = this.getContainerRect();
 
+      const { target: eventTarget, clientX, clientY } = event;
+
       return (
-        canvas.contains(event.target as HTMLElement) &&
-        event.clientX <= x + width &&
-        event.clientY <= y + height
+        (eventTarget === canvas ||
+          eventTarget instanceof DisplayObject ||
+          eventTarget instanceof Canvas) &&
+        clientX <= x + width &&
+        clientX >= x &&
+        clientY <= y + height &&
+        clientY >= y
       );
     }
 
@@ -224,14 +230,16 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event)?.showTooltip) {
+    const { tooltip } = this.spreadsheet;
+
+    if (!tooltip?.visible) {
       return false;
     }
 
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
-    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+    if (event.target instanceof Node) {
       return verifyTheElementInTooltip(
         this.spreadsheet.tooltip?.container,
         event.target,
@@ -413,9 +421,9 @@ export class EventController {
   private hasBrushSelectionIntercepts() {
     return this.spreadsheet.interaction.hasIntercepts([
       InterceptType.HOVER,
-      InterceptType.BRUSH_SELECTION,
-      InterceptType.ROW_BRUSH_SELECTION,
-      InterceptType.COL_BRUSH_SELECTION,
+      InterceptType.DATA_CELL_BRUSH_SELECTION,
+      InterceptType.ROW_CELL_BRUSH_SELECTION,
+      InterceptType.COL_CELL_BRUSH_SELECTION,
     ]);
   }
 
@@ -544,7 +552,10 @@ export class EventController {
   };
 
   private onCanvasMouseout = (event: CanvasEvent) => {
-    if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
+    if (
+      !this.isAutoResetSheetStyle ||
+      this.isMouseOnTheCanvasContainer(event as Event)
+    ) {
       return;
     }
 

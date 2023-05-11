@@ -138,7 +138,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     ).toBeFalsy();
     expect(
       brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
+        InterceptType.DATA_CELL_BRUSH_SELECTION,
       ]),
     ).toBeFalsy();
     expect(

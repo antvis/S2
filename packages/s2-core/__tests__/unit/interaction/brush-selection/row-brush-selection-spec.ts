@@ -2,7 +2,7 @@ import { map } from 'lodash';
 import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
 import {
-  RowBrushSelection,
+  RowCellBrushSelection,
   S2Event,
   SpreadSheet,
   RootInteraction,
@@ -24,7 +24,7 @@ const MockRootInteraction =
 
 // RowHeader: start: { x: 0, y: 90}, end: {x: 200, y: 400}
 describe('Interaction Row Cell Brush Selection Tests', () => {
-  let brushSelectionInstance: RowBrushSelection;
+  let brushSelectionInstance: RowCellBrushSelection;
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
@@ -77,7 +77,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         height: 400,
         interaction: {
           brushSelection: {
-            row: true,
+            rowCell: true,
           },
         },
         style: {
@@ -97,7 +97,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.facet.getRowCells = () => allRowHeaderCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
-    brushSelectionInstance = new RowBrushSelection(mockSpreadSheetInstance);
+    brushSelectionInstance = new RowCellBrushSelection(mockSpreadSheetInstance);
 
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;

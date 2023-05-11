@@ -136,7 +136,7 @@ const expectScrollBrush = async (
   await emitBrushEvent(s2, 400, 200);
 
   const brushInteraction = s2.interaction.interactions.get(
-    InteractionName.BRUSH_SELECTION,
+    InteractionName.DATA_CELL_BRUSH_SELECTION,
   ) as BaseBrushSelection;
 
   const brushRange = brushInteraction.getBrushRange();
@@ -213,8 +213,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
         },
         interaction: {
           brushSelection: {
-            row: true,
-            data: false,
+            rowCell: true,
+            dataCell: false,
           },
         },
       },
@@ -255,7 +255,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
         },
         interaction: {
           brushSelection: {
-            row: true,
+            rowCell: true,
           },
         },
       },
@@ -324,7 +324,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     await expectScrollBrush(s2, dataCell);
 
     const brushSelection = s2.interaction.interactions.get(
-      InteractionName.BRUSH_SELECTION,
+      InteractionName.DATA_CELL_BRUSH_SELECTION,
     ) as BaseBrushSelection;
 
     expect(brushSelection.prepareSelectMaskShape.attr('x')).toEqual(
