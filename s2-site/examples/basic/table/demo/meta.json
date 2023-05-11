@@ -19,6 +19,14 @@
         "en": "Column Group"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*DgnhTYveL1AAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "table-column-group-customize-cell.ts",
+      "title": {
+        "zh": "列分组自定义合并单元格",
+        "en": "Column Group Customize The Cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*DgnhTYveL1AAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }
