@@ -290,6 +290,7 @@ describe('Merge Cells Test', () => {
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
+        appendChild: jest.fn(),
       } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);
@@ -312,6 +313,7 @@ describe('Merge Cells Test', () => {
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
+        appendChild: jest.fn(),
       } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);
