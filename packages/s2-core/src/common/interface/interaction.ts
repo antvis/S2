@@ -21,6 +21,7 @@ import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
 import type { RootInteraction } from '../../interaction';
 import type { SeriesNumberCell } from '../../cell/series-number-cell';
+import type { Transformer } from '../../utils/export/interface';
 import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
 
@@ -184,6 +185,10 @@ export interface InteractionOptions {
    */
   copyWithHeader?: boolean;
 
+  /**
+   * 复制时支持自定义(transformer)数据导出格式化方法
+   */
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
   /**
    * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态)
    */

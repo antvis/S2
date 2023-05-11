@@ -50,7 +50,7 @@ export const matrixHtmlTransformer = (
   };
 };
 
-export const transformers: {
+export const Transformers: {
   [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
   [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 } = {
@@ -157,44 +157,54 @@ export const getFormatOptions = (isFormat?: FormatOptions) => {
   };
 };
 
+function getTransformer(
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>,
+): Transformer {
+  if (!customTransformer) {
+    return Transformers;
+  }
+
+  const customTransformersTemp = customTransformer(Transformers);
+
+  return {
+    [CopyMIMEType.PLAIN]:
+      customTransformersTemp[CopyMIMEType.PLAIN] ||
+      Transformers[CopyMIMEType.PLAIN],
+    [CopyMIMEType.HTML]:
+      customTransformersTemp[CopyMIMEType.HTML] ||
+      Transformers[CopyMIMEType.HTML],
+  };
+}
+
 // 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
 export function unifyConfig({
-  spreadsheet,
-  config,
-  isExport,
-}: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
-  const {
+  spreadsheet: {
+    options: { interaction },
+  },
+  config: {
     formatOptions = false,
     separator = NewTab,
     selectedCells = [],
     customTransformer,
-  } = config;
-
-  let isFormatData = spreadsheet.options.interaction?.copyWithFormat ?? false;
-  let isFormatHeader = spreadsheet.options.interaction?.copyWithFormat ?? false;
-  let customTransformers: Transformer = transformers;
-
-  if (isExport) {
-    ({ isFormatData, isFormatHeader } = getFormatOptions(formatOptions));
-
-    if (customTransformer) {
-      const customTransformersTemp = customTransformer(transformers);
-
-      customTransformers = {
-        [CopyMIMEType.PLAIN]:
-          customTransformersTemp[CopyMIMEType.PLAIN] ||
-          transformers[CopyMIMEType.PLAIN],
-        [CopyMIMEType.HTML]:
-          customTransformersTemp[CopyMIMEType.HTML] ||
-          transformers[CopyMIMEType.HTML],
+  },
+  isExport,
+}: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
+  const { copyWithFormat, customTransformer: brushCopyCustomTransformer } =
+    interaction ?? {};
+  const { isFormatData, isFormatHeader } = isExport
+    ? getFormatOptions(formatOptions)
+    : {
+        isFormatData: copyWithFormat ?? false,
+        isFormatHeader: copyWithFormat ?? false,
       };
-    }
-  }
+  const transformers = getTransformer(
+    isExport ? customTransformer : brushCopyCustomTransformer,
+  );
 
   return {
     separator,
     selectedCells,
-    transformers: customTransformers,
+    transformers,
     isFormatData,
     isFormatHeader,
   };
