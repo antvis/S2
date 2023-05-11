@@ -51,6 +51,7 @@ jest.mock('@/sheet-type', () => {
         facet: {
           getColLeafNodes: jest.fn().mockReturnValue([]),
           getColNodes: jest.fn().mockReturnValue([]),
+          getHiddenColumnsInfo: jest.fn(),
         },
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
