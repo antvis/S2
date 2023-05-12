@@ -1,6 +1,9 @@
 name: test
 
-on: [pull_request]
+on:
+  pull_request:
+    paths-ignore:
+      - 's2-site/**'
 
 concurrency:
   group: ${{github.workflow}}-${{github.event_name}}-${{github.ref}}
