@@ -1,4 +1,5 @@
-import { isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
+import type { Fields } from '../../common/interface';
 
 export const getCellPadding = () => {
   const padding = [12, 4, 12, 4];
@@ -12,4 +13,18 @@ export const getCellPadding = () => {
     top,
     bottom,
   };
+};
+
+/**
+ * fields 的 rows、columns、values、customTreeItems 值都为空时，返回 true
+ * @param {Fields} fields
+ * @return {boolean}
+ */
+export const areAllFieldsEmpty = (fields: Fields) => {
+  return (
+    isEmpty(fields.rows) &&
+    isEmpty(fields.columns) &&
+    isEmpty(fields.values) &&
+    isEmpty(fields.customTreeItems)
+  );
 };
