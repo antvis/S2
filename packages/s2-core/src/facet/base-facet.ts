@@ -53,7 +53,7 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
-import { isMobile } from '../utils/is-mobile';
+import { isMobile, isWindows } from '../utils/is-mobile';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
@@ -934,8 +934,9 @@ export abstract class BaseFacet {
     let { deltaX, deltaY, offsetX, offsetY } = event;
     const { shiftKey } = event;
 
-    // 按住shift时，固定为水平方向滚动
-    if (shiftKey) {
+    // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
+    // see https://github.com/antvis/S2/issues/2198
+    if (shiftKey && isWindows()) {
       offsetX = offsetX - deltaX + deltaY;
       deltaX = deltaY;
       offsetY -= deltaY;
