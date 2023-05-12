@@ -12,8 +12,8 @@ import type { ColCell, RowCell } from '../../../cell';
 import { getSelectedCols, getSelectedRows } from '../method';
 import {
   type CopyableList,
+  type CopyAllDataParams,
   CopyMIMEType,
-  type FormatOptions,
 } from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
@@ -208,14 +208,12 @@ export const getSelectedData = (spreadsheet: SpreadSheet): CopyableList => {
 };
 
 // 全量导出使用
-export const processAllSelected = (
-  spreadsheet: SpreadSheet,
-  split: string,
-  formatOptions?: FormatOptions,
-): CopyableList => {
-  if (spreadsheet.isPivotMode()) {
-    return processSelectedAllPivot(spreadsheet, split, formatOptions);
+export const processAllSelected = (params: CopyAllDataParams): CopyableList => {
+  const { sheetInstance } = params;
+
+  if (sheetInstance.isPivotMode()) {
+    return processSelectedAllPivot(params);
   }
 
-  return processSelectedAllTable(spreadsheet, split, formatOptions);
+  return processSelectedAllTable(params);
 };

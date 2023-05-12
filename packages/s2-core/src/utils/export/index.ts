@@ -1,5 +1,4 @@
 import { concat, get } from 'lodash';
-import type { SpreadSheet } from '../../sheet-type';
 import { NewTab } from '../../common/constant/copy';
 import {
   CopyMIMEType,
@@ -7,6 +6,7 @@ import {
   type CopyableItem,
   type FormatOptions,
   type CopyableList,
+  type CopyAllDataParams,
 } from './interface';
 import { processAllSelected } from './copy/core';
 import { getNodeFormatData, assembleMatrix, getMaxRowLen } from './copy/common';
@@ -107,13 +107,22 @@ export const download = (str: string, fileName: string) => {
  * @param sheetInstance
  * @param split
  * @param formatOptions 是否格式化数据
+ * @param customTransformer
  */
 // TODO: 改名
-export const copyData = (
-  sheetInstance: SpreadSheet,
+export const copyData = ({
+  sheetInstance,
   split = NewTab,
-  formatOptions?: FormatOptions,
-) => processAllSelected(sheetInstance, split, formatOptions)[0].content;
+  formatOptions,
+  customTransformer,
+}: CopyAllDataParams) => {
+  return processAllSelected({
+    sheetInstance,
+    split,
+    formatOptions,
+    customTransformer,
+  })[0].content;
+};
 
 export { CopyableList, FormatOptions };
 export { assembleMatrix, getMaxRowLen, getNodeFormatData };
