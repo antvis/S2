@@ -134,7 +134,14 @@ export class DataCell extends BaseCell<ViewMeta> {
       }
     }
 
-    if (isEqual(currentHoverCell.id, this.getMeta().id)) {
+    const { id, rowIndex, colIndex } = this.getMeta();
+
+    // fix issue: https://github.com/antvis/S2/issues/1781
+    if (
+      isEqual(currentHoverCell.id, id) &&
+      isEqual(currentHoverCell.rowIndex, rowIndex) &&
+      isEqual(currentHoverCell.colIndex, colIndex)
+    ) {
       this.updateByState(InteractionStateName.HOVER_FOCUS);
     }
   }
