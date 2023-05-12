@@ -17,7 +17,7 @@ describe('Data order Test', () => {
 
   s2.render();
   test('should get right order of rendering data', () => {
-    const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+    const rowLeafNodes = s2.facet.getLayoutResult().rowLeafNodes;
 
     expect(rowLeafNodes[0].value).toEqual('张三');
     expect(rowLeafNodes[1].value).toEqual('李四');

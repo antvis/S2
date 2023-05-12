@@ -221,7 +221,7 @@ export class ColCell extends HeaderCell {
    * -------------------------------------------------
    */
   protected isCrossColumnLeafNode() {
-    const { colsHierarchy } = this.spreadsheet.facet.layoutResult;
+    const { colsHierarchy } = this.spreadsheet.facet.getLayoutResult();
     const { level, isLeaf } = this.meta;
 
     return colsHierarchy?.sampleNodeForLastLevel?.level !== level && isLeaf;

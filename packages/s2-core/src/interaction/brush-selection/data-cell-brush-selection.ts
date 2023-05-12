@@ -62,10 +62,11 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   }
 
   public getSelectedCellMetas = (brushRange: BrushRange): CellMeta[] => {
+    const { facet } = this.spreadsheet;
     const metas: CellMeta[] = [];
-    const { rowLeafNodes = [], colLeafNodes = [] } =
-      this.spreadsheet.facet.layoutResult;
 
+    const rowLeafNodes = facet.getRowLeafNodes();
+    const colLeafNodes = facet.getColLeafNodes();
     const rowIndexRange = range(
       brushRange.start.rowIndex,
       brushRange.end.rowIndex + 1,

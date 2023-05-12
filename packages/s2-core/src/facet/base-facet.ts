@@ -22,7 +22,13 @@ import {
   reduce,
   sumBy,
 } from 'lodash';
-import { ColCell, CornerCell, DataCell, RowCell } from '../cell';
+import {
+  ColCell,
+  CornerCell,
+  DataCell,
+  RowCell,
+  SeriesNumberCell,
+} from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellTypes,
@@ -126,6 +132,10 @@ export abstract class BaseFacet {
   // render header/corner/scrollbar/resize
   public foregroundGroup: Group;
 
+  /**
+   * 当前布局节点信息
+   * @description 内部消费, 外部调用请使用 facet.getLayoutResult()
+   */
   public layoutResult: LayoutResult;
 
   public viewCellWidths: number[];
@@ -181,6 +191,17 @@ export abstract class BaseFacet {
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.init();
+  }
+
+  public getLayoutResult(): LayoutResult {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { getCellMeta, ...layout } = this.layoutResult;
+
+    return {
+      ...layout,
+      cornerNodes: this.getCornerNodes(),
+      seriesNumberNodes: this.getSeriesNumberNodes(),
+    };
   }
 
   protected initGroups() {
@@ -1587,13 +1608,14 @@ export abstract class BaseFacet {
   }
 
   /**
-   * 获取表头节点 (角头,行头,列头) (含可视区域)
+   * 获取表头节点 (角头,序号, 行头,列头) (含可视区域)
    * @example 获取全部: facet.getHeaderNodes()
    * @example 获取一组 facet.getHeaderNodes(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
   public getHeaderNodes(nodeIds?: string[]): Node[] {
     const headerNodes = concat<Node>(
       this.getCornerNodes(),
+      this.getSeriesNumberNodes(),
       this.getRowNodes(),
       this.getColNodes(),
     );
@@ -1610,6 +1632,13 @@ export abstract class BaseFacet {
    */
   public getCornerNodes(): Node[] {
     return this.cornerHeader?.getNodes() || [];
+  }
+
+  /**
+   * 获取序号节点
+   */
+  public getSeriesNumberNodes(): Node[] {
+    return this.seriesNumberHeader?.getNodes() || [];
   }
 
   /**
@@ -1652,6 +1681,27 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取列头小计/总计节点 (含非可视区域)
+   */
+  public getColTotalsNodes(): Node[] {
+    return this.getRowNodes().filter((node) => node.isTotals);
+  }
+
+  /**
+   * 获取列头小计节点 (含非可视区域)
+   */
+  public getColSubTotalsNodes(): Node[] {
+    return this.getRowTotalsNodes().filter((node) => node.isSubTotals);
+  }
+
+  /**
+   * 获取列头总计节点 (含非可视区域)
+   */
+  public getColGrandTotalsNodes(): Node[] {
+    return this.getRowTotalsNodes().filter((node) => node.isGrandTotals);
+  }
+
+  /**
    * 获取行头节点 (含非可视区域)
    * @description 获取行头单元格 (可视区域内) facet.getRowCells()
    * @example 获取全部: facet.getRowNodes()
@@ -1691,9 +1741,30 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取行头小计/总计节点 (含非可视区域)
+   */
+  public getRowTotalsNodes(): Node[] {
+    return this.getRowNodes().filter((node) => node.isTotals);
+  }
+
+  /**
+   * 获取行头小计节点 (含非可视区域)
+   */
+  public getRowSubTotalsNodes(): Node[] {
+    return this.getRowTotalsNodes().filter((node) => node.isSubTotals);
+  }
+
+  /**
+   * 获取行头总计节点 (含非可视区域)
+   */
+  public getRowGrandTotalsNodes(): Node[] {
+    return this.getRowTotalsNodes().filter((node) => node.isGrandTotals);
+  }
+
+  /**
    * 获取单元格的所有子节点 (含非可视区域)
    * @example
-   * const rowCell = facet.getRowCell()[0]
+   * const rowCell = facet.getRowCells()[0]
    * facet.getCellChildrenNodes(rowCell)
    */
   public getCellChildrenNodes = (cell: S2CellType): Node[] => {
@@ -1725,11 +1796,9 @@ export abstract class BaseFacet {
    * 获取行头单元格 (不含可视区域)
    */
   public getRowCells(): RowCell[] {
-    const children = this.foregroundGroup?.children || [];
-    const rowHeader = children.find((group) => group instanceof RowHeader);
-    const headerChildren = rowHeader?.children || [];
+    const headerChildren = (this.getRowHeader()?.children || []) as RowCell[];
 
-    return getAllChildCells(headerChildren as RowCell[], RowCell).filter(
+    return getAllChildCells(headerChildren, RowCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     );
   }
@@ -1738,20 +1807,30 @@ export abstract class BaseFacet {
    * 获取列头单元格 (不含可视区域)
    */
   public getColCells(): ColCell[] {
-    const children = this.foregroundGroup?.children || [];
-    const colHeader = children.find((group) => group instanceof ColHeader);
-    const headerChildren = colHeader?.children || [];
+    const headerChildren = (this.getColHeader()?.children || []) as ColCell[];
 
-    return getAllChildCells(headerChildren as ColCell[], ColCell).filter(
+    return getAllChildCells(headerChildren, ColCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     );
   }
 
+  /**
+   * 获取角头单元格
+   */
   public getCornerCells(): CornerCell[] {
     return filter(
       this.getCornerHeader().children as CornerCell[],
       (element) => element instanceof CornerCell,
     ) as unknown[] as CornerCell[];
+  }
+
+  public getSeriesNumberCells(): SeriesNumberCell[] {
+    const headerChildren = (this.getSeriesNumberHeader()?.children ||
+      []) as SeriesNumberCell[];
+
+    return getAllChildCells(headerChildren, SeriesNumberCell).filter(
+      (cell: S2CellType) => cell.cellType === CellTypes.SERIES_NUMBER_CELL,
+    );
   }
 
   /**

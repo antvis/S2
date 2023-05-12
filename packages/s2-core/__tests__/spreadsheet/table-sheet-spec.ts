@@ -183,7 +183,7 @@ describe('TableSheet normal spec', () => {
       },
     });
     s2.render();
-    expect(s2.facet.layoutResult.colsHierarchy.width).toBe(850);
+    expect(s2.facet.getLayoutResult().colsHierarchy.width).toBe(850);
 
     s2.destroy();
   });

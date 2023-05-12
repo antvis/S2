@@ -19,11 +19,11 @@ export type GetCellMeta = (
 
 export interface LayoutResult {
   /**
-   * 列头节点, 对应 colCell (含可视范围外)
+   * 列头节点, 对应 ColCell (含可视范围外)
    */
   colNodes: Node[];
   /**
-   * 列头叶子节点, 对应 colCell (含可视范围外)
+   * 列头叶子节点, 对应 ColCell (含可视范围外)
    */
   colLeafNodes: Node[];
   /**
@@ -31,7 +31,7 @@ export interface LayoutResult {
    */
   colsHierarchy: Hierarchy;
   /**
-   * 行头节点, 对应 rowCell (含可视范围外)
+   * 行头节点, 对应 RowCell (含可视范围外)
    */
   rowNodes: Node[];
   /**
@@ -39,13 +39,21 @@ export interface LayoutResult {
    */
   rowsHierarchy: Hierarchy;
   /**
-   * 行头叶子节点, 对应 rowCell (含可视范围外)
+   * 行头叶子节点, 对应 RowCell (含可视范围外)
    */
   rowLeafNodes: Node[];
+  /**
+   * 序号节点, 对应 SeriesNumberCell (含可视范围外)
+   */
+  seriesNumberNodes?: Node[];
+  /**
+   * 角头节点, 对应 CornerCell (含可视范围外)
+   */
+  cornerNodes?: Node[];
   /**
    * 根据行列索引获取单元格元数据
    * @ref facet.getCellMeta
    * @example layoutResult.getCellMeta(rowIndex, colIndex)
    */
-  getCellMeta: GetCellMeta;
+  getCellMeta?: GetCellMeta;
 }

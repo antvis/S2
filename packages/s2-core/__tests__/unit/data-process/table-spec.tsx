@@ -23,7 +23,7 @@ describe('List Table Core Data Process', () => {
   s2.render();
 
   describe('1、Generate Col Hierarchy', () => {
-    const layoutResult = s2.facet.layoutResult;
+    const layoutResult = s2.facet.getLayoutResult();
     const { colsHierarchy } = layoutResult;
 
     test('should get correct col hierarchy structure', () => {

@@ -37,8 +37,8 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     test('should render default cell style', () => {
-      expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
-      expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+      expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
+      expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       expect(
         mapNodeSize(s2.facet.getDataCells().map((cell) => cell.getMeta())),
       ).toMatchSnapshot();
@@ -88,7 +88,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
       test('should get custom row cell style by custom hook', () => {
@@ -110,7 +110,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
       test('should get custom row cell style by field', () => {
@@ -128,7 +128,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
       test('should get custom row cell style by field id', () => {
@@ -148,7 +148,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
       test('should not get custom row cell style if not leaf node by field', () => {
@@ -241,7 +241,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
       test('should get custom col cell style by custom hook', () => {
@@ -263,7 +263,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
       test('should get custom col cell style by field', () => {
@@ -281,7 +281,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
       test('should get custom col cell style by field id', () => {
@@ -301,7 +301,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         s2.render();
 
-        expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
       test('should not get custom col cell style if not leaf node by field', () => {
@@ -416,8 +416,8 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     test('should render default cell style', () => {
-      expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
-      expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+      expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
+      expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       expect(
         mapNodeSize(s2.facet.getDataCells().map((cell) => cell.getMeta())),
       ).toMatchSnapshot();

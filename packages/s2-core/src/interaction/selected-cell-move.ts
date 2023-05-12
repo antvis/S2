@@ -136,12 +136,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   }
 
   private generateCellMeta(spreadsheet: SpreadSheet, row: number, col: number) {
-    const {
-      isTableMode,
-      facet: {
-        layoutResult: { colLeafNodes, rowLeafNodes },
-      },
-    } = spreadsheet;
+    const { isTableMode, facet } = spreadsheet;
+
+    const rowLeafNodes = facet.getRowLeafNodes();
+    const colLeafNodes = facet.getColLeafNodes();
     const rowId = isTableMode() ? String(row) : rowLeafNodes[row].id;
     const colId = colLeafNodes[col].id;
 
@@ -181,7 +179,9 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       colCount: frozenColCount = 0,
       trailingColCount: frozenTrailingColCount = 0,
     } = spreadsheet.options.frozen!;
-    const { rowLeafNodes, colLeafNodes } = spreadsheet.facet.layoutResult;
+
+    const rowLeafNodes = spreadsheet.facet.getRowLeafNodes();
+    const colLeafNodes = spreadsheet.facet.getColLeafNodes();
 
     const [minCol, maxCol] = [
       0 + frozenColCount,
@@ -260,7 +260,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       frozenTrailingRowGroup,
     } = facet;
 
-    const { colLeafNodes } = facet.layoutResult;
+    const colLeafNodes = facet.getColLeafNodes();
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
     const splitLineStyle = get(spreadsheet, 'theme.splitLine');

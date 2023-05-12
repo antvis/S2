@@ -85,7 +85,7 @@ export function getRowCellForSelectedCell(
       return [];
     }
 
-    const colId = facet.layoutResult.colLeafNodes[0].id;
+    const colId = facet.getColLeafNodes()[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
     const result: TableSeriesCell[] = [];
     const rowCell = facet.getCellById(id);

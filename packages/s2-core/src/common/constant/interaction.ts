@@ -30,6 +30,7 @@ export enum CellTypes {
   HEADER_CELL = 'headerCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
+  SERIES_NUMBER_CELL = 'seriesNumberCell',
   CORNER_CELL = 'cornerCell',
   MERGED_CELL = 'mergedCell',
 }

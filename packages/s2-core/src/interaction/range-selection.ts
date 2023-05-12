@@ -89,15 +89,14 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       );
 
       const cells = range(start.colIndex, end.colIndex + 1).flatMap((col) => {
-        const cellIdSuffix =
-          this.spreadsheet.facet.layoutResult.colLeafNodes[col].id;
+        const cellIdSuffix = this.spreadsheet.facet.getColLeafNodes()[col].id;
 
         return range(start.rowIndex, end.rowIndex + 1).map((row) => {
           const cellIdPrefix =
             this.spreadsheet.facet.getSeriesNumberWidth() ||
             this.spreadsheet.isTableMode()
               ? String(row)
-              : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
+              : this.spreadsheet.facet.getRowLeafNodes()[row].id;
 
           return {
             id: `${cellIdPrefix}-${cellIdSuffix}`,
@@ -142,9 +141,10 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         lastCell.cellType === cell!.cellType &&
         lastCell.getMeta().level === meta.level
       ) {
+        const { rowsHierarchy, colsHierarchy } = facet.getLayoutResult();
         const [rowMaxLevel, colMaxLevel] = [
-          facet.layoutResult.rowsHierarchy.maxLevel,
-          facet.layoutResult.colsHierarchy.maxLevel,
+          rowsHierarchy.maxLevel,
+          colsHierarchy.maxLevel,
         ];
         const { start, end } = getRangeIndex(lastCell.getMeta(), meta);
 
@@ -204,7 +204,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     cell: S2CellType<ViewMeta>,
   ) {
     // table模式下序列号行头
-    const cellIdSufFix = this.spreadsheet.facet.layoutResult.colLeafNodes[0].id;
+    const cellIdSufFix = this.spreadsheet.facet.getColLeafNodes()[0].id;
 
     return range(startIndex, endIndex + 1).map((row) => {
       const cellIdPrefix = String(row);
@@ -224,7 +224,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     cell: S2CellType<ViewMeta>,
   ) {
     // ROW_CELL类型 最后一个Level支持区间选择
-    return this.spreadsheet.facet.layoutResult.rowNodes
+    return this.spreadsheet.facet
+      .getRowNodes()
       .filter(({ rowIndex }) => inRange(rowIndex, startIndex, endIndex + 1))
       .map((e) => {
         return {
@@ -242,7 +243,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     cell: S2CellType<ViewMeta>,
   ) {
     // COL_CELL类型 最后一个Level支持区间选择
-    return this.spreadsheet.facet.layoutResult.colLeafNodes
+    return this.spreadsheet.facet
+      .getColLeafNodes()
       .filter(({ colIndex }) => inRange(colIndex, startIndex, endIndex + 1))
       .map((e) => {
         return {

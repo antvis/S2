@@ -34,7 +34,7 @@ describe('GrandTotal Cells Rendering Test', () => {
   });
 
   test('should get right height of GrandTotal node', () => {
-    const hierarchy = s2.facet.layoutResult.colsHierarchy;
+    const hierarchy = s2.facet.getLayoutResult().colsHierarchy;
     const grandTotalNode = find(
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,

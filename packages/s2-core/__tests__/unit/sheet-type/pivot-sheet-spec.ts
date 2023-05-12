@@ -82,6 +82,7 @@ describe('PivotSheet Tests', () => {
         [CellTypes.CORNER_CELL]: 'cornerCell',
         [CellTypes.HEADER_CELL]: 'header',
         [CellTypes.MERGED_CELL]: 'merged',
+        [CellTypes.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType]);
 
     test('should support callback tooltip content for string', () => {
@@ -822,9 +823,9 @@ describe('PivotSheet Tests', () => {
 
       tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
 
       tree.setOptions({
         style: {
@@ -835,9 +836,11 @@ describe('PivotSheet Tests', () => {
       });
       tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
     });
 
     // https://github.com/antvis/S2/issues/1072
@@ -854,14 +857,16 @@ describe('PivotSheet Tests', () => {
 
       tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
 
       tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
     });
   });
 

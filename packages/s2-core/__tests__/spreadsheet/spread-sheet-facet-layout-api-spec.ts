@@ -5,7 +5,8 @@ import { createPivotSheet, createTableSheet } from '../util/helpers';
 describe('Facet Layout API Tests', () => {
   let s2: SpreadSheet;
 
-  const mapNode = (node: Node | ViewMeta) => pick(node, ['field', 'id']);
+  const mapNode = (node: Node | ViewMeta) =>
+    pick(node, ['field', 'id', 'value']);
   const mapNodes = (nodes: Node[]) => nodes.map(mapNode);
   const mapCells = (cells: S2CellType<ViewMeta>[]) =>
     cells.map((cell) => {
@@ -19,6 +20,7 @@ describe('Facet Layout API Tests', () => {
       s2 = createPivotSheet({
         width: 300,
         height: 300,
+        showSeriesNumber: false,
       });
       s2.render();
     });
@@ -28,44 +30,53 @@ describe('Facet Layout API Tests', () => {
     });
 
     describe('Cell', () => {
-      test('#getHeaderNodes', () => {
+      test('#getHeaderNodes()', () => {
         expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "province",
               "id": "",
+              "value": "province",
             },
             Object {
               "field": "city",
               "id": "",
+              "value": "city",
             },
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
             Object {
               "field": "province",
               "id": "root[&]浙江",
+              "value": "浙江",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -75,49 +86,126 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
           ]
         `);
       });
 
-      test('#getHeaderCells', () => {
+      test('#getHeaderNodes() for seriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "",
+              "id": "",
+              "value": "序号",
+            },
+            Object {
+              "field": "province",
+              "id": "",
+              "value": "province",
+            },
+            Object {
+              "field": "city",
+              "id": "",
+              "value": "city",
+            },
+            Object {
+              "field": "type",
+              "id": "",
+              "value": "type",
+            },
+            Object {
+              "field": "",
+              "id": "",
+              "value": "1",
+            },
+            Object {
+              "field": "province",
+              "id": "root[&]浙江",
+              "value": "浙江",
+            },
+            Object {
+              "field": "city",
+              "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
+            },
+            Object {
+              "field": "city",
+              "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
+            },
+            Object {
+              "field": "type",
+              "id": "root[&]笔",
+              "value": "笔",
+            },
+            Object {
+              "field": "$$extra$$",
+              "id": "root[&]笔[&]price",
+              "value": "price",
+            },
+            Object {
+              "field": "$$extra$$",
+              "id": "root[&]笔[&]cost",
+              "value": "cost",
+            },
+          ]
+        `);
+      });
+
+      test('#getHeaderCells()', () => {
         expect(mapCells(s2.facet.getHeaderCells())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "province",
               "id": "",
+              "value": "province",
             },
             Object {
               "field": "city",
               "id": "",
+              "value": "city",
             },
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
             Object {
               "field": "province",
               "id": "root[&]浙江",
+              "value": "浙江",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -127,49 +215,59 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
           ]
         `);
       });
 
-      test('#getCells', () => {
+      test('#getCells()', () => {
         expect(mapCells(s2.facet.getCells())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "province",
               "id": "",
+              "value": "province",
             },
             Object {
               "field": "city",
               "id": "",
+              "value": "city",
             },
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
             Object {
               "field": "province",
               "id": "root[&]浙江",
+              "value": "浙江",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
             Object {
               "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
@@ -191,77 +289,214 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
           ]
         `);
       });
 
-      test('#getCellById', () => {
+      test('#getCellById()', () => {
         expect(mapCells([s2.facet.getCellById('root[&]浙江[&]义乌')!]))
           .toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
           ]
         `);
       });
 
-      test('#getCellsByField', () => {
+      test('#getCellsByField()', () => {
         expect(mapCells(s2.facet.getCellsByField('type')))
           .toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
+            },
+          ]
+        `);
+      });
+
+      test('#getCellChildrenNodes()', () => {
+        const rowCell = s2.facet.getRowCells()[0];
+
+        expect(mapNodes(s2.facet.getCellChildrenNodes(rowCell)))
+          .toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "city",
+              "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
+            },
+            Object {
+              "field": "city",
+              "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
       });
     });
 
-    describe('Corner', () => {
-      test('#getCornerNodes', () => {
+    describe('CornerCell', () => {
+      test('#getCornerNodes()', () => {
         expect(mapNodes(s2.facet.getCornerNodes())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "province",
               "id": "",
+              "value": "province",
             },
             Object {
               "field": "city",
               "id": "",
+              "value": "city",
             },
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
           ]
         `);
       });
 
-      test('#getHeaderCells', () => {
+      test('#getCornerNodes() for seriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapNodes(s2.facet.getCornerNodes())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "",
+              "id": "",
+              "value": "序号",
+            },
+            Object {
+              "field": "province",
+              "id": "",
+              "value": "province",
+            },
+            Object {
+              "field": "city",
+              "id": "",
+              "value": "city",
+            },
+            Object {
+              "field": "type",
+              "id": "",
+              "value": "type",
+            },
+          ]
+        `);
+      });
+
+      test('#getCornerCell()s', () => {
         expect(mapCells(s2.facet.getCornerCells())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "province",
               "id": "",
+              "value": "province",
             },
             Object {
               "field": "city",
               "id": "",
+              "value": "city",
             },
             Object {
               "field": "type",
               "id": "",
+              "value": "type",
             },
           ]
         `);
+      });
+
+      test('#getCornerCells() for seriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapCells(s2.facet.getCornerCells())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "",
+              "id": "",
+              "value": "序号",
+            },
+            Object {
+              "field": "province",
+              "id": "",
+              "value": "province",
+            },
+            Object {
+              "field": "city",
+              "id": "",
+              "value": "city",
+            },
+            Object {
+              "field": "type",
+              "id": "",
+              "value": "type",
+            },
+          ]
+        `);
+      });
+    });
+
+    describe('SeriesNumberCell', () => {
+      test('#getSeriesNumberNodes()', () => {
+        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchInlineSnapshot(
+          `Array []`,
+        );
+      });
+
+      test('#getSeriesNumberNodes() for seriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapNodes(s2.facet.getSeriesNumberNodes()))
+          .toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "",
+              "id": "",
+              "value": "1",
+            },
+          ]
+        `);
+      });
+
+      test('#getSeriesNumberCells()', () => {
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchInlineSnapshot(
+          `Array []`,
+        );
+      });
+
+      test('#getSeriesNumberCells() for seriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchInlineSnapshot(
+          `Array []`,
+        );
       });
     });
 
@@ -272,14 +507,17 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "province",
               "id": "root[&]浙江",
+              "value": "浙江",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
@@ -289,10 +527,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
@@ -304,10 +544,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
@@ -320,10 +562,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
@@ -335,6 +579,7 @@ describe('Facet Layout API Tests', () => {
           Object {
             "field": "city",
             "id": "root[&]浙江[&]杭州",
+            "value": "杭州",
           }
         `);
       });
@@ -345,17 +590,73 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "province",
               "id": "root[&]浙江",
+              "value": "浙江",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]义乌",
+              "value": "义乌",
             },
             Object {
               "field": "city",
               "id": "root[&]浙江[&]杭州",
+              "value": "杭州",
             },
           ]
         `);
+      });
+
+      describe('Row Total Cell', () => {
+        beforeEach(() => {
+          s2 = createPivotSheet(
+            {
+              width: 300,
+              height: 300,
+              showSeriesNumber: false,
+              totals: {
+                row: {
+                  showGrandTotals: true,
+                  showSubTotals: true,
+                  reverseLayout: true,
+                  reverseSubLayout: true,
+                },
+              },
+            },
+            { useSimpleData: false, useTotalData: true },
+          );
+          s2.render();
+        });
+
+        test('#getRowTotalsNodes()', () => {
+          expect(mapNodes(s2.facet.getRowTotalsNodes())).toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "field": "province",
+                "id": "root[&]总计",
+                "value": "总计",
+              },
+            ]
+          `);
+        });
+
+        test('#getRowGrandTotalsNodes()', () => {
+          expect(mapNodes(s2.facet.getRowGrandTotalsNodes()))
+            .toMatchInlineSnapshot(`
+            Array [
+              Object {
+                "field": "province",
+                "id": "root[&]总计",
+                "value": "总计",
+              },
+            ]
+          `);
+        });
+
+        test('#getRowSubTotalsNodes()', () => {
+          expect(
+            mapNodes(s2.facet.getRowSubTotalsNodes()),
+          ).toMatchInlineSnapshot(`Array []`);
+        });
       });
     });
 
@@ -366,14 +667,17 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -382,10 +686,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -397,10 +703,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -412,6 +720,7 @@ describe('Facet Layout API Tests', () => {
           Object {
             "field": "$$extra$$",
             "id": "root[&]笔[&]cost",
+            "value": "cost",
           }
         `);
       });
@@ -423,6 +732,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
           ]
         `);
@@ -434,10 +744,12 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
@@ -449,22 +761,89 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]笔",
+              "value": "笔",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]price",
+              "value": "price",
             },
             Object {
               "field": "$$extra$$",
               "id": "root[&]笔[&]cost",
+              "value": "cost",
             },
           ]
         `);
+      });
+
+      describe('Col Total Cell', () => {
+        beforeEach(() => {
+          s2 = createPivotSheet(
+            {
+              width: 300,
+              height: 300,
+              showSeriesNumber: false,
+              totals: {
+                col: {
+                  showGrandTotals: true,
+                  showSubTotals: true,
+                  reverseLayout: true,
+                  reverseSubLayout: true,
+                },
+              },
+            },
+            { useSimpleData: false, useTotalData: true },
+          );
+          s2.render();
+        });
+
+        test('#getColTotalsNodes()', () => {
+          expect(mapNodes(s2.facet.getColTotalsNodes())).toMatchInlineSnapshot(
+            `Array []`,
+          );
+        });
+
+        test('#getColGrandTotalsNodes()', () => {
+          expect(
+            mapNodes(s2.facet.getColGrandTotalsNodes()),
+          ).toMatchInlineSnapshot(`Array []`);
+        });
+
+        test('#getColSubTotalsNodes()', () => {
+          expect(
+            mapNodes(s2.facet.getColSubTotalsNodes()),
+          ).toMatchInlineSnapshot(`Array []`);
+        });
       });
     });
 
     describe('DataCell', () => {
       test('#getDataCells()', () => {
+        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
+            },
+            Object {
+              "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
+            },
+            Object {
+              "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
+            },
+            Object {
+              "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
+            },
+          ]
+        `);
+      });
+
+      test('#getDataCells() for showSeriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
         expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
           Array [
             Object {
@@ -490,6 +869,7 @@ describe('Facet Layout API Tests', () => {
       s2 = createTableSheet({
         width: 300,
         height: 300,
+        showSeriesNumber: false,
       });
       s2.render();
     });
@@ -505,6 +885,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -519,6 +900,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -533,6 +915,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
             Object {
               "id": "0-root[&]type",
@@ -566,9 +949,31 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
+      });
+    });
+
+    describe('SeriesNumberCell', () => {
+      beforeEach(() => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+      });
+
+      test('#getSeriesNumberNodes', () => {
+        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchInlineSnapshot(
+          `Array []`,
+        );
+      });
+
+      test('#getSeriesNumberCells', () => {
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchInlineSnapshot(
+          `Array []`,
+        );
       });
     });
 
@@ -579,6 +984,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -587,12 +993,35 @@ describe('Facet Layout API Tests', () => {
         );
       });
 
+      test('#getColNodes() for showSeriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapNodes(s2.facet.getColNodes())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "field": "$$series_number$$",
+              "id": "root[&]序号",
+              "value": "序号",
+            },
+            Object {
+              "field": "type",
+              "id": "root[&]type",
+              "value": "type",
+            },
+          ]
+        `);
+      });
+
       test('#getColLeafNodes()', () => {
         expect(mapNodes(s2.facet.getColLeafNodes())).toMatchInlineSnapshot(`
           Array [
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -611,6 +1040,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -622,6 +1052,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -633,6 +1064,7 @@ describe('Facet Layout API Tests', () => {
             Object {
               "field": "type",
               "id": "root[&]type",
+              "value": "type",
             },
           ]
         `);
@@ -643,6 +1075,36 @@ describe('Facet Layout API Tests', () => {
       test('#getDataCells()', () => {
         expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
           Array [
+            Object {
+              "id": "0-root[&]type",
+            },
+            Object {
+              "id": "1-root[&]type",
+            },
+            Object {
+              "id": "2-root[&]type",
+            },
+          ]
+        `);
+      });
+
+      test('#getDataCells() for showSeriesNumber enable', () => {
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+        s2.render(false);
+
+        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "id": "0-root[&]序号",
+            },
+            Object {
+              "id": "1-root[&]序号",
+            },
+            Object {
+              "id": "2-root[&]序号",
+            },
             Object {
               "id": "0-root[&]type",
             },

@@ -230,7 +230,7 @@ export class TableFacet extends BaseFacet {
   }
 
   protected calculateCornerBBox() {
-    const { colsHierarchy } = this.layoutResult;
+    const { colsHierarchy } = this.getLayoutResult();
     const height = Math.floor(colsHierarchy.height);
 
     this.cornerBBox = new CornerBBox(this);

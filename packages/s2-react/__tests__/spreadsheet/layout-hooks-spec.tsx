@@ -200,7 +200,7 @@ const MainLayout = ({ options, dataCfg }: SheetComponentsProps) => (
 
 describe('layout hooks spec', () => {
   test('layout arrange hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = innerSS.facet.getRowLeafNodes();
     let arrangeValues;
 
     if (innerSS.options.hierarchyType === 'tree') {
@@ -213,7 +213,7 @@ describe('layout hooks spec', () => {
   });
 
   test('layout hierarchy hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = innerSS.facet.getRowLeafNodes();
     let addValues;
 
     if (innerSS.options.hierarchyType === 'tree') {
@@ -226,15 +226,14 @@ describe('layout hooks spec', () => {
   });
 
   test('layout coordinate hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = innerSS.facet.getRowLeafNodes();
     const item = rowLeafNodes.find((rn) => rn.value === '东莞');
 
     expect(item?.height).toEqual(70);
   });
 
   test('layout data position hook', () => {
-    const { getCellMeta } = innerSS.facet.layoutResult;
-    const { fieldValue } = getCellMeta(0, 0)!;
+    const { fieldValue } = innerSS.facet.getCellMeta(0, 0)!;
 
     expect(fieldValue).toEqual(999);
   });

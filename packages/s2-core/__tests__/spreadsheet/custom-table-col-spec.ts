@@ -233,7 +233,7 @@ describe('TableSheet Custom Tests', () => {
       .getColNodes()
       .filter((node) => node.level === 0 && node.isLeaf);
 
-    const cellHeight = s2.facet.layoutResult.colsHierarchy.height;
+    const cellHeight = s2.facet.getLayoutResult().colsHierarchy.height;
 
     expect(cellHeight).toEqual(60);
     expect(nodes.every((node) => node.height === cellHeight)).toBeTruthy();
@@ -246,7 +246,7 @@ describe('TableSheet Custom Tests', () => {
     s2.render(false);
 
     const { sampleNodeForLastLevel, sampleNodesForAllLevels } =
-      s2.facet.layoutResult.colsHierarchy;
+      s2.facet.getLayoutResult().colsHierarchy;
 
     expect(sampleNodeForLastLevel?.isSeriesNumberNode()).toBeFalsy();
     expect(

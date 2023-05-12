@@ -63,7 +63,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(DEFAULT_STYLE.colCell!.height);
@@ -99,7 +99,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).not.toBeLessThan(
         DEFAULT_STYLE.dataCell!.width as number,
@@ -140,7 +140,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(0);
@@ -170,7 +170,7 @@ describe('PivotSheet Corner Tests', () => {
     s2.render();
 
     const cornerNodes = s2.facet.getCornerNodes();
-    const { colsHierarchy } = s2.facet.layoutResult;
+    const { colsHierarchy } = s2.facet.getLayoutResult();
 
     expect(colsHierarchy.width).toEqual(0);
     expect(colsHierarchy.height).toEqual(0);

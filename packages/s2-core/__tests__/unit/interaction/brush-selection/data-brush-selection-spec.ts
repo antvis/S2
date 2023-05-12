@@ -19,6 +19,7 @@ import {
   getScrollOffsetForRow,
   type S2DataConfig,
   type S2Options,
+  type LayoutResult,
 } from '@/index';
 import type { TableFacet } from '@/facet';
 
@@ -111,26 +112,26 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.getDataCells = () => panelGroupAllDataCells;
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
-    mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
-      new Array(10),
-    ).map((_, idx) => {
-      return {
-        colIndex: idx,
-        id: idx,
-        x: idx * 100,
-        width: 100,
-      };
-    }) as unknown[] as Node[];
-    mockSpreadSheetInstance.facet.layoutResult.rowLeafNodes = Array.from(
-      new Array(10),
-    ).map((_, idx) => {
-      return {
-        rowIndex: idx,
-        id: idx,
-        y: idx * 100,
-        height: 100,
-      };
-    }) as unknown[] as Node[];
+    mockSpreadSheetInstance.facet.getLayoutResult = () =>
+      ({
+        colLeafNodes: Array.from(new Array(10)).map((_, idx) => {
+          return {
+            colIndex: idx,
+            id: idx,
+            x: idx * 100,
+            width: 100,
+          };
+        }) as unknown as Node[],
+        rowLeafNodes: Array.from(new Array(10)).map((_, idx) => {
+          return {
+            rowIndex: idx,
+            id: idx,
+            y: idx * 100,
+            height: 100,
+          };
+        }) as unknown as Node[],
+      } as LayoutResult);
+
     mockSpreadSheetInstance.facet.getCellRange = () => {
       return {
         start: 0,
@@ -510,7 +511,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       height: facet.getCanvasSize().height,
     } as any;
 
-    facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);
+    facet.viewCellHeights = facet.getViewCellHeights(facet.getLayoutResult());
 
     expect(
       getScrollOffsetForRow(

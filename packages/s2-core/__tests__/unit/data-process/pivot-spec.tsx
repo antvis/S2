@@ -91,7 +91,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('2、Generate hierarchy', () => {
-    const layoutResult = s2.facet.layoutResult;
+    const layoutResult = s2.facet.getLayoutResult();
     const { rowsHierarchy, colsHierarchy } = layoutResult;
 
     test('should get correct row hierarchy structure', () => {
@@ -219,7 +219,7 @@ describe('Pivot Table Core Data Process', () => {
 
   describe('3、Calculate row & col coordinates', () => {
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
-      s2.facet.layoutResult;
+      s2.facet.getLayoutResult();
     const { dataCell, colCell } = s2.options.style!;
 
     test('should calc correct row & cell width', () => {

@@ -214,7 +214,7 @@ describe('<StrategySheet/> Tests', () => {
       StrategySheetDataConfig,
     );
 
-    const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => {
+    const rowNodes = s2.facet.getRowNodes().map((node) => {
       return {
         field: node.field,
         value: node.value,

@@ -136,7 +136,8 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct hierarchy', () => {
     const { dataCell, colCell } = s2.options.style!;
-    const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
+    const { rowsHierarchy, colsHierarchy, colLeafNodes } =
+      facet.getLayoutResult();
 
     const width = Math.max(
       DEFAULT_STYLE.dataCell!.width!,
@@ -224,7 +225,7 @@ describe('Pivot Mode Facet Test', () => {
 
     s2.dataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet(s2);
-    const { rowsHierarchy } = treeFacet.layoutResult;
+    const { rowsHierarchy } = treeFacet.getLayoutResult();
 
     afterAll(() => {
       spy.mockRestore();
@@ -360,7 +361,7 @@ describe('Pivot Mode Facet Test', () => {
       });
       const customWidthFacet = new PivotFacet(s2);
 
-      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+      customWidthFacet.getColLeafNodes().forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
@@ -386,7 +387,7 @@ describe('Pivot Mode Facet Test', () => {
     });
     const customWidthFacet = new PivotFacet(s2);
 
-    customWidthFacet.layoutResult.rowNodes.forEach((node) => {
+    customWidthFacet.getRowNodes().forEach((node) => {
       expect(node.width).toStrictEqual(400);
     });
   });

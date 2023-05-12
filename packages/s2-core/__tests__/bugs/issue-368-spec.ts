@@ -35,7 +35,7 @@ describe('Total Cells Rendering Test', () => {
 
   s2.render();
   test('should get right SubTotals position', () => {
-    const layoutResult = s2.facet.layoutResult;
+    const layoutResult = s2.facet.getLayoutResult();
     const rowSubTotalNodes = layoutResult.rowsHierarchy
       .getNodes()
       .filter((node: Node) => node.isSubTotals);
@@ -75,7 +75,7 @@ describe('Total Cells Rendering Test', () => {
 
     s2.render();
 
-    const layoutResult = s2.facet.layoutResult;
+    const layoutResult = s2.facet.getLayoutResult();
     const rowSubTotalNodes = layoutResult.rowsHierarchy
       .getNodes()
       .filter((node: Node) => node.isSubTotals);

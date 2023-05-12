@@ -132,7 +132,7 @@ class StrategyCopyData extends PivotDataCellCopy {
   };
 
   protected getDataMatrixByHeaderNode = () => {
-    const { getCellMeta } = this.spreadsheet?.facet?.layoutResult;
+    const { getCellMeta } = this.spreadsheet?.facet;
 
     return map(this.leafRowNodes, (rowNode) => {
       // 获取每行的数据，如果无法获取到数据则使用 placeholder 填充

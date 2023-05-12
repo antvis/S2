@@ -271,7 +271,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected shouldHideRowSubtotalData() {
     const { row = {} } = this.spreadsheet.options.totals ?? {};
     const { rowIndex } = this.meta;
-    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const node = this.spreadsheet.facet.getRowLeafNodes()[rowIndex];
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
 
     /*

@@ -221,7 +221,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
     s2.render();
 
-    const { rowNodes, rowsHierarchy } = s2.facet.layoutResult;
+    const { rowNodes, rowsHierarchy } = s2.facet.getLayoutResult();
 
     expect(rowsHierarchy.width).toEqual(50);
     expect(rowNodes.every((node) => node.width === 50)).toBeTruthy();

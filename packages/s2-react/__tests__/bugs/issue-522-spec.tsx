@@ -53,9 +53,10 @@ describe('spreadsheet normal spec', () => {
   act(() => {
     ReactDOM.render(<MainLayout />, getContainer());
   });
+
   test(`sampleForAllLevels shouldn't include total node`, () => {
     const { sampleNodesForAllLevels } =
-      sheetInstance.facet.layoutResult.rowsHierarchy;
+      sheetInstance.facet.getLayoutResult().rowsHierarchy;
 
     expect(sampleNodesForAllLevels).toHaveLength(3);
 
