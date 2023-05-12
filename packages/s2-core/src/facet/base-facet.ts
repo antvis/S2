@@ -67,6 +67,7 @@ import {
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
 import {
+  areAllFieldsEmpty,
   calculateInViewIndexes,
   getCellRange,
   optimizeScrollXY,
@@ -216,6 +217,10 @@ export abstract class BaseFacet {
    * Start render, call from outside
    */
   public render() {
+    if (areAllFieldsEmpty(this.spreadsheet.dataCfg.fields)) {
+      return;
+    }
+
     this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();

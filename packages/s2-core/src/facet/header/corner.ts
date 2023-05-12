@@ -18,7 +18,6 @@ import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { BaseHeader, type BaseHeaderConfig } from './base';
-import { areAllFieldsEmpty } from './util';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
@@ -110,12 +109,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
     const cornerNodeY = leafNode?.y ?? 0;
     const cornerNodeHeight = leafNode?.height ?? colCfg?.height ?? 0;
-    const fields = s2.dataCfg.fields;
-
-    // 当用户还未配置行列头和数值时，不渲染
-    if (areAllFieldsEmpty(fields)) {
-      return cornerNodes;
-    }
 
     // check if show series number node
     if (seriesNumberWidth) {
