@@ -47,7 +47,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
   });
 
   test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
-    'should add click intercept when keydown',
+    'should add click intercept when %s keydown',
     (key) => {
       s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
         key,
@@ -58,11 +58,25 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
   );
 
   test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
-    'should remove click intercept when  keyup',
+    'should remove click intercept when %s keyup',
     (key) => {
+      s2.interaction.addIntercepts([InterceptType.CLICK]);
       s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
         key,
       } as KeyboardEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+    },
+  );
+
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should remove click intercept when %s released',
+    () => {
+      Object.defineProperty(dataCellMultiSelection, 'isMultiSelection', {
+        value: true,
+      });
+      s2.interaction.addIntercepts([InterceptType.CLICK]);
+      s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {} as MouseEvent);
 
       expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
     },
