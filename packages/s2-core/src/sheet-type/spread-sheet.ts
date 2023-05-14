@@ -381,6 +381,11 @@ export abstract class SpreadSheet extends EE {
     } else {
       this.options = customMerge(this.options, options);
     }
+
+    if (reset || options.tooltip?.renderTooltip) {
+      this.initTooltip();
+    }
+
     this.registerIcons();
   }
 
