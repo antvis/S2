@@ -53,6 +53,36 @@ describe('header cell formatter test', () => {
       expect(rowCell.getFieldValue()).toBe('杭州1');
     });
 
+    test('should not format pivot col and row total cell', () => {
+      const colNode = new Node({
+        id: `root[&]总计`,
+        key: '',
+        value: '总计',
+        parent: root,
+        label: '总计',
+        isTotals: true,
+      });
+      const rowNode = new Node({
+        id: `root[&]杭州[&]小计`,
+        key: '',
+        value: '小计',
+        parent: root,
+        label: '小计',
+        isTotals: true,
+      });
+
+      const formatter: Formatter = (value) => {
+        return `${value}1`;
+      };
+      jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
+
+      const colCell = new ColCell(colNode, s2);
+      const rowCell = new RowCell(rowNode, s2);
+
+      expect(colCell.getFieldValue()).toBe('总计');
+      expect(rowCell.getFieldValue()).toBe('小计');
+    });
+
     test('pivot corner cell not formatter', () => {
       const formatter: Formatter = (value) => {
         return `${value}1`;

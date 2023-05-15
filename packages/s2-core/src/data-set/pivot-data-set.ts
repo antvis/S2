@@ -50,7 +50,6 @@ import {
 } from '../utils/data-set-operate';
 import {
   deleteMetaById,
-  generateExtraFieldMeta,
   getDataPath,
   getDimensionsWithoutPathPre,
   getQueryDimValues,

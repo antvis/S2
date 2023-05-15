@@ -1,4 +1,5 @@
-import { PivotSheet, DataCell } from '@antv/s2';
+import { PivotSheet, DataCell, drawObjectText } from '@antv/s2';
+import { isObject } from 'lodash';
 
 /**
  * 自定义 DataCell，给数值单元格添加背景图
@@ -14,6 +15,15 @@ class CustomDataCell extends DataCell {
       },
     });
   }
+
+  // 当配置对象时，完全接管绘制（实现趋势表的mini图功能）
+  protected drawTextShape() {
+    if (isObject(this.getMeta().fieldValue)) {
+      drawObjectText(this);
+    } else {
+      super.drawTextShape();
+    }
+  }
 }
 
 fetch(
@@ -21,7 +31,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((res) => {
-    const container = document.getElementById('container');
+    const container = document.getElementById('container')!;
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
@@ -29,8 +39,30 @@ fetch(
         values: ['number'],
       },
       meta: res.meta,
-      data: res.data,
+      data: [
+        ...res.data,
+        // 用于绘制 mini 图的数据
+        {
+          province: '海南省',
+          city: '三亚市',
+          type: '家具',
+          sub_type: '桌子',
+          number: {
+            values: {
+              type: 'line',
+              data: [
+                { date: '周一', value: 110 },
+                { date: '周二', value: 150 },
+                { date: '周三', value: 90 },
+                { date: '周三', value: 190 },
+              ],
+              encode: { x: 'date', y: 'value' },
+            },
+          },
+        },
+      ],
     };
+
     const s2Options = {
       width: 600,
       height: 480,

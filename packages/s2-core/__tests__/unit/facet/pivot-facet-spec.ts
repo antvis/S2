@@ -16,8 +16,9 @@ import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
-import type { ViewMeta } from '@/common/interface/basic';
+import type { Fields, ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
+import { areAllFieldsEmpty } from '@/facet/utils';
 
 jest.mock('@/interaction/root');
 
@@ -198,6 +199,7 @@ describe('Pivot Mode Facet Test', () => {
     s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
     const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
     const mockDataSet = new MockPivotDataSet(s2);
+    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields
     const treeFacet = new PivotFacet({
       spreadsheet: s2,
       dataSet: mockDataSet,
@@ -278,7 +280,72 @@ describe('Pivot Mode Facet Test', () => {
     });
   });
 
-  describe('should get correct result when enable seriesnumber', () => {
+  describe('should get none layer when dataCfg.fields is empty', () => {
+    const fields: Fields = {
+      rows: [],
+      columns: [],
+      values: [],
+      customTreeItems: [],
+      valueInCols: false,
+    };
+    const container = new Canvas({
+      width: 100,
+      height: 100,
+      container: document.body,
+    });
+    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields todo: 然后调用 render 看是否会进入后续的方法
+    const spreadsheet = Object.assign({}, s2, {
+      dataCfg: { fields },
+      panelGroup: container.addGroup(),
+      foregroundGroup: container.addGroup(),
+      backgroundGroup: container.addGroup(),
+    });
+
+    const mockDataSet = new MockPivotDataSet(spreadsheet);
+    const newFacet = new PivotFacet({
+      spreadsheet,
+      dataSet: mockDataSet,
+      ...fields,
+      ...assembleOptions(),
+    });
+
+    beforeAll(() => {
+      newFacet.render();
+    });
+
+    afterAll(() => {
+      newFacet.destroy();
+    });
+
+    test('areAllFieldsEmpty execution result is true', () => {
+      expect(areAllFieldsEmpty(fields)).toBeTrue();
+    });
+
+    test('can not get header after render', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = newFacet;
+
+      expect(rowHeader).toBeFalsy();
+      expect(cornerHeader).toBeFalsy();
+      expect(columnHeader).toBeFalsy();
+      expect(centerFrame).toBeFalsy();
+    });
+
+    test('can not get series number after render', () => {
+      const { backgroundGroup, rowIndexHeader } = newFacet;
+      const rect = get(backgroundGroup, 'cfg.children[0]');
+
+      expect(rect).toBeFalsy();
+      expect(rowIndexHeader).toBeFalsy();
+    });
+
+    test('can not get cell after render', () => {
+      const { panelGroup } = spreadsheet;
+
+      expect(panelGroup.cfg.children).toBeEmpty();
+    });
+  });
+
+  describe('should get correct result when enable series number', () => {
     const mockDataSet = new MockPivotDataSet(s2);
     const seriesNumberFacet = new PivotFacet({
       spreadsheet: s2,
