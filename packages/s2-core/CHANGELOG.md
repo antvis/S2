@@ -1,3 +1,18 @@
+# [@antv/s2-v1.46.0](https://github.com/antvis/S2/compare/@antv/s2-v1.45.1...@antv/s2-v1.46.0) (2023-05-15)
+
+
+### Bug Fixes
+
+* 修复 meta name 同名时，hoverFocus 出错的问题 ([#2187](https://github.com/antvis/S2/issues/2187)) ([a2d7a81](https://github.com/antvis/S2/commit/a2d7a8162e4a177bf593af463e4bb7a4b0e96fc7))
+* 修复总计小计被意外 format 的问题 ([#2209](https://github.com/antvis/S2/issues/2209)) ([6e98291](https://github.com/antvis/S2/commit/6e982917d15ad66d6caecac6da30050527811875))
+* 复制时移除空控制符 ([#2204](https://github.com/antvis/S2/issues/2204)) ([ce9dcab](https://github.com/antvis/S2/commit/ce9dcab8ffe00cec60fe412ce7a71aa00541dc13))
+* 系统拦截快捷键后多选交互异常 ([#2191](https://github.com/antvis/S2/issues/2191)) ([6a8b85a](https://github.com/antvis/S2/commit/6a8b85ab59ebf2ce9f03e4a3aaa841c251654eb3))
+
+
+### Features
+
+* 行列头和数值为空时，不渲染表格框架 ([#2207](https://github.com/antvis/S2/issues/2207)) ([1a404e1](https://github.com/antvis/S2/commit/1a404e1ec256298801222dacd318a57ba890dbcd))
+
 # [@antv/s2-v1.45.1](https://github.com/antvis/S2/compare/@antv/s2-v1.45.0...@antv/s2-v1.45.1) (2023-04-28)
 
 
