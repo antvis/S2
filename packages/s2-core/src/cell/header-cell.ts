@@ -85,16 +85,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
+    const { label, isTotals } = this.meta;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
     );
 
-    const isTableMode = this.spreadsheet.isTableMode();
+    // 如果是 总计/小计 文字单元格，不需要被格式化
     // 如果是 table mode，列头不需要被格式化
+    const isTableMode = this.spreadsheet.isTableMode();
     const formattedValue =
-      formatter && !isTableMode
+      formatter && !isTableMode && !isTotals
         ? formatter(label, undefined, this.meta)
         : label;
 
