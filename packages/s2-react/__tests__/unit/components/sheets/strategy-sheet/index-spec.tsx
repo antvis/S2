@@ -7,6 +7,7 @@ import {
   InteractionStateName,
   SpreadSheet,
   type S2DataConfig,
+  EXTRA_FIELD,
 } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -201,7 +202,9 @@ describe('<StrategySheet/> Tests', () => {
     const textList = s2.facet.cornerHeader
       .getChildren()
       .map((element) => (element as any).actualText);
+    const dataSetFields = s2.dataSet.fields;
 
+    expect(dataSetFields.rows).toEqual([EXTRA_FIELD]);
     expect(textList).toEqual(['数值', '日期']);
   });
 
