@@ -55,10 +55,8 @@ export class CustomTreePivotDataSet extends PivotDataSet {
 
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     // 自定义行头有如下几个特点
-    // 1、rows配置必须是空，需要额外添加 $$extra$$ 定位数据（标记指标的id）
     // 2、要有配置 fields.rowCustomTree(行头结构)
     // 3、values 不需要参与计算，默认就在行头结构中
-    dataCfg.fields.rows = [EXTRA_FIELD];
     dataCfg.fields.valueInCols = false;
     const { data, meta, ...restCfg } = dataCfg;
     const { values } = dataCfg.fields;
@@ -94,6 +92,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       ...restCfg,
       meta: newMeta,
       data: uniq(transformedData),
+      fields: {
+        ...dataCfg.fields,
+        // 1、rows配置必须是空，需要额外添加 $$extra$$ 定位数据（标记指标的id）
+        rows: [EXTRA_FIELD],
+      },
     };
   }
 }
