@@ -67,9 +67,11 @@ export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
       new ClipboardItem(
         [].concat(data).reduce((prev, copyable: CopyableItem) => {
           const { type, content } = copyable;
+          // eslint-disable-next-line no-control-regex
+          const contentToCopy = content.replace(/\x00/g, '');
           return {
             ...prev,
-            [type]: new Blob([content], { type }),
+            [type]: new Blob([contentToCopy], { type }),
           };
         }, {}),
       ),
