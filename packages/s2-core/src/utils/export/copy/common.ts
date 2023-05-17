@@ -5,12 +5,14 @@ import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CopyableHTML,
-  type CopyableList,
   type CopyablePlain,
   type CopyAndExportUnifyConfig,
-  CopyMIMEType,
-  type CopyOrExportConfig,
   type FormatOptions,
+  type SheetCopyConstructorParams,
+  type Transformer,
+  type MatrixPlainTransformer,
+  type MatrixHTMLTransformer,
+  CopyMIMEType,
 } from '../interface';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
@@ -48,6 +50,14 @@ export const matrixHtmlTransformer = (
   };
 };
 
+export const Transformers: {
+  [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
+  [CopyMIMEType.HTML]: MatrixHTMLTransformer;
+} = {
+  [CopyMIMEType.PLAIN]: matrixPlainTextTransformer,
+  [CopyMIMEType.HTML]: matrixHtmlTransformer,
+};
+
 export function getFormatter(
   spreadsheet: SpreadSheet,
   field: string,
@@ -71,7 +81,7 @@ export const assembleMatrix = ({
   dataMatrix: string[][];
   rowMatrix?: string[][];
   cornerMatrix?: string[][];
-}): CopyableList => {
+}): string[][] => {
   const rowWidth = rowMatrix?.[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
@@ -111,7 +121,7 @@ export const assembleMatrix = ({
     }),
   );
 
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+  return matrix as string[][];
 };
 
 export function getMaxRowLen(matrix: string[][]): number {
@@ -147,32 +157,56 @@ export const getFormatOptions = (isFormat?: FormatOptions) => {
   };
 };
 
-// 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
-export function unifyConfig(
-  config: CopyOrExportConfig,
-  spreadsheet: SpreadSheet,
-  isExport: boolean,
-): CopyAndExportUnifyConfig {
-  let result = {
-    isFormatData: spreadsheet.options.interaction?.copyWithFormat ?? false,
-    isFormatHeader: spreadsheet.options.interaction?.copyWithFormat ?? false,
-  };
-
-  if (isExport) {
-    const { isFormatData, isFormatHeader } = getFormatOptions(
-      config?.formatOptions ?? false,
-    );
-
-    result = {
-      isFormatData,
-      isFormatHeader,
-    };
+function getTransformer(
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>,
+): Transformer {
+  if (!customTransformer) {
+    return Transformers;
   }
 
+  const customTransformersTemp = customTransformer(Transformers);
+
   return {
-    separator: config.separator ?? NewTab,
-    selectedCells: config.selectedCells ?? [],
-    ...result,
+    [CopyMIMEType.PLAIN]:
+      customTransformersTemp[CopyMIMEType.PLAIN] ||
+      Transformers[CopyMIMEType.PLAIN],
+    [CopyMIMEType.HTML]:
+      customTransformersTemp[CopyMIMEType.HTML] ||
+      Transformers[CopyMIMEType.HTML],
+  };
+}
+
+// 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
+export function unifyConfig({
+  spreadsheet: {
+    options: { interaction },
+  },
+  config: {
+    formatOptions = false,
+    separator = NewTab,
+    selectedCells = [],
+    customTransformer,
+  },
+  isExport,
+}: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
+  const { copyWithFormat, customTransformer: brushCopyCustomTransformer } =
+    interaction ?? {};
+  const { isFormatData, isFormatHeader } = isExport
+    ? getFormatOptions(formatOptions)
+    : {
+        isFormatData: copyWithFormat ?? false,
+        isFormatHeader: copyWithFormat ?? false,
+      };
+  const transformers = getTransformer(
+    isExport ? customTransformer : brushCopyCustomTransformer,
+  );
+
+  return {
+    separator,
+    selectedCells,
+    transformers,
+    isFormatData,
+    isFormatHeader,
   };
 }
 

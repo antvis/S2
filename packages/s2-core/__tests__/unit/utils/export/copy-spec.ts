@@ -17,6 +17,7 @@ import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event, NewLine, NewTab } from '@/common/constant';
 import { TableSeriesCell } from '@/cell';
+import { CopyMIMEType } from '@/utils/export/interface';
 
 const newLineTest = `### 问题摘要 ${NewLine}- **会话地址**：`;
 
@@ -432,6 +433,32 @@ describe('List Table Core Data Process', () => {
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
+  });
+
+  it('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        customTransformer: () => {
+          return {
+            [CopyMIMEType.PLAIN]: () => {
+              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+            },
+          };
+        },
+      },
+    });
+
+    s2.render();
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
   });
 });
 
@@ -1036,6 +1063,32 @@ describe('Pivot Table Core Data Process', () => {
       四川省	小计	7818	9473	17291	7495
       总计		26193	23516	49709	12321"
     `);
+  });
+
+  it('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        customTransformer: () => {
+          return {
+            [CopyMIMEType.PLAIN]: () => {
+              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+            },
+          };
+        },
+      },
+    });
+
+    s2.render();
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
   });
 });
 
