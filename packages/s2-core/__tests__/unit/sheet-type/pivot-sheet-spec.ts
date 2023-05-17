@@ -975,6 +975,7 @@ describe('PivotSheet Tests', () => {
     s2.store.set('test', 111);
 
     // restore mock...
+    s2.tooltip.show = jest.fn();
     (s2.tooltip.show as jest.Mock).mockRestore();
     s2.showTooltip({
       position: {
@@ -984,7 +985,7 @@ describe('PivotSheet Tests', () => {
       content: () => 'custom callback content',
     });
     s2.hideTooltip();
-    s2.tooltip.container.classList.add('destroy-test');
+    s2.tooltip.container?.classList.add('destroy-test');
     s2.interaction.addIntercepts([InterceptType.HOVER]);
     s2.interaction.interactions.set('test-interaction', null);
     s2.container.on('test-event', () => {});
@@ -1005,7 +1006,7 @@ describe('PivotSheet Tests', () => {
     expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
     // destroy tooltip
     expect(document.querySelector('.destroy-test')).toBe(null);
-    expect(s2.tooltip.container).toBe(null);
+    expect(s2.tooltip.container).toBe(undefined);
     // destroy facet
     expect(facetDestroySpy).toHaveBeenCalledTimes(1);
     // destroy hdAdapter
