@@ -1,6 +1,6 @@
 import {
   type CopyableList,
-  type CopyConstructorParams,
+  type SheetCopyConstructorParams,
   type FormatOptions,
   type Node,
   type ViewMeta,
@@ -50,7 +50,7 @@ const getHeaderLabel = (val: string) => {
 };
 
 class StrategyCopyData extends PivotDataCellCopy {
-  constructor(props: CopyConstructorParams) {
+  constructor(props: SheetCopyConstructorParams) {
     super(props);
   }
 
@@ -187,12 +187,14 @@ class StrategyCopyData extends PivotDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    return assembleMatrix({
-      colMatrix,
-      dataMatrix,
-      rowMatrix,
-      cornerMatrix,
-    });
+    return this.matrixTransformer(
+      assembleMatrix({
+        colMatrix,
+        dataMatrix,
+        rowMatrix,
+        cornerMatrix,
+      }),
+    );
   };
 }
 

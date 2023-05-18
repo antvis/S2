@@ -3,17 +3,17 @@ import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet, TableSheet } from '@/sheet-type';
+import { TableDataCell, TableSeriesNumberCell } from '@/cell';
+import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
   CellTypes,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import { TableDataCell } from '@/cell';
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import { getSelectedData } from '@/utils/export/copy';
+import { CopyMIMEType } from '@/utils/export/interface';
 import { convertString } from '@/utils/export/method';
-import { TableSeriesNumberCell } from '@/cell';
-import { NewLine, NewTab, S2Event } from '@/common/constant';
 import { getCellMeta } from '@/utils/interaction/select-event';
 
 const newLineTest = `### 问题摘要 ${NewLine}- **会话地址**：`;
@@ -424,6 +424,30 @@ describe('List Table Core Data Process', () => {
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
+  });
+
+  it('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        customTransformer: () => {
+          return {
+            [CopyMIMEType.PLAIN]: () => {
+              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+            },
+          };
+        },
+      },
+    });
+
+    s2.render();
+    const cell = s2.facet.getDataCells()[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
   });
 });
 
@@ -1011,6 +1035,30 @@ describe('Pivot Table Core Data Process', () => {
       四川省	小计	7818	9473	17291	7495
       总计		26193	23516	49709	12321"
     `);
+  });
+
+  it('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        customTransformer: () => {
+          return {
+            [CopyMIMEType.PLAIN]: () => {
+              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+            },
+          };
+        },
+      },
+    });
+
+    s2.render();
+    const cell = s2.facet.getDataCells()[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
   });
 });
 
