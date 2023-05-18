@@ -107,9 +107,7 @@ describe('Data Cell Tests', () => {
       s2.dataSet = dataSet;
 
       s2.facet = {
-        layoutResult: {
-          rowLeafNodes: [],
-        },
+        getRowLeafNodes: () => [],
       } as unknown as PivotFacet;
     });
 
@@ -158,9 +156,7 @@ describe('Data Cell Tests', () => {
       s2.dataSet = dataSet;
 
       s2.facet = {
-        layoutResult: {
-          rowLeafNodes: [],
-        },
+        getRowLeafNodes: () => [],
       } as unknown as PivotFacet;
     });
 

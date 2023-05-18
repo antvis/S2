@@ -1,5 +1,5 @@
 import { forEach, reduce, uniqBy } from 'lodash';
-import { ColCell, RowCell, TableSeriesCell } from '../../cell';
+import { ColCell, RowCell, TableSeriesNumberCell } from '../../cell';
 import {
   CellTypes,
   InteractionKeyboardKey,
@@ -39,7 +39,10 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
     colIndex,
     rowIndex,
     rowQuery,
-    type: cell instanceof TableSeriesCell ? CellTypes.ROW_CELL : cell.cellType,
+    type:
+      cell instanceof TableSeriesNumberCell
+        ? CellTypes.ROW_CELL
+        : cell.cellType,
   };
 };
 
@@ -77,7 +80,7 @@ export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
 export function getRowCellForSelectedCell(
   meta: ViewMeta,
   spreadsheet: SpreadSheet,
-): (ColCell | RowCell | TableSeriesCell)[] {
+): (ColCell | RowCell | TableSeriesNumberCell)[] {
   const { facet, options } = spreadsheet;
 
   if (spreadsheet.isTableMode()) {
@@ -87,10 +90,10 @@ export function getRowCellForSelectedCell(
 
     const colId = facet.getColLeafNodes()[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
-    const result: TableSeriesCell[] = [];
+    const result: TableSeriesNumberCell[] = [];
     const rowCell = facet.getCellById(id);
 
-    if (rowCell && rowCell instanceof TableSeriesCell) {
+    if (rowCell && rowCell instanceof TableSeriesNumberCell) {
       result.push(rowCell);
     }
 

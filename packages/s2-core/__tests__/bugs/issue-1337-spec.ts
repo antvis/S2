@@ -39,9 +39,7 @@ describe('Totals Tests', () => {
     expect(rowTotalNodes).toHaveLength(0);
 
     // 列总计节点
-    const colTotalNodes = spreadsheet.facet
-      .getColTotalsNodes()
-      .filter((node) => node.isTotals);
+    const colTotalNodes = spreadsheet.facet.getColTotalsNodes();
 
     expect(colTotalNodes).toHaveLength(1);
   });

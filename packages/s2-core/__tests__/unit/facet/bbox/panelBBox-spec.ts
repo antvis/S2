@@ -3,6 +3,17 @@ import type { BaseFacet } from '@/facet/base-facet';
 import { PanelBBox } from '@/facet/bbox/panelBBox';
 
 describe('PanelBBox test', () => {
+  const layoutResult = {
+    rowsHierarchy: {
+      height: 100,
+      width: 100,
+    },
+    colsHierarchy: {
+      height: 100,
+      width: 100,
+    },
+  };
+
   const getMockFacet = (
     realWidth: number,
     realHeight: number,
@@ -19,6 +30,9 @@ describe('PanelBBox test', () => {
           height: 100,
           width: 100,
         },
+      },
+      getLayoutResult() {
+        return layoutResult;
       },
       cornerBBox: {
         width: 20,

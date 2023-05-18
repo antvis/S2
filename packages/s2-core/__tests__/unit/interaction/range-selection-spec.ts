@@ -100,10 +100,8 @@ describe('Interaction Range Selection Tests', () => {
     });
 
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [{ id: '0' }, { id: '1' }],
-        rowLeafNodes: [{ id: '0' }, { id: '1' }],
-      },
+      getColLeafNodes: () => [{ id: '0' }, { id: '1' }],
+      getRowLeafNodes: () => [{ id: '0' }, { id: '1' }],
       getDataCells: () => [],
       getSeriesNumberWidth: () => 200,
     } as unknown as PivotFacet;
@@ -168,10 +166,8 @@ describe('Interaction Range Selection Tests', () => {
     });
 
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [{ id: '0' }, { id: '1' }],
-        rowLeafNodes: [],
-      },
+      getColLeafNodes: () => [{ id: '0' }, { id: '1' }],
+      getRowLeafNodes: () => [],
       getDataCells: jest.fn(),
       getSeriesNumberWidth: () => 0,
     } as unknown as PivotFacet;

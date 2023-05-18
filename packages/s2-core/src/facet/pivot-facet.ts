@@ -1,4 +1,5 @@
 import {
+  filter,
   find,
   forEach,
   get,
@@ -15,6 +16,7 @@ import {
   size,
   sumBy,
 } from 'lodash';
+import { SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
@@ -911,5 +913,16 @@ export class PivotFacet extends BaseFacet {
       getIndexRange: (minHeight: number, maxHeight: number) =>
         getIndexRangeWithOffsets(heights, minHeight, maxHeight),
     };
+  }
+
+  /**
+   * 获取序号单元格
+   * @description 对于透视表, 序号属于 RowCell
+   */
+  public getSeriesNumberCells(): SeriesNumberCell[] {
+    return filter(
+      this.getSeriesNumberHeader()?.children,
+      (element: SeriesNumberCell) => element instanceof SeriesNumberCell,
+    ) as unknown[] as SeriesNumberCell[];
   }
 }

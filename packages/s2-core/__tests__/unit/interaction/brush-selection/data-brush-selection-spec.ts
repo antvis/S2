@@ -2,26 +2,25 @@ import { Group } from '@antv/g';
 import { range } from 'lodash';
 import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
-import { RootInteraction } from '@/interaction/root';
+import type { TableFacet } from '@/facet';
 import {
-  DataCellBrushSelection,
   CellTypes,
+  DataCellBrushSelection,
+  FrozenGroupType,
+  getScrollOffsetForCol,
+  getScrollOffsetForRow,
   InteractionBrushSelectionStage,
   Node,
-  type OriginalEvent,
   PivotSheet,
   S2Event,
-  SpreadSheet,
-  type ViewMeta,
   ScrollDirection,
-  getScrollOffsetForCol,
-  FrozenGroupType,
-  getScrollOffsetForRow,
+  SpreadSheet,
+  type OriginalEvent,
   type S2DataConfig,
   type S2Options,
-  type LayoutResult,
+  type ViewMeta,
 } from '@/index';
-import type { TableFacet } from '@/facet';
+import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -111,27 +110,25 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.getDataCells = () => panelGroupAllDataCells;
+    mockSpreadSheetInstance.facet.getColLeafNodes = () =>
+      Array.from(new Array(10)).map((_, idx) => {
+        return {
+          colIndex: idx,
+          id: idx,
+          x: idx * 100,
+          width: 100,
+        };
+      }) as unknown as Node[];
+    mockSpreadSheetInstance.facet.getRowLeafNodes = () =>
+      Array.from(new Array(10)).map((_, idx) => {
+        return {
+          rowIndex: idx,
+          id: idx,
+          y: idx * 100,
+          height: 100,
+        };
+      }) as unknown as Node[];
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
-    mockSpreadSheetInstance.facet.getLayoutResult = () =>
-      ({
-        colLeafNodes: Array.from(new Array(10)).map((_, idx) => {
-          return {
-            colIndex: idx,
-            id: idx,
-            x: idx * 100,
-            width: 100,
-          };
-        }) as unknown as Node[],
-        rowLeafNodes: Array.from(new Array(10)).map((_, idx) => {
-          return {
-            rowIndex: idx,
-            id: idx,
-            y: idx * 100,
-            height: 100,
-          };
-        }) as unknown as Node[],
-      } as LayoutResult);
-
     mockSpreadSheetInstance.facet.getCellRange = () => {
       return {
         start: 0,

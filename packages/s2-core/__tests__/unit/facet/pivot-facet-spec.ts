@@ -71,6 +71,9 @@ jest.mock('@/sheet-type', () => {
           layoutResult: {
             rowLeafNodes: [],
           },
+          getRowLeafNodes: () => [],
+          getRowNodes: () => [],
+          getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
         },
         getCanvasElement: () =>

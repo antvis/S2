@@ -1,6 +1,6 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
-import { TableDataCell } from '../cell';
+import { TableSeriesNumberCell, TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
@@ -1333,5 +1333,16 @@ export class TableFacet extends BaseFacet {
         `${key}Group`,
       );
     });
+  }
+
+  /**
+   * 获取序号单元格
+   * @description 明细表序号单元格是基于 DataCell 实现
+   */
+  public getSeriesNumberCells(): TableSeriesNumberCell[] {
+    // @ts-ignore
+    return this.getDataCells().filter(
+      (cell) => cell instanceof TableSeriesNumberCell,
+    );
   }
 }

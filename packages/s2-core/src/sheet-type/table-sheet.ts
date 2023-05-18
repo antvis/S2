@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import { TableDataCell, TableSeriesCell } from '../cell';
+import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   getTooltipOperatorTableSortMenus,
   InterceptType,
@@ -89,7 +89,7 @@ export class TableSheet extends SpreadSheet {
   protected buildFacet() {
     const defaultCell = (facet: ViewMeta) => {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
-        return new TableSeriesCell(facet, this);
+        return new TableSeriesNumberCell(facet, this);
       }
 
       return new TableDataCell(facet, this);

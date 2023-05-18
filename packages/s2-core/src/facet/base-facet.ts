@@ -28,6 +28,7 @@ import {
   DataCell,
   RowCell,
   SeriesNumberCell,
+  TableSeriesNumberCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -1399,27 +1400,29 @@ export abstract class BaseFacet {
   }
 
   protected getCornerHeader(): CornerHeader {
-    if (!this.cornerHeader) {
-      return CornerHeader.getCornerHeader({
+    return (
+      this.cornerHeader ||
+      CornerHeader.getCornerHeader({
         panelBBox: this.panelBBox,
         cornerBBox: this.cornerBBox,
         seriesNumberWidth: this.getSeriesNumberWidth(),
         layoutResult: this.layoutResult,
         spreadsheet: this.spreadsheet,
-      });
-    }
-
-    return this.cornerHeader;
+      })
+    );
   }
 
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
-    return SeriesNumberHeader.getSeriesNumberHeader({
-      spreadsheet: this.spreadsheet,
-      panelBBox: this.panelBBox,
-      cornerWidth: this.cornerBBox.width,
-      seriesNumberWidth: this.getSeriesNumberWidth(),
-      rowsHierarchy: this.layoutResult.rowsHierarchy,
-    });
+    return (
+      this.seriesNumberHeader ||
+      SeriesNumberHeader.getSeriesNumberHeader({
+        spreadsheet: this.spreadsheet,
+        panelBBox: this.panelBBox,
+        cornerWidth: this.cornerBBox.width,
+        seriesNumberWidth: this.getSeriesNumberWidth(),
+        rowsHierarchy: this.layoutResult.rowsHierarchy,
+      })
+    );
   }
 
   protected getCenterFrame(): Frame {
@@ -1645,7 +1648,7 @@ export abstract class BaseFacet {
    * 获取列头节点 (含非可视区域)
    * @description 获取列头单元格 (可视区域内) facet.getColCells()
    * @example 获取全部: facet.getColNodes()
-   * @example 指定层级: facet.getColNodes(2)
+   * @example 指定层级: facet.getColNodes(level)
    */
   public getColNodes(level?: number): Node[] {
     const { colNodes = [] } = this.layoutResult;
@@ -1682,30 +1685,36 @@ export abstract class BaseFacet {
 
   /**
    * 获取列头小计/总计节点 (含非可视区域)
+   * @example 获取全部: facet.getColTotalsNodes()
+   * @example 指定层级: facet.getColTotalsNodes(level)
    */
-  public getColTotalsNodes(): Node[] {
-    return this.getRowNodes().filter((node) => node.isTotals);
+  public getColTotalsNodes(level?: number): Node[] {
+    return this.getColNodes(level).filter((node) => node.isTotals);
   }
 
   /**
    * 获取列头小计节点 (含非可视区域)
+   * @example 获取全部: facet.getColSubTotalsNodes()
+   * @example 指定层级: facet.getColSubTotalsNodes(level)
    */
-  public getColSubTotalsNodes(): Node[] {
-    return this.getRowTotalsNodes().filter((node) => node.isSubTotals);
+  public getColSubTotalsNodes(level?: number): Node[] {
+    return this.getColTotalsNodes(level).filter((node) => node.isSubTotals);
   }
 
   /**
    * 获取列头总计节点 (含非可视区域)
+   * @example 获取全部: facet.getColGrandTotalsNodes()
+   * @example 指定层级: facet.getColGrandTotalsNodes(level)
    */
-  public getColGrandTotalsNodes(): Node[] {
-    return this.getRowTotalsNodes().filter((node) => node.isGrandTotals);
+  public getColGrandTotalsNodes(level?: number): Node[] {
+    return this.getColTotalsNodes(level).filter((node) => node.isGrandTotals);
   }
 
   /**
    * 获取行头节点 (含非可视区域)
    * @description 获取行头单元格 (可视区域内) facet.getRowCells()
    * @example 获取全部: facet.getRowNodes()
-   * @example 指定层级: facet.getRowNodes(2)
+   * @example 指定层级: facet.getRowNodes(level)
    */
   public getRowNodes(level?: number): Node[] {
     const { rowNodes = [] } = this.layoutResult;
@@ -1742,23 +1751,29 @@ export abstract class BaseFacet {
 
   /**
    * 获取行头小计/总计节点 (含非可视区域)
+   * @example 获取全部: facet.getRowTotalsNodes()
+   * @example 指定层级: facet.getRowTotalsNodes(level)
    */
-  public getRowTotalsNodes(): Node[] {
-    return this.getRowNodes().filter((node) => node.isTotals);
+  public getRowTotalsNodes(level?: number): Node[] {
+    return this.getRowNodes(level).filter((node) => node.isTotals);
   }
 
   /**
    * 获取行头小计节点 (含非可视区域)
+   * @example 获取全部: facet.getRowSubTotalsNodes()
+   * @example 指定层级: facet.getRowSubTotalsNodes(level)
    */
-  public getRowSubTotalsNodes(): Node[] {
-    return this.getRowTotalsNodes().filter((node) => node.isSubTotals);
+  public getRowSubTotalsNodes(level?: number): Node[] {
+    return this.getRowTotalsNodes(level).filter((node) => node.isSubTotals);
   }
 
   /**
    * 获取行头总计节点 (含非可视区域)
+   * @example 获取全部: facet.getRowGrandTotalsNodes()
+   * @example 指定层级: facet.getRowGrandTotalsNodes(level)
    */
-  public getRowGrandTotalsNodes(): Node[] {
-    return this.getRowTotalsNodes().filter((node) => node.isGrandTotals);
+  public getRowGrandTotalsNodes(level?: number): Node[] {
+    return this.getRowTotalsNodes(level).filter((node) => node.isGrandTotals);
   }
 
   /**
@@ -1804,6 +1819,13 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取行头叶子节点单元格 (不含可视区域)
+   */
+  public getRowLeafCells(): RowCell[] {
+    return this.getRowCells().filter((cell) => cell.getMeta().isLeaf);
+  }
+
+  /**
    * 获取列头单元格 (不含可视区域)
    */
   public getColCells(): ColCell[] {
@@ -1815,23 +1837,28 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取列头叶子节点单元格 (不含可视区域)
+   */
+  public getColLeafCells(): ColCell[] {
+    return this.getColCells().filter((cell) => cell.getMeta().isLeaf);
+  }
+
+  /**
    * 获取角头单元格
    */
   public getCornerCells(): CornerCell[] {
     return filter(
-      this.getCornerHeader().children as CornerCell[],
-      (element) => element instanceof CornerCell,
+      this.getCornerHeader().children,
+      (element: CornerCell) => element instanceof CornerCell,
     ) as unknown[] as CornerCell[];
   }
 
-  public getSeriesNumberCells(): SeriesNumberCell[] {
-    const headerChildren = (this.getSeriesNumberHeader()?.children ||
-      []) as SeriesNumberCell[];
-
-    return getAllChildCells(headerChildren, SeriesNumberCell).filter(
-      (cell: S2CellType) => cell.cellType === CellTypes.SERIES_NUMBER_CELL,
-    );
-  }
+  /**
+   * 获取序号单元格
+   */
+  public abstract getSeriesNumberCells():
+    | SeriesNumberCell[]
+    | TableSeriesNumberCell[];
 
   /**
    * 获取表头单元格 (角头,行头,列头) (不含可视区域)
@@ -1841,6 +1868,7 @@ export abstract class BaseFacet {
   public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
     const headerCells = concat<S2CellType>(
       this.getCornerCells(),
+      this.getSeriesNumberCells(),
       this.getRowCells(),
       this.getColCells(),
     );

@@ -103,6 +103,9 @@ export const createFakeSpreadSheet = () => {
     layoutResult: {
       getCellMeta: jest.fn(),
       rowLeafNodes: [],
+      colLeafNodes: [],
+      rowNodes: [],
+      colNodes: [],
     },
     getCellMeta: jest.fn(),
     getCellById: jest.fn(),

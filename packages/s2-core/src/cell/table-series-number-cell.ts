@@ -2,7 +2,7 @@ import { CellTypes } from '../common/constant';
 import type { TextTheme } from '../common/interface';
 import { TableDataCell } from './table-data-cell';
 
-export class TableSeriesCell extends TableDataCell {
+export class TableSeriesNumberCell extends TableDataCell {
   public get cellType() {
     /*
      * 在行列冻结并且开启序号时

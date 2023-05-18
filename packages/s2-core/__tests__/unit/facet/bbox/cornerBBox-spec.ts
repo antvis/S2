@@ -17,6 +17,9 @@ describe('cornerBBox test', () => {
           sampleNodeForLastLevel: true,
         },
       },
+      getLayoutResult() {
+        return mockFacet.layoutResult;
+      },
       getSeriesNumberWidth() {
         return 80;
       },

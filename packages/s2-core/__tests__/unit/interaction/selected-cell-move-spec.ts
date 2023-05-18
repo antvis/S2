@@ -38,12 +38,11 @@ describe('Interaction Keyboard Move Tests', () => {
       getDisplayDataSet: () => [{ a: 0 }, { a: 1 }],
     } as any;
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [
-          { x: 0, id: '0', colIndex: 0 },
-          { x: 1, id: '1', colIndex: 1 },
-        ],
-      },
+      getRowLeafNodes: () => [],
+      getColLeafNodes: () => [
+        { x: 0, id: '0', colIndex: 0 },
+        { x: 1, id: '1', colIndex: 1 },
+      ],
       getTotalHeightForRange: () => 0,
       scrollWithAnimation: (data: OffsetConfig) => {
         s2.store.set('scrollX', data?.offsetX?.value!);
