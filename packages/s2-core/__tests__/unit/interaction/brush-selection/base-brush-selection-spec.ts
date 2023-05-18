@@ -1,20 +1,20 @@
 import { Group } from '@antv/g';
 import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
-import { RootInteraction } from '@/interaction/root';
+import type { BBox } from '@/engine';
 import {
+  BaseBrushSelection,
   DataCellBrushSelection,
   InteractionBrushSelectionStage,
-  type OriginalEvent,
+  InterceptType,
   PivotSheet,
   S2Event,
   SpreadSheet,
-  type ViewMeta,
-  InterceptType,
-  BaseBrushSelection,
+  type OriginalEvent,
   type S2DataConfig,
+  type ViewMeta,
 } from '@/index';
-import type { BBox } from '@/engine';
+import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -27,7 +27,7 @@ const MockDataCell = DataCell as unknown as jest.Mock<DataCell>;
 
 describe('Interaction Base Cell Brush Selection Tests', () => {
   let brushSelectionInstance: DataCellBrushSelection;
-  let mockSpreadSheetInstance: SpreadSheet;
+  let s2: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
   const startBrushDataCellMeta: Partial<ViewMeta> = {
@@ -57,20 +57,14 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
-    mockSpreadSheetInstance = new PivotSheet(
-      getContainer(),
-      null as unknown as S2DataConfig,
-      null,
-    );
-    mockSpreadSheetInstance.render();
-    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.facet.foregroundGroup = new Group();
-    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
-    mockSpreadSheetInstance.interaction = mockRootInteraction;
-    brushSelectionInstance = new DataCellBrushSelection(
-      mockSpreadSheetInstance,
-    );
+    s2 = new PivotSheet(getContainer(), null as unknown as S2DataConfig, null);
+    s2.render();
+    mockRootInteraction = new MockRootInteraction(s2);
+    s2.getCell = jest.fn(() => startBrushDataCell) as any;
+    s2.facet.foregroundGroup = new Group();
+    s2.showTooltipWithInfo = jest.fn();
+    s2.interaction = mockRootInteraction;
+    brushSelectionInstance = new DataCellBrushSelection(s2);
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
@@ -105,16 +99,14 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   test('should clear brush selection state when mouse down and context menu clicked', () => {
     const globalMouseUp = jest.fn();
 
-    mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
+    s2.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
 
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
       x: 10,
       y: 20,
     });
 
-    const canvasRect = mockSpreadSheetInstance
-      .getCanvasElement()
-      .getBoundingClientRect();
+    const canvasRect = s2.getCanvasElement().getBoundingClientRect();
 
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: canvasRect.left + 12,
@@ -174,7 +166,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxX: 15,
       maxY: 15,
     } as BBox;
-    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    const baseBrushSelection = new BaseBrushSelection(s2);
 
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
@@ -192,7 +184,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxX: 15,
       maxY: 15,
     } as BBox;
-    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    const baseBrushSelection = new BaseBrushSelection(s2);
 
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
@@ -210,7 +202,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxX: 15,
       maxY: 15,
     } as BBox;
-    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    const baseBrushSelection = new BaseBrushSelection(s2);
 
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeFalsy();
   });

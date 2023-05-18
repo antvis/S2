@@ -15,6 +15,7 @@ import {
   S2Event,
   ScrollDirection,
   SpreadSheet,
+  type LayoutResult,
   type OriginalEvent,
   type S2DataConfig,
   type S2Options,
@@ -33,7 +34,7 @@ const MockDataCell = DataCell as unknown as jest.Mock<DataCell>;
 
 describe('Interaction Data Cell Brush Selection Tests', () => {
   let brushSelectionInstance: DataCellBrushSelection;
-  let mockSpreadSheetInstance: SpreadSheet;
+  let s2: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
   const startBrushDataCellMeta: Partial<ViewMeta> = {
@@ -91,14 +92,32 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
-    mockSpreadSheetInstance = new PivotSheet(
+    const mockColLeafNodes = Array.from(new Array(10)).map((_, idx) => {
+      return {
+        colIndex: idx,
+        id: idx,
+        x: idx * 100,
+        width: 100,
+      };
+    }) as unknown as Node[];
+
+    const mockRowLeafNodes = Array.from(new Array(10)).map((_, idx) => {
+      return {
+        rowIndex: idx,
+        id: idx,
+        y: idx * 100,
+        height: 100,
+      };
+    }) as unknown as Node[];
+
+    s2 = new PivotSheet(
       getContainer(),
       null as unknown as S2DataConfig,
       null as unknown as S2Options,
     );
-    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
+    mockRootInteraction = new MockRootInteraction(s2);
+    s2.getCell = jest.fn(() => startBrushDataCell) as any;
+    s2.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getSelectedCellHighlight = () => {
       return {
         rowHeader: false,
@@ -107,44 +126,31 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         currentCol: false,
       };
     };
-    mockSpreadSheetInstance.interaction = mockRootInteraction;
-    mockSpreadSheetInstance.render();
-    mockSpreadSheetInstance.facet.getDataCells = () => panelGroupAllDataCells;
-    mockSpreadSheetInstance.facet.getColLeafNodes = () =>
-      Array.from(new Array(10)).map((_, idx) => {
-        return {
-          colIndex: idx,
-          id: idx,
-          x: idx * 100,
-          width: 100,
-        };
-      }) as unknown as Node[];
-    mockSpreadSheetInstance.facet.getRowLeafNodes = () =>
-      Array.from(new Array(10)).map((_, idx) => {
-        return {
-          rowIndex: idx,
-          id: idx,
-          y: idx * 100,
-          height: 100,
-        };
-      }) as unknown as Node[];
-    mockSpreadSheetInstance.facet.foregroundGroup = new Group();
-    mockSpreadSheetInstance.facet.getCellRange = () => {
+    s2.interaction = mockRootInteraction;
+    s2.render();
+    s2.facet.getDataCells = () => panelGroupAllDataCells;
+    s2.facet.getLayoutResult = () =>
+      ({
+        colLeafNodes: mockColLeafNodes,
+        rowLeafNodes: mockRowLeafNodes,
+      } as LayoutResult);
+    s2.facet.getColLeafNodes = () => mockColLeafNodes;
+    s2.facet.getRowLeafNodes = () => mockRowLeafNodes;
+    s2.facet.foregroundGroup = new Group();
+    s2.facet.getCellRange = () => {
       return {
         start: 0,
         end: 9,
       };
     };
-    brushSelectionInstance = new DataCellBrushSelection(
-      mockSpreadSheetInstance,
-    );
+    brushSelectionInstance = new DataCellBrushSelection(s2);
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
   });
 
   test('should highlight relevant col&row header cell with selectedCellHighlight option toggled on', () => {
-    mockSpreadSheetInstance.setOptions({
+    s2.setOptions({
       interaction: { selectedCellHighlight: true },
     });
     mockRootInteraction.getSelectedCellHighlight = () => {
@@ -177,15 +183,15 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (brushSelectionInstance as any).updateSelectedCells();
 
-    (mockSpreadSheetInstance.facet.getColCells() || [])
+    (s2.facet.getColCells() || [])
       .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
 
-    mockSpreadSheetInstance.facet.getCells();
+    s2.facet.getCells();
 
-    (mockSpreadSheetInstance.facet.getRowCells() || [])
+    (s2.facet.getRowCells() || [])
       .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();
@@ -217,9 +223,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       y: 20,
     });
 
-    const domRect = mockSpreadSheetInstance
-      .getCanvasElement()
-      .getBoundingClientRect();
+    const domRect = s2.getCanvasElement().getBoundingClientRect();
 
     //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
@@ -244,22 +248,17 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const selectedFn = jest.fn();
     const brushSelectionFn = jest.fn();
 
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
+    s2.getCell = jest.fn(() => startBrushDataCell) as any;
 
-    mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
-    mockSpreadSheetInstance.on(
-      S2Event.DATA_CELL_BRUSH_SELECTION,
-      brushSelectionFn,
-    );
+    s2.on(S2Event.GLOBAL_SELECTED, selectedFn);
+    s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, brushSelectionFn);
 
     // ================== mouse down ==================
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
 
-    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
+    s2.getCell = jest.fn(() => endBrushDataCell) as any;
     // ================== mouse move ==================
-    const domRect = mockSpreadSheetInstance
-      .getCanvasElement()
-      .getBoundingClientRect();
+    const domRect = s2.getCanvasElement().getBoundingClientRect();
 
     //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
@@ -291,7 +290,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
     ).toBeFalsy();
     // show tooltip
-    expect(mockSpreadSheetInstance.showTooltipWithInfo).toHaveBeenCalled();
+    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
     // reset brush stage
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.UN_DRAGGED,
@@ -314,13 +313,13 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   test('should get correct formatted brush point', () => {
     const EXTRA_PIXEL = 2;
     const VSCROLLBAR_WIDTH = 5;
-    const { width, height } = mockSpreadSheetInstance.facet.getCanvasSize();
+    const { width, height } = s2.facet.getCanvasSize();
     const minX = 10;
     const minY = 10;
     const maxY = height + 10;
     const maxX = width + 10;
 
-    mockSpreadSheetInstance.facet.panelBBox = {
+    s2.facet.panelBBox = {
       minX,
       minY,
       maxY,
@@ -333,7 +332,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       colIndex: 0,
       rowIndex: 0,
     };
-    mockSpreadSheetInstance.facet.vScrollBar = {
+    s2.facet.vScrollBar = {
       getBBox: () =>
         ({
           width: VSCROLLBAR_WIDTH,
@@ -423,7 +422,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
       brushSelectionInstance;
 
-    mockSpreadSheetInstance.setOptions({
+    s2.setOptions({
       frozen: {
         colCount: 1,
         rowCount: 1,
@@ -431,13 +430,11 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         trailingRowCount: 1,
       },
     });
-    mockSpreadSheetInstance.dataSet.getDisplayDataSet = () =>
+    s2.dataSet.getDisplayDataSet = () =>
       Array.from(new Array(10)).map(() => {
         return {};
       });
-    (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
-      1, 8, 1, 8,
-    ];
+    (s2.facet as TableFacet).panelScrollGroupIndexes = [1, 8, 1, 8];
 
     expect(adjustNextColIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
       8,
@@ -457,22 +454,10 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   });
 
   test('should get correct scroll offset for row and col', () => {
-    const { facet } = mockSpreadSheetInstance;
+    const { facet } = s2;
 
-    expect(
-      getScrollOffsetForCol(
-        7,
-        ScrollDirection.SCROLL_UP,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(700);
-    expect(
-      getScrollOffsetForCol(
-        7,
-        ScrollDirection.SCROLL_DOWN,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(202);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(202);
 
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
@@ -489,20 +474,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       },
     };
 
-    expect(
-      getScrollOffsetForCol(
-        7,
-        ScrollDirection.SCROLL_UP,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(600);
-    expect(
-      getScrollOffsetForCol(
-        7,
-        ScrollDirection.SCROLL_DOWN,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(302);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(302);
 
     facet.panelBBox = {
       height: facet.getCanvasSize().height,
@@ -510,20 +483,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     facet.viewCellHeights = facet.getViewCellHeights(facet.getLayoutResult());
 
-    expect(
-      getScrollOffsetForRow(
-        7,
-        ScrollDirection.SCROLL_UP,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(700);
-    expect(
-      getScrollOffsetForRow(
-        7,
-        ScrollDirection.SCROLL_DOWN,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(320);
+    expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
+    expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(320);
 
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
@@ -539,20 +500,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         height: 100,
       },
     };
-    expect(
-      getScrollOffsetForRow(
-        7,
-        ScrollDirection.SCROLL_UP,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(600);
-    expect(
-      getScrollOffsetForRow(
-        7,
-        ScrollDirection.SCROLL_DOWN,
-        mockSpreadSheetInstance,
-      ),
-    ).toBe(420);
+    expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
+    expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(420);
   });
 
   test('should get valid x and y index', () => {
@@ -568,7 +517,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateYIndex(10)).toBe(null);
     expect(validateYIndex(9)).toBe(9);
 
-    (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
+    (s2.facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
         range: [0, 1],
       },
