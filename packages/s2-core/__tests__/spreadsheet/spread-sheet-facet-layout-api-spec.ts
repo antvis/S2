@@ -507,6 +507,28 @@ describe('Facet Layout API Tests', () => {
       });
     });
 
+    describe('MergedCell', () => {
+      test('#getMergedCells()', () => {
+        s2.setOptions({
+          mergedCellsInfo: [
+            [
+              { colIndex: 0, rowIndex: 0, showText: true },
+              { colIndex: 1, rowIndex: 1 },
+            ],
+          ],
+        });
+        s2.render(false);
+
+        expect(mapCells(s2.facet.getMergedCells())).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
+            },
+          ]
+        `);
+      });
+    });
+
     describe('RowCell', () => {
       test('#getRowNodes()', () => {
         expect(mapNodes(s2.facet.getRowNodes())).toMatchInlineSnapshot(`

@@ -119,6 +119,16 @@ export const s2Options: SheetComponentOptions = {
       colResizeType: ResizeType.CURRENT,
     },
   },
+  // mergedCellsInfo: [
+  //   [
+  //     { colIndex: 1, rowIndex: 1, showText: true },
+  //     { colIndex: 1, rowIndex: 2 },
+  //   ],
+  //   [
+  //     { colIndex: 2, rowIndex: 1 },
+  //     { colIndex: 2, rowIndex: 2, showText: true },
+  //   ],
+  // ],
   tooltip: {
     operation: {
       hiddenColumns: true,

@@ -26,6 +26,7 @@ import {
   ColCell,
   CornerCell,
   DataCell,
+  MergedCell,
   RowCell,
   SeriesNumberCell,
   TableSeriesNumberCell,
@@ -1841,6 +1842,16 @@ export abstract class BaseFacet {
    */
   public getColLeafCells(): ColCell[] {
     return this.getColCells().filter((cell) => cell.getMeta().isLeaf);
+  }
+
+  /**
+   * 获取合并单元格 (不含可视区域)
+   */
+  public getMergedCells(): MergedCell[] {
+    return filter(
+      this.panelScrollGroup.getMergedCellsGroup().children,
+      (element: MergedCell) => element instanceof MergedCell,
+    ) as unknown[] as MergedCell[];
   }
 
   /**
