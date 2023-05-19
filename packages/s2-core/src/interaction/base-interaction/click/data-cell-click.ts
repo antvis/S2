@@ -1,7 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import type { RowCell } from '@antv/s2';
 import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
+import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
