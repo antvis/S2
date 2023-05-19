@@ -388,9 +388,7 @@ describe('List Table Core Data Process', () => {
 
     sheet.render();
 
-    const cell = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[40];
+    const cell = sheet.facet.getDataCells()[40];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
