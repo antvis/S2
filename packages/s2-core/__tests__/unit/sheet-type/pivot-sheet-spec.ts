@@ -456,6 +456,10 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should init new tooltip', () => {
+    const tooltipDestorySpy = jest
+      .spyOn(s2.tooltip, 'destroy')
+      .mockImplementationOnce(() => {});
+
     class CustomTooltip extends BaseTooltip {}
 
     s2.setOptions({
@@ -464,6 +468,7 @@ describe('PivotSheet Tests', () => {
       },
     });
 
+    expect(tooltipDestorySpy).toHaveBeenCalled();
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
@@ -975,10 +980,10 @@ describe('PivotSheet Tests', () => {
     s2.store.set('test', 111);
 
     // restore mock...
-    const tooltipShow = jest
+    const tooltipShowSpy = jest
       .spyOn(s2.tooltip, 'show')
       .mockImplementationOnce(() => {});
-    tooltipShow.mockRestore();
+    tooltipShowSpy.mockRestore();
     s2.showTooltip({
       position: {
         x: 10,
