@@ -293,7 +293,7 @@ describe('Pivot Mode Facet Test', () => {
       height: 100,
       container: document.body,
     });
-    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields todo: 然后调用 render 看是否会进入后续的方法
+    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields
     const spreadsheet = Object.assign({}, s2, {
       dataCfg: { fields },
       panelGroup: container.addGroup(),
