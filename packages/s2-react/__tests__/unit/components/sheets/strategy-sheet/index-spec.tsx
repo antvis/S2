@@ -2,38 +2,40 @@ import type { Event as GEvent } from '@antv/g-canvas';
 import {
   CellTypes,
   copyData,
+  CornerNodeType,
   customMerge,
+  EXTRA_FIELD,
   getCellMeta,
   InteractionStateName,
-  SpreadSheet,
   type S2DataConfig,
+  SpreadSheet,
 } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { merge } from 'lodash';
 import {
   SheetComponent,
   SheetComponentOptions,
 } from '../../../../../src/components';
 import { getContainer } from '../../../../util/helpers';
 import {
-  StrategySheetDataConfig,
   StrategyOptions,
+  StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
   let container: HTMLDivElement;
 
-  beforeAll(() => {
+  beforeEach(() => {
     container = getContainer();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     ReactDOM.unmountComponentAtNode(container);
     container.remove();
   });
-
   const renderStrategySheet = (
     options: SheetComponentOptions | null,
     dataCfg?: S2DataConfig,
@@ -181,6 +183,35 @@ describe('<StrategySheet/> Tests', () => {
     ]);
   });
 
+  test('should get custom corner extra field text', () => {
+    const cornerExtraFieldText = '自定义';
+    const s2DataCfg = {
+      fields: {
+        ...StrategySheetDataConfig.fields,
+        valueInCols: false,
+      },
+    };
+    const s2Options = {
+      cornerExtraFieldText,
+    };
+
+    renderStrategySheet(s2Options, {
+      ...StrategySheetDataConfig,
+      ...s2DataCfg,
+    });
+
+    const cornerNode = s2.facet
+      .getCornerNodes()
+      .find((node) => node.cornerType === CornerNodeType.Row);
+    const textList = s2.facet.cornerHeader
+      .getChildren()
+      .map((element) => (element as any).actualText);
+
+    expect(textList).toEqual([cornerExtraFieldText, '日期']);
+
+    expect(cornerNode.label).toEqual(cornerExtraFieldText);
+  });
+
   test('should format corner date field', () => {
     renderStrategySheet(
       {
@@ -201,7 +232,9 @@ describe('<StrategySheet/> Tests', () => {
     const textList = s2.facet.cornerHeader
       .getChildren()
       .map((element) => (element as any).actualText);
+    const dataSetFields = s2.dataSet.fields;
 
+    expect(dataSetFields.rows).toEqual([EXTRA_FIELD]);
     expect(textList).toEqual(['数值', '日期']);
   });
 

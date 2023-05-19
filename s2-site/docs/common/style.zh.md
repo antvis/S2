@@ -50,5 +50,5 @@ object **必选**,_default：null_ 功能描述： 行样式配置
 | --- | --- | --- | --- | ---  |
 | width | 行单元格宽度，可根据当前行头节点动态设置宽度，如果是树状结构，请使用 `styles.treeRowsWidth` | `number \| (rowNode: Node) => number` | 96 |  |
 | treeRowsWidth | 树状结构下，行单元格宽度 (**已废弃，请使用 `style.treeRowsWidth` 代替**) | `number` | 120 |  |
-| withByField | 根据 `field` 设置每行的宽度。`field` 是行的 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
+| widthByField | 根据 `field` 设置每行的宽度。`field` 是行的 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
 | heightByField | 根据 `field` 设置每行的高度。`field` 是行的 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |

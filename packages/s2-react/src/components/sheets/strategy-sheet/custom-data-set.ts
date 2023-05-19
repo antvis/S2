@@ -10,7 +10,6 @@ import {
 
 export class StrategyDataSet extends CustomTreePivotDataSet {
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    dataCfg.fields.rows = [EXTRA_FIELD];
     dataCfg.fields.valueInCols = false;
     const { data, meta, ...restCfg } = dataCfg;
     const transformedData = [];
@@ -31,19 +30,16 @@ export class StrategyDataSet extends CustomTreePivotDataSet {
       }
     });
 
-    const extraFieldName =
-      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
-
-    const extraFieldMeta: Meta = {
-      field: EXTRA_FIELD,
-      name: extraFieldName,
-    };
-    const newMeta: Meta[] = [...meta, extraFieldMeta];
+    const newMeta: Meta[] = this.processMeta(meta, i18n('数值'));
 
     return {
       data: uniq(transformedData),
       meta: newMeta,
       ...restCfg,
+      fields: {
+        ...dataCfg.fields,
+        rows: [EXTRA_FIELD],
+      },
     };
   }
 }
