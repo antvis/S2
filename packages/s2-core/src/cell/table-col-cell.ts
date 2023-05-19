@@ -8,12 +8,7 @@ import type { FormatResult } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import type { SimpleBBox } from '../engine';
 import type { BaseHeaderConfig } from '../facet/header';
-import {
-  getNodeRoot,
-  isFrozenCol,
-  isFrozenTrailingCol,
-  isTopLevelNode,
-} from '../facet/utils';
+import { getNodeRoot, isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
 import {
@@ -41,9 +36,7 @@ export class TableColCell extends ColCell {
   protected isFrozenCell() {
     const { colCount = 0, trailingColCount = 0 } =
       this.spreadsheet.options.frozen!;
-    const colNodes = this.spreadsheet.facet
-      .getColNodes()
-      .filter(isTopLevelNode);
+    const colNodes = this.spreadsheet.facet.getColNodes(0);
     const { colIndex } = getNodeRoot(this.meta);
 
     return (

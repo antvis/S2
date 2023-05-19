@@ -61,7 +61,6 @@ import {
   getFrozenDataCellType,
   getFrozenLeafNodesCount,
   isFrozenTrailingRow,
-  isTopLevelNode,
   splitInViewIndexesWithFrozen,
   translateGroup,
 } from './utils';
@@ -394,7 +393,7 @@ export class TableFacet extends BaseFacet {
       currentNode.height = this.getColNodeHeight(currentNode);
     }
 
-    const topLevelNodes = allNodes.filter(isTopLevelNode);
+    const topLevelNodes = colsHierarchy.getNodes(0);
     const { trailingColCount: frozenTrailingColCount = 0 } =
       getValidFrozenOptions(
         this.spreadsheet.options.frozen!,
@@ -1282,7 +1281,7 @@ export class TableFacet extends BaseFacet {
   }
 
   public getTopLevelColNodes() {
-    return this.layoutResult.colNodes.filter(isTopLevelNode);
+    return this.getColNodes(0);
   }
 
   public updatePanelScrollGroup() {
