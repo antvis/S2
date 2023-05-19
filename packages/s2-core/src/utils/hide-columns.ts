@@ -20,13 +20,13 @@ export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-  const columnNodes = spreadsheet.facet.getInitColLeafNodes();
+  const colNodes = spreadsheet.facet.getInitColLeafNodes();
 
   return compact(
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
 
-      return columnNodes.find((node) => node[targetFieldKey] === field);
+      return colNodes.find((node) => node[targetFieldKey] === field);
     }),
   );
 };

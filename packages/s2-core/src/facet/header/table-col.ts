@@ -67,7 +67,7 @@ export class TableColHeader extends ColHeader {
       trailingColCount: frozenTrailingColCount = 0,
     } = spreadsheet.options.frozen!;
     const { colIndex } = meta;
-    const colLeafNodes = spreadsheet.facet.getColLeafNodes;
+    const colLeafNodes = spreadsheet.facet.getColLeafNodes();
 
     return (
       isFrozenCol(colIndex, frozenColCount) ||

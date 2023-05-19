@@ -32,11 +32,9 @@ export const getHeaderNodeFromMeta = (
   spreadsheet: SpreadSheet,
 ) => {
   const { rowIndex, colIndex } = meta;
+  const { facet } = spreadsheet;
 
-  return [
-    spreadsheet.facet.getRowNodes().find((row) => row.rowIndex === rowIndex),
-    spreadsheet.facet.getColNodes().find((col) => col.colIndex === colIndex),
-  ];
+  return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
 };
 
 /**

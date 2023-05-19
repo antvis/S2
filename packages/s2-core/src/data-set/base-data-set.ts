@@ -112,11 +112,11 @@ export abstract class BaseDataSet {
 
     // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
     if (cell.cellType === CellTypes.DATA_CELL) {
-      const row = find(this.spreadsheet.facet.getRowNodes(), {
-        rowIndex: meta?.rowIndex,
-      });
+      const rowNode = this.spreadsheet.facet.getRowNodeByIndex(meta?.rowIndex);
 
-      return row?.value || this.getFieldName(row?.field as CustomHeaderField);
+      return (
+        rowNode?.value || this.getFieldName(rowNode?.field as CustomHeaderField)
+      );
     }
 
     // 行/列头单元格, 取节点本身标题

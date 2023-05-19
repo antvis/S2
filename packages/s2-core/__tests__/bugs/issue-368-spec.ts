@@ -4,10 +4,9 @@
  * Wrong style when show the totals in multi-value mode
  *
  */
-import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-368.json';
+import { getContainer } from '../util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import type { Node } from '@/facet/layout/node';
 
 const s2Options = {
   width: 800,
@@ -35,13 +34,8 @@ describe('Total Cells Rendering Test', () => {
 
   s2.render();
   test('should get right SubTotals position', () => {
-    const layoutResult = s2.facet.getLayoutResult();
-    const rowSubTotalNodes = layoutResult.rowsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
-    const colSubTotalNodes = layoutResult.colsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
+    const rowSubTotalNodes = s2.facet.getRowSubTotalsNodes();
+    const colSubTotalNodes = s2.facet.getColSubTotalsNodes();
 
     expect(rowSubTotalNodes[0].width).toEqual(192);
     expect(rowSubTotalNodes[0].height).toEqual(30);
@@ -75,10 +69,7 @@ describe('Total Cells Rendering Test', () => {
 
     s2.render();
 
-    const layoutResult = s2.facet.getLayoutResult();
-    const rowSubTotalNodes = layoutResult.rowsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
+    const rowSubTotalNodes = s2.facet.getRowSubTotalsNodes();
     const rowSubTotalChildNode = rowSubTotalNodes[0].children[0];
 
     expect(rowSubTotalNodes[0].x).toEqual(96);

@@ -193,8 +193,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (it) => {
-        const [rowNode, colNode] = getHeaderNodeFromMeta(it, this.spreadsheet);
+      map(cellsMeta, (meta) => {
+        const [rowNode, colNode] = getHeaderNodeFromMeta(
+          meta,
+          this.spreadsheet,
+        );
         const dataItem = this.getDataCellValue(rowNode!, colNode!);
 
         return convertString(dataItem);

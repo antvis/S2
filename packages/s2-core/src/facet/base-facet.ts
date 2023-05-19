@@ -1670,6 +1670,22 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 根据列头索引获取指定列头节点
+   * @example facet.getColNodeByIndex(colIndex)
+   */
+  public getColNodeByIndex(colIndex: number): Node | undefined {
+    return this.getColNodes().find((node) => node.colIndex === colIndex);
+  }
+
+  /**
+   * 根据列头索引获取指定列头叶子节点
+   * @example facet.getColLeafNodes(colIndex)
+   */
+  public getColLeafNodeByIndex(colIndex: number): Node | undefined {
+    return this.getColLeafNodes().find((node) => node.colIndex === colIndex);
+  }
+
+  /**
    * 根据 field 获取指定列头节点
    * @example facet.getColCellNodeByField('number')
    */
@@ -1733,6 +1749,22 @@ export abstract class BaseFacet {
    */
   public getRowNodeById(nodeId: string): Node | undefined {
     return this.getRowNodes().find((node) => node.id === nodeId);
+  }
+
+  /**
+   * 根据行头索引获取指定列头节点
+   * @example facet.getRowNodeByIndex(rowIndex)
+   */
+  public getRowNodeByIndex(rowIndex: number): Node | undefined {
+    return this.getRowNodes().find((node) => node.rowIndex === rowIndex);
+  }
+
+  /**
+   * 根据行头索引获取指定列头叶子节点
+   * @example facet.getRowLeafNodeByIndex(rowIndex)
+   */
+  public getRowLeafNodeByIndex(rowIndex: number): Node | undefined {
+    return this.getRowLeafNodes().find((node) => node.rowIndex === rowIndex);
   }
 
   /**

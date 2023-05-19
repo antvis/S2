@@ -359,9 +359,7 @@ describe('<StrategySheet/> Tests', () => {
     it('should selected cell and update spotlight style', () => {
       const dataCellId = `root[&]自定义节点A[&]指标A-root[&]2022-11[&]["数值","环比","同比"]`;
 
-      const selectedDataCell = s2.facet
-        .getDataCells()
-        .find((cell) => cell.getMeta().id === dataCellId)!;
+      const selectedDataCell = s2.facet.getCellById(dataCellId)!;
 
       s2.interaction.changeState({
         cells: [getCellMeta(selectedDataCell)],
