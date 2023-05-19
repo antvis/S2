@@ -975,7 +975,10 @@ describe('PivotSheet Tests', () => {
     s2.store.set('test', 111);
 
     // restore mock...
-    (s2.tooltip.show as jest.Mock).mockRestore();
+    const tooltipShow = jest
+      .spyOn(s2.tooltip, 'show')
+      .mockImplementationOnce(() => {});
+    tooltipShow.mockRestore();
     s2.showTooltip({
       position: {
         x: 10,
