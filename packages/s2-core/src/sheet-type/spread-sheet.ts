@@ -219,6 +219,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initTooltip() {
+    this.tooltip?.destroy?.();
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
