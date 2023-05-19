@@ -357,7 +357,7 @@ export class PivotFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
+    const userDraggedHeight = get(colCfg, ['heightByField', col.key]);
     return userDraggedHeight ?? colCfg?.height;
   }
 
@@ -622,7 +622,7 @@ export class PivotFacet extends BaseFacet {
   private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCfg, spreadsheet } = this.cfg;
 
-    const cellDraggedWidth = get(rowCfg, `widthByField.${node.key}`);
+    const cellDraggedWidth = get(rowCfg, ['widthByField', node.key]);
 
     if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;

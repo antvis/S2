@@ -103,7 +103,7 @@ export abstract class BaseDataSet {
   }
 
   public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
-    const newMeta: Meta[] = [
+    return [
       ...meta,
       generateExtraFieldMeta(
         meta,
@@ -111,7 +111,6 @@ export abstract class BaseDataSet {
         defaultExtraFieldText,
       ),
     ];
-    return newMeta;
   }
 
   public getDisplayDataSet() {

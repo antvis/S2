@@ -636,7 +636,7 @@ describe('Scroll Tests', () => {
       ).toBeFalsy();
     });
 
-    test('should scroll horizontally when shift key is held', async () => {
+    test('should scroll horizontally when shift key is held on Windows', async () => {
       s2.setOptions({
         frozenRowHeader: true,
         style: {
@@ -671,11 +671,39 @@ describe('Scroll Tests', () => {
         shiftKey: true,
       });
 
+      Object.defineProperty(window.navigator, 'userAgent', {
+        value: 'Windows',
+        configurable: true,
+        writable: true,
+      });
+
       canvas.dispatchEvent(wheelEvent);
-
       await sleep(200);
-
       expect(onScroll).toHaveBeenCalled();
+    });
+
+    test('should not scroll horizontally when shift key is held on macOS', async () => {
+      const onScroll = jest.fn((...args) => {
+        expect(args[0].rowHeaderScrollX).toBeGreaterThan(0);
+        expect(args[0].scrollX).toBe(0);
+        expect(args[0].scrollY).toBe(0);
+      });
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: 0,
+        deltaY: 20,
+        shiftKey: true,
+      });
+
+      Object.defineProperty(window.navigator, 'userAgent', {
+        value: 'Mac OS',
+        configurable: true,
+        writable: true,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+      await sleep(200);
+      expect(onScroll).not.toHaveBeenCalled();
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', () => {
