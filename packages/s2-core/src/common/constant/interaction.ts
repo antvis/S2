@@ -124,3 +124,10 @@ export interface InteractionCellSelectedHighlightType {
   currentRow?: boolean; // 高亮选中单元格所在行
   currentCol?: boolean; // 高亮选中单元格所在列
 }
+
+export interface HoverHighlight {
+  rowHeader: boolean; // 高亮行头
+  colHeader: boolean; // 高亮列头
+  currentRow: boolean; // 高亮选中单元格所在行
+  currentCol: boolean; // 高亮选中单元格所在列
+}

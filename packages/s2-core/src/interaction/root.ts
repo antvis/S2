@@ -8,6 +8,7 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
+  type HoverHighlight,
   type InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type {
@@ -598,5 +599,32 @@ export class RootInteraction {
 
   public getHoverAfterScroll(): boolean {
     return this.spreadsheet.options.interaction.hoverAfterScroll;
+  }
+
+  public getHoverHighlight(): HoverHighlight {
+    const { hoverHighlight } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(hoverHighlight)) {
+      return {
+        rowHeader: hoverHighlight,
+        colHeader: hoverHighlight,
+        currentRow: hoverHighlight,
+        currentCol: hoverHighlight,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = hoverHighlight ?? {};
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
   }
 }

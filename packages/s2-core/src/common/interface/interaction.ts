@@ -14,6 +14,7 @@ import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
 import type {
   CellTypes,
+  HoverHighlight,
   InteractionCellSelectedHighlightType,
   InteractionStateName,
   InterceptType,
@@ -141,7 +142,7 @@ export interface InteractionOptions {
   // focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
+  hoverHighlight?: boolean | HoverHighlight;
   // keep cell hovered after 800ms duration
   hoverFocus?: boolean | HoverFocusOptions;
   // enable Command + C to copy spread data

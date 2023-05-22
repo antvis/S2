@@ -35,13 +35,17 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     const { rowId, colId } = meta;
     const { interaction } = this.spreadsheet;
 
-    updateAllColHeaderCellState(
-      colId,
-      interaction.getAllColHeaderCells(),
-      InteractionStateName.HOVER,
-    );
+    const { rowHeader, colHeader } = interaction.getHoverHighlight();
 
-    if (rowId) {
+    if (colHeader) {
+      updateAllColHeaderCellState(
+        colId,
+        interaction.getAllColHeaderCells(),
+        InteractionStateName.HOVER,
+      );
+    }
+
+    if (rowHeader && rowId) {
       // update rowHeader cells
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
@@ -86,7 +90,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         showSingleTips,
       };
-      if (interactionOptions.hoverHighlight) {
+      const { rowHeader, colHeader } = interaction.getHoverHighlight();
+      if (rowHeader || colHeader) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
@@ -201,7 +206,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-      if (interactionOptions.hoverHighlight) {
+      const { rowHeader, colHeader } = interaction.getHoverHighlight();
+      if (rowHeader || colHeader) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
