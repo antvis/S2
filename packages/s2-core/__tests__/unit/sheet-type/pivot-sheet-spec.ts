@@ -455,6 +455,23 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.showSeriesNumber).toBeTruthy();
   });
 
+  test('should init new tooltip', () => {
+    const tooltipDestorySpy = jest
+      .spyOn(s2.tooltip, 'destroy')
+      .mockImplementationOnce(() => {});
+
+    class CustomTooltip extends BaseTooltip {}
+
+    s2.setOptions({
+      tooltip: {
+        renderTooltip: (spreadsheet) => new CustomTooltip(spreadsheet),
+      },
+    });
+
+    expect(tooltipDestorySpy).toHaveBeenCalled();
+    expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
+  });
+
   test('should render sheet', () => {
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
@@ -963,7 +980,10 @@ describe('PivotSheet Tests', () => {
     s2.store.set('test', 111);
 
     // restore mock...
-    (s2.tooltip.show as jest.Mock).mockRestore();
+    const tooltipShowSpy = jest
+      .spyOn(s2.tooltip, 'show')
+      .mockImplementationOnce(() => {});
+    tooltipShowSpy.mockRestore();
     s2.showTooltip({
       position: {
         x: 10,
