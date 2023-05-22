@@ -202,8 +202,6 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
-    this.handleViewport(viewport);
-
     const { textAlign } = this.getTextStyle();
     const adjustedViewport = adjustColHeaderScrollingViewport(
       viewport,
@@ -520,14 +518,5 @@ export class ColCell extends HeaderCell {
 
   protected isLastColumn() {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
-  }
-
-  /**
-   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
-   * @param viewport
-   * @returns viewport
-   */
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    return viewport;
   }
 }
