@@ -12,6 +12,7 @@ import {
   getPalette,
   type DataType,
   type HeaderActionIconProps,
+  type HoverHighlight,
   type InteractionCellSelectedHighlightType,
   type InteractionOptions,
   type S2DataConfig,
@@ -953,18 +954,57 @@ function MainLayout() {
                   </Select>
                 </Tooltip>
                 <Tooltip title="高亮当前行列单元格">
-                  <Switch
-                    checkedChildren="hover十字器开"
-                    unCheckedChildren="hover十字器关"
-                    checked={mergedOptions.interaction.hoverHighlight}
-                    onChange={(checked) => {
+                  <Select
+                    style={{ width: 260 }}
+                    placeholder="单元格悬停高亮"
+                    allowClear
+                    mode="multiple"
+                    defaultValue={[mergedOptions.interaction.hoverHighlight]}
+                    onChange={(type) => {
+                      let hoverHighlight: boolean | HoverHighlight = false;
+
+                      const oldIdx = type.findIndex((typeItem) =>
+                        isBoolean(typeItem),
+                      );
+
+                      if (oldIdx > -1) {
+                        hoverHighlight = type[oldIdx];
+                      } else {
+                        hoverHighlight = {
+                          rowHeader: false,
+                          colHeader: false,
+                          currentCol: false,
+                          currentRow: false,
+                        };
+                        type.forEach((i) => {
+                          // @ts-ignore
+                          hoverHighlight[i] = true;
+                        });
+                      }
+
                       updateOptions({
                         interaction: {
-                          hoverHighlight: checked,
+                          hoverHighlight,
                         },
                       });
                     }}
-                  />
+                  >
+                    <Select.Option value={true}>
+                      （旧）高亮单元格所在行列以及行列头
+                    </Select.Option>
+                    <Select.Option value="rowHeader">
+                      rowHeader: 高亮所在行头
+                    </Select.Option>
+                    <Select.Option value="colHeader">
+                      colHeader: 高亮所在列头
+                    </Select.Option>
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
+                    </Select.Option>
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
+                    </Select.Option>
+                  </Select>
                 </Tooltip>
                 <Tooltip title="在数值单元格悬停800ms,显示tooltip">
                   <Switch
