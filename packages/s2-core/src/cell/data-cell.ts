@@ -369,6 +369,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           height: height - margin * 2,
         },
         {
+          capture: false,
           visible: false,
         },
       ),
