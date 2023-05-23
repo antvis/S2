@@ -1,3 +1,10 @@
+# [@antv/s2-v1.47.1](https://github.com/antvis/S2/compare/@antv/s2-v1.47.0...@antv/s2-v1.47.1) (2023-05-23)
+
+
+### Bug Fixes
+
+* 修复 dataCell linkField 不能点击的问题 ([#2227](https://github.com/antvis/S2/issues/2227)) ([71410e2](https://github.com/antvis/S2/commit/71410e27b8e6a09ba79f1fc570ab782432479cb8))
+
 # [@antv/s2-v1.47.0](https://github.com/antvis/S2/compare/@antv/s2-v1.46.0...@antv/s2-v1.47.0) (2023-05-22)
 
 
