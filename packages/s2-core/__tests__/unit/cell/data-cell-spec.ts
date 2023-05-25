@@ -407,16 +407,30 @@ describe('Data Cell Tests', () => {
     });
 
     test('should test condition mapping params when the sheet is pivot', () => {
+      const formatter = (v: any) => {
+        return `${v}%`;
+      };
+
+      s2.setDataCfg({
+        ...s2.dataCfg,
+        meta: [
+          {
+            field: 'cost',
+            formatter,
+          },
+        ],
+      });
       s2.setOptions({
         conditions: {
           background: [
             {
               field: 'cost',
-              mapping(value, dataInfo) {
+              mapping(value, dataInfo, formattedValue) {
                 const originData = s2.dataSet.originData;
                 const resultData = find(originData, dataInfo);
 
                 expect(resultData).toEqual(dataInfo);
+                expect(formatter(value)).toEqual(formattedValue);
                 // @ts-ignore
                 expect(value).toEqual(resultData.cost);
 
