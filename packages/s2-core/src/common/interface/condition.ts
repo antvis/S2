@@ -31,6 +31,7 @@ export interface MappingResult extends ValueRange {
 export type MappingFunction = (
   fieldValue: number | string,
   data: RawData,
+  formattedValue?: number | string,
 ) => MappingResult | undefined | null;
 
 /**
