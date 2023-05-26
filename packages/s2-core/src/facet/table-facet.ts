@@ -369,39 +369,16 @@ export class TableFacet extends BaseFacet {
     return totalHeight;
   }
 
-  /** 判断 columns 中是否配置了 rowSpan */
-  private isRowSpanConfiged(columns: Columns) {
-    return columns.some((item) => {
-      if (isString(item)) {
-        return false;
-      }
-      if (item.rowSpan) {
-        return true;
-      }
-      if (item.children?.length) {
-        const res = this.isRowSpanConfiged(item.children);
-        if (res) {
-          return true;
-        }
-      }
-      return false;
-    });
-  }
-
-  private getTreeDepth(column: string | ColumnNode) {
-    if (!column) {
-      return 0;
+  private getKeysOfFirstColumn(columns: Columns) {
+    let res = [];
+    const key = isString(columns?.[0]) ? columns?.[0] : columns?.[0]?.key;
+    if (key) {
+      res = res.concat(key);
     }
-    let maxDepth = 0;
-    if (!isString(column)) {
-      column?.children?.slice(0, 1)?.forEach((child) => {
-        const depth = this.getTreeDepth(child);
-        if (depth > maxDepth) {
-          maxDepth = depth;
-        }
-      });
+    if (!isString(columns?.[0]) && columns?.[0]?.children?.length) {
+      res = res.concat(this.getKeysOfFirstColumn(columns?.[0]?.children));
     }
-    return maxDepth + 1;
+    return res;
   }
 
   private calculateColNodesCoordinate(
@@ -412,20 +389,15 @@ export class TableFacet extends BaseFacet {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
 
-    // 一旦设置了 rowSpan 则只根据第一列行数计算列头高度, 避免出现空白行
-    const isRowSpanConfiged = this.isRowSpanConfiged(columns);
-    const countLines = this.getTreeDepth(columns?.[0]);
-    let end = colsHierarchy.sampleNodesForAllLevels.length + 1;
-    if (isRowSpanConfiged) {
-      end = countLines;
-    }
+    const keys = this.getKeysOfFirstColumn(columns);
 
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels.slice(
-      0,
-      end,
-    )) {
-      levelSample.height = this.getColNodeHeight(levelSample);
-      colsHierarchy.height += levelSample.height;
+    const nodesOfFirstColumn = allNodes.filter((node) => {
+      return keys.includes(node.field);
+    });
+
+    for (const nodeSample of nodesOfFirstColumn) {
+      nodeSample.height = this.getColNodeHeight(nodeSample);
+      colsHierarchy.height += nodeSample.height;
     }
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
     let currentCollIndex = 0;
