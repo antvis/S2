@@ -198,6 +198,8 @@ Function description: interactive general theme
 | backgroundOpacity | background transparency | `number` |          |          |
 | borderColor       | Edge fill color         | `string` |          |          |
 | borderWidth       | Edge Width              | `number` |          |          |
+| borderOpacity     | border transparency     | `number` |          |          |
+| textOpacity       | text transparency       | `number` |          |          |
 | opacity           | overall transparency    | `number` |          |          |
 
 #### Margin｜Padding
