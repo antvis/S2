@@ -12,8 +12,7 @@ import {
   getPalette,
   type DataType,
   type HeaderActionIconProps,
-  type HoverHighlight,
-  type InteractionCellSelectedHighlightType,
+  type InteractionCellHighlight,
   type InteractionOptions,
   type S2DataConfig,
   type TargetCellInfo,
@@ -910,7 +909,7 @@ function MainLayout() {
                     onChange={(type) => {
                       let selectedCellHighlight:
                         | boolean
-                        | InteractionCellSelectedHighlightType = false;
+                        | InteractionCellHighlight = false;
                       const oldIdx = type.findIndex((typeItem) =>
                         isBoolean(typeItem),
                       );
@@ -961,7 +960,8 @@ function MainLayout() {
                     mode="multiple"
                     defaultValue={[mergedOptions.interaction.hoverHighlight]}
                     onChange={(type) => {
-                      let hoverHighlight: boolean | HoverHighlight = false;
+                      let hoverHighlight: boolean | InteractionCellHighlight =
+                        false;
 
                       const oldIdx = type.findIndex((typeItem) =>
                         isBoolean(typeItem),

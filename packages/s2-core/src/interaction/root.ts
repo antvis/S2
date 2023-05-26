@@ -8,14 +8,13 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  type HoverHighlight,
-  type InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type {
   BrushSelection,
   BrushSelectionInfo,
   CellMeta,
   CustomInteraction,
+  InteractionCellHighlight,
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
@@ -570,7 +569,7 @@ export class RootInteraction {
     return this.hoverTimer;
   }
 
-  public getSelectedCellHighlight(): InteractionCellSelectedHighlightType {
+  public getSelectedCellHighlight(): InteractionCellHighlight {
     const { selectedCellHighlight } = this.spreadsheet.options.interaction;
 
     if (isBoolean(selectedCellHighlight)) {
@@ -601,7 +600,7 @@ export class RootInteraction {
     return this.spreadsheet.options.interaction.hoverAfterScroll;
   }
 
-  public getHoverHighlight(): HoverHighlight {
+  public getHoverHighlight(): InteractionCellHighlight {
     const { hoverHighlight } = this.spreadsheet.options.interaction;
 
     if (isBoolean(hoverHighlight)) {
