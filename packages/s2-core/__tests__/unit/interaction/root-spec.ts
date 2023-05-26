@@ -66,7 +66,7 @@ describe('RootInteraction Tests', () => {
       },
     } as unknown as DataCell);
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockSpreadSheet.mockClear();
     panelGroupAllDataCells = Array.from<DataCell>({ length: 10 }).map(
       (_, idx) => getMockCell(idx),
@@ -92,6 +92,10 @@ describe('RootInteraction Tests', () => {
     rootInteraction.getAllColHeaderCells = () => [];
     rootInteraction.getAllRowHeaderCells = () => [];
     mockSpreadSheetInstance.interaction = rootInteraction;
+  });
+
+  afterEach(() => {
+    rootInteraction.destroy();
   });
 
   test('should get default interaction state', () => {
@@ -660,5 +664,7 @@ describe('RootInteraction Tests', () => {
     rootInteraction.interactions.forEach((interaction) => {
       expect(interaction.reset).toHaveBeenCalled();
     });
+
+    rootInteraction.destroy();
   });
 });
