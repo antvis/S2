@@ -199,8 +199,8 @@ const s2Options = {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      rowCells: false,  // 选中单元格时，高亮当前行
-      colCells: false,  // 选中单元格时，高亮当前列
+      currentRow: false,  // 选中单元格时，高亮当前行
+      currentCol: false,  // 选中单元格时，高亮当前列
     },
   },
 };
