@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.40.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.39.0...@antv/s2-react-v1.40.0) (2023-05-22)
+
+
+### Bug Fixes
+
+* **core:** can reset tooltip.renderTooltip in setOptions ([#2210](https://github.com/antvis/S2/issues/2210)) ([8b26d9c](https://github.com/antvis/S2/commit/8b26d9c0d8f4298859be8e301dcccc86b7514b87))
+
+
+### Features
+
+* 在行列头配置为空时，趋势分析表不渲染框架 ([#2216](https://github.com/antvis/S2/issues/2216)) ([f1fbcdb](https://github.com/antvis/S2/commit/f1fbcdb504e8fadff04cd067777a88724a769708))
+
 # [@antv/s2-react-v1.39.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.38.0...@antv/s2-react-v1.39.0) (2023-03-31)
 
 

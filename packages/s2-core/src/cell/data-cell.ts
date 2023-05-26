@@ -192,12 +192,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
+    this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -369,6 +369,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           height: height - margin * 2,
         },
         {
+          capture: false,
           visible: false,
         },
       ),

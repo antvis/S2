@@ -1,3 +1,26 @@
+# [@antv/s2-v1.47.1](https://github.com/antvis/S2/compare/@antv/s2-v1.47.0...@antv/s2-v1.47.1) (2023-05-23)
+
+
+### Bug Fixes
+
+* 修复 dataCell linkField 不能点击的问题 ([#2227](https://github.com/antvis/S2/issues/2227)) ([71410e2](https://github.com/antvis/S2/commit/71410e27b8e6a09ba79f1fc570ab782432479cb8))
+
+# [@antv/s2-v1.47.0](https://github.com/antvis/S2/compare/@antv/s2-v1.46.0...@antv/s2-v1.47.0) (2023-05-22)
+
+
+### Bug Fixes
+
+* **core:** can not set field height or width when the field name is surrounded by square brackets ([#2212](https://github.com/antvis/S2/issues/2212)) ([83b8e4d](https://github.com/antvis/S2/commit/83b8e4d11bb822843050ed12cf99eae72ca6ef2b))
+* **core:** can reset tooltip.renderTooltip in setOptions ([#2210](https://github.com/antvis/S2/issues/2210)) ([8b26d9c](https://github.com/antvis/S2/commit/8b26d9c0d8f4298859be8e301dcccc86b7514b87))
+* **core:** only do compatibility of shift + scroll on Windows ([#2206](https://github.com/antvis/S2/issues/2206)) ([740462f](https://github.com/antvis/S2/commit/740462fb8af9591a4567ec808d1d04944017b530))
+* 修复树状模式下，总计小计格式化问题 ([#2219](https://github.com/antvis/S2/issues/2219)) ([d3cdca0](https://github.com/antvis/S2/commit/d3cdca013e778f11527afb54df4fd5be51250450))
+* 明细表存在横向滚动条时多列头文本不居中 close [#2199](https://github.com/antvis/S2/issues/2199) ([#2200](https://github.com/antvis/S2/issues/2200)) ([c15f8c8](https://github.com/antvis/S2/commit/c15f8c83d4fc25fc26f6e138b7c7f874256279bc))
+
+
+### Features
+
+* 在行列头配置为空时，趋势分析表不渲染框架 ([#2216](https://github.com/antvis/S2/issues/2216)) ([f1fbcdb](https://github.com/antvis/S2/commit/f1fbcdb504e8fadff04cd067777a88724a769708))
+
 # [@antv/s2-v1.46.0](https://github.com/antvis/S2/compare/@antv/s2-v1.45.1...@antv/s2-v1.46.0) (2023-05-15)
 
 

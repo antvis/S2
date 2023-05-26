@@ -17,6 +17,7 @@ import {
   type InteractionOptions,
   DEFAULT_STYLE,
   type InteractionCellSelectedHighlightType,
+  BaseTooltip,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -68,6 +69,12 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+class ResetTooltip extends BaseTooltip {
+  renderContent() {
+    ReactDOM.render(<>Reset Tooltip</>, this.container);
+  }
+}
 
 const { TabPane } = Tabs;
 
@@ -449,6 +456,21 @@ function MainLayout() {
                 </Tooltip>
               </Space>
               <Space>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      tooltip: {
+                        renderTooltip: (spreadsheet) =>
+                          new ResetTooltip(spreadsheet),
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                  style={{ marginLeft: 20 }}
+                >
+                  自定义 Tooltip (s2.setOptions)
+                </Button>
                 <Popover
                   placement="bottomRight"
                   content={
@@ -471,9 +493,7 @@ function MainLayout() {
                     </>
                   }
                 >
-                  <Button size="small" style={{ marginLeft: 20 }}>
-                    主题色调整
-                  </Button>
+                  <Button size="small">主题色调整</Button>
                 </Popover>
                 <Button
                   danger

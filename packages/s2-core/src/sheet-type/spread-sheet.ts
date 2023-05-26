@@ -219,6 +219,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initTooltip() {
+    this.tooltip?.destroy?.();
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
@@ -381,6 +382,11 @@ export abstract class SpreadSheet extends EE {
     } else {
       this.options = customMerge(this.options, options);
     }
+
+    if (reset || options.tooltip?.renderTooltip) {
+      this.initTooltip();
+    }
+
     this.registerIcons();
   }
 
