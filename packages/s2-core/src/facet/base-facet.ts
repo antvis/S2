@@ -23,6 +23,7 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  OriginEventType,
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
@@ -1346,10 +1347,25 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-    const { interaction } = this.spreadsheet;
+    const { interaction, container } = this.spreadsheet;
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
-      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+      interaction.removeIntercepts([InterceptType.HOVER]);
+
+      const canvasMousemoveEvent =
+        interaction.eventController.lastCanvasMousemoveEvent;
+      if (canvasMousemoveEvent) {
+        const { x, y } = canvasMousemoveEvent;
+        const shape = container.getShape(x, y);
+        if (shape) {
+          container.emit(OriginEventType.MOUSE_MOVE, {
+            ...canvasMousemoveEvent,
+            shape,
+            target: shape,
+            timestamp: performance.now(),
+          });
+        }
+      }
     }
   }, 300);
 

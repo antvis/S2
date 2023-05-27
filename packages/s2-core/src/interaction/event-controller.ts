@@ -51,6 +51,8 @@ export class EventController {
 
   public isCanvasEffect = false;
 
+  public lastCanvasMousemoveEvent: CanvasEvent;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
@@ -333,6 +335,8 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
+    this.lastCanvasMousemoveEvent = event;
+
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
