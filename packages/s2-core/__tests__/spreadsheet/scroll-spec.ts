@@ -390,6 +390,55 @@ describe('Scroll Tests', () => {
     },
   );
 
+  // https://github.com/antvis/S2/issues/2222
+  test.each([
+    {
+      type: 'horizontal',
+      offset: {
+        scrollX: 20,
+        scrollY: 0,
+      },
+    },
+    {
+      type: 'vertical',
+      offset: {
+        scrollX: 0,
+        scrollY: 20,
+      },
+    },
+  ])(
+    'should trigger hover cells when hover cells after scroll by %o',
+    async ({ offset }) => {
+      s2.facet.cornerBBox.maxY = -9999;
+      s2.facet.panelBBox.minX = -9999;
+      s2.facet.panelBBox.minY = -9999;
+
+      const mousemoveEvent = new MouseEvent('mousemove', {
+        clientX: 200,
+        clientY: 200,
+      });
+
+      canvas.dispatchEvent(mousemoveEvent);
+
+      s2.container.emit = jest.fn();
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: offset.scrollX,
+        deltaY: offset.scrollY,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+
+      // wait requestAnimationFrame and debounce
+      await sleep(1000);
+
+      expect(s2.container.emit).toHaveBeenCalledWith(
+        OriginEventType.MOUSE_MOVE,
+        expect.any(Object),
+      );
+    },
+  );
+
   test('should not trigger scroll event on passive renders', () => {
     const sheet = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
