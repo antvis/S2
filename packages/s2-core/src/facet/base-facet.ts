@@ -1352,8 +1352,9 @@ export abstract class BaseFacet {
     if (!interaction.isSelectedState()) {
       interaction.removeIntercepts([InterceptType.HOVER]);
 
+      // https://github.com/antvis/S2/issues/2222
       const canvasMousemoveEvent =
-        interaction.eventController.lastCanvasMousemoveEvent;
+        interaction.eventController.canvasMousemoveEvent;
       if (canvasMousemoveEvent) {
         const { x, y } = canvasMousemoveEvent;
         const shape = container.getShape(x, y);
