@@ -166,12 +166,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       map(customRows, (row, rowIndex) => {
         // 角头的最后一行，为行头
         if (colIndex === customColumns.length - 1) {
-          return find(meta, ['field', row])?.name ?? row;
+          return this.config.isFormatData
+            ? find(meta, ['field', row])?.name
+            : row;
         }
 
         // 角头的最后一列，为列头
         if (rowIndex === maxRowLen - 1) {
-          return find(meta, ['field', col])?.name ?? col;
+          return this.config.isFormatData
+            ? find(meta, ['field', col])?.name
+            : col;
         }
 
         return '';
@@ -221,6 +225,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   };
 
@@ -231,7 +236,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     // 不带表头复制
     if (!copyWithHeader) {
-      return this.matrixTransformer(dataMatrix);
+      return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
@@ -241,6 +246,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   }
 
@@ -254,6 +260,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
+      this.config.separator,
     );
   };
 }
