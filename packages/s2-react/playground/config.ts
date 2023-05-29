@@ -92,11 +92,11 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: false,
-  width: 600,
-  height: 400,
+  debug: true,
+  width: 800,
+  height: 600,
   hierarchyType: 'grid',
-  // showSeriesNumber: true,
+  // showSeriesNumber: false,
   frozen: {
     rowHeader: true,
     // rowCount: 1,
@@ -136,6 +136,7 @@ export const s2Options: SheetComponentOptions = {
       ],
     },
   },
+
   conditions: s2ConditionsOptions,
   style: {
     rowCell: {

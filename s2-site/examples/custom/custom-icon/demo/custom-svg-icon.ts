@@ -29,7 +29,7 @@ fetch(
       // 使用刚定义的 icon
       headerActionIcons: [
         {
-          iconNames: ['customKingIcon'],
+          icons: ['customKingIcon'],
           belongsCell: 'rowCell',
         },
       ],

@@ -15,8 +15,8 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import {
-  getFixedTextIconPosition,
-  getVerticalIconPositionByText,
+  getHorizontalTextIconPosition,
+  getVerticalIconPosition,
 } from '../utils/cell/cell';
 import { renderCircle, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
@@ -34,9 +34,6 @@ import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrol
 
 export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
-
-  /** icon 绘制起始坐标 */
-  protected iconPosition: PointLike;
 
   public get cellType() {
     return CellTypes.ROW_CELL;
@@ -56,8 +53,8 @@ export class RowCell extends HeaderCell {
     this.drawInteractiveBorderShape();
     // 绘制单元格文本
     this.drawTextShape();
-    // 绘制字段标记 -- icon
-    this.drawConditionIconShapes();
+    // 绘制字段和 action标记 -- icon 和 action
+    this.drawActionAndConditionIcons();
     // 绘制树状模式收起展开的 icon
     this.drawTreeIcon();
     // 绘制树状模式下子节点层级占位圆点
@@ -66,8 +63,6 @@ export class RowCell extends HeaderCell {
     this.drawBorders();
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
-    // 绘制 action icons
-    this.drawActionIcons();
     this.update();
   }
 
@@ -150,7 +145,7 @@ export class RowCell extends HeaderCell {
     const contentIndent = this.getContentIndent();
 
     const iconX = x + contentIndent;
-    const iconY = this.iconPosition.y;
+    const iconY = this.getIconPosition().y;
 
     this.treeIcon = renderTreeIcon({
       group: this,
@@ -345,14 +340,10 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected getIconPosition() {
-    return this.iconPosition;
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
-    return width - this.getTextIndent() - this.getActionIconsWidth();
+    return width - this.getTextIndent() - this.getActionAndConditionIconWidth();
   }
 
   protected getTextArea() {
@@ -370,7 +361,7 @@ export class RowCell extends HeaderCell {
     const { scrollY, viewportHeight } = this.headerConfig;
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
-    const { cell, icon: iconStyle } = this.getStyle()!;
+    const { cell, icon: iconStyle } = this.getStyle();
 
     const viewport: AreaRange = {
       start: scrollY!,
@@ -387,34 +378,38 @@ export class RowCell extends HeaderCell {
         align: normalizeTextAlign(textStyle.textBaseline!),
         size: {
           textSize: textStyle.fontSize!,
-          iconSize: 0,
         },
         padding: {
-          start: cell?.padding?.top!,
-          end: cell?.padding?.bottom!,
-          betweenTextIcon: 0,
+          start: cell.padding.top,
+          end: cell.padding.bottom,
         },
       },
     );
 
-    const { text, icon } = getFixedTextIconPosition({
+    const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textStyle,
       textWidth: this.actualTextWidth,
-      iconStyle: this.getIconStyle(),
-      iconCount: this.getActionIconsCount(),
+      textAlign: textStyle.textAlign!,
+      groupedIcons: this.groupedIcons,
+      iconStyle: iconStyle!,
     });
 
-    this.iconPosition = {
-      x: icon.x,
-      y: getVerticalIconPositionByText(
-        iconStyle?.size!,
-        textStart,
-        textStyle.fontSize!,
-        textStyle.textBaseline!,
-      ),
+    const iconY = getVerticalIconPosition(
+      iconStyle?.size!,
+      textStart,
+      textStyle.fontSize!,
+      textStyle.textBaseline!,
+    );
+
+    this.leftIconPosition = {
+      x: leftIconX,
+      y: iconY,
+    };
+    this.rightIconPosition = {
+      x: rightIconX,
+      y: iconY,
     };
 
-    return { x: text.x, y: textStart };
+    return { x: textX, y: textStart };
   }
 }

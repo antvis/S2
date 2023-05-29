@@ -1,13 +1,41 @@
-import { find, isEmpty, isEqual } from 'lodash';
+import { find, groupBy, isEmpty, isEqual, merge } from 'lodash';
+import type {
+  FullyIconName,
+  IconPosition,
+  IconTheme,
+  InternalFullyHeaderActionIcon,
+} from '../../common/interface';
 import { CellTypes, EXTRA_FIELD } from '../../common/constant';
 import type {
+  ActionIconName,
   FormatResult,
   HeaderActionIcon,
 } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
-export const shouldShowActionIcons = (
-  actionIconCfg: HeaderActionIcon,
+const normalizeIcons = (
+  icons: ActionIconName[],
+  position: IconPosition = 'right',
+) =>
+  icons.map((icon) => {
+    if (typeof icon === 'string') {
+      return { name: icon, position };
+    }
+
+    return icon;
+  });
+
+const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
+  actionIconList.map(
+    (actionIcon) =>
+      ({
+        ...actionIcon,
+        icons: normalizeIcons(actionIcon.icons),
+      } as InternalFullyHeaderActionIcon),
+  );
+
+const shouldShowActionIcons = (
+  actionIconCfg: InternalFullyHeaderActionIcon,
   meta: Node,
   cellType: CellTypes,
 ) => {
@@ -15,9 +43,9 @@ export const shouldShowActionIcons = (
     return false;
   }
 
-  const { iconNames, displayCondition, belongsCell } = actionIconCfg;
+  const { icons, displayCondition, belongsCell } = actionIconCfg;
 
-  if (isEmpty(iconNames)) {
+  if (isEmpty(icons)) {
     return false;
   }
 
@@ -31,7 +59,7 @@ export const shouldShowActionIcons = (
   }
 
   // 有任意 iconName 命中展示，则使用当前 headerActionIcon config
-  return iconNames.some((iconName) => displayCondition(meta, iconName));
+  return icons.some((icon) => displayCondition(meta, icon.name));
 };
 
 /**
@@ -45,8 +73,10 @@ export const getActionIconConfig = (
   actionIconCfgList: HeaderActionIcon[] = [],
   meta: Node,
   cellType: CellTypes,
-): HeaderActionIcon | undefined => {
-  const iconConfig = find(actionIconCfgList, (cfg) =>
+): InternalFullyHeaderActionIcon | undefined => {
+  const normalizedList = normalizeActionIconCfg(actionIconCfgList);
+
+  const iconConfig = find(normalizedList, (cfg) =>
     shouldShowActionIcons(cfg, meta, cellType),
   );
 
@@ -55,18 +85,63 @@ export const getActionIconConfig = (
   }
 
   // 使用配置的 displayCondition 进一步筛选需要展示的 icon
-  let nextIconNames = iconConfig.iconNames;
+  let nextIcons = iconConfig.icons;
 
   if (iconConfig.displayCondition) {
-    nextIconNames = nextIconNames.filter((iconName) =>
-      iconConfig.displayCondition?.(meta, iconName),
+    nextIcons = nextIcons.filter((iconName) =>
+      iconConfig.displayCondition?.(meta, iconName.name),
     );
   }
 
   return {
     ...iconConfig,
-    iconNames: nextIconNames,
+    icons: nextIcons,
   };
+};
+
+export const getIconTotalWidth = (
+  icons: FullyIconName[] = [],
+  iconTheme: IconTheme,
+): number => {
+  if (isEmpty(icons)) {
+    return 0;
+  }
+
+  const { margin, size } = iconTheme;
+
+  return icons.reduce(
+    (acc, { position }) =>
+      acc + size! + (position === 'left' ? margin!.right! : margin!.left!),
+    0,
+  );
+};
+
+export type GroupedIcons = {
+  [key in IconPosition]: FullyIconName[];
+};
+
+export const groupIconsByPosition = (
+  icons: FullyIconName[] = [],
+  conditionIcon?: FullyIconName,
+) => {
+  const groupedIcons = merge(
+    {
+      left: [],
+      right: [],
+    },
+    groupBy(icons, 'position'),
+  ) as GroupedIcons;
+
+  // 基于 condition icon 和 value 是强关联的，所以最好将 condition icon 放在 value 的左右侧
+  if (conditionIcon) {
+    if (conditionIcon.position === 'left') {
+      groupedIcons.left.push(conditionIcon);
+    } else {
+      groupedIcons.right.unshift(conditionIcon);
+    }
+  }
+
+  return groupedIcons;
 };
 
 /**

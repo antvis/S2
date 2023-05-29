@@ -1,5 +1,5 @@
 import type { PointLike } from '@antv/g';
-import { cond, constant, isEmpty, last, matches, max, stubTrue } from 'lodash';
+import { isEmpty, last, max } from 'lodash';
 import {
   CellTypes,
   ELLIPSIS_SYMBOL,
@@ -11,7 +11,10 @@ import {
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
-import { getTextPosition, getVerticalPosition } from '../utils/cell/cell';
+import {
+  getHorizontalTextIconPosition,
+  getVerticalIconPosition,
+} from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderText, renderTreeIcon } from '../utils/g-renders';
 import {
@@ -51,21 +54,18 @@ export class CornerCell extends HeaderCell {
     super.initCell();
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
-    this.drawTreeIcon();
     this.drawTextShape();
-    this.drawConditionIconShapes();
-    this.drawActionIcons();
+    this.drawTreeIcon();
+    this.drawActionAndConditionIcons();
     this.drawBorders();
     this.drawResizeArea();
   }
 
   protected drawTextShape() {
-    const { x, y, height } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const { x, y, height, width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     const textStyle = this.getTextStyle();
     const cornerText = this.getCornerText();
-
-    // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
     const emptyPlaceholder = getEmptyPlaceholder(
@@ -103,15 +103,23 @@ export class CornerCell extends HeaderCell {
       });
     }
 
-    const { x: textX } = getTextPosition(
-      {
+    this.actualTextWidth = max([
+      measureTextWidth(firstLine, textStyle),
+      measureTextWidth(secondLine, textStyle),
+    ])!;
+
+    const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
+      bbox: {
         x: x + this.getTreeIconWidth(),
         y,
-        width: maxWidth,
+        width: width - this.getTreeIconWidth(),
         height,
       },
-      textStyle,
-    );
+      textAlign: textStyle.textAlign!,
+      textWidth: this.actualTextWidth,
+      groupedIcons: this.groupedIcons,
+      iconStyle: this.getIconStyle()!,
+    });
 
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
 
@@ -137,10 +145,22 @@ export class CornerCell extends HeaderCell {
       );
     }
 
-    this.actualTextWidth = max([
-      measureTextWidth(firstLine, textStyle),
-      measureTextWidth(secondLine, textStyle),
-    ])!;
+    const { size = 0 } = this.getStyle()!.icon!;
+    const iconY = getVerticalIconPosition(
+      size,
+      y + height / 2,
+      size,
+      textStyle.textBaseline!,
+    );
+
+    this.leftIconPosition = {
+      x: leftIconX,
+      y: iconY,
+    };
+    this.rightIconPosition = {
+      x: rightIconX,
+      y: iconY,
+    };
   }
 
   /**
@@ -153,14 +173,14 @@ export class CornerCell extends HeaderCell {
 
     const { collapseAll } = this.spreadsheet.options.style?.rowCell!;
     const { size = 0 } = this.getStyle()!.icon!;
-    const { textBaseline, fill } = this.getTextStyle();
+    const { fill } = this.getTextStyle();
     const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     this.treeIcon = renderTreeIcon({
       group: this,
       iconCfg: {
         x: area.x,
-        y: getVerticalPosition(area, textBaseline!, size),
+        y: this.getIconPosition().y,
         width: size,
         height: size,
         fill,
@@ -286,29 +306,6 @@ export class CornerCell extends HeaderCell {
     return this.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0;
   }
 
-  protected getIconPosition(): PointLike {
-    const textX = +this.textShapes[0]?.getAttribute('x')! ?? 0;
-    const { textBaseline, textAlign } = this.getTextStyle();
-    const { size, margin } = this.getStyle()!.icon!;
-
-    const iconX =
-      textX +
-      cond([
-        [matches('center'), constant(this.actualTextWidth / 2)],
-        [matches('right'), constant(0)],
-        [stubTrue, constant(this.actualTextWidth)],
-      ])(textAlign) +
-      margin?.left!;
-
-    const iconY = getVerticalPosition(
-      this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textBaseline!,
-      size,
-    );
-
-    return { x: iconX, y: iconY };
-  }
-
   protected getTreeIconWidth() {
     const { size, margin } = this.getStyle()!.icon!;
 
@@ -318,18 +315,26 @@ export class CornerCell extends HeaderCell {
   protected getTextStyle(): TextTheme {
     const { text, bolderText } = this.getStyle()!;
     const cornerTextStyle = this.isBolderText() ? text : bolderText;
-    const fill = this.getTextConditionFill(cornerTextStyle!);
+
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill(
+      this.getDefaultTextFill(cornerTextStyle!.fill!),
+    );
 
     return {
       ...cornerTextStyle,
       fill,
+      // 角头因为要折行，所以在都是按照middle来计算，这里写死，不然用户配置了baseline，会导致计算错误
+      textBaseline: 'middle',
     };
   }
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
-    return width - this.getTreeIconWidth() - this.getActionIconsWidth();
+    return (
+      width - this.getTreeIconWidth() - this.getActionAndConditionIconWidth()
+    );
   }
 
   protected getTextPosition(): PointLike {

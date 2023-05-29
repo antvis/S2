@@ -175,9 +175,9 @@ importers:
   packages/s2-core:
     specifiers:
       '@antv/event-emitter': ^0.1.3
-      '@antv/g': ^5.15.2
-      '@antv/g-canvas': ^1.9.21
-      '@antv/g-lite': ^1.0.0
+      '@antv/g': ^5.16.13
+      '@antv/g-canvas': ^1.9.41
+      '@antv/g-lite': ^1.0.51
       '@testing-library/dom': ^8.16.0
       '@types/d3-dsv': ^3.0.0
       '@types/d3-ease': ^3.0.0
@@ -194,15 +194,15 @@ importers:
       tinycolor2: ^1.4.2
     dependencies:
       '@antv/event-emitter': 0.1.3
-      '@antv/g': 5.15.8
-      '@antv/g-canvas': 1.9.24_@antv+g-lite@1.0.28
+      '@antv/g': 5.16.13
+      '@antv/g-canvas': 1.9.41_@antv+g-lite@1.0.51
+      '@antv/g-lite': 1.0.51
       d3-ease: 3.0.1
       d3-interpolate: 1.4.0
       d3-timer: 1.0.10
       decimal.js: 10.4.3
       lodash: 4.17.21
     devDependencies:
-      '@antv/g-lite': 1.0.28
       '@testing-library/dom': 8.19.1
       '@types/d3-dsv': 3.0.1
       '@types/d3-ease': 3.0.0
@@ -653,14 +653,25 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-camera-api/1.0.24_@antv+g-lite@1.0.28:
+  /@antv/g-camera-api/1.0.24_@antv+g-lite@1.0.51:
     resolution: {integrity: sha512-GdjPwpFfDUBy2fUQYJmuuIMw4CZE6bEMOmH9k33o4znk1gWAKPeSah82mJimPo/LWVZeYu7bF8ote0EZXl5XVA==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
+    dev: true
+
+  /@antv/g-camera-api/1.0.34_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-3Sty9aNb3IEwzMQZDHTFMHjU5xZRo3yWwsCiycsNJHHiUl5KvW9b2mFXmcOr3uAb4v1jJzBmyRGL80TAV35H5A==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
+      '@antv/util': 3.3.2
+      gl-matrix: 3.4.3
+    dev: false
 
   /@antv/g-canvas/0.5.13:
     resolution: {integrity: sha512-nu6wNeZhYomkEks2aniWlYML0ZGb9t5PGzjiOIp+B4z4HUEUvHOTdIPNfinzl5+4QC7fVZntsQKZK5dBFO5MDQ==}
@@ -674,48 +685,75 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-canvas/1.9.24_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-1d6qWrFp/wEFBROTQRsjkQN9Ohmyg1P7pGkCUJTAnfH8aaULSoD15kB44/SIbmchK814dXT0RixbnXoPMHDfqQ==}
+  /@antv/g-canvas/1.9.41_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-3y6XzfQ69XcZu53HUsJAIzDMPIHs1k7mB9QL5FiaxvDGt2yeDWMrCihKZdNN2C0pVuItneMAZRNhj7ZKmybHvg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
-      '@antv/g-plugin-canvas-path-generator': 1.1.35_@antv+g-lite@1.0.28
-      '@antv/g-plugin-canvas-picker': 1.8.33_@antv+g-lite@1.0.28
-      '@antv/g-plugin-canvas-renderer': 1.7.38_@antv+g-lite@1.0.28
-      '@antv/g-plugin-dom-interaction': 1.7.35_@antv+g-lite@1.0.28
-      '@antv/g-plugin-html-renderer': 1.7.35_@antv+g-lite@1.0.28
-      '@antv/g-plugin-image-loader': 1.1.36_@antv+g-lite@1.0.28
+      '@antv/g-lite': 1.0.51
+      '@antv/g-plugin-canvas-path-generator': 1.1.46_@antv+g-lite@1.0.51
+      '@antv/g-plugin-canvas-picker': 1.8.45_@antv+g-lite@1.0.51
+      '@antv/g-plugin-canvas-renderer': 1.7.53_@antv+g-lite@1.0.51
+      '@antv/g-plugin-dom-interaction': 1.7.45_@antv+g-lite@1.0.51
+      '@antv/g-plugin-html-renderer': 1.7.49_@antv+g-lite@1.0.51
+      '@antv/g-plugin-image-loader': 1.1.47_@antv+g-lite@1.0.51
       '@antv/util': 3.3.2
       '@types/offscreencanvas': 2019.7.0
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-css-layout-api/1.0.24_@antv+g-lite@1.0.28:
+  /@antv/g-css-layout-api/1.0.24_@antv+g-lite@1.0.51:
     resolution: {integrity: sha512-wjoskFGlYjRndZqcfbf6qSDPAfx/QK+nglQcwZAWYTVEW5rfp+biCflyqZMKk07RNO202XJ9aph1rcgaYKIkPQ==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
+    dev: true
 
-  /@antv/g-css-typed-om-api/1.0.24_@antv+g-lite@1.0.28:
+  /@antv/g-css-layout-api/1.0.33_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-XqPSrDaiJnl1OKH4/8X7am8s179Ds2egUnf34vmKVxTKJZvSex1jP4+jgmt3L2/ijDnH8WtMxctAPC6p7mpiqg==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
+    dev: false
+
+  /@antv/g-css-typed-om-api/1.0.24_@antv+g-lite@1.0.51:
     resolution: {integrity: sha512-yunoV3rjoIKJ3gk6ovMk1JpsiaZ4RWCng78hk55HAePm5Jl/Ww/V/gw7NtdH0R7+5CLxZXrny9L2q8vpQs165g==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
+    dev: true
 
-  /@antv/g-dom-mutation-observer-api/1.0.24_@antv+g-lite@1.0.28:
+  /@antv/g-css-typed-om-api/1.0.33_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-Cq4WE7fEmbXyUZywSK6vPwzugPVVfZp6r908YjeY48gWnBelfwowWL76qdddObPTOm+xxR5Tl9EkCiAdrq/fVQ==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
+    dev: false
+
+  /@antv/g-dom-mutation-observer-api/1.0.24_@antv+g-lite@1.0.51:
     resolution: {integrity: sha512-qNpUiQzsCXnPWXjDGkba8iekX40h0ePjSZsOD35FbQ4EYv+csJ0+x9Rnt5iFxIaDnOPaKbnDdlJQo3dWoszLHQ==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
+    dev: true
 
-  /@antv/g-lite/1.0.28:
-    resolution: {integrity: sha512-Yiu3TJNy5RYd00AoutW8e+oZuWCgk+2kj6TpS3GbHHYMCY15EQsNO9Uu7YwirwQramvXLuNpqxTLkZ6746YF1w==}
+  /@antv/g-dom-mutation-observer-api/1.0.33_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-htSNqW0eYpl9SUhYs4K3VWQHVdIyo7K0yA+539vP/Xg8dsHb5NKS0Kf5noMO7xhiMnT73k9HYkskPfOqxchB7w==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-math': 1.7.35
+      '@antv/g-lite': 1.0.51
+    dev: false
+
+  /@antv/g-lite/1.0.51:
+    resolution: {integrity: sha512-iaK6+1FI+gfK2P4eHhAx3rI9G589afiOnP1+P8DtT45TqU9ycYEuiWdKBbawQf2y46WQzrP+KonHW14L+UNxfQ==}
+    dependencies:
+      '@antv/g-math': 1.7.44
       '@antv/util': 3.3.2
       '@types/offscreencanvas': 2019.7.0
       d3-color: 1.4.1
@@ -731,96 +769,118 @@ packages:
       gl-matrix: 3.4.3
     dev: false
 
-  /@antv/g-math/1.7.35:
-    resolution: {integrity: sha512-hacNVMH+J416Bi4Nw1euAbxf8mSDALaZahXa2D4/3WSlig6M+SFIQsmQCP4zw0pypjlUXesNNeHcZzF81wYiag==}
+  /@antv/g-math/1.7.44:
+    resolution: {integrity: sha512-4DWbf1nfn/HhQ3TSuPrv8NUL+Jtj4JMUR3d4DYnStbbx4rLBFIG7HXVkgRI41yymwpeHDNEH12cOW8AwGl+rNw==}
     dependencies:
       gl-matrix: 3.4.3
       tslib: 2.4.1
 
-  /@antv/g-plugin-canvas-path-generator/1.1.35_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-AzLoBWDCH/R0TmSoRQlnKeql0YeV56cPZb7dtq4w4CVFtSXEZfIsi6mOxn9NQGMLEAZLIfrBWuU0TBwkg21adQ==}
+  /@antv/g-plugin-canvas-path-generator/1.1.46_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-YbV2FHflEUQKdN1cQP0vZNRk51lPlYP68IAGJty7LlFh6oIssBSY9fDyYotD9wTg3rn7V2cFSYCJUBxl53FlAg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
-      '@antv/g-math': 1.7.35
+      '@antv/g-lite': 1.0.51
+      '@antv/g-math': 1.7.44
       '@antv/util': 3.3.2
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-canvas-picker/1.8.33_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-+2lVotZBIQKV7OCga7tmQb4jvfoavVzj4dlJz+A3RtgO5yhDX7zjJqcRK6dT4y7HG5l+/s8yLYIfKilM5f0DxA==}
+  /@antv/g-plugin-canvas-picker/1.8.45_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-wFZ5xK3RlXfk2qV/hvfyWlfVWTJTuch1CSNZycFAxUmBw3T2eoTq5fWqj81ZnF/T75DiG/8L7aB901BaGfiC8A==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
-      '@antv/g-plugin-canvas-path-generator': 1.1.35_@antv+g-lite@1.0.28
-      '@antv/util': 3.3.2
-      gl-matrix: 3.4.3
-      tslib: 2.4.1
-    dev: false
-
-  /@antv/g-plugin-canvas-renderer/1.7.38_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-qkroMUvxHLKnEDqAW+FZ8fRSWakxTWMCUD7SO3vJfeKp7FEYJ1QVvGhMi6+BduXUY1xEZn6AC1ezvaxU/YSKqA==}
-    peerDependencies:
-      '@antv/g-lite': ^1.0.0
-    dependencies:
-      '@antv/g-lite': 1.0.28
-      '@antv/g-math': 1.7.35
-      '@antv/g-plugin-canvas-path-generator': 1.1.35_@antv+g-lite@1.0.28
-      '@antv/g-plugin-image-loader': 1.1.36_@antv+g-lite@1.0.28
+      '@antv/g-lite': 1.0.51
+      '@antv/g-plugin-canvas-path-generator': 1.1.46_@antv+g-lite@1.0.51
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-dom-interaction/1.7.35_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-g9BZNgDXn7B7IcD0rT0VO+MokCVSFgzWGBYHGvZZoRlBt/Urm0q283OgrWiVv4eBgrd9ofleORUBalXVEc60VQ==}
+  /@antv/g-plugin-canvas-renderer/1.7.53_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-S/U4KYJobEQeoOv1Ahf4JaW8gpQGB2/2f+eNx93GigNkiMD0PxTtXhrclFG1vBHNaLJxdmLHd2WTvI0Qihy3sg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
-      tslib: 2.4.1
-    dev: false
-
-  /@antv/g-plugin-html-renderer/1.7.35_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-5Dd6OE/YwbsX7e7msMtLVDunnhr4qu2HmLqyTGKZBWerS6QDkYK2LHMmeqVMiX8afmwdF7QSxmX0mqzKvejoaA==}
-    peerDependencies:
-      '@antv/g-lite': ^1.0.0
-    dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
+      '@antv/g-math': 1.7.44
+      '@antv/g-plugin-canvas-path-generator': 1.1.46_@antv+g-lite@1.0.51
+      '@antv/g-plugin-image-loader': 1.1.47_@antv+g-lite@1.0.51
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-image-loader/1.1.36_@antv+g-lite@1.0.28:
-    resolution: {integrity: sha512-1tw8e23xU9fw4WdgMqgI9fvJnGJevXtl4EMZ+UsuqPu2osZDJKEjHbyafMfgA4T+aHHYzS8LuBtVLcq0bh0UmQ==}
+  /@antv/g-plugin-dom-interaction/1.7.45_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-14sLKemcCxObQDQPSVjNqD9k7uVvf8OfeCJQCza7IadWqdQPEyvFfhCw458hxW+wQm8zqT6rki0Z3RGZW2SPDw==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
+      tslib: 2.4.1
+    dev: false
+
+  /@antv/g-plugin-html-renderer/1.7.49_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-pwP+bjybMHCMcHpIaVZV26obrNMnbI9YZB+4B1MbDHOYRtlE/NHFnNluDIAV7WiyePjp+gUOjqzeox7WNV+C1Q==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
+      '@antv/util': 3.3.2
+      gl-matrix: 3.4.3
+      tslib: 2.4.1
+    dev: false
+
+  /@antv/g-plugin-image-loader/1.1.47_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-GBVA2RfBehkGRcetVW99SPlP7MHhBl89JEueZjyPLx9KdpTZ6z++vnknK/2IVcCKlho41t/IJyarsAGsCwLdQg==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
       '@antv/util': 3.3.2
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-web-animations-api/1.0.24_@antv+g-lite@1.0.28:
+  /@antv/g-web-animations-api/1.0.24_@antv+g-lite@1.0.51:
     resolution: {integrity: sha512-PP4xA6SdAlCD02rt1fzjbPq0iJE1Vp0Gve8YbD/xmFk/U1PFocEfqQGh6FFJoyzwf91buJlebizEqPvhY0Rs3Q==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.28
+      '@antv/g-lite': 1.0.51
       '@antv/util': 3.3.2
+    dev: true
+
+  /@antv/g-web-animations-api/1.0.34_@antv+g-lite@1.0.51:
+    resolution: {integrity: sha512-svqHWdC1jEoEla8yW2EzHaac7Lg2vnzvowSpMjYk/lIZyr9FvZ5flR5e84wLkYF91Q+hx3ouvn2DrRNVhNA2yQ==}
+    peerDependencies:
+      '@antv/g-lite': ^1.0.0
+    dependencies:
+      '@antv/g-lite': 1.0.51
+      '@antv/util': 3.3.2
+    dev: false
 
   /@antv/g/5.15.8:
     resolution: {integrity: sha512-2XmBC6UVpUlpBkKCOMNiKDl9CdPhGSDahHhzTw7L/+lEIflJSZyh9UsNUmpbkXafbeh8uEOVoPYBVKPDDNDidg==}
     dependencies:
-      '@antv/g-camera-api': 1.0.24_@antv+g-lite@1.0.28
-      '@antv/g-css-layout-api': 1.0.24_@antv+g-lite@1.0.28
-      '@antv/g-css-typed-om-api': 1.0.24_@antv+g-lite@1.0.28
-      '@antv/g-dom-mutation-observer-api': 1.0.24_@antv+g-lite@1.0.28
-      '@antv/g-lite': 1.0.28
-      '@antv/g-web-animations-api': 1.0.24_@antv+g-lite@1.0.28
+      '@antv/g-camera-api': 1.0.24_@antv+g-lite@1.0.51
+      '@antv/g-css-layout-api': 1.0.24_@antv+g-lite@1.0.51
+      '@antv/g-css-typed-om-api': 1.0.24_@antv+g-lite@1.0.51
+      '@antv/g-dom-mutation-observer-api': 1.0.24_@antv+g-lite@1.0.51
+      '@antv/g-lite': 1.0.51
+      '@antv/g-web-animations-api': 1.0.24_@antv+g-lite@1.0.51
+    dev: true
+
+  /@antv/g/5.16.13:
+    resolution: {integrity: sha512-AE/BfRhaivghVXWeeMqMWuV/eGEtOQj7PQ9NVThGdhZ5EbzWGG8SVMqKGlQXijH+lcEyK3NgNtxOuhiH3AFVLQ==}
+    dependencies:
+      '@antv/g-camera-api': 1.0.34_@antv+g-lite@1.0.51
+      '@antv/g-css-layout-api': 1.0.33_@antv+g-lite@1.0.51
+      '@antv/g-css-typed-om-api': 1.0.33_@antv+g-lite@1.0.51
+      '@antv/g-dom-mutation-observer-api': 1.0.33_@antv+g-lite@1.0.51
+      '@antv/g-lite': 1.0.51
+      '@antv/g-web-animations-api': 1.0.34_@antv+g-lite@1.0.51
+    dev: false
 
   /@antv/matrix-util/3.0.4:
     resolution: {integrity: sha512-BAPyu6dUliHcQ7fm9hZSGKqkwcjEDVLVAstlHULLvcMZvANHeLXgHEgV7JqcAV/GIhIz8aZChIlzM1ZboiXpYQ==}

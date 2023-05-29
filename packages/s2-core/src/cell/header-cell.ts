@@ -1,6 +1,7 @@
 import type {
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
+  PointLike,
 } from '@antv/g';
 import {
   find,
@@ -12,7 +13,9 @@ import {
   isEmpty,
   isEqual,
   map,
+  merge,
 } from 'lodash';
+import { renderIcon } from '../utils/g-renders';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -26,18 +29,25 @@ import type {
   CellMeta,
   Condition,
   FormatResult,
+  FullyIconName,
   HeaderActionIconOptions,
+  InternalFullyHeaderActionIcon,
   MappingResult,
   TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header';
 import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
-import { getActionIconConfig } from '../utils/cell/header-cell';
+import {
+  getActionIconConfig,
+  groupIconsByPosition,
+} from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
+
+  protected actionIconConfig: InternalFullyHeaderActionIcon | undefined;
 
   protected treeIcon: GuiIcon | undefined;
 
@@ -47,13 +57,21 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected hasDefaultHiddenIcon: boolean;
 
+  protected conditionIconMappingResult: FullyIconName | undefined;
+
+  /** left icon 绘制起始坐标 */
+  protected leftIconPosition: PointLike;
+
+  /** left icon 绘制起始坐标 */
+  protected rightIconPosition: PointLike;
+
   protected abstract isBolderText(): boolean;
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams || [];
-    // 改单元格是否为需要展示排序 icon 单元格
+    // 该单元格是否为需要展示排序 icon 单元格
     const isSortCell = this.isSortCell();
     const sortParam = find(
       [...sortParams].reverse(),
@@ -75,6 +93,33 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.resetTextAndConditionIconShapes();
     this.actionIcons = [];
     this.hasDefaultHiddenIcon = false;
+    this.generateIconConfig();
+  }
+
+  protected generateIconConfig() {
+    this.conditionIconMappingResult = this.getIconConditionResult();
+
+    const { sortParam } = this.headerConfig;
+    // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
+
+    if (this.showSortIcon()) {
+      this.actionIconConfig = {
+        icons: [{ name: get(sortParam, 'type', 'none'), position: 'right' }],
+        belongsCell: this.cellType,
+        isSortIcon: true,
+      };
+    } else {
+      this.actionIconConfig = getActionIconConfig(
+        this.spreadsheet.options.headerActionIcons,
+        this.meta,
+        this.cellType,
+      );
+    }
+
+    this.groupedIcons = groupIconsByPosition(
+      this.actionIconConfig?.icons ?? [],
+      this.conditionIconMappingResult,
+    );
   }
 
   protected getFormattedFieldValue(): FormatResult {
@@ -90,17 +135,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
       formattedValue,
       value,
     };
-  }
-
-  /**
-   * 获取操作 icons
-   */
-  protected getActionIconCfg() {
-    return getActionIconConfig(
-      this.spreadsheet.options.headerActionIcons,
-      this.meta,
-      this.cellType,
-    );
   }
 
   protected showSortIcon() {
@@ -124,51 +158,19 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconsCount() {
-    if (this.showSortIcon()) {
-      return 1;
-    }
-
-    const actionIconCfg = this.getActionIconCfg();
-
-    if (actionIconCfg) {
-      const iconNames = actionIconCfg.iconNames;
-
-      return iconNames.length;
-    }
-
-    return 0;
+    return this.groupedIcons.left.length + this.groupedIcons.right.length;
   }
 
-  protected getActionIconsWidth() {
-    const { size, margin } = this.getStyle()!.icon!;
+  protected getActionIconStyle() {
+    const { icon } = this.getStyle()!;
+    const fill = this.getTextConditionFill(this.getTextStyle().fill!);
 
-    return (size! + margin!.left!) * this.getActionIconsCount();
-  }
-
-  // 绘制排序icon
-  protected drawSortIcons() {
-    if (!this.showSortIcon()) {
-      return;
-    }
-
-    const { icon, text } = this.getStyle()!;
-    const fill = this.getTextConditionFill(text!);
-    const { sortParam } = this.headerConfig;
-    const position = this.getIconPosition();
-    const sortIcon = new GuiIcon({
-      name: get(sortParam, 'type', 'none'),
-      ...position,
-      width: icon!.size,
-      height: icon!.size,
-      fill,
-    });
-
-    sortIcon.addEventListener('click', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      this.spreadsheet.handleGroupSort(event, this.meta);
-    });
-    this.appendChild(sortIcon);
-    this.actionIcons.push(sortIcon);
+    return {
+      width: icon?.size,
+      height: icon?.size,
+      // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
+      fill: icon?.fill || fill,
+    };
   }
 
   // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
@@ -177,23 +179,19 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, iconName, defaultHide, onClick, onHover } = options;
-    const { icon: iconTheme, text: textTheme } = this.getStyle()!;
-    const fill = this.getTextConditionFill(textTheme!);
-    // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
-    const actionIconColor = iconTheme?.fill || fill;
+    const { x, y, iconName, defaultHide, onClick, onHover, isSortIcon } =
+      options;
 
     const icon = new GuiIcon({
       name: iconName,
       x,
       y,
-      width: iconTheme?.size,
-      height: iconTheme?.size,
-      fill: actionIconColor,
+      ...this.getActionIconStyle(),
     });
 
     // 默认隐藏，hover 可见
     icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
+
     icon.addEventListener('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
       onHover?.({
@@ -203,6 +201,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         event,
       });
     });
+
     icon.addEventListener('mouseleave', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
       onHover?.({
@@ -212,58 +211,82 @@ export abstract class HeaderCell extends BaseCell<Node> {
         event,
       });
     });
-    icon.addEventListener('click', (event: CanvasEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      onClick?.({
-        iconName,
-        meta: this.meta,
-        event,
+
+    if (isSortIcon) {
+      icon.addEventListener('click', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+        this.spreadsheet.handleGroupSort(event, this.meta);
       });
-    });
+    } else {
+      icon.addEventListener('click', (event: CanvasEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+        onClick?.({
+          iconName,
+          meta: this.meta,
+          event,
+        });
+      });
+    }
 
     this.actionIcons.push(icon);
     this.appendChild(icon);
   }
 
-  protected drawActionIcons() {
-    if (this.showSortIcon()) {
-      this.drawSortIcons();
-
+  protected drawActionAndConditionIcons() {
+    if (isEmpty(this.groupedIcons.left) && isEmpty(this.groupedIcons.right)) {
       return;
     }
 
-    const actionIconCfg = this.getActionIconCfg();
-
-    if (!actionIconCfg) {
+    if (!this.leftIconPosition || !this.rightIconPosition) {
       return;
     }
 
-    const { iconNames, onClick, onHover, defaultHide } = actionIconCfg;
+    forEach(this.groupedIcons, (icons, position) => {
+      const { size, margin } = this.getStyle()!.icon!;
 
-    const position = this.getIconPosition(iconNames.length);
+      const iconMargin = position === 'left' ? margin!.right! : margin!.right!;
+      const iconPosition =
+        position === 'left' ? this.leftIconPosition : this.rightIconPosition;
 
-    const { size, margin } = this.getStyle()!.icon!;
+      forEach(icons, (icon, i) => {
+        const x = iconPosition.x + (size! + iconMargin) * i;
+        const y = iconPosition.y;
 
-    forEach(iconNames, (iconName, i) => {
-      const x = position.x + i * size! + i * margin!.left!;
-      const y = position.y;
+        if (icon.isConditionIcon) {
+          this.conditionIconShape = renderIcon(this, {
+            x,
+            y,
+            name: icon?.name!,
+            width: size,
+            height: size,
+            fill: icon?.fill,
+          });
+          this.addConditionIconShape(this.conditionIconShape);
 
-      const iconDefaultHide =
-        typeof defaultHide === 'function'
-          ? defaultHide(this.meta, iconName)
-          : defaultHide;
+          return;
+        }
 
-      if (iconDefaultHide) {
-        this.hasDefaultHiddenIcon = true;
-      }
+        const { onClick, onHover, defaultHide, isSortIcon } =
+          this.actionIconConfig!;
 
-      this.addActionIcon({
-        iconName,
-        x,
-        y,
-        defaultHide: iconDefaultHide,
-        onClick,
-        onHover,
+        const iconDefaultHide =
+          typeof defaultHide === 'function'
+            ? defaultHide(this.meta, icon.name)
+            : defaultHide;
+
+        if (iconDefaultHide) {
+          this.hasDefaultHiddenIcon = true;
+        }
+
+        this.addActionIcon({
+          iconName: icon.name,
+          x,
+          y,
+          defaultHide: iconDefaultHide,
+          onClick,
+          onHover,
+          isSortIcon,
+        });
       });
     });
   }
@@ -340,7 +363,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
       style = text;
     }
 
-    const fill = this.getTextConditionFill(style!);
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill(
+      this.getDefaultTextFill(style!.fill!),
+    );
 
     return { ...style, fill };
   }
@@ -348,19 +374,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
-    let fill = backgroundColor;
-    // get background condition fill color
-    const bgCondition = this.findFieldCondition(this.conditions?.background!);
 
-    if (bgCondition?.mapping!) {
-      const attrs = this.mappingValue(bgCondition);
-
-      if (attrs) {
-        fill = attrs.fill;
-      }
-    }
-
-    return { backgroundColor: fill, backgroundColorOpacity };
+    return merge(
+      { backgroundColor, backgroundColorOpacity },
+      this.getBackgroundConditionFill(),
+    );
   }
 
   public toggleActionIcon(id: string) {
@@ -376,6 +394,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
       });
       this.spreadsheet.store.set('visibleActionIcons', visibleActionIcons);
     }
+  }
+
+  protected getIconPosition(): PointLike {
+    return this.leftIconPosition || this.rightIconPosition;
   }
 
   public update() {

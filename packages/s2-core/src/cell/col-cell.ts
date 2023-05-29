@@ -1,5 +1,5 @@
 import type { Group, PointLike } from '@antv/g';
-import { isEmpty, min } from 'lodash';
+import { isEmpty } from 'lodash';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
 import {
@@ -21,9 +21,9 @@ import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
 import { Frame, type ColHeaderConfig } from '../facet/header';
 import {
-  getFixedTextIconPosition,
-  getVerticalIconPositionByText,
-  getVerticalPosition,
+  getHorizontalTextIconPosition,
+  getVerticalIconPosition,
+  getVerticalTextPosition,
 } from '../utils/cell/cell';
 import { renderIcon, renderLine } from '../utils/g-renders';
 import { isLastColumnAfterHidden } from '../utils/hide-columns';
@@ -37,9 +37,6 @@ import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
-
-  /** icon 绘制起始坐标 */
-  protected iconPosition: PointLike;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -60,9 +57,7 @@ export class ColCell extends HeaderCell {
     // draw text
     this.drawTextShape();
     // 绘制字段标记 -- icon
-    this.drawConditionIconShapes();
-    // draw action icons
-    this.drawActionIcons();
+    this.drawActionAndConditionIcons();
     // draw borders
     this.drawBorders();
     // draw resize ares
@@ -92,7 +87,7 @@ export class ColCell extends HeaderCell {
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
-    return width - this.getActionIconsWidth();
+    return width - this.getActionAndConditionIconWidth();
   }
 
   protected isBolderText() {
@@ -113,20 +108,35 @@ export class ColCell extends HeaderCell {
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-    const iconStyle = this.getIconStyle();
+    const iconStyle = this.getIconStyle()!;
+
+    const textY = getVerticalTextPosition(contentBox, textStyle.textBaseline!);
+    const iconY = getVerticalIconPosition(
+      iconStyle.size!,
+      textY,
+      textStyle.fontSize!,
+      textStyle.textBaseline!,
+    );
 
     if (isLeaf) {
-      const { text, icon } = getFixedTextIconPosition({
+      const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBox,
-        textStyle,
         textWidth: this.actualTextWidth,
+        textAlign: textStyle.textAlign!,
+        groupedIcons: this.groupedIcons,
         iconStyle,
-        iconCount: this.getActionIconsCount(),
       });
 
-      this.iconPosition = icon;
+      this.leftIconPosition = {
+        x: leftIconX,
+        y: iconY,
+      };
+      this.rightIconPosition = {
+        x: rightIconX,
+        y: iconY,
+      };
 
-      return text;
+      return { x: textX, y: textY };
     }
 
     /**
@@ -150,55 +160,40 @@ export class ColCell extends HeaderCell {
 
     this.handleViewport(viewport);
 
-    const { icon, cell } = this.getStyle()!;
-    const { textAlign, textBaseline, fontSize } = this.getTextStyle();
+    const { cell, icon } = this.getStyle()!;
+    const { textAlign, textBaseline } = this.getTextStyle();
 
-    const actionIconSpace = this.getActionIconsWidth();
-
-    const paddingBetweenTextIcon = icon?.margin?.left ?? 0;
-    const { textStart, iconStart } = adjustTextIconPositionWhileScrolling(
-      viewport,
-      { start: contentBox.x, size: contentBox.width },
-      {
-        align: normalizeTextAlign(textAlign!),
-        size: {
-          textSize: this.actualTextWidth,
-          iconSize: min([actionIconSpace - paddingBetweenTextIcon, 0])!,
+    const { textStart, iconStart, iconEnd } =
+      adjustTextIconPositionWhileScrolling(
+        viewport,
+        { start: contentBox.x, size: contentBox.width },
+        {
+          align: normalizeTextAlign(textAlign!),
+          size: {
+            textSize: this.actualTextWidth,
+            iconStartSize: this.getActionAndConditionIconWidth('left'),
+            iconEndSize: this.getActionAndConditionIconWidth('right'),
+          },
+          padding: {
+            start: cell?.padding?.left!,
+            end: cell?.padding?.right!,
+            betweenTextAndEndIcon: icon?.margin?.left!,
+          },
         },
-        padding: {
-          start: cell?.padding?.left!,
-          end: cell?.padding?.right!,
-          betweenTextIcon: paddingBetweenTextIcon,
-        },
-      },
-    );
+      );
 
-    const y = getVerticalPosition(contentBox, textBaseline!);
+    const y = getVerticalTextPosition(contentBox, textBaseline!);
 
-    this.iconPosition = {
+    this.leftIconPosition = {
       x: iconStart,
-      y: getVerticalIconPositionByText(
-        icon?.size!,
-        y,
-        fontSize!,
-        textBaseline!,
-      ),
+      y: iconY,
+    };
+    this.rightIconPosition = {
+      x: iconEnd,
+      y: iconY,
     };
 
     return { x: textStart, y };
-  }
-
-  protected getIconPosition(): PointLike {
-    return this.iconPosition;
-  }
-
-  protected getActionIconsWidth() {
-    const { size, margin } = this.getStyle()!.icon!;
-    const iconCount = this.getActionIconsCount();
-
-    return (
-      (size! + margin!.left!) * iconCount + (iconCount > 0 ? margin!.right! : 0)
-    );
   }
 
   protected getColResizeArea(): Group | undefined {
