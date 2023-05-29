@@ -167,14 +167,14 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         // 角头的最后一行，为行头
         if (colIndex === customColumns.length - 1) {
           return this.config.isFormatData
-            ? find(meta, ['field', row])?.name
+            ? find(meta, ['field', row])?.name ?? row
             : row;
         }
 
         // 角头的最后一列，为列头
         if (rowIndex === maxRowLen - 1) {
           return this.config.isFormatData
-            ? find(meta, ['field', col])?.name
+            ? find(meta, ['field', col])?.name ?? col
             : col;
         }
 
