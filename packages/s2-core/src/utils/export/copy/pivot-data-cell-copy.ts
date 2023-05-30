@@ -135,9 +135,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         colNode.isTotalMeasure,
     });
 
+    const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;
+
     const field = getColNodeFieldFromNode(
       this.spreadsheet.isPivotMode,
-      colNode,
+      formatNode,
     );
 
     const formatter = getFormatter(
@@ -215,8 +217,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
 
-    // 判断是否为趋势分析表
-
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
@@ -289,6 +289,13 @@ export const processSelectedAllPivot = (
   return pivotDataCellCopy.getPivotAllCopyData();
 };
 
+/**
+ * 刷选单元格数据时使用此方法
+ * @param {SpreadSheet} spreadsheet
+ * @param {CellMeta[][]} selectedCells
+ * @param {CellMeta[]} headerSelectedCells
+ * @return {CopyableList}
+ */
 export const processSelectedPivotByDataCell = ({
   spreadsheet,
   selectedCells,

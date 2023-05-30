@@ -472,13 +472,14 @@ describe('Pivot Table Core Data Process', () => {
   // 2 = ['province', 'city'].length 列头宽度
   const ROW_HEADER_WIDTH = 2;
 
-  function getDataCfg(meta: Meta[] = []) {
+  function getDataCfg(meta: Meta[] = [], valueInCols = true) {
     return assembleDataCfg({
       meta,
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
         values: ['number'],
+        valueInCols,
       },
     });
   }
@@ -536,6 +537,55 @@ describe('Pivot Table Core Data Process', () => {
         )!.number
       }`,
     );
+  });
+
+  // todo-zc: 小计需要查看
+  it('should copy normal data when valueInCols is false with number is format in grid mode', () => {
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+    ] as Meta[];
+
+    s2.setOptions({
+      interaction: {
+        copyWithFormat: true,
+        enableCopy: true,
+      },
+    });
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    s2.render();
+
+    const allDataCells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    const hangzhouDeskCell = allDataCells[0];
+    const zhejiangCityDeskSubTotalCell = allDataCells[4];
+
+    // console.log(allDataCells, 'allDataCells');
+
+    // 普通数据节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(hangzhouDeskCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(getCopyPlainContent(s2)).toEqual(`${originalData[0].number}元`);
+
+    // 小计节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"18375"`);
+    // expect(getCopyPlainContent(s2)).toEqual(
+    //   `${
+    //     totalData.find(
+    //       (data) => data.province === '浙江省' && data.sub_type === '桌子',
+    //     )!.number
+    //   }元`,
+    // );
   });
 
   it('should copy col data in grid mode', () => {
