@@ -3,6 +3,7 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
+import { Aggregation } from '@antv/s2';
 import { TableDataCell } from '@/cell';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 import {
@@ -539,17 +540,17 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy normal data when valueInCols is false with number is format in grid mode', () => {
-    const meta = [
-      { field: 'number', formatter: (v: string) => `${v}元` },
-    ] as Meta[];
-
+  it('should copy format data when valueInCols is false in grid mode', () => {
     s2.setOptions({
       interaction: {
         copyWithFormat: true,
         enableCopy: true,
       },
     });
+
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+    ] as Meta[];
 
     s2.setDataCfg(getDataCfg(meta, false));
 
@@ -582,6 +583,78 @@ describe('Pivot Table Core Data Process', () => {
         )!.number
       }元`,
     );
+  });
+
+  it('should copy format total data in grid mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithFormat: true,
+        enableCopy: true,
+        copyWithHeader: true,
+      },
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseLayout: true,
+          reverseSubLayout: true,
+          subTotalsDimensions: ['province'],
+          calcTotals: {
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            aggregation: Aggregation.SUM,
+          },
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseLayout: true,
+          reverseSubLayout: true,
+          subTotalsDimensions: ['type'],
+          calcTotals: {
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            aggregation: Aggregation.SUM,
+          },
+        },
+      },
+    });
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    s2.render();
+    const allDataCells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    s2.interaction.changeState({
+      cells: map(allDataCells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const copyContent = getCopyPlainContent(s2);
+
+    // 主要查看行列小计总计对应的值都格式化成功了
+    expect(copyContent).toMatchInlineSnapshot(`
+      "			总计	家具	家具	家具
+      				小计	桌子	沙发
+      总计			78868元	49709元	26193元	23516元
+      浙江省	小计		43098元	32418元	18375元	14043元
+      浙江省	杭州市	number	15420元	13132元	7789元	5343元
+      浙江省	绍兴市	number	5657元	2999元	2367元	632元
+      浙江省	宁波市	number	13779元	11111元	3877元	7234元
+      浙江省	舟山市	number	8242元	5176元	4342元	834元
+      四川省	小计		35770元	17291元	7818元	9473元
+      四川省	成都市	number	10513元	4174元	1723元	2451元
+      四川省	绵阳市	number	7388元	4066元	1822元	2244元
+      四川省	南充市	number	10284元	4276元	1943元	2333元
+      四川省	乐山市	number	7585元	4775元	2330元	2445元"
+    `);
   });
 
   it('should copy col data in grid mode', () => {
