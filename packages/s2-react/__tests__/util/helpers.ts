@@ -123,6 +123,8 @@ export const createMockCellInfo = (
       facet: {
         getRowNodes: jest.fn(),
         getColNodes: jest.fn(),
+        getColLeafNodeByIndex: jest.fn(),
+        getRowLeafNodeByIndex: jest.fn(),
       },
       dataCfg: {
         meta: null,
