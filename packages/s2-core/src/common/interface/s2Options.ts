@@ -11,7 +11,7 @@ import type {
 import type {
   LayoutArrange,
   LayoutCoordinate,
-  LayoutDataPosition,
+  LayoutCellMeta,
   LayoutHierarchy,
   LayoutSeriesNumberNodes,
 } from '../../common/interface/hooks';
@@ -201,10 +201,10 @@ export interface S2BasicOptions<
   layoutCoordinate?: LayoutCoordinate;
 
   /**
-   * 自定义数据坐标, 动态修改单元格数值
+   * 自定义单元格对应元数据
    * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-layout/#custom-data-position
    */
-  layoutDataPosition?: LayoutDataPosition;
+  layoutCellMeta?: LayoutCellMeta;
 
   /**
    * 自定义序号节点

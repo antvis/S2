@@ -17,13 +17,13 @@ The table of `S2` is drawn by `Canvas` , so there will only be one `dom` element
 
 ### Get the specified area cell
 
-After the rendering is complete, access `s2.facet.layoutResult` to get all [the cells in](/docs/api/basic-class/node) the current visible range. [see more](/docs/api/basic-class/base-facet)
+After the rendering is complete, access `s2.facet.getLayoutResult()` to get all [the cells in](/docs/api/basic-class/node) the current visible range. [see more](/docs/api/basic-class/base-facet)
 
 ```ts
 s2.render()
 
 // 确保在 s2.render() 之后获取
-console.log(s2.facet.layoutResult)
+console.log(s2.facet.getLayoutResult())
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview">

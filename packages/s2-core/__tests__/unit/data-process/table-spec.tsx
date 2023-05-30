@@ -6,6 +6,7 @@
  */
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
+import { ROOT_NODE_ID } from '../../../src';
 import { TableSheet } from '@/sheet-type';
 
 describe('List Table Core Data Process', () => {
@@ -23,8 +24,7 @@ describe('List Table Core Data Process', () => {
   s2.render();
 
   describe('1、Generate Col Hierarchy', () => {
-    const layoutResult = s2.facet.getLayoutResult();
-    const { colsHierarchy } = layoutResult;
+    const { colsHierarchy } = s2.facet.getLayoutResult();
 
     test('should get correct col hierarchy structure', () => {
       // 节点正确
@@ -43,7 +43,7 @@ describe('List Table Core Data Process', () => {
 
       nodes.forEach((node) => {
         expect(node.children).toEqual([]);
-        expect(node.parent!.id).toEqual('root');
+        expect(node.parent!.id).toEqual(ROOT_NODE_ID);
       });
     });
   });

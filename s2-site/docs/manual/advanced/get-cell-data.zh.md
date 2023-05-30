@@ -20,13 +20,13 @@ order: 9
 
 ### 获取指定区域单元格
 
-在渲染完成后，访问 `s2.facet.layoutResult` 获取到当前可视范围内所有 [单元格](/docs/api/basic-class/node)。[查看更多](/docs/api/basic-class/base-facet)
+在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前可视范围内所有 [单元格](/docs/api/basic-class/node)。[查看更多](/docs/api/basic-class/base-facet)
 
 ```ts
 s2.render()
 
 // 确保在 s2.render() 之后获取
-console.log(s2.facet.layoutResult)
+console.log(s2.facet.getLayoutResult())
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview"/>

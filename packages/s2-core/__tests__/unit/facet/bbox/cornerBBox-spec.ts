@@ -4,21 +4,23 @@ import { CornerBBox } from '@/facet/bbox/cornerBBox';
 describe('cornerBBox test', () => {
   let mockFacet: BaseFacet;
 
+  const layoutResult = {
+    rowsHierarchy: {
+      height: 100,
+      width: 100,
+    },
+    colsHierarchy: {
+      height: 100,
+      width: 100,
+      sampleNodeForLastLevel: true,
+    },
+  };
+
   beforeEach(() => {
     mockFacet = {
-      layoutResult: {
-        rowsHierarchy: {
-          height: 100,
-          width: 100,
-        },
-        colsHierarchy: {
-          height: 100,
-          width: 100,
-          sampleNodeForLastLevel: true,
-        },
-      },
+      layoutResult,
       getLayoutResult() {
-        return mockFacet.layoutResult;
+        return layoutResult;
       },
       getSeriesNumberWidth() {
         return 80;
@@ -58,7 +60,7 @@ describe('cornerBBox test', () => {
   });
 
   test('should return correct width when original width is reach the limit and freeze row header', () => {
-    mockFacet.layoutResult.rowsHierarchy.width = 200;
+    mockFacet.getLayoutResult().rowsHierarchy.width = 200;
 
     const bbox = new CornerBBox(mockFacet, true);
 
@@ -67,8 +69,8 @@ describe('cornerBBox test', () => {
   });
 
   test('should return correct width when original width is reach the limit and freeze row header, but cols is short', () => {
-    mockFacet.layoutResult.rowsHierarchy.width = 200;
-    mockFacet.layoutResult.colsHierarchy.width = 120;
+    mockFacet.getLayoutResult().rowsHierarchy.width = 200;
+    mockFacet.getLayoutResult().colsHierarchy.width = 120;
 
     const bbox = new CornerBBox(mockFacet, true);
 
@@ -77,8 +79,8 @@ describe('cornerBBox test', () => {
   });
 
   test('should return correct width when original width is reach the limit and freeze row header, but cols is long', () => {
-    mockFacet.layoutResult.rowsHierarchy.width = 200;
-    mockFacet.layoutResult.colsHierarchy.width = 200;
+    mockFacet.getLayoutResult().rowsHierarchy.width = 200;
+    mockFacet.getLayoutResult().colsHierarchy.width = 200;
 
     const bbox = new CornerBBox(mockFacet, true);
 
@@ -88,7 +90,7 @@ describe('cornerBBox test', () => {
 
   test('should use default column height when columns is empty', () => {
     mockFacet.spreadsheet.options.style!.colCell!.height = 20;
-    mockFacet.layoutResult.colsHierarchy.sampleNodeForLastLevel = null;
+    mockFacet.getLayoutResult().colsHierarchy.sampleNodeForLastLevel = null;
 
     const bbox = new CornerBBox(mockFacet, true);
 

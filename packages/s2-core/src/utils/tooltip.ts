@@ -10,8 +10,10 @@ import {
   concat,
   every,
   filter,
+  flatMap,
   forEach,
   get,
+  groupBy,
   isEmpty,
   isEqual,
   isFunction,
@@ -22,11 +24,8 @@ import {
   mapKeys,
   noop,
   pick,
-  groupBy,
-  flatMap,
   sumBy,
 } from 'lodash';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import {
   CellTypes,
   EXTRA_FIELD,
@@ -41,13 +40,12 @@ import {
 import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
-  LayoutResult,
-  TooltipDetailListItem,
+  Data,
   Tooltip,
+  TooltipDetailListItem,
+  TooltipSummaryOptionsValue,
   ViewMeta,
   ViewMetaData,
-  Data,
-  TooltipSummaryOptionsValue,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -63,10 +61,11 @@ import type {
   TooltipPosition,
   TooltipSummaryOptions,
 } from '../common/interface/tooltip';
-import type { SpreadSheet } from '../sheet-type';
-import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import type { Node as S2Node } from '../facet/layout/node';
 import { getLeafColumnsWithKey } from '../facet/utils';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
 import { customMerge } from './merge';
 import { getEmptyPlaceholder } from './text';
 
@@ -351,11 +350,9 @@ const getRowOrColSelectedIndexes = (
   return selectedIndexes;
 };
 
-export const getSelectedCellIndexes = (
-  spreadsheet: SpreadSheet,
-  layoutResult: LayoutResult,
-) => {
-  const { rowLeafNodes, colLeafNodes } = layoutResult;
+export const getSelectedCellIndexes = (spreadsheet: SpreadSheet) => {
+  const rowLeafNodes = spreadsheet.facet.getRowLeafNodes();
+  const colLeafNodes = spreadsheet.facet.getColLeafNodes();
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
 
@@ -375,7 +372,7 @@ export const getSelectedCellsData = (
   targetCell: S2CellType,
   showSingleTips?: boolean,
 ): ViewMetaData[] => {
-  const { layoutResult, getCellMeta } = spreadsheet.facet || {};
+  const { facet } = spreadsheet;
 
   /**
    * 当开启小计/总计后
@@ -409,13 +406,8 @@ export const getSelectedCellsData = (
       return false;
     }
 
-    const currentColCellNode = layoutResult.colNodes.find(
-      (node) => node.colIndex === cellMeta.colIndex,
-    );
-
-    const currentRowCellNode = layoutResult.rowNodes.find(
-      (node) => node.rowIndex === cellMeta.rowIndex,
-    );
+    const currentColCellNode = facet.getColNodeByIndex(cellMeta.colIndex);
+    const currentRowCellNode = facet.getRowNodeByIndex(cellMeta.rowIndex);
 
     // 行头点击, 去除列头对应的小计/总计, 列头相反
     const isTotalCell = isTargetColCell
@@ -431,14 +423,11 @@ export const getSelectedCellsData = (
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (showSingleTips) {
     // 行头列头单选多选
-    const selectedCellIndexes = getSelectedCellIndexes(
-      spreadsheet,
-      layoutResult,
-    );
+    const selectedCellIndexes = getSelectedCellIndexes(spreadsheet);
 
     return compact(
       map(selectedCellIndexes, ([rowIndex, colIndex]) => {
-        const currentCellMeta = getCellMeta(rowIndex, colIndex);
+        const currentCellMeta = facet.getCellMeta(rowIndex, colIndex);
 
         if (isBelongTotalCell(currentCellMeta)) {
           return;
@@ -454,12 +443,12 @@ export const getSelectedCellsData = (
 
   return cells
     .filter((cellMeta) => {
-      const meta = getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
+      const meta = facet.getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
 
       return !isBelongTotalCell(meta);
     })
     .map((cellMeta) => {
-      const meta = getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
+      const meta = facet.getCellMeta(cellMeta.rowIndex, cellMeta.colIndex);
 
       return meta?.data || getMergedQuery(meta);
     }) as ViewMetaData[];

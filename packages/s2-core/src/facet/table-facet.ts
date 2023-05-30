@@ -251,7 +251,7 @@ export class TableFacet extends BaseFacet {
       rowNodes: [],
       rowsHierarchy,
       rowLeafNodes: [],
-      getCellMeta: this.getCellMeta,
+      cornerNodes: [],
     };
   }
 
@@ -268,7 +268,7 @@ export class TableFacet extends BaseFacet {
   }
 
   public getCellMeta = (rowIndex = 0, colIndex = 0) => {
-    const { colLeafNodes } = this.layoutResult;
+    const { colLeafNodes } = this.getLayoutResult();
     const colNode = colLeafNodes[colIndex];
 
     if (!colNode) {
@@ -896,7 +896,7 @@ export class TableFacet extends BaseFacet {
         trailingRowCount: frozenTrailingRowCount,
         trailingColCount,
       },
-      this.layoutResult.colLeafNodes.length,
+      this.getColLeafNodes().length,
       cellRange,
     );
 
@@ -994,7 +994,7 @@ export class TableFacet extends BaseFacet {
         viewportHeight,
         cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
-        nodes: this.layoutResult.colNodes,
+        nodes: this.getColNodes(),
         sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
@@ -1046,7 +1046,7 @@ export class TableFacet extends BaseFacet {
   }
 
   private getFrozenOptions = () => {
-    const colLength = this.layoutResult.colLeafNodes.length;
+    const colLength = this.getColLeafNodes().length;
     const cellRange = this.getCellRange();
 
     return getValidFrozenOptions(
@@ -1129,7 +1129,7 @@ export class TableFacet extends BaseFacet {
   }
 
   public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const colLength = this.layoutResult.colLeafNodes.length;
+    const colLength = this.getColLeafNodes().length;
     const cellRange = this.getCellRange();
 
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;

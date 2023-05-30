@@ -17,7 +17,7 @@ s2.facet.getRealWidth()
 | backgroundGroup | 背景区域 |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | panelGroup | 数值区域 | [Group](https://g.antv.vision/zh/docs/api/group) |
 | foregroundGroup | 前景区域 |  [Group](https://g.antv.vision/zh/docs/api/group) |
-| layoutResult | 布局信息 |  [LayoutResult](#layoutresult) |
+| getLayoutResult | 获取布局信息 （角头，序号，行头，列头） |  () => [LayoutResult](#layoutresult) |
 | viewCellWidths | 单元格宽度信息 | `number[]` |
 | hScrollBar | 数值区域水平滚动条 | () =>  [Group](https://g.antv.vision/zh/docs/api/group) |
 | hRowScrollBar | 行头区域水平滚动条 | () =>  [Group](https://g.antv.vision/zh/docs/api/group) |
@@ -28,7 +28,7 @@ s2.facet.getRealWidth()
 | seriesNumberHeader | 序号 |  [BaseHeaderConfig](#baseheaderconfig)  |
 | centerFrame | 框架 |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | gridInfo | 网格信息 |  [GridInfo](#gridinfo) |
-| getViewCellHeights | 获取单元格高度信息 | (`layoutResult`: [LayoutResult](#layoutresult)) => [ViewCellHeights](#viewcellheights) |
+| getViewCellHeights | 获取单元格高度信息 | () => [ViewCellHeights](#viewcellheights) |
 | scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/docs/api/general/S2Theme/#scrollbartheme) |
 | scrollBarSize | 滚动条大小 | `number` |
 | hideScrollBar | 隐藏滚动条 | () => void |

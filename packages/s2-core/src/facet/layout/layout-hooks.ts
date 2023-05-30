@@ -1,5 +1,4 @@
 import { each, isBoolean, isEmpty } from 'lodash';
-import type { LayoutResult } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
@@ -110,28 +109,4 @@ export const layoutCoordinate = (
       spreadsheet.options?.layoutCoordinate(spreadsheet, rowNode, colNode);
     }
   }
-};
-
-/**
- * Custom position cell's data
- */
-export const layoutDataPosition = (
-  spreadsheet: SpreadSheet,
-  layoutResult: LayoutResult,
-): LayoutResult => {
-  const dataPosition = spreadsheet.options?.layoutDataPosition;
-
-  if (dataPosition) {
-    const handledGetCellMeta = dataPosition(
-      spreadsheet,
-      layoutResult.getCellMeta!,
-    );
-
-    return {
-      ...layoutResult,
-      getCellMeta: handledGetCellMeta,
-    };
-  }
-
-  return layoutResult;
 };

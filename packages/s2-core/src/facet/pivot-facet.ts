@@ -22,12 +22,14 @@ import {
   LAYOUT_SAMPLE_COUNT,
   type IconTheme,
   type MultiData,
+  type ViewMeta,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
+import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
@@ -39,10 +41,14 @@ import { BaseFacet } from './base-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
-import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
+import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 
 export class PivotFacet extends BaseFacet {
+  public constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
+  }
+
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell!.cell;
   }
@@ -58,17 +64,14 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
     } as LayoutResult);
 
-    const layoutResult: LayoutResult = {
+    return {
       colNodes: colsHierarchy.getNodes(),
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowsHierarchy,
       rowLeafNodes,
       colLeafNodes,
-      getCellMeta: this.getCellMeta,
     };
-
-    return layoutDataPosition(this.spreadsheet, layoutResult);
   }
 
   private buildAllHeaderHierarchy() {
@@ -95,7 +98,8 @@ export class PivotFacet extends BaseFacet {
    * 根据行列索引获取单元格元数据
    */
   public getCellMeta = (rowIndex = 0, colIndex = 0) => {
-    const { rowLeafNodes, colLeafNodes } = this.layoutResult;
+    const { options, dataSet } = this.spreadsheet;
+    const { rowLeafNodes, colLeafNodes } = this.getLayoutResult();
     const row = rowLeafNodes[rowIndex];
     const col = colLeafNodes[colIndex];
 
@@ -108,8 +112,7 @@ export class PivotFacet extends BaseFacet {
     const isTotals =
       row.isTotals || row.isTotalMeasure || col.isTotals || col.isTotalMeasure;
 
-    const hideMeasure =
-      this.spreadsheet.options.style?.colCell?.hideValue ?? false;
+    const hideMeasure = options.style?.colCell?.hideValue ?? false;
 
     /*
      * 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
@@ -118,11 +121,11 @@ export class PivotFacet extends BaseFacet {
      */
     const measureInfo = hideMeasure
       ? {
-          [EXTRA_FIELD]: this.spreadsheet.dataSet.fields.values?.[0],
+          [EXTRA_FIELD]: dataSet.fields.values?.[0],
         }
       : {};
     const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
-    const data = this.spreadsheet.dataSet.getCellData({
+    const data = dataSet.getCellData({
       query: dataQuery,
       rowNode: row,
       isTotals,
@@ -131,7 +134,7 @@ export class PivotFacet extends BaseFacet {
     const valueField = dataQuery[EXTRA_FIELD]!;
     const fieldValue = get(data, VALUE_FIELD, null);
 
-    return {
+    const cellMeta: ViewMeta = {
       spreadsheet: this.spreadsheet,
       x: col.x,
       y: row.y,
@@ -149,6 +152,8 @@ export class PivotFacet extends BaseFacet {
       colId: col.id,
       id: getDataCellId(row.id, col.id),
     };
+
+    return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
   };
 
   private calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
@@ -890,8 +895,8 @@ export class PivotFacet extends BaseFacet {
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
-  public getViewCellHeights(layoutResult: LayoutResult) {
-    const { rowLeafNodes } = layoutResult;
+  public getViewCellHeights() {
+    const rowLeafNodes = this.getRowLeafNodes();
 
     const heights = reduce(
       rowLeafNodes,

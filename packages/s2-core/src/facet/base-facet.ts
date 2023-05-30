@@ -138,7 +138,7 @@ export abstract class BaseFacet {
    * 当前布局节点信息
    * @description 内部消费, 外部调用请使用 facet.getLayoutResult()
    */
-  public layoutResult: LayoutResult;
+  private layoutResult: LayoutResult;
 
   public viewCellWidths: number[];
 
@@ -168,9 +168,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-  public abstract getViewCellHeights(
-    layoutResult: LayoutResult,
-  ): ViewCellHeights;
+  public abstract getViewCellHeights(): ViewCellHeights;
 
   public abstract getCellMeta(
     rowIndex: number,
@@ -195,16 +193,13 @@ export abstract class BaseFacet {
     this.init();
   }
 
-  public getLayoutResult(): LayoutResult {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { getCellMeta, ...layout } = this.layoutResult;
-
+  public getLayoutResult = (): LayoutResult => {
     return {
-      ...layout,
+      ...this.layoutResult,
       cornerNodes: this.getCornerNodes(),
       seriesNumberNodes: this.getSeriesNumberNodes(),
     };
-  }
+  };
 
   protected initGroups() {
     const container = this.spreadsheet.container;
@@ -538,7 +533,7 @@ export abstract class BaseFacet {
     );
 
     this.viewCellWidths = widths;
-    this.viewCellHeights = this.getViewCellHeights(this.layoutResult);
+    this.viewCellHeights = this.getViewCellHeights();
   };
 
   /**

@@ -481,7 +481,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       height: facet.getCanvasSize().height,
     } as any;
 
-    facet.viewCellHeights = facet.getViewCellHeights(facet.getLayoutResult());
+    facet.viewCellHeights = facet.getViewCellHeights();
 
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(320);

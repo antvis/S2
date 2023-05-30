@@ -1076,12 +1076,10 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
@@ -1097,10 +1095,8 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowLeafNodes).toHaveLength(0);
-      expect(layoutResult.rowNodes).toHaveLength(0);
+      expect(sheet.facet.getRowLeafNodes()).toHaveLength(0);
+      expect(sheet.facet.getRowNodes()).toHaveLength(0);
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
     });
 
@@ -1122,9 +1118,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowNodes).toHaveLength(2);
+      expect(sheet.facet.getRowNodes()).toHaveLength(2);
     });
 
     it('should only render value nodes in column if rows & columns fields is empty', () => {
@@ -1138,12 +1132,10 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
     });
@@ -1160,7 +1152,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
+      const layoutResult = sheet.facet.getLayoutResult();
 
       // if value empty, not render value cell in row leaf nodes
       expect(layoutResult.rowLeafNodes).toHaveLength(0);

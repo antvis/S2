@@ -75,6 +75,7 @@ jest.mock('@/sheet-type', () => {
           getRowNodes: () => [],
           getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
+          getCellMeta: jest.fn(),
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
