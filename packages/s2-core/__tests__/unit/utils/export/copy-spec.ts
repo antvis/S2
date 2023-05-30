@@ -539,7 +539,6 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  // todo-zc: 小计需要查看
   it('should copy normal data when valueInCols is false with number is format in grid mode', () => {
     const meta = [
       { field: 'number', formatter: (v: string) => `${v}元` },
@@ -563,8 +562,6 @@ describe('Pivot Table Core Data Process', () => {
     const hangzhouDeskCell = allDataCells[0];
     const zhejiangCityDeskSubTotalCell = allDataCells[4];
 
-    // console.log(allDataCells, 'allDataCells');
-
     // 普通数据节点
     s2.interaction.changeState({
       cells: [getCellMeta(hangzhouDeskCell)],
@@ -578,14 +575,13 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"18375"`);
-    // expect(getCopyPlainContent(s2)).toEqual(
-    //   `${
-    //     totalData.find(
-    //       (data) => data.province === '浙江省' && data.sub_type === '桌子',
-    //     )!.number
-    //   }元`,
-    // );
+    expect(getCopyPlainContent(s2)).toEqual(
+      `${
+        totalData.find(
+          (data) => data.province === '浙江省' && data.sub_type === '桌子',
+        )!.number
+      }元`,
+    );
   });
 
   it('should copy col data in grid mode', () => {

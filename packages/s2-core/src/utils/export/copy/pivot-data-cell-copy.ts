@@ -137,10 +137,13 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;
 
-    const field = getColNodeFieldFromNode(
-      this.spreadsheet.isPivotMode,
-      formatNode,
-    );
+    let field: string | undefined =
+      getColNodeFieldFromNode(this.spreadsheet.isPivotMode, formatNode) ?? '';
+
+    // 主要解决只有一个度量时,总计小计对应的值无法格式化的问题
+    const values = this.spreadsheet.dataCfg.fields.values;
+
+    field = values?.includes(field) ? field : values?.[0];
 
     const formatter = getFormatter(
       this.spreadsheet,
