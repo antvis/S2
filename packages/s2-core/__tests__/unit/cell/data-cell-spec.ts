@@ -26,7 +26,10 @@ import { renderText } from '@/utils/g-renders';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') =>
+const findDataCell = (
+  s2: SpreadSheet,
+  valueField: 'price' | 'cost' | 'number',
+) =>
   s2.facet.panelGroup.children[0].find<DataCell>(
     (item) =>
       item instanceof DataCell && item.getMeta().valueField === valueField,
@@ -210,7 +213,86 @@ describe('Data Cell Tests', () => {
       expect(dataCell.getConditionIconShapes()).toBeEmpty();
     });
   });
+  describe('Condition by formattedValue Tests', () => {
+    const s2 = createPivotSheet(
+      {
+        conditions: {
+          text: [
+            {
+              field: 'number',
+              mapping(_v, _, formattedValue) {
+                let val: number | undefined;
 
+                if (typeof formattedValue === 'string') {
+                  val = Number(formattedValue.replaceAll('%', ''));
+                } else {
+                  val = formattedValue;
+                }
+
+                if (val && val >= 50) {
+                  return {
+                    fill: '#18A058',
+                  };
+                }
+
+                return {
+                  fill: '#D03050',
+                };
+              },
+            },
+          ],
+        },
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['province', 'city'],
+          },
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['type', 'sub_type'],
+          },
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    // eslint-disable-next-line jest/expect-expect
+    test('should test condition mapping formattedValue params when the sheet is pivot', () => {
+      s2.setDataCfg({
+        ...s2.dataCfg,
+        meta: [
+          {
+            field: 'number',
+            // 把单元显示的值，显示为行总计占比
+            formatter: (v, _, c) => {
+              const totalData = s2.dataSet.getCellData({
+                query: { ...c?.colQuery, [EXTRA_FIELD]: 'number' },
+                isTotals: true,
+              });
+
+              return totalData
+                ? `${(
+                    (Number(v) / (totalData[VALUE_FIELD] as number)) *
+                    100
+                  ).toFixed(0)}%`
+                : '';
+            },
+          },
+        ],
+      });
+      s2.render();
+
+      const dataCell = findDataCell(s2, 'number');
+
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#D03050');
+    });
+  });
   describe('Condition Tests', () => {
     const s2 = createPivotSheet({
       conditions: {
@@ -407,30 +489,16 @@ describe('Data Cell Tests', () => {
     });
 
     test('should test condition mapping params when the sheet is pivot', () => {
-      const formatter = (v: any) => {
-        return `${v}%`;
-      };
-
-      s2.setDataCfg({
-        ...s2.dataCfg,
-        meta: [
-          {
-            field: 'cost',
-            formatter,
-          },
-        ],
-      });
       s2.setOptions({
         conditions: {
           background: [
             {
               field: 'cost',
-              mapping(value, dataInfo, formattedValue) {
+              mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
                 const resultData = find(originData, dataInfo);
 
                 expect(resultData).toEqual(dataInfo);
-                expect(formatter(value)).toEqual(formattedValue);
                 // @ts-ignore
                 expect(value).toEqual(resultData.cost);
 
