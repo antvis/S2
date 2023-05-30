@@ -48,6 +48,7 @@ import type {
   PartDrillDown,
   PartDrillDownInfo,
   SheetComponentOptions,
+  SheetComponentsProps,
 } from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
@@ -168,7 +169,8 @@ function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
-  const [showPagination, setShowPagination] = React.useState(false);
+  const [showPagination, setShowPagination] =
+    React.useState<SheetComponentsProps['showPagination']>(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
     name: 'default',
@@ -812,7 +814,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="分页"
                   unCheckedChildren="不分页"
-                  checked={showPagination}
+                  checked={showPagination as boolean}
                   onChange={setShowPagination}
                 />
                 <Switch
