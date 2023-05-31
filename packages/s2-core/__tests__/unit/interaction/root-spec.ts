@@ -647,7 +647,11 @@ describe('RootInteraction Tests', () => {
   test('should reset interaction when visibilitychange', () => {
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
     rootInteraction.removeIntercepts = jest.fn();
+    rootInteraction.reset = jest.fn();
+
     mockSpreadSheetInstance.interaction = rootInteraction;
+    mockSpreadSheetInstance.interaction.removeIntercepts = jest.fn();
+
     rootInteraction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
     });
@@ -656,7 +660,5 @@ describe('RootInteraction Tests', () => {
     rootInteraction.interactions.forEach((interaction) => {
       expect(interaction.reset).toHaveBeenCalled();
     });
-
-    rootInteraction.destroy();
   });
 });
