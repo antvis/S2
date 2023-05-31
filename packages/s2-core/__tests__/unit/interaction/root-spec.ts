@@ -492,7 +492,9 @@ describe('RootInteraction Tests', () => {
           InterceptType.CLICK,
         ]),
       ).toBeTruthy();
+
       rootInteraction.removeIntercepts([InterceptType.CLICK]);
+
       expect(rootInteraction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
       expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
     });
@@ -644,6 +646,7 @@ describe('RootInteraction Tests', () => {
 
   test('should reset interaction when visibilitychange', () => {
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    rootInteraction.removeIntercepts = jest.fn();
     mockSpreadSheetInstance.interaction = rootInteraction;
     rootInteraction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
