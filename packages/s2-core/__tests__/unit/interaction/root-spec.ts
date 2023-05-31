@@ -94,6 +94,10 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 
+  afterEach(() => {
+    rootInteraction.destroy();
+  });
+
   test('should get default interaction state', () => {
     expect(rootInteraction.getState()).toEqual({
       cells: [],
@@ -649,8 +653,10 @@ describe('RootInteraction Tests', () => {
     rootInteraction.removeIntercepts = jest.fn();
     rootInteraction.reset = jest.fn();
 
+    // 本地测试一直通过, CI 上一直 TypeError: this.spreadsheet.interaction.removeIntercepts is not a function
     mockSpreadSheetInstance.interaction = rootInteraction;
     mockSpreadSheetInstance.interaction.removeIntercepts = jest.fn();
+    rootInteraction.spreadsheet.interaction.removeIntercepts = jest.fn();
 
     Object.defineProperty(
       mockSpreadSheetInstance.interaction,
@@ -664,6 +670,14 @@ describe('RootInteraction Tests', () => {
       value: () => {},
     });
 
+    Object.defineProperty(
+      rootInteraction.spreadsheet.interaction,
+      'removeIntercepts',
+      {
+        value: () => {},
+      },
+    );
+
     rootInteraction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
       interaction.spreadsheet.interaction.removeIntercepts = jest.fn();
@@ -673,5 +687,7 @@ describe('RootInteraction Tests', () => {
     rootInteraction.interactions.forEach((interaction) => {
       expect(interaction.reset).toHaveBeenCalled();
     });
+
+    rootInteraction.destroy();
   });
 });
