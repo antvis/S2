@@ -60,7 +60,7 @@ describe('Header Component Tests', () => {
 
     expect(result.asFragment()).toMatchSnapshot();
     expect(result.container.querySelector(className)).toBeDefined();
-    expect(screen.getByText('高级排序')).toBeDefined();
-    expect(screen.getByText('行列切换')).toBeDefined();
+    expect(screen.getAllByText('高级排序')).toBeDefined();
+    expect(screen.getAllByText('行列切换')).toBeDefined();
   });
 });
