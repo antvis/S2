@@ -652,8 +652,21 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.interaction = rootInteraction;
     mockSpreadSheetInstance.interaction.removeIntercepts = jest.fn();
 
+    Object.defineProperty(
+      mockSpreadSheetInstance.interaction,
+      'removeIntercepts',
+      {
+        value: () => {},
+      },
+    );
+
+    Object.defineProperty(rootInteraction, 'removeIntercepts', {
+      value: () => {},
+    });
+
     rootInteraction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
+      interaction.spreadsheet.interaction.removeIntercepts = jest.fn();
     });
     window.dispatchEvent(new Event('visibilitychange'));
 
