@@ -95,6 +95,7 @@ describe('RootInteraction Tests', () => {
   });
 
   afterEach(() => {
+    mockSpreadSheetInstance.interaction.destroy();
     rootInteraction.destroy();
   });
 
@@ -649,45 +650,14 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should reset interaction when visibilitychange', () => {
-    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    rootInteraction.removeIntercepts = jest.fn();
-    rootInteraction.reset = jest.fn();
-
-    // 本地测试一直通过, CI 上一直 TypeError: this.spreadsheet.interaction.removeIntercepts is not a function
-    mockSpreadSheetInstance.interaction = rootInteraction;
-    mockSpreadSheetInstance.interaction.removeIntercepts = jest.fn();
-    rootInteraction.spreadsheet.interaction.removeIntercepts = jest.fn();
-
-    Object.defineProperty(
-      mockSpreadSheetInstance.interaction,
-      'removeIntercepts',
-      {
-        value: () => {},
-      },
-    );
-
-    Object.defineProperty(rootInteraction, 'removeIntercepts', {
-      value: () => {},
-    });
-
-    Object.defineProperty(
-      rootInteraction.spreadsheet.interaction,
-      'removeIntercepts',
-      {
-        value: () => {},
-      },
-    );
-
-    rootInteraction.interactions.forEach((interaction) => {
+    mockSpreadSheetInstance.interaction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
       interaction.spreadsheet.interaction.removeIntercepts = jest.fn();
     });
     window.dispatchEvent(new Event('visibilitychange'));
 
-    rootInteraction.interactions.forEach((interaction) => {
+    mockSpreadSheetInstance.interaction.interactions.forEach((interaction) => {
       expect(interaction.reset).toHaveBeenCalled();
     });
-
-    rootInteraction.destroy();
   });
 });
