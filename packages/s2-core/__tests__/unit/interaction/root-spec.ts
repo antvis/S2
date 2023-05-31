@@ -34,6 +34,7 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/ui/hd-adapter');
+jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/utils/interaction/merge-cell', () => {
   return {
     mergeCell: jest.fn(),
@@ -652,7 +653,6 @@ describe('RootInteraction Tests', () => {
   test('should reset interaction when visibilitychange', () => {
     mockSpreadSheetInstance.interaction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
-      interaction.spreadsheet.interaction.removeIntercepts = jest.fn();
     });
     window.dispatchEvent(new Event('visibilitychange'));
 
