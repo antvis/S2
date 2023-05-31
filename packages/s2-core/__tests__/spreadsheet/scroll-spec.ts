@@ -432,6 +432,7 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
+      expect(s2.interaction.eventController.canvasMousemoveEvent).toBeDefined();
       expect(s2.container.emit).toHaveBeenCalledWith(
         OriginEventType.MOUSE_MOVE,
         expect.any(Object),
