@@ -5,7 +5,7 @@ order: 3
 
 默认情况下，`S2` 会在指标行头（指标挂行头）或列头 （指标挂列头）展示默认的组内排序操作 icon，如下图：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*kV8gR555SxgAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*qqLAS5Q3obUAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 但在很多情况下，会需要展示其他的操作 `icon`，例如：筛选、下钻等，`S2` 提供了 `headerActionIcons` 参数让你可以通过简单的配置项快速实现行头、列头、角头的操作 `icon` 自定义。
 
@@ -13,11 +13,25 @@ order: 3
 const s2Options = {
   headerActionIcons: [
     {
-      iconNames: ['SortDown'],
+      icons: ['SortDown'],
       belongsCell: 'colCell',
     },
   ],
 }
+```
+
+自定义操作 `icon` 默认会展示在行列头的右侧，如果需要展示在左侧，可以使用对象的形式，如下：
+
+```ts
+const s2Options = {
+  headerActionIcons: [
+    {
+      icons: [{ name: 'SortDown', position: 'left' }],
+      belongsCell: 'colCell',
+    },
+  ],
+};
+
 ```
 
 1、如果内置 `icon` 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/docs/manual/basic/theme) 章节。

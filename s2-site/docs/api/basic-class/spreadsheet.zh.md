@@ -99,7 +99,6 @@ interface OffsetConfig {
 ```ts
 export enum CellTypes {
   DATA_CELL = 'dataCell',  // 数值单元格
-  HEADER_CELL = 'headerCell', // 行列头单元格
   ROW_CELL = 'rowCell', // 行头单元格
   COL_CELL = 'colCell', // 列头单元格
   CORNER_CELL = 'cornerCell', // 角头单元格

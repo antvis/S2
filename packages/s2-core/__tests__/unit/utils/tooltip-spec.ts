@@ -227,8 +227,7 @@ describe('Tooltip Utils Tests', () => {
         [CellTypes.COL_CELL]: 'colCell',
         [CellTypes.DATA_CELL]: 'dataCell',
         [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'merge',
-        [CellTypes.HEADER_CELL]: 'header',
+        [CellTypes.MERGED_CELL]: 'mergedCell',
         [CellTypes.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType] || '');
 

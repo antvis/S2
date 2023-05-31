@@ -1,6 +1,7 @@
 import type { LineStyleProps } from '@antv/g';
 import type { InteractionStateName } from '../constant';
 import type { CellTypes } from '../../common/constant/interaction';
+import type { DeepRequired } from './util';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -412,3 +413,6 @@ export interface MiniChartTheme {
   bullet?: BulletTheme;
   interval?: IntervalTheme;
 }
+
+export type InternalFullyCellTheme = DeepRequired<DefaultCellTheme>;
+export type InternalFullyTheme = DeepRequired<S2Theme>;

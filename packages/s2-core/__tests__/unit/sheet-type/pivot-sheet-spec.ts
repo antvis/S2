@@ -80,7 +80,6 @@ describe('PivotSheet Tests', () => {
         [CellTypes.COL_CELL]: 'colCell',
         [CellTypes.DATA_CELL]: 'dataCell',
         [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.HEADER_CELL]: 'header',
         [CellTypes.MERGED_CELL]: 'merged',
         [CellTypes.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType]);

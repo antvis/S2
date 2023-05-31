@@ -398,7 +398,7 @@ export const StrategyOptions: SheetComponentOptions = {
   },
   headerActionIcons: [
     {
-      iconNames: ['Trend'],
+      icons: ['Trend'],
       belongsCell: 'rowCell',
       defaultHide: true,
       onClick: () => {},

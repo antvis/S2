@@ -1,9 +1,5 @@
 import type { AreaRange } from '../../common/interface';
 import { NormalizedAlign } from '../normalize';
-/*
- * TODO: 在之前行列头添加了字段标记的能力，icon condition 可以设置位于文字的左边还是右边，而 action icon 都只能在右边
- *       这部分之前的版本并没有去适配，会出现设置不生效，以及 condition icon 和 action icon 相互重叠的问题，后续需要处理
- */
 
 /**
  * 动态调整滚动过程中列头的可视区域
@@ -15,18 +11,23 @@ export const adjustTextIconPositionWhileScrolling = (
     align: NormalizedAlign;
     size: {
       textSize: number;
-      iconSize: number;
+      iconStartSize?: number;
+      iconEndSize?: number;
     };
     padding: {
       start: number;
       end: number;
-      betweenTextIcon: number;
+      betweenTextAndEndIcon?: number;
     };
   },
 ) => {
   const { align, size, padding } = style;
-  const { textSize, iconSize } = size;
-  const totalSize = textSize + iconSize + padding.betweenTextIcon;
+  const { textSize, iconStartSize = 0, iconEndSize = 0 } = size;
+  let { betweenTextAndEndIcon = 0 } = padding;
+
+  betweenTextAndEndIcon = iconEndSize ? betweenTextAndEndIcon : 0;
+
+  const totalSize = textSize + iconStartSize + iconEndSize;
 
   const paddingArea: AreaRange = {
     start: contentArea.start - padding.start,
@@ -40,24 +41,28 @@ export const adjustTextIconPositionWhileScrolling = (
     switch (align) {
       case NormalizedAlign.Start:
         return {
-          textStart: area.start,
-          iconStart: area.start + textSize + padding.betweenTextIcon,
+          iconStart: area.start,
+          textStart: area.start + iconStartSize,
+          iconEnd:
+            area.start + iconStartSize + textSize + betweenTextAndEndIcon,
         };
 
       case NormalizedAlign.Center:
         const start = area.start + area.size / 2 - totalSize / 2;
 
         return {
-          textStart: start + textSize / 2,
-          iconStart: start + textSize + padding.betweenTextIcon,
+          iconStart: start,
+          textStart: start + iconStartSize + textSize / 2,
+          iconEnd: start + iconStartSize + textSize + betweenTextAndEndIcon,
         };
 
       default:
         const areaEnd = area.start + area.size;
 
         return {
-          textStart: areaEnd - iconSize - padding.betweenTextIcon,
-          iconStart: areaEnd - iconSize,
+          iconStart: areaEnd - iconEndSize - textSize - iconStartSize,
+          textStart: areaEnd - iconEndSize,
+          iconEnd: areaEnd - iconEndSize + betweenTextAndEndIcon,
         };
     }
   }
@@ -147,13 +152,11 @@ export const adjustTextIconPositionWhileScrolling = (
   };
 
   /**
-   * 这种情况下需要考虑文本内容超级长，超过了可视区域范围的情况，在这情况下，文字的对齐方式无论是啥都没有意义，
-   * 为了使内容能随着滚动完全被显示出来（以向左滚动为例）：
+   * 这种情况下需要考虑文本内容超级长，超过了可视区域范围的情况，在这情况下，文字的对齐方式无论是啥都没有意义，为了使内容能随着滚动完全被显示出来（以向左滚动为例）：
    *   1. 将文字和 icon 在单元格内居中对齐，以对齐后的文字和 icon 内容的起始点做作为左边界，结束点作为右边界
    *   2. 如果当前左边界还在可视范围内，则以内容左边界贴边显示
    *   3. 如果左边界滚出可视范围，则内容以左边界为界限，文字也跟随一起滚动
    *   4. 直到右边界进入可以范围内，则以内容右边界贴边显示
-   *
    *     +----------------------+
    *     |      viewport        |
    *  +--|----------------------|----------------------+

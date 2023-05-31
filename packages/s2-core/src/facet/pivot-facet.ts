@@ -412,7 +412,7 @@ export class PivotFacet extends BaseFacet {
         cellType,
       );
 
-      iconCount = customIcons?.iconNames.length ?? 0;
+      iconCount = customIcons?.icons.length ?? 0;
     }
 
     // calc width

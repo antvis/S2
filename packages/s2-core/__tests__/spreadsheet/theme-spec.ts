@@ -27,7 +27,7 @@ describe('SpreadSheet Theme Tests', () => {
       {
         headerActionIcons: [
           {
-            iconNames: ['DrillDownIcon'],
+            icons: ['DrillDownIcon'],
             belongsCell: 'rowCell',
             displayCondition: () => true,
             onClick: () => {},
@@ -141,7 +141,7 @@ describe('SpreadSheet Theme Tests', () => {
         ],
         headerActionIcons: [
           {
-            iconNames: [iconInfo.name],
+            icons: [iconInfo.name],
             belongsCell: 'rowCell',
           },
         ],
@@ -200,10 +200,11 @@ describe('SpreadSheet Theme Tests', () => {
 
         const rowCellWidth = get(rowCell, 'meta.width');
         const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
-        const actionIconStyle = actionIcon.parsedStyle;
+        // @ts-ignore
+        const actionIconCfg = actionIcon.cfg;
 
-        expect(actionIconStyle.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconStyle.x! + actionIconStyle.width!).toBeLessThanOrEqual(
+        expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
+        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
           rowCellWidth,
         );
       },

@@ -27,7 +27,6 @@ export enum InteractionStateName {
 
 export enum CellTypes {
   DATA_CELL = 'dataCell',
-  HEADER_CELL = 'headerCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   SERIES_NUMBER_CELL = 'seriesNumberCell',

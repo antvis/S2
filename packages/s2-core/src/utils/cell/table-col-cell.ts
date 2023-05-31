@@ -20,8 +20,8 @@ export const getTableColIconsWidth = (
     iconCount = 1;
   } else {
     iconCount =
-      getActionIconConfig(s2.options.headerActionIcons!, meta, cellType)
-        ?.iconNames.length ?? 0;
+      getActionIconConfig(s2.options.headerActionIcons!, meta, cellType)?.icons
+        .length ?? 0;
   }
 
   return (

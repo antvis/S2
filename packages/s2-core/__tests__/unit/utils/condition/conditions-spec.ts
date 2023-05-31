@@ -1,12 +1,9 @@
-import {
-  getIconPositionCfg,
-  getIntervalScale,
-} from '@/utils/condition/condition';
+import { getIconPosition, getIntervalScale } from '@/utils/condition/condition';
 
 describe('getIconLayoutPosition Test', () => {
   test('should return right by default', () => {
     expect(
-      getIconPositionCfg({
+      getIconPosition({
         field: 'value',
         mapping: () => {
           return { fill: 'red' };
@@ -17,7 +14,7 @@ describe('getIconLayoutPosition Test', () => {
 
   test(`should return left when it's left`, () => {
     expect(
-      getIconPositionCfg({
+      getIconPosition({
         field: 'value',
         position: 'left',
         mapping: () => {

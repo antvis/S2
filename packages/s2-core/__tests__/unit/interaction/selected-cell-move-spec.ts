@@ -1,6 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import type { BaseFacet } from '../../../src/facet';
-import type { OffsetConfig } from '@/common/interface';
+import type { InternalFullyTheme, OffsetConfig } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
@@ -31,7 +31,7 @@ describe('Interaction Keyboard Move Tests', () => {
         verticalBorderWidth: 1,
         horizontalBorderWidth: 1,
       },
-    };
+    } as InternalFullyTheme;
     s2.isTableMode = jest.fn(() => true);
     s2.dataSet = {
       fields: { columns: ['0', '1'] },
