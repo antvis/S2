@@ -1,7 +1,7 @@
 import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import type { MergedCell } from '../cell';
 import {
-  CellTypes,
+  CellType,
   InteractionName,
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
@@ -170,7 +170,7 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells(cellType?: CellTypes[]): CellMeta[] {
+  public getCells(cellType?: CellType[]): CellMeta[] {
     const currentState = this.getState();
     const cells = currentState?.cells || [];
 
@@ -236,7 +236,7 @@ export class RootInteraction {
     this.addIntercepts([InterceptType.HOVER]);
 
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
-    const isColCell = cell?.cellType === CellTypes.COL_CELL;
+    const isColCell = cell?.cellType === CellType.COL_CELL;
     const lastState = this.getState();
     const isSelectedCell = this.isSelectedCell(cell);
     const isMultiSelected =

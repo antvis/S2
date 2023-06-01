@@ -17,7 +17,7 @@ import {
   getCustomFieldsSummaries,
 } from '@/utils/tooltip';
 import {
-  CellTypes,
+  CellType,
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
@@ -221,21 +221,21 @@ describe('Tooltip Utils Tests', () => {
   });
 
   describe('Tooltip Get Options Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'mergedCell',
-        [CellTypes.SERIES_NUMBER_CELL]: 'seriesNumberCell',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'mergedCell',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType] || '');
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
@@ -267,10 +267,10 @@ describe('Tooltip Utils Tests', () => {
     );
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip options and merge base tooltip config',
       (cellType) => {
@@ -321,7 +321,7 @@ describe('Tooltip Utils Tests', () => {
 
     test('should filter not displayed tooltip operation menus', () => {
       const mockCell = {
-        cellType: CellTypes.DATA_CELL,
+        cellType: CellType.DATA_CELL,
       } as unknown as S2CellType;
       const onClick = jest.fn();
 
@@ -343,12 +343,12 @@ describe('Tooltip Utils Tests', () => {
           {
             key: 'menu-5',
             text: '动态显示',
-            visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType === CellType.DATA_CELL,
           },
           {
             key: 'menu-6',
             text: '动态隐藏',
-            visible: (cell) => cell.cellType !== CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType !== CellType.DATA_CELL,
           },
           {
             key: 'menu-7',

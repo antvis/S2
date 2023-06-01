@@ -1,5 +1,5 @@
 import {
-  CellTypes,
+  CellType,
   ResizeType,
   type S2TableSheetFrozenOptions,
   type CustomHeaderField,
@@ -137,7 +137,7 @@ export const s2Options: SheetComponentOptions = {
           key: 'trend',
           text: '趋势',
           icon: 'Trend',
-          visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          visible: (cell) => cell.cellType === CellType.DATA_CELL,
           onClick: (cell) => {
             // eslint-disable-next-line no-console
             console.log('趋势图 icon 点击: ', cell);

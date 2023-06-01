@@ -1,6 +1,6 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
 import { get } from 'lodash';
-import { type CellMeta, CellTypes, type ViewMeta } from '../common';
+import { type CellMeta, CellType, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
@@ -94,7 +94,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       rowIndex: meta.rowIndex,
       colIndex: meta.colIndex,
       id: meta.id,
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
     };
   }
 
@@ -147,7 +147,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       rowIndex: row,
       colIndex: col,
       id: getDataCellId(rowId, colId),
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
     };
   }
 

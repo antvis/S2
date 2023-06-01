@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
-import { CellTypes, InteractionStateName, type Node } from '../../../../../src';
+import { CellType, InteractionStateName, type Node } from '../../../../../src';
 import type { GEvent } from '@/index';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
@@ -59,7 +59,7 @@ describe('Interaction Corner Cell Click Tests', () => {
         {
           colIndex: -1,
           rowIndex: -1,
-          type: CellTypes.ROW_CELL,
+          type: CellType.ROW_CELL,
           id: mockCellInfo.mockCellMeta['id'],
         },
       ],

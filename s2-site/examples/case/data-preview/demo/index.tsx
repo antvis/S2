@@ -8,7 +8,7 @@ import {
   TableCornerCell,
   S2Event,
   InteractionStateName,
-  CellTypes,
+  CellType,
 } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
 import {
@@ -228,7 +228,7 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
         colIndex,
         rowIndex,
         id: `${String(rowIndex)}-${colsNodes[colIndex + 1].id}`,
-        type: CellTypes.DATA_CELL,
+        type: CellType.DATA_CELL,
       },
     ],
   });

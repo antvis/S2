@@ -2,7 +2,7 @@ import { isEmpty, range } from 'lodash';
 import type { DataCell } from '../../cell/data-cell';
 import { S2Event } from '../../common/constant';
 import {
-  CellTypes,
+  CellType,
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
@@ -88,7 +88,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
           colIndex,
           rowIndex,
           id: `${rowId}-${colId}`,
-          type: CellTypes.DATA_CELL,
+          type: CellType.DATA_CELL,
           rowId,
           colId,
           spreadsheet: this.spreadsheet,

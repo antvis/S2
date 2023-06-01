@@ -5,7 +5,7 @@ import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
-  CellTypes,
+  CellType,
   CornerCellClick,
   DataCell,
   DataCellClick,
@@ -53,11 +53,11 @@ describe('RootInteraction Tests', () => {
 
   const getMockCell = (id: number) =>
     ({
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       hideInteractionShape: jest.fn(),
       clearUnselectedState: jest.fn(),
       update: jest.fn(),
-      cellType: CellTypes.DATA_CELL,
+      cellType: CellType.DATA_CELL,
       getMeta: () => {
         return {
           colIndex: id,

@@ -1,7 +1,7 @@
 import type { SimpleBBox } from '../../engine';
 import type {
   InteractionStateName,
-  CellTypes,
+  CellType,
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
@@ -41,7 +41,7 @@ export interface CellMeta {
   id: string;
   colIndex: number;
   rowIndex: number;
-  type: CellTypes;
+  type: CellType;
   rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }

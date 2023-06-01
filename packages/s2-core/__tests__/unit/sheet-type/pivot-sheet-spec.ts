@@ -8,7 +8,7 @@ import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
 import type { CornerCell } from '@/cell/corner-cell';
 import {
-  CellTypes,
+  CellType,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
@@ -74,14 +74,14 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('PivotSheet Tooltip Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'merged',
-        [CellTypes.SERIES_NUMBER_CELL]: 'seriesNumberCell',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'merged',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType]);
 
     test('should support callback tooltip content for string', () => {
@@ -206,10 +206,10 @@ describe('PivotSheet Tests', () => {
     });
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
@@ -242,7 +242,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for string content',
       (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;
@@ -280,7 +280,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should use %o tooltip content from tooltip config first for element content',
       (cellType) => {
         const tooltipContent = document.createElement('span');
@@ -315,7 +315,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for element content',
       (cellType) => {
         const tooltipContent = document.createElement('span');

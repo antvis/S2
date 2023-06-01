@@ -1,4 +1,4 @@
-import { CellTypes } from '../common/constant';
+import { CellType } from '../common/constant';
 import type { TextTheme } from '../common/interface';
 import { TableDataCell } from './table-data-cell';
 
@@ -10,7 +10,7 @@ export class TableSeriesNumberCell extends TableDataCell {
      * 因此下层在选择到序号时，需要将 cellType 修改为 RowCell, 保证交互逻辑统一:
      *     packages/s2-core/src/utils/interaction/select-event.ts -> getCellMeta
      */
-    return CellTypes.DATA_CELL;
+    return CellType.DATA_CELL;
   }
 
   protected getTextStyle(): TextTheme {

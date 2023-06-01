@@ -1,5 +1,5 @@
 import {
-  CellTypes,
+  CellType,
   customMerge,
   getCellMeta,
   InteractionStateName,
@@ -98,9 +98,9 @@ describe('<StrategySheet/> Tests', () => {
   });
 
   test.each([
-    CellTypes.ROW_CELL,
-    CellTypes.COL_CELL,
-    CellTypes.DATA_CELL,
+    CellType.ROW_CELL,
+    CellType.COL_CELL,
+    CellType.DATA_CELL,
   ] as const)(
     'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
     (cellType) => {
@@ -242,17 +242,17 @@ describe('<StrategySheet/> Tests', () => {
       const corner2 = rows[1].split('\t').slice(0, 3);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(corner1).toEqual(['', '', '日期']);
@@ -273,17 +273,17 @@ describe('<StrategySheet/> Tests', () => {
       const col2: string[] = rows[1].split('\t').slice(3);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(col1.length).toEqual(col2.length);
@@ -309,17 +309,17 @@ describe('<StrategySheet/> Tests', () => {
       const detailRow: string[] = rows[3].split('\t').slice(0, 5);
 
       expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
+        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022
         		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
+        自定义节点A												-
+        自定义节点A	指标A					377		3877	4324	42%	-	-	377
         自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
+        自定义节点A	指标A	自定义节点B
         自定义节点A	指标A	指标C					324	377	0		-	-		324
         自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
+        自定义节点A	自定义节点E
+        指标E								377	324	0.02	-	-
+        指标E	自定义节点C
         指标E	自定义节点D													"
       `);
       expect(detailRow).toEqual(['自定义节点A', '指标A', '', '', '']);

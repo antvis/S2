@@ -17,7 +17,7 @@ cell.getActualText()
 | getStyle               | get cell style                         | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme)  |
 | getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number` ) => [TextAndIconPosition](#textandiconposition) |
 | getActualText          | get the drawn text                     | `() => string`                                                        |
-| cellType               | cell type                              | [CellTypes](#celltypes)                                               |
+| cellType               | cell type                              | [CellType](#celltypes)                                               |
 | initCell               | Initialize cells                       | `() => void`                                                          |
 | update                 | update cell                            | `() => void`                                                          |
 | getTextStyle           | get text style                         | `() => void`                                                          |
@@ -55,10 +55,10 @@ interface TextAndIconPosition {
 }
 ```
 
-### CellTypes
+### CellType
 
 ```ts
-export enum CellTypes {
+export enum CellType {
   DATA_CELL = 'dataCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',

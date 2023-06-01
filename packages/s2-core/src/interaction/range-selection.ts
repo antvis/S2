@@ -2,7 +2,7 @@ import type { FederatedPointerEvent as Event } from '@antv/g';
 import { inRange, isNil, range } from 'lodash';
 import { DataCell } from '../cell';
 import {
-  CellTypes,
+  CellType,
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
@@ -155,7 +155,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
             cell,
           );
         } else if (
-          cell?.cellType === CellTypes.ROW_CELL &&
+          cell?.cellType === CellType.ROW_CELL &&
           meta.level === rowMaxLevel
         ) {
           selectedCells = this.handleRowSelected(
@@ -164,7 +164,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
             cell,
           );
         } else if (
-          cell?.cellType === CellTypes.COL_CELL &&
+          cell?.cellType === CellType.COL_CELL &&
           meta.level === colMaxLevel
         ) {
           selectedCells = this.handleColSelected(

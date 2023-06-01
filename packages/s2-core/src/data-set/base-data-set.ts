@@ -30,7 +30,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import { CellTypes } from '../common';
+import { CellType } from '../common';
 import type { CellMeta, RowData, CustomHeaderField } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
@@ -111,7 +111,7 @@ export abstract class BaseDataSet {
     const meta = cell.getMeta?.();
 
     // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
-    if (cell.cellType === CellTypes.DATA_CELL) {
+    if (cell.cellType === CellType.DATA_CELL) {
       const rowNode = this.spreadsheet.facet.getRowNodeByIndex(meta?.rowIndex);
 
       return (
@@ -144,7 +144,7 @@ export abstract class BaseDataSet {
     }
 
     // 数值单元格
-    if (cell.cellType === CellTypes.DATA_CELL) {
+    if (cell.cellType === CellType.DATA_CELL) {
       const currentMeta = find(meta?.spreadsheet.dataCfg.meta, {
         field: meta?.field || meta?.value || meta?.valueField,
       });

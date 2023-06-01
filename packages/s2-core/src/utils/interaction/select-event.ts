@@ -1,7 +1,7 @@
 import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesNumberCell } from '../../cell';
 import {
-  CellTypes,
+  CellType,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
@@ -40,9 +40,7 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
     rowIndex,
     rowQuery,
     type:
-      cell instanceof TableSeriesNumberCell
-        ? CellTypes.ROW_CELL
-        : cell.cellType,
+      cell instanceof TableSeriesNumberCell ? CellType.ROW_CELL : cell.cellType,
   };
 };
 

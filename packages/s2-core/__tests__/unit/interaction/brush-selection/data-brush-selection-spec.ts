@@ -4,7 +4,7 @@ import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
 import type { TableFacet } from '@/facet';
 import {
-  CellTypes,
+  CellType,
   DataCellBrushSelection,
   FrozenGroupType,
   getScrollOffsetForCol,
@@ -59,7 +59,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     .reduce<DataCell[]>((arr, v, i) => {
       v.forEach((_, j) => {
         const cell = {
-          cellType: CellTypes.DATA_CELL,
+          cellType: CellType.DATA_CELL,
           getMeta() {
             return {
               colIndex: j,

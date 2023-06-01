@@ -25,7 +25,7 @@ import {
   type ViewMeta,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
-import { CellTypes } from '../common/constant/interaction';
+import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
@@ -296,7 +296,7 @@ export class PivotFacet extends BaseFacet {
       );
       const leafNodeLabel = cellFormatter?.(col.value) ?? col.value;
       const iconWidth = this.getExpectedCellIconWidth(
-        CellTypes.COL_CELL,
+        CellType.COL_CELL,
         this.spreadsheet.isValueInCols() &&
           this.spreadsheet.options.showDefaultHeaderActionIcon!,
         colIconStyle!,
@@ -386,7 +386,7 @@ export class PivotFacet extends BaseFacet {
    * @returns 宽度
    */
   private getExpectedCellIconWidth(
-    cellType: CellTypes,
+    cellType: CellType,
     useDefaultIcon: boolean,
     iconStyle: IconTheme,
   ): number {
@@ -850,7 +850,7 @@ export class PivotFacet extends BaseFacet {
 
     // calc rowNode width
     const rowIconWidth = this.getExpectedCellIconWidth(
-      CellTypes.ROW_CELL,
+      CellType.ROW_CELL,
       !this.spreadsheet.isValueInCols() &&
         isLeaf &&
         this.spreadsheet.options.showDefaultHeaderActionIcon!,
@@ -875,7 +875,7 @@ export class PivotFacet extends BaseFacet {
     // calc corner fieldNameNodeWidth
     const fieldName = this.spreadsheet.dataSet.getFieldName(field);
     const cornerIconWidth = this.getExpectedCellIconWidth(
-      CellTypes.CORNER_CELL,
+      CellType.CORNER_CELL,
       false,
       cornerIconStyle!,
     );

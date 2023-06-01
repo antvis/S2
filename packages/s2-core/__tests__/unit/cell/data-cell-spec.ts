@@ -11,7 +11,7 @@ import {
   S2Event,
   type OriginalEvent,
   type S2CellType,
-  CellTypes,
+  CellType,
 } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
@@ -490,7 +490,7 @@ describe('Data Cell Tests', () => {
       const interactedCells = s2.interaction.getInteractedCells();
       const firstRowCell = find(
         interactedCells,
-        (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+        (cell: S2CellType) => cell.cellType === CellType.ROW_CELL,
       );
 
       expect(interactedCells.length).toBe(7);
@@ -511,7 +511,7 @@ describe('Data Cell Tests', () => {
       const interactedCells = s2.interaction.getInteractedCells();
       const firstColCell = find(
         interactedCells,
-        (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+        (cell: S2CellType) => cell.cellType === CellType.COL_CELL,
       );
 
       expect(interactedCells.length).toBe(8);

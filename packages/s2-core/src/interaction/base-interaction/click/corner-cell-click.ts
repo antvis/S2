@@ -1,6 +1,6 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty } from 'lodash';
-import { CellTypes, type CellMeta, type Data } from '../../../common';
+import { CellType, type CellMeta, type Data } from '../../../common';
 import {
   InteractionStateName,
   InterceptType,
@@ -70,7 +70,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
         // 选中角头而高亮的行头, 不需要联动数值单元格, 所以索引设置为 -1
         colIndex: -1,
         rowIndex: -1,
-        type: CellTypes.ROW_CELL,
+        type: CellType.ROW_CELL,
       };
     });
   }

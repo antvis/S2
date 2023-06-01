@@ -6,7 +6,7 @@ import { getContainer } from 'tests/util/helpers';
 import { TableDataCell, TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
-  CellTypes,
+  CellType,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
@@ -156,7 +156,7 @@ describe('List Table Core Data Process', () => {
       .getCells()
       .filter(
         (cell) =>
-          cell.cellType === CellTypes.DATA_CELL &&
+          cell.cellType === CellType.DATA_CELL &&
           !(cell instanceof TableSeriesNumberCell),
       )[0];
 
@@ -225,7 +225,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = sheet.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[1];
+      .filter(({ cellType }) => cellType === CellType.COL_CELL)[1];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -250,14 +250,14 @@ describe('List Table Core Data Process', () => {
     const dataContent = getCopyPlainContent(s2);
 
     expect(dataContent).toMatchInlineSnapshot(`
-      "浙江省	
-      	
-      	
-      	
-      	
-      	
-      	
-      	
+      "浙江省
+
+
+
+
+
+
+
       	宁波市"
     `);
   });
@@ -351,7 +351,7 @@ describe('List Table Core Data Process', () => {
       .getCells()
       .filter(
         (cell) =>
-          cell.cellType === CellTypes.DATA_CELL &&
+          cell.cellType === CellType.DATA_CELL &&
           !(cell instanceof TableSeriesNumberCell),
       )[20];
 
@@ -418,7 +418,7 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "1	浙江省	杭州市	家具	### 问题摘要 
+      "1	浙江省	杭州市	家具	### 问题摘要
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
@@ -548,7 +548,7 @@ describe('Pivot Table Core Data Process', () => {
     sheet.render();
     const cell = sheet.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)
+      .filter(({ cellType }) => cellType === CellType.ROW_CELL)
       .pop();
 
     sheet.interaction.changeState({
@@ -869,7 +869,7 @@ describe('Pivot Table Core Data Process', () => {
 
     const cell = sheet.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -909,7 +909,7 @@ describe('Pivot Table Core Data Process', () => {
     s2New.render();
     const cell = s2New.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
 
     s2New.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -944,7 +944,7 @@ describe('Pivot Table Core Data Process', () => {
     s2New.render();
     const cell = s2New.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
 
     s2New.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -968,7 +968,7 @@ describe('Pivot Table Core Data Process', () => {
     sheet.render();
     const cells = sheet.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
 
     sheet.interaction.changeState({
       cells: map(cells, getCellMeta),
@@ -1010,7 +1010,7 @@ describe('Pivot Table Core Data Process', () => {
     sheet.render();
     const cells = sheet.facet
       .getCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
 
     sheet.interaction.changeState({
       cells: map(cells, getCellMeta),

@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
 import {
-  CellTypes,
+  CellType,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
@@ -39,7 +39,7 @@ export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
 
   public get cellType() {
-    return CellTypes.COL_CELL;
+    return CellType.COL_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

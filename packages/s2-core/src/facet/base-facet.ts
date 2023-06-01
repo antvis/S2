@@ -33,7 +33,7 @@ import {
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-  CellTypes,
+  CellType,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -1812,7 +1812,7 @@ export abstract class BaseFacet {
    */
   public getCellChildrenNodes = (cell: S2CellType): Node[] => {
     const selectNode = cell?.getMeta?.() as Node;
-    const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
+    const isRowCell = cell?.cellType === CellType.ROW_CELL;
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
 
     // 树状模式的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
@@ -1842,7 +1842,7 @@ export abstract class BaseFacet {
     const headerChildren = (this.getRowHeader()?.children || []) as RowCell[];
 
     return getAllChildCells(headerChildren, RowCell).filter(
-      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+      (cell: S2CellType) => cell.cellType === CellType.ROW_CELL,
     );
   }
 
@@ -1860,7 +1860,7 @@ export abstract class BaseFacet {
     const headerChildren = (this.getColHeader()?.children || []) as ColCell[];
 
     return getAllChildCells(headerChildren, ColCell).filter(
-      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+      (cell: S2CellType) => cell.cellType === CellType.COL_CELL,
     );
   }
 

@@ -27,7 +27,7 @@ import {
   sumBy,
 } from 'lodash';
 import {
-  CellTypes,
+  CellType,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
@@ -356,11 +356,11 @@ export const getSelectedCellIndexes = (spreadsheet: SpreadSheet) => {
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
 
-  if (cellType === CellTypes.COL_CELL) {
+  if (cellType === CellType.COL_CELL) {
     return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
   }
 
-  if (cellType === CellTypes.ROW_CELL) {
+  if (cellType === CellType.ROW_CELL) {
     return getRowOrColSelectedIndexes(nodes, colLeafNodes);
   }
 
@@ -399,8 +399,8 @@ export const getSelectedCellsData = (
 
     // target: 当前点击的单元格类型
     const isTargetTotalCell = targetCellMeta?.isTotals;
-    const isTargetColCell = targetCell?.cellType === CellTypes.COL_CELL;
-    const isTargetRowCell = targetCell?.cellType === CellTypes.ROW_CELL;
+    const isTargetColCell = targetCell?.cellType === CellType.COL_CELL;
+    const isTargetRowCell = targetCell?.cellType === CellType.ROW_CELL;
 
     if (!isTargetColCell && !isTargetRowCell) {
       return false;
@@ -665,26 +665,26 @@ export const getCellsTooltipData = (
 
 export const getTooltipOptionsByCellType = (
   cellTooltipConfig: Tooltip = {},
-  cellType: CellTypes,
+  cellType: CellType,
 ): Tooltip => {
   const getOptionsByCell = (cellConfig?: BaseTooltipConfig) =>
     customMerge<BaseTooltipConfig>(cellTooltipConfig, cellConfig);
 
   const { colCell, rowCell, dataCell, cornerCell } = cellTooltipConfig;
 
-  if (cellType === CellTypes.COL_CELL) {
+  if (cellType === CellType.COL_CELL) {
     return getOptionsByCell(colCell);
   }
 
-  if (cellType === CellTypes.ROW_CELL) {
+  if (cellType === CellType.ROW_CELL) {
     return getOptionsByCell(rowCell);
   }
 
-  if (cellType === CellTypes.DATA_CELL) {
+  if (cellType === CellType.DATA_CELL) {
     return getOptionsByCell(dataCell);
   }
 
-  if (cellType === CellTypes.CORNER_CELL) {
+  if (cellType === CellType.CORNER_CELL) {
     return getOptionsByCell(cornerCell);
   }
 

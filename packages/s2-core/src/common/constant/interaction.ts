@@ -25,7 +25,7 @@ export enum InteractionStateName {
   PREPARE_SELECT = 'prepareSelect',
 }
 
-export enum CellTypes {
+export enum CellType {
   DATA_CELL = 'dataCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',

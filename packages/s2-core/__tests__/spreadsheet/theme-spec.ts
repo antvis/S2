@@ -9,7 +9,7 @@ import type {
 } from '@/common/interface/theme';
 import type { PivotSheet } from '@/sheet-type';
 import {
-  CellTypes,
+  CellType,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
   GuiIcon,
@@ -45,12 +45,12 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Theme Default Value Tests', () => {
-    const CELL_TYPES: CellTypes[] = [
-      CellTypes.DATA_CELL,
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.CORNER_CELL,
-      CellTypes.MERGED_CELL,
+    const CELL_TYPES: CellType[] = [
+      CellType.DATA_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.CORNER_CELL,
+      CellType.MERGED_CELL,
     ];
 
     test('should get default theme', () => {
@@ -59,7 +59,7 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
-      (cellType: CellTypes) => {
+      (cellType: CellType) => {
         s2.setThemeCfg({
           name: 'colorful',
         });
@@ -72,7 +72,7 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellType) => {
       s2.setThemeCfg({
         name: 'colorful',
       });

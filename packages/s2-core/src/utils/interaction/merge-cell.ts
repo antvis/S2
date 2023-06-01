@@ -9,7 +9,7 @@ import {
   map,
 } from 'lodash';
 import { MergedCell } from '../../cell/merged-cell';
-import { CellTypes } from '../../common/constant';
+import { CellType } from '../../common/constant';
 import type {
   MergedCellInfo,
   S2CellType,
@@ -344,7 +344,7 @@ export const removeUnmergedCellsInfo = (
  * @param sheet
  */
 export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
-  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELL) {
+  if (!removedCells || removedCells.cellType !== CellType.MERGED_CELL) {
     // eslint-disable-next-line no-console
     console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
 

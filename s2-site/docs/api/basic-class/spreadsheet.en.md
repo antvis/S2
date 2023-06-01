@@ -54,7 +54,7 @@ s2.isPivotMode()
 | facet.getColLeafNodes         | Get the column head leaf node                                                                                                                                                                    | () => [Node\[\]](/docs/api/basic-class/node/)                                                                                                                          |                                                                      |
 | updateScrollOffset         | update scroll offset                                                                                                                                                                             | (config: [OffsetConfig](#offsetconfig) ) => void                                                                                                                       |                                                                      |
 | getCell                    | Get the current cell according to event.target                                                                                                                                                   | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target) ) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype)                    |                                                                      |
-| getCellType                | Get the current cell type according to event.target                                                                                                                                              | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target) ) => [CellTypes](/docs/api/basic-class/base-cell#celltypes)                      |                                                                      |
+| getCellType                | Get the current cell type according to event.target                                                                                                                                              | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target) ) => [CellType](/docs/api/basic-class/base-cell#celltypes)                      |                                                                      |
 | getTotalsConfig            | Get Total Subtotal Configuration                                                                                                                                                                 | (dimension: string) => [Total](/docs/api/general/S2Options#totals)                                                                                                     |                                                                      |
 | getInitColLeafNodes     | Get the leaf node of the column header for the first rendering (for example: before hiding the column header)                                                                                    | () => [Node\[\]](/docs/api/basic-class/node/)                                                                                                                          |                                                                      |
 | getCanvasElement           | Get the `<canvas/>` HTML element corresponding to the table                                                                                                                                      | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement)                                                                          |                                                                      |
@@ -88,12 +88,12 @@ interface OffsetConfig {
 }
 ```
 
-### CellTypes
+### CellType
 
 Function description: cell type
 
 ```ts
-export enum CellTypes {
+export enum CellType {
   DATA_CELL = 'dataCell',  // 数值单元格
   ROW_CELL = 'rowCell', // 行头单元格
   COL_CELL = 'colCell', // 列头单元格
