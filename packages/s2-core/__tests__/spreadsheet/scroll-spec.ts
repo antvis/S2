@@ -414,7 +414,7 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minX = -9999;
       s2.facet.panelBBox.minY = -9999;
 
-      await sleep(500);
+      // await sleep(500);
       const bbox = s2.getCanvasElement().getBoundingClientRect();
       const mousemoveEvent = new MouseEvent('mousemove', {
         clientX: bbox.left + 100,
@@ -423,7 +423,7 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
-      await sleep(500);
+      // await sleep(500);
 
       s2.container.emit = jest.fn();
 
