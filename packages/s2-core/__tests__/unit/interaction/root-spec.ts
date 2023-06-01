@@ -66,7 +66,7 @@ describe('RootInteraction Tests', () => {
       },
     } as unknown as DataCell);
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockSpreadSheet.mockClear();
     panelGroupAllDataCells = Array.from<DataCell>({ length: 10 }).map(
       (_, idx) => getMockCell(idx),
@@ -179,10 +179,7 @@ describe('RootInteraction Tests', () => {
       isMultiSelection: true,
     });
 
-    expect(rootInteraction.getState().cells).toEqual([
-      getCellMeta(mockCell),
-      getCellMeta(mockCellA),
-    ]);
+    expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
 
     // 选中 cellB
     rootInteraction.selectHeaderCell({
@@ -191,7 +188,6 @@ describe('RootInteraction Tests', () => {
     });
 
     expect(rootInteraction.getState().cells).toEqual([
-      getCellMeta(mockCell),
       getCellMeta(mockCellA),
       getCellMeta(mockCellB),
     ]);
@@ -203,10 +199,7 @@ describe('RootInteraction Tests', () => {
     });
 
     // 取消选中
-    expect(rootInteraction.getState().cells).toEqual([
-      getCellMeta(mockCell),
-      getCellMeta(mockCellA),
-    ]);
+    expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
 
     isEqualStateNameSpy.mockRestore();
   });
