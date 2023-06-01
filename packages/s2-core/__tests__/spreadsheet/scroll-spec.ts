@@ -392,7 +392,7 @@ describe('Scroll Tests', () => {
   );
 
   // https://github.com/antvis/S2/issues/2222
-  test.only.each([
+  test.each([
     {
       type: 'horizontal',
       offset: {
