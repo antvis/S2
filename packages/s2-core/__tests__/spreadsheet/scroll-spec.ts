@@ -434,12 +434,15 @@ describe('Scroll Tests', () => {
       const onMouseMove = jest.fn();
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
 
-      expect(isMobile()).toBeFalse();
       expect(s2.facet.scrollFrameId).toBeFalsy();
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
         deltaY: offset.scrollY,
       });
+
+      const { canvasMousemoveEvent: cmme } = s2.interaction.eventController;
+      expect(cmme).toBeDefined();
+      expect(s2.container.getShape(cmme.x, cmme.y)).toBeDefined();
 
       canvas.dispatchEvent(wheelEvent);
 
