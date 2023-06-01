@@ -391,7 +391,7 @@ describe('Scroll Tests', () => {
   );
 
   // https://github.com/antvis/S2/issues/2222
-  test.each([
+  test.only.each([
     {
       type: 'horizontal',
       offset: {
@@ -420,6 +420,7 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
+      const spyFn = jest.spyOn(s2.facet, 'onAfterScroll');
       const onMouseMove = jest.fn();
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
       const wheelEvent = new WheelEvent('wheel', {
@@ -432,7 +433,18 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
-      expect(s2.interaction.eventController.canvasMousemoveEvent).toBeDefined();
+      expect(spyFn).toHaveBeenCalled();
+
+      const { canvasMousemoveEvent } = s2.interaction.eventController;
+
+      expect(s2.interaction.isSelectedState()).toBeFalsy();
+      expect(canvasMousemoveEvent).toBeDefined();
+      expect(canvasMousemoveEvent.x).toEqual(160);
+      expect(canvasMousemoveEvent.y).toEqual(140);
+      expect(canvasMousemoveEvent).toBeDefined();
+      expect(
+        s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
+      ).toBeDefined();
 
       expect(onMouseMove).toHaveBeenCalled();
     },
