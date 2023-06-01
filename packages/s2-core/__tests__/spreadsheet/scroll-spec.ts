@@ -400,13 +400,13 @@ describe('Scroll Tests', () => {
         scrollY: 0,
       },
     },
-    // {
-    //   type: 'vertical',
-    //   offset: {
-    //     scrollX: 0,
-    //     scrollY: 20,
-    //   },
-    // },
+    {
+      type: 'vertical',
+      offset: {
+        scrollX: 0,
+        scrollY: 20,
+      },
+    },
   ])(
     'should trigger hover cells when hover cells after scroll by %o',
     async ({ offset }) => {
@@ -454,6 +454,12 @@ describe('Scroll Tests', () => {
         deltaY: offset.scrollY,
       });
       canvas.dispatchEvent(wheelEvent);
+
+      // s2.facet.updateHorizontalScrollOffset({
+      //   offset: 20,
+      //   offsetX: 0,
+      //   offsetY: 0,
+      // });
 
       // wait requestAnimationFrame and debounce
       await sleep(1000);
