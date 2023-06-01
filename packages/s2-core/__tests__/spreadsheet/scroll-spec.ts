@@ -425,7 +425,7 @@ describe('Scroll Tests', () => {
 
       await sleep(500);
 
-      const onMouseMove = jest.fn();
+      s2.container.emit = jest.fn();
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
 
       const { canvasMousemoveEvent } = s2.interaction.eventController;
@@ -443,7 +443,10 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
-      expect(onMouseMove).toHaveBeenCalled();
+      expect(s2.container.emit).toHaveBeenCalledWith(
+        OriginEventType.MOUSE_MOVE,
+        expect.any(Object),
+      );
     },
   );
 
