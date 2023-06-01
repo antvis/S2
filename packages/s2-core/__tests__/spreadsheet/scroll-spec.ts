@@ -427,11 +427,18 @@ describe('Scroll Tests', () => {
 
       s2.container.emit = jest.fn();
 
+      const pointFuncs = [1, 2, 3, 4].map((idx) =>
+        jest.spyOn(s2.facet, 'jestPoint' + idx),
+      );
+
       const { canvasMousemoveEvent } = s2.interaction.eventController;
       expect(canvasMousemoveEvent).toBeTruthy();
       expect(
         s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
       ).toBeObject();
+
+      const spyOnAfterScroll = jest.spyOn(s2.facet, 'onAfterScroll');
+      const spyDynamicRenderCell = jest.spyOn(s2.facet, 'dynamicRenderCell');
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
@@ -442,7 +449,10 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
-      expect(s2.container.emit).toHaveBeenCalledWith(
+      pointFuncs.forEach((fn) => expect(fn).toBeCalled());
+      expect(spyOnAfterScroll).toBeCalled();
+      expect(spyDynamicRenderCell).toBeCalled();
+      expect(s2.container.emit).toBeCalledWith(
         OriginEventType.MOUSE_MOVE,
         expect.any(Object),
       );

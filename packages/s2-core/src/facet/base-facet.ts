@@ -1346,19 +1346,30 @@ export abstract class BaseFacet {
     this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
   }
 
+  public jestPoint1() {}
+
+  public jestPoint2() {}
+
+  public jestPoint3() {}
+
+  public jestPoint4() {}
+
   protected onAfterScroll = debounce(() => {
     const { interaction, container } = this.spreadsheet;
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
+    this.jestPoint1();
     if (!interaction.isSelectedState()) {
       interaction.removeIntercepts([InterceptType.HOVER]);
-
+      this.jestPoint2();
       // https://github.com/antvis/S2/issues/2222
       const canvasMousemoveEvent =
         interaction.eventController.canvasMousemoveEvent;
       if (canvasMousemoveEvent) {
         const { x, y } = canvasMousemoveEvent;
         const shape = container.getShape(x, y);
+        this.jestPoint3();
         if (shape) {
+          this.jestPoint4();
           container.emit(OriginEventType.MOUSE_MOVE, {
             ...canvasMousemoveEvent,
             shape,
