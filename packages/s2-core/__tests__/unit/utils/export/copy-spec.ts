@@ -1,4 +1,5 @@
 import type { Meta, S2DataConfig } from '@antv/s2';
+import { Aggregation } from '@antv/s2';
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
@@ -223,9 +224,7 @@ describe('List Table Core Data Process', () => {
 
     sheet.render();
 
-    const cell = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.COL_CELL)[1];
+    const cell = sheet.facet.getColCells()[1];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -459,13 +458,14 @@ describe('Pivot Table Core Data Process', () => {
   // 2 = ['province', 'city'].length 列头宽度
   const ROW_HEADER_WIDTH = 2;
 
-  function getDataCfg(meta: Meta[] = []) {
+  function getDataCfg(meta: Meta[] = [], valueInCols = true) {
     return assembleDataCfg({
       meta,
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
         values: ['number'],
+        valueInCols,
       },
     });
   }
@@ -523,6 +523,119 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
+  it('should copy format data when valueInCols is false in grid mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithFormat: true,
+        enableCopy: true,
+      },
+    });
+
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    s2.render();
+
+    const allDataCells = s2.facet.getDataCells();
+
+    const hangzhouDeskCell = allDataCells[0];
+    const zhejiangCityDeskSubTotalCell = allDataCells[4];
+
+    // 普通数据节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(hangzhouDeskCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(getCopyPlainContent(s2)).toEqual(`${originalData[0].number}元`);
+
+    // 小计节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toEqual(
+      `${
+        totalData.find(
+          (data) => data.province === '浙江省' && data.sub_type === '桌子',
+        )!.number
+      }元`,
+    );
+  });
+
+  it('should copy format total data in grid mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithFormat: true,
+        enableCopy: true,
+        copyWithHeader: true,
+      },
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseLayout: true,
+          reverseSubLayout: true,
+          subTotalsDimensions: ['province'],
+          calcTotals: {
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            aggregation: Aggregation.SUM,
+          },
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          reverseLayout: true,
+          reverseSubLayout: true,
+          subTotalsDimensions: ['type'],
+          calcTotals: {
+            aggregation: Aggregation.SUM,
+          },
+          calcSubTotals: {
+            aggregation: Aggregation.SUM,
+          },
+        },
+      },
+    });
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta, false));
+
+    s2.render();
+    const allDataCells = s2.facet.getDataCells();
+
+    s2.interaction.changeState({
+      cells: map(allDataCells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const copyContent = getCopyPlainContent(s2);
+
+    // 主要查看行列小计总计对应的值都格式化成功了
+    expect(copyContent).toMatchInlineSnapshot(`
+      "			总计	家具	家具	家具
+      				小计	桌子	沙发
+      总计			78868元	49709元	26193元	23516元
+      浙江省	小计		43098元	32418元	18375元	14043元
+      浙江省	杭州市	number	15420元	13132元	7789元	5343元
+      浙江省	绍兴市	number	5657元	2999元	2367元	632元
+      浙江省	宁波市	number	13779元	11111元	3877元	7234元
+      浙江省	舟山市	number	8242元	5176元	4342元	834元
+      四川省	小计		35770元	17291元	7818元	9473元
+      四川省	成都市	number	10513元	4174元	1723元	2451元
+      四川省	绵阳市	number	7388元	4066元	1822元	2244元
+      四川省	南充市	number	10284元	4276元	1943元	2333元
+      四川省	乐山市	number	7585元	4775元	2330元	2445元"
+    `);
+  });
+
   it('should copy col data in grid mode', () => {
     const cell = s2.facet.getColCells()[0];
 
@@ -546,10 +659,7 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     sheet.render();
-    const cell = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.ROW_CELL)
-      .pop();
+    const cell = sheet.facet.getRowCells().pop();
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell!)],
@@ -867,9 +977,7 @@ describe('Pivot Table Core Data Process', () => {
 
     sheet.render();
 
-    const cell = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
+    const cell = sheet.facet.getDataCells()[0];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -907,9 +1015,7 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     s2New.render();
-    const cell = s2New.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
+    const cell = s2New.facet.getDataCells()[0];
 
     s2New.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -942,9 +1048,7 @@ describe('Pivot Table Core Data Process', () => {
     );
 
     s2New.render();
-    const cell = s2New.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.DATA_CELL)[0];
+    const cell = s2New.facet.getDataCells()[0];
 
     s2New.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -966,9 +1070,7 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
     sheet.render();
-    const cells = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
+    const cells = sheet.facet.getDataCells();
 
     sheet.interaction.changeState({
       cells: map(cells, getCellMeta),
@@ -1008,9 +1110,7 @@ describe('Pivot Table Core Data Process', () => {
       showSeriesNumber: true,
     });
     sheet.render();
-    const cells = sheet.facet
-      .getCells()
-      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
+    const cells = sheet.facet.getDataCells();
 
     sheet.interaction.changeState({
       cells: map(cells, getCellMeta),
@@ -1197,17 +1297,17 @@ describe('Tree Table Core Data Process', () => {
     setSelectedVisibleCell();
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375元	14043元	32418	4826元	5854元
-      7789元	5343元	13132	945元	1343元
-      2367元	632元	2999	1304元	1354元
-      3877元	7234元	11111	1145元	1523元
-      4342元	834元	5176	1432元	1634元
-      7818元	9473元	17291	7495元	10984元
-      1723元	2451元	4174	2335元	4004元
-      1822元	2244元	4066	245元	3077元
-      1943元	2333元	4276	2457元	3551元
-      2330元	2445元	4775	2458元	352元
-      26193元	23516元	49709	12321元	16838元"
+      "18375元	14043元	32418元	4826元	5854元
+      7789元	5343元	13132元	945元	1343元
+      2367元	632元	2999元	1304元	1354元
+      3877元	7234元	11111元	1145元	1523元
+      4342元	834元	5176元	1432元	1634元
+      7818元	9473元	17291元	7495元	10984元
+      1723元	2451元	4174元	2335元	4004元
+      1822元	2244元	4066元	245元	3077元
+      1943元	2333元	4276元	2457元	3551元
+      2330元	2445元	4775元	2458元	352元
+      26193元	23516元	49709元	12321元	16838元"
     `);
   });
 

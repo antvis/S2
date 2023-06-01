@@ -129,10 +129,15 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         colNode.isTotalMeasure,
     });
 
-    const field = getColNodeFieldFromNode(
-      this.spreadsheet.isPivotMode,
-      colNode,
-    );
+    const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;
+
+    let field: string | undefined =
+      getColNodeFieldFromNode(this.spreadsheet.isPivotMode, formatNode) ?? '';
+
+    // 主要解决只有一个度量时,总计小计对应的值无法格式化的问题
+    const values = this.spreadsheet.dataCfg.fields.values;
+
+    field = values?.includes(field) ? field : values?.[0];
 
     const formatter = getFormatter(
       this.spreadsheet,
@@ -212,8 +217,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
 
-    // 判断是否为趋势分析表
-
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
@@ -286,6 +289,13 @@ export const processSelectedAllPivot = (
   return pivotDataCellCopy.getPivotAllCopyData();
 };
 
+/**
+ * 刷选单元格数据时使用此方法
+ * @param {SpreadSheet} spreadsheet
+ * @param {CellMeta[][]} selectedCells
+ * @param {CellMeta[]} headerSelectedCells
+ * @return {CopyableList}
+ */
 export const processSelectedPivotByDataCell = ({
   spreadsheet,
   selectedCells,
