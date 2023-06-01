@@ -1,3 +1,14 @@
+jest.mock('@/interaction/base-interaction/click/row-column-click');
+jest.mock('@/interaction/event-controller');
+jest.mock('@/sheet-type');
+jest.mock('@/ui/hd-adapter');
+jest.mock('@/utils/interaction/merge-cell', () => {
+  return {
+    mergeCell: jest.fn(),
+    unmergeCell: jest.fn(),
+  };
+});
+
 import { Canvas, Group } from '@antv/g-canvas';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { Store } from '@/common/store';
@@ -31,16 +42,6 @@ import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
 
-jest.mock('@/sheet-type');
-jest.mock('@/interaction/event-controller');
-jest.mock('@/ui/hd-adapter');
-jest.mock('@/interaction/base-interaction/click/row-column-click');
-jest.mock('@/utils/interaction/merge-cell', () => {
-  return {
-    mergeCell: jest.fn(),
-    unmergeCell: jest.fn(),
-  };
-});
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('RootInteraction Tests', () => {
