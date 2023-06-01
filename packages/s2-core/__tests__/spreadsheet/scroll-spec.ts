@@ -426,7 +426,6 @@ describe('Scroll Tests', () => {
       await sleep(500);
 
       s2.container.emit = jest.fn();
-      s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
 
       const { canvasMousemoveEvent } = s2.interaction.eventController;
       expect(canvasMousemoveEvent).toBeTruthy();
