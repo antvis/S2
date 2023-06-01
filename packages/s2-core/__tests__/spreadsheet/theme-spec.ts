@@ -21,7 +21,7 @@ import type { Node } from '@/facet/layout/node';
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = createPivotSheet(
       {
         headerActionIcons: [
@@ -39,7 +39,7 @@ describe('SpreadSheet Theme Tests', () => {
     s2.render();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     s2.destroy();
   });
 
