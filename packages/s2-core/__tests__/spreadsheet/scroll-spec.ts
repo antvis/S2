@@ -16,6 +16,7 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '@/common/constant';
+import { isMobile } from '@/utils';
 
 const s2Options: S2Options = {
   width: 200,
@@ -420,9 +421,20 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
-      const spyFn = jest.spyOn(s2.facet, 'onAfterScroll');
+      const spyHidetooltip = jest.spyOn(s2, 'hideTooltip');
+      const spyiOverVP = jest.spyOn(s2.facet, 'isScrollOverTheViewport');
+      const spyHoriScroll = jest.spyOn(
+        s2.facet,
+        'updateHorizontalScrollOffset',
+      );
+      const spyHBarChange = jest.spyOn(s2.facet.hScrollBar, 'emitScrollChange');
+      const spyDynamicRenderCell = jest.spyOn(s2.facet, 'dynamicRenderCell');
+      const spyAfterScroll = jest.spyOn(s2.facet, 'onAfterScroll');
+
       const onMouseMove = jest.fn();
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
+
+      expect(isMobile()).toBeFalse();
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
         deltaY: offset.scrollY,
@@ -433,7 +445,17 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
-      expect(spyFn).toHaveBeenCalled();
+      expect(spyHidetooltip).toHaveBeenCalled();
+      expect(spyiOverVP).toBeCalledWith({
+        deltaX: 20,
+        deltaY: 0,
+        offsetX: -40,
+        offsetY: -60,
+      });
+      expect(spyHoriScroll).toHaveBeenCalled();
+      expect(spyHBarChange).toHaveBeenCalled();
+      expect(spyDynamicRenderCell).toHaveBeenCalled();
+      expect(spyAfterScroll).toHaveBeenCalled();
 
       const { canvasMousemoveEvent } = s2.interaction.eventController;
 
