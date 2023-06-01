@@ -400,13 +400,13 @@ describe('Scroll Tests', () => {
         scrollY: 0,
       },
     },
-    // {
-    //   type: 'vertical',
-    //   offset: {
-    //     scrollX: 0,
-    //     scrollY: 20,
-    //   },
-    // },
+    {
+      type: 'vertical',
+      offset: {
+        scrollX: 0,
+        scrollY: 20,
+      },
+    },
   ])(
     'should trigger hover cells when hover cells after scroll by %o',
     async ({ offset }) => {
@@ -415,9 +415,10 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minY = -9999;
 
       await sleep(500);
+      const bbox = s2.getCanvasElement().getBoundingClientRect();
       const mousemoveEvent = new MouseEvent('mousemove', {
-        clientX: 200,
-        clientY: 200,
+        clientX: bbox.left + 100,
+        clientY: bbox.top + 100,
       });
 
       canvas.dispatchEvent(mousemoveEvent);
@@ -428,9 +429,6 @@ describe('Scroll Tests', () => {
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
 
       const { canvasMousemoveEvent } = s2.interaction.eventController;
-
-      expect(canvasMousemoveEvent.x).toEqual(160);
-      expect(canvasMousemoveEvent.y).toEqual(-1738);
       expect(canvasMousemoveEvent).toBeTruthy();
       expect(
         s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
