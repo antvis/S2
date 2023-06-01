@@ -52,7 +52,7 @@
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
     "sync-event": "node ./scripts/sync-event.mjs",
-    "test": "jest --passWithNoTests scroll-spec",
+    "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
     "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
