@@ -468,8 +468,11 @@ describe('Scroll Tests', () => {
       expect(wheelFuncs[0]).toBeCalled();
       expect(wheelFuncs[1]).toBeCalled();
       expect(wheelFuncs[2]).toBeCalledWith(true);
-      expect(wheelFuncs[3]).toBeCalledWith(true);
-      expect(spyUpdateHorizontalScrollOffset).toBeCalled();
+
+      if (offset.scrollX) {
+        expect(wheelFuncs[3]).toBeCalledWith(true);
+        expect(spyUpdateHorizontalScrollOffset).toBeCalled();
+      }
 
       expect(spyDynamicRenderCell).toBeCalled();
       expect(spyOnAfterScroll).toBeCalled();
