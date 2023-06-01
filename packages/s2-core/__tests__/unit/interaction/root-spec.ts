@@ -648,7 +648,24 @@ describe('RootInteraction Tests', () => {
     });
   });
 
-  test.skip('should reset interaction when visibilitychange', () => {
+  test('should reset interaction when visibilitychange', () => {
+    Object.defineProperty(
+      mockSpreadSheetInstance.interaction,
+      'removeIntercepts',
+      {
+        value: () => {},
+        configurable: true,
+      },
+    );
+    Object.defineProperty(
+      rootInteraction.spreadsheet.interaction,
+      'removeIntercepts',
+      {
+        value: () => {},
+        configurable: true,
+      },
+    );
+
     const resetSpyList = [...rootInteraction.interactions.values()].map(
       (interaction) => {
         return jest
