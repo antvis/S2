@@ -449,7 +449,12 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
-      pointFuncs.forEach((fn) => expect(fn).toBeCalled());
+      const [fn1, fn2, fn3, fn4] = pointFuncs;
+      expect(fn1).toBeCalled();
+      expect(fn2).toBeCalled();
+      expect(fn3).toBeCalled();
+      expect(fn4).toBeCalled();
+
       expect(spyOnAfterScroll).toBeCalled();
       expect(spyDynamicRenderCell).toBeCalled();
       expect(s2.container.emit).toBeCalledWith(
