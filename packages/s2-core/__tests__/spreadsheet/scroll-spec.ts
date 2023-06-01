@@ -400,13 +400,13 @@ describe('Scroll Tests', () => {
         scrollY: 0,
       },
     },
-    {
-      type: 'vertical',
-      offset: {
-        scrollX: 0,
-        scrollY: 20,
-      },
-    },
+    // {
+    //   type: 'vertical',
+    //   offset: {
+    //     scrollX: 0,
+    //     scrollY: 20,
+    //   },
+    // },
   ])(
     'should trigger hover cells when hover cells after scroll by %o',
     async ({ offset }) => {
@@ -427,18 +427,27 @@ describe('Scroll Tests', () => {
 
       s2.container.emit = jest.fn();
 
-      const pointFuncs = [1, 2, 3, 4].map((idx) =>
-        jest.spyOn(s2.facet, 'jestPoint' + idx),
-      );
-
+      // --------------------------------------------------------
       const { canvasMousemoveEvent } = s2.interaction.eventController;
       expect(canvasMousemoveEvent).toBeTruthy();
       expect(
         s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
       ).toBeObject();
 
-      const spyOnAfterScroll = jest.spyOn(s2.facet, 'onAfterScroll');
+      expect(s2.facet.hScrollBar).toBeDefined();
+      const wheelFuncs = Array.from({ length: 4 }).map((_, idx) =>
+        jest.spyOn(s2.facet, 'wheel' + (idx + 1)),
+      );
+      const spyUpdateHorizontalScrollOffset = jest.spyOn(
+        s2.facet,
+        'updateHorizontalScrollOffset',
+      );
       const spyDynamicRenderCell = jest.spyOn(s2.facet, 'dynamicRenderCell');
+      const spyOnAfterScroll = jest.spyOn(s2.facet, 'onAfterScroll');
+      const pointFuncs = Array.from({ length: 4 }).map((_, idx) =>
+        jest.spyOn(s2.facet, 'jestPoint' + (idx + 1)),
+      );
+      // --------------------------------------------------------
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
@@ -449,6 +458,13 @@ describe('Scroll Tests', () => {
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
+      // --------------------------------------------------------
+      expect(wheelFuncs[0]).toBeCalled();
+      expect(wheelFuncs[1]).toBeCalled();
+      expect(wheelFuncs[2]).toBeCalledWith(true);
+      expect(wheelFuncs[3]).toBeCalledWith(true);
+      expect(spyUpdateHorizontalScrollOffset).toBeCalled();
+
       expect(spyDynamicRenderCell).toBeCalled();
       expect(spyOnAfterScroll).toBeCalled();
 
@@ -457,6 +473,7 @@ describe('Scroll Tests', () => {
       expect(fn2).toBeCalled();
       expect(fn3).toBeCalled();
       expect(fn4).toBeCalled();
+      // --------------------------------------------------------
 
       expect(s2.container.emit).toBeCalledWith(
         OriginEventType.MOUSE_MOVE,

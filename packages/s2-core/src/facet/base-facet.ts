@@ -800,6 +800,7 @@ export abstract class BaseFacet {
     offsetX,
     offsetY,
   }: CellScrollOffset) => {
+    this.wheel4(this.isScrollOverThePanelArea({ offsetX, offsetY }));
     // 1.行头没有滚动条 2.在数值区域滚动时 才更新数值区域水平滚动条
     if (
       !this.hRowScrollBar ||
@@ -935,10 +936,20 @@ export abstract class BaseFacet {
     (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
   };
 
+  public wheel1() {}
+
+  public wheel2() {}
+
+  public wheel3(s: boolean) {}
+
+  public wheel4(s: boolean) {}
+
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
     const { shiftKey } = event;
+
+    this.wheel1();
 
     // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
     // see https://github.com/antvis/S2/issues/2198
@@ -970,6 +981,8 @@ export abstract class BaseFacet {
       return;
     }
 
+    this.wheel2();
+
     this.stopScrollChaining(event);
 
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
@@ -984,6 +997,8 @@ export abstract class BaseFacet {
         scrollY: currentScrollY,
         rowHeaderScrollX,
       } = this.getScrollOffset();
+
+      this.wheel3(optimizedDeltaX + optimizedDeltaY !== 0);
 
       if (optimizedDeltaX !== 0) {
         this.showHorizontalScrollBar();
