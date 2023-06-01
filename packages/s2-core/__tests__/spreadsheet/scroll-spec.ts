@@ -442,7 +442,7 @@ describe('Scroll Tests', () => {
 
       const { canvasMousemoveEvent: cmme } = s2.interaction.eventController;
       expect(cmme).toBeDefined();
-      expect(s2.container.getShape(cmme.x, cmme.y)).toBeDefined();
+      expect(s2.container.getShape(cmme.x, cmme.y)).toBeObject();
 
       canvas.dispatchEvent(wheelEvent);
 
@@ -470,7 +470,7 @@ describe('Scroll Tests', () => {
       expect(canvasMousemoveEvent).toBeDefined();
       expect(
         s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
-      ).toBeDefined();
+      ).toBeObject();
 
       expect(onMouseMove).toHaveBeenCalled();
     },
