@@ -44,7 +44,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   public reset() {
     this.isMultiSelection = false;
-    // this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
   private bindKeyboardDown() {

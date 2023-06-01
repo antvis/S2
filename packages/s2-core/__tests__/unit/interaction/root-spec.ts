@@ -94,6 +94,10 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 
+  afterEach(() => {
+    rootInteraction.destroy();
+  });
+
   test('should get default interaction state', () => {
     expect(rootInteraction.getState()).toEqual({
       cells: [],
@@ -645,15 +649,18 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should reset interaction when visibilitychange', () => {
-    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.interaction = rootInteraction;
-    rootInteraction.interactions.forEach((interaction) => {
-      interaction.reset = jest.fn();
-    });
+    const resetSpyList = [...rootInteraction.interactions.values()].map(
+      (interaction) => {
+        return jest
+          .spyOn(interaction, 'reset')
+          .mockImplementationOnce(() => {});
+      },
+    );
+
     window.dispatchEvent(new Event('visibilitychange'));
 
-    rootInteraction.interactions.forEach((interaction) => {
-      expect(interaction.reset).toHaveBeenCalled();
+    resetSpyList.forEach((resetSpy) => {
+      expect(resetSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
