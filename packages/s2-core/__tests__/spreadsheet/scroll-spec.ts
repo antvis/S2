@@ -420,7 +420,8 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
-      const emitFunc = jest.spyOn(s2.container, 'emit');
+      const onMouseMove = jest.fn();
+      s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
         deltaY: offset.scrollY,
@@ -433,10 +434,7 @@ describe('Scroll Tests', () => {
 
       expect(s2.interaction.eventController.canvasMousemoveEvent).toBeDefined();
 
-      expect(emitFunc).toHaveBeenCalledWith(
-        OriginEventType.MOUSE_MOVE,
-        expect.any(Object),
-      );
+      expect(onMouseMove).toHaveBeenCalled();
     },
   );
 
