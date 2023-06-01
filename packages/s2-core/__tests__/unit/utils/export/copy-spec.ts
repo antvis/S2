@@ -250,14 +250,14 @@ describe('List Table Core Data Process', () => {
     const dataContent = getCopyPlainContent(s2);
 
     expect(dataContent).toMatchInlineSnapshot(`
-      "浙江省
-
-
-
-
-
-
-
+      "浙江省	
+      	
+      	
+      	
+      	
+      	
+      	
+      	
       	宁波市"
     `);
   });
@@ -418,7 +418,7 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "1	浙江省	杭州市	家具	### 问题摘要
+      "1	浙江省	杭州市	家具	### 问题摘要 
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
