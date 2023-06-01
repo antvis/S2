@@ -48,34 +48,28 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   }
 
   private getLeafRowNodes() {
-    const allRowLeafNodes = this.spreadsheet.getRowLeafNodes();
-    let result: Node[] = allRowLeafNodes;
-    const selectedRowMeta = getSelectedRows(this.config.selectedCells);
+    const rowLeafNodes = this.spreadsheet.facet.getRowLeafNodes();
+    const selectedRowsMeta = getSelectedRows(this.config.selectedCells);
     const isTreeData = this.spreadsheet.isHierarchyTreeType();
 
-    // selectedRowMeta 选中了指定的行头，则只展示对应行头对应的数据
-    if (!isEmpty(selectedRowMeta)) {
-      result = this.getSelectedNode(
-        selectedRowMeta,
-        allRowLeafNodes,
-        isTreeData,
-      );
+    if (isEmpty(selectedRowsMeta)) {
+      return rowLeafNodes;
     }
 
-    return result;
+    // selectedRowMeta 选中了指定的行头，则只展示对应行头对应的数据
+    return this.getSelectedNode(selectedRowsMeta, rowLeafNodes, isTreeData);
   }
 
   private getLeafColNodes() {
-    const allColLeafNodes = this.spreadsheet.getColumnLeafNodes();
-    let result: Node[] = allColLeafNodes;
-    const selectedColMetas = getSelectedCols(this.config.selectedCells);
+    const colLeafNodes = this.spreadsheet.facet.getColLeafNodes();
+    const selectedColsMeta = getSelectedCols(this.config.selectedCells);
 
-    // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
-    if (!isEmpty(selectedColMetas)) {
-      result = this.getSelectedNode(selectedColMetas, allColLeafNodes);
+    if (isEmpty(selectedColsMeta)) {
+      return colLeafNodes;
     }
 
-    return result;
+    // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
+    return this.getSelectedNode(selectedColsMeta, colLeafNodes);
   }
 
   private getSelectedNode(
@@ -199,8 +193,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (it) => {
-        const [rowNode, colNode] = getHeaderNodeFromMeta(it, this.spreadsheet);
+      map(cellsMeta, (meta) => {
+        const [rowNode, colNode] = getHeaderNodeFromMeta(
+          meta,
+          this.spreadsheet,
+        );
         const dataItem = this.getDataCellValue(rowNode!, colNode!);
 
         return convertString(dataItem);

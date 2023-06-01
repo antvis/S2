@@ -9,7 +9,7 @@ import type {
 } from '@/common/interface/theme';
 import type { PivotSheet } from '@/sheet-type';
 import {
-  CellTypes,
+  CellType,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
   GuiIcon,
@@ -45,12 +45,12 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Theme Default Value Tests', () => {
-    const CELL_TYPES: CellTypes[] = [
-      CellTypes.DATA_CELL,
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.CORNER_CELL,
-      CellTypes.MERGED_CELL,
+    const CELL_TYPES: CellType[] = [
+      CellType.DATA_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.CORNER_CELL,
+      CellType.MERGED_CELL,
     ];
 
     test('should get default theme', () => {
@@ -59,7 +59,7 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
-      (cellType: CellTypes) => {
+      (cellType: CellType) => {
         s2.setThemeCfg({
           name: 'colorful',
         });
@@ -72,7 +72,7 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellType) => {
       s2.setThemeCfg({
         name: 'colorful',
       });
@@ -224,8 +224,8 @@ describe('SpreadSheet Theme Tests', () => {
         containsDataCells = false,
         customNodes,
       } = options;
-      const targetNodes = customNodes || s2.getColumnLeafNodes();
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const targetNodes = customNodes || s2.facet.getColLeafNodes();
+      const dataCells = s2.facet.getDataCells();
 
       expect(targetNodes).not.toHaveLength(0);
 
@@ -275,7 +275,7 @@ describe('SpreadSheet Theme Tests', () => {
 
       s2.render();
 
-      const rowMeasureFields = s2
+      const rowMeasureFields = s2.facet
         .getRowNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
@@ -296,8 +296,8 @@ describe('SpreadSheet Theme Tests', () => {
 
       s2.render();
 
-      const colMeasureFields = s2
-        .getColumnNodes()
+      const colMeasureFields = s2.facet
+        .getColNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
       expectTextAlign({
@@ -372,10 +372,12 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.render();
 
-        const rowTotalNodes = s2.getRowNodes().filter((node) => node.isTotals);
+        const rowTotalNodes = s2.facet
+          .getRowNodes()
+          .filter((node) => node.isTotals);
 
-        const colTotalNodes = s2
-          .getColumnNodes()
+        const colTotalNodes = s2.facet
+          .getColNodes()
           .filter((node) => node.isTotals);
 
         expectTextAlign({

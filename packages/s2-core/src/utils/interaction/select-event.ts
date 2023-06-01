@@ -1,7 +1,7 @@
 import { forEach, reduce, uniqBy } from 'lodash';
-import { ColCell, RowCell, TableSeriesCell } from '../../cell';
+import { ColCell, RowCell, TableSeriesNumberCell } from '../../cell';
 import {
-  CellTypes,
+  CellType,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
@@ -39,7 +39,8 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
     colIndex,
     rowIndex,
     rowQuery,
-    type: cell instanceof TableSeriesCell ? CellTypes.ROW_CELL : cell.cellType,
+    type:
+      cell instanceof TableSeriesNumberCell ? CellType.ROW_CELL : cell.cellType,
   };
 };
 
@@ -77,22 +78,20 @@ export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
 export function getRowCellForSelectedCell(
   meta: ViewMeta,
   spreadsheet: SpreadSheet,
-): (ColCell | RowCell | TableSeriesCell)[] {
-  const { interaction, facet, options } = spreadsheet;
+): (ColCell | RowCell | TableSeriesNumberCell)[] {
+  const { facet, options } = spreadsheet;
 
   if (spreadsheet.isTableMode()) {
     if (!options.showSeriesNumber) {
       return [];
     }
 
-    const colId = facet.layoutResult.colLeafNodes[0].id;
+    const colId = facet.getColLeafNodes()[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
-    const result: TableSeriesCell[] = [];
-    const rowCell = interaction
-      .getAllCells()
-      .find((cell) => cell.getMeta().id === id);
+    const result: TableSeriesNumberCell[] = [];
+    const rowCell = facet.getCellById(id);
 
-    if (rowCell && rowCell instanceof TableSeriesCell) {
+    if (rowCell && rowCell instanceof TableSeriesNumberCell) {
       result.push(rowCell);
     }
 
@@ -101,18 +100,18 @@ export function getRowCellForSelectedCell(
 
   return getActiveHoverRowColCells(
     meta.rowId!,
-    interaction.getAllRowHeaderCells(),
+    facet.getRowCells(),
     spreadsheet.isHierarchyTreeType(),
   );
 }
 
 export function updateRowColCells(meta: ViewMeta) {
   const { rowId, colId, spreadsheet } = meta;
-  const { interaction } = spreadsheet;
+  const { facet } = spreadsheet;
 
   updateAllColHeaderCellState(
     colId!,
-    interaction.getAllColHeaderCells(),
+    facet.getColCells(),
     InteractionStateName.SELECTED,
   );
 
@@ -126,10 +125,10 @@ export function updateRowColCells(meta: ViewMeta) {
 }
 
 export const getRowHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
-  s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
+  s2.facet.getRowNodes().filter((node: Node) => cellId.includes(node.id));
 
 export const getColHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
-  s2.getColumnNodes().filter((node: Node) => cellId.includes(node.id));
+  s2.facet.getColNodes().filter((node: Node) => cellId.includes(node.id));
 
 export const getInteractionCells = (
   cell: CellMeta,
@@ -175,14 +174,15 @@ export const getInteractionCellsBySelectedCells = (
 };
 
 export const afterSelectDataCells: OnUpdateCells = (root, updateDataCells) => {
+  const { facet } = root.spreadsheet;
   const { colHeader, rowHeader } = root.getSelectedCellHighlight();
 
   if (colHeader) {
-    root.updateCells(root.getAllColHeaderCells());
+    root.updateCells(facet.getColCells());
   }
 
   if (rowHeader) {
-    root.updateCells(root.getAllRowHeaderCells());
+    root.updateCells(facet.getRowCells());
   }
 
   updateDataCells();

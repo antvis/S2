@@ -205,13 +205,13 @@ describe('Drill Down Test', () => {
     // 执行测试
     handleDrillDown(drillDownCfg);
     await sleep(1000);
-    const rowLeftNodes = mockInstance.facet.layoutResult.rowLeafNodes;
+    const rowLeafNodes = mockInstance.facet.getRowLeafNodes();
 
-    expect(rowLeftNodes).toHaveLength(13);
-    expect(rowLeftNodes[1].value).toEqual('杭州市');
-    expect(rowLeftNodes[2].value).toEqual('西湖区');
-    expect(rowLeftNodes[3].value).toEqual('下沙区');
-    expect(rowLeftNodes[4].value).toEqual('余杭区');
+    expect(rowLeafNodes).toHaveLength(13);
+    expect(rowLeafNodes[1].value).toEqual('杭州市');
+    expect(rowLeafNodes[2].value).toEqual('西湖区');
+    expect(rowLeafNodes[3].value).toEqual('下沙区');
+    expect(rowLeafNodes[4].value).toEqual('余杭区');
 
     // 准备数据
     const SXCityNode = new Node({
@@ -233,8 +233,7 @@ describe('Drill Down Test', () => {
     // 执行操作
     handleDrillDown(drillDownCfg);
     await sleep(1000);
-    const secondDrillDownRowLeftNodes =
-      mockInstance.facet.layoutResult.rowLeafNodes;
+    const secondDrillDownRowLeftNodes = mockInstance.facet.getRowLeafNodes();
 
     expect(secondDrillDownRowLeftNodes).toHaveLength(16);
     expect(secondDrillDownRowLeftNodes[5].value).toEqual('绍兴市');

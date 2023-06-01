@@ -55,7 +55,7 @@ There are multiple column headers in the pivot table, and the [node id](/docs/ap
 
 <details><summary>How to get column header Id?</summary><pre> <code class="language-ts">//&#x26;nbsp;/docs/api/basic-class/spreadsheet
 const&#x26;nbsp;s2&#x26;nbsp;=&#x26;nbsp;new&#x26;nbsp;PivotSheet()
-console.log(s2.getColumnNodes())
+console.log(s2.facet.getColCellNodes())
 </code></pre></details>
 
 ```ts

@@ -51,6 +51,7 @@ class CustomDataCell extends DataCell {
     if (JSON.stringify(this.meta.colQuery).includes('合计')) {
       this.drawTextShape();
     }
+
     this.update();
   }
 
@@ -62,6 +63,7 @@ class CustomDataCell extends DataCell {
 
     let fill;
     let opacity = 1;
+
     if (!Number.isNaN(fieldValue as number)) {
       fill =
         paletteLegendMap.find((v) => v.text === colQuery?.['时刻'])?.color ??
@@ -71,6 +73,7 @@ class CustomDataCell extends DataCell {
       fill =
         paletteLegendMap.find((v) => v.text === fieldValue)?.color ?? '#FAD5BB';
     }
+
     this.backgroundShape = this.addShape('circle', {
       attrs: {
         x: positionX,
@@ -107,8 +110,9 @@ class CustomFrame extends Frame {
     } = cfg;
     const scrollContainsRowHeader = !spreadsheet.isFrozenRowHeader();
     const splitLine = spreadsheet.theme?.splitLine;
-    const { rowsHierarchy } = spreadsheet.facet.layoutResult;
+    const { rowsHierarchy } = spreadsheet.facet.getLayoutResult();
     const rootNodes = rowsHierarchy.getNodesLessThanLevel(0);
+
     rootNodes.forEach((node, key) => {
       if (key < rootNodes.length - 1) {
         const { children } = node;
@@ -117,6 +121,7 @@ class CustomFrame extends Frame {
         const x2 =
           x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
         const y = position.y + height + lastChild.y + lastChild.height;
+
         this.addShape('line', {
           attrs: {
             x1,
@@ -136,8 +141,9 @@ class CustomFrame extends Frame {
     const cfg = this.cfg;
     const { height, viewportHeight, position, width, spreadsheet } = cfg;
     const splitLine = spreadsheet.theme?.splitLine;
-    const { colsHierarchy } = spreadsheet.facet.layoutResult;
+    const { colsHierarchy } = spreadsheet.facet.getLayoutResult();
     const rootNodes = colsHierarchy.getNodesLessThanLevel(0);
+
     rootNodes.forEach((node, key) => {
       if (key < rootNodes.length - 1) {
         const { children } = node;
@@ -145,6 +151,7 @@ class CustomFrame extends Frame {
         const x = lastChild.x + lastChild.width + width;
         const y1 = position.y;
         const y2 = position.y + height + viewportHeight;
+
         this.addShape('line', {
           attrs: {
             x1: x,
@@ -273,6 +280,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         ))}
       </div>
     );
+
     ReactDOM.render(
       <div className="sheet-wrapper">
         <PaletteLegend />

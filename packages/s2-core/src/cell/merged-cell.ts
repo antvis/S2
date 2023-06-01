@@ -1,5 +1,5 @@
 import { isEmpty, isObject } from 'lodash';
-import { CellTypes } from '../common/constant';
+import { CellType } from '../common/constant';
 import type { ViewMeta } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type { SpreadSheet } from '../sheet-type';
@@ -27,7 +27,7 @@ export class MergedCell extends DataCell {
   }
 
   public get cellType() {
-    return CellTypes.MERGED_CELL;
+    return CellType.MERGED_CELL;
   }
 
   public update() {}

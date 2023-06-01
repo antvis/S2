@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as Event, Group } from '@antv/g';
-import type { CellTypes } from '../../common/constant';
+import type { CellType } from '../../common/constant';
 import type {
   CustomTreeNode,
   Data,
@@ -276,7 +276,7 @@ export interface HeaderActionIcon {
    */
   icons: ActionIconName[];
   // 所属的 cell 类型
-  belongsCell: Omit<CellTypes, 'dataCell'>;
+  belongsCell: Omit<CellType, 'dataCell'>;
   /** 是否默认隐藏， true 为 hover后显示, false 为一直显示 */
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
   /** 是否展示当前 iconNames 配置的 icon */

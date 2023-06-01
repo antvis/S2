@@ -14,7 +14,7 @@ import {
 import type { SimpleBBox } from '../engine';
 import type { ColCell } from '../cell';
 import {
-  CellTypes,
+  CellType,
   ELLIPSIS_SYMBOL,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
@@ -297,7 +297,7 @@ const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
   const cellStyle = cell.getStyle(
-    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
+    isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
   );
 
   let textStyle: TextTheme | undefined;
@@ -446,7 +446,7 @@ export const drawObjectText = (
 
   // 绘制单元格主标题
   if (text?.label) {
-    const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+    const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
     const labelStyle = dataCellStyle!.bolderText!;
 
     /*

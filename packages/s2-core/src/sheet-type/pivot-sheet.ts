@@ -44,9 +44,6 @@ export class PivotSheet extends SpreadSheet {
     return false;
   }
 
-  /**
-   * Check if is pivot mode
-   */
   public isPivotMode(): boolean {
     return true;
   }
@@ -91,7 +88,7 @@ export class PivotSheet extends SpreadSheet {
       dataCell: this.options.dataCell ?? defaultCell,
     });
     this.facet?.destroy();
-    this.facet = new PivotFacet(this);
+    this.facet = this.options.facet?.(this) ?? new PivotFacet(this);
     this.facet.render();
   }
 

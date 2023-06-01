@@ -10,7 +10,6 @@ import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
-import { getLeafColNode } from '../utils';
 import type { CustomTooltipProps } from './interface';
 
 import './index.less';
@@ -29,15 +28,15 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   const defaultRowName = spreadsheet.dataSet.getCustomRowFieldName(cell);
   const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
   const rowName = customLabel ?? defaultRowName;
-  const leftColNode = getLeafColNode(meta);
+  const colLeafNode = spreadsheet.facet.getColLeafNodeByIndex(meta.colIndex);
 
   const [, ...derivedLabels] = React.useMemo(() => {
     try {
-      return JSON.parse(leftColNode?.value!);
+      return JSON.parse(colLeafNode?.value!);
     } catch {
       return [];
     }
-  }, [leftColNode?.value]);
+  }, [colLeafNode?.value]);
 
   const { placeholder, style } = spreadsheet.options;
   const valuesCfg = style?.dataCell?.valuesCfg;

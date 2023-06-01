@@ -1,32 +1,33 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
-import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
-import { PivotDataSet } from '../../../src/data-set';
+import dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 import type { BaseEvent } from '../../../src';
-import type { GEvent } from '@/index';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotDataSet } from '../../../src/data-set';
+import { PivotFacet } from '../../../src/facet';
+import type { CornerCell } from '@/cell/corner-cell';
 import {
-  CellTypes,
-  type CustomSVGIcon,
+  CellType,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  type S2DataConfig,
   S2Event,
+  setLang,
+  TOOLTIP_CONTAINER_CLS,
+  type CustomSVGIcon,
+  type HiddenColumnsInfo,
+  type LangType,
+  type RowCellCollapsedParams,
+  type S2DataConfig,
   type S2Options,
   type TooltipShowOptions,
-  TOOLTIP_CONTAINER_CLS,
-  setLang,
-  type LangType,
-  type HiddenColumnsInfo,
-  type RowCellCollapsedParams,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import type { GEvent } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/utils/hide-columns');
 
@@ -73,13 +74,14 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('PivotSheet Tooltip Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'merged',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'merged',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType]);
 
     test('should support callback tooltip content for string', () => {
@@ -204,10 +206,10 @@ describe('PivotSheet Tests', () => {
     });
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
@@ -240,7 +242,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for string content',
       (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;
@@ -278,7 +280,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should use %o tooltip content from tooltip config first for element content',
       (cellType) => {
         const tooltipContent = document.createElement('span');
@@ -313,7 +315,7 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for element content',
       (cellType) => {
         const tooltipContent = document.createElement('span');
@@ -527,11 +529,11 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get row nodes', () => {
-    expect(s2.getRowNodes()).toHaveLength(3);
+    expect(s2.facet.getRowNodes()).toHaveLength(3);
   });
 
   test('should get column nodes', () => {
-    expect(s2.getColumnNodes()).toHaveLength(3);
+    expect(s2.facet.getColNodes()).toHaveLength(3);
   });
 
   test('should change sheet container size', () => {
@@ -620,15 +622,15 @@ describe('PivotSheet Tests', () => {
 
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
-    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
+    expect(s2.facet.getInitColLeafNodes()).toHaveLength(2);
   });
 
   test('should clear init column nodes', () => {
-    s2.store.set('initColumnLeafNodes', [null, null] as unknown as Node[]);
+    s2.store.set('initColLeafNodes', [null, null] as unknown as Node[]);
 
-    s2.clearColumnLeafNodes();
+    s2.facet.clearInitColLeafNodes();
 
-    expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
+    expect(s2.store.get('initColLeafNodes')).toBeFalsy();
   });
 
   test('should get pivot mode', () => {
@@ -820,9 +822,9 @@ describe('PivotSheet Tests', () => {
 
       tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
 
       tree.setOptions({
         style: {
@@ -833,9 +835,11 @@ describe('PivotSheet Tests', () => {
       });
       tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
     });
 
     // https://github.com/antvis/S2/issues/1072
@@ -852,14 +856,16 @@ describe('PivotSheet Tests', () => {
 
       tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
 
       tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
     });
   });
 
@@ -1069,12 +1075,10 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
@@ -1090,10 +1094,8 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowLeafNodes).toHaveLength(0);
-      expect(layoutResult.rowNodes).toHaveLength(0);
+      expect(sheet.facet.getRowLeafNodes()).toHaveLength(0);
+      expect(sheet.facet.getRowNodes()).toHaveLength(0);
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
     });
 
@@ -1115,9 +1117,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowNodes).toHaveLength(2);
+      expect(sheet.facet.getRowNodes()).toHaveLength(2);
     });
 
     it('should only render value nodes in column if rows & columns fields is empty', () => {
@@ -1131,12 +1131,10 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
     });
@@ -1153,7 +1151,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      const { layoutResult } = sheet.facet;
+      const layoutResult = sheet.facet.getLayoutResult();
 
       // if value empty, not render value cell in row leaf nodes
       expect(layoutResult.rowLeafNodes).toHaveLength(0);
@@ -1190,7 +1188,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.render();
 
-      sheet.getRowLeafNodes().forEach((node) => {
+      sheet.facet.getRowLeafNodes().forEach((node) => {
         const rowCell = node.belongsCell;
 
         expect(get(rowCell, 'actionIcons')).toHaveLength(0);
@@ -1225,5 +1223,28 @@ describe('PivotSheet Tests', () => {
     expect(s2.isCustomHeaderFields()).toBeTruthy();
     expect(s2.isCustomRowFields()).toBeTruthy();
     expect(s2.isCustomColumnFields()).toBeTruthy();
+  });
+
+  test('should render custom pivot facet', () => {
+    const mockRender = jest.fn();
+
+    class CustomFacet extends PivotFacet {
+      render() {
+        super.render();
+        mockRender();
+      }
+    }
+
+    const sheet = new PivotSheet(getContainer(), originalDataCfg, {
+      facet: (spreadsheet) => new CustomFacet(spreadsheet),
+      tooltip: {
+        showTooltip: false,
+      },
+    });
+
+    sheet.render();
+
+    expect(sheet.facet).toBeInstanceOf(PivotFacet);
+    expect(mockRender).toHaveBeenCalledTimes(1);
   });
 });

@@ -216,7 +216,7 @@ function MainLayout() {
       return dataCfg.fields?.columns || [];
     }
 
-    return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
+    return s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || [];
   };
 
   //  ================== Hooks ========================
@@ -790,8 +790,8 @@ function MainLayout() {
                 <Button
                   size="small"
                   onClick={() => {
-                    const rowNode = s2Ref.current
-                      ?.getRowNodes()
+                    const rowNode = s2Ref.current?.facet
+                      .getRowNodes()
                       .find(({ id }) => id === 'root[&]四川省[&]成都市');
 
                     clearInterval(scrollTimer.current!);

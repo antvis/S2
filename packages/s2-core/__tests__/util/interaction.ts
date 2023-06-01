@@ -39,7 +39,7 @@ export const getTestTooltipData = (s2: SpreadSheet, cell: S2CellType) => {
 };
 
 export const mapCellNodeValues = (s2: SpreadSheet) => {
-  const colNodes = s2.getColumnNodes().map((node) => {
+  const colNodes = s2.facet.getColNodes().map((node) => {
     return {
       actualText: node.belongsCell?.getActualText(),
       value: node.value,
@@ -47,7 +47,7 @@ export const mapCellNodeValues = (s2: SpreadSheet) => {
     };
   });
 
-  const rowNodes = s2.getRowNodes().map((node) => {
+  const rowNodes = s2.facet.getRowNodes().map((node) => {
     return {
       actualText: node.belongsCell?.getActualText(),
       value: node.value,
@@ -55,8 +55,8 @@ export const mapCellNodeValues = (s2: SpreadSheet) => {
     };
   });
 
-  const dataCellTexts = s2.interaction
-    .getPanelGroupAllDataCells()
+  const dataCellTexts = s2.facet
+    .getDataCells()
     .map((cell) => cell.getActualText());
 
   return {

@@ -1,6 +1,6 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
 import { get } from 'lodash';
-import { type CellMeta, CellTypes, type ViewMeta } from '../common';
+import { type CellMeta, CellType, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
@@ -94,7 +94,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       rowIndex: meta.rowIndex,
       colIndex: meta.colIndex,
       id: meta.id,
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
     };
   }
 
@@ -136,12 +136,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   }
 
   private generateCellMeta(spreadsheet: SpreadSheet, row: number, col: number) {
-    const {
-      isTableMode,
-      facet: {
-        layoutResult: { colLeafNodes, rowLeafNodes },
-      },
-    } = spreadsheet;
+    const { isTableMode, facet } = spreadsheet;
+
+    const rowLeafNodes = facet.getRowLeafNodes();
+    const colLeafNodes = facet.getColLeafNodes();
     const rowId = isTableMode() ? String(row) : rowLeafNodes[row].id;
     const colId = colLeafNodes[col].id;
 
@@ -149,7 +147,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       rowIndex: row,
       colIndex: col,
       id: getDataCellId(rowId, colId),
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
     };
   }
 
@@ -181,7 +179,9 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       colCount: frozenColCount = 0,
       trailingColCount: frozenTrailingColCount = 0,
     } = spreadsheet.options.frozen!;
-    const { rowLeafNodes, colLeafNodes } = spreadsheet.facet.layoutResult;
+
+    const rowLeafNodes = spreadsheet.facet.getRowLeafNodes();
+    const colLeafNodes = spreadsheet.facet.getColLeafNodes();
 
     const [minCol, maxCol] = [
       0 + frozenColCount,
@@ -260,7 +260,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       frozenTrailingRowGroup,
     } = facet;
 
-    const { colLeafNodes } = facet.layoutResult;
+    const colLeafNodes = facet.getColLeafNodes();
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
     const splitLineStyle = get(spreadsheet, 'theme.splitLine');

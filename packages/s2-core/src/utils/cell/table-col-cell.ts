@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { CellTypes } from '../../common/constant';
+import { CellType } from '../../common/constant';
 import type { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -8,7 +8,7 @@ import { getActionIconConfig } from './header-cell';
 export const getTableColIconsWidth = (
   s2: SpreadSheet,
   meta: Node,
-  cellType: CellTypes,
+  cellType: CellType,
   iconStyle: IconTheme,
 ) => {
   const iconSize = iconStyle?.size!;
@@ -71,7 +71,7 @@ export const getOccupiedWidthForTableCol = (
   const iconsWidth = getTableColIconsWidth(
     s2,
     meta,
-    CellTypes.COL_CELL,
+    CellType.COL_CELL,
     style?.icon!,
   );
 

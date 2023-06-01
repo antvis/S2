@@ -30,12 +30,12 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
       'fieldValue',
     ]);
     const scrollOffset = spreadsheet.facet.getScrollOffset();
+    const sampleColNode = spreadsheet.facet.getColNodes()[0];
+    const sampleColNodeHeight = sampleColNode?.height || 0;
     // 点位偏移
     const pointX = point.x;
     const pointY = point.y;
-    const scrollOffsetY =
-      scrollOffset?.scrollY -
-      (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
+    const scrollOffsetY = scrollOffset?.scrollY - sampleColNodeHeight;
     const cellMaxX = cellMeta.x - scrollOffset.scrollX + cellMeta.width + 4;
     const cellMinX = cellMeta.x - scrollOffset.scrollX;
     const cellMaxY = cellMeta.y - scrollOffsetY + cellMeta.height + 4;
@@ -69,7 +69,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
   const getCurrentHoverCell = (event: MouseEvent) => {
     const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const allCells = spreadsheet.facet.getDataCells();
 
     return allCells.find((dataCell) =>
       isInCell({ y: event.y - rect.y, x: event.x - rect.x }, dataCell),
@@ -83,7 +83,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     const maxX = Math.max(startCellMeta.colIndex, endCellMeta.colIndex);
     const maxY = Math.max(startCellMeta.rowIndex, endCellMeta.rowIndex);
     const minY = Math.min(startCellMeta.rowIndex, endCellMeta.rowIndex);
-    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const allCells = spreadsheet.facet.getDataCells();
 
     return allCells.filter((item) => {
       const itemMeta = item.getMeta();
@@ -186,7 +186,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
     const { top, left } = get(event, 'target.style', {});
-    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const allCells = spreadsheet.facet.getDataCells();
     const targetCell = allCells.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),
     );

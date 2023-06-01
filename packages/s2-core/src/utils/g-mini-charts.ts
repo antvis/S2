@@ -19,7 +19,7 @@ import {
   renderRect,
   renderText,
 } from '../utils/g-renders';
-import { CellTypes, MiniChartTypes } from '../common/constant';
+import { CellType, MiniChartTypes } from '../common/constant';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import { getIntervalScale } from '../utils/condition/condition';
 import type { DataCell } from '..';
@@ -36,7 +36,7 @@ interface FractionDigitsOptions {
 export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const { data, encode, type } = chartData;
   const { x, y, height, width } = cell.getMeta();
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL) as DefaultCellTheme;
+  const dataCellStyle = cell.getStyle(CellType.DATA_CELL) as DefaultCellTheme;
   const { cell: cellStyle, miniChart } = dataCellStyle;
   const measures: number[] = [];
   const encodedData = map(data, (item) => {
@@ -130,7 +130,7 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
     return;
   }
 
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL) as DefaultCellTheme;
+  const dataCellStyle = cell.getStyle(CellType.DATA_CELL) as DefaultCellTheme;
   const { miniChart } = dataCellStyle;
   const { point, linkLine } = miniChart?.line!;
 
@@ -164,7 +164,7 @@ export const drawBar = (chartData: BaseChartData, cell: S2CellType) => {
     return;
   }
 
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
   const { miniChart } = dataCellStyle;
   const { bar } = miniChart;
 
@@ -300,7 +300,7 @@ export const drawInterval = (cell: DataCell) => {
  *  绘制单元格内的 mini子弹图
  */
 export const drawBullet = (value: BulletValue, cell: S2CellType) => {
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
   const { x, y, height, width, spreadsheet } = cell.getMeta();
 
   if (isEmpty(value)) {

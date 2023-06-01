@@ -64,14 +64,18 @@ jest.mock('@/sheet-type', () => {
         getTotalsConfig: jest.fn().mockReturnValue({}),
         getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
-        getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
+          getColLeafNodes: jest.fn().mockReturnValue([]),
           layoutResult: {
             rowLeafNodes: [],
           },
+          getRowLeafNodes: () => [],
+          getRowNodes: () => [],
+          getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
+          getCellMeta: jest.fn(),
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -136,7 +140,8 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct hierarchy', () => {
     const { dataCell, colCell } = s2.options.style!;
-    const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
+    const { rowsHierarchy, colsHierarchy, colLeafNodes } =
+      facet.getLayoutResult();
 
     const width = Math.max(
       DEFAULT_STYLE.dataCell!.width!,
@@ -198,7 +203,7 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct cell meta', () => {
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
 
     test('should get correct cell meta', () => {
       expect(
@@ -224,7 +229,7 @@ describe('Pivot Mode Facet Test', () => {
 
     s2.dataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet(s2);
-    const { rowsHierarchy } = treeFacet.layoutResult;
+    const { rowsHierarchy } = treeFacet.getLayoutResult();
 
     afterAll(() => {
       spy.mockRestore();
@@ -360,7 +365,7 @@ describe('Pivot Mode Facet Test', () => {
       });
       const customWidthFacet = new PivotFacet(s2);
 
-      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+      customWidthFacet.getColLeafNodes().forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
@@ -386,7 +391,7 @@ describe('Pivot Mode Facet Test', () => {
     });
     const customWidthFacet = new PivotFacet(s2);
 
-    customWidthFacet.layoutResult.rowNodes.forEach((node) => {
+    customWidthFacet.getRowNodes().forEach((node) => {
       expect(node.width).toStrictEqual(400);
     });
   });

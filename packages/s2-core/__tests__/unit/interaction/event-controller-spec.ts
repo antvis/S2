@@ -17,7 +17,7 @@ import { Renderer } from '@antv/g-canvas';
 import { GEventType, GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
-  CellTypes,
+  CellType,
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
@@ -83,7 +83,7 @@ describe('Interaction Event Controller Tests', () => {
       eventType: OriginEventType | GEventType,
       customEvent?: (evt: FederatedEvent) => void,
     ) =>
-    (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
+    (options: { eventNames: (keyof EmitterType)[]; type: CellType }) => {
       const { eventNames, type } = options;
 
       spreadsheet.getCellType = () => type;
@@ -129,7 +129,9 @@ describe('Interaction Event Controller Tests', () => {
         maxX: s2Options.width,
         maxY: s2Options.height,
       } as BBox,
-    } as BaseFacet;
+      getDataCells: jest.fn(),
+      getCells: jest.fn(),
+    } as unknown as BaseFacet;
     spreadsheet.interaction = new RootInteraction(
       spreadsheet as unknown as SpreadSheet,
     );
@@ -230,23 +232,23 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     {
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       eventNames: [S2Event.DATA_CELL_MOUSE_DOWN],
     },
     {
-      type: CellTypes.ROW_CELL,
+      type: CellType.ROW_CELL,
       eventNames: [S2Event.ROW_CELL_MOUSE_DOWN],
     },
     {
-      type: CellTypes.COL_CELL,
+      type: CellType.COL_CELL,
       eventNames: [S2Event.COL_CELL_MOUSE_DOWN],
     },
     {
-      type: CellTypes.CORNER_CELL,
+      type: CellType.CORNER_CELL,
       eventNames: [S2Event.CORNER_CELL_MOUSE_DOWN],
     },
     {
-      type: CellTypes.MERGED_CELL,
+      type: CellType.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_DOWN],
     },
   ])(
@@ -256,7 +258,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     {
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       eventNames: [
         S2Event.DATA_CELL_MOUSE_MOVE,
         S2Event.DATA_CELL_HOVER,
@@ -264,7 +266,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
     {
-      type: CellTypes.ROW_CELL,
+      type: CellType.ROW_CELL,
       eventNames: [
         S2Event.ROW_CELL_MOUSE_MOVE,
         S2Event.ROW_CELL_HOVER,
@@ -272,7 +274,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
     {
-      type: CellTypes.COL_CELL,
+      type: CellType.COL_CELL,
       eventNames: [
         S2Event.COL_CELL_MOUSE_MOVE,
         S2Event.COL_CELL_HOVER,
@@ -280,7 +282,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
     {
-      type: CellTypes.CORNER_CELL,
+      type: CellType.CORNER_CELL,
       eventNames: [
         S2Event.CORNER_CELL_MOUSE_MOVE,
         S2Event.CORNER_CELL_HOVER,
@@ -288,7 +290,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
     {
-      type: CellTypes.MERGED_CELL,
+      type: CellType.MERGED_CELL,
       eventNames: [
         S2Event.MERGED_CELLS_MOUSE_MOVE,
         S2Event.MERGED_CELLS_HOVER,
@@ -302,23 +304,23 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     {
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       eventNames: [S2Event.DATA_CELL_MOUSE_UP],
     },
     {
-      type: CellTypes.ROW_CELL,
+      type: CellType.ROW_CELL,
       eventNames: [S2Event.ROW_CELL_MOUSE_UP],
     },
     {
-      type: CellTypes.COL_CELL,
+      type: CellType.COL_CELL,
       eventNames: [S2Event.COL_CELL_MOUSE_UP],
     },
     {
-      type: CellTypes.CORNER_CELL,
+      type: CellType.CORNER_CELL,
       eventNames: [S2Event.CORNER_CELL_MOUSE_UP],
     },
     {
-      type: CellTypes.MERGED_CELL,
+      type: CellType.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_UP],
     },
   ])(
@@ -328,23 +330,23 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     {
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       eventNames: [S2Event.DATA_CELL_DOUBLE_CLICK],
     },
     {
-      type: CellTypes.ROW_CELL,
+      type: CellType.ROW_CELL,
       eventNames: [S2Event.ROW_CELL_DOUBLE_CLICK],
     },
     {
-      type: CellTypes.COL_CELL,
+      type: CellType.COL_CELL,
       eventNames: [S2Event.COL_CELL_DOUBLE_CLICK],
     },
     {
-      type: CellTypes.CORNER_CELL,
+      type: CellType.CORNER_CELL,
       eventNames: [S2Event.CORNER_CELL_DOUBLE_CLICK],
     },
     {
-      type: CellTypes.MERGED_CELL,
+      type: CellType.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_DOUBLE_CLICK],
     },
   ])('should emit double click event for %s', (params) => {
@@ -360,26 +362,26 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     {
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       eventNames: [S2Event.DATA_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
     },
     {
-      type: CellTypes.ROW_CELL,
+      type: CellType.ROW_CELL,
       eventNames: [S2Event.ROW_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
     },
     {
-      type: CellTypes.COL_CELL,
+      type: CellType.COL_CELL,
       eventNames: [S2Event.COL_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
     },
     {
-      type: CellTypes.CORNER_CELL,
+      type: CellType.CORNER_CELL,
       eventNames: [
         S2Event.CORNER_CELL_CONTEXT_MENU,
         S2Event.GLOBAL_CONTEXT_MENU,
       ],
     },
     {
-      type: CellTypes.MERGED_CELL,
+      type: CellType.MERGED_CELL,
       eventNames: [
         S2Event.MERGED_CELLS_CONTEXT_MENU,
         S2Event.GLOBAL_CONTEXT_MENU,
@@ -856,9 +858,9 @@ describe('Interaction Event Controller Tests', () => {
   );
 
   test.each([
-    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
-    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
-    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+    { cellType: CellType.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellType.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellType.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
   ])(
     'should not trigger click event if event target is gui icon image shape for event %o',
     async ({ cellType, event }) => {
@@ -908,9 +910,9 @@ describe('Interaction Event Controller Tests', () => {
 
   // https://github.com/antvis/S2/issues/1360
   test.each([
-    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
-    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
-    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+    { cellType: CellType.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellType.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellType.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
   ])(
     'should trigger click event if event target is custom image shape for event %o',
     ({ cellType, event }) => {
