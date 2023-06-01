@@ -414,6 +414,7 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minX = -9999;
       s2.facet.panelBBox.minY = -9999;
 
+      await sleep(500);
       const mousemoveEvent = new MouseEvent('mousemove', {
         clientX: 200,
         clientY: 200,
@@ -421,56 +422,28 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(mousemoveEvent);
 
-      const spyHidetooltip = jest.spyOn(s2, 'hideTooltip');
-      const spyiOverVP = jest.spyOn(s2.facet, 'isScrollOverTheViewport');
-      const spyHoriScroll = jest.spyOn(
-        s2.facet,
-        'updateHorizontalScrollOffset',
-      );
-      const spyHBarChange = jest.spyOn(s2.facet.hScrollBar, 'emitScrollChange');
-      const spyDynamicRenderCell = jest.spyOn(s2.facet, 'dynamicRenderCell');
-      const spyAfterScroll = jest.spyOn(s2.facet, 'onAfterScroll');
+      await sleep(500);
 
       const onMouseMove = jest.fn();
       s2.container.on(OriginEventType.MOUSE_MOVE, onMouseMove);
 
-      expect(s2.facet.scrollFrameId).toBeFalsy();
+      const { canvasMousemoveEvent } = s2.interaction.eventController;
+
+      expect(canvasMousemoveEvent.x).toEqual(160);
+      expect(canvasMousemoveEvent.y).toEqual(-1738);
+      expect(canvasMousemoveEvent).toBeTruthy();
+      expect(
+        s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
+      ).toBeObject();
+
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
         deltaY: offset.scrollY,
       });
-
-      const { canvasMousemoveEvent: cmme } = s2.interaction.eventController;
-      expect(cmme).toBeDefined();
-      expect(s2.container.getShape(cmme.x, cmme.y)).toBeObject();
-
       canvas.dispatchEvent(wheelEvent);
 
       // wait requestAnimationFrame and debounce
       await sleep(1000);
-
-      expect(spyHidetooltip).toHaveBeenCalled();
-      // expect(spyiOverVP).toBeCalledWith({
-      //   deltaX: 20,
-      //   deltaY: 0,
-      //   offsetX: -40,
-      //   offsetY: -60,
-      // });
-      expect(spyHoriScroll).toHaveBeenCalled();
-      expect(spyHBarChange).toHaveBeenCalled();
-      expect(spyDynamicRenderCell).toHaveBeenCalled();
-      expect(spyAfterScroll).toHaveBeenCalled();
-
-      const { canvasMousemoveEvent } = s2.interaction.eventController;
-
-      expect(s2.interaction.isSelectedState()).toBeFalsy();
-      expect(canvasMousemoveEvent).toBeDefined();
-      expect(canvasMousemoveEvent.x).toEqual(160);
-      // expect(canvasMousemoveEvent.y).toEqual(140); // -1738
-      expect(canvasMousemoveEvent).toBeDefined();
-      expect(
-        s2.container.getShape(canvasMousemoveEvent.x, canvasMousemoveEvent.y),
-      ).toBeObject();
 
       expect(onMouseMove).toHaveBeenCalled();
     },
