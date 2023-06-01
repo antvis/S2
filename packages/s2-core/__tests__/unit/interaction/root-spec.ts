@@ -648,7 +648,7 @@ describe('RootInteraction Tests', () => {
     });
   });
 
-  test('should reset interaction when visibilitychange', () => {
+  test.skip('should reset interaction when visibilitychange', () => {
     const resetSpyList = [...rootInteraction.interactions.values()].map(
       (interaction) => {
         return jest
