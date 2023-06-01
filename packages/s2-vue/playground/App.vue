@@ -1,7 +1,7 @@
 <script lang="ts">
 /* eslint-disable no-console */
 import {
-  CellTypes,
+  CellType,
   type S2DataConfig,
   type S2Options,
   type Query,
@@ -617,7 +617,7 @@ export default defineComponent({
               key: 'trend',
               text: '趋势',
               icon: 'Trend',
-              visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+              visible: (cell) => cell.cellType === CellType.DATA_CELL,
               onClick(cell) {
                 // eslint-disable-next-line no-console
                 console.log('趋势图 icon 点击: ', cell);

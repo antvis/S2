@@ -14,6 +14,10 @@ export class PanelScrollGroup extends GridGroup {
     this.initMergedCellsGroup();
   }
 
+  getMergedCellsGroup() {
+    return this.mergedCellsGroup;
+  }
+
   protected initMergedCellsGroup() {
     if (this.mergedCellsGroup && this.getElementById(KEY_GROUP_MERGED_CELLS)) {
       return;

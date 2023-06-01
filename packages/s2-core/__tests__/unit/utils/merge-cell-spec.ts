@@ -49,9 +49,8 @@ describe('Merge Cells Test', () => {
       cfg: {
         dataCell: jest.fn(),
       },
-      layoutResult: {
-        getCellMeta: jest.fn(),
-      },
+      getCellMeta: jest.fn(),
+      getDataCells: jest.fn(() => mockAllVisibleCells),
     } as unknown as BaseFacet;
 
     mockOneCellEdges = [
@@ -211,7 +210,7 @@ describe('Merge Cells Test', () => {
   });
 
   test('should get cells in the outside of visible area through mergeCellInfo', () => {
-    mockInstance.facet.layoutResult.getCellMeta = jest
+    mockInstance.facet.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
 
@@ -244,7 +243,7 @@ describe('Merge Cells Test', () => {
   });
 
   test('should get the data cell and meta that make up the mergedCell. (getTempMergedCell)', () => {
-    mockInstance.facet.layoutResult.getCellMeta = jest
+    mockInstance.facet.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
 
@@ -291,6 +290,7 @@ describe('Merge Cells Test', () => {
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
+        appendChild: jest.fn(),
       } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);
@@ -310,14 +310,10 @@ describe('Merge Cells Test', () => {
         height: 100,
         mergedCellsInfo: [mockMergeCellInfo],
       };
-      mockInstance.interaction = {
-        getPanelGroupAllDataCells() {
-          return [];
-        },
-      } as unknown as RootInteraction;
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
+        appendChild: jest.fn(),
       } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);

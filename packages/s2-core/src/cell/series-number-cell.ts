@@ -7,7 +7,7 @@ import type {
   AreaRange,
 } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
-import { CellTypes } from '../common/constant/interaction';
+import { CellType } from '../common/constant/interaction';
 import type { Node } from '../facet/layout/node';
 import type { BaseHeaderConfig } from '../facet/header/interface';
 import { getHorizontalTextIconPosition } from '../utils/cell/cell';
@@ -23,7 +23,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
   }
 
   public get cellType() {
-    return CellTypes.ROW_CELL;
+    return CellType.ROW_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

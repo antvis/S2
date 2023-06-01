@@ -9,7 +9,7 @@ import {
   map,
 } from 'lodash';
 import { MergedCell } from '../../cell/merged-cell';
-import { CellTypes } from '../../common/constant';
+import { CellType } from '../../common/constant';
 import type {
   MergedCellInfo,
   S2CellType,
@@ -124,7 +124,7 @@ export const getInvisibleInfo = (
   let viewMeta: ViewMeta | undefined;
 
   forEach(invisibleCellInfo, (cellInfo) => {
-    const meta = sheet?.facet?.layoutResult?.getCellMeta(
+    const meta = sheet?.facet?.getCellMeta(
       cellInfo.rowIndex!,
       cellInfo.colIndex!,
     );
@@ -284,7 +284,7 @@ export const mergeCell = (
     return;
   }
 
-  const allVisibleCells = sheet.interaction.getPanelGroupAllDataCells();
+  const allVisibleCells = sheet.facet.getDataCells();
   const { cells, viewMeta } = getTempMergedCell(
     allVisibleCells,
     sheet,
@@ -344,7 +344,7 @@ export const removeUnmergedCellsInfo = (
  * @param sheet
  */
 export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
-  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELL) {
+  if (!removedCells || removedCells.cellType !== CellType.MERGED_CELL) {
     // eslint-disable-next-line no-console
     console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
 
@@ -425,7 +425,7 @@ export const updateMergedCells = (
   }
 
   // 可见区域的所有cells
-  const allCells = sheet.interaction.getPanelGroupAllDataCells();
+  const allCells = sheet.facet.getDataCells();
 
   if (isEmpty(allCells)) {
     return;

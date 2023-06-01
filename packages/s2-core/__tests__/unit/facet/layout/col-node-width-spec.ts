@@ -35,9 +35,7 @@ describe('Col width Test', () => {
     });
 
     test('get correct width in layoutWidthType adaptive mode', () => {
-      const { colLeafNodes } = s2.facet.layoutResult;
-
-      expect(colLeafNodes[0].width).toBe(200);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(200);
     });
 
     test('get correct width in layoutWidthType adaptive mode when enable series number', () => {
@@ -45,9 +43,8 @@ describe('Col width Test', () => {
         showSeriesNumber: true,
       });
       s2.render();
-      const { colLeafNodes } = s2.facet.layoutResult;
 
-      expect(colLeafNodes[0].width).toBe(180);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(180);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode', () => {
@@ -55,9 +52,8 @@ describe('Col width Test', () => {
         hierarchyType: 'tree',
       });
       s2.render();
-      const { colLeafNodes } = s2.facet.layoutResult;
 
-      expect(Math.round(colLeafNodes[0].width)).toBe(339);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(339);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode when enable series number', () => {
@@ -66,9 +62,8 @@ describe('Col width Test', () => {
         showSeriesNumber: true,
       });
       s2.render();
-      const { colLeafNodes } = s2.facet.layoutResult;
 
-      expect(Math.round(colLeafNodes[0].width)).toBe(299);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(299);
     });
 
     test('get correct width in layoutWidthType compact mode', () => {
@@ -80,9 +75,8 @@ describe('Col width Test', () => {
       s2.render();
 
       // 无 formatter
-      const { colLeafNodes } = s2.facet.layoutResult;
 
-      expect(Math.round(colLeafNodes[0].width)).toBe(78);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(78);
     });
 
     test('get correct width in layoutWidthType compact mode when apply formatter', () => {
@@ -104,9 +98,8 @@ describe('Col width Test', () => {
       s2.render();
 
       // 有formatter
-      const { colLeafNodes } = s2.facet.layoutResult;
 
-      expect(Math.round(colLeafNodes[0].width)).toBe(62);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(62);
     });
   });
 
@@ -138,7 +131,7 @@ describe('Col width Test', () => {
       });
       s2.render();
 
-      const { colLeafNodes } = s2.facet.layoutResult;
+      const colLeafNodes = s2.facet.getColLeafNodes();
 
       // price 列，列头标签比表身数据更长
       expect(Math.round(colLeafNodes[0].width)).toBe(46);

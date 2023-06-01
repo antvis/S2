@@ -9,7 +9,7 @@
       "@/*":["s2-react/src/*"],
       "tests/*":["s2-react/__tests__/*"]
     }
-  }, 
+  },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
   "include": ["src", "./typings.d.ts", "playground", "__tests__/"]
 }

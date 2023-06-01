@@ -33,7 +33,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
   spreadsheet.interaction.resetState();
   if (spreadsheet.options.interaction?.selectedCellsSpotlight) {
     const unSelectedCells =
-      spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+      spreadsheet.interaction.getUnSelectedDataCells() || [];
 
     forEach(unSelectedCells, (cell) => {
       cell.clearUnselectedState();

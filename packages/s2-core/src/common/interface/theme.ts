@@ -1,6 +1,6 @@
 import type { LineStyleProps } from '@antv/g';
 import type { InteractionStateName } from '../constant';
-import type { CellTypes } from '../../common/constant/interaction';
+import type { CellType } from '../../common/constant/interaction';
 import type { DeepRequired } from './util';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -301,7 +301,7 @@ export interface GridAnalysisCellTheme {
 }
 
 export type CellThemes = {
-  [K in CellTypes]?: DefaultCellTheme;
+  [K in CellType]?: DefaultCellTheme;
 };
 
 export interface S2Theme extends CellThemes {

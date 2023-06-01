@@ -103,7 +103,22 @@ export const createFakeSpreadSheet = () => {
     layoutResult: {
       getCellMeta: jest.fn(),
       rowLeafNodes: [],
+      colLeafNodes: [],
+      rowNodes: [],
+      colNodes: [],
     },
+    getCellMeta: jest.fn(),
+    getCellById: jest.fn(),
+    getCellChildrenNodes: jest.fn(),
+    getCells: jest.fn(),
+    getColCells: jest.fn(),
+    getRowCells: jest.fn(),
+    getDataCells: jest.fn(),
+    getRowNodes: jest.fn(),
+    getRowLeafNodes: jest.fn(),
+    getColNodes: jest.fn(),
+    getColLeafNodes: jest.fn(),
+    getInitColLeafNodes: jest.fn(),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -125,7 +140,7 @@ export const createFakeSpreadSheet = () => {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
-  s2.getRowNodes = jest.fn().mockReturnValue([]);
+  s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
   s2.isCustomHeaderFields = jest.fn(() => false);

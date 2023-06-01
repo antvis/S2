@@ -4,12 +4,11 @@
  * Column should not be formatted
  *
  */
-import { getContainer } from 'tests/util/helpers';
-import { filter, get } from 'lodash';
+import { get } from 'lodash';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { CornerCell } from '@/cell';
-import type { S2DataConfig, S2Options } from '@/common/interface';
+import { getContainer } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2options: S2Options = {
   // 让被测试的单元格在首屏显示出来
@@ -62,18 +61,13 @@ describe('Formatter Tests', () => {
   });
 
   test('corner should not be formatted', () => {
-    const cornerNodes = filter(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      s2.facet.getCornerHeader().getChildren(),
-      (node) => node instanceof CornerCell,
-    ) as unknown[] as CornerCell[];
+    const cornerCells = s2.facet.getCornerCells();
 
-    const provinceCornerNode = cornerNodes.find(
+    const provinceCornerNode = cornerCells.find(
       (cell) => get(cell, 'meta.field') === 'province',
     );
 
-    const cityCornerNode = cornerNodes.find(
+    const cityCornerNode = cornerCells.find(
       (cell) => get(cell, 'meta.field') === 'city',
     );
 
@@ -82,14 +76,14 @@ describe('Formatter Tests', () => {
   });
 
   test('row should not be formatted', () => {
-    const rowNodes = s2.getRowNodes();
+    const rowNodes = s2.facet.getRowNodes();
     const provinceRowNode = rowNodes.find(({ field }) => field === 'province');
 
     expect(provinceRowNode!.value).toStrictEqual('浙江');
   });
 
   test('column should not be formatted', () => {
-    const colNodes = s2.getColumnNodes();
+    const colNodes = s2.facet.getColNodes();
 
     const cityColNode = colNodes.find(({ field }) => field === 'city');
 
@@ -97,7 +91,7 @@ describe('Formatter Tests', () => {
   });
 
   test('data cell should render formatted value', () => {
-    const priceDataCells = s2.interaction.getPanelGroupAllDataCells();
+    const priceDataCells = s2.facet.getDataCells();
 
     expect(priceDataCells).not.toHaveLength(0);
     expect(priceDataCells).toSatisfyAll(

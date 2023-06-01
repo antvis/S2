@@ -1,10 +1,11 @@
 import type { Canvas } from '@antv/g';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { get } from 'lodash';
+import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
-  CellTypes,
+  CellType,
   CornerCellClick,
   DataCell,
   DataCellClick,
@@ -52,11 +53,11 @@ describe('RootInteraction Tests', () => {
 
   const getMockCell = (id: number) =>
     ({
-      type: CellTypes.DATA_CELL,
+      type: CellType.DATA_CELL,
       hideInteractionShape: jest.fn(),
       clearUnselectedState: jest.fn(),
       update: jest.fn(),
-      cellType: CellTypes.DATA_CELL,
+      cellType: CellType.DATA_CELL,
       getMeta: () => {
         return {
           colIndex: id,
@@ -88,9 +89,14 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.isTableMode = jest.fn();
     mockSpreadSheetInstance.isHierarchyTreeType = () => false;
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    rootInteraction.getPanelGroupAllDataCells = () => panelGroupAllDataCells;
-    rootInteraction.getAllColHeaderCells = () => [];
-    rootInteraction.getAllRowHeaderCells = () => [];
+    mockSpreadSheetInstance.facet = {
+      getDataCells: () => panelGroupAllDataCells,
+      getColCells: () => [],
+      getRowCells: () => [],
+      getCells: () => panelGroupAllDataCells,
+      getCellChildrenNodes: () => [],
+      getHeaderCells: () => [],
+    } as unknown as PivotFacet;
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 

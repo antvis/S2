@@ -6,6 +6,7 @@ import type { PanelBBox } from '../bbox/panelBBox';
 import { translateGroup } from '../utils';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { S2CellType } from '../../common/interface';
+import type { Node } from '../layout/node';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
@@ -107,5 +108,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const { scrollY = 0, scrollX = 0, position } = this.headerConfig;
 
     translateGroup(this, position.x - scrollX, position.y - scrollY);
+  }
+
+  public getNodes(): Node[] {
+    return this.headerConfig.nodes || [];
   }
 }

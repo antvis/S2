@@ -40,9 +40,9 @@ describe('Grand Total Row Node Tests', () => {
   s2.render();
 
   test("should calc correct grand total children nodes' width", () => {
-    const { rowLeafNodes } = s2.facet.layoutResult;
-    const totalLeafNode = rowLeafNodes.find((it) => it.isTotalMeasure)!;
-    const normalLeafNode = rowLeafNodes.find((it) => !it.isTotalMeasure)!;
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
+    const totalLeafNode = rowLeafNodes.find((node) => node.isTotalMeasure)!;
+    const normalLeafNode = rowLeafNodes.find((node) => !node.isTotalMeasure)!;
 
     expect(totalLeafNode.width).toEqual(normalLeafNode.width);
   });

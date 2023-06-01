@@ -18,7 +18,7 @@ import {
 import { renderIcon } from '../utils/g-renders';
 import { BaseCell } from '../cell/base-cell';
 import {
-  CellTypes,
+  CellType,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
   S2Event,
@@ -297,10 +297,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
 
     if (isValueInCols) {
-      return isMaxLevel && this.cellType === CellTypes.COL_CELL;
+      return isMaxLevel && this.cellType === CellType.COL_CELL;
     }
 
-    return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
+    return isMaxLevel && this.cellType === CellType.ROW_CELL;
   }
 
   protected handleByStateName(
@@ -403,10 +403,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells([
-      CellTypes.COL_CELL,
-      CellTypes.ROW_CELL,
-    ]);
+    const cells = interaction?.getCells([CellType.COL_CELL, CellType.ROW_CELL]);
 
     if (!first(cells)) {
       return;

@@ -53,7 +53,7 @@ describe('Column Formatter Tests', () => {
   });
 
   test('column should not be formatted', () => {
-    const colNodes = s2.getColumnNodes();
+    const colNodes = s2.facet.getColNodes();
     const typeColNode = colNodes.find(({ field }) => field === 'type');
     const costColNode = colNodes.find(({ field }) => field === 'cost');
 
@@ -62,7 +62,7 @@ describe('Column Formatter Tests', () => {
   });
 
   test('date cell should render formatted value', () => {
-    const dataCells = s2.interaction.getPanelGroupAllDataCells();
+    const dataCells = s2.facet.getDataCells();
     const typeDataCells = dataCells.filter(
       (cell) => cell.getMeta().valueField === 'type',
     );

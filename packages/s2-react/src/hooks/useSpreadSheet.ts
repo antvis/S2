@@ -95,7 +95,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
         prevDataCfg?.fields?.columns?.length !==
         dataCfg?.fields?.columns?.length
       ) {
-        s2Ref.current?.clearColumnLeafNodes();
+        s2Ref.current?.facet.clearInitColLeafNodes();
       }
 
       reloadData = true;

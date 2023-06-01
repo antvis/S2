@@ -1,6 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableDataSet } from '../../../src/data-set';
+import { TableFacet } from '../../../src/facet';
 import type { GEvent } from '@/index';
 import { TableSheet } from '@/sheet-type';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
@@ -236,5 +237,28 @@ describe('TableSheet Tests', () => {
     s2.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
+  });
+
+  test('should render custom table facet', () => {
+    const mockRender = jest.fn();
+
+    class CustomFacet extends TableFacet {
+      render() {
+        super.render();
+        mockRender();
+      }
+    }
+
+    const sheet = new TableSheet(getContainer(), dataCfg, {
+      facet: (spreadsheet) => new CustomFacet(spreadsheet),
+      tooltip: {
+        showTooltip: false,
+      },
+    });
+
+    sheet.render();
+
+    expect(sheet.facet).toBeInstanceOf(TableFacet);
+    expect(mockRender).toHaveBeenCalledTimes(1);
   });
 });

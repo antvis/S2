@@ -54,7 +54,7 @@ export class TableDataCell extends DataCell {
     }
 
     const { y, height } = this.getBBoxByType();
-    const rowIndex = this.meta.rowIndex;
+    const { rowIndex } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const {
       rowCount: frozenRowCount = 0,

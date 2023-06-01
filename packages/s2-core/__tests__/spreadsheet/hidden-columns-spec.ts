@@ -34,11 +34,11 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should get init column node', () => {
-      expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
+      expect(tableSheet.facet.getColNodes().map((node) => node.field)).toEqual(
         mockTableDataConfig.fields.columns,
       );
       expect(
-        tableSheet.getInitColumnLeafNodes().map((node) => node.field),
+        tableSheet.facet.getInitColLeafNodes().map((node) => node.field),
       ).toEqual(mockTableDataConfig.fields.columns);
     });
 
@@ -56,7 +56,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
+      expect(tableSheet.facet.getColNodes().map((node) => node.field)).toEqual(
         difference(mockTableDataConfig.fields.columns, hiddenColumns),
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
@@ -77,7 +77,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
       const [priceDetail, cityDetail] = hiddenColumnsDetail;
 
-      expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
+      expect(tableSheet.facet.getColNodes().map((node) => node.field)).toEqual(
         mockTableDataConfig.fields.columns.filter(
           (column) => !hiddenColumns.includes(column),
         ),
@@ -113,7 +113,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
       const [groupDetail] = hiddenColumnsDetail;
 
-      expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
+      expect(tableSheet.facet.getColNodes().map((node) => node.field)).toEqual(
         mockTableDataConfig.fields.columns.filter(
           (column) => !hiddenColumns.includes(column),
         ),
@@ -146,7 +146,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(sheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(sheet.getColumnNodes().map((node) => node.field)).toEqual(
+      expect(sheet.facet.getColNodes().map((node) => node.field)).toEqual(
         difference(mockTableDataConfig.fields.columns, hiddenColumns),
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
@@ -180,7 +180,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(tableSheet.getColumnNodes().map((node) => node.field))
+      expect(tableSheet.facet.getColNodes().map((node) => node.field))
         .toMatchInlineSnapshot(`
         Array [
           "a-1",
@@ -223,9 +223,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should get init column node', () => {
-      expect(pivotSheet.getColumnNodes()).toHaveLength(5);
+      expect(pivotSheet.facet.getColNodes()).toHaveLength(5);
       expect(
-        pivotSheet.getInitColumnLeafNodes().map((node) => node.id),
+        pivotSheet.facet.getInitColLeafNodes().map((node) => node.id),
       ).toEqual([typePriceColumnId, cityPriceColumnId]);
     });
 
@@ -243,9 +243,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(pivotSheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
-        cityPriceColumnId,
-      ]);
+      expect(pivotSheet.facet.getColLeafNodes().map((node) => node.id)).toEqual(
+        [cityPriceColumnId],
+      );
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(priceDetail.displaySiblingNode.prev).toEqual(null);
       expect(priceDetail.displaySiblingNode.next?.id).toEqual(
@@ -266,7 +266,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
       const [multipleColumnDetail] = hiddenColumnsDetail;
 
-      expect(pivotSheet.getColumnLeafNodes()).toEqual([]);
+      expect(pivotSheet.facet.getColLeafNodes()).toEqual([]);
       expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
@@ -339,7 +339,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(sheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(sheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
+      expect(sheet.facet.getColLeafNodes().map((node) => node.id)).toEqual([
         cityPriceColumnId,
       ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
@@ -382,16 +382,16 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       pivotSheet.interaction.hideColumns([nodeId]);
 
-      const grandTotalsNode = pivotSheet
-        .getColumnNodes()
+      const grandTotalsNode = pivotSheet.facet
+        .getColNodes()
         .find((node) => node.isGrandTotals)!;
 
-      const rootNode = pivotSheet
-        .getColumnNodes()
+      const rootNode = pivotSheet.facet
+        .getColNodes()
         .find((node) => node.id === 'root[&]笔')!;
 
-      const parentNode = pivotSheet
-        .getColumnNodes()
+      const parentNode = pivotSheet.facet
+        .getColNodes()
         .find((node) => node.id === 'root[&]笔[&]义乌')!;
 
       const hiddenColumnsInfo = pivotSheet.store.get('hiddenColumnsDetail')[0];
@@ -426,7 +426,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
-      expect(pivotSheet.getColumnNodes().map((node) => node.field))
+      expect(pivotSheet.facet.getColNodes().map((node) => node.field))
         .toMatchInlineSnapshot(`
         Array [
           "a-1",
@@ -493,16 +493,16 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       ])('should hide totals node for %o', ({ id, x, width }) => {
         sheet.interaction.hideColumns([id]);
 
-        const totalsSiblingNode = sheet
-          .getColumnNodes()
+        const totalsSiblingNode = sheet.facet
+          .getColNodes()
           .find((node) => node.id === 'root[&]家具')!;
 
         expect(totalsSiblingNode.x).toEqual(x);
         expect(totalsSiblingNode.width).toEqual(width);
         expect(
-          sheet.getColumnNodes().some((node) => node.id === id),
+          sheet.facet.getColNodes().some((node) => node.id === id),
         ).toBeFalsy();
-        expect(sheet.getColumnLeafNodes()).toHaveLength(6);
+        expect(sheet.facet.getColLeafNodes()).toHaveLength(6);
       });
 
       test('should hide measure node', () => {
@@ -514,7 +514,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         sheet.interaction.hideColumns(nodeIds);
 
         expect(
-          sheet.getColumnLeafNodes().find((node) => nodeIds.includes(node.id)),
+          sheet.facet
+            .getColLeafNodes()
+            .find((node) => nodeIds.includes(node.id)),
         ).toBeFalsy();
       });
 
@@ -535,7 +537,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
         // 避免采样的节点被隐藏后, 影响角头坐标计算
         expect(
-          sheet.facet.layoutResult.colsHierarchy.sampleNodeForLastLevel?.y,
+          sheet.facet.getLayoutResult().colsHierarchy.sampleNodeForLastLevel?.y,
         ).toStrictEqual(60);
         expect(colCornerNodesMeta).toMatchInlineSnapshot(`
           Array [
@@ -584,7 +586,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
         sheet.interaction.hideColumns([nodeId]);
 
-        const leafNodes = sheet.getColumnLeafNodes();
+        const leafNodes = sheet.facet.getColLeafNodes();
 
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(5);

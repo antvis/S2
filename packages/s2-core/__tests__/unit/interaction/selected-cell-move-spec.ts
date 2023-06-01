@@ -38,12 +38,11 @@ describe('Interaction Keyboard Move Tests', () => {
       getDisplayDataSet: () => [{ a: 0 }, { a: 1 }],
     } as any;
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [
-          { x: 0, id: '0', colIndex: 0 },
-          { x: 1, id: '1', colIndex: 1 },
-        ],
-      },
+      getRowLeafNodes: () => [],
+      getColLeafNodes: () => [
+        { x: 0, id: '0', colIndex: 0 },
+        { x: 1, id: '1', colIndex: 1 },
+      ],
       getTotalHeightForRange: () => 0,
       scrollWithAnimation: (data: OffsetConfig) => {
         s2.store.set('scrollX', data?.offsetX?.value!);
@@ -81,7 +80,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected cell right', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
 
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
@@ -99,7 +98,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
     // overflow not call
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    s2.facet.getCells = () => [mockCell01.mockCell as any];
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
     } as KeyboardEvent);
@@ -108,7 +107,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected cell left', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    s2.facet.getCells = () => [mockCell01.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -125,7 +124,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
     // overflow not call
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_LEFT,
     } as KeyboardEvent);
@@ -134,7 +133,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected cell up', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell10.mockCell as any];
+    s2.facet.getCells = () => [mockCell10.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell10.mockCell;
     // @ts-ignore
@@ -151,7 +150,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
     // overflow not call
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_UP,
     } as KeyboardEvent);
@@ -160,7 +159,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected cell down', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    s2.facet.getCells = () => [mockCell01.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -177,7 +176,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
     // overflow not call
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell11.mockCell as any];
+    s2.facet.getCells = () => [mockCell11.mockCell as any];
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_DOWN,
     } as KeyboardEvent);
@@ -186,7 +185,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected with meta', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -239,7 +238,7 @@ describe('Interaction Keyboard Move Tests', () => {
     const onDataCellSelectMove = jest.fn();
 
     s2.interaction.changeState = jest.fn();
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -277,7 +276,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should move selected with shift and meta', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    s2.facet.getCells = () => [mockCell00.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -314,7 +313,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should not move selected cell down when isCanvasEffect is false', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    s2.facet.getCells = () => [mockCell01.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -332,7 +331,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
   test('should scroll to active cell', () => {
     s2.interaction.changeState = jest.fn(() => {});
-    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    s2.facet.getCells = () => [mockCell01.mockCell as any];
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore

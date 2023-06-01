@@ -1,4 +1,5 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import type { PivotFacet } from '../../../src/facet';
 import type { GEvent } from '@/index';
 import type { S2CellType } from '@/common/interface/interaction';
 import type { SpreadSheet } from '@/sheet-type';
@@ -99,12 +100,11 @@ describe('Interaction Range Selection Tests', () => {
     });
 
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [{ id: '0' }, { id: '1' }],
-        rowLeafNodes: [{ id: '0' }, { id: '1' }],
-      },
+      getColLeafNodes: () => [{ id: '0' }, { id: '1' }],
+      getRowLeafNodes: () => [{ id: '0' }, { id: '1' }],
+      getDataCells: () => [],
       getSeriesNumberWidth: () => 200,
-    } as any;
+    } as unknown as PivotFacet;
 
     const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
     const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
@@ -166,12 +166,11 @@ describe('Interaction Range Selection Tests', () => {
     });
 
     s2.facet = {
-      layoutResult: {
-        colLeafNodes: [{ id: '0' }, { id: '1' }],
-        rowLeafNodes: [],
-      },
+      getColLeafNodes: () => [{ id: '0' }, { id: '1' }],
+      getRowLeafNodes: () => [],
+      getDataCells: jest.fn(),
       getSeriesNumberWidth: () => 0,
-    } as any;
+    } as unknown as PivotFacet;
 
     const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
     const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });

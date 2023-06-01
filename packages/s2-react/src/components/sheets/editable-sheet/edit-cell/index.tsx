@@ -79,10 +79,11 @@ function EditCellComponent(
       };
     }
 
+    const sampleColNode = spreadsheet.facet.getColNodes()[0];
+    const sampleColNodeHeight = sampleColNode?.height || 0;
+
     cellMeta.x -= scroll.scrollX || 0;
-    cellMeta.y -=
-      (scroll.scrollY || 0) -
-      (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
+    cellMeta.y -= (scroll.scrollY || 0) - sampleColNodeHeight;
 
     return cellMeta;
   }, [cell, spreadsheet]);
