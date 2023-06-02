@@ -409,6 +409,12 @@ describe('Scroll Tests', () => {
   ])(
     'should trigger hover cells when hover cells after scroll by %o',
     async ({ offset }) => {
+      s2.setOptions({
+        interaction: {
+          hoverAfterScroll: true,
+        },
+      });
+
       s2.facet.cornerBBox.maxY = -9999;
       s2.facet.panelBBox.minX = -9999;
       s2.facet.panelBBox.minY = -9999;
