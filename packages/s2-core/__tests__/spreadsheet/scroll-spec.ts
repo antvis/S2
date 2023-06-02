@@ -413,9 +413,10 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minX = -9999;
       s2.facet.panelBBox.minY = -9999;
 
+      const bbox = s2.getCanvasElement().getBoundingClientRect();
       const mousemoveEvent = new MouseEvent('mousemove', {
-        clientX: 200,
-        clientY: 200,
+        clientX: bbox.left + 100,
+        clientY: bbox.top + 100,
       });
 
       canvas.dispatchEvent(mousemoveEvent);
