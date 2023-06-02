@@ -26,6 +26,7 @@ order: 5
 | eventListenerOptions                 | 事件监听函数 `addEventListener` 的 [可选项配置](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener), 可控制事件从冒泡阶段还是捕获阶段触发 | `false`                                   |                                                       |
 | selectedCellHighlight                | 选中格子后的高亮行为<br/>rowHeader：是否高亮选中格子所在行头<br/>colHeader：是否高亮选中格子所在列头<br/>currentRow：是否高亮选中格子所在行<br/>currentCol：是否高亮选中格子所在列<br/>true：同{rowHeader: true, colHeader: true}     | `boolean \| { rowHeader?: boolean, colHeader?: boolean, currentRow?: boolean, currentCol?: boolean }` | `false`                                               |                  |
 | overscrollBehavior                   | 控制滚动至边界的行为，可禁用浏览器的默认滚动行为。[详情](/docs/manual/advanced/interaction/basic/#修改滚动至边界行为)  | `auto \| contain \| none \| null`  |  `auto` |
+| hoverAfterScroll                   | 滚动结束后是否在当前鼠标所处单元格自动触发悬停表现  | `boolean`  |  `false` |
 
 ### CustomInteraction
 

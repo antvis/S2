@@ -75,6 +75,14 @@
         "en": "Disable auto reset sheet style"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lb0%26u6LtAu/reset.gif"
+    },
+    {
+      "filename": "hover-after-scroll.ts",
+      "title": {
+        "zh": "滚动后自动触发悬停状态",
+        "en": "Trigger hover after scroll"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
     }
   ]
 }

@@ -2,22 +2,22 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
-  customMerge,
-  type DataType,
-  generatePalette,
-  getPalette,
-  type HeaderActionIconProps,
+  BaseTooltip,
+  DEFAULT_STYLE,
   Node,
-  type S2DataConfig,
   SpreadSheet,
+  customMerge,
+  generatePalette,
+  getLang,
+  getPalette,
+  type DataType,
+  type HeaderActionIconProps,
+  type InteractionCellSelectedHighlightType,
+  type InteractionOptions,
+  type S2DataConfig,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  getLang,
-  type InteractionOptions,
-  DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightType,
-  BaseTooltip,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -29,7 +29,6 @@ import {
   Input,
   Popover,
   Radio,
-  type RadioChangeEvent,
   Select,
   Slider,
   Space,
@@ -37,12 +36,20 @@ import {
   Tabs,
   Tag,
   Tooltip,
+  type RadioChangeEvent,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce, forEach, isBoolean, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
+import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
+import {
+  StrategyOptions,
+  StrategySheetDataConfig,
+} from '../__tests__/data/strategy-data';
 import reactPkg from '../package.json';
 import type {
   PartDrillDown,
@@ -51,13 +58,6 @@ import type {
   SheetComponentsProps,
 } from '../src';
 import { SheetComponent } from '../src';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
-import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import {
-  StrategySheetDataConfig,
-  StrategyOptions,
-} from '../__tests__/data/strategy-data';
 import {
   defaultOptions,
   mockGridAnalysisOptions,
@@ -975,6 +975,20 @@ function MainLayout() {
                       updateOptions({
                         interaction: {
                           hoverFocus: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="滚动后自动触发悬停状态">
+                  <Switch
+                    checkedChildren="滚动悬停开"
+                    unCheckedChildren="滚动悬停关"
+                    checked={mergedOptions.interaction.hoverAfterScroll}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverAfterScroll: checked,
                         },
                       });
                     }}
