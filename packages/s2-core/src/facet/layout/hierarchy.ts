@@ -30,7 +30,7 @@ export class Hierarchy {
 
   // get all leaf nodes
   public getLeaves(): Node[] {
-    return this.allNodesWithoutRoot.filter((value) => value.isLeaf);
+    return this.allNodesWithoutRoot.filter((node) => node.isLeaf);
   }
 
   /**
@@ -39,7 +39,7 @@ export class Hierarchy {
    */
   public getNodes(level?: number): Node[] {
     if (level !== undefined) {
-      return this.allNodesWithoutRoot.filter((value) => value.level === level);
+      return this.allNodesWithoutRoot.filter((node) => node.level === level);
     }
 
     return this.allNodesWithoutRoot;
@@ -51,25 +51,25 @@ export class Hierarchy {
    */
   public getNodesLessThanLevel(lessThanLevel: number): Node[] {
     return this.allNodesWithoutRoot.filter(
-      (value) => value.level <= lessThanLevel,
+      (node) => node.level <= lessThanLevel,
     );
   }
 
   /**
    * Add new node
-   * @param value
+   * @param node
    * @param insetIndex
    */
-  public pushNode(value: Node, insetIndex = -1) {
+  public pushNode(node: Node, insetIndex = -1) {
     if (insetIndex === -1) {
-      this.allNodesWithoutRoot.push(value);
+      this.allNodesWithoutRoot.push(node);
     } else {
-      this.allNodesWithoutRoot.splice(insetIndex, 0, value);
+      this.allNodesWithoutRoot.splice(insetIndex, 0, node);
     }
   }
 
-  public pushIndexNode(value: Node) {
-    this.indexNode.push(value);
+  public pushIndexNode(node: Node) {
+    this.indexNode.push(node);
   }
 
   public getIndexNodes(): Node[] {

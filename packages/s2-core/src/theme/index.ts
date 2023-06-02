@@ -1,6 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
-import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
+import type {
+  DefaultCellTheme,
+  InternalFullyTheme,
+  ThemeCfg,
+} from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -11,7 +15,7 @@ import { getPalette } from '../utils/theme';
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
-): S2Theme => {
+): InternalFullyTheme => {
   const {
     basicColors,
     semanticColors,
@@ -478,5 +482,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  };
+  } as InternalFullyTheme;
 };

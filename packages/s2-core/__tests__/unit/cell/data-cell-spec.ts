@@ -11,7 +11,7 @@ import {
   S2Event,
   type OriginalEvent,
   type S2CellType,
-  CellTypes,
+  CellType,
 } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
@@ -107,9 +107,7 @@ describe('Data Cell Tests', () => {
       s2.dataSet = dataSet;
 
       s2.facet = {
-        layoutResult: {
-          rowLeafNodes: [],
-        },
+        getRowLeafNodes: () => [],
       } as unknown as PivotFacet;
     });
 
@@ -158,9 +156,7 @@ describe('Data Cell Tests', () => {
       s2.dataSet = dataSet;
 
       s2.facet = {
-        layoutResult: {
-          rowLeafNodes: [],
-        },
+        getRowLeafNodes: () => [],
       } as unknown as PivotFacet;
     });
 
@@ -481,7 +477,7 @@ describe('Data Cell Tests', () => {
     };
 
     test('should be highlight entire row data cells when the row header is clicked', () => {
-      const allRowCells = s2.interaction.getAllRowHeaderCells();
+      const allRowCells = s2.facet.getRowCells();
       const mockCell = allRowCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);
@@ -494,7 +490,7 @@ describe('Data Cell Tests', () => {
       const interactedCells = s2.interaction.getInteractedCells();
       const firstRowCell = find(
         interactedCells,
-        (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+        (cell: S2CellType) => cell.cellType === CellType.ROW_CELL,
       );
 
       expect(interactedCells.length).toBe(7);
@@ -502,7 +498,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should be highlight entire column data cells when the column header is clicked', () => {
-      const allColumnCells = s2.interaction.getAllColHeaderCells();
+      const allColumnCells = s2.facet.getColCells();
       const mockCell = allColumnCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);
@@ -515,7 +511,7 @@ describe('Data Cell Tests', () => {
       const interactedCells = s2.interaction.getInteractedCells();
       const firstColCell = find(
         interactedCells,
-        (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+        (cell: S2CellType) => cell.cellType === CellType.COL_CELL,
       );
 
       expect(interactedCells.length).toBe(8);
@@ -523,7 +519,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should be highlight data cell when the data cell is clicked', () => {
-      const allDataCells = s2.interaction.getAllCells();
+      const allDataCells = s2.facet.getDataCells();
       const mockCell = allDataCells[0];
 
       s2.getCell = jest.fn().mockReturnValue(mockCell);

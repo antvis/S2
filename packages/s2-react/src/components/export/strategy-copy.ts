@@ -1,6 +1,6 @@
 import {
   type CopyableList,
-  type CopyConstructorParams,
+  type SheetCopyConstructorParams,
   type FormatOptions,
   type Node,
   type ViewMeta,
@@ -50,7 +50,7 @@ const getHeaderLabel = (val: string) => {
 };
 
 class StrategyCopyData extends PivotDataCellCopy {
-  constructor(props: CopyConstructorParams) {
+  constructor(props: SheetCopyConstructorParams) {
     super(props);
   }
 
@@ -132,7 +132,7 @@ class StrategyCopyData extends PivotDataCellCopy {
   };
 
   protected getDataMatrixByHeaderNode = () => {
-    const { getCellMeta } = this.spreadsheet?.facet?.layoutResult;
+    const { getCellMeta } = this.spreadsheet?.facet;
 
     return map(this.leafRowNodes, (rowNode) => {
       // 获取每行的数据，如果无法获取到数据则使用 placeholder 填充
@@ -187,12 +187,14 @@ class StrategyCopyData extends PivotDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    return assembleMatrix({
-      colMatrix,
-      dataMatrix,
-      rowMatrix,
-      cornerMatrix,
-    });
+    return this.matrixTransformer(
+      assembleMatrix({
+        colMatrix,
+        dataMatrix,
+        rowMatrix,
+        cornerMatrix,
+      }),
+    );
   };
 }
 

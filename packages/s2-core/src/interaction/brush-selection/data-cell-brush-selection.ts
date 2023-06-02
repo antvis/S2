@@ -2,7 +2,7 @@ import { isEmpty, range } from 'lodash';
 import type { DataCell } from '../../cell/data-cell';
 import { S2Event } from '../../common/constant';
 import {
-  CellTypes,
+  CellType,
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
@@ -62,10 +62,11 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   }
 
   public getSelectedCellMetas = (brushRange: BrushRange): CellMeta[] => {
+    const { facet } = this.spreadsheet;
     const metas: CellMeta[] = [];
-    const { rowLeafNodes = [], colLeafNodes = [] } =
-      this.spreadsheet.facet.layoutResult;
 
+    const rowLeafNodes = facet.getRowLeafNodes();
+    const colLeafNodes = facet.getColLeafNodes();
     const rowIndexRange = range(
       brushRange.start.rowIndex,
       brushRange.end.rowIndex + 1,
@@ -87,7 +88,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
           colIndex,
           rowIndex,
           id: `${rowId}-${colId}`,
-          type: CellTypes.DATA_CELL,
+          type: CellType.DATA_CELL,
           rowId,
           colId,
           spreadsheet: this.spreadsheet,
@@ -131,7 +132,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         return visibleCell;
       }
 
-      const viewMeta = this.spreadsheet.facet.layoutResult.getCellMeta(
+      const viewMeta = this.spreadsheet.facet.getCellMeta(
         meta.rowIndex,
         meta.colIndex,
       )!;

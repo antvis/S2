@@ -5,6 +5,7 @@ import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 import { NewTab, NewLine } from '@/common';
+import { CopyMIMEType } from '@/utils/export/interface';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', () => {
@@ -29,8 +30,12 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab, {
-      isFormatHeader: true,
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: {
+        isFormatHeader: true,
+      },
     });
     const rows = data.split(NewLine);
     const headers = rows[0].split(NewTab);
@@ -75,7 +80,10 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
     const rows = data.split(NewLine);
     const headers = rows[0].split(NewTab);
 
@@ -113,7 +121,11 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab, true);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: true,
+    });
 
     expect(data).toMatchInlineSnapshot(`
       "province	type	sub_type	number
@@ -123,6 +135,37 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	桌子	4342
       浙江省-province	家具-type	沙发	5343"
     `);
+  });
+  it('should support custom export matrix transformer', () => {
+    const s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        data: slice(originData, 0, 5),
+        fields: {
+          columns: ['province', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        showSeriesNumber: false,
+      }),
+    );
+
+    s2.render();
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: true,
+      customTransformer: () => {
+        return {
+          [CopyMIMEType.PLAIN]: () => {
+            return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+          },
+        };
+      },
+    });
+
+    expect(data).toMatchInlineSnapshot(`"custom data"`);
+    expect(data).toEqual('custom data');
   });
 });
 
@@ -141,7 +184,10 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
     const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(14);
@@ -168,7 +214,9 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+    });
     const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(16);
@@ -203,7 +251,11 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab, true);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: true,
+    });
     const rows = data.split(NewLine);
 
     expect(rows).toMatchInlineSnapshot(`
@@ -239,7 +291,11 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab, true);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: true,
+    });
     const rows = data.split(NewLine);
 
     expect(rows).toMatchInlineSnapshot(`
@@ -282,7 +338,11 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
+
     const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(13);
@@ -318,7 +378,11 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
+
     const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(17);
@@ -354,7 +418,10 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
     const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(16);
@@ -394,7 +461,12 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t', { isFormatHeader: true });
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: { isFormatHeader: true },
+    });
+
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(7);
@@ -425,7 +497,11 @@ describe('PivotSheet Export Test', () => {
 
     s2.render();
 
-    const data = copyData(s2, NewTab, { isFormatData: true });
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      formatOptions: { isFormatData: true },
+    });
 
     expect(data).toMatchInlineSnapshot(`
       "	type	家具	家具	办公用品	办公用品
@@ -471,7 +547,10 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
 
     expect(data).toMatchInlineSnapshot(`
       "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
@@ -506,8 +585,10 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-
-    const data = copyData(s2, NewTab);
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
 
     expect(data).toMatchInlineSnapshot(`
       "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
@@ -523,5 +604,31 @@ describe('PivotSheet Export Test', () => {
 
     expect(rows[0].split(NewTab)[1]).toEqual('province');
     expect(rows[1].split(NewTab)[1]).toEqual('city');
+  });
+
+  it('should support custom export matrix transformer', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(),
+      assembleOptions({
+        hierarchyType: 'grid',
+      }),
+    );
+
+    s2.render();
+
+    const data = copyData({
+      sheetInstance: s2,
+      split: NewTab,
+      customTransformer: () => {
+        return {
+          [CopyMIMEType.PLAIN]: () => {
+            return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+          },
+        };
+      },
+    });
+
+    expect(data).toEqual('custom data');
   });
 });

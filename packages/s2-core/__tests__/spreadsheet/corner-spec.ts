@@ -63,7 +63,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(DEFAULT_STYLE.colCell!.height);
@@ -99,7 +99,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).not.toBeLessThan(
         DEFAULT_STYLE.dataCell!.width as number,
@@ -140,7 +140,7 @@ describe('PivotSheet Corner Tests', () => {
       s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(0);
@@ -170,7 +170,7 @@ describe('PivotSheet Corner Tests', () => {
     s2.render();
 
     const cornerNodes = s2.facet.getCornerNodes();
-    const { colsHierarchy } = s2.facet.layoutResult;
+    const { colsHierarchy } = s2.facet.getLayoutResult();
 
     expect(colsHierarchy.width).toEqual(0);
     expect(colsHierarchy.height).toEqual(0);
@@ -211,7 +211,9 @@ describe('PivotSheet Corner Tests', () => {
   ])(
     'should selected/unselected current corner row cell when %s clicked',
     ({ field, selectedIds }) => {
-      const node = s2.getRowNodes().find((rowNode) => rowNode.field === field);
+      const node = s2.facet
+        .getRowNodes()
+        .find((rowNode) => rowNode.field === field);
 
       const getCellSpy = jest.spyOn(s2, 'getCell').mockImplementation(() => {
         return {
@@ -244,7 +246,9 @@ describe('PivotSheet Corner Tests', () => {
   );
 
   test('should not selected current corner row cell when column corner cell clicked', () => {
-    const node = s2.getRowNodes().find((rowNode) => rowNode.field === 'type');
+    const node = s2.facet
+      .getRowNodes()
+      .find((rowNode) => rowNode.field === 'type');
 
     jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
       return {
@@ -263,7 +267,7 @@ describe('PivotSheet Corner Tests', () => {
   });
 
   test('should get corner row cell summaries', () => {
-    const node = s2
+    const node = s2.facet
       .getRowNodes()
       .find((rowNode) => rowNode.field === 'province');
 

@@ -185,7 +185,7 @@ function dynamicRender() {
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes); // 根据上次和这次坐标集合差值计算增加和减少的坐标集合
 
     each(add, ([i, j]) => {
-        const viewMeta = this.layoutResult.getCellMeta(j, i);
+        const viewMeta = this.getCellMeta(j, i);
         const cell = this.cfg.dataCell(viewMeta);
         this.addCell(cell); // 渲染增加的单元格
     });

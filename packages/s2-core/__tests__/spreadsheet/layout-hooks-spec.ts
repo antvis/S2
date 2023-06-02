@@ -1,57 +1,28 @@
-import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
-import React from 'react';
 import {
-  type GetCellMeta,
-  Node,
   type S2DataConfig,
-  SpreadSheet,
-  PivotSheet,
-  type ViewMeta,
+  type SpreadSheet,
   type LayoutHierarchyReturnType,
   generateId,
-  type S2MountContainer,
+  type ViewMeta,
   type S2Options,
-} from '@antv/s2';
+  PivotSheet,
+  Node,
+} from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
 
-const data = getMockData('../data/tableau-supermarket.csv');
+const data = getMockData(
+  '../../../s2-react/__tests__/data/tableau-supermarket.csv',
+);
 
-let innerSS: SpreadSheet;
-const onMounted = (
-  dom: S2MountContainer,
-  dataCfg: S2DataConfig,
-  options: SheetComponentsProps['options'],
-) => {
-  innerSS = new PivotSheet(dom, dataCfg, options as S2Options);
-
-  return innerSS;
+const dataCfg: S2DataConfig = {
+  fields: {
+    rows: ['area', 'province', 'city'],
+    columns: ['type', 'sub_type'],
+    values: ['profit', 'count'],
+    valueInCols: true,
+  },
+  data,
 };
-
-const getDataCfg = () =>
-  ({
-    fields: {
-      rows: ['area', 'province', 'city'],
-      columns: ['type', 'sub_type'],
-      values: ['profit', 'count'],
-      valueInCols: true,
-    },
-    meta: [
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v) => v,
-      },
-      {
-        field: 'profit',
-        name: '利润',
-        formatter: (v) => v,
-      },
-    ],
-    data,
-  } as S2DataConfig);
 
 const CustomLayoutArrange = (
   spreadsheet: SpreadSheet,
@@ -132,78 +103,70 @@ const CustomLayoutCoordinate = (
   }
 };
 
-const CustomLayoutDataPosition =
-  (spreadsheet: SpreadSheet, getCellData: GetCellMeta): GetCellMeta =>
-  (rowIndex: number, colIndex: number): ViewMeta | null => {
-    const viewMeta = getCellData(rowIndex, colIndex);
+const CustomLayoutCellMeta = (cellMeta: ViewMeta) => {
+  const { rowIndex, colIndex } = cellMeta;
 
-    // 更改0，0 坐标的值为 999
-    if (rowIndex === 0 && colIndex === 0) {
-      return {
-        ...viewMeta,
-        data: {
-          $$extra$$: 'profit',
-          $$value$$: 999,
-          area: '中南',
-          sub_type: '系固件',
-          type: '办公用品',
-        },
-        fieldValue: 999,
-      } as ViewMeta;
-    }
+  // 更改 0，0 坐标的值为 999
+  if (rowIndex === 0 && colIndex === 0) {
+    return {
+      ...cellMeta,
+      data: {
+        $$extra$$: 'profit',
+        $$value$$: 999,
+        area: '中南',
+        sub_type: '系固件',
+        type: '办公用品',
+      },
+      fieldValue: 999,
+    };
+  }
 
-    return viewMeta;
-  };
-
-const getOptions = (): SheetComponentsProps['options'] => {
-  return {
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    frozen: {
-      rowHeader: true,
-    },
-    style: {
-      rowCell: {
-        collapseAll: false,
-        width: 120,
-      },
-      colCell: {
-        widthByField: {},
-        heightByField: {},
-      },
-      dataCell: {
-        height: 32,
-      },
-    },
-    tooltip: {
-      showTooltip: true,
-    },
-    // layout hooks
-    layoutArrange: CustomLayoutArrange,
-    layoutHierarchy: CustomLayoutHierarchy,
-    layoutCoordinate: CustomLayoutCoordinate,
-    layoutDataPosition: CustomLayoutDataPosition,
-  };
+  return cellMeta;
 };
 
-const MainLayout = ({ options, dataCfg }: SheetComponentsProps) => (
-  <div>
-    <SheetComponent
-      dataCfg={dataCfg}
-      adaptive={false}
-      options={options}
-      spreadsheet={onMounted}
-    />
-  </div>
-);
+const s2Options: S2Options = {
+  width: 800,
+  height: 600,
+  hierarchyType: 'grid',
+  frozen: {
+    rowHeader: true,
+  },
+  style: {
+    rowCell: {
+      collapseAll: false,
+      width: 120,
+    },
+    colCell: {
+      widthByField: {},
+      heightByField: {},
+    },
+    dataCell: {
+      height: 32,
+    },
+  },
+  tooltip: {
+    showTooltip: true,
+  },
+  // layout hooks
+  layoutArrange: CustomLayoutArrange,
+  layoutHierarchy: CustomLayoutHierarchy,
+  layoutCoordinate: CustomLayoutCoordinate,
+  layoutCellMeta: CustomLayoutCellMeta,
+};
 
 describe('layout hooks spec', () => {
+  let s2: SpreadSheet;
+
+  beforeEach(() => {
+    s2 = new PivotSheet(getContainer(), dataCfg, s2Options);
+    s2.render();
+  });
+
   test('layout arrange hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
     let arrangeValues;
 
-    if (innerSS.options.hierarchyType === 'tree') {
+    if (s2.isHierarchyTreeType()) {
       arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.value);
     } else {
       arrangeValues = rowLeafNodes.slice(0, 3).map((v) => v.value);
@@ -213,10 +176,10 @@ describe('layout hooks spec', () => {
   });
 
   test('layout hierarchy hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
     let addValues;
 
-    if (innerSS.options.hierarchyType === 'tree') {
+    if (s2.isHierarchyTreeType()) {
       addValues = rowLeafNodes.slice(5, 8).map((v) => v.value);
     } else {
       addValues = rowLeafNodes.slice(3, 6).map((v) => v.value);
@@ -226,23 +189,24 @@ describe('layout hooks spec', () => {
   });
 
   test('layout coordinate hook', () => {
-    const { rowLeafNodes } = innerSS.facet.layoutResult;
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
     const item = rowLeafNodes.find((rn) => rn.value === '东莞');
 
     expect(item?.height).toEqual(70);
   });
 
-  test('layout data position hook', () => {
-    const { getCellMeta } = innerSS.facet.layoutResult;
-    const { fieldValue } = getCellMeta(0, 0)!;
+  test('layout cell meta hook', () => {
+    const { fieldValue, data } = s2.facet.getCellMeta(0, 0)!;
 
     expect(fieldValue).toEqual(999);
-  });
-
-  act(() => {
-    ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      getContainer(),
-    );
+    expect(data).toMatchInlineSnapshot(`
+      Object {
+        "$$extra$$": "profit",
+        "$$value$$": 999,
+        "area": "中南",
+        "sub_type": "系固件",
+        "type": "办公用品",
+      }
+    `);
   });
 });

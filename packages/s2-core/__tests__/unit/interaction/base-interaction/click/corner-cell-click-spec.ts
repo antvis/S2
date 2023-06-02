@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
-import { CellTypes, InteractionStateName, type Node } from '../../../../../src';
+import { CellType, InteractionStateName, type Node } from '../../../../../src';
 import type { GEvent } from '@/index';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
@@ -32,7 +32,10 @@ describe('Interaction Corner Cell Click Tests', () => {
     } as S2Options;
     s2.isTableMode = jest.fn(() => true);
     s2.interaction.reset = jest.fn();
-    s2.getRowNodes = () => [mockCellInfo.mockCell.getMeta() as Node];
+    s2.facet.getRowNodes = () => [mockCellInfo.mockCell.getMeta() as Node];
+    s2.facet.getRowNodesByField = () => [
+      mockCellInfo.mockCell.getMeta() as Node,
+    ];
     cornerCellClick = new CornerCellClick(s2);
   });
 
@@ -56,7 +59,7 @@ describe('Interaction Corner Cell Click Tests', () => {
         {
           colIndex: -1,
           rowIndex: -1,
-          type: CellTypes.ROW_CELL,
+          type: CellType.ROW_CELL,
           id: mockCellInfo.mockCellMeta['id'],
         },
       ],

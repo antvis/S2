@@ -1,5 +1,5 @@
 import {
-  CellTypes,
+  CellType,
   ResizeType,
   type S2TableSheetFrozenOptions,
   type CustomHeaderField,
@@ -92,11 +92,11 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: false,
-  width: 600,
-  height: 400,
+  debug: true,
+  width: 800,
+  height: 600,
   hierarchyType: 'grid',
-  // showSeriesNumber: true,
+  // showSeriesNumber: false,
   frozen: {
     rowHeader: true,
     // rowCount: 1,
@@ -119,6 +119,16 @@ export const s2Options: SheetComponentOptions = {
       colResizeType: ResizeType.CURRENT,
     },
   },
+  // mergedCellsInfo: [
+  //   [
+  //     { colIndex: 1, rowIndex: 1, showText: true },
+  //     { colIndex: 1, rowIndex: 2 },
+  //   ],
+  //   [
+  //     { colIndex: 2, rowIndex: 1 },
+  //     { colIndex: 2, rowIndex: 2, showText: true },
+  //   ],
+  // ],
   tooltip: {
     operation: {
       hiddenColumns: true,
@@ -127,7 +137,7 @@ export const s2Options: SheetComponentOptions = {
           key: 'trend',
           text: '趋势',
           icon: 'Trend',
-          visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          visible: (cell) => cell.cellType === CellType.DATA_CELL,
           onClick: (cell) => {
             // eslint-disable-next-line no-console
             console.log('趋势图 icon 点击: ', cell);
@@ -136,6 +146,7 @@ export const s2Options: SheetComponentOptions = {
       ],
     },
   },
+
   conditions: s2ConditionsOptions,
   style: {
     rowCell: {

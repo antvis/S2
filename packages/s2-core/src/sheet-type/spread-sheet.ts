@@ -18,6 +18,7 @@ import {
   some,
   values,
 } from 'lodash';
+import { runtime } from '@antv/g-lite';
 import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
@@ -30,6 +31,7 @@ import type {
   EmitterType,
   Fields,
   InteractionOptions,
+  InternalFullyTheme,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -67,9 +69,16 @@ import {
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 
+/**
+ * 关闭 CSS 解析的开关，可以提升首屏性能,
+ * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
+ * 而是要用 circle.style.r = 20;
+ */
+runtime.enableCSSParsing = false;
+
 export abstract class SpreadSheet extends EE {
   // theme config
-  public theme: S2Theme;
+  public theme: InternalFullyTheme;
 
   // store some temporary data
   public store = new Store();
@@ -496,38 +505,6 @@ export abstract class SpreadSheet extends EE {
     return this.options.style?.layoutWidthType!;
   }
 
-  public getRowNodes(level = -1): Node[] {
-    if (level === -1) {
-      return this.facet.layoutResult.rowNodes;
-    }
-
-    return this.facet.layoutResult.rowNodes.filter(
-      (node) => node.level === level,
-    );
-  }
-
-  public getRowLeafNodes(): Node[] {
-    return this.facet?.layoutResult.rowLeafNodes || [];
-  }
-
-  /**
-   * get columnNode in levels,
-   * @param level -1 = get all
-   */
-  public getColumnNodes(level = -1): Node[] {
-    const colNodes = this.facet?.layoutResult.colNodes || [];
-
-    if (level === -1) {
-      return colNodes;
-    }
-
-    return colNodes.filter((node) => node.level === level);
-  }
-
-  public getColumnLeafNodes(): Node[] {
-    return this.facet?.layoutResult.colLeafNodes || [];
-  }
-
   /**
    * Update scroll's offset, the value can be undefined,
    * indicate not update current value
@@ -648,14 +625,6 @@ export abstract class SpreadSheet extends EE {
     if (canvas) {
       canvas.style.display = 'block';
     }
-  }
-
-  public getInitColumnLeafNodes(): Node[] {
-    return this.store.get('initColumnLeafNodes', [])!;
-  }
-
-  public clearColumnLeafNodes() {
-    this.store.set('initColumnLeafNodes', undefined);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

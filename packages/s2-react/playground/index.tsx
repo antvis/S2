@@ -216,7 +216,7 @@ function MainLayout() {
       return dataCfg.fields?.columns || [];
     }
 
-    return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
+    return s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || [];
   };
 
   //  ================== Hooks ========================
@@ -289,7 +289,7 @@ function MainLayout() {
       ],
       headerActionIcons: !options.showDefaultHeaderActionIcon && [
         {
-          iconNames: ['Filter'],
+          icons: ['Filter'],
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id !== 'root[&]家具[&]桌子[&]number',
@@ -301,7 +301,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['SortDown'],
+          icons: ['SortDown'],
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id === 'root[&]家具[&]桌子[&]number',
@@ -313,7 +313,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['FilterAsc'],
+          icons: ['FilterAsc'],
           belongsCell: 'cornerCell',
           onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
@@ -323,7 +323,7 @@ function MainLayout() {
           },
         },
         {
-          iconNames: ['SortDown', 'Filter'],
+          icons: ['SortDown', 'Filter'],
           belongsCell: 'rowCell',
           onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
@@ -345,7 +345,7 @@ function MainLayout() {
         destroyInactiveTabPane
       >
         <TabPane tab="基础表" key="basic">
-          <Collapse defaultActiveKey={['filter']}>
+          <Collapse defaultActiveKey={[]}>
             <Collapse.Panel header="筛选器" key="filter">
               <Space>
                 <Tooltip title="表格类型">
@@ -791,8 +791,8 @@ function MainLayout() {
                 <Button
                   size="small"
                   onClick={() => {
-                    const rowNode = s2Ref.current
-                      ?.getRowNodes()
+                    const rowNode = s2Ref.current?.facet
+                      .getRowNodes()
                       .find(({ id }) => id === 'root[&]四川省[&]成都市');
 
                     clearInterval(scrollTimer.current!);

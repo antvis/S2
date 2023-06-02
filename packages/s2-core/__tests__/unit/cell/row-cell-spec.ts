@@ -15,7 +15,7 @@ describe('Row Cell Tests', () => {
 
     test.each([
       ['left', 21],
-      ['center', 77],
+      ['center', 75],
       ['right', 129],
     ] as [TextAlign, number][])(
       'should align link shape with text by %o',

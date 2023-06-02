@@ -121,7 +121,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
     },
     headerActionIcons: [
       {
-        iconNames: ['SortDown', 'SortUp'],
+        icons: ['SortDown', 'SortUp'],
         belongsCell: 'colCell',
         displayCondition: (meta: Node) => meta.level >= 0,
         onClick() {},

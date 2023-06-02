@@ -8,13 +8,13 @@ import { RowCell } from './row-cell';
 import { TableColCell } from './table-col-cell';
 import { TableCornerCell } from './table-corner-cell';
 import { TableDataCell } from './table-data-cell';
-import { TableSeriesCell } from './table-series-cell';
+import { TableSeriesNumberCell } from './table-series-number-cell';
 import { SeriesNumberCell } from './series-number-cell';
 
 export {
   TableCornerCell,
   TableColCell,
-  TableSeriesCell,
+  TableSeriesNumberCell,
   TableDataCell,
   SeriesNumberCell,
   RowCell,

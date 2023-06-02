@@ -81,7 +81,7 @@ describe('useSpreadSheet tests', () => {
     );
     const s2 = result.current.s2Ref.current;
 
-    expect(s2!.getInitColumnLeafNodes()).toHaveLength(2);
+    expect(s2!.facet.getInitColLeafNodes()).toHaveLength(2);
 
     /*
      * 很奇怪, rerender 之后始终拿到的两次 dataCfg 是一样的, 暂时先注释了
@@ -99,7 +99,7 @@ describe('useSpreadSheet tests', () => {
      * });
      */
 
-    // expect(s2.store.get('initColumnLeafNodes')).toEqual([]);
+    // expect(s2.store.get('initColLeafNodes')).toEqual([]);
   });
 
   test('should destroy sheet after unmount component', () => {

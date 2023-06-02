@@ -3,7 +3,7 @@ import type { DataCell } from '../../cell';
 import type { SpreadSheet } from '../../sheet-type';
 import {
   InteractionStateName,
-  CellTypes,
+  CellType,
   EMPTY_PLACEHOLDER,
 } from '../../common/constant';
 import type { CellMeta, S2CellType } from '../../common/interface';
@@ -29,7 +29,7 @@ export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
   return currentRow || currentCol || rowHeader || colHeader;
 };
 
-export const isDataCell = (cell: CellMeta) => cell.type === CellTypes.DATA_CELL;
+export const isDataCell = (cell: CellMeta) => cell.type === CellType.DATA_CELL;
 
 /**
  * highlight cells of the row
@@ -91,7 +91,7 @@ export const updateBySelectedCellsHighlight = (
   const { rowHeader, colHeader, currentRow, currentCol } =
     s2.interaction.getSelectedCellHighlight();
 
-  const isRowCell = dataCell.cellType === CellTypes.ROW_CELL;
+  const isRowCell = dataCell.cellType === CellType.ROW_CELL;
   // 高亮序号
   const showSNWhenRowHeaderHighlight =
     s2.isTableMode() && s2.options.showSeriesNumber && rowHeader && isRowCell;

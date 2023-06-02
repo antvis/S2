@@ -1,7 +1,7 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { difference } from 'lodash';
 import {
-  CellTypes,
+  CellType,
   InterceptType,
   S2Event,
   getTooltipOperatorHiddenColumnsMenu,
@@ -124,11 +124,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   ): TooltipOperatorOptions {
     const cell = this.spreadsheet.getCell(event.target)!;
     const cellMeta = cell.getMeta() as Node;
-    const isColCell = cell.cellType === CellTypes.COL_CELL;
+    const isColCell = cell.cellType === CellType.COL_CELL;
 
     // 只有一个叶子节点时, 不显示隐藏按钮
     const isOnlyOneLeafColumn =
-      this.spreadsheet.getColumnLeafNodes().length === 1;
+      this.spreadsheet.facet.getColLeafNodes().length === 1;
 
     const TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU =
       getTooltipOperatorHiddenColumnsMenu();

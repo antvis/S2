@@ -17,7 +17,7 @@ import {
   getCustomFieldsSummaries,
 } from '@/utils/tooltip';
 import {
-  CellTypes,
+  CellType,
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
@@ -221,21 +221,21 @@ describe('Tooltip Utils Tests', () => {
   });
 
   describe('Tooltip Get Options Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'merge',
-        [CellTypes.HEADER_CELL]: 'header',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'mergedCell',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType] || '');
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
@@ -267,10 +267,10 @@ describe('Tooltip Utils Tests', () => {
     );
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip options and merge base tooltip config',
       (cellType) => {
@@ -321,7 +321,7 @@ describe('Tooltip Utils Tests', () => {
 
     test('should filter not displayed tooltip operation menus', () => {
       const mockCell = {
-        cellType: CellTypes.DATA_CELL,
+        cellType: CellType.DATA_CELL,
       } as unknown as S2CellType;
       const onClick = jest.fn();
 
@@ -343,12 +343,12 @@ describe('Tooltip Utils Tests', () => {
           {
             key: 'menu-5',
             text: '动态显示',
-            visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType === CellType.DATA_CELL,
           },
           {
             key: 'menu-6',
             text: '动态隐藏',
-            visible: (cell) => cell.cellType !== CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType !== CellType.DATA_CELL,
           },
           {
             key: 'menu-7',
@@ -473,7 +473,7 @@ describe('Tooltip Utils Tests', () => {
     };
 
     const getTotalInfo = (isTotalCell: boolean, count: number) => {
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const dataCells = s2.facet.getDataCells();
       const selectedCells = isTotalCell
         ? [
             dataCells.find((cell) => {
@@ -647,7 +647,7 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells().find((cell) => {
+        const rowCell = s2.facet.getRowCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -697,7 +697,7 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells().find((cell) => {
+        const colCell = s2.facet.getColCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -721,13 +721,11 @@ describe('Tooltip Utils Tests', () => {
       });
       s2.render();
 
-      const grandTotalRowCell = s2.interaction
-        .getAllRowHeaderCells()
-        .find((cell) => {
-          const meta = cell.getMeta();
+      const grandTotalRowCell = s2.facet.getRowCells().find((cell) => {
+        const meta = cell.getMeta();
 
-          return meta.isGrandTotals;
-        });
+        return meta.isGrandTotals;
+      });
 
       const tooltipData = getMockTooltipData(grandTotalRowCell!);
 
@@ -746,15 +744,11 @@ describe('Tooltip Utils Tests', () => {
         });
         s2.render();
 
-        const colLeafCell = s2.interaction
-          .getAllColHeaderCells()
-          .find((cell) => {
-            const meta = cell.getMeta();
+        const colLeafCell = s2.facet.getColCells().find((cell) => {
+          const meta = cell.getMeta();
 
-            return (
-              (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf
-            );
-          });
+          return (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf;
+        });
 
         const tooltipData = getMockTooltipData(colLeafCell!);
 
@@ -775,7 +769,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+        const rowCell = s2.facet.getRowCells()[0];
 
         const tooltipData = getMockTooltipData(rowCell);
 
@@ -786,7 +780,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells()[0];
+        const colCell = s2.facet.getColCells()[0];
 
         const tooltipData = getMockTooltipData(colCell);
 
@@ -797,7 +791,7 @@ describe('Tooltip Utils Tests', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
-        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+        const dataCell = s2.facet.getDataCells()[0];
 
         const tooltipData = getMockTooltipData(dataCell);
 
@@ -813,21 +807,17 @@ describe('Tooltip Utils Tests', () => {
           });
           s2.render();
 
-          const colTotalCell = s2.interaction
-            .getAllColHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const colTotalCell = s2.facet.getColCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
-          const rowTotalCell = s2.interaction
-            .getAllRowHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const rowTotalCell = s2.facet.getRowCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
           expect(getMockTooltipData(colTotalCell!).description).toBeUndefined();
           expect(getMockTooltipData(rowTotalCell!).description).toBeUndefined();

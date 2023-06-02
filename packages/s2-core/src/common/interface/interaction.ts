@@ -1,7 +1,7 @@
 import type { SimpleBBox } from '../../engine';
 import type {
   InteractionStateName,
-  CellTypes,
+  CellType,
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
@@ -13,7 +13,7 @@ import type {
   MergedCell,
   RowCell,
   TableCornerCell,
-  TableSeriesCell,
+  TableSeriesNumberCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
@@ -21,6 +21,7 @@ import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
 import type { RootInteraction } from '../../interaction';
 import type { SeriesNumberCell } from '../../cell/series-number-cell';
+import type { Transformer } from '../../utils/export/interface';
 import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
 
@@ -33,14 +34,14 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | SeriesNumberCell
   | MergedCell
   | TableCornerCell
-  | TableSeriesCell
+  | TableSeriesNumberCell
   | BaseCell<T>;
 
 export interface CellMeta {
   id: string;
   colIndex: number;
   rowIndex: number;
-  type: CellTypes;
+  type: CellType;
   rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }
@@ -184,6 +185,10 @@ export interface InteractionOptions {
    */
   copyWithHeader?: boolean;
 
+  /**
+   * 复制时支持自定义(transformer)数据导出格式化方法
+   */
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
   /**
    * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态)
    */

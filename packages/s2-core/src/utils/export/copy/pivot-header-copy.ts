@@ -2,7 +2,7 @@ import { filter, isEmpty, map, max, repeat, zip } from 'lodash';
 import type { ColCell, RowCell } from '../../../cell';
 import type { CopyableList } from '../interface';
 import { getAllLevels, getHeaderList } from '../method';
-import { CellTypes, NODE_ID_SEPARATOR } from '../../../common';
+import { CellType, NODE_ID_SEPARATOR } from '../../../common';
 import { matrixHtmlTransformer, matrixPlainTextTransformer } from './common';
 
 /**
@@ -67,7 +67,7 @@ export function getBrushHeaderCopyable(
   >;
 
   // 拼接选中行列头的内容矩阵
-  const isCol = interactedCells[0].cellType === CellTypes.COL_CELL;
+  const isCol = interactedCells[0].cellType === CellType.COL_CELL;
   let cellMatrix = getHeaderCellMatrix(lastLevelCells, maxLevel, allLevels);
 
   // 如果是列头，需要转置

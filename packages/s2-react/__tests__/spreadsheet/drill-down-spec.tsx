@@ -89,7 +89,7 @@ describe('Spread Sheet Drill Down Tests', () => {
             ...s2Options,
             headerActionIcons: [
               {
-                iconNames: ['SortDown'],
+                icons: ['SortDown'],
                 belongsCell: 'colCell',
                 displayCondition: (meta: Node) => meta.isLeaf,
                 onClick: noop,
@@ -135,7 +135,9 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2!.getRowNodes().filter((node) => node.rowIndex >= 1);
+    const rowNodes = s2!.facet
+      .getRowNodes()
+      .filter((node) => node.rowIndex >= 1);
 
     rowNodes.forEach((node) => {
       expect(get(node.belongsCell, 'actionIcons.0.cfg.name')).toEqual(
@@ -164,7 +166,7 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2!.getRowNodes();
+    const rowNodes = s2!.facet.getRowNodes();
 
     rowNodes.forEach((node) => {
       expect(get(node.belongsCell, 'actionIcons')).toHaveLength(0);

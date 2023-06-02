@@ -90,7 +90,7 @@ export class GuiIcon extends Group {
           `${STYLE_PLACEHOLDER} fill="${fill}"`,
         );
 
-        /*
+        /**
          * 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
          * https://www.chromestatus.com/features/5656049583390720
          */

@@ -13,7 +13,6 @@ import {
   includes,
   isArray,
   isBoolean,
-  isEmpty,
   isFunction,
   isNumber,
   keys,
@@ -21,19 +20,19 @@ import {
 } from 'lodash';
 import type { SimpleBBox } from '../engine';
 import {
-  CellTypes,
+  CellType,
+  DEFAULT_FONT_COLOR,
   InteractionStateName,
+  REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
 import {
-  type CellThemes,
   type DefaultCellTheme,
   type FormatResult,
   type ResizeInteractionOptions,
   type ResizeArea,
   type S2CellType,
-  type S2Theme,
   type StateShapeLayer,
   type TextTheme,
   type Conditions,
@@ -42,12 +41,15 @@ import {
   CellClipBox,
   CellBorderPosition,
   type InteractionStateTheme,
+  type FullyIconName,
+  type IconPosition,
+  type InternalFullyTheme,
+  type InternalFullyCellTheme,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
-  getFixedTextIconPosition,
 } from '../utils/cell/cell';
 import {
   renderIcon,
@@ -60,6 +62,12 @@ import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
+import { shouldReverseFontColor } from '../utils/color';
+import { getIconPosition } from '../utils/condition/condition';
+import {
+  getIconTotalWidth,
+  type GroupedIcons,
+} from '../utils/cell/header-cell';
 import { checkIsLinkField } from '../utils/interaction/link-field';
 import type { Node } from '../facet/layout/node';
 import type { ViewMeta } from '../common/interface/basic';
@@ -72,7 +80,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected spreadsheet: SpreadSheet;
 
   // spreadsheet's theme
-  protected theme: S2Theme;
+  protected theme: InternalFullyTheme;
 
   // background control shape
   protected backgroundShape: Rect | Polygon;
@@ -99,6 +107,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditionIconShapes: GuiIcon[] = [];
 
+  protected groupedIcons: GroupedIcons;
+
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
 
@@ -112,6 +122,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
     this.conditions = this.spreadsheet.options.conditions!;
+    this.groupedIcons = { left: [], right: [] };
     this.handleRestOptions(...restOptions);
     if (this.shouldInit()) {
       this.initCell();
@@ -128,19 +139,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public getIconStyle() {
     return this.theme[this.cellType]?.icon;
-  }
-
-  public getTextIconPosition(iconCount = 1) {
-    const textTheme = this.getTextStyle();
-    const iconTheme = this.getIconStyle();
-
-    return getFixedTextIconPosition({
-      bbox: this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textStyle: textTheme,
-      textWidth: this.actualTextWidth,
-      iconStyle: iconTheme,
-      iconCount,
-    });
   }
 
   public getActualText() {
@@ -167,7 +165,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /**
    * Return the type of the cell
    */
-  public abstract get cellType(): CellTypes;
+  public abstract get cellType(): CellType;
 
   /**
    * Determine how to render this cell area
@@ -189,6 +187,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getTextPosition(): PointLike;
 
+  protected abstract getIconPosition(): PointLike;
+
   protected abstract findFieldCondition(
     conditions: Condition[] | undefined,
   ): Condition | undefined;
@@ -207,9 +207,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return width > 0 && height > 0;
   }
 
-  public getStyle<K extends keyof S2Theme = keyof CellThemes>(
+  public getStyle<K extends keyof InternalFullyTheme = CellType>(
     name?: K,
-  ): DefaultCellTheme | S2Theme[K] {
+  ): InternalFullyTheme[K] | InternalFullyCellTheme {
     return get(this.theme, name || this.cellType);
   }
 
@@ -285,6 +285,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected abstract getBackgroundColor(): {
     backgroundColor: string | undefined;
     backgroundColorOpacity: number | undefined;
+    intelligentReverseTextColor: boolean;
   };
 
   protected drawBackgroundShape() {
@@ -309,10 +310,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         visibility: 'hidden',
       }),
     );
-  }
-
-  protected getIconPosition(iconCount = 1) {
-    return this.getTextIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {
@@ -526,35 +523,103 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public drawConditionIconShapes() {
+    const attrs = this.getIconConditionResult();
+
+    if (attrs) {
+      const position = this.getIconPosition();
+      const { size } = this.getStyle()!.icon!;
+
+      this.conditionIconShape = renderIcon(this, {
+        ...position,
+        name: attrs?.name!,
+        width: size,
+        height: size,
+        fill: attrs?.fill,
+      });
+      this.addConditionIconShape(this.conditionIconShape);
+    }
+  }
+
+  public getTextConditionFill(textFill: string) {
+    // get text condition's fill result
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+
+    if (textCondition?.mapping) {
+      textFill = this.mappingValue(textCondition)?.fill || textFill;
+    }
+
+    return textFill;
+  }
+
+  /**
+   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
+   * @param textStyle
+   * @private
+   */
+  protected getDefaultTextFill(textFill: string) {
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
+
+    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    if (
+      shouldReverseFontColor(backgroundColor as string) &&
+      textFill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
+    ) {
+      textFill = REVERSE_FONT_COLOR;
+    }
+
+    return textFill;
+  }
+
+  public getBackgroundConditionFill() {
+    // get background condition fill color
+    const bgCondition = this.findFieldCondition(this.conditions?.background!);
+
+    if (bgCondition?.mapping!) {
+      const attrs = this.mappingValue(bgCondition);
+
+      if (attrs) {
+        return {
+          backgroundColor: attrs.fill,
+          intelligentReverseTextColor:
+            attrs.intelligentReverseTextColor || false,
+        };
+      }
+    }
+
+    return {
+      intelligentReverseTextColor: false,
+    };
+  }
+
+  public getIconConditionResult(): FullyIconName | undefined {
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
 
     if (iconCondition?.mapping!) {
       const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
-      const { size } = this.theme.dataCell!.icon!;
 
-      if (!isEmpty(attrs?.icon)) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs?.icon!,
-          width: size,
-          height: size,
-          fill: attrs?.fill,
-        });
-        this.addConditionIconShape(this.conditionIconShape);
+      if (attrs && attrs.icon) {
+        return {
+          name: attrs.icon,
+          position: getIconPosition(iconCondition),
+          fill: attrs.fill,
+          isConditionIcon: true,
+        };
       }
     }
   }
 
-  public getTextConditionFill(textStyle: TextTheme) {
-    // get text condition's fill result
-    let fillResult = textStyle.fill;
-    const textCondition = this.findFieldCondition(this.conditions?.text);
+  protected getActionAndConditionIconWidth(position?: IconPosition) {
+    const { left, right } = this.groupedIcons;
+    const iconStyle = this.getStyle()!.icon!;
 
-    if (textCondition?.mapping) {
-      fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    if (!position) {
+      return (
+        getIconTotalWidth(left, iconStyle) + getIconTotalWidth(right, iconStyle)
+      );
     }
 
-    return fillResult;
+    return getIconTotalWidth(this.groupedIcons[position], iconStyle);
   }
 }

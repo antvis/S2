@@ -20,13 +20,13 @@ export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-  const columnNodes = spreadsheet.getInitColumnLeafNodes();
+  const colNodes = spreadsheet.facet.getInitColLeafNodes();
 
   return compact(
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
 
-      return columnNodes.find((node) => node[targetFieldKey] === field);
+      return colNodes.find((node) => node[targetFieldKey] === field);
     }),
   );
 };
@@ -49,17 +49,17 @@ export const getHiddenColumnDisplaySiblingNode = (
     };
   }
 
-  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
+  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
   ).map((node) => node?.colIndex);
   const lastHiddenColumnIndex = Math.max(...hiddenColumnIndexes);
   const firstHiddenColumnIndex = Math.min(...hiddenColumnIndexes);
-  const nextSiblingNode = initColumnLeafNodes.find(
+  const nextSiblingNode = initColLeafNodes.find(
     (node) => node.colIndex === lastHiddenColumnIndex + 1,
   );
-  const prevSiblingNode = initColumnLeafNodes.find(
+  const prevSiblingNode = initColLeafNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
 
@@ -189,7 +189,7 @@ export const getColumns = (spreadsheet: SpreadSheet) => {
     return columns;
   }
 
-  return spreadsheet.getInitColumnLeafNodes().map(({ id }) => id);
+  return spreadsheet.facet.getInitColLeafNodes().map(({ id }) => id);
 };
 
 /**
@@ -225,13 +225,13 @@ export const isLastColumnAfterHidden = (
   spreadsheet: SpreadSheet,
   columnField: string,
 ) => {
-  const columnNodes = spreadsheet.getColumnNodes();
-  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
+  const columnNodes = spreadsheet.facet.getColNodes();
+  const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
     get(last(columnNodes), fieldKey) === columnField &&
-    get(last(initColumnLeafNodes), fieldKey) !== columnField
+    get(last(initColLeafNodes), fieldKey) !== columnField
   );
 };
 

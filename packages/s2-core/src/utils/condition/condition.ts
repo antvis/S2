@@ -2,7 +2,7 @@ import { clamp } from 'lodash';
 import type { IconCondition } from '../../common/interface';
 import { parseNumberWithPrecision } from '../formatter';
 
-export const getIconPositionCfg = (condition: IconCondition) =>
+export const getIconPosition = (condition: IconCondition) =>
   condition?.position ?? 'right';
 
 /*

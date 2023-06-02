@@ -63,7 +63,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
   }
 
   protected setDisplayedCells() {
-    this.displayedCells = this.spreadsheet.interaction.getAllRowHeaderCells();
+    this.displayedCells = this.spreadsheet.facet.getRowCells();
   }
 
   protected isInBrushRange = (meta: ViewMeta | Node) => {
@@ -119,10 +119,10 @@ export class RowCellBrushSelection extends BaseBrushSelection {
   }
 
   protected onUpdateCells: OnUpdateCells = (root) =>
-    root.updateCells(root.getAllRowHeaderCells());
+    root.updateCells(this.spreadsheet.facet.getRowCells());
 
   private getSelectedRowNodes = (): Node[] => {
-    return this.spreadsheet.getRowNodes().filter(this.isInBrushRange);
+    return this.spreadsheet.facet.getRowNodes().filter(this.isInBrushRange);
   };
 
   private getScrollBrushRangeCells(nodes: Node[]) {
@@ -154,7 +154,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
      * -------------------------------------
      */
   private getVisibleRowLeafCellByScrollDirection = (dir: ScrollDirection) => {
-    const rowCell = this.spreadsheet.interaction.getAllRowHeaderCells();
+    const rowCell = this.spreadsheet.facet.getRowCells();
 
     if (dir === ScrollDirection.SCROLL_DOWN) {
       return last(rowCell);

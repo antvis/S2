@@ -158,7 +158,7 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
 
     s2.render();
 
-    const targetCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const targetCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, targetCell);
 
@@ -195,7 +195,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     s2.render();
 
-    const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const dataCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, dataCell);
   });
@@ -226,7 +226,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
     await sleep(50);
 
-    const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowCell = s2.facet.getRowCells()[0];
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,
@@ -267,7 +267,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
     await sleep(50);
 
-    const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowCell = s2.facet.getRowCells()[0];
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,
@@ -319,7 +319,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     s2.render();
 
-    const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const dataCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, dataCell);
 

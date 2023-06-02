@@ -5,6 +5,7 @@ import {
   S2_PREFIX_CLS,
   SpreadSheet,
   i18n,
+  NewTab,
 } from '@antv/s2';
 import { Dropdown, Menu, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
@@ -53,7 +54,11 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
   const copyData = (isFormat: boolean) => {
-    const data = getSheetData(sheet, '\t', isFormat);
+    const data = getSheetData({
+      sheetInstance: sheet,
+      split: NewTab,
+      formatOptions: isFormat,
+    });
 
     copyToClipboard(data, syncCopy)
       .then(() => {
@@ -67,7 +72,11 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   };
 
   const downloadData = (isFormat: boolean) => {
-    const data = getSheetData(sheet, ',', isFormat);
+    const data = getSheetData({
+      sheetInstance: sheet,
+      split: ',',
+      formatOptions: isFormat,
+    });
 
     try {
       download(data, fileName);
