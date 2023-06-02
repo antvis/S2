@@ -20,11 +20,11 @@ describe('SpreadSheet Tests', () => {
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -256,11 +256,11 @@ describe('SpreadSheet Tests', () => {
   describe('Destroy Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -399,11 +399,11 @@ describe('SpreadSheet Tests', () => {
   describe('Sheet Config Change Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 

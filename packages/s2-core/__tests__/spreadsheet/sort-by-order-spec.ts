@@ -78,7 +78,7 @@ describe('Manual Sort Tests', () => {
     ],
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     const container = getContainer();
     s2 = new PivotSheet(container, mockDataCfg, s2Options);
     s2.render();

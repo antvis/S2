@@ -12,11 +12,11 @@ const s2Options: S2Options = {
 
 describe('SpreadSheet Tree Mode Tests', () => {
   let container: HTMLElement;
-  beforeAll(() => {
+  beforeEach(() => {
     container = getContainer();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     container?.remove();
   });
 

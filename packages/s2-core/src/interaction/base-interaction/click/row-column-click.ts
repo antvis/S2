@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { difference } from 'lodash';
+import { difference, findLast } from 'lodash';
 import {
   CellTypes,
   InterceptType,
@@ -205,8 +205,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       'hiddenColumnsDetail',
       [],
     );
+
+    // 当前单元格的前/后节点都被隐藏时, 会出现两个展开按钮, 优先展开靠右的
     const { hideColumnNodes = [] } =
-      lastHiddenColumnsDetail.find(({ displaySiblingNode }) =>
+      findLast(lastHiddenColumnsDetail, ({ displaySiblingNode }) =>
         isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
       ) || {};
 
