@@ -1,7 +1,7 @@
-import type { IElement, IGroup } from '@antv/g-canvas';
 import type { Event as GraphEvent } from '@antv/g-base';
+import type { IElement, IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import { type GestureEvent, Wheel } from '@antv/g-gesture';
+import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -27,10 +27,11 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import {
-  DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
+  DebuggerUtil,
 } from '../common/debug';
 import type {
   CellCustomWidth,
@@ -44,9 +45,9 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type {
-  ScrollOffset,
-  CellScrollPosition,
   CellScrollOffset,
+  CellScrollPosition,
+  ScrollOffset,
 } from '../common/interface/scroll';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -55,7 +56,6 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile, isWindows } from '../utils/is-mobile';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -1352,19 +1352,21 @@ export abstract class BaseFacet {
     if (!interaction.isSelectedState()) {
       interaction.removeIntercepts([InterceptType.HOVER]);
 
-      // https://github.com/antvis/S2/issues/2222
-      const canvasMousemoveEvent =
-        interaction.eventController.canvasMousemoveEvent;
-      if (canvasMousemoveEvent) {
-        const { x, y } = canvasMousemoveEvent;
-        const shape = container.getShape(x, y);
-        if (shape) {
-          container.emit(OriginEventType.MOUSE_MOVE, {
-            ...canvasMousemoveEvent,
-            shape,
-            target: shape,
-            timestamp: performance.now(),
-          });
+      if (interaction.getHoverAfterScroll()) {
+        // https://github.com/antvis/S2/issues/2222
+        const canvasMousemoveEvent =
+          interaction.eventController.canvasMousemoveEvent;
+        if (canvasMousemoveEvent) {
+          const { x, y } = canvasMousemoveEvent;
+          const shape = container.getShape(x, y);
+          if (shape) {
+            container.emit(OriginEventType.MOUSE_MOVE, {
+              ...canvasMousemoveEvent,
+              shape,
+              target: shape,
+              timestamp: performance.now(),
+            });
+          }
         }
       }
     }

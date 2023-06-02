@@ -1,12 +1,5 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import type {
-  InteractionStateName,
-  CellTypes,
-  InterceptType,
-  ScrollbarPositionType,
-  InteractionCellSelectedHighlightType,
-} from '../constant';
-import type {
   BaseCell,
   ColCell,
   CornerCell,
@@ -16,11 +9,18 @@ import type {
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
+import type { RootInteraction } from '../../interaction';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { RootInteraction } from '../../interaction';
-import type { ResizeInteractionOptions } from './resize';
+import type {
+  CellTypes,
+  InteractionCellSelectedHighlightType,
+  InteractionStateName,
+  InterceptType,
+  ScrollbarPositionType,
+} from '../constant';
 import type { ViewMeta } from './basic';
+import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -174,6 +174,8 @@ export interface InteractionOptions {
   selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain';
+  // trigger hover after scroll
+  hoverAfterScroll?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
