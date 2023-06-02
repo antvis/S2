@@ -37,7 +37,7 @@ export class GuiIcon extends Group {
 
   // 获取 Image 实例，使用缓存，以避免滚动时因重复的 new Image() 耗时导致的闪烁问题
   /* 异步获取 image 实例 */
-  private getImage(
+  public getImage(
     name: string,
     cacheKey: string,
     fill?: string,
@@ -113,6 +113,18 @@ export class GuiIcon extends Group {
       style: omit(attrs, 'fill'),
     });
 
+    this.iconImageShape = image;
+    this.setImageAttrs({ name, fill });
+  }
+
+  public setImageAttrs(attrs: Partial<{ name: string; fill: string }>) {
+    let { name, fill } = attrs;
+    const { iconImageShape: image } = this;
+
+    // 保证 name 和 fill 都有值
+    name = name || this.cfg.name;
+    fill = fill || this.cfg.fill;
+
     const cacheKey = `${name}-${fill}`;
     const img = ImageCache[cacheKey];
 
@@ -136,7 +148,5 @@ export class GuiIcon extends Group {
           console.error(`GuiIcon ${name} load failed`, event);
         });
     }
-
-    this.iconImageShape = image;
   }
 }

@@ -21,6 +21,133 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should calc correctly leaf nodes height and corner nodes 1`] = `
+Array [
+  Object {
+    "description": undefined,
+    "field": "a-0",
+    "height": 30,
+    "value": "测试-0",
+    "width": 192,
+    "x": 0,
+    "y": 0,
+  },
+  Object {
+    "description": undefined,
+    "field": "a-0-1",
+    "height": 60,
+    "value": "测试-0-1",
+    "width": 96,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "description": undefined,
+    "field": "a-0-2",
+    "height": 60,
+    "value": "测试-0-2",
+    "width": 96,
+    "x": 96,
+    "y": 30,
+  },
+  Object {
+    "description": "a-1 描述",
+    "field": "a-1",
+    "height": 30,
+    "value": "自定义节点 a-1",
+    "width": 288,
+    "x": 192,
+    "y": 0,
+  },
+  Object {
+    "description": "a-1-1 描述",
+    "field": "a-1-1",
+    "height": 30,
+    "value": "自定义节点 a-1-1",
+    "width": 192,
+    "x": 192,
+    "y": 30,
+  },
+  Object {
+    "description": "指标1描述",
+    "field": "measure-1",
+    "height": 30,
+    "value": "指标1",
+    "width": 96,
+    "x": 192,
+    "y": 60,
+  },
+  Object {
+    "description": "指标2描述",
+    "field": "measure-2",
+    "height": 30,
+    "value": "指标2",
+    "width": 96,
+    "x": 288,
+    "y": 60,
+  },
+  Object {
+    "description": "a-1-2 描述",
+    "field": "a-1-2",
+    "height": 60,
+    "value": "自定义节点 a-1-2",
+    "width": 96,
+    "x": 384,
+    "y": 30,
+  },
+  Object {
+    "description": "a-2 描述",
+    "field": "a-2",
+    "height": 90,
+    "value": "自定义节点 a-2",
+    "width": 96,
+    "x": 480,
+    "y": 0,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should calc correctly leaf nodes height and corner nodes 2`] = `
+Array [
+  Object {
+    "description": undefined,
+    "field": "type",
+    "height": 30,
+    "value": "类型",
+    "width": 96,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "description": undefined,
+    "field": "sub_type",
+    "height": 30,
+    "value": "子类型",
+    "width": 96,
+    "x": 96,
+    "y": 60,
+  },
+  Object {
+    "description": undefined,
+    "field": "a-1",
+    "height": 30,
+    "value": "层级1",
+    "width": 192,
+    "x": 0,
+    "y": 0,
+  },
+  Object {
+    "description": undefined,
+    "field": "a-1-1",
+    "height": 30,
+    "value": "层级2",
+    "width": 192,
+    "x": 0,
+    "y": 30,
+  },
+]
+`;
+
 exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should calc correctly leaf nodes width after column resized 1`] = `
 Array [
   Object {
@@ -50,6 +177,54 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should format custom columns 1`] = `
+Array [
+  Object {
+    "actualText": "%-自定义节点 a-1",
+    "id": "a-1",
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "actualText": "自定义节点 a-1-1",
+    "id": "a-1-1",
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "actualText": "指标1",
+    "id": "measure-1",
+    "value": "指标1",
+  },
+  Object {
+    "actualText": "指标2",
+    "id": "measure-2",
+    "value": "指标2",
+  },
+  Object {
+    "actualText": "自定义节点 a...",
+    "id": "a-1-2",
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "actualText": "自定义节点 a-2",
+    "id": "a-2",
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should format custom columns 2`] = `
+Array [
+  "#-13",
+  "#-11",
+  "666-2",
+  "666-8",
+  "-",
+  "-",
+  "-",
+  "-",
+]
+`;
+
 exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should render custom format corner text 1`] = `
 Array [
   Object {
@@ -75,39 +250,57 @@ exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should render custo
 Array [
   Object {
     "description": "a-1 描述",
+    "field": "a-1",
     "height": 30,
     "value": "自定义节点 a-1",
     "width": 300,
+    "x": 0,
+    "y": 0,
   },
   Object {
     "description": "a-1-1 描述",
+    "field": "a-1-1",
     "height": 30,
     "value": "自定义节点 a-1-1",
     "width": 200,
+    "x": 0,
+    "y": 30,
   },
   Object {
     "description": "指标1描述",
+    "field": "measure-1",
     "height": 30,
     "value": "指标1",
     "width": 100,
+    "x": 0,
+    "y": 60,
   },
   Object {
     "description": "指标2描述",
+    "field": "measure-2",
     "height": 30,
     "value": "指标2",
     "width": 100,
+    "x": 100,
+    "y": 60,
   },
   Object {
     "description": "a-1-2 描述",
+    "field": "a-1-2",
     "height": 60,
     "value": "自定义节点 a-1-2",
     "width": 100,
+    "x": 200,
+    "y": 30,
   },
   Object {
     "description": "a-2 描述",
+    "field": "a-2",
     "height": 90,
     "value": "自定义节点 a-2",
     "width": 100,
+    "x": 300,
+    "y": 0,
   },
 ]
 `;
@@ -164,6 +357,54 @@ Array [
     "rowIndex": 3,
     "value": "自定义节点 a-2",
   },
+]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should format custom rows 1`] = `
+Array [
+  Object {
+    "actualText": "%-自定义节点 a-1",
+    "id": "a-1",
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "actualText": "@-自定义节点 a-...",
+    "id": "a-1-1",
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "actualText": "#-指标1",
+    "id": "measure-1",
+    "value": "指标1",
+  },
+  Object {
+    "actualText": "指标2",
+    "id": "measure-2",
+    "value": "指标2",
+  },
+  Object {
+    "actualText": "&-自定义节点 a-1-2",
+    "id": "a-1-2",
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "actualText": "*-自定义节点 a-2",
+    "id": "a-2",
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should format custom rows 2`] = `
+Array [
+  "#-13",
+  "2",
+  "&-null",
+  "*-null",
+  "#-11",
+  "8",
+  "&-null",
+  "*-null",
 ]
 `;
 

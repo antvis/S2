@@ -22,6 +22,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
+
+    this.initScrollGroup();
+  }
+
+  private initScrollGroup() {
     this.scrollGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_COL_SCROLL,
@@ -62,46 +67,44 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected getCellInstance(
-    item: Node,
+    node: Node,
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
   ): S2CellType {
-    return new ColCell(item, spreadsheet, headerConfig);
+    return new ColCell(node, spreadsheet, headerConfig);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected getCellGroup(node: Node) {
+  protected getCellGroup(node: Node): Group {
     return this.scrollGroup;
   }
 
-  protected isColCellInRect(item: Node): boolean {
+  protected isColCellInRect(node: Node): boolean {
     const { spreadsheet, cornerWidth, width, scrollX = 0 } = this.headerConfig;
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
-      width + scrollX > item.x &&
+      width + scrollX > node.x &&
       scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
-        item.x + item.width
+        node.x + node.width
     );
   }
 
   protected layout() {
-    const { data, spreadsheet } = this.headerConfig;
+    const { nodes, spreadsheet } = this.headerConfig;
     const { colCell } = spreadsheet.options;
 
-    each(data, (node: Node) => {
-      const item = node;
-
-      if (this.isColCellInRect(item)) {
+    each(nodes, (node) => {
+      if (this.isColCellInRect(node)) {
         const cell =
-          colCell?.(item, spreadsheet, this.headerConfig) ||
-          this.getCellInstance(item, spreadsheet, this.headerConfig);
+          colCell?.(node, spreadsheet, this.headerConfig) ||
+          this.getCellInstance(node, spreadsheet, this.headerConfig);
 
-        item.belongsCell = cell;
+        node.belongsCell = cell;
 
-        const group = this.getCellGroup(item);
+        const group = this.getCellGroup(node);
 
-        group.appendChild(cell);
+        group?.appendChild(cell);
       }
     });
   }
@@ -109,7 +112,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX = 0 } = this.headerConfig;
 
-    // 暂时不考虑移动y
+    // 暂时不考虑移动 y
     translateGroupX(this.scrollGroup, position.x - scrollX);
   }
 }

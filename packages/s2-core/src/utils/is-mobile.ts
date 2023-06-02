@@ -9,7 +9,7 @@ export function isMobile(device?: string) {
     return true;
   }
 
-  return /(iPhone|iPad|SymbianOS|Windows Phone|iPod|iOS|Android)/i.test(
+  return /(?:iPhone|iPad|SymbianOS|Windows Phone|iPod|iOS|Android)/i.test(
     navigator.userAgent,
   );
 }

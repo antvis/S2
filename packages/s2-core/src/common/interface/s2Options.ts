@@ -3,6 +3,7 @@ import type {
   CornerHeaderCallback,
   DataCellCallback,
   FrameCallback,
+  MergedCellCallback,
   MergedCellInfo,
   Pagination,
   Totals,
@@ -51,16 +52,19 @@ export interface S2BasicOptions<
 
   /**
    * 字段标记
+   * @see https://s2.antv.antgroup.com/manual/basic/conditions
    */
   conditions?: Conditions | null;
 
   /**
    * 提示信息
+   * @see https://s2.antv.antgroup.com/manual/basic/tooltip
    */
   tooltip?: Tooltip<T, Icon, Text> | null;
 
   /**
    * 交互配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/basic
    */
   interaction?: InteractionOptions;
 
@@ -86,21 +90,25 @@ export interface S2BasicOptions<
 
   /**
    * 自定义表头图标配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
    */
   headerActionIcons?: HeaderActionIcon[];
 
   /**
    * 自定义 SVG 图标
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
    */
   customSVGIcons?: CustomSVGIcon[];
 
   /**
    * 表格单元格宽高配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/cell-size
    */
   style?: S2Style;
 
   /**
    * 是否开启高清适配
+   * @see https://s2.antv.antgroup.com/manual/advanced/hd-adapter
    */
   hdAdapter?: boolean;
 
@@ -127,57 +135,73 @@ export interface S2BasicOptions<
   /** *********** 自定义单元格 hooks **************** */
   /**
    * 自定义数值单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#data-cell
    */
   dataCell?: DataCellCallback;
 
   /**
    * 自定义角头单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#corner-cell
    */
   cornerCell?: CellCallback<CornerHeaderConfig>;
 
   /**
    * 自定义序号单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#series-number-cell
    */
   seriesNumberCell?: CellCallback<BaseHeaderConfig>;
 
   /**
    * 自定义行头单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#row-cell
    */
   rowCell?: CellCallback<RowHeaderConfig>;
 
   /**
    * 自定义列头单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#col-cell
    */
   colCell?: CellCallback<ColHeaderConfig>;
 
   /**
+   * 自定义合并单元格
+   */
+  mergedCell?: MergedCellCallback;
+
+  /**
    * 自定义表格框架/边框
+   * @see https://s2.antv.antgroup.com/examples/case/comparison#measure-comparison
    */
   frame?: FrameCallback;
 
   /**
    * 自定义角头
+   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#corner-header
    */
   cornerHeader?: CornerHeaderCallback;
 
   /** *********** 自定义布局 hooks **************** */
   /**
    * 自定义单元格层级, 动态增加/删除单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-hierarchy
    */
   layoutHierarchy?: LayoutHierarchy;
 
   /**
    * 自定义节点排列顺序 (树状模式有效)
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-arrange
    */
   layoutArrange?: LayoutArrange;
 
   /**
    * 自定义单元格对应节点坐标/宽高
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-coordinate
    */
   layoutCoordinate?: LayoutCoordinate;
 
   /**
    * 自定义数据坐标, 动态修改单元格数值
+   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-layout/#custom-data-position
    */
   layoutDataPosition?: LayoutDataPosition;
 
@@ -238,11 +262,13 @@ export interface S2PivotSheetOptions {
 
   /**
    * 小计/总计配置
+   * @see https://s2.antv.antgroup.com/manual/basic/totals
    */
   totals?: Totals | null;
 
   /**
    * 合并单元格配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/merge-cell
    */
   mergedCellsInfo?: MergedCellInfo[][];
 
@@ -264,6 +290,9 @@ export interface S2Options<
   Text = string,
 > extends S2BasicOptions<T, P, Icon, Text>,
     S2PivotSheetOptions {
+  /**
+   * 行列冻结
+   */
   frozen?: S2PivotSheetFrozenOptions & S2TableSheetFrozenOptions;
 }
 

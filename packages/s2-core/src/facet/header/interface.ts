@@ -1,12 +1,7 @@
 import type { PointLike } from '@antv/g';
-import type {
-  LayoutResult,
-  S2Options,
-  SortParam,
-} from '../../common/interface';
+import type { LayoutResult, SortParam } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
-import type { ViewMeta } from '../../common/interface';
 
 /**
  * Base header config interface
@@ -31,15 +26,11 @@ export interface BaseHeaderConfig {
   // group's top-left point
   position: PointLike;
   // group's all nodes
-  data: Node[];
+  nodes: Node[];
   // spreadsheet entrance instance
   spreadsheet: SpreadSheet;
   // leaf node sort params
   sortParam?: SortParam;
-  // field ids that click to navigate (todo: 合并master 时加入的)
-  linkFields: string[] | ((meta: Node | ViewMeta) => boolean);
-  // type of hierarchy
-  hierarchyType: S2Options['hierarchyType'];
 }
 
 export interface ColHeaderConfig extends BaseHeaderConfig {

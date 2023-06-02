@@ -1,14 +1,5 @@
-import { Group, Rect } from '@antv/g';
-import {
-  get,
-  isBoolean,
-  isEmpty,
-  isNumber,
-  keys,
-  last,
-  maxBy,
-  set,
-} from 'lodash';
+import { Group, Rect, type LineStyleProps } from '@antv/g';
+import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -38,8 +29,10 @@ import type {
   SortParams,
   TableSortParam,
   ViewMeta,
+  ViewMetaData,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
+import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils/cell/data-cell';
@@ -56,7 +49,7 @@ import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
-import { type ColHeaderConfig, Frame, type SeriesNumberHeader } from './header';
+import { Frame, type SeriesNumberHeader } from './header';
 import type { ColHeader } from './header/col';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -125,15 +118,15 @@ export class TableFacet extends BaseFacet {
       KEY_GROUP_PANEL_FROZEN_TOP,
       KEY_GROUP_PANEL_FROZEN_BOTTOM,
     ].map((name) => {
-      const g = new FrozenGroup({
+      const frozenGroup = new FrozenGroup({
         name,
         zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
         s2: this.spreadsheet,
       });
 
-      this.panelGroup.add(g);
+      this.panelGroup.appendChild(frozenGroup);
 
-      return g;
+      return frozenGroup;
     });
   }
 
@@ -258,10 +251,14 @@ export class TableFacet extends BaseFacet {
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
-      const { showSeriesNumber } = this.spreadsheet.options;
       const colNode = colLeafNodes[colIndex];
-      const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
+      if (!colNode) {
+        return null;
+      }
+
+      const { showSeriesNumber } = this.spreadsheet.options;
+      const cellHeight = this.getCellHeightByRowIndex(rowIndex);
       const cellRange = this.getCellRange();
       const { trailingRowCount: frozenTrailingRowCount = 0 } =
         getValidFrozenOptions(
@@ -270,7 +267,7 @@ export class TableFacet extends BaseFacet {
           cellRange.end - cellRange.start + 1,
         );
 
-      let data;
+      let data: ViewMetaData | number;
 
       const x = colNode.x;
       let y = this.viewCellHeights.getCellOffsetY(rowIndex);
@@ -338,6 +335,7 @@ export class TableFacet extends BaseFacet {
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
 
+      // TODO: 向下取整, 导致单元格未撑满 canvas, 在冻结情况下会有问题, 代冻结重构后解决
       return Math.max(
         dataCell?.width!,
         Math.floor(canvasW / Math.max(1, colHeaderColSize)),
@@ -347,24 +345,8 @@ export class TableFacet extends BaseFacet {
     return dataCell?.width ?? 0;
   }
 
-  private getColNodeHeight(colNode: Node, totalHeight?: number) {
-    const height = this.getDefaultColNodeHeight(colNode);
-
-    if (!totalHeight) {
-      return height;
-    }
-
-    // 如果传递了总高，则需要根据层级情况获得高度
-    if (!isEmpty(colNode?.children)) {
-      return height;
-    }
-
-    while (colNode.parent) {
-      totalHeight -= isTopLevelNode(colNode) ? 0 : height;
-      colNode = colNode.parent;
-    }
-
-    return totalHeight;
+  private getColNodeHeight(colNode: Node) {
+    return this.getDefaultColNodeHeight(colNode);
   }
 
   private calculateColNodesCoordinate(
@@ -404,12 +386,10 @@ export class TableFacet extends BaseFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(
-        currentNode,
-        colsHierarchy.height,
-      );
+      currentNode.height = this.getColNodeHeight(currentNode);
     }
-    const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
+
+    const topLevelNodes = allNodes.filter(isTopLevelNode);
     const { trailingColCount: frozenTrailingColCount = 0 } =
       getValidFrozenOptions(
         this.spreadsheet.options.frozen!,
@@ -438,6 +418,11 @@ export class TableFacet extends BaseFacet {
       }
     }
 
+    this.updateCustomFieldsSampleNodes(colsHierarchy);
+    this.adjustColLeafNodesHeight({
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    });
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
 
@@ -459,7 +444,7 @@ export class TableFacet extends BaseFacet {
         parent.x = parent.children[0].x;
         // parent's width = all children's width
         parent.width = parent.children
-          .map((value: Node) => value.width)
+          .map((childNode) => childNode.width)
           .reduce((sum, current) => sum + current, 0);
         prevColParent = parent;
       }
@@ -693,9 +678,8 @@ export class TableFacet extends BaseFacet {
       x: panelBBoxStartX,
       y: panelBBoxStartY,
     } = this.panelBBox;
-    const colLeafNodes = this.layoutResult.colNodes.filter((node) =>
-      isTopLevelNode(node),
-    );
+
+    const topLevelColNodes = this.getTopLevelColNodes();
     const cellRange = this.getCellRange();
     const dataLength = cellRange.end - cellRange.start;
     const {
@@ -705,7 +689,7 @@ export class TableFacet extends BaseFacet {
       trailingRowCount: frozenTrailingRowCount = 0,
     } = getValidFrozenOptions(
       this.spreadsheet.options.frozen!,
-      colLeafNodes.length,
+      topLevelColNodes.length,
       dataLength,
     );
 
@@ -721,7 +705,7 @@ export class TableFacet extends BaseFacet {
         viewportHeight,
     );
 
-    // remove previous splitline group
+    // remove previous split line group
     this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
 
     const { splitLine } = this.spreadsheet.theme;
@@ -734,13 +718,13 @@ export class TableFacet extends BaseFacet {
       }),
     );
 
-    const verticalBorderStyle = {
+    const verticalBorderStyle: Partial<LineStyleProps> = {
       lineWidth: SPLIT_LINE_WIDTH,
       stroke: splitLine?.verticalBorderColor,
       opacity: splitLine?.verticalBorderColorOpacity,
     };
 
-    const horizontalBorderStyle = {
+    const horizontalBorderStyle: Partial<LineStyleProps> = {
       lineWidth: SPLIT_LINE_WIDTH,
       stroke: splitLine?.horizontalBorderColor,
       opacity: splitLine?.horizontalBorderColorOpacity,
@@ -751,7 +735,7 @@ export class TableFacet extends BaseFacet {
     );
 
     if (frozenColCount > 0) {
-      const x = colLeafNodes.reduce((prev, item, idx) => {
+      const x = topLevelColNodes.reduce((prev, item, idx) => {
         if (idx < frozenColCount) {
           return prev + item.width;
         }
@@ -761,18 +745,13 @@ export class TableFacet extends BaseFacet {
 
       const height = frozenTrailingRowCount > 0 ? panelHeight : viewportHeight;
 
-      renderLine(
-        splitLineGroup as Group,
-        {
-          x1: x + panelBBoxStartX,
-          x2: x + panelBBoxStartX,
-          y1: panelBBoxStartY,
-          y2: panelBBoxStartY + height,
-        },
-        {
-          ...verticalBorderStyle,
-        },
-      );
+      renderLine(splitLineGroup, {
+        ...verticalBorderStyle,
+        x1: x + panelBBoxStartX,
+        x2: x + panelBBoxStartX,
+        y1: panelBBoxStartY,
+        y2: panelBBoxStartY + height,
+      });
 
       if (splitLine?.showShadow && scrollX > 0) {
         splitLineGroup.appendChild(
@@ -798,18 +777,13 @@ export class TableFacet extends BaseFacet {
         );
       const width = frozenTrailingColCount > 0 ? panelWidth : viewportWidth;
 
-      renderLine(
-        splitLineGroup as Group,
-        {
-          x1: 0,
-          x2: width + frameVerticalBorderWidth,
-          y1: y,
-          y2: y,
-        },
-        {
-          ...horizontalBorderStyle,
-        },
-      );
+      renderLine(splitLineGroup, {
+        ...horizontalBorderStyle,
+        x1: 0,
+        x2: width + frameVerticalBorderWidth,
+        y1: y,
+        y2: y,
+      });
 
       if (splitLine?.showShadow && relativeScrollY > 0) {
         splitLineGroup.appendChild(
@@ -827,21 +801,17 @@ export class TableFacet extends BaseFacet {
     }
 
     if (frozenTrailingColCount > 0) {
-      const { x } = colLeafNodes[colLeafNodes.length - frozenTrailingColCount];
+      const { x } =
+        topLevelColNodes[topLevelColNodes.length - frozenTrailingColCount];
       const height = frozenTrailingRowCount ? panelHeight : viewportHeight;
 
-      renderLine(
-        splitLineGroup as Group,
-        {
-          x1: x,
-          x2: x,
-          y1: panelBBoxStartY,
-          y2: panelBBoxStartY + height,
-        },
-        {
-          ...verticalBorderStyle,
-        },
-      );
+      renderLine(splitLineGroup, {
+        ...verticalBorderStyle,
+        x1: x,
+        x2: x,
+        y1: panelBBoxStartY,
+        y2: panelBBoxStartY + height,
+      });
 
       if (
         splitLine?.showShadow &&
@@ -870,18 +840,13 @@ export class TableFacet extends BaseFacet {
         );
       const width = frozenTrailingColCount > 0 ? panelWidth : viewportWidth;
 
-      renderLine(
-        splitLineGroup as Group,
-        {
-          x1: 0,
-          x2: width + frameVerticalBorderWidth,
-          y1: y,
-          y2: y,
-        },
-        {
-          ...horizontalBorderStyle,
-        },
-      );
+      renderLine(splitLineGroup, {
+        ...horizontalBorderStyle,
+        x1: 0,
+        x2: width + frameVerticalBorderWidth,
+        y1: y,
+        y2: y,
+      });
 
       if (splitLine?.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
         splitLineGroup.appendChild(
@@ -900,9 +865,7 @@ export class TableFacet extends BaseFacet {
   };
 
   protected renderFrozenPanelCornerGroup = () => {
-    const topLevelNodes = this.layoutResult.colNodes.filter((node) =>
-      isTopLevelNode(node),
-    );
+    const topLevelNodes = this.getTopLevelColNodes();
     const cellRange = this.getCellRange();
 
     const {
@@ -937,7 +900,7 @@ export class TableFacet extends BaseFacet {
       const cells = result[key];
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const group = this[FrozenCellGroupMap[key]];
+      const group = this[FrozenCellGroupMap[key]] as Group;
 
       if (group) {
         cells.forEach((cell) => {
@@ -961,22 +924,21 @@ export class TableFacet extends BaseFacet {
   getRealFrozenColumns = (
     frozenColCount: number,
     frozenTrailingColCount: number,
-  ) => {
-    let colCount = frozenColCount;
-    let trailingColCount = frozenTrailingColCount;
-
+  ): { colCount: number; trailingColCount: number } => {
     if (frozenColCount || frozenTrailingColCount) {
-      let nodes = this.layoutResult.colsHierarchy.getNodes();
+      const nodes = this.getTopLevelColNodes();
 
-      nodes = nodes.filter((node) => isTopLevelNode(node));
-      ({ colCount, trailingColCount } = getFrozenLeafNodesCount(
+      return getFrozenLeafNodesCount(
         nodes,
         frozenColCount,
         frozenTrailingColCount,
-      ));
+      );
     }
 
-    return { colCount, trailingColCount };
+    return {
+      colCount: frozenColCount,
+      trailingColCount: frozenTrailingColCount,
+    };
   };
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -986,9 +948,9 @@ export class TableFacet extends BaseFacet {
       trailingRowCount: frozenTrailingRowCount = 0,
       trailingColCount: frozenTrailingColCount = 0,
     } = this.spreadsheet.options.frozen!;
-    const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
-    const cellRange = this.getCellRange();
 
+    const colLength = this.spreadsheet.getColumnLeafNodes().length;
+    const cellRange = this.getCellRange();
     const { colCount, trailingColCount } = this.getRealFrozenColumns(
       frozenColCount,
       frozenTrailingColCount,
@@ -1006,12 +968,14 @@ export class TableFacet extends BaseFacet {
       cellRange,
     );
 
-    const group = FrozenCellGroupMap[frozenCellType];
+    const groupName = FrozenCellGroupMap[frozenCellType];
 
-    if (group) {
+    if (groupName) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      (this[group] as Group).appendChild(cell);
+      const group = this[groupName] as Group;
+
+      group.appendChild(cell);
     }
   };
 
@@ -1026,18 +990,17 @@ export class TableFacet extends BaseFacet {
         viewportHeight,
         cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
-        data: this.layoutResult.colNodes,
+        nodes: this.layoutResult.colNodes,
         sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
-      } as unknown as ColHeaderConfig);
+      });
     }
 
     return this.columnHeader;
   }
 
   protected updateRowResizeArea() {
-    const { options } = this.spreadsheet;
-    const resize = get(options, 'interaction.resize');
+    const { resize } = this.spreadsheet.options.interaction!;
 
     const shouldDrawResize = isBoolean(resize)
       ? resize
@@ -1097,9 +1060,7 @@ export class TableFacet extends BaseFacet {
       trailingRowCount: frozenTrailingRowCount = 0,
     } = this.getFrozenOptions();
 
-    const colLeafNodes = this.layoutResult.colNodes.filter((node) =>
-      isTopLevelNode(node),
-    );
+    const topLevelColNodes = this.getTopLevelColNodes();
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
     const { frozenCol, frozenTrailingCol, frozenRow, frozenTrailingRow } =
@@ -1107,8 +1068,8 @@ export class TableFacet extends BaseFacet {
 
     if (frozenColCount > 0) {
       frozenCol.width =
-        colLeafNodes[frozenColCount - 1].x +
-        colLeafNodes[frozenColCount - 1].width -
+        topLevelColNodes[frozenColCount - 1].x +
+        topLevelColNodes[frozenColCount - 1].width -
         0;
       frozenCol.range = [0, frozenColCount - 1];
     }
@@ -1122,12 +1083,12 @@ export class TableFacet extends BaseFacet {
 
     if (frozenTrailingColCount > 0) {
       frozenTrailingCol.width =
-        colLeafNodes[colLeafNodes.length - 1].x -
-        colLeafNodes[colLeafNodes.length - frozenTrailingColCount].x +
-        colLeafNodes[colLeafNodes.length - 1].width;
+        topLevelColNodes[topLevelColNodes.length - 1].x -
+        topLevelColNodes[topLevelColNodes.length - frozenTrailingColCount].x +
+        topLevelColNodes[topLevelColNodes.length - 1].width;
       frozenTrailingCol.range = [
-        colLeafNodes.length - frozenTrailingColCount,
-        colLeafNodes.length - 1,
+        topLevelColNodes.length - frozenTrailingColCount,
+        topLevelColNodes.length - 1,
       ];
     }
 
@@ -1176,7 +1137,7 @@ export class TableFacet extends BaseFacet {
       trailingRowCount: frozenTrailingRowCount = 0,
     } = this.getFrozenOptions();
 
-    const finalViewport = {
+    const finalViewport: SimpleBBox = {
       width,
       height,
       x: 0,
@@ -1315,8 +1276,13 @@ export class TableFacet extends BaseFacet {
     }
   }
 
+  public getTopLevelColNodes() {
+    return this.layoutResult.colNodes.filter(isTopLevelNode);
+  }
+
   public updatePanelScrollGroup() {
     super.updatePanelScrollGroup();
+
     [
       FrozenGroupType.FROZEN_COL,
       FrozenGroupType.FROZEN_ROW,
@@ -1327,8 +1293,8 @@ export class TableFacet extends BaseFacet {
         return;
       }
 
-      let cols = [];
-      let rows = [];
+      let cols: number[] = [];
+      let rows: number[] = [];
 
       if (key.toLowerCase().includes('row')) {
         const [rowMin, rowMax] = this.frozenGroupInfo[key].range || [];
@@ -1348,9 +1314,7 @@ export class TableFacet extends BaseFacet {
         }
       } else {
         const [colMin, colMax] = this.frozenGroupInfo[key].range || [];
-        const nodes = this.layoutResult.colNodes.filter((node) =>
-          isTopLevelNode(node),
-        );
+        const nodes = this.getTopLevelColNodes();
 
         cols = getColsForGrid(colMin, colMax, nodes);
         rows = this.gridInfo.rows;

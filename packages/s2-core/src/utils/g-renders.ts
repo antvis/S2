@@ -20,6 +20,7 @@ import {
 } from '@antv/g';
 import { forEach, isArray, isEmpty, isFunction } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
+import { CustomText } from '../engine/CustomText';
 
 export function renderRect(group: Group, style: RectStyleProps): Rect {
   return group?.appendChild(
@@ -52,10 +53,11 @@ export function renderCircle(group: Group, style: CircleStyleProps): Circle {
   );
 }
 
-export function renderText(
+export function renderText<T>(
   group: Group,
   shapes: DisplayObject[],
   attrs: TextStyleProps,
+  appendInfo?: T,
 ): Text {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: DisplayObject) => {
@@ -66,33 +68,31 @@ export function renderText(
   }
 
   return group?.appendChild(
-    new Text({
-      style: {
-        /**
-         * 补充 g5.0 内部 measureText 时的必要参数（variant|fontStyle|lineWidth）
-         * 否则创建完 Text 后，实例 getBBox 返回为全 0
-         * @see https://github.com/antvis/GUI/blob/302ae68d93dbb5675f35fca37e8821d4427d495b/src/util/style.ts#L18-L29
-         */
-        fontVariant: 'normal',
-        fontStyle: 'normal',
-        lineWidth: 1,
-        ...attrs,
+    new CustomText<T>(
+      {
+        style: {
+          /**
+           * 补充 g5.0 内部 measureText 时的必要参数（variant|fontStyle|lineWidth）
+           * 否则创建完 Text 后，实例 getBBox 返回为全 0
+           * @see https://github.com/antvis/GUI/blob/302ae68d93dbb5675f35fca37e8821d4427d495b/src/util/style.ts#L18-L29
+           */
+          fontVariant: 'normal',
+          fontStyle: 'normal',
+          lineWidth: 1,
+          ...attrs,
+        },
       },
-    }),
+      appendInfo || ({} as T),
+    ),
   );
 }
 
-export function renderLine(
-  group: Group,
-  coordinate: { x1: number; y1: number; x2: number; y2: number },
-  lineStyle: Omit<LineStyleProps, 'x1' | 'x2' | 'y1' | 'y2'>,
-): Line {
+export function renderLine(group: Group, options: LineStyleProps): Line {
   return group?.appendChild(
     new Line({
       style: {
         zIndex: 100,
-        ...coordinate,
-        ...lineStyle,
+        ...options,
       },
     }),
   );

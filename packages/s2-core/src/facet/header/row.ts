@@ -17,7 +17,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
   protected layout() {
     const {
-      data,
+      nodes,
       spreadsheet,
       width,
       viewportHeight,
@@ -28,33 +28,34 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const rowCell = spreadsheet?.options?.rowCell;
     // row'cell only show when visible
-    const rowCellInRect = (item: Node): boolean =>
-      // bottom
-      viewportHeight + scrollY > item.y &&
-      // top
-      scrollY < item.y + item.height &&
-      // left
-      width - position.x + scrollX > item.x &&
-      // right
-      scrollX - position.x < item.x + item.width;
+    const rowCellInRect = (node: Node): boolean => {
+      return (
+        // bottom
+        viewportHeight + scrollY > node.y &&
+        // top
+        scrollY < node.y + node.height &&
+        // left
+        width - position.x + scrollX > node.x &&
+        // right
+        scrollX - position.x < node.x + node.width
+      );
+    };
 
-    each(data, (item: Node) => {
-      if (rowCellInRect(item) && item.height !== 0) {
+    each(nodes, (node) => {
+      if (rowCellInRect(node) && node.height !== 0) {
         let cell: S2CellType | null = null;
 
         // 首先由外部控制UI展示
         if (rowCell) {
-          cell = rowCell(item, spreadsheet, this.headerConfig);
+          cell = rowCell(node, spreadsheet, this.headerConfig);
         }
 
         // 如果外部没处理，就用默认的
-        if (isEmpty(cell)) {
-          if (spreadsheet.isPivotMode()) {
-            cell = new RowCell(item, spreadsheet, this.headerConfig);
-          }
+        if (isEmpty(cell) && spreadsheet.isPivotMode()) {
+          cell = new RowCell(node, spreadsheet, this.headerConfig);
         }
 
-        item.belongsCell = cell;
+        node.belongsCell = cell;
 
         if (cell) {
           this.appendChild(cell);

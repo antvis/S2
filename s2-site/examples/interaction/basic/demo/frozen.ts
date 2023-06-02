@@ -7,7 +7,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
 
     const s2DataConfig: S2DataConfig = {
       fields: {
-        columns: ['province', 'city', 'type', 'price', 'cost'],
+        columns: ['province', 'city', 'type', 'price'],
       },
       meta: [
         {
@@ -26,23 +26,19 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           field: 'price',
           name: '价格',
         },
-        {
-          field: 'cost',
-          name: '成本',
-        },
       ],
       data: res,
     };
 
     const s2Options: S2Options = {
-      width: 480,
+      width: 450,
       height: 480,
       showSeriesNumber: true,
       frozen: {
-        frozenRowCount: 1, // 行头冻结数量
-        frozenColCount: 1, // 列头冻结数量
-        frozenTrailingRowCount: 1, // 列尾冻结数量
-        frozenTrailingColCount: 1, // 列尾冻结数量
+        rowCount: 1, // 行头冻结数量
+        colCount: 1, // 列头冻结数量
+        trailingRowCount: 1, // 列尾冻结数量
+        trailingColCount: 1, // 列尾冻结数量
       },
     };
 

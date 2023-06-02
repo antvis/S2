@@ -95,15 +95,15 @@ export class Frame extends Group {
       const y2 =
         position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
 
-      renderLine(
-        this,
-        { x1: x, y1: position.y, x2: x, y2 },
-        {
-          stroke: verticalBorderColor,
-          lineWidth: frameVerticalWidth,
-          opacity: verticalBorderColorOpacity,
-        },
-      );
+      renderLine(this, {
+        x1: x,
+        y1: position.y,
+        x2: x,
+        y2,
+        stroke: verticalBorderColor,
+        lineWidth: frameVerticalWidth,
+        opacity: verticalBorderColorOpacity,
+      });
 
       return;
     }
@@ -116,35 +116,30 @@ export class Frame extends Group {
       ? spreadsheet.theme.cornerCell!.cell!
       : spreadsheet.theme.colCell!.cell!;
 
-    renderLine(
-      this,
-      { x1: x, y1: position.y, x2: x, y2: position.y + cornerHeight },
-      {
-        stroke: headerVerticalBorderColor,
-        lineWidth: frameVerticalWidth,
-        opacity: headerVerticalBorderColorOpacity,
-      },
-    );
+    renderLine(this, {
+      x1: x,
+      y1: position.y,
+      x2: x,
+      y2: position.y + cornerHeight,
+      stroke: headerVerticalBorderColor,
+      lineWidth: frameVerticalWidth,
+      opacity: headerVerticalBorderColorOpacity,
+    });
 
     const {
       verticalBorderColor: cellVerticalBorderColor,
       verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
     } = spreadsheet.theme.dataCell!.cell!;
 
-    renderLine(
-      this,
-      {
-        x1: x,
-        y1: position.y + cornerHeight + horizontalBorderWidth!,
-        x2: x,
-        y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
-      },
-      {
-        stroke: cellVerticalBorderColor,
-        lineWidth: frameVerticalWidth,
-        opacity: cellVerticalBorderColorOpacity,
-      },
-    );
+    renderLine(this, {
+      x1: x,
+      y1: position.y + cornerHeight + horizontalBorderWidth!,
+      x2: x,
+      y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
+      stroke: cellVerticalBorderColor,
+      lineWidth: frameVerticalWidth,
+      opacity: cellVerticalBorderColorOpacity,
+    });
   }
 
   private addCornerBottomBorder() {
@@ -171,20 +166,15 @@ export class Frame extends Group {
       (spreadsheet.isFrozenRowHeader() ? 0 : scrollX);
     const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
-    renderLine(
-      this,
-      {
-        x1,
-        y1: y,
-        x2,
-        y2: y,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
+    renderLine(this, {
+      x1,
+      y1: y,
+      x2,
+      y2: y,
+      stroke: horizontalBorderColor,
+      lineWidth: horizontalBorderWidth,
+      opacity: horizontalBorderColorOpacity,
+    });
   }
 
   private addSplitLineShadow() {

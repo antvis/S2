@@ -13,10 +13,7 @@ import type { OnUpdateCells } from '../../common/interface';
 import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush col cell selection interaction
- */
-export class ColBrushSelection extends BaseBrushSelection {
+export class ColCellBrushSelection extends BaseBrushSelection {
   public displayedCells: ColCell[] = [];
 
   public brushRangeCells: ColCell[] = [];
@@ -28,10 +25,8 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseDown() {
-    [S2Event.COL_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
-      this.spreadsheet.on(e, (event: CanvasEvent) => {
-        super.mouseDown(event);
-      });
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_DOWN, (event) => {
+      super.mouseDown(event);
     });
   }
 
@@ -126,7 +121,7 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   protected addBrushIntercepts() {
     this.spreadsheet.interaction.addIntercepts([
-      InterceptType.COL_BRUSH_SELECTION,
+      InterceptType.COL_CELL_BRUSH_SELECTION,
     ]);
   }
 

@@ -11,7 +11,8 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        hoverHighlight: true, // hover highlight
+        // 悬停高亮
+        hoverHighlight: true,
       },
       tooltip: {
         showTooltip: true,

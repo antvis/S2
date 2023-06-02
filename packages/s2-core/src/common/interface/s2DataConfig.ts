@@ -6,8 +6,17 @@ import type {
 import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {
+  /**
+   * 类型
+   */
   type: MiniChartTypes;
+  /**
+   * 数据
+   */
   data: RawData[];
+  /**
+   * 坐标轴数据
+   */
   encode?: {
     x: keyof RawData;
     y: keyof RawData;
@@ -16,10 +25,17 @@ export interface BaseChartData {
 
 /* 子弹图数据结构 */
 export interface BulletValue {
+  /**
+   * 类型
+   */
   type: MiniChartTypes.Bullet;
-  // 当前指标
+  /**
+   * 当前值
+   */
   measure: number | string;
-  // 目标值
+  /**
+   * 目标值
+   */
   target: number | string;
   [key: string]: unknown;
 }
@@ -27,20 +43,25 @@ export interface BulletValue {
 export type MiniChartData = BaseChartData | BulletValue;
 
 /**
- * use for gridAnalysisSheet
- *  eg. { label: '余额女',
- *      values: [
- *        ['最近7天登端天数', 1, 3423423, 323],
- *        ['自然月新登用户数', 1, 3423423, 323],
- *        ['最近7天登端天数', 1, 3423423, 323],
- *        ['自然月新登用户数', 1, 3423423, 323],
- *      ],
- *    }
+ * 单个单元格, 显示一组数据
+ * 适用于 (网格分析表, 趋势分析表) 和其他自定义场景
+  {
+    label: '余额女',
+    values: [
+      ['最近7天登端天数', 1, 3423423, 323],
+      ['自然月新登用户数', 1, 3423423, 323],
+      ['最近7天登端天数', 1, 3423423, 323],
+      ['自然月新登用户数', 1, 3423423, 323],
+    ],
+  }
  */
+
 export interface MultiData<T = SimpleData[][] | MiniChartData> {
+  /** 数值 */
   values: T;
+  /** 原始值 */
   originalValues?: T;
-  // the title of one cell of the gridAnalysisSheet
+  /** 单元格标题 */
   label?: string;
   [key: string]: unknown;
 }
@@ -64,26 +85,49 @@ export type ExtraData = {
 export type Data = (RawData & ExtraData) | undefined | null;
 
 export interface CustomTreeNode {
+  /**
+   * 字段唯一标识
+   */
   field: string;
+  /**
+   * 标题
+   */
   title?: string;
-  // 是否收起（默认都展开）
+  /**
+   * 是否收起（默认都展开）
+   */
   collapsed?: boolean;
+  /**
+   * 字段描述
+   */
   description?: string;
-  children?: string[] | CustomTreeNode[];
+  /**
+   * 子节点
+   */
+  children?: CustomTreeNode[];
 }
 
 export interface S2DataConfig {
-  // origin detail data
+  /**
+   * 原始明细数据
+   */
   data: RawData[];
-  // data keys for render row,columns,values etc
+  /**
+   * 维度字段
+   */
   fields: Fields;
-  // data keys meta info
+  /**
+   * 字段元数据
+   */
   meta?: Meta[];
-  // field sort info
+  /**
+   * 排序配置
+   */
   sortParams?: SortParams;
-  // field filer params
+  /**
+   * 筛选配置
+   */
   filterParams?: FilterParam[];
-  // extra config
   [key: string]: unknown;
 }
 

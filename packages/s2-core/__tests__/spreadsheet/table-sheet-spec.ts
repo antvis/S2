@@ -1,11 +1,9 @@
-import { get, last } from 'lodash';
+import { last } from 'lodash';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import type { TableFacet } from '@/facet';
 import {
   ColCell,
   DeviceType,
   ResizeType,
-  TableDataCell,
   TableSheet,
   type RawData,
   type S2DataConfig,
@@ -134,7 +132,7 @@ describe('TableSheet normal spec', () => {
     expect(s2.facet.getScrollOffset()).toStrictEqual({
       scrollY: 10,
       scrollX: 10,
-      hRowScrollX: 0,
+      rowHeaderScrollX: 0,
     });
     expect(onScrollFinish).toHaveBeenCalled();
 
@@ -242,19 +240,21 @@ describe('TableSheet normal spec', () => {
   test('should render link shape', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...options,
-      frozenRowCount: 0,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
-    } as S2Options);
+      frozen: {
+        rowCount: 0,
+        colCount: 0,
+        trailingColCount: 0,
+        trailingRowCount: 0,
+      },
+    });
 
     s2.render();
 
-    const orderIdDataCell = (
-      (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
-    ).find((item) => item.getMeta().valueField === 'order_id');
+    const orderIdDataCell = s2.interaction
+      .getPanelGroupAllDataCells()
+      .find((cell) => cell.getMeta().valueField === 'order_id');
 
-    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+    expect(orderIdDataCell?.getLinkFieldShape()).toBeDefined();
 
     s2.destroy();
   });

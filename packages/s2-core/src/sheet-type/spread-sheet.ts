@@ -15,6 +15,7 @@ import {
   isFunction,
   isString,
   memoize,
+  some,
   values,
 } from 'lodash';
 import { injectThemeVars } from '../utils/theme';
@@ -129,6 +130,25 @@ export abstract class SpreadSheet extends EE {
     this.setOverscrollBehavior();
   }
 
+  public isCustomHeaderFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean {
+    const { fields } = this.dataCfg;
+
+    if (!fieldType) {
+      return some(
+        [...fields?.rows!, ...fields?.columns!],
+        (field) => !isString(field),
+      );
+    }
+
+    return some(fields?.[fieldType], (field) => !isString(field));
+  }
+
+  public isCustomColumnFields(): boolean {
+    return this.isCustomHeaderFields('columns');
+  }
+
   private setOverscrollBehavior() {
     const { overscrollBehavior } = this.options.interaction!;
     // 行内样式 + css 样式
@@ -216,13 +236,7 @@ export abstract class SpreadSheet extends EE {
    */
   public abstract isPivotMode(): boolean;
 
-  public abstract isCustomHeaderFields(
-    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
-  ): boolean;
-
   public abstract isCustomRowFields(): boolean;
-
-  public abstract isCustomColumnFields(): boolean;
 
   /**
    * tree type must be in strategy mode
@@ -280,7 +294,7 @@ export abstract class SpreadSheet extends EE {
 
   public showTooltipWithInfo(
     event: CanvasEvent | MouseEvent,
-    data: TooltipData[],
+    cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
     const { showTooltip, content } = getTooltipOptions(this, event)!;
@@ -290,15 +304,17 @@ export abstract class SpreadSheet extends EE {
     }
 
     const targetCell = this.getCell(event?.target);
-    const tooltipData = getTooltipData({
-      spreadsheet: this,
-      cellInfos: data,
-      targetCell,
-      options: {
-        enableFormat: true,
-        ...options,
-      },
-    });
+    const tooltipData =
+      options?.data ??
+      getTooltipData({
+        spreadsheet: this,
+        cellInfos,
+        targetCell,
+        options: {
+          enableFormat: true,
+          ...options,
+        },
+      });
 
     this.showTooltip({
       data: tooltipData,
@@ -520,20 +536,23 @@ export abstract class SpreadSheet extends EE {
    * but offsetY(vertical scroll don't need animation)
    */
   public updateScrollOffset(offsetConfig: OffsetConfig) {
+    const config: OffsetConfig = {
+      offsetX: {
+        value: undefined,
+        animate: false,
+      },
+      offsetY: {
+        value: undefined,
+        animate: false,
+      },
+      rowHeaderOffsetX: {
+        value: undefined,
+        animate: false,
+      },
+    };
+
     this.facet.updateScrollOffset(
-      customMerge(
-        {
-          offsetX: {
-            value: undefined,
-            animate: false,
-          },
-          offsetY: {
-            value: undefined,
-            animate: false,
-          },
-        },
-        offsetConfig,
-      ) as OffsetConfig,
+      customMerge(config, offsetConfig) as OffsetConfig,
     );
   }
 

@@ -60,6 +60,9 @@ import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
+import { checkIsLinkField } from '../utils/interaction/link-field';
+import type { Node } from '../facet/layout/node';
+import type { ViewMeta } from '../common/interface/basic';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -262,7 +265,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         this.getStyle()?.cell!,
       );
 
-      renderLine(this, position, style);
+      renderLine(this, { ...position, ...style });
     });
   }
 
@@ -368,17 +371,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
       const { bottom: maxY } = this.textShape.getBBox();
 
-      this.linkFieldShape = renderLine(
-        this,
-        {
-          x1: startX,
-          y1: maxY + 1,
-          // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
-          x2: startX + this.actualTextWidth,
-          y2: maxY + 1,
-        },
-        { stroke: linkFillColor, lineWidth: 1 },
-      );
+      this.linkFieldShape = renderLine(this, {
+        x1: startX,
+        y1: maxY + 1,
+        // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
+        x2: startX + this.actualTextWidth,
+        y2: maxY + 1,
+        stroke: linkFillColor,
+        lineWidth: 1,
+      });
     }
 
     this.textShape.style.fill = linkFillColor;
@@ -388,6 +389,19 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       isLinkFieldText: true,
       cellData: this.meta,
     };
+  }
+
+  // 要被子类覆写，返回颜色字符串
+  protected getLinkFieldStyle(): string {
+    return this.getTextStyle().linkTextFill!;
+  }
+
+  protected drawLinkField(meta: Node | ViewMeta) {
+    const { linkFields = [] } = this.spreadsheet.options.interaction!;
+    const linkTextFill = this.getLinkFieldStyle();
+    const isLinkField = checkIsLinkField(linkFields, meta);
+
+    this.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
   // 根据当前state来更新cell的样式

@@ -17,7 +17,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
   DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightType,
+  type InteractionCellSelectedHighlightOptions,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -109,7 +109,7 @@ function MainLayout() {
   );
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
-  >('single');
+  >('multiple');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -190,13 +190,13 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string, callback?: () => void) =>
-    (...args: unknown[]) => {
+    (name: string, callback?: (...args: any[]) => void) =>
+    (...args: any[]) => {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
 
-      callback?.();
+      callback?.(...args);
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -236,7 +236,11 @@ function MainLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
+    if (sheetType !== 'table') {
+      return;
+    }
+
     setDataCfg(
       customMerge(tableSheetDataCfg, {
         fields: {
@@ -247,7 +251,7 @@ function MainLayout() {
         },
       }),
     );
-  }, [tableSheetColumnType]);
+  }, [sheetType, tableSheetColumnType]);
 
   //  ================== Config ========================
 
@@ -495,7 +499,7 @@ function MainLayout() {
                     disabled={sheetType === 'table'}
                   />
                 </Tooltip>
-                <Tooltip title="透视表有效">
+                <Tooltip title="明细表有效">
                   <Switch
                     checkedChildren="冻结列头开"
                     unCheckedChildren="冻结列头关"
@@ -818,6 +822,20 @@ function MainLayout() {
                 </Button>
                 <Button
                   size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current?.updateScrollOffset({
+                      rowHeaderOffsetX: {
+                        value: 100,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动行头
+                </Button>
+                <Button
+                  size="small"
                   danger
                   onClick={() => {
                     if (
@@ -900,21 +918,84 @@ function MainLayout() {
                   }}
                 />
                 <Switch
-                  checkedChildren="折叠省份(province) 所有维值"
-                  unCheckedChildren="展开省份(province) 所有维值"
-                  disabled={mergedOptions.hierarchyType !== 'tree'}
+                  checkedChildren="冻结行头开"
+                  unCheckedChildren="冻结行头关"
+                  defaultChecked={Boolean(mergedOptions.frozen?.rowHeader)}
                   onChange={(checked) => {
                     updateOptions({
-                      style: {
-                        rowCell: {
-                          collapseAll: null,
-                          expandDepth: null,
-                          collapseFields: {
-                            'root[&]浙江省': checked,
-                            'root[&]四川省': checked,
-                            province: checked,
-                          },
-                        },
+                      frozen: {
+                        rowHeader: checked,
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="容器宽高自适应开"
+                  unCheckedChildren="容器宽高自适应关"
+                  defaultChecked={Boolean(adaptive)}
+                  onChange={setAdaptive}
+                />
+                <Switch
+                  checkedChildren="显示序号"
+                  unCheckedChildren="不显示序号"
+                  checked={mergedOptions.showSeriesNumber}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showSeriesNumber: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="分页"
+                  unCheckedChildren="不分页"
+                  checked={showPagination}
+                  onChange={setShowPagination}
+                />
+                <Switch
+                  checkedChildren="汇总"
+                  unCheckedChildren="无汇总"
+                  checked={showTotals}
+                  onChange={setShowTotals}
+                />
+                <Switch
+                  checkedChildren="默认actionIcons"
+                  unCheckedChildren="自定义actionIcons"
+                  checked={mergedOptions.showDefaultHeaderActionIcon}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showDefaultHeaderActionIcon: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="开启Tooltip"
+                  unCheckedChildren="关闭Tooltip"
+                  checked={mergedOptions.tooltip!.showTooltip}
+                  onChange={(checked) => {
+                    updateOptions({
+                      tooltip: {
+                        showTooltip: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="自定义Tooltip"
+                  unCheckedChildren="默认Tooltip"
+                  checked={showCustomTooltip}
+                  onChange={setShowCustomTooltip}
+                />
+                <Switch
+                  checkedChildren="打开链接跳转"
+                  unCheckedChildren="无链接跳转"
+                  checked={!!mergedOptions.interaction!.linkFields!.length}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        linkFields: checked
+                          ? ['province', 'city', 'number']
+                          : [],
                       },
                     });
                   }}
@@ -971,7 +1052,7 @@ function MainLayout() {
                     onChange={(type) => {
                       let selectedCellHighlight:
                         | boolean
-                        | InteractionCellSelectedHighlightType = false;
+                        | InteractionCellSelectedHighlightOptions = false;
                       const oldIdx = type.findIndex((typeItem: any) =>
                         isBoolean(typeItem),
                       );
@@ -1147,7 +1228,11 @@ function MainLayout() {
               })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
-              onCornerCellClick={(cellInfo) => {
+              onCornerCellClick={logHandler('onCornerCellClick', (cellInfo) => {
+                if (!showCustomTooltip) {
+                  return;
+                }
+
                 s2Ref.current?.showTooltip({
                   position: {
                     x: cellInfo.event.clientX,
@@ -1155,7 +1240,7 @@ function MainLayout() {
                   },
                   content: 'click',
                 });
-              }}
+              })}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}

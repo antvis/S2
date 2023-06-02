@@ -39,13 +39,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       viewportWidth: cornerWidth,
       viewportHeight,
       position: { x: 0, y: panelBBox.y },
-      data: layoutSeriesNumberNodes(
+      nodes: layoutSeriesNumberNodes(
         rowsHierarchy,
         seriesNumberWidth,
         spreadsheet,
       ),
       spreadsheet,
-    } as BaseHeaderConfig);
+    });
   }
 
   constructor(cfg: BaseHeaderConfig) {
@@ -67,15 +67,15 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   public layout() {
     const {
-      data,
+      nodes,
       scrollY = 0,
       viewportHeight,
       spreadsheet,
     } = this.headerConfig;
     const seriesNumberCell = spreadsheet?.options?.seriesNumberCell;
 
-    each(data, (item) => {
-      const { y, height: cellHeight } = item;
+    each(nodes, (node) => {
+      const { y, height: cellHeight } = node;
       const isHeaderCellInViewport = this.isHeaderCellInViewport({
         cellPosition: y,
         cellSize: cellHeight,
@@ -91,14 +91,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       let cell: S2CellType | null = null;
 
       if (seriesNumberCell) {
-        cell = seriesNumberCell(item, spreadsheet, this.headerConfig);
+        cell = seriesNumberCell(node, spreadsheet, this.headerConfig);
       }
 
       if (isEmpty(cell)) {
-        cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
+        cell = new SeriesNumberCell(node, spreadsheet, this.headerConfig);
       }
 
-      item.belongsCell = cell;
+      node.belongsCell = cell;
       this.appendChild(cell);
     });
   }

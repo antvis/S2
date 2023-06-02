@@ -13,11 +13,17 @@ import type { BaseTooltip } from '../../ui/tooltip';
 export type TooltipDataItem = Data;
 
 export interface TooltipOperatorMenu<Icon = Element | string, Text = string> {
+  /** 唯一标识 */
   key: string;
+  /** 自定义 icon */
   icon?: Icon;
+  /** 名称 */
   text?: Text;
+  /** 点击回调 */
   onClick?: (cell: S2CellType) => void;
+  /** 是否显示 */
   visible?: boolean | ((cell: S2CellType) => boolean);
+  /** 子菜单 */
   children?: TooltipOperatorMenu<Icon, Text>[];
 }
 
@@ -56,6 +62,8 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   enableFormat?: boolean;
   // 是否强制清空 dom
   forceRender?: boolean;
+  // 自定义数据
+  data?: TooltipData;
 }
 
 export type TooltipSummaryOptionsValue = number | string | undefined | null;
@@ -164,22 +172,45 @@ export interface BaseTooltipConfig<
   Icon = Element | string,
   Text = string,
 > {
+  /**
+   * 是否显示
+   */
   showTooltip?: boolean;
-  // Custom content
+  /**
+   * 自定义内容
+   * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
+   */
   content?: TooltipShowOptions<T>['content'];
-  // Tooltip operation
+  /**
+   * 自定义操作项
+   * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
+   */
   operation?: TooltipOperation<Icon, Text>;
-  // Tooltip Boundary
+  /**
+   * 显示边界, 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能
+   */
   autoAdjustBoundary?: TooltipAutoAdjustBoundary;
-  // Custom tooltip
+  /**
+   * 自定义 Tooltip 类
+   * @see https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-tooltip
+   */
+
   renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
-  // Custom tooltip position
+  /**
+   * 自定义坐标
+   */
   adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
-  // Custom tooltip mount container
+  /**
+   * 自定义挂载容器, 默认 body
+   */
   getContainer?: () => HTMLElement;
-  // Extra tooltip container class name
+  /**
+   * 容器类名
+   */
   className?: string | string[];
-  // Extra tooltip container style
+  /**
+   * 容器样式
+   */
   style?: CSS.Properties;
 }
 

@@ -300,7 +300,7 @@ importers:
   s2-site:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@antv/dumi-theme-antv': ^0.3.0
+      '@antv/dumi-theme-antv': ^0.3.5
       '@antv/g-canvas': ^0.5.12
       '@antv/s2': next
       '@antv/s2-react': next
@@ -314,6 +314,17 @@ importers:
       lodash: ^4.17.21
       micromark-extension-directive: ^2.1.2
       react-color: ^2.19.3
+      rehype-document: ^6.1.0
+      rehype-format: ^4.0.1
+      rehype-parse: ^8.0.4
+      rehype-remark: ^9.1.2
+      rehype-stringify: ^9.0.3
+      remark-gfm: ^3.0.1
+      remark-parse: ^10.0.1
+      remark-rehype: ^10.1.0
+      remark-stringify: ^10.0.2
+      unified: ^10.1.2
+      unist-util-visit: ^4.1.1
     dependencies:
       '@ant-design/icons': 4.8.0
       '@antv/dumi-theme-antv': 0.3.5_dumi@2.1.1
@@ -331,6 +342,17 @@ importers:
       '@stone-lyl/google-translate-script': 0.1.0
       hast-util-to-html: 8.0.4
       micromark-extension-directive: 2.1.2
+      rehype-document: 6.1.0
+      rehype-format: 4.0.1
+      rehype-parse: 8.0.4
+      rehype-remark: 9.1.2
+      rehype-stringify: 9.0.3
+      remark-gfm: 3.0.1
+      remark-parse: 10.0.1
+      remark-rehype: 10.1.0
+      remark-stringify: 10.0.2
+      unified: 10.1.2
+      unist-util-visit: 4.1.1
 
 packages:
 
@@ -7208,7 +7230,7 @@ packages:
     engines: {node: '>= 10'}
 
   /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==, registry: https://registry.yarnpkg.com/}
     engines: {node: '>= 12'}
     dev: false
 
@@ -20913,7 +20935,7 @@ packages:
     engines: {node: '>=0.10.0'}
 
   /source-map/0.5.7:
-    resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==}
+    resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==, registry: https://registry.yarnpkg.com/}
     engines: {node: '>=0.10.0'}
     dev: true
 

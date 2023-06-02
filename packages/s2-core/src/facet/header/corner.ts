@@ -55,7 +55,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     });
 
     return new CornerHeader({
-      data: cornerNodes,
+      nodes: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
       width: cornerWidth,
       height: cornerHeight,
@@ -65,7 +65,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       viewportHeight: height,
       seriesNumberWidth,
       spreadsheet,
-    } as CornerHeaderConfig);
+    });
   }
 
   public static getTreeCornerText(options: BaseCornerOptions) {
@@ -235,7 +235,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected renderCells() {
-    const { data, spreadsheet } = this.headerConfig;
+    const { nodes, spreadsheet } = this.headerConfig;
     const cornerHeader = spreadsheet.options?.cornerHeader;
     const cornerCell = spreadsheet?.options?.cornerCell;
 
@@ -249,7 +249,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       return;
     }
 
-    data.forEach((node: Node) => {
+    nodes.forEach((node) => {
       let cell: Group | null = null;
 
       if (cornerCell) {
@@ -292,6 +292,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   public getNodes(): Node[] {
-    return this.headerConfig.data || [];
+    return this.headerConfig.nodes || [];
   }
 }
