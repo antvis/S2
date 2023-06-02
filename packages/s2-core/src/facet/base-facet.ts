@@ -1378,7 +1378,7 @@ export abstract class BaseFacet {
     }
 
     return hiddenColumnsDetail.find((detail) =>
-      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

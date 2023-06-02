@@ -63,7 +63,7 @@ describe('Table Mode Dataset Test', () => {
     dataSet.setDataCfg(dataCfg);
   });
 
-  afterAll(() => {});
+  afterEach(() => {});
 
   describe('meta config test', () => {
     test.each`

@@ -72,7 +72,7 @@ describe('Interaction Hover Tests', () => {
     mockCellUpdate.mockReset();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     mockCellUpdate.mockRestore();
   });
 

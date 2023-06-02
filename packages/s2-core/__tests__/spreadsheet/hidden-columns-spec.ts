@@ -1,7 +1,7 @@
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
-import { getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import { difference, get, pick } from 'lodash';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -348,6 +348,33 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
+    // https://github.com/antvis/S2/issues/2194
+    test('should render correctly when always hidden last column', () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+      sheet.render();
+
+      // 模拟一列一列的手动隐藏最后一列
+      [
+        'root[&]办公用品[&]纸张[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]家具[&]沙发[&]number',
+      ].forEach((field) => {
+        sheet.interaction.hideColumns([field]);
+      });
+
+      expect(sheet.getColumnLeafNodes()).toHaveLength(1);
+      expect(sheet.getColumnLeafNodes()[0].id).toEqual(
+        'root[&]家具[&]桌子[&]number',
+      );
+    });
+
     describe('Multiple Values Tests', () => {
       let sheet: PivotSheet;
 
@@ -479,7 +506,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       });
 
       // https://github.com/antvis/S2/issues/1721
-      test('should hide grand totals node1', () => {
+      test('should hide grand totals node', () => {
         const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({

@@ -57,7 +57,7 @@ describe('Tooltip Utils Tests', () => {
     height: 1000,
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = createFakeSpreadSheet();
     tooltipContainer = {
       getBoundingClientRect: () =>

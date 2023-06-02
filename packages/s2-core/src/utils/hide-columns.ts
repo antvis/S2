@@ -20,7 +20,7 @@ export const getHiddenColumnNodes = (
   hiddenColumnFields: string[] = [],
 ): Node[] => {
   const columnNodes = spreadsheet.getInitColumnLeafNodes();
-  return compact(
+  return compact<Node>(
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
       return columnNodes.find((node) => node[targetFieldKey] === field);
@@ -45,6 +45,7 @@ export const getHiddenColumnDisplaySiblingNode = (
       next: null,
     };
   }
+
   const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
@@ -58,6 +59,7 @@ export const getHiddenColumnDisplaySiblingNode = (
   const prevSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
+
   return {
     prev: prevSiblingNode || null,
     next: nextSiblingNode || null,
@@ -141,9 +143,17 @@ export const hideColumns = (
     ...lastHiddenColumnFields,
   ]);
 
+  const isAllNearToHiddenColumnNodes = getHiddenColumnNodes(
+    spreadsheet,
+    hiddenColumnFields,
+  ).every((node, i, nodes) => {
+    const nextNode = nodes[i + 1];
+    return !nextNode || Math.abs(node.colIndex - nextNode.colIndex) === 1;
+  });
+
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
-    selectedColumnFields,
+    isAllNearToHiddenColumnNodes ? hiddenColumnFields : selectedColumnFields,
   );
 
   const currentHiddenColumnsInfo: HiddenColumnsInfo = {
@@ -211,12 +221,12 @@ export const isLastColumnAfterHidden = (
   spreadsheet: SpreadSheet,
   columnField: string,
 ) => {
-  const columnNodes = spreadsheet.getColumnNodes();
+  const columnLeafNodes = spreadsheet.getColumnLeafNodes();
   const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
-    get(last(columnNodes), fieldKey) === columnField &&
+    get(last(columnLeafNodes), fieldKey) === columnField &&
     get(last(initColumnLeafNodes), fieldKey) !== columnField
   );
 };
