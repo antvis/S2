@@ -1,5 +1,6 @@
 import type { LineStyleProps } from '@antv/g';
 import type { InteractionStateName } from '../constant';
+import type { PALETTE_MAP } from '../constant/theme';
 import type { CellType } from '../../common/constant/interaction';
 import type { DeepRequired } from './util';
 
@@ -321,7 +322,7 @@ export interface S2Theme extends CellThemes {
   background?: Background;
 }
 
-export type ThemeName = 'default' | 'colorful' | 'gray';
+export type ThemeName = keyof typeof PALETTE_MAP;
 
 export interface ThemeCfg {
   /* 主题 */

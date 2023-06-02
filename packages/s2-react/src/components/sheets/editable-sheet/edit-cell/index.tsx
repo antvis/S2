@@ -41,12 +41,11 @@ type onChangeProps = {
 const EDIT_CELL_CLASS = `${S2_PREFIX_CLS}-edit-cell`;
 
 function EditCellComponent(
-  props: InvokeComponentProps<{ event: GEvent } & onChangeProps>,
+  props: InvokeComponentProps<{ cell: S2CellType } & onChangeProps>,
 ) {
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
-  const { event, onChange, CustomComponent } = params;
-  const cell = spreadsheet.getCell(event.target);
+  const { cell, onChange, CustomComponent } = params;
 
   const { left, top, width, height } = useMemo(() => {
     const rect = spreadsheet?.getCanvasElement().getBoundingClientRect();
@@ -191,7 +190,11 @@ function EditCell({ onChange, CustomComponent }: onChangeProps) {
     (event: GEvent) => {
       invokeComponent({
         component: EditCellComponent,
-        params: { event, onChange, CustomComponent },
+        params: {
+          cell: spreadsheet.getCell(event.target)!,
+          onChange,
+          CustomComponent,
+        },
         spreadsheet,
       });
     },

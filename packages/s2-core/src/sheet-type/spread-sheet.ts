@@ -19,6 +19,7 @@ import {
   values,
 } from 'lodash';
 import { runtime } from '@antv/g-lite';
+import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -439,6 +440,7 @@ export abstract class SpreadSheet extends EE {
     const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
 
     this.theme = customMerge(newTheme, theme);
+    injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {

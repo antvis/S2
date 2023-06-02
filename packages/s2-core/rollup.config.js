@@ -49,6 +49,7 @@ const plugins = [
     },
   }),
   postcss({
+    exclude: ['**/styles/theme/*.less'],
     minimize: isUmdFormat,
     use: {
       sass: null,
@@ -56,6 +57,17 @@ const plugins = [
       less: { javascriptEnabled: true },
     },
     extract: `style${isUmdFormat ? '.min' : ''}.css`,
+  }),
+  /** 主题变量 less 不需要 extract&inject */
+  postcss({
+    include: ['**/styles/theme/*.less'],
+    use: {
+      sass: null,
+      stylus: null,
+      less: { javascriptEnabled: true },
+    },
+    inject: false,
+    extract: false,
   }),
 ];
 

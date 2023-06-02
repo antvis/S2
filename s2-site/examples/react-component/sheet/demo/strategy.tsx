@@ -4,6 +4,17 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
 
+// 临时处理老数据格式
+function process(children) {
+  return children.map((item) => {
+    return {
+      ...item,
+      field: item.key,
+      children: process(item.children),
+    };
+  });
+}
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json',
 )
@@ -13,7 +24,7 @@ fetch(
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
-        rows: dataCfg.customTreeItems,
+        rows: process(dataCfg.fields.customTreeItems),
       },
       meta: [
         // 日期列头 格式化

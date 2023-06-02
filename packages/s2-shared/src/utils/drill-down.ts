@@ -144,7 +144,7 @@ export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
       defaultHide: true,
       displayCondition:
         partDrillDown.displayCondition || defaultPartDrillDownDisplayCondition,
-      action: (actionIconProps: HeaderActionIconProps) => {
+      onClick: (actionIconProps: HeaderActionIconProps) => {
         const { iconName, meta, event } = actionIconProps;
 
         if (iconName === 'DrillDownIcon') {

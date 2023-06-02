@@ -42,6 +42,14 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    &.ant-menu {
+      background: var(~'@{css-var-prefix}-tooltip-background', #fff);
+
+      &:not(.ant-menu-horizontal) .ant-menu-item-selected {
+        background-color: var(~'@{css-var-prefix}-block-background', #e6f7ff);
+      }
+    }
+
     &-item {
       height: 32px !important;
       line-height: 32px !important;

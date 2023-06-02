@@ -1,6 +1,6 @@
-@tooltip-prefix-cls: antv-s2-tooltip;
+@import '../../styles/variables.less';
 
-.@{tooltip-prefix-cls} {
+.@{tooltip-cls-prefix} {
   &-container {
     position: fixed;
     user-select: text;
@@ -10,7 +10,10 @@
     overflow: auto;
     z-index: 1024;
     display: inline-block;
-    background: rgba(255, 255, 255, 0.96);
+    background: var(
+      ~'@{css-var-prefix}-tooltip-background',
+      rgba(255, 255, 255, 0.95)
+    );
     border-radius: 2px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
     font-size: 12px;

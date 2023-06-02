@@ -15,35 +15,40 @@
 
 .@{advanced-sort-cls-prefix}-modal {
   min-width: 640px;
+
+  .ant-modal-content,
+  .ant-modal-header {
+    background-color: var(~'@{css-var-prefix}-container-background', #fff);
+  }
   .@{advanced-sort-cls-prefix}-sider-layout.ant-layout-sider {
-    border-right: 1px solid #d9d9d9;
-    background: #fff;
+    border-right: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
+    background: var(~'@{css-var-prefix}-container-background', #fff);
   }
 
   .@{advanced-sort-cls-prefix}-sider-layout {
     .@{advanced-sort-cls-prefix}-title {
       font-size: 12px;
       padding: 8px 16px;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
     }
     .@{advanced-sort-cls-prefix}-dimension-item {
       height: 32px;
       padding: 8px 5px;
       cursor: pointer;
       align-items: center;
-      color: rgba(0, 0, 0, 0.65);
+      color: var(~'@{css-var-prefix}-font-65', rgba(0, 0, 0, 0.65));
       font-size: 12px;
       margin-left: 10px;
     }
   }
 
   .@{advanced-sort-cls-prefix}-content-layout {
-    background: #fff;
+    background: var(~'@{css-var-prefix}-container-background', #fff);
 
     .@{advanced-sort-cls-prefix}-title {
       font-size: 12px;
       padding: 8px 16px;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
     }
 
     .@{advanced-sort-cls-prefix}-custom-form.ant-form {
@@ -95,12 +100,12 @@
     .@{advanced-sort-cls-prefix}-field-prefix {
       position: relative;
       padding: 0 6px;
-      color: rgba(0, 0, 0, 0.65);
+      color: var(~'@{css-var-prefix}-font-65', rgba(0, 0, 0, 0.65));
       font-weight: 400;
       font-size: 12px;
       text-align: center;
-      background-color: #fafafa;
-      border: 1px solid #d9d9d9;
+      background-color: var(~'@{css-var-prefix}-block-background', #fafafa);
+      border: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
       border-radius: 2px 0 0 2px;
       height: 24px;
       display: inline-block;
@@ -130,7 +135,7 @@
 
     .@{advanced-sort-cls-prefix}-split-value {
       height: 32px;
-      color: #333;
+      color: var(~'@{css-var-prefix}-font-65', #333);
       line-height: 32px;
       padding: 0 10px 0 7px;
 
@@ -138,11 +143,15 @@
         float: right;
         cursor: pointer;
         width: 30px;
+
+        svg {
+          fill: var(~'@{css-var-prefix}-font-65');
+        }
       }
     }
 
     .@{advanced-sort-cls-prefix}-split-value:nth-child(odd) {
-      background: #f7f9fb;
+      background: var(~'@{css-var-prefix}-block-background', #f7f9fb);
     }
   }
 }

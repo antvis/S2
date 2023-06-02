@@ -643,6 +643,7 @@ function MainLayout() {
                   <Radio.Button value="default">默认</Radio.Button>
                   <Radio.Button value="gray">简约灰</Radio.Button>
                   <Radio.Button value="colorful">多彩蓝</Radio.Button>
+                  <Radio.Button value="dark">暗黑</Radio.Button>
                 </Radio.Group>
                 <Popover
                   placement="bottomRight"

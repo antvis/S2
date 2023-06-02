@@ -1,9 +1,9 @@
-import type { Meta, S2DataConfig } from '@antv/s2';
-import { Aggregation } from '@antv/s2';
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
+import type { Meta, S2DataConfig } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
 import { TableDataCell, TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
