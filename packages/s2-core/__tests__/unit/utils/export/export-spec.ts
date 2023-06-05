@@ -8,6 +8,21 @@ import { NewTab, NewLine } from '@/common';
 import { CopyMIMEType } from '@/utils/export/interface';
 
 describe('TableSheet Export Test', () => {
+  let tableSheet: TableSheet;
+
+  beforeEach(() => {
+    tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+    tableSheet.render();
+  });
+
   it('should export correct data with series number', () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -167,9 +182,42 @@ describe('TableSheet Export Test', () => {
     expect(data).toMatchInlineSnapshot(`"custom data"`);
     expect(data).toEqual('custom data');
   });
+
+  // https://github.com/antvis/S2/issues/2236
+  it('should export correct data When the split separator is configured', () => {
+    const data = copyData({
+      sheetInstance: tableSheet,
+      split: ',',
+    });
+    // 只取前10行数据
+    const result = slice(data.split(NewLine), 0, 5);
+
+    expect(result).toMatchInlineSnapshot(`
+      Array [
+        "province,city,type,sub_type,number",
+        "浙江省,杭州市,家具,桌子,7789",
+        "浙江省,绍兴市,家具,桌子,2367",
+        "浙江省,宁波市,家具,桌子,3877",
+        "浙江省,舟山市,家具,桌子,4342",
+      ]
+    `);
+  });
 });
 
 describe('PivotSheet Export Test', () => {
+  let pivotSheet: PivotSheet;
+
+  beforeEach(() => {
+    pivotSheet = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(),
+      assembleOptions({
+        hierarchyType: 'grid',
+      }),
+    );
+    pivotSheet.render();
+  });
+
   it('should export correct data in grid mode - get', () => {
     const s2 = new PivotSheet(
       getContainer(),
@@ -630,5 +678,28 @@ describe('PivotSheet Export Test', () => {
     });
 
     expect(data).toEqual('custom data');
+  });
+
+  // https://github.com/antvis/S2/issues/2236
+  it('should export correct data When the split separator is configured', () => {
+    const data = copyData({
+      sheetInstance: pivotSheet,
+      split: ',',
+      formatOptions: { isFormatHeader: true },
+    });
+
+    expect(data).toMatchInlineSnapshot(`
+      ",类别,家具,家具,办公用品,办公用品
+      ,子类别,桌子,沙发,笔,纸张
+      省份,城市,数量,数量,数量,数量
+      浙江省,杭州市,7789,5343,945,1343
+      浙江省,绍兴市,2367,632,1304,1354
+      浙江省,宁波市,3877,7234,1145,1523
+      浙江省,舟山市,4342,834,1432,1634
+      四川省,成都市,1723,2451,2335,4004
+      四川省,绵阳市,1822,2244,245,3077
+      四川省,南充市,1943,2333,2457,3551
+      四川省,乐山市,2330,2445,2458,352"
+    `);
   });
 });
