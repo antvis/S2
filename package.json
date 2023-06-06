@@ -47,7 +47,7 @@
     "test:ci-coverage": "pnpm -r --filter './packages/*' --stream test:ci-coverage",
     "lint": "run-s lint:type lint:script lint:style lint:docs lint:word",
     "lint:type": "pnpm -r --filter './packages/*' --stream tsc",
-    "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx,.vue'",
+    "lint:script": "eslint --ext '.js,.jsx,.ts,.tsx,.vue'",
     "lint:style": "stylelint packages/**/*.less",
     "lint:docs": "markdownlint '**/*.md'",
     "lint:word": "case-police '**/*.md'",
