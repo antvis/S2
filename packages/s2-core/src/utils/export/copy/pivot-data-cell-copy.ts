@@ -221,6 +221,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   };
 
@@ -231,7 +232,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     // 不带表头复制
     if (!copyWithHeader) {
-      return this.matrixTransformer(dataMatrix);
+      return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
@@ -241,6 +242,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   }
 
@@ -254,6 +256,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
+      this.config.separator,
     );
   };
 }
@@ -272,6 +275,7 @@ export function processSelectedPivotByHeader(
   return pivotDataCellCopy.getPivotCopyData();
 }
 
+// 全量导出使用
 export const processSelectedAllPivot = (
   params: CopyAllDataParams,
 ): CopyableList => {
