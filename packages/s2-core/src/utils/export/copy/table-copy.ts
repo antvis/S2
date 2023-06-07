@@ -68,9 +68,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
         }
 
         const formatter = getFormatter(
-          this.spreadsheet,
           field,
           this.config.isFormatData,
+          this.spreadsheet.dataSet,
         );
         const value = row[field];
 
@@ -107,9 +107,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const value = this.displayData[meta.rowIndex]?.[fieldKey!];
 
     const formatter = getFormatter(
-      this.spreadsheet,
       fieldKey!,
       this.config.isFormatData,
+      this.spreadsheet.dataSet,
     );
 
     return formatter(value);

@@ -2,7 +2,6 @@ import { escape, map, max } from 'lodash';
 import type { Node } from '../../../facet/layout/node';
 import type { DataItem } from '../../../common';
 import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
-import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CopyableHTML,
   type CopyablePlain,
@@ -14,6 +13,7 @@ import {
   type MatrixHTMLTransformer,
   CopyMIMEType,
 } from '../interface';
+import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
@@ -59,12 +59,12 @@ export const Transformers: {
 };
 
 export function getFormatter(
-  spreadsheet: SpreadSheet,
   field: string,
   isFormatData = false,
+  dataSet: BaseDataSet,
 ) {
   if (isFormatData) {
-    return spreadsheet.dataSet.getFieldFormatter(field!);
+    return dataSet.getFieldFormatter(field!);
   }
 
   return (value: DataItem) => value;

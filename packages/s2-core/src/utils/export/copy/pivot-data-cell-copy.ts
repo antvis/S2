@@ -39,6 +39,28 @@ export interface GetDataCellValueType {
 
 // create webworker's getDataMatrixByHeaderNode
 const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
+  // 因为 webworker 中clone 很多对象会报错，所以需要删除一些不必要的属性
+  const { dataSet, leafRowNodes, leafColNodes, compatibleHideMeasureColumn } =
+    params;
+  // node 只需要留下 query, isTotals, isTotalMeasure, field;
+  const workerLeafRowNodes = map(leafRowNodes, (node) => {
+    const { query, isTotals, isTotalMeasure, field } = node;
+
+    return { query, isTotals, isTotalMeasure, field };
+  });
+
+  const workerLeafColNodes = map(leafColNodes, (node) => {
+    const { query, isTotals, isTotalMeasure, field } = node;
+
+    return { query, isTotals, isTotalMeasure, field };
+  });
+
+  // dataSet 需要留下：getCellData，getFieldFormatter
+  const workerDataSet = {
+    getCellData: dataSet.getCellData,
+    getFieldFormatter: dataSet.getFieldFormatter,
+  };
+
   if (window.Worker) {
     const worker = new Worker('worker.ts');
 
@@ -48,9 +70,16 @@ const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
       // eslint-disable-next-line no-console
       console.warn('Received message from Worker444:', message, params);
     });
-    const message = 'Hello from the main page!111';
+    const message = {
+      leafRowNodes: workerLeafRowNodes,
+      leafColNodes: workerLeafColNodes,
+      compatibleHideMeasureColumn,
+      workerDataSet,
+    };
 
-    worker.postMessage(message);
+    // console.warn('Received message from Worker666:', params);
+
+    worker.postMessage(JSON.parse(JSON.stringify(message)));
   }
 };
 
@@ -164,9 +193,9 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const field = getColNodeFieldFromNode(pivotMode, colNode);
 
     const formatter = getFormatter(
-      this.spreadsheet,
       field ?? colNode.field,
       this.config.isFormatData,
+      this.spreadsheet.dataSet,
     );
 
     return formatter(cellData?.[VALUE_FIELD] ?? '');
@@ -277,16 +306,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     // todo-zc: 只有 getDataMatrixByHeaderNode 和 matriTransformer 两个函数耗时较长，需要优化
-    // const compatibleHideMeasureColumn = this.compatibleHideMeasureColumn();
-    // const leafRowNodes = this.leafRowNodes;
-    // const leafColNodes = this.leafColNodes;
+    const compatibleHideMeasureColumn = this.compatibleHideMeasureColumn();
+    const leafRowNodes = this.leafRowNodes;
+    const leafColNodes = this.leafColNodes;
 
     getDataMatrixByHeaderNodeWorker({
-      leafRowNodes: [],
-      // leafRowNodes: leafRowNodes,
-      // leafColNodes: leafColNodes,
-      // compatibleHideMeasureColumn,
-      // dataSet: this.spreadsheet.dataSet,
+      // leafRowNodes: [],
+      leafRowNodes,
+      leafColNodes,
+      compatibleHideMeasureColumn,
+      dataSet: this.spreadsheet.dataSet,
     });
 
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
