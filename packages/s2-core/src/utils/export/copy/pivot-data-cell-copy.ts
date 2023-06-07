@@ -35,13 +35,19 @@ export interface GetDataCellValueType {
   leafColNodes?: Node[];
   compatibleHideMeasureColumn?: { '[EXTRA_FIELD]': string | undefined };
   dataSet?: BaseDataSet;
+  isPivotMode?: () => boolean;
 }
 
 // create webworker's getDataMatrixByHeaderNode
 const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
   // 因为 webworker 中clone 很多对象会报错，所以需要删除一些不必要的属性
-  const { dataSet, leafRowNodes, leafColNodes, compatibleHideMeasureColumn } =
-    params;
+  const {
+    isPivotMode,
+    dataSet,
+    leafRowNodes,
+    leafColNodes,
+    compatibleHideMeasureColumn,
+  } = params;
   // node 只需要留下 query, isTotals, isTotalMeasure, field;
   const workerLeafRowNodes = map(leafRowNodes, (node) => {
     const { query, isTotals, isTotalMeasure, field } = node;
@@ -62,7 +68,7 @@ const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
   };
 
   if (window.Worker) {
-    const worker = new Worker('worker.ts');
+    const worker = new Worker('worker.ts', { type: 'module' });
 
     worker.addEventListener('message', (event) => {
       const message = event.data;
@@ -75,6 +81,7 @@ const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
       leafColNodes: workerLeafColNodes,
       compatibleHideMeasureColumn,
       workerDataSet,
+      isPivotMode,
     };
 
     // console.warn('Received message from Worker666:', params);
@@ -316,6 +323,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       leafColNodes,
       compatibleHideMeasureColumn,
       dataSet: this.spreadsheet.dataSet,
+      isPivotMode: this.spreadsheet.isPivotMode,
     });
 
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
