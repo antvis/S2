@@ -118,14 +118,17 @@ export class DataCell extends BaseCell<ViewMeta> {
       return;
     }
 
-    if (this.spreadsheet.options.interaction.hoverHighlight) {
+    const { currentRow, currentCol } =
+      this.spreadsheet.interaction.getHoverHighlight();
+
+    if (currentRow || currentCol) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.colIndex ||
-        currentRowIndex === currentHoverCell?.rowIndex
+        (currentCol && currentColIndex === currentHoverCell?.colIndex) ||
+        (currentRow && currentRowIndex === currentHoverCell?.rowIndex)
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {

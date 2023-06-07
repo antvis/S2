@@ -174,6 +174,13 @@ const s2Options = {
 const s2Options = {
   interaction: {
     hoverHighlight: false // 默认 true
+    // 等同于
+    // hoverHighlight: {
+    //   rowHeader = false, // 高亮悬停格子所在行头
+    //   colHeader = false, // 高亮悬停格子所在列头
+    //   currentRow = false, // 高亮悬停格子所在行
+    //   currentCol = false, // 高亮悬停格子所在列
+    // },
   }
 };
 ```

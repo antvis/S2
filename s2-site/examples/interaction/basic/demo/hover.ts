@@ -13,6 +13,13 @@ fetch(
       interaction: {
         // 悬停高亮
         hoverHighlight: true,
+        // 等同于
+        // hoverHighlight: {
+        //   rowHeader = true, // 高亮悬停格子所在行头
+        //   colHeader = true, // 高亮悬停格子所在列头
+        //   currentRow = true, // 高亮悬停格子所在行
+        //   currentCol = true, // 高亮悬停格子所在列
+        // },
       },
       tooltip: {
         showTooltip: true,
