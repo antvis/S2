@@ -19,6 +19,7 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
+import type { BaseDataSet } from './../../../data-set/base-data-set';
 import {
   assembleMatrix,
   completeMatrix,
@@ -28,6 +29,30 @@ import {
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
 import { BaseDataCellCopy } from './base-data-cell-copy';
+
+export interface GetDataCellValueType {
+  leafRowNodes?: Node[];
+  leafColNodes?: Node[];
+  compatibleHideMeasureColumn?: { '[EXTRA_FIELD]': string | undefined };
+  dataSet?: BaseDataSet;
+}
+
+// create webworker's getDataMatrixByHeaderNode
+const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
+  if (window.Worker) {
+    const worker = new Worker('worker.ts');
+
+    worker.addEventListener('message', (event) => {
+      const message = event.data;
+
+      // eslint-disable-next-line no-console
+      console.warn('Received message from Worker444:', message, params);
+    });
+    const message = 'Hello from the main page!111';
+
+    worker.postMessage(message);
+  }
+};
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
@@ -135,10 +160,8 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         colNode.isTotalMeasure,
     });
 
-    const field = getColNodeFieldFromNode(
-      this.spreadsheet.isPivotMode,
-      colNode,
-    );
+    const pivotMode: () => boolean = this.spreadsheet.isPivotMode;
+    const field = getColNodeFieldFromNode(pivotMode, colNode);
 
     const formatter = getFormatter(
       this.spreadsheet,
@@ -252,6 +275,20 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
+
+    // todo-zc: 只有 getDataMatrixByHeaderNode 和 matriTransformer 两个函数耗时较长，需要优化
+    // const compatibleHideMeasureColumn = this.compatibleHideMeasureColumn();
+    // const leafRowNodes = this.leafRowNodes;
+    // const leafColNodes = this.leafColNodes;
+
+    getDataMatrixByHeaderNodeWorker({
+      leafRowNodes: [],
+      // leafRowNodes: leafRowNodes,
+      // leafColNodes: leafColNodes,
+      // compatibleHideMeasureColumn,
+      // dataSet: this.spreadsheet.dataSet,
+    });
+
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
     return this.matrixTransformer(
