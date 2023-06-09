@@ -45,10 +45,27 @@ export type SheetType =
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
+type _ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (pageSize: number) => void;
+      onChange?: (current: number) => void;
+    };
+
+type ShowPagination<OverrideShowPagination, Options> =
+  OverrideShowPagination extends true
+    ? Options extends {
+        pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
+      }
+      ? boolean | Pick<Options['pagination'], 'onShowSizeChange' | 'onChange'>
+      : _ShowPagination
+    : _ShowPagination;
+
 export interface BaseSheetComponentProps<
   PartialDrillDown = unknown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
+  OverrideShowPagination = false,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
@@ -61,12 +78,7 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
-  showPagination?:
-    | boolean
-    | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
-      };
+  showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
   header?: Header;
   /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */

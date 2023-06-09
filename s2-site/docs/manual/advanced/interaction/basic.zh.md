@@ -174,6 +174,13 @@ const s2Options = {
 const s2Options = {
   interaction: {
     hoverHighlight: false // 默认 true
+    // 等同于
+    // hoverHighlight: {
+    //   rowHeader = false, // 高亮悬停格子所在行头
+    //   colHeader = false, // 高亮悬停格子所在列头
+    //   currentRow = false, // 高亮悬停格子所在行
+    //   currentCol = false, // 高亮悬停格子所在列
+    // },
   }
 };
 ```
@@ -199,8 +206,8 @@ const s2Options = {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      rowCells: false,  // 选中单元格时，高亮当前行
-      colCells: false,  // 选中单元格时，高亮当前列
+      currentRow: false,  // 选中单元格时，高亮当前行
+      currentCol: false,  // 选中单元格时，高亮当前列
     },
   },
 };

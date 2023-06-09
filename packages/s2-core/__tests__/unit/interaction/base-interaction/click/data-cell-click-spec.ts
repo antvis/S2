@@ -4,11 +4,11 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
+import type { InteractionCellHighlight } from '@antv/s2';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
-  type InteractionCellSelectedHighlightType,
   InteractionName,
   InteractionStateName,
   InterceptType,
@@ -165,7 +165,7 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
   });
 
-  test('should highlight the column header cell when data cell clicked', () => {
+  test('should highlight the column header cell and row header cell when data cell clicked', () => {
     const headerCellId0 = 'header-0';
     const headerCellId1 = 'header-1';
     const columnNode: Array<Partial<Node>> = [
@@ -202,7 +202,8 @@ describe('Interaction Data Cell Click Tests', () => {
       interaction: {
         selectedCellHighlight: {
           colHeader: true,
-        } as InteractionCellSelectedHighlightType,
+          rowHeader: true,
+        } as InteractionCellHighlight,
       },
     });
 
@@ -211,21 +212,21 @@ describe('Interaction Data Cell Click Tests', () => {
       rowIndex: columnNode[0].belongsCell.getMeta().rowIndex,
     });
 
-    s2.interaction.getAllColHeaderCells = jest.fn();
     s2.interaction.updateCells = jest.fn();
+    s2.interaction.getAllColHeaderCells = jest.fn();
+    s2.interaction.getAllRowHeaderCells = jest.fn();
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    // TODO: 选中datacell不应触发colCell的选中态，只应该有高亮的展示态。此处的testcase需要修改，目前pr仅为workaround
-
-    // expect(s2.interaction.getState()).toEqual({
-    //   cells: [firstDataCellInfo.mockCellMeta, mockHeaderCellInfo.mockCellMeta],
-    //   stateName: InteractionStateName.SELECTED,
-    //   onUpdateCells: expect.any(Function),
-    // });
-    // expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
-    // expect(s2.interaction.updateCells).toHaveBeenCalled();
+    expect(s2.interaction.getState()).toEqual({
+      cells: [firstDataCellInfo.mockCellMeta],
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: expect.any(Function),
+    });
+    expect(s2.interaction.updateCells).toHaveBeenCalled();
+    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
+    expect(s2.interaction.getAllRowHeaderCells).toHaveBeenCalled();
   });
 });

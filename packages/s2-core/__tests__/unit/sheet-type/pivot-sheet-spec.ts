@@ -56,14 +56,14 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeAll(() => {
+  beforeEach(() => {
     setLang('zh_CN');
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     container?.remove();
     s2?.destroy();
   });
@@ -115,7 +115,7 @@ describe('PivotSheet Tests', () => {
       s2.tooltip.destroy();
 
       // remove container
-      expect(s2.tooltip.container).toBe(null);
+      expect(s2.tooltip.container).toBeFalsy();
       // reset position
       expect(s2.tooltip.position).toEqual({
         x: 0,
@@ -912,7 +912,7 @@ describe('PivotSheet Tests', () => {
       {
         query: undefined,
         sortByMeasure: nodeMeta.value,
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'asc',
       },
     ]);
@@ -928,7 +928,7 @@ describe('PivotSheet Tests', () => {
       {
         query: undefined,
         sortByMeasure: nodeMeta.value,
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'desc',
       },
     ]);
@@ -959,7 +959,7 @@ describe('PivotSheet Tests', () => {
       {
         query: { $$extra$$: 'price', type: '笔' },
         sortByMeasure: 'price',
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'asc',
       },
     ]);

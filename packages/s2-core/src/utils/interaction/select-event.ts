@@ -1,4 +1,4 @@
-import { forEach, reduce, uniqBy } from 'lodash';
+import { reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import {
   InteractionKeyboardKey,
@@ -14,10 +14,7 @@ import type {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { getDataCellId } from '../cell/data-cell';
-import {
-  getActiveHoverRowColCells,
-  updateAllColHeaderCellState,
-} from './hover-event';
+import { getActiveHoverRowColCells } from './hover-event';
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
@@ -95,24 +92,6 @@ export function getRowCellForSelectedCell(
     interaction.getAllRowHeaderCells(),
     spreadsheet.isHierarchyTreeType(),
   );
-}
-
-export function updateRowColCells(meta: ViewMeta) {
-  const { rowId, colId, spreadsheet } = meta;
-  const { interaction } = spreadsheet;
-
-  updateAllColHeaderCellState(
-    colId,
-    interaction.getAllColHeaderCells(),
-    InteractionStateName.SELECTED,
-  );
-
-  if (rowId) {
-    const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
-    forEach(allRowHeaderCells, (cell: RowCell) => {
-      cell.updateByState(InteractionStateName.SELECTED);
-    });
-  }
 }
 
 export const getRowHeaderByCellId = (
