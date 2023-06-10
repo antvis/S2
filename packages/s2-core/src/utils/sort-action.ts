@@ -17,9 +17,9 @@ import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
 import type { DataType, SortActionParams } from '../data-set/interface';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
-import { getLeafColumnsWithKey } from '../facet/utils';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -86,8 +86,13 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
-  const idWithPre = originValues.filter((originItem) =>
-    sortByValues.find((value) => endsWith(originItem, value)),
+  const idWithPre = originValues.filter(
+    (originItem) =>
+      !isNil(
+        sortByValues.find((value) =>
+          endsWith(originItem, isNil(value) ? value : value || '[&]'),
+        ),
+      ),
   );
   // 将 id 拆分为父节点和目标节点
   const idListWithPre = idWithPre.map((idStr) => {
