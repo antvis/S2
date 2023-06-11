@@ -3,6 +3,7 @@ import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
 import { Input } from 'antd';
 import { merge, pick } from 'lodash';
 import React, {
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -172,27 +173,25 @@ function EditCellComponent(
   );
 }
 
-function EditCell({
-  onChange,
-  onDataCellEditEnd,
-  CustomComponent,
-}: onChangeProps) {
-  const spreadsheet = useSpreadSheetRef();
+const EditCell = memo(
+  ({ onChange, onDataCellEditEnd, CustomComponent }: onChangeProps) => {
+    const spreadsheet = useSpreadSheetRef();
 
-  const cb = useCallback(
-    (e: CanvasEvent) => {
-      invokeComponent(
-        EditCellComponent,
-        { event: e, onChange, onDataCellEditEnd, CustomComponent },
-        spreadsheet,
-      );
-    },
-    [spreadsheet],
-  );
+    const cb = useCallback(
+      (e: CanvasEvent) => {
+        invokeComponent(
+          EditCellComponent,
+          { event: e, onChange, onDataCellEditEnd, CustomComponent },
+          spreadsheet,
+        );
+      },
+      [spreadsheet],
+    );
 
-  useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
+    useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
 
-  return null;
-}
+    return null;
+  },
+);
 
 export { EditCell };

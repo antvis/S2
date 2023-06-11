@@ -1,9 +1,9 @@
 import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
-import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
+import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
 import type {
@@ -24,6 +24,7 @@ export const BaseSheet = React.forwardRef<
   const [contextVal, setContextVal] = React.useState<SpreadSheet>(
     s2Ref.current,
   );
+  const value = useMemo(() => contextVal, [contextVal]);
 
   // 同步实例
   React.useEffect(() => {
@@ -36,7 +37,7 @@ export const BaseSheet = React.forwardRef<
 
   return (
     <React.StrictMode>
-      <SpreadSheetContext.Provider value={contextVal}>
+      <SpreadSheetContext.Provider value={value}>
         <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
           <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
