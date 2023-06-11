@@ -1,14 +1,14 @@
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
+import { Input } from 'antd';
+import { merge, pick } from 'lodash';
 import React, {
-  useRef,
-  useState,
+  useCallback,
   useEffect,
   useMemo,
-  useCallback,
+  useRef,
+  useState,
 } from 'react';
-import { Input } from 'antd';
-import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import {
@@ -93,6 +93,16 @@ function EditCellComponent(
     const { rowIndex, valueField } = cell.getMeta();
     spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
+
+    spreadsheet.emit(
+      S2Event.DATA_CELL_EDIT_END,
+      merge(cell.getMeta(), {
+        fieldValue: inputVal,
+        data: {
+          [valueField]: inputVal,
+        },
+      }),
+    );
 
     if (onChange) {
       onChange(spreadsheet.dataSet.originData);

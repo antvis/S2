@@ -1,9 +1,9 @@
 import {
-  type EmitterType,
-  getBaseCellData,
   GEvent,
   S2Event,
   SpreadSheet,
+  getBaseCellData,
+  type EmitterType,
   type TargetCellInfo,
 } from '@antv/s2';
 import React from 'react';
@@ -91,6 +91,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.DATA_CELL_SELECT_MOVE, props.onDataCellSelectMove, s2);
+  useS2Event(S2Event.DATA_CELL_EDIT_END, props.onDataCellEditEnd, s2);
 
   // ============== Corner Cell ====================
   useCellEvent(S2Event.CORNER_CELL_HOVER, props.onCornerCellHover, s2);
