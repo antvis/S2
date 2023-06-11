@@ -1,5 +1,4 @@
 import { concat, get } from 'lodash';
-import { NewTab } from '../../common/constant/copy';
 import {
   CopyMIMEType,
   type Copyable,
@@ -110,18 +109,8 @@ export const download = (str: string, fileName: string) => {
  * @param customTransformer
  */
 // TODO: 改名
-export const copyData = ({
-  sheetInstance,
-  split = NewTab,
-  formatOptions,
-  customTransformer,
-}: CopyAllDataParams) => {
-  return processAllSelected({
-    sheetInstance,
-    split,
-    formatOptions,
-    customTransformer,
-  })[0].content;
+export const copyData = (params: CopyAllDataParams) => {
+  return processAllSelected(params)[0].content;
 };
 
 export { CopyableList, FormatOptions };

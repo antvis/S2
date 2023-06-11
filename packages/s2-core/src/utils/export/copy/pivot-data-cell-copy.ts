@@ -1,4 +1,4 @@
-import { find, isEmpty, map, slice, zip } from 'lodash';
+import { clone, find, isEmpty, map, slice, zip } from 'lodash';
 import {
   type CellMeta,
   type DataItem,
@@ -37,58 +37,6 @@ export interface GetDataCellValueType {
   dataSet?: BaseDataSet;
   isPivotMode?: () => boolean;
 }
-
-// create webworker's getDataMatrixByHeaderNode
-const getDataMatrixByHeaderNodeWorker = (params: GetDataCellValueType) => {
-  // 因为 webworker 中clone 很多对象会报错，所以需要删除一些不必要的属性
-  const {
-    isPivotMode,
-    dataSet,
-    leafRowNodes,
-    leafColNodes,
-    compatibleHideMeasureColumn,
-  } = params;
-  // node 只需要留下 query, isTotals, isTotalMeasure, field;
-  const workerLeafRowNodes = map(leafRowNodes, (node) => {
-    const { query, isTotals, isTotalMeasure, field } = node;
-
-    return { query, isTotals, isTotalMeasure, field };
-  });
-
-  const workerLeafColNodes = map(leafColNodes, (node) => {
-    const { query, isTotals, isTotalMeasure, field } = node;
-
-    return { query, isTotals, isTotalMeasure, field };
-  });
-
-  // dataSet 需要留下：getCellData，getFieldFormatter
-  const workerDataSet = {
-    getCellData: dataSet.getCellData,
-    getFieldFormatter: dataSet.getFieldFormatter,
-  };
-
-  if (window.Worker) {
-    const worker = new Worker('worker.ts', { type: 'module' });
-
-    worker.addEventListener('message', (event) => {
-      const message = event.data;
-
-      // eslint-disable-next-line no-console
-      console.warn('Received message from Worker444:', message, params);
-    });
-    const message = {
-      leafRowNodes: workerLeafRowNodes,
-      leafColNodes: workerLeafColNodes,
-      compatibleHideMeasureColumn,
-      workerDataSet,
-      isPivotMode,
-    };
-
-    // console.warn('Received message from Worker666:', params);
-
-    worker.postMessage(JSON.parse(JSON.stringify(message)));
-  }
-};
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
@@ -174,10 +122,75 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected getDataMatrixByHeaderNode = () =>
     map(this.leafRowNodes, (rowNode) =>
-      this.leafColNodes.map((colNode) =>
-        this.getDataCellValue(rowNode, colNode),
-      ),
+      this.leafColNodes.map((colNode) => {
+        // const
+        return this.getDataCellValue(rowNode, colNode);
+      }),
     );
+
+  // i need use requestIdleCallback implement getDataMatrixByHeaderNode
+  protected getDataMatrixByHeaderNodeRIC = () => {
+    const matrix: DataItem[][] = [];
+    const rowNodes = clone(this.leafRowNodes);
+
+    const colNodes = clone(this.leafColNodes);
+    const measureQuery = this.compatibleHideMeasureColumn();
+    const pivotMode: () => boolean = this.spreadsheet.isPivotMode;
+    const dataSet = this.spreadsheet.dataSet;
+    const rowIndex = 0;
+    // const colIndex = 0;
+
+    const getDataCellValue = (rowNode: Node, colNode: Node): DataItem => {
+      const cellData = dataSet.getCellData({
+        query: {
+          ...rowNode.query,
+          ...colNode.query,
+          ...measureQuery,
+        },
+        rowNode,
+        isTotals:
+          rowNode.isTotals ||
+          rowNode.isTotalMeasure ||
+          colNode.isTotals ||
+          colNode.isTotalMeasure,
+      });
+
+      const field = getColNodeFieldFromNode(pivotMode, colNode);
+
+      const formatter = getFormatter(
+        field ?? colNode.field,
+        this.config.isFormatData,
+        dataSet,
+      );
+
+      return formatter(cellData?.[VALUE_FIELD] ?? '');
+    };
+
+    // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 rowNodes 和 colNodes
+    const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
+      while (deadline.timeRemaining() > 0 && rowNodes.length) {
+        // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
+        const rowNode = rowNodes[rowIndex];
+        // const colNode = colNodes[colIndex];
+        const row = colNodes.map((colNode) => {
+          return getDataCellValue.call(this, rowNode, colNode);
+        });
+
+        matrix.push(row);
+      }
+
+      if (rowNodes.length) {
+        requestIdleCallback(dataMatrixIdleCallback);
+      } else {
+        // this.config.onSuccess(matrix);
+        // console.log('dataMatrixIdleCallback finish', matrix);
+      }
+    };
+
+    requestIdleCallback(dataMatrixIdleCallback);
+
+    return matrix;
+  };
 
   private getDataCellValue(rowNode: Node, colNode: Node): DataItem {
     const measureQuery = this.compatibleHideMeasureColumn();
@@ -313,25 +326,22 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     // todo-zc: 只有 getDataMatrixByHeaderNode 和 matriTransformer 两个函数耗时较长，需要优化
-    const compatibleHideMeasureColumn = this.compatibleHideMeasureColumn();
-    const leafRowNodes = this.leafRowNodes;
-    const leafColNodes = this.leafColNodes;
+    this.getDataMatrixByHeaderNodeRIC();
 
-    getDataMatrixByHeaderNodeWorker({
-      // leafRowNodes: [],
-      leafRowNodes,
-      leafColNodes,
-      compatibleHideMeasureColumn,
-      dataSet: this.spreadsheet.dataSet,
-      isPivotMode: this.spreadsheet.isPivotMode,
-    });
-
+    // console.time('getDataMatrixByHeaderNode');
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    return this.matrixTransformer(
+    // console.timeEnd('getDataMatrixByHeaderNode');
+
+    // console.time('resultMatrix');
+    const resultMatrix = this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
       this.config.separator,
     );
+
+    // console.timeEnd('resultMatrix');
+
+    return resultMatrix;
   };
 }
 
