@@ -1,13 +1,13 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import {
+  GEvent,
   PivotSheet,
   S2Event,
-  type S2Options,
   SpreadSheet,
-  GEvent,
+  type S2Options,
 } from '@antv/s2';
-import { createMockCellInfo, getContainer } from 'tests/util/helpers';
+import { act, renderHook } from '@testing-library/react-hooks';
 import * as mockDataConfig from 'tests/data/simple-data.json';
+import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import type { SheetComponentsProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 
@@ -254,6 +254,10 @@ const cellEventCases = [
   {
     event: S2Event.DATA_CELL_SELECT_MOVE,
     name: 'onDataCellSelectMove',
+  },
+  {
+    event: S2Event.DATA_CELL_EDIT_END,
+    name: 'onDataCellEditEnd',
   },
   {
     event: S2Event.CORNER_CELL_HOVER,
