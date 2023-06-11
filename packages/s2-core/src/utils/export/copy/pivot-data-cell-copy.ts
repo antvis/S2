@@ -137,8 +137,8 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const measureQuery = this.compatibleHideMeasureColumn();
     const pivotMode: () => boolean = this.spreadsheet.isPivotMode;
     const dataSet = this.spreadsheet.dataSet;
-    const rowIndex = 0;
-    // const colIndex = 0;
+    let rowIndex = 0;
+    let colIndex = 0;
 
     const getDataCellValue = (rowNode: Node, colNode: Node): DataItem => {
       const cellData = dataSet.getCellData({
@@ -168,18 +168,36 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 rowNodes 和 colNodes
     const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-      while (deadline.timeRemaining() > 0 && rowNodes.length) {
-        // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
-        const rowNode = rowNodes[rowIndex];
-        // const colNode = colNodes[colIndex];
-        const row = colNodes.map((colNode) => {
-          return getDataCellValue.call(this, rowNode, colNode);
-        });
+      // console.count('enter dataMatrixIdleCallback');
+      let count = 5000;
+      const rowLen: number = rowNodes.length;
 
-        matrix.push(row);
+      while (
+        deadline.timeRemaining() > 0 &&
+        rowIndex < rowLen - 1 &&
+        count > 0
+      ) {
+        // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
+        // 尽量在空间时间内，执行尽可能多的 rowNodes 和 colNodes
+
+        for (let j = rowIndex; j < rowLen && count > 0; j++) {
+          const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
+          const rowNode = rowNodes[j];
+
+          for (let i = colIndex; i < colNodes.length; i++) {
+            const colNode = colNodes[i];
+
+            row.push(getDataCellValue(rowNode, colNode));
+            colIndex = i;
+          }
+          colIndex = 0;
+          rowIndex = j;
+          matrix.push(row);
+          count--;
+        }
       }
 
-      if (rowNodes.length) {
+      if (rowIndex < rowLen - 1) {
         requestIdleCallback(dataMatrixIdleCallback);
       } else {
         // this.config.onSuccess(matrix);
@@ -326,20 +344,20 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     // todo-zc: 只有 getDataMatrixByHeaderNode 和 matriTransformer 两个函数耗时较长，需要优化
-    this.getDataMatrixByHeaderNodeRIC();
+    const dataMatrix = this.getDataMatrixByHeaderNodeRIC();
 
-    // console.time('getDataMatrixByHeaderNode');
-    const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
+    // // console.time('getDataMatrixByHeaderNode');
+    // const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    // console.timeEnd('getDataMatrixByHeaderNode');
+    // // console.timeEnd('getDataMatrixByHeaderNode');
 
-    // console.time('resultMatrix');
+    // // console.time('resultMatrix');
     const resultMatrix = this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
       this.config.separator,
     );
 
-    // console.timeEnd('resultMatrix');
+    // // console.timeEnd('resultMatrix');
 
     return resultMatrix;
   };
