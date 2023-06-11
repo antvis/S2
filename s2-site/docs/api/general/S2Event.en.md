@@ -54,6 +54,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | mouse release    | `S2Event.DATA_CELL_MOUSE_UP`         | Value cell mouse release                                 |
 | trend icon click | `S2Event.DATA_CELL_TREND_ICON_CLICK` | Click on the trend icon in the tooltip of the value cell |
 | Swipe            | `S2Event.DATA_CELL_BRUSH_SELECTION`  | Value cell selection                                     |
+| Edit end           | `S2Event.DATA_CELL_EDIT_END`  | Value cell edit end(Currently only supports React editable SheetComponent)                         |
 
 ### Corner head
 
