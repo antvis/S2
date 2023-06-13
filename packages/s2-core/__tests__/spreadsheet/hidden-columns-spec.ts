@@ -293,7 +293,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const renderSpy = jest
         .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
+        .mockImplementationOnce(async () => {});
 
       pivotSheet.interaction.hideColumns([], false);
 
@@ -312,7 +312,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const renderSpy = jest
         .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
+        .mockImplementationOnce(async () => {});
 
       pivotSheet.interaction.hideColumns([], true);
 

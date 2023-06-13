@@ -37,7 +37,9 @@ describe('TableSheet Tests', () => {
 
   describe('TableSheet Sort Tests', () => {
     test('should trigger sort', () => {
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const showTooltipWithInfoSpy = jest
         .spyOn(s2, 'showTooltipWithInfo')

@@ -682,7 +682,9 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should clear drill down data', () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementation(async () => {});
 
     s2.interaction.addIntercepts([InterceptType.DATA_CELL_BRUSH_SELECTION]);
 
@@ -754,7 +756,9 @@ describe('PivotSheet Tests', () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const collapseRows = jest.fn();
 
@@ -791,7 +795,9 @@ describe('PivotSheet Tests', () => {
         style: { rowCell: { collapseFields: undefined } },
       });
 
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const isCollapsed = true;
 
@@ -915,7 +921,9 @@ describe('PivotSheet Tests', () => {
   );
 
   test('should handle group sort', () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementation(async () => {});
 
     const showTooltipWithInfoSpy = jest
       .spyOn(s2, 'showTooltipWithInfo')
