@@ -6,6 +6,8 @@ import {
   SpreadSheet,
   i18n,
   NewTab,
+  AsyncRequestThreshold,
+  exportDataAsync,
 } from '@antv/s2';
 import { Dropdown, Menu, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
@@ -53,12 +55,20 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
-  const copyData = (isFormat: boolean) => {
-    const data = getSheetData({
-      sheetInstance: sheet,
-      split: NewTab,
-      formatOptions: isFormat,
-    });
+  const isAsyncRequest = sheet.dataCfg?.data?.length >= AsyncRequestThreshold;
+
+  const copyData = async (isFormat: boolean) => {
+    const data = isAsyncRequest
+      ? await exportDataAsync({
+          sheetInstance: sheet,
+          split: NewTab,
+          formatOptions: isFormat,
+        })
+      : getSheetData({
+          sheetInstance: sheet,
+          split: NewTab,
+          formatOptions: isFormat,
+        });
 
     copyToClipboard(data, syncCopy)
       .then(() => {
@@ -71,8 +81,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
       });
   };
 
-  const downloadData = (isFormat: boolean) => {
-    const data = getSheetData({
+  const downloadData = async (isFormat: boolean) => {
+    const data = await getSheetData({
       sheetInstance: sheet,
       split: ',',
       formatOptions: isFormat,

@@ -1,5 +1,6 @@
-import { clone, find, isEmpty, map, slice, zip } from 'lodash';
+import { find, isEmpty, map, slice, zip } from 'lodash';
 import {
+  AsyncRenderThreshold,
   type CellMeta,
   type DataItem,
   EXTRA_FIELD,
@@ -10,6 +11,7 @@ import type { SpreadSheet } from '../../../sheet-type';
 import type {
   CopyableList,
   CopyAllDataParams,
+  MeasureQuery,
   SheetCopyConstructorParams,
 } from '../interface';
 import {
@@ -29,14 +31,6 @@ import {
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
 import { BaseDataCellCopy } from './base-data-cell-copy';
-
-export interface GetDataCellValueType {
-  leafRowNodes?: Node[];
-  leafColNodes?: Node[];
-  compatibleHideMeasureColumn?: { '[EXTRA_FIELD]': string | undefined };
-  dataSet?: BaseDataSet;
-  isPivotMode?: () => boolean;
-}
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
@@ -107,7 +101,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
    * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
    * https://github.com/antvis/S2/issues/1955
    */
-  private compatibleHideMeasureColumn = () => {
+  private compatibleHideMeasureColumn = (): MeasureQuery => {
     const isHideValue =
       this.spreadsheet.options?.style?.colCell?.hideValue &&
       this.spreadsheet.isValueInCols();
@@ -120,100 +114,109 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       : {};
   };
 
-  protected getDataMatrixByHeaderNode = () =>
-    map(this.leafRowNodes, (rowNode) =>
+  protected getDataMatrixByHeaderNode = () => {
+    const measureQuery = this.compatibleHideMeasureColumn();
+
+    return map(this.leafRowNodes, (rowNode) =>
       this.leafColNodes.map((colNode) => {
         // const
-        return this.getDataCellValue(rowNode, colNode);
+        return this.getDataCellValue({
+          rowNode,
+          colNode,
+          config: {
+            measureQuery,
+            isPivotMode: this.spreadsheet.isPivotMode,
+            dataSet: this.spreadsheet.dataSet,
+          },
+        });
       }),
     );
+  };
 
-  // i need use requestIdleCallback implement getDataMatrixByHeaderNode
   protected getDataMatrixByHeaderNodeRIC = () => {
     const matrix: DataItem[][] = [];
-    const rowNodes = clone(this.leafRowNodes);
-
-    const colNodes = clone(this.leafColNodes);
-    const measureQuery = this.compatibleHideMeasureColumn();
-    const pivotMode: () => boolean = this.spreadsheet.isPivotMode;
-    const dataSet = this.spreadsheet.dataSet;
     let rowIndex = 0;
     let colIndex = 0;
 
-    const getDataCellValue = (rowNode: Node, colNode: Node): DataItem => {
-      const cellData = dataSet.getCellData({
-        query: {
-          ...rowNode.query,
-          ...colNode.query,
-          ...measureQuery,
-        },
-        rowNode,
-        isTotals:
-          rowNode.isTotals ||
-          rowNode.isTotalMeasure ||
-          colNode.isTotals ||
-          colNode.isTotalMeasure,
-      });
-
-      const field = getColNodeFieldFromNode(pivotMode, colNode);
-
-      const formatter = getFormatter(
-        field ?? colNode.field,
-        this.config.isFormatData,
-        dataSet,
-      );
-
-      return formatter(cellData?.[VALUE_FIELD] ?? '');
-    };
-
-    // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 rowNodes 和 colNodes
-    const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-      // console.count('enter dataMatrixIdleCallback');
-      let count = 5000;
-      const rowLen: number = rowNodes.length;
-
-      while (
-        deadline.timeRemaining() > 0 &&
-        rowIndex < rowLen - 1 &&
-        count > 0
-      ) {
-        // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
-        // 尽量在空间时间内，执行尽可能多的 rowNodes 和 colNodes
-
-        for (let j = rowIndex; j < rowLen && count > 0; j++) {
-          const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
-          const rowNode = rowNodes[j];
-
-          for (let i = colIndex; i < colNodes.length; i++) {
-            const colNode = colNodes[i];
-
-            row.push(getDataCellValue(rowNode, colNode));
-            colIndex = i;
-          }
-          colIndex = 0;
-          rowIndex = j;
-          matrix.push(row);
-          count--;
-        }
-      }
-
-      if (rowIndex < rowLen - 1) {
-        requestIdleCallback(dataMatrixIdleCallback);
-      } else {
-        // this.config.onSuccess(matrix);
-        // console.log('dataMatrixIdleCallback finish', matrix);
-      }
-    };
-
-    requestIdleCallback(dataMatrixIdleCallback);
-
-    return matrix;
-  };
-
-  private getDataCellValue(rowNode: Node, colNode: Node): DataItem {
     const measureQuery = this.compatibleHideMeasureColumn();
 
-    const cellData = this.spreadsheet.dataSet.getCellData({
+    // 需要将 asyncDataMatrix 封装成一个 Promise
+    const asyncDataMatrix = (): Promise<DataItem[][]> => {
+      return new Promise((resolve, reject) => {
+        try {
+          // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 this.leafRowNodes 和 this.leafColNodes
+          const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
+            let count = AsyncRenderThreshold;
+            const rowLen: number = this.leafRowNodes.length;
+
+            while (
+              deadline.timeRemaining() > 0 &&
+              rowIndex < rowLen - 1 &&
+              count > 0
+            ) {
+              // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
+              // 尽量在空间时间内，执行尽可能多的 this.leafRowNodes 和 this.leafColNodes
+
+              for (let j = rowIndex; j < rowLen && count > 0; j++) {
+                const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
+                const rowNode = this.leafRowNodes[j];
+
+                for (let i = colIndex; i < this.leafColNodes.length; i++) {
+                  const colNode = this.leafColNodes[i];
+
+                  row.push(
+                    this.getDataCellValue({
+                      rowNode,
+                      colNode,
+                      config: {
+                        isPivotMode: this.spreadsheet.isPivotMode,
+                        dataSet: this.spreadsheet.dataSet,
+                        measureQuery,
+                      },
+                    }),
+                  );
+                  colIndex = i;
+                }
+                colIndex = 0;
+                rowIndex = j;
+                matrix.push(row);
+                count--;
+              }
+            }
+
+            if (rowIndex < rowLen - 1) {
+              requestIdleCallback(dataMatrixIdleCallback);
+            } else {
+              // console.log(matrix, 'dataMatrix');
+              resolve(matrix);
+            }
+          };
+
+          requestIdleCallback(dataMatrixIdleCallback);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    };
+
+    return asyncDataMatrix();
+  };
+
+  private getDataCellValue = ({
+    rowNode,
+    colNode,
+    config,
+  }: {
+    rowNode: Node;
+    colNode: Node;
+    config: {
+      isPivotMode: () => boolean;
+      dataSet: BaseDataSet;
+      measureQuery: MeasureQuery;
+    };
+  }): DataItem => {
+    const { isPivotMode, dataSet, measureQuery } = config;
+    const cellData = dataSet.getCellData({
       query: {
         ...rowNode.query,
         ...colNode.query,
@@ -227,17 +230,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         colNode.isTotalMeasure,
     });
 
-    const pivotMode: () => boolean = this.spreadsheet.isPivotMode;
-    const field = getColNodeFieldFromNode(pivotMode, colNode);
+    const field = getColNodeFieldFromNode(isPivotMode, colNode);
 
     const formatter = getFormatter(
       field ?? colNode.field,
       this.config.isFormatData,
-      this.spreadsheet.dataSet,
+      dataSet,
     );
 
     return formatter(cellData?.[VALUE_FIELD] ?? '');
-  }
+  };
 
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
     const { fields, meta } = this.spreadsheet.dataCfg;
@@ -287,11 +289,20 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   getDataMatrixByDataCell = (cellMetaMatrix: CellMeta[][]): CopyableList => {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
+    const measureQuery = this.compatibleHideMeasureColumn();
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
       map(cellsMeta, (it) => {
         const [rowNode, colNode] = getHeaderNodeFromMeta(it, this.spreadsheet);
-        const dataItem = this.getDataCellValue(rowNode!, colNode!);
+        const dataItem = this.getDataCellValue({
+          rowNode: rowNode!,
+          colNode: colNode!,
+          config: {
+            isPivotMode: this.spreadsheet.isPivotMode,
+            dataSet: this.spreadsheet.dataSet,
+            measureQuery,
+          },
+        });
 
         return convertString(dataItem);
       }),
@@ -336,6 +347,32 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     );
   }
 
+  getAsyncAllPivotCopyData = async (): Promise<CopyableList> => {
+    const rowMatrix = this.getRowMatrix();
+
+    const colMatrix = this.getColMatrix();
+
+    const cornerMatrix = this.getCornerMatrix(rowMatrix);
+
+    let dataMatrix: string[][] = [];
+
+    // 把两类导出都封装成异步的，保证导出类型的一致
+    if (this.config.isAsyncExport) {
+      dataMatrix = (await this.getDataMatrixByHeaderNodeRIC()) as string[][];
+    } else {
+      dataMatrix = (await Promise.resolve(
+        this.getDataMatrixByHeaderNode(),
+      )) as string[][];
+    }
+
+    const resultMatrix = this.matrixTransformer(
+      assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
+      this.config.separator,
+    );
+
+    return resultMatrix;
+  };
+
   getPivotAllCopyData = (): CopyableList => {
     const rowMatrix = this.getRowMatrix();
 
@@ -343,21 +380,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
-    // todo-zc: 只有 getDataMatrixByHeaderNode 和 matriTransformer 两个函数耗时较长，需要优化
-    const dataMatrix = this.getDataMatrixByHeaderNodeRIC();
+    const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
-    // // console.time('getDataMatrixByHeaderNode');
-    // const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
-
-    // // console.timeEnd('getDataMatrixByHeaderNode');
-
-    // // console.time('resultMatrix');
     const resultMatrix = this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
       this.config.separator,
     );
-
-    // // console.timeEnd('resultMatrix');
 
     return resultMatrix;
   };
@@ -393,6 +421,25 @@ export const processSelectedAllPivot = (
   });
 
   return pivotDataCellCopy.getPivotAllCopyData();
+};
+
+// 全量导出使用 异步方法
+export const processSelectedAllPivotAsync = (
+  params: CopyAllDataParams,
+): Promise<CopyableList> => {
+  const { sheetInstance, split, formatOptions, customTransformer } = params;
+  const pivotDataCellCopy = new PivotDataCellCopy({
+    spreadsheet: sheetInstance,
+    isExport: true,
+    config: {
+      separator: split,
+      formatOptions,
+      customTransformer,
+      isAsyncExport: true,
+    },
+  });
+
+  return pivotDataCellCopy.getAsyncAllPivotCopyData();
 };
 
 export const processSelectedPivotByDataCell = ({

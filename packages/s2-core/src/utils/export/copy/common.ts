@@ -186,6 +186,7 @@ export function unifyConfig({
     separator = NewTab,
     selectedCells = [],
     customTransformer,
+    isAsyncExport = false,
   },
   isExport,
 }: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
@@ -207,6 +208,7 @@ export function unifyConfig({
     transformers,
     isFormatData,
     isFormatHeader,
+    isAsyncExport,
   };
 }
 

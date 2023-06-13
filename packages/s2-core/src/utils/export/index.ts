@@ -7,7 +7,7 @@ import {
   type CopyableList,
   type CopyAllDataParams,
 } from './interface';
-import { processAllSelected } from './copy/core';
+import { processAllSelected, processAllSelectedAsync } from './copy/core';
 import { getNodeFormatData, assembleMatrix, getMaxRowLen } from './copy/common';
 import { getHeaderList } from './method';
 
@@ -110,7 +110,15 @@ export const download = (str: string, fileName: string) => {
  */
 // TODO: 改名
 export const copyData = (params: CopyAllDataParams) => {
-  return processAllSelected(params)[0].content;
+  const result = processAllSelected(params);
+
+  return result[0].content;
+};
+
+export const exportDataAsync = async (params: CopyAllDataParams) => {
+  const result = await processAllSelectedAsync(params);
+
+  return result[0].content;
 };
 
 export { CopyableList, FormatOptions };
