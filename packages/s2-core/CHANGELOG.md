@@ -1,3 +1,17 @@
+# [@antv/s2-v1.48.0](https://github.com/antvis/S2/compare/@antv/s2-v1.47.1...@antv/s2-v1.48.0) (2023-06-09)
+
+
+### Bug Fixes
+
+* **core:** highlight the column header cell and row header when data cell clicked ([#2211](https://github.com/antvis/S2/issues/2211)) ([b2ac77c](https://github.com/antvis/S2/commit/b2ac77c2d7d2e42f61668d6122d0ddbee865d183))
+* **interaction:** 修复列头隐藏后展开 icon 显示异常 close [#2194](https://github.com/antvis/S2/issues/2194) ([#2224](https://github.com/antvis/S2/issues/2224)) ([d23b8f2](https://github.com/antvis/S2/commit/d23b8f2171e2aa09d626bc9227f2f622c3fdd5c7))
+
+
+### Features
+
+* support separate config of `hoverHighlight` ([#2226](https://github.com/antvis/S2/issues/2226)) ([de86300](https://github.com/antvis/S2/commit/de86300b13737bb359e81e11856a4ae0050a99ed))
+* 表格滚动后触发hover ([#2235](https://github.com/antvis/S2/issues/2235)) ([645c85c](https://github.com/antvis/S2/commit/645c85caab24feaf4ca02344b54e63c81f420e3a))
+
 # [@antv/s2-v1.47.1](https://github.com/antvis/S2/compare/@antv/s2-v1.47.0...@antv/s2-v1.47.1) (2023-05-23)
 
 
