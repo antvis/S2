@@ -390,7 +390,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, options: S2RenderOptions = {}) {
+  private doRender(reloadData = true, options: S2RenderOptions = {}) {
     // 防止表格卸载后, 再次调用 render 函数的报错
     if (
       !this.getCanvasElement() ||
@@ -419,6 +419,20 @@ export abstract class SpreadSheet extends EE {
     }
 
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
+  }
+
+  /**
+   * 同步渲染
+   * @deprecated 适配 g5.0 异步渲染过程中暂时保留
+   */
+  // eslint-disable-next-line camelcase
+  public UNSAFE_render(reloadData?: boolean, options?: S2RenderOptions) {
+    this.doRender(reloadData, options);
+  }
+
+  public async render(reloadData?: boolean, options?: S2RenderOptions) {
+    await this.container.ready;
+    this.doRender(reloadData, options);
   }
 
   public destroy() {

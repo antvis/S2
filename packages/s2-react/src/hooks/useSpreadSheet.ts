@@ -55,11 +55,11 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     [sheetType, options, dataCfg, customSpreadSheet],
   );
 
-  const buildSpreadSheet = React.useCallback(() => {
+  const buildSpreadSheet = React.useCallback(async () => {
     setLoading(true);
     s2Ref.current = renderSpreadSheet(containerRef.current!);
     s2Ref.current.setThemeCfg(props.themeCfg);
-    s2Ref.current.render();
+    await s2Ref.current.render();
     setLoading(false);
 
     /*
