@@ -3,6 +3,7 @@ import {
   Canvas,
   DisplayObject,
   FederatedPointerEvent as CanvasEvent,
+  runtime,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
@@ -18,7 +19,6 @@ import {
   some,
   values,
 } from 'lodash';
-import { runtime } from '@antv/g-lite';
 import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
