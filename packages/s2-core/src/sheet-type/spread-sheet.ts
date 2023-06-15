@@ -215,6 +215,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initInteraction() {
+    this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
 
@@ -381,6 +382,10 @@ export abstract class SpreadSheet extends EE {
       this.options = getSafetyOptions(options);
     } else {
       this.options = customMerge(this.options, options);
+    }
+
+    if (reset || options.interaction) {
+      this.initInteraction();
     }
 
     if (reset || options.tooltip?.renderTooltip) {
