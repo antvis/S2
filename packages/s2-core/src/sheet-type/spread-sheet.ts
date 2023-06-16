@@ -109,6 +109,11 @@ export abstract class SpreadSheet extends EE {
 
   private untypedEmit = this.emit;
 
+  /**
+   * 表格是否已销毁
+   */
+  private destroyed = false;
+
   public on = <K extends keyof EmitterType>(
     event: K,
     listener: EmitterType[K],
@@ -431,11 +436,20 @@ export abstract class SpreadSheet extends EE {
   }
 
   public async render(reloadData?: boolean, options?: S2RenderOptions) {
+    if (this.destroyed) {
+      return;
+    }
+
     await this.container.ready;
     this.doRender(reloadData, options);
   }
 
   public destroy() {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
     this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();

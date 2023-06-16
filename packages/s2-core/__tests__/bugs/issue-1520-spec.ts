@@ -5,7 +5,7 @@
  */
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-1520.json';
-import { PivotSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { GuiIcon } from '@/common';
 
 const s2Options = {
@@ -24,16 +24,19 @@ const s2Options = {
 };
 
 describe('Conditions Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  let s2: SpreadSheet;
 
-  s2.render();
+  beforeEach(async () => {
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
+    await s2.render();
+  });
+
   test('should render icon for cell with field value 0', () => {
     const dataNodes = s2.facet.getDataCells();
 
     dataNodes.forEach((node) => {
-      const drawIcon = node
-        .getChildren()
-        .some((child) => child instanceof GuiIcon);
+      const drawIcon = node.children.some((child) => child instanceof GuiIcon);
 
       expect(drawIcon).toBeTrue();
     });

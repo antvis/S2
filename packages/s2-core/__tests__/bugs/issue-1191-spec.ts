@@ -57,7 +57,7 @@ const dataCfg: S2DataConfig = {
 describe('Link Field Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2options);
     s2.setTheme({
       rowCell: {
@@ -69,7 +69,7 @@ describe('Link Field Tests', () => {
         },
       },
     });
-    s2.render();
+    await s2.render();
   });
 
   test('province row cell should use link field style', () => {

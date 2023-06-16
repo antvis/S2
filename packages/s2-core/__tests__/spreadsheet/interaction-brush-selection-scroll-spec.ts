@@ -156,7 +156,7 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
   test('should scroll when mouse outside table data cell', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
-    s2.render();
+    await s2.render();
 
     const targetCell = s2.facet.getDataCells()[0];
 
@@ -170,7 +170,7 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
         trailingRowCount: 2,
       },
     });
-    s2.render();
+    await s2.render();
     s2.interaction.reset();
 
     await expectScrollBrush(s2, targetCell);
@@ -193,7 +193,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
 
     const dataCell = s2.facet.getDataCells()[0];
 
@@ -221,10 +221,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
-
-    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
-    await sleep(50);
+    await s2.render();
 
     const rowCell = s2.facet.getRowCells()[0];
 
@@ -262,10 +259,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
-
-    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
-    await sleep(50);
+    await s2.render();
 
     const rowCell = s2.facet.getRowCells()[0];
 
@@ -317,7 +311,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
 
     const dataCell = s2.facet.getDataCells()[0];
 

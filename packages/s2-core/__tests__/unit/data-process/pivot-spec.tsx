@@ -9,18 +9,22 @@ import { data } from '../../data/mock-dataset.json';
 import type { ViewMeta } from '../../../src/common';
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
-import { PivotSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 describe('Pivot Table Core Data Process', () => {
-  const s2 = new PivotSheet(
-    getContainer(),
-    assembleDataCfg({
-      data,
-    }),
-    assembleOptions({}),
-  );
+  let s2: SpreadSheet;
 
-  s2.render();
+  beforeAll(async () => {
+    s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        data,
+      }),
+      assembleOptions({}),
+    );
+
+    await s2.render();
+  });
 
   describe('1、Transform indexes data', () => {
     const ds = s2.dataSet as PivotDataSet;

@@ -212,7 +212,7 @@ describe('PivotSheet Tests', () => {
       CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
-      (cellType) => {
+      async (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;
         const defaultTooltipContent = 'default tooltip content';
 
@@ -233,7 +233,7 @@ describe('PivotSheet Tests', () => {
           }),
         );
 
-        sheet.render();
+        await sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container!.innerHTML).toEqual(tooltipContent);

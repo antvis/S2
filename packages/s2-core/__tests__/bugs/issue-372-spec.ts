@@ -28,9 +28,9 @@ const s2Options: S2Options = {
 describe('GrandTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should get right height of GrandTotal node', () => {

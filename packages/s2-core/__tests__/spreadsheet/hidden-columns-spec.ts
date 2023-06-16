@@ -20,13 +20,13 @@ describe('SpreadSheet Hidden Columns Tests', () => {
   describe('TableSheet', () => {
     let tableSheet: TableSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       tableSheet = new TableSheet(
         getContainer(),
         mockTableDataConfig,
         s2Options,
       );
-      tableSheet.render();
+      await tableSheet.render();
     });
 
     afterEach(() => {
@@ -129,7 +129,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(groupDetail.hideColumnNodes[1].field).toEqual('province');
     });
 
-    test('should hide columns by interaction hiddenColumnFields config by default', () => {
+    test('should hide columns by interaction hiddenColumnFields config by default', async () => {
       const hiddenColumns = ['cost'];
       const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
         ...s2Options,
@@ -138,7 +138,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [costDetail] = hiddenColumnsDetail;
@@ -156,7 +156,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
 
-    test('should hide columns for multiple columns', () => {
+    test('should hide columns for multiple columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
       ];
@@ -167,7 +167,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           columns: customColMultipleColumns,
         },
       });
-      tableSheet.render();
+      await tableSheet.render();
 
       tableSheet.interaction.hideColumns(hiddenColumns);
 
@@ -213,9 +213,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       },
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2Options);
-      pivotSheet.render();
+      await pivotSheet.render();
     });
 
     afterEach(() => {
@@ -322,7 +322,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsDetail).toEqual([]);
     });
 
-    test('should default hidden columns by interaction hiddenColumnFields config', () => {
+    test('should default hidden columns by interaction hiddenColumnFields config', async () => {
       const hiddenColumns = [typePriceColumnId];
       const sheet = new PivotSheet(getContainer(), pivotDataCfg, {
         ...s2Options,
@@ -331,7 +331,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [priceDetail] = hiddenColumnsDetail;
@@ -352,7 +352,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1993
-    test('should render correctly x and width after hide columns grandTotals next sibling cell', () => {
+    test('should render correctly x and width after hide columns grandTotals next sibling cell', async () => {
       const nodeId = 'root[&]笔[&]义乌[&]price';
 
       pivotSheet.setOptions({
@@ -378,7 +378,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           },
         },
       });
-      pivotSheet.render();
+      await pivotSheet.render();
 
       pivotSheet.interaction.hideColumns([nodeId]);
 
@@ -404,7 +404,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
-    test('should hide columns for multiple columns', () => {
+    test('should hide columns for multiple columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
       ];
@@ -413,7 +413,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         ...mockPivotDataConfig,
         fields: customColGridSimpleFields,
       });
-      pivotSheet.render();
+      await pivotSheet.render();
 
       pivotSheet.interaction.hideColumns(hiddenColumns);
 
@@ -466,7 +466,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       };
 
-      beforeEach(() => {
+      beforeEach(async () => {
         sheet = new PivotSheet(
           getContainer(),
           {
@@ -480,7 +480,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           },
           options,
         );
-        sheet.render();
+        await sheet.render();
       });
 
       afterEach(() => {
@@ -570,7 +570,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       });
 
       // https://github.com/antvis/S2/issues/1721
-      test('should hide grand totals node1', () => {
+      test('should hide grand totals node1', async () => {
         const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({
@@ -582,7 +582,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
             valueInCols: true,
           },
         });
-        sheet.render();
+        await sheet.render();
 
         sheet.interaction.hideColumns([nodeId]);
 

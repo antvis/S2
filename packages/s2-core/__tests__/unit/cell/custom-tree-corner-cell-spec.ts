@@ -6,7 +6,7 @@ import { CustomTreeData } from 'tests/data/data-custom-tree';
 import { getContainer } from 'tests/util/helpers';
 import { get } from 'lodash';
 import type { S2DataConfig } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { CornerCell, type S2Options } from '@/index';
 
 describe('test for corner text', () => {
@@ -36,9 +36,12 @@ describe('test for corner text', () => {
     hierarchyType: 'tree',
   };
 
-  const mockSheet = new PivotSheet(getContainer(), dataCfg, options);
+  let mockSheet: SpreadSheet;
 
-  mockSheet.render();
+  beforeAll(async () => {
+    mockSheet = new PivotSheet(getContainer(), dataCfg, options);
+    await mockSheet.render();
+  });
 
   test('get correct default corner text when the corner label is empty', () => {
     const cornerCells = mockSheet.facet.cornerHeader.children;
@@ -47,9 +50,9 @@ describe('test for corner text', () => {
     expect(get(cornerCells[1], 'actualText')).toEqual('type');
   });
 
-  test('get correct default corner text when set the cornerText.', () => {
+  test('get correct default corner text when set the cornerText.', async () => {
     mockSheet.setOptions({ ...options, cornerText: 'test' });
-    mockSheet.render();
+    await mockSheet.render();
 
     const cornerCells = mockSheet.facet.cornerHeader.children.filter(
       (v) => v instanceof CornerCell,
