@@ -6,7 +6,6 @@ import {
   VALUE_FIELD,
   InteractionStateName,
   CellTypes,
-  type InteractionCellSelectedHighlightType,
   EMPTY_PLACEHOLDER,
 } from '../../common/constant';
 import type {

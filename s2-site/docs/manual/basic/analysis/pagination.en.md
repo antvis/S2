@@ -33,6 +33,17 @@ onShowSizeChange?: (pageSize: number) => void,\
 onChange?: (current: number) => void\
 } | `false` | |
 
+📢 It should be noted that in the @antv/s2-react version, the type of `showPagination` is:
+
+```ts
+type ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (current: number, pageSize: number) => void,
+      onChange?: (current: number, pageSize: number) => void
+    }
+```
+
 ### React version
 
 > The [Ant Design](https://ant.design/components/pagination-cn/) Pagination paging component is used, which supports [transparent transmission API](https://ant.design/components/pagination-cn/#API) . If you need to modify the style, you can directly override it through CSS.

@@ -123,6 +123,8 @@ describe('Table Mode Facet Test', () => {
       panelGroup: container.addGroup(),
       foregroundGroup: container.addGroup(),
       backgroundGroup: container.addGroup(),
+      off: jest.fn(),
+      on: jest.fn(),
     });
     const mockDataSet = new MockTableDataSet(spreadsheet);
     spreadsheet.dataSet = mockDataSet;
@@ -136,11 +138,11 @@ describe('Table Mode Facet Test', () => {
       dataCell: (fct) => new DataCell(fct, spreadsheet),
     });
 
-    beforeAll(() => {
+    beforeEach(() => {
       newFacet.render();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       newFacet.destroy();
     });
 

@@ -200,6 +200,8 @@ s2.setTheme({
 | backgroundOpacity | 背景透明度 | `number` |        |      |
 | borderColor       | 边线填充色 | `string` |        |      |
 | borderWidth       | 边线宽度   | `number` |        |      |
+| borderOpacity     | 边线透明度 | `number` |        |      |
+| textOpacity       | 文本透明度 | `number` |        |      |
 | opacity           | 整体透明度 | `number` |        |      |
 
 #### Margin ｜ Padding

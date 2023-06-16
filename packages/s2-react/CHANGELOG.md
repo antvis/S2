@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.41.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.40.0...@antv/s2-react-v1.41.0) (2023-06-09)
+
+
+### Bug Fixes
+
+* **react:** 更新react分页器定义 ([#2238](https://github.com/antvis/S2/issues/2238)) ([83c48f7](https://github.com/antvis/S2/commit/83c48f71e3b834be5e56e884ee183050ee2c5866))
+
+
+### Features
+
+* support separate config of `hoverHighlight` ([#2226](https://github.com/antvis/S2/issues/2226)) ([de86300](https://github.com/antvis/S2/commit/de86300b13737bb359e81e11856a4ae0050a99ed))
+* 表格滚动后触发hover ([#2235](https://github.com/antvis/S2/issues/2235)) ([645c85c](https://github.com/antvis/S2/commit/645c85caab24feaf4ca02344b54e63c81f420e3a))
+
 # [@antv/s2-react-v1.40.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.39.0...@antv/s2-react-v1.40.0) (2023-05-22)
 
 

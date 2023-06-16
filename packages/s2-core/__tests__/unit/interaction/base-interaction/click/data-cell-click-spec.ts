@@ -4,12 +4,11 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
-import { getActiveHoverRowColCells } from '@antv/s2';
+import type { InteractionCellHighlight } from '@antv/s2';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
-  type InteractionCellSelectedHighlightType,
   InteractionName,
   InteractionStateName,
   InterceptType,
@@ -204,7 +203,7 @@ describe('Interaction Data Cell Click Tests', () => {
         selectedCellHighlight: {
           colHeader: true,
           rowHeader: true,
-        } as InteractionCellSelectedHighlightType,
+        } as InteractionCellHighlight,
       },
     });
 

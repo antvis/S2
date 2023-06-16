@@ -10,16 +10,16 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
+      style: {
+        cellCfg: {
+          height: 100,
+        },
+      },
       interaction: {
         // 悬停高亮
         hoverHighlight: true,
-        // 等同于
-        // hoverHighlight: {
-        //   rowHeader = true, // 高亮悬停格子所在行头
-        //   colHeader = true, // 高亮悬停格子所在列头
-        //   currentRow = true, // 高亮悬停格子所在行
-        //   currentCol = true, // 高亮悬停格子所在列
-        // },
+        // 滚动后自动触发悬停状态
+        hoverAfterScroll: true,
       },
       tooltip: {
         showTooltip: true,

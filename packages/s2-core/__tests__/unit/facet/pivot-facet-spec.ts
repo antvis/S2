@@ -210,7 +210,7 @@ describe('Pivot Mode Facet Test', () => {
     });
     const { rowsHierarchy } = treeFacet.layoutResult;
 
-    afterAll(() => {
+    afterEach(() => {
       spy.mockRestore();
     });
 
@@ -238,11 +238,11 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct layer after render', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       facet.render();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       facet.render();
     });
 
@@ -266,7 +266,7 @@ describe('Pivot Mode Facet Test', () => {
 
       const rect = get(backgroundGroup, 'cfg.children[0]');
 
-      expect(backgroundGroup.cfg.children).toHaveLength(1);
+      expect(backgroundGroup.cfg.children).toHaveLength(3);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();
     });
@@ -309,11 +309,11 @@ describe('Pivot Mode Facet Test', () => {
       ...assembleOptions(),
     });
 
-    beforeAll(() => {
+    beforeEach(() => {
       newFacet.render();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       newFacet.destroy();
     });
 
@@ -356,11 +356,11 @@ describe('Pivot Mode Facet Test', () => {
       showSeriesNumber: true,
     });
 
-    beforeAll(() => {
+    beforeEach(() => {
       seriesNumberFacet.render();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       seriesNumberFacet.destroy();
     });
 
