@@ -428,11 +428,13 @@ export class RowCell extends HeaderCell {
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
+    const adjustTextAreaHeight =
+      textArea.height > height ? height : textArea.height;
 
     const { fontSize } = this.getTextStyle();
     const textY = getAdjustPosition(
       textArea.y,
-      textArea.height,
+      adjustTextAreaHeight,
       scrollY,
       height,
       fontSize,
