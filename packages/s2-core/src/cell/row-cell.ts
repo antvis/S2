@@ -428,8 +428,17 @@ export class RowCell extends HeaderCell {
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
-    const adjustTextAreaHeight =
-      textArea.height > height ? height : textArea.height;
+
+    let adjustTextAreaHeight = textArea.height;
+    const isShowVerticalScrollBar = this.spreadsheet.foregroundGroup.contain(
+      this.spreadsheet.facet.vScrollBar,
+    );
+    if (
+      !isShowVerticalScrollBar &&
+      textArea.y + textArea.height > scrollY + height
+    ) {
+      adjustTextAreaHeight = scrollY + height - textArea.y;
+    }
 
     const { fontSize } = this.getTextStyle();
     const textY = getAdjustPosition(
