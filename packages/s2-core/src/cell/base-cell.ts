@@ -37,7 +37,7 @@ import {
   type TextTheme,
   type Conditions,
   type Condition,
-  type MappingResult,
+  type ConditionMappingResult,
   CellClipBox,
   CellBorderPosition,
   type InteractionStateTheme,
@@ -45,6 +45,7 @@ import {
   type IconPosition,
   type InternalFullyTheme,
   type InternalFullyCellTheme,
+  type IconCondition,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -195,7 +196,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract mappingValue(
     condition: Condition,
-  ): MappingResult | undefined | null;
+  ): ConditionMappingResult | undefined | null;
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -540,15 +541,28 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
   }
 
-  public getTextConditionFill(textFill: string) {
-    // get text condition's fill result
+  public getTextConditionMappingResult() {
     const textCondition = this.findFieldCondition(this.conditions?.text);
 
     if (textCondition?.mapping) {
-      textFill = this.mappingValue(textCondition)?.fill || textFill;
+      return this.mappingValue(textCondition);
     }
 
-    return textFill;
+    return null;
+  }
+
+  public getContainConditionMappingResultTextStyle(
+    style: TextTheme | undefined,
+  ) {
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 主题配置文字样式 < 条件格式文字样式
+    const defaultTextFill = this.getDefaultTextFill(style!.fill!);
+    const conditionStyle = this.getTextConditionMappingResult();
+
+    return {
+      ...style,
+      ...conditionStyle,
+      fill: conditionStyle?.fill || defaultTextFill,
+    };
   }
 
   /**
@@ -569,7 +583,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textFill = REVERSE_FONT_COLOR;
     }
 
-    return textFill;
+    return textFill || '';
   }
 
   public getBackgroundConditionFill() {
@@ -594,7 +608,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public getIconConditionResult(): FullyIconName | undefined {
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const iconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    ) as IconCondition;
 
     if (iconCondition?.mapping!) {
       const attrs = this.mappingValue(iconCondition);

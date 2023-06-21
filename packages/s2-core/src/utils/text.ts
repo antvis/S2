@@ -334,17 +334,13 @@ const getCurrentTextStyle = ({
   textStyle?: TextTheme;
   textCondition?: Condition;
 }) => {
-  let fill = textStyle?.fill;
+  const style = textCondition?.mapping?.(data, {
+    rowIndex,
+    colIndex,
+    meta,
+  });
 
-  if (textCondition?.mapping) {
-    fill = textCondition?.mapping(data, {
-      rowIndex,
-      colIndex,
-      meta,
-    })?.fill;
-  }
-
-  return { ...textStyle, fill };
+  return { ...textStyle, ...style };
 };
 
 /**
@@ -573,7 +569,7 @@ export const drawObjectText = (
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
-        const attrs = iconCondition?.mapping(curText, {
+        const attrs = iconCondition?.mapping?.(curText, {
           rowIndex: i,
           colIndex: j,
           meta: cell?.getMeta(),
@@ -586,8 +582,8 @@ export const drawObjectText = (
             x: iconX,
             y: iconY,
             name: attrs.icon!,
-            width: iconStyle?.size,
-            height: iconStyle?.size,
+            width: attrs.size ?? iconStyle?.size,
+            height: attrs.size ?? iconStyle?.size,
             fill: attrs.fill,
           });
 

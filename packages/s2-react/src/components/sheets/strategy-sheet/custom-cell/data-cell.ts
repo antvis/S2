@@ -8,7 +8,7 @@ import { DataCell, drawObjectText } from '@antv/s2';
  * | measure1 measure2  measure3 |
  * --------------------------------------
  */
-export class CustomDataCell extends DataCell {
+export class StrategySheetDataCell extends DataCell {
   /**
    * Render cell main text
    */

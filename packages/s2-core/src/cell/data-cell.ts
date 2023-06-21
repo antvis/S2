@@ -10,13 +10,14 @@ import {
   CellBorderPosition,
   CellClipBox,
   type FullyIconName,
+  type IconCondition,
   type InteractionStateTheme,
 } from '../common/interface';
 import type {
   CellMeta,
   Condition,
   FormatResult,
-  MappingResult,
+  ConditionMappingResult,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
@@ -229,7 +230,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 并且为了保证格式的统一，只要有 condition icon 配置，就提供 icon 的占位，不过 mapping 结果是否为 null
     // 比如在 icon position 为 right 时，如果根据实际的 mappingResult 来决定是否提供 icon 占位，文字本身对齐效果就不太好，
 
-    const iconCondition = this.findFieldCondition(this.conditions?.icon!);
+    const iconCondition = this.findFieldCondition(
+      this.conditions?.icon!,
+    ) as IconCondition;
+
     const iconCfg =
       iconCondition &&
       iconCondition.mapping! &&
@@ -248,12 +252,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.theme.dataCell?.bolderText
       : this.theme.dataCell?.text;
 
-    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
-    const fill = this.getTextConditionFill(
-      this.getDefaultTextFill(textStyle!.fill!),
-    );
-
-    return { ...textStyle, fill };
+    return this.getContainConditionMappingResultTextStyle(textStyle);
   }
 
   protected drawConditionIntervalShape() {
@@ -426,7 +425,9 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  public mappingValue(condition: Condition): MappingResult | undefined | null {
+  public mappingValue(
+    condition: Condition,
+  ): ConditionMappingResult | undefined | null {
     const value = this.meta.fieldValue as unknown as number;
     const rowDataInfo = this.spreadsheet.isTableMode()
       ? this.spreadsheet.dataSet.getCellData({

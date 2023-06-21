@@ -181,8 +181,6 @@ Function description: icon general theme
 | parameter     | illustrate             | type                       | Defaults  | required |
 | ------------- | ---------------------- | -------------------------- | --------- | -------- |
 | fill          | icon fill color        | `string`                   | -         |          |
-| downIconColor | drop icon fill color   | `string`                   | `#FF4D4F` |          |
-| upIconColor   | Rising icon fill color | `string`                   | `#29A294` |          |
 | size          | icon size              | `number`                   | -         |          |
 | margin        | cell margin            | [Margin](#margin--padding) | -         |          |
 
