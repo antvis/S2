@@ -34,10 +34,10 @@ describe('<StrategySheet/> Tests', () => {
     container = getContainer();
   });
 
-  // afterEach(() => {
-  //   ReactDOM.unmountComponentAtNode(container);
-  //   container.remove();
-  // });
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
+  });
 
   const renderStrategySheet = (
     options: SheetComponentOptions | null,
@@ -449,5 +449,45 @@ describe('<StrategySheet/> Tests', () => {
     renderStrategySheet(s2Options, StrategySheetDataConfig);
 
     expect(fn).toHaveBeenCalled();
+  });
+
+  test('should render custom text style by conditions', () => {
+    const s2Options: SheetComponentOptions = {
+      width: 800,
+      height: 600,
+      conditions: {
+        text: [
+          {
+            mapping: () => {
+              return {
+                fill: 'red',
+                fontWeight: 800,
+                fontSize: 20,
+              };
+            },
+          },
+        ],
+      },
+    };
+
+    renderStrategySheet(s2Options, StrategySheetDataConfig);
+
+    const dataCellTextShapes = s2.facet
+      .getDataCells()
+      .filter((cell) => {
+        const meta = cell.getMeta();
+
+        return meta.colIndex === 1 && meta.fieldValue;
+      })
+      .map((cell) => cell.getTextShapes())
+      .flat();
+
+    dataCellTextShapes.forEach((text) => {
+      const { fill, fontSize, fontWeight } = text.attributes;
+
+      expect(fill).toEqual('red');
+      expect(fontSize).toEqual(20);
+      expect(fontWeight).toEqual(800);
+    });
   });
 });
