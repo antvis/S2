@@ -222,7 +222,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     );
 
     await s2.render();
-    await sleep(0); // wait for anthor loop;
+    await sleep(20); // wait for anthor loop;
 
     const rowCell = s2.facet.getRowCells()[0];
 
@@ -261,7 +261,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     );
 
     await s2.render();
-    await sleep(0); // wait for anthor loop;
+    await sleep(20); // wait for anthor loop;
 
     const rowCell = s2.facet.getRowCells()[0];
 
