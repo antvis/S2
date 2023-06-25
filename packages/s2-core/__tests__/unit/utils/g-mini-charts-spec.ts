@@ -336,11 +336,11 @@ describe('drawInterval Test', () => {
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
 
-  beforeEach(() => {
-    s2.render();
+  beforeEach(async () => {
+    await s2.render();
   });
 
-  test('should get right condition interval when only set fill', () => {
+  test('should get right condition interval when only set fill', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -355,7 +355,7 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
     const cells = s2.facet
       .getCells()
@@ -369,7 +369,7 @@ describe('drawInterval Test', () => {
     expect(allIntervalWidth).toMatchSnapshot();
   });
 
-  test('should get right condition interval when minValue and maxValue is custom', () => {
+  test('should get right condition interval when minValue and maxValue is custom', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -387,7 +387,7 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
     const cells = s2.facet
       .getCells()
@@ -400,7 +400,7 @@ describe('drawInterval Test', () => {
     expect(lastIntervalInfo?.style.width).toEqual(88);
   });
 
-  test('should get right condition interval when filedValue is custom', () => {
+  test('should get right condition interval when filedValue is custom', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -419,7 +419,7 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
     const cells = s2.facet
       .getCells()

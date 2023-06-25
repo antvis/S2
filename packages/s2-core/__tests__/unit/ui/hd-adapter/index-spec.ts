@@ -23,7 +23,7 @@ describe.skip('HD Adapter Tests', () => {
     updatedSize?: [number, number],
   ) => void;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     Object.defineProperty(window, 'devicePixelRatio', {
       value: DPR,
     });
@@ -33,7 +33,7 @@ describe.skip('HD Adapter Tests', () => {
     });
 
     s2 = createPivotSheet(s2Options);
-    s2.render();
+    await s2.render();
 
     expectContainerSize = (
       [width, height]: [number, number] = [
