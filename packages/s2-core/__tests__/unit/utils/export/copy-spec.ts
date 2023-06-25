@@ -1,6 +1,11 @@
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
-import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
+import {
+  assembleDataCfg,
+  assembleOptions,
+  TOTALS_OPTIONS,
+  waitForRender,
+} from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import type { Meta, S2DataConfig } from '@/common/interface';
 import { Aggregation } from '@/common/interface';
@@ -269,9 +274,11 @@ describe('List Table Core Data Process', () => {
     });
     await s2.render();
 
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'province',
-      filteredValues: ['浙江省'],
+    await waitForRender(s2, () => {
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey: 'province',
+        filteredValues: ['浙江省'],
+      });
     });
 
     const cell = s2.facet
@@ -297,13 +304,15 @@ describe('List Table Core Data Process', () => {
     });
   });
 
-  it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, [
-      {
-        sortFieldId: 'number',
-        sortMethod: 'DESC' as SortMethodType,
-      },
-    ]);
+  it('should copy correct data with data sorted', async () => {
+    await waitForRender(s2, () => {
+      s2.emit(S2Event.RANGE_SORT, [
+        {
+          sortFieldId: 'number',
+          sortMethod: 'DESC' as SortMethodType,
+        },
+      ]);
+    });
 
     const cell = s2.facet
       .getCells()
