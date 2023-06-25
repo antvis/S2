@@ -2,6 +2,7 @@ import type { Group } from '@antv/g';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
 import { pick } from 'lodash';
+import { waitForRender } from 'tests/util';
 import type { HeaderCell } from '../../src/cell/header-cell';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
@@ -377,12 +378,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(cornerCellLabels).toMatchSnapshot();
     });
 
-    test('should hide columns', () => {
+    test('should hide columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
       ];
 
-      s2.interaction.hideColumns(hiddenColumns);
+      await waitForRender(s2, () => {
+        s2.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
       const [measureDetail] = hiddenColumnsDetail;

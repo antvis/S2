@@ -27,9 +27,8 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('1、Transform indexes data', () => {
-    const ds = s2.dataSet as PivotDataSet;
-
     test('should get correct pivot meta', () => {
+      const ds = s2.dataSet as PivotDataSet;
       const rowPivotMeta = ds.rowPivotMeta;
       const colPivotMeta = ds.colPivotMeta;
 
@@ -50,6 +49,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     test('should get correct indexes data', () => {
+      const ds = s2.dataSet as PivotDataSet;
       const indexesData = ds.indexesData;
 
       expect(flattenDeep(indexesData).filter(Boolean)).toHaveLength(
@@ -95,10 +95,10 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('2、Generate hierarchy', () => {
-    const layoutResult = s2.facet.getLayoutResult();
-    const { rowsHierarchy, colsHierarchy } = layoutResult;
-
     test('should get correct row hierarchy structure', () => {
+      const layoutResult = s2.facet.getLayoutResult();
+      const { rowsHierarchy } = layoutResult;
+
       // 节点正确
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
@@ -161,6 +161,9 @@ describe('Pivot Table Core Data Process', () => {
       ]);
     });
     test('should get correct col hierarchy structure', () => {
+      const layoutResult = s2.facet.getLayoutResult();
+      const { colsHierarchy } = layoutResult;
+
       // 节点正确
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
       expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]number
@@ -222,15 +225,16 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('3、Calculate row & col coordinates', () => {
-    const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
-      s2.facet.getLayoutResult();
-    const { dataCell, colCell } = s2.options.style!;
-
     test('should calc correct row & cell width', () => {
+      const { rowLeafNodes, colLeafNodes } = s2.facet.getLayoutResult();
+
       expect(rowLeafNodes[0].width).toEqual(99);
       expect(colLeafNodes[0].width).toEqual(100);
     });
     test('should calc correct row node size and coordinate', () => {
+      const { dataCell } = s2.options.style!;
+      const { rowsHierarchy, rowLeafNodes } = s2.facet.getLayoutResult();
+
       // all sample width.
       expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(99);
       expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(99);
@@ -258,6 +262,10 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     test('should calc correct col node size and coordinate', () => {
+      const { colCell } = s2.options.style!;
+      const layoutResult = s2.facet.getLayoutResult();
+      const { colsHierarchy, colLeafNodes } = layoutResult;
+
       // sample height
       expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(
         colCell?.height,
@@ -306,9 +314,8 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('4、Calculate data cell info', () => {
-    const { getCellMeta } = s2.facet;
-
     test('should get correct data value', () => {
+      const { getCellMeta } = s2.facet;
       const getData = (meta: ViewMeta | null) => meta?.data?.[VALUE_FIELD];
 
       // 左上角

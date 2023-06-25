@@ -1,5 +1,6 @@
 import type { Group } from '@antv/g';
 import { getContainer } from 'tests/util/helpers';
+import { waitForRender } from 'tests/util';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import {
   customColMultipleColumns,
@@ -136,10 +137,12 @@ describe('TableSheet Custom Tests', () => {
     expect(s2.interaction.getActiveCells()).toBeEmpty();
   });
 
-  test('should hide columns', () => {
+  test('should hide columns', async () => {
     const hiddenColumns = ['root[&]金额[&]价格'];
 
-    s2.interaction.hideColumns(hiddenColumns);
+    await waitForRender(s2, () => {
+      s2.interaction.hideColumns(hiddenColumns);
+    });
 
     const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
     const [measureDetail] = hiddenColumnsDetail;
