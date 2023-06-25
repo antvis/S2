@@ -220,8 +220,9 @@ describe('Data Cell Tests', () => {
           text: [
             {
               field: 'number',
-              mapping(_v, _, formattedValue) {
+              mapping(_, __, node) {
                 let val: number | undefined;
+                const formattedValue = node?.getFieldValue();
 
                 if (typeof formattedValue === 'string') {
                   val = Number(formattedValue.replaceAll('%', ''));

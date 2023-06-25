@@ -33,7 +33,7 @@ order: 2
 type MappingFunction = (
   fieldValue: number | string | null,
   data: Record<string, any>,
-  formattedValue: number | string | null
+  node: DataCell
 ) => {
   // 仅用于图标字段标记，可选
   icon?: string;
