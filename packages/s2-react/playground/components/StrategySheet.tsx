@@ -5,7 +5,7 @@ import {
   type S2DataConfig,
 } from '@antv/s2';
 import { Switch } from 'antd';
-import { isNil } from 'lodash';
+import { get, isNil } from 'lodash';
 import React from 'react';
 import {
   SheetComponent,
@@ -28,42 +28,35 @@ export const StrategySheet: React.FC<
   const conditions: SheetComponentOptions['conditions'] = {
     text: [
       {
-        field: 'date',
-        mapping: (value) => {
-          if (value === '2022-09') {
-            return {
-              fill: 'red',
-              fontSize: 26,
-              textAlign: 'right',
-            };
-          }
-        },
-      },
-      {
-        field: 'number',
         mapping: (value, cellInfo) => {
           const { colIndex } = cellInfo;
           const isNilValue = isNil(value) || value === '';
+
+          if (get(cellInfo, 'meta.rowIndex') === 1) {
+            return {
+              fontWeight: 800,
+              fontSize: 20,
+            };
+          }
 
           if (colIndex === 0 || isNilValue) {
             return {
               fill: '#000',
               fontSize: 16,
-              fontWeight: 800,
               opacity: 0.7,
             };
           }
 
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-            fontSize: 30,
+            fontSize: 16,
+            opacity: 0.7,
           };
         },
       },
     ],
     icon: [
       {
-        field: 'number',
         position: 'left',
         mapping(value, cellInfo) {
           const { colIndex } = cellInfo;
@@ -77,7 +70,7 @@ export const StrategySheet: React.FC<
                 // icon 用于指定图标条件格式所使用的 icon 类型
                 icon: 'CellUp',
                 fill: '#FF4D4F',
-                size: 16,
+                size: 12,
               }
             : {
                 icon: 'CellDown',
@@ -97,7 +90,7 @@ export const StrategySheet: React.FC<
       dataCfg={strategyDataCfg}
       options={{
         ...StrategyOptions,
-        conditions: showConditions ? conditions : StrategyOptions.conditions,
+        conditions: showConditions ? conditions : null,
       }}
       header={{
         title: '趋势分析表',

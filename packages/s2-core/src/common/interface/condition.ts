@@ -13,7 +13,7 @@ export type ConditionMappingResult<T = unknown> = ValueRange &
     // only used in icon condition
     icon?: string;
     // interval, background, text fill color
-    fill: string;
+    fill?: string;
     // only used in interval condition
     isCompare?: boolean;
     /**

@@ -11,7 +11,6 @@ import {
   toString,
   trim,
 } from 'lodash';
-import type { SimpleBBox } from '../engine';
 import type { ColCell } from '../cell';
 import {
   CellType,
@@ -20,8 +19,8 @@ import {
 } from '../common/constant';
 import {
   CellClipBox,
-  type DataCellStyle,
   type Condition,
+  type DataCellStyle,
   type MultiData,
   type S2CellType,
   type S2Options,
@@ -29,8 +28,8 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
+import type { SimpleBBox } from '../engine';
 import { renderIcon, renderText } from '../utils/g-renders';
-import { renderMiniChart } from './g-mini-charts';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -38,6 +37,7 @@ import {
 } from './cell/cell';
 import type { GroupedIcons } from './cell/header-cell';
 import { getIconPosition } from './condition/condition';
+import { renderMiniChart } from './g-mini-charts';
 
 /**
  * 获取文本的 ... 文本。
