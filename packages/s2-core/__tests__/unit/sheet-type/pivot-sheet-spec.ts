@@ -3,6 +3,7 @@ import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
+import { waitForRender } from 'tests/util';
 import type { BaseEvent } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
@@ -860,7 +861,9 @@ describe('PivotSheet Tests', () => {
 
       const isCollapsed = true;
 
-      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
+      await waitForRender(tree, () => {
+        tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
+      });
 
       expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
         'province',
@@ -868,7 +871,9 @@ describe('PivotSheet Tests', () => {
         'city',
       ]);
 
-      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
+      await waitForRender(tree, () => {
+        tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
+      });
       expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
         'province',
       ]);
@@ -1206,12 +1211,15 @@ describe('PivotSheet Tests', () => {
     });
   });
 
-  test('should emit destroy event', () => {
+  test('should emit destroy event', async () => {
     const onDestroy = jest.fn();
 
-    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+    const sheet = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.destroy();
+    await sheet.render();
+    sheet.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    sheet.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
   });
