@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import type { SheetType } from '@antv/s2-shared';
 import { act } from 'react-dom/test-utils';
+import { waitFor } from '@testing-library/react';
 import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
@@ -44,17 +45,23 @@ describe('SheetComponent Correct Render Tests', () => {
 
   test.each(sheets)(
     'should correct render %o with empty options',
-    ({ sheetType, adaptive }) => {
+    async ({ sheetType, adaptive }) => {
+      const container = getContainer();
+
       function render() {
         act(() => {
           ReactDOM.render(
             <MainLayout sheetType={sheetType} adaptive={adaptive} />,
-            getContainer(),
+            container,
           );
         });
       }
 
-      expect(render).not.toThrow();
+      await waitFor(() => {
+        expect(render).not.toThrow();
+      });
+
+      ReactDOM.unmountComponentAtNode(container);
     },
   );
 });
