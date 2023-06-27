@@ -5,7 +5,7 @@ import {
   type SpreadSheet,
 } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -13,18 +13,18 @@ import { SheetComponent, type SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = getContainer();
-  });
-
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    container.remove();
-  });
-
   describe('Render Tests', () => {
+    let container: HTMLDivElement;
+
+    beforeEach(() => {
+      container = getContainer();
+    });
+
+    afterEach(() => {
+      ReactDOM.unmountComponentAtNode(container);
+      container.remove();
+    });
+
     const sheetTypes: SheetType[] = [
       'pivot',
       'table',
@@ -47,7 +47,7 @@ describe('<SheetComponent/> Tests', () => {
 
     test.each(sheetTypes)(
       'should render successfully for %s sheet',
-      (sheetType) => {
+      async (sheetType) => {
         function init() {
           act(() => {
             ReactDOM.render(
@@ -57,21 +57,28 @@ describe('<SheetComponent/> Tests', () => {
           });
         }
 
-        expect(init).not.toThrowError();
+        await waitFor(() => {
+          expect(init).not.toThrowError();
+        });
       },
     );
 
-    test.each(sheetTypes)('should render %s sheet by snapshot', (sheetType) => {
-      const { asFragment } = render(
-        <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
-      );
+    test.each(sheetTypes)(
+      'should render %s sheet by snapshot',
+      async (sheetType) => {
+        const { asFragment } = render(
+          <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
+        );
 
-      expect(asFragment()).toMatchSnapshot();
-    });
+        await waitFor(() => {
+          expect(asFragment()).toMatchSnapshot();
+        });
+      },
+    );
 
     test.each(sheetTypes)(
       'should render and destroy for %s sheet',
-      (sheetType) => {
+      async (sheetType) => {
         let onMountedRef: SpreadSheet;
 
         const onMounted = jest.fn((instance) => {
@@ -92,18 +99,22 @@ describe('<SheetComponent/> Tests', () => {
           );
         });
 
-        expect(onMounted).toHaveBeenCalledWith(onMountedRef!);
-        expect(onDestroy).not.toHaveBeenCalled();
+        await waitFor(() => {
+          expect(onMounted).toHaveBeenCalledWith(onMountedRef!);
+          expect(onDestroy).not.toHaveBeenCalled();
+        });
 
         act(() => {
           ReactDOM.unmountComponentAtNode(container);
         });
 
-        expect(onDestroy).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+          expect(onDestroy).toHaveBeenCalledTimes(1);
+        });
       },
     );
 
-    test('should get latest instance after sheet type changed', () => {
+    test('should get latest instance after sheet type changed', async () => {
       let spreadSheet: SpreadSheet;
 
       function Component({
@@ -127,13 +138,17 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(<Component sheetType={'pivot'} />, container);
       });
 
-      expect(spreadSheet!).toBeInstanceOf(PivotSheet);
+      await waitFor(() => {
+        expect(spreadSheet!).toBeInstanceOf(PivotSheet);
+      });
 
       act(() => {
         ReactDOM.render(<Component sheetType={'table'} />, container);
       });
 
-      expect(spreadSheet!).toBeInstanceOf(TableSheet);
+      await waitFor(() => {
+        expect(spreadSheet!).toBeInstanceOf(TableSheet);
+      });
     });
   });
 });
