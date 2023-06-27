@@ -140,66 +140,58 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     const measureQuery = this.compatibleHideMeasureColumn();
 
-    // 需要将 asyncDataMatrix 封装成一个 Promise
-    const asyncDataMatrix = (): Promise<DataItem[][]> => {
-      return new Promise((resolve, reject) => {
-        try {
-          // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 this.leafRowNodes 和 this.leafColNodes
-          const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-            let count = AsyncRenderThreshold;
-            const rowLen: number = this.leafRowNodes.length;
+    // 在所有单元格数据获取成功后 resolve
+    return new Promise((resolve, reject) => {
+      try {
+        // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 this.leafRowNodes 和 this.leafColNodes
+        const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
+          let count = AsyncRenderThreshold;
+          const rowLen: number = this.leafRowNodes.length;
 
-            while (
-              deadline.timeRemaining() > 0 &&
-              rowIndex < rowLen - 1 &&
-              count > 0
-            ) {
-              // console.log(deadline.timeRemaining(), 'deadline.timeRemaining()');
-              // 尽量在空间时间内，执行尽可能多的 this.leafRowNodes 和 this.leafColNodes
+          while (
+            deadline.timeRemaining() > 0 &&
+            rowIndex < rowLen - 1 &&
+            count > 0
+          ) {
+            for (let j = rowIndex; j < rowLen && count > 0; j++) {
+              const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
+              const rowNode = this.leafRowNodes[j];
 
-              for (let j = rowIndex; j < rowLen && count > 0; j++) {
-                const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
-                const rowNode = this.leafRowNodes[j];
+              for (let i = colIndex; i < this.leafColNodes.length; i++) {
+                const colNode = this.leafColNodes[i];
 
-                for (let i = colIndex; i < this.leafColNodes.length; i++) {
-                  const colNode = this.leafColNodes[i];
+                const dataItem = this.getDataCellValue({
+                  rowNode,
+                  colNode,
+                  config: {
+                    isPivotMode: this.spreadsheet.isPivotMode,
+                    dataSet: this.spreadsheet.dataSet,
+                    measureQuery,
+                  },
+                });
 
-                  row.push(
-                    this.getDataCellValue({
-                      rowNode,
-                      colNode,
-                      config: {
-                        isPivotMode: this.spreadsheet.isPivotMode,
-                        dataSet: this.spreadsheet.dataSet,
-                        measureQuery,
-                      },
-                    }),
-                  );
-                  colIndex = i;
-                }
-                colIndex = 0;
-                rowIndex = j;
-                matrix.push(row);
-                count--;
+                row.push(dataItem);
+                colIndex = i;
               }
+              colIndex = 0;
+              rowIndex = j;
+              matrix.push(row);
+              count--;
             }
+          }
 
-            if (rowIndex < rowLen - 1) {
-              requestIdleCallback(dataMatrixIdleCallback);
-            } else {
-              // console.log(matrix, 'dataMatrix');
-              resolve(matrix);
-            }
-          };
+          if (rowIndex < rowLen - 1) {
+            requestIdleCallback(dataMatrixIdleCallback);
+          } else {
+            resolve(matrix);
+          }
+        };
 
-          requestIdleCallback(dataMatrixIdleCallback);
-        } catch (e) {
-          reject(e);
-        }
-      });
-    };
-
-    return asyncDataMatrix();
+        requestIdleCallback(dataMatrixIdleCallback);
+      } catch (e) {
+        reject(e);
+      }
+    }) as Promise<DataItem[][]>;
   };
 
   private getDataCellValue = ({

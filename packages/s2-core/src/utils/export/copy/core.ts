@@ -18,11 +18,13 @@ import {
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processSelectedAllPivot,
+  processSelectedAllPivotAsync,
   processSelectedPivotByDataCell,
   processSelectedPivotByHeader,
 } from './pivot-data-cell-copy';
 import {
   processSelectedAllTable,
+  processSelectedAllTableAsync,
   processSelectedTableByDataCell,
   processSelectedTableByHeader,
 } from './table-copy';
@@ -212,8 +214,23 @@ export const processAllSelected = (params: CopyAllDataParams): CopyableList => {
   const { sheetInstance } = params;
 
   if (sheetInstance.isPivotMode()) {
-    return processSelectedAllPivot(params);
+    const result = processSelectedAllPivot(params);
+
+    return result;
   }
 
   return processSelectedAllTable(params);
+};
+
+// 异步全量导出使用
+export const processAllSelectedAsync = (
+  params: CopyAllDataParams,
+): Promise<CopyableList> => {
+  const { sheetInstance } = params;
+
+  if (sheetInstance.isPivotMode()) {
+    return processSelectedAllPivotAsync(params);
+  }
+
+  return processSelectedAllTableAsync(params);
 };

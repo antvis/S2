@@ -5,6 +5,7 @@ import {
   type RawData,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
+  AsyncRenderThreshold,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type {
@@ -77,6 +78,67 @@ class TableDataCellCopy extends BaseDataCellCopy {
         return formatter(value);
       }),
     ) as string[][];
+  }
+
+  protected getDataMatrixRIC(): Promise<string[][]> {
+    const { showSeriesNumber } = this.spreadsheet.options;
+    const result: string[][] = [];
+    let rowIndex = 0;
+    let colIndex = 0;
+
+    return new Promise((resolve, reject) => {
+      try {
+        const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
+          let count = AsyncRenderThreshold;
+          const rowLength = this.displayData.length;
+
+          while (
+            deadline.timeRemaining() > 0 &&
+            count > 0 &&
+            rowIndex < rowLength - 1
+          ) {
+            for (let j = rowIndex; j < rowLength && count > 0; j++) {
+              const rowData = this.displayData[j];
+              const row: string[] = colIndex === 0 ? [] : result[rowIndex];
+
+              for (let i = colIndex; i < this.columnNodes.length; i++) {
+                const colNode = this.columnNodes[i];
+                const field = colNode.field;
+
+                if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+                  return (i + 1).toString();
+                }
+
+                const formatter = getFormatter(
+                  field,
+                  this.config.isFormatData,
+                  this.spreadsheet.dataSet,
+                );
+                const value = rowData[field];
+                const dataItem = formatter(value);
+
+                row.push(dataItem as string);
+                colIndex = i;
+              }
+              colIndex = 0;
+              rowIndex = j;
+              result.push(row);
+              count--;
+            }
+          }
+
+          if (rowIndex === rowLength - 1) {
+            resolve(result);
+          } else {
+            requestIdleCallback(dataMatrixIdleCallback);
+          }
+        };
+
+        requestIdleCallback(dataMatrixIdleCallback);
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   private getColMatrix(): string[] {
@@ -155,6 +217,23 @@ class TableDataCellCopy extends BaseDataCellCopy {
       this.config.separator,
     );
   }
+
+  async processSelectedTableAsync(allSelected = false): Promise<CopyableList> {
+    const matrix = this.config.isAsyncExport
+      ? await this.getDataMatrixRIC()
+      : await Promise.resolve(this.getDataMatrix());
+
+    if (!allSelected) {
+      return this.matrixTransformer(matrix, this.config.separator);
+    }
+
+    const colMatrix = this.getColMatrix();
+
+    return this.matrixTransformer(
+      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      this.config.separator,
+    );
+  }
 }
 
 /**
@@ -194,6 +273,26 @@ export const processSelectedAllTable = (
   });
 
   return tableDataCellCopy.processSelectedTable(true);
+};
+
+// 导出全部数据
+export const processSelectedAllTableAsync = (
+  params: CopyAllDataParams,
+): Promise<CopyableList> => {
+  const { sheetInstance, split, formatOptions, customTransformer } = params;
+  const tableDataCellCopy = new TableDataCellCopy({
+    spreadsheet: sheetInstance,
+    config: {
+      selectedCells: [],
+      separator: split,
+      formatOptions,
+      customTransformer,
+      isAsyncExport: true,
+    },
+    isExport: true,
+  });
+
+  return tableDataCellCopy.processSelectedTableAsync(true);
 };
 
 // 通过选中数据单元格进行复制
