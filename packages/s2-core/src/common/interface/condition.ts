@@ -1,6 +1,6 @@
 import type { RawData } from './s2DataConfig';
 import type { IconTheme } from './theme';
-import type { DataCell } from '@/cell';
+import type { DataCell, HeaderCell } from '@/cell';
 
 export interface ValueRange {
   minValue?: number;
@@ -32,7 +32,7 @@ export interface MappingResult extends ValueRange {
 export type MappingFunction = (
   fieldValue: number | string,
   data: RawData,
-  node?: DataCell,
+  cell?: DataCell | HeaderCell,
 ) => MappingResult | undefined | null;
 
 /**

@@ -220,69 +220,34 @@ describe('Data Cell Tests', () => {
           text: [
             {
               field: 'number',
-              mapping(_, __, node) {
-                let val: number | undefined;
-                const formattedValue = node?.getFieldValue();
+              mapping(_, __, cell) {
+                const formattedValue = cell?.getFieldValue();
 
-                if (typeof formattedValue === 'string') {
-                  val = Number(formattedValue.replaceAll('%', ''));
-                } else {
-                  val = formattedValue;
-                }
-
-                if (val && val >= 50) {
+                if (formattedValue === 'formatted') {
                   return {
-                    fill: '#18A058',
+                    fill: '#D03050',
                   };
                 }
 
                 return {
-                  fill: '#D03050',
+                  fill: '#fff',
                 };
               },
             },
           ],
         },
-        totals: {
-          row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: ['province', 'city'],
-          },
-          col: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: ['type', 'sub_type'],
-          },
-        },
       },
       { useSimpleData: false },
     );
 
-    // eslint-disable-next-line jest/expect-expect
     test('should test condition mapping formattedValue params when the sheet is pivot', () => {
       s2.setDataCfg({
         ...s2.dataCfg,
         meta: [
           {
             field: 'number',
-            // 把单元显示的值，显示为行总计占比
-            formatter: (v, _, c) => {
-              const totalData = s2.dataSet.getCellData({
-                query: { ...c?.colQuery, [EXTRA_FIELD]: 'number' },
-                isTotals: true,
-              });
-
-              return totalData
-                ? `${(
-                    (Number(v) / (totalData[VALUE_FIELD] as number)) *
-                    100
-                  ).toFixed(0)}%`
-                : '';
+            formatter: () => {
+              return 'formatted';
             },
           },
         ],
