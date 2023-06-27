@@ -6,6 +6,7 @@ class HiddenInteraction extends BaseEvent {
     this.spreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (event) => {
       const cell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
+
       this.spreadsheet.interaction.hideColumns([meta.field]);
     });
 
@@ -71,7 +72,7 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-        showTooltip: true,
+        visible: true,
       },
       interaction: {
         customInteractions: [

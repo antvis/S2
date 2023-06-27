@@ -21,11 +21,13 @@ export default defineComponent({
     'content',
   ] as unknown as GetInitProps<TooltipRenderProps>,
   setup(props) {
-    const { operator, onlyMenu } = getTooltipDefaultOptions(props.options);
+    const { operator, onlyShowOperator } = getTooltipDefaultOptions(
+      props.options,
+    );
 
     return {
       operator,
-      onlyMenu,
+      onlyShowOperator,
     };
   },
   components: {
@@ -40,10 +42,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <template v-if="onlyMenu">
+  <template v-if="onlyShowOperator">
     <TooltipOperator
       :menus="operator?.menus || []"
-      :onlyMenu="true"
+      :onlyShowOperator="true"
       :cell="cell"
       @click="operator?.onClick"
     />
@@ -51,7 +53,7 @@ export default defineComponent({
   <template v-else>
     <TooltipOperator
       :menus="operator?.menus || []"
-      :onlyMenu="false"
+      :onlyShowOperator="false"
       :cell="cell"
       @click="operator?.onClick"
     />

@@ -14,7 +14,7 @@ describe('TableSheet Tests', () => {
     width: 100,
     height: 100,
     tooltip: {
-      showTooltip: true,
+      visible: true,
     },
     interaction: {
       autoResetSheetStyle: false,
@@ -61,7 +61,7 @@ describe('TableSheet Tests', () => {
         [],
         {
           operator: expect.anything(),
-          onlyMenu: true,
+          onlyShowOperator: true,
           forceRender: true,
         },
       );
@@ -197,7 +197,7 @@ describe('TableSheet Tests', () => {
           expect.anything(),
           {
             forceRender: true,
-            onlyMenu: true,
+            onlyShowOperator: true,
             operator: {
               menus: [
                 { icon: 'groupAsc', key: 'asc', text: groupAscText },
@@ -252,7 +252,7 @@ describe('TableSheet Tests', () => {
     const sheet = new TableSheet(getContainer(), dataCfg, {
       facet: (spreadsheet) => new CustomFacet(spreadsheet),
       tooltip: {
-        showTooltip: false,
+        visible: false,
       },
     });
 

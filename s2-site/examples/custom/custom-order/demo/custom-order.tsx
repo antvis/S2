@@ -38,7 +38,7 @@ const s2Options = {
     },
   ],
   tooltip: {
-    showTooltip: true,
+    visible: true,
   },
 };
 
@@ -87,11 +87,12 @@ const App = () => {
           },
           menus: MENUS,
         };
+
         // 自定义 tooltip 配置，展示 toolTip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,
-          showSingleTips: true,
-          onlyMenu: true,
+          onlyShowCellText: true,
+          onlyShowOperator: true,
         });
       },
     },
@@ -104,6 +105,7 @@ const App = () => {
         { sortFieldId: 'type', sortBy: ['办公用品', '家具'] },
         { sortFieldId: 'city', sortMethod: 'ASC' },
       ];
+
       setSortParams(sortParams);
       console.log('可以在这里实现你手动排序的交互和逻辑哟', sortParams);
     } else {

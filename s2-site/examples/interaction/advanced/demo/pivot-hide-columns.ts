@@ -16,7 +16,7 @@ fetch(
         hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
       },
       tooltip: {
-        showTooltip: true,
+        visible: true,
         operation: {
           // 开启手动隐藏, 叶子节点有效
           hiddenColumns: true,

@@ -108,8 +108,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       valueField,
     } = meta;
     const currentCellMeta = data;
-    const showSingleTips = this.spreadsheet.isTableMode();
-    const cellData = showSingleTips
+    const onlyShowCellText = this.spreadsheet.isTableMode();
+    const cellData = onlyShowCellText
       ? ({
           ...currentCellMeta,
           value: value || fieldValue,
@@ -124,9 +124,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       isTotals,
       operator,
-      enterable: true,
       hideSummary: true,
-      showSingleTips,
+      onlyShowCellText,
     });
   }
 

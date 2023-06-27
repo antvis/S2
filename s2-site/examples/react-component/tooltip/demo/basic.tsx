@@ -12,9 +12,9 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-        showTooltip: true,
+        visible: true,
         rowCell: {
-          showTooltip: false,
+          visible: false,
         },
       },
     };

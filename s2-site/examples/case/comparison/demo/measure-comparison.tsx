@@ -35,6 +35,7 @@ class CustomColCell extends ColCell {
 
   getCellArea() {
     const { x, y, height, width, parent } = this.meta;
+
     if (parent?.id === 'root') {
       return {
         x,
@@ -43,12 +44,14 @@ class CustomColCell extends ColCell {
         width: TAG_WIDTH,
       };
     }
+
     return { x, y, height, width };
   }
 
   // 绘制背景
   drawBackgroundShape() {
     const { parent } = this.meta;
+
     if (parent?.id === 'root' && this.lineConfigStyle.stroke) {
       this.backgroundShape = this.addShape('rect', {
         attrs: {
@@ -64,18 +67,22 @@ class CustomColCell extends ColCell {
   // 交互显示
   drawInteractiveBgShape() {
     const { parent } = this.meta;
+
     if (parent?.id === 'root') {
       return;
     }
+
     super.drawInteractiveBgShape();
   }
 
   // 绘制文本
   drawTextShape() {
     const { value, parent } = this.meta;
+
     if (parent?.id === 'root') {
       const position = this.getTextPosition();
       const textStyle = this.getTextStyle();
+
       this.textShape = this.addShape('text', {
         attrs: {
           x: position.x,
@@ -100,6 +107,7 @@ class CustomColCell extends ColCell {
       horizontalBorderWidth,
       verticalBorderColorOpacity,
     } = this.getStyle().cell;
+
     if (parent?.id === 'root') {
       this.addShape('line', {
         attrs: {
@@ -125,11 +133,13 @@ class CustomColCell extends ColCell {
         },
       });
     }
+
     if (parent?.parent?.id === 'root') {
       if (this.lineConfig[value]) {
         indexCache[colIndex + 1] = 1;
         this.spreadsheet?.store?.set('indexCache', indexCache);
       }
+
       if (indexCache[colIndex]) {
         this.addShape('line', {
           attrs: {
@@ -164,6 +174,7 @@ class CustomDataCell extends DataCell {
 
   handleRestOptions(options) {
     const { lineConfig, lineConfigStyle, conditions, textConfig } = options;
+
     this.lineConfig = lineConfig;
     this.lineConfigStyle = lineConfigStyle;
     this.customConditions = conditions;
@@ -175,12 +186,14 @@ class CustomDataCell extends DataCell {
     const tagName = Object.keys(this.customConditions).find((item) =>
       this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
     );
+
     if (tagName) {
       this.conditions = {
         ...this.conditions,
         ...(this.customConditions?.[tagName] || []),
       };
     }
+
     return super.getIconStyle();
   }
 
@@ -196,10 +209,13 @@ class CustomDataCell extends DataCell {
       const { formattedValue: defaultFormattedValue } =
         this.getFormattedFieldValue();
       let formattedValue = defaultFormattedValue;
+
       if (getCustomFormattedValue) {
         formattedValue = getCustomFormattedValue(fieldValue);
       }
+
       const textStyle = this.getTextStyle();
+
       this.actualTextWidth = measureTextWidth(formattedValue, textStyle);
       const position = this.getTextPosition();
 
@@ -240,6 +256,7 @@ class CustomDataCell extends DataCell {
         },
       });
     }
+
     if (indexCache[colIndex]) {
       this.addShape('line', {
         attrs: {
@@ -253,6 +270,7 @@ class CustomDataCell extends DataCell {
         },
       });
     }
+
     if (currentConfig) {
       indexCache[colIndex + 1] = 1;
       this.spreadsheet?.store?.set('dataIndexCache', indexCache);
@@ -269,6 +287,7 @@ class CustomDataCell extends DataCell {
       horizontalBorderWidth,
       verticalBorderColorOpacity,
     } = this.getStyle().cell;
+
     if (currentConfig) {
       this.addShape('line', {
         attrs: {
@@ -282,10 +301,12 @@ class CustomDataCell extends DataCell {
         },
       });
     }
+
     const tagLength = [...(spreadsheet.dataSet.colPivotMeta || [])].length;
     const shouldAddRightLine =
       (colIndex + 1) % valueLength === 0 &&
       colIndex + 1 !== tagLength * valueLength; // 除了表格最后一列,每个 tag 最后一个子列加 right line
+
     if (shouldAddRightLine) {
       this.addShape('line', {
         attrs: {
@@ -366,12 +387,15 @@ class CustomFrame extends Frame {
     } = this.cfg;
 
     const { scrollX } = spreadsheet.facet.getScrollOffset();
+
     if (!isPivotMode || scrollX === 0) {
       return;
     }
+
     // 滚动时使用默认的颜色
     const { showRightShadow, shadowWidth, shadowColors } =
       spreadsheet.theme?.splitLine || {};
+
     if (
       showRightShadow &&
       showViewPortRightShadow &&
@@ -379,6 +403,7 @@ class CustomFrame extends Frame {
     ) {
       const x = position.x + width;
       const y = position.y;
+
       this.addShape('rect', {
         attrs: {
           x,
@@ -397,6 +422,7 @@ class CustomCornelCell extends CornerCell {
     if (this.meta.cornerType === 'col') {
       return;
     }
+
     super.drawTextShape();
   }
 
@@ -407,6 +433,7 @@ class CustomCornelCell extends CornerCell {
       fill: this.meta.cornerType === 'col' ? '#FFF' : backgroundColor,
       opacity: backgroundColorOpacity,
     };
+
     this.backgroundShape = this.addShape('rect', {
       attrs,
     });
@@ -508,7 +535,7 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       height: 480,
       showDefaultHeaderActionIcon: false,
       tooltip: {
-        showTooltip: false,
+        visible: false,
       },
       colCell: (node, spreadsheet, ...restOptions) => {
         return new CustomColCell(

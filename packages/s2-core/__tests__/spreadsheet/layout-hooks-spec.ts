@@ -145,7 +145,7 @@ const s2Options: S2Options = {
     },
   },
   tooltip: {
-    showTooltip: true,
+    visible: true,
   },
   // layout hooks
   layoutArrange: CustomLayoutArrange,

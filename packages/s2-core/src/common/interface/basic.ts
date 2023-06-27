@@ -270,7 +270,7 @@ export type FullyIconName = {
 export type ActionIconName = string | FullyIconName;
 
 export interface HeaderActionIcon {
-  /*
+  /**
    * 已注册的 icon 类型或自定义的 icon 类型名
    * 如果是 string[], 则默认 icon 位置为右侧
    */

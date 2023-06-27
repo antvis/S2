@@ -679,11 +679,11 @@ function MainLayout() {
                 <Switch
                   checkedChildren="开启Tooltip"
                   unCheckedChildren="关闭Tooltip"
-                  checked={mergedOptions.tooltip?.showTooltip}
+                  checked={mergedOptions.tooltip?.visible}
                   onChange={(checked) => {
                     updateOptions({
                       tooltip: {
-                        showTooltip: checked,
+                        visible: checked,
                       },
                     });
                   }}
@@ -971,11 +971,11 @@ function MainLayout() {
                 <Switch
                   checkedChildren="开启Tooltip"
                   unCheckedChildren="关闭Tooltip"
-                  checked={mergedOptions.tooltip!.showTooltip}
+                  checked={mergedOptions.tooltip!.visible}
                   onChange={(checked) => {
                     updateOptions({
                       tooltip: {
-                        showTooltip: checked,
+                        visible: checked,
                       },
                     });
                   }}
@@ -1285,7 +1285,7 @@ function MainLayout() {
             options={{
               ...mergedOptions,
               tooltip: {
-                showTooltip: false,
+                visible: false,
               },
             }}
             ref={s2Ref}

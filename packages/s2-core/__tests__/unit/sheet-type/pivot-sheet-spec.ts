@@ -52,7 +52,7 @@ describe('PivotSheet Tests', () => {
     hierarchyType: 'grid',
     customSVGIcons: [customSVGIcon],
     tooltip: {
-      showTooltip: true,
+      visible: true,
     },
     interaction: {
       autoResetSheetStyle: false,
@@ -145,7 +145,7 @@ describe('PivotSheet Tests', () => {
     test("should dont't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
-          showTooltip: false,
+          visible: false,
         },
         configurable: true,
       });
@@ -161,7 +161,7 @@ describe('PivotSheet Tests', () => {
     test('should show tooltip when call showTooltipWithInfo if enable tooltip', () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
-          showTooltip: true,
+          visible: true,
         },
         configurable: true,
       });
@@ -383,8 +383,8 @@ describe('PivotSheet Tests', () => {
         dataCfg,
         customMerge(s2Options, {
           tooltip: {
-            showTooltip: true,
-            renderTooltip: (spreadsheet) => new CustomTooltip(spreadsheet),
+            visible: true,
+            render: (spreadsheet) => new CustomTooltip(spreadsheet),
             autoAdjustBoundary: null,
           } as S2Options['tooltip'],
         }),
@@ -413,8 +413,8 @@ describe('PivotSheet Tests', () => {
         dataCfg,
         customMerge(s2Options, {
           tooltip: {
-            showTooltip: true,
-            renderTooltip: () => new CustomTooltip(),
+            visible: true,
+            render: () => new CustomTooltip(),
             autoAdjustBoundary: null,
           },
         }),
@@ -897,7 +897,7 @@ describe('PivotSheet Tests', () => {
         expect.anything(),
         expect.anything(),
         {
-          onlyMenu: true,
+          onlyShowOperator: true,
           forceRender: true,
           operator: {
             menus: [
@@ -1238,7 +1238,7 @@ describe('PivotSheet Tests', () => {
     const sheet = new PivotSheet(getContainer(), originalDataCfg, {
       facet: (spreadsheet) => new CustomFacet(spreadsheet),
       tooltip: {
-        showTooltip: false,
+        visible: false,
       },
     });
 

@@ -228,7 +228,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
+    return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
   protected abstract bindEvents(): void;
@@ -306,7 +306,7 @@ export abstract class SpreadSheet extends EE {
     cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, content } = getTooltipOptions(this, event)!;
+    const { visible: showTooltip, content } = getTooltipOptions(this, event)!;
 
     if (!showTooltip) {
       return;
@@ -331,10 +331,7 @@ export abstract class SpreadSheet extends EE {
         x: event.clientX,
         y: event.clientY,
       },
-      options: {
-        enterable: true,
-        ...options,
-      },
+      options,
       event,
       content,
     });

@@ -8,7 +8,6 @@ import type {
 import type { SpreadSheet } from '../../sheet-type';
 import {
   getAutoAdjustPosition,
-  getTooltipDefaultOptions,
   setTooltipContainerStyle,
 } from '../../utils/tooltip';
 
@@ -32,14 +31,13 @@ export class BaseTooltip {
     this.spreadsheet = spreadsheet;
   }
 
-  public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
-    const { position, options, content, event } = showOptions;
-    const { enterable } = getTooltipDefaultOptions(options);
+  public show<T = Element | string>(options: TooltipShowOptions<T>) {
+    const { position, content, event } = options;
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
 
     this.visible = true;
-    this.options = showOptions as unknown as TooltipShowOptions;
+    this.options = options as unknown as TooltipShowOptions;
     const container = this.getContainer();
 
     this.renderContent<T>(content as T);
@@ -60,7 +58,7 @@ export class BaseTooltip {
       style: {
         left: `${this.position?.x}px`,
         top: `${this.position?.y}px`,
-        pointerEvents: enterable ? 'all' : 'none',
+        pointerEvents: 'all',
       },
       visible: true,
     });

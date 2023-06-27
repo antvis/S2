@@ -33,7 +33,7 @@ export const getTestTooltipData = (s2: SpreadSheet, cell: S2CellType) => {
     cellInfos,
     targetCell: cell,
     options: {
-      showSingleTips: true,
+      onlyShowCellText: true,
     },
   });
 };

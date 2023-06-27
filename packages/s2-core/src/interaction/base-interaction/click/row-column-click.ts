@@ -96,7 +96,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   };
 
   private showTooltip(event: CanvasEvent) {
-    const { operation, showTooltip } = getTooltipOptions(
+    const { operation, visible: showTooltip } = getTooltipOptions(
       this.spreadsheet,
       event,
     )!;
@@ -113,7 +113,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const operator = this.getTooltipOperator(event, operation!);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
-      showSingleTips: true,
+      onlyShowCellText: true,
       operator,
     });
   }

@@ -24,7 +24,7 @@ fetch(
         },
       },
       tooltip: {
-        showTooltip: true,
+        visible: true,
       },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);

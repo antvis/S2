@@ -28,16 +28,21 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     operator:
       | TooltipOperatorOptions<React.ReactNode, React.ReactNode>
       | undefined,
-    onlyMenu?: boolean,
-  ) =>
-    operator ? (
+    onlyShowOperator?: boolean,
+  ) => {
+    if (!operator) {
+      return null;
+    }
+
+    return (
       <TooltipOperator
         {...operator}
         onClick={operator.onClick as (params: { key: string }) => void}
-        onlyMenu={onlyMenu!}
+        onlyShowOperator={onlyShowOperator!}
         cell={cell!}
       />
-    ) : null;
+    );
+  };
 
   const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
     const { name, tips } = nameTip || {};
@@ -73,7 +78,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   );
 
   const renderContent = () => {
-    const { operator, onlyMenu } = getTooltipDefaultOptions<
+    const { operator, onlyShowOperator } = getTooltipDefaultOptions<
       React.ReactNode,
       React.ReactNode
     >(options);
@@ -90,7 +95,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     } = data || {};
     const nameTip: TooltipNameTipsOptions = { name, tips };
 
-    if (onlyMenu) {
+    if (onlyShowOperator) {
       return renderOperation(operator, true);
     }
 

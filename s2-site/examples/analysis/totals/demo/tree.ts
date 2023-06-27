@@ -38,7 +38,7 @@ fetch(
       height: 480,
       hierarchyType: 'tree',
       tooltip: {
-        showTooltip: true,
+        visible: true,
       },
       interaction: {
         enableCopy: true,

@@ -52,6 +52,7 @@ const getTargetColor = (value) => {
   if (Number.isNaN(Number(value))) {
     return PALETTE_COLORS[0].background;
   }
+
   return PALETTE_COLORS[Math.floor(Number(value) / 10)].background;
 };
 
@@ -110,7 +111,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       width: 800,
       height: 600,
       tooltip: {
-        showTooltip: true,
+        visible: true,
         operation: {
           hiddenColumns: true,
         },
@@ -144,6 +145,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
             field: 'count',
             mapping(value) {
               const backgroundColor = getTargetColor(value);
+
               return {
                 fill: backgroundColor,
               };

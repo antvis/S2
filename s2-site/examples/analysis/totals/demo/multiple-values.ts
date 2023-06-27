@@ -43,7 +43,7 @@ fetch(
       selectedCellsSpotlight: true,
       hoverHighlight: true,
       tooltip: {
-        showTooltip: true,
+        visible: true,
       },
       interaction: {
         enableCopy: true,

@@ -269,7 +269,7 @@ describe('merge test', () => {
   test('should get custom options', () => {
     const options = getSafetyOptions({
       tooltip: {
-        showTooltip: false,
+        visible: false,
         operation: {
           sort: false,
           menus: [

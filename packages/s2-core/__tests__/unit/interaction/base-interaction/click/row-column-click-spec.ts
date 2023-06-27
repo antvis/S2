@@ -66,7 +66,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
         hiddenColumnFields: ['a'],
       },
       tooltip: {
-        showTooltip: true,
+        visible: true,
         operation: {
           hiddenColumns: false,
         },

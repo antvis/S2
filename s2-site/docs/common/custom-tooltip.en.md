@@ -75,10 +75,9 @@ object is **required** , *default: null* Function description: tooltip partial c
 | -------------- | ------------------------------------------------- | -------- | -------- | --------------------------------------------- |
 | hideSummary    | `boolean`                                         |          | `false`  | Whether to hide selected item statistics      |
 | operator       | [TooltipOperatorOptions](#tooltipoperatoroptions) |          |          | Action Bar Configuration                      |
-| onlyMenu       | `boolean`                                         |          | `false`  | Whether tooltip only shows action menu items  |
-| enterable      | `boolean`                                         |          | `false`  | Is it possible to enter the tooltip component |
+| onlyShowOperator       | `boolean`                                         |          | `false`  | Whether tooltip only shows action menu items  |
 | isTotals       | `boolean`                                         |          | `false`  | Is it a total/subtotal cell                   |
-| showSingleTips | `boolean`                                         |          | `false`  | Whether to display cell prompt information    |
+| onlyShowCellText | `boolean`                                         |          | `false`  | Whether to display cell prompt information    |
 | enableFormat   | `boolean`                                         |          | `false`  | Whether to enable formatting                  |
 | forceRender    | `boolean`                                         |          | `false`  | Whether to force the dom to be cleared        |
 

@@ -17,7 +17,7 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
   (props) => {
     const {
       menus,
-      onlyMenu,
+      onlyShowOperator,
       onClick: onMenuClick,
       cell,
       defaultSelectedKeys,
@@ -61,7 +61,7 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
     };
 
     const renderMenus = () => {
-      if (onlyMenu) {
+      if (onlyShowOperator) {
         return (
           <Menu
             className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}

@@ -3,6 +3,6 @@ import { CustomTooltip } from '../../components/tooltip/custom-tooltip';
 
 export const RENDER_TOOLTIP_OPTION: Partial<S2Options> = {
   tooltip: {
-    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+    render: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },
 };

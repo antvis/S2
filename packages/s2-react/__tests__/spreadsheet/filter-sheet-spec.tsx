@@ -100,7 +100,7 @@ function MainLayout() {
       trailingRowCount: 1,
     },
     tooltip: {
-      showTooltip: true,
+      visible: true,
       operation: {},
     },
   };

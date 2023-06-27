@@ -16,7 +16,7 @@ describe('Mobile Tooltip Different Tests', () => {
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            renderTooltip: (s) => {
+            render: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
 
@@ -47,7 +47,7 @@ describe('Mobile Tooltip Different Tests', () => {
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            renderTooltip: (s) => {
+            render: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
 
@@ -78,7 +78,7 @@ describe('Mobile Tooltip Different Tests', () => {
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            renderTooltip: (s) => {
+            render: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
 

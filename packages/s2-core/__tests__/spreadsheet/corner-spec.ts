@@ -30,7 +30,7 @@ describe('PivotSheet Corner Tests', () => {
       width: 300,
       height: 300,
       tooltip: {
-        showTooltip: true,
+        visible: true,
       },
     });
     s2.render();

@@ -100,7 +100,7 @@ describe('Options Tests', () => {
   test('should get custom options', () => {
     const options = getBaseSheetComponentOptions({
       tooltip: {
-        showTooltip: false,
+        visible: false,
         operation: {
           sort: false,
           menus: [

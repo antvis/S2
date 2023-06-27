@@ -130,7 +130,6 @@ export const getTooltipDefaultOptions = <
 ): TooltipOptions<Icon, Text> => {
   return {
     operator: { onClick: noop, menus: [] },
-    enterable: true,
     enableFormat: true,
     ...options,
   };
@@ -370,7 +369,7 @@ export const getSelectedCellIndexes = (spreadsheet: SpreadSheet) => {
 export const getSelectedCellsData = (
   spreadsheet: SpreadSheet,
   targetCell: S2CellType,
-  showSingleTips?: boolean,
+  onlyShowCellText?: boolean,
 ): ViewMetaData[] => {
   const { facet } = spreadsheet;
 
@@ -421,7 +420,7 @@ export const getSelectedCellsData = (
   };
 
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
-  if (showSingleTips) {
+  if (onlyShowCellText) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(spreadsheet);
 
@@ -485,7 +484,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const summary: Record<string, any> = {};
   const isTableMode = spreadsheet.isTableMode();
 
-  if (isTableMode && options?.showSingleTips) {
+  if (isTableMode && options?.onlyShowCellText) {
     const selectedCellsData = spreadsheet.dataSet.getMultiData({});
 
     return [{ selectedData: selectedCellsData as Data[], name: '', value: '' }];
@@ -495,7 +494,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const selectedCellsData = getSelectedCellsData(
     spreadsheet,
     targetCell!,
-    options.showSingleTips,
+    options.onlyShowCellText,
   );
 
   forEach(selectedCellsData, (item) => {
@@ -571,7 +570,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       options,
       targetCell,
     });
-  } else if (options.showSingleTips) {
+  } else if (options.onlyShowCellText) {
     // 行列头hover & 明细表所有hover
 
     const value = getFieldValueOfViewMetaData(firstCellInfo, 'value') as string;
@@ -582,11 +581,11 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
 
     const currentFormatter = getFieldFormatter(spreadsheet, valueField);
     const formattedValue = currentFormatter(value) as string;
-    const cellName = options.enableFormat
+    const cellText = options.enableFormat
       ? spreadsheet.dataSet.getFieldName(value) || formattedValue
       : spreadsheet.dataSet.getFieldName(valueField);
 
-    name = cellName || '';
+    name = cellText || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getTooltipDetailList(

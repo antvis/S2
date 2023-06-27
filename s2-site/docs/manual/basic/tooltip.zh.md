@@ -62,10 +62,10 @@ const s2Options = {
 ```ts
 const s2Options = {
   tooltip: {
-    showTooltip: true,
+    visible: true,
     rowCell: {
       // 单独设置行头不显示
-      showTooltip: false,
+      visible: false,
     }
   }
 };
@@ -415,8 +415,8 @@ export class CustomTooltip extends BaseTooltip {
 ```ts
 const s2Options = {
   tooltip: {
-    showTooltip: true,
-    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+    visible: true,
+    render: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },
 }
 ```
@@ -450,7 +450,7 @@ class RowHoverInteraction extends BaseEvent {
 
 const s2Options = {
   tooltip: {
-    showTooltip: true,
+    visible: true,
   },
   interaction: {
     customInteractions: [
@@ -591,7 +591,7 @@ sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-ori
 ```ts
 // options 配置 tooltip 显示
 tooltip: {
-  showTooltip: true,
+  visible: true,
 }
 ```
 
