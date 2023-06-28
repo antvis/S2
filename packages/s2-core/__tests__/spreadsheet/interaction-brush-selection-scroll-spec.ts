@@ -174,6 +174,8 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
     s2.interaction.reset();
 
     await expectScrollBrush(s2, targetCell);
+
+    s2.destroy();
   });
 });
 
@@ -198,6 +200,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     const dataCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, dataCell);
+
+    s2.destroy();
   });
 
   test('should vertical scroll when mouse outside row cell', async () => {
@@ -237,6 +241,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     expect(s2.interaction.getCells()).not.toBeEmpty();
+
+    s2.destroy();
   });
 
   // https://github.com/antvis/S2/pull/2101
@@ -295,6 +301,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
         },
       ]
     `);
+
+    s2.destroy();
   });
 
   // https://github.com/antvis/S2/issues/2106
@@ -329,5 +337,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     expect(brushSelection.prepareSelectMaskShape.attr('y')).toEqual(
       s2.facet.panelBBox.minY,
     );
+
+    s2.destroy();
   });
 });
