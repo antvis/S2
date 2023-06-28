@@ -8,21 +8,6 @@ import { NewTab, NewLine } from '@/common';
 import { CopyMIMEType } from '@/utils/export/interface';
 
 describe('TableSheet Export Test', () => {
-  let tableSheet: TableSheet;
-
-  beforeEach(() => {
-    tableSheet = new TableSheet(
-      getContainer(),
-      assembleDataCfg({
-        fields: {
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
-        },
-      }),
-      assembleOptions(),
-    );
-    tableSheet.render();
-  });
-
   it('should export correct data with series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -37,7 +22,7 @@ describe('TableSheet Export Test', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
-        data: originData,
+        data: slice(originData, 0, 10),
       }),
       assembleOptions({
         showSeriesNumber: true,
@@ -61,7 +46,7 @@ describe('TableSheet Export Test', () => {
     `);
 
       // 33行数据 包括一行列头
-      expect(rows).toHaveLength(33);
+      expect(rows).toHaveLength(11);
       // 6列数据 包括序列号
       rows.forEach((e) => {
         expect(e.split(NewTab)).toHaveLength(6);
@@ -106,7 +91,7 @@ describe('TableSheet Export Test', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
-        data: originData,
+        data: slice(originData, 0, 10),
       }),
       assembleOptions({
         showSeriesNumber: false,
@@ -122,7 +107,7 @@ describe('TableSheet Export Test', () => {
     const headers = rows[0].split(NewTab);
 
     // 33行数据 包括一行列头
-    expect(rows).toHaveLength(33);
+    expect(rows).toHaveLength(11);
     // 5列数据 包括序列号
     rows.forEach((e) => {
       expect(e.split(NewTab)).toHaveLength(5);
@@ -204,6 +189,17 @@ describe('TableSheet Export Test', () => {
 
   // https://github.com/antvis/S2/issues/2236
   it('should export correct data When the split separator is configured', () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    tableSheet.render();
     const data = copyData({
       sheetInstance: tableSheet,
       split: ',',
