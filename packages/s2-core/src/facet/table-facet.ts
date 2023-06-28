@@ -174,7 +174,7 @@ export class TableFacet extends BaseFacet {
     );
   };
 
-  private onFilterHandler = (params: FilterParam) => {
+  private onFilterHandler = async (params: FilterParam) => {
     const s2 = this.spreadsheet;
     const unFilter =
       !params.filteredValues || params.filteredValues.length === 0;
@@ -199,7 +199,7 @@ export class TableFacet extends BaseFacet {
 
     set(s2.dataCfg, 'filterParams', oldConfig);
 
-    s2.render(true);
+    await s2.render(true);
     s2.emit(
       S2Event.RANGE_FILTERED,
       (s2.dataSet as TableDataSet).getDisplayDataSet(),
