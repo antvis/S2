@@ -258,7 +258,7 @@ describe('merge test', () => {
             "menus": Array [],
             "sort": false,
           },
-          "showTooltip": false,
+          "visible": false,
         },
         "totals": Object {},
         "width": 600,
@@ -295,7 +295,7 @@ describe('merge test', () => {
           ],
           "sort": false,
         },
-        "showTooltip": false,
+        "visible": false,
       }
     `);
   });
