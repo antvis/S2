@@ -66,6 +66,7 @@ export interface CopyAllDataParams {
   split?: string;
   formatOptions?: FormatOptions;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  isAsyncExport?: boolean;
 }
 
 export interface SheetCopyConstructorParams {

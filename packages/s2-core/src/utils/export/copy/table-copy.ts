@@ -285,7 +285,13 @@ export const processSelectedAllTable = (
 export const asyncProcessSelectedAllTable = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
-  const { sheetInstance, split, formatOptions, customTransformer } = params;
+  const {
+    sheetInstance,
+    split,
+    formatOptions,
+    customTransformer,
+    isAsyncExport,
+  } = params;
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet: sheetInstance,
     config: {
@@ -293,7 +299,7 @@ export const asyncProcessSelectedAllTable = (
       separator: split,
       formatOptions,
       customTransformer,
-      isAsyncExport: true,
+      isAsyncExport: true ?? isAsyncExport,
     },
     isExport: true,
   });
