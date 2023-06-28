@@ -52,9 +52,12 @@ describe('useSpreadSheet tests', () => {
       adaptive: false,
     };
     const { result } = renderHook(() => useSpreadSheet(props));
-    const s2: SpreadSheet = result.current.s2Ref.current!;
+
+    let s2: SpreadSheet;
 
     await waitFor(() => {
+      s2 = result.current.s2Ref.current!;
+
       expect(s2.options.width).toEqual(s2Options.width);
       expect(s2.options.height).toEqual(s2Options.height);
     });
@@ -63,9 +66,9 @@ describe('useSpreadSheet tests', () => {
       s2.setOptions({ width: 300, height: 400 });
     });
 
-    const canvas = s2.getCanvasElement();
-
     await waitFor(() => {
+      const canvas = s2.getCanvasElement();
+
       expect(s2.options.width).toEqual(300);
       expect(s2.options.height).toEqual(400);
 
@@ -87,9 +90,11 @@ describe('useSpreadSheet tests', () => {
       sheetType: 'strategy' as const,
     });
     const { result } = renderHook(() => useSpreadSheet(props));
-    const s2 = result.current.s2Ref.current;
 
     await waitFor(() => {
+      const s2 = result.current.s2Ref.current;
+
+      expect(s2).not.toEqual(null);
       expect(s2!.facet.getInitColLeafNodes()).toHaveLength(2);
     });
 
@@ -123,12 +128,17 @@ describe('useSpreadSheet tests', () => {
     };
     const { result, unmount } = renderHook(() => useSpreadSheet(props));
 
-    const s2 = result.current.s2Ref.current!;
+    let s2: SpreadSheet;
 
-    s2.on(S2Event.LAYOUT_DESTROY, onDestroyFromS2Event);
+    await waitFor(() => {
+      s2 = result.current.s2Ref.current!;
+      expect(s2).not.toEqual(null);
+    });
+
+    s2!.on(S2Event.LAYOUT_DESTROY, onDestroyFromS2Event);
 
     const destroySpy = jest
-      .spyOn(s2, 'destroy')
+      .spyOn(s2!, 'destroy')
       .mockImplementationOnce(() => {});
 
     act(() => {
@@ -152,9 +162,10 @@ describe('useSpreadSheet tests', () => {
     };
     const { result } = renderHook(() => useSpreadSheet(props));
 
-    const s2 = result.current.s2Ref.current;
-
     await waitFor(() => {
+      const s2 = result.current.s2Ref.current;
+
+      expect(s2).not.toEqual(null);
       expect(onMounted).toHaveBeenCalledWith(s2);
     });
   });
