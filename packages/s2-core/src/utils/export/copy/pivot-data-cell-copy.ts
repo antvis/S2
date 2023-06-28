@@ -136,7 +136,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   protected getDataMatrixByHeaderNodeRIC = () => {
     const matrix: DataItem[][] = [];
     let rowIndex = 0;
-    let colIndex = 0;
 
     const measureQuery = this.compatibleHideMeasureColumn();
 
@@ -154,10 +153,10 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
             count > 0
           ) {
             for (let j = rowIndex; j < rowLen && count > 0; j++) {
-              const row: DataItem[] = colIndex === 0 ? [] : matrix[rowIndex];
+              const row: DataItem[] = [];
               const rowNode = this.leafRowNodes[j];
 
-              for (let i = colIndex; i < this.leafColNodes.length; i++) {
+              for (let i = 0; i < this.leafColNodes.length; i++) {
                 const colNode = this.leafColNodes[i];
 
                 const dataItem = this.getDataCellValue({
@@ -171,9 +170,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
                 });
 
                 row.push(dataItem);
-                colIndex = i;
               }
-              colIndex = 0;
               rowIndex = j;
               matrix.push(row);
               count--;

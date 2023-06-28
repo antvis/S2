@@ -84,7 +84,6 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const { showSeriesNumber } = this.spreadsheet.options;
     const result: string[][] = [];
     let rowIndex = 0;
-    let colIndex = 0;
 
     return new Promise((resolve, reject) => {
       try {
@@ -99,9 +98,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
           ) {
             for (let j = rowIndex; j < rowLength && count > 0; j++) {
               const rowData = this.displayData[j];
-              const row: string[] = colIndex === 0 ? [] : result[rowIndex];
+              const row: string[] = [];
 
-              for (let i = colIndex; i < this.columnNodes.length; i++) {
+              for (let i = 0; i < this.columnNodes.length; i++) {
                 const colNode = this.columnNodes[i];
                 const field = colNode.field;
 
@@ -118,9 +117,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
                 const dataItem = formatter(value);
 
                 row.push(dataItem as string);
-                colIndex = i;
               }
-              colIndex = 0;
               rowIndex = j;
               result.push(row);
               count--;
