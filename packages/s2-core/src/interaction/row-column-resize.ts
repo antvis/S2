@@ -10,12 +10,12 @@ import {
   InterceptType,
   MIN_CELL_HEIGHT,
   MIN_CELL_WIDTH,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-  ResizeType,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+  ResizeType,
   S2Event,
 } from '../common/constant';
 import type {
@@ -137,6 +137,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         ['L', offsetX + width, guideLineMaxHeight],
       ]);
       this.resizeStartPosition.offsetX = event.offsetX;
+      this.resizeStartPosition.clientX = event.clientX;
       return;
     }
 
@@ -149,6 +150,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       ['L', guideLineMaxWidth, offsetY + height],
     ]);
     this.resizeStartPosition.offsetY = event.offsetY;
+    this.resizeStartPosition.clientY = event.clientY;
   }
 
   private bindMouseDown() {
@@ -425,7 +427,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineStart: ResizeGuideLinePath,
     guideLineEnd: ResizeGuideLinePath,
   ) {
-    let offsetX = originalEvent.offsetX - this.resizeStartPosition.offsetX;
+    let offsetX = originalEvent.clientX - this.resizeStartPosition.clientX;
     if (resizeInfo.width + offsetX < MIN_CELL_WIDTH) {
       // 禁止拖到最小宽度
       offsetX = -(resizeInfo.width - MIN_CELL_WIDTH);
@@ -447,7 +449,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineStart: ResizeGuideLinePath,
     guideLineEnd: ResizeGuideLinePath,
   ) {
-    let offsetY = originalEvent.offsetY - this.resizeStartPosition.offsetY;
+    let offsetY = originalEvent.clientY - this.resizeStartPosition.clientY;
 
     if (resizeInfo.height + offsetY < MIN_CELL_HEIGHT) {
       offsetY = -(resizeInfo.height - MIN_CELL_HEIGHT);
