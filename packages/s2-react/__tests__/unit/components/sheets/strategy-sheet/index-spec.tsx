@@ -47,7 +47,6 @@ describe('<StrategySheet/> Tests', () => {
               height: 200,
             },
             options,
-            { debug: true },
           )}
           dataCfg={dataCfg as S2DataConfig}
           onMounted={(instance) => {
