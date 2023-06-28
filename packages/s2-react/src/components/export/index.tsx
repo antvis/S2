@@ -7,7 +7,7 @@ import {
   i18n,
   NewTab,
   AsyncRequestThreshold,
-  exportDataAsync,
+  asyncGetAllPlainData,
 } from '@antv/s2';
 import { Dropdown, Menu, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
@@ -55,11 +55,12 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
-  const isAsyncRequest = sheet.dataCfg?.data?.length >= AsyncRequestThreshold;
+  const isAsyncRequest =
+    true || sheet?.dataCfg?.data?.length >= AsyncRequestThreshold;
 
   const copyData = async (isFormat: boolean) => {
     const data = isAsyncRequest
-      ? await exportDataAsync({
+      ? await asyncGetAllPlainData({
           sheetInstance: sheet,
           split: NewTab,
           formatOptions: isFormat,

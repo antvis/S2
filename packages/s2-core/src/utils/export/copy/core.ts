@@ -24,7 +24,7 @@ import {
 } from './pivot-data-cell-copy';
 import {
   processSelectedAllTable,
-  processSelectedAllTableAsync,
+  asyncProcessSelectedAllTable,
   processSelectedTableByDataCell,
   processSelectedTableByHeader,
 } from './table-copy';
@@ -232,5 +232,5 @@ export const processAllSelectedAsync = (
     return processSelectedAllPivotAsync(params);
   }
 
-  return processSelectedAllTableAsync(params);
+  return asyncProcessSelectedAllTable(params);
 };

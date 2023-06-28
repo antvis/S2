@@ -180,10 +180,10 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
             }
           }
 
-          if (rowIndex < rowLen - 1) {
-            requestIdleCallback(dataMatrixIdleCallback);
-          } else {
+          if (rowIndex === rowLen - 1) {
             resolve(matrix);
+          } else {
+            requestIdleCallback(dataMatrixIdleCallback);
           }
         };
 

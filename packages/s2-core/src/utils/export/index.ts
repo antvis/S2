@@ -107,6 +107,7 @@ export const download = (str: string, fileName: string) => {
  * @param split
  * @param formatOptions 是否格式化数据
  * @param customTransformer
+ * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
  */
 // TODO: 改名
 export const copyData = (params: CopyAllDataParams) => {
@@ -115,7 +116,7 @@ export const copyData = (params: CopyAllDataParams) => {
   return result[0].content;
 };
 
-export const exportDataAsync = async (params: CopyAllDataParams) => {
+export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
   const result = await processAllSelectedAsync(params);
 
   return result[0].content;

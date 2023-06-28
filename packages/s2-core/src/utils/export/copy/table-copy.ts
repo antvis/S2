@@ -202,6 +202,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
    * allSelected: true 时，明细表点击 全选 进行复制逻辑
    * @param {boolean} allSelected
    * @return {CopyableList}
+   * @deprecated 后续将废弃，使用 asyncProcessSelectedTable 替代
    */
   processSelectedTable(allSelected = false): CopyableList {
     const matrix = this.getDataMatrix();
@@ -218,7 +219,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     );
   }
 
-  async processSelectedTableAsync(allSelected = false): Promise<CopyableList> {
+  async asyncProcessSelectedTable(allSelected = false): Promise<CopyableList> {
     const matrix = this.config.isAsyncExport
       ? await this.getDataMatrixRIC()
       : await Promise.resolve(this.getDataMatrix());
@@ -256,7 +257,12 @@ export const processSelectedTableByHeader = (
   return tableDataCellCopy.processSelectedTable();
 };
 
-// 导出全部数据
+/**
+ * 导出全部数据
+ * @param {CopyAllDataParams} params
+ * @return {CopyableList}
+ * @deprecated 后续将废弃，使用 asyncProcessSelectedAllTable 替代
+ */
 export const processSelectedAllTable = (
   params: CopyAllDataParams,
 ): CopyableList => {
@@ -276,7 +282,7 @@ export const processSelectedAllTable = (
 };
 
 // 导出全部数据
-export const processSelectedAllTableAsync = (
+export const asyncProcessSelectedAllTable = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
   const { sheetInstance, split, formatOptions, customTransformer } = params;
@@ -292,7 +298,7 @@ export const processSelectedAllTableAsync = (
     isExport: true,
   });
 
-  return tableDataCellCopy.processSelectedTableAsync(true);
+  return tableDataCellCopy.asyncProcessSelectedTable(true);
 };
 
 // 通过选中数据单元格进行复制
