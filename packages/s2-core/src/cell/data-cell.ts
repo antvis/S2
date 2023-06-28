@@ -2,7 +2,7 @@ import type { PointLike } from '@antv/g';
 import { find, findLast, first, get, isEmpty, isEqual, merge } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
-  CellTypes,
+  CellType,
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
@@ -56,7 +56,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   iconPosition: PointLike;
 
   public get cellType() {
-    return CellTypes.DATA_CELL;
+    return CellType.DATA_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -98,15 +98,15 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     switch (currentCellType) {
       // 列多选
-      case CellTypes.COL_CELL:
+      case CellType.COL_CELL:
         this.changeRowColSelectState('colIndex');
         break;
       // 行多选
-      case CellTypes.ROW_CELL:
+      case CellType.ROW_CELL:
         this.changeRowColSelectState('rowIndex');
         break;
       // 单元格单选/多选
-      case CellTypes.DATA_CELL:
+      case CellType.DATA_CELL:
         if (shouldUpdateBySelectedCellsHighlight(this.spreadsheet)) {
           updateBySelectedCellsHighlight(cells, this, this.spreadsheet);
         } else if (includeCell(cells, this)) {
@@ -126,7 +126,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected handleHover(cells: CellMeta[]) {
     const currentHoverCell = first(cells) as CellMeta;
 
-    if (currentHoverCell.type !== CellTypes.DATA_CELL) {
+    if (currentHoverCell.type !== CellType.DATA_CELL) {
       this.hideInteractionShape();
 
       return;
@@ -263,7 +263,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected shouldHideRowSubtotalData() {
     const { row = {} } = this.spreadsheet.options.totals ?? {};
     const { rowIndex } = this.meta;
-    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const node = this.spreadsheet.facet.getRowLeafNodes()[rowIndex];
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
 
     /*

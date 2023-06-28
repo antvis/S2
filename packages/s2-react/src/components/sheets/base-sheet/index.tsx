@@ -1,6 +1,7 @@
 import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
 import React from 'react';
+import { injectThemeVars } from '@antv/s2-shared';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
 import { SpreadSheetContext } from '../../../context/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
@@ -33,6 +34,10 @@ export const BaseSheet = React.forwardRef<
   }, [ref, s2Ref]);
 
   React.useEffect(() => setContextVal(s2Ref.current!), [setContextVal, s2Ref]);
+
+  React.useEffect(() => {
+    injectThemeVars(props.themeCfg?.name);
+  }, [props.themeCfg?.name]);
 
   return (
     <React.StrictMode>

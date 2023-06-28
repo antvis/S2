@@ -34,7 +34,7 @@ describe('Spreadsheet Empty Test', () => {
 
   valueInColsGridS2.render();
   test('should render skeleton when grid sheet in the valueInCols mode', () => {
-    const layoutResult = valueInColsGridS2.facet.layoutResult;
+    const layoutResult = valueInColsGridS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toHaveLength(2);
@@ -48,7 +48,7 @@ describe('Spreadsheet Empty Test', () => {
 
   valueInRowsGridS2.render();
   test('should render skeleton when grid sheet in the valueInRows mode', () => {
-    const layoutResult = valueInRowsGridS2.facet.layoutResult;
+    const layoutResult = valueInRowsGridS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(2);
     expect(layoutResult.rowNodes).toHaveLength(5);
@@ -62,7 +62,7 @@ describe('Spreadsheet Empty Test', () => {
 
   valueInColstreeS2.render();
   test('should render skeleton when tree sheet in the valueInCols mode', () => {
-    const layoutResult = valueInColstreeS2.facet.layoutResult;
+    const layoutResult = valueInColstreeS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toBeEmpty();
@@ -76,7 +76,7 @@ describe('Spreadsheet Empty Test', () => {
 
   valueInRowsTreeS2.render();
   test('should render skeleton when tree sheet in the valueInRows mode', () => {
-    const layoutResult = valueInRowsTreeS2.facet.layoutResult;
+    const layoutResult = valueInRowsTreeS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(2);
     expect(layoutResult.rowNodes).toBeEmpty();

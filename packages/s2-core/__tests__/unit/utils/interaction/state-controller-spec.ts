@@ -1,6 +1,6 @@
 import { getCellMeta } from '@/utils/interaction/select-event';
 import type { RowCell } from '@/cell/row-cell';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import { CellType, InteractionStateName } from '@/common/constant/interaction';
 import type { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';
 import { RootInteraction } from '@/interaction/root';
@@ -14,10 +14,10 @@ const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('State Controller Utils Tests', () => {
   const mockRowCell = {
-    type: CellTypes.ROW_CELL,
+    type: CellType.ROW_CELL,
     hideInteractionShape: jest.fn(),
     clearUnselectedState: jest.fn(),
-    cellType: CellTypes.ROW_CELL,
+    cellType: CellType.ROW_CELL,
     getMeta: () => {
       return {
         colIndex: 0,

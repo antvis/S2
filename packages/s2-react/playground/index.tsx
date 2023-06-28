@@ -216,7 +216,7 @@ function MainLayout() {
       return dataCfg.fields?.columns || [];
     }
 
-    return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
+    return s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || [];
   };
 
   //  ================== Hooks ========================
@@ -643,6 +643,7 @@ function MainLayout() {
                   <Radio.Button value="default">默认</Radio.Button>
                   <Radio.Button value="gray">简约灰</Radio.Button>
                   <Radio.Button value="colorful">多彩蓝</Radio.Button>
+                  <Radio.Button value="dark">暗黑</Radio.Button>
                 </Radio.Group>
                 <Popover
                   placement="bottomRight"
@@ -790,8 +791,8 @@ function MainLayout() {
                 <Button
                   size="small"
                   onClick={() => {
-                    const rowNode = s2Ref.current
-                      ?.getRowNodes()
+                    const rowNode = s2Ref.current?.facet
+                      .getRowNodes()
                       .find(({ id }) => id === 'root[&]四川省[&]成都市');
 
                     clearInterval(scrollTimer.current!);

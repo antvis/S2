@@ -10,7 +10,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
   let s2: SpreadSheet;
 
   const mapNodes = (spreadsheet: SpreadSheet) =>
-    spreadsheet.getRowLeafNodes().map((node) => node.id);
+    spreadsheet.facet.getRowLeafNodes().map((node) => node.id);
 
   beforeEach(() => {
     container = getContainer();
@@ -54,7 +54,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       });
       s2.render();
 
-      const rowLeafNodes = s2.getRowLeafNodes();
+      const rowLeafNodes = s2.facet.getRowLeafNodes();
 
       expect(rowLeafNodes).toHaveLength(3);
       expect(mapNodes(s2)).toMatchInlineSnapshot(`

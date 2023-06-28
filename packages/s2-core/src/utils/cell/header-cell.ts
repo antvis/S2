@@ -5,7 +5,7 @@ import type {
   IconTheme,
   InternalFullyHeaderActionIcon,
 } from '../../common/interface';
-import { CellTypes, EXTRA_FIELD } from '../../common/constant';
+import { CellType, EXTRA_FIELD } from '../../common/constant';
 import type {
   ActionIconName,
   FormatResult,
@@ -37,7 +37,7 @@ const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
 const shouldShowActionIcons = (
   actionIconCfg: InternalFullyHeaderActionIcon,
   meta: Node,
-  cellType: CellTypes,
+  cellType: CellType,
 ) => {
   if (!actionIconCfg) {
     return false;
@@ -72,7 +72,7 @@ const shouldShowActionIcons = (
 export const getActionIconConfig = (
   actionIconCfgList: HeaderActionIcon[] = [],
   meta: Node,
-  cellType: CellTypes,
+  cellType: CellType,
 ): InternalFullyHeaderActionIcon | undefined => {
   const normalizedList = normalizeActionIconCfg(actionIconCfgList);
 

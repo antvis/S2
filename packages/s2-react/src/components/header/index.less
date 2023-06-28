@@ -5,11 +5,11 @@
   margin: 0;
   margin-bottom: 16px;
   box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(~'@{css-var-prefix}-font-85', rgba(0, 0, 0, 0.85));
   font-size: 14px;
   list-style: none;
   position: relative;
-  background-color: #fff;
+  background-color: var(~'@{css-var-prefix}-background', #fff);
 
   &-heading {
     display: flex;
@@ -26,7 +26,7 @@
     &-title {
       margin-right: 12px;
       margin-bottom: 0;
-      color: rgba(0, 0, 0, 0.85);
+      color: var(~'@{css-var-prefix}-font-85', rgba(0, 0, 0, 0.85));
       font-weight: 600;
       font-size: 20px;
       line-height: 32px;

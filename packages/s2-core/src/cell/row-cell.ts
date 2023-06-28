@@ -1,7 +1,7 @@
 import type { PointLike } from '@antv/g';
 import { find, get } from 'lodash';
 import {
-  CellTypes,
+  CellType,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -36,7 +36,7 @@ export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
 
   public get cellType() {
-    return CellTypes.ROW_CELL;
+    return CellType.ROW_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

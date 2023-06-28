@@ -4,7 +4,7 @@
 import { forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import type { DataItem } from '../../common';
-import { type CellMeta, CellTypes, NODE_ID_SEPARATOR } from '../../common';
+import { type CellMeta, CellType, NODE_ID_SEPARATOR } from '../../common';
 import type { Node } from '../../facet/layout/node';
 
 export function keyEqualTo(key: string, compareKey: string) {
@@ -84,7 +84,7 @@ export const getColNodeFieldFromNode = (
 };
 
 export const getSelectedCols = (cells: CellMeta[]) =>
-  cells.filter(({ type }) => type === CellTypes.COL_CELL);
+  cells.filter(({ type }) => type === CellType.COL_CELL);
 
 export const getSelectedRows = (cells: CellMeta[]) =>
-  cells.filter(({ type }) => type === CellTypes.ROW_CELL);
+  cells.filter(({ type }) => type === CellType.ROW_CELL);

@@ -19,6 +19,7 @@ import {
   values,
 } from 'lodash';
 import { runtime } from '@antv/g-lite';
+import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -439,6 +440,7 @@ export abstract class SpreadSheet extends EE {
     const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
 
     this.theme = customMerge(newTheme, theme);
+    injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {
@@ -501,38 +503,6 @@ export abstract class SpreadSheet extends EE {
 
   public getLayoutWidthType(): LayoutWidthType {
     return this.options.style?.layoutWidthType!;
-  }
-
-  public getRowNodes(level = -1): Node[] {
-    if (level === -1) {
-      return this.facet.layoutResult.rowNodes;
-    }
-
-    return this.facet.layoutResult.rowNodes.filter(
-      (node) => node.level === level,
-    );
-  }
-
-  public getRowLeafNodes(): Node[] {
-    return this.facet?.layoutResult.rowLeafNodes || [];
-  }
-
-  /**
-   * get columnNode in levels,
-   * @param level -1 = get all
-   */
-  public getColumnNodes(level = -1): Node[] {
-    const colNodes = this.facet?.layoutResult.colNodes || [];
-
-    if (level === -1) {
-      return colNodes;
-    }
-
-    return colNodes.filter((node) => node.level === level);
-  }
-
-  public getColumnLeafNodes(): Node[] {
-    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
@@ -655,14 +625,6 @@ export abstract class SpreadSheet extends EE {
     if (canvas) {
       canvas.style.display = 'block';
     }
-  }
-
-  public getInitColumnLeafNodes(): Node[] {
-    return this.store.get('initColumnLeafNodes', [])!;
-  }
-
-  public clearColumnLeafNodes() {
-    this.store.set('initColumnLeafNodes', undefined);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

@@ -37,7 +37,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
   private getSelectedColNodes(): Node[] {
     const selectedCols = getSelectedCols(this.config.selectedCells);
-    const allColNodes = this.spreadsheet.getColumnNodes();
+    const allColNodes = this.spreadsheet.facet.getColNodes();
 
     if (selectedCols.length === 0) {
       return allColNodes;

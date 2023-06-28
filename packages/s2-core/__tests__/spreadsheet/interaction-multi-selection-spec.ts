@@ -40,15 +40,15 @@ describe('Interaction Multi Selection Tests', () => {
     });
     s2.render(false);
 
-    const colRootCell = s2.interaction.getAllColHeaderCells()[0];
+    const colRootCell = s2.facet.getColCells()[0];
 
     // 选中
     s2.interaction.selectHeaderCell({
       cell: colRootCell,
     });
 
-    s2.interaction
-      .getPanelGroupAllDataCells()
+    s2.facet
+      .getDataCells()
       .filter((cell) => {
         const targetCellMeta = colRootCell.getMeta();
         const meta = cell.getMeta();
@@ -90,7 +90,7 @@ describe('Interaction Multi Selection Tests', () => {
 
     s2.render();
 
-    const rowRootCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowRootCell = s2.facet.getRowCells()[0];
 
     s2.interaction.selectHeaderCell({
       cell: rowRootCell,
@@ -125,7 +125,7 @@ describe('Interaction Multi Selection Tests', () => {
 
     s2.render();
 
-    const colRootCell = s2.interaction.getAllColHeaderCells()[0];
+    const colRootCell = s2.facet.getColCells()[0];
 
     s2.interaction.selectHeaderCell({
       cell: colRootCell,

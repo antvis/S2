@@ -151,6 +151,7 @@ describe('Interaction Row Column Resize Tests', () => {
       } as BBox,
       destroy: jest.fn(),
       render: jest.fn(),
+      getColNodes: () => [],
     } as unknown as BaseFacet;
     s2.interaction = mockRootInteraction;
     rowColumnResizeInstance = new RowColumnResize(s2);
@@ -608,7 +609,7 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should get vertical custom filed resize style', () => {
     jest.spyOn(s2, 'isCustomColumnFields').mockImplementationOnce(() => true);
     jest
-      .spyOn(s2, 'getColumnNodes')
+      .spyOn(s2.facet, 'getColNodes')
       .mockImplementationOnce(() => [
         createMockCellInfo('test-a', { level: 0 }).getNode(),
         createMockCellInfo('test-b', { level: 0 }).getNode(),
@@ -785,7 +786,7 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should get vertical filed resize style for table mode', () => {
     jest.spyOn(s2, 'isTableMode').mockImplementationOnce(() => true);
     jest
-      .spyOn(s2, 'getColumnNodes')
+      .spyOn(s2.facet, 'getColNodes')
       .mockImplementationOnce(() => [
         createMockCellInfo('test-a', { level: 0 }).getNode(),
         createMockCellInfo('test-b', { level: 0 }).getNode(),

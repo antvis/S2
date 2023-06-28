@@ -1,5 +1,5 @@
 import type { Node } from '@antv/s2';
-import { CellTypes, type HeaderActionIcon } from '@/common';
+import { CellType, type HeaderActionIcon } from '@/common';
 import { getActionIconConfig } from '@/utils/cell/header-cell';
 
 describe('Header Cell Utils Tests', () => {
@@ -22,7 +22,7 @@ describe('Header Cell Utils Tests', () => {
       const rowConfig = getActionIconConfig(
         actionConfig,
         rowMeta,
-        CellTypes.ROW_CELL,
+        CellType.ROW_CELL,
       );
 
       expect(rowConfig?.icons).toEqual([
@@ -43,7 +43,7 @@ describe('Header Cell Utils Tests', () => {
         getActionIconConfig(
           actionConfig,
           null as unknown as Node,
-          CellTypes.COL_CELL,
+          CellType.COL_CELL,
         ),
       ).toEqual({
         icons: [
@@ -58,7 +58,7 @@ describe('Header Cell Utils Tests', () => {
         getActionIconConfig(
           actionConfig,
           null as unknown as Node,
-          CellTypes.CORNER_CELL,
+          CellType.CORNER_CELL,
         ),
       ).toBeUndefined();
     });
@@ -75,7 +75,7 @@ describe('Header Cell Utils Tests', () => {
       const rowConfig = getActionIconConfig(
         actionConfig,
         null as unknown as Node,
-        CellTypes.ROW_CELL,
+        CellType.ROW_CELL,
       );
 
       expect(rowConfig!.icons).toEqual([

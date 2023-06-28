@@ -12,7 +12,7 @@ fetch(
       height: 480,
       interaction: {
         // 透视表默认隐藏需要指定唯一列头id
-        // 可通过 `s2.getColumnNodes()` 获取列头节点查看id
+        // 可通过 `s2.facet.getColCellNodes()` 获取列头节点查看id
         hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
       },
       tooltip: {

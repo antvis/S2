@@ -2,7 +2,7 @@ import type { FederatedPointerEvent as Event } from '@antv/g';
 import { isEmpty } from 'lodash';
 import type { DataCell } from '../cell';
 import {
-  CellTypes,
+  CellType,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -56,7 +56,7 @@ export class DataCellMultiSelection
   private getSelectedCells(cell: S2CellType<ViewMeta>) {
     const id = cell.getMeta().id;
     const { interaction } = this.spreadsheet;
-    let selectedCells = interaction.getCells([CellTypes.DATA_CELL]);
+    let selectedCells = interaction.getCells([CellType.DATA_CELL]);
     let cells: CellMeta[] = [];
 
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {

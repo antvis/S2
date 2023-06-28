@@ -1,5 +1,5 @@
 import {
-  CellTypes,
+  CellType,
   customMerge,
   getCellMeta,
   InteractionStateName,
@@ -98,9 +98,9 @@ describe('<StrategySheet/> Tests', () => {
   });
 
   test.each([
-    CellTypes.ROW_CELL,
-    CellTypes.COL_CELL,
-    CellTypes.DATA_CELL,
+    CellType.ROW_CELL,
+    CellType.COL_CELL,
+    CellType.DATA_CELL,
   ] as const)(
     'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
     (cellType) => {
@@ -133,13 +133,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     // 当前测试数据, 第 4 列是子弹图
-    const dataCell = s2.interaction
-      .getPanelGroupAllDataCells()
-      .filter((cell) => {
-        const meta = cell.getMeta();
+    const dataCell = s2.facet.getDataCells().filter((cell) => {
+      const meta = cell.getMeta();
 
-        return meta.colIndex === 3 && meta.fieldValue;
-      });
+      return meta.colIndex === 3 && meta.fieldValue;
+    });
 
     const bulletMeasureTextList = dataCell.map((cell) => {
       const textShape = cell.children.find(
@@ -216,7 +214,7 @@ describe('<StrategySheet/> Tests', () => {
       StrategySheetDataConfig,
     );
 
-    const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => {
+    const rowNodes = s2.facet.getRowNodes().map((node) => {
       return {
         field: node.field,
         value: node.value,
@@ -361,18 +359,15 @@ describe('<StrategySheet/> Tests', () => {
     it('should selected cell and update spotlight style', () => {
       const dataCellId = `root[&]自定义节点A[&]指标A-root[&]2022-11[&]["数值","环比","同比"]`;
 
-      const selectedDataCell = s2.interaction
-        .getPanelGroupAllDataCells()
-        .find((cell) => cell.getMeta().id === dataCellId)!;
+      const selectedDataCell = s2.facet.getCellById(dataCellId)!;
 
       s2.interaction.changeState({
         cells: [getCellMeta(selectedDataCell)],
         stateName: InteractionStateName.SELECTED,
       });
 
-      const allDataCells = s2.interaction.getPanelGroupAllDataCells();
-      const unSelectedDataCells =
-        s2.interaction.getPanelGroupAllUnSelectedDataCells();
+      const allDataCells = s2.facet.getDataCells();
+      const unSelectedDataCells = s2.interaction.getUnSelectedDataCells();
 
       expect(allDataCells).toHaveLength(30);
       // 选中一个

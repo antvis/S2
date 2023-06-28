@@ -1,7 +1,7 @@
 import type { SimpleBBox } from '../../engine';
 import type {
   InteractionStateName,
-  CellTypes,
+  CellType,
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
@@ -13,7 +13,7 @@ import type {
   MergedCell,
   RowCell,
   TableCornerCell,
-  TableSeriesCell,
+  TableSeriesNumberCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
@@ -34,14 +34,14 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | SeriesNumberCell
   | MergedCell
   | TableCornerCell
-  | TableSeriesCell
+  | TableSeriesNumberCell
   | BaseCell<T>;
 
 export interface CellMeta {
   id: string;
   colIndex: number;
   rowIndex: number;
-  type: CellTypes;
+  type: CellType;
   rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }

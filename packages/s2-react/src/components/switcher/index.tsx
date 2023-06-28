@@ -41,6 +41,9 @@ export const Switcher: FC<SwitcherProps> = ({
       placement="bottomLeft"
       destroyTooltipOnHide
       {...popover}
+      overlayClassName={`${getSwitcherClassName('switcher-overlay')} ${
+        popover?.overlayClassName || ''
+      }`}
     >
       {isValidElement(title) ? (
         title

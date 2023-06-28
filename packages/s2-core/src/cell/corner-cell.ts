@@ -1,7 +1,7 @@
 import type { PointLike } from '@antv/g';
 import { isEmpty, last, max } from 'lodash';
 import {
-  CellTypes,
+  CellType,
   ELLIPSIS_SYMBOL,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
@@ -41,7 +41,7 @@ export class CornerCell extends HeaderCell {
   }
 
   public get cellType() {
-    return CellTypes.CORNER_CELL;
+    return CellType.CORNER_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

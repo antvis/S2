@@ -28,7 +28,7 @@ describe('Conditions Test', () => {
 
   s2.render();
   test('should render icon for cell with field value 0', () => {
-    const dataNodes = s2.interaction.getPanelGroupAllDataCells();
+    const dataNodes = s2.facet.getDataCells();
 
     dataNodes.forEach((node) => {
       const drawIcon = node

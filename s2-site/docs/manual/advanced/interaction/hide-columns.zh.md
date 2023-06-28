@@ -59,7 +59,7 @@ const s2Options = {
 ```ts
 // /docs/api/basic-class/spreadsheet
 const s2 = new PivotSheet()
-console.log(s2.getColumnNodes())
+console.log(s2.facet.getColCellNodes())
 ```
 
 </details>

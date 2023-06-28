@@ -54,11 +54,11 @@ describe('Multi Values GrandTotal Height Test', () => {
   });
 
   test('should get correctly grand total node height if value in rows', () => {
-    const grandTotalsNode = s2
-      .getColumnNodes()
+    const grandTotalsNode = s2.facet
+      .getColNodes()
       .find((node) => node.isGrandTotals)!;
 
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
+    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(60);
   });
 
@@ -79,11 +79,11 @@ describe('Multi Values GrandTotal Height Test', () => {
     });
     s2.render(true);
 
-    const grandTotalsNode = s2
-      .getColumnNodes()
+    const grandTotalsNode = s2.facet
+      .getColNodes()
       .find((node) => node.isGrandTotals)!;
 
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
+    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(30);
   });
 });

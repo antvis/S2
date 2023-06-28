@@ -17,7 +17,7 @@ describe('Row width Test in grid mode', () => {
   });
 
   test('get the correct custom width of row nodes when the layoutWidthType equals adaptive', () => {
-    const { rowNodes } = s2.facet.layoutResult;
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(Math.round(rowNodes[0].width)).toBe(266);
   });
@@ -30,7 +30,8 @@ describe('Row width Test in grid mode', () => {
       },
     });
     s2.render();
-    const { rowNodes } = s2.facet.layoutResult;
+
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(rowNodes[0].width).toBe(50);
   });
@@ -43,7 +44,8 @@ describe('Row width Test in grid mode', () => {
       },
     });
     s2.render();
-    const { rowNodes } = s2.facet.layoutResult;
+
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(rowNodes[0].width).toBe(20);
   });

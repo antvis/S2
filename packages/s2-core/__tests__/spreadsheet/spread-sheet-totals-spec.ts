@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { getContainer } from 'tests/util/helpers';
+import { get, merge } from 'lodash';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
-import { flatMap, get, merge } from 'lodash';
-import { PivotSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
+import { DataCell } from '@/cell';
 import type { RawData, S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
-import { DataCell } from '@/cell';
+import { PivotSheet } from '@/sheet-type';
 
 describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;
@@ -18,9 +18,8 @@ describe('Spreadsheet Totals Tests', () => {
   test('should render total nodes on row header', () => {
     spreadsheet.setOptions({ totals: TOTALS_OPTIONS });
     spreadsheet.render();
-    const totalNodes = spreadsheet.facet.layoutResult.rowNodes.filter(
-      (node) => node.isTotals,
-    );
+
+    const totalNodes = spreadsheet.facet.getRowTotalsNodes();
 
     expect(totalNodes).toHaveLength(3);
 
@@ -42,9 +41,7 @@ describe('Spreadsheet Totals Tests', () => {
   test('should render total nodes on col header', () => {
     spreadsheet.setOptions({ totals: TOTALS_OPTIONS });
     spreadsheet.render();
-    const totalNodes = spreadsheet.facet.layoutResult.colNodes.filter(
-      (node) => node.isTotals,
-    );
+    const totalNodes = spreadsheet.facet.getColTotalsNodes();
 
     expect(totalNodes).toHaveLength(3);
 
@@ -76,10 +73,10 @@ describe('Spreadsheet Totals Tests', () => {
     });
     spreadsheet.render();
 
-    const { rowNodes, colNodes } = spreadsheet.facet.layoutResult;
-    const totalNodes = flatMap([rowNodes, colNodes], (nodes) =>
-      nodes.filter((node) => node.isTotals),
-    );
+    const totalNodes = [
+      ...spreadsheet.facet.getRowTotalsNodes(),
+      ...spreadsheet.facet.getColTotalsNodes(),
+    ];
 
     expect(totalNodes.filter((node) => node.isGrandTotals)).toHaveLength(0);
     expect(totalNodes).toHaveLength(4);
@@ -128,7 +125,7 @@ describe('Spreadsheet Totals Tests', () => {
           node.isSubTotals,
       );
 
-    const { rowNodes, colNodes } = spreadsheet.facet.layoutResult;
+    const { rowNodes, colNodes } = spreadsheet.facet.getLayoutResult();
 
     // 当子维度只有一个时，不展示小计节点
     expect(findSubTotalNode(rowNodes, '浙江省', 'city')).toBeDefined();
