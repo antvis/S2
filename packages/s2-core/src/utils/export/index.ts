@@ -107,6 +107,7 @@ export const download = (str: string, fileName: string) => {
  * @param split
  * @param formatOptions 是否格式化数据
  * @param customTransformer
+ * @param isAsyncExport 是否异步导出
  * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
  */
 // TODO: 改名

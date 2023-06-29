@@ -44,6 +44,7 @@ export interface Transformer {
   [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
   [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 }
+
 export interface CopyOrExportConfig {
   selectedCells?: CellMeta[];
   formatOptions?: FormatOptions;
@@ -66,6 +67,7 @@ export interface CopyAllDataParams {
   split?: string;
   formatOptions?: FormatOptions;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  /** 是否开启异步导出 */
   isAsyncExport?: boolean;
 }
 
