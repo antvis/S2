@@ -321,7 +321,7 @@ describe('Interaction Row Column Resize Tests', () => {
       resizeInfo,
     );
 
-    expect(rowColumnResizeInstance.resizeStartPosition).toEqual({
+    expect(rowColumnResizeInstance.resizeStartPosition).toStrictEqual({
       offsetY: 20,
       clientY: 20,
     });
