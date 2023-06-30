@@ -105,7 +105,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
                 const field = colNode.field;
 
                 if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
-                  return (i + 1).toString();
+                  row.push((j + 1).toString());
+                  // eslint-disable-next-line no-continue
+                  continue;
                 }
 
                 const formatter = getFormatter(
