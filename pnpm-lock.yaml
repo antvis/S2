@@ -236,7 +236,6 @@ importers:
       react-beautiful-dnd: ^13.1.0
       react-color: ^2.19.3
       react-dom: ^17.0.2
-      stats.js: ^0.17.0
       vite-plugin-svgr: ^2.2.2
     dependencies:
       ahooks: 3.7.8_react@17.0.2
@@ -261,7 +260,6 @@ importers:
       react: 17.0.2
       react-color: 2.19.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
-      stats.js: 0.17.0
       vite-plugin-svgr: 2.4.0
 
   packages/s2-shared:
@@ -21558,10 +21556,6 @@ packages:
     dependencies:
       define-property: 0.2.5
       object-copy: 0.1.0
-    dev: true
-
-  /stats.js/0.17.0:
-    resolution: {integrity: sha1-scPcRtlEmLV4t/05hbgaznExzH0=, tarball: https://registry.npm.alibaba-inc.com/stats.js/download/stats.js-0.17.0.tgz}
     dev: true
 
   /stdin-discarder/0.1.0:
