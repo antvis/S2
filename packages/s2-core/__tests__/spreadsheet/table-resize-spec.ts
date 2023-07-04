@@ -5,14 +5,14 @@ import { TableSheet } from '@/sheet-type';
 import { KEY_GROUP_ROW_RESIZE_AREA } from '@/common/constant';
 
 describe('Table Sheet Resize Test', () => {
-  test('should draw resize area in series cell when show series', () => {
+  test('should draw resize area in series cell when show series', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       width: 800,
       height: 600,
       showSeriesNumber: true,
     });
 
-    s2.render();
+    await s2.render();
 
     const resizeGroup = s2.facet.foregroundGroup.getElementById(
       KEY_GROUP_ROW_RESIZE_AREA,
@@ -21,14 +21,14 @@ describe('Table Sheet Resize Test', () => {
     expect(resizeGroup.children.length).toBeGreaterThan(0);
   });
 
-  test('should draw resize area in data cell when hide series', () => {
+  test('should draw resize area in data cell when hide series', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       width: 800,
       height: 600,
       showSeriesNumber: false,
     });
 
-    s2.render();
+    await s2.render();
 
     const resizeGroup = s2.facet.foregroundGroup.getElementById(
       KEY_GROUP_ROW_RESIZE_AREA,

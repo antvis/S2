@@ -36,14 +36,16 @@ function MainLayout() {
 }
 
 describe('SheetComponent Tooltip Tests', () => {
-  beforeEach(() => {
-    s2?.destroy();
-  });
+  const container = getContainer();
 
   beforeEach(() => {
     act(() => {
-      ReactDOM.render(<MainLayout />, getContainer());
+      ReactDOM.render(<MainLayout />, container);
     });
+  });
+
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
   });
 
   // https://github.com/antvis/S2/issues/828
@@ -188,17 +190,23 @@ describe('SheetComponent Tooltip Tests', () => {
     async ({ forceRender }) => {
       await sleep(1000);
 
-      const unmountComponentAtNodeSpy = jest
-        .spyOn(ReactDOM, 'unmountComponentAtNode')
-        .mockImplementationOnce(() => true);
+      const unmountComponentAtNodeSpy = jest.spyOn(
+        s2.tooltip as CustomTooltip,
+        // @ts-ignore
+        'unmountComponentAtNode',
+      );
 
-      s2.showTooltip({ position: { x: 0, y: 0 }, options: { forceRender } });
-      s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
-      s2.hideTooltip();
+      act(() => {
+        s2.showTooltip({ position: { x: 0, y: 0 }, options: { forceRender } });
+        s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
+        s2.hideTooltip();
+      });
 
       expect(unmountComponentAtNodeSpy).toHaveBeenCalledTimes(
         forceRender ? 2 : 0,
       );
+
+      s2.tooltip.destroy();
     },
   );
 

@@ -16,10 +16,10 @@ const s2Options = {
 };
 
 describe('Export data in pivot tree mode', () => {
-  test('should export correct col header in pivot tree mode', () => {
+  test('should export correct col header in pivot tree mode', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: '\t',

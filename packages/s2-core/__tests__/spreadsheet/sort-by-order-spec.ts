@@ -78,11 +78,11 @@ describe('Manual Sort Tests', () => {
     ],
   };
 
-  beforeAll(() => {
+  beforeAll(async () => {
     const container = getContainer();
 
     s2 = new PivotSheet(container, mockDataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('getDimensionValues should include correct values', () => {

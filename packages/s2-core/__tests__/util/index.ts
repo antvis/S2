@@ -4,6 +4,8 @@ import {
   type S2DataConfig,
   type S2Options,
   DEFAULT_DATA_CONFIG,
+  SpreadSheet,
+  S2Event,
 } from '@/index';
 import { customMerge } from '@/utils';
 
@@ -41,4 +43,22 @@ export const TOTALS_OPTIONS: S2Options['totals'] = {
     showSubTotals: true,
     subTotalsDimensions: ['type', 'sub_type'],
   },
+};
+
+/**
+ * 等待 render 异步执行工具函数
+ * @param spreadsheet 表格实例
+ * @param executeBlock 会触发 render 的执行代码块
+ */
+export const waitForRender = async (
+  spreadsheet: SpreadSheet,
+  executeBlock: () => void,
+) => {
+  const renderPromise = new Promise((r) => {
+    spreadsheet.once(S2Event.LAYOUT_AFTER_RENDER, () => r(true));
+  });
+
+  await executeBlock();
+
+  return renderPromise;
 };

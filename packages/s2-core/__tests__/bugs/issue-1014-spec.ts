@@ -55,9 +55,9 @@ const dataCfg: S2DataConfig = {
 describe('Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2options);
-    s2.render();
+    await s2.render();
   });
 
   test('corner should not be formatted', () => {

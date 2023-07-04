@@ -22,11 +22,11 @@ const s2Options: S2Options = {
 };
 
 describe('ScrollBar Track Offset Tests', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  test('should not get NaN offset when scroll track clicked', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-  s2.render();
+    await s2.render();
 
-  test('should not get NaN offset when scroll track clicked', () => {
     const { hScrollBar } = s2.facet;
 
     const updateThumbOffsetSpy = jest

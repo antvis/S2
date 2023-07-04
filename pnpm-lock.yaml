@@ -264,10 +264,7 @@ importers:
         version: 5.16.13
       '@antv/g-canvas':
         specifier: ^1.9.41
-        version: 1.9.41(@antv/g-lite@1.0.51)
-      '@antv/g-lite':
-        specifier: ^1.0.51
-        version: 1.0.51
+        version: 1.9.41
       d3-ease:
         specifier: ^3.0.1
         version: 3.0.1
@@ -841,18 +838,17 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-canvas@1.9.41(@antv/g-lite@1.0.51):
+  /@antv/g-canvas@1.9.41:
     resolution: {integrity: sha512-3y6XzfQ69XcZu53HUsJAIzDMPIHs1k7mB9QL5FiaxvDGt2yeDWMrCihKZdNN2C0pVuItneMAZRNhj7ZKmybHvg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
-      '@antv/g-plugin-canvas-path-generator': 1.1.46(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-canvas-picker': 1.8.45(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-canvas-renderer': 1.7.53(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-dom-interaction': 1.7.45(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-html-renderer': 1.7.49(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-image-loader': 1.1.47(@antv/g-lite@1.0.51)
+      '@antv/g-plugin-canvas-path-generator': 1.1.46
+      '@antv/g-plugin-canvas-picker': 1.8.45
+      '@antv/g-plugin-canvas-renderer': 1.7.53
+      '@antv/g-plugin-dom-interaction': 1.7.45
+      '@antv/g-plugin-html-renderer': 1.7.49
+      '@antv/g-plugin-image-loader': 1.1.47
       '@antv/util': 3.3.2
       '@types/offscreencanvas': 2019.7.0
       tslib: 2.4.1
@@ -931,69 +927,63 @@ packages:
       gl-matrix: 3.4.3
       tslib: 2.4.1
 
-  /@antv/g-plugin-canvas-path-generator@1.1.46(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-canvas-path-generator@1.1.46:
     resolution: {integrity: sha512-YbV2FHflEUQKdN1cQP0vZNRk51lPlYP68IAGJty7LlFh6oIssBSY9fDyYotD9wTg3rn7V2cFSYCJUBxl53FlAg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
       '@antv/g-math': 1.7.44
       '@antv/util': 3.3.2
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-canvas-picker@1.8.45(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-canvas-picker@1.8.45:
     resolution: {integrity: sha512-wFZ5xK3RlXfk2qV/hvfyWlfVWTJTuch1CSNZycFAxUmBw3T2eoTq5fWqj81ZnF/T75DiG/8L7aB901BaGfiC8A==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
-      '@antv/g-plugin-canvas-path-generator': 1.1.46(@antv/g-lite@1.0.51)
+      '@antv/g-plugin-canvas-path-generator': 1.1.46
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-canvas-renderer@1.7.53(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-canvas-renderer@1.7.53:
     resolution: {integrity: sha512-S/U4KYJobEQeoOv1Ahf4JaW8gpQGB2/2f+eNx93GigNkiMD0PxTtXhrclFG1vBHNaLJxdmLHd2WTvI0Qihy3sg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
       '@antv/g-math': 1.7.44
-      '@antv/g-plugin-canvas-path-generator': 1.1.46(@antv/g-lite@1.0.51)
-      '@antv/g-plugin-image-loader': 1.1.47(@antv/g-lite@1.0.51)
+      '@antv/g-plugin-canvas-path-generator': 1.1.46
+      '@antv/g-plugin-image-loader': 1.1.47
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-dom-interaction@1.7.45(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-dom-interaction@1.7.45:
     resolution: {integrity: sha512-14sLKemcCxObQDQPSVjNqD9k7uVvf8OfeCJQCza7IadWqdQPEyvFfhCw458hxW+wQm8zqT6rki0Z3RGZW2SPDw==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-html-renderer@1.7.49(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-html-renderer@1.7.49:
     resolution: {integrity: sha512-pwP+bjybMHCMcHpIaVZV26obrNMnbI9YZB+4B1MbDHOYRtlE/NHFnNluDIAV7WiyePjp+gUOjqzeox7WNV+C1Q==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
       tslib: 2.4.1
     dev: false
 
-  /@antv/g-plugin-image-loader@1.1.47(@antv/g-lite@1.0.51):
+  /@antv/g-plugin-image-loader@1.1.47:
     resolution: {integrity: sha512-GBVA2RfBehkGRcetVW99SPlP7MHhBl89JEueZjyPLx9KdpTZ6z++vnknK/2IVcCKlho41t/IJyarsAGsCwLdQg==}
     peerDependencies:
       '@antv/g-lite': ^1.0.0
     dependencies:
-      '@antv/g-lite': 1.0.51
       '@antv/util': 3.3.2
       tslib: 2.4.1
     dev: false

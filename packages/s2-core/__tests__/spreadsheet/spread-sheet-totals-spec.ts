@@ -15,9 +15,9 @@ describe('Spreadsheet Totals Tests', () => {
     spreadsheet = new PivotSheet(getContainer(), dataCfg, assembleOptions());
   });
 
-  test('should render total nodes on row header', () => {
+  test('should render total nodes on row header', async () => {
     spreadsheet.setOptions({ totals: TOTALS_OPTIONS });
-    spreadsheet.render();
+    await spreadsheet.render();
 
     const totalNodes = spreadsheet.facet.getRowTotalsNodes();
 
@@ -38,9 +38,9 @@ describe('Spreadsheet Totals Tests', () => {
     expect(provinceSubTotalNodes).toHaveLength(2); // 四川、浙江
   });
 
-  test('should render total nodes on col header', () => {
+  test('should render total nodes on col header', async () => {
     spreadsheet.setOptions({ totals: TOTALS_OPTIONS });
-    spreadsheet.render();
+    await spreadsheet.render();
     const totalNodes = spreadsheet.facet.getColTotalsNodes();
 
     expect(totalNodes).toHaveLength(3);
@@ -60,7 +60,7 @@ describe('Spreadsheet Totals Tests', () => {
     expect(typeSubTotalNodes).toHaveLength(2); // 家具、办公用品
   });
 
-  test('should not render grand total nodes', () => {
+  test('should not render grand total nodes', async () => {
     spreadsheet.setOptions({
       totals: merge({}, TOTALS_OPTIONS, {
         row: {
@@ -71,7 +71,7 @@ describe('Spreadsheet Totals Tests', () => {
         },
       }),
     });
-    spreadsheet.render();
+    await spreadsheet.render();
 
     const totalNodes = [
       ...spreadsheet.facet.getRowTotalsNodes(),
@@ -82,7 +82,7 @@ describe('Spreadsheet Totals Tests', () => {
     expect(totalNodes).toHaveLength(4);
   });
 
-  test('should not render sub total nodes when always=false', () => {
+  test('should not render sub total nodes when always=false', async () => {
     const anotherDataCfg = assembleDataCfg() as S2DataConfig;
 
     /**
@@ -111,7 +111,7 @@ describe('Spreadsheet Totals Tests', () => {
         },
       } as S2Options['totals']),
     });
-    spreadsheet.render();
+    await spreadsheet.render();
 
     const findSubTotalNode = (
       nodes: Node[],
@@ -134,7 +134,7 @@ describe('Spreadsheet Totals Tests', () => {
     expect(findSubTotalNode(colNodes, '办公用品', 'sub_type')).toBeDefined();
   });
 
-  test('should render actual row subtotal data in tree mode with row subtotal close', () => {
+  test('should render actual row subtotal data in tree mode with row subtotal close', async () => {
     spreadsheet.setOptions({
       hierarchyType: 'tree',
       totals: {
@@ -145,37 +145,30 @@ describe('Spreadsheet Totals Tests', () => {
         },
       },
     });
-    spreadsheet.render();
+    await spreadsheet.render();
 
-    const grandTotal = spreadsheet.facet.panelScrollGroup
-      .getChildren()
-      .find(
-        (child) =>
-          child instanceof DataCell &&
-          get(child, 'meta.rowId') === 'root[&]总计',
-      ) as DataCell;
+    const grandTotal = spreadsheet.facet.panelScrollGroup.children.find(
+      (child) =>
+        child instanceof DataCell && get(child, 'meta.rowId') === 'root[&]总计',
+    ) as DataCell;
 
     // @ts-ignore
     expect(grandTotal.textShape.attr('text')).toEqual('26193');
 
-    const rowSubtotal1 = spreadsheet.facet.panelScrollGroup
-      .getChildren()
-      .find(
-        (child) =>
-          child instanceof DataCell &&
-          get(child, 'meta.rowId') === 'root[&]浙江省',
-      ) as DataCell;
+    const rowSubtotal1 = spreadsheet.facet.panelScrollGroup.children.find(
+      (child) =>
+        child instanceof DataCell &&
+        get(child, 'meta.rowId') === 'root[&]浙江省',
+    ) as DataCell;
 
     // @ts-ignore
     expect(rowSubtotal1.textShape).toBeUndefined();
 
-    const rowSubtotal2 = spreadsheet.facet.panelScrollGroup
-      .getChildren()
-      .find(
-        (child) =>
-          child instanceof DataCell &&
-          get(child, 'meta.rowId') === 'root[&]浙江省',
-      ) as DataCell;
+    const rowSubtotal2 = spreadsheet.facet.panelScrollGroup.children.find(
+      (child) =>
+        child instanceof DataCell &&
+        get(child, 'meta.rowId') === 'root[&]浙江省',
+    ) as DataCell;
 
     // @ts-ignore
     expect(rowSubtotal2.textShape).toBeUndefined();

@@ -16,13 +16,13 @@ describe('Facet Layout API Tests', () => {
     });
 
   describe('PivotSheet', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createPivotSheet({
         width: 300,
         height: 300,
         showSeriesNumber: false,
       });
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -92,11 +92,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getHeaderNodes() for seriesNumber enable', () => {
+      test('#getHeaderNodes() for seriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
           Array [
@@ -370,11 +370,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getCornerNodes() for seriesNumber enable', () => {
+      test('#getCornerNodes() for seriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapNodes(s2.facet.getCornerNodes())).toMatchInlineSnapshot(`
           Array [
@@ -424,11 +424,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getCornerCells() for seriesNumber enable', () => {
+      test('#getCornerCells() for seriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getCornerCells())).toMatchInlineSnapshot(`
           Array [
@@ -464,11 +464,11 @@ describe('Facet Layout API Tests', () => {
         );
       });
 
-      test('#getSeriesNumberNodes() for seriesNumber enable', () => {
+      test('#getSeriesNumberNodes() for seriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapNodes(s2.facet.getSeriesNumberNodes()))
           .toMatchInlineSnapshot(`
@@ -488,11 +488,11 @@ describe('Facet Layout API Tests', () => {
         );
       });
 
-      test('#getSeriesNumberCells() for seriesNumber enable', () => {
+      test('#getSeriesNumberCells() for seriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getSeriesNumberCells()))
           .toMatchInlineSnapshot(`
@@ -508,7 +508,7 @@ describe('Facet Layout API Tests', () => {
     });
 
     describe('MergedCell', () => {
-      test('#getMergedCells()', () => {
+      test('#getMergedCells()', async () => {
         s2.setOptions({
           mergedCellsInfo: [
             [
@@ -517,7 +517,7 @@ describe('Facet Layout API Tests', () => {
             ],
           ],
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getMergedCells())).toMatchInlineSnapshot(`
           Array [
@@ -653,7 +653,7 @@ describe('Facet Layout API Tests', () => {
       });
 
       describe('Row Total Cell', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           s2 = createPivotSheet(
             {
               width: 300,
@@ -670,7 +670,7 @@ describe('Facet Layout API Tests', () => {
             },
             { useSimpleData: false, useTotalData: true },
           );
-          s2.render();
+          await s2.render();
         });
 
         test('#getRowTotalsNodes()', () => {
@@ -841,7 +841,7 @@ describe('Facet Layout API Tests', () => {
       });
 
       describe('Col Total Cell', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           s2 = createPivotSheet(
             {
               width: 300,
@@ -858,7 +858,7 @@ describe('Facet Layout API Tests', () => {
             },
             { useSimpleData: false, useTotalData: true },
           );
-          s2.render();
+          await s2.render();
         });
 
         test('#getColTotalsNodes()', () => {
@@ -914,11 +914,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getDataCells() for showSeriesNumber enable', () => {
+      test('#getDataCells() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
           Array [
@@ -941,13 +941,13 @@ describe('Facet Layout API Tests', () => {
   });
 
   describe('TableSheet', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createTableSheet({
         width: 300,
         height: 300,
         showSeriesNumber: false,
       });
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -970,11 +970,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getHeaderNodes() for showSeriesNumber enable', () => {
+      test('#getHeaderNodes() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
           Array [
@@ -1012,11 +1012,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getHeaderCells() for showSeriesNumber enable', () => {
+      test('#getHeaderCells() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getHeaderCells())).toMatchInlineSnapshot(`
           Array [
@@ -1072,11 +1072,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getCells() for showSeriesNumber enable', () => {
+      test('#getCells() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getCells())).toMatchInlineSnapshot(`
           Array [
@@ -1150,11 +1150,11 @@ describe('Facet Layout API Tests', () => {
     });
 
     describe('SeriesNumberCell', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
       });
 
       test('#getSeriesNumberNodes()', () => {
@@ -1197,11 +1197,11 @@ describe('Facet Layout API Tests', () => {
         );
       });
 
-      test('#getColNodes() for showSeriesNumber enable', () => {
+      test('#getColNodes() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapNodes(s2.facet.getColNodes())).toMatchInlineSnapshot(`
           Array [
@@ -1304,11 +1304,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getDataCells() for showSeriesNumber enable', () => {
+      test('#getDataCells() for showSeriesNumber enable', async () => {
         s2.setOptions({
           showSeriesNumber: true,
         });
-        s2.render(false);
+        await s2.render(false);
 
         expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
           Array [

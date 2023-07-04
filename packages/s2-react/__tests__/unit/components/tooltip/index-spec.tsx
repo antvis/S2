@@ -6,7 +6,7 @@ import {
   type S2CellType,
   type TooltipOperatorMenu,
 } from '@antv/s2';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CustomTooltip, TooltipComponent } from '../../../../src';
 import { MobileSheetComponent } from '../../../../src/components/sheets/mobile-sheet';
@@ -51,7 +51,7 @@ describe('Tooltip Component Tests', () => {
 });
 
 describe('Tooltip Common Components Tests', () => {
-  test('custom tooltip instance of CustomTooltip', () => {
+  test('custom tooltip instance of CustomTooltip', async () => {
     let s2: SpreadSheet;
 
     render(
@@ -64,9 +64,11 @@ describe('Tooltip Common Components Tests', () => {
       />,
     );
 
-    s2!.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
-    expect(s2!.tooltip).toBeInstanceOf(CustomTooltip);
-    expect(s2!.tooltip).toBeInstanceOf(BaseTooltip);
+    await waitFor(() => {
+      s2!.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
+      expect(s2!.tooltip).toBeInstanceOf(CustomTooltip);
+      expect(s2!.tooltip).toBeInstanceOf(BaseTooltip);
+    });
   });
 
   test('render sort tooltip: TooltipOperator', () => {

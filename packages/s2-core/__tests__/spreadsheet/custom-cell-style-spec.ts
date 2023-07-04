@@ -27,9 +27,9 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
   describe('PivotSheet Custom Cell Style Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createPivotSheet(s2Options);
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -45,7 +45,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     describe('#DataCell', () => {
-      test('should get custom data cell style', () => {
+      test('should get custom data cell style', async () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
@@ -56,7 +56,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         });
 
-        sheet.render();
+        await sheet.render();
 
         expect(
           mapNodeSize(sheet.facet.getDataCells().map((cell) => cell.getMeta())),
@@ -77,7 +77,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     describe('#RowCell', () => {
-      test('should get custom row cell style', () => {
+      test('should get custom row cell style', async () => {
         s2.setOptions({
           style: {
             rowCell: {
@@ -86,12 +86,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
-      test('should get custom row cell style by custom hook', () => {
+      test('should get custom row cell style by custom hook', async () => {
         s2.setOptions({
           style: {
             rowCell: {
@@ -108,12 +108,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
-      test('should get custom row cell style by field', () => {
+      test('should get custom row cell style by field', async () => {
         s2.setOptions({
           style: {
             rowCell: {
@@ -126,12 +126,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
-      test('should get custom row cell style by field id', () => {
+      test('should get custom row cell style by field id', async () => {
         const cityId = `root[&]浙江[&]杭州`;
 
         s2.setOptions({
@@ -146,12 +146,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
-      test('should not get custom row cell style if not leaf node by field', () => {
+      test('should not get custom row cell style if not leaf node by field', async () => {
         const width = 100;
         const height = 200;
 
@@ -171,7 +171,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         const rootRowNodes = s2.facet
           .getRowNodes()
@@ -184,7 +184,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom row cell style priority by rowCell.heightByField > rowCell.height > dataCell.height', () => {
+      test('should get custom row cell style priority by rowCell.heightByField > rowCell.height > dataCell.height', async () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
@@ -200,7 +200,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         });
 
-        sheet.render();
+        await sheet.render();
 
         // 1. rowCell.heightByField > rowCell.height > dataCell.height
         sheet.facet.getRowLeafNodes().forEach((node) => {
@@ -221,7 +221,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
           true,
         );
-        sheet.render(false);
+        await sheet.render(false);
 
         sheet.facet.getRowLeafNodes().forEach((node) => {
           expect(node.height).toEqual(20);
@@ -230,7 +230,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     describe('#ColCell', () => {
-      test('should get custom col cell style', () => {
+      test('should get custom col cell style', async () => {
         s2.setOptions({
           style: {
             colCell: {
@@ -239,12 +239,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
-      test('should get custom col cell style by custom hook', () => {
+      test('should get custom col cell style by custom hook', async () => {
         s2.setOptions({
           style: {
             colCell: {
@@ -261,12 +261,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
-      test('should get custom col cell style by field', () => {
+      test('should get custom col cell style by field', async () => {
         s2.setOptions({
           style: {
             colCell: {
@@ -279,12 +279,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
-      test('should get custom col cell style by field id', () => {
+      test('should get custom col cell style by field id', async () => {
         const priceId = `root[&]笔[&]price`;
 
         s2.setOptions({
@@ -299,12 +299,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
-      test('should not get custom col cell style if not leaf node by field', () => {
+      test('should not get custom col cell style if not leaf node by field', async () => {
         const width = 100;
         const height = 200;
 
@@ -324,7 +324,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         const rootColNodes = s2.facet
           .getColNodes()
@@ -337,7 +337,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom col cell style priority by colCell.widthByField > colCell.width > dataCell.width', () => {
+      test('should get custom col cell style priority by colCell.widthByField > colCell.width > dataCell.width', async () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
@@ -353,7 +353,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         });
 
-        sheet.render();
+        await sheet.render();
 
         // 1. colCell.widthByField > colCell.width > dataCell.width
         sheet.facet.getColLeafNodes().forEach((node) => {
@@ -374,14 +374,14 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
           true,
         );
-        sheet.render(false);
+        await sheet.render(false);
 
         sheet.facet.getColLeafNodes().forEach((node) => {
           expect(node.width).toEqual(200);
         });
       });
 
-      test('should get custom col cell style if measure column hidden', () => {
+      test('should get custom col cell style if measure column hidden', async () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
@@ -394,7 +394,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         });
 
-        sheet.render();
+        await sheet.render();
 
         sheet.facet.getColLeafNodes().forEach((node) => {
           expect(node.width).toEqual(100);
@@ -404,11 +404,11 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   });
 
   describe('TableSheet Custom Cell Style Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createTableSheet(s2Options, {
         useSimpleData: false,
       });
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -423,7 +423,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       ).toMatchSnapshot();
     });
 
-    test('should set row cell style by height', () => {
+    test('should set row cell style by height', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -431,14 +431,14 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       expect(
         mapNodeSize(s2.facet.getDataCells().map((cell) => cell.getMeta())),
       ).toMatchSnapshot();
     });
 
-    test('should set row cell style by row index', () => {
+    test('should set row cell style by row index', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -449,14 +449,14 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       expect(
         mapNodeSize(s2.facet.getDataCells().map((cell) => cell.getMeta())),
       ).toMatchSnapshot();
     });
 
-    test('should set col cell style by width', () => {
+    test('should set col cell style by width', async () => {
       s2.setOptions({
         style: {
           colCell: {
@@ -464,12 +464,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
     });
 
-    test('should set col cell style by field', () => {
+    test('should set col cell style by field', async () => {
       const sheet = createTableSheet(s2Options, {
         useSimpleData: false,
       });
@@ -484,12 +484,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      sheet.render();
+      await sheet.render();
 
       expect(mapNodeSize(sheet.facet.getColNodes())).toMatchSnapshot();
     });
 
-    test('should set col cell style by field id', () => {
+    test('should set col cell style by field id', async () => {
       const sheet = createTableSheet(s2Options, {
         useSimpleData: false,
       });
@@ -504,12 +504,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      sheet.render();
+      await sheet.render();
 
       expect(mapNodeSize(sheet.facet.getColNodes())).toMatchSnapshot();
     });
 
-    test('should not set top level col cell style by field', () => {
+    test('should not set top level col cell style by field', async () => {
       const customColDataCfg: S2DataConfig = {
         ...dataConfig,
         fields: {
@@ -528,7 +528,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      sheet.render();
+      await sheet.render();
 
       const nodes = sheet.facet.getColNodes();
 
@@ -539,7 +539,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       expect(moneyNode?.width).not.toEqual(100);
     });
 
-    test('should set col cell style by field for multiple columns', () => {
+    test('should set col cell style by field for multiple columns', async () => {
       const customColDataCfg: S2DataConfig = {
         ...dataConfig,
         fields: {
@@ -560,7 +560,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      sheet.render();
+      await sheet.render();
 
       expect(mapNodeSize(sheet.facet.getColNodes())).toMatchSnapshot();
     });

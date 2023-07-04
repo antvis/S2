@@ -14,7 +14,7 @@ const s2Options = {
 };
 
 describe('background color opacity test', () => {
-  test('should set background color opacity correctly', () => {
+  test('should set background color opacity correctly', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
     s2.setThemeCfg({
@@ -37,7 +37,7 @@ describe('background color opacity test', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
     // corner cell
     const cornerCell = s2.facet.cornerHeader.children[0];

@@ -248,10 +248,10 @@ describe('SheetComponent adaptive Tests', () => {
       );
     });
 
+    await sleep(1000);
+
     const container = document.getElementById(containerId)!;
     const canvas = s2!.getCanvasElement();
-
-    await sleep(1000);
 
     const { height: containerHeight } = container.getBoundingClientRect();
 

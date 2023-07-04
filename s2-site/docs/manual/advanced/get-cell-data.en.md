@@ -20,9 +20,9 @@ The table of `S2` is drawn by `Canvas` , so there will only be one `dom` element
 After the rendering is complete, access `s2.facet.getLayoutResult()` to get all [the cells in](/docs/api/basic-class/node) the current visible range. [see more](/docs/api/basic-class/base-facet)
 
 ```ts
-s2.render()
+await s2.render()
 
-// 确保在 s2.render() 之后获取
+// ensure invoke after s2.render() completes
 console.log(s2.facet.getLayoutResult())
 ```
 
