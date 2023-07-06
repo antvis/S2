@@ -73,7 +73,7 @@ const App = () => {
   const headerActionIcons = [
     {
       // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
-      iconNames: ['customKingIcon'],
+      icons: ['customKingIcon'],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,

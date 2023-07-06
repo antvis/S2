@@ -1,6 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableDataSet } from '../../../src/data-set';
+import { TableFacet } from '../../../src/facet';
 import type { GEvent } from '@/index';
 import { TableSheet } from '@/sheet-type';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
@@ -22,10 +23,10 @@ describe('TableSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     container = getContainer();
     s2 = new TableSheet(container, dataCfg, s2Options);
-    s2.render();
+    await s2.render();
     s2.store.set('sortMethodMap', null);
   });
 
@@ -36,7 +37,9 @@ describe('TableSheet Tests', () => {
 
   describe('TableSheet Sort Tests', () => {
     test('should trigger sort', () => {
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const showTooltipWithInfoSpy = jest
         .spyOn(s2, 'showTooltipWithInfo')
@@ -169,12 +172,12 @@ describe('TableSheet Tests', () => {
     // https://github.com/antvis/S2/issues/1421
     test.each(['zh_CN', 'en_US'] as LangType[])(
       'should render group sort menu',
-      (lang) => {
+      async (lang) => {
         setLang(lang);
 
         const sheet = new TableSheet(container, dataCfg, s2Options);
 
-        sheet.render();
+        await sheet.render();
 
         const showTooltipWithInfoSpy = jest
           .spyOn(sheet, 'showTooltipWithInfo')
@@ -236,5 +239,28 @@ describe('TableSheet Tests', () => {
     s2.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
+  });
+
+  test('should render custom table facet', async () => {
+    const mockRender = jest.fn();
+
+    class CustomFacet extends TableFacet {
+      render() {
+        super.render();
+        mockRender();
+      }
+    }
+
+    const sheet = new TableSheet(getContainer(), dataCfg, {
+      facet: (spreadsheet) => new CustomFacet(spreadsheet),
+      tooltip: {
+        showTooltip: false,
+      },
+    });
+
+    await sheet.render();
+
+    expect(sheet.facet).toBeInstanceOf(TableFacet);
+    expect(mockRender).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,13 +1,13 @@
-import { merge } from 'lodash';
 import type { SimpleBBox } from '../../engine';
 import {
   CellClipBox,
   type CellTheme,
-  type IconStyle,
-  type TextAlignStyle,
+  type IconTheme,
+  type TextAlign,
   type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
+import { getIconTotalWidth, type GroupedIcons } from './header-cell';
 
 /**
  * text 和 icon 之间布局关系：
@@ -17,34 +17,9 @@ import { CellBorderPosition } from '../../common/interface';
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
  */
 
-const normalizeIconStyle = (iconStyle?: IconStyle): IconStyle =>
-  merge(
-    {
-      size: 0,
-      position: 'right',
-      margin: {
-        left: 0,
-        right: 0,
-      },
-    },
-    iconStyle,
-  );
-
-export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconStyle) => {
-  iconCfg = normalizeIconStyle(iconCfg);
-
-  return (
-    contentWidth -
-    iconCfg.size! -
-    iconCfg!.margin!.right! -
-    iconCfg!.margin!.left!
-  );
-};
-
-export const getVerticalPosition = (
+export const getVerticalTextPosition = (
   bbox: SimpleBBox,
   textBaseline: TextBaseline,
-  size = 0,
 ) => {
   const { y, height } = bbox;
 
@@ -52,13 +27,13 @@ export const getVerticalPosition = (
     case 'top':
       return y;
     case 'middle':
-      return y + height / 2 - size / 2;
+      return y + height / 2;
     default:
-      return y + height - size;
+      return y + height;
   }
 };
 
-export const getVerticalIconPositionByText = (
+export const getVerticalIconPosition = (
   iconSize: number,
   textY: number,
   textFontSize: number,
@@ -77,111 +52,60 @@ export const getVerticalIconPositionByText = (
 };
 
 // 获取text及其跟随icon的位置坐标
-export const getFixedTextIconPosition = (options: {
+export const getHorizontalTextIconPosition = (options: {
   bbox: SimpleBBox;
-  textStyle: TextAlignStyle | undefined;
-  textWidth?: number;
-  iconStyle?: IconStyle;
-  iconCount?: number;
+  textWidth: number;
+  textAlign: TextAlign;
+  groupedIcons: GroupedIcons;
+  iconStyle: IconTheme;
 }) => {
-  const { bbox, textStyle, textWidth = 0, iconStyle, iconCount = 1 } = options;
+  const { bbox, textWidth, textAlign, groupedIcons, iconStyle } = options;
   const { x, width } = bbox;
-  const { textAlign, textBaseline } = textStyle!;
-  const {
-    size,
-    margin,
-    position: iconPosition,
-  } = normalizeIconStyle(iconStyle);
 
-  const iconSpace =
-    iconCount * (size! + margin!.left!) + (iconCount ? margin!.right! : 0);
+  const leftIconWidth = getIconTotalWidth(groupedIcons.left, iconStyle);
+  const rightIconWidth = getIconTotalWidth(groupedIcons.right, iconStyle);
+
   let textX: number;
-  let iconX: number;
+  let leftIconX: number;
+  let rightIconX: number;
 
   switch (textAlign) {
     case 'left':
-      /**
-       * icon left -- text left
-       * ------------------------------------------------------
-       * | margin-left | icon | margin-right | text | padding |
-       * ------------------------------------------------------
-       *
-       * text left - icon right
-       * ------------------------------------------------------
-       * | text | margin-left | icon | margin-right | padding |
-       * ------------------------------------------------------
-       */
-      textX = x + (iconPosition === 'left' ? iconSpace : 0);
-      iconX =
-        x +
-        (iconPosition === 'left' ? margin!.left! : textWidth + margin!.left!);
-      break;
-    case 'center': {
-      /**
-       * icon left -- text center
-       * ----------------------------------------------------------------
-       * | padding | margin-left | icon | margin-right | text | padding |
-       * ----------------------------------------------------------------
-       *
-       * text center - icon right
-       * ----------------------------------------------------------------
-       * | padding | text | margin-left | icon | margin-right | padding |
-       * ----------------------------------------------------------------
-       */
-      const totalWidth =
-        iconSpace -
-        (iconPosition === 'left' ? margin!.left! : margin!.right!) +
-        textWidth;
-      const startX = x + width / 2 - totalWidth / 2;
+      leftIconX = x;
+      textX = x + leftIconWidth;
+      rightIconX =
+        textX + textWidth + (rightIconWidth && iconStyle.margin!.left!);
 
-      textX =
-        startX +
-        textWidth / 2 +
-        (iconPosition === 'left' ? iconSpace - margin!.left! : 0);
-      iconX =
-        startX + (iconPosition === 'left' ? 0 : textWidth + margin!.left!);
       break;
-    }
-    default: {
-      /**
-       * icon left -- text right
-       * ------------------------------------------------------
-       * | padding | margin-left | icon | margin-right | text |
-       * ------------------------------------------------------
-       *
-       * text right - icon right
-       * ------------------------------------------------------
-       * | padding | text | margin-left | icon | margin-right |
-       * ------------------------------------------------------
-       */
-      textX = x + width - (iconPosition === 'right' ? iconSpace : 0);
-      iconX =
+    case 'right':
+      textX = x + width - rightIconWidth;
+      leftIconX = textX - textWidth - leftIconWidth;
+      rightIconX =
         x +
         width -
-        (iconPosition === 'right'
-          ? iconSpace - margin?.left!
-          : textWidth + iconSpace - margin?.left!);
+        rightIconWidth +
+        (rightIconWidth && iconStyle.margin!.left!);
       break;
-    }
+
+    default:
+      const totalWidth = leftIconWidth + textWidth + rightIconWidth;
+
+      leftIconX = x + width / 2 - totalWidth / 2;
+      textX = leftIconX + leftIconWidth + textWidth / 2;
+      rightIconX =
+        leftIconX +
+        leftIconWidth +
+        textWidth +
+        (rightIconWidth && iconStyle.margin!.left!);
+      break;
   }
 
-  const textY = getVerticalPosition(bbox, textBaseline!, 0);
-  const iconY = getVerticalPosition(bbox, textBaseline!, size);
-
   return {
-    text: { x: textX, y: textY },
-    icon: { x: iconX, y: iconY },
+    textX,
+    leftIconX,
+    rightIconX,
   };
 };
-
-export const getTextPosition = (
-  contentBox: SimpleBBox,
-  textCfg: TextAlignStyle,
-) =>
-  getFixedTextIconPosition({
-    bbox: contentBox,
-    textStyle: textCfg,
-  }).text;
 
 /**
  * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip

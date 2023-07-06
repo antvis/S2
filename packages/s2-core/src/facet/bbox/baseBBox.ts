@@ -40,7 +40,7 @@ export abstract class BaseBBox implements BBox {
   constructor(facet: BaseFacet, autoCalculateBBoxWhenCreated = false) {
     this.facet = facet;
     this.spreadsheet = facet.spreadsheet;
-    this.layoutResult = facet.layoutResult;
+    this.layoutResult = facet.getLayoutResult();
 
     if (autoCalculateBBoxWhenCreated) {
       this.calculateBBox();

@@ -43,26 +43,26 @@ const fields: S2DataConfig['fields'] = {
 describe('Multi Values GrandTotal Height Test', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
     s2.setDataCfg({
       ...mockDataConfig,
       fields,
     });
-    s2.render();
+    await s2.render();
   });
 
   test('should get correctly grand total node height if value in rows', () => {
-    const grandTotalsNode = s2
-      .getColumnNodes()
+    const grandTotalsNode = s2.facet
+      .getColNodes()
       .find((node) => node.isGrandTotals)!;
 
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
+    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(60);
   });
 
-  test('should get correctly grand total node height if value in columns', () => {
+  test('should get correctly grand total node height if value in columns', async () => {
     s2.setDataCfg({
       ...mockDataConfig,
       fields: {
@@ -77,13 +77,13 @@ describe('Multi Values GrandTotal Height Test', () => {
         },
       },
     });
-    s2.render(true);
+    await s2.render(true);
 
-    const grandTotalsNode = s2
-      .getColumnNodes()
+    const grandTotalsNode = s2.facet
+      .getColNodes()
       .find((node) => node.isGrandTotals)!;
 
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
+    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(30);
   });
 });

@@ -7,12 +7,12 @@ describe('text-scrolling test', () => {
     start: 0,
     size: 100,
   };
-  const iconSize = 10;
+  const iconEndSize = 10 + 5; // icon size + padding
 
   const padding = {
     start: 10,
     end: 10,
-    betweenTextIcon: 5,
+    betweenTextAndEndIcon: 5,
   };
 
   /**
@@ -28,14 +28,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 20,
-      iconStart: 35,
+      iconStart: 20,
+      iconEnd: 35,
     });
   });
 
@@ -52,14 +53,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 10,
-      iconStart: 25,
+      iconStart: 10,
+      iconEnd: 25,
     });
   });
 
@@ -69,14 +71,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: -5,
-      iconStart: 10,
+      iconStart: -5,
+      iconEnd: 10,
     });
   });
 
@@ -93,14 +96,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 60,
-      iconStart: 75,
+      iconStart: 60,
+      iconEnd: 75,
     });
   });
 
@@ -110,14 +114,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 90,
-      iconStart: 105,
+      iconStart: 90,
+      iconEnd: 105,
     });
   });
 
@@ -135,14 +140,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 10,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 10,
-      iconStart: 25,
+      iconStart: 10,
+      iconEnd: 25,
     });
   });
 
@@ -162,14 +168,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 145,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: 10,
-      iconStart: 160,
+      iconStart: 10,
+      iconEnd: 160,
     });
   });
 
@@ -179,14 +186,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 145,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: -20,
-      iconStart: 130,
+      iconStart: -20,
+      iconEnd: 130,
     });
   });
 
@@ -196,14 +204,15 @@ describe('text-scrolling test', () => {
       align: NormalizedAlign.Start,
       size: {
         textSize: 145,
-        iconSize,
+        iconEndSize,
       },
       padding,
     });
 
     expect(result).toEqual({
       textStart: -70,
-      iconStart: 80,
+      iconStart: -70,
+      iconEnd: 80,
     });
   });
 });

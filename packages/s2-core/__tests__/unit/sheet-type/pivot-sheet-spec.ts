@@ -1,32 +1,34 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
-import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
-import { PivotDataSet } from '../../../src/data-set';
+import dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
+import { waitForRender } from 'tests/util';
 import type { BaseEvent } from '../../../src';
-import type { GEvent } from '@/index';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotDataSet } from '../../../src/data-set';
+import { PivotFacet } from '../../../src/facet';
+import type { CornerCell } from '@/cell/corner-cell';
 import {
-  CellTypes,
-  type CustomSVGIcon,
+  CellType,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  type S2DataConfig,
   S2Event,
+  setLang,
+  TOOLTIP_CONTAINER_CLS,
+  type CustomSVGIcon,
+  type HiddenColumnsInfo,
+  type LangType,
+  type RowCellCollapsedParams,
+  type S2DataConfig,
   type S2Options,
   type TooltipShowOptions,
-  TOOLTIP_CONTAINER_CLS,
-  setLang,
-  type LangType,
-  type HiddenColumnsInfo,
-  type RowCellCollapsedParams,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import type { GEvent } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/utils/hide-columns');
 
@@ -60,11 +62,11 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     setLang('zh_CN');
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterAll(() => {
@@ -73,14 +75,14 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('PivotSheet Tooltip Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.HEADER_CELL]: 'header',
-        [CellTypes.MERGED_CELL]: 'merged',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'merged',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType]);
 
     test('should support callback tooltip content for string', () => {
@@ -205,13 +207,13 @@ describe('PivotSheet Tests', () => {
     });
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
-      (cellType) => {
+      async (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;
         const defaultTooltipContent = 'default tooltip content';
 
@@ -232,7 +234,7 @@ describe('PivotSheet Tests', () => {
           }),
         );
 
-        sheet.render();
+        await sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container!.innerHTML).toEqual(tooltipContent);
@@ -241,9 +243,9 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for string content',
-      (cellType) => {
+      async (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;
         const defaultTooltipContent = 'default tooltip content';
         const methodTooltipContent = 'method tooltip content';
@@ -265,7 +267,7 @@ describe('PivotSheet Tests', () => {
           }),
         );
 
-        sheet.render();
+        await sheet.render();
         sheet.showTooltip({
           position: { x: 0, y: 0 },
           content: methodTooltipContent,
@@ -279,9 +281,9 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should use %o tooltip content from tooltip config first for element content',
-      (cellType) => {
+      async (cellType) => {
         const tooltipContent = document.createElement('span');
         const defaultTooltipContent = document.createElement('div');
 
@@ -302,7 +304,7 @@ describe('PivotSheet Tests', () => {
           }),
         );
 
-        sheet.render();
+        await sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container!.contains(tooltipContent)).toBeTruthy();
@@ -314,9 +316,9 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([CellType.ROW_CELL, CellType.COL_CELL, CellType.DATA_CELL])(
       'should replace %o tooltip content if call showTooltip method for element content',
-      (cellType) => {
+      async (cellType) => {
         const tooltipContent = document.createElement('span');
         const defaultTooltipContent = document.createElement('div');
         const methodTooltipContent = document.createElement('a');
@@ -338,7 +340,7 @@ describe('PivotSheet Tests', () => {
           }),
         );
 
-        sheet.render();
+        await sheet.render();
         sheet.showTooltip({
           position: { x: 0, y: 0 },
           content: methodTooltipContent,
@@ -400,7 +402,7 @@ describe('PivotSheet Tests', () => {
       sheet.destroy();
     });
 
-    test('should show invalid custom tooltip warning', () => {
+    test('should show invalid custom tooltip warning', async () => {
       const warnSpy = jest
         .spyOn(console, 'warn')
         .mockImplementationOnce(() => {});
@@ -419,7 +421,7 @@ describe('PivotSheet Tests', () => {
         }),
       );
 
-      sheet.render();
+      await sheet.render();
 
       expect(warnSpy).toHaveBeenCalledWith(
         `[Custom Tooltip]: ${(
@@ -471,7 +473,7 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.showSeriesNumber).toBeTruthy();
   });
 
-  test('should render sheet', () => {
+  test('should render sheet', async () => {
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
       .mockImplementation(() => {});
@@ -482,7 +484,7 @@ describe('PivotSheet Tests', () => {
     s2.on(S2Event.LAYOUT_BEFORE_RENDER, beforeRender);
     s2.on(S2Event.LAYOUT_AFTER_RENDER, afterRender);
 
-    s2.render(false);
+    await s2.render(false);
 
     // build facet
     expect(facetRenderSpy).toHaveBeenCalledTimes(1);
@@ -491,7 +493,7 @@ describe('PivotSheet Tests', () => {
     expect(afterRender).toHaveBeenCalledTimes(1);
   });
 
-  test('should emit after real dataCell render', () => {
+  test('should emit after real dataCell render', async () => {
     const afterRealDataCellRender = jest.fn();
     const sheet = new PivotSheet(container, dataCfg, s2Options);
 
@@ -499,7 +501,7 @@ describe('PivotSheet Tests', () => {
       S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER,
       afterRealDataCellRender,
     );
-    sheet.render();
+    await sheet.render();
 
     expect(afterRealDataCellRender).toHaveBeenCalledTimes(1);
   });
@@ -528,11 +530,11 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get row nodes', () => {
-    expect(s2.getRowNodes()).toHaveLength(3);
+    expect(s2.facet.getRowNodes()).toHaveLength(3);
   });
 
   test('should get column nodes', () => {
-    expect(s2.getColumnNodes()).toHaveLength(3);
+    expect(s2.facet.getColNodes()).toHaveLength(3);
   });
 
   test('should change sheet container size', () => {
@@ -621,15 +623,15 @@ describe('PivotSheet Tests', () => {
 
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
-    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
+    expect(s2.facet.getInitColLeafNodes()).toHaveLength(2);
   });
 
   test('should clear init column nodes', () => {
-    s2.store.set('initColumnLeafNodes', [null, null] as unknown as Node[]);
+    s2.store.set('initColLeafNodes', [null, null] as unknown as Node[]);
 
-    s2.clearColumnLeafNodes();
+    s2.facet.clearInitColLeafNodes();
 
-    expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
+    expect(s2.store.get('initColLeafNodes')).toBeFalsy();
   });
 
   test('should get pivot mode', () => {
@@ -659,9 +661,9 @@ describe('PivotSheet Tests', () => {
     expect(s2.getDataSet()).toBeInstanceOf(PivotDataSet);
   });
 
-  test('should rebuild hidden columns detail by status', () => {
+  test('should rebuild hidden columns detail by status', async () => {
     // 重新更新, 但是没有隐藏列信息
-    s2.render(false, { reBuildHiddenColumnsDetail: true });
+    await s2.render(false, { reBuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
@@ -670,18 +672,20 @@ describe('PivotSheet Tests', () => {
     ] as unknown as HiddenColumnsInfo[]);
 
     // 重新更新, 有隐藏列信息, 但是 reBuildHiddenColumnsDetail 为 false
-    s2.render(false, { reBuildHiddenColumnsDetail: false });
+    await s2.render(false, { reBuildHiddenColumnsDetail: false });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
     // 重新更新, 有隐藏列信息, 且 reBuildHiddenColumnsDetail 为 true
-    s2.render(false, { reBuildHiddenColumnsDetail: true });
+    await s2.render(false, { reBuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(1);
   });
 
   test('should clear drill down data', () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementation(async () => {});
 
     s2.interaction.addIntercepts([InterceptType.DATA_CELL_BRUSH_SELECTION]);
 
@@ -703,7 +707,7 @@ describe('PivotSheet Tests', () => {
     renderSpy.mockRestore();
   });
 
-  test('should get extra field text', () => {
+  test('should get extra field text', async () => {
     const pivotSheet = new PivotSheet(
       container,
       customMerge(originalDataCfg, {
@@ -714,16 +718,16 @@ describe('PivotSheet Tests', () => {
       s2Options,
     );
 
-    pivotSheet.render();
+    await pivotSheet.render();
     const extraField = last(
-      pivotSheet.facet.cornerHeader.getChildren(),
+      pivotSheet.facet.cornerHeader.children,
     ) as CornerCell;
 
     expect(get(extraField, 'actualText')).toEqual('数值');
   });
 
   // https://github.com/antvis/S2/issues/1212
-  test('should get custom extra field text', () => {
+  test('should get custom extra field text', async () => {
     const cornerExtraFieldText = 'custom';
 
     const pivotSheet = new PivotSheet(
@@ -739,10 +743,10 @@ describe('PivotSheet Tests', () => {
       },
     );
 
-    pivotSheet.render();
+    await pivotSheet.render();
 
     const extraField = last(
-      pivotSheet.facet.cornerHeader.getChildren(),
+      pivotSheet.facet.cornerHeader.children,
     ) as CornerCell;
 
     expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
@@ -753,7 +757,9 @@ describe('PivotSheet Tests', () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const collapseRows = jest.fn();
 
@@ -790,7 +796,9 @@ describe('PivotSheet Tests', () => {
         style: { rowCell: { collapseFields: undefined } },
       });
 
-      const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+      const renderSpy = jest
+        .spyOn(s2, 'render')
+        .mockImplementation(async () => {});
 
       const isCollapsed = true;
 
@@ -808,7 +816,7 @@ describe('PivotSheet Tests', () => {
       renderSpy.mockRestore();
     });
 
-    test('should update row nodes when collapseAll options changed', () => {
+    test('should update row nodes when collapseAll options changed', async () => {
       const tree = new PivotSheet(getContainer(), dataCfg, {
         ...s2Options,
         hierarchyType: 'tree',
@@ -819,11 +827,11 @@ describe('PivotSheet Tests', () => {
         },
       });
 
-      tree.render();
+      await tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
 
       tree.setOptions({
         style: {
@@ -832,46 +840,54 @@ describe('PivotSheet Tests', () => {
           },
         },
       });
-      tree.render();
+      await tree.render();
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
     });
 
     // https://github.com/antvis/S2/issues/1072
 
-    test('should update row nodes when toggle collapse all rows with tree mode', () => {
+    test('should update row nodes when toggle collapse all rows with tree mode', async () => {
       const tree = new PivotSheet(getContainer(), dataCfg, {
         ...s2Options,
         hierarchyType: 'tree',
       });
 
-      tree.render();
+      await tree.render();
 
       const isCollapsed = true;
 
-      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
+      await waitForRender(tree, () => {
+        tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
+      });
 
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province', 'city', 'city']);
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+        'city',
+        'city',
+      ]);
 
-      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
-      expect(
-        tree.facet.layoutResult.rowNodes.map(({ field }) => field),
-      ).toEqual(['province']);
+      await waitForRender(tree, () => {
+        tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
+      });
+      expect(tree.facet.getRowNodes().map(({ field }) => field)).toEqual([
+        'province',
+      ]);
     });
   });
 
   // https://github.com/antvis/S2/issues/1421
   test.each(['zh_CN', 'en_US'] as LangType[])(
     'should render group sort menu',
-    (lang) => {
+    async (lang) => {
       setLang(lang);
       const sheet = new PivotSheet(container, dataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
       const showTooltipWithInfoSpy = jest
         .spyOn(sheet, 'showTooltipWithInfo')
@@ -910,7 +926,9 @@ describe('PivotSheet Tests', () => {
   );
 
   test('should handle group sort', () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementation(async () => {});
 
     const showTooltipWithInfoSpy = jest
       .spyOn(s2, 'showTooltipWithInfo')
@@ -992,7 +1010,7 @@ describe('PivotSheet Tests', () => {
     expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
   });
 
-  test('should destroy sheet', () => {
+  test('should destroy sheet', async () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
       .mockImplementationOnce(() => {});
@@ -1001,7 +1019,7 @@ describe('PivotSheet Tests', () => {
       .spyOn(s2.hdAdapter, 'destroy')
       .mockImplementationOnce(() => {});
 
-    s2.render(false);
+    await s2.render(false);
 
     s2.store.set('test', 111);
 
@@ -1060,7 +1078,7 @@ describe('PivotSheet Tests', () => {
       s2.destroy();
     });
 
-    it('should render column leaf nodes if column fields is empty but config values fields', () => {
+    it('should render column leaf nodes if column fields is empty but config values fields', async () => {
       const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
         fields: {
           columns: [],
@@ -1068,20 +1086,18 @@ describe('PivotSheet Tests', () => {
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
     });
 
-    it('should render empty row nodes if rows fields is empty', () => {
+    it('should render empty row nodes if rows fields is empty', async () => {
       const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
         fields: {
           rows: [],
@@ -1089,16 +1105,14 @@ describe('PivotSheet Tests', () => {
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowLeafNodes).toHaveLength(0);
-      expect(layoutResult.rowNodes).toHaveLength(0);
+      expect(sheet.facet.getRowLeafNodes()).toHaveLength(0);
+      expect(sheet.facet.getRowNodes()).toHaveLength(0);
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
     });
 
-    it('should render row nodes if rows fields contain empty string value', () => {
+    it('should render row nodes if rows fields contain empty string value', async () => {
       const layoutDataCfg: S2DataConfig = {
         fields: {
           rows: ['row'],
@@ -1114,14 +1128,12 @@ describe('PivotSheet Tests', () => {
       } as S2DataConfig;
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.rowNodes).toHaveLength(2);
+      expect(sheet.facet.getRowNodes()).toHaveLength(2);
     });
 
-    it('should only render value nodes in column if rows & columns fields is empty', () => {
+    it('should only render value nodes in column if rows & columns fields is empty', async () => {
       const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
         fields: {
           rows: [],
@@ -1130,20 +1142,18 @@ describe('PivotSheet Tests', () => {
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
-      const { layoutResult } = sheet.facet;
-
-      expect(layoutResult.colLeafNodes).toHaveLength(
+      expect(sheet.facet.getColLeafNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-      expect(layoutResult.colNodes).toHaveLength(
+      expect(sheet.facet.getColNodes()).toHaveLength(
         originalDataCfg.fields.values.length,
       );
     });
 
     // https://github.com/antvis/S2/issues/777
-    it('should cannot render row leaf nodes if values is empty', () => {
+    it('should cannot render row leaf nodes if values is empty', async () => {
       const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
         fields: {
           values: [],
@@ -1152,9 +1162,9 @@ describe('PivotSheet Tests', () => {
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
 
-      sheet.render();
+      await sheet.render();
 
-      const { layoutResult } = sheet.facet;
+      const layoutResult = sheet.facet.getLayoutResult();
 
       // if value empty, not render value cell in row leaf nodes
       expect(layoutResult.rowLeafNodes).toHaveLength(0);
@@ -1174,7 +1184,7 @@ describe('PivotSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1514
-    it('should not show default action icons if values is empty', () => {
+    it('should not show default action icons if values is empty', async () => {
       const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
         fields: {
           values: [],
@@ -1189,9 +1199,9 @@ describe('PivotSheet Tests', () => {
         hierarchyType: 'tree',
       });
 
-      sheet.render();
+      await sheet.render();
 
-      sheet.getRowLeafNodes().forEach((node) => {
+      sheet.facet.getRowLeafNodes().forEach((node) => {
         const rowCell = node.belongsCell;
 
         expect(get(rowCell, 'actionIcons')).toHaveLength(0);
@@ -1201,17 +1211,20 @@ describe('PivotSheet Tests', () => {
     });
   });
 
-  test('should emit destroy event', () => {
+  test('should emit destroy event', async () => {
     const onDestroy = jest.fn();
 
-    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+    const sheet = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.destroy();
+    await sheet.render();
+    sheet.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    sheet.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 
-  test('should get custom header fields status', () => {
+  test('should get custom header fields status', async () => {
     const newDataCfg: S2DataConfig = {
       fields: {
         rows: [{ field: '1', title: '1' }],
@@ -1221,10 +1234,33 @@ describe('PivotSheet Tests', () => {
     };
 
     s2.setDataCfg(newDataCfg);
-    s2.render();
+    await s2.render();
 
     expect(s2.isCustomHeaderFields()).toBeTruthy();
     expect(s2.isCustomRowFields()).toBeTruthy();
     expect(s2.isCustomColumnFields()).toBeTruthy();
+  });
+
+  test('should render custom pivot facet', async () => {
+    const mockRender = jest.fn();
+
+    class CustomFacet extends PivotFacet {
+      render() {
+        super.render();
+        mockRender();
+      }
+    }
+
+    const sheet = new PivotSheet(getContainer(), originalDataCfg, {
+      facet: (spreadsheet) => new CustomFacet(spreadsheet),
+      tooltip: {
+        showTooltip: false,
+      },
+    });
+
+    await sheet.render();
+
+    expect(sheet.facet).toBeInstanceOf(PivotFacet);
+    expect(mockRender).toHaveBeenCalledTimes(1);
   });
 });

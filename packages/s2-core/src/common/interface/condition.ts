@@ -2,6 +2,7 @@ import type { RawData } from './s2DataConfig';
 import type { IconTheme } from './theme';
 import type { DataCell, HeaderCell } from '@/cell';
 
+
 export interface ValueRange {
   minValue?: number;
   maxValue?: number;
@@ -56,6 +57,3 @@ export interface Conditions {
   interval?: Condition[];
   icon?: IconCondition[];
 }
-
-export type IconStyle = Pick<IconTheme, 'size' | 'margin'> &
-  Pick<IconCondition, 'position'>;

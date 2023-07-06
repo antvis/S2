@@ -28,13 +28,13 @@ const s2Options: S2Options = {
 describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should get the right height of GrandTotal node', () => {
-    const hierarchy = s2.facet.layoutResult.colsHierarchy;
+    const hierarchy = s2.facet.getLayoutResult().colsHierarchy;
 
     const grandTotalNode = find(
       hierarchy.getNodes(0),
@@ -45,7 +45,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   });
 
   test('should get the right position of GrandTotal Measure node', () => {
-    const hierarchy = s2.facet.layoutResult.colsHierarchy;
+    const hierarchy = s2.facet.getLayoutResult().colsHierarchy;
 
     const grandTotalNode = find(
       hierarchy.getNodes(0),
@@ -57,7 +57,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   });
 
   test('should get the right height of SubTotal node', () => {
-    const hierarchy = s2.facet.layoutResult.colsHierarchy;
+    const hierarchy = s2.facet.getLayoutResult().colsHierarchy;
 
     const subTotalNode = find(
       hierarchy.getNodes(1),
@@ -68,7 +68,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   });
 
   test('should get the right position of subTotalNode Measure node', () => {
-    const hierarchy = s2.facet.layoutResult.colsHierarchy;
+    const hierarchy = s2.facet.getLayoutResult().colsHierarchy;
     const subTotalNode = find(
       hierarchy.getNodes(1),
       (node: Node) => node.isSubTotals,

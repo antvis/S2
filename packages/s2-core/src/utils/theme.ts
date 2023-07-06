@@ -1,5 +1,7 @@
-import { PALETTE_MAP } from '../common/constant';
+import { PALETTE_MAP, STYLE_ELEMENT_ID } from '../common/constant';
 import type { Palette, ThemeName } from '../common/interface/theme';
+import DarkVars from '../styles/theme/dark.less';
+import { injectCssText } from './inject-css-text';
 
 /**
  * 获取当前的主题色板
@@ -8,5 +10,13 @@ import type { Palette, ThemeName } from '../common/interface/theme';
 export const getPalette = (type?: ThemeName): Palette => {
   const themeName = type || 'default';
 
-  return PALETTE_MAP[themeName.toLowerCase()];
+  return PALETTE_MAP[themeName];
+};
+
+/**
+ * 根据主题注入组件的 css 变量
+ */
+export const injectThemeVars = (themeName?: ThemeName) => {
+  // 目前仅dark主题需要定制
+  injectCssText(STYLE_ELEMENT_ID, themeName === 'dark' ? DarkVars : '');
 };

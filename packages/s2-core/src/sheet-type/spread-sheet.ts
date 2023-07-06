@@ -3,6 +3,7 @@ import {
   Canvas,
   DisplayObject,
   FederatedPointerEvent as CanvasEvent,
+  runtime,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
@@ -18,6 +19,7 @@ import {
   some,
   values,
 } from 'lodash';
+import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -29,6 +31,7 @@ import type {
   EmitterType,
   Fields,
   InteractionOptions,
+  InternalFullyTheme,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -66,9 +69,16 @@ import {
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 
+/**
+ * 关闭 CSS 解析的开关，可以提升首屏性能,
+ * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
+ * 而是要用 circle.style.r = 20;
+ */
+runtime.enableCSSParsing = false;
+
 export abstract class SpreadSheet extends EE {
   // theme config
-  public theme: S2Theme;
+  public theme: InternalFullyTheme;
 
   // store some temporary data
   public store = new Store();
@@ -98,6 +108,11 @@ export abstract class SpreadSheet extends EE {
   private untypedOn = this.on;
 
   private untypedEmit = this.emit;
+
+  /**
+   * 表格是否已销毁
+   */
+  private destroyed = false;
 
   public on = <K extends keyof EmitterType>(
     event: K,
@@ -380,7 +395,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, options: S2RenderOptions = {}) {
+  private doRender(reloadData = true, options: S2RenderOptions = {}) {
     // 防止表格卸载后, 再次调用 render 函数的报错
     if (
       !this.getCanvasElement() ||
@@ -411,7 +426,30 @@ export abstract class SpreadSheet extends EE {
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
+  /**
+   * 同步渲染
+   * @deprecated 适配 g5.0 异步渲染过程中暂时保留
+   */
+  // eslint-disable-next-line camelcase
+  public UNSAFE_render(reloadData?: boolean, options?: S2RenderOptions) {
+    this.doRender(reloadData, options);
+  }
+
+  public async render(reloadData?: boolean, options?: S2RenderOptions) {
+    if (this.destroyed) {
+      return;
+    }
+
+    await this.container.ready;
+    this.doRender(reloadData, options);
+  }
+
   public destroy() {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
     this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();
@@ -430,6 +468,7 @@ export abstract class SpreadSheet extends EE {
     const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
 
     this.theme = customMerge(newTheme, theme);
+    injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {
@@ -492,38 +531,6 @@ export abstract class SpreadSheet extends EE {
 
   public getLayoutWidthType(): LayoutWidthType {
     return this.options.style?.layoutWidthType!;
-  }
-
-  public getRowNodes(level = -1): Node[] {
-    if (level === -1) {
-      return this.facet.layoutResult.rowNodes;
-    }
-
-    return this.facet.layoutResult.rowNodes.filter(
-      (node) => node.level === level,
-    );
-  }
-
-  public getRowLeafNodes(): Node[] {
-    return this.facet?.layoutResult.rowLeafNodes || [];
-  }
-
-  /**
-   * get columnNode in levels,
-   * @param level -1 = get all
-   */
-  public getColumnNodes(level = -1): Node[] {
-    const colNodes = this.facet?.layoutResult.colNodes || [];
-
-    if (level === -1) {
-      return colNodes;
-    }
-
-    return colNodes.filter((node) => node.level === level);
-  }
-
-  public getColumnLeafNodes(): Node[] {
-    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
@@ -646,14 +653,6 @@ export abstract class SpreadSheet extends EE {
     if (canvas) {
       canvas.style.display = 'block';
     }
-  }
-
-  public getInitColumnLeafNodes(): Node[] {
-    return this.store.get('initColumnLeafNodes', [])!;
-  }
-
-  public clearColumnLeafNodes() {
-    this.store.set('initColumnLeafNodes', undefined);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

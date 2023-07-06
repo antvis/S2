@@ -48,8 +48,11 @@ jest.mock('@/sheet-type', () => {
         getTotalsConfig: jest.fn(),
         getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
-        getColumnLeafNodes: jest.fn().mockReturnValue([]),
-        getColumnNodes: jest.fn().mockReturnValue([]),
+        facet: {
+          getColLeafNodes: jest.fn().mockReturnValue([]),
+          getColNodes: jest.fn().mockReturnValue([]),
+          getHiddenColumnsInfo: jest.fn(),
+        },
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -126,7 +129,7 @@ const createMockTableFacet = (
 describe('Table Mode Facet Test', () => {
   test('should get correct row hierarchy', () => {
     const { facet } = createMockTableFacet();
-    const { rowsHierarchy } = facet.layoutResult;
+    const { rowsHierarchy } = facet.getLayoutResult();
 
     expect(rowsHierarchy.height).toBe(0);
     expect(rowsHierarchy.width).toBe(0);
@@ -138,7 +141,7 @@ describe('Table Mode Facet Test', () => {
       showSeriesNumber: true,
     });
 
-    expect(facet.layoutResult.colLeafNodes[0].value).toEqual('序号');
+    expect(facet.getColLeafNodes()[0].value).toEqual('序号');
   });
 
   test('should get custom seriesNumberText', () => {
@@ -148,7 +151,7 @@ describe('Table Mode Facet Test', () => {
       seriesNumberText,
     });
 
-    expect(facet.layoutResult.colLeafNodes[0].value).toEqual(seriesNumberText);
+    expect(facet.getColLeafNodes()[0].value).toEqual(seriesNumberText);
   });
 });
 
@@ -160,11 +163,9 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
     const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout', () => {
-      const { colLeafNodes } = facet.layoutResult;
-
       const adaptiveWith = 119;
 
-      colLeafNodes.forEach((node, index) => {
+      facet.getColLeafNodes().forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith);
         expect(Math.round(node.width)).toBe(adaptiveWith);
@@ -180,7 +181,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
     const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
-      const { colLeafNodes } = facet.layoutResult;
+      const colLeafNodes = facet.getColLeafNodes();
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
       const adaptiveWith = 103;
@@ -237,12 +238,11 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     );
 
     test('col hierarchy coordinate with compact layout', () => {
-      const { colLeafNodes } = facet.layoutResult;
       const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
 
-      colLeafNodes.forEach((node, index) => {
+      facet.getColLeafNodes().forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
@@ -287,13 +287,11 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
-      const { colLeafNodes } = facet.layoutResult;
-
       const COMPACT_WIDTH = [80, 53, 53, 65, 41, 73];
 
       let lastX = 0;
 
-      colLeafNodes.forEach((node, index) => {
+      facet.getColLeafNodes().forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
@@ -371,10 +369,10 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct col layout with frozen col', () => {
     const { colCount = 0 } = s2.options.frozen!;
-    const { colLeafNodes } = facet.layoutResult;
 
     expect(
-      colLeafNodes
+      facet
+        .getColLeafNodes()
         .slice(-colCount)
         .reverse()
         .map((node) => node.x),
@@ -383,10 +381,10 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingCol', () => {
     const { trailingColCount } = s2.options.frozen!;
-    const { colLeafNodes } = facet.layoutResult;
 
     expect(
-      colLeafNodes
+      facet
+        .getColLeafNodes()
         .slice(-trailingColCount!)
         .reverse()
         .map((node) => node.x),
@@ -395,7 +393,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
@@ -554,7 +552,7 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
   });
 
   test('should get correct width by layoutCoordinate', () => {
-    facet.layoutResult.colLeafNodes.forEach((item) => {
+    facet.getColLeafNodes().forEach((item) => {
       expect(item.width).toBe(200);
     });
   });
@@ -577,11 +575,11 @@ describe('Custom Column Width Tests', () => {
         },
       });
 
-      facet.layoutResult.colNodes.forEach((node) => {
+      facet.getColNodes().forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
-      facet.layoutResult.colLeafNodes.forEach((node) => {
+      facet.getColLeafNodes().forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
@@ -678,10 +676,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct col layout with frozen col', () => {
     const { colCount } = s2.options.frozen!;
-    const { colNodes } = facet.layoutResult;
-    const topLevelNodes = colNodes.filter(
-      (node) => node.parent!.id === ROOT_NODE_ID,
-    );
+    const topLevelNodes = facet
+      .getColNodes()
+      .filter((node) => node.parent!.id === ROOT_NODE_ID);
 
     expect(
       topLevelNodes.slice(0, colCount).map((node) => node.x),
@@ -690,10 +687,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingCol', () => {
     const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
-    const { colNodes, colLeafNodes } = s2.facet.layoutResult;
-    const topLevelNodes = colNodes.filter(
-      (node) => node.parent!.id === ROOT_NODE_ID,
-    );
+    const topLevelNodes = facet
+      .getColNodes()
+      .filter((node) => node.parent!.id === ROOT_NODE_ID);
     const { trailingColCount } = getFrozenLeafNodesCount(
       topLevelNodes,
       0,
@@ -701,7 +697,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     );
 
     expect(
-      colLeafNodes
+      facet
+        .getColLeafNodes()
         .slice(-trailingColCount)
         .reverse()
         .map((node) => node.x),
@@ -714,7 +711,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet.layoutResult;
+    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(

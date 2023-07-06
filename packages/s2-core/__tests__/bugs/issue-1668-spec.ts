@@ -31,11 +31,11 @@ const s2Options: S2Options = {
 };
 
 describe('Totals Cell Resize Tests', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  test('should render extra resize id for resize area handler', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-  s2.render();
+    await s2.render();
 
-  test('should render extra resize id for resize area handler', () => {
     const resizeArea = s2.facet.foregroundGroup.getElementById<Group>(
       KEY_GROUP_COL_RESIZE_AREA,
     )!;

@@ -51,13 +51,13 @@ describe('Scroll Tests', () => {
     };
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
     canvas = s2.getCanvasElement();
   });
 
@@ -146,7 +146,7 @@ describe('Scroll Tests', () => {
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
     s2.setOptions({ frozen: { rowHeader: true } });
-    s2.render(false);
+    await s2.render(false);
 
     // 模拟在行头滚动
     jest
@@ -215,7 +215,7 @@ describe('Scroll Tests', () => {
 
       // toggle rowHeader mode
       s2.setOptions({ frozen: { rowHeader } });
-      s2.render(false);
+      await s2.render(false);
 
       const showHorizontalScrollBarSpy = jest
         .spyOn(s2.facet, 'showHorizontalScrollBar')
@@ -286,7 +286,7 @@ describe('Scroll Tests', () => {
     async ({ offset }) => {
       // hide scroll bar
       s2.changeSheetSize(1000, 300);
-      s2.render(false);
+      await s2.render(false);
 
       const showHorizontalScrollBarSpy = jest
         .spyOn(s2.facet, 'showHorizontalScrollBar')
@@ -381,12 +381,12 @@ describe('Scroll Tests', () => {
     },
   );
 
-  test('should not trigger scroll event on passive renders', () => {
+  test('should not trigger scroll event on passive renders', async () => {
     const sheet = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
     });
 
-    sheet.render();
+    await sheet.render();
 
     jest.spyOn(sheet.facet as any, 'dynamicRenderCell');
     jest.spyOn(sheet.facet as any, 'emitScrollEvent');
@@ -397,7 +397,7 @@ describe('Scroll Tests', () => {
     expect((sheet.facet as any).emitScrollEvent).not.toHaveBeenCalled();
   });
 
-  test('should render correct scroll position', () => {
+  test('should render correct scroll position', async () => {
     s2.setOptions({
       interaction: {
         scrollbarPosition: ScrollbarPositionType.CONTENT,
@@ -407,13 +407,13 @@ describe('Scroll Tests', () => {
       },
     });
     s2.changeSheetSize(100, 1000); // 横向滚动条
-    s2.render(false);
+    await s2.render(false);
 
     expect(s2.facet.hScrollBar.getBBox().y).toBe(225);
     expect(s2.facet.hRowScrollBar.getBBox().y).toBe(225);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
-    s2.render(false);
+    await s2.render(false);
     expect(s2.facet.vScrollBar.getBBox().x).toBe(195);
 
     s2.setOptions({
@@ -422,13 +422,13 @@ describe('Scroll Tests', () => {
       },
     });
     s2.changeSheetSize(100, 1000); // 横向滚动条
-    s2.render(false);
+    await s2.render(false);
 
     expect(s2.facet.hScrollBar.getBBox().y).toBe(997);
     expect(s2.facet.hRowScrollBar.getBBox().y).toBe(997);
 
     s2.changeSheetSize(1000, 200); // 纵向滚动条
-    s2.render(false);
+    await s2.render(false);
 
     expect(s2.facet.vScrollBar.getBBox().x).toBe(997);
   });
@@ -449,9 +449,9 @@ describe('Scroll Tests', () => {
     },
   ] as const)(
     'should render scroll bar real size by canvas BBox',
-    ({ name, key }) => {
+    async ({ name, key }) => {
       s2.changeSheetSize(200, 200); // 显示横/竖滚动条
-      s2.render(false);
+      await s2.render(false);
 
       const scrollBar = s2.facet[name];
 
@@ -463,9 +463,9 @@ describe('Scroll Tests', () => {
     },
   );
 
-  test('should render scroll bar does not appear outside the canvas', () => {
+  test('should render scroll bar does not appear outside the canvas', async () => {
     s2.changeSheetSize(200, 200); // 显示横/竖滚动条
-    s2.render(false);
+    await s2.render(false);
 
     s2.updateScrollOffset({
       offsetX: {
@@ -502,7 +502,7 @@ describe('Scroll Tests', () => {
     const onRowCellScroll = jest.fn();
 
     s2.changeSheetSize(400, 300);
-    s2.render(false);
+    await s2.render(false);
 
     jest
       .spyOn(s2.facet, 'isScrollOverTheCornerArea')
@@ -581,7 +581,7 @@ describe('Scroll Tests', () => {
       },
     ])(
       'should scroll by overscroll behavior %o',
-      ({
+      async ({
         overscrollBehavior,
         isScrollOverTheViewport,
         stopScrollChainingTimes,
@@ -593,7 +593,7 @@ describe('Scroll Tests', () => {
               overscrollBehavior as InteractionOptions['overscrollBehavior'],
           },
         });
-        s2.render(false);
+        await s2.render(false);
 
         jest
           .spyOn(s2.facet, 'isScrollOverTheViewport')
@@ -618,7 +618,7 @@ describe('Scroll Tests', () => {
       },
     );
 
-    it('should not add property to body when render and destroyed if overscrollBehavior is null', () => {
+    it('should not add property to body when render and destroyed if overscrollBehavior is null', async () => {
       const sheet = new PivotSheet(getContainer(), mockDataConfig, {
         ...s2Options,
         interaction: {
@@ -626,7 +626,7 @@ describe('Scroll Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       expect(
         document.body.style.getPropertyValue('overscroll-behavior'),
@@ -659,7 +659,7 @@ describe('Scroll Tests', () => {
       });
 
       s2.changeSheetSize(400, 300);
-      s2.render(false);
+      await s2.render(false);
 
       jest
         .spyOn(s2.facet, 'isScrollOverTheCornerArea')
@@ -683,7 +683,7 @@ describe('Scroll Tests', () => {
       expect(onScroll).toHaveBeenCalled();
     });
 
-    it('should not change init body overscrollBehavior style when render and destroyed', () => {
+    it('should not change init body overscrollBehavior style when render and destroyed', async () => {
       document.body.style.overscrollBehavior = 'none';
 
       const sheet = new PivotSheet(getContainer(), mockDataConfig, {
@@ -693,7 +693,7 @@ describe('Scroll Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       expect(sheet.store.get('initOverscrollBehavior')).toEqual('none');
       expect(document.body.style.overscrollBehavior).toEqual('none');
@@ -709,7 +709,7 @@ describe('Scroll Tests', () => {
       'none',
     ] as InteractionOptions['overscrollBehavior'][])(
       'should add %s property to body',
-      (overscrollBehavior) => {
+      async (overscrollBehavior) => {
         document.body.style.overscrollBehavior = '';
 
         const sheet = new PivotSheet(getContainer(), mockDataConfig, {
@@ -719,7 +719,7 @@ describe('Scroll Tests', () => {
           },
         });
 
-        sheet.render();
+        await sheet.render();
 
         expect(sheet.store.get('initOverscrollBehavior')).toBeUndefined();
         expect(document.body.style.overscrollBehavior).toEqual(
@@ -746,7 +746,7 @@ describe('Scroll Tests', () => {
       },
     });
 
-    s2.render(false);
+    await s2.render(false);
 
     const errorSpy = jest
       .spyOn(console, 'error')

@@ -1,8 +1,9 @@
 import type { FederatedPointerEvent as Event, Group } from '@antv/g';
-import type { CellTypes } from '../../common/constant';
+import type { CellType } from '../../common/constant';
 import type {
   CustomTreeNode,
   Data,
+  IconPosition,
   RawData,
   ResizeInfo,
 } from '../../common/interface';
@@ -256,14 +257,26 @@ export interface HeaderActionIconOptions {
   y: number;
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
+  isSortIcon?: boolean;
   defaultHide?: boolean;
 }
 
+export type FullyIconName = {
+  name: string;
+  position: IconPosition;
+  fill?: string;
+  isConditionIcon?: boolean;
+};
+export type ActionIconName = string | FullyIconName;
+
 export interface HeaderActionIcon {
-  /** 已注册的 icon 类型或自定义的 icon 名称 */
-  iconNames: string[];
-  /** 所属的 cell 类型 */
-  belongsCell: Omit<CellTypes, 'dataCell'>;
+  /*
+   * 已注册的 icon 类型或自定义的 icon 类型名
+   * 如果是 string[], 则默认 icon 位置为右侧
+   */
+  icons: ActionIconName[];
+  // 所属的 cell 类型
+  belongsCell: Omit<CellType, 'dataCell'>;
   /** 是否默认隐藏， true 为 hover后显示, false 为一直显示 */
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
   /** 是否展示当前 iconNames 配置的 icon */
@@ -272,6 +285,11 @@ export interface HeaderActionIcon {
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
   /** 悬停回调函数 */
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
+}
+
+export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
+  icons: FullyIconName[];
+  isSortIcon?: boolean;
 }
 
 export type CellCallback<T extends BaseHeaderConfig> = (

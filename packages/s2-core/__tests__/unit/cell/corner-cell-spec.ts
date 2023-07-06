@@ -7,9 +7,9 @@ import type { SpreadSheet } from '@/sheet-type';
 describe('Corner Cell Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet({ width: 200, height: 200 });
-    s2.render();
+    await s2.render();
   });
 
   const node = {

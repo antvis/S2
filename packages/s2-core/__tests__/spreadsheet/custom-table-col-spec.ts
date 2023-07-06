@@ -1,5 +1,6 @@
 import type { Group } from '@antv/g';
 import { getContainer } from 'tests/util/helpers';
+import { waitForRender } from 'tests/util';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import {
   customColMultipleColumns,
@@ -55,9 +56,9 @@ describe('TableSheet Custom Tests', () => {
     },
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(getContainer(), customColDataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -65,7 +66,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should render custom layout column nodes', () => {
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,
@@ -79,7 +80,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should calc correctly col index of leaf nodes', () => {
-    const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+    const colLeafNodes = s2.facet.getColLeafNodes().map((node) => {
       return {
         value: node.value,
         colIndex: node.colIndex,
@@ -90,7 +91,7 @@ describe('TableSheet Custom Tests', () => {
     expect(colLeafNodes).toMatchSnapshot();
   });
 
-  test('should calc correctly leaf nodes width after column resized', () => {
+  test('should calc correctly leaf nodes width after column resized', async () => {
     s2.setOptions({
       style: {
         colCell: {
@@ -100,9 +101,9 @@ describe('TableSheet Custom Tests', () => {
         },
       },
     });
-    s2.render(false);
+    await s2.render(false);
 
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         height: node.height,
@@ -114,7 +115,7 @@ describe('TableSheet Custom Tests', () => {
 
   test('should select custom col header cell', () => {
     // 地区
-    const colNode = s2.getColumnNodes()[0];
+    const colNode = s2.facet.getColNodes()[0];
 
     // 选中地区
     s2.interaction.selectHeaderCell({
@@ -136,16 +137,18 @@ describe('TableSheet Custom Tests', () => {
     expect(s2.interaction.getActiveCells()).toBeEmpty();
   });
 
-  test('should hide columns', () => {
+  test('should hide columns', async () => {
     const hiddenColumns = ['root[&]金额[&]价格'];
 
-    s2.interaction.hideColumns(hiddenColumns);
+    await waitForRender(s2, () => {
+      s2.interaction.hideColumns(hiddenColumns);
+    });
 
     const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
     const [measureDetail] = hiddenColumnsDetail;
 
     expect(s2.options.interaction?.hiddenColumnFields).toEqual(hiddenColumns);
-    expect(s2.getColumnNodes().map((node) => node.field)).toEqual([
+    expect(s2.facet.getColNodes().map((node) => node.field)).toEqual([
       'area',
       'province',
       'city',
@@ -160,13 +163,13 @@ describe('TableSheet Custom Tests', () => {
     expect(measureDetail.hideColumnNodes[0].field).toEqual('price');
   });
 
-  test('should render correctly resize group for custom column fields', () => {
+  test('should render correctly resize group for custom column fields', async () => {
     s2.setTheme({
       resizeArea: {
         backgroundOpacity: 1,
       },
     });
-    s2.render(false);
+    await s2.render(false);
 
     const groups = s2.facet.foregroundGroup.getElementById<Group>(
       KEY_GROUP_COL_RESIZE_AREA,
@@ -175,7 +178,7 @@ describe('TableSheet Custom Tests', () => {
     expect(groups?.childNodes.length).toEqual(11);
   });
 
-  test('should format custom column', () => {
+  test('should format custom column', async () => {
     s2.setDataCfg({
       ...customColDataCfg,
       meta: [
@@ -189,7 +192,7 @@ describe('TableSheet Custom Tests', () => {
         },
       ],
     });
-    s2.render();
+    await s2.render();
 
     const { colNodes, dataCellTexts } = mapCellNodeValues(s2);
 
@@ -202,51 +205,51 @@ describe('TableSheet Custom Tests', () => {
     ).toBeTruthy();
   });
 
-  test('should render default series number text', () => {
+  test('should render default series number text', async () => {
     s2.setOptions({
       showSeriesNumber: true,
     });
-    s2.render(false);
+    await s2.render(false);
 
-    expect(s2.getColumnNodes()[0].value).toEqual('序号');
+    expect(s2.facet.getColNodes()[0].value).toEqual('序号');
   });
 
-  test('should render custom series number text', () => {
+  test('should render custom series number text', async () => {
     const seriesNumberText = '牛';
 
     s2.setOptions({
       seriesNumberText,
       showSeriesNumber: true,
     });
-    s2.render(false);
+    await s2.render(false);
 
-    expect(s2.getColumnNodes()[0].value).toEqual(seriesNumberText);
+    expect(s2.facet.getColNodes()[0].value).toEqual(seriesNumberText);
   });
 
-  test('should render correctly column height if enable series number', () => {
+  test('should render correctly column height if enable series number', async () => {
     s2.setOptions({
       showSeriesNumber: true,
     });
-    s2.render(false);
+    await s2.render(false);
 
-    const nodes = s2
-      .getColumnNodes()
+    const nodes = s2.facet
+      .getColNodes()
       .filter((node) => node.level === 0 && node.isLeaf);
 
-    const cellHeight = s2.facet.layoutResult.colsHierarchy.height;
+    const cellHeight = s2.facet.getLayoutResult().colsHierarchy.height;
 
     expect(cellHeight).toEqual(60);
     expect(nodes.every((node) => node.height === cellHeight)).toBeTruthy();
   });
 
-  test('should not sample series node', () => {
+  test('should not sample series node', async () => {
     s2.setOptions({
       showSeriesNumber: true,
     });
-    s2.render(false);
+    await s2.render(false);
 
     const { sampleNodeForLastLevel, sampleNodesForAllLevels } =
-      s2.facet.layoutResult.colsHierarchy;
+      s2.facet.getLayoutResult().colsHierarchy;
 
     expect(sampleNodeForLastLevel?.isSeriesNumberNode()).toBeFalsy();
     expect(
@@ -254,16 +257,16 @@ describe('TableSheet Custom Tests', () => {
     ).toBeTruthy();
   });
 
-  test('should render custom multiple column nodes', () => {
+  test('should render custom multiple column nodes', async () => {
     s2.setDataCfg({
       ...baseDataConfig,
       fields: {
         columns: customColMultipleColumns,
       },
     });
-    s2.render();
+    await s2.render();
 
-    const colNodes = s2.getColumnNodes().map((node) => {
+    const colNodes = s2.facet.getColNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,
@@ -276,7 +279,7 @@ describe('TableSheet Custom Tests', () => {
     expect(colNodes).toMatchSnapshot();
   });
 
-  test('should render correctly resize area handler', () => {
+  test('should render correctly resize area handler', async () => {
     s2.setDataCfg({
       ...baseDataConfig,
       fields: {
@@ -288,7 +291,7 @@ describe('TableSheet Custom Tests', () => {
         backgroundOpacity: 1,
       },
     });
-    s2.render();
+    await s2.render();
 
     const resizeArea = s2.facet.foregroundGroup.getElementById<Group>(
       KEY_GROUP_COL_RESIZE_AREA,

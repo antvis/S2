@@ -38,11 +38,11 @@ const s2Options: S2Options = {
 };
 
 describe('Hover Focus Tests', () => {
-  const s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
-
-  s2.render();
-
   test(`should focus on province cell but don't focus on city cell when hover on province cell`, async () => {
+    const s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
+
+    await s2.render();
+
     await sleep(3000);
 
     // 浙江省份信息

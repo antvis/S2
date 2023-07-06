@@ -14,7 +14,7 @@ import {
 import type { SimpleBBox } from '../engine';
 import type { ColCell } from '../cell';
 import {
-  CellTypes,
+  CellType,
   ELLIPSIS_SYMBOL,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
@@ -31,7 +31,13 @@ import {
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
 import { renderMiniChart } from './g-mini-charts';
-import { getMaxTextWidth, getFixedTextIconPosition } from './cell/cell';
+import {
+  getHorizontalTextIconPosition,
+  getVerticalIconPosition,
+  getVerticalTextPosition,
+} from './cell/cell';
+import type { GroupedIcons } from './cell/header-cell';
+import { getIconPosition } from './condition/condition';
 
 /**
  * 获取文本的 ... 文本。
@@ -291,7 +297,7 @@ const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
   const cellStyle = cell.getStyle(
-    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
+    isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
   );
 
   let textStyle: TextTheme | undefined;
@@ -440,7 +446,7 @@ export const drawObjectText = (
 
   // 绘制单元格主标题
   if (text?.label) {
-    const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+    const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
     const labelStyle = dataCellStyle!.bolderText!;
 
     /*
@@ -472,7 +478,7 @@ export const drawObjectText = (
     iconCondition.mapping! && {
       size: iconStyle?.size,
       margin: iconStyle?.margin,
-      position: iconCondition?.position,
+      position: getIconPosition(iconCondition),
     };
 
   let curText: string | number;
@@ -502,10 +508,16 @@ export const drawObjectText = (
             textStyle,
             textCondition,
           })
-        : textStyle;
+        : textStyle!;
 
       const emptyPlaceholder = getEmptyPlaceholder(meta, options.placeholder);
-      const maxTextWidth = getMaxTextWidth(contentBoxes[i][j].width, iconStyle);
+      const maxTextWidth =
+        contentBoxes[i][j].width -
+        iconStyle.size -
+        (iconCfg?.position === 'left'
+          ? iconStyle.margin.right
+          : iconStyle.margin.left);
+
       const ellipsisText = getEllipsisText({
         measureTextWidth,
         text: curText,
@@ -513,22 +525,42 @@ export const drawObjectText = (
         fontParam: curStyle,
         placeholder: emptyPlaceholder,
       });
-      const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+      const actualTextWidth = measureTextWidth(ellipsisText, curStyle);
 
-      const position = getFixedTextIconPosition({
+      const groupedIcons: GroupedIcons = {
+        left: [],
+        right: [],
+      };
+
+      if (iconCfg) {
+        groupedIcons[iconCfg.position].push(iconCfg as any);
+      }
+
+      const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBoxes[i][j],
-        textStyle,
+        textAlign: curStyle.textAlign!,
         textWidth: actualTextWidth,
-        iconStyle: iconCfg,
-        iconCount: iconCondition ? 1 : 0,
+        iconStyle,
+        groupedIcons,
       });
+
+      const textY = getVerticalTextPosition(
+        contentBoxes[i][j],
+        curStyle!.textBaseline!,
+      );
+      const iconY = getVerticalIconPosition(
+        iconStyle.size!,
+        textY,
+        curStyle.fontSize!,
+        curStyle.textBaseline!,
+      );
 
       const textShape = renderText(
         cell,
         [],
         {
-          x: position.text.x,
-          y: position.text.y,
+          x: textX,
+          y: textY,
           text: ellipsisText,
           ...curStyle,
         },
@@ -547,9 +579,12 @@ export const drawObjectText = (
           meta: cell?.getMeta(),
         });
 
+        const iconX = iconCfg?.position === 'left' ? leftIconX : rightIconX;
+
         if (attrs) {
           const iconShape = renderIcon(cell, {
-            ...position.icon,
+            x: iconX,
+            y: iconY,
             name: attrs.icon!,
             width: iconStyle?.size,
             height: iconStyle?.size,

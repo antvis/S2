@@ -1,6 +1,5 @@
 import type { Group } from '@antv/g';
 import { findIndex, isNil } from 'lodash';
-import { ROOT_NODE_ID } from '../common';
 import type { FrozenCellIndex } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
@@ -405,19 +404,12 @@ export const getFrozenLeafNodesCount = (
 };
 
 /**
- * 明细表多级表头判断一个 node 是不是顶层节点
- * @param node
- * @returns {boolean}
- */
-export const isTopLevelNode = (node: Node) => node?.parent?.id === ROOT_NODE_ID;
-
-/**
  * 明细表多级表头根据一个 node 返回其所属顶层节点
  * @param node
  * @returns {Node}
  */
 export const getNodeRoot = (node: Node): Node => {
-  while (!isTopLevelNode(node)) {
+  while (node.level !== 0) {
     node = node.parent!;
   }
 

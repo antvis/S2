@@ -1,7 +1,7 @@
 import { concat, every, isEmpty } from 'lodash';
 import {
   type CellMeta,
-  CellTypes,
+  CellType,
   EMPTY_PLACEHOLDER,
   InteractionStateName,
   type S2CellType,
@@ -32,11 +32,9 @@ export const getHeaderNodeFromMeta = (
   spreadsheet: SpreadSheet,
 ) => {
   const { rowIndex, colIndex } = meta;
+  const { facet } = spreadsheet;
 
-  return [
-    spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
-    spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
-  ];
+  return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
 };
 
 /**
@@ -98,8 +96,8 @@ function getIsBrushHeader(interactedCells: S2CellType[]) {
     : every(
         interactedCells,
         (cell) =>
-          cell.cellType === CellTypes.ROW_CELL ||
-          cell.cellType === CellTypes.COL_CELL,
+          cell.cellType === CellType.ROW_CELL ||
+          cell.cellType === CellType.COL_CELL,
       );
 }
 
@@ -165,14 +163,14 @@ function getDataCellCopyable(
       return {
         ...cellMeta,
         id: cellMeta?.id?.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
-        type: CellTypes.COL_CELL,
+        type: CellType.COL_CELL,
       };
     });
     const selectedRowMetas = selectedCellsMeta.map((cellMeta) => {
       return {
         ...cellMeta[0],
         id: cellMeta[0]?.id?.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
-        type: CellTypes.ROW_CELL,
+        type: CellType.ROW_CELL,
       };
     });
 

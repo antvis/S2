@@ -8,18 +8,18 @@ describe('Row Cell Tests', () => {
   describe('Link Shape Tests', () => {
     let s2: SpreadSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createPivotSheet({});
-      s2.render();
+      await s2.render();
     });
 
     test.each([
       ['left', 21],
-      ['center', 77],
+      ['center', 75],
       ['right', 129],
     ] as [TextAlign, number][])(
       'should align link shape with text by %o',
-      (textAlign, textCenterX) => {
+      async (textAlign, textCenterX) => {
         s2.setOptions({
           interaction: {
             linkFields: ['province'],
@@ -32,7 +32,7 @@ describe('Row Cell Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         const provinceCell = s2.facet.rowHeader!.children[0] as RowCell;
         const { left: minX, right: maxX } = provinceCell
@@ -70,14 +70,14 @@ describe('Row Cell Tests', () => {
       },
     });
 
-    test('should draw right condition text shape', () => {
-      s2.render();
+    test('should draw right condition text shape', async () => {
+      await s2.render();
       const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
 
       expect(rowCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
-    test('should draw right condition icon shape', () => {
+    test('should draw right condition icon shape', async () => {
       s2.setOptions({
         conditions: {
           icon: [
@@ -93,14 +93,14 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const rowCell = s2.facet.rowHeader!.children[1];
 
       expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
 
-    test('should draw right condition background shape', () => {
+    test('should draw right condition background shape', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -115,7 +115,7 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const rowCell = s2.facet.rowHeader!.children[0];
 
       expect(get(rowCell, 'backgroundShape.parsedStyle.fill')).toBeColor(

@@ -10,7 +10,7 @@ import { CustomImage } from '../engine';
 import { GuiIcon } from '../common';
 
 import {
-  CellTypes,
+  CellType,
   GEventType,
   InteractionKeyboardKey,
   InterceptType,
@@ -335,19 +335,19 @@ export class EventController {
     const cellType = this.spreadsheet.getCellType(event.target);
 
     switch (cellType) {
-      case CellTypes.DATA_CELL:
+      case CellType.DATA_CELL:
         this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.ROW_CELL:
+      case CellType.ROW_CELL:
         this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.COL_CELL:
+      case CellType.COL_CELL:
         this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.CORNER_CELL:
+      case CellType.CORNER_CELL:
         this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.MERGED_CELL:
+      case CellType.MERGED_CELL:
         this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_DOWN, event);
         break;
       default:
@@ -374,19 +374,19 @@ export class EventController {
       const cellType = cell.cellType;
 
       switch (cellType) {
-        case CellTypes.DATA_CELL:
+        case CellType.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.ROW_CELL:
+        case CellType.ROW_CELL:
           this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.COL_CELL:
+        case CellType.COL_CELL:
           this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.CORNER_CELL:
+        case CellType.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.MERGED_CELL:
+        case CellType.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_MOVE, event);
           break;
         default:
@@ -396,19 +396,19 @@ export class EventController {
       if (!this.hasBrushSelectionIntercepts()) {
         this.spreadsheet.emit(S2Event.GLOBAL_HOVER, event);
         switch (cellType) {
-          case CellTypes.DATA_CELL:
+          case CellType.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, event);
             break;
-          case CellTypes.ROW_CELL:
+          case CellType.ROW_CELL:
             this.spreadsheet.emit(S2Event.ROW_CELL_HOVER, event);
             break;
-          case CellTypes.COL_CELL:
+          case CellType.COL_CELL:
             this.spreadsheet.emit(S2Event.COL_CELL_HOVER, event);
             break;
-          case CellTypes.CORNER_CELL:
+          case CellType.CORNER_CELL:
             this.spreadsheet.emit(S2Event.CORNER_CELL_HOVER, event);
             break;
-          case CellTypes.MERGED_CELL:
+          case CellType.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_HOVER, event);
             break;
           default:
@@ -444,10 +444,10 @@ export class EventController {
         const isGuiIconShape = this.isGuiIconShape(event.target);
 
         switch (cellType) {
-          case CellTypes.DATA_CELL:
+          case CellType.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
             break;
-          case CellTypes.ROW_CELL:
+          case CellType.ROW_CELL:
             // 屏蔽 actionIcons 的点击，只有 HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
             if (isGuiIconShape) {
               break;
@@ -455,21 +455,21 @@ export class EventController {
 
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
-          case CellTypes.COL_CELL:
+          case CellType.COL_CELL:
             if (isGuiIconShape) {
               break;
             }
 
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
-          case CellTypes.CORNER_CELL:
+          case CellType.CORNER_CELL:
             if (isGuiIconShape) {
               break;
             }
 
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
-          case CellTypes.MERGED_CELL:
+          case CellType.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
             break;
           default:
@@ -479,19 +479,19 @@ export class EventController {
 
       // 通用的mouseup事件
       switch (cellType) {
-        case CellTypes.DATA_CELL:
+        case CellType.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.ROW_CELL:
+        case CellType.ROW_CELL:
           this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.COL_CELL:
+        case CellType.COL_CELL:
           this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.CORNER_CELL:
+        case CellType.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.MERGED_CELL:
+        case CellType.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
           break;
         default:
@@ -529,19 +529,19 @@ export class EventController {
 
       if (this.target === event.target) {
         switch (cellType) {
-          case CellTypes.DATA_CELL:
+          case CellType.DATA_CELL:
             spreadsheet.emit(S2Event.DATA_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.ROW_CELL:
+          case CellType.ROW_CELL:
             spreadsheet.emit(S2Event.ROW_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.COL_CELL:
+          case CellType.COL_CELL:
             spreadsheet.emit(S2Event.COL_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.CORNER_CELL:
+          case CellType.CORNER_CELL:
             spreadsheet.emit(S2Event.CORNER_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.MERGED_CELL:
+          case CellType.MERGED_CELL:
             spreadsheet.emit(S2Event.MERGED_CELLS_DOUBLE_CLICK, event);
             break;
           default:
@@ -581,19 +581,19 @@ export class EventController {
     const cellType = this.spreadsheet.getCellType(event.target);
 
     switch (cellType) {
-      case CellTypes.DATA_CELL:
+      case CellType.DATA_CELL:
         this.spreadsheet.emit(S2Event.DATA_CELL_CONTEXT_MENU, event);
         break;
-      case CellTypes.ROW_CELL:
+      case CellType.ROW_CELL:
         this.spreadsheet.emit(S2Event.ROW_CELL_CONTEXT_MENU, event);
         break;
-      case CellTypes.COL_CELL:
+      case CellType.COL_CELL:
         this.spreadsheet.emit(S2Event.COL_CELL_CONTEXT_MENU, event);
         break;
-      case CellTypes.CORNER_CELL:
+      case CellType.CORNER_CELL:
         this.spreadsheet.emit(S2Event.CORNER_CELL_CONTEXT_MENU, event);
         break;
-      case CellTypes.MERGED_CELL:
+      case CellType.MERGED_CELL:
         this.spreadsheet.emit(S2Event.MERGED_CELLS_CONTEXT_MENU, event);
         break;
       default:

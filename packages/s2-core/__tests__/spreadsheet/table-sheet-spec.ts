@@ -109,7 +109,7 @@ describe('TableSheet normal spec', () => {
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
-    s2.render();
+    await s2.render();
 
     const onScrollFinish = jest.fn();
 
@@ -142,7 +142,7 @@ describe('TableSheet normal spec', () => {
   test('should be able to resize frozen col when there is a vertical scroll width', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
-    s2.render();
+    await s2.render();
 
     const onScrollFinish = jest.fn();
 
@@ -158,7 +158,7 @@ describe('TableSheet normal spec', () => {
     );
     await sleep(30);
 
-    const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
+    const firstColCell = s2.facet.getColNodes()[1].belongsCell as any;
 
     expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
     expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 81, y: 0 });
@@ -166,7 +166,7 @@ describe('TableSheet normal spec', () => {
     s2.destroy();
   });
 
-  test('should support custom layoutCoordinate calls', () => {
+  test('should support custom layoutCoordinate calls', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...options,
       frozen: {
@@ -182,8 +182,8 @@ describe('TableSheet normal spec', () => {
         }
       },
     });
-    s2.render();
-    expect(s2.facet.layoutResult.colsHierarchy.width).toBe(850);
+    await s2.render();
+    expect(s2.facet.getLayoutResult().colsHierarchy.width).toBe(850);
 
     s2.destroy();
   });
@@ -191,10 +191,10 @@ describe('TableSheet normal spec', () => {
   test('should be able to resize last column', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
-    s2.render();
+    await s2.render();
 
     const getLastColCell = () =>
-      last(s2.getColumnNodes())!.belongsCell as ColCell;
+      last(s2.facet.getColNodes())!.belongsCell as ColCell;
     const preColWidth = getLastColCell().getMeta().width;
 
     await sleep(30);
@@ -237,7 +237,7 @@ describe('TableSheet normal spec', () => {
     expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
   });
 
-  test('should render link shape', () => {
+  test('should render link shape', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...options,
       frozen: {
@@ -248,10 +248,10 @@ describe('TableSheet normal spec', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
-    const orderIdDataCell = s2.interaction
-      .getPanelGroupAllDataCells()
+    const orderIdDataCell = s2.facet
+      .getDataCells()
       .find((cell) => cell.getMeta().valueField === 'order_id');
 
     expect(orderIdDataCell?.getLinkFieldShape()).toBeDefined();

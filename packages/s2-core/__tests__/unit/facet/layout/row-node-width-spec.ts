@@ -11,39 +11,41 @@ const s2options: S2Options = {
 describe('Row width Test in grid mode', () => {
   let s2: PivotSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
-    s2.render();
+    await s2.render();
   });
 
   test('get the correct custom width of row nodes when the layoutWidthType equals adaptive', () => {
-    const { rowNodes } = s2.facet.layoutResult;
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(Math.round(rowNodes[0].width)).toBe(266);
   });
 
-  test('get the correct custom width of row nodes when the layoutWidthType equals colAdaptive', () => {
+  test('get the correct custom width of row nodes when the layoutWidthType equals colAdaptive', async () => {
     s2.setOptions({
       style: {
         layoutWidthType: 'compact',
         rowCell: { width: 50 },
       },
     });
-    s2.render();
-    const { rowNodes } = s2.facet.layoutResult;
+    await s2.render();
+
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(rowNodes[0].width).toBe(50);
   });
 
-  test('get the correct custom width of row nodes when the layoutWidthType equals compact', () => {
+  test('get the correct custom width of row nodes when the layoutWidthType equals compact', async () => {
     s2.setOptions({
       style: {
         layoutWidthType: 'compact',
         rowCell: { width: 20 },
       },
     });
-    s2.render();
-    const { rowNodes } = s2.facet.layoutResult;
+    await s2.render();
+
+    const rowNodes = s2.facet.getRowNodes();
 
     expect(rowNodes[0].width).toBe(20);
   });

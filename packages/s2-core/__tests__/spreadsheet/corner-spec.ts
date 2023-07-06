@@ -25,7 +25,7 @@ describe('PivotSheet Corner Tests', () => {
     { hierarchyType: 'grid', cornerNodeCount: 3, showSeriesNumber: true },
   ];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet({
       width: 300,
       height: 300,
@@ -33,7 +33,7 @@ describe('PivotSheet Corner Tests', () => {
         showTooltip: true,
       },
     });
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -43,7 +43,7 @@ describe('PivotSheet Corner Tests', () => {
   // https://github.com/antvis/S2/issues/1929
   test.each(cornerTypes)(
     'should render row corner when columns is empty and measure hidden for %o',
-    ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
       s2.setDataCfg({
         ...simpleDataConfig,
         fields: {
@@ -60,10 +60,10 @@ describe('PivotSheet Corner Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(DEFAULT_STYLE.colCell!.height);
@@ -86,7 +86,7 @@ describe('PivotSheet Corner Tests', () => {
 
   test.each(cornerTypes)(
     'should render row corner when measure hidden for %o',
-    ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
       s2.setOptions({
         hierarchyType,
         showSeriesNumber,
@@ -96,10 +96,10 @@ describe('PivotSheet Corner Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).not.toBeLessThan(
         DEFAULT_STYLE.dataCell!.width as number,
@@ -124,7 +124,7 @@ describe('PivotSheet Corner Tests', () => {
 
   test.each(cornerTypes)(
     'should render row corner when columns and values is empty for %o',
-    ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
       s2.setDataCfg({
         ...simpleDataConfig,
         fields: {
@@ -137,10 +137,10 @@ describe('PivotSheet Corner Tests', () => {
         hierarchyType,
         showSeriesNumber,
       });
-      s2.render();
+      await s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
-      const { colsHierarchy } = s2.facet.layoutResult;
+      const { colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(0);
@@ -158,7 +158,7 @@ describe('PivotSheet Corner Tests', () => {
     },
   );
 
-  test('should not render row corner when fields is empty', () => {
+  test('should not render row corner when fields is empty', async () => {
     s2.setDataCfg({
       ...simpleDataConfig,
       fields: {
@@ -167,10 +167,10 @@ describe('PivotSheet Corner Tests', () => {
         values: [],
       },
     });
-    s2.render();
+    await s2.render();
 
     const cornerNodes = s2.facet.getCornerNodes();
-    const { colsHierarchy } = s2.facet.layoutResult;
+    const { colsHierarchy } = s2.facet.getLayoutResult();
 
     expect(colsHierarchy.width).toEqual(0);
     expect(colsHierarchy.height).toEqual(0);
@@ -178,7 +178,7 @@ describe('PivotSheet Corner Tests', () => {
     expect(cornerNodes).toHaveLength(0);
   });
 
-  test('should customize cornerBbox width and max width when freeze row header', () => {
+  test('should customize cornerBbox width and max width when freeze row header', async () => {
     // 默认占据一半宽度
     let cornerBBox = s2.facet.cornerBBox;
 
@@ -191,7 +191,7 @@ describe('PivotSheet Corner Tests', () => {
         rowHeader: 0.4,
       },
     });
-    s2.render();
+    await s2.render();
 
     cornerBBox = s2.facet.cornerBBox;
     expect(cornerBBox.originalWidth).toEqual(192);
@@ -211,7 +211,9 @@ describe('PivotSheet Corner Tests', () => {
   ])(
     'should selected/unselected current corner row cell when %s clicked',
     ({ field, selectedIds }) => {
-      const node = s2.getRowNodes().find((rowNode) => rowNode.field === field);
+      const node = s2.facet
+        .getRowNodes()
+        .find((rowNode) => rowNode.field === field);
 
       const getCellSpy = jest.spyOn(s2, 'getCell').mockImplementation(() => {
         return {
@@ -244,7 +246,9 @@ describe('PivotSheet Corner Tests', () => {
   );
 
   test('should not selected current corner row cell when column corner cell clicked', () => {
-    const node = s2.getRowNodes().find((rowNode) => rowNode.field === 'type');
+    const node = s2.facet
+      .getRowNodes()
+      .find((rowNode) => rowNode.field === 'type');
 
     jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
       return {
@@ -263,7 +267,7 @@ describe('PivotSheet Corner Tests', () => {
   });
 
   test('should get corner row cell summaries', () => {
-    const node = s2
+    const node = s2.facet
       .getRowNodes()
       .find((rowNode) => rowNode.field === 'province');
 
@@ -289,7 +293,7 @@ describe('PivotSheet Corner Tests', () => {
     });
   });
 
-  test('should get custom corner text when hierarchy type is tree', () => {
+  test('should get custom corner text when hierarchy type is tree', async () => {
     const cornerText = '自定义 cornerText';
 
     s2.setOptions({
@@ -303,7 +307,7 @@ describe('PivotSheet Corner Tests', () => {
       },
     });
     s2.changeSheetSize(600, 600);
-    s2.render();
+    await s2.render();
 
     const cornerNode = s2.facet
       .getCornerNodes()
@@ -318,7 +322,7 @@ describe('PivotSheet Corner Tests', () => {
     expect(cell.actualText).toEqual(cornerText);
   });
 
-  test('should get custom corner extra text when hierarchy type is tree', () => {
+  test('should get custom corner extra text when hierarchy type is tree', async () => {
     const cornerExtraFieldText = '自定义';
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -331,7 +335,7 @@ describe('PivotSheet Corner Tests', () => {
     s2.setOptions({
       cornerExtraFieldText,
     });
-    s2.render();
+    await s2.render();
 
     const cornerNode = s2.facet
       .getCornerNodes()

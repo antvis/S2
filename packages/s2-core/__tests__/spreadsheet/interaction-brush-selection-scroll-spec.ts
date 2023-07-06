@@ -156,9 +156,9 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
   test('should scroll when mouse outside table data cell', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
-    s2.render();
+    await s2.render();
 
-    const targetCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const targetCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, targetCell);
 
@@ -170,10 +170,12 @@ describe('TableSheet Brush Selection Scroll Tests', () => {
         trailingRowCount: 2,
       },
     });
-    s2.render();
+    await s2.render();
     s2.interaction.reset();
 
     await expectScrollBrush(s2, targetCell);
+
+    s2.destroy();
   });
 });
 
@@ -193,11 +195,13 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
 
-    const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const dataCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, dataCell);
+
+    s2.destroy();
   });
 
   test('should vertical scroll when mouse outside row cell', async () => {
@@ -221,12 +225,10 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
+    await sleep(20); // wait for anthor loop;
 
-    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
-    await sleep(50);
-
-    const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowCell = s2.facet.getRowCells()[0];
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,
@@ -239,6 +241,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     expect(s2.interaction.getCells()).not.toBeEmpty();
+
+    s2.destroy();
   });
 
   // https://github.com/antvis/S2/pull/2101
@@ -262,12 +266,10 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
+    await sleep(20); // wait for anthor loop;
 
-    // TODO: g5.0 异步渲染，第一时刻底层base-brush可能无法通过elementsFromPointSync取到元素
-    await sleep(50);
-
-    const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowCell = s2.facet.getRowCells()[0];
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,
@@ -299,6 +301,8 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
         },
       ]
     `);
+
+    s2.destroy();
   });
 
   // https://github.com/antvis/S2/issues/2106
@@ -317,9 +321,9 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
 
-    const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+    const dataCell = s2.facet.getDataCells()[0];
 
     await expectScrollBrush(s2, dataCell);
 
@@ -333,5 +337,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     expect(brushSelection.prepareSelectMaskShape.attr('y')).toEqual(
       s2.facet.panelBBox.minY,
     );
+
+    s2.destroy();
   });
 });

@@ -1,5 +1,5 @@
+import type { ViewMeta } from '../../common/interface/basic';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
-import type { GetCellMeta } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 
@@ -40,10 +40,7 @@ export type LayoutCoordinate = (
 /**
  * determine the data of cells in Cartesian coordinates
  */
-export type LayoutDataPosition = (
-  spreadsheet: SpreadSheet,
-  getCellData: GetCellMeta,
-) => GetCellMeta;
+export type LayoutCellMeta = (viewMeta: ViewMeta) => ViewMeta | null;
 
 /**
  * determine the series number cell coordinates

@@ -4,10 +4,9 @@
  * Wrong style when show the totals in multi-value mode
  *
  */
-import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-368.json';
-import { PivotSheet } from '@/sheet-type';
-import type { Node } from '@/facet/layout/node';
+import { getContainer } from '../util/helpers';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2Options = {
   width: 800,
@@ -31,17 +30,17 @@ const s2Options = {
 };
 
 describe('Total Cells Rendering Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  let s2: SpreadSheet;
 
-  s2.render();
+  beforeAll(async () => {
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
+    await s2.render();
+  });
+
   test('should get right SubTotals position', () => {
-    const layoutResult = s2.facet.layoutResult;
-    const rowSubTotalNodes = layoutResult.rowsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
-    const colSubTotalNodes = layoutResult.colsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
+    const rowSubTotalNodes = s2.facet.getRowSubTotalsNodes();
+    const colSubTotalNodes = s2.facet.getColSubTotalsNodes();
 
     expect(rowSubTotalNodes[0].width).toEqual(192);
     expect(rowSubTotalNodes[0].height).toEqual(30);
@@ -54,7 +53,7 @@ describe('Total Cells Rendering Test', () => {
     expect(colSubTotalNodes[0].y).toEqual(30);
   });
 
-  test('should get right SubTotals position when valueInCols is false', () => {
+  test('should get right SubTotals position when valueInCols is false', async () => {
     s2.setDataCfg({
       ...mockDataConfig,
       fields: {
@@ -73,12 +72,9 @@ describe('Total Cells Rendering Test', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
-    const layoutResult = s2.facet.layoutResult;
-    const rowSubTotalNodes = layoutResult.rowsHierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
+    const rowSubTotalNodes = s2.facet.getRowSubTotalsNodes();
     const rowSubTotalChildNode = rowSubTotalNodes[0].children[0];
 
     expect(rowSubTotalNodes[0].x).toEqual(96);

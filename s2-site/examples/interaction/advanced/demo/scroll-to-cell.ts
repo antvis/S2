@@ -78,11 +78,11 @@ fetch(
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
-
-    addScrollToCellButton(s2);
-    addScrollToTopButton(s2);
-    addScrollRowHeaderButton(s2);
+    s2.render().then(() => {
+      addScrollToCellButton(s2);
+      addScrollToTopButton(s2);
+      addScrollRowHeaderButton(s2);
+    });
   });
 
 insertCss(`

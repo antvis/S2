@@ -20,13 +20,13 @@ const s2Options: S2Options = {
 describe('Interaction Multi Selection Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell);
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -34,21 +34,21 @@ describe('Interaction Multi Selection Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1306
-  test('should selected belong data cell after selected root col cells', () => {
+  test('should selected belong data cell after selected root col cells', async () => {
     s2.setOptions({
       hierarchyType: 'tree',
     });
-    s2.render(false);
+    await s2.render(false);
 
-    const colRootCell = s2.interaction.getAllColHeaderCells()[0];
+    const colRootCell = s2.facet.getColCells()[0];
 
     // 选中
     s2.interaction.selectHeaderCell({
       cell: colRootCell,
     });
 
-    s2.interaction
-      .getPanelGroupAllDataCells()
+    s2.facet
+      .getDataCells()
       .filter((cell) => {
         const targetCellMeta = colRootCell.getMeta();
         const meta = cell.getMeta();
@@ -73,7 +73,7 @@ describe('Interaction Multi Selection Tests', () => {
   });
 
   // https://github.com/antvis/S2/pull/1419
-  test('should always get leaf nodes at multiple row level more than 2', () => {
+  test('should always get leaf nodes at multiple row level more than 2', async () => {
     const data = mockDataConfig.data.map((item) => {
       return {
         ...item,
@@ -88,9 +88,9 @@ describe('Interaction Multi Selection Tests', () => {
       data,
     });
 
-    s2.render();
+    await s2.render();
 
-    const rowRootCell = s2.interaction.getAllRowHeaderCells()[0];
+    const rowRootCell = s2.facet.getRowCells()[0];
 
     s2.interaction.selectHeaderCell({
       cell: rowRootCell,
@@ -107,7 +107,7 @@ describe('Interaction Multi Selection Tests', () => {
     expect(getSelectedSum(tooltipData.summaries)).toEqual(6);
   });
 
-  test('should always get leaf nodes at multiple column level more than 2', () => {
+  test('should always get leaf nodes at multiple column level more than 2', async () => {
     const data = mockDataConfig.data.map((item) => {
       return {
         ...item,
@@ -123,9 +123,9 @@ describe('Interaction Multi Selection Tests', () => {
       data,
     });
 
-    s2.render();
+    await s2.render();
 
-    const colRootCell = s2.interaction.getAllColHeaderCells()[0];
+    const colRootCell = s2.facet.getColCells()[0];
 
     s2.interaction.selectHeaderCell({
       cell: colRootCell,

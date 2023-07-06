@@ -1,4 +1,4 @@
-import { TableSeriesCell } from '../../../../src/cell';
+import { TableSeriesNumberCell } from '../../../../src/cell';
 import {
   isMultiSelectionKey,
   getRowCellForSelectedCell,
@@ -10,7 +10,7 @@ import type { ViewMeta } from '@/common';
 jest.mock('@/cell', () => {
   return {
     // eslint-disable-next-line object-shorthand
-    TableSeriesCell: function () {
+    TableSeriesNumberCell: function () {
       // @ts-ignore
       this.getMeta = () => {
         return {
@@ -40,7 +40,7 @@ describe('Select Event Utils Tests', () => {
 
   describe('getRowCellForSelectedCell test', () => {
     test('should return correct value for getRowCellForSelectedCell', () => {
-      const cell = new TableSeriesCell(
+      const cell = new TableSeriesNumberCell(
         {} as unknown as ViewMeta,
         {} as unknown as SpreadSheet,
       );
@@ -56,13 +56,12 @@ describe('Select Event Utils Tests', () => {
               getAllCells: () => [cell],
             },
             facet: {
-              layoutResult: {
-                colLeafNodes: [
-                  {
-                    id: '序号',
-                  },
-                ],
-              },
+              getColLeafNodes: () => [
+                {
+                  id: '序号',
+                },
+              ],
+              getCellById: () => cell,
             },
             isTableMode: () => true,
           } as unknown as SpreadSheet,

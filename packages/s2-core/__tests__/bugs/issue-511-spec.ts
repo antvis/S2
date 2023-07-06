@@ -13,11 +13,12 @@ const s2Options = {
 };
 
 describe('Data order Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  test('should get right order of rendering data', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-  s2.render();
-  test('should get right order of rendering data', () => {
-    const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+    await s2.render();
+
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
 
     expect(rowLeafNodes[0].value).toEqual('张三');
     expect(rowLeafNodes[1].value).toEqual('李四');

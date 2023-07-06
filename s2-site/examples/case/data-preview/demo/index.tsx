@@ -8,7 +8,7 @@ import {
   TableCornerCell,
   S2Event,
   InteractionStateName,
-  CellTypes,
+  CellType,
 } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
 import {
@@ -197,15 +197,13 @@ const initColumns = ['province', 'city', 'type', 'price'];
 
 const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
   const { rowCount: frozenRowCount } = options.frozen;
-  const colsNodes = facet.layoutResult.colLeafNodes;
+  const colsNodes = facet.getColLeafNodes();
 
   let offsetX = 0;
   let offsetY = 0;
 
   offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - 1);
-  offsetX = facet.layoutResult.colLeafNodes.find(
-    (item) => item.colIndex === colIndex,
-  )?.x;
+  offsetX = colsNodes.find((item) => item.colIndex === colIndex)?.x;
   if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
     offsetY -= facet.getTotalHeightForRange(0, frozenRowCount - 1);
   }
@@ -230,7 +228,7 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
         colIndex,
         rowIndex,
         id: `${String(rowIndex)}-${colsNodes[colIndex + 1].id}`,
-        type: CellTypes.DATA_CELL,
+        type: CellType.DATA_CELL,
       },
     ],
   });

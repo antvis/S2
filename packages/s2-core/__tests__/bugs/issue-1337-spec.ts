@@ -23,7 +23,7 @@ describe('Totals Tests', () => {
     spreadsheet = new PivotSheet(getContainer(), dataCfg, assembleOptions());
   });
 
-  test('should render total nodes correctly', () => {
+  test('should render total nodes correctly', async () => {
     spreadsheet.setOptions({
       totals: {
         col: {
@@ -31,20 +31,16 @@ describe('Totals Tests', () => {
         },
       },
     });
-    spreadsheet.render();
+    await spreadsheet.render();
 
     // 行总计节点
-    const rowTotalNodes = spreadsheet.facet.layoutResult.rowNodes.filter(
-      (node) => node.isTotals,
-    );
+    const rowTotalNodes = spreadsheet.facet.getRowTotalsNodes();
 
     expect(rowTotalNodes).toHaveLength(0);
 
     // 列总计节点
-    const columnTotalNodes = spreadsheet.facet.layoutResult.colNodes.filter(
-      (node) => node.isTotals,
-    );
+    const colTotalNodes = spreadsheet.facet.getColTotalsNodes();
 
-    expect(columnTotalNodes).toHaveLength(1);
+    expect(colTotalNodes).toHaveLength(1);
   });
 });

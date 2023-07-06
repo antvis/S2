@@ -15,9 +15,9 @@ const s2Options: S2Options = {
 describe('Interaction SelectedCellsSpotlight Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet(s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -27,8 +27,8 @@ describe('Interaction SelectedCellsSpotlight Tests', () => {
   test('should display tooltip when data cell clicked', () => {
     const dataCellId = `root[&]浙江[&]杭州-root[&]笔[&]price`;
 
-    const selectedDataCell = s2.interaction
-      .getPanelGroupAllDataCells()
+    const selectedDataCell = s2.facet
+      .getDataCells()
       .find((cell) => cell.getMeta().id === dataCellId)!;
 
     s2.interaction.changeState({
@@ -36,9 +36,8 @@ describe('Interaction SelectedCellsSpotlight Tests', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    const allDataCells = s2.interaction.getPanelGroupAllDataCells();
-    const unSelectedDataCells =
-      s2.interaction.getPanelGroupAllUnSelectedDataCells();
+    const allDataCells = s2.facet.getDataCells();
+    const unSelectedDataCells = s2.interaction.getUnSelectedDataCells();
 
     expect(allDataCells).toHaveLength(4);
     // 选中一个

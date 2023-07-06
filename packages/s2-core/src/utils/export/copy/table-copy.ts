@@ -36,7 +36,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
   private getSelectedColNodes(): Node[] {
     const selectedCols = getSelectedCols(this.config.selectedCells);
-    const allColNodes = this.spreadsheet.getColumnNodes();
+    const allColNodes = this.spreadsheet.facet.getColNodes();
 
     if (selectedCols.length === 0) {
       return allColNodes;
@@ -124,13 +124,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
     ) as string[][];
 
     if (!copyWithHeader) {
-      return this.matrixTransformer(dataMatrix);
+      return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
       assembleMatrix({ colMatrix: [colMatrix], dataMatrix }),
+      this.config.separator,
     );
   }
 
@@ -144,13 +145,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const matrix = this.getDataMatrix();
 
     if (!allSelected) {
-      return this.matrixTransformer(matrix);
+      return this.matrixTransformer(matrix, this.config.separator);
     }
 
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
       assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      this.config.separator,
     );
   }
 }

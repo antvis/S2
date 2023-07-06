@@ -4,7 +4,7 @@ import { forEach, map } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import type { RangeColors } from '../../../src/common/interface/theme';
 import { PivotSheet } from '@/sheet-type';
-import { CellTypes, MiniChartTypes, type S2CellType } from '@/common';
+import { CellType, MiniChartTypes, type S2CellType } from '@/common';
 import {
   getBulletRangeColor,
   transformRatioToPercent,
@@ -336,11 +336,11 @@ describe('drawInterval Test', () => {
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
 
-  beforeEach(() => {
-    s2.render();
+  beforeEach(async () => {
+    await s2.render();
   });
 
-  test('should get right condition interval when only set fill', () => {
+  test('should get right condition interval when only set fill', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -355,11 +355,11 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    const cells = s2.facet
+      .getCells()
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
 
     const allIntervalWidth = map(
       cells,
@@ -369,7 +369,7 @@ describe('drawInterval Test', () => {
     expect(allIntervalWidth).toMatchSnapshot();
   });
 
-  test('should get right condition interval when minValue and maxValue is custom', () => {
+  test('should get right condition interval when minValue and maxValue is custom', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -387,11 +387,11 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    const cells = s2.facet
+      .getCells()
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
 
     const firstIntervalInfo = drawInterval(cells[0] as DataCell);
     const lastIntervalInfo = drawInterval(cells[cells.length - 1] as DataCell);
@@ -400,7 +400,7 @@ describe('drawInterval Test', () => {
     expect(lastIntervalInfo?.style.width).toEqual(88);
   });
 
-  test('should get right condition interval when filedValue is custom', () => {
+  test('should get right condition interval when filedValue is custom', async () => {
     s2.setOptions({
       conditions: {
         interval: [
@@ -419,11 +419,11 @@ describe('drawInterval Test', () => {
         ],
       },
     });
-    s2.render();
+    await s2.render();
 
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    const cells = s2.facet
+      .getCells()
+      .filter(({ cellType }) => cellType === CellType.DATA_CELL);
 
     forEach(cells, (cell) => {
       const intervalInfo = drawInterval(cell as DataCell);

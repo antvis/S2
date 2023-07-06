@@ -26,57 +26,61 @@ const treeOptions: S2Options = {
 };
 
 describe('Spreadsheet Empty Test', () => {
-  const valueInColsGridS2 = new PivotSheet(
-    getContainer(),
-    valueInCols,
-    gridOptions,
-  );
+  test('should render skeleton when grid sheet in the valueInCols mode', async () => {
+    const valueInColsGridS2 = new PivotSheet(
+      getContainer(),
+      valueInCols,
+      gridOptions,
+    );
 
-  valueInColsGridS2.render();
-  test('should render skeleton when grid sheet in the valueInCols mode', () => {
-    const layoutResult = valueInColsGridS2.facet.layoutResult;
+    await valueInColsGridS2.render();
+
+    const layoutResult = valueInColsGridS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toHaveLength(2);
   });
 
-  const valueInRowsGridS2 = new PivotSheet(
-    getContainer(),
-    valueInRows,
-    gridOptions,
-  );
+  test('should render skeleton when grid sheet in the valueInRows mode', async () => {
+    const valueInRowsGridS2 = new PivotSheet(
+      getContainer(),
+      valueInRows,
+      gridOptions,
+    );
 
-  valueInRowsGridS2.render();
-  test('should render skeleton when grid sheet in the valueInRows mode', () => {
-    const layoutResult = valueInRowsGridS2.facet.layoutResult;
+    await valueInRowsGridS2.render();
+
+    const layoutResult = valueInRowsGridS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(2);
     expect(layoutResult.rowNodes).toHaveLength(5);
   });
 
-  const valueInColstreeS2 = new PivotSheet(
-    getContainer(),
-    valueInCols,
-    treeOptions,
-  );
+  test('should render skeleton when tree sheet in the valueInCols mode', async () => {
+    const valueInColstreeS2 = new PivotSheet(
+      getContainer(),
+      valueInCols,
+      treeOptions,
+    );
 
-  valueInColstreeS2.render();
-  test('should render skeleton when tree sheet in the valueInCols mode', () => {
-    const layoutResult = valueInColstreeS2.facet.layoutResult;
+    await valueInColstreeS2.render();
+
+    const layoutResult = valueInColstreeS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toBeEmpty();
   });
 
-  const valueInRowsTreeS2 = new PivotSheet(
-    getContainer(),
-    valueInRows,
-    treeOptions,
-  );
+  test('should render skeleton when tree sheet in the valueInRows mode', async () => {
+    const valueInRowsTreeS2 = new PivotSheet(
+      getContainer(),
+      valueInRows,
+      treeOptions,
+    );
 
-  valueInRowsTreeS2.render();
-  test('should render skeleton when tree sheet in the valueInRows mode', () => {
-    const layoutResult = valueInRowsTreeS2.facet.layoutResult;
+    await valueInRowsTreeS2.render();
+
+    const layoutResult = valueInRowsTreeS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(2);
     expect(layoutResult.rowNodes).toBeEmpty();

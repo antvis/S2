@@ -9,7 +9,7 @@ import type {
 } from '@/common/interface/theme';
 import type { PivotSheet } from '@/sheet-type';
 import {
-  CellTypes,
+  CellType,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
   GuiIcon,
@@ -22,12 +22,12 @@ import type { Node } from '@/facet/layout/node';
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     s2 = createPivotSheet(
       {
         headerActionIcons: [
           {
-            iconNames: ['DrillDownIcon'],
+            icons: ['DrillDownIcon'],
             belongsCell: 'rowCell',
             displayCondition: () => true,
             onClick: () => {},
@@ -37,7 +37,7 @@ describe('SpreadSheet Theme Tests', () => {
       { useSimpleData: false },
     );
 
-    s2.render();
+    await s2.render();
   });
 
   afterAll(() => {
@@ -45,12 +45,12 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Theme Default Value Tests', () => {
-    const CELL_TYPES: CellTypes[] = [
-      CellTypes.DATA_CELL,
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.CORNER_CELL,
-      CellTypes.MERGED_CELL,
+    const CELL_TYPES: CellType[] = [
+      CellType.DATA_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.CORNER_CELL,
+      CellType.MERGED_CELL,
     ];
 
     test('should get default theme', () => {
@@ -59,11 +59,11 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
-      (cellType: CellTypes) => {
+      async (cellType: CellType) => {
         s2.setThemeCfg({
           name: 'colorful',
         });
-        s2.render();
+        await s2.render();
         const cellTheme = s2.theme[cellType];
 
         expect(cellTheme!.bolderText!.fill).toEqual(cellTheme!.icon!.fill);
@@ -72,15 +72,18 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
-      s2.setThemeCfg({
-        name: 'colorful',
-      });
-      s2.render();
-      const cellTheme = s2.theme[cellType];
+    test.each(CELL_TYPES)(
+      'should set cell for %s',
+      async (cellType: CellType) => {
+        s2.setThemeCfg({
+          name: 'colorful',
+        });
+        await s2.render();
+        const cellTheme = s2.theme[cellType];
 
-      expect(cellTheme!.cell).toBeTruthy();
-    });
+        expect(cellTheme!.cell).toBeTruthy();
+      },
+    );
 
     test('should set theme correctly', () => {
       s2.setTheme({
@@ -125,7 +128,7 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Custom SVG Icon Tests', () => {
-    test('should set custom SVG icon size and color', () => {
+    test('should set custom SVG icon size and color', async () => {
       const iconInfo = {
         name: 'filter',
         size: 30,
@@ -141,7 +144,7 @@ describe('SpreadSheet Theme Tests', () => {
         ],
         headerActionIcons: [
           {
-            iconNames: [iconInfo.name],
+            icons: [iconInfo.name],
             belongsCell: 'rowCell',
           },
         ],
@@ -159,8 +162,8 @@ describe('SpreadSheet Theme Tests', () => {
           },
         },
       });
-      s2.render();
-      const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
+      await s2.render();
+      const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
       const actionIcon = get(rowCell, 'actionIcons.[0]') as GuiIcon;
       // @ts-ignore
       const cfg = actionIcon.cfg;
@@ -192,18 +195,19 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(TEXT_ALIGNS)(
       'should render correctly icon position when text %s aligned',
-      (align: TextAlign) => {
+      async (align: TextAlign) => {
         s2.setThemeCfg(getRowCellThemeCfg(align));
-        s2.render();
+        await s2.render();
 
-        const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
+        const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
 
         const rowCellWidth = get(rowCell, 'meta.width');
         const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
-        const actionIconStyle = actionIcon.parsedStyle;
+        // @ts-ignore
+        const actionIconCfg = actionIcon.cfg;
 
-        expect(actionIconStyle.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconStyle.x! + actionIconStyle.width!).toBeLessThanOrEqual(
+        expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
+        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
           rowCellWidth,
         );
       },
@@ -223,8 +227,8 @@ describe('SpreadSheet Theme Tests', () => {
         containsDataCells = false,
         customNodes,
       } = options;
-      const targetNodes = customNodes || s2.getColumnLeafNodes();
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const targetNodes = customNodes || s2.facet.getColLeafNodes();
+      const dataCells = s2.facet.getDataCells();
 
       expect(targetNodes).not.toHaveLength(0);
 
@@ -265,16 +269,16 @@ describe('SpreadSheet Theme Tests', () => {
       });
     });
 
-    it('should render normal font wight and left text align text with row cells', () => {
+    it('should render normal font wight and left text align text with row cells', async () => {
       s2.setDataCfg({
         fields: {
           valueInCols: false,
         },
       } as S2DataConfig);
 
-      s2.render();
+      await s2.render();
 
-      const rowMeasureFields = s2
+      const rowMeasureFields = s2.facet
         .getRowNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
@@ -286,17 +290,17 @@ describe('SpreadSheet Theme Tests', () => {
       });
     });
 
-    it('should render normal font wight and left text align text with col cell', () => {
+    it('should render normal font wight and left text align text with col cell', async () => {
       s2.setDataCfg({
         fields: {
           valueInCols: true,
         },
       } as S2DataConfig);
 
-      s2.render();
+      await s2.render();
 
-      const colMeasureFields = s2
-        .getColumnNodes()
+      const colMeasureFields = s2.facet
+        .getColNodes()
         .filter((node) => node.field === EXTRA_FIELD);
 
       expectTextAlign({
@@ -309,7 +313,7 @@ describe('SpreadSheet Theme Tests', () => {
 
     it.each(['left', 'center', 'right'] as TextAlign[])(
       'should render %s text align for column nodes',
-      (textAlign) => {
+      async (textAlign) => {
         s2.setThemeCfg({
           theme: {
             colCell: {
@@ -320,7 +324,7 @@ describe('SpreadSheet Theme Tests', () => {
           },
         });
 
-        s2.render(true);
+        await s2.render(true);
 
         expectTextAlign({ textAlign, fontWight: 'normal' });
       },
@@ -335,7 +339,7 @@ describe('SpreadSheet Theme Tests', () => {
       { isRowCell: false, textAlign: 'right' },
     ] as Array<{ isRowCell: boolean; textAlign: TextAlign }>)(
       'should render %s text align for totals nodes',
-      ({ isRowCell, textAlign }) => {
+      async ({ isRowCell, textAlign }) => {
         s2.setOptions({
           totals: {
             col: {
@@ -369,12 +373,14 @@ describe('SpreadSheet Theme Tests', () => {
           },
         });
 
-        s2.render();
+        await s2.render();
 
-        const rowTotalNodes = s2.getRowNodes().filter((node) => node.isTotals);
+        const rowTotalNodes = s2.facet
+          .getRowNodes()
+          .filter((node) => node.isTotals);
 
-        const colTotalNodes = s2
-          .getColumnNodes()
+        const colTotalNodes = s2.facet
+          .getColNodes()
           .filter((node) => node.isTotals);
 
         expectTextAlign({
@@ -385,7 +391,7 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    it('should not align column headers with data cells and render normal font wight leaf node text if hideValue', () => {
+    it('should not align column headers with data cells and render normal font wight leaf node text if hideValue', async () => {
       s2.setOptions({
         style: {
           colCell: {
@@ -394,7 +400,7 @@ describe('SpreadSheet Theme Tests', () => {
         },
         totals: null,
       });
-      s2.render();
+      await s2.render();
 
       expectTextAlign({
         textAlign: 'center',
@@ -405,7 +411,7 @@ describe('SpreadSheet Theme Tests', () => {
     // https://github.com/antvis/S2/pull/1371
     it.each(['left', 'center', 'right'] as TextAlign[])(
       'should render %s text align for column nodes',
-      (textAlign) => {
+      async (textAlign) => {
         s2.setThemeCfg({
           theme: {
             colCell: {
@@ -430,7 +436,7 @@ describe('SpreadSheet Theme Tests', () => {
           },
         });
 
-        s2.render(true);
+        await s2.render(true);
 
         expectTextAlign({ textAlign, fontWight: 'normal' });
       },
@@ -443,7 +449,7 @@ describe('SpreadSheet Theme Tests', () => {
 
     test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
       'should render %s text align for column nodes',
-      (textBaseline) => {
+      async (textBaseline) => {
         s2.setThemeCfg({
           theme: {
             rowCell: {
@@ -461,7 +467,7 @@ describe('SpreadSheet Theme Tests', () => {
           showSeriesNumber: true,
         });
 
-        s2.render();
+        await s2.render();
 
         const rowCell = s2.facet.rowHeader!.children[0] as Group; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
@@ -477,7 +483,7 @@ describe('SpreadSheet Theme Tests', () => {
 
   // https://github.com/antvis/S2/issues/1892
   describe('ScrollBar Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       // 保证滚动条很小
       s2.setOptions({
         style: {
@@ -490,7 +496,7 @@ describe('SpreadSheet Theme Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
     });
 
     test('should render default min scrollbar size', () => {
@@ -500,7 +506,7 @@ describe('SpreadSheet Theme Tests', () => {
       expect(s2.facet.vScrollBar.thumbLen).toEqual(32);
     });
 
-    test('should render min scrollbar size', () => {
+    test('should render min scrollbar size', async () => {
       s2.setTheme({
         scrollBar: {
           thumbHorizontalMinSize: 20,
@@ -508,7 +514,7 @@ describe('SpreadSheet Theme Tests', () => {
         },
       });
 
-      s2.render();
+      await s2.render();
 
       // 行头有分割线, 会减去分割线的宽度 (2px)
       expect(s2.facet.hRowScrollBar.thumbLen).toEqual(18);
@@ -516,7 +522,7 @@ describe('SpreadSheet Theme Tests', () => {
       expect(s2.facet.vScrollBar.thumbLen).toEqual(10);
     });
 
-    test('should render real scrollbar size', () => {
+    test('should render real scrollbar size', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -528,7 +534,7 @@ describe('SpreadSheet Theme Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       // 行头有分割线, 会减去分割线的宽度 (2px)
       expect(s2.facet.hRowScrollBar.thumbLen).not.toBeLessThanOrEqual(30);

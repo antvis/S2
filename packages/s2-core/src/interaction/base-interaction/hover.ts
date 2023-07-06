@@ -32,11 +32,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
-    const { interaction } = this.spreadsheet;
+    const { facet } = this.spreadsheet;
 
     updateAllColHeaderCellState(
       colId,
-      interaction.getAllColHeaderCells(),
+      facet.getColCells(),
       InteractionStateName.HOVER,
     );
 
@@ -44,7 +44,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       // update rowHeader cells
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
-        interaction.getAllRowHeaderCells(),
+        facet.getRowCells(),
         this.spreadsheet.isHierarchyTreeType(),
       );
 

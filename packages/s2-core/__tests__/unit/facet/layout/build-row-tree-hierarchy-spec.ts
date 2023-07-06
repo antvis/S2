@@ -18,7 +18,7 @@ const s2Options: S2Options = {
 
 describe('build row tree hierarchy', () => {
   // https://stackblitz.com/edit/react-ts-aj2r8w?file=data.ts
-  test('should get order hierarchy when order is group ascend', () => {
+  test('should get order hierarchy when order is group ascend', async () => {
     const s2DataConfig: S2DataConfig = {
       ...sortData,
       // 城市根据纸张价格进行组内升序
@@ -36,8 +36,9 @@ describe('build row tree hierarchy', () => {
     };
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
 
-    s2.render();
-    const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+    await s2.render();
+
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
 
     expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].value).toEqual('浙江');
@@ -48,7 +49,7 @@ describe('build row tree hierarchy', () => {
     expect(rowLeafNodes[5].value).toEqual('白山');
     expect(rowLeafNodes[6].value).toEqual('总计');
   });
-  test('should get order hierarchy when order is group desc', () => {
+  test('should get order hierarchy when order is group desc', async () => {
     const s2DataConfig: S2DataConfig = {
       ...sortData,
       // 城市根据笔价格进行组内升序
@@ -66,8 +67,8 @@ describe('build row tree hierarchy', () => {
     };
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
 
-    s2.render();
-    const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+    await s2.render();
+    const rowLeafNodes = s2.facet.getRowLeafNodes();
 
     expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].value).toEqual('浙江');

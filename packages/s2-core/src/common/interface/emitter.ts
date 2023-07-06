@@ -134,7 +134,7 @@ export interface EmitterType {
     total: number;
     current: number;
   }) => void;
-  [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
+  [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (layoutResult: LayoutResult) => void;
   [S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER]: (options: {
     add: [number, number][];
     remove: [number, number][];

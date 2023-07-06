@@ -8,7 +8,22 @@ import { NewTab, NewLine } from '@/common';
 import { CopyMIMEType } from '@/utils/export/interface';
 
 describe('TableSheet Export Test', () => {
-  it('should export correct data with series number', () => {
+  let tableSheet: TableSheet;
+
+  beforeEach(async () => {
+    tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+    await tableSheet.render();
+  });
+
+  it('should export correct data with series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -29,7 +44,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -64,7 +79,7 @@ describe('TableSheet Export Test', () => {
       'number',
     ]);
   });
-  it('should export correct data with no series number', () => {
+  it('should export correct data with no series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -79,7 +94,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -96,7 +111,7 @@ describe('TableSheet Export Test', () => {
     expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
   });
 
-  it('should export correct data with totals', () => {
+  it('should export correct data with totals', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -120,7 +135,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -136,7 +151,7 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	沙发	5343"
     `);
   });
-  it('should support custom export matrix transformer', () => {
+  it('should support custom export matrix transformer', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -150,7 +165,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -167,10 +182,43 @@ describe('TableSheet Export Test', () => {
     expect(data).toMatchInlineSnapshot(`"custom data"`);
     expect(data).toEqual('custom data');
   });
+
+  // https://github.com/antvis/S2/issues/2236
+  it('should export correct data When the split separator is configured', () => {
+    const data = copyData({
+      sheetInstance: tableSheet,
+      split: ',',
+    });
+    // 只取前10行数据
+    const result = slice(data.split(NewLine), 0, 5);
+
+    expect(result).toMatchInlineSnapshot(`
+      Array [
+        "province,city,type,sub_type,number",
+        "浙江省,杭州市,家具,桌子,7789",
+        "浙江省,绍兴市,家具,桌子,2367",
+        "浙江省,宁波市,家具,桌子,3877",
+        "浙江省,舟山市,家具,桌子,4342",
+      ]
+    `);
+  });
 });
 
 describe('PivotSheet Export Test', () => {
-  it('should export correct data in grid mode - get', () => {
+  let pivotSheet: PivotSheet;
+
+  beforeEach(async () => {
+    pivotSheet = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(),
+      assembleOptions({
+        hierarchyType: 'grid',
+      }),
+    );
+    await pivotSheet.render();
+  });
+
+  it('should export correct data in grid mode - get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -183,7 +231,7 @@ describe('PivotSheet Export Test', () => {
       assembleOptions({ hierarchyType: 'grid' }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -198,7 +246,7 @@ describe('PivotSheet Export Test', () => {
       expect(e.split(NewTab)).toHaveLength(34);
     });
   });
-  it('should export correct data in tree mode - get', () => {
+  it('should export correct data in tree mode - get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -213,7 +261,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
     });
@@ -231,7 +279,7 @@ describe('PivotSheet Export Test', () => {
    * 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
    * https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
    */
-  it('should export correct data in tree mode and collapseAll is true -get', () => {
+  it('should export correct data in tree mode and collapseAll is true -get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -250,7 +298,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -276,7 +324,7 @@ describe('PivotSheet Export Test', () => {
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
-  it('should export correct data in tree mode and collapseAll is false -get', () => {
+  it('should export correct data in tree mode and collapseAll is false -get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -290,7 +338,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -322,7 +370,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[2].split(NewTab)[2]).toEqual('数量');
   });
 
-  it('should export correct data in grid mode with valueInCols is false - get', () => {
+  it('should export correct data in grid mode with valueInCols is false - get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -337,7 +385,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -351,7 +399,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data in grid mode with totals in col - get', () => {
+  it('should export correct data in grid mode with totals in col - get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -377,7 +425,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -391,7 +439,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data in grid mode with totals in row - get', () => {
+  it('should export correct data in grid mode with totals in row - get', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -417,7 +465,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -430,7 +478,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {isFormatHeader: true}', () => {
+  it('should export correct data when isFormat: {isFormatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -460,7 +508,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -476,7 +524,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[3].split(NewTab)[0]).toEqual('家具-type');
   });
 
-  it('should export correct data when isFormat: {isFormatData: true}', () => {
+  it('should export correct data when isFormat: {isFormatData: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -495,7 +543,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
 
     const data = copyData({
       sheetInstance: s2,
@@ -518,7 +566,7 @@ describe('PivotSheet Export Test', () => {
     `);
   });
 
-  it('should export correct data when data is incomplete', () => {
+  it('should export correct data when data is incomplete', async () => {
     const incompleteData = map(originData, (d) => {
       if (d.province === '浙江省' && d.city === '杭州市') {
         return omit(d, 'number');
@@ -546,7 +594,7 @@ describe('PivotSheet Export Test', () => {
       assembleOptions({ hierarchyType: 'tree' }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -565,7 +613,7 @@ describe('PivotSheet Export Test', () => {
     `);
   });
 
-  it('should export correct data when series number', () => {
+  it('should export correct data when series number', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -584,7 +632,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -606,7 +654,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[1].split(NewTab)[1]).toEqual('city');
   });
 
-  it('should support custom export matrix transformer', () => {
+  it('should support custom export matrix transformer', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -615,7 +663,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
 
     const data = copyData({
       sheetInstance: s2,
@@ -630,5 +678,28 @@ describe('PivotSheet Export Test', () => {
     });
 
     expect(data).toEqual('custom data');
+  });
+
+  // https://github.com/antvis/S2/issues/2236
+  it('should export correct data When the split separator is configured', () => {
+    const data = copyData({
+      sheetInstance: pivotSheet,
+      split: ',',
+      formatOptions: { isFormatHeader: true },
+    });
+
+    expect(data).toMatchInlineSnapshot(`
+      ",类别,家具,家具,办公用品,办公用品
+      ,子类别,桌子,沙发,笔,纸张
+      省份,城市,数量,数量,数量,数量
+      浙江省,杭州市,7789,5343,945,1343
+      浙江省,绍兴市,2367,632,1304,1354
+      浙江省,宁波市,3877,7234,1145,1523
+      浙江省,舟山市,4342,834,1432,1634
+      四川省,成都市,1723,2451,2335,4004
+      四川省,绵阳市,1822,2244,245,3077
+      四川省,南充市,1943,2333,2457,3551
+      四川省,乐山市,2330,2445,2458,352"
+    `);
   });
 });

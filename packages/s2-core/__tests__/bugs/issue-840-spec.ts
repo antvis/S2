@@ -47,13 +47,13 @@ const dataCfg: S2DataConfig = {
 describe('Column Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(getContainer(), dataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('column should not be formatted', () => {
-    const colNodes = s2.getColumnNodes();
+    const colNodes = s2.facet.getColNodes();
     const typeColNode = colNodes.find(({ field }) => field === 'type');
     const costColNode = colNodes.find(({ field }) => field === 'cost');
 
@@ -62,7 +62,7 @@ describe('Column Formatter Tests', () => {
   });
 
   test('date cell should render formatted value', () => {
-    const dataCells = s2.interaction.getPanelGroupAllDataCells();
+    const dataCells = s2.facet.getDataCells();
     const typeDataCells = dataCells.filter(
       (cell) => cell.getMeta().valueField === 'type',
     );

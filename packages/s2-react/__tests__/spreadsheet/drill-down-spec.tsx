@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { customMerge, GuiIcon, Node, RowCell, SpreadSheet } from '@antv/s2';
 import { get, noop } from 'lodash';
+import { waitFor } from '@testing-library/react';
 import * as mockDataConfig from '../data/simple-data.json';
 import { type SheetComponentsProps, SheetComponent } from '../../src';
 import { getContainer } from '../util/helpers';
@@ -58,7 +59,7 @@ describe('Spread Sheet Drill Down Tests', () => {
     container?.remove();
   });
 
-  test('should render drill down icon', () => {
+  test('should render drill down icon', async () => {
     let s2Instance: SpreadSheet | null = null;
 
     // 首次 render
@@ -75,7 +76,10 @@ describe('Spread Sheet Drill Down Tests', () => {
         container,
       );
     });
-    expect(findDrillDownIcon(s2Instance!)).toBeDefined();
+
+    await waitFor(() => {
+      expect(findDrillDownIcon(s2Instance!)).toBeDefined();
+    });
 
     // mock drill down
     s2Instance!.store.set('drillDownIdPathMap', new Map());
@@ -89,7 +93,7 @@ describe('Spread Sheet Drill Down Tests', () => {
             ...s2Options,
             headerActionIcons: [
               {
-                iconNames: ['SortDown'],
+                icons: ['SortDown'],
                 belongsCell: 'colCell',
                 displayCondition: (meta: Node) => meta.isLeaf,
                 onClick: noop,
@@ -105,16 +109,19 @@ describe('Spread Sheet Drill Down Tests', () => {
         container,
       );
     });
-    expect(findDrillDownIcon(s2Instance!)).toBeDefined();
 
-    // render new headerActionIcons should not clear data
-    expect(s2Instance!.store.get('drillItemsNum')).toEqual(
-      EXPECT_DRILL_ITEMS_NUM,
-    );
+    await waitFor(() => {
+      expect(findDrillDownIcon(s2Instance!)).toBeDefined();
+
+      // render new headerActionIcons should not clear data
+      expect(s2Instance!.store.get('drillItemsNum')).toEqual(
+        EXPECT_DRILL_ITEMS_NUM,
+      );
+    });
   });
 
   // https://github.com/antvis/S2/issues/1514
-  test('should render drill down icon and not show sort icon if value is empty', () => {
+  test('should render drill down icon and not show sort icon if value is empty', async () => {
     let s2: SpreadSheet;
 
     act(() => {
@@ -135,16 +142,20 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2!.getRowNodes().filter((node) => node.rowIndex >= 1);
+    await waitFor(() => {
+      const rowNodes = s2!.facet
+        .getRowNodes()
+        .filter((node) => node.rowIndex >= 1);
 
-    rowNodes.forEach((node) => {
-      expect(get(node.belongsCell, 'actionIcons.0.cfg.name')).toEqual(
-        'DrillDownIcon',
-      );
+      rowNodes.forEach((node) => {
+        expect(get(node.belongsCell, 'actionIcons.0.cfg.name')).toEqual(
+          'DrillDownIcon',
+        );
+      });
     });
   });
 
-  test('should not render drill down icon is displayCondition return false', () => {
+  test('should not render drill down icon is displayCondition return false', async () => {
     let s2: SpreadSheet;
 
     act(() => {
@@ -164,10 +175,12 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2!.getRowNodes();
+    await waitFor(() => {
+      const rowNodes = s2!.facet.getRowNodes();
 
-    rowNodes.forEach((node) => {
-      expect(get(node.belongsCell, 'actionIcons')).toHaveLength(0);
+      rowNodes.forEach((node) => {
+        expect(get(node.belongsCell, 'actionIcons')).toHaveLength(0);
+      });
     });
   });
 });

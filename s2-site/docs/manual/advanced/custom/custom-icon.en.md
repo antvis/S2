@@ -13,7 +13,7 @@ But in many cases, you will need to display other action `icon` , such as: filte
 const s2Options = {
   headerActionIcons: [
     {
-      iconNames: ['SortDown'],
+      icons: ['SortDown'],
       belongsCell: 'colCell',
     },
   ],

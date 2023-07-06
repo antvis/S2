@@ -1,0 +1,20 @@
+@import '../variables.less';
+
+:root {
+  @white: #fff;
+
+  // container
+  @{css-var-prefix}-container-background: #191919;
+  @{css-var-prefix}-block-background: #232323;
+
+  // text
+  @{css-var-prefix}-font: @white;
+  each(range(19), {
+    @fadePercent: 100 - @value * 5;
+    @{css-var-prefix}-font-@{fadePercent}: fade(@white, @fadePercent);
+  });
+
+  // border
+  @{css-var-prefix}-border: fade(@white, 15);
+  @{css-var-prefix}-divider: fade(@white, 10);
+}

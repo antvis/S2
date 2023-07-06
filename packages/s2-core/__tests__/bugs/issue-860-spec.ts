@@ -20,13 +20,13 @@ const s2Options: S2Options = {
 describe('Empty String Row Value Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should get correct row hierarchy with empty row node', () => {
-    const layoutResult = s2.facet.layoutResult;
+    const layoutResult = s2.facet.getLayoutResult();
 
     expect(layoutResult.rowNodes).toHaveLength(7);
     expect(layoutResult.rowLeafNodes).toHaveLength(4);

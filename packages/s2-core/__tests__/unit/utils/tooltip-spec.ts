@@ -17,7 +17,7 @@ import {
   getCustomFieldsSummaries,
 } from '@/utils/tooltip';
 import {
-  CellTypes,
+  CellType,
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
@@ -221,21 +221,21 @@ describe('Tooltip Utils Tests', () => {
   });
 
   describe('Tooltip Get Options Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) =>
+    const getCellNameByType = (cellType: CellType) =>
       ({
-        [CellTypes.ROW_CELL]: 'rowCell',
-        [CellTypes.COL_CELL]: 'colCell',
-        [CellTypes.DATA_CELL]: 'dataCell',
-        [CellTypes.CORNER_CELL]: 'cornerCell',
-        [CellTypes.MERGED_CELL]: 'merge',
-        [CellTypes.HEADER_CELL]: 'header',
+        [CellType.ROW_CELL]: 'rowCell',
+        [CellType.COL_CELL]: 'colCell',
+        [CellType.DATA_CELL]: 'dataCell',
+        [CellType.CORNER_CELL]: 'cornerCell',
+        [CellType.MERGED_CELL]: 'mergedCell',
+        [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
       }[cellType] || '');
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
@@ -267,10 +267,10 @@ describe('Tooltip Utils Tests', () => {
     );
 
     test.each([
-      CellTypes.ROW_CELL,
-      CellTypes.COL_CELL,
-      CellTypes.DATA_CELL,
-      CellTypes.CORNER_CELL,
+      CellType.ROW_CELL,
+      CellType.COL_CELL,
+      CellType.DATA_CELL,
+      CellType.CORNER_CELL,
     ])(
       'should use %o tooltip options and merge base tooltip config',
       (cellType) => {
@@ -321,7 +321,7 @@ describe('Tooltip Utils Tests', () => {
 
     test('should filter not displayed tooltip operation menus', () => {
       const mockCell = {
-        cellType: CellTypes.DATA_CELL,
+        cellType: CellType.DATA_CELL,
       } as unknown as S2CellType;
       const onClick = jest.fn();
 
@@ -343,12 +343,12 @@ describe('Tooltip Utils Tests', () => {
           {
             key: 'menu-5',
             text: '动态显示',
-            visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType === CellType.DATA_CELL,
           },
           {
             key: 'menu-6',
             text: '动态隐藏',
-            visible: (cell) => cell.cellType !== CellTypes.DATA_CELL,
+            visible: (cell) => cell.cellType !== CellType.DATA_CELL,
           },
           {
             key: 'menu-7',
@@ -473,7 +473,7 @@ describe('Tooltip Utils Tests', () => {
     };
 
     const getTotalInfo = (isTotalCell: boolean, count: number) => {
-      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const dataCells = s2.facet.getDataCells();
       const selectedCells = isTotalCell
         ? [
             dataCells.find((cell) => {
@@ -566,12 +566,12 @@ describe('Tooltip Utils Tests', () => {
       { count: 4, isTotalCell: false, name: '多选' },
     ])(
       'should get data cell summary data info for %o',
-      ({ count, isTotalCell }) => {
+      async ({ count, isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           row: rowTotalOptions,
           col: colTotalOptions,
         });
-        s2.render();
+        await s2.render();
         const { tooltipData, value, selectedData } = getTotalInfo(
           isTotalCell,
           count,
@@ -595,7 +595,7 @@ describe('Tooltip Utils Tests', () => {
       { count: 4, isTotalCell: false, name: '多选' },
     ])(
       `should get data cell summary data info for %o when the meta set formatted`,
-      ({ count, isTotalCell }) => {
+      async ({ count, isTotalCell }) => {
         const customMeta = dataConfig.meta.map((meta) => {
           if (meta.name === '数量') {
             return {
@@ -621,7 +621,7 @@ describe('Tooltip Utils Tests', () => {
             },
           },
         );
-        s2.render();
+        await s2.render();
 
         const { tooltipData, value, selectedData } = getTotalInfo(
           isTotalCell,
@@ -641,13 +641,13 @@ describe('Tooltip Utils Tests', () => {
 
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get row cell summary data info for %o',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           row: rowTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells().find((cell) => {
+        const rowCell = s2.facet.getRowCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -691,13 +691,13 @@ describe('Tooltip Utils Tests', () => {
 
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get col cell summary data info for %o',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           col: colTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells().find((cell) => {
+        const colCell = s2.facet.getColCells().find((cell) => {
           const meta = cell.getMeta();
 
           return isTotalCell ? meta.isTotals : !meta.isTotals;
@@ -715,19 +715,17 @@ describe('Tooltip Utils Tests', () => {
       },
     );
 
-    test('should get grand totals row cell summary data', () => {
+    test('should get grand totals row cell summary data', async () => {
       s2 = createTotalsPivotSheet({
         row: rowTotalOptions,
       });
-      s2.render();
+      await s2.render();
 
-      const grandTotalRowCell = s2.interaction
-        .getAllRowHeaderCells()
-        .find((cell) => {
-          const meta = cell.getMeta();
+      const grandTotalRowCell = s2.facet.getRowCells().find((cell) => {
+        const meta = cell.getMeta();
 
-          return meta.isGrandTotals;
-        });
+        return meta.isGrandTotals;
+      });
 
       const tooltipData = getMockTooltipData(grandTotalRowCell!);
 
@@ -739,22 +737,18 @@ describe('Tooltip Utils Tests', () => {
     // https://github.com/antvis/S2/issues/1137
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get without row cell sub and grand totals %o col cell summary data',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           col: colTotalOptions,
           row: rowTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
-        const colLeafCell = s2.interaction
-          .getAllColHeaderCells()
-          .find((cell) => {
-            const meta = cell.getMeta();
+        const colLeafCell = s2.facet.getColCells().find((cell) => {
+          const meta = cell.getMeta();
 
-            return (
-              (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf
-            );
-          });
+          return (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf;
+        });
 
         const tooltipData = getMockTooltipData(colLeafCell!);
 
@@ -771,33 +765,33 @@ describe('Tooltip Utils Tests', () => {
         s2.destroy();
       });
 
-      test('should get row cell description', () => {
+      test('should get row cell description', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
-        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+        const rowCell = s2.facet.getRowCells()[0];
 
         const tooltipData = getMockTooltipData(rowCell);
 
         expect(tooltipData.description).toEqual('省份说明。。');
       });
 
-      test('should get col cell descriptions', () => {
+      test('should get col cell descriptions', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
-        const colCell = s2.interaction.getAllColHeaderCells()[0];
+        const colCell = s2.facet.getColCells()[0];
 
         const tooltipData = getMockTooltipData(colCell);
 
         expect(tooltipData.description).toEqual('类别说明。。');
       });
 
-      test('should get data cell description', () => {
+      test('should get data cell description', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
-        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+        const dataCell = s2.facet.getDataCells()[0];
 
         const tooltipData = getMockTooltipData(dataCell);
 
@@ -806,28 +800,24 @@ describe('Tooltip Utils Tests', () => {
 
       test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(
         'should not get total cell description with %s',
-        (key) => {
+        async (key) => {
           s2 = createTotalsPivotSheet({
             col: colTotalOptions,
             row: rowTotalOptions,
           });
-          s2.render();
+          await s2.render();
 
-          const colTotalCell = s2.interaction
-            .getAllColHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const colTotalCell = s2.facet.getColCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
-          const rowTotalCell = s2.interaction
-            .getAllRowHeaderCells()
-            .find((cell) => {
-              const meta = cell.getMeta();
+          const rowTotalCell = s2.facet.getRowCells().find((cell) => {
+            const meta = cell.getMeta();
 
-              return meta[key];
-            });
+            return meta[key];
+          });
 
           expect(getMockTooltipData(colTotalCell!).description).toBeUndefined();
           expect(getMockTooltipData(rowTotalCell!).description).toBeUndefined();

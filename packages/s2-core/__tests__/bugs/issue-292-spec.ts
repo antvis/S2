@@ -14,11 +14,12 @@ const s2Options = {
 };
 
 describe('Multi-Values Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  test('should get right order of multi-values', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-  s2.render();
-  test('should get right order of multi-values', () => {
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
+    await s2.render();
+
+    const colLeafNodes = s2.facet.getColLeafNodes();
 
     expect(colLeafNodes[0].value).toEqual('price');
     expect(colLeafNodes[1].value).toEqual('cost');

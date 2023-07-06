@@ -242,7 +242,7 @@ export class BaseBrushSelection
       return null;
     }
 
-    let max = facet.layoutResult.colLeafNodes.length - 1;
+    let max = facet.getColLeafNodes().length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
 
     if (frozenTrailingColRange) {
@@ -262,7 +262,7 @@ export class BaseBrushSelection
   ) => {
     const { facet, dataSet, options } = this.spreadsheet;
     const dataLength = dataSet.getDisplayDataSet().length;
-    const colLength = facet.layoutResult.colLeafNodes.length;
+    const colLength = facet.getColLeafNodes().length;
 
     const {
       trailingColCount: frozenTrailingColCount,
@@ -296,7 +296,7 @@ export class BaseBrushSelection
   ) => {
     const { facet, dataSet, options } = this.spreadsheet;
     const dataLength = dataSet.getDisplayDataSet().length;
-    const colLength = facet.layoutResult.colLeafNodes.length;
+    const colLength = facet.getColLeafNodes().length;
     const cellRange = facet.getCellRange();
     const {
       trailingRowCount: frozenTrailingRowCount,
@@ -536,8 +536,7 @@ export class BaseBrushSelection
   }
 
   protected setDisplayedCells() {
-    this.displayedCells =
-      this.spreadsheet.interaction.getPanelGroupAllDataCells();
+    this.displayedCells = this.spreadsheet.facet.getDataCells();
   }
 
   protected updatePrepareSelectMask() {

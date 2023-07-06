@@ -9,7 +9,7 @@ import {
   type S2Options,
 } from '@/common';
 
-function renderSheet(options: S2Options) {
+async function renderSheet(options: S2Options) {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, {
     height: 150,
     ...options,
@@ -22,14 +22,14 @@ function renderSheet(options: S2Options) {
       },
     },
   });
-  s2.render();
+  await s2.render();
 
   return s2;
 }
 
 describe('SpreadSheet Resize Active Tests', () => {
-  test('should show all resize area by default', () => {
-    const s2 = renderSheet({} as S2Options);
+  test('should show all resize area by default', async () => {
+    const s2 = await renderSheet({} as S2Options);
 
     const group = s2.facet.foregroundGroup;
 
@@ -38,8 +38,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
   });
 
-  test('should hide all resize area when set resize to false', () => {
-    const s2 = renderSheet({
+  test('should hide all resize area when set resize to false', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: false,
       },
@@ -52,8 +52,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
   });
 
-  test('should disable row cell resize area', () => {
-    const s2 = renderSheet({
+  test('should disable row cell resize area', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           rowCellVertical: false,
@@ -66,8 +66,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
   });
 
-  test('should disable corner cell resize area', () => {
-    const s2 = renderSheet({
+  test('should disable corner cell resize area', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           cornerCellHorizontal: false,
@@ -80,8 +80,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_CORNER_RESIZE_AREA)).toBeNull();
   });
 
-  test('should disable col cell resize area', () => {
-    const s2 = renderSheet({
+  test('should disable col cell resize area', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           colCellHorizontal: false,
@@ -96,8 +96,8 @@ describe('SpreadSheet Resize Active Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1603
-  test('should disable col cell resize area if col is hidden', () => {
-    const s2 = renderSheet({
+  test('should disable col cell resize area if col is hidden', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           colCellHorizontal: false,
@@ -114,15 +114,15 @@ describe('SpreadSheet Resize Active Tests', () => {
       },
     });
 
-    s2.render(false);
+    await s2.render(false);
 
     const group = s2.facet.foregroundGroup;
 
     expect(group.getElementById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
   });
 
-  test('should disable col cell vertical direction resize area', () => {
-    const s2 = renderSheet({
+  test('should disable col cell vertical direction resize area', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           colCellVertical: false,
@@ -135,8 +135,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
   });
 
-  test('should disable col cell horizontal direction resize area', () => {
-    const s2 = renderSheet({
+  test('should disable col cell horizontal direction resize area', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           colCellHorizontal: false,
@@ -149,8 +149,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.getElementById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
   });
 
-  test('should disable all cell resize area by visible', () => {
-    const s2 = renderSheet({
+  test('should disable all cell resize area by visible', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           visible: () => false,
@@ -169,8 +169,8 @@ describe('SpreadSheet Resize Active Tests', () => {
     });
   });
 
-  test('should only show col cell resize area by visible', () => {
-    const s2 = renderSheet({
+  test('should only show col cell resize area by visible', async () => {
+    const s2 = await renderSheet({
       interaction: {
         resize: {
           visible: (cell) => {

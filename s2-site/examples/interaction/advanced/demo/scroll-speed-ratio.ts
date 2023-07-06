@@ -77,9 +77,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
-
-    createSlider(s2);
+    s2.render().then(() => {
+      createSlider(s2);
+    });
   });
 
 insertCss(`

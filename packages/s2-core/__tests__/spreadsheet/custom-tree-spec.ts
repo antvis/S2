@@ -34,7 +34,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       .map((cell: HeaderCell) => cell.getActualText());
 
   const mapRowNodes = (spreadsheet: SpreadSheet) =>
-    spreadsheet.getRowLeafNodes().map((node) => {
+    spreadsheet.facet.getRowLeafNodes().map((node) => {
       const iconName = (node.belongsCell as HeaderCell).getTreeIcon()?.config
         .name;
 
@@ -67,13 +67,13 @@ describe('SpreadSheet Custom Tree Tests', () => {
     fields: customRowGridSimpleFields,
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), customRowDataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   test('should disable valueInCols', () => {
@@ -86,7 +86,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should render custom layout row nodes', () => {
-    const rowNodes = s2.getRowNodes().map((node) => {
+    const rowNodes = s2.facet.getRowNodes().map((node) => {
       return {
         value: node.value,
         width: node.width,
@@ -99,7 +99,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should calc correctly row index of leaf nodes', () => {
-    const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+    const rowLeafNodes = s2.facet.getRowLeafNodes().map((node) => {
       return {
         value: node.value,
         rowIndex: node.rowIndex,
@@ -111,7 +111,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should select custom row header cell', () => {
     // a-1
-    const rowNode = s2.getRowNodes()[0];
+    const rowNode = s2.facet.getRowNodes()[0];
 
     // 选中 a-1
     s2.interaction.selectHeaderCell({
@@ -140,7 +140,9 @@ describe('SpreadSheet Custom Tree Tests', () => {
   ])(
     'should get selected cell summary infos for %o',
     ({ field, count, sum }) => {
-      const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
+      const rowNode = s2.facet
+        .getRowNodes()
+        .find((node) => node.field === field)!;
 
       // 选中
       s2.interaction.selectHeaderCell({
@@ -156,13 +158,13 @@ describe('SpreadSheet Custom Tree Tests', () => {
     },
   );
 
-  test('should render custom corner text by default title', () => {
+  test('should render custom corner text by default title', async () => {
     s2.setDataCfg({
       ...customRowDataCfg,
       meta: [],
     });
 
-    s2.render();
+    await s2.render();
 
     const cornerCellLabels = getCornerCellLabels();
 
@@ -172,7 +174,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     ]);
   });
 
-  test('should render custom corner text by meta formatter', () => {
+  test('should render custom corner text by meta formatter', async () => {
     s2.setDataCfg({
       ...customRowDataCfg,
       meta: [
@@ -187,18 +189,18 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ],
     });
 
-    s2.render();
+    await s2.render();
     const cornerCellLabels = getCornerCellLabels();
 
     expect(cornerCellLabels).toEqual(['文本1/文本2/数值', 'type']);
   });
 
-  test('should render custom corner text by cornerText options', () => {
+  test('should render custom corner text by cornerText options', async () => {
     s2.setOptions({
       cornerText: '测试',
     });
 
-    s2.render();
+    await s2.render();
 
     const cornerCellLabels = (s2.facet as any)
       .getCornerHeader()
@@ -208,7 +210,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expect(cornerCellLabels).toEqual(['测试', '类型']);
   });
 
-  test('should render custom tree row node width', () => {
+  test('should render custom tree row node width', async () => {
     s2.setOptions({
       style: {
         rowCell: {
@@ -217,15 +219,15 @@ describe('SpreadSheet Custom Tree Tests', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
-    const { rowNodes, rowsHierarchy } = s2.facet.layoutResult;
+    const { rowNodes, rowsHierarchy } = s2.facet.getLayoutResult();
 
     expect(rowsHierarchy.width).toEqual(50);
     expect(rowNodes.every((node) => node.width === 50)).toBeTruthy();
   });
 
-  test('should collapse node by collapsed', () => {
+  test('should collapse node by collapsed', async () => {
     s2.setDataCfg({
       ...customRowDataCfg,
       fields: {
@@ -238,12 +240,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
         }),
       },
     });
-    s2.render(true);
+    await s2.render(true);
 
     expect(mapRowNodes(s2)).toMatchSnapshot();
   });
 
-  test('should collapse node by collapsed fields id', () => {
+  test('should collapse node by collapsed fields id', async () => {
     s2.setOptions({
       style: {
         rowCell: {
@@ -254,12 +256,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
         },
       },
     });
-    s2.render(true);
+    await s2.render(true);
 
     expect(mapRowNodes(s2)).toMatchSnapshot();
   });
 
-  test('should collapse node by collapsed field', () => {
+  test('should collapse node by collapsed field', async () => {
     s2.setOptions({
       style: {
         rowCell: {
@@ -267,12 +269,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
         },
       },
     });
-    s2.render(true);
+    await s2.render(true);
 
     expect(mapRowNodes(s2)).toMatchSnapshot();
   });
 
-  test('should collapse node by user collapseFields first', () => {
+  test('should collapse node by user collapseFields first', async () => {
     const collapsedField = 'custom-node-1';
 
     s2.setDataCfg({
@@ -297,7 +299,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
         },
       },
     });
-    s2.render(true);
+    await s2.render(true);
 
     expect(mapRowNodes(s2)).toMatchSnapshot();
   });

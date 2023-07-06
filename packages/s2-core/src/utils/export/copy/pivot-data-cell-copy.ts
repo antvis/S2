@@ -48,34 +48,28 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   }
 
   private getLeafRowNodes() {
-    const allRowLeafNodes = this.spreadsheet.getRowLeafNodes();
-    let result: Node[] = allRowLeafNodes;
-    const selectedRowMeta = getSelectedRows(this.config.selectedCells);
+    const rowLeafNodes = this.spreadsheet.facet.getRowLeafNodes();
+    const selectedRowsMeta = getSelectedRows(this.config.selectedCells);
     const isTreeData = this.spreadsheet.isHierarchyTreeType();
 
-    // selectedRowMeta 选中了指定的行头，则只展示对应行头对应的数据
-    if (!isEmpty(selectedRowMeta)) {
-      result = this.getSelectedNode(
-        selectedRowMeta,
-        allRowLeafNodes,
-        isTreeData,
-      );
+    if (isEmpty(selectedRowsMeta)) {
+      return rowLeafNodes;
     }
 
-    return result;
+    // selectedRowMeta 选中了指定的行头，则只展示对应行头对应的数据
+    return this.getSelectedNode(selectedRowsMeta, rowLeafNodes, isTreeData);
   }
 
   private getLeafColNodes() {
-    const allColLeafNodes = this.spreadsheet.getColumnLeafNodes();
-    let result: Node[] = allColLeafNodes;
-    const selectedColMetas = getSelectedCols(this.config.selectedCells);
+    const colLeafNodes = this.spreadsheet.facet.getColLeafNodes();
+    const selectedColsMeta = getSelectedCols(this.config.selectedCells);
 
-    // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
-    if (!isEmpty(selectedColMetas)) {
-      result = this.getSelectedNode(selectedColMetas, allColLeafNodes);
+    if (isEmpty(selectedColsMeta)) {
+      return colLeafNodes;
     }
 
-    return result;
+    // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
+    return this.getSelectedNode(selectedColsMeta, colLeafNodes);
   }
 
   private getSelectedNode(
@@ -135,10 +129,15 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
         colNode.isTotalMeasure,
     });
 
-    const field = getColNodeFieldFromNode(
-      this.spreadsheet.isPivotMode,
-      colNode,
-    );
+    const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;
+
+    let field: string | undefined =
+      getColNodeFieldFromNode(this.spreadsheet.isPivotMode, formatNode) ?? '';
+
+    // 主要解决只有一个度量时,总计小计对应的值无法格式化的问题
+    const values = this.spreadsheet.dataCfg.fields.values;
+
+    field = values?.includes(field) ? field : values?.[0];
 
     const formatter = getFormatter(
       this.spreadsheet,
@@ -199,8 +198,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (it) => {
-        const [rowNode, colNode] = getHeaderNodeFromMeta(it, this.spreadsheet);
+      map(cellsMeta, (meta) => {
+        const [rowNode, colNode] = getHeaderNodeFromMeta(
+          meta,
+          this.spreadsheet,
+        );
         const dataItem = this.getDataCellValue(rowNode!, colNode!);
 
         return convertString(dataItem);
@@ -215,12 +217,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
 
-    // 判断是否为趋势分析表
-
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   };
 
@@ -231,7 +232,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     // 不带表头复制
     if (!copyWithHeader) {
-      return this.matrixTransformer(dataMatrix);
+      return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
@@ -241,6 +242,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix }),
+      this.config.separator,
     );
   }
 
@@ -254,6 +256,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return this.matrixTransformer(
       assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix }),
+      this.config.separator,
     );
   };
 }
@@ -272,6 +275,7 @@ export function processSelectedPivotByHeader(
   return pivotDataCellCopy.getPivotCopyData();
 }
 
+// 全量导出使用
 export const processSelectedAllPivot = (
   params: CopyAllDataParams,
 ): CopyableList => {
@@ -289,6 +293,13 @@ export const processSelectedAllPivot = (
   return pivotDataCellCopy.getPivotAllCopyData();
 };
 
+/**
+ * 刷选单元格数据时使用此方法
+ * @param {SpreadSheet} spreadsheet
+ * @param {CellMeta[][]} selectedCells
+ * @param {CellMeta[]} headerSelectedCells
+ * @return {CopyableList}
+ */
 export const processSelectedPivotByDataCell = ({
   spreadsheet,
   selectedCells,
