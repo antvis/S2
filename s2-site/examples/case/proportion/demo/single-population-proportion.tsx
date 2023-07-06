@@ -111,7 +111,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       width: 800,
       height: 600,
       tooltip: {
-        visible: true,
+        enable: true,
         operation: {
           hiddenColumns: true,
         },

@@ -277,7 +277,7 @@ describe('Tooltip Utils Tests', () => {
         const type = getCellNameByType(cellType);
 
         const tooltip: Tooltip = {
-          visible: false,
+          enable: false,
           content: '',
           operation: {
             hiddenColumns: true,
@@ -286,7 +286,7 @@ describe('Tooltip Utils Tests', () => {
             menus: [{ key: 'menu-a', text: 'menu-a' }],
           },
           [type]: {
-            visible: true,
+            enable: true,
             operation: {
               hiddenColumns: false,
               menus: [{ key: 'menu-b', text: 'menu-b' }],
@@ -307,7 +307,7 @@ describe('Tooltip Utils Tests', () => {
         );
 
         expect(tooltipOptions).toEqual({
-          visible: true,
+          enable: true,
           content: '',
           operation: {
             hiddenColumns: false,

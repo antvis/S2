@@ -617,7 +617,7 @@ export default defineComponent({
               key: 'trend',
               text: '趋势',
               icon: 'Trend',
-              visible: (cell) => cell.cellType === CellType.DATA_CELL,
+              enable: (cell) => cell.cellType === CellType.DATA_CELL,
               onClick(cell) {
                 // eslint-disable-next-line no-console
                 console.log('趋势图 icon 点击: ', cell);

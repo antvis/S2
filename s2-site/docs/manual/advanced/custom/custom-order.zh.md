@@ -76,7 +76,7 @@ const s2Options = {
 ```jsx
 const s2Options = {
   tooltip: {
-    visible: true,
+    enable: true,
   },
   ...
 }

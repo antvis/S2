@@ -306,7 +306,7 @@ export abstract class SpreadSheet extends EE {
     cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { visible: showTooltip, content } = getTooltipOptions(this, event)!;
+    const { enable: showTooltip, content } = getTooltipOptions(this, event)!;
 
     if (!showTooltip) {
       return;

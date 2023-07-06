@@ -52,7 +52,7 @@ describe('PivotSheet Tests', () => {
     hierarchyType: 'grid',
     customSVGIcons: [customSVGIcon],
     tooltip: {
-      visible: true,
+      enable: true,
     },
     interaction: {
       autoResetSheetStyle: false,
@@ -145,7 +145,7 @@ describe('PivotSheet Tests', () => {
     test("should dont't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
-          visible: false,
+          enable: false,
         },
         configurable: true,
       });
@@ -161,7 +161,7 @@ describe('PivotSheet Tests', () => {
     test('should show tooltip when call showTooltipWithInfo if enable tooltip', () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
-          visible: true,
+          enable: true,
         },
         configurable: true,
       });
@@ -383,7 +383,7 @@ describe('PivotSheet Tests', () => {
         dataCfg,
         customMerge(s2Options, {
           tooltip: {
-            visible: true,
+            enable: true,
             render: (spreadsheet) => new CustomTooltip(spreadsheet),
             autoAdjustBoundary: null,
           } as S2Options['tooltip'],
@@ -413,7 +413,7 @@ describe('PivotSheet Tests', () => {
         dataCfg,
         customMerge(s2Options, {
           tooltip: {
-            visible: true,
+            enable: true,
             render: () => new CustomTooltip(),
             autoAdjustBoundary: null,
           },
@@ -1238,7 +1238,7 @@ describe('PivotSheet Tests', () => {
     const sheet = new PivotSheet(getContainer(), originalDataCfg, {
       facet: (spreadsheet) => new CustomFacet(spreadsheet),
       tooltip: {
-        visible: false,
+        enable: false,
       },
     });
 

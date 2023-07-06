@@ -398,7 +398,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     resize: {
-      visible: (cell) => {
+      enable: (cell) => {
         const meta = cell.getMeta();
         return meta.colIndex < 3
       }

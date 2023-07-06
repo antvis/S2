@@ -21,7 +21,7 @@ fetch(
               text: '趋势',
               icon: 'Trend',
               // 数值单元格展示
-              visible: (cell) => cell.cellType === CellType.DATA_CELL,
+              enable: (cell) => cell.cellType === CellType.DATA_CELL,
               onClick: (cell) => {
                 console.log('趋势图 icon 点击: ', cell);
               },

@@ -16,7 +16,7 @@ describe('Tooltip Tests', () => {
     });
 
   test('should not render tooltip in default container if disable tooltip', () => {
-    const s2 = createS2({ visible: false });
+    const s2 = createS2({ enable: false });
 
     s2.render();
 
@@ -28,7 +28,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should not render tooltip in default container when hide tooltip if disable tooltip', () => {
-    const s2 = createS2({ visible: false });
+    const s2 = createS2({ enable: false });
 
     s2.render();
 
@@ -42,7 +42,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should render tooltip in default container', () => {
-    const s2 = createS2({ visible: true });
+    const s2 = createS2({ enable: true });
 
     s2.render();
 
@@ -62,7 +62,7 @@ describe('Tooltip Tests', () => {
     document.body.appendChild(container);
 
     const s2 = createS2({
-      visible: true,
+      enable: true,
       adjustPosition: (positionInfo) => {
         const { position } = positionInfo;
 
@@ -86,7 +86,7 @@ describe('Tooltip Tests', () => {
     document.body.appendChild(container);
 
     const s2 = createS2({
-      visible: true,
+      enable: true,
       getContainer: () => container,
     });
 

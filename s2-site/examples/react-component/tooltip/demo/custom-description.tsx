@@ -43,7 +43,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       width: 600,
       height: 480,
       tooltip: {
-        visible: true,
+        enable: true,
       },
     };
 

@@ -16,7 +16,7 @@ fetch(
         width: 800,
         height: 600,
         tooltip: {
-          visible: false,
+          enable: false,
         },
         style: {
           layoutWidthType: 'colAdaptive',

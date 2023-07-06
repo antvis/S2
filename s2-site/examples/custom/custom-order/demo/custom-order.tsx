@@ -38,7 +38,7 @@ const s2Options = {
     },
   ],
   tooltip: {
-    visible: true,
+    enable: true,
   },
 };
 

@@ -96,7 +96,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   };
 
   private showTooltip(event: CanvasEvent) {
-    const { operation, visible: showTooltip } = getTooltipOptions(
+    const { operation, enable: showTooltip } = getTooltipOptions(
       this.spreadsheet,
       event,
     )!;

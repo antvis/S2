@@ -535,7 +535,7 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       height: 480,
       showDefaultHeaderActionIcon: false,
       tooltip: {
-        visible: false,
+        enable: false,
       },
       colCell: (node, spreadsheet, ...restOptions) => {
         return new CustomColCell(

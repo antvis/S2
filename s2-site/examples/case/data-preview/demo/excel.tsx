@@ -9,7 +9,7 @@ const s2Options = {
   width: 600,
   height: 400,
   showSeriesNumber: true,
-  tooltip: { visible: false },
+  tooltip: { enable: false },
   interaction: { enableCopy: true, hoverHighlight: false },
   showDefaultHeaderActionIcon: false,
 };

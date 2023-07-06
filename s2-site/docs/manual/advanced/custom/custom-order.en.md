@@ -75,7 +75,7 @@ Related chapters: [headerActionIcons configuration instructions](/docs/api/gener
 ```jsx
 const s2Options = {
   tooltip: {
-    visible: true,
+    enable: true,
   },
   ...
 }

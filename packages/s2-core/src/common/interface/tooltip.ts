@@ -195,9 +195,12 @@ export interface BaseTooltipConfig<
   Text = string,
 > {
   /**
-   * 是否显示
+   * 是否开启 tooltip, 在点击/悬停/停留/刷选/多选等场景会显示
+   * @description @antv/s2 中只保留了 tooltip 的核心显隐逻辑，提供相应数据，不渲染内容
+   * React 版本 和 Vue3 版本中通过 自定义 Tooltip 类 的方式渲染 tooltip 的内容，包括 排序下拉菜单, 单元格选中信息汇总, 列头隐藏按钮 等。
+   * @see https://s2.antv.antgroup.com/manual/basic/tooltip
    */
-  visible?: boolean;
+  enable?: boolean;
 
   /**
    * 自定义内容

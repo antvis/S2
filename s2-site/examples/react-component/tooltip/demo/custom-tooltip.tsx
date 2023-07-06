@@ -42,7 +42,7 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-        visible: true,
+        enable: true,
         render: (spreadsheet) => new CustomTooltip(spreadsheet),
       },
     };

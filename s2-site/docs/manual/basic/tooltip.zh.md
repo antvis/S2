@@ -62,10 +62,10 @@ const s2Options = {
 ```ts
 const s2Options = {
   tooltip: {
-    visible: true,
+    enable: true,
     rowCell: {
       // 单独设置行头不显示
-      visible: false,
+      enable: false,
     }
   }
 };
@@ -286,13 +286,13 @@ const s2Options = {
           key: 'custom-a',
           text: '操作 1',
           icon: 'Trend',
-          visible: false,
+          enable: false,
         },
         {
           key: 'custom-b',
           text: '操作 2',
           icon: 'EyeOutlined',
-          visible: (cell) => {
+          enable: (cell) => {
             // 根据单元格信息动态显示，如：叶子节点不显示
             const meta = cell.getMeta()
             return meta.isLeaf
@@ -415,7 +415,7 @@ export class CustomTooltip extends BaseTooltip {
 ```ts
 const s2Options = {
   tooltip: {
-    visible: true,
+    enable: true,
     render: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },
 }
@@ -450,7 +450,7 @@ class RowHoverInteraction extends BaseEvent {
 
 const s2Options = {
   tooltip: {
-    visible: true,
+    enable: true,
   },
   interaction: {
     customInteractions: [
@@ -591,7 +591,7 @@ sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-ori
 ```ts
 // options 配置 tooltip 显示
 tooltip: {
-  visible: true,
+  enable: true,
 }
 ```
 

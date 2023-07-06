@@ -14,7 +14,7 @@ describe('TableSheet Tests', () => {
     width: 100,
     height: 100,
     tooltip: {
-      visible: true,
+      enable: true,
     },
     interaction: {
       autoResetSheetStyle: false,
@@ -252,7 +252,7 @@ describe('TableSheet Tests', () => {
     const sheet = new TableSheet(getContainer(), dataCfg, {
       facet: (spreadsheet) => new CustomFacet(spreadsheet),
       tooltip: {
-        visible: false,
+        enable: false,
       },
     });
 

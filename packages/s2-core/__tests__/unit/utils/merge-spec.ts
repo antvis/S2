@@ -253,12 +253,12 @@ describe('merge test', () => {
         "supportCSSTransform": false,
         "tooltip": Object {
           "autoAdjustBoundary": "body",
+          "enable": false,
           "operation": Object {
             "hiddenColumns": false,
             "menus": Array [],
             "sort": false,
           },
-          "visible": false,
         },
         "totals": Object {},
         "width": 600,
@@ -269,7 +269,7 @@ describe('merge test', () => {
   test('should get custom options', () => {
     const options = getSafetyOptions({
       tooltip: {
-        visible: false,
+        enable: false,
         operation: {
           sort: false,
           menus: [
@@ -285,6 +285,7 @@ describe('merge test', () => {
     expect(options.tooltip).toMatchInlineSnapshot(`
       Object {
         "autoAdjustBoundary": "body",
+        "enable": false,
         "operation": Object {
           "hiddenColumns": false,
           "menus": Array [
@@ -295,7 +296,6 @@ describe('merge test', () => {
           ],
           "sort": false,
         },
-        "visible": false,
       }
     `);
   });

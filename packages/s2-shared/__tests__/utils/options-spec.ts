@@ -89,7 +89,7 @@ describe('Options Tests', () => {
             "menus": Array [],
             "sort": true,
           },
-          "showTooltip": true,
+          "enable": true,
         },
         "totals": Object {},
         "width": 600,
@@ -100,7 +100,7 @@ describe('Options Tests', () => {
   test('should get custom options', () => {
     const options = getBaseSheetComponentOptions({
       tooltip: {
-        visible: false,
+        enable: false,
         operation: {
           sort: false,
           menus: [
@@ -126,7 +126,7 @@ describe('Options Tests', () => {
           ],
           "sort": false,
         },
-        "showTooltip": false,
+        "enable": false,
       }
     `);
   });
