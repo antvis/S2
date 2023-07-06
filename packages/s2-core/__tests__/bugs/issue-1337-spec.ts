@@ -23,7 +23,7 @@ describe('Totals Tests', () => {
     spreadsheet = new PivotSheet(getContainer(), dataCfg, assembleOptions());
   });
 
-  test('should render total nodes correctly', () => {
+  test('should render total nodes correctly', async () => {
     spreadsheet.setOptions({
       totals: {
         col: {
@@ -31,7 +31,7 @@ describe('Totals Tests', () => {
         },
       },
     });
-    spreadsheet.render();
+    await spreadsheet.render();
 
     // 行总计节点
     const rowTotalNodes = spreadsheet.facet.getRowTotalsNodes();

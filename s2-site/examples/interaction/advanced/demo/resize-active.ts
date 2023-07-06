@@ -61,9 +61,9 @@ fetch(
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
-
-    createRadioGroup(s2);
+    s2.render().then(() => {
+      createRadioGroup(s2);
+    });
   });
 
 insertCss(`
@@ -75,4 +75,4 @@ insertCss(`
   label{
     margin-right: 10px
   }
-`);  
+`);

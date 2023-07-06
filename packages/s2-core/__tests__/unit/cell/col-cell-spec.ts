@@ -122,14 +122,14 @@ describe('Col Cell Tests', () => {
       },
     });
 
-    test('should draw right condition text shape', () => {
-      s2.render();
+    test('should draw right condition text shape', async () => {
+      await s2.render();
       const colCell = s2.facet.columnHeader.children[0].children[1] as ColCell;
 
       expect(colCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
-    test('should draw right condition icon shape', () => {
+    test('should draw right condition icon shape', async () => {
       s2.setOptions({
         conditions: {
           icon: [
@@ -147,7 +147,7 @@ describe('Col Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
 
       const colCell = s2.facet.columnHeader.children[0].children[0];
 
@@ -155,7 +155,7 @@ describe('Col Cell Tests', () => {
       expect(get(colCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
 
-    test('should draw right condition background shape', () => {
+    test('should draw right condition background shape', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -170,7 +170,7 @@ describe('Col Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const colCell = s2.facet.columnHeader.children[0].children[1];
 
       expect(get(colCell, 'backgroundShape.parsedStyle.fill')).toBeColor(

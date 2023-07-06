@@ -16,7 +16,8 @@ import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData, sleep } from '../util/helpers';
+import { waitFor } from '@testing-library/react';
+import { getContainer, getMockData } from '../util/helpers';
 import type { SwitcherFields } from '@/components/switcher/interface';
 import {
   SheetComponent,
@@ -247,45 +248,39 @@ function MainLayout({ callback }: Props) {
 }
 
 describe('table sheet normal spec', () => {
-  let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
-
-  act(() => {
-    ReactDOM.render(
-      <MainLayout
-        callback={(params) => {
-          setShowPagination = params.setShowPagination;
-        }}
-      />,
-      getContainer(),
-    );
-  });
-
   test('getCellRange', async () => {
-    expect(s2.facet.getCellRange()).toStrictEqual({
-      start: 0,
-      end: 999,
+    let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
+    const container = getContainer();
+
+    act(() => {
+      ReactDOM.render(
+        <MainLayout
+          callback={(params) => {
+            setShowPagination = params.setShowPagination;
+          }}
+        />,
+        container,
+      );
+    });
+
+    await waitFor(() => {
+      expect(s2.facet.getCellRange()).toStrictEqual({
+        start: 0,
+        end: 999,
+      });
     });
 
     act(() => {
       setShowPagination(true);
     });
 
-    // wait for debounce render
-    await sleep(1000);
-
-    expect(s2.facet.getCellRange()).toStrictEqual({
-      start: 0,
-      end: 49,
+    await waitFor(() => {
+      expect(s2.facet.getCellRange()).toStrictEqual({
+        start: 0,
+        end: 49,
+      });
     });
 
-    act(() => {
-      setShowPagination(false);
-      s2.facet.onWheel({
-        deltaX: 0,
-        deltaY: 0,
-        offsetX: 0,
-        offsetY: 0,
-      } as unknown as WheelEvent);
-    });
+    ReactDOM.unmountComponentAtNode(container);
   });
 });

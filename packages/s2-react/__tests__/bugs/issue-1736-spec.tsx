@@ -7,24 +7,37 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getMockSheetInstance, getContainer } from 'tests/util/helpers';
+import { waitFor } from '@testing-library/react';
 import { Export } from '@/components/export';
 
 describe('header export component render tests', () => {
-  test('should render export and dropdown keep invisible', () => {
+  let container: HTMLDivElement;
+
+  beforeEach(() => {
+    container = getContainer();
+  });
+
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
+  });
+
+  test('should render export and dropdown keep invisible', async () => {
     act(() => {
       const sheet = getMockSheetInstance();
 
-      ReactDOM.render(<Export sheet={sheet} open={true} />, getContainer());
+      ReactDOM.render(<Export sheet={sheet} open={true} />, container);
     });
 
-    // export 组件
-    expect(document.querySelector('.antv-s2-export')).toBeDefined();
+    await waitFor(() => {
+      // export 组件
+      expect(document.querySelector('.antv-s2-export')).toBeDefined();
 
-    // dropdown 不应该渲染
-    expect(document.querySelector('.ant-dropdown')).toBe(null);
+      // dropdown 不应该渲染
+      expect(document.querySelector('.ant-dropdown')).toBe(null);
+    });
   });
 
-  test('should render export dropdown menu', () => {
+  test('should render export dropdown menu', async () => {
     act(() => {
       const sheet = getMockSheetInstance();
 
@@ -36,11 +49,13 @@ describe('header export component render tests', () => {
             open: true,
           }}
         />,
-        getContainer(),
+        container,
       );
     });
 
-    // dropdown组件
-    expect(document.querySelector('.ant-dropdown')).toBeDefined();
+    await waitFor(() => {
+      // dropdown组件
+      expect(document.querySelector('.ant-dropdown')).toBeDefined();
+    });
   });
 });

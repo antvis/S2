@@ -7,26 +7,30 @@
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { ROOT_NODE_ID } from '../../../src';
-import { TableSheet } from '@/sheet-type';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
 
 describe('List Table Core Data Process', () => {
-  const s2 = new TableSheet(
-    getContainer(),
-    assembleDataCfg({
-      meta: [],
-      fields: {
-        columns: ['province', 'city', 'type', 'sub_type', 'number'],
-      },
-    }),
-    assembleOptions({}),
-  );
+  let s2: SpreadSheet;
 
-  s2.render();
+  beforeAll(async () => {
+    s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({}),
+    );
+
+    await s2.render();
+  });
 
   describe('1、Generate Col Hierarchy', () => {
-    const { colsHierarchy } = s2.facet.getLayoutResult();
-
     test('should get correct col hierarchy structure', () => {
+      const { colsHierarchy } = s2.facet.getLayoutResult();
+
       // 节点正确
       expect(colsHierarchy.getIndexNodes()).toHaveLength(5);
       expect(colsHierarchy.getLeaves()).toHaveLength(5);
@@ -49,9 +53,9 @@ describe('List Table Core Data Process', () => {
   });
 
   describe('2、Calculate overlapped data cell info', () => {
-    const { getCellMeta } = s2.facet;
-
     test('should get correct data value', () => {
+      const { getCellMeta } = s2.facet;
+
       // 第一行
       expect(getCellMeta(0, 0)!.data).toEqual({ province: '浙江省' });
       expect(getCellMeta(0, 1)!.data).toEqual({ city: '杭州市' });

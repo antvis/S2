@@ -47,7 +47,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     getMeta: () => endBrushColCellMeta as Node,
   }) as unknown as ColCell;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     MockRootInteraction.mockClear();
 
     s2 = new PivotSheet(getContainer(), data as S2DataConfig, {
@@ -72,7 +72,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushColCell) as any;
     s2.interaction = mockRootInteraction;
-    s2.render();
+    await s2.render();
     brushSelectionInstance = new ColCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =

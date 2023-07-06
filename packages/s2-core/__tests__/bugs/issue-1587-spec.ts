@@ -19,11 +19,11 @@ const s2Options: S2Options = {
 };
 
 describe('Pagination Tests', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  test('should get correctly pagination scroll y if pagination.current is empty', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-  s2.render();
+    await s2.render();
 
-  test('should get correctly pagination scroll y if pagination.current is empty', () => {
     expect(s2.facet.getPaginationScrollY()).toEqual(0);
   });
 });

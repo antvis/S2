@@ -23,7 +23,7 @@ describe.skip('HD Adapter Tests', () => {
     updatedSize?: [number, number],
   ) => void;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     Object.defineProperty(window, 'devicePixelRatio', {
       value: DPR,
     });
@@ -33,7 +33,7 @@ describe.skip('HD Adapter Tests', () => {
     });
 
     s2 = createPivotSheet(s2Options);
-    s2.render();
+    await s2.render();
 
     expectContainerSize = (
       [width, height]: [number, number] = [
@@ -69,7 +69,9 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should not be update container size when zoom scale changed, but scale less than current DPR', async () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementationOnce(async () => {});
 
     visualViewport!.dispatchEvent(new Event('resize'));
     await sleep(500);
@@ -112,7 +114,9 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should use DPR for update container size when zoom scale changed, and scale less than current DPR', async () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementationOnce(async () => {});
 
     Object.defineProperty(visualViewport, 'scale', {
       value: 1,
@@ -125,7 +129,9 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should not rerender when zoom event destroyed', async () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementationOnce(async () => {});
 
     s2.destroy();
 
@@ -140,7 +146,9 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should not rerender when zoom event destroyed on mobile device', async () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementationOnce(async () => {});
 
     s2.hdAdapter.destroy();
 

@@ -87,7 +87,7 @@ function createCheckbox(s2: SpreadSheet) {
   canvas?.before(text);
 }
 
-function render() {
+async function render() {
   const container = document.getElementById('container');
 
   const s2DataConfig: S2DataConfig = {
@@ -127,7 +127,7 @@ function render() {
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-  s2.render();
+  await s2.render();
 
   createCheckbox(s2);
 }

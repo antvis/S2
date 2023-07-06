@@ -15,10 +15,10 @@ describe('Tooltip Tests', () => {
       tooltip: tooltipOptions,
     });
 
-  test('should not render tooltip in default container if disable tooltip', () => {
+  test('should not render tooltip in default container if disable tooltip', async () => {
     const s2 = createS2({ enable: false });
 
-    s2.render();
+    await s2.render();
 
     expect(
       document.querySelector(`body > .${CONTAINER_CLASS_NAME}`),
@@ -27,10 +27,10 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should not render tooltip in default container when hide tooltip if disable tooltip', () => {
+  test('should not render tooltip in default container when hide tooltip if disable tooltip', async () => {
     const s2 = createS2({ enable: false });
 
-    s2.render();
+    await s2.render();
 
     s2.hideTooltip();
 
@@ -41,10 +41,10 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render tooltip in default container', () => {
+  test('should render tooltip in default container', async () => {
     const s2 = createS2({ enable: true });
 
-    s2.render();
+    await s2.render();
 
     s2.showTooltip({ position: { x: 0, y: 0 } });
 
@@ -55,7 +55,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render tooltip in custom position', () => {
+  test('should render tooltip in custom position', async () => {
     const container = document.createElement('div');
 
     container.id = 'custom-container';
@@ -70,7 +70,7 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
     s2.showTooltip({ position: { x: 0, y: 0 } });
 
@@ -79,7 +79,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render tooltip in custom container', () => {
+  test('should render tooltip in custom container', async () => {
     const container = document.createElement('div');
 
     container.id = 'custom-container';
@@ -90,7 +90,7 @@ describe('Tooltip Tests', () => {
       getContainer: () => container,
     });
 
-    s2.render();
+    await s2.render();
 
     s2.showTooltip({ position: { x: 0, y: 0 } });
 

@@ -3,6 +3,7 @@ import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { getContainer } from 'tests/util/helpers';
+import { waitForRender } from 'tests/util';
 import { customColMultipleColumns } from '../data/custom-table-col-fields';
 import { customColGridSimpleFields } from '../data/custom-grid-simple-fields';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -20,13 +21,13 @@ describe('SpreadSheet Hidden Columns Tests', () => {
   describe('TableSheet', () => {
     let tableSheet: TableSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       tableSheet = new TableSheet(
         getContainer(),
         mockTableDataConfig,
         s2Options,
       );
-      tableSheet.render();
+      await tableSheet.render();
     });
 
     afterEach(() => {
@@ -42,10 +43,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       ).toEqual(mockTableDataConfig.fields.columns);
     });
 
-    test('should hide column correctly', () => {
+    test('should hide column correctly', async () => {
       const hiddenColumns = ['cost'];
 
-      tableSheet.interaction.hideColumns(hiddenColumns);
+      await waitForRender(tableSheet, () => {
+        tableSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = tableSheet.store.get(
         'hiddenColumnsDetail',
@@ -66,10 +69,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
 
-    test('should hide multiple columns correctly', () => {
+    test('should hide multiple columns correctly', async () => {
       const hiddenColumns = ['price', 'city'];
 
-      tableSheet.interaction.hideColumns(hiddenColumns);
+      await waitForRender(tableSheet, () => {
+        tableSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = tableSheet.store.get(
         'hiddenColumnsDetail',
@@ -102,10 +107,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(cityDetail.hideColumnNodes[0].field).toEqual('city');
     });
 
-    test('should hide closer group columns correctly', () => {
+    test('should hide closer group columns correctly', async () => {
       const hiddenColumns = ['cost', 'province'];
 
-      tableSheet.interaction.hideColumns(hiddenColumns);
+      await waitForRender(tableSheet, () => {
+        tableSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = tableSheet.store.get(
         'hiddenColumnsDetail',
@@ -129,7 +136,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(groupDetail.hideColumnNodes[1].field).toEqual('province');
     });
 
-    test('should hide columns by interaction hiddenColumnFields config by default', () => {
+    test('should hide columns by interaction hiddenColumnFields config by default', async () => {
       const hiddenColumns = ['cost'];
       const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
         ...s2Options,
@@ -138,7 +145,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [costDetail] = hiddenColumnsDetail;
@@ -156,7 +163,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
 
-    test('should hide columns for multiple columns', () => {
+    test('should hide columns for multiple columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
       ];
@@ -167,9 +174,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           columns: customColMultipleColumns,
         },
       });
-      tableSheet.render();
-
-      tableSheet.interaction.hideColumns(hiddenColumns);
+      await tableSheet.render();
+      await waitForRender(tableSheet, () => {
+        tableSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = tableSheet.store.get(
         'hiddenColumnsDetail',
@@ -213,9 +221,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       },
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2Options);
-      pivotSheet.render();
+      await pivotSheet.render();
     });
 
     afterEach(() => {
@@ -229,10 +237,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       ).toEqual([typePriceColumnId, cityPriceColumnId]);
     });
 
-    test('should hide column correctly', () => {
+    test('should hide column correctly', async () => {
       const hiddenColumns = [typePriceColumnId];
 
-      pivotSheet.interaction.hideColumns(hiddenColumns);
+      await waitForRender(pivotSheet, () => {
+        pivotSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = pivotSheet.store.get(
         'hiddenColumnsDetail',
@@ -255,11 +265,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
     });
 
-    test('should hide multiple columns correctly', () => {
+    test('should hide multiple columns correctly', async () => {
       const hiddenColumns = [typePriceColumnId, cityPriceColumnId];
 
-      pivotSheet.interaction.hideColumns(hiddenColumns);
-
+      await waitForRender(pivotSheet, () => {
+        pivotSheet.interaction.hideColumns(hiddenColumns);
+      });
       const hiddenColumnsDetail = pivotSheet.store.get(
         'hiddenColumnsDetail',
         [],
@@ -293,7 +304,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const renderSpy = jest
         .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
+        .mockImplementationOnce(async () => {});
 
       pivotSheet.interaction.hideColumns([], false);
 
@@ -312,7 +323,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const renderSpy = jest
         .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
+        .mockImplementationOnce(async () => {});
 
       pivotSheet.interaction.hideColumns([], true);
 
@@ -322,7 +333,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsDetail).toEqual([]);
     });
 
-    test('should default hidden columns by interaction hiddenColumnFields config', () => {
+    test('should default hidden columns by interaction hiddenColumnFields config', async () => {
       const hiddenColumns = [typePriceColumnId];
       const sheet = new PivotSheet(getContainer(), pivotDataCfg, {
         ...s2Options,
@@ -331,7 +342,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       });
 
-      sheet.render();
+      await sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [priceDetail] = hiddenColumnsDetail;
@@ -352,7 +363,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1993
-    test('should render correctly x and width after hide columns grandTotals next sibling cell', () => {
+    test('should render correctly x and width after hide columns grandTotals next sibling cell', async () => {
       const nodeId = 'root[&]笔[&]义乌[&]price';
 
       pivotSheet.setOptions({
@@ -378,9 +389,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           },
         },
       });
-      pivotSheet.render();
-
-      pivotSheet.interaction.hideColumns([nodeId]);
+      await pivotSheet.render();
+      await waitForRender(pivotSheet, () => {
+        pivotSheet.interaction.hideColumns([nodeId]);
+      });
 
       const grandTotalsNode = pivotSheet.facet
         .getColNodes()
@@ -404,7 +416,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
-    test('should hide columns for multiple columns', () => {
+    test('should hide columns for multiple columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
       ];
@@ -413,9 +425,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         ...mockPivotDataConfig,
         fields: customColGridSimpleFields,
       });
-      pivotSheet.render();
-
-      pivotSheet.interaction.hideColumns(hiddenColumns);
+      await pivotSheet.render();
+      await waitForRender(pivotSheet, () => {
+        pivotSheet.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = pivotSheet.store.get(
         'hiddenColumnsDetail',
@@ -466,7 +479,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       };
 
-      beforeEach(() => {
+      beforeEach(async () => {
         sheet = new PivotSheet(
           getContainer(),
           {
@@ -480,7 +493,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           },
           options,
         );
-        sheet.render();
+        await sheet.render();
       });
 
       afterEach(() => {
@@ -490,8 +503,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       test.each([
         { id: 'root[&]总计', x: 0, width: 288 },
         { id: 'root[&]家具[&]小计', x: 96, width: 192 },
-      ])('should hide totals node for %o', ({ id, x, width }) => {
-        sheet.interaction.hideColumns([id]);
+      ])('should hide totals node for %o', async ({ id, x, width }) => {
+        await waitForRender(sheet, () => {
+          sheet.interaction.hideColumns([id]);
+        });
 
         const totalsSiblingNode = sheet.facet
           .getColNodes()
@@ -505,13 +520,15 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         expect(sheet.facet.getColLeafNodes()).toHaveLength(6);
       });
 
-      test('should hide measure node', () => {
+      test('should hide measure node', async () => {
         const nodeIds = [
           'root[&]家具[&]桌子[&]number',
           'root[&]办公用品[&]笔[&]number',
         ];
 
-        sheet.interaction.hideColumns(nodeIds);
+        await waitForRender(sheet, () => {
+          sheet.interaction.hideColumns(nodeIds);
+        });
 
         expect(
           sheet.facet
@@ -520,7 +537,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         ).toBeFalsy();
       });
 
-      test('should render correct row corner after hide measure node', () => {
+      test('should render correct row corner after hide measure node', async () => {
         const nodeIds = [
           'root[&]总计',
           'root[&]小计',
@@ -528,7 +545,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           'root[&]办公用品[&]笔[&]number',
         ];
 
-        sheet.interaction.hideColumns(nodeIds);
+        await waitForRender(sheet, () => {
+          sheet.interaction.hideColumns(nodeIds);
+        });
 
         const cornerNodes = sheet.facet.getCornerNodes();
         const colCornerNodesMeta = cornerNodes.map((node) =>
@@ -570,7 +589,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       });
 
       // https://github.com/antvis/S2/issues/1721
-      test('should hide grand totals node1', () => {
+      test('should hide grand totals node1', async () => {
         const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({
@@ -582,9 +601,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
             valueInCols: true,
           },
         });
-        sheet.render();
-
-        sheet.interaction.hideColumns([nodeId]);
+        await sheet.render();
+        await waitForRender(sheet, () => {
+          sheet.interaction.hideColumns([nodeId]);
+        });
 
         const leafNodes = sheet.facet.getColLeafNodes();
 

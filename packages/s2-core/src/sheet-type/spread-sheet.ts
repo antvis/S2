@@ -3,6 +3,7 @@ import {
   Canvas,
   DisplayObject,
   FederatedPointerEvent as CanvasEvent,
+  runtime,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
@@ -18,7 +19,6 @@ import {
   some,
   values,
 } from 'lodash';
-import { runtime } from '@antv/g-lite';
 import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
@@ -108,6 +108,11 @@ export abstract class SpreadSheet extends EE {
   private untypedOn = this.on;
 
   private untypedEmit = this.emit;
+
+  /**
+   * 表格是否已销毁
+   */
+  private destroyed = false;
 
   public on = <K extends keyof EmitterType>(
     event: K,
@@ -387,7 +392,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, options: S2RenderOptions = {}) {
+  private doRender(reloadData = true, options: S2RenderOptions = {}) {
     // 防止表格卸载后, 再次调用 render 函数的报错
     if (
       !this.getCanvasElement() ||
@@ -418,7 +423,30 @@ export abstract class SpreadSheet extends EE {
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
+  /**
+   * 同步渲染
+   * @deprecated 适配 g5.0 异步渲染过程中暂时保留
+   */
+  // eslint-disable-next-line camelcase
+  public UNSAFE_render(reloadData?: boolean, options?: S2RenderOptions) {
+    this.doRender(reloadData, options);
+  }
+
+  public async render(reloadData?: boolean, options?: S2RenderOptions) {
+    if (this.destroyed) {
+      return;
+    }
+
+    await this.container.ready;
+    this.doRender(reloadData, options);
+  }
+
   public destroy() {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
     this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();

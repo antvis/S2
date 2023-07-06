@@ -2,6 +2,7 @@ import type { Group } from '@antv/g';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
 import { pick } from 'lodash';
+import { waitForRender } from 'tests/util';
 import type { HeaderCell } from '../../src/cell/header-cell';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
@@ -60,9 +61,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
       fields: customRowGridSimpleFields,
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = new PivotSheet(getContainer(), customRowDataCfg, s2Options);
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -101,7 +102,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(rowLeafNodes).toMatchSnapshot();
     });
 
-    test('should calc correctly leaf nodes width after row resized', () => {
+    test('should calc correctly leaf nodes width after row resized', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -111,7 +112,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       const rowLeafNodes = s2.facet.getRowLeafNodes().map((node) => {
         return {
@@ -200,7 +201,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(cornerCellLabels).toMatchSnapshot();
     });
 
-    test('should format custom rows', () => {
+    test('should format custom rows', async () => {
       s2.setDataCfg({
         ...customRowDataCfg,
         meta: [
@@ -226,7 +227,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           },
         ],
       });
-      s2.render();
+      await s2.render();
 
       const { rowNodes, dataCellTexts } = mapCellNodeValues(s2);
 
@@ -249,9 +250,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
       fields: customColGridSimpleFields,
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = new PivotSheet(getContainer(), customColDataCfg, s2Options);
-      s2.render();
+      await s2.render();
     });
 
     afterEach(() => {
@@ -286,7 +287,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(colLeafNodes).toMatchSnapshot();
     });
 
-    test('should calc correctly leaf nodes width after column resized', () => {
+    test('should calc correctly leaf nodes width after column resized', async () => {
       s2.setOptions({
         style: {
           colCell: {
@@ -296,7 +297,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       const colNodes = s2.facet.getColNodes().map((node) => {
         return {
@@ -377,12 +378,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(cornerCellLabels).toMatchSnapshot();
     });
 
-    test('should hide columns', () => {
+    test('should hide columns', async () => {
       const hiddenColumns = [
         'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
       ];
 
-      s2.interaction.hideColumns(hiddenColumns);
+      await waitForRender(s2, () => {
+        s2.interaction.hideColumns(hiddenColumns);
+      });
 
       const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
       const [measureDetail] = hiddenColumnsDetail;
@@ -403,13 +406,13 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1979
-    test('should render correctly resize group for custom column fields', () => {
+    test('should render correctly resize group for custom column fields', async () => {
       s2.setTheme({
         resizeArea: {
           backgroundOpacity: 1,
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       const groups = s2.facet.foregroundGroup.getElementById<Group>(
         KEY_GROUP_COL_RESIZE_AREA,
@@ -419,7 +422,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/2017
-    test('should format custom columns', () => {
+    test('should format custom columns', async () => {
       s2.setDataCfg({
         ...customColDataCfg,
         meta: [
@@ -437,7 +440,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           },
         ],
       });
-      s2.render();
+      await s2.render();
 
       const { colNodes, dataCellTexts } = mapCellNodeValues(s2);
 
@@ -455,7 +458,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/2117
-    test('should calc correctly leaf nodes height and corner nodes', () => {
+    test('should calc correctly leaf nodes height and corner nodes', async () => {
       s2.setDataCfg({
         ...customColDataCfg,
         fields: {
@@ -479,7 +482,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
 
       const colNodes = mapColNodes();
       const cornerNodes = mapColNodes(s2.facet.getCornerNodes());

@@ -566,12 +566,12 @@ describe('Tooltip Utils Tests', () => {
       { count: 4, isTotalCell: false, name: '多选' },
     ])(
       'should get data cell summary data info for %o',
-      ({ count, isTotalCell }) => {
+      async ({ count, isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           row: rowTotalOptions,
           col: colTotalOptions,
         });
-        s2.render();
+        await s2.render();
         const { tooltipData, value, selectedData } = getTotalInfo(
           isTotalCell,
           count,
@@ -595,7 +595,7 @@ describe('Tooltip Utils Tests', () => {
       { count: 4, isTotalCell: false, name: '多选' },
     ])(
       `should get data cell summary data info for %o when the meta set formatted`,
-      ({ count, isTotalCell }) => {
+      async ({ count, isTotalCell }) => {
         const customMeta = dataConfig.meta.map((meta) => {
           if (meta.name === '数量') {
             return {
@@ -621,7 +621,7 @@ describe('Tooltip Utils Tests', () => {
             },
           },
         );
-        s2.render();
+        await s2.render();
 
         const { tooltipData, value, selectedData } = getTotalInfo(
           isTotalCell,
@@ -641,11 +641,11 @@ describe('Tooltip Utils Tests', () => {
 
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get row cell summary data info for %o',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           row: rowTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
         const rowCell = s2.facet.getRowCells().find((cell) => {
           const meta = cell.getMeta();
@@ -691,11 +691,11 @@ describe('Tooltip Utils Tests', () => {
 
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get col cell summary data info for %o',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           col: colTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
         const colCell = s2.facet.getColCells().find((cell) => {
           const meta = cell.getMeta();
@@ -715,11 +715,11 @@ describe('Tooltip Utils Tests', () => {
       },
     );
 
-    test('should get grand totals row cell summary data', () => {
+    test('should get grand totals row cell summary data', async () => {
       s2 = createTotalsPivotSheet({
         row: rowTotalOptions,
       });
-      s2.render();
+      await s2.render();
 
       const grandTotalRowCell = s2.facet.getRowCells().find((cell) => {
         const meta = cell.getMeta();
@@ -737,12 +737,12 @@ describe('Tooltip Utils Tests', () => {
     // https://github.com/antvis/S2/issues/1137
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
       'should get without row cell sub and grand totals %o col cell summary data',
-      ({ isTotalCell }) => {
+      async ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           col: colTotalOptions,
           row: rowTotalOptions,
         });
-        s2.render();
+        await s2.render();
 
         const colLeafCell = s2.facet.getColCells().find((cell) => {
           const meta = cell.getMeta();
@@ -765,9 +765,9 @@ describe('Tooltip Utils Tests', () => {
         s2.destroy();
       });
 
-      test('should get row cell description', () => {
+      test('should get row cell description', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
         const rowCell = s2.facet.getRowCells()[0];
 
@@ -776,9 +776,9 @@ describe('Tooltip Utils Tests', () => {
         expect(tooltipData.description).toEqual('省份说明。。');
       });
 
-      test('should get col cell descriptions', () => {
+      test('should get col cell descriptions', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
         const colCell = s2.facet.getColCells()[0];
 
@@ -787,9 +787,9 @@ describe('Tooltip Utils Tests', () => {
         expect(tooltipData.description).toEqual('类别说明。。');
       });
 
-      test('should get data cell description', () => {
+      test('should get data cell description', async () => {
         s2 = createTotalsPivotSheet(null);
-        s2.render();
+        await s2.render();
 
         const dataCell = s2.facet.getDataCells()[0];
 
@@ -800,12 +800,12 @@ describe('Tooltip Utils Tests', () => {
 
       test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(
         'should not get total cell description with %s',
-        (key) => {
+        async (key) => {
           s2 = createTotalsPivotSheet({
             col: colTotalOptions,
             row: rowTotalOptions,
           });
-          s2.render();
+          await s2.render();
 
           const colTotalCell = s2.facet.getColCells().find((cell) => {
             const meta = cell.getMeta();
