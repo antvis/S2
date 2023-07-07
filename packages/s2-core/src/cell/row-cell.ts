@@ -8,7 +8,11 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition, type ViewMeta } from '../common/interface';
+import {
+  CellBorderPosition,
+  type TextArea,
+  type ViewMeta,
+} from '../common/interface';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
@@ -415,7 +419,7 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
-  protected getTextArea() {
+  protected getTextArea(): TextArea {
     const content = this.getContentArea();
     const textIndent = this.getTextIndent();
     return {
@@ -426,7 +430,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected getAdjustTextAreaHeight(
-    textArea: ReturnType<typeof this.getTextArea>,
+    textArea: TextArea,
     scrollY: number,
     viewportHeight: number,
   ): number {

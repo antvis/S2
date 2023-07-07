@@ -528,3 +528,10 @@ export interface GridInfo {
 }
 
 export type RowData = Data | DataType;
+
+export type TextArea = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
