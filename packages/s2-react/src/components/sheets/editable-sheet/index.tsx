@@ -8,7 +8,10 @@ export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     return (
       <BaseSheet {...props} sheetType={'table'}>
-        <EditCell onChange={() => {}} />
+        <EditCell
+          onChange={() => {}}
+          onDataCellEditEnd={props.onDataCellEditEnd}
+        />
         <DragCopyPoint />
       </BaseSheet>
     );

@@ -32,7 +32,6 @@ export enum S2Event {
   DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
   DATA_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
   DATA_CELL_SELECT_MOVE = 'data-cell:select-move',
-  DATA_CELL_EDIT_END = 'data-cell:edit-end',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_HOVER = 'corner-cell:hover',

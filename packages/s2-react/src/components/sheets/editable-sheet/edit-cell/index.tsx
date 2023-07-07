@@ -28,6 +28,7 @@ export interface CustomProps {
 
 type onChangeProps = {
   onChange?: (val: any[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -37,7 +38,7 @@ function EditCellComponent(
 ) {
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
-  const { event, onChange, CustomComponent } = params;
+  const { event, onChange, onDataCellEditEnd, CustomComponent } = params;
   const cell: BaseCell<ViewMeta> = event.target.cfg.parent;
 
   const { left, top, width, height } = useMemo(() => {
@@ -94,8 +95,7 @@ function EditCellComponent(
     spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
 
-    spreadsheet.emit(
-      S2Event.DATA_CELL_EDIT_END,
+    onDataCellEditEnd?.(
       merge(cell.getMeta(), {
         fieldValue: inputVal,
         data: {
@@ -172,14 +172,18 @@ function EditCellComponent(
   );
 }
 
-function EditCell({ onChange, CustomComponent }: onChangeProps) {
+function EditCell({
+  onChange,
+  onDataCellEditEnd,
+  CustomComponent,
+}: onChangeProps) {
   const spreadsheet = useSpreadSheetRef();
 
   const cb = useCallback(
     (e: CanvasEvent) => {
       invokeComponent(
         EditCellComponent,
-        { event: e, onChange, CustomComponent },
+        { event: e, onChange, onDataCellEditEnd, CustomComponent },
         spreadsheet,
       );
     },
