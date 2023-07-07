@@ -34,6 +34,8 @@ export interface ResizeGuideLinePosition {
 export interface ResizePosition {
   offsetX?: number;
   offsetY?: number;
+  clientX?: number;
+  clientY?: number;
 }
 
 export interface ResizeDetail {

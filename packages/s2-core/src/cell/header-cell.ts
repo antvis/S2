@@ -395,9 +395,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
     const cells = interaction?.getCells([
+      CellTypes.CORNER_CELL,
       CellTypes.COL_CELL,
       CellTypes.ROW_CELL,
     ]);
+
     if (!first(cells)) {
       return;
     }

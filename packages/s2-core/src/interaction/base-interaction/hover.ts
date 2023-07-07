@@ -231,8 +231,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public bindCornerCellHover() {
     this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target);
-      this.showEllipsisTooltip(event, cell);
+      this.handleHeaderHover(event);
     });
   }
 }
