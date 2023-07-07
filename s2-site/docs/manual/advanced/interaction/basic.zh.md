@@ -229,6 +229,26 @@ const s2Options = {
 };
 ```
 
+:::warning{title='如何关闭悬停时出现的单元格黑色边框？'}
+:::
+
+```ts
+s2.setTheme({
+  dataCell: {
+    cell: {
+      interactionState: {
+        hoverFocus: {
+          // 边框设置为透明
+          borderColor: 'transparent'
+          // 或者边框透明度设置为 0
+          // borderOpacity: 0
+        }
+      }
+    }
+  }
+})
+```
+
 ### 圈选
 
 圈选又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，支持对 `数据单元格 (dataCell)`, `行头单元格 (rowCell)`, `列头单元格 (colCell)` 进行圈选，同时支持 `滚动圈选`, 可以用来做 `统计数据总和`, `单元格个数`, `复制选定数据` 等操作，默认开启 `数据单元格`，可配置 `brushSelection` 关闭：
