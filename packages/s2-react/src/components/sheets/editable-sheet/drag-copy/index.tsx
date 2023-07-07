@@ -8,10 +8,6 @@ import { DragCopyMask } from './drag-copy-mask';
 
 import './drag-copy-point.less';
 
-export type DragCopyProps = {
-  onChange?: (val: string) => void;
-};
-
 export function DragCopyPoint() {
   const spreadsheet = useSpreadSheetRef();
 
