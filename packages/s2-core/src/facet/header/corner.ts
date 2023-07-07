@@ -135,7 +135,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
       const cNode: Node = new Node({
         key: '',
-        id: '',
+        id: cornerText,
         value: cornerText,
       });
       cNode.x = position.x + seriesNumberWidth;
@@ -154,7 +154,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const field = rows[rowNode.level];
         const cNode: Node = new Node({
           key: field,
-          id: '',
+          id: field,
           value: dataSet.getFieldName(field),
         });
 
@@ -176,7 +176,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
-          id: '',
+          id: field,
           value: dataSet.getFieldName(field),
         });
         cNode.x = position.x;
