@@ -425,27 +425,37 @@ export class RowCell extends HeaderCell {
     };
   }
 
+  protected getAdjustTextAreaHeight(
+    textArea: ReturnType<typeof this.getTextArea>,
+    scrollY: number,
+    viewportHeight: number,
+  ): number {
+    let adjustTextAreaHeight = textArea.height;
+    if (
+      this.spreadsheet.facet.vScrollBar &&
+      textArea.y + textArea.height > scrollY + viewportHeight
+    ) {
+      adjustTextAreaHeight = scrollY + viewportHeight - textArea.y;
+    }
+    return adjustTextAreaHeight;
+  }
+
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.headerConfig;
 
-    let adjustTextAreaHeight = textArea.height;
-    const isShowVerticalScrollBar = this.spreadsheet.foregroundGroup.contain(
-      this.spreadsheet.facet.vScrollBar,
+    const adjustTextAreaHeight = this.getAdjustTextAreaHeight(
+      textArea,
+      scrollY,
+      viewportHeight,
     );
-    if (
-      !isShowVerticalScrollBar &&
-      textArea.y + textArea.height > scrollY + height
-    ) {
-      adjustTextAreaHeight = scrollY + height - textArea.y;
-    }
 
     const { fontSize } = this.getTextStyle();
     const textY = getAdjustPosition(
       textArea.y,
       adjustTextAreaHeight,
       scrollY,
-      height,
+      viewportHeight,
       fontSize,
     );
     const textX = getTextAndFollowingIconPosition(
