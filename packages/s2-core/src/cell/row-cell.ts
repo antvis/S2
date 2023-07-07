@@ -1,6 +1,7 @@
 import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
+import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -8,11 +9,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
-  type TextArea,
-  type ViewMeta,
-} from '../common/interface';
+import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
@@ -419,7 +416,7 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
-  protected getTextArea(): TextArea {
+  protected getTextArea(): SimpleBBox {
     const content = this.getContentArea();
     const textIndent = this.getTextIndent();
     return {
@@ -430,7 +427,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected getAdjustTextAreaHeight(
-    textArea: TextArea,
+    textArea: SimpleBBox,
     scrollY: number,
     viewportHeight: number,
   ): number {
