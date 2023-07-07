@@ -44,11 +44,16 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       frozenTrailingColCount: 1, // 列尾冻结数量
     };
 
+    const onDataCellEditEnd = (meta) => {
+      console.log('onDataCellEditEnd', meta);
+    };
+
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
         sheetType="editable"
+        onDataCellEditEnd={onDataCellEditEnd}
       />,
       document.getElementById('container'),
     );
