@@ -472,6 +472,23 @@ describe('PivotSheet Tests', () => {
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
+  test('should init new interaction', () => {
+    const interactionDestorySpy = jest
+      .spyOn(s2.interaction, 'destroy')
+      .mockImplementationOnce(() => {});
+
+    const lastInteraction = s2.interaction;
+
+    s2.setOptions({
+      interaction: {
+        brushSelection: true,
+      },
+    });
+
+    expect(interactionDestorySpy).toHaveBeenCalled();
+    expect(s2.interaction).not.toBe(lastInteraction);
+  });
+
   test('should render sheet', () => {
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
