@@ -256,10 +256,6 @@ const cellEventCases = [
     name: 'onDataCellSelectMove',
   },
   {
-    event: S2Event.DATA_CELL_EDIT_END,
-    name: 'onDataCellEditEnd',
-  },
-  {
     event: S2Event.CORNER_CELL_HOVER,
     name: 'onCornerCellHover',
   },
