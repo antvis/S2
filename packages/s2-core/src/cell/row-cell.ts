@@ -432,7 +432,7 @@ export class RowCell extends HeaderCell {
   ): number {
     let adjustTextAreaHeight = textArea.height;
     if (
-      this.spreadsheet.facet.vScrollBar &&
+      !this.spreadsheet.facet.vScrollBar &&
       textArea.y + textArea.height > scrollY + viewportHeight
     ) {
       adjustTextAreaHeight = scrollY + viewportHeight - textArea.y;
