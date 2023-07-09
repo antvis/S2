@@ -472,21 +472,34 @@ describe('PivotSheet Tests', () => {
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
-  test('should init new interaction', () => {
-    const interactionDestorySpy = jest
-      .spyOn(s2.interaction, 'destroy')
-      .mockImplementationOnce(() => {});
-
-    const lastInteraction = s2.interaction;
-
+  test('should refresh brush selection info', () => {
     s2.setOptions({
       interaction: {
         brushSelection: true,
       },
     });
 
-    expect(interactionDestorySpy).toHaveBeenCalled();
-    expect(s2.interaction).not.toBe(lastInteraction);
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: true,
+      col: true,
+    });
+
+    s2.setOptions({
+      interaction: {
+        brushSelection: {
+          data: true,
+          row: false,
+          col: false,
+        },
+      },
+    });
+
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: false,
+      col: false,
+    });
   });
 
   test('should render sheet', () => {
