@@ -479,17 +479,13 @@ function MainLayout() {
                   onClick={() => {
                     s2Ref.current?.setOptions({
                       interaction: {
-                        brushSelection: {
-                          row: false,
-                          col: false,
-                          data: true,
-                        },
+                        brushSelection: false,
                       },
                     });
                     s2Ref.current?.render();
                   }}
                 >
-                  禁用行头列头刷选 (s2.setOptions)
+                  禁用刷选 (s2.setOptions)
                 </Button>
 
                 <Popover
