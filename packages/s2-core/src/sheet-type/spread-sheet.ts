@@ -380,20 +380,10 @@ export abstract class SpreadSheet extends EE {
   public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
 
-    const lastOptions = this.options;
-
     if (reset) {
       this.options = getSafetyOptions(options);
     } else {
       this.options = customMerge(this.options, options);
-    }
-
-    if (
-      reset ||
-      (options.interaction &&
-        !isEqual(lastOptions.interaction, this.options.interaction))
-    ) {
-      this.initInteraction();
     }
 
     if (reset || options.tooltip?.renderTooltip) {

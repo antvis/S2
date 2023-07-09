@@ -19,6 +19,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().data) {
+        return;
+      }
+
       super.mouseDown(event);
       this.resetScrollDelta();
     });

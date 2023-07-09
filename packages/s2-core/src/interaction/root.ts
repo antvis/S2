@@ -626,4 +626,24 @@ export class RootInteraction {
       currentCol,
     };
   }
+
+  public getBrushSelection(): BrushSelection {
+    const { brushSelection } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(brushSelection)) {
+      return {
+        data: brushSelection,
+        row: brushSelection,
+        col: brushSelection,
+      };
+    }
+
+    const { data = false, row = false, col = false } = brushSelection ?? {};
+
+    return {
+      data,
+      row,
+      col,
+    };
+  }
 }

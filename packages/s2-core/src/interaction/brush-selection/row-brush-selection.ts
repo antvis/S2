@@ -19,6 +19,10 @@ import { BaseBrushSelection } from './base-brush-selection';
 export class RowBrushSelection extends BaseBrushSelection {
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().row) {
+        return;
+      }
+
       super.mouseDown(event);
     });
   }
