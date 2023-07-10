@@ -16,13 +16,13 @@ const s2Options: S2Options = {
 describe('Interaction Tooltip Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell);
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {

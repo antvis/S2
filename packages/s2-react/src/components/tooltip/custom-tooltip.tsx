@@ -74,8 +74,8 @@ export class CustomTooltip extends BaseTooltip {
   }
 
   destroy() {
-    super.destroy();
     this.unmountComponentAtNode();
+    super.destroy();
   }
 
   private unmountComponentAtNode() {

@@ -16,10 +16,10 @@ const s2Options: S2Options = {
 };
 
 describe('Grid Border Tests', () => {
-  test('should draw left border without series number', () => {
+  test('should draw left border without series number', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
 
-    s2.render();
+    await s2.render();
 
     const panelScrollGroup = s2.facet.panelGroup.children[0];
     const gridGroup = (panelScrollGroup as any).gridGroup as Group;

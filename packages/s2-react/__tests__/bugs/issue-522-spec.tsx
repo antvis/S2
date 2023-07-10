@@ -8,6 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import type { SpreadSheet, Node } from '@antv/s2';
+import { waitFor } from '@testing-library/react';
 import { getContainer } from '../util/helpers';
 import dataCfg from '../data/data-issue-522.json';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
@@ -50,18 +51,19 @@ function MainLayout() {
 }
 
 describe('spreadsheet normal spec', () => {
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
-  });
+  test(`sampleForAllLevels shouldn't include total node`, async () => {
+    act(() => {
+      ReactDOM.render(<MainLayout />, getContainer());
+    });
+    await waitFor(() => {
+      const { sampleNodesForAllLevels } =
+        sheetInstance.facet.getLayoutResult().rowsHierarchy;
 
-  test(`sampleForAllLevels shouldn't include total node`, () => {
-    const { sampleNodesForAllLevels } =
-      sheetInstance.facet.getLayoutResult().rowsHierarchy;
+      expect(sampleNodesForAllLevels).toHaveLength(3);
 
-    expect(sampleNodesForAllLevels).toHaveLength(3);
-
-    expect(sampleNodesForAllLevels).toSatisfyAll(
-      (node: Node) => !node.isTotals,
-    );
+      expect(sampleNodesForAllLevels).toSatisfyAll(
+        (node: Node) => !node.isTotals,
+      );
+    });
   });
 });

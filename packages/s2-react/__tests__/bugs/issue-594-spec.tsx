@@ -10,12 +10,13 @@ import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import type { SheetType } from '@antv/s2-shared';
+import { waitFor } from '@testing-library/react';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
 
 let s2: SpreadSheet | null;
 
-const mockRef = {
+let mockRef = {
   current: null,
 } as unknown as MutableRefObject<SpreadSheet | null>;
 
@@ -27,8 +28,8 @@ function MainLayout(
   const [sheetType, setSheetType] = React.useState<SheetType>(props.sheetType!);
 
   React.useEffect(() => {
-    mockRef.current = s2Ref.current;
-  }, [sheetType]);
+    mockRef = s2Ref;
+  }, [sheetType, s2Ref]);
 
   React.useEffect(() => {
     buttonRef.current?.addEventListener('click', () => {
@@ -63,23 +64,29 @@ describe('SheetComponent Ref Tests', () => {
     mockRef.current = null;
   });
 
-  test('should get spreadsheet instance by', () => {
+  test('should get spreadsheet instance by', async () => {
     act(() => {
       ReactDOM.render(<MainLayout sheetType="pivot" />, getContainer());
     });
-    expect(s2).toBeInstanceOf(SpreadSheet);
-    expect(mockRef.current).toBeInstanceOf(SpreadSheet);
+
+    await waitFor(() => {
+      expect(s2).toBeInstanceOf(SpreadSheet);
+      expect(mockRef.current).toBeInstanceOf(SpreadSheet);
+    });
   });
 
-  test('should get table spreadsheet instance', () => {
+  test('should get table spreadsheet instance', async () => {
     act(() => {
       ReactDOM.render(<MainLayout sheetType="table" />, getContainer());
     });
-    expect(s2).toBeInstanceOf(TableSheet);
-    expect(mockRef.current).toBeInstanceOf(TableSheet);
+
+    await waitFor(() => {
+      expect(s2).toBeInstanceOf(TableSheet);
+      expect(mockRef.current).toBeInstanceOf(TableSheet);
+    });
   });
 
-  test('should register events when sheet type updated', () => {
+  test('should register events when sheet type updated', async () => {
     act(() => {
       ReactDOM.render(
         <MainLayout sheetType="pivot" toggleSheetType />,
@@ -92,7 +99,11 @@ describe('SheetComponent Ref Tests', () => {
       document.querySelector('.btn')!.dispatchEvent(new Event('click'));
     });
 
-    // should don't miss events
-    expect(mockRef.current?.getEvents()[S2Event.COL_CELL_CLICK]).toBeDefined();
+    await waitFor(() => {
+      // should don't miss events
+      expect(
+        mockRef.current?.getEvents()[S2Event.COL_CELL_CLICK],
+      ).toBeDefined();
+    });
   });
 });

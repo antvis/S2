@@ -76,10 +76,10 @@ describe('Row Text Link Tests', () => {
   let s2: PivotSheet;
   const linkFieldJump = jest.fn();
 
-  beforeAll(() => {
+  beforeAll(async () => {
     container = getContainer();
     s2 = new PivotSheet(container, s2DataCfg, s2Options);
-    s2.render();
+    await s2.render();
     s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
   });
 

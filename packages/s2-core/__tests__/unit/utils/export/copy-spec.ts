@@ -1,6 +1,11 @@
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
-import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
+import {
+  assembleDataCfg,
+  assembleOptions,
+  TOTALS_OPTIONS,
+  waitForRender,
+} from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import type { Meta, S2DataConfig } from '@/common/interface';
 import { Aggregation } from '@/common/interface';
@@ -36,7 +41,7 @@ const getCopyPlainContent = (sheet: TableSheet | PivotSheet): string => {
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -50,7 +55,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -114,14 +119,14 @@ describe('List Table Core Data Process', () => {
     );
   });
 
-  it('should copy normal data with header in table mode', () => {
+  it('should copy normal data with header in table mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
       },
       showSeriesNumber: false,
     });
-    s2.render();
+    await s2.render();
 
     const cell = s2.facet
       .getDataCells()
@@ -134,7 +139,7 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2)).toEqual('province\r\n浙江省');
   });
 
-  it('should copy format data', () => {
+  it('should copy format data', async () => {
     const sheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -152,7 +157,7 @@ describe('List Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
     const cell = s2.facet
       .getCells()
       .filter(
@@ -169,7 +174,7 @@ describe('List Table Core Data Process', () => {
   });
 
   // https://github.com/antvis/S2/issues/1770
-  it('should copy format data with row header selected', () => {
+  it('should copy format data with row header selected', async () => {
     const sheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -187,7 +192,7 @@ describe('List Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cell = sheet.facet
       .getCells()
@@ -204,7 +209,7 @@ describe('List Table Core Data Process', () => {
   });
 
   // https://github.com/antvis/S2/issues/1770
-  it('should copy format data with col header selected', () => {
+  it('should copy format data with col header selected', async () => {
     const sheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -222,11 +227,11 @@ describe('List Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cell = sheet.facet.getColCells()[1];
 
-    sheet.interaction.changeState({
+    await sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
@@ -236,8 +241,8 @@ describe('List Table Core Data Process', () => {
     expect(data.split('_formatted').length).toEqual(33);
   });
 
-  it('should copy correct data when selected diagonal cells', () => {
-    s2.render();
+  it('should copy correct data when selected diagonal cells', async () => {
+    await s2.render();
 
     const cells = s2.facet.getDataCells();
 
@@ -261,17 +266,19 @@ describe('List Table Core Data Process', () => {
     `);
   });
 
-  it('should copy correct data with data filtered', () => {
+  it('should copy correct data with data filtered', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: false,
       },
     });
-    s2.render();
+    await s2.render();
 
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'province',
-      filteredValues: ['浙江省'],
+    await waitForRender(s2, () => {
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey: 'province',
+        filteredValues: ['浙江省'],
+      });
     });
 
     const cell = s2.facet
@@ -297,13 +304,15 @@ describe('List Table Core Data Process', () => {
     });
   });
 
-  it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, [
-      {
-        sortFieldId: 'number',
-        sortMethod: 'DESC' as SortMethodType,
-      },
-    ]);
+  it('should copy correct data with data sorted', async () => {
+    await waitForRender(s2, () => {
+      s2.emit(S2Event.RANGE_SORT, [
+        {
+          sortFieldId: 'number',
+          sortMethod: 'DESC' as SortMethodType,
+        },
+      ]);
+    });
 
     const cell = s2.facet
       .getCells()
@@ -322,7 +331,7 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toEqual(33);
   });
 
-  it('should copy correct data with \n data', () => {
+  it('should copy correct data with \n data', async () => {
     const newLineText = `1
     2`;
     const sheet = new TableSheet(
@@ -344,7 +353,7 @@ describe('List Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cell = sheet.facet
       .getCells()
@@ -363,7 +372,7 @@ describe('List Table Core Data Process', () => {
     expect(data).toBe(convertString(newLineText));
   });
 
-  it('should not transform double quotes to single quotes when newline char is in data', () => {
+  it('should not transform double quotes to single quotes when newline char is in data', async () => {
     const newLineText = `"1
     2"`;
     const sheet = new TableSheet(
@@ -385,7 +394,7 @@ describe('List Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cell = sheet.facet.getDataCells()[40];
 
@@ -398,7 +407,7 @@ describe('List Table Core Data Process', () => {
     expect(data).toBe(convertString(newLineText));
   });
 
-  it('should copy row data when select data row cell', () => {
+  it('should copy row data when select data row cell', async () => {
     s2.setOptions({
       interaction: {
         selectedCellHighlight: {
@@ -407,7 +416,7 @@ describe('List Table Core Data Process', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
 
     const dataCell = s2.facet.getDataCells()[0];
 
@@ -423,7 +432,7 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
   });
 
-  it('should support custom copy matrix transformer', () => {
+  it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
       interaction: {
         customTransformer: () => {
@@ -436,7 +445,7 @@ describe('List Table Core Data Process', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
     const cell = s2.facet.getDataCells()[0];
 
     s2.interaction.changeState({
@@ -482,9 +491,9 @@ describe('Pivot Table Core Data Process', () => {
 
   let s2: PivotSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
-    s2.render();
+    await s2.render();
   });
 
   it('should copy no data in grid mode', () => {
@@ -523,7 +532,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy format data when valueInCols is false in grid mode', () => {
+  it('should copy format data when valueInCols is false in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithFormat: true,
@@ -537,7 +546,7 @@ describe('Pivot Table Core Data Process', () => {
 
     s2.setDataCfg(getDataCfg(meta, false));
 
-    s2.render();
+    await s2.render();
 
     const allDataCells = s2.facet.getDataCells();
 
@@ -566,7 +575,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy format total data in grid mode', () => {
+  it('should copy format total data in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithFormat: true,
@@ -608,7 +617,7 @@ describe('Pivot Table Core Data Process', () => {
 
     s2.setDataCfg(getDataCfg(meta, false));
 
-    s2.render();
+    await s2.render();
     const allDataCells = s2.facet.getDataCells();
 
     s2.interaction.changeState({
@@ -646,7 +655,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toBe(COL_COUNT);
   });
 
-  it('should copy row data in grid mode', () => {
+  it('should copy row data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       getDataCfg(),
@@ -658,7 +667,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
     const cell = sheet.facet.getRowCells().pop();
 
     sheet.interaction.changeState({
@@ -678,7 +687,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy format data in grid mode', () => {
+  it('should copy format data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -698,7 +707,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
     const cell = s2.facet.getDataCells()[0];
 
     sheet.interaction.changeState({
@@ -708,13 +717,13 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(sheet)).toEqual(`${originalData[0].number}元`);
   });
 
-  it('should copy normal data with header in grid mode', () => {
+  it('should copy normal data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     const allDataCells = s2.facet.getDataCells();
 
@@ -741,7 +750,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy normal data with format header in grid mode', () => {
+  it('should copy normal data with format header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
@@ -760,7 +769,7 @@ describe('Pivot Table Core Data Process', () => {
 
     s2.setDataCfg(getDataCfg(meta));
 
-    s2.render();
+    await s2.render();
 
     const allDataCells = s2.facet.getDataCells();
 
@@ -796,13 +805,13 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   // 看图更清晰 https://gw.alipayobjects.com/zos/antfincdn/zK68PhcnX/d852ffb8-603a-43e5-b841-dbf3c7577638.png
-  it('should copy col data with header in grid mode', () => {
+  it('should copy col data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     const cell = s2.facet.getColCells()[0];
 
@@ -822,13 +831,13 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/q3mBlV9Ii/1d68499a-b529-4594-93ce-8b04f8b4c4bc.png
-  it('should copy row data with header in grid mode', () => {
+  it('should copy row data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     const allRowCells = s2.facet.getRowCells();
 
@@ -858,7 +867,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy row data with format header in grid mode', () => {
+  it('should copy row data with format header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
@@ -883,7 +892,7 @@ describe('Pivot Table Core Data Process', () => {
         values: ['number'],
       },
     } as S2DataConfig);
-    s2.render();
+    await s2.render();
 
     const allColCells = s2.facet.getColCells();
 
@@ -908,13 +917,13 @@ describe('Pivot Table Core Data Process', () => {
     `);
   });
 
-  it('should copy all data with header in grid mode', () => {
+  it('should copy all data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -928,7 +937,7 @@ describe('Pivot Table Core Data Process', () => {
     );
   });
 
-  it('should copy correct data with data sorted in grid mode', () => {
+  it('should copy correct data with data sorted in grid mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: false,
@@ -938,7 +947,7 @@ describe('Pivot Table Core Data Process', () => {
 
     s2.groupSortByMethod('ASC' as SortMethodType, node);
     s2.setDataCfg(s2.dataCfg);
-    s2.render();
+    await s2.render();
 
     const cell = s2.facet.getRowCells().find((e) => e.getMeta().isLeaf)!;
 
@@ -955,7 +964,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toEqual(COL_COUNT);
   });
 
-  it('should copy correct data with \n data in grid mode', () => {
+  it('should copy correct data with \n data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -975,7 +984,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cell = sheet.facet.getDataCells()[0];
 
@@ -988,7 +997,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(data).toBe(convertString(`7789\n元`));
   });
 
-  it('should get correct data with - string in header', () => {
+  it('should get correct data with - string in header', async () => {
     const s2New = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -1014,7 +1023,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
     );
 
-    s2New.render();
+    await s2New.render();
     const cell = s2New.facet.getDataCells()[0];
 
     s2New.interaction.changeState({
@@ -1026,7 +1035,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(data).toBe(convertString(`7789\n元`));
   });
 
-  it('should get correct data with - string in header name', () => {
+  it('should get correct data with - string in header name', async () => {
     const s2New = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -1047,7 +1056,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
     );
 
-    s2New.render();
+    await s2New.render();
     const cell = s2New.facet.getDataCells()[0];
 
     s2New.interaction.changeState({
@@ -1059,7 +1068,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(data).toBe(convertString(`7789\n元`));
   });
 
-  it('should get correct data with hideMeasureColumn is true', () => {
+  it('should get correct data with hideMeasureColumn is true', async () => {
     const sheet = new PivotSheet(getContainer(), getDataCfg(), getOptions());
 
     sheet.setOptions({
@@ -1069,7 +1078,7 @@ describe('Pivot Table Core Data Process', () => {
         },
       },
     });
-    sheet.render();
+    await sheet.render();
     const cells = sheet.facet.getDataCells();
 
     sheet.interaction.changeState({
@@ -1094,7 +1103,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   // https://github.com/antvis/S2/issues/1955
-  it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
+  it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', async () => {
     const sheet = new PivotSheet(getContainer(), getDataCfg(), getOptions());
 
     sheet.setOptions({
@@ -1109,7 +1118,7 @@ describe('Pivot Table Core Data Process', () => {
       },
       showSeriesNumber: true,
     });
-    sheet.render();
+    await sheet.render();
     const cells = sheet.facet.getDataCells();
 
     sheet.interaction.changeState({
@@ -1135,7 +1144,7 @@ describe('Pivot Table Core Data Process', () => {
     `);
   });
 
-  it('should support custom copy matrix transformer', () => {
+  it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
       interaction: {
         customTransformer: () => {
@@ -1148,7 +1157,7 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
 
-    s2.render();
+    await s2.render();
     const cell = s2.facet.getDataCells()[0];
 
     s2.interaction.changeState({
@@ -1172,7 +1181,7 @@ describe('Tree Table Core Data Process', () => {
     });
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -1191,7 +1200,7 @@ describe('Tree Table Core Data Process', () => {
         totals: TOTALS_OPTIONS,
       }),
     );
-    s2.render();
+    await s2.render();
   });
 
   it('should copy no data in tree mode', () => {
@@ -1278,7 +1287,7 @@ describe('Tree Table Core Data Process', () => {
     `);
   });
 
-  it('should copy all data in tree mode with format', () => {
+  it('should copy all data in tree mode with format', async () => {
     s2.setDataCfg({
       meta: [{ field: 'number', formatter: (v) => `${v}元` }],
       fields: {
@@ -1292,7 +1301,7 @@ describe('Tree Table Core Data Process', () => {
         copyWithFormat: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     setSelectedVisibleCell();
 
@@ -1311,14 +1320,14 @@ describe('Tree Table Core Data Process', () => {
     `);
   });
 
-  it('should copy normal data with header in tree mode', () => {
+  it('should copy normal data with header in tree mode', async () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
         enableCopy: true,
       },
     });
-    s2.render();
+    await s2.render();
 
     setSelectedVisibleCell();
 
@@ -1360,8 +1369,8 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
 
-  beforeEach(() => {
-    s2.render();
+  beforeEach(async () => {
+    await s2.render();
   });
 
   test('should copy all row data in grid mode', () => {
@@ -1406,7 +1415,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy selection row data in grid mode', () => {
+  test('should copy selection row data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -1420,7 +1429,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       options,
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cells = sheet.facet.getRowCells().filter((rowCell) => {
       const meta = rowCell.getMeta();
@@ -1466,7 +1475,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy selection col data in grid mode', () => {
+  test('should copy selection col data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -1480,7 +1489,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       options,
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cells = sheet.facet.getColCells().filter((c) => {
       const meta = c.getMeta();
@@ -1520,7 +1529,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy row total data in grid mode', () => {
+  test('should copy row total data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       dataCfg,
@@ -1534,7 +1543,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cells = sheet.facet.getRowCells();
 
@@ -1561,7 +1570,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy col total data in grid mode', () => {
+  test('should copy col total data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       dataCfg,
@@ -1575,7 +1584,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
     );
 
-    sheet.render();
+    await sheet.render();
 
     const cells = sheet.facet.getColCells();
 

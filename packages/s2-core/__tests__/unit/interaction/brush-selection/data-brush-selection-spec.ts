@@ -89,7 +89,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     } as any);
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     MockRootInteraction.mockClear();
 
     const mockColLeafNodes = Array.from(new Array(10)).map((_, idx) => {
@@ -127,7 +127,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       };
     };
     s2.interaction = mockRootInteraction;
-    s2.render();
+    await s2.render();
     s2.facet.getDataCells = () => panelGroupAllDataCells;
     s2.facet.getLayoutResult = () =>
       ({

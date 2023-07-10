@@ -55,12 +55,15 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     [sheetType, options, dataCfg, customSpreadSheet],
   );
 
-  const buildSpreadSheet = React.useCallback(() => {
+  const buildSpreadSheet = React.useCallback(async () => {
     setLoading(true);
-    s2Ref.current = renderSpreadSheet(containerRef.current!);
-    s2Ref.current.setThemeCfg(props.themeCfg);
-    s2Ref.current.render();
+
+    const spreadsheet = renderSpreadSheet(containerRef.current!);
+
+    spreadsheet.setThemeCfg(props.themeCfg);
+    await spreadsheet.render();
     setLoading(false);
+    s2Ref.current = spreadsheet;
 
     /*
      * 子 hooks 内使用了 s2Ref.current 作为 dep

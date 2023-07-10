@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { type LangType, setLang, type Pagination } from '@antv/s2';
+import { type LangType, setLang, type Pagination, SpreadSheet } from '@antv/s2';
+import { waitFor } from '@testing-library/react';
 import * as mockDataConfig from '../data/simple-data.json';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
 import { getContainer } from '../util/helpers';
@@ -25,6 +26,7 @@ describe('Pagination Tests', () => {
   });
 
   afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
     container?.remove();
   });
 
@@ -42,8 +44,10 @@ describe('Pagination Tests', () => {
     },
   ] as Array<{ locale: LangType; page: string; count: string }>)(
     'should render locale text for %o',
-    ({ locale, page, count }) => {
+    async ({ locale, page, count }) => {
       setLang(locale);
+
+      let spreadsheet: SpreadSheet;
 
       act(() => {
         ReactDOM.render(
@@ -51,22 +55,30 @@ describe('Pagination Tests', () => {
             options={s2Options}
             dataCfg={mockDataConfig as any}
             showPagination
+            onMounted={(instance) => {
+              spreadsheet = instance;
+            }}
           />,
           container,
         );
       });
 
-      expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
-      expect(
-        document.querySelector('.ant-select-selection-item')?.innerHTML,
-      ).toEqual(page);
-      expect(
-        document.querySelector('.antv-s2-pagination-count')?.innerHTML,
-      ).toEqual(count);
+      await waitFor(() => {
+        expect(spreadsheet).toBeDefined();
+        expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
+        expect(
+          document.querySelector('.ant-select-selection-item')?.innerHTML,
+        ).toEqual(page);
+        expect(
+          document.querySelector('.antv-s2-pagination-count')?.innerHTML,
+        ).toEqual(count);
+      });
     },
   );
 
-  test('should receive antd <Pagination/> component extra props', () => {
+  test('should receive antd <Pagination/> component extra props', async () => {
+    let spreadsheet: SpreadSheet;
+
     act(() => {
       ReactDOM.render(
         <SheetComponent
@@ -81,17 +93,23 @@ describe('Pagination Tests', () => {
           }}
           dataCfg={mockDataConfig as any}
           showPagination
+          onMounted={(instance) => {
+            spreadsheet = instance;
+          }}
         />,
         container,
       );
     });
 
-    expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
-    expect(
-      document.querySelector('.ant-pagination-options-quick-jumper'),
-    ).toBeTruthy();
-    expect(
-      document.querySelector('.ant-pagination-options-size-changer'),
-    ).toBeFalsy();
+    await waitFor(() => {
+      expect(spreadsheet).toBeDefined();
+      expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
+      expect(
+        document.querySelector('.ant-pagination-options-quick-jumper'),
+      ).toBeTruthy();
+      expect(
+        document.querySelector('.ant-pagination-options-size-changer'),
+      ).toBeFalsy();
+    });
   });
 });

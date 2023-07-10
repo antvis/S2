@@ -305,7 +305,7 @@ describe('Sort By Func Tests', () => {
 describe('GetSortByMeasureValues Tests', () => {
   let s2: PivotSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     const dataCfg: S2DataConfig = {
       ...sortData,
       // 补充一些总、小计数据
@@ -344,7 +344,7 @@ describe('GetSortByMeasureValues Tests', () => {
         },
       },
     });
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
