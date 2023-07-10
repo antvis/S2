@@ -29,7 +29,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
 
     function testCase(data: string): void {
       const rows = data.split(NewLine);
@@ -83,7 +83,7 @@ describe('TableSheet Export Test', () => {
     testCase(asyncData);
   });
 
-  it('should export correct data with no series number', () => {
+  it('should export correct data with no series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -98,7 +98,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -115,7 +115,7 @@ describe('TableSheet Export Test', () => {
     expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
   });
 
-  it('should export correct data with totals', () => {
+  it('should export correct data with totals', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -139,7 +139,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -155,7 +155,7 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	沙发	5343"
     `);
   });
-  it('should support custom export matrix transformer', () => {
+  it('should support custom export matrix transformer', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -169,7 +169,7 @@ describe('TableSheet Export Test', () => {
       }),
     );
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: NewTab,
@@ -188,7 +188,7 @@ describe('TableSheet Export Test', () => {
   });
 
   // https://github.com/antvis/S2/issues/2236
-  it('should export correct data When the split separator is configured', () => {
+  it('should export correct data When the split separator is configured', async () => {
     const tableSheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -199,7 +199,7 @@ describe('TableSheet Export Test', () => {
       assembleOptions(),
     );
 
-    tableSheet.render();
+    await tableSheet.render();
     const data = copyData({
       sheetInstance: tableSheet,
       split: ',',
