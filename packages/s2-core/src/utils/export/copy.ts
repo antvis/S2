@@ -478,10 +478,8 @@ const processTableRowSelected = (
   const matrix = displayData
     .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
     .map((entry) => {
-      return Object.keys(entry)
-        .map((cName) =>
-          spreadsheet.getColumnNodes().find((n) => n.field === cName),
-        )
+      return spreadsheet
+        .getColumnNodes()
         .filter(Boolean) // 过滤掉空值，如行头cell
         .map((node) =>
           convertString(
