@@ -31,7 +31,7 @@ fetch(
           x: value.event.clientX,
           y: value.event.clientY,
         };
-        spreadsheet.tooltip.show({
+        spreadsheet.showTooltip({
           position,
           content: <CustomTooltip />,
         });
