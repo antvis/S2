@@ -12,7 +12,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
   const mapNodes = (spreadsheet: SpreadSheet) =>
     spreadsheet.facet.getRowLeafNodes().map((node) => node.id);
 
-  beforeEach(() => {
+  beforeEach(async () => {
     container = getContainer();
     s2 = new PivotSheet(
       container,
@@ -36,7 +36,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         },
       },
     );
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -44,7 +44,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
   });
 
   describe('Tree Mode', () => {
-    test('should init rows with expandDepth config', () => {
+    test('should init rows with expandDepth config', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -52,7 +52,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       const rowLeafNodes = s2.facet.getRowLeafNodes();
 
@@ -72,7 +72,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render();
+      await s2.render();
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -85,7 +85,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse all row nodes', () => {
+    test('should collapse all row nodes', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -94,7 +94,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         },
       });
 
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -103,7 +103,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse by field', () => {
+    test('should collapse by field', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -114,7 +114,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         },
       });
 
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -123,7 +123,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse by field id', () => {
+    test('should collapse by field id', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -134,7 +134,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         },
       });
 
-      s2.render();
+      await s2.render();
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -146,7 +146,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use collapseFields first', () => {
+    test('should collapse use collapseFields first', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -158,7 +158,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         },
       });
 
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -169,7 +169,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use expandDepth first', () => {
+    test('should collapse use expandDepth first', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -178,7 +178,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -191,7 +191,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use collapseFields first when contain collapseAll and expandDepth config', () => {
+    test('should collapse use collapseFields first when contain collapseAll and expandDepth config', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -203,7 +203,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -215,7 +215,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use collapseFields by node id first', () => {
+    test('should collapse use collapseFields by node id first', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -226,7 +226,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
         Array [
@@ -235,7 +235,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       `);
     });
 
-    test('should collapse all nodes if collapseAll is true and collapseFields is undefined', () => {
+    test('should collapse all nodes if collapseAll is true and collapseFields is undefined', async () => {
       s2.setOptions({
         style: {
           rowCell: {
@@ -244,7 +244,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           },
         },
       });
-      s2.render(false);
+      await s2.render(false);
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
         Array [

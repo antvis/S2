@@ -15,9 +15,9 @@ const s2Options: S2Options = {
 describe('Interaction SelectedCellsSpotlight Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet(s2Options);
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {

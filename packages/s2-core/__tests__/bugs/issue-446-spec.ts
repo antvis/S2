@@ -16,10 +16,10 @@ const s2Options = {
 };
 
 describe('export', () => {
-  test('should export correct data with showSeriesNumber', () => {
+  test('should export correct data with showSeriesNumber', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: '\t',
@@ -36,13 +36,13 @@ describe('export', () => {
     `);
   });
 
-  test('should export correct data without showSeriesNumber', () => {
+  test('should export correct data without showSeriesNumber', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       ...s2Options,
       showSeriesNumber: false,
     });
 
-    s2.render();
+    await s2.render();
     const data = copyData({
       sheetInstance: s2,
       split: '\t',

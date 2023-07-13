@@ -49,9 +49,9 @@ describe('Data Cell Tests', () => {
   let s2: SpreadSheet;
 
   describe('Link Shape Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createPivotSheet({});
-      s2.render();
+      await s2.render();
     });
 
     test.each([
@@ -60,7 +60,7 @@ describe('Data Cell Tests', () => {
       ['right', 438],
     ] as const)(
       'should align link shape with text',
-      (textAlign: TextAlign, textCenterX: number) => {
+      async (textAlign: TextAlign, textCenterX: number) => {
         s2.setOptions({
           interaction: {
             linkFields: ['price'],
@@ -73,7 +73,7 @@ describe('Data Cell Tests', () => {
             },
           },
         });
-        s2.render();
+        await s2.render();
 
         const panelBBoxInstance = s2.facet.panelGroup.children[0];
         const dataCell = panelBBoxInstance.children.find(
@@ -223,14 +223,14 @@ describe('Data Cell Tests', () => {
       },
     });
 
-    test('should draw right condition text shape', () => {
-      s2.render();
+    test('should draw right condition text shape', async () => {
+      await s2.render();
       const dataCell = findDataCell(s2, 'price');
 
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
-    test('should render text by text theme', () => {
+    test('should render text by text theme', async () => {
       s2.setOptions({
         conditions: {
           text: [
@@ -247,7 +247,7 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
 
       const dataCell = findDataCell(s2, 'price')!;
       const { fill, fontSize, fontWeight } = dataCell.getTextShape().attributes;
@@ -257,7 +257,7 @@ describe('Data Cell Tests', () => {
       expect(fontWeight).toEqual(800);
     });
 
-    test('should draw right condition icon shape', () => {
+    test('should draw right condition icon shape', async () => {
       s2.setOptions({
         conditions: {
           icon: [
@@ -273,14 +273,14 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const dataCell = findDataCell(s2, 'cost');
 
       expect(get(dataCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(dataCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
 
-    test('should draw right condition background shape', () => {
+    test('should draw right condition background shape', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -295,7 +295,7 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
 
       const dataCell = findDataCell(s2, 'cost');
 
@@ -349,7 +349,7 @@ describe('Data Cell Tests', () => {
       ).toEqual(cellWidth);
     });
 
-    test('should draw REVERSE_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is true', () => {
+    test('should draw REVERSE_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is true', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -365,7 +365,7 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const dataCell = findDataCell(s2, 'cost');
 
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
@@ -376,7 +376,7 @@ describe('Data Cell Tests', () => {
       );
     });
 
-    test('should draw DEFAULT_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is false', () => {
+    test('should draw DEFAULT_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is false', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -391,7 +391,7 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const dataCell = findDataCell(s2, 'cost');
 
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
@@ -402,7 +402,7 @@ describe('Data Cell Tests', () => {
       );
     });
 
-    test('should draw DEFAULT_FONT_COLOR on text when background high brightness is and intelligentReverseTextColor is true', () => {
+    test('should draw DEFAULT_FONT_COLOR on text when background high brightness is and intelligentReverseTextColor is true', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -418,7 +418,7 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
       const dataCell = findDataCell(s2, 'cost');
 
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
@@ -429,7 +429,7 @@ describe('Data Cell Tests', () => {
       );
     });
 
-    test('should test condition mapping params when the sheet is pivot', () => {
+    test('should test condition mapping params when the sheet is pivot', async () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -451,10 +451,10 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
     });
 
-    test('should test condition mapping params when the sheet is table', () => {
+    test('should test condition mapping params when the sheet is table', async () => {
       const table = createTableSheet({});
 
       table.setOptions({
@@ -478,21 +478,21 @@ describe('Data Cell Tests', () => {
           ],
         },
       });
-      table.render();
+      await table.render();
     });
   });
 
   describe('Data Cell Interaction', () => {
     // let s2: SpreadSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = createPivotSheet({
         showSeriesNumber: true,
         interaction: {
           enableCopy: true,
         },
       });
-      s2.render();
+      await s2.render();
     });
     const emitEvent = (type: S2Event, event: Partial<OriginalEvent>) => {
       s2.emit(type, {

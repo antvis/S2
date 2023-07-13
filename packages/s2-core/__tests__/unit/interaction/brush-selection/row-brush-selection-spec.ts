@@ -47,7 +47,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     getMeta: () => endBrushRowCellMeta as Node,
   }) as unknown as RowCell;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     MockRootInteraction.mockClear();
 
     s2 = new PivotSheet(getContainer(), data as S2DataConfig, {
@@ -72,7 +72,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     s2.getCell = jest.fn(() => startBrushRowCell) as any;
     mockRootInteraction = new MockRootInteraction(s2);
     s2.interaction = mockRootInteraction;
-    s2.render();
+    await s2.render();
     brushSelectionInstance = new RowCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =
@@ -201,7 +201,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     expect(brushSelectionFn).toHaveBeenCalledTimes(1);
   });
 
-  test('should get brush selection range cells when row header is scroll', () => {
+  test('should get brush selection range cells when row header is scroll', async () => {
     s2.setOptions({
       style: {
         rowCell: {
@@ -215,7 +215,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       rowHeaderScrollX: 100,
       scrollY: 0,
     });
-    s2.render();
+    await s2.render();
     // ================== mouse down ==================
     emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 100, y: 90 });
 

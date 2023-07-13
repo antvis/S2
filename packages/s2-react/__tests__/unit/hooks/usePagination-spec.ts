@@ -29,9 +29,9 @@ describe('usePagination tests', () => {
     dataCfg: mockDataConfig,
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should be defined', () => {
@@ -65,7 +65,7 @@ describe('usePagination tests', () => {
     expect(result.current.pagination.pageSize).toEqual(15);
   });
 
-  test('should update total after render with new data', () => {
+  test('should update total after render with new data', async () => {
     let s2Instance = s2;
     const { result, rerender } = renderHook(() =>
       usePagination(s2Instance, props),
@@ -73,16 +73,16 @@ describe('usePagination tests', () => {
 
     expect(result.current.pagination.total).toBe(0);
 
-    act(() => {
+    await act(async () => {
       // 触发内部更新
       s2Instance = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-      s2Instance.render();
+      await s2Instance.render();
 
       rerender();
     });
     expect(result.current.pagination.total).toBe(2);
 
-    act(() => {
+    await act(async () => {
       const newData = [
         ...mockDataConfig.data,
         {
@@ -97,7 +97,7 @@ describe('usePagination tests', () => {
         ...mockDataConfig,
         data: newData,
       });
-      s2Instance.render();
+      await s2Instance.render();
     });
     expect(result.current.pagination.total).toBe(3);
   });

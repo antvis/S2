@@ -54,11 +54,11 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     } as any);
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     MockRootInteraction.mockClear();
 
     s2 = new PivotSheet(getContainer(), null as unknown as S2DataConfig, null);
-    s2.render();
+    await s2.render();
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushDataCell) as any;
     s2.facet.foregroundGroup = new Group();

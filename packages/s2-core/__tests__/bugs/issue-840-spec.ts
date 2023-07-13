@@ -47,9 +47,9 @@ const dataCfg: S2DataConfig = {
 describe('Column Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(getContainer(), dataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('column should not be formatted', () => {

@@ -12,7 +12,7 @@ import { Button, Space } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData } from '../util/helpers';
+import { getContainer, getMockData, sleep } from '../util/helpers';
 import {
   SheetComponent,
   type SheetComponentOptions,
@@ -146,11 +146,13 @@ describe('table sheet filter spec', () => {
     ReactDOM.render(<MainLayout />, getContainer());
   });
 
-  test('filter customer_type values', () => {
+  test('filter customer_type values', async () => {
     spreadSheet.emit(S2Event.RANGE_FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
     });
+
+    await sleep(50);
 
     expect(spreadSheet.facet.getCellRange()).toStrictEqual({
       end: 467,
@@ -158,7 +160,7 @@ describe('table sheet filter spec', () => {
     });
   });
 
-  test('reset filter params on customer_type', () => {
+  test('reset filter params on customer_type', async () => {
     spreadSheet.emit(S2Event.RANGE_FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
@@ -169,31 +171,47 @@ describe('table sheet filter spec', () => {
       filteredValues: [],
     });
 
+    await sleep(50);
+
     expect(spreadSheet.facet.getCellRange()).toStrictEqual({
       end: 999,
       start: 0,
     });
   });
 
-  test('filtered event fired with new data', () => {
+  test('filtered event fired with new data', async () => {
+    let dataLength = 0;
+
     spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
-      expect(data.length).toStrictEqual(468);
+      dataLength = data.length;
     });
 
     spreadSheet.emit(S2Event.RANGE_FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
     });
+
+    await sleep(50);
+
+    expect(dataLength).toStrictEqual(468);
   });
 
-  test('falsy/nullish data should not be filtered with irrelevant filter params', () => {
+  test('falsy/nullish data should not be filtered with irrelevant filter params', async () => {
+    let dataLength = 0;
+
     spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
-      expect(data.length).toStrictEqual(468);
+      dataLength = data.length;
     });
 
-    spreadSheet.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'express_type',
-      filteredValues: ['消费者'],
+    act(() => {
+      spreadSheet.emit(S2Event.RANGE_FILTER, {
+        filterKey: 'express_type',
+        filteredValues: ['消费者'],
+      });
     });
+
+    await sleep(50);
+
+    expect(dataLength).toStrictEqual(468);
   });
 });

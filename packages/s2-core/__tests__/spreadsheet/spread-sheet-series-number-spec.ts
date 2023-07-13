@@ -18,10 +18,10 @@ describe('SpreadSheet Series Number Tests', () => {
     container = getContainer();
   });
 
-  test('series number should only contain root parent in grid mode', () => {
+  test('series number should only contain root parent in grid mode', async () => {
     const s2 = new PivotSheet(container, mockDataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
 
     const seriesNumberHeader = s2.facet.seriesNumberHeader;
 
@@ -33,13 +33,13 @@ describe('SpreadSheet Series Number Tests', () => {
     expect(seriesNum1.meta.height).toEqual(60);
   });
 
-  test("series number should contain root parent and it's all children in tree mode", () => {
+  test("series number should contain root parent and it's all children in tree mode", async () => {
     const s2 = new PivotSheet(container, mockDataConfig, {
       ...s2Options,
       hierarchyType: 'tree',
     });
 
-    s2.render();
+    await s2.render();
 
     const seriesNumberHeader = s2.facet.seriesNumberHeader;
 

@@ -27,14 +27,14 @@ const s2Options: S2Options = {
 describe('Sync Row Scroll Offset Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-    s2.render();
+    await s2.render();
   });
 
-  test('should not reset row scroll bar offset when resize end', () => {
+  test('should not reset row scroll bar offset when resize end', async () => {
     s2.store.set('rowHeaderScrollX', 20);
-    s2.render(false);
+    await s2.render(false);
 
     s2.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, {
       originalEvent: {},

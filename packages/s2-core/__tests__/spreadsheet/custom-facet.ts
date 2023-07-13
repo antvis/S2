@@ -3,7 +3,7 @@
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 
 describe('SpreadSheet Custom Facet Tests', () => {
-  test('should render custom pivot facet for custom cell meta', () => {
+  test('should render custom pivot facet for custom cell meta', async () => {
     const getCellMeta = jest.fn();
 
     const layoutCellMeta = () => {
@@ -16,13 +16,13 @@ describe('SpreadSheet Custom Facet Tests', () => {
       layoutCellMeta,
     });
 
-    s2.render();
+    await s2.render();
 
     expect(s2.facet.getCellMeta(0, 0)).toBeNull();
     expect(getCellMeta).toHaveBeenCalledTimes(1);
   });
 
-  test('should render custom table facet for custom cell meta', () => {
+  test('should render custom table facet for custom cell meta', async () => {
     const getCellMeta = jest.fn();
 
     const layoutCellMeta = () => {
@@ -35,7 +35,7 @@ describe('SpreadSheet Custom Facet Tests', () => {
       layoutCellMeta,
     });
 
-    s2.render();
+    await s2.render();
 
     expect(s2.facet.getCellMeta(0, 0)).toBeNull();
     expect(getCellMeta).toHaveBeenCalledTimes(1);

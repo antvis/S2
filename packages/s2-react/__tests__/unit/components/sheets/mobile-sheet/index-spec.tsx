@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { DEFAULT_MOBILE_OPTIONS, DeviceType, SpreadSheet } from '@antv/s2';
 import { pick } from 'lodash';
@@ -6,7 +6,7 @@ import * as mockDataConfig from '../../../../data/simple-data.json';
 import { MobileSheetComponent } from '../../../../../src/components/sheets/mobile-sheet';
 
 describe('MobileSheet Tests', () => {
-  test('get mobile default option', () => {
+  test('get mobile default option', async () => {
     let s2: SpreadSheet;
 
     render(
@@ -19,15 +19,17 @@ describe('MobileSheet Tests', () => {
       />,
     );
 
-    const interactionOptions = pick(
-      s2!.options.interaction,
-      Object.keys(DEFAULT_MOBILE_OPTIONS.interaction!),
-    );
-    const { height, device } = s2!.options;
+    await waitFor(() => {
+      const interactionOptions = pick(
+        s2!.options.interaction,
+        Object.keys(DEFAULT_MOBILE_OPTIONS.interaction!),
+      );
+      const { height, device } = s2!.options;
 
-    expect(interactionOptions).toEqual(DEFAULT_MOBILE_OPTIONS.interaction);
-    expect(height).toEqual(300);
-    expect(device).toEqual(DeviceType.MOBILE);
+      expect(interactionOptions).toEqual(DEFAULT_MOBILE_OPTIONS.interaction);
+      expect(height).toEqual(300);
+      expect(device).toEqual(DeviceType.MOBILE);
+    });
   });
 
   test('get mobile default fragment', () => {

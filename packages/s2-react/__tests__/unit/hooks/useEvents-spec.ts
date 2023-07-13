@@ -308,13 +308,13 @@ const cellEventCases = [
 describe('useEvents tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options);
 
     const mockCell = createMockCellInfo('test', { rowIndex: 0, colIndex: 0 });
 
     s2.getCell = () => mockCell.mockCell;
-    s2.render();
+    await s2.render();
   });
 
   test('useEvents should be defined', () => {

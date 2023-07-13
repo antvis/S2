@@ -13,7 +13,7 @@ describe('Col width Test', () => {
   describe('Grid Mode', () => {
     let s2: PivotSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = new PivotSheet(
         getContainer(),
         {
@@ -31,55 +31,55 @@ describe('Col width Test', () => {
         },
         s2options,
       );
-      s2.render();
+      await s2.render();
     });
 
     test('get correct width in layoutWidthType adaptive mode', () => {
       expect(s2.facet.getColLeafNodes()[0].width).toBe(200);
     });
 
-    test('get correct width in layoutWidthType adaptive mode when enable series number', () => {
+    test('get correct width in layoutWidthType adaptive mode when enable series number', async () => {
       s2.setOptions({
         showSeriesNumber: true,
       });
-      s2.render();
+      await s2.render();
 
       expect(s2.facet.getColLeafNodes()[0].width).toBe(180);
     });
 
-    test('get correct width in layoutWidthType adaptive tree mode', () => {
+    test('get correct width in layoutWidthType adaptive tree mode', async () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
-      s2.render();
+      await s2.render();
 
       expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(339);
     });
 
-    test('get correct width in layoutWidthType adaptive tree mode when enable series number', () => {
+    test('get correct width in layoutWidthType adaptive tree mode when enable series number', async () => {
       s2.setOptions({
         hierarchyType: 'tree',
         showSeriesNumber: true,
       });
-      s2.render();
+      await s2.render();
 
       expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(299);
     });
 
-    test('get correct width in layoutWidthType compact mode', () => {
+    test('get correct width in layoutWidthType compact mode', async () => {
       s2.setOptions({
         style: {
           layoutWidthType: 'compact',
         },
       });
-      s2.render();
+      await s2.render();
 
       // 无 formatter
 
       expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(78);
     });
 
-    test('get correct width in layoutWidthType compact mode when apply formatter', () => {
+    test('get correct width in layoutWidthType compact mode when apply formatter', async () => {
       s2.setDataCfg({
         fields: undefined as unknown as S2DataConfig['fields'],
         data: undefined as unknown as S2DataConfig['data'],
@@ -95,7 +95,7 @@ describe('Col width Test', () => {
           layoutWidthType: 'compact',
         },
       });
-      s2.render();
+      await s2.render();
 
       // 有formatter
 
@@ -106,7 +106,7 @@ describe('Col width Test', () => {
   describe('Table Mode', () => {
     let s2: TableSheet;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       s2 = new TableSheet(
         getContainer(),
         {
@@ -120,16 +120,16 @@ describe('Col width Test', () => {
         },
         s2options,
       );
-      s2.render();
+      await s2.render();
     });
 
-    test('get correct width in layoutWidthType compact mode', () => {
+    test('get correct width in layoutWidthType compact mode', async () => {
       s2.setOptions({
         style: {
           layoutWidthType: 'compact',
         },
       });
-      s2.render();
+      await s2.render();
 
       const colLeafNodes = s2.facet.getColLeafNodes();
 

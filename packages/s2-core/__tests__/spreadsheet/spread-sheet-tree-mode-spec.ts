@@ -20,10 +20,10 @@ describe('SpreadSheet Tree Mode Tests', () => {
   });
 
   describe('Facet Tests', () => {
-    test('should re-calc row header width', () => {
+    test('should re-calc row header width', async () => {
       const s2 = createPivotSheet(s2Options);
 
-      s2.render();
+      await s2.render();
 
       const rowsHierarchyWidth = s2.facet.getLayoutResult().rowsHierarchy.width;
 
@@ -45,7 +45,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
       };
 
       s2.setDataCfg(newDataCfg);
-      s2.render();
+      await s2.render();
 
       expect(s2.facet.getLayoutResult().rowsHierarchy.width).not.toEqual(
         rowsHierarchyWidth,

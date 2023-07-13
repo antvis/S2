@@ -82,9 +82,9 @@ fetch(
       clearInterval(timer);
     });
 
-    s2.render();
-
-    addScrollButton(s2);
+    s2.render().then(() => {
+      addScrollButton(s2);
+    });
   });
 
 insertCss(`
