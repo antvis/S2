@@ -123,7 +123,7 @@ describe('Row Cell Tests', () => {
       );
     });
 
-    test('should render text by text theme', () => {
+    test('should render text by text theme', async () => {
       s2.setOptions({
         conditions: {
           text: [
@@ -140,7 +140,7 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-      s2.render();
+      await s2.render();
 
       const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
       const { fill, fontSize, fontWeight } = rowCell.getTextShape().attributes;
