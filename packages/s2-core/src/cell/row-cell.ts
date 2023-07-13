@@ -1,6 +1,7 @@
 import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
+import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -27,7 +28,6 @@ import {
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
-import { checkIsLinkField } from '../utils/interaction/link-field';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -415,7 +415,7 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
-  protected getTextArea() {
+  protected getTextArea(): SimpleBBox {
     const content = this.getContentArea();
     const textIndent = this.getTextIndent();
     return {
@@ -425,16 +425,37 @@ export class RowCell extends HeaderCell {
     };
   }
 
+  protected getAdjustTextAreaHeight(
+    textArea: SimpleBBox,
+    scrollY: number,
+    viewportHeight: number,
+  ): number {
+    let adjustTextAreaHeight = textArea.height;
+    if (
+      !this.spreadsheet.facet.vScrollBar &&
+      textArea.y + textArea.height > scrollY + viewportHeight
+    ) {
+      adjustTextAreaHeight = scrollY + viewportHeight - textArea.y;
+    }
+    return adjustTextAreaHeight;
+  }
+
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.headerConfig;
+
+    const adjustTextAreaHeight = this.getAdjustTextAreaHeight(
+      textArea,
+      scrollY,
+      viewportHeight,
+    );
 
     const { fontSize } = this.getTextStyle();
     const textY = getAdjustPosition(
       textArea.y,
-      textArea.height,
+      adjustTextAreaHeight,
       scrollY,
-      height,
+      viewportHeight,
       fontSize,
     );
     const textX = getTextAndFollowingIconPosition(

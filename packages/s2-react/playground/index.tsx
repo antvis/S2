@@ -188,6 +188,7 @@ function MainLayout() {
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
   >('single');
+  const [pageSize, setPageSize] = React.useState(10);
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet>();
@@ -330,7 +331,7 @@ function MainLayout() {
     {},
     {
       pagination: showPagination && {
-        pageSize: 10,
+        pageSize,
         current: 1,
       },
       tooltip: {
@@ -550,6 +551,14 @@ function MainLayout() {
                 >
                   改变表格大小 (s2.changeSheetSize)
                 </Button>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={(e) => setPageSize(+e.target.value)}
+                  defaultValue={pageSize}
+                  suffix="条"
+                  prefix="每页条数"
+                  size="small"
+                />
                 <Popover
                   placement="bottomRight"
                   content={
