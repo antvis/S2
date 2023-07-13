@@ -474,6 +474,21 @@ function MainLayout() {
                 >
                   自定义 Tooltip (s2.setOptions)
                 </Button>
+
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      interaction: {
+                        brushSelection: false,
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                >
+                  禁用刷选 (s2.setOptions)
+                </Button>
+
                 <Popover
                   placement="bottomRight"
                   content={

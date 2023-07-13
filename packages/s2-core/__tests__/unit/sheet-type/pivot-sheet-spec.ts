@@ -472,6 +472,36 @@ describe('PivotSheet Tests', () => {
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
+  test('should refresh brush selection info', () => {
+    s2.setOptions({
+      interaction: {
+        brushSelection: true,
+      },
+    });
+
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: true,
+      col: true,
+    });
+
+    s2.setOptions({
+      interaction: {
+        brushSelection: {
+          data: true,
+          row: false,
+          col: false,
+        },
+      },
+    });
+
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: false,
+      col: false,
+    });
+  });
+
   test('should render sheet', () => {
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)

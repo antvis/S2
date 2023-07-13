@@ -6,6 +6,7 @@ import {
   get,
   includes,
   isEmpty,
+  isEqual,
   isFunction,
   isString,
   memoize,
@@ -215,6 +216,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initInteraction() {
+    this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
 
@@ -377,6 +379,7 @@ export abstract class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
+
     if (reset) {
       this.options = getSafetyOptions(options);
     } else {
