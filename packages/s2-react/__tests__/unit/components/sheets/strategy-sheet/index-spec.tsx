@@ -267,20 +267,7 @@ describe('<StrategySheet/> Tests', () => {
         const corner1 = rows[0].split('\t').slice(0, 3);
         const corner2 = rows[1].split('\t').slice(0, 3);
 
-        expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-        `);
+        expect(result).toMatchSnapshot();
         expect(corner1).toEqual(['', '', '日期']);
         expect(corner2).toEqual(['', '', '指标']);
       });
@@ -300,20 +287,7 @@ describe('<StrategySheet/> Tests', () => {
         const col1: string[] = rows[0].split('\t').slice(3);
         const col2: string[] = rows[1].split('\t').slice(3);
 
-        expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-        `);
+        expect(result).toMatchSnapshot();
         expect(col1.length).toEqual(col2.length);
         // 2022-09 对齐其数值
         const idx1 = col1.findIndex((col) => col === '2022-09');
@@ -338,20 +312,7 @@ describe('<StrategySheet/> Tests', () => {
         // 自定义节点A - 指标A
         const detailRow: string[] = rows[3].split('\t').slice(0, 5);
 
-        expect(result).toMatchInlineSnapshot(`
-        "		日期	2022-09			2022-10		2022-11			2021年净增完成度	趋势	2022	
-        		指标	数值	环比	同比	数值	环比	数值	环比	同比	净增完成度	趋势	数值	环比
-        自定义节点A												-		
-        自定义节点A	指标A					377		3877	4324	42%	-	-	377	
-        自定义节点A	指标A	指标B				377	324	377	324	-0.02	-	-	377	324
-        自定义节点A	指标A	自定义节点B												
-        自定义节点A	指标A	指标C					324	377	0		-	-		324
-        自定义节点A	指标A	指标D				377	324	377	324	0.02	-	-	377	324
-        自定义节点A	自定义节点E													
-        指标E								377	324	0.02	-	-		
-        指标E	自定义节点C													
-        指标E	自定义节点D													"
-      `);
+        expect(result).toMatchSnapshot();
         expect(detailRow).toEqual(['自定义节点A', '指标A', '', '', '']);
       });
     });
@@ -418,7 +379,7 @@ describe('<StrategySheet/> Tests', () => {
     });
   });
 
-  test('should overwrite strategy sheet row cell', () => {
+  test('should overwrite strategy sheet row cell', async () => {
     const fn = jest.fn();
 
     class CustomRowCell extends RowCell {
@@ -435,10 +396,12 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);
 
-    expect(fn).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(fn).toHaveBeenCalled();
+    });
   });
 
-  test('should overwrite strategy sheet col cell', () => {
+  test('should overwrite strategy sheet col cell', async () => {
     const fn = jest.fn();
 
     class CustomColCell extends StrategySheetColCell {
@@ -455,10 +418,12 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);
 
-    expect(fn).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(fn).toHaveBeenCalled();
+    });
   });
 
-  test('should overwrite strategy sheet data cell', () => {
+  test('should overwrite strategy sheet data cell', async () => {
     const fn = jest.fn();
 
     class CustomDataCell extends StrategySheetDataCell {
@@ -476,10 +441,12 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);
 
-    expect(fn).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(fn).toHaveBeenCalled();
+    });
   });
 
-  test('should render custom text style by conditions', () => {
+  test('should render custom text style by conditions', async () => {
     const s2Options: SheetComponentOptions = {
       width: 800,
       height: 600,
@@ -500,22 +467,24 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);
 
-    const dataCellTextShapes = s2.facet
-      .getDataCells()
-      .filter((cell) => {
-        const meta = cell.getMeta();
+    await waitFor(() => {
+      const dataCellTextShapes = s2.facet
+        .getDataCells()
+        .filter((cell) => {
+          const meta = cell.getMeta();
 
-        return meta.colIndex === 1 && meta.fieldValue;
-      })
-      .map((cell) => cell.getTextShapes())
-      .flat();
+          return meta.colIndex === 1 && meta.fieldValue;
+        })
+        .map((cell) => cell.getTextShapes())
+        .flat();
 
-    dataCellTextShapes.forEach((text) => {
-      const { fill, fontSize, fontWeight } = text.attributes;
+      dataCellTextShapes.forEach((text) => {
+        const { fill, fontSize, fontWeight } = text.attributes;
 
-      expect(fill).toEqual('red');
-      expect(fontSize).toEqual(20);
-      expect(fontWeight).toEqual(800);
+        expect(fill).toEqual('red');
+        expect(fontSize).toEqual(20);
+        expect(fontWeight).toEqual(800);
+      });
     });
   });
 });
