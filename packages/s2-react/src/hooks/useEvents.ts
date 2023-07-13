@@ -1,9 +1,9 @@
 import {
-  type EmitterType,
-  getBaseCellData,
   GEvent,
   S2Event,
   SpreadSheet,
+  getBaseCellData,
+  type EmitterType,
   type TargetCellInfo,
 } from '@antv/s2';
 import React from 'react';

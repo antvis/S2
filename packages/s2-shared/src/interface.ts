@@ -1,29 +1,29 @@
 import type {
-  S2DataConfig,
-  S2Options,
+  CellMeta,
   CellScrollPosition,
-  TargetCellInfo,
-  ResizeParams,
-  Node,
-  SpreadSheet,
-  ThemeCfg,
-  ViewMeta,
-  LayoutResult,
-  SortParams,
-  DataCell,
+  CollapsedRowsType,
   Data,
+  DataCell,
+  DataType,
   GEvent,
   HiddenColumnsInfo,
-  CollapsedRowsType,
-  DataType,
-  ResizeInfo,
-  S2CellType,
-  TooltipOperatorOptions,
-  S2RenderOptions,
-  S2MountContainer,
-  CellMeta,
-  TooltipContentType,
+  LayoutResult,
+  Node,
   Pagination,
+  ResizeInfo,
+  ResizeParams,
+  S2CellType,
+  S2DataConfig,
+  S2MountContainer,
+  S2Options,
+  S2RenderOptions,
+  SortParams,
+  SpreadSheet,
+  TargetCellInfo,
+  ThemeCfg,
+  TooltipContentType,
+  TooltipOperatorOptions,
+  ViewMeta,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -121,6 +121,7 @@ export interface BaseSheetComponentProps<
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
