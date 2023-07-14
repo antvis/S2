@@ -5,6 +5,7 @@ import {
   type RawData,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
+  AsyncRenderThreshold,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type {
@@ -68,15 +69,75 @@ class TableDataCellCopy extends BaseDataCellCopy {
         }
 
         const formatter = getFormatter(
-          this.spreadsheet,
           field,
           this.config.isFormatData,
+          this.spreadsheet.dataSet,
         );
         const value = row[field];
 
         return formatter(value);
       }),
     ) as string[][];
+  }
+
+  protected getDataMatrixRIC(): Promise<string[][]> {
+    const { showSeriesNumber } = this.spreadsheet.options;
+    const result: string[][] = [];
+    let rowIndex = 0;
+
+    return new Promise((resolve, reject) => {
+      try {
+        const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
+          let count = AsyncRenderThreshold;
+          const rowLength = this.displayData.length;
+
+          while (
+            deadline.timeRemaining() > 0 &&
+            count > 0 &&
+            rowIndex < rowLength - 1
+          ) {
+            for (let j = rowIndex; j < rowLength && count > 0; j++) {
+              const rowData = this.displayData[j];
+              const row: string[] = [];
+
+              for (let i = 0; i < this.columnNodes.length; i++) {
+                const colNode = this.columnNodes[i];
+                const field = colNode.field;
+
+                if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+                  row.push((j + 1).toString());
+                  // eslint-disable-next-line no-continue
+                  continue;
+                }
+
+                const formatter = getFormatter(
+                  field,
+                  this.config.isFormatData,
+                  this.spreadsheet.dataSet,
+                );
+                const value = rowData[field];
+                const dataItem = formatter(value);
+
+                row.push(dataItem as string);
+              }
+              rowIndex = j;
+              result.push(row);
+              count--;
+            }
+          }
+
+          if (rowIndex === rowLength - 1) {
+            resolve(result);
+          } else {
+            requestIdleCallback(dataMatrixIdleCallback);
+          }
+        };
+
+        requestIdleCallback(dataMatrixIdleCallback);
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   private getColMatrix(): string[] {
@@ -107,9 +168,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const value = this.displayData[meta.rowIndex]?.[fieldKey!];
 
     const formatter = getFormatter(
-      this.spreadsheet,
       fieldKey!,
       this.config.isFormatData,
+      this.spreadsheet.dataSet,
     );
 
     return formatter(value);
@@ -140,9 +201,27 @@ class TableDataCellCopy extends BaseDataCellCopy {
    * allSelected: true 时，明细表点击 全选 进行复制逻辑
    * @param {boolean} allSelected
    * @return {CopyableList}
+   * @deprecated 后续将废弃，使用 asyncProcessSelectedTable 替代
    */
   processSelectedTable(allSelected = false): CopyableList {
     const matrix = this.getDataMatrix();
+
+    if (!allSelected) {
+      return this.matrixTransformer(matrix, this.config.separator);
+    }
+
+    const colMatrix = this.getColMatrix();
+
+    return this.matrixTransformer(
+      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      this.config.separator,
+    );
+  }
+
+  async asyncProcessSelectedTable(allSelected = false): Promise<CopyableList> {
+    const matrix = this.config.isAsyncExport
+      ? await this.getDataMatrixRIC()
+      : await Promise.resolve(this.getDataMatrix());
 
     if (!allSelected) {
       return this.matrixTransformer(matrix, this.config.separator);
@@ -177,7 +256,12 @@ export const processSelectedTableByHeader = (
   return tableDataCellCopy.processSelectedTable();
 };
 
-// 导出全部数据
+/**
+ * 导出全部数据
+ * @param {CopyAllDataParams} params
+ * @return {CopyableList}
+ * @deprecated 后续将废弃，使用 asyncProcessSelectedAllTable 替代
+ */
 export const processSelectedAllTable = (
   params: CopyAllDataParams,
 ): CopyableList => {
@@ -194,6 +278,32 @@ export const processSelectedAllTable = (
   });
 
   return tableDataCellCopy.processSelectedTable(true);
+};
+
+// 导出全部数据
+export const asyncProcessSelectedAllTable = (
+  params: CopyAllDataParams,
+): Promise<CopyableList> => {
+  const {
+    sheetInstance,
+    split,
+    formatOptions,
+    customTransformer,
+    isAsyncExport,
+  } = params;
+  const tableDataCellCopy = new TableDataCellCopy({
+    spreadsheet: sheetInstance,
+    config: {
+      selectedCells: [],
+      separator: split,
+      formatOptions,
+      customTransformer,
+      isAsyncExport: true ?? isAsyncExport,
+    },
+    isExport: true,
+  });
+
+  return tableDataCellCopy.asyncProcessSelectedTable(true);
 };
 
 // 通过选中数据单元格进行复制
