@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.42.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.41.0...@antv/s2-react-v1.42.0) (2023-07-14)
+
+
+### Bug Fixes
+
+* **core:** 悬停角头单元格后显示图标 ([#2261](https://github.com/antvis/S2/issues/2261)) ([2d85d57](https://github.com/antvis/S2/commit/2d85d5739f5a3a52e92df699a935df93aa2a6a73))
+* **core:** 文本区域高度不应超过视口高度 ([#2265](https://github.com/antvis/S2/issues/2265)) ([00cb47d](https://github.com/antvis/S2/commit/00cb47d107996af23e468c945277c4270e3b092f))
+* **core:** 调用 `setOptions` 设置 `brushSelection` ([#2257](https://github.com/antvis/S2/issues/2257)) ([f610514](https://github.com/antvis/S2/commit/f610514b9122cac396bfe9f7a83ff294164df2b9))
+
+
+### Features
+
+* 为 react 编辑组件添加 onDataCellEditEnd 事件 ([#2247](https://github.com/antvis/S2/issues/2247)) ([b0563ad](https://github.com/antvis/S2/commit/b0563adc8b15538ffa4b74746d5e6d68ba6a0e3f))
+
 # [@antv/s2-react-v1.41.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.40.0...@antv/s2-react-v1.41.0) (2023-06-09)
 
 
