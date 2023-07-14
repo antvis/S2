@@ -1,3 +1,4 @@
+import type { DataCell, HeaderCell } from '../../cell';
 import type { RawData } from './s2DataConfig';
 
 export interface ValueRange {
@@ -30,6 +31,7 @@ export interface MappingResult extends ValueRange {
 export type MappingFunction = (
   fieldValue: number | string,
   data: RawData,
+  cell?: DataCell | HeaderCell,
 ) => MappingResult | undefined | null;
 
 /**
