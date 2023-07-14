@@ -131,9 +131,69 @@ s2.render(false)
 
 请查看 [这篇文章](/docs/manual/advanced/get-cell-data)
 
-### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
+### 为什么 Tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 
 请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+
+### 如何在点击或悬停单元格的时候自定义 Tooltip?
+
+请查看相关文档和示例
+
+- [Tooltip 自定义教程](https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89)
+- [自定义点击显示 Tooltip](/examples/react-component/tooltip/#custom-click-show-tooltip)
+- [自定义悬停显示 Tooltip](/examples/react-component/tooltip/#custom-hover-show-tooltip)
+
+### 如何在 Tooltip 里自定义操作项？
+
+- 方式 1: 默认 tooltip 内容不变，通过 [自定义操作项](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-operation), 在内容上方增加自定义操作菜单。
+- 方式 2: 通过 [自定义 Tooltip 内容](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-content), 完全自定义组件内容。
+
+### React 组件，自定义显示 tooltip 后，内容未更新怎么回事？
+
+当手动调用实例方法 `s2.showTooltip` 时，如果内容是一个 React 自定义组件，且组件内容未更新时，可以尝试声明 `forceRender` 强制更新组件内容
+
+```ts
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"A"}/>
+})
+
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"B"} />
+  options: {
+    forceRender: true
+  }
+})
+```
+
+相关 issue: <https://github.com/antvis/S2/issues/1716>
+
+### 使用 React 组件，Tooltip 莫名其妙被隐藏，不展示了？
+
+```tsx
+<SheetComponent options={options} dataCfg={dataCfg}/>
+```
+
+- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/master/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
+
+- `场景 2`: S2 默认点击非表格区域，会隐藏 tooltip, 还原交互状态，请确保你自己的业务逻辑有无相应的 `click` 事件，看是否有被冒泡影响，尝试阻止冒泡
+
+```ts
+event.stopPropagation()
+```
+
+- `场景 3`: 手动调用 `s2.showTooltip` 展示 tooltip 后，点击内部的某个元素后，再次展示第二个 tooltip, 这个时候 tooltip 被隐藏，和场景 2 类似，请给 `click` 事件增加冒泡处理。
+
+```ts
+// 菜单 1-1 => click
+
+s2.showTooltip({ ... })
+
+// 菜单 1-1 => click
+event.stopPropagation()
+s2.showTooltip({ ... })
+```
 
 ### 如何在 Vue 中自定义 Tooltip?
 
@@ -183,27 +243,6 @@ s2.setTheme({
   }
 })
 ```
-
-### React 组件，自定义显示 tooltip 后，内容未更新怎么回事？
-
-当手动调用实例方法 `s2.showTooltip` 时，如果内容是一个 React 自定义组件，且组件内容未更新时，可以尝试声明 `forceRender` 强制更新组件内容
-
-```ts
-s2.showTooltip({
-  ...,
-  content: <YourComponent props={"A"}/>
-})
-
-s2.showTooltip({
-  ...,
-  content: <YourComponent props={"B"} />
-  options: {
-    forceRender: true
-  }
-})
-```
-
-相关 issue: <https://github.com/antvis/S2/issues/1716>
 
 ### S2 支持对表格进行编辑吗？
 
