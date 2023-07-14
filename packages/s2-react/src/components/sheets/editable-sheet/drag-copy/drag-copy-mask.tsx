@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import {
   S2Event,
   DataCell,
@@ -14,7 +14,7 @@ type DragCopyProps = {
   onCopyFinished?: () => void;
 };
 
-export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
+export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
   const spreadsheet = useSpreadSheetRef();
 
   const [startCell, setStartCell] = useState<DataCell>();
@@ -220,4 +220,4 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
       }}
     ></div>
   );
-}
+});

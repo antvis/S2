@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
-import { EditCell } from './edit-cell';
 import { DragCopyPoint } from './drag-copy';
+import { EditCell } from './edit-cell';
 
 export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
-  (props) => (
-    <BaseSheet {...props} sheetType={'table'}>
-      <EditCell onChange={() => {}} />
-      <DragCopyPoint />
-    </BaseSheet>
-  ),
+  (props) => {
+    const onChange = useCallback(() => {}, []);
+
+    return (
+      <BaseSheet {...props} sheetType={'table'}>
+        <EditCell onChange={onChange} />
+        <DragCopyPoint />
+      </BaseSheet>
+    );
+  },
 );
 
 EditableSheet.displayName = 'EditableSheet';
