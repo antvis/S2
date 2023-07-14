@@ -48,6 +48,7 @@ order: 0
 | onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
+| onDataCellEditEnd | 数值单元格编辑完成（暂只支持编辑表） | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

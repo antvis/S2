@@ -161,9 +161,55 @@ s2.render(false)
 
 请查看 [使用文档](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
 
+### 如何关闭 hover 单元格出现的黑色边框？
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png)
+
+边框属于 `聚焦 (hoverFocus)` 交互状态的一种，可通过 [主题配置](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatetheme) 关闭
+
+```ts
+s2.setTheme({
+  dataCell: {
+    cell: {
+      interactionState: {
+        hoverFocus: {
+          // 边框设置为透明
+          borderColor: 'transparent'
+          // 或者边框透明度设置为 0
+          // borderOpacity: 0
+        }
+      }
+    }
+  }
+})
+```
+
+### React 组件，自定义显示 tooltip 后，内容未更新怎么回事？
+
+当手动调用实例方法 `s2.showTooltip` 时，如果内容是一个 React 自定义组件，且组件内容未更新时，可以尝试声明 `forceRender` 强制更新组件内容
+
+```ts
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"A"}/>
+})
+
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"B"} />
+  options: {
+    forceRender: true
+  }
+})
+```
+
+相关 issue: <https://github.com/antvis/S2/issues/1716>
+
 ### S2 支持对表格进行编辑吗？
 
-请查看 [编辑模式示例](/examples/case/data-preview#excel)
+请查看 [编辑模式示例](/examples/case/data-preview#excel) 和 [编辑表示例](https://s2.antv.antgroup.com/examples/react-component/sheet/#editable)
+
+目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 

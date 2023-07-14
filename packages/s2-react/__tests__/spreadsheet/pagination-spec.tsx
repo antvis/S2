@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { LangType, S2Options, setLang } from '@antv/s2';
+import { LangType, S2Options, setLang, SpreadSheet } from '@antv/s2';
+import { getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from '../data/simple-data.json';
+import { pivotSheetDataCfg } from '../../playground/config';
 import { SheetComponent } from '../../src';
-import { getContainer } from '../util/helpers';
 import 'antd/dist/antd.min.css';
 
 const s2Options: S2Options = {
@@ -16,6 +17,8 @@ const s2Options: S2Options = {
   },
   hierarchyType: 'grid',
 };
+
+let s2: SpreadSheet;
 
 describe('Pagination Tests', () => {
   let container: HTMLDivElement;
@@ -93,5 +96,36 @@ describe('Pagination Tests', () => {
     expect(
       document.querySelector('.ant-pagination-options-size-changer'),
     ).toBeFalsy();
+  });
+
+  test('should row header cell render text position based on the actual cell height when pagination is show', async () => {
+    act(() => {
+      ReactDOM.render(
+        <SheetComponent
+          options={{
+            ...s2Options,
+            pagination: {
+              ...s2Options.pagination,
+              current: 1,
+              pageSize: 1,
+            },
+            height: 400,
+          }}
+          dataCfg={pivotSheetDataCfg as any}
+          onMounted={(instance) => {
+            s2 = instance;
+          }}
+          showPagination
+        />,
+        container,
+      );
+    });
+
+    await sleep(1000);
+
+    expect(
+      s2.foregroundGroup.cfg.children[0].headerConfig.data[0].belongsCell
+        .textShapes[0].attrs.y,
+    ).toBe(9);
   });
 });
