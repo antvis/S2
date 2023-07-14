@@ -236,7 +236,7 @@ describe('Data Cell Tests', () => {
       { useSimpleData: false },
     );
 
-    test('should test condition mapping formattedValue params when the sheet is pivot', () => {
+    test('should test condition mapping formattedValue params when the sheet is pivot', async () => {
       s2.setDataCfg({
         ...s2.dataCfg,
         meta: [
@@ -248,7 +248,7 @@ describe('Data Cell Tests', () => {
           },
         ],
       });
-      s2.render();
+      await s2.render();
 
       const dataCell = findDataCell(s2, 'number');
 

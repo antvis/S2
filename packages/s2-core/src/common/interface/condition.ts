@@ -1,7 +1,5 @@
+import type { DataCell, HeaderCell } from '../../cell';
 import type { RawData } from './s2DataConfig';
-import type { IconTheme } from './theme';
-import type { DataCell, HeaderCell } from '@/cell';
-
 
 export interface ValueRange {
   minValue?: number;
