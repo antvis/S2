@@ -32,7 +32,8 @@ Function description: Configure conditional formatting. Including text (text), b
 ```ts
 type MappingFunction = (
   fieldValue: number | string | null,
-  data: Record<string, any>
+  data: Record<string, any>,
+  node: DataCell | HeaderCell
 ) => {
   // 仅用于图标字段标记，可选
   icon?: string;

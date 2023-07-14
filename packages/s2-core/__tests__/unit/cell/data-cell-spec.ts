@@ -26,7 +26,10 @@ import { renderText } from '@/utils/g-renders';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') =>
+const findDataCell = (
+  s2: SpreadSheet,
+  valueField: 'price' | 'cost' | 'number',
+) =>
   s2.facet.panelGroup.children[0].find<DataCell>(
     (item) =>
       item instanceof DataCell && item.getMeta().valueField === valueField,
@@ -206,7 +209,52 @@ describe('Data Cell Tests', () => {
       expect(dataCell.getConditionIconShapes()).toBeEmpty();
     });
   });
+  describe('Condition by formattedValue Tests', () => {
+    const s2 = createPivotSheet(
+      {
+        conditions: {
+          text: [
+            {
+              field: 'number',
+              mapping(_, __, cell) {
+                const formattedValue = cell?.getFieldValue();
 
+                if (formattedValue === 'formatted') {
+                  return {
+                    fill: '#D03050',
+                  };
+                }
+
+                return {
+                  fill: '#fff',
+                };
+              },
+            },
+          ],
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    test('should test condition mapping formattedValue params when the sheet is pivot', async () => {
+      s2.setDataCfg({
+        ...s2.dataCfg,
+        meta: [
+          {
+            field: 'number',
+            formatter: () => {
+              return 'formatted';
+            },
+          },
+        ],
+      });
+      await s2.render();
+
+      const dataCell = findDataCell(s2, 'number');
+
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#D03050');
+    });
+  });
   describe('Condition Tests', () => {
     const s2 = createPivotSheet({
       conditions: {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DataCell, S2Event, S2_PREFIX_CLS, GEvent } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
@@ -7,10 +7,6 @@ import { useSpreadSheetRef } from '../../../../context/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
 
 import './drag-copy-point.less';
-
-export type DragCopyProps = {
-  onChange?: (val: string) => void;
-};
 
 export function DragCopyPoint() {
   const spreadsheet = useSpreadSheetRef();
@@ -131,10 +127,12 @@ export function DragCopyPoint() {
     }
   }, [scroll, cell]);
 
-  /** 多选时隐藏拖拽点 */
-  const batchSelected = () => {
+  /**
+   * 多选时隐藏拖拽点
+   */
+  const batchSelected = useCallback(() => {
     setCell(undefined);
-  };
+  }, []);
 
   useS2Event(S2Event.COL_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.ROW_CELL_CLICK, batchSelected, spreadsheet);

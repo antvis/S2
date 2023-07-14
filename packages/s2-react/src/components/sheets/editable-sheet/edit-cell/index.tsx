@@ -1,4 +1,5 @@
 import React, {
+  memo,
   useRef,
   useState,
   useEffect,
@@ -183,7 +184,7 @@ function EditCellComponent(
   );
 }
 
-function EditCell({ onChange, CustomComponent }: onChangeProps) {
+const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
   const spreadsheet = useSpreadSheetRef();
 
   const onEditCell = useCallback(
@@ -204,6 +205,6 @@ function EditCell({ onChange, CustomComponent }: onChangeProps) {
   useS2Event(S2Event.DATA_CELL_CLICK, onEditCell, spreadsheet);
 
   return null;
-}
+});
 
 export { EditCell };

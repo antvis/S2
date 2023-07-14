@@ -1,5 +1,4 @@
 import { concat, get } from 'lodash';
-import { NewTab } from '../../common/constant/copy';
 import {
   CopyMIMEType,
   type Copyable,
@@ -8,7 +7,7 @@ import {
   type CopyableList,
   type CopyAllDataParams,
 } from './interface';
-import { processAllSelected } from './copy/core';
+import { processAllSelected, processAllSelectedAsync } from './copy/core';
 import { getNodeFormatData, assembleMatrix, getMaxRowLen } from './copy/common';
 import { getHeaderList } from './method';
 
@@ -108,20 +107,20 @@ export const download = (str: string, fileName: string) => {
  * @param split
  * @param formatOptions 是否格式化数据
  * @param customTransformer
+ * @param isAsyncExport 是否异步导出
+ * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
  */
 // TODO: 改名
-export const copyData = ({
-  sheetInstance,
-  split = NewTab,
-  formatOptions,
-  customTransformer,
-}: CopyAllDataParams) => {
-  return processAllSelected({
-    sheetInstance,
-    split,
-    formatOptions,
-    customTransformer,
-  })[0].content;
+export const copyData = (params: CopyAllDataParams) => {
+  const result = processAllSelected(params);
+
+  return result[0].content;
+};
+
+export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
+  const result = await processAllSelectedAsync(params);
+
+  return result[0].content;
 };
 
 export { CopyableList, FormatOptions };

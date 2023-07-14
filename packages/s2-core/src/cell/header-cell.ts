@@ -437,7 +437,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public mappingValue(condition: Condition): ConditionMappingResult {
     const value = this.getMeta().value;
 
-    return condition?.mapping(value, this.meta)!;
+    return condition?.mapping(value, this.meta, this)!;
   }
 
   public findFieldCondition(conditions: Condition[]): Condition | undefined {

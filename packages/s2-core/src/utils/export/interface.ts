@@ -1,5 +1,6 @@
 import type { SpreadSheet } from '../../sheet-type';
 import type { DataItem, CellMeta } from '../../common';
+import { EXTRA_FIELD } from '../../common';
 
 export type MatrixPlainTransformer = (
   data: DataItem[][],
@@ -43,11 +44,13 @@ export interface Transformer {
   [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
   [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 }
+
 export interface CopyOrExportConfig {
   selectedCells?: CellMeta[];
   formatOptions?: FormatOptions;
   separator?: string;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  isAsyncExport?: boolean;
 }
 
 export interface CopyAndExportUnifyConfig {
@@ -56,6 +59,7 @@ export interface CopyAndExportUnifyConfig {
   isFormatData: boolean;
   selectedCells: CellMeta[];
   transformers: Transformer;
+  isAsyncExport: boolean;
 }
 
 export interface CopyAllDataParams {
@@ -63,6 +67,8 @@ export interface CopyAllDataParams {
   split?: string;
   formatOptions?: FormatOptions;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  /** 是否开启异步导出 */
+  isAsyncExport?: boolean;
 }
 
 export interface SheetCopyConstructorParams {
@@ -70,3 +76,8 @@ export interface SheetCopyConstructorParams {
   config: CopyOrExportConfig;
   isExport?: boolean;
 }
+
+export type MeasureQuery =
+  | { [EXTRA_FIELD]: string | undefined }
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  | {};

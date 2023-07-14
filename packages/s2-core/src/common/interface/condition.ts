@@ -1,5 +1,6 @@
-import type { IconTheme, TextTheme } from '..';
+import type { DataCell, HeaderCell } from '../../cell';
 import type { RawData } from './s2DataConfig';
+import type { IconTheme, TextTheme } from './theme';
 
 export interface ValueRange {
   minValue?: number;
@@ -31,6 +32,7 @@ export type ConditionMappingResult<T = unknown> = ValueRange &
 export type ConditionMapping<T = unknown> = (
   fieldValue: number | string,
   data: RawData,
+  cell?: DataCell | HeaderCell,
 ) => ConditionMappingResult<T> | undefined | null;
 
 /**
