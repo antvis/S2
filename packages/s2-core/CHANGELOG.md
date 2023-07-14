@@ -1,3 +1,20 @@
+# [@antv/s2-v1.49.0](https://github.com/antvis/S2/compare/@antv/s2-v1.48.0...@antv/s2-v1.49.0) (2023-07-14)
+
+
+### Bug Fixes
+
+* **core:** 使用客户端的位置来计算调整大小的偏移量 ([#2273](https://github.com/antvis/S2/issues/2273)) ([ae9f4ec](https://github.com/antvis/S2/commit/ae9f4eca88132292a2a7676d4cd165d8b67ca178))
+* **core:** 删除范围选择中的错误拦截器 ([#2263](https://github.com/antvis/S2/issues/2263)) ([589ebb5](https://github.com/antvis/S2/commit/589ebb543745e3e084aa6cae82f58782a763638d))
+* **core:** 悬停角头单元格后显示图标 ([#2261](https://github.com/antvis/S2/issues/2261)) ([2d85d57](https://github.com/antvis/S2/commit/2d85d5739f5a3a52e92df699a935df93aa2a6a73))
+* **core:** 文本区域高度不应超过视口高度 ([#2265](https://github.com/antvis/S2/issues/2265)) ([00cb47d](https://github.com/antvis/S2/commit/00cb47d107996af23e468c945277c4270e3b092f))
+* **core:** 调用 `setOptions` 设置 `brushSelection` ([#2257](https://github.com/antvis/S2/issues/2257)) ([f610514](https://github.com/antvis/S2/commit/f610514b9122cac396bfe9f7a83ff294164df2b9))
+* 交叉表圈选表头复制内容不正确 ([#2254](https://github.com/antvis/S2/issues/2254)) ([a4021cb](https://github.com/antvis/S2/commit/a4021cbfd62c84f6d6a5f96871b225f24b268f29))
+
+
+### Features
+
+* 为 react 编辑组件添加 onDataCellEditEnd 事件 ([#2247](https://github.com/antvis/S2/issues/2247)) ([b0563ad](https://github.com/antvis/S2/commit/b0563adc8b15538ffa4b74746d5e6d68ba6a0e3f))
+
 # [@antv/s2-v1.48.0](https://github.com/antvis/S2/compare/@antv/s2-v1.47.1...@antv/s2-v1.48.0) (2023-06-09)
 
 
