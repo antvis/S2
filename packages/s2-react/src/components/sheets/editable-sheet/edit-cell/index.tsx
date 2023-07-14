@@ -1,14 +1,14 @@
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
+import { Input } from 'antd';
+import { merge, pick } from 'lodash';
 import React, {
-  useRef,
-  useState,
+  useCallback,
   useEffect,
   useMemo,
-  useCallback,
+  useRef,
+  useState,
 } from 'react';
-import { Input } from 'antd';
-import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import {
@@ -28,6 +28,7 @@ export interface CustomProps {
 
 type onChangeProps = {
   onChange?: (val: any[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -37,7 +38,7 @@ function EditCellComponent(
 ) {
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
-  const { event, onChange, CustomComponent } = params;
+  const { event, onChange, onDataCellEditEnd, CustomComponent } = params;
   const cell: BaseCell<ViewMeta> = event.target.cfg.parent;
 
   const { left, top, width, height } = useMemo(() => {
@@ -93,6 +94,15 @@ function EditCellComponent(
     const { rowIndex, valueField } = cell.getMeta();
     spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
+
+    onDataCellEditEnd?.(
+      merge(cell.getMeta(), {
+        fieldValue: inputVal,
+        data: {
+          [valueField]: inputVal,
+        },
+      }),
+    );
 
     if (onChange) {
       onChange(spreadsheet.dataSet.originData);
@@ -162,14 +172,18 @@ function EditCellComponent(
   );
 }
 
-function EditCell({ onChange, CustomComponent }: onChangeProps) {
+function EditCell({
+  onChange,
+  onDataCellEditEnd,
+  CustomComponent,
+}: onChangeProps) {
   const spreadsheet = useSpreadSheetRef();
 
   const cb = useCallback(
     (e: CanvasEvent) => {
       invokeComponent(
         EditCellComponent,
-        { event: e, onChange, CustomComponent },
+        { event: e, onChange, onDataCellEditEnd, CustomComponent },
         spreadsheet,
       );
     },

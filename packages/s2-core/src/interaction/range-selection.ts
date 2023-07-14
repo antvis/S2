@@ -187,6 +187,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           stateName: InteractionStateName.SELECTED,
         });
       } else {
+        interaction.removeIntercepts([InterceptType.HOVER]);
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
 

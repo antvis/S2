@@ -64,6 +64,11 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.foregroundGroup = new Group('');
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
     mockSpreadSheetInstance.render();
     brushSelectionInstance = new DataCellBrushSelection(
       mockSpreadSheetInstance,
