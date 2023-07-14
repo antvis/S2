@@ -316,14 +316,11 @@ export class CornerCell extends HeaderCell {
     const { text, bolderText } = this.getStyle()!;
     const cornerTextStyle = this.isBolderText() ? text : bolderText;
 
-    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
-    const fill = this.getTextConditionFill(
-      this.getDefaultTextFill(cornerTextStyle!.fill!),
-    );
+    const textStyle =
+      this.getContainConditionMappingResultTextStyle(cornerTextStyle);
 
     return {
-      ...cornerTextStyle,
-      fill,
+      ...textStyle,
       // 角头因为要折行，所以在都是按照middle来计算，这里写死，不然用户配置了baseline，会导致计算错误
       textBaseline: 'middle',
     };

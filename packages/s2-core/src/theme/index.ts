@@ -161,8 +161,6 @@ export const getTheme = (
       },
       icon: {
         fill: basicColors[13],
-        downIconColor: semanticColors.red,
-        upIconColor: semanticColors.green,
         size: 10,
         margin: {
           right: 4,

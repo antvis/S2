@@ -6,7 +6,7 @@ import type { CustomTooltipProps } from './interface';
 
 import './index.less';
 
-export const StrategySheetColTooltip: React.FC<CustomTooltipProps> = ({
+export const StrategySheetColCellTooltip: React.FC<CustomTooltipProps> = ({
   cell,
   label,
 }) => {

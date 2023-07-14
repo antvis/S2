@@ -197,14 +197,12 @@ Object {
       "verticalBorderWidth": 1,
     },
     "icon": Object {
-      "downIconColor": "#FF4D4F",
       "fill": "#000000",
       "margin": Object {
         "left": 4,
         "right": 4,
       },
       "size": 10,
-      "upIconColor": "#29A294",
     },
     "miniChart": Object {
       "bar": Object {
@@ -323,14 +321,12 @@ Object {
       "verticalBorderWidth": 1,
     },
     "icon": Object {
-      "downIconColor": "#FF4D4F",
       "fill": "#000000",
       "margin": Object {
         "left": 4,
         "right": 4,
       },
       "size": 10,
-      "upIconColor": "#29A294",
     },
     "miniChart": Object {
       "bar": Object {

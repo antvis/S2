@@ -14,7 +14,7 @@ import type { CustomTooltipProps } from './interface';
 
 import './index.less';
 
-export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
+export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
   cell,
   label,
   showOriginalValue: showOriginalValueFromTooltip,
@@ -114,6 +114,6 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   );
 };
 
-StrategySheetDataTooltip.defaultProps = {
+StrategySheetDataCellTooltip.defaultProps = {
   showOriginalValue: false,
 };

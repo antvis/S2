@@ -69,7 +69,127 @@ export const pivotSheetDataCfg: S2DataConfig = {
 };
 
 export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
-  text: [],
+  text: [
+    {
+      field: 'province',
+      mapping(value) {
+        if (value === '浙江省') {
+          return {
+            fontSize: 30,
+            fill: 'pink',
+            textAlign: 'center',
+            fontWeight: 'bold',
+          };
+        }
+      },
+    },
+    {
+      field: 'city',
+      mapping(value) {
+        if (value === '成都市') {
+          return {
+            fontSize: 20,
+            fill: 'red',
+            textAlign: 'right',
+            fontWeight: 'bold',
+          };
+        }
+      },
+    },
+    {
+      field: 'type',
+      mapping() {
+        return {
+          fontSize: 20,
+          fill: 'red',
+          textAlign: 'right',
+        };
+      },
+    },
+    {
+      field: 'sub_type',
+      mapping() {
+        return {
+          fontSize: 12,
+          opacity: 0.6,
+          fill: 'yellow',
+          textAlign: 'left',
+        };
+      },
+    },
+    {
+      field: 'number',
+      mapping(value) {
+        if (value <= 3000) {
+          return {
+            fill: '#065',
+            fontWeight: 800,
+            fontSize: 20,
+          };
+        }
+
+        if (value > 3000) {
+          return {
+            fill: '#000',
+            opacity: 0.4,
+          };
+        }
+
+        return {
+          fontSize: 30,
+          fill: '#000',
+          textAlign: 'left',
+        };
+      },
+    },
+  ],
+  icon: [
+    {
+      field: 'type',
+      position: 'left',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#054',
+          size: 26,
+        };
+      },
+    },
+    {
+      field: 'city',
+      position: 'left',
+      mapping(value) {
+        if (value === '成都市') {
+          return {
+            icon: 'CellUp',
+            fill: '#FF4D4F',
+            size: 16,
+          };
+        }
+      },
+    },
+    {
+      field: 'province',
+      position: 'left',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#FF4D4F',
+          size: 16,
+        };
+      },
+    },
+    {
+      field: 'number',
+      mapping() {
+        return {
+          icon: 'CellUp',
+          fill: '#FF4D4F',
+          size: 16,
+        };
+      },
+    },
+  ],
   interval: [
     {
       field: 'number',

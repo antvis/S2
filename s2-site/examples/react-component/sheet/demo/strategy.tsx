@@ -54,11 +54,13 @@ fetch(
             field: 'number',
             mapping: (value, cellInfo) => {
               const { meta, colIndex } = cellInfo;
+
               if (colIndex === 0 || !value || !meta?.fieldValue) {
                 return {
                   fill: '#000',
                 };
               }
+
               return {
                 fill: value > 0 ? '#FF4D4F' : '#29A294',
               };
