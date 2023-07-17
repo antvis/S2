@@ -1,3 +1,5 @@
+# [@antv/s2-vue-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.6...@antv/s2-vue-v2.0.0-next.7) (2023-07-17)
+
 # [@antv/s2-vue-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.5...@antv/s2-vue-v2.0.0-next.6) (2023-04-23)
 
 
