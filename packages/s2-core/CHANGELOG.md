@@ -1,3 +1,23 @@
+# [@antv/s2-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.7...@antv/s2-v2.0.0-next.8) (2023-07-17)
+
+
+### Bug Fixes
+
+* 修复 meta name 同名时，hoverFocus 出错的问题 ([#2180](https://github.com/antvis/S2/issues/2180)) ([1480528](https://github.com/antvis/S2/commit/1480528c119f33fe40bc08e52e7abf87e9f9a797))
+* 修复导出数据分隔符有误的问题 ([#2241](https://github.com/antvis/S2/issues/2241)) ([ec0a31c](https://github.com/antvis/S2/commit/ec0a31c4fc660b44176b074d4cc8c098dbe95eb4))
+
+
+### Features
+
+* 使用 requestIdleCallback 处理数据大量导出的情况 ([#2272](https://github.com/antvis/S2/issues/2272)) ([42a5551](https://github.com/antvis/S2/commit/42a55516dd369d9ab5579b52fbc9900b0ad81858))
+* 同步复制支持自定义transformer  ([#2201](https://github.com/antvis/S2/issues/2201)) ([9003767](https://github.com/antvis/S2/commit/9003767d584248b9d122f299326fd14753961883))
+* 增加暗黑主题 ([#2130](https://github.com/antvis/S2/issues/2130)) ([51dbdcf](https://github.com/antvis/S2/commit/51dbdcf564b387a3fd1809a71016f3a91eebde38))
+* 完善复制和导出在格式化后，总计、小计对应数值没有格式化的问题 ([#2237](https://github.com/antvis/S2/issues/2237)) ([abc0dbb](https://github.com/antvis/S2/commit/abc0dbb1544d9a4ef133e6a2c7d2d09ac8f35b48))
+* 文本和图标的条件格式支持主题配置 ([#2267](https://github.com/antvis/S2/issues/2267)) ([c332c68](https://github.com/antvis/S2/commit/c332c687dfb7be1d07b79b44934f78c1947cc466))
+* 条件格式 mapping 增加第三个参数获取单元格实例 ([#2242](https://github.com/antvis/S2/issues/2242)) ([aae427d](https://github.com/antvis/S2/commit/aae427dfe6a87cae577ce2449fd6058d358971f9))
+* 行列头兼容 condition icon 和 action icons ([#2161](https://github.com/antvis/S2/issues/2161)) ([1df4286](https://github.com/antvis/S2/commit/1df42860f6a12d3cb182ba7633c4984a04e62890))
+* 适配g5.0异步渲染 ([#2251](https://github.com/antvis/S2/issues/2251)) ([069d03d](https://github.com/antvis/S2/commit/069d03d299429c2ffab3e20d56ecd6bb30119ffd))
+
 # [@antv/s2-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.6...@antv/s2-v2.0.0-next.7) (2023-04-28)
 
 
