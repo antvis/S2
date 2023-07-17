@@ -121,7 +121,7 @@ describe('<StrategySheet/> Tests', () => {
 
       renderStrategySheet({
         tooltip: {
-          showTooltip: true,
+          enable: true,
           [cellType]: {
             content: () => <div>{content}</div>,
           },

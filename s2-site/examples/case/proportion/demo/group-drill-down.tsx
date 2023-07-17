@@ -16,7 +16,7 @@ fetch(
         width: 800,
         height: 600,
         tooltip: {
-          showTooltip: false,
+          enable: false,
         },
         style: {
           layoutWidthType: 'colAdaptive',
@@ -34,12 +34,14 @@ fetch(
               mapping: (value, cellInfo) => {
                 // 添加文本颜色映射逻辑
                 const { colIndex } = cellInfo;
+
                 if (colIndex <= 1) {
                   // 主指标为黑色
                   return {
                     fill: '#000',
                   };
                 }
+
                 return {
                   fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
                 };
@@ -53,6 +55,7 @@ fetch(
         if (!drillDownField) {
           return null;
         }
+
         return (
           <div className="antv-s2-breadcrumb">
             <span
@@ -71,6 +74,7 @@ fetch(
 
       const dataCellTooltip = (viewMeta) => {
         const { spreadsheet, fieldValue } = viewMeta;
+
         return (
           <div>
             <div className="antv-s2-tooltip-operator">
@@ -117,6 +121,7 @@ fetch(
 
       const onDataCellMouseUp = (value) => {
         const viewMeta = value?.viewMeta;
+
         if (!viewMeta) {
           return;
         }
@@ -125,11 +130,13 @@ fetch(
           x: value.event.clientX,
           y: value.event.clientY,
         };
+
         viewMeta.spreadsheet.tooltip.show({
           position,
           content: dataCellTooltip(viewMeta),
         });
       };
+
       return (
         <SheetComponent
           dataCfg={s2DataConfig}

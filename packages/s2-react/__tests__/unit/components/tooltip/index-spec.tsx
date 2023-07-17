@@ -23,7 +23,7 @@ describe('Tooltip Component Tests', () => {
       const { asFragment } = render(
         <TooltipComponent
           options={{
-            onlyMenu: true,
+            onlyShowOperator: true,
             operator: {
               menus: getTooltipOperatorSortMenus(),
               defaultSelectedKeys: [key],
@@ -85,7 +85,7 @@ describe('Tooltip Common Components Tests', () => {
         menus={menus}
         key={'tooltipOperator'}
         cell={mockCell as unknown as S2CellType}
-        onlyMenu={true}
+        onlyShowOperator={true}
         onClick={mockMenuClick}
         defaultSelectedKeys={[menus[0].key]}
       />,
@@ -110,7 +110,7 @@ describe('Tooltip Common Components Tests', () => {
 
     const { asFragment, getByText, container } = render(
       <TooltipOperator
-        onlyMenu={false}
+        onlyShowOperator={false}
         menus={hiddenMenus}
         cell={jest.fn() as unknown as S2CellType}
       />,

@@ -140,7 +140,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
       },
     },
     tooltip: {
-      showTooltip: true,
+      enable: true,
     },
   };
 };

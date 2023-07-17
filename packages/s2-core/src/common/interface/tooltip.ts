@@ -6,7 +6,6 @@ import type {
   Point,
   S2CellType,
   SortMethod,
-  SortParam,
 } from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
 
@@ -50,19 +49,60 @@ export type TooltipDetailListItem = {
 };
 
 export interface TooltipOptions<Icon = Element | string, Text = string> {
-  // 隐藏汇总
+  /**
+   * 是否隐藏汇总项
+   * @example "数量(总和) 999"
+   */
   hideSummary?: boolean;
-  // 顶部操作项
+
+  /**
+   * 顶部操作项
+   */
   operator?: TooltipOperatorOptions<Icon, Text>;
-  enterable?: boolean;
-  // 是否是小计
+
+  /**
+   * 是否是小计/总计
+   */
   isTotals?: boolean;
-  showSingleTips?: boolean;
-  onlyMenu?: boolean;
+
+  /**
+   * 只展示当前单元格文本 (不含汇总/行列头信息), 如果存在省略, 显示完整文本
+   * 1. 用于单元格省略后 hover 显示完整文本
+   * 2. 明细表 hover/click 显示当前单元格文本
+   * 3. 自定义交互 hover/click 场景
+  * @example
+    s2.showTooltip({
+      ...
+      options: { onlyShowCellText: true }
+    })
+   */
+  onlyShowCellText?: boolean;
+
+  /**
+   * 只展示顶部操作项菜单 (不含汇总/行列头/单元格信息)
+   * 1. 用于排序场景
+   * 2. 自定义交互
+   * @example
+      s2.showTooltip({
+        ...
+        options: { onlyShowOperator: true }
+      })
+   */
+  onlyShowOperator?: boolean;
+
+  /**
+   * 是否格式化数据
+   */
   enableFormat?: boolean;
-  // 是否强制清空 dom
+
+  /**
+   * 是否强制清空 dom
+   */
   forceRender?: boolean;
-  // 自定义数据
+
+  /**
+   * 自定义数据
+   */
   data?: TooltipData;
 }
 
@@ -78,18 +118,6 @@ export interface TooltipSummaryOptions {
 export interface TooltipNameTipsOptions {
   name?: string | undefined | null;
   tips?: string | undefined | null;
-}
-
-export interface TooltipOperationOptions {
-  plot: SpreadSheet;
-  sortFieldId: string;
-  sortQuery: {
-    [key: string]: string;
-  };
-}
-
-export interface TooltipOperationState {
-  sortParam: SortParam;
 }
 
 export type TooltipDetailProps = {
@@ -157,12 +185,6 @@ export interface TooltipDataParam extends TooltipDataParams {
   cellInfos: TooltipData[];
 }
 
-export interface OrderOption {
-  sortMethod: 'ASC' | 'DESC';
-  type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
-  name: string;
-}
-
 export type TooltipAutoAdjustBoundary = 'body' | 'container' | null | undefined;
 
 export type TooltipContentType = Element | string | undefined | null;
@@ -173,41 +195,51 @@ export interface BaseTooltipConfig<
   Text = string,
 > {
   /**
-   * 是否显示
+   * 是否开启 tooltip, 在点击/悬停/停留/刷选/多选等场景会显示
+   * @description @antv/s2 中只保留了 tooltip 的核心显隐逻辑，提供相应数据，不渲染内容
+   * React 版本 和 Vue3 版本中通过 自定义 Tooltip 类 的方式渲染 tooltip 的内容，包括 排序下拉菜单, 单元格选中信息汇总, 列头隐藏按钮 等。
+   * @see https://s2.antv.antgroup.com/manual/basic/tooltip
    */
-  showTooltip?: boolean;
+  enable?: boolean;
+
   /**
    * 自定义内容
    * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
    */
   content?: TooltipShowOptions<T>['content'];
+
   /**
    * 自定义操作项
    * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
    */
   operation?: TooltipOperation<Icon, Text>;
+
   /**
    * 显示边界, 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能
    */
   autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+
   /**
    * 自定义 Tooltip 类
    * @see https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-tooltip
    */
+  render?: (spreadsheet: SpreadSheet) => BaseTooltip;
 
-  renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   /**
    * 自定义坐标
    */
   adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
+
   /**
    * 自定义挂载容器, 默认 body
    */
   getContainer?: () => HTMLElement;
+
   /**
    * 容器类名
    */
   className?: string | string[];
+
   /**
    * 容器样式
    */

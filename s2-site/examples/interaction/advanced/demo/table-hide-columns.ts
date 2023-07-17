@@ -41,7 +41,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         hiddenColumnFields: ['province', 'price'],
       },
       tooltip: {
-        showTooltip: true,
+        enable: true,
         operation: {
           // 开启手动隐藏
           hiddenColumns: true,

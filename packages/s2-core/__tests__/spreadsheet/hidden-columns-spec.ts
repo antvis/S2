@@ -13,7 +13,7 @@ const s2Options: S2Options = {
   width: 400,
   height: 120,
   tooltip: {
-    showTooltip: true,
+    enable: true,
   },
 };
 

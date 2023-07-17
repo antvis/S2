@@ -1,12 +1,10 @@
 # [@antv/s2-react-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.5...@antv/s2-react-v2.0.0-next.6) (2023-04-28)
 
-
 ### Bug Fixes
 
 * fix lint error ([f3eba69](https://github.com/antvis/S2/commit/f3eba69a17f2febd7e3adc1ae0c2069295ba0ae6))
 * **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
 * **layout:** 修复自定义列头采样错误导致行角头不显示 close [#2117](https://github.com/antvis/S2/issues/2117) ([#2175](https://github.com/antvis/S2/issues/2175)) ([2266272](https://github.com/antvis/S2/commit/22662721739b45fbe5c00c1157ad00071d8f5f0d))
-
 
 ### Features
 
@@ -19,20 +17,17 @@
 
 # [@antv/s2-react-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.4...@antv/s2-react-v2.0.0-next.5) (2023-04-23)
 
-
 ### Features
 
 * 统一导出和复制逻辑，优化导出和复制性能 ([#2152](https://github.com/antvis/S2/issues/2152)) ([df88455](https://github.com/antvis/S2/commit/df884557756e4374e95687cf4c99d575bc2cb6fc))
 
 # [@antv/s2-react-v2.0.0-next.4](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.3...@antv/s2-react-v2.0.0-next.4) (2023-02-22)
 
-
 ### Bug Fixes
 
 * **layout:** 修复存在列总计但不存在列小计时, 隐藏其兄弟节点后单元格坐标偏移 close [#1993](https://github.com/antvis/S2/issues/1993) ([#2047](https://github.com/antvis/S2/issues/2047)) ([2ae663e](https://github.com/antvis/S2/commit/2ae663e1c46a3c8cb04b79d357fc033314f4cf77))
 * **layout:** 修复存在多列头多数值且数值置于行头时,列总计单元格高度不对 close [#1715](https://github.com/antvis/S2/issues/1715) [#2049](https://github.com/antvis/S2/issues/2049) ([#2051](https://github.com/antvis/S2/issues/2051)) ([a415f46](https://github.com/antvis/S2/commit/a415f465e8fa355a5b68d556f6fa645e3a72b5b7))
 * **layout:** 修复无列头时行头对应的角头不显示 close [#1929](https://github.com/antvis/S2/issues/1929) ([#2026](https://github.com/antvis/S2/issues/2026)) ([c073578](https://github.com/antvis/S2/commit/c073578dc008ef83a2877041830be18f827c7341))
-
 
 ### Features
 
@@ -41,13 +36,11 @@
 
 # [@antv/s2-react-v1.36.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.35.0...@antv/s2-react-v1.36.0) (2023-01-16)
 
-
 ### Bug Fixes
 
 * **layout:** 修复存在列总计但不存在列小计时, 隐藏其兄弟节点后单元格坐标偏移 close [#1993](https://github.com/antvis/S2/issues/1993) ([#2047](https://github.com/antvis/S2/issues/2047)) ([2ae663e](https://github.com/antvis/S2/commit/2ae663e1c46a3c8cb04b79d357fc033314f4cf77))
 * **layout:** 修复存在多列头多数值且数值置于行头时,列总计单元格高度不对 close [#1715](https://github.com/antvis/S2/issues/1715) [#2049](https://github.com/antvis/S2/issues/2049) ([#2051](https://github.com/antvis/S2/issues/2051)) ([a415f46](https://github.com/antvis/S2/commit/a415f465e8fa355a5b68d556f6fa645e3a72b5b7))
 * **layout:** 修复无列头时行头对应的角头不显示 close [#1929](https://github.com/antvis/S2/issues/1929) ([#2026](https://github.com/antvis/S2/issues/2026)) ([c073578](https://github.com/antvis/S2/commit/c073578dc008ef83a2877041830be18f827c7341))
-
 
 ### Features
 
@@ -55,11 +48,9 @@
 
 # [@antv/s2-react-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.34.0...@antv/s2-react-v1.35.0) (2023-01-03)
 
-
 ### Bug Fixes
 
 * 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
-
 
 ### Features
 
@@ -67,17 +58,14 @@
 
 # [@antv/s2-react-v1.34.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.33.0...@antv/s2-react-v1.34.0) (2022-12-09)
 
-
 ### Bug Fixes
 
 * **interaction:** 修复自定义列头时无法调整第一列的叶子节点高度 close [#1979](https://github.com/antvis/S2/issues/1979) ([#2038](https://github.com/antvis/S2/issues/2038)) ([a632ab1](https://github.com/antvis/S2/commit/a632ab19193b19ab80f456ab3ce19740dce0e52b))
 * 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
 
-
 ### Code Refactoring
 
 * 调整 s2Options API 命名 ([#2015](https://github.com/antvis/S2/issues/2015)) ([e39b32f](https://github.com/antvis/S2/commit/e39b32f99befdf53569fab633087bb56edfc8720))
-
 
 ### Features
 
@@ -86,12 +74,11 @@
 * 折叠展开重构 & 简化行头 tree 相关配置 ([#2030](https://github.com/antvis/S2/issues/2030)) ([0f3ea3b](https://github.com/antvis/S2/commit/0f3ea3b5c668137bc2fcb53bd186a41b34140e25))
 * 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
 
-
 ### BREAKING CHANGES
 
 * s2Options.tooltip 和 s2Options.style API 命名更改, 移除 trend 操作项
 
-* refactor: tree 相关配置移动到 rowCell 下 
+* refactor: tree 相关配置移动到 rowCell 下
 
 * refactor: hideMeasureColumn => hideValue
 
@@ -875,7 +862,7 @@
 * **resize:** fix set width and height problem ([#402](https://github.com/antvis/S2/issues/402)) ([41caf18](https://github.com/antvis/S2/commit/41caf1812687130d9d4d595b680c544a69a49843))
 * return filtered dataset on range_filtered event ([#513](https://github.com/antvis/S2/issues/513)) ([ed7e78a](https://github.com/antvis/S2/commit/ed7e78adea7b8bd1c629c579f36ae6f2b5f2c15f))
 * revert code ([#325](https://github.com/antvis/S2/issues/325)) ([6ece5e8](https://github.com/antvis/S2/commit/6ece5e89f50b7d450c412e224546e923792d0aca))
-* row-col-click's show about pivot and table, formatter when showSingleTips ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
+* row-col-click's show about pivot and table, formatter when onlyShowCellText ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
 * scroll move event target ([#622](https://github.com/antvis/S2/issues/622)) ([79583c1](https://github.com/antvis/S2/commit/79583c183bfdc1f9fc383b0cc24168e98c46fa8b))
 * **scroll:** fix cannot scroll by mouse or touch tablet ([#698](https://github.com/antvis/S2/issues/698)) ([edbbe6f](https://github.com/antvis/S2/commit/edbbe6f2598118f1762f7077e22fa319ab63547f))
 * **scroll:** optimize scroll hover event ([#577](https://github.com/antvis/S2/issues/577)) ([5006bdc](https://github.com/antvis/S2/commit/5006bdc7b1bcd2d1f4e0d7157c59d84f3c51d66b))
@@ -1029,7 +1016,7 @@
 * **resize:** fix set width and height problem ([#402](https://github.com/antvis/S2/issues/402)) ([41caf18](https://github.com/antvis/S2/commit/41caf1812687130d9d4d595b680c544a69a49843))
 * return filtered dataset on range_filtered event ([#513](https://github.com/antvis/S2/issues/513)) ([ed7e78a](https://github.com/antvis/S2/commit/ed7e78adea7b8bd1c629c579f36ae6f2b5f2c15f))
 * revert code ([#325](https://github.com/antvis/S2/issues/325)) ([6ece5e8](https://github.com/antvis/S2/commit/6ece5e89f50b7d450c412e224546e923792d0aca))
-* row-col-click's show about pivot and table, formatter when showSingleTips ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
+* row-col-click's show about pivot and table, formatter when onlyShowCellText ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
 * scroll move event target ([#622](https://github.com/antvis/S2/issues/622)) ([79583c1](https://github.com/antvis/S2/commit/79583c183bfdc1f9fc383b0cc24168e98c46fa8b))
 * **scroll:** fix cannot scroll by mouse or touch tablet ([#698](https://github.com/antvis/S2/issues/698)) ([edbbe6f](https://github.com/antvis/S2/commit/edbbe6f2598118f1762f7077e22fa319ab63547f))
 * **scroll:** optimize scroll hover event ([#577](https://github.com/antvis/S2/issues/577)) ([5006bdc](https://github.com/antvis/S2/commit/5006bdc7b1bcd2d1f4e0d7157c59d84f3c51d66b))
@@ -1181,7 +1168,7 @@
 * **resize:** fix set width and height problem ([#402](https://github.com/antvis/S2/issues/402)) ([41caf18](https://github.com/antvis/S2/commit/41caf1812687130d9d4d595b680c544a69a49843))
 * return filtered dataset on range_filtered event ([#513](https://github.com/antvis/S2/issues/513)) ([ed7e78a](https://github.com/antvis/S2/commit/ed7e78adea7b8bd1c629c579f36ae6f2b5f2c15f))
 * revert code ([#325](https://github.com/antvis/S2/issues/325)) ([6ece5e8](https://github.com/antvis/S2/commit/6ece5e89f50b7d450c412e224546e923792d0aca))
-* row-col-click's show about pivot and table, formatter when showSingleTips ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
+* row-col-click's show about pivot and table, formatter when onlyShowCellText ([#327](https://github.com/antvis/S2/issues/327)) ([23d3508](https://github.com/antvis/S2/commit/23d3508bc42954e1561c350cc11db54cc54bf321))
 * scroll move event target ([#622](https://github.com/antvis/S2/issues/622)) ([79583c1](https://github.com/antvis/S2/commit/79583c183bfdc1f9fc383b0cc24168e98c46fa8b))
 * **scroll:** fix cannot scroll by mouse or touch tablet ([#698](https://github.com/antvis/S2/issues/698)) ([edbbe6f](https://github.com/antvis/S2/commit/edbbe6f2598118f1762f7077e22fa319ab63547f))
 * **scroll:** optimize scroll hover event ([#577](https://github.com/antvis/S2/issues/577)) ([5006bdc](https://github.com/antvis/S2/commit/5006bdc7b1bcd2d1f4e0d7157c59d84f3c51d66b))

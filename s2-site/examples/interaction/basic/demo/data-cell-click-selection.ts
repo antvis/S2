@@ -18,7 +18,7 @@ fetch(
         multiSelection: true,
       },
       tooltip: {
-        showTooltip: true,
+        enable: true,
       },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);

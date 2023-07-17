@@ -51,7 +51,7 @@ const s2Options: S2Options = {
   width: 200,
   height: 200,
   tooltip: {
-    showTooltip: true,
+    enable: true,
   },
   interaction: {
     enableCopy: true,
@@ -954,15 +954,15 @@ describe('Interaction Event Controller Tests', () => {
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
     spreadsheet.options.tooltip = {
-      showTooltip: false,
+      enable: false,
       dataCell: {
-        showTooltip: true,
+        enable: true,
       },
       colCell: {
-        showTooltip: true,
+        enable: true,
       },
       rowCell: {
-        showTooltip: true,
+        enable: true,
       },
     };
     spreadsheet.tooltip.visible = true;

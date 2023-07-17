@@ -219,7 +219,7 @@ export interface ResizeEffectParams {
 // Tooltip 操作项
 export interface TooltipOperatorProps<Icon = Element | string, Text = string>
   extends Omit<TooltipOperatorOptions<Icon, Text>, 'onClick'> {
-  onlyMenu: boolean;
+  onlyShowOperator: boolean;
   cell: S2CellType;
 }
 

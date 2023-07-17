@@ -75,7 +75,7 @@ Related chapters: [headerActionIcons configuration instructions](/docs/api/gener
 ```jsx
 const s2Options = {
   tooltip: {
-    showTooltip: true,
+    enable: true,
   },
   ...
 }
@@ -109,8 +109,8 @@ const s2Options = {
         // 自定义 tooltip 配置，展示 toolTip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,
-          showSingleTips: true,
-          onlyMenu: true,
+          onlyShowCellText: true,
+          onlyShowOperator: true,
         });
       },
     },
@@ -164,8 +164,8 @@ const s2Options = {
         };
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,
-          showSingleTips: true,
-          onlyMenu: true,
+          onlyShowCellText: true,
+          onlyShowOperator: true,
         });
       },
       ...

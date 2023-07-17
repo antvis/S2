@@ -80,12 +80,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
-      const showSingleTips = this.spreadsheet.isTableMode();
+      const onlyShowCellText = this.spreadsheet.isTableMode();
       const options: TooltipOptions = {
         isTotals: meta.isTotals,
-        enterable: true,
         hideSummary: true,
-        showSingleTips,
+        onlyShowCellText,
       };
 
       if (interactionOptions?.hoverHighlight) {
@@ -93,7 +92,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.updateRowColCells(meta);
       }
 
-      const data = this.getCellData(meta, showSingleTips);
+      const data = this.getCellData(meta, onlyShowCellText);
 
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     };
@@ -150,22 +149,20 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     }
 
     const meta = cell.getMeta() as ViewMeta;
-    const showSingleTips = true;
     const options: TooltipOptions = {
       isTotals: meta.isTotals,
-      enterable: true,
       hideSummary: true,
-      showSingleTips,
+      onlyShowCellText: true,
       enableFormat: this.spreadsheet.isPivotMode(),
     };
-    const data = this.getCellData(meta, showSingleTips);
+    const data = this.getCellData(meta, options.onlyShowCellText);
 
     this.spreadsheet.showTooltipWithInfo(event, data, options);
   }
 
   private getCellData(
     meta: ViewMeta = {} as ViewMeta,
-    showSingleTips?: boolean,
+    onlyShowCellText?: boolean,
   ): TooltipData[] {
     const {
       data,
@@ -179,7 +176,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     } = meta;
     const currentCellMeta = data;
 
-    const cellInfos = showSingleTips
+    const cellInfos = onlyShowCellText
       ? [
           {
             ...query,

@@ -38,7 +38,7 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-        showTooltip: true,
+        enable: true,
       },
       interaction: {
         customInteractions: [

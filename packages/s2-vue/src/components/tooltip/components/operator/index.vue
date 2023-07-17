@@ -16,7 +16,7 @@ export default defineComponent({
   name: 'TooltipOperator',
   props: [
     'menus',
-    'onlyMenu',
+    'onlyShowOperator',
     'onClick',
     'cell',
   ] as unknown as GetInitProps<TooltipOperatorProps>,
@@ -41,7 +41,7 @@ export default defineComponent({
 
 <template>
   <div :class="`${TOOLTIP_PREFIX_CLS}-operator`">
-    <template v-if="onlyMenu">
+    <template v-if="onlyShowOperator">
       <Menu
         :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"
         @click="onMenuClick"

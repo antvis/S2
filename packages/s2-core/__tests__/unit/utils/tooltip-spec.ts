@@ -277,7 +277,7 @@ describe('Tooltip Utils Tests', () => {
         const type = getCellNameByType(cellType);
 
         const tooltip: Tooltip = {
-          showTooltip: false,
+          enable: false,
           content: '',
           operation: {
             hiddenColumns: true,
@@ -286,7 +286,7 @@ describe('Tooltip Utils Tests', () => {
             menus: [{ key: 'menu-a', text: 'menu-a' }],
           },
           [type]: {
-            showTooltip: true,
+            enable: true,
             operation: {
               hiddenColumns: false,
               menus: [{ key: 'menu-b', text: 'menu-b' }],
@@ -307,7 +307,7 @@ describe('Tooltip Utils Tests', () => {
         );
 
         expect(tooltipOptions).toEqual({
-          showTooltip: true,
+          enable: true,
           content: '',
           operation: {
             hiddenColumns: false,
@@ -465,7 +465,7 @@ describe('Tooltip Utils Tests', () => {
       return getTooltipData({
         cellInfos: [cell as TooltipData],
         options: {
-          showSingleTips: true,
+          onlyShowCellText: true,
         },
         targetCell: cell,
         spreadsheet: s2,
@@ -501,7 +501,7 @@ describe('Tooltip Utils Tests', () => {
       const tooltipData = getTooltipData({
         cellInfos: [selectedCellMetas as TooltipData],
         options: {
-          showSingleTips: false,
+          onlyShowCellText: false,
         },
         targetCell: null,
         spreadsheet: s2,
@@ -552,7 +552,7 @@ describe('Tooltip Utils Tests', () => {
         cellInfos: [],
         options: {
           enableFormat: true,
-          showSingleTips: false,
+          onlyShowCellText: false,
         },
         targetCell: cell.mockCell,
         spreadsheet: s2,

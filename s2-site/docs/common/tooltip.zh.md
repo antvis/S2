@@ -15,7 +15,7 @@ object **可选**,_default：null_ 功能描述： tooltip 配置
 | colCell                | 列头单元格配置     | [BaseTooltipConfig](#basetooltipconfig) | -      |      |
 | dataCell               | 数值单元格配置  | [BaseTooltipConfig](#basetooltipconfig) | -      |      |
 | cornerCell             | 角头单元格配置    | [BaseTooltipConfig](#basetooltipconfig) | -      |      |
-| renderTooltip      | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法    | [RenderTooltip](#rendertooltip)         | -      |      |
+| render      | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法    | [RenderTooltip](#rendertooltip)         | -      |      |
 | content   | 自定义 tooltip 内容  | `ReactNode \| Element \| string` 或者 `(cell, defaultTooltipShowOptions) => ReactNode \| Element \| string`   | -      |      |
 | autoAdjustBoundary | 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能 | `container` \| `body`  | `body` |      |
 | adjustPosition | 自定义 tooltip 位置，| (positionInfo: [TooltipPositionInfo](#tooltippositioninfo) ) => {x: number, y: number}                  |  |      |

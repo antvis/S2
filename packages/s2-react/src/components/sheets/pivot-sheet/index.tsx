@@ -32,7 +32,10 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
         );
 
         if (event) {
-          const { showTooltip } = getTooltipOptions(sheetInstance, event)!;
+          const { enable: showTooltip } = getTooltipOptions(
+            sheetInstance,
+            event,
+          )!;
 
           if (!showTooltip) {
             return;

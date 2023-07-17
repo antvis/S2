@@ -62,10 +62,10 @@ Control the display of `Tooltip` by configuring the `showTooltip` field, the def
 ```ts
 const s2Options = {
    tooltip: {
-     showTooltip: true,
+     enable: true,
      rowCell: {
        // Set the line header separately to not display
-       showTooltip: false,
+       enable: false,
      }
    }
 };
@@ -286,13 +286,13 @@ const s2Options = {
            key: 'custom-a',
            text: 'Operation 1',
            icon: 'Trend',
-           visible: false,
+           enable: false,
          },
          {
            key: 'custom-b',
            text: 'Operation 2',
            icon: 'EyeOutlined',
-           visible: (cell) => {
+           enable: (cell) => {
              // Display dynamically according to cell information, such as: leaf nodes are not displayed
              const meta = cell. getMeta()
              return meta.isLeaf
@@ -415,8 +415,8 @@ Override the default and use your custom `Tooltip`
 ```ts
 const s2Options = {
    tooltip: {
-     showTooltip: true,
-     renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+     enable: true,
+     render: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
    },
 }
 ```
@@ -450,7 +450,7 @@ class RowHoverInteraction extends BaseEvent {
 
 const s2Options = {
    tooltip: {
-     showTooltip: true,
+     enable: true,
    },
    interaction: {
      customInteractions: [
@@ -591,7 +591,7 @@ In addition to the custom display method of `custom Tooltip class` mentioned abo
 ```ts
 // options configure tooltip display
 tooltip: {
-   showTooltip: true,
+   enable: true,
 }
 ```
 

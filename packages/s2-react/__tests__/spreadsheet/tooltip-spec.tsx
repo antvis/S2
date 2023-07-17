@@ -14,7 +14,7 @@ const s2Options: SheetComponentOptions = {
   height: 200,
   hdAdapter: false,
   tooltip: {
-    showTooltip: true,
+    enable: true,
   },
 };
 
@@ -79,12 +79,12 @@ describe('SheetComponent Tooltip Tests', () => {
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
-  test('should get renderTooltip options', async () => {
+  test('should get render options', async () => {
     await sleep(1000);
-    const { renderTooltip } = s2.options.tooltip!;
+    const { render } = s2.options.tooltip!;
 
-    expect(renderTooltip).toBeFunction();
-    expect(renderTooltip!(s2)).toBeInstanceOf(CustomTooltip);
+    expect(render).toBeFunction();
+    expect(render!(s2)).toBeInstanceOf(CustomTooltip);
   });
 
   test('should render tooltip content for jsx element', async () => {

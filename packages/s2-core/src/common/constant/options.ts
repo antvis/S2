@@ -47,7 +47,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   conditions: {},
   totals: {},
   tooltip: {
-    showTooltip: false,
+    enable: false,
     autoAdjustBoundary: 'body',
     operation: {
       hiddenColumns: false,

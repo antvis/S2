@@ -137,7 +137,7 @@ export class TableSheet extends SpreadSheet {
 
     this.showTooltipWithInfo(event, [], {
       operator,
-      onlyMenu: true,
+      onlyShowOperator: true,
       forceRender: true,
     });
   }

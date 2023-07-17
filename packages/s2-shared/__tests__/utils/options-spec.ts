@@ -84,12 +84,12 @@ describe('Options Tests', () => {
         "supportCSSTransform": false,
         "tooltip": Object {
           "autoAdjustBoundary": "body",
+          "enable": true,
           "operation": Object {
             "hiddenColumns": true,
             "menus": Array [],
             "sort": true,
           },
-          "showTooltip": true,
         },
         "totals": Object {},
         "width": 600,
@@ -100,7 +100,7 @@ describe('Options Tests', () => {
   test('should get custom options', () => {
     const options = getBaseSheetComponentOptions({
       tooltip: {
-        showTooltip: false,
+        enable: false,
         operation: {
           sort: false,
           menus: [
@@ -116,6 +116,7 @@ describe('Options Tests', () => {
     expect(options.tooltip).toMatchInlineSnapshot(`
       Object {
         "autoAdjustBoundary": "body",
+        "enable": false,
         "operation": Object {
           "hiddenColumns": true,
           "menus": Array [
@@ -126,7 +127,6 @@ describe('Options Tests', () => {
           ],
           "sort": false,
         },
-        "showTooltip": false,
       }
     `);
   });

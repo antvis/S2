@@ -44,7 +44,7 @@ fetch(
               key: 'custom-c',
               text: '操作3',
               icon: 'EyeOutlined',
-              visible: false,
+              enable: false,
               onClick: () => {
                 console.log('操作3点击');
               },
@@ -53,7 +53,7 @@ fetch(
               key: 'custom-c',
               text: '操作4',
               icon: 'EyeOutlined',
-              visible: (cell) => {
+              enable: (cell) => {
                 // 叶子节点才显示
                 const meta = cell.getMeta();
                 return meta.isLeaf;

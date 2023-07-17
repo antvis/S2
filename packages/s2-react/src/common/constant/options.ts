@@ -5,6 +5,6 @@ export const MOBILE_DRAWER_WIDTH = 300;
 
 export const RENDER_TOOLTIP_OPTION: S2Options = {
   tooltip: {
-    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+    render: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },
 };

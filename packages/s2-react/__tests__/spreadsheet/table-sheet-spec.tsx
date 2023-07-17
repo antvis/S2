@@ -152,7 +152,7 @@ function MainLayout({ callback }: Props) {
       trailingRowCount: 1,
     },
     tooltip: {
-      showTooltip: true,
+      enable: true,
       operation: {
         hiddenColumns: hiddenColumnsOperator,
       },

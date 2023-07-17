@@ -28,10 +28,9 @@ describe('Interaction Hover Tests', () => {
   const mockTooltipParams = [
     [{ value: undefined, valueField: undefined }],
     {
-      enterable: true,
       hideSummary: true,
       isTotals: undefined,
-      showSingleTips: true,
+      onlyShowCellText: true,
     },
   ];
 
