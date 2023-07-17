@@ -177,5 +177,32 @@ describe('Col Cell Tests', () => {
         '#F7B46F',
       );
     });
+
+    test('should render text by text theme', async () => {
+      s2.setOptions({
+        conditions: {
+          text: [
+            {
+              field: 'type',
+              mapping() {
+                return {
+                  fill: 'red',
+                  fontSize: 20,
+                  fontWeight: 800,
+                };
+              },
+            },
+          ],
+        },
+      });
+      await s2.render();
+
+      const colCell = s2.facet.columnHeader.children[0].children[0] as ColCell;
+      const { fill, fontSize, fontWeight } = colCell.getTextShape().attributes;
+
+      expect(fill).toEqual('red');
+      expect(fontSize).toEqual(20);
+      expect(fontWeight).toEqual(800);
+    });
   });
 });

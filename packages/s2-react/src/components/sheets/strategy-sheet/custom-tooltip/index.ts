@@ -1,3 +1,3 @@
-export * from './custom-col-tooltip';
-export * from './custom-data-tooltip';
-export * from './custom-row-tooltip';
+export * from './col-cell-tooltip';
+export * from './data-cell-tooltip';
+export * from './row-cell-tooltip';

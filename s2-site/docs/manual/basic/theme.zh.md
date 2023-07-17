@@ -664,27 +664,5 @@ s2.render(false);
     <td colspan=3  style="text-align: center;"> 语义色-semanticColors</td>
     <td colspan=2 style="text-align: center;"> </td>
     </tr>
-    <tr>
-        <td style="text-align: center; background: #FF4D4F; "> red: #FF4D4F</td>
-        <td style="text-align: center; background: #FF4D4F;"> red: #FF4D4F</td>
-        <td style="text-align: center;  background: #FF4D4F;"> red: #FF4D4F</td>
-        <td style="text-align: left;">
-           数据单元格上箭头图标颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            dataCell.icon.downIconColor</br>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align: center; background: #29A294; "> green: #29A294</td>
-        <td style="text-align: center; background: #29A294;"> green: #29A294</td>
-        <td style="text-align: center;  background: #29A294;"> green: #29A294</td>
-        <td style="text-align: left;">
-           数据单元格下箭头图标颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            dataCell.icon.upIconColor</br>
-        </td>
-    </tr>
   </tbody>
 </table>

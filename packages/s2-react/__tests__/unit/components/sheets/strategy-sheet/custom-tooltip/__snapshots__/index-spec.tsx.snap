@@ -31,9 +31,9 @@ Array [
 
 exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test col label',
-  component: [Function: StrategySheetColTooltip] {
+  component: [Function: StrategySheetColCellTooltip] {
     [length]: 1,
-    [name]: 'StrategySheetColTooltip'
+    [name]: 'StrategySheetColCellTooltip'
   }
 } 1`] = `
 <span
@@ -45,9 +45,9 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
 
 exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test data label',
-  component: [Function: StrategySheetDataTooltip] {
+  component: [Function: StrategySheetDataCellTooltip] {
     [length]: 1,
-    [name]: 'StrategySheetDataTooltip',
+    [name]: 'StrategySheetDataCellTooltip',
     defaultProps: { showOriginalValue: false }
   }
 } 1`] = `
@@ -60,9 +60,9 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
 
 exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test row label',
-  component: [Function: StrategySheetRowTooltip] {
+  component: [Function: StrategySheetRowCellTooltip] {
     [length]: 1,
-    [name]: 'StrategySheetRowTooltip'
+    [name]: 'StrategySheetRowCellTooltip'
   }
 } 1`] = `
 <div

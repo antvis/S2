@@ -122,5 +122,32 @@ describe('Row Cell Tests', () => {
         '#F7B46F',
       );
     });
+
+    test('should render text by text theme', async () => {
+      s2.setOptions({
+        conditions: {
+          text: [
+            {
+              field: 'city',
+              mapping() {
+                return {
+                  fill: 'red',
+                  fontSize: 20,
+                  fontWeight: 800,
+                };
+              },
+            },
+          ],
+        },
+      });
+      await s2.render();
+
+      const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
+      const { fill, fontSize, fontWeight } = rowCell.getTextShape().attributes;
+
+      expect(fill).toEqual('red');
+      expect(fontSize).toEqual(20);
+      expect(fontWeight).toEqual(800);
+    });
   });
 });

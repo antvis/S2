@@ -32,7 +32,7 @@ import type {
   FullyIconName,
   HeaderActionIconOptions,
   InternalFullyHeaderActionIcon,
-  MappingResult,
+  ConditionMappingResult,
   TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header';
@@ -163,13 +163,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected getActionIconStyle() {
     const { icon } = this.getStyle()!;
-    const fill = this.getTextConditionFill(this.getTextStyle().fill!);
+    const conditionStyle = this.getTextConditionMappingResult();
+    const defaultTextFill = conditionStyle?.fill || this.getTextStyle().fill!;
 
     return {
       width: icon?.size,
       height: icon?.size,
       // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
-      fill: icon?.fill || fill,
+      fill: icon?.fill || defaultTextFill,
     };
   }
 
@@ -363,12 +364,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       style = text;
     }
 
-    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
-    const fill = this.getTextConditionFill(
-      this.getDefaultTextFill(style!.fill!),
-    );
-
-    return { ...style, fill };
+    return this.getContainConditionMappingResultTextStyle(style);
   }
 
   public getBackgroundColor() {
@@ -438,7 +434,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
   }
 
-  public mappingValue(condition: Condition): MappingResult {
+  public mappingValue(condition: Condition): ConditionMappingResult {
     const value = this.getMeta().value;
 
     return condition?.mapping(value, this.meta, this)!;

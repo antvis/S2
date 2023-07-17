@@ -23,7 +23,7 @@ export interface PaletteMeta {
     standardColorIndex: number;
   }>;
 
-  /* 语义色值 */
+  /** 语义色值 */
   semanticColors: {
     red: string;
     green: string;
@@ -31,7 +31,7 @@ export interface PaletteMeta {
     [key: string]: string;
   };
 
-  /* 补充色值 */
+  /** 补充色值 */
   others?: {
     results: string;
     highlight: string;
@@ -75,25 +75,25 @@ export interface Background {
   color?: string;
 }
 export interface InteractionStateTheme {
-  /* 背景透明度 */
+  /** 背景透明度 */
   backgroundOpacity?: number;
 
-  /* 背景填充色 */
+  /** 背景填充色 */
   backgroundColor?: string;
 
-  /* 文本透明度 */
+  /** 文本透明度 */
   textOpacity?: number;
 
-  /* 边线颜色 */
+  /** 边线颜色 */
   borderColor?: string;
 
-  /* 边线宽度 */
+  /** 边线宽度 */
   borderWidth?: number;
 
-  /* 边线透明度 */
+  /** 边线透明度 */
   borderOpacity?: number;
 
-  /* 透明度 */
+  /** 透明度 */
   opacity?: number;
 }
 
@@ -109,120 +109,114 @@ export interface TextAlignStyle {
 }
 
 export interface TextTheme extends TextAlignStyle {
-  /* 字体 */
+  /** 字体 */
   fontFamily?: string;
 
-  /* 字体大小 */
+  /** 字体大小 */
   fontSize?: number;
 
-  /* 字体粗细 */
+  /** 字体粗细 */
   fontWeight?: number | 'normal' | 'bold' | 'bolder' | 'lighter';
 
-  /* 字体颜色 */
+  /** 字体颜色 */
   fill?: string;
 
-  /* 链接文本颜色 */
+  /** 链接文本颜色 */
   linkTextFill?: string;
 
-  /* 字体透明度 */
+  /** 字体透明度 */
   opacity?: number;
 }
 
 export interface CellTheme {
-  /* 奇数行单元格背景色 */
+  /** 奇数行单元格背景色 */
   crossBackgroundColor?: string;
 
-  /* 单元格背景色 */
+  /** 单元格背景色 */
   backgroundColor?: string;
 
-  /* 单元格背景色透明度 */
+  /** 单元格背景色透明度 */
   backgroundColorOpacity?: number;
 
-  /* 单元格水平边线颜色 */
+  /** 单元格水平边线颜色 */
   horizontalBorderColor?: string;
 
-  /* 单元格水平边线颜色透明度 */
+  /** 单元格水平边线颜色透明度 */
   horizontalBorderColorOpacity?: number;
 
-  /* 单元格垂直边线颜色 */
+  /** 单元格垂直边线颜色 */
   verticalBorderColor?: string;
 
-  /* 单元格垂直边线颜色透明度 */
+  /** 单元格垂直边线颜色透明度 */
   verticalBorderColorOpacity?: number;
 
-  /* 单元格水平边线宽度 */
+  /** 单元格水平边线宽度 */
   horizontalBorderWidth?: number;
 
-  /* 单元格垂直边线宽度 */
+  /** 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
 
-  /* 单元格内边距 */
+  /** 单元格内边距 */
   padding?: Padding;
 
-  /* 交互态 */
+  /** 交互态 */
   interactionState?: InteractionState;
 }
 
 export interface IconTheme {
-  /* icon 填充色 */
+  /** icon 填充色 */
   fill?: string;
 
-  /* 下跌 icon 填充色 */
-  downIconColor?: string;
-
-  /* 上涨 icon 填充色 */
-  upIconColor?: string;
-
-  /* icon  大小 */
+  /** icon  大小 */
   size?: number;
 
-  /* icon 外边距 */
+  /** icon 外边距 */
   margin?: Margin;
 }
 
 export interface ResizeArea {
-  /* 热区尺寸 */
+  /** 热区尺寸 */
   size?: number;
 
-  /* 热区背景色 */
+  /** 热区背景色 */
   background?: string;
 
-  /* 参考线颜色 */
+  /** 参考线颜色 */
   guideLineColor?: string;
 
-  /* 参考线不可用颜色 */
+  /** 参考线不可用颜色 */
   guideLineDisableColor?: string;
 
-  /* 参考线间隔 */
+  /** 参考线间隔 */
   guideLineDash?: number[];
 
-  /* 热区背景色透明度 */
+  /** 热区背景色透明度 */
   backgroundOpacity?: number;
 
-  /* 交互态 */
+  /** 交互态 */
   interactionState?: InteractionState;
 }
 
 export interface ScrollBarTheme {
-  /* 滚动条轨道颜色 */
+  /** 滚动条轨道颜色 */
   trackColor?: string;
 
-  /* 滚动条 hover 态颜色 */
+  /** 滚动条 hover 态颜色 */
   thumbHoverColor?: string;
 
-  /* 滚动条颜色 */
+  /** 滚动条颜色 */
   thumbColor?: string;
 
-  /* 滚动条水平最小尺寸 */
+  /** 滚动条水平最小尺寸 */
   thumbHorizontalMinSize?: number;
 
-  /* 滚动条垂直最小尺寸 */
+  /** 滚动条垂直最小尺寸 */
   thumbVerticalMinSize?: number;
 
-  /* 滚动条尺寸 */
+  /** 滚动条尺寸 */
   size?: number;
 
-  /* 滚动条 hover 态尺寸 */
+  /** 滚动条 hover 态尺寸 */
   hoverSize?: number;
 
   /** 指定如何绘制每一条线段末端，lineCap?: 'butt' | 'round' | 'square'; */
@@ -230,69 +224,69 @@ export interface ScrollBarTheme {
 }
 
 export interface SplitLine {
-  /* 水平分割线颜色 */
+  /** 水平分割线颜色 */
   horizontalBorderColor?: string;
 
-  /* 水平分割线颜色透明度 */
+  /** 水平分割线颜色透明度 */
   horizontalBorderColorOpacity?: number;
 
-  /* 水平分割线宽度 */
+  /** 水平分割线宽度 */
   horizontalBorderWidth?: number;
 
-  /* 垂直分割线颜色 */
+  /** 垂直分割线颜色 */
   verticalBorderColor?: string;
 
-  /* 垂直分割线颜色透明度 */
+  /** 垂直分割线颜色透明度 */
   verticalBorderColorOpacity?: number;
 
-  /* 垂直分割线宽度 */
+  /** 垂直分割线宽度 */
   verticalBorderWidth?: number;
 
-  /* 分割线是否显示外阴影 */
+  /** 分割线是否显示外阴影 */
   showShadow?: boolean;
 
-  /* 阴影宽度 */
+  /** 阴影宽度 */
   shadowWidth?: number;
 
-  /* 阴影线性渐变色 */
+  /** 阴影线性渐变色 */
   shadowColors?: {
-    /* 线性变化左侧颜色 */
+    /** 线性变化左侧颜色 */
     left: string;
 
-    /* 线性变化右侧颜色 */
+    /** 线性变化右侧颜色 */
     right: string;
   };
 }
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
-  /* 粗体文本样式 */
+  /** 粗体文本样式 */
   bolderText?: TextTheme;
 
-  /* 文本样式 */
+  /** 文本样式 */
   text?: TextTheme;
 
-  /* 序号样式 */
+  /** 序号样式 */
   seriesText?: TextTheme;
 
-  /* 度量值文本样式 */
+  /** 度量值文本样式 */
   measureText?: TextTheme;
 
-  /* 单元格样式 */
+  /** 单元格样式 */
   cell?: CellTheme;
 
-  /* 图标样式 */
+  /** 图标样式 */
   icon?: IconTheme;
 
-  /* mini 图样式配置 */
+  /** mini 图样式配置 */
   miniChart?: MiniChartTheme;
 
-  /* 序号列宽 */
+  /** 序号列宽 */
   seriesNumberWidth?: number;
 }
 
 export interface GridAnalysisCellTheme {
-  /* 次级文本，如副指标 */
+  /** 次级文本，如副指标 */
   minorText?: TextTheme;
-  /* 衍生指标 */
+  /** 衍生指标 */
   derivedMeasureText?: {
     mainUp: string;
     mainDown: string;
@@ -306,60 +300,60 @@ export type CellThemes = {
 };
 
 export interface S2Theme extends CellThemes {
-  /* 列宽行高调整热区 */
+  /** 列宽行高调整热区 */
   resizeArea?: ResizeArea;
 
-  /* 滚动条样式 */
+  /** 滚动条样式 */
   scrollBar?: ScrollBarTheme;
 
-  /* 分割线样式 */
+  /** 分割线样式 */
   splitLine?: SplitLine;
 
-  /* 刷选遮罩 */
+  /** 刷选遮罩 */
   prepareSelectMask?: InteractionStateTheme;
 
-  /* 画布背景底色 */
+  /** 画布背景底色 */
   background?: Background;
 }
 
 export type ThemeName = keyof typeof PALETTE_MAP;
 
 export interface ThemeCfg {
-  /* 主题 */
+  /** 主题 */
   theme?: S2Theme;
 
-  /* 色板 */
+  /** 色板 */
   palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
 
-  /* 主题名 */
+  /** 主题名 */
   name?: ThemeName;
 }
 
-/* 子弹图状态颜色 */
+/** 子弹图状态颜色 */
 export interface RangeColors {
-  /* 满意 */
+  /** 满意 */
   good: string;
 
-  /* 良好 */
+  /** 良好 */
   satisfactory: string;
 
-  /* 不符合预期 */
+  /** 不符合预期 */
   bad: string;
 }
 
-/* 子弹图样式配置 */
+/** 子弹图样式配置 */
 export interface BulletTheme {
-  /* 进度条 */
+  /** 进度条 */
   progressBar: {
-    /* 子弹图宽度相对单元格 content 占比，小数 */
+    /** 子弹图宽度相对单元格 content 占比，小数 */
     widthPercent: number;
     height: number;
 
-    /* 内高度 */
+    /** 内高度 */
     innerHeight: number;
   };
 
-  /* 测量标记线 */
+  /** 测量标记线 */
   comparativeMeasure: {
     width: number;
     height: number;
@@ -367,16 +361,16 @@ export interface BulletTheme {
     opacity?: number;
   };
 
-  /* 子弹图状态颜色 */
+  /** 子弹图状态颜色 */
   rangeColors: RangeColors;
 
-  /* 子弹图背景色 */
+  /** 子弹图背景色 */
   backgroundColor: string;
 }
 
-/* 折线图样式配置 */
+/** 折线图样式配置 */
 export interface LineTheme {
-  /* 点 */
+  /** 点 */
   point?: {
     // 半径
     size: number;
@@ -384,7 +378,7 @@ export interface LineTheme {
     opacity?: number;
   };
 
-  /* 线 */
+  /** 线 */
   linkLine?: {
     size: number;
     fill?: string;
@@ -392,7 +386,7 @@ export interface LineTheme {
   };
 }
 
-/* 柱状图样式配置 */
+/** 柱状图样式配置 */
 export interface BarTheme {
   // 柱状图之间的间隔距离
   intervalPadding?: number;
@@ -400,14 +394,14 @@ export interface BarTheme {
   opacity?: number;
 }
 
-/* 条件格式柱图样式配置 */
+/** 条件格式柱图样式配置 */
 
 export interface IntervalTheme {
   height: number;
   fill: string;
 }
 
-/* 迷你图样式 */
+/** 迷你图样式 */
 export interface MiniChartTheme {
   line?: LineTheme;
   bar?: BarTheme;

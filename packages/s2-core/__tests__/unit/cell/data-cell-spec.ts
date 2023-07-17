@@ -278,6 +278,33 @@ describe('Data Cell Tests', () => {
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
+    test('should render text by text theme', async () => {
+      s2.setOptions({
+        conditions: {
+          text: [
+            {
+              field: 'price',
+              mapping() {
+                return {
+                  fill: 'red',
+                  fontSize: 20,
+                  fontWeight: 800,
+                };
+              },
+            },
+          ],
+        },
+      });
+      await s2.render();
+
+      const dataCell = findDataCell(s2, 'price')!;
+      const { fill, fontSize, fontWeight } = dataCell.getTextShape().attributes;
+
+      expect(fill).toEqual('red');
+      expect(fontSize).toEqual(20);
+      expect(fontWeight).toEqual(800);
+    });
+
     test('should draw right condition icon shape', async () => {
       s2.setOptions({
         conditions: {

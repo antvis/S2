@@ -181,8 +181,6 @@ s2.setTheme({
 | 参数          | 说明             | 类型                       | 默认值    | 必选 |
 | ------------- | ---------------- | -------------------------- | --------- | ---- |
 | fill          | icon 填充色      | `string`                   | -         |      |
-| downIconColor | 下跌 icon 填充色 | `string`                   | `#FF4D4F` |      |
-| upIconColor   | 上涨 icon 填充色 | `string`                   | `#29A294` |      |
 | size          | icon 大小        | `number`                   | -         |      |
 | margin        | 单元格外边距     | [Margin](#margin--padding) | -         |      |
 

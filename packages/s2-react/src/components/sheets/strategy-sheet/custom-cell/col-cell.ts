@@ -16,7 +16,7 @@ import { isArray } from 'lodash';
  * | label1 label2  label3 |
  * --------------------------------------
  */
-export class CustomColCell extends ColCell {
+export class StrategySheetColCell extends ColCell {
   constructor(
     meta: Node,
     spreadsheet: SpreadSheet,

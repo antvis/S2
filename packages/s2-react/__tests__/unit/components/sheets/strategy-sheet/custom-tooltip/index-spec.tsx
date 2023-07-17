@@ -3,9 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createMockCellInfo, getContainer } from '../../../../../util/helpers';
 import {
-  StrategySheetColTooltip,
-  StrategySheetDataTooltip,
-  StrategySheetRowTooltip,
+  StrategySheetColCellTooltip,
+  StrategySheetDataCellTooltip,
+  StrategySheetRowCellTooltip,
 } from '../../../../../../src/components/sheets/strategy-sheet/custom-tooltip';
 
 describe('StrategySheet Tooltip Tests', () => {
@@ -14,15 +14,15 @@ describe('StrategySheet Tooltip Tests', () => {
   test.each([
     {
       label: 'test col label',
-      component: StrategySheetColTooltip,
+      component: StrategySheetColCellTooltip,
     },
     {
       label: 'test data label',
-      component: StrategySheetDataTooltip,
+      component: StrategySheetDataCellTooltip,
     },
     {
       label: 'test row label',
-      component: StrategySheetRowTooltip,
+      component: StrategySheetRowCellTooltip,
     },
   ])('should render tooltip with %o', ({ label, component: Comp }) => {
     render(<Comp cell={mockCellInfo.mockCell} label={label} />);
@@ -48,7 +48,7 @@ describe('StrategySheet Tooltip Tests', () => {
 
     act(() => {
       ReactDOM.render(
-        <StrategySheetDataTooltip
+        <StrategySheetDataCellTooltip
           cell={mockCellInfo.mockCell}
           showOriginalValue
         />,
@@ -63,7 +63,7 @@ describe('StrategySheet Tooltip Tests', () => {
 
   test('should render custom derived value', () => {
     render(
-      <StrategySheetDataTooltip
+      <StrategySheetDataCellTooltip
         cell={mockCellInfo.mockCell}
         renderDerivedValue={() => 'customDerivedValue'}
       />,

@@ -3,7 +3,7 @@ import type {
   TextTheme,
   FormatResult,
   Condition,
-  MappingResult,
+  ConditionMappingResult,
   AreaRange,
 } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
@@ -114,7 +114,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
     return undefined;
   }
 
-  protected mappingValue(): MappingResult | undefined {
+  protected mappingValue(): ConditionMappingResult | undefined {
     return undefined;
   }
 
