@@ -25,12 +25,38 @@ fetch(
     const CustomDataCellTooltip = () => <div>data cell tooltip</div>;
 
     const onColCellHover = ({ event, viewMeta }) => {
+      // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
       viewMeta.spreadsheet.tooltip.show({
         position: {
           x: event.clientX,
           y: event.clientY,
         },
         content: <CustomColCellTooltip />,
+        // 自定义操作项
+        options: {
+          operator: {
+            menus: [
+              {
+                key: 'custom-a',
+                text: '操作1',
+                icon: 'Trend',
+                onClick: (cell) => {
+                  console.log('操作1点击', cell);
+                },
+                children: [
+                  {
+                    key: 'custom-a-a',
+                    text: '操作 1-1',
+                    icon: 'Trend',
+                    onClick: (cell) => {
+                      console.log('操作 1-1 点击', cell);
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
       });
     };
 
