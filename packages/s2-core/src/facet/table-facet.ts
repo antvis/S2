@@ -102,6 +102,13 @@ export class TableFacet extends BaseFacet {
     s2.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
+  public getContentHeight(): number {
+    const { getTotalHeight } = this.getViewCellHeights();
+    const { colsHierarchy } = this.layoutResult;
+
+    return getTotalHeight() + colsHierarchy.height;
+  }
+
   private onSortHandler = (sortParams) => {
     const s2 = this.spreadsheet;
     let params = sortParams;

@@ -35,6 +35,10 @@ export class PivotSheet extends SpreadSheet {
     return realDataSet;
   }
 
+  public getContentHeight() {
+    return this.facet.getContentHeight();
+  }
+
   /**
    * Check if is pivot mode
    */
