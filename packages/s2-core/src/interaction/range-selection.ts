@@ -1,5 +1,5 @@
 import type { Event } from '@antv/g-canvas';
-import { inRange, isNil, range } from 'lodash';
+import { inRange, isEmpty, isNil, range } from 'lodash';
 import { DataCell } from '../cell';
 import {
   CellTypes,
@@ -187,7 +187,9 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           stateName: InteractionStateName.SELECTED,
         });
       } else {
-        interaction.removeIntercepts([InterceptType.HOVER]);
+        if (isEmpty(interaction.getCells())) {
+          interaction.removeIntercepts([InterceptType.HOVER]);
+        }
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
 
