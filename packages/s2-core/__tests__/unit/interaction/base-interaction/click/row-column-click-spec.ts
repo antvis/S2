@@ -147,6 +147,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       });
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTrue();
 
       isSelectedCellSpy.mockRestore();
     },
@@ -177,6 +178,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(s2.interaction.getState().cells).toEqual([]);
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalse();
 
       getInteractedCellsSpy.mockRestore();
     },
