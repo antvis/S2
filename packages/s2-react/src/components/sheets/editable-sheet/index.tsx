@@ -3,6 +3,7 @@ import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
 import { EditCell } from './edit-cell';
 import { DragCopyPoint } from './drag-copy';
+import { PastePlugin } from './paste';
 
 export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -13,6 +14,7 @@ export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
           onDataCellEditEnd={props.onDataCellEditEnd}
         />
         <DragCopyPoint />
+        <PastePlugin />
       </BaseSheet>
     );
   },
