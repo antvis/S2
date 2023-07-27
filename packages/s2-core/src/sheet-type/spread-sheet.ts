@@ -371,12 +371,12 @@ export abstract class SpreadSheet extends EE {
     dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
     reset?: T,
   ) {
+    this.store.set('originalDataCfg', dataCfg);
     if (reset) {
       this.dataCfg = getSafetyDataConfig(dataCfg);
     } else {
       this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
     }
-    this.store.set('originalDataCfg', this.dataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
