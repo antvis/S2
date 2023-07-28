@@ -6,7 +6,6 @@ import {
   get,
   includes,
   isEmpty,
-  isEqual,
   isFunction,
   isString,
   memoize,
@@ -61,6 +60,7 @@ import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
@@ -69,7 +69,6 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -364,9 +363,14 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
-   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
+   * @param reset 是否使用传入的 dataCfg 重置已保存的 dataCfg
+   *
+   * @example setDataCfg(dataCfg, true) 直接使用传入的 DataCfg，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
+  public setDataCfg<T extends boolean = false>(
+    dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
+    reset?: T,
+  ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
       this.dataCfg = getSafetyDataConfig(dataCfg);

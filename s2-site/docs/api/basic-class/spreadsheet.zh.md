@@ -49,7 +49,7 @@ s2.isPivotMode()
 | hideTooltip | 隐藏 tooltip                                                                                                             | `() => void` |    |
 | destroyTooltip | 销毁 tooltip                                                                                                             | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
-| setDataCfg | 更新数据配置                                                                                                                 | (dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), reset?: boolean ) => void | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
+| setDataCfg | 更新数据配置                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
 | setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
 | render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |    |
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |

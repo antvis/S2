@@ -64,7 +64,7 @@ export interface StoreKey {
   // interaction state
   interactionStateInfo: InteractionStateInfo;
 
-  originalDataCfg: S2DataConfig;
+  originalDataCfg: Partial<S2DataConfig>;
 
   panelBBox: BBox;
   // resize area group
