@@ -42,6 +42,11 @@ export class PivotFacet extends BaseFacet {
     return this.spreadsheet.theme.rowCell.cell;
   }
 
+  public getContentHeight(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+    return rowsHierarchy.height + colsHierarchy.height;
+  }
+
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
