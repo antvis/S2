@@ -1,20 +1,20 @@
 import { find, groupBy, isEmpty, isEqual, merge } from 'lodash';
 import type {
-  FullyIconName,
+  HeaderActionNameOptions,
   IconPosition,
   IconTheme,
   InternalFullyHeaderActionIcon,
 } from '../../common/interface';
 import { CellType, EXTRA_FIELD } from '../../common/constant';
 import type {
-  ActionIconName,
+  HeaderActionName,
   FormatResult,
   HeaderActionIcon,
 } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
 const normalizeIcons = (
-  icons: ActionIconName[],
+  icons: HeaderActionName[],
   position: IconPosition = 'right',
 ) =>
   icons.map((icon) => {
@@ -53,13 +53,13 @@ const shouldShowActionIcons = (
     return false;
   }
 
-  if (!displayCondition) {
-    // 没有展示条件参数默认全展示
-    return true;
-  }
-
   // 有任意 iconName 命中展示，则使用当前 headerActionIcon config
-  return icons.some((icon) => displayCondition(meta, icon.name));
+  return icons.some(
+    (icon) =>
+      icon.displayCondition?.(meta, icon.name) ??
+      displayCondition?.(meta, icon.name) ??
+      true,
+  );
 };
 
 /**
@@ -85,22 +85,21 @@ export const getActionIconConfig = (
   }
 
   // 使用配置的 displayCondition 进一步筛选需要展示的 icon
-  let nextIcons = iconConfig.icons;
-
-  if (iconConfig.displayCondition) {
-    nextIcons = nextIcons.filter((iconName) =>
-      iconConfig.displayCondition?.(meta, iconName.name),
-    );
-  }
+  const displayIcons = iconConfig.icons.filter(
+    (icon) =>
+      icon.displayCondition?.(meta, icon.name) ??
+      iconConfig.displayCondition?.(meta, icon.name) ??
+      true,
+  );
 
   return {
     ...iconConfig,
-    icons: nextIcons,
+    icons: displayIcons,
   };
 };
 
 export const getIconTotalWidth = (
-  icons: FullyIconName[] = [],
+  icons: HeaderActionNameOptions[] = [],
   iconTheme: IconTheme,
 ): number => {
   if (isEmpty(icons)) {
@@ -117,12 +116,12 @@ export const getIconTotalWidth = (
 };
 
 export type GroupedIcons = {
-  [key in IconPosition]: FullyIconName[];
+  [key in IconPosition]: HeaderActionNameOptions[];
 };
 
 export const groupIconsByPosition = (
-  icons: FullyIconName[] = [],
-  conditionIcon?: FullyIconName,
+  icons: HeaderActionNameOptions[] = [],
+  conditionIcon?: HeaderActionNameOptions,
 ) => {
   const groupedIcons = merge(
     {

@@ -8,14 +8,14 @@ import {
 } from '@antv/s2';
 import { throttle, pick, get } from 'lodash';
 import './drag-copy-mask.less';
-import { useSpreadSheetRef } from '../../../../context/SpreadSheetContext';
+import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 
 type DragCopyProps = {
   onCopyFinished?: () => void;
 };
 
 export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
-  const spreadsheet = useSpreadSheetRef();
+  const spreadsheet = useSpreadSheetInstance();
 
   const [startCell, setStartCell] = useState<DataCell>();
   const [maskPosition, setMaskPosition] = useState({ right: 0, bottom: 0 });

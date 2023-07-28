@@ -266,8 +266,6 @@ export const s2Options: SheetComponentOptions = {
       ],
     },
   },
-
-  conditions: s2ConditionsOptions,
   style: {
     rowCell: {
       height: 50,

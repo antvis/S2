@@ -41,7 +41,7 @@ import {
   CellClipBox,
   CellBorderPosition,
   type InteractionStateTheme,
-  type FullyIconName,
+  type HeaderActionNameOptions,
   type IconPosition,
   type InternalFullyTheme,
   type InternalFullyCellTheme,
@@ -607,7 +607,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     };
   }
 
-  public getIconConditionResult(): FullyIconName | undefined {
+  public getIconConditionResult(): HeaderActionNameOptions | undefined {
     const iconCondition = this.findFieldCondition(
       this.conditions?.icon,
     ) as IconCondition;

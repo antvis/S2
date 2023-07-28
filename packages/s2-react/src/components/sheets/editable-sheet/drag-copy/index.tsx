@@ -3,13 +3,13 @@ import { DataCell, S2Event, S2_PREFIX_CLS, GEvent } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetRef } from '../../../../context/SpreadSheetContext';
+import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
 
 import './drag-copy-point.less';
 
 export function DragCopyPoint() {
-  const spreadsheet = useSpreadSheetRef();
+  const spreadsheet = useSpreadSheetInstance();
 
   const [scroll, setScroll] = useState<
     ScrollOffset & { width?: number; overflow?: boolean }

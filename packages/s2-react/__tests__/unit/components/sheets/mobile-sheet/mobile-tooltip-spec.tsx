@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import type { SpreadSheet } from '@antv/s2';
-import { MobileSheetComponent } from '../../../../../src/components/sheets/mobile-sheet';
+import { MobileSheet } from '../../../../../src/components/sheets/mobile-sheet';
 import { SheetComponent } from '../../../../../src/components/sheets';
 import { CustomTooltip } from '../../../../../src';
 import * as mockDataConfig from '../../../../data/simple-data.json';
@@ -45,7 +45,7 @@ describe('Mobile Tooltip Different Tests', () => {
     let customTooltipInstance;
 
     render(
-      <MobileSheetComponent
+      <MobileSheet
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
@@ -78,7 +78,7 @@ describe('Mobile Tooltip Different Tests', () => {
     let customTooltipInstance;
 
     render(
-      <MobileSheetComponent
+      <MobileSheet
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
