@@ -6,7 +6,6 @@ import {
   get,
   includes,
   isEmpty,
-  isEqual,
   isFunction,
   isString,
   memoize,
