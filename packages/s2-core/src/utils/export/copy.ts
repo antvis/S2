@@ -478,7 +478,14 @@ const processTableRowSelected = (
   const matrix = displayData
     .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
     .map((entry) => {
+      // 确保顺序和表格中的列顺序一致
+      const idxMap = spreadsheet.getColumnNodes().reduce((prev, curr, idx) => {
+        prev[curr.field] = idx;
+        return prev;
+      }, {});
+
       return Object.keys(entry)
+        .sort((a, b) => idxMap[a] - idxMap[b])
         .map((cName) =>
           spreadsheet.getColumnNodes().find((n) => n.field === cName),
         )
