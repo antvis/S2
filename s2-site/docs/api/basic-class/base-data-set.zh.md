@@ -22,7 +22,7 @@ s2.dataSet.getFieldName('type')
 | getFieldName        | 获取字段名                         | `() => string`                                               |                                             |
 | getFieldFormatter   | 获取字段格式化函数                 | `() => (v: string) => unknown`                               |                                             |
 | getFieldDescription | 获取字段描述                       | `() => string`                                               |                                             |
-| setDataCfg          | 设置数据配置                       | (dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), reset?: boolean) => void | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
+| setDataCfg          | 设置数据配置                       | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
 | getDisplayDataSet   | 获取当前显示的数据集               | () => [DataType[]](#datatype)                                |                                             |
 | getDimensionValues  | 获取维值                           | (filed: string, query?: [DataType](#datatype) ) => string[]  |                                             |
 | getCellData         | 获取单个的单元格数据               | (params: [CellDataParams](#celldataparams)) => [DataType[]](#datatype) |                                             |
