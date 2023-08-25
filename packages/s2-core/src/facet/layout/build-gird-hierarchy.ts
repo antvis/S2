@@ -7,6 +7,8 @@ import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node'
 import type { FieldValue, GridHeaderParams } from '../layout/interface';
 import { layoutArrange } from '../layout/layout-hooks';
 import { TotalMeasure } from '../layout/total-measure';
+import { whetherLeafByLevel } from '../../utils/layout/whether-leaf-by-level';
+import { TotalClass } from './total-class';
 
 const hideMeasureColumn = (
   fieldValues: FieldValue[],
@@ -45,11 +47,38 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
 
   let query = {};
   if (parentNode.isTotals) {
-    // add total measures
-    if (addTotalMeasureInTotal) {
-      query = getDimsCondition(parentNode.parent, true);
+    const totalsConfig = spreadsheet.getTotalsConfig(currentField);
+    const dimensionGroup = parentNode.isGrandTotals
+      ? totalsConfig.totalsDimensionsGroup
+      : totalsConfig.subTotalsDimensionsGroup;
+    if (dimensionGroup?.includes(currentField)) {
+      query = getDimsCondition(parentNode);
+      const dimValues = dataSet.getTotalDimensionValues(currentField, query);
+      fieldValues.push(
+        ...(dimValues || []).map(
+          (v) =>
+            new TotalClass(v, parentNode.isSubTotals, parentNode.isGrandTotals),
+        ),
+      );
+    } else if (addTotalMeasureInTotal && currentField === EXTRA_FIELD) {
       // add total measures
+      query = getDimsCondition(parentNode.parent, true);
       fieldValues.push(...values.map((v) => new TotalMeasure(v)));
+    } else {
+      if (whetherLeafByLevel({ facetCfg, level: index, fields })) {
+        parentNode.isLeaf = true;
+      } else {
+        buildGridHierarchy({
+          addTotalMeasureInTotal,
+          addMeasureInTotalQuery,
+          parentNode,
+          currentField: fields[index + 1],
+          fields,
+          facetCfg,
+          hierarchy,
+        });
+      }
+      return;
     }
   } else {
     // field(dimension)'s all values

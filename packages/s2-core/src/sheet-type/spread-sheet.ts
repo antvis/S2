@@ -622,6 +622,8 @@ export abstract class SpreadSheet extends EE {
       reverseSubLayout: totalConfig.reverseSubLayout,
       label: totalConfig.label || i18n('总计'),
       subLabel: totalConfig.subLabel || i18n('小计'),
+      totalsDimensionsGroup: totalConfig.totalsDimensionsGroup,
+      subTotalsDimensionsGroup: totalConfig.subTotalsDimensionsGroup,
     };
   }
 

@@ -317,6 +317,35 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
+  public getTotalDimensionValues(field: string, query?: DataType): string[] {
+    const { rows = [], columns = [] } = this.fields || {};
+    let dimensions: string[] = [];
+    if (includes(rows, field)) {
+      dimensions = rows;
+    } else if (includes(columns, field)) {
+      dimensions = columns as string[];
+    }
+    const allCurrentFieldDimensionValues = this.sortedDimensionValues[field];
+    if (allCurrentFieldDimensionValues) {
+      for (const [dimension, index] of dimensions) {
+        if (field === dimension) {
+          break;
+        }
+        const value = get(query, dimension);
+        if (value) {
+          allCurrentFieldDimensionValues.filter((dim) => {
+            const arrTypeValue = dim.split(ID_SEPARATOR);
+            return arrTypeValue[index] === value;
+          });
+        }
+      }
+      return uniq(
+        getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues]),
+      );
+    }
+    return [];
+  }
+
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();

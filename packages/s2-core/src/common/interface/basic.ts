@@ -152,9 +152,9 @@ export interface Total {
   // sub label's display name, default = '小计'
   subLabel?: string;
   /** 总计分组维度 */
-  totalDimensionGroup?: string[];
+  totalsDimensionsGroup?: string[];
   /** 小计分组维度 */
-  subTotalDimensionGroup?: string[];
+  subTotalsDimensionsGroup?: string[];
 }
 
 /**

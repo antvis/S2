@@ -12,6 +12,8 @@ import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
 import type { Columns } from '../../common';
+import { JUZELOG } from '../../../UTIL';
+import { whetherLeafByLevel } from './whether-leaf-by-level';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {
@@ -26,7 +28,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   } = params;
-  const { spreadsheet, collapsedCols, colCfg } = facetCfg;
+  const { spreadsheet, collapsedCols } = facetCfg;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -48,20 +50,17 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
           ...query,
           [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
         };
-        isLeaf = true;
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
         nodeQuery = query;
-        if (!addTotalMeasureInTotal) {
-          isLeaf = true;
-        }
       }
+      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
       nodeQuery = { ...query, [EXTRA_FIELD]: value };
       adjustedField = EXTRA_FIELD;
-      isLeaf = true;
+      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;
       adjustedField = fields[index];
@@ -71,13 +70,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
       nodeQuery = { ...query, [currentField]: value };
-      const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
-      const isHideMeasure =
-        colCfg?.hideMeasureColumn &&
-        isValueInCols &&
-        includes(fields, EXTRA_FIELD);
-      const extraSize = isHideMeasure ? 2 : 1;
-      isLeaf = level === fields.length - extraSize;
+      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
     }
     const uniqueId = generateId(parentNode.id, value);
     if (!uniqueId) {

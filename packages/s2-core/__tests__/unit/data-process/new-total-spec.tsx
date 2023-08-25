@@ -145,9 +145,9 @@ describe('Pivot Table Core Data Process', () => {
       fields: {
         rows: ['province', 'city', 'type'],
         columns: ['sub_type'],
-        values: ['number'],
+        values: ['number', 'cost'],
         valueInCols: false,
-        customValueOrder: 2,
+        // customValueOrder: 2,
       },
       totalData: [],
     }),
@@ -155,10 +155,11 @@ describe('Pivot Table Core Data Process', () => {
       // hierarchyType: 'tree',
       debug: false,
       width: 1024,
-      height: 360,
+      height: 600,
       totals: {
         row: {
-          totalDimensionGroup: [],
+          subTotalsDimensionsGroup: ['type'],
+          totalsDimensionsGroup: ['city'],
           calcTotals: {
             aggregation: Aggregation.SUM,
           },

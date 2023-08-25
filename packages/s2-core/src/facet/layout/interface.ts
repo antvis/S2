@@ -93,3 +93,9 @@ export interface CustomTreeHeaderParams {
   hierarchy: Hierarchy;
   customTreeItems: CustomTreeItem[];
 }
+
+export interface WhetherLeafParams {
+  facetCfg: SpreadSheetFacetCfg;
+  fields: string[];
+  level: number;
+}
