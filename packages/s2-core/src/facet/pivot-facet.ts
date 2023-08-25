@@ -31,6 +31,7 @@ import {
   getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
+import { JUZELOG } from '../../UTIL';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -517,6 +518,32 @@ export class PivotFacet extends BaseFacet {
     }
   }
 
+  private getMultipleMap(
+    hierarchy: Hierarchy,
+    isRowHeader?: boolean,
+    isSubTotal?: boolean,
+  ) {
+    const { maxLevel } = hierarchy;
+    const { totals, dataSet } = this.cfg;
+    const moreThanOneValue = dataSet.moreThanOneValue();
+    const { rows, columns } = dataSet.fields;
+    const fields = isRowHeader ? rows : columns;
+    const totalConfig = isRowHeader ? totals.row : totals.col;
+    const dimensionGroup = isSubTotal
+      ? totalConfig.totalsDimensionsGroup
+      : totalConfig.subTotalsDimensionsGroup;
+    const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
+    for (let level = maxLevel; level > 0; level--) {
+      const currentField = fields[level] as string;
+      // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
+      const existValueField = currentField === EXTRA_FIELD && moreThanOneValue;
+      if (!(dimensionGroup.includes(currentField) || existValueField)) {
+        multipleMap[level - 1] += multipleMap[level];
+        multipleMap[level] = 0;
+      }
+    }
+  }
+
   /**
    * @description adjust the coordinate of total nodes and their children
    * @param hierarchy Hierarchy
@@ -525,7 +552,9 @@ export class PivotFacet extends BaseFacet {
   private adjustTotalNodesCoordinate(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
+    isSubTotal?: boolean,
   ) {
+    this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
     const moreThanOneValue = this.cfg.dataSet.moreThanOneValue();
     const { maxLevel } = hierarchy;
     const grandTotalNode = find(

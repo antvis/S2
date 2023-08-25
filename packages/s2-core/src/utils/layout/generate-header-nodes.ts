@@ -1,4 +1,4 @@
-import { includes, isBoolean } from 'lodash';
+import { isBoolean } from 'lodash';
 import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
@@ -12,7 +12,6 @@ import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
 import type { Columns } from '../../common';
-import { JUZELOG } from '../../../UTIL';
 import { whetherLeafByLevel } from './whether-leaf-by-level';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {

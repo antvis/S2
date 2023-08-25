@@ -44,6 +44,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
 
   const { dataSet, values, spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
+  const fieldName = dataSet.getFieldName(currentField);
 
   let query = {};
   if (parentNode.isTotals) {
@@ -60,6 +61,9 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
             new TotalClass(v, parentNode.isSubTotals, parentNode.isGrandTotals),
         ),
       );
+      if (isEmpty(fieldValues)) {
+        fieldValues.push(fieldName);
+      }
     } else if (addTotalMeasureInTotal && currentField === EXTRA_FIELD) {
       // add total measures
       query = getDimsCondition(parentNode.parent, true);
@@ -95,8 +99,6 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     fieldValues.push(...(arrangedValues || []));
 
     // add skeleton for empty data
-
-    const fieldName = dataSet.getFieldName(currentField);
 
     if (isEmpty(fieldValues)) {
       if (currentField === EXTRA_FIELD) {
