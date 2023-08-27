@@ -1,4 +1,5 @@
 import {
+  filter,
   find,
   forEach,
   get,
@@ -26,12 +27,8 @@ import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, ViewMeta } from '../common/interface';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
-import {
-  getIndexRangeWithOffsets,
-  getSubTotalNodeWidthOrHeightByLevel,
-} from '../utils/facet';
+import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
-import { JUZELOG } from '../../UTIL';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -221,8 +218,8 @@ export class PivotFacet extends BaseFacet {
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
-      this.adjustTotalNodesCoordinate(colsHierarchy);
-      this.adjustSubTotalNodesCoordinate(colsHierarchy);
+      this.adjustTotalNodesCoordinate(colsHierarchy, false, true);
+      this.adjustTotalNodesCoordinate(colsHierarchy, false, false);
     }
   }
 
@@ -488,8 +485,8 @@ export class PivotFacet extends BaseFacet {
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
-        this.adjustTotalNodesCoordinate(rowsHierarchy, true);
-        this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
+        this.adjustTotalNodesCoordinate(rowsHierarchy, true, false);
+        this.adjustTotalNodesCoordinate(rowsHierarchy, true, true);
       }
     }
   }
@@ -530,8 +527,8 @@ export class PivotFacet extends BaseFacet {
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals.row : totals.col;
     const dimensionGroup = isSubTotal
-      ? totalConfig.totalsDimensionsGroup
-      : totalConfig.subTotalsDimensionsGroup;
+      ? totalConfig.subTotalsDimensionsGroup
+      : totalConfig.totalsDimensionsGroup;
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields[level] as string;
@@ -542,109 +539,38 @@ export class PivotFacet extends BaseFacet {
         multipleMap[level] = 0;
       }
     }
+    return multipleMap;
   }
 
   /**
-   * @description adjust the coordinate of total nodes and their children
+   * @description adjust the coordinate of total / subTotal nodes and their children
    * @param hierarchy Hierarchy
    * @param isRowHeader boolean
+   * @param isSubTotal boolean
    */
   private adjustTotalNodesCoordinate(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
     isSubTotal?: boolean,
   ) {
-    this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
-    const moreThanOneValue = this.cfg.dataSet.moreThanOneValue();
-    const { maxLevel } = hierarchy;
-    const grandTotalNode = find(
-      hierarchy.getNodes(0),
-      (node: Node) => node.isGrandTotals,
+    const multipleMap = this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
+    const totalNodes = filter(hierarchy.getNodes(), (node: Node) =>
+      isSubTotal ? node.isSubTotals : node.isGrandTotals,
     );
-    if (!(grandTotalNode instanceof Node)) {
-      return;
-    }
-    const grandTotalChildren = grandTotalNode.children;
-    // 总计节点层级 (有且有两级)
-    if (isRowHeader) {
-      // 填充行总单元格宽度
-      grandTotalNode.width = hierarchy.width;
-      // 调整其叶子节点位置和宽度
-      forEach(grandTotalChildren, (node: Node) => {
-        const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
-        node.x = maxLevelNode.x;
-        node.width = maxLevelNode.width;
-      });
-    } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
-      // 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
-      // 填充列总计单元格高度
-      const grandTotalChildrenHeight = grandTotalChildren?.[0]?.height ?? 0;
-      grandTotalNode.height = hierarchy.height - grandTotalChildrenHeight;
-      // 调整其叶子结点位置, 以非小计行为准
-      const positionY = find(
-        hierarchy.getNodes(maxLevel),
-        (node: Node) => !node.isTotalMeasure,
-      )?.y;
-      forEach(grandTotalChildren, (node: Node) => {
-        node.y = positionY;
-      });
-    }
-  }
-
-  /**
-   * @description adust the coordinate of subTotal nodes when there is just one value
-   * @param hierarchy Hierarchy
-   * @param isRowHeader boolean
-   */
-  private adjustSubTotalNodesCoordinate(
-    hierarchy: Hierarchy,
-    isRowHeader?: boolean,
-  ) {
-    const subTotalNodes = hierarchy
-      .getNodes()
-      .filter((node: Node) => node.isSubTotals);
-
-    if (isEmpty(subTotalNodes)) {
-      return;
-    }
-    const { maxLevel } = hierarchy;
-    forEach(subTotalNodes, (subTotalNode: Node) => {
-      const subTotalNodeChildren = subTotalNode.children;
-      if (isRowHeader) {
-        // 填充行总单元格宽度
-        subTotalNode.width = getSubTotalNodeWidthOrHeightByLevel(
-          hierarchy.sampleNodesForAllLevels,
-          subTotalNode.level,
-          'width',
-        );
-
-        // 调整其叶子结点位置
-        forEach(subTotalNodeChildren, (node: Node) => {
-          node.x = hierarchy.getNodes(maxLevel)[0].x;
-        });
-      } else {
-        // 填充列总单元格高度
-        const totalHeight = getSubTotalNodeWidthOrHeightByLevel(
-          hierarchy.sampleNodesForAllLevels,
-          subTotalNode.level,
-          'height',
-        );
-        const subTotalNodeChildrenHeight =
-          subTotalNodeChildren?.[0]?.height ?? 0;
-        subTotalNode.height = totalHeight - subTotalNodeChildrenHeight;
-        // 调整其叶子结点位置,以非小计单元格为准
-        forEach(subTotalNodeChildren, (node: Node) => {
-          node.y = hierarchy.getNodes(maxLevel)[0].y;
-        });
-        // 调整其叶子结点位置, 以非小计行为准
-        const positionY = find(
-          hierarchy.getNodes(maxLevel),
-          (node: Node) => !node.isTotalMeasure,
-        )?.y;
-        forEach(subTotalNodeChildren, (node: Node) => {
-          node.y = positionY;
-        });
+    const key = isRowHeader ? 'width' : 'height';
+    forEach(totalNodes, (node: Node) => {
+      let multiple = multipleMap[node.level];
+      // 小计根节点倍数最小为1
+      if (!multiple && isSubTotal) {
+        multiple = 1;
       }
+      let res = 0;
+      for (let i = 0; i < multiple; i++) {
+        res += hierarchy.sampleNodesForAllLevels.find(
+          (sampleNode) => sampleNode.level === node.level + i,
+        )[key];
+      }
+      node[key] = res;
     });
   }
 

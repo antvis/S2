@@ -145,7 +145,7 @@ describe('Pivot Table Core Data Process', () => {
       fields: {
         rows: ['province', 'city', 'type'],
         columns: ['sub_type'],
-        values: ['number', 'cost'],
+        values: ['number'],
         valueInCols: false,
         // customValueOrder: 2,
       },
