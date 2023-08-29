@@ -58,7 +58,12 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       fieldValues.push(
         ...(dimValues || []).map(
           (v) =>
-            new TotalClass(v, parentNode.isSubTotals, parentNode.isGrandTotals),
+            new TotalClass(
+              v,
+              parentNode.isSubTotals,
+              parentNode.isGrandTotals,
+              false,
+            ),
         ),
       );
       if (isEmpty(fieldValues)) {
@@ -66,7 +71,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       }
     } else if (addTotalMeasureInTotal && currentField === EXTRA_FIELD) {
       // add total measures
-      query = getDimsCondition(parentNode.parent, true);
+      query = getDimsCondition(parentNode);
       fieldValues.push(...values.map((v) => new TotalMeasure(v)));
     } else {
       if (whetherLeafByLevel({ facetCfg, level: index, fields })) {

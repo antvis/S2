@@ -8,7 +8,6 @@ import {
   reduce,
   set,
 } from 'lodash';
-import { i18n } from '../../common/i18n';
 import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
@@ -189,7 +188,6 @@ export function getDataPath(params: DataPathParams) {
     }
     return path;
   };
-
   const rowPath = getPath(rowDimensionValues, true, rowPivotMeta, colPivotMeta);
   const colPath = getPath(
     colDimensionValues,
@@ -197,9 +195,7 @@ export function getDataPath(params: DataPathParams) {
     rowPivotMeta,
     colPivotMeta,
   );
-  const result = rowPath.concat(...colPath);
-
-  return result;
+  return rowPath.concat(...colPath);
 }
 
 /**

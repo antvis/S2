@@ -2,7 +2,6 @@ import type { BBox } from '@antv/g-canvas';
 import type { LayoutResult } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseFacet } from '../base-facet';
-import { JUZELOG } from '../../../UTIL';
 
 // BBox相同数据结构，便于已有逻辑的直接复用
 export abstract class BaseBBox implements BBox {
@@ -42,8 +41,6 @@ export abstract class BaseBBox implements BBox {
     this.facet = facet;
     this.spreadsheet = facet.spreadsheet;
     this.layoutResult = facet.layoutResult;
-    // JUZEMARK
-    JUZELOG(this.layoutResult, 'layoutResult');
 
     if (autoCalculateBBoxWhenCreated) {
       this.calculateBBox();

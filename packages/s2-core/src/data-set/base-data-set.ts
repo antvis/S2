@@ -177,7 +177,7 @@ export abstract class BaseDataSet {
    *          宁波市   E
    * query = {province: "浙江省"}
    * field = 'type'
-   * *  => [A,B,C]
+   * *  => [B,D,E]
    *
    * @param field current dimensions
    * @param query dimension value query

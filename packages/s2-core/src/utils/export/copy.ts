@@ -115,6 +115,12 @@ const getValueFromMeta = (
         rowNode.isTotalMeasure ||
         colNode.isTotals ||
         colNode.isTotalMeasure,
+      totalStatus: {
+        isRowTotal: rowNode.isGrandTotals,
+        isRowSubTotal: rowNode.isSubTotals,
+        isColTotal: colNode.isGrandTotals,
+        isColSubTotal: colNode.isSubTotals,
+      },
     });
     return cell?.[VALUE_FIELD] ?? '';
   }
@@ -394,6 +400,12 @@ const getDataMatrix = (
           rowNode.isTotalMeasure ||
           colNode.isTotals ||
           colNode.isTotalMeasure,
+        totalStatus: {
+          isRowTotal: rowNode.isGrandTotals,
+          isRowSubTotal: rowNode.isSubTotals,
+          isColTotal: colNode.isGrandTotals,
+          isColSubTotal: colNode.isSubTotals,
+        },
       });
       return getFormat(
         colNode.colIndex,

@@ -1,5 +1,6 @@
 import {
   compact,
+  concat,
   difference,
   each,
   every,
@@ -64,6 +65,7 @@ import type {
   DataType,
   PivotMeta,
   SortedDimensionValues,
+  TotalStatus,
 } from './interface';
 
 export class PivotDataSet extends BaseDataSet {
@@ -396,10 +398,11 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
-  getTotalValue(query: DataType) {
+  getTotalValue(query: DataType, totalStatus?: TotalStatus) {
+    const status = totalStatus || this.getTotalStatus(query);
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
-        this.getTotalStatus(query),
+        status,
         this.spreadsheet.options?.totals,
       ) || {};
     const calcAction = calcActionByType[aggregation];
@@ -408,13 +411,11 @@ export class PivotDataSet extends BaseDataSet {
     if (calcAction || calcFunc) {
       const data = this.getMultiData(query);
       let totalValue: number;
-
       if (calcFunc) {
         totalValue = calcFunc(query, data);
       } else if (calcAction) {
         totalValue = calcAction(data, VALUE_FIELD);
       }
-
       return {
         ...query,
         [VALUE_FIELD]: totalValue,
@@ -424,7 +425,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getCellData(params: CellDataParams): DataType {
-    const { query, rowNode, isTotals = false } = params || {};
+    const { query, rowNode, isTotals = false, totalStatus } = params || {};
 
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
@@ -456,8 +457,7 @@ export class PivotDataSet extends BaseDataSet {
       // 如果已经有数据则取已有数据
       return data;
     }
-
-    return isTotals ? this.getTotalValue(query) : data;
+    return isTotals ? this.getTotalValue(query, totalStatus) : data;
   }
 
   getCustomData = (path: number[]) => {
@@ -511,6 +511,72 @@ export class PivotDataSet extends BaseDataSet {
     };
   };
 
+  // [undefined , '杭州市' , undefined , 'number'] => true
+  // ['浙江省' , '杭州市' , undefined , 'number'] => true
+  private checkExistDimensionGroup(query: DataType): boolean {
+    const { rows, columns } = this.fields;
+    const check = (dimensions: string[]) => {
+      let existDimensionValue = false;
+      for (let i = dimensions.length; i > 0; i--) {
+        const key = dimensions[i - 1];
+        if (keys(query).includes(key)) {
+          if (key !== EXTRA_FIELD) {
+            existDimensionValue = true;
+          }
+        } else if (existDimensionValue) {
+          return true;
+        }
+      }
+      return false;
+    };
+    return check(rows) || check(columns as string[]);
+  }
+
+  /**
+   * 补足分组汇总场景的前置 undefined
+   * {undefined,'可乐','undefined','price'}
+   * => [
+   *      {'可口公司','可乐','undefined','price'}，
+   *      {'百事公司','可乐','undefined','price'},
+   *    ]
+   */
+  private getTotalGroupQueries(dimensions: string[], query) {
+    let queryArray = [query];
+    let existDimensionGroupKey = null;
+    for (let i = dimensions.length; i > 0; i--) {
+      const key = dimensions[i - 1];
+      if (keys(query).includes(key)) {
+        if (key !== EXTRA_FIELD) {
+          existDimensionGroupKey = key;
+        }
+      } else if (existDimensionGroupKey) {
+        const allCurrentFieldDimensionValues =
+          this.sortedDimensionValues[existDimensionGroupKey];
+        const resKeys = [];
+        let res = [];
+        const arrayLength =
+          allCurrentFieldDimensionValues[0].split(ID_SEPARATOR).length;
+        for (const queryItem of queryArray) {
+          for (const dim of allCurrentFieldDimensionValues) {
+            const arrTypeValue = dim.split(ID_SEPARATOR);
+            if (
+              arrTypeValue[arrayLength - 1] ===
+              queryItem[existDimensionGroupKey]
+            ) {
+              resKeys.push(arrTypeValue[arrayLength - 2]);
+            }
+          }
+          const queryList = uniq(resKeys).map((v) => {
+            return { ...query, [key]: v };
+          });
+          res = concat(res, queryList);
+        }
+        queryArray = res;
+      }
+    }
+    return queryArray;
+  }
+
   public getMultiData(
     query: DataType,
     isTotals?: boolean,
@@ -524,68 +590,99 @@ export class PivotDataSet extends BaseDataSet {
     const totalRows = !isEmpty(drillDownFields)
       ? rows.concat(drillDownFields)
       : rows;
-    const rowDimensionValues = getQueryDimValues(totalRows, query);
-    const colDimensionValues = getQueryDimValues(columns as string[], query);
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      careUndefined: true,
-      isFirstCreate: true,
-      rowFields: rows,
-      colFields: columns as string[],
-      rowPivotMeta: this.rowPivotMeta,
-      colPivotMeta: this.colPivotMeta,
-    });
-    const currentData = this.getCustomData(path);
-    let result = compact(customFlatten(currentData));
-    if (isTotals) {
-      // 总计/小计（行/列）
-      // need filter extra data
-      // grand total =>  {$$extra$$: 'price'}
-      // sub total => {$$extra$$: 'price', category: 'xxxx'}
-      // [undefined, undefined, "price"] => [category]
-      let fieldKeys = [];
-      const rowKeys = getFieldKeysByDimensionValues(rowDimensionValues, rows);
-      const colKeys = getFieldKeysByDimensionValues(
-        colDimensionValues,
-        columns as string[],
-      );
-      if (isRow) {
-        // 行总计
-        fieldKeys = rowKeys;
-      } else {
-        // 只有一个值，此时为列总计
-        const isCol = keys(query)?.length === 1 && has(query, EXTRA_FIELD);
+    // 当 undefined 维度后面有非 undefined，为维度分组场景，将非 undefined 维度前的维度填充为所有可能的维度值。
+    // 如 [undefined , '杭州市' , undefined , 'number']
+    const existDimensionGroup = this.checkExistDimensionGroup(query);
+    let result = [];
+    const getDataPathByRowCol = (row: string[], col: string[]) =>
+      getDataPath({
+        rowDimensionValues: row,
+        colDimensionValues: col,
+        careUndefined: true,
+        isFirstCreate: true,
+        rowFields: rows,
+        colFields: columns as string[],
+        rowPivotMeta: this.rowPivotMeta,
+        colPivotMeta: this.colPivotMeta,
+      });
 
-        if (isCol) {
-          fieldKeys = colKeys;
+    if (existDimensionGroup) {
+      const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
+      let totalGroupQueries = [];
+      for (const queryItem of rowTotalGroupQueries) {
+        totalGroupQueries = concat(
+          totalGroupQueries,
+          this.getTotalGroupQueries(columns as string[], queryItem),
+        );
+      }
+      for (const queryItem of totalGroupQueries) {
+        const rowDimensionValues = getQueryDimValues(totalRows, queryItem);
+        const colDimensionValues = getQueryDimValues(
+          columns as string[],
+          queryItem,
+        );
+        const path = getDataPathByRowCol(
+          rowDimensionValues,
+          colDimensionValues,
+        );
+        const currentData = this.getCustomData(path);
+        result = concat(result, compact(customFlatten(currentData)));
+      }
+    } else {
+      const rowDimensionValues = getQueryDimValues(totalRows, query);
+      const colDimensionValues = getQueryDimValues(columns as string[], query);
+      const path = getDataPathByRowCol(rowDimensionValues, colDimensionValues);
+      const currentData = this.getCustomData(path);
+      result = compact(customFlatten(currentData));
+      if (isTotals) {
+        // 总计/小计（行/列）
+        // need filter extra data
+        // grand total =>  {$$extra$$: 'price'}
+        // sub total => {$$extra$$: 'price', category: 'xxxx'}
+        // [undefined, undefined, "price"] => [category]
+        let fieldKeys = [];
+        const rowKeys = getFieldKeysByDimensionValues(rowDimensionValues, rows);
+        const colKeys = getFieldKeysByDimensionValues(
+          colDimensionValues,
+          columns as string[],
+        );
+        if (isRow) {
+          // 行总计
+          fieldKeys = rowKeys;
         } else {
-          const getTotalStatus = (dimensions: string[]) => {
-            return isEveryUndefined(
-              dimensions?.filter((item) => !valueList?.includes(item)),
-            );
-          };
-          const isRowTotal = getTotalStatus(colDimensionValues);
-          const isColTotal = getTotalStatus(rowDimensionValues);
+          // 只有一个值，此时为列总计
+          const isCol = keys(query)?.length === 1 && has(query, EXTRA_FIELD);
 
-          if (isRowTotal) {
-            // 行小计
-            fieldKeys = rowKeys;
-          } else if (isColTotal) {
-            // 列小计
+          if (isCol) {
             fieldKeys = colKeys;
           } else {
-            // 行小计+列 or 列小计+行
-            fieldKeys = [...rowKeys, ...colKeys];
+            const getTotalStatus = (dimensions: string[]) => {
+              return isEveryUndefined(
+                dimensions?.filter((item) => !valueList?.includes(item)),
+              );
+            };
+            const isRowTotal = getTotalStatus(colDimensionValues);
+            const isColTotal = getTotalStatus(rowDimensionValues);
+
+            if (isRowTotal) {
+              // 行小计
+              fieldKeys = rowKeys;
+            } else if (isColTotal) {
+              // 列小计
+              fieldKeys = colKeys;
+            } else {
+              // 行小计+列 or 列小计+行
+              fieldKeys = [...rowKeys, ...colKeys];
+            }
           }
         }
+        result = result.filter(
+          (r) =>
+            !fieldKeys?.find(
+              (item) => item !== EXTRA_FIELD && keys(r)?.includes(item),
+            ),
+        );
       }
-      result = result.filter(
-        (r) =>
-          !fieldKeys?.find(
-            (item) => item !== EXTRA_FIELD && keys(r)?.includes(item),
-          ),
-      );
     }
 
     return result || [];

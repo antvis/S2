@@ -69,7 +69,6 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { JUZELOG } from '../../UTIL';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -624,8 +623,8 @@ export abstract class SpreadSheet extends EE {
       reverseSubLayout: totalConfig.reverseSubLayout,
       label: totalConfig.label || i18n('总计'),
       subLabel: totalConfig.subLabel || i18n('小计'),
-      totalsDimensionsGroup: totalConfig.totalsDimensionsGroup,
-      subTotalsDimensionsGroup: totalConfig.subTotalsDimensionsGroup,
+      totalsDimensionsGroup: totalConfig.totalsDimensionsGroup || [],
+      subTotalsDimensionsGroup: totalConfig.subTotalsDimensionsGroup || [],
     };
   }
 

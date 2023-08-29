@@ -95,10 +95,17 @@ export class PivotFacet extends BaseFacet {
             }
           : {};
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
+      const totalStatus = {
+        isRowTotal: row.isGrandTotals,
+        isRowSubTotal: row.isSubTotals,
+        isColTotal: col.isGrandTotals,
+        isColSubTotal: col.isSubTotals,
+      };
       const data = dataSet.getCellData({
         query: dataQuery,
         rowNode: row,
         isTotals,
+        totalStatus,
       });
       let valueField: string;
       let fieldValue = null;
@@ -180,9 +187,17 @@ export class PivotFacet extends BaseFacet {
   ) {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
+    const sampleNodesForAllLevels = colsHierarchy.sampleNodesForAllLevels;
+    for (let level = 0; level < sampleNodesForAllLevels.length; level++) {
+      const levelSample = sampleNodesForAllLevels[level];
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
+      if (levelSample.level === 0) {
+        levelSample.y = 0;
+      } else {
+        const preLevelSample = sampleNodesForAllLevels[level - 1];
+        levelSample.y = preLevelSample?.y + preLevelSample?.height ?? 0;
+      }
     }
     let currentCollIndex = 0;
     for (let i = 0; i < allNodes.length; i++) {
@@ -209,11 +224,7 @@ export class PivotFacet extends BaseFacet {
         );
         currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
       }
-      // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
-      currentNode.height =
-        currentNode.isGrandTotals && currentNode.isLeaf
-          ? colsHierarchy.height
-          : this.getColNodeHeight(currentNode);
+      currentNode.height = this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
@@ -309,6 +320,12 @@ export class PivotFacet extends BaseFacet {
               col.isTotalMeasure ||
               rowNode.isTotals ||
               rowNode.isTotalMeasure,
+            totalStatus: {
+              isRowTotal: rowNode.isGrandTotals,
+              isRowSubTotal: rowNode.isSubTotals,
+              isColTotal: col.isGrandTotals,
+              isColSubTotal: col.isSubTotals,
+            },
           });
 
           if (cellData) {
@@ -527,8 +544,8 @@ export class PivotFacet extends BaseFacet {
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals.row : totals.col;
     const dimensionGroup = isSubTotal
-      ? totalConfig.subTotalsDimensionsGroup
-      : totalConfig.totalsDimensionsGroup;
+      ? totalConfig.subTotalsDimensionsGroup || []
+      : totalConfig.totalsDimensionsGroup || [];
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields[level] as string;
@@ -654,6 +671,12 @@ export class PivotFacet extends BaseFacet {
           col.isTotalMeasure ||
           rowNode.isTotals ||
           rowNode.isTotalMeasure,
+        totalStatus: {
+          isRowTotal: rowNode.isGrandTotals,
+          isRowSubTotal: rowNode.isSubTotals,
+          isColTotal: col.isGrandTotals,
+          isColSubTotal: col.isSubTotals,
+        },
       });
 
       const cellDataKeys = keys(cellData);
