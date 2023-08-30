@@ -483,19 +483,25 @@ export abstract class BaseFacet {
     );
 
     this.timer = timer((elapsed) => {
-      const ratio = Math.min(elapsed / duration, 1);
-      const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
+      try {
+        const ratio = Math.min(elapsed / duration, 1);
+        const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
 
-      this.setScrollOffset({
-        rowHeaderScrollX,
-        scrollX,
-        scrollY,
-      });
-      this.startScroll();
+        this.setScrollOffset({
+          rowHeaderScrollX,
+          scrollX,
+          scrollY,
+        });
+        this.startScroll();
 
-      if (elapsed > duration) {
+        if (elapsed > duration) {
+          this.timer.stop();
+          cb?.();
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
         this.timer.stop();
-        cb?.();
       }
     });
   };
@@ -1047,16 +1053,16 @@ export abstract class BaseFacet {
       scrollY,
       KEY_GROUP_ROW_INDEX_RESIZE_AREA,
     );
-    this.cornerHeader.onCorScroll(
+    this.cornerHeader?.onCorScroll(
       this.getRealScrollX(scrollX, hRowScroll),
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    this.centerFrame.onChangeShadowVisibility(
+    this.centerFrame?.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
     );
-    this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
+    this.centerFrame?.onBorderScroll(this.getRealScrollX(scrollX));
+    this.columnHeader?.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
