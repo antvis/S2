@@ -328,25 +328,20 @@ export class PivotDataSet extends BaseDataSet {
     } else if (includes(columns, field)) {
       dimensions = columns as string[];
     }
-    const allCurrentFieldDimensionValues = this.sortedDimensionValues[field];
-    if (allCurrentFieldDimensionValues) {
-      for (const [dimension, index] of dimensions) {
-        if (field === dimension) {
-          break;
-        }
-        const value = get(query, dimension);
-        if (value) {
-          allCurrentFieldDimensionValues.filter((dim) => {
-            const arrTypeValue = dim.split(ID_SEPARATOR);
-            return arrTypeValue[index] === value;
-          });
-        }
-      }
-      return uniq(
-        getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues]),
-      );
-    }
-    return [];
+    let allCurrentFieldDimensionValues =
+      this.sortedDimensionValues[field] || [];
+    allCurrentFieldDimensionValues = allCurrentFieldDimensionValues.filter(
+      (dimValue) =>
+        this.checkAccordQueryWithDimensionValue(
+          dimValue,
+          query,
+          dimensions,
+          field,
+        ),
+    );
+    return uniq(
+      getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues]),
+    );
   }
 
   public getDimensionValues(field: string, query?: DataType): string[] {
@@ -533,6 +528,35 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   /**
+   * 检查 DimensionValue 是否符合 query 条件
+   * dimensions = ['province','city']
+   * query = [province: '杭州市', type: '文具']
+   * 浙江省[&]杭州市[&]家具[&]桌子 => true
+   * 四川省[&]成都市[&]文具[&]笔 => false
+   */
+  private checkAccordQueryWithDimensionValue(
+    dimensionValues: string,
+    query,
+    dimensions: string[],
+    field: string,
+  ): boolean {
+    for (const [index, dimension] of dimensions.entries()) {
+      const queryValue = get(query, dimension);
+      if (queryValue) {
+        const arrTypeValue = dimensionValues.split(ID_SEPARATOR);
+        const dimensionValue = arrTypeValue[index];
+        if (dimensionValue !== queryValue) {
+          return false;
+        }
+      }
+      if (field === dimension) {
+        break;
+      }
+    }
+    return true;
+  }
+
+  /**
    * 补足分组汇总场景的前置 undefined
    * {undefined,'可乐','undefined','price'}
    * => [
@@ -549,24 +573,24 @@ export class PivotDataSet extends BaseDataSet {
         if (key !== EXTRA_FIELD) {
           existDimensionGroupKey = key;
         }
-        queryArray = filter(
-          queryArray,
-          (queryItem) => queryItem[key] === query[key],
-        );
       } else if (existDimensionGroupKey) {
         const allCurrentFieldDimensionValues =
           this.sortedDimensionValues[existDimensionGroupKey];
-        const resKeys = [];
         let res = [];
         const arrayLength =
           allCurrentFieldDimensionValues[0].split(ID_SEPARATOR).length;
         for (const queryItem of queryArray) {
-          for (const dim of allCurrentFieldDimensionValues) {
-            const arrTypeValue = dim.split(ID_SEPARATOR);
+          const resKeys = [];
+          for (const dimValue of allCurrentFieldDimensionValues) {
             if (
-              arrTypeValue[arrayLength - 1] ===
-              queryItem[existDimensionGroupKey]
+              this.checkAccordQueryWithDimensionValue(
+                dimValue,
+                queryItem,
+                dimensions,
+                existDimensionGroupKey,
+              )
             ) {
+              const arrTypeValue = dimValue.split(ID_SEPARATOR);
               resKeys.push(arrTypeValue[arrayLength - 2]);
             }
           }
@@ -610,7 +634,6 @@ export class PivotDataSet extends BaseDataSet {
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
-
     if (existDimensionGroup) {
       const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
       let totalGroupQueries = [];
@@ -620,6 +643,7 @@ export class PivotDataSet extends BaseDataSet {
           this.getTotalGroupQueries(columns as string[], queryItem),
         );
       }
+
       for (const queryItem of totalGroupQueries) {
         const rowDimensionValues = getQueryDimValues(totalRows, queryItem);
         const colDimensionValues = getQueryDimValues(
@@ -689,7 +713,6 @@ export class PivotDataSet extends BaseDataSet {
         );
       }
     }
-
     return result || [];
   }
 

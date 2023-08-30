@@ -25,7 +25,6 @@ import type {
   ResizeInfo,
   ResizePosition,
 } from '../common/interface/resize';
-import { JUZELOG } from '../../UTIL';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -156,7 +155,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
-      JUZELOG(this.spreadsheet.dataSet, 'resize-render-mouseDown');
       const shape = event.target as IGroup;
       const originalEvent = event.originalEvent as MouseEvent;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);

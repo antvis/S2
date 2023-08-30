@@ -56,7 +56,6 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile, isWindows } from '../utils/is-mobile';
-import { JUZELOG } from '../../UTIL';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -1329,6 +1328,7 @@ export abstract class BaseFacet {
     this.spreadsheet.interaction.clearHoverTimer();
 
     this.realCellRender(scrollX, scrollY);
+
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
     this.clip(scrollX, scrollY);
