@@ -69,6 +69,7 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { JUZELOG } from '../../UTIL';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -406,6 +407,7 @@ export abstract class SpreadSheet extends EE {
     const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
       options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+    JUZELOG(this.dataSet, 'render');
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet(this.options);
     }

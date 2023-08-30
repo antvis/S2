@@ -1,6 +1,5 @@
 import {
   filter,
-  find,
   forEach,
   get,
   isArray,
@@ -577,9 +576,14 @@ export class PivotFacet extends BaseFacet {
     const key = isRowHeader ? 'width' : 'height';
     forEach(totalNodes, (node: Node) => {
       let multiple = multipleMap[node.level];
-      // 小计根节点倍数最小为1
+      // 小计根节点若为0，则改为最近上级倍数 - level 差
       if (!multiple && isSubTotal) {
-        multiple = 1;
+        let lowerLevelIndex = 1;
+        while (!multiple) {
+          multiple =
+            multipleMap[node.level - lowerLevelIndex] - lowerLevelIndex;
+          lowerLevelIndex++;
+        }
       }
       let res = 0;
       for (let i = 0; i < multiple; i++) {

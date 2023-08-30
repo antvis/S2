@@ -75,7 +75,10 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       fieldValues.push(...values.map((v) => new TotalMeasure(v)));
     } else {
       if (whetherLeafByLevel({ facetCfg, level: index, fields })) {
+        // 如果最后一级没有分组维度，则将上一个结点设为叶子结点
         parentNode.isLeaf = true;
+        hierarchy.pushIndexNode(parentNode);
+        parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
       } else {
         buildGridHierarchy({
           addTotalMeasureInTotal,

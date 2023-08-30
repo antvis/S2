@@ -137,16 +137,49 @@ const myData = [
     sub_type: '纸张',
   },
 ];
+const meta = [
+  {
+    field: 'number',
+    name: '数量',
+    description: '数量说明。。',
+  },
+  {
+    field: 'province',
+    name: '省份',
+    description: '省份说明。。',
+  },
+  {
+    field: 'city',
+    name: '城市',
+    description: '城市说明。。',
+  },
+  {
+    field: 'type',
+    name: '类别',
+    description: '类别说明。。',
+  },
+  {
+    field: 'sub_type',
+    name: '子类别',
+    description: '子类别说明。。',
+  },
+  {
+    field: 'cost',
+    name: '价格',
+    description: 'Value2',
+  },
+];
 describe('Pivot Table Core Data Process', () => {
   const s2 = new PivotSheet(
     getContainer(),
     assembleDataCfg({
       data: myData,
+      meta,
       fields: {
-        rows: ['province', 'city', 'type'],
-        columns: ['sub_type'],
+        rows: ['province', 'city', 'type', 'sub_type'],
+        columns: [],
         values: ['number', 'cost'],
-        valueInCols: false,
+        // valueInCols: false,
         // customValueOrder: 2,
       },
       totalData: [],
@@ -158,8 +191,8 @@ describe('Pivot Table Core Data Process', () => {
       height: 600,
       totals: {
         row: {
-          subTotalsDimensionsGroup: ['type'],
-          totalsDimensionsGroup: ['city'],
+          totalsDimensionsGroup: ['city', 'type'],
+          subTotalsDimensionsGroup: ['sub_type'],
           calcTotals: {
             aggregation: Aggregation.SUM,
           },
@@ -172,19 +205,21 @@ describe('Pivot Table Core Data Process', () => {
           reverseSubLayout: true,
           subTotalsDimensions: ['province'],
         },
-        col: {
-          calcTotals: {
-            aggregation: Aggregation.SUM,
-          },
-          calcSubTotals: {
-            aggregation: Aggregation.SUM,
-          },
-          showGrandTotals: true,
-          showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
-          subTotalsDimensions: ['province'],
-        },
+        // col: {
+        //   subTotalsDimensionsGroup: ['city'],
+        //   totalsDimensionsGroup: ['sub_type'],
+        //   calcTotals: {
+        //     aggregation: Aggregation.SUM,
+        //   },
+        //   calcSubTotals: {
+        //     aggregation: Aggregation.SUM,
+        //   },
+        //   showGrandTotals: true,
+        //   showSubTotals: true,
+        //   reverseLayout: true,
+        //   reverseSubLayout: true,
+        //   subTotalsDimensions: ['province'],
+        // },
       },
     }),
   );

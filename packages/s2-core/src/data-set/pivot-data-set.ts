@@ -202,6 +202,7 @@ export class PivotDataSet extends BaseDataSet {
       }
       // 2. 删除 rowPivotMeta 当前下钻层级对应 meta 信息
       deleteMetaById(this.rowPivotMeta, rowNodeId);
+
       // 3. 删除下钻缓存路径
       idPathMap.delete(rowNodeId);
 
@@ -359,7 +360,6 @@ export class PivotDataSet extends BaseDataSet {
       meta = this.colPivotMeta;
       dimensions = columns as string[];
     }
-
     if (!isEmpty(query)) {
       let sortedMeta = [];
       const dimensionValuePath = [];
@@ -549,6 +549,10 @@ export class PivotDataSet extends BaseDataSet {
         if (key !== EXTRA_FIELD) {
           existDimensionGroupKey = key;
         }
+        queryArray = filter(
+          queryArray,
+          (queryItem) => queryItem[key] === query[key],
+        );
       } else if (existDimensionGroupKey) {
         const allCurrentFieldDimensionValues =
           this.sortedDimensionValues[existDimensionGroupKey];
@@ -567,11 +571,12 @@ export class PivotDataSet extends BaseDataSet {
             }
           }
           const queryList = uniq(resKeys).map((v) => {
-            return { ...query, [key]: v };
+            return { ...queryItem, [key]: v };
           });
           res = concat(res, queryList);
         }
         queryArray = res;
+        existDimensionGroupKey = key;
       }
     }
     return queryArray;
