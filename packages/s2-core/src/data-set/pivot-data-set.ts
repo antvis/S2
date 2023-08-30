@@ -320,6 +320,8 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
+  // rows :['province','city','type']
+  // query: ['浙江省',undefined] => return: ['文具','家具']
   public getTotalDimensionValues(field: string, query?: DataType): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let dimensions: string[] = [];
@@ -506,8 +508,11 @@ export class PivotDataSet extends BaseDataSet {
     };
   };
 
-  // [undefined , '杭州市' , undefined , 'number'] => true
-  // ['浙江省' , '杭州市' , undefined , 'number'] => true
+  /**
+   * 检查是否属于需要填充中间汇总维度的场景
+   * [undefined , '杭州市' , undefined , 'number'] => true
+   * ['浙江省' , '杭州市' , undefined , 'number'] => true
+   */
   private checkExistDimensionGroup(query: DataType): boolean {
     const { rows, columns } = this.fields;
     const check = (dimensions: string[]) => {
@@ -634,6 +639,7 @@ export class PivotDataSet extends BaseDataSet {
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
+    // 有中间维度汇总的分组场景，将有中间汇总值的 query 处理为一组合法 query 后查询数据
     if (existDimensionGroup) {
       const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
       let totalGroupQueries = [];

@@ -1328,7 +1328,6 @@ export abstract class BaseFacet {
     this.spreadsheet.interaction.clearHoverTimer();
 
     this.realCellRender(scrollX, scrollY);
-
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
     this.clip(scrollX, scrollY);

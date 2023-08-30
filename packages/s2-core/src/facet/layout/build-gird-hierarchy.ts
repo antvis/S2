@@ -80,6 +80,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
         hierarchy.pushIndexNode(parentNode);
         parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
       } else {
+        // 如果是空维度，则跳转到下一级 level
         buildGridHierarchy({
           addTotalMeasureInTotal,
           addMeasureInTotalQuery,
