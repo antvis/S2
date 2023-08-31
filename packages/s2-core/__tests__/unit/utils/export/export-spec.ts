@@ -221,6 +221,8 @@ describe('PivotSheet Export Test', () => {
             subTotalsDimensions: ['province'],
           },
           col: {
+            totalsDimensionsGroup: ['city', 'type'],
+            subTotalsDimensionsGroup: ['sub_type'],
             showGrandTotals: true,
             showSubTotals: true,
             subTotalsDimensions: ['type'],
@@ -233,7 +235,7 @@ describe('PivotSheet Export Test', () => {
     const rows = data.split('\n');
     expect(rows).toHaveLength(17);
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(53);
+      expect(e.split('\t')).toHaveLength(60);
     });
   });
 
@@ -255,6 +257,8 @@ describe('PivotSheet Export Test', () => {
             subTotalsDimensions: ['province'],
           },
           col: {
+            totalsDimensionsGroup: ['city', 'sub_type', 'province'],
+            subTotalsDimensionsGroup: ['sub_type'],
             showGrandTotals: true,
             showSubTotals: true,
             subTotalsDimensions: ['type'],
@@ -267,7 +271,7 @@ describe('PivotSheet Export Test', () => {
     const rows = data.split('\n');
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(54);
+      expect(e.split('\t')).toHaveLength(63);
     });
   });
 

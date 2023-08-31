@@ -343,7 +343,7 @@ export class PivotDataSet extends BaseDataSet {
     );
     return uniq(
       getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues]),
-    );
+    ).filter((v) => v !== 'undefined');
   }
 
   public getDimensionValues(field: string, query?: DataType): string[] {
@@ -513,7 +513,7 @@ export class PivotDataSet extends BaseDataSet {
    * [undefined , '杭州市' , undefined , 'number'] => true
    * ['浙江省' , '杭州市' , undefined , 'number'] => true
    */
-  private checkExistDimensionGroup(query: DataType): boolean {
+  checkExistDimensionGroup(query: DataType): boolean {
     const { rows, columns } = this.fields;
     const check = (dimensions: string[]) => {
       let existDimensionValue = false;
@@ -536,10 +536,11 @@ export class PivotDataSet extends BaseDataSet {
    * 检查 DimensionValue 是否符合 query 条件
    * dimensions = ['province','city']
    * query = [province: '杭州市', type: '文具']
+   * field = 'sub_type'
    * 浙江省[&]杭州市[&]家具[&]桌子 => true
    * 四川省[&]成都市[&]文具[&]笔 => false
    */
-  private checkAccordQueryWithDimensionValue(
+  checkAccordQueryWithDimensionValue(
     dimensionValues: string,
     query,
     dimensions: string[],
@@ -569,7 +570,7 @@ export class PivotDataSet extends BaseDataSet {
    *      {'百事公司','可乐','undefined','price'},
    *    ]
    */
-  private getTotalGroupQueries(dimensions: string[], query) {
+  getTotalGroupQueries(dimensions: string[], query) {
     let queryArray = [query];
     let existDimensionGroupKey = null;
     for (let i = dimensions.length; i > 0; i--) {
@@ -596,7 +597,10 @@ export class PivotDataSet extends BaseDataSet {
               )
             ) {
               const arrTypeValue = dimValue.split(ID_SEPARATOR);
-              resKeys.push(arrTypeValue[arrayLength - 2]);
+              const currentKey = arrTypeValue[arrayLength - 2];
+              if (currentKey !== 'undefined') {
+                resKeys.push(currentKey);
+              }
             }
           }
           const queryList = uniq(resKeys).map((v) => {

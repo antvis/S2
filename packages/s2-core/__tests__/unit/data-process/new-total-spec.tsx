@@ -9,8 +9,29 @@ import { PivotSheet } from '@/sheet-type';
 
 const myData = [
   {
-    cost: 537,
-    number: 7789,
+    cost: 99099,
+    number: 99099,
+    city: '杭州市',
+    type: '家具',
+    sub_type: '桌子',
+  },
+  {
+    cost: 99099,
+    number: 99099,
+    province: '浙江省',
+    city: '杭州市',
+    sub_type: '桌子',
+  },
+  {
+    cost: 99099,
+    number: 99099,
+    province: '浙江省',
+    city: '杭州市',
+    type: '家具',
+  },
+  {
+    cost: 99099,
+    number: 99099,
     province: '浙江省',
     city: '杭州市',
     type: '家具',
