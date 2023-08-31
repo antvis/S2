@@ -9,7 +9,7 @@ import {
 import {
   CellBorderPosition,
   CellClipBox,
-  type FullyIconName,
+  type HeaderActionNameOptions,
   type IconCondition,
   type InteractionStateTheme,
 } from '../common/interface';
@@ -241,7 +241,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         // 此时 name 是什么值都无所谓，因为后面会根据 mappingResult 来决定
         name: '',
         position: getIconPosition(iconCondition),
-      } as FullyIconName);
+      } as HeaderActionNameOptions);
 
     this.groupedIcons = groupIconsByPosition([], iconCfg);
   }

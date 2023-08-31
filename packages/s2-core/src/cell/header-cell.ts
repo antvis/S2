@@ -1,6 +1,6 @@
 import type {
-  FederatedPointerEvent as CanvasEvent,
   DisplayObject,
+  FederatedPointerEvent as CanvasEvent,
   PointLike,
 } from '@antv/g';
 import {
@@ -15,7 +15,6 @@ import {
   map,
   merge,
 } from 'lodash';
-import { renderIcon } from '../utils/g-renders';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellType,
@@ -25,14 +24,15 @@ import {
 } from '../common/constant';
 import { InteractionStateName } from '../common/constant/interaction';
 import { GuiIcon } from '../common/icons';
+import type { GuiIconCfg } from '../common/icons/gui-icon';
 import type {
   CellMeta,
   Condition,
-  FormatResult,
-  FullyIconName,
-  HeaderActionIconOptions,
-  InternalFullyHeaderActionIcon,
   ConditionMappingResult,
+  FormatResult,
+  HeaderActionIconOptions,
+  HeaderActionNameOptions,
+  InternalFullyHeaderActionIcon,
   TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header';
@@ -42,6 +42,7 @@ import {
   getActionIconConfig,
   groupIconsByPosition,
 } from '../utils/cell/header-cell';
+import { renderIcon } from '../utils/g-renders';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell extends BaseCell<Node> {
@@ -57,7 +58,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected hasDefaultHiddenIcon: boolean;
 
-  protected conditionIconMappingResult: FullyIconName | undefined;
+  protected conditionIconMappingResult: HeaderActionNameOptions | undefined;
 
   /** left icon 绘制起始坐标 */
   protected leftIconPosition: PointLike;
@@ -157,11 +158,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return false;
   }
 
-  protected getActionIconsCount() {
-    return this.groupedIcons.left.length + this.groupedIcons.right.length;
-  }
-
-  protected getActionIconStyle() {
+  protected getActionIconStyle(
+    options: Partial<HeaderActionIconOptions>,
+  ): Partial<GuiIconCfg> {
     const { icon } = this.getStyle()!;
     const conditionStyle = this.getTextConditionMappingResult();
     const defaultTextFill = conditionStyle?.fill || this.getTextStyle().fill!;
@@ -169,8 +168,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return {
       width: icon?.size,
       height: icon?.size,
-      // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
-      fill: icon?.fill || defaultTextFill,
+      // 优先级: 单个 icon 颜色配置 > 全部 icon 颜色配置 > 主题 icon 颜色配置 > 文本默认颜色
+      fill: options?.fill || icon?.fill || defaultTextFill,
+      cursor: 'pointer',
     };
   }
 
@@ -180,14 +180,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, iconName, defaultHide, onClick, onHover, isSortIcon } =
-      options;
+    const { x, y, name, defaultHide, onClick, onHover, isSortIcon } = options;
 
     const icon = new GuiIcon({
-      name: iconName,
+      ...this.getActionIconStyle(options),
+      name,
       x,
       y,
-      ...this.getActionIconStyle(),
     });
 
     // 默认隐藏，hover 可见
@@ -197,7 +196,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
       onHover?.({
         hovering: true,
-        iconName,
+        name,
         meta: this.meta,
         event,
       });
@@ -207,27 +206,27 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
       onHover?.({
         hovering: false,
-        iconName,
+        name,
         meta: this.meta,
         event,
       });
     });
 
-    if (isSortIcon) {
-      icon.addEventListener('click', (event: CanvasEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+    icon.addEventListener('click', (event: CanvasEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+
+      if (isSortIcon) {
         this.spreadsheet.handleGroupSort(event, this.meta);
+
+        return;
+      }
+
+      onClick?.({
+        name,
+        meta: this.meta,
+        event,
       });
-    } else {
-      icon.addEventListener('click', (event: CanvasEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-        onClick?.({
-          iconName,
-          meta: this.meta,
-          event,
-        });
-      });
-    }
+    });
 
     this.actionIcons.push(icon);
     this.appendChild(icon);
@@ -257,10 +256,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
           this.conditionIconShape = renderIcon(this, {
             x,
             y,
-            name: icon?.name!,
+            name: icon.name,
             width: size,
             height: size,
-            fill: icon?.fill,
+            fill: icon.fill,
           });
           this.addConditionIconShape(this.conditionIconShape);
 
@@ -270,22 +269,24 @@ export abstract class HeaderCell extends BaseCell<Node> {
         const { onClick, onHover, defaultHide, isSortIcon } =
           this.actionIconConfig!;
 
+        const defaultHideHandler = icon.defaultHide ?? defaultHide;
         const iconDefaultHide =
-          typeof defaultHide === 'function'
-            ? defaultHide(this.meta, icon.name)
-            : defaultHide;
+          typeof defaultHideHandler === 'function'
+            ? defaultHideHandler(this.meta, icon.name)
+            : defaultHideHandler;
 
         if (iconDefaultHide) {
           this.hasDefaultHiddenIcon = true;
         }
 
         this.addActionIcon({
-          iconName: icon.name,
+          name: icon.name,
+          fill: icon.fill,
           x,
           y,
           defaultHide: iconDefaultHide,
-          onClick,
-          onHover,
+          onClick: icon.onClick ?? onClick,
+          onHover: icon.onHover ?? onHover,
           isSortIcon,
         });
       });
@@ -450,5 +451,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public getTreeIcon() {
     return this.treeIcon;
+  }
+
+  public getActionIcons() {
+    return this.actionIcons;
   }
 }

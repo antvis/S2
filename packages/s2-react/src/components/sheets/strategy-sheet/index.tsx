@@ -28,7 +28,6 @@ import {
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
-    const s2Ref = React.useRef<SpreadSheet | null>(null);
 
     const strategySheetOptions =
       React.useMemo<SheetComponentOptions | null>(() => {
@@ -91,7 +90,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         options={s2Options}
         themeCfg={themeCfg}
         dataCfg={dataCfg}
-        ref={s2Ref}
         {...restProps}
       />
     );

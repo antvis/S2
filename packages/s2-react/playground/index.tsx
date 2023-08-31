@@ -201,7 +201,8 @@ function MainLayout() {
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
     logHandler('onColCellClick')(cellInfo);
-    if (!options.showDefaultHeaderActionIcon) {
+
+    if (showCustomTooltip) {
       const { event } = cellInfo;
 
       s2Ref.current?.showTooltip({
@@ -345,7 +346,7 @@ function MainLayout() {
         destroyInactiveTabPane
       >
         <TabPane tab="基础表" key="basic">
-          <Collapse defaultActiveKey={[]}>
+          <Collapse defaultActiveKey={['filter']}>
             <Collapse.Panel header="筛选器" key="filter">
               <Space>
                 <Tooltip title="表格类型">
@@ -565,8 +566,8 @@ function MainLayout() {
                   onChange={setShowTotals}
                 />
                 <Switch
-                  checkedChildren="默认actionIcons"
-                  unCheckedChildren="自定义actionIcons"
+                  checkedChildren="默认 headerActionIcons"
+                  unCheckedChildren="自定义 headerActionIcons"
                   checked={mergedOptions.showDefaultHeaderActionIcon}
                   onChange={(checked) => {
                     updateOptions({
@@ -913,89 +914,6 @@ function MainLayout() {
                             'root[&]浙江省': checked,
                           },
                         },
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="冻结行头开"
-                  unCheckedChildren="冻结行头关"
-                  defaultChecked={Boolean(mergedOptions.frozen?.rowHeader)}
-                  onChange={(checked) => {
-                    updateOptions({
-                      frozen: {
-                        rowHeader: checked,
-                      },
-                    });
-                  }}
-                  disabled={sheetType === 'table'}
-                />
-                <Switch
-                  checkedChildren="容器宽高自适应开"
-                  unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={Boolean(adaptive)}
-                  onChange={setAdaptive}
-                />
-                <Switch
-                  checkedChildren="显示序号"
-                  unCheckedChildren="不显示序号"
-                  checked={mergedOptions.showSeriesNumber}
-                  onChange={(checked) => {
-                    updateOptions({
-                      showSeriesNumber: checked,
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="分页"
-                  unCheckedChildren="不分页"
-                  checked={showPagination}
-                  onChange={setShowPagination}
-                />
-                <Switch
-                  checkedChildren="汇总"
-                  unCheckedChildren="无汇总"
-                  checked={showTotals}
-                  onChange={setShowTotals}
-                />
-                <Switch
-                  checkedChildren="默认actionIcons"
-                  unCheckedChildren="自定义actionIcons"
-                  checked={mergedOptions.showDefaultHeaderActionIcon}
-                  onChange={(checked) => {
-                    updateOptions({
-                      showDefaultHeaderActionIcon: checked,
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="开启Tooltip"
-                  unCheckedChildren="关闭Tooltip"
-                  checked={mergedOptions.tooltip!.enable}
-                  onChange={(checked) => {
-                    updateOptions({
-                      tooltip: {
-                        enable: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="自定义Tooltip"
-                  unCheckedChildren="默认Tooltip"
-                  checked={showCustomTooltip}
-                  onChange={setShowCustomTooltip}
-                />
-                <Switch
-                  checkedChildren="打开链接跳转"
-                  unCheckedChildren="无链接跳转"
-                  checked={!!mergedOptions.interaction!.linkFields!.length}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        linkFields: checked
-                          ? ['province', 'city', 'number']
-                          : [],
                       },
                     });
                   }}

@@ -1,15 +1,16 @@
-import { isEmpty, isObject } from 'lodash';
-import React from 'react';
-import { SpreadSheet, getTooltipOptions } from '@antv/s2';
-import { useLatest } from 'ahooks';
+import { getTooltipOptions } from '@antv/s2';
 import {
   buildDrillDownOptions,
   handleDrillDown,
   type ActionIconCallback,
 } from '@antv/s2-shared';
-import { BaseSheet } from '../base-sheet';
+import { useLatest } from 'ahooks';
+import { isEmpty, isObject } from 'lodash';
+import React from 'react';
+import { useSpreadSheetInstance } from '../../../context/SpreadSheetContext';
 import { usePivotSheetUpdate } from '../../../hooks';
 import { DrillDown } from '../../drill-down';
+import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
@@ -17,7 +18,8 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     const { options: pivotOptions, ...restProps } = props;
     const { dataCfg, partDrillDown } = restProps;
 
-    const s2Ref = React.useRef<SpreadSheet | null>(null);
+    const s2 = useSpreadSheetInstance();
+
     const [drillFields, setDrillFields] = React.useState<string[]>([]);
 
     const onDrillDownIconClick = useLatest<ActionIconCallback>(
@@ -68,7 +70,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
      * @param rowId 不传表示全部清空
      */
     const clearDrillDownInfo = (rowId?: string) => {
-      s2Ref.current?.clearDrillDownData(rowId);
+      s2?.clearDrillDownData(rowId);
     };
 
     /**
@@ -76,9 +78,9 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
      * 仅由 drillFields 驱动
      */
     React.useEffect(() => {
-      s2Ref.current?.hideTooltip();
+      s2?.hideTooltip();
       if (isEmpty(drillFields)) {
-        clearDrillDownInfo(s2Ref.current?.store.get('drillDownNode')?.id);
+        clearDrillDownInfo(s2?.store.get('drillDownNode')?.id);
       } else {
         // 执行下钻
         handleDrillDown({
@@ -86,7 +88,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
           drillFields,
           fetchData: partDrillDown?.fetchData,
           drillItemsNum: partDrillDown?.drillItemsNum,
-          spreadsheet: s2Ref.current!,
+          spreadsheet: s2!,
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +112,6 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
         {...restProps}
         options={options}
         onSheetUpdate={onSheetUpdate}
-        ref={s2Ref}
       />
     );
   },

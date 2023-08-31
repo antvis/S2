@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-const CornerTooltip = <div>CornerTooltip</div>;
+const CornerTooltip = () => <div>CornerTooltip</div>;
 
-const RowTooltip = <div>RowTooltip</div>;
+const RowTooltip = () => <div>RowTooltip</div>;
 
-const ColTooltip = <div>ColTooltip</div>;
+const ColTooltip = () => <div>ColTooltip</div>;
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -28,10 +28,12 @@ fetch(
         {
           icons: ['SortDown'],
           belongsCell: 'colCell',
+          defaultHide: false,
           displayCondition: (meta) => meta.level > 0,
-          onClick: (props) => {
-            const { meta, event } = props;
-            console.log(meta);
+          onClick: (options) => {
+            console.log(options);
+            const { meta, event } = options;
+
             meta.spreadsheet.handleGroupSort(event, meta);
           },
         },
@@ -39,35 +41,59 @@ fetch(
           icons: ['Filter', { name: 'CellUp', position: 'left' }],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.id === 'root[&]家具',
-          onClick: (props) => {
-            const { meta, event } = props;
+          onClick: (options) => {
+            const { meta, event } = options;
+
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              content: ColTooltip,
+              content: <ColTooltip />,
             });
           },
         },
         {
           icons: ['SortUp'],
           belongsCell: 'cornerCell',
-          onClick: (props) => {
-            const { meta, event } = props;
+          defaultHide: true,
+          onClick: (options) => {
+            const { meta, event } = options;
+
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              content: CornerTooltip,
+              content: <CornerTooltip />,
             });
           },
         },
         {
-          icons: ['DrillDownIcon'],
+          icons: [
+            {
+              name: 'DrillDownIcon',
+              position: 'right',
+              fill: '#000',
+              onClick: (options) => {
+                const { meta, event } = options;
+
+                meta.spreadsheet.tooltip.show({
+                  position: { x: event.clientX, y: event.clientY },
+                  content: <RowTooltip />,
+                });
+              },
+            },
+            {
+              name: 'Plus',
+              position: 'left',
+              fill: '#06a',
+              displayCondition: (meta) => meta.rowIndex > 2,
+              onHover: (options) => {
+                const { meta, event } = options;
+
+                meta.spreadsheet.tooltip.show({
+                  position: { x: event.clientX, y: event.clientY },
+                  content: <RowTooltip />,
+                });
+              },
+            },
+          ],
           belongsCell: 'rowCell',
-          onClick: (props) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
-              position: { x: event.clientX, y: event.clientY },
-              content: RowTooltip,
-            });
-          },
         },
       ],
       style: {

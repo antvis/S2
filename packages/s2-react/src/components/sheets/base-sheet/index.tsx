@@ -1,9 +1,8 @@
-import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
+import { getSafetyDataConfig, S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'antd';
 import React from 'react';
 import { injectThemeVars } from '@antv/s2-shared';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
-import { SpreadSheetContext } from '../../../context/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
@@ -14,26 +13,10 @@ import type {
 
 import './index.less';
 
-export const BaseSheet = React.forwardRef<
-  SpreadSheet,
-  React.PropsWithChildren<SheetComponentsProps>
->((props, ref) => {
+export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
   const { dataCfg, options, header } = props;
   const { s2Ref, loading, containerRef, pagination, wrapperRef } =
     useSpreadSheet(props);
-
-  const [contextVal, setContextVal] = React.useState<SpreadSheet>(
-    s2Ref.current!,
-  );
-
-  // 同步实例
-  React.useEffect(() => {
-    if (ref) {
-      (ref as React.MutableRefObject<SpreadSheet>).current = s2Ref.current!;
-    }
-  }, [ref, s2Ref]);
-
-  React.useEffect(() => setContextVal(s2Ref.current!), [setContextVal, s2Ref]);
 
   React.useEffect(() => {
     injectThemeVars(props.themeCfg?.name);
@@ -41,32 +24,30 @@ export const BaseSheet = React.forwardRef<
 
   return (
     <React.StrictMode>
-      <SpreadSheetContext.Provider value={contextVal}>
-        <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
-          <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
-            {header && (
-              <Header
-                {...header}
-                sheet={s2Ref.current!}
-                style={{
-                  width: options?.width,
-                }}
-                dataCfg={getSafetyDataConfig(dataCfg)}
-                options={getSheetComponentOptions(options!)}
-              />
-            )}
-            <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-            {pagination.showPagination && (
-              <S2Pagination
-                pagination={pagination.pagination}
-                onChange={pagination.onChange}
-                onShowSizeChange={pagination.onShowSizeChange}
-              />
-            )}
-            {props.children}
-          </div>
-        </Spin>
-      </SpreadSheetContext.Provider>
+      <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
+        <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+          {header && (
+            <Header
+              {...header}
+              sheet={s2Ref.current!}
+              style={{
+                width: options?.width,
+              }}
+              dataCfg={getSafetyDataConfig(dataCfg)}
+              options={getSheetComponentOptions(options!)}
+            />
+          )}
+          <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
+          {pagination.showPagination && (
+            <S2Pagination
+              pagination={pagination.pagination}
+              onChange={pagination.onChange}
+              onShowSizeChange={pagination.onShowSizeChange}
+            />
+          )}
+          {props.children}
+        </div>
+      </Spin>
     </React.StrictMode>
   );
 });

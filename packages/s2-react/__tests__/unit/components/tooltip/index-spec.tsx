@@ -9,7 +9,7 @@ import {
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CustomTooltip, TooltipComponent } from '../../../../src';
-import { MobileSheetComponent } from '../../../../src/components/sheets/mobile-sheet';
+import { MobileSheet } from '../../../../src/components/sheets/mobile-sheet';
 import { TooltipOperator } from '../../../../src/components/tooltip/components/operator';
 import { TooltipDetail } from '../../../../src/components/tooltip/components/detail';
 import { TooltipHead } from '../../../../src/components/tooltip/components/head-info';
@@ -55,7 +55,7 @@ describe('Tooltip Common Components Tests', () => {
     let s2: SpreadSheet;
 
     render(
-      <MobileSheetComponent
+      <MobileSheet
         dataCfg={mockDataConfig}
         options={{ height: 300 }}
         onMounted={(s) => {

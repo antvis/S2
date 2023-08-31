@@ -1,4 +1,4 @@
-import { customMerge, SpreadSheet, type ThemeCfg } from '@antv/s2';
+import { customMerge, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
@@ -9,7 +9,6 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, ...restProps } = props;
 
-    const s2Ref = React.useRef<SpreadSheet | null>(null);
     const s2Options = React.useMemo(
       () =>
         customMerge<SheetComponentOptions>(options, {
@@ -30,12 +29,7 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
     );
 
     return (
-      <BaseSheet
-        options={s2Options}
-        themeCfg={S2ThemeCfg}
-        ref={s2Ref}
-        {...restProps}
-      />
+      <BaseSheet options={s2Options} themeCfg={S2ThemeCfg} {...restProps} />
     );
   },
 );
