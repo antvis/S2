@@ -201,6 +201,7 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
+      // TODO: 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, next 版本未复现
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -933,9 +934,14 @@ export abstract class BaseFacet {
   };
 
   private stopScrollChaining = (event: WheelEvent) => {
-    event?.preventDefault?.();
+    if (event?.cancelable) {
+      event?.preventDefault?.();
+    }
     // 移动端的 prevent 存在于 originalEvent上
-    (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
+    const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
+    if (mobileEvent?.cancelable) {
+      mobileEvent?.preventDefault?.();
+    }
   };
 
   onWheel = (event: WheelEvent) => {
