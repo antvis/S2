@@ -178,7 +178,7 @@ describe('Pivot Table Core Data Process', () => {
       fields: {
         rows: ['province', 'city', 'type', 'sub_type'],
         columns: [],
-        values: ['number', 'cost'],
+        values: ['number'],
         // valueInCols: false,
         // customValueOrder: 2,
       },
@@ -186,6 +186,11 @@ describe('Pivot Table Core Data Process', () => {
     }),
     assembleOptions({
       // hierarchyType: 'tree',
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
       debug: false,
       width: 1024,
       height: 600,
