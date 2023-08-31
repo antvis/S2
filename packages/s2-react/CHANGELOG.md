@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.42.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.0...@antv/s2-react-v1.42.1) (2023-08-11)
+
+
+### Performance Improvements
+
+* **react:** 防止不必要的重新渲染 ([#2250](https://github.com/antvis/S2/issues/2250)) ([a06560d](https://github.com/antvis/S2/commit/a06560daaab05915997a38905cfd5e5d6e087af5))
+
 # [@antv/s2-react-v1.42.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.41.0...@antv/s2-react-v1.42.0) (2023-07-14)
 
 
