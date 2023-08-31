@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { DataCell, S2Event, S2_PREFIX_CLS } from '@antv/s2';
-import type { ScrollOffset } from '@antv/s2';
-import { isEqual, pick } from 'lodash';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { ScrollOffset } from '@antv/s2';
+import { DataCell, S2Event, S2_PREFIX_CLS } from '@antv/s2';
+import { isEqual, pick } from 'lodash';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
-import './drag-copy-point.less';
 import { DragCopyMask } from './drag-copy-mask';
+import './drag-copy-point.less';
 
 export type DragCopyProps = {
   onChange?: (val) => void;
 };
 
-export function DragCopyPoint(props: DragCopyProps) {
+export const DragCopyPoint = memo((props: DragCopyProps) => {
   const spreadsheet = useSpreadSheetRef();
 
   const [scroll, setScroll] = useState<
@@ -69,7 +69,7 @@ export function DragCopyPoint(props: DragCopyProps) {
     }
   };
 
-  const fixPostiton = (event: CanvasEvent) => {
+  const fixPosition = (event: CanvasEvent) => {
     const eventCell = event.target.cfg.parent;
     const isEventCellSelected =
       spreadsheet.interaction.isSelectedCell(eventCell);
@@ -123,17 +123,19 @@ export function DragCopyPoint(props: DragCopyProps) {
     }
   }, [scroll, cell]);
 
-  /** 多选时隐藏拖拽点 */
-  const batchSelected = () => {
+  /**
+   * 多选时隐藏拖拽点
+   */
+  const batchSelected = useCallback(() => {
     setCell(undefined);
-  };
+  }, []);
 
   useS2Event(S2Event.COL_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.ROW_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.CORNER_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected, spreadsheet);
 
-  useS2Event(S2Event.DATA_CELL_CLICK, fixPostiton, spreadsheet);
+  useS2Event(S2Event.DATA_CELL_CLICK, fixPosition, spreadsheet);
 
   return (
     <div
@@ -149,4 +151,4 @@ export function DragCopyPoint(props: DragCopyProps) {
       <DragCopyMask onCopyFinished={batchSelected} />
     </div>
   );
-}
+});

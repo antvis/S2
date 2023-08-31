@@ -126,6 +126,8 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
+  public abstract getContentHeight(): number;
+
   public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
@@ -254,11 +256,6 @@ export abstract class BaseFacet {
       width: this.cfg.width,
       height: this.cfg.height,
     };
-  }
-
-  public getContentHeight(): number {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-    return rowsHierarchy.height + colsHierarchy.height;
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {

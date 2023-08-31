@@ -214,4 +214,8 @@ describe('TableSheet Tests', () => {
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
   });
+
+  test('should get content height', () => {
+    expect(s2.getContentHeight()).toEqual(120);
+  });
 });

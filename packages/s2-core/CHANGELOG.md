@@ -1,3 +1,18 @@
+# [@antv/s2-v1.49.2](https://github.com/antvis/S2/compare/@antv/s2-v1.49.1...@antv/s2-v1.49.2) (2023-08-11)
+
+
+### Bug Fixes
+
+* 修复复制整行时错位 ([#2278](https://github.com/antvis/S2/issues/2278)) ([8076481](https://github.com/antvis/S2/commit/807648180fe64f47e9f70df865890ab480b07603))
+
+# [@antv/s2-v1.49.1](https://github.com/antvis/S2/compare/@antv/s2-v1.49.0...@antv/s2-v1.49.1) (2023-07-24)
+
+
+### Bug Fixes
+
+* **table-sheet:** 修复明细表获取到错误的实际渲染内容高度 ([#2290](https://github.com/antvis/S2/issues/2290)) ([3e1fb77](https://github.com/antvis/S2/commit/3e1fb7752512654e145728207523e7f2a982beb1))
+* 点击列头后hover拦截消失 ([#2288](https://github.com/antvis/S2/issues/2288)) ([a6b0f81](https://github.com/antvis/S2/commit/a6b0f81acbfc82a7f27d40cb7fa9889186b81467))
+
 # [@antv/s2-v1.49.0](https://github.com/antvis/S2/compare/@antv/s2-v1.48.0...@antv/s2-v1.49.0) (2023-07-14)
 
 
