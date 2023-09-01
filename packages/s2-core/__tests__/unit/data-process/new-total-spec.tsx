@@ -197,8 +197,8 @@ describe('Pivot Table Core Data Process', () => {
       data: myData,
       meta,
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type', 'sub_type'],
+        rows: ['province', 'city', 'type', 'sub_type'],
+        columns: [],
         values: ['number'],
         // valueInCols: false,
         // customValueOrder: 2,
@@ -206,7 +206,7 @@ describe('Pivot Table Core Data Process', () => {
       totalData: [],
     }),
     assembleOptions({
-      hierarchyType: 'tree',
+      // hierarchyType: 'tree',
       style: {
         colCfg: {
           hideMeasureColumn: true,
@@ -214,11 +214,11 @@ describe('Pivot Table Core Data Process', () => {
       },
       debug: false,
       width: 1024,
-      height: 2600,
+      height: 600,
       totals: {
         row: {
-          totalsDimensionsGroup: ['type'],
-          subTotalsDimensionsGroup: ['type', 'sub_type'],
+          totalsDimensionsGroup: ['city', 'type'],
+          subTotalsDimensionsGroup: ['sub_type'],
           calcTotals: {
             aggregation: Aggregation.SUM,
           },
@@ -231,20 +231,21 @@ describe('Pivot Table Core Data Process', () => {
           reverseSubLayout: true,
           subTotalsDimensions: ['province'],
         },
-        col: {
-          totalsDimensionsGroup: ['sub_type'],
-          calcTotals: {
-            aggregation: Aggregation.SUM,
-          },
-          calcSubTotals: {
-            aggregation: Aggregation.SUM,
-          },
-          showGrandTotals: true,
-          showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
-          subTotalsDimensions: ['province'],
-        },
+        // col: {
+        //   subTotalsDimensionsGroup: ['city'],
+        //   totalsDimensionsGroup: ['sub_type'],
+        //   calcTotals: {
+        //     aggregation: Aggregation.SUM,
+        //   },
+        //   calcSubTotals: {
+        //     aggregation: Aggregation.SUM,
+        //   },
+        //   showGrandTotals: true,
+        //   showSubTotals: true,
+        //   reverseLayout: true,
+        //   reverseSubLayout: true,
+        //   subTotalsDimensions: ['province'],
+        // },
       },
     }),
   );
