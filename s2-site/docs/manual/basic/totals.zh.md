@@ -51,17 +51,15 @@ order: 5
 
 按维度进行 小计/总计 的汇总计算，用于进行某一维度的数据对比分析等。
 
-#### 行总计小计
+#### 行总计小计分组
 
 行总计按 “类别” 分组，行小计按 “类别”，“子类别” 分组：
 
-图片1
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6kU_SqAmKMkAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="row" />
 
-#### 列总计小计
+#### 列总计小计分组
 
-列总计按 “城市” 分组：
-
-图片2
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4Ek5QbkWAuQAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="row" />
 
 ## 使用
 

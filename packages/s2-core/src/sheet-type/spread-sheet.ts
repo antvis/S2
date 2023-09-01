@@ -413,7 +413,6 @@ export abstract class SpreadSheet extends EE {
       this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
-
     this.buildFacet();
     if (reBuildHiddenColumnsDetail) {
       this.initHiddenColumnsDetail();

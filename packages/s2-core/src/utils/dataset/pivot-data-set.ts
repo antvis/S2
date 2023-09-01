@@ -188,6 +188,7 @@ export function getDataPath(params: DataPathParams) {
     }
     return path;
   };
+
   const rowPath = getPath(rowDimensionValues, true, rowPivotMeta, colPivotMeta);
   const colPath = getPath(
     colDimensionValues,
