@@ -21,6 +21,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3SuoQrkTsR/5657d02f-8e7f-4fbc-8159-7a0e8f772462.png"
     },
     {
+      "filename": "dimension-group.ts",
+      "title": {
+        "zh": "分组汇总",
+        "en": "Grouping Value Totals"
+      },
+      "screenshot": ""
+    },
+    {
       "filename": "tree.ts",
       "title": {
         "zh": "树状模式",

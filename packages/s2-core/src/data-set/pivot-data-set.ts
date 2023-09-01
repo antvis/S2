@@ -59,6 +59,7 @@ import {
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
 import type { CellMeta } from '../common';
+import { JUZELOG } from '../../UTIL';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
@@ -396,7 +397,13 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   getTotalValue(query: DataType, totalStatus?: TotalStatus) {
-    const status = totalStatus || this.getTotalStatus(query);
+    let effectiveStatus = false;
+    forEach(totalStatus, (bol) => {
+      if (bol) {
+        effectiveStatus = true;
+      }
+    });
+    const status = effectiveStatus ? totalStatus : this.getTotalStatus(query);
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         status,
@@ -413,6 +420,7 @@ export class PivotDataSet extends BaseDataSet {
       } else if (calcAction) {
         totalValue = calcAction(data, VALUE_FIELD);
       }
+
       return {
         ...query,
         [VALUE_FIELD]: totalValue,
