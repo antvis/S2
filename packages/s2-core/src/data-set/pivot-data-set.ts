@@ -59,7 +59,6 @@ import {
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
 import type { CellMeta } from '../common';
-import { JUZELOG } from '../../UTIL';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,

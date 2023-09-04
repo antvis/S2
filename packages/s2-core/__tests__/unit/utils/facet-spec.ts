@@ -5,8 +5,6 @@ import {
 } from '@/utils/facet';
 
 describe('Facet util test', () => {
-  // JUZEMARK 倍数Map
-
   test('should get correct index range for given offsets', () => {
     const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
     expect(getIndexRangeWithOffsets(offsets, 0, 31)).toStrictEqual({
