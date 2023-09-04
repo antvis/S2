@@ -9,7 +9,7 @@ inquirer.registerPrompt('autocomplete', autoCompletePrompt);
 async function main() {
   const spinner = ora('读取测试文件中...').start();
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
-  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.ts';
+  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.tsx';
   spinner.stop();
 
   const selectedPath = await inquirer.prompt([
