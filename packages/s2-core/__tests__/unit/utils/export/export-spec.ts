@@ -221,6 +221,40 @@ describe('PivotSheet Export Test', () => {
             subTotalsDimensions: ['province'],
           },
           col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(17);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(53);
+    });
+  });
+
+  it('should export correct data in grid mode with grouped totals in col', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
             totalsDimensionsGroup: ['city', 'type'],
             subTotalsDimensionsGroup: ['sub_type'],
             showGrandTotals: true,
@@ -239,7 +273,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data in grid mode with totals in row', () => {
+  it('should export correct data in grid mode with grouped totals in row', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -272,6 +306,39 @@ describe('PivotSheet Export Test', () => {
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(63);
+    });
+  });
+  it('should export correct data in grid mode with totals in row', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: false,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(16);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(54);
     });
   });
 
