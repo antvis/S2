@@ -1,3 +1,10 @@
+# [@antv/s2-v1.49.2](https://github.com/antvis/S2/compare/@antv/s2-v1.49.1...@antv/s2-v1.49.2) (2023-08-11)
+
+
+### Bug Fixes
+
+* 修复复制整行时错位 ([#2278](https://github.com/antvis/S2/issues/2278)) ([8076481](https://github.com/antvis/S2/commit/807648180fe64f47e9f70df865890ab480b07603))
+
 # [@antv/s2-v1.49.1](https://github.com/antvis/S2/compare/@antv/s2-v1.49.0...@antv/s2-v1.49.1) (2023-07-24)
 
 
