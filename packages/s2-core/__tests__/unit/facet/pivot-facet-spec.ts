@@ -280,7 +280,6 @@ describe('Pivot Mode Facet Test', () => {
     });
   });
 
-  describe('get layer when summary dimension grouping', () => {});
   describe('should get none layer when dataCfg.fields is empty', () => {
     const fields: Fields = {
       rows: [],
