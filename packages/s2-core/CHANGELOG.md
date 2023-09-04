@@ -3,7 +3,7 @@
 
 ### Features
 
-* 增加 小计/总计 按维度汇总功能 ([8076481](https://github.com/antvis/S2/commit/807648180fe64f47e9f70df865890ab480b07603))
+* 增加 小计/总计 按维度汇总功能
 
 
 # [@antv/s2-v1.49.2](https://github.com/antvis/S2/compare/@antv/s2-v1.49.1...@antv/s2-v1.49.2) (2023-08-11)
