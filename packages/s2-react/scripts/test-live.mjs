@@ -10,7 +10,7 @@ async function main() {
   const spinner = ora('读取测试文件中...').start();
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
 
-  const defaultPath = '__tests__/unit/data-process/new-total-spec.tsx';
+  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.ts';
   spinner.stop();
 
   const selectedPath = await inquirer.prompt([
