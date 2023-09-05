@@ -121,18 +121,18 @@ describe('Row Cell Tests', () => {
       width: 800,
       height: 600,
     });
+    const crossColor = '#FFFFFF';
+    const defaultColor = '#F5F8FF';
+    const cellColorConfig = {
+      crossBackgroundColor: crossColor,
+      backgroundColor: defaultColor,
+    };
     s2.setTheme({
       rowCell: {
-        cell: {
-          crossBackgroundColor: '#ffffff',
-          backgroundColor: '#F5F8FF',
-        },
+        cell: cellColorConfig,
       },
       dataCell: {
-        cell: {
-          crossBackgroundColor: '#ffffff',
-          backgroundColor: '#F5F8FF',
-        },
+        cell: cellColorConfig,
       },
     });
     s2.render();
@@ -141,11 +141,11 @@ describe('Row Cell Tests', () => {
       const rowCell1 = s2.facet.rowHeader.getChildByIndex(1);
       const rowCell2 = s2.facet.rowHeader.getChildByIndex(2);
       expect(get(rowCell0, 'actualText')).toEqual('浙江');
-      expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual('#F5F8FF');
+      expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
       expect(get(rowCell1, 'actualText')).toEqual('义乌');
-      expect(get(rowCell1, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
+      expect(get(rowCell1, 'backgroundShape.attrs.fill')).toEqual(crossColor);
       expect(get(rowCell2, 'actualText')).toEqual('杭州');
-      expect(get(rowCell2, 'backgroundShape.attrs.fill')).toEqual('#F5F8FF');
+      expect(get(rowCell2, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
     });
   });
 });
