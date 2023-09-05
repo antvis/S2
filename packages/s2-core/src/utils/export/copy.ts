@@ -32,6 +32,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import { flattenDeep } from '../data-set-operate';
 import { getEmptyPlaceholder } from '../text';
+import { getTotalStatusByRowCol } from '../dataset/pivot-data-set';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -115,12 +116,7 @@ const getValueFromMeta = (
         rowNode.isTotalMeasure ||
         colNode.isTotals ||
         colNode.isTotalMeasure,
-      totalStatus: {
-        isRowTotal: rowNode.isGrandTotals,
-        isRowSubTotal: rowNode.isSubTotals,
-        isColTotal: colNode.isGrandTotals,
-        isColSubTotal: colNode.isSubTotals,
-      },
+      totalStatus: getTotalStatusByRowCol(rowNode, colNode),
     });
     return cell?.[VALUE_FIELD] ?? '';
   }
@@ -400,12 +396,7 @@ const getDataMatrix = (
           rowNode.isTotalMeasure ||
           colNode.isTotals ||
           colNode.isTotalMeasure,
-        totalStatus: {
-          isRowTotal: rowNode.isGrandTotals,
-          isRowSubTotal: rowNode.isSubTotals,
-          isColTotal: colNode.isGrandTotals,
-          isColSubTotal: colNode.isSubTotals,
-        },
+        totalStatus: getTotalStatusByRowCol(rowNode, colNode),
       });
       return getFormat(
         colNode.colIndex,
@@ -682,6 +673,7 @@ function getCellMatrix(
 
     // 为总计小计补齐高度
     if (isTotals && level !== maxLevel) {
+      // TODO:一行代码写了一万个bug - JUZEMARK
       cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
     }
 

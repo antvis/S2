@@ -42,9 +42,9 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       const dimValues = dataSet.getTotalDimensionValues(currentField, query);
       fieldValues.push(
         ...(dimValues || []).map(
-          (v) =>
+          (value) =>
             new TotalClass(
-              v,
+              value,
               parentNode.isSubTotals,
               parentNode.isGrandTotals,
               false,
@@ -58,24 +58,15 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       // add total measures
       query = getDimsCondition(parentNode);
       fieldValues.push(...values.map((v) => new TotalMeasure(v)));
+    } else if (whetherLeafByLevel({ facetCfg, level: index, fields })) {
+      // 如果最后一级没有分组维度，则将上一个结点设为叶子结点
+      parentNode.isLeaf = true;
+      hierarchy.pushIndexNode(parentNode);
+      parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
+      return;
     } else {
-      if (whetherLeafByLevel({ facetCfg, level: index, fields })) {
-        // 如果最后一级没有分组维度，则将上一个结点设为叶子结点
-        parentNode.isLeaf = true;
-        hierarchy.pushIndexNode(parentNode);
-        parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
-      } else {
-        // 如果是空维度，则跳转到下一级 level
-        buildGridHierarchy({
-          addTotalMeasureInTotal,
-          addMeasureInTotalQuery,
-          parentNode,
-          currentField: fields[index + 1],
-          fields,
-          facetCfg,
-          hierarchy,
-        });
-      }
+      // 如果是空维度，则跳转到下一级 level
+      buildGridHierarchy({ ...params, currentField: fields[index + 1] });
       return;
     }
   } else {
@@ -113,7 +104,6 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   }
 
   const displayFieldValues = fieldValues.filter((value) => !isUndefined(value));
-
   generateHeaderNodes({
     currentField,
     fields,
