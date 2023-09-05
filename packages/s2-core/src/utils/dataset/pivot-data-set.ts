@@ -14,8 +14,10 @@ import type {
   DataType,
   PivotMeta,
   SortedDimensionValues,
+  TotalStatus,
 } from '../../data-set/interface';
 import type { Meta } from '../../common/interface/basic';
+import type { Node } from '../../facet/layout/node';
 
 interface Param {
   rows: string[];
@@ -340,4 +342,13 @@ export function generateExtraFieldMeta(
   };
 
   return extraFieldMeta;
+}
+
+export function getTotalStatusByRowCol(row: Node, col: Node): TotalStatus {
+  return {
+    isRowTotal: row.isGrandTotals,
+    isRowSubTotal: row.isSubTotals,
+    isColTotal: col.isGrandTotals,
+    isColSubTotal: col.isSubTotals,
+  };
 }

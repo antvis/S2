@@ -28,6 +28,7 @@ import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
+import { getTotalStatusByRowCol } from '../utils/dataset/pivot-data-set';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -94,12 +95,7 @@ export class PivotFacet extends BaseFacet {
             }
           : {};
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
-      const totalStatus = {
-        isRowTotal: row.isGrandTotals,
-        isRowSubTotal: row.isSubTotals,
-        isColTotal: col.isGrandTotals,
-        isColSubTotal: col.isSubTotals,
-      };
+      const totalStatus = getTotalStatusByRowCol(row, col);
       const data = dataSet.getCellData({
         query: dataQuery,
         rowNode: row,
@@ -228,8 +224,16 @@ export class PivotFacet extends BaseFacet {
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
-      this.adjustTotalNodesCoordinate(colsHierarchy, false, true);
-      this.adjustTotalNodesCoordinate(colsHierarchy, false, false);
+      this.adjustTotalNodesCoordinate({
+        hierarchy: colsHierarchy,
+        isRowHeader: false,
+        isSubTotal: true,
+      });
+      this.adjustTotalNodesCoordinate({
+        hierarchy: colsHierarchy,
+        isRowHeader: false,
+        isSubTotal: false,
+      });
     }
   }
 
@@ -319,12 +323,7 @@ export class PivotFacet extends BaseFacet {
               col.isTotalMeasure ||
               rowNode.isTotals ||
               rowNode.isTotalMeasure,
-            totalStatus: {
-              isRowTotal: rowNode.isGrandTotals,
-              isRowSubTotal: rowNode.isSubTotals,
-              isColTotal: col.isGrandTotals,
-              isColSubTotal: col.isSubTotals,
-            },
+            totalStatus: getTotalStatusByRowCol(rowNode, col),
           });
 
           if (cellData) {
@@ -501,8 +500,16 @@ export class PivotFacet extends BaseFacet {
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
-        this.adjustTotalNodesCoordinate(rowsHierarchy, true, false);
-        this.adjustTotalNodesCoordinate(rowsHierarchy, true, true);
+        this.adjustTotalNodesCoordinate({
+          hierarchy: rowsHierarchy,
+          isRowHeader: true,
+          isSubTotal: false,
+        });
+        this.adjustTotalNodesCoordinate({
+          hierarchy: rowsHierarchy,
+          isRowHeader: true,
+          isSubTotal: true,
+        });
       }
     }
   }
@@ -531,6 +538,7 @@ export class PivotFacet extends BaseFacet {
     }
   }
 
+  // please read README-adjustTotalNodesCoordinate.md to understand this function
   private getMultipleMap(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
@@ -558,17 +566,13 @@ export class PivotFacet extends BaseFacet {
     return multipleMap;
   }
 
-  /**
-   * @description adjust the coordinate of total / subTotal nodes and their children
-   * @param hierarchy Hierarchy
-   * @param isRowHeader boolean
-   * @param isSubTotal boolean
-   */
-  private adjustTotalNodesCoordinate(
-    hierarchy: Hierarchy,
-    isRowHeader?: boolean,
-    isSubTotal?: boolean,
-  ) {
+  // please read README-adjustTotalNodesCoordinate.md to understand this function
+  private adjustTotalNodesCoordinate(params: {
+    hierarchy: Hierarchy;
+    isRowHeader?: boolean;
+    isSubTotal?: boolean;
+  }) {
+    const { hierarchy, isRowHeader, isSubTotal } = params;
     const multipleMap = this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
     const totalNodes = filter(hierarchy.getNodes(), (node: Node) =>
       isSubTotal ? node.isSubTotals : node.isGrandTotals,
@@ -576,7 +580,7 @@ export class PivotFacet extends BaseFacet {
     const key = isRowHeader ? 'width' : 'height';
     forEach(totalNodes, (node: Node) => {
       let multiple = multipleMap[node.level];
-      // 小计根节点若为0，则改为最近上级倍数 - level 差
+      // 小计根节点若为 0，则改为最近上级倍数 - level 差
       if (!multiple && isSubTotal) {
         let lowerLevelIndex = 1;
         while (!multiple) {
@@ -675,12 +679,7 @@ export class PivotFacet extends BaseFacet {
           col.isTotalMeasure ||
           rowNode.isTotals ||
           rowNode.isTotalMeasure,
-        totalStatus: {
-          isRowTotal: rowNode.isGrandTotals,
-          isRowSubTotal: rowNode.isSubTotals,
-          isColTotal: col.isGrandTotals,
-          isColSubTotal: col.isSubTotals,
-        },
+        totalStatus: getTotalStatusByRowCol(rowNode, col),
       });
 
       const cellDataKeys = keys(cellData);

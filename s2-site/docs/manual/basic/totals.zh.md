@@ -51,6 +51,8 @@ order: 5
 
 按维度进行 小计/总计 的汇总计算，用于进行某一维度的数据对比分析等。
 
+<Playground path='analysis/totals/demo/dimension-group.ts' rid='pivot-hide-columns' height='400'></playground>
+
 #### 行总计小计分组
 
 行总计按 “类别” 分组，行小计按 “类别”，“子类别” 分组：

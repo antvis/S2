@@ -341,9 +341,9 @@ export class PivotDataSet extends BaseDataSet {
           field,
         ),
     );
-    return uniq(
-      getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues]),
-    ).filter((v) => v !== 'undefined');
+    return filterUndefined(
+      uniq(getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues])),
+    );
   }
 
   public getDimensionValues(field: string, query?: DataType): string[] {
@@ -622,6 +622,39 @@ export class PivotDataSet extends BaseDataSet {
     return queryArray;
   }
 
+  private getGroupTotalMultiData(totalRows, columns, query): DataType[] {
+    let result = [];
+    const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
+    let totalGroupQueries = [];
+    for (const queryItem of rowTotalGroupQueries) {
+      totalGroupQueries = concat(
+        totalGroupQueries,
+        this.getTotalGroupQueries(columns as string[], queryItem),
+      );
+    }
+
+    for (const queryItem of totalGroupQueries) {
+      const rowDimensionValues = getQueryDimValues(totalRows, queryItem);
+      const colDimensionValues = getQueryDimValues(
+        columns as string[],
+        queryItem,
+      );
+      const path = getDataPath({
+        rowDimensionValues,
+        colDimensionValues,
+        careUndefined: true,
+        isFirstCreate: true,
+        rowFields: rowDimensionValues,
+        colFields: colDimensionValues,
+        rowPivotMeta: this.rowPivotMeta,
+        colPivotMeta: this.colPivotMeta,
+      });
+      const currentData = this.getCustomData(path);
+      result = concat(result, compact(customFlatten(currentData)));
+    }
+    return result;
+  }
+
   public getMultiData(
     query: DataType,
     isTotals?: boolean,
@@ -639,45 +672,22 @@ export class PivotDataSet extends BaseDataSet {
     // 如 [undefined , '杭州市' , undefined , 'number']
     const existDimensionGroup = this.checkExistDimensionGroup(query);
     let result = [];
-    const getDataPathByRowCol = (row: string[], col: string[]) =>
-      getDataPath({
-        rowDimensionValues: row,
-        colDimensionValues: col,
-        careUndefined: true,
-        isFirstCreate: true,
-        rowFields: rows,
-        colFields: columns as string[],
-        rowPivotMeta: this.rowPivotMeta,
-        colPivotMeta: this.colPivotMeta,
-      });
     // 有中间维度汇总的分组场景，将有中间汇总值的 query 处理为一组合法 query 后查询数据
     if (existDimensionGroup) {
-      const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
-      let totalGroupQueries = [];
-      for (const queryItem of rowTotalGroupQueries) {
-        totalGroupQueries = concat(
-          totalGroupQueries,
-          this.getTotalGroupQueries(columns as string[], queryItem),
-        );
-      }
-
-      for (const queryItem of totalGroupQueries) {
-        const rowDimensionValues = getQueryDimValues(totalRows, queryItem);
-        const colDimensionValues = getQueryDimValues(
-          columns as string[],
-          queryItem,
-        );
-        const path = getDataPathByRowCol(
-          rowDimensionValues,
-          colDimensionValues,
-        );
-        const currentData = this.getCustomData(path);
-        result = concat(result, compact(customFlatten(currentData)));
-      }
+      result = this.getGroupTotalMultiData(totalRows, columns, query);
     } else {
       const rowDimensionValues = getQueryDimValues(totalRows, query);
       const colDimensionValues = getQueryDimValues(columns as string[], query);
-      const path = getDataPathByRowCol(rowDimensionValues, colDimensionValues);
+      const path = getDataPath({
+        rowDimensionValues,
+        colDimensionValues,
+        careUndefined: true,
+        isFirstCreate: true,
+        rowFields: rowDimensionValues,
+        colFields: colDimensionValues,
+        rowPivotMeta: this.rowPivotMeta,
+        colPivotMeta: this.colPivotMeta,
+      });
       const currentData = this.getCustomData(path);
       result = compact(customFlatten(currentData));
       if (isTotals) {
