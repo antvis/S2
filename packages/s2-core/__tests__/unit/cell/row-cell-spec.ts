@@ -1,6 +1,8 @@
 import { get } from 'lodash';
-import { createPivotSheet } from 'tests/util/helpers';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import type { RowCell } from '@antv/s2';
+import simpleData from '../../data/simple-data.json';
+import { PivotSheet } from '@/index';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -111,6 +113,39 @@ describe('Row Cell Tests', () => {
       s2.render();
       const rowCell = s2.facet.rowHeader.getChildByIndex(0);
       expect(get(rowCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
+    });
+  });
+
+  describe('Cross Background Color Tests', () => {
+    const s2 = new PivotSheet(getContainer(), simpleData, {
+      width: 800,
+      height: 600,
+    });
+    s2.setTheme({
+      rowCell: {
+        cell: {
+          crossBackgroundColor: '#ffffff',
+          backgroundColor: '#F5F8FF',
+        },
+      },
+      dataCell: {
+        cell: {
+          crossBackgroundColor: '#ffffff',
+          backgroundColor: '#F5F8FF',
+        },
+      },
+    });
+    s2.render();
+    test('should draw right condition background shape', () => {
+      const rowCell0 = s2.facet.rowHeader.getChildByIndex(0);
+      const rowCell1 = s2.facet.rowHeader.getChildByIndex(1);
+      const rowCell2 = s2.facet.rowHeader.getChildByIndex(2);
+      expect(get(rowCell0, 'actualText')).toEqual('浙江');
+      expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual('#F5F8FF');
+      expect(get(rowCell1, 'actualText')).toEqual('义乌');
+      expect(get(rowCell1, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
+      expect(get(rowCell2, 'actualText')).toEqual('杭州');
+      expect(get(rowCell2, 'backgroundShape.attrs.fill')).toEqual('#F5F8FF');
     });
   });
 });
