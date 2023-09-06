@@ -91,7 +91,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       level,
       field: adjustedField,
       parent: parentNode,
-      isTotals,
+      isTotals: isTotals || isTotalMeasure,
       isGrandTotals,
       isSubTotals,
       isTotalMeasure,
