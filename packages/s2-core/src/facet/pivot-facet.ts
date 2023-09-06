@@ -583,7 +583,7 @@ export class PivotFacet extends BaseFacet {
       // 小计根节点若为 0，则改为最近上级倍数 - level 差
       if (!multiple && isSubTotal) {
         let lowerLevelIndex = 1;
-        while (!multiple) {
+        while (multiple < 1) {
           multiple =
             multipleMap[node.level - lowerLevelIndex] - lowerLevelIndex;
           lowerLevelIndex++;
