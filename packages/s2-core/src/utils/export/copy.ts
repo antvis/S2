@@ -10,21 +10,20 @@ import {
   max,
   orderBy,
   reduce,
-  repeat,
   zip,
 } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import {
+  type CellMeta,
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
+  type RowData,
   SERIES_NUMBER_FIELD,
   VALUE_FIELD,
-  type CellMeta,
-  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
@@ -661,6 +660,21 @@ function getLastLevelCells(
   });
 }
 
+function getTotalCellMatrixId(meta: Node, maxLevel: number) {
+  let nextNode = meta;
+  let lastNode = { level: maxLevel };
+  let cellId = nextNode.label;
+  while (nextNode.level >= 0) {
+    let repeatNumber = lastNode.level - nextNode.level;
+    while (repeatNumber > 0) {
+      cellId = nextNode.label + ID_SEPARATOR + cellId;
+      repeatNumber--;
+    }
+    lastNode = nextNode;
+    nextNode = nextNode.parent;
+  }
+  return cellId;
+}
 function getCellMatrix(
   lastLevelCells: Array<RowCell | ColCell>,
   maxLevel: number,
@@ -668,23 +682,19 @@ function getCellMatrix(
 ) {
   return map(lastLevelCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
-    const { id, label, isTotals, level } = meta;
+    const { id, label, isTotals } = meta;
     let cellId = id;
 
-    // 为总计小计补齐高度
-    if (isTotals && level !== maxLevel) {
-      // TODO:一行代码写了一万个bug - JUZEMARK
-      cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
+    if (isTotals) {
+      cellId = getTotalCellMatrixId(meta, maxLevel);
     }
 
     // 将指标维度单元格的标签替换为实际文本
     const actualText = cell.getActualText();
     const headerList = getHeaderList(cellId, allLevel.size);
-    const formattedHeaderList = map(headerList, (header) =>
+    return map(headerList, (header) =>
       isEqual(header, label) ? actualText : header,
     );
-
-    return formattedHeaderList;
   });
 }
 

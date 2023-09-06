@@ -197,15 +197,10 @@ describe('Pivot Table Core Data Process', () => {
       data: myData,
       meta,
       fields: {
-        rows: [],
-        columns: ['province', 'city', 'type', 'sub_type'],
+        rows: ['province', 'city', 'type', 'sub_type'],
+        columns: [],
         values: ['number', 'cost'],
-        valueInCols: false,
-        // rows: ['province', 'city', 'type'],
-        // columns: ['sub_type'],
-        // values: ['number', 'cost'],
         // valueInCols: false,
-        // customValueOrder: 2,
       },
       totalData: [],
     }),
@@ -219,7 +214,7 @@ describe('Pivot Table Core Data Process', () => {
         enableCopy: true,
       },
       totals: {
-        col: {
+        row: {
           totalsDimensionsGroup: ['type'],
           subTotalsDimensionsGroup: ['sub_type'],
           calcTotals: {
@@ -232,7 +227,7 @@ describe('Pivot Table Core Data Process', () => {
           showSubTotals: true,
           reverseLayout: true,
           reverseSubLayout: true,
-          subTotalsDimensions: ['type'],
+          subTotalsDimensions: ['province'],
         },
         // col: {
         //   subTotalsDimensionsGroup: ['city'],
