@@ -1,3 +1,19 @@
+# [@antv/s2-v1.50.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.49.2...@antv/s2-v1.50.0-alpha.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* condition.mapping 返回值与文档不符合，允许返回undefined与null ([#2320](https://github.com/antvis/S2/issues/2320)) ([fcc36bd](https://github.com/antvis/S2/commit/fcc36bd9d0f72d78a39ec8a4f7e2e3d7a97e3a6a))
+* delete last method from lodash ([251b845](https://github.com/antvis/S2/commit/251b8457548b2c06358b422464c9f90fab2a3b78))
+* **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
+* **scroll:** 修复移动端快速滚动时控制台报错 close [#2266](https://github.com/antvis/S2/issues/2266) ([#2302](https://github.com/antvis/S2/issues/2302)) ([4ccc03d](https://github.com/antvis/S2/commit/4ccc03d50ef6622774a8c9e3599c988d2a7e126e))
+* **scroll:** 修复调用 scrollWithAnimation 后 unmount 表格导致频繁报错 ([#2317](https://github.com/antvis/S2/issues/2317)) ([e8f3eb1](https://github.com/antvis/S2/commit/e8f3eb12fb4a3935ee5b9bf0f392cfb2984e71d6))
+
+
+### Features
+
+* 小计/总计功能，支持按维度分组汇总 [#2337](https://github.com/antvis/S2/issues/2337) ([#2338](https://github.com/antvis/S2/issues/2338)) ([f29c466](https://github.com/antvis/S2/commit/f29c466b975573103837fb07c8a658033333fe8b))
+
 # [@antv/s2-v1.43.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.42.1-alpha.2...@antv/s2-v1.43.0-alpha.1) (2023-03-08)
 
 ### Features
