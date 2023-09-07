@@ -42,6 +42,11 @@ export class PivotFacet extends BaseFacet {
     return this.spreadsheet.theme.rowCell.cell;
   }
 
+  public getContentHeight(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+    return rowsHierarchy.height + colsHierarchy.height;
+  }
+
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
@@ -357,7 +362,7 @@ export class PivotFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
+    const userDraggedHeight = get(colCfg, ['heightByField', col.key]);
     return userDraggedHeight ?? colCfg?.height;
   }
 
@@ -535,9 +540,11 @@ export class PivotFacet extends BaseFacet {
     if (isRowHeader) {
       // 填充行总单元格宽度
       grandTotalNode.width = hierarchy.width;
-      // 调整其叶子结点位置
+      // 调整其叶子节点位置和宽度
       forEach(grandTotalChildren, (node: Node) => {
-        node.x = hierarchy.getNodes(maxLevel)[0].x;
+        const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
+        node.x = maxLevelNode.x;
+        node.width = maxLevelNode.width;
       });
     } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
       // 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
@@ -620,7 +627,7 @@ export class PivotFacet extends BaseFacet {
   private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCfg, spreadsheet } = this.cfg;
 
-    const cellDraggedWidth = get(rowCfg, `widthByField.${node.key}`);
+    const cellDraggedWidth = get(rowCfg, ['widthByField', node.key]);
 
     if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;

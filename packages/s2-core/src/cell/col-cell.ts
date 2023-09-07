@@ -202,8 +202,6 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
-    this.handleViewport(viewport);
-
     const { textAlign } = this.getTextStyle();
     const adjustedViewport = adjustColHeaderScrollingViewport(
       viewport,
@@ -486,11 +484,21 @@ export class ColCell extends HeaderCell {
       return;
     }
     this.addExpandColumnSplitLine();
-    this.addExpandColumnIcon();
+    this.addExpandColumnIcons();
   }
 
-  protected addExpandColumnIcon() {
-    const iconConfig = this.getExpandColumnIconConfig();
+  protected addExpandColumnIcons() {
+    const isLastColumn = this.isLastColumn();
+    this.addExpandColumnIcon(isLastColumn);
+
+    // 如果当前节点的兄弟节点 (前/后) 都被隐藏了, 隐藏后当前节点变为最后一个节点, 需要渲染两个展开按钮, 一个展开[前], 一个展开[后]
+    if (this.isAllDisplaySiblingNodeHidden() && isLastColumn) {
+      this.addExpandColumnIcon(false);
+    }
+  }
+
+  private addExpandColumnIcon(isLastColumn: boolean) {
+    const iconConfig = this.getExpandColumnIconConfig(isLastColumn);
     const icon = renderIcon(this, {
       ...iconConfig,
       name: 'ExpandColIcon',
@@ -502,12 +510,12 @@ export class ColCell extends HeaderCell {
   }
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  protected getExpandColumnIconConfig() {
+  protected getExpandColumnIconConfig(isLastColumn: boolean) {
     const { size } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getCellArea();
 
     const baseIconX = x - size;
-    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconX = isLastColumn ? baseIconX + width : baseIconX;
     const iconY = y + height / 2 - size / 2;
 
     return {
@@ -522,12 +530,20 @@ export class ColCell extends HeaderCell {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 
-  /**
-   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
-   * @param viewport
-   * @returns viewport
-   */
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    return viewport;
+  protected isAllDisplaySiblingNodeHidden() {
+    const { id } = this.meta;
+    const lastHiddenColumnDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    const isPrevSiblingNodeHidden = lastHiddenColumnDetail.find(
+      ({ displaySiblingNode }) => displaySiblingNode?.next?.id === id,
+    );
+    const isNextSiblingNodeHidden = lastHiddenColumnDetail.find(
+      ({ displaySiblingNode }) => displaySiblingNode?.prev?.id === id,
+    );
+
+    return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
 }

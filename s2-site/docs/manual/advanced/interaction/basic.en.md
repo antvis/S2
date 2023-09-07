@@ -184,8 +184,20 @@ When the mouse selects a cell or brushes a selected cell, the row and column hea
 ```ts
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false
+    selectedCellHighlight: true // default is false
   }
+};
+
+// You can also configure the highlighting of header and cells in selectedCellHighlight separately
+const s2Options = {
+  interaction: {
+    selectedCellHighlight: {
+      rowHeader: true,  // Highlight row header when cell is selected
+      colHeader: true,  // Highlight column header when cells are selected
+      currentRow: false,  // Highlight the current row when a cell is selected
+      currentCol: false,  // Highlight the current column when a cell is selected
+    },
+  },
 };
 ```
 

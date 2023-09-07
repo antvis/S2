@@ -83,6 +83,23 @@ export const s2Options: SheetComponentOptions = {
       },
     ],
   },
+  headerActionIcons: [
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'colCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'cornerCell',
+      defaultHide: true,
+    },
+  ],
   hierarchyType: 'grid',
   style: {
     colCfg: {

@@ -15,6 +15,7 @@ import type {
   S2CellType,
   TempMergedCell,
   ViewMeta,
+  MergedCellCallback,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 /**
@@ -227,6 +228,25 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
 };
 
 /**
+ * 创建 merged cell 实例
+ * @param spreasheet 表格实例
+ * @param cells 待合并的单元格
+ * @param meta 元信息
+ * @returns
+ */
+export const getMergedCellInstance: MergedCellCallback = (
+  spreasheet,
+  cells,
+  meta,
+) => {
+  if (spreasheet.options.mergedCell) {
+    return spreasheet.options.mergedCell(spreasheet, cells, meta);
+  }
+
+  return new MergedCell(spreasheet, cells, meta);
+};
+
+/**
  * draw the background of the merged cell
  * @param sheet the base sheet instance
  * @param cellsInfo
@@ -258,7 +278,10 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.addMergeCell(new MergedCell(sheet, cells, meta));
+
+    sheet.panelScrollGroup.addMergeCell(
+      getMergedCellInstance(sheet, cells, meta),
+    );
   }
 };
 
@@ -418,6 +441,6 @@ export const updateMergedCells = (
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta }) => {
-    mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
+    mergedCellsGroup.add(getMergedCellInstance(sheet, cells, viewMeta));
   });
 };

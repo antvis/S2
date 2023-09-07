@@ -2,21 +2,22 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
-  customMerge,
-  type DataType,
-  generatePalette,
-  getPalette,
-  type HeaderActionIconProps,
+  BaseTooltip,
+  DEFAULT_STYLE,
   Node,
-  type S2DataConfig,
   SpreadSheet,
+  customMerge,
+  generatePalette,
+  getLang,
+  getPalette,
+  type DataType,
+  type HeaderActionIconProps,
+  type InteractionCellHighlight,
+  type InteractionOptions,
+  type S2DataConfig,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  getLang,
-  type InteractionOptions,
-  DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightType,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -28,7 +29,6 @@ import {
   Input,
   Popover,
   Radio,
-  type RadioChangeEvent,
   Select,
   Slider,
   Space,
@@ -36,26 +36,28 @@ import {
   Tabs,
   Tag,
   Tooltip,
+  type RadioChangeEvent,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce, forEach, isBoolean, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
+import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
+import {
+  StrategyOptions,
+  StrategySheetDataConfig,
+} from '../__tests__/data/strategy-data';
 import reactPkg from '../package.json';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
   SheetComponentOptions,
+  SheetComponentsProps,
 } from '../src';
 import { SheetComponent } from '../src';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
-import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import {
-  StrategySheetDataConfig,
-  StrategyOptions,
-} from '../__tests__/data/strategy-data';
 import {
   defaultOptions,
   mockGridAnalysisOptions,
@@ -68,6 +70,12 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+class ResetTooltip extends BaseTooltip {
+  renderContent() {
+    ReactDOM.render(<>Reset Tooltip</>, this.container);
+  }
+}
 
 const { TabPane } = Tabs;
 
@@ -161,7 +169,8 @@ function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
-  const [showPagination, setShowPagination] = React.useState(false);
+  const [showPagination, setShowPagination] =
+    React.useState<SheetComponentsProps['showPagination']>(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
     name: 'default',
@@ -179,6 +188,7 @@ function MainLayout() {
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
   >('single');
+  const [pageSize, setPageSize] = React.useState(10);
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet>();
@@ -321,7 +331,7 @@ function MainLayout() {
     {},
     {
       pagination: showPagination && {
-        pageSize: 10,
+        pageSize,
         current: 1,
       },
       tooltip: {
@@ -449,6 +459,36 @@ function MainLayout() {
                 </Tooltip>
               </Space>
               <Space>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      tooltip: {
+                        renderTooltip: (spreadsheet) =>
+                          new ResetTooltip(spreadsheet),
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                  style={{ marginLeft: 20 }}
+                >
+                  自定义 Tooltip (s2.setOptions)
+                </Button>
+
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      interaction: {
+                        brushSelection: false,
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                >
+                  禁用刷选 (s2.setOptions)
+                </Button>
+
                 <Popover
                   placement="bottomRight"
                   content={
@@ -471,9 +511,7 @@ function MainLayout() {
                     </>
                   }
                 >
-                  <Button size="small" style={{ marginLeft: 20 }}>
-                    主题色调整
-                  </Button>
+                  <Button size="small">主题色调整</Button>
                 </Popover>
                 <Button
                   danger
@@ -528,6 +566,14 @@ function MainLayout() {
                 >
                   改变表格大小 (s2.changeSheetSize)
                 </Button>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={(e) => setPageSize(+e.target.value)}
+                  defaultValue={pageSize}
+                  suffix="条"
+                  prefix="每页条数"
+                  size="small"
+                />
                 <Popover
                   placement="bottomRight"
                   content={
@@ -792,7 +838,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="分页"
                   unCheckedChildren="不分页"
-                  checked={showPagination}
+                  checked={showPagination as boolean}
                   onChange={setShowPagination}
                 />
                 <Switch
@@ -836,7 +882,9 @@ function MainLayout() {
                   onChange={(checked) => {
                     updateOptions({
                       interaction: {
-                        linkFields: checked ? ['province', 'city'] : [],
+                        linkFields: checked
+                          ? ['province', 'city', 'number']
+                          : [],
                       },
                     });
                   }}
@@ -885,7 +933,7 @@ function MainLayout() {
                     onChange={(type) => {
                       let selectedCellHighlight:
                         | boolean
-                        | InteractionCellSelectedHighlightType = false;
+                        | InteractionCellHighlight = false;
                       const oldIdx = type.findIndex((typeItem) =>
                         isBoolean(typeItem),
                       );
@@ -929,18 +977,58 @@ function MainLayout() {
                   </Select>
                 </Tooltip>
                 <Tooltip title="高亮当前行列单元格">
-                  <Switch
-                    checkedChildren="hover十字器开"
-                    unCheckedChildren="hover十字器关"
-                    checked={mergedOptions.interaction.hoverHighlight}
-                    onChange={(checked) => {
+                  <Select
+                    style={{ width: 260 }}
+                    placeholder="单元格悬停高亮"
+                    allowClear
+                    mode="multiple"
+                    defaultValue={[mergedOptions.interaction.hoverHighlight]}
+                    onChange={(type) => {
+                      let hoverHighlight: boolean | InteractionCellHighlight =
+                        false;
+
+                      const oldIdx = type.findIndex((typeItem) =>
+                        isBoolean(typeItem),
+                      );
+
+                      if (oldIdx > -1) {
+                        hoverHighlight = type[oldIdx];
+                      } else {
+                        hoverHighlight = {
+                          rowHeader: false,
+                          colHeader: false,
+                          currentCol: false,
+                          currentRow: false,
+                        };
+                        type.forEach((i) => {
+                          // @ts-ignore
+                          hoverHighlight[i] = true;
+                        });
+                      }
+
                       updateOptions({
                         interaction: {
-                          hoverHighlight: checked,
+                          hoverHighlight,
                         },
                       });
                     }}
-                  />
+                  >
+                    <Select.Option value={true}>
+                      （旧）高亮单元格所在行列以及行列头
+                    </Select.Option>
+                    <Select.Option value="rowHeader">
+                      rowHeader: 高亮所在行头
+                    </Select.Option>
+                    <Select.Option value="colHeader">
+                      colHeader: 高亮所在列头
+                    </Select.Option>
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
+                    </Select.Option>
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
+                    </Select.Option>
+                  </Select>
                 </Tooltip>
                 <Tooltip title="在数值单元格悬停800ms,显示tooltip">
                   <Switch
@@ -951,6 +1039,20 @@ function MainLayout() {
                       updateOptions({
                         interaction: {
                           hoverFocus: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="滚动后自动触发悬停状态">
+                  <Switch
+                    checkedChildren="滚动悬停开"
+                    unCheckedChildren="滚动悬停关"
+                    checked={mergedOptions.interaction.hoverAfterScroll}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverAfterScroll: checked,
                         },
                       });
                     }}
@@ -1160,6 +1262,7 @@ function MainLayout() {
             ref={s2Ref}
             themeCfg={themeCfg}
             onMounted={onSheetMounted}
+            onDataCellEditEnd={logHandler('onDataCellEditEnd')}
           />
         </TabPane>
       </Tabs>

@@ -37,5 +37,6 @@ export type SheetComponentOptions = S2Options<
 export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderCfgProps,
-  SheetComponentOptions
+  SheetComponentOptions,
+  true
 >;

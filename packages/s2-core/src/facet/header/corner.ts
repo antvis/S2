@@ -131,17 +131,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
     // spreadsheet type tree mode
     if (s2.isHierarchyTreeType()) {
-      const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
-      const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
+      const cornerText = this.getTreeCornerText(s2);
 
       const cNode: Node = new Node({
         key: '',
-        id: '',
-        // 角头过滤下钻的维度
-        value: rows
-          .filter((value) => !includes(drillFields, value))
-          .map((key: string): string => dataSet.getFieldName(key))
-          .join('/'),
+        id: cornerText,
+        value: cornerText,
       });
       cNode.x = position.x + seriesNumberWidth;
       cNode.y = cornerNodeY;
@@ -159,7 +154,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const field = rows[rowNode.level];
         const cNode: Node = new Node({
           key: field,
-          id: '',
+          id: field,
           value: dataSet.getFieldName(field),
         });
 
@@ -181,7 +176,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
-          id: '',
+          id: field,
           value: dataSet.getFieldName(field),
         });
         cNode.x = position.x;
@@ -196,6 +191,27 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
     });
     return cornerNodes;
+  }
+
+  public static getTreeCornerText(s2: SpreadSheet) {
+    const { rows = [] } = s2.dataSet.fields;
+
+    const { cornerText: defaultCornerText } = s2.options;
+
+    if (defaultCornerText) {
+      return defaultCornerText;
+    }
+
+    const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
+    const drillFields = drillDownFieldInLevel.map((field) => field.drillField);
+
+    // 角头过滤下钻的维度
+    const treeLabel = rows
+      .filter((value) => !includes(drillFields, value))
+      .map((field): string => s2.dataSet.getFieldName(field))
+      .join('/');
+
+    return treeLabel;
   }
 
   constructor(cfg: CornerHeaderConfig) {

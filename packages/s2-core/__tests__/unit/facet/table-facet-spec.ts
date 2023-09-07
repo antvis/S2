@@ -2,18 +2,20 @@
  * table mode pivot test.
  */
 import { Canvas } from '@antv/g-canvas';
-import { merge } from 'lodash';
+import { get, merge } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
 import { FrozenGroup } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { DEFAULT_STYLE, Node } from '@/index';
+import { DataCell, DEFAULT_STYLE, type Fields, Node } from '@/index';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
-
+const actualDataSet = jest.requireActual(
+  '@/data-set/base-data-set',
+).BaseDataSet;
 jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
@@ -45,6 +47,13 @@ jest.mock('@/sheet-type', () => {
         isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
+        facet: {
+          getFreezeCornerDiffWidth: jest.fn(),
+          layoutResult: {
+            rowLeafNodes: [],
+          },
+          getHiddenColumnsInfo: jest.fn(),
+        },
         getCanvasElement: () => container.get('el'),
         hideTooltip: jest.fn(),
         interaction: {
@@ -66,7 +75,8 @@ jest.mock('@/data-set/table-data-set', () => {
         getDimensionValues: jest.fn(),
         getDisplayDataSet: jest.fn(() => data),
         getCellData: () => 1,
-        getFieldFormatter: jest.fn(),
+        getFieldMeta: jest.fn(),
+        getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
       };
     }),
   };
@@ -92,6 +102,65 @@ describe('Table Mode Facet Test', () => {
       expect(rowsHierarchy.height).toBe(0);
       expect(rowsHierarchy.width).toBe(0);
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
+    });
+  });
+
+  describe('should get none layer when dataCfg.fields is empty', () => {
+    const fields: Fields = {
+      rows: [],
+      columns: [],
+      values: [],
+      customTreeItems: [],
+      valueInCols: false,
+    };
+    const container = new Canvas({
+      width: 100,
+      height: 100,
+      container: document.body,
+    });
+    const spreadsheet = Object.assign({}, ss, {
+      dataCfg: { fields },
+      panelGroup: container.addGroup(),
+      foregroundGroup: container.addGroup(),
+      backgroundGroup: container.addGroup(),
+      off: jest.fn(),
+      on: jest.fn(),
+    });
+    const mockDataSet = new MockTableDataSet(spreadsheet);
+    spreadsheet.dataSet = mockDataSet;
+
+    const newFacet: TableFacet = new TableFacet({
+      spreadsheet,
+      dataSet: mockDataSet,
+      ...fields,
+      ...assembleOptions(),
+      showSeriesNumber: false,
+      dataCell: (fct) => new DataCell(fct, spreadsheet),
+    });
+
+    beforeEach(() => {
+      newFacet.render();
+    });
+
+    afterEach(() => {
+      newFacet.destroy();
+    });
+
+    test('can not get header after render in table sheet', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = newFacet;
+
+      expect(rowHeader).toBeFalsy();
+      expect(cornerHeader).toBeFalsy();
+      expect(columnHeader).toBeFalsy();
+      expect(centerFrame).toBeFalsy();
+    });
+
+    test('can not get series number after render in table sheet', () => {
+      const { backgroundGroup, rowIndexHeader } = newFacet;
+      const rect = get(backgroundGroup, 'cfg.children[0]');
+
+      expect(rect).toBeFalsy();
+      expect(rowIndexHeader).toBeFalsy();
     });
   });
 });

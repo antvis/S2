@@ -35,7 +35,6 @@ import {
 } from '../utils/interaction/resize';
 import { isIPhoneX } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
-import { i18n } from './../common/i18n';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -54,8 +53,6 @@ export class CornerCell extends HeaderCell {
     return CellTypes.CORNER_CELL;
   }
 
-  public update() {}
-
   protected initCell() {
     super.initCell();
     this.resetTextAndConditionIconShapes();
@@ -66,6 +63,7 @@ export class CornerCell extends HeaderCell {
     this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
+    this.update();
   }
 
   /**
@@ -364,10 +362,6 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getCornerText(): string {
-    if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText || i18n('指标');
-    }
-
     const { formattedValue } = this.getFormattedFieldValue();
     return formattedValue;
   }

@@ -1,12 +1,10 @@
 # [@antv/s2-react-v1.37.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.1-alpha.1...@antv/s2-react-v1.37.1-alpha.2) (2023-03-08)
 
-
 ### Bug Fixes
 
 * **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
 
 # [@antv/s2-react-v1.37.1-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.0...@antv/s2-react-v1.37.1-alpha.1) (2023-02-28)
-
 
 ### Bug Fixes
 

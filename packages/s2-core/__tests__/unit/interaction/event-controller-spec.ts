@@ -44,6 +44,15 @@ const s2Options: S2Options = {
   },
 };
 
+// 定义一个变量来存储原始 MouseEvent
+let OriginalMouseEvent: typeof MouseEvent;
+
+class CustomMouseEvent extends MouseEvent {
+  constructor(eventType: string, eventInitDict?: MouseEventInit) {
+    super(eventType, eventInitDict);
+  }
+}
+
 describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
   let spreadsheet: SpreadSheet;
@@ -110,6 +119,8 @@ describe('Interaction Event Controller Tests', () => {
     Object.defineProperty(eventController, 'isCanvasEffect', {
       value: true,
     });
+    OriginalMouseEvent = MouseEvent;
+    (global as any).MouseEvent = CustomMouseEvent;
   });
 
   afterEach(() => {
@@ -118,6 +129,7 @@ describe('Interaction Event Controller Tests', () => {
         autoResetSheetStyle: true,
       },
     });
+    (global as any).MouseEvent = OriginalMouseEvent;
   });
 
   test('should bind events', () => {
@@ -529,6 +541,7 @@ describe('Interaction Event Controller Tests', () => {
   test('should not reset if current mouse on the tooltip and outside the canvas container', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.tooltip.visible = true;
     spreadsheet.tooltip.container.getBoundingClientRect = () =>
       ({
         x: 200,
@@ -867,4 +880,55 @@ describe('Interaction Event Controller Tests', () => {
       expect(handler).toHaveBeenCalledTimes(1);
     },
   );
+
+  // https://github.com/antvis/S2/issues/2170
+  test('should not reset if tooltip content clicked', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.options.tooltip = {
+      showTooltip: false,
+      data: {
+        showTooltip: true,
+      },
+      col: {
+        showTooltip: true,
+      },
+      row: {
+        showTooltip: true,
+      },
+    };
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+      ({
+        x: 200,
+        y: 200,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    Array.from({ length: 3 }).forEach(() => {
+      window.dispatchEvent(
+        new PointerEvent('click', {
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+    });
+  });
+
+  // https://github.com/antvis/S2/pull/2163
+  test('should not reset if Mouse Event is Proxy', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    window.dispatchEvent(
+      new PointerEvent('click', {
+        clientX: 100,
+        clientY: 100,
+      }),
+    );
+    expect(eventController.isCanvasEffect).toBe(true);
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
 });

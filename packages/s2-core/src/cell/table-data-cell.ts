@@ -16,18 +16,8 @@ import {
 import { checkIsLinkField } from '../utils/interaction/link-field';
 
 export class TableDataCell extends DataCell {
-  protected drawTextShape() {
-    super.drawTextShape();
-    this.drawLinkFieldShape();
-  }
-
-  protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction;
-    const linkTextFill = this.theme.rowCell.text.linkTextFill;
-
-    const isLinkField = checkIsLinkField(linkFields, this.meta);
-
-    super.drawLinkFieldShape(isLinkField, linkTextFill);
+  protected getLinkFieldStyle() {
+    return this.theme.rowCell.text.linkTextFill;
   }
 
   protected drawBorderShape() {

@@ -1,5 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
+import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
@@ -13,14 +15,15 @@ import type {
 } from '../../../common/interface';
 import {
   getCellMeta,
-  getInteractionCells,
   afterSelectDataCells,
+  getRowCellForSelectedCell,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import { updateAllColHeaderCellState } from '../../../utils/interaction';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -67,6 +70,28 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
+
+      // 点击单元格，高亮对应的行头、列头
+      const { rowId, colId, spreadsheet } = meta;
+      const { colHeader, rowHeader } = interaction.getSelectedCellHighlight();
+      if (colHeader) {
+        updateAllColHeaderCellState(
+          colId,
+          interaction.getAllColHeaderCells(),
+          InteractionStateName.SELECTED,
+        );
+      }
+      if (rowHeader) {
+        if (rowId) {
+          const allRowHeaderCells = getRowCellForSelectedCell(
+            meta,
+            spreadsheet,
+          );
+          forEach(allRowHeaderCells, (cell: RowCell) => {
+            cell.updateByState(InteractionStateName.SELECTED);
+          });
+        }
+      }
     });
   }
 

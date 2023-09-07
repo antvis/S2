@@ -31,7 +31,7 @@ describe('hide-columns test', () => {
   beforeEach(() => {
     sheet = {
       getInitColumnLeafNodes: () => initColumnNodes,
-      getColumnNodes: () => initColumnNodes,
+      getColumnLeafNodes: () => initColumnNodes,
     } as PivotSheet;
 
     mockSpreadSheetInstance = new PivotSheet(
@@ -327,6 +327,426 @@ describe('hide-columns test', () => {
         hideColumnNodes: [{ field: '3', id: 'id-3', colIndex: 3 }],
       },
     ]);
+  });
+
+  // https://github.com/antvis/S2/issues/2194
+  test('should hidden group columns for fields (5 => 2)', () => {
+    ['5', '4', '3', '2'].forEach((field) => {
+      hideColumnsByThunkGroup(mockSpreadSheetInstance, [field]);
+    });
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 5,
+              "field": "5",
+              "id": "id-5",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should hidden group columns for fields (3 => 5)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['3']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['5']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+            "prev": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 5,
+              "field": "5",
+              "id": "id-5",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get empty next sibling nodes when always hidden last column for fields (1 => 2)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['2']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+            "prev": null,
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+            "prev": null,
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get empty next sibling nodes when always hidden last column for fields (1 => 3)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['3']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+            "prev": null,
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+            "prev": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get empty next sibling nodes when always hidden last column for fields (5 => 4)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['5']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['4']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 5,
+              "field": "5",
+              "id": "id-5",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get correctly sibling nodes when hidden first and last column for fields (1 => 5)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['5']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+            "prev": null,
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": null,
+            "prev": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 5,
+              "field": "5",
+              "id": "id-5",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get correctly sibling nodes when hidden odd columns for fields (2 => 4)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['2']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['4']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+            "prev": Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 5,
+              "field": "5",
+              "id": "id-5",
+            },
+            "prev": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+          ],
+        },
+      ]
+    `);
+  });
+
+  test('should get correctly sibling nodes when hidden near columns for fields (2 => 3)', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['2']);
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['3']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail'))
+      .toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+            "prev": Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 2,
+              "field": "2",
+              "id": "id-2",
+            },
+          ],
+        },
+        Object {
+          "displaySiblingNode": Object {
+            "next": Object {
+              "colIndex": 4,
+              "field": "4",
+              "id": "id-4",
+            },
+            "prev": Object {
+              "colIndex": 1,
+              "field": "1",
+              "id": "id-1",
+            },
+          },
+          "hideColumnNodes": Array [
+            Object {
+              "colIndex": 3,
+              "field": "3",
+              "id": "id-3",
+            },
+          ],
+        },
+      ]
+    `);
   });
 
   test('should skip hidden group columns if hidden column fields not change', () => {

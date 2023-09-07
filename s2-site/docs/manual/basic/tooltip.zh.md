@@ -298,6 +298,27 @@ const s2Options = {
 };
 ```
 
+通过实例方法调用同理，[查看更多配置](/api/basic-class/base-tooltip#tooltipshowoptions)
+
+```ts
+s2.showTooltip({
+  options: {
+    operator: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          onClick: (cell) => {
+            console.log('操作 1 点击', cell);
+          },
+        }
+      ],
+    },
+  }
+})
+```
+
 <br/>
 
 <Playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>

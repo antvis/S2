@@ -1,8 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import type { SpreadSheet } from '../../sheet-type';
+import type { ColCell } from '../../cell/col-cell';
 import type { DataCell } from '../../cell/data-cell';
 import type { RowCell } from '../../cell/row-cell';
-import type { ColCell } from '../../cell/col-cell';
 import type { S2Event } from '../../common/constant';
 import type {
   CellMeta,
@@ -19,6 +18,7 @@ import type {
 } from '../../common/interface/basic';
 import type { Data } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 import type { ResizeInfo } from './resize';
 
 export type CollapsedRowsType = {

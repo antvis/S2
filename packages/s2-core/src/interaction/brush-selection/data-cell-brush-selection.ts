@@ -1,4 +1,5 @@
 import { isEmpty, range } from 'lodash';
+import type { Point } from '@antv/g-canvas';
 import { DataCell } from '../../cell/data-cell';
 import { S2Event } from '../../common/constant';
 import {
@@ -8,6 +9,7 @@ import {
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
+import { TableDataCell } from '../../cell/table-data-cell';
 import { BaseBrushSelection } from './base-brush-selection';
 
 export class DataCellBrushSelection extends BaseBrushSelection {
@@ -17,6 +19,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().data) {
+        return;
+      }
+
       super.mouseDown(event);
       this.resetScrollDelta();
     });
@@ -125,11 +131,24 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         meta.rowIndex,
         meta.colIndex,
       );
-      return new DataCell(viewMeta, this.spreadsheet);
+      // TODO: next 分支把这些单元格 (包括自定义单元格) 都放在了 s2.options.dataCell 里, 合并后不需要判断是不是明细表了
+      const Cell = this.spreadsheet.isTableMode() ? TableDataCell : DataCell;
+      return new Cell(viewMeta, this.spreadsheet);
     });
   }
 
   protected bindMouseUp() {
     super.bindMouseUp(true);
+  }
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    const { minX, minY } = this.spreadsheet.facet.panelBBox;
+    const x = Math.max(brushRange.start.x, minX);
+    const y = Math.max(brushRange.start.y, minY);
+
+    return {
+      x,
+      y,
+    };
   }
 }

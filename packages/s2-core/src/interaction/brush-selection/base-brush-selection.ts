@@ -133,7 +133,7 @@ export class BaseBrushSelection
       }
     }
 
-    this.mouseMoveDistanceFromCanvas = deltaVal;
+    this.mouseMoveDistanceFromCanvas = Math.abs(deltaVal);
   };
 
   public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
@@ -426,15 +426,15 @@ export class BaseBrushSelection
     }
 
     this.scrollAnimationComplete = false;
-    let ratio = 3;
     // x 轴滚动速度慢
-    if (config.x.scroll) {
-      ratio = 1;
-    }
-
+    const ratio = config.x.scroll ? 1 : 3;
+    const duration = Math.max(
+      16,
+      300 - this.mouseMoveDistanceFromCanvas * ratio,
+    );
     this.spreadsheet.facet.scrollWithAnimation(
       offsetCfg,
-      Math.max(16, 300 - this.mouseMoveDistanceFromCanvas * ratio),
+      duration,
       this.onScrollAnimationComplete,
     );
   };
@@ -508,9 +508,11 @@ export class BaseBrushSelection
 
   protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
+    const { x, y } = this.getPrepareSelectMaskPosition(brushRange);
+
     this.prepareSelectMaskShape.attr({
-      x: brushRange.start.x,
-      y: brushRange.start.y,
+      x,
+      y,
       width: brushRange.width,
       height: brushRange.height,
     });
@@ -753,4 +755,11 @@ export class BaseBrushSelection
   protected bindMouseMove() {}
 
   protected updateSelectedCells() {}
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    return {
+      x: brushRange.start.x,
+      y: brushRange.start.y,
+    };
+  }
 }

@@ -97,6 +97,11 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     mockRootInteraction.getAllColHeaderCells = () =>
       allColHeaderCells as unknown as ColCell[];
     mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
     mockSpreadSheetInstance.render();
     brushSelectionInstance = new ColBrushSelection(mockSpreadSheetInstance);
 
@@ -226,5 +231,34 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     // emit event
     expect(selectedFn).toHaveBeenCalledTimes(1);
     expect(brushSelectionFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: false,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    mockSpreadSheetInstance.on(
+      S2Event.COL_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, { x: 200, y: 0 });
+
+    // ================== mouse move ==================
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
+      clientX: 600,
+      clientY: 90,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

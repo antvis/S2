@@ -43,6 +43,7 @@ describe('Custom Tree Dataset Test', () => {
 
   describe('test base dataset structure', () => {
     test('should get correct field data', () => {
+      expect(dataCfg.fields.rows).toEqual([]);
       expect(dataSet.fields.rows).toEqual([EXTRA_FIELD]);
       expect(dataSet.fields.columns).toEqual(['type', 'sub_type']);
       expect(dataSet.fields.values).toEqual(values);

@@ -10,10 +10,12 @@ import {
   S2Event,
 } from '@/common/constant';
 import { RangeSelection } from '@/interaction/range-selection';
+import { getCellMeta } from '@/utils';
 
 jest.mock('@/utils/tooltip');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
+jest.mock('@/interaction/base-interaction/click/row-column-click');
 
 describe('Interaction Range Selection Tests', () => {
   let rangeSelection: RangeSelection;
@@ -54,9 +56,20 @@ describe('Interaction Range Selection Tests', () => {
   });
 
   test('should remove click intercept when shift keyup', () => {
+    s2.interaction.addIntercepts([InterceptType.CLICK]);
     s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
       key: InteractionKeyboardKey.SHIFT,
     } as KeyboardEvent);
+
+    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+  });
+
+  test('should remove click intercept when shift released', () => {
+    Object.defineProperty(rangeSelection, 'isRangeSelection', {
+      value: true,
+    });
+    s2.interaction.addIntercepts([InterceptType.CLICK]);
+    s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {} as MouseEvent);
 
     expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
   });
@@ -75,6 +88,27 @@ describe('Interaction Range Selection Tests', () => {
     } as unknown as GEvent);
 
     expect(s2.store.get('lastClickedCell')).toEqual(mockCell00.mockCell);
+  });
+
+  test('should remove hover intercepts when col cell unselected', () => {
+    const mockCell00 = createMockCellInfo('3-3', { rowIndex: 3, colIndex: 3 });
+    s2.getCell = () => mockCell00.mockCell as any;
+
+    s2.interaction.addIntercepts([InterceptType.HOVER]);
+
+    // 有选中时，不应清理 hover 拦截
+    s2.interaction.getCells = () => [getCellMeta(mockCell00.mockCell)];
+    s2.emit(S2Event.COL_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+    expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTrue();
+
+    // 无选中时，应清理拦截
+    s2.interaction.getCells = () => [];
+    s2.emit(S2Event.COL_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+    expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalse();
   });
 
   // should use data cell click interaction for single cell select

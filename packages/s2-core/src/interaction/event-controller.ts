@@ -5,7 +5,7 @@ import {
   type LooseObject,
   Shape,
 } from '@antv/g-canvas';
-import { each, get, isEmpty, isNil } from 'lodash';
+import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
   CellTypes,
@@ -18,7 +18,7 @@ import {
 import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
-import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
+import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -50,6 +50,8 @@ export class EventController {
   public domEventListeners: EventListener[] = [];
 
   public isCanvasEffect = false;
+
+  public canvasMousemoveEvent: CanvasEvent;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -188,8 +190,13 @@ export class EventController {
     interaction.reset();
   }
 
+  private isMouseEvent(event: Event): event is MouseEvent {
+    // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
+    return hasIn(event, 'clientX') && hasIn(event, 'clientY');
+  }
+
   private isMouseOnTheCanvasContainer(event: Event) {
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       const canvas = this.spreadsheet.getCanvasElement();
       if (!canvas) {
         return false;
@@ -219,21 +226,22 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
+    const { tooltip } = this.spreadsheet;
+    if (!tooltip?.visible) {
       return false;
     }
 
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
-    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+    if (event.target instanceof Node) {
       return verifyTheElementInTooltip(
         this.spreadsheet.tooltip?.container,
         event.target,
       );
     }
 
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       return (
         event.clientX >= x &&
         event.clientX <= x + width &&
@@ -327,6 +335,8 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
+    this.canvasMousemoveEvent = event;
+
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);

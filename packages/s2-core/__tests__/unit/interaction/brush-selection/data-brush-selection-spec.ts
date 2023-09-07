@@ -102,6 +102,11 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       currentCol: false,
     });
     mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
@@ -260,7 +265,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     // show prepare brush selection mask
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
-      y: 20,
+      y: 30,
       width: 90,
       height: 180,
     });
@@ -566,5 +571,34 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateXIndex(2)).toBe(2);
     expect(validateXIndex(8)).toBe(null);
     expect(validateXIndex(7)).toBe(7);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      data: false,
+      row: true,
+      col: true,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    mockSpreadSheetInstance.on(
+      S2Event.DATA_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
+
+    // ================== mouse move ==================
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 100,
+      clientY: 200,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

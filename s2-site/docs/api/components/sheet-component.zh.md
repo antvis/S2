@@ -19,7 +19,7 @@ order: 0
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
-| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
+| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (current:number, pageSize: number) => void,<br>onChange?: (current:number, pageSize: number) => void <br>} | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
@@ -48,6 +48,7 @@ order: 0
 | onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
+| onDataCellEditEnd | 数值单元格编辑完成（暂只支持编辑表） | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

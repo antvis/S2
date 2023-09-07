@@ -1,7 +1,7 @@
-import type { IElement, IGroup } from '@antv/g-canvas';
 import type { Event as GraphEvent } from '@antv/g-base';
+import type { IElement, IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import { type GestureEvent, Wheel } from '@antv/g-gesture';
+import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -23,13 +23,15 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  OriginEventType,
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import {
-  DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
+  DebuggerUtil,
 } from '../common/debug';
 import type {
   CellCustomWidth,
@@ -43,9 +45,9 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type {
-  ScrollOffset,
-  CellScrollPosition,
   CellScrollOffset,
+  CellScrollPosition,
+  ScrollOffset,
 } from '../common/interface/scroll';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -53,8 +55,7 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
-import { isMobile } from '../utils/is-mobile';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
+import { isMobile, isWindows } from '../utils/is-mobile';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -67,6 +68,7 @@ import {
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
 import {
+  areAllFieldsEmpty,
   calculateInViewIndexes,
   getCellRange,
   optimizeScrollXY,
@@ -123,6 +125,8 @@ export abstract class BaseFacet {
   public gridInfo: GridInfo;
 
   protected abstract doLayout(): LayoutResult;
+
+  public abstract getContentHeight(): number;
 
   public abstract getViewCellHeights(
     layoutResult: LayoutResult,
@@ -197,6 +201,7 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
+      // TODO: 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, next 版本未复现
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -216,6 +221,10 @@ export abstract class BaseFacet {
    * Start render, call from outside
    */
   public render() {
+    if (areAllFieldsEmpty(this.spreadsheet.dataCfg.fields)) {
+      return;
+    }
+
     this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();
@@ -247,11 +256,6 @@ export abstract class BaseFacet {
       width: this.cfg.width,
       height: this.cfg.height,
     };
-  }
-
-  public getContentHeight(): number {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-    return rowsHierarchy.height + colsHierarchy.height;
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {
@@ -480,19 +484,25 @@ export abstract class BaseFacet {
     );
 
     this.timer = timer((elapsed) => {
-      const ratio = Math.min(elapsed / duration, 1);
-      const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
+      try {
+        const ratio = Math.min(elapsed / duration, 1);
+        const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
 
-      this.setScrollOffset({
-        rowHeaderScrollX,
-        scrollX,
-        scrollY,
-      });
-      this.startScroll();
+        this.setScrollOffset({
+          rowHeaderScrollX,
+          scrollX,
+          scrollY,
+        });
+        this.startScroll();
 
-      if (elapsed > duration) {
+        if (elapsed > duration) {
+          this.timer.stop();
+          cb?.();
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
         this.timer.stop();
-        cb?.();
       }
     });
   };
@@ -642,7 +652,7 @@ export abstract class BaseFacet {
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
-          ? this.cornerBBox.width
+          ? Math.min(this.cornerBBox.width, this.getCanvasHW().width)
           : 0);
       const finalPosition = {
         x:
@@ -924,9 +934,14 @@ export abstract class BaseFacet {
   };
 
   private stopScrollChaining = (event: WheelEvent) => {
-    event?.preventDefault?.();
+    if (event?.cancelable) {
+      event?.preventDefault?.();
+    }
     // 移动端的 prevent 存在于 originalEvent上
-    (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
+    const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
+    if (mobileEvent?.cancelable) {
+      mobileEvent?.preventDefault?.();
+    }
   };
 
   onWheel = (event: WheelEvent) => {
@@ -934,8 +949,9 @@ export abstract class BaseFacet {
     let { deltaX, deltaY, offsetX, offsetY } = event;
     const { shiftKey } = event;
 
-    // 按住shift时，固定为水平方向滚动
-    if (shiftKey) {
+    // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
+    // see https://github.com/antvis/S2/issues/2198
+    if (shiftKey && isWindows()) {
       offsetX = offsetX - deltaX + deltaY;
       deltaX = deltaY;
       offsetY -= deltaY;
@@ -1043,16 +1059,16 @@ export abstract class BaseFacet {
       scrollY,
       KEY_GROUP_ROW_INDEX_RESIZE_AREA,
     );
-    this.cornerHeader.onCorScroll(
+    this.cornerHeader?.onCorScroll(
       this.getRealScrollX(scrollX, hRowScroll),
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    this.centerFrame.onChangeShadowVisibility(
+    this.centerFrame?.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
     );
-    this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
+    this.centerFrame?.onBorderScroll(this.getRealScrollX(scrollX));
+    this.columnHeader?.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -1340,10 +1356,28 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-    const { interaction } = this.spreadsheet;
+    const { interaction, container } = this.spreadsheet;
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
-      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+      interaction.removeIntercepts([InterceptType.HOVER]);
+
+      if (interaction.getHoverAfterScroll()) {
+        // https://github.com/antvis/S2/issues/2222
+        const canvasMousemoveEvent =
+          interaction.eventController.canvasMousemoveEvent;
+        if (canvasMousemoveEvent) {
+          const { x, y } = canvasMousemoveEvent;
+          const shape = container.getShape(x, y);
+          if (shape) {
+            container.emit(OriginEventType.MOUSE_MOVE, {
+              ...canvasMousemoveEvent,
+              shape,
+              target: shape,
+              timestamp: performance.now(),
+            });
+          }
+        }
+      }
     }
   }, 300);
 
@@ -1372,7 +1406,7 @@ export abstract class BaseFacet {
     }
 
     return hiddenColumnsDetail.find((detail) =>
-      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

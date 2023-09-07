@@ -9,7 +9,12 @@ import type {
   ViewMeta,
 } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
-import { InteractionStateName, S2Event } from '@/common/constant';
+import {
+  InteractionKeyboardKey,
+  InteractionStateName,
+  InterceptType,
+  S2Event,
+} from '@/common/constant';
 import type { Node } from '@/facet/layout/node';
 
 jest.mock('@/interaction/event-controller');
@@ -84,6 +89,42 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     expect(rowColumnClick.bindEvents).toBeDefined();
   });
 
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should add click intercept when %s keydown',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+        key,
+      } as KeyboardEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
+    },
+  );
+
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should remove click intercept when %s keyup',
+    (key) => {
+      s2.interaction.addIntercepts([InterceptType.CLICK]);
+      s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
+        key,
+      } as KeyboardEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+    },
+  );
+
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should remove click intercept when %s released',
+    () => {
+      Object.defineProperty(rowColumnClick, 'isMultiSelection', {
+        value: true,
+      });
+      s2.interaction.addIntercepts([InterceptType.CLICK]);
+      s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {} as MouseEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+    },
+  );
+
   // https://github.com/antvis/S2/issues/1243
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
     'should selected cell when %s cell clicked',
@@ -106,6 +147,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       });
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTrue();
 
       isSelectedCellSpy.mockRestore();
     },
@@ -136,6 +178,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(s2.interaction.getState().cells).toEqual([]);
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalse();
 
       getInteractedCellsSpy.mockRestore();
     },

@@ -1,14 +1,15 @@
 import type { IGroup, SimpleBBox } from '@antv/g-canvas';
-import { findIndex, isNil } from 'lodash';
+import { findIndex, isEmpty, isNil } from 'lodash';
 
-import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
+import { FrozenCellType } from '../common/constant/frozen';
 import type {
   ColumnNode,
   Columns,
   Pagination,
   ScrollSpeedRatio,
 } from '../common/interface';
+import type { Fields } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type { Node } from './layout/node';
@@ -517,4 +518,17 @@ export const getLeftLeafNode = (node: Node) => {
     return node;
   }
   return firstNode.isLeaf ? firstNode : getLeftLeafNode(firstNode);
+};
+/**
+ * fields 的 rows、columns、values、customTreeItems 值都为空时，返回 true
+ * @param {Fields} fields
+ * @return {boolean}
+ */
+export const areAllFieldsEmpty = (fields: Fields) => {
+  return (
+    isEmpty(fields.rows) &&
+    isEmpty(fields.columns) &&
+    isEmpty(fields.values) &&
+    isEmpty(fields.customTreeItems)
+  );
 };
