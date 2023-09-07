@@ -623,7 +623,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   // 有中间维度汇总的分组场景，将有中间 undefined 值的 query 处理为一组合法 query 后查询数据再合并
-  private getGroupTotalMultiData(totalRows, columns, query): DataType[] {
+  private getGroupTotalMultiData(totalRows, rows, columns, query): DataType[] {
     let result = [];
     const rowTotalGroupQueries = this.getTotalGroupQueries(totalRows, query);
     let totalGroupQueries = [];
@@ -645,8 +645,8 @@ export class PivotDataSet extends BaseDataSet {
         colDimensionValues,
         careUndefined: true,
         isFirstCreate: true,
-        rowFields: rowDimensionValues,
-        colFields: colDimensionValues,
+        rowFields: rows,
+        colFields: columns,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
@@ -674,7 +674,7 @@ export class PivotDataSet extends BaseDataSet {
     const existDimensionGroup = this.checkExistDimensionGroup(query);
     let result = [];
     if (existDimensionGroup) {
-      result = this.getGroupTotalMultiData(totalRows, columns, query);
+      result = this.getGroupTotalMultiData(totalRows, rows, columns, query);
     } else {
       const rowDimensionValues = getQueryDimValues(totalRows, query);
       const colDimensionValues = getQueryDimValues(columns as string[], query);
@@ -683,8 +683,8 @@ export class PivotDataSet extends BaseDataSet {
         colDimensionValues,
         careUndefined: true,
         isFirstCreate: true,
-        rowFields: rowDimensionValues,
-        colFields: colDimensionValues,
+        rowFields: rows,
+        colFields: columns as string[],
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
