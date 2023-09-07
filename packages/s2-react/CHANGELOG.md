@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.42.2-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.1...@antv/s2-react-v1.42.2-alpha.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
+* **scroll:** 修复移动端快速滚动时控制台报错 close [#2266](https://github.com/antvis/S2/issues/2266) ([#2302](https://github.com/antvis/S2/issues/2302)) ([4ccc03d](https://github.com/antvis/S2/commit/4ccc03d50ef6622774a8c9e3599c988d2a7e126e))
+
 # [@antv/s2-react-v1.37.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.1-alpha.1...@antv/s2-react-v1.37.1-alpha.2) (2023-03-08)
 
 ### Bug Fixes
