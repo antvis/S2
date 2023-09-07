@@ -47,6 +47,15 @@ export interface CellDataParams {
   rowNode?: Node;
   // mark row's cell
   isRow?: boolean;
+  // use with isTotals
+  totalStatus?: TotalStatus;
+}
+
+export interface TotalStatus {
+  isRowTotal: boolean;
+  isRowSubTotal: boolean;
+  isColTotal: boolean;
+  isColSubTotal: boolean;
 }
 
 export interface SortActionParams {
