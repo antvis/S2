@@ -7,6 +7,7 @@ import {
   getCellWidth,
   getEmptyPlaceholder,
   getContentAreaForMultiData,
+  isZeroData,
 } from '@/utils/text';
 
 const isHD = window.devicePixelRatio >= 2;
@@ -270,5 +271,27 @@ describe('Text Utils Tests', () => {
         },
       ],
     ]);
+  });
+});
+
+describe('isZeroData', () => {
+  test('should return true for zero values', () => {
+    expect(isZeroData('0.00%')).toBe(true);
+    expect(isZeroData('0.0万亿')).toBe(true);
+    expect(isZeroData('0.00万')).toBe(true);
+    expect(isZeroData('0')).toBe(true);
+    expect(isZeroData(0)).toBe(true);
+  });
+
+  test('should return false for non-zero values', () => {
+    expect(isZeroData('0.5%')).toBe(false);
+    expect(isZeroData('0.01万亿')).toBe(false);
+    expect(isZeroData('1')).toBe(false);
+    expect(isZeroData(0.1)).toBe(false);
+  });
+
+  test('should return true for non-numeric values', () => {
+    expect(isZeroData('abc')).toBe(true);
+    expect(isZeroData('')).toBe(true);
   });
 });

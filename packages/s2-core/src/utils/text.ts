@@ -299,6 +299,15 @@ export const isUpDataValue = (value: number | string): boolean => {
 };
 
 /**
+ * Determines whether the data is actually equal to 0
+ * example: "0.00%"
+ * @param value
+ */
+export const isZeroData = (value: number | string): boolean => {
+  return Number(String(value).replace(/[^0-9.]+/g, '')) === 0;
+};
+
+/**
  * 根据单元格对齐方式计算文本的 x 坐标
  * @param x 单元格的 x 坐标
  * @param paddingRight

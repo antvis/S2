@@ -5,6 +5,7 @@ import {
   type MultiData,
   type SimpleDataItem,
   type ViewMeta,
+  isZeroData,
 } from '@antv/s2';
 import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
@@ -68,8 +69,11 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
             {derivedValues.map((derivedValue: SimpleDataItem, i) => {
-              const isNormal = isNil(derivedValue) || derivedValue === '';
-              const isUp = isUpDataValue(derivedValue as string);
+              const isNormal =
+                isNil(derivedValue) ||
+                derivedValue === '' ||
+                isZeroData(derivedValue);
+              const isUp = !isNormal && isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
               const originalDerivedValue = derivedOriginalValues[
                 i
