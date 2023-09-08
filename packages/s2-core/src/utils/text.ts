@@ -299,12 +299,16 @@ export const isUpDataValue = (value: number | string): boolean => {
 };
 
 /**
- * Determines whether the data is actually equal to 0
- * example: "0.00%"
+ * Determines whether the data is actually equal to 0 or empty or nil
+ * example: "0.00%" => true
  * @param value
  */
-export const isZeroData = (value: number | string): boolean => {
-  return Number(String(value).replace(/[^0-9.]+/g, '')) === 0;
+export const isZeroOrEmptyValue = (value: number | string): boolean => {
+  return (
+    isNil(value) ||
+    value === '' ||
+    Number(String(value).replace(/[^0-9.]+/g, '')) === 0
+  );
 };
 
 /**
