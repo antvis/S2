@@ -72,7 +72,7 @@ export class RowCell extends HeaderCell {
 
   public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
-      this.getBackgroundColorByCross(this.meta.rowIndex);
+      this.getCrossBackgroundColor(this.meta.rowIndex);
     return this.getBackgroundColorByCondition(
       backgroundColor,
       backgroundColorOpacity,

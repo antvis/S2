@@ -308,7 +308,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const backgroundColorByCross = this.getBackgroundColorByCross(
+    const backgroundColorByCross = this.getCrossBackgroundColor(
       this.meta.rowIndex,
     );
     let backgroundColor = backgroundColorByCross.backgroundColor;

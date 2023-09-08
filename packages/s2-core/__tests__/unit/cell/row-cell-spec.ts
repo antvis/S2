@@ -1,8 +1,6 @@
 import { get } from 'lodash';
-import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import { createPivotSheet } from 'tests/util/helpers';
 import type { RowCell } from '@antv/s2';
-import simpleData from '../../data/simple-data.json';
-import { PivotSheet } from '@/index';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -117,7 +115,7 @@ describe('Row Cell Tests', () => {
   });
 
   describe('Cross Background Color Tests', () => {
-    const s2 = new PivotSheet(getContainer(), simpleData, {
+    const s2 = createPivotSheet({
       width: 800,
       height: 600,
     });
