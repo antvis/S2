@@ -19,7 +19,7 @@ order: 5
 | scrollSpeedRatio                     | 用于控制滚动速率，分水平和垂直两个方向，默认为 1                                                                                                              | [ScrollSpeedRatio](#scrollspeedratio)     |                                                       |                  |
 | autoResetSheetStyle                  | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态                                                                                                          | `boolean`                                 | `true`                                                |                  |
 | resize                               | 用于控制 resize 热区是否显示     | `boolean`  \| [ResizeInteractionOptions](#resizeinteractionoptions) |      `true`      |       |
-| brushSelection         | 是否允许单元格（包含行头，列头，数值单元格）刷选。行头，列头刷选只支持透视表     | `boolean` \|  [BrushSelection](#brushSelection)  | `true`                         |     |  1.29.0 后支持 [BrushSelection](#brushSelection)   |
+| brushSelection         | 是否允许单元格（包含行头，列头，数值单元格）刷选。    | `boolean` \|  [BrushSelection](#brushSelection)  | `true`                         |     |  1.29.0 后支持 [BrushSelection](#brushSelection)   |
 | multiSelection                       | 是否允许多选 （包含行头，列头，数值单元格）                                                                                                                 | `boolean`                                 | `true`                                                |                  |
 | rangeSelection                       | 是否允许区间快捷多选                                                                                                                             | `boolean`                                 | `true`                                                |                  |
 | scrollbarPosition                    | 用于控制滚动条展示在内容区边缘还是画布边缘                                                                                                                  | `content \| canvas`                                              |    `content`     |   |
@@ -64,4 +64,4 @@ interface ScrollSpeedRatio {
 | ----------------- | --------------------- | ----------------- | ------- | --- |
 | data            | 是否允许数值单元格刷选         | `boolean`         | true  |       |
 | row             | 是否允许行头单元格刷选（仅支持透视表） | `boolean`         | false |       |
-| col             | 是否允许列头单元格刷选（仅支持透视表） | `boolean`         | false |       |
+| col             | 是否允许列头单元格刷选 | `boolean`         | false |       |
