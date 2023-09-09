@@ -165,7 +165,7 @@ export class TableFacet extends BaseFacet {
     if (oldIndex !== -1) {
       if (unFilter) {
         // remove filter params on current key if passed an empty filterValues field
-        oldConfig.splice(oldIndex);
+        oldConfig.splice(oldIndex, 1);
       } else {
         // if filter with same key already exists, replace it
         oldConfig[oldIndex] = params;
