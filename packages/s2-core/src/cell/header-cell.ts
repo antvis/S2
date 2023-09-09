@@ -365,6 +365,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
+    return this.getBackgroundColorByCondition(
+      backgroundColor,
+      backgroundColorOpacity,
+    );
+  }
+
+  protected getBackgroundColorByCondition(
+    backgroundColor: string,
+    backgroundColorOpacity: number,
+  ) {
     let fill = backgroundColor;
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);

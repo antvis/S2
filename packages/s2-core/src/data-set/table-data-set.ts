@@ -64,8 +64,9 @@ export class TableDataSet extends BaseDataSet {
 
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
+      const filteredValuesSet = new Set(filteredValues);
       const defaultFilterFunc = (row: DataType) =>
-        !includes(filteredValues, row[filterKey]);
+        !filteredValuesSet.has(row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
         ...filter(this.getMovableRows(), (row) => {

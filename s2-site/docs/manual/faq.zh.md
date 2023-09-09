@@ -225,7 +225,7 @@ s2.showTooltip({ ... })
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png)
 
-边框属于 `聚焦 (hoverFocus)` 交互状态的一种，可通过 [主题配置](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatetheme) 关闭
+边框属于 `聚焦 (hoverFocus)` 交互状态的一种，可通过 [主题配置 - 交互通用主题](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename) 关闭。
 
 ```ts
 s2.setTheme({
@@ -243,6 +243,10 @@ s2.setTheme({
   }
 })
 ```
+
+### 如何修改选中，悬停，刷选等单元格交互主题配置？
+
+请 [查看文档](/manual/advanced/interaction/basic#%E8%B0%83%E6%95%B4%E4%BA%A4%E4%BA%92%E4%B8%BB%E9%A2%98) 和 [示例](/zh/examples/interaction/basic#state-theme)
 
 ### S2 支持对表格进行编辑吗？
 

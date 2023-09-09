@@ -840,4 +840,44 @@ describe('Scroll Tests', () => {
 
     expect(errorSpy).not.toHaveBeenCalled();
   });
+
+  // https://github.com/antvis/S2/issues/2316
+  test('should not throw infinite error if spreadsheet is unmounted during scrolling', async () => {
+    s2.setOptions({
+      style: {
+        rowCfg: {
+          width: 200,
+        },
+        cellCfg: {
+          width: 30,
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    // 滚动时 unmount 表格实例
+    s2.facet.scrollWithAnimation(
+      {
+        offsetX: {
+          value: 10,
+          animate: true,
+        },
+        offsetY: {
+          value: 10,
+          animate: true,
+        },
+      },
+      200,
+    );
+    s2.destroy();
+
+    await sleep(500);
+
+    expect(errorSpy).toBeCalledTimes(1);
+  });
 });

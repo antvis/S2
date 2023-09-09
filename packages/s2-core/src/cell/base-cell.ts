@@ -462,4 +462,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
     return fillResult;
   }
+
+  protected getCrossBackgroundColor(rowIndex: number) {
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
+
+    if (crossBackgroundColor && rowIndex % 2 === 0) {
+      // 隔行颜色的配置
+      // 偶数行展示灰色背景，因为index是从0开始的
+      return { backgroundColorOpacity, backgroundColor: crossBackgroundColor };
+    }
+
+    return {
+      backgroundColorOpacity,
+      backgroundColor: this.getStyle().cell.backgroundColor,
+    };
+  }
 }
