@@ -1,3 +1,20 @@
+# [@antv/s2-v1.50.0](https://github.com/antvis/S2/compare/@antv/s2-v1.49.2...@antv/s2-v1.50.0) (2023-09-09)
+
+
+### Bug Fixes
+
+* condition.mapping 返回值与文档不符合，允许返回undefined与null ([#2320](https://github.com/antvis/S2/issues/2320)) ([fcc36bd](https://github.com/antvis/S2/commit/fcc36bd9d0f72d78a39ec8a4f7e2e3d7a97e3a6a))
+* **scroll:** 修复移动端快速滚动时控制台报错 close [#2266](https://github.com/antvis/S2/issues/2266) ([#2302](https://github.com/antvis/S2/issues/2302)) ([4ccc03d](https://github.com/antvis/S2/commit/4ccc03d50ef6622774a8c9e3599c988d2a7e126e))
+* **scroll:** 修复调用 scrollWithAnimation 后 unmount 表格导致频繁报错 ([#2317](https://github.com/antvis/S2/issues/2317)) ([e8f3eb1](https://github.com/antvis/S2/commit/e8f3eb12fb4a3935ee5b9bf0f392cfb2984e71d6))
+* **table-facet:** 修复过滤多列时，删除一列过滤将同时清空后续过滤列 ([#2323](https://github.com/antvis/S2/issues/2323)) ([3ad35b1](https://github.com/antvis/S2/commit/3ad35b1791a3a5c832d4e2875af30ac0f2362606))
+* 优化 handleDimensionValueFilter 复杂度 ([#2325](https://github.com/antvis/S2/issues/2325)) ([e0d3de8](https://github.com/antvis/S2/commit/e0d3de8c1b972a5f277838fe433666e34a6997a3))
+
+
+### Features
+
+* 交叉表行头叶子节点支持斑马纹风格 ([#2332](https://github.com/antvis/S2/issues/2332)) ([5320fbf](https://github.com/antvis/S2/commit/5320fbf29bdd81f26ceb3eade1180bfe163743a5))
+* 趋势分析表无波动的字体不用红绿色显示 ([#2339](https://github.com/antvis/S2/issues/2339)) ([f1d4eed](https://github.com/antvis/S2/commit/f1d4eeda82945aec3d28c8a1d562901b4b5e53ad))
+
 # [@antv/s2-v1.49.2](https://github.com/antvis/S2/compare/@antv/s2-v1.49.1...@antv/s2-v1.49.2) (2023-08-11)
 
 
