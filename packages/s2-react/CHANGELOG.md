@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.44.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.43.0...@antv/s2-react-v1.44.0-alpha.1) (2023-09-14)
+
+
+### Bug Fixes
+
+* **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
+
+
+### Features
+
+* 对比值无波动时也显示灰色 ([#2351](https://github.com/antvis/S2/issues/2351)) ([12f2d02](https://github.com/antvis/S2/commit/12f2d0268d447ec99a1227ffedd5ed266d93e86b))
+
 # [@antv/s2-react-v1.42.2-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.1...@antv/s2-react-v1.42.2-alpha.1) (2023-09-07)
 
 ### Bug Fixes
