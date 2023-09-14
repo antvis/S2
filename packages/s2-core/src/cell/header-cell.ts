@@ -99,7 +99,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (this.spreadsheet.isTableMode()) {
       shouldFormat = false;
     } else if (this.spreadsheet.isHierarchyTreeType()) {
-      shouldFormat = !isGrandTotals;
+      shouldFormat = !(isGrandTotals && isTotalRoot);
     } else {
       shouldFormat = !isTotalRoot;
     }
