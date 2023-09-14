@@ -325,8 +325,11 @@ describe('isUnchangedValue', () => {
     expect(isUnchangedValue(123, 123)).toBeTruthy();
   });
 
-  test('should return false for changed values', () => {
-    expect(isUnchangedValue('test', 'abc')).toBeFalsy();
+  test('should return true for numberless changed values', () => {
+    expect(isUnchangedValue('test', 'abc')).toBeTruthy();
+  });
+
+  test('should return false for numeric changed values', () => {
     expect(isUnchangedValue(123, 456)).toBeFalsy();
   });
 
