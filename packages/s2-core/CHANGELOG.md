@@ -1,3 +1,18 @@
+# [@antv/s2-v1.51.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.50.0...@antv/s2-v1.51.0-alpha.1) (2023-09-14)
+
+
+### Bug Fixes
+
+* delete last method from lodash ([251b845](https://github.com/antvis/S2/commit/251b8457548b2c06358b422464c9f90fab2a3b78))
+* **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
+* 修复树状模式下总计节点的指标节点没有被格式化数据 ([#2353](https://github.com/antvis/S2/issues/2353)) ([24b39ff](https://github.com/antvis/S2/commit/24b39ffadeff41fcbbad37c699aba7361b9f6c44))
+
+
+### Features
+
+* 对比值无波动时也显示灰色 ([#2351](https://github.com/antvis/S2/issues/2351)) ([12f2d02](https://github.com/antvis/S2/commit/12f2d0268d447ec99a1227ffedd5ed266d93e86b))
+* 小计/总计功能，支持按维度分组汇总 [#2337](https://github.com/antvis/S2/issues/2337) ([#2338](https://github.com/antvis/S2/issues/2338)) ([f29c466](https://github.com/antvis/S2/commit/f29c466b975573103837fb07c8a658033333fe8b))
+
 # [@antv/s2-v1.50.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.49.2...@antv/s2-v1.50.0-alpha.1) (2023-09-07)
 
 ### Bug Fixes
