@@ -308,16 +308,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const { crossBackgroundColor, backgroundColorOpacity } =
-      this.getStyle().cell;
-
-    let backgroundColor = this.getStyle().cell.backgroundColor;
-
-    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
-      // 隔行颜色的配置
-      // 偶数行展示灰色背景，因为index是从0开始的
-      backgroundColor = crossBackgroundColor;
-    }
+    const backgroundColorByCross = this.getCrossBackgroundColor(
+      this.meta.rowIndex,
+    );
+    let backgroundColor = backgroundColorByCross.backgroundColor;
+    const backgroundColorOpacity =
+      backgroundColorByCross.backgroundColorOpacity;
 
     if (this.shouldHideRowSubtotalData()) {
       return { backgroundColor, backgroundColorOpacity };

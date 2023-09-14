@@ -1,6 +1,5 @@
 # [@antv/s2-react-v1.42.2-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.1...@antv/s2-react-v1.42.2-alpha.1) (2023-09-07)
 
-
 ### Bug Fixes
 
 * **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))

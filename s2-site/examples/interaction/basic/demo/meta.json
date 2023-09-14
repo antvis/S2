@@ -83,6 +83,14 @@
         "en": "Trigger hover after scroll"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
+    },
+    {
+      "filename": "state-theme.ts",
+      "title": {
+        "zh": "交互主题配置",
+        "en": "Interaction state theme"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }
