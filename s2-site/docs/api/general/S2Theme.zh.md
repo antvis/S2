@@ -170,7 +170,7 @@ s2.setTheme({
 | verticalBorderColorOpacity   | 单元格垂直边线颜色透明度                | `number`                                        | 1      |      |
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
-| interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
+| interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/zh/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | miniBarChartHeight           | 单元格内条件格式-迷你条形图高度         | `number`                                        | 12     |      |
 | miniBarChartFillColor        | 单元格内条件格式-迷你条形图默认填充颜色 | `string`                                        | -      |      |
 
@@ -188,11 +188,45 @@ s2.setTheme({
 | size          | icon 大小        | `number`                   | -         |      |
 | margin        | 单元格外边距     | [Margin](#margin--padding) | -         |      |
 
+#### InteractionStateName
+
+> 示例
+
+```ts
+s2.setTheme({
+  dataCell: {
+    cell: {
+      interactionState: {
+        hoverFocus: {},
+        selected: {},
+        prepareSelect: {}
+      }
+    }
+  }
+})
+```
+
+| 状态名              | 说明       | 类型     | 默认值 | 必选 |
+| ----------------- | ---------- | -------- | ------ | ---- |
+| hover   | 悬停 | [InteractionStateTheme](#interactionstatetheme) |        |      |
+| hoverFocus | 悬停聚焦 | [InteractionStateTheme](#interactionstatetheme) |        |      |
+| selected       | 选中 | [InteractionStateTheme](#interactionstatetheme)|        |      |
+| unselected       | 未选中   | [InteractionStateTheme](#interactionstatetheme) |        |      |
+| searchResult     | 搜索结果 | [InteractionStateTheme](#interactionstatetheme) |        |      |
+| highlight       | 高亮 | [InteractionStateTheme](#interactionstatetheme) |        |      |
+| prepareSelect           | 预选中 | [InteractionStateTheme](#interactionstatetheme) |        |      |
+
 #### InteractionStateTheme
 
 <description> **optional** _object_ </description>
 
 功能描述：交互通用主题
+
+```ts
+type InteractionState = {
+  [K in InteractionStateName]?: InteractionStateTheme;
+};
+```
 
 | 参数              | 说明       | 类型     | 默认值 | 必选 |
 | ----------------- | ---------- | -------- | ------ | ---- |

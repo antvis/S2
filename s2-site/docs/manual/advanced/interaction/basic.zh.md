@@ -27,7 +27,7 @@ order: 0
 | 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                       | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                                                 |
 | 刷选         | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` |  批量选中刷选范围内的数值单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                              |
 | 行头刷选       | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）          |
-| 列头刷选       | `S2Event.COL_CELL_BRUSH_SELECTION`  `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）              |
+| 列头刷选       | `S2Event.COL_CELL_BRUSH_SELECTION`  `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息              |
 | 区间快捷多选     | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                           |
 | 悬停         | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
 | 复制         | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                            |
@@ -227,26 +227,6 @@ const s2Options = {
     hoverFocus: false // 默认 true
   }
 };
-```
-
-:::warning{title='如何关闭悬停时出现的单元格黑色边框？'}
-:::
-
-```ts
-s2.setTheme({
-  dataCell: {
-    cell: {
-      interactionState: {
-        hoverFocus: {
-          // 边框设置为透明
-          borderColor: 'transparent'
-          // 或者边框透明度设置为 0
-          // borderOpacity: 0
-        }
-      }
-    }
-  }
-})
 ```
 
 ### 圈选
@@ -477,6 +457,12 @@ const s2Options = {
   }
 };
 ```
+
+## 调整交互主题
+
+<Playground path='interaction/basic/demo/state-theme.ts' rid='container' height='300'></playground>
+
+可以通过 [主题配置](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename) 对应的 [交互主题](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename), 调整选中/悬停/圈选等交互主题。
 
 ## 调用 API
 

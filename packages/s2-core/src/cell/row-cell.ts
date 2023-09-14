@@ -70,6 +70,15 @@ export class RowCell extends HeaderCell {
     this.update();
   }
 
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getCrossBackgroundColor(this.meta.rowIndex);
+    return this.getBackgroundColorByCondition(
+      backgroundColor,
+      backgroundColorOpacity,
+    );
+  }
+
   /**
    * 绘制hover悬停，刷选的外框
    */
