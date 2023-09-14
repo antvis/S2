@@ -5,7 +5,7 @@ import {
   type MultiData,
   type SimpleDataItem,
   type ViewMeta,
-  isZeroOrEmptyValue,
+  isUnchangedValue,
 } from '@antv/s2';
 import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
@@ -69,7 +69,10 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
             {derivedValues.map((derivedValue: SimpleDataItem, i) => {
-              const isUnchanged = isZeroOrEmptyValue(derivedValue);
+              const isUnchanged = isUnchangedValue(
+                derivedValue,
+                value as SimpleDataItem,
+              );
               const isUp =
                 !isUnchanged && isUpDataValue(derivedValue as string);
               const isDown = !isUnchanged && !isUp;
