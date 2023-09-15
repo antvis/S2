@@ -185,7 +185,7 @@ const EditCell = memo(
           spreadsheet,
         );
 
-        console.log(e)
+        console.log(e);
       },
       [spreadsheet],
     );
