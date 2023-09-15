@@ -3,20 +3,20 @@ import {
   forEach,
   get,
   intersection,
+  isNil,
   isUndefined,
   last,
   reduce,
   set,
 } from 'lodash';
-import { i18n } from '../../common/i18n';
 import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import type { Meta } from '../../common/interface/basic';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
-import type { Meta } from '../../common/interface/basic';
 
 interface Param {
   rows: string[];
@@ -68,7 +68,11 @@ export function transformDimensionsValues(
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
     const splitArr = item?.split(ID_SEPARATOR);
-    return splitArr[splitArr?.length - 1] || item;
+    const dimensionsWithoutPathPre = splitArr[splitArr?.length - 1];
+    if (isNil(dimensionsWithoutPathPre)) {
+      return item;
+    }
+    return dimensionsWithoutPathPre;
   });
 }
 

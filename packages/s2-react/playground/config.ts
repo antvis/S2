@@ -1,12 +1,12 @@
-import { isUpDataValue, type Columns } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
+import { isUpDataValue, type Columns } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import {
   data,
-  totalData,
-  meta,
   fields,
+  meta,
+  totalData,
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 
@@ -39,11 +39,20 @@ export const tableSheetDataCfg: S2DataConfig = {
   },
 };
 
+data.unshift({
+  number: 7799,
+  province: '浙江省',
+  city: '',
+  type: '家具',
+  sub_type: '桌子',
+});
+
 export const pivotSheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
   fields,
+  sortParams: [{ sortFieldId: 'city', sortBy: ['', '舟山市', '宁波市'] }],
 };
 
 export const s2Options: SheetComponentOptions = {

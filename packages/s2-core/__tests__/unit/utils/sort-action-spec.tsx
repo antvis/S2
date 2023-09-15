@@ -1,21 +1,21 @@
-import { getContainer } from 'tests/util/helpers';
 import { sortData } from 'tests/data/sort-advanced';
+import { getContainer } from 'tests/util/helpers';
+import {
+  EXTRA_FIELD,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+  type S2DataConfig,
+  type S2Options,
+  type SortParam,
+} from '@/common';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   getSortByMeasureValues,
   sortAction,
   sortByCustom,
   sortByFunc,
 } from '@/utils/sort-action';
-import {
-  EXTRA_FIELD,
-  type S2Options,
-  type SortParam,
-  TOTAL_VALUE,
-  type S2DataConfig,
-  VALUE_FIELD,
-} from '@/common';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { BaseDataSet, PivotDataSet, type SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -711,6 +711,109 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         price: '11',
         $$extra$$: 'price',
         $$value$$: '11',
+      },
+    ]);
+  });
+
+  test('should consider empty string in sort', () => {
+    // 行小计进行 组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortBy: ['', '舟山', '杭州'],
+    };
+
+    sortData.data.unshift({
+      province: '浙江',
+      city: '',
+      type: '笔',
+      price: '2',
+    });
+    dataSet.setDataCfg(sortData);
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]',
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]长春',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: '2',
+        city: '',
+        price: '2',
+        province: '浙江',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '1',
+        city: '杭州',
+        price: '1',
+        province: '浙江',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '2',
+        city: '杭州',
+        price: '2',
+        province: '浙江',
+        type: '纸张',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '17',
+        city: '舟山',
+        price: '17',
+        province: '浙江',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '25.5',
+        city: '舟山',
+        price: '25.5',
+        province: '浙江',
+        type: '纸张',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '10',
+        city: '长春',
+        price: '10',
+        province: '吉林',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '3',
+        city: '长春',
+        price: '3',
+        province: '吉林',
+        type: '纸张',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '9',
+        city: '白山',
+        price: '9',
+        province: '吉林',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '11',
+        city: '白山',
+        price: '11',
+        province: '吉林',
+        type: '纸张',
       },
     ]);
   });
