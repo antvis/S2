@@ -137,7 +137,7 @@ function EditCellComponent(
     <div
       ref={containerRef}
       style={{
-        zIndex: 500,
+        zIndex: 1100,
         position: 'absolute',
         overflow: 'hidden',
         left,
@@ -184,6 +184,8 @@ const EditCell = memo(
           { event: e, onChange, onDataCellEditEnd, CustomComponent },
           spreadsheet,
         );
+
+        console.log(e)
       },
       [spreadsheet],
     );
