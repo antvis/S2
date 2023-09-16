@@ -344,7 +344,7 @@ export function generateExtraFieldMeta(
   return extraFieldMeta;
 }
 
-export function getTotalStatusByRowCol(row: Node, col: Node): TotalStatus {
+export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
   return {
     isRowTotal: row.isGrandTotals,
     isRowSubTotal: row.isSubTotals,

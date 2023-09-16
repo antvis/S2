@@ -31,7 +31,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import { flattenDeep } from '../data-set-operate';
 import { getEmptyPlaceholder } from '../text';
-import { getTotalStatusByRowCol } from '../dataset/pivot-data-set';
+import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -115,7 +115,7 @@ const getValueFromMeta = (
         rowNode.isTotalMeasure ||
         colNode.isTotals ||
         colNode.isTotalMeasure,
-      totalStatus: getTotalStatusByRowCol(rowNode, colNode),
+      totalStatus: getHeaderTotalStatus(rowNode, colNode),
     });
     return cell?.[VALUE_FIELD] ?? '';
   }
@@ -395,7 +395,7 @@ const getDataMatrix = (
           rowNode.isTotalMeasure ||
           colNode.isTotals ||
           colNode.isTotalMeasure,
-        totalStatus: getTotalStatusByRowCol(rowNode, colNode),
+        totalStatus: getHeaderTotalStatus(rowNode, colNode),
       });
       return getFormat(
         colNode.colIndex,
@@ -660,6 +660,11 @@ function getLastLevelCells(
   });
 }
 
+/** 处理有合并单元格的复制（小记总计格）
+ *  维度1 ｜ 维度2  ｜ 维度3
+ *  总计           ｜  维度三
+ *  => 总计  总计  维度三
+ */
 function getTotalCellMatrixId(meta: Node, maxLevel: number) {
   let nextNode = meta;
   let lastNode = { level: maxLevel };
@@ -667,7 +672,7 @@ function getTotalCellMatrixId(meta: Node, maxLevel: number) {
   while (nextNode.level >= 0) {
     let repeatNumber = lastNode.level - nextNode.level;
     while (repeatNumber > 0) {
-      cellId = nextNode.label + ID_SEPARATOR + cellId;
+      cellId = `${nextNode.label}${ID_SEPARATOR}${cellId}`;
       repeatNumber--;
     }
     lastNode = nextNode;
@@ -675,6 +680,7 @@ function getTotalCellMatrixId(meta: Node, maxLevel: number) {
   }
   return cellId;
 }
+
 function getCellMatrix(
   lastLevelCells: Array<RowCell | ColCell>,
   maxLevel: number,

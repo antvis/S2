@@ -28,7 +28,7 @@ import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
-import { getTotalStatusByRowCol } from '../utils/dataset/pivot-data-set';
+import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -95,7 +95,7 @@ export class PivotFacet extends BaseFacet {
             }
           : {};
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
-      const totalStatus = getTotalStatusByRowCol(row, col);
+      const totalStatus = getHeaderTotalStatus(row, col);
       const data = dataSet.getCellData({
         query: dataQuery,
         rowNode: row,
@@ -323,7 +323,7 @@ export class PivotFacet extends BaseFacet {
               col.isTotalMeasure ||
               rowNode.isTotals ||
               rowNode.isTotalMeasure,
-            totalStatus: getTotalStatusByRowCol(rowNode, col),
+            totalStatus: getHeaderTotalStatus(rowNode, col),
           });
 
           if (cellData) {
@@ -551,8 +551,8 @@ export class PivotFacet extends BaseFacet {
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals.row : totals.col;
     const dimensionGroup = isSubTotal
-      ? totalConfig.subTotalsDimensionsGroup || []
-      : totalConfig.totalsDimensionsGroup || [];
+      ? totalConfig.subTotalsGroupDimensions || []
+      : totalConfig.totalsGroupDimensions || [];
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields[level] as string;
@@ -679,7 +679,7 @@ export class PivotFacet extends BaseFacet {
           col.isTotalMeasure ||
           rowNode.isTotals ||
           rowNode.isTotalMeasure,
-        totalStatus: getTotalStatusByRowCol(rowNode, col),
+        totalStatus: getHeaderTotalStatus(rowNode, col),
       });
 
       const cellDataKeys = keys(cellData);

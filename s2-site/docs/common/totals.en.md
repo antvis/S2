@@ -27,8 +27,8 @@ object is **required** , *default: null* Function description: subtotal total co
 | subLabel            | subtotal alias                                                                                                                                                                            | `string`                  |                       |          |
 | calcTotals          | Custom Calculated Totals                                                                                                                                                                  | [CalcTotals](#calctotals) |                       |          |
 | calcSubTotals       | Custom Calculated Subtotals                                                                                                                                                               | [CalcTotals](#calctotals) |                       |          |
-| totalsDimensionsGroup                  | grouping dimension of the total                                                                       |`string[]`    |                    |      |
-| subTotalsDimensionsGroup               | grouping dimension of the subtotal                                                                    |  `string[]`            |                    |      |
+| totalsGroupDimensions                  | grouping dimension of the total                                                                       |`string[]`    |                    |      |
+| subTotalsGroupDimensions               | grouping dimension of the subtotal                                                                    |  `string[]`            |                    |      |
 
 ## CalcTotals
 

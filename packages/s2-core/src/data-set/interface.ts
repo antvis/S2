@@ -51,6 +51,15 @@ export interface CellDataParams {
   totalStatus?: TotalStatus;
 }
 
+export interface checkAccordQueryParams {
+  // item of sortedDimensionValues,es: "浙江省[&]杭州市[&]家具[&]桌子"
+  dimensionValues: string;
+  query: DataType;
+  // rows or columns
+  dimensions: string[];
+  field: string;
+}
+
 export interface TotalStatus {
   isRowTotal: boolean;
   isRowSubTotal: boolean;

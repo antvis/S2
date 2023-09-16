@@ -42,15 +42,8 @@ export interface TotalParams {
   spreadsheet: SpreadSheet;
 }
 
-export interface HeaderNodesParams {
-  currentField: string;
-  fields: string[];
+export interface HeaderNodesParams extends GridHeaderParams {
   fieldValues: FieldValue[];
-  addTotalMeasureInTotal: boolean;
-  addMeasureInTotalQuery: boolean;
-  facetCfg: SpreadSheetFacetCfg;
-  hierarchy: Hierarchy;
-  parentNode: Node;
   level: number;
   query: Record<string, any>;
 }
