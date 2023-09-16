@@ -55,9 +55,9 @@ fetch('https://gw.alipayobjects.com/os/bmw-prod/6eede6eb-8021-4da8-bb12-67891a57
             aggregation: 'SUM',
           },
           // 总计分组下，city 城市维度会出现分组
-          totalsDimensionsGroup: ['city'],
+          totalsGroupDimensions: ['city'],
           // 小计维度下，type 类别维度下会出现分组
-          subTotalsDimensionsGroup: ['type'],
+          subTotalsGroupDimensions: ['type'],
         },
       },
     };
