@@ -835,50 +835,50 @@ describe('Pivot Dataset Total Test', () => {
     });
     test('should get correct boolean of dimensionValue is a query condition', () => {
       expect(
-        dataSet.checkAccordQueryWithDimensionValue(
-          '浙江省[&]杭州市[&]家具[&]桌子',
-          {
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
             province: '浙江省',
             city: 'A',
             type: 'Abc',
           },
-          dataCfg.fields.rows,
-          'province',
-        ),
+          dimensions: dataCfg.fields.rows,
+          field: 'province',
+        }),
       ).toEqual(true);
       expect(
-        dataSet.checkAccordQueryWithDimensionValue(
-          '浙江省[&]杭州市[&]家具[&]桌子',
-          {
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
             province: '浙江省',
             city: '杭州市',
             type: '家具',
           },
-          dataCfg.fields.rows,
-          'sub_type',
-        ),
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
       ).toEqual(true);
       expect(
-        dataSet.checkAccordQueryWithDimensionValue(
-          '浙江省[&]杭州市[&]家具[&]桌子',
-          {
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
             province: '浙江省',
             city: '不是杭州市',
             type: '家具',
           },
-          dataCfg.fields.rows,
-          'sub_type',
-        ),
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
       ).toEqual(false);
       expect(
-        dataSet.checkAccordQueryWithDimensionValue(
-          '浙江省[&]杭州市[&]家具[&]桌子',
-          {
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
             province: '浙江省',
           },
-          dataCfg.fields.rows,
-          'sub_type',
-        ),
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
       ).toEqual(true);
     });
     test('get correct query list when query need to be processed', () => {

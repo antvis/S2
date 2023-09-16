@@ -521,7 +521,7 @@ export class PivotDataSet extends BaseDataSet {
    * [undefined , '杭州市' , undefined , 'number'] => true
    * ['浙江省' , '杭州市' , undefined , 'number'] => true
    */
-  private checkExistDimensionGroup(query: DataType): boolean {
+  checkExistDimensionGroup(query: DataType): boolean {
     const { rows, columns } = this.fields;
     const check = (dimensions: string[]) => {
       let existDimensionValue = false;
@@ -548,9 +548,7 @@ export class PivotDataSet extends BaseDataSet {
    * DimensionValue: 浙江省[&]杭州市[&]家具[&]桌子 => true
    * DimensionValue: 四川省[&]成都市[&]文具[&]笔 => false
    */
-  private checkAccordQueryWithDimensionValue(
-    params: checkAccordQueryParams,
-  ): boolean {
+  checkAccordQueryWithDimensionValue(params: checkAccordQueryParams): boolean {
     const { dimensionValues, query, dimensions, field } = params;
     for (const [index, dimension] of dimensions.entries()) {
       const queryValue = get(query, dimension);
@@ -576,7 +574,7 @@ export class PivotDataSet extends BaseDataSet {
    *      {'百事公司','可乐','undefined','price'},
    *    ]
    */
-  private getTotalGroupQueries(dimensions: string[], originQuery: DataType) {
+  getTotalGroupQueries(dimensions: string[], originQuery: DataType) {
     let queries = [originQuery];
     let existDimensionGroupKey = null;
     for (let i = dimensions.length; i > 0; i--) {
@@ -677,7 +675,7 @@ export class PivotDataSet extends BaseDataSet {
     const existDimensionGroup = this.checkExistDimensionGroup(query);
     let result = [];
     if (existDimensionGroup) {
-      result = this.getGroupTotalMultiData(totalRows, rows);
+      result = this.getGroupTotalMultiData(totalRows, query);
     } else {
       const rowDimensionValues = getQueryDimValues(totalRows, query);
       const colDimensionValues = getQueryDimValues(columns as string[], query);

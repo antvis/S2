@@ -35,9 +35,9 @@ export const addTotals = (params: TotalParams) => {
   ) {
     action = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
     totalValue = new TotalClass({
-      label: totalsConfig.label,
-      isSubTotals: false,
-      isGrandTotals: true,
+      label: totalsConfig.subLabel,
+      isSubTotals: true,
+      isGrandTotals: false,
       isTotalRoot: true,
     });
   }
