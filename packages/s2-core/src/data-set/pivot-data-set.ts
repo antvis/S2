@@ -63,7 +63,7 @@ import type { CellMeta } from '../common';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
-  checkAccordQueryParams,
+  CheckAccordQueryParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
@@ -548,7 +548,7 @@ export class PivotDataSet extends BaseDataSet {
    * DimensionValue: 浙江省[&]杭州市[&]家具[&]桌子 => true
    * DimensionValue: 四川省[&]成都市[&]文具[&]笔 => false
    */
-  checkAccordQueryWithDimensionValue(params: checkAccordQueryParams): boolean {
+  checkAccordQueryWithDimensionValue(params: CheckAccordQueryParams): boolean {
     const { dimensionValues, query, dimensions, field } = params;
     for (const [index, dimension] of dimensions.entries()) {
       const queryValue = get(query, dimension);

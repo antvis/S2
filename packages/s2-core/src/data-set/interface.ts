@@ -51,7 +51,7 @@ export interface CellDataParams {
   totalStatus?: TotalStatus;
 }
 
-export interface checkAccordQueryParams {
+export interface CheckAccordQueryParams {
   // item of sortedDimensionValues,es: "浙江省[&]杭州市[&]家具[&]桌子"
   dimensionValues: string;
   query: DataType;
