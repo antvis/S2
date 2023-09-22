@@ -47,6 +47,24 @@ export interface CellDataParams {
   rowNode?: Node;
   // mark row's cell
   isRow?: boolean;
+  // use with isTotals
+  totalStatus?: TotalStatus;
+}
+
+export interface CheckAccordQueryParams {
+  // item of sortedDimensionValues,es: "浙江省[&]杭州市[&]家具[&]桌子"
+  dimensionValues: string;
+  query: DataType;
+  // rows or columns
+  dimensions: string[];
+  field: string;
+}
+
+export interface TotalStatus {
+  isRowTotal: boolean;
+  isRowSubTotal: boolean;
+  isColTotal: boolean;
+  isColSubTotal: boolean;
 }
 
 export interface SortActionParams {

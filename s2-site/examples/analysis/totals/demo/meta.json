@@ -21,6 +21,22 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3SuoQrkTsR/5657d02f-8e7f-4fbc-8159-7a0e8f772462.png"
     },
     {
+      "filename": "dimension-group-row.ts",
+      "title": {
+        "zh": "行总计小计按维度分组",
+        "en": "Total Of Rows Grouped By Dimension"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1SDsRpTA_kQAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "dimension-group-col.ts",
+      "title": {
+        "zh": "列总计小计按维度分组",
+        "en": "Total Of Columns Grouped By Dimension"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*5PTqQpXXCcsAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
       "filename": "tree.ts",
       "title": {
         "zh": "树状模式",

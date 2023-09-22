@@ -5,7 +5,7 @@ order: 5
 Function description: layout node. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/layout/node.ts)
 
 | parameter         | illustrate                             | type                                                |
-| ----------------- | -------------------------------------- | --------------------------------------------------- |
+|-------------------|----------------------------------------| --------------------------------------------------- |
 | id                | node id                                | `string`                                            |
 | key               | node key                               | `string`                                            |
 | value             | node value                             | `string`                                            |
@@ -17,6 +17,7 @@ Function description: layout node. [details](https://github.com/antvis/S2/blob/m
 | isTotals          | Is it summary                          | `boolean`                                           |
 | isSubTotals       | Is it a subtotal                       | `boolean`                                           |
 | isGrandTotals     | Is it total                            | `boolean`                                           |
+| isTotalRoot       | Is it total root                       | `boolean`                                                  |
 | isCollapsed       | Whether to expand                      | `boolean`                                           |
 | hierarchy         | hierarchical structure                 | [Hierarchy](#)                                      |
 | isPivotMode       | Is it a pivot table                    | `boolean`                                           |

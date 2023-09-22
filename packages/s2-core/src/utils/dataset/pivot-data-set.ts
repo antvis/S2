@@ -8,15 +8,16 @@ import {
   reduce,
   set,
 } from 'lodash';
-import { i18n } from '../../common/i18n';
 import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
+  TotalStatus,
 } from '../../data-set/interface';
 import type { Meta } from '../../common/interface/basic';
+import type { Node } from '../../facet/layout/node';
 
 interface Param {
   rows: string[];
@@ -197,9 +198,7 @@ export function getDataPath(params: DataPathParams) {
     rowPivotMeta,
     colPivotMeta,
   );
-  const result = rowPath.concat(...colPath);
-
-  return result;
+  return rowPath.concat(...colPath);
 }
 
 /**
@@ -343,4 +342,13 @@ export function generateExtraFieldMeta(
   };
 
   return extraFieldMeta;
+}
+
+export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
+  return {
+    isRowTotal: row.isGrandTotals,
+    isRowSubTotal: row.isSubTotals,
+    isColTotal: col.isGrandTotals,
+    isColSubTotal: col.isSubTotals,
+  };
 }

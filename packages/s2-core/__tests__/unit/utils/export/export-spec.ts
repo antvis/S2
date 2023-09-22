@@ -237,6 +237,77 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
+  it('should export correct data in grid mode with grouped totals in col', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            totalsGroupDimensions: ['city', 'type'],
+            subTotalsGroupDimensions: ['sub_type'],
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(17);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(60);
+    });
+  });
+
+  it('should export correct data in grid mode with grouped totals in row', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: false,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            totalsGroupDimensions: ['city', 'sub_type', 'province'],
+            subTotalsGroupDimensions: ['sub_type'],
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(16);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(63);
+    });
+  });
   it('should export correct data in grid mode with totals in row', () => {
     const s2 = new PivotSheet(
       getContainer(),

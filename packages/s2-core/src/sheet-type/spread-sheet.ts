@@ -616,12 +616,12 @@ export abstract class SpreadSheet extends EE {
         ? totalConfig.showSubTotals
         : false;
     return {
+      label: i18n('总计'),
+      subLabel: i18n('小计'),
+      totalsGroupDimensions: [],
+      subTotalsGroupDimensions: [],
+      ...totalConfig,
       showSubTotals,
-      showGrandTotals: totalConfig.showGrandTotals,
-      reverseLayout: totalConfig.reverseLayout,
-      reverseSubLayout: totalConfig.reverseSubLayout,
-      label: totalConfig.label || i18n('总计'),
-      subLabel: totalConfig.subLabel || i18n('小计'),
     };
   }
 

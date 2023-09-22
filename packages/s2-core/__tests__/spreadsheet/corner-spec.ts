@@ -49,6 +49,7 @@ describe('PivotSheet Corner Tests', () => {
         fields: {
           ...simpleDataConfig.fields,
           columns: [],
+          values: ['price'],
         },
       });
       s2.setOptions({
@@ -86,6 +87,13 @@ describe('PivotSheet Corner Tests', () => {
           colCfg: {
             hideMeasureColumn: true,
           },
+        },
+      });
+      s2.setDataCfg({
+        ...simpleDataConfig,
+        fields: {
+          ...simpleDataConfig.fields,
+          values: ['price'],
         },
       });
       s2.render();
