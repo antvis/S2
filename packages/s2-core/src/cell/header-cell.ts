@@ -85,7 +85,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { label, isTotals, isGrandTotals } = this.meta;
+    const { label, isTotalRoot, isGrandTotals } = this.meta;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
@@ -99,16 +99,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (this.spreadsheet.isTableMode()) {
       shouldFormat = false;
     } else if (this.spreadsheet.isHierarchyTreeType()) {
-      shouldFormat = !isGrandTotals;
+      shouldFormat = !(isGrandTotals && isTotalRoot);
     } else {
-      shouldFormat = !isTotals;
+      shouldFormat = !isTotalRoot;
     }
 
     const formattedValue =
       shouldFormat && formatter
         ? formatter(label, undefined, this.meta)
         : label;
-
     return {
       formattedValue,
       value: label,

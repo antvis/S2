@@ -27,6 +27,8 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 | subLabel            | 小计别名                 | `string`     |         |       |
 | calcTotals          | 自定义计算总计                 | [CalcTotals](#calctotals) |         |       |
 | calcSubTotals       | 自定义计算小计                 | [CalcTotals](#calctotals) |         |       |
+| totalsGroupDimensions                  | 总计的分组维度                                            |`string[]`    |                    |      |
+| subTotalsGroupDimensions               | 小计的分组维度                                            |  `string[]`            |                    |      |
 
 ## CalcTotals
 

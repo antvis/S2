@@ -81,9 +81,10 @@ describe('Multi Values GrandTotal Height Test', () => {
 
     const grandTotalsNode = s2
       .getColumnNodes()
-      .find((node) => node.isGrandTotals);
+      .find((node) => node.isGrandTotals && node.isTotalRoot);
 
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
-    expect(grandTotalsNode.height).toEqual(30);
+    // 有多个 Value 时不允许隐藏度量列
+    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(90);
+    expect(grandTotalsNode.height).toEqual(60);
   });
 });

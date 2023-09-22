@@ -60,7 +60,7 @@ describe('header cell formatter test', () => {
         value: '总计',
         parent: root,
         label: '总计',
-        isTotals: true,
+        isTotalRoot: true,
       });
       const rowNode = new Node({
         id: `root[&]杭州[&]小计`,
@@ -68,7 +68,7 @@ describe('header cell formatter test', () => {
         value: '小计',
         parent: root,
         label: '小计',
-        isTotals: true,
+        isTotalRoot: true,
       });
 
       const formatter: Formatter = (value) => {
@@ -92,6 +92,7 @@ describe('header cell formatter test', () => {
         label: '总计',
         isTotals: true,
         isGrandTotals: true,
+        isTotalRoot: true,
       });
 
       const rowSubTotalNode = new Node({

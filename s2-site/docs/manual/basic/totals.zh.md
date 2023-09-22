@@ -47,6 +47,22 @@ order: 5
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/GekvQBQAw/8dde8830-e496-458c-b05e-bcd4f3e4bc0c.png" width="600"  alt="row" />
 
+### 分组汇总
+
+按维度进行 小计/总计 的汇总计算，用于进行某一维度的数据对比分析等。
+
+<Playground path='analysis/totals/demo/dimension-group.ts' rid='pivot-total-group' height='400'></playground>
+
+#### 行总计小计分组
+
+行总计按 “类别” 分组，行小计按 “类别”，“子类别” 分组：
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6kU_SqAmKMkAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="row" />
+
+#### 列总计小计分组
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4Ek5QbkWAuQAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="col" />
+
 ## 使用
 
 ### 1. 显示配置
@@ -66,17 +82,19 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 
 object **必选**,_default：null_ 功能描述： 小计总计算配置
 
-| 参数                | 说明                     | 类型         | 默认值 | 必选 |
-| ------------------- | ------------------------ | ------------ | ------ | ---- |
-| showGrandTotals     | 是否显示总计             | `boolean`    | false  | ✓    |
-| showSubTotals       | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示。             | `boolean | { always: boolean }`    | false  | ✓    |
-| subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     | ✓    |
-| reverseLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| reverseSubLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| label               | 总计别名                 | `string`     |        |      |
-| subLabel            | 小计别名                 | `string`     |        |      |
-| calcTotals          | 计算总计                 | `CalcTotals` |        |      |
-| calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
+| 参数                                     | 说明                                                 | 类型           | 默认值                | 必选 |
+|----------------------------------------|----------------------------------------------------|--------------|--------------------| ---- |
+| showGrandTotals                        | 是否显示总计                                             | `boolean`    | false              | ✓    |
+| showSubTotals                          | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示。 | `boolean     | { always: boolean }` | false  | ✓    |
+| subTotalsDimensions                    | 小计的汇总维度                                            | `string[]`   | []                 | ✓    |
+| reverseLayout                          | 总计布局位置，默认下或右                                       | `boolean`    | false              | ✓    |
+| reverseSubLayout                       | 小计布局位置，默认下或右                                       | `boolean`    | false              | ✓    |
+| label                                  | 总计别名                                               | `string`     |                    |      |
+| subLabel                               | 小计别名                                               | `string`     |                    |      |
+| calcTotals                             | 计算总计                                               | `CalcTotals` |                    |      |
+| calcSubTotals                          | 计算小计                                               | `CalcTotals` |                    |      |
+| totalsGroupDimensions                  | 总计的分组维度                                            |`string[]`    |                    |      |
+| subTotalsGroupDimensions               | 小计的分组维度                                            |  `string[]`            |                    |      |
 
 ```ts
 const s2Options = {
@@ -87,6 +105,8 @@ const s2Options = {
       reverseLayout: true,
       reverseSubLayout: true,
       subTotalsDimensions: ['province'],
+      totalsGroupDimensions: ['city'],
+      subTotalsGroupDimensions: ['type', 'sub_type'],    
     },
     col: {
       showGrandTotals: true,

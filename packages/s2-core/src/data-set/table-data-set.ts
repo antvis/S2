@@ -150,6 +150,10 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
+  public getTotalDimensionValues(field: string, query?: DataType): string[] {
+    return [];
+  }
+
   public getDimensionValues(field: string, query?: DataType): string[] {
     return [];
   }

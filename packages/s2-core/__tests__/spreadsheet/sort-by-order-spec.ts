@@ -104,4 +104,15 @@ describe('Manual Sort Tests', () => {
       }),
     ).toEqual(['整体访问', '小程序访问', '支付宝访问']);
   });
+
+  test('getTotalDimensionValues should include correct values', () => {
+    const sortedType1 = s2.dataSet.getTotalDimensionValues('type1', {});
+    expect(sortedType1).toEqual(['整体访问', '小程序访问', '支付宝访问']);
+
+    expect(s2.dataSet.getTotalDimensionValues('type2', {})).toEqual([
+      '整体访问',
+      '小程序访问',
+      '支付宝访问',
+    ]);
+  });
 });
