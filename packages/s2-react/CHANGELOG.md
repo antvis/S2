@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.44.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.43.0...@antv/s2-react-v1.44.0) (2023-09-22)
+
+
+### Features
+
+* 对比值无波动时也显示灰色 ([#2351](https://github.com/antvis/S2/issues/2351)) ([12f2d02](https://github.com/antvis/S2/commit/12f2d0268d447ec99a1227ffedd5ed266d93e86b))
+* 小计/总计功能，支持按维度分组汇总 ([#2346](https://github.com/antvis/S2/issues/2346)) ([20e608f](https://github.com/antvis/S2/commit/20e608f2447e9ffdb135d98e4cc7f39f1cfb308d))
+
 # [@antv/s2-react-v1.43.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.1...@antv/s2-react-v1.43.0) (2023-09-09)
 
 
