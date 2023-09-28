@@ -28,6 +28,7 @@ s2.dataSet.getFieldName('type')
 | getCellData         | 获取单个的单元格数据               | (params: [CellDataParams](#celldataparams)) => [DataType[]](#datatype) |                                             |
 | getMultiData        | 获取批量的单元格数据               | (query: [DataType](#datatype), isTotals?: boolean, isRow?: boolean, drillDownFields?: string[]) => [DataType[]](#datatype) |                                             |
 | moreThanOneValue    | 是否超过 1 个数值                  | () => [ViewMeta](#viewmeta)                                  |                                             |
+| isEmptyDataSet    | 是否为空数据集                 | () => `boolean`                                 |      `@antv/s2-v1.51.1`                                       |
 
 ### DataType
 
