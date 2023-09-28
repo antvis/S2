@@ -13,9 +13,11 @@ import { DataCell, DEFAULT_STYLE, type Fields, Node } from '@/index';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+
 const actualDataSet = jest.requireActual(
   '@/data-set/base-data-set',
 ).BaseDataSet;
+
 jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
