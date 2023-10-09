@@ -113,6 +113,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // 如果当前是隐藏节点, 给其父节点挂载相应信息 (兄弟节点, 当前哪个子节点隐藏了), 这样在 facet 层可以直接使用, 不用每次都去遍历
     const hiddenColumnsInfo = spreadsheet?.facet?.getHiddenColumnsInfo(node);
     if (hiddenColumnsInfo && parentNode) {
+      // hiddenChildNodeInfo 属性在 S2 中没有用到，但是没删怕外部有使用
       parentNode.hiddenChildNodeInfo = hiddenColumnsInfo;
     }
 

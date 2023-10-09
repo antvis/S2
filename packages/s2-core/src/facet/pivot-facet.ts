@@ -252,9 +252,9 @@ export class PivotFacet extends BaseFacet {
         leafNodes.push(parentNode);
 
         const firstVisibleChildNode = parentNode.children?.find(
-          (childNode) => !childNode.hiddenChildNodeInfo,
+          (childNode) => childNode.width,
         );
-        // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
+        // 父节点 x 坐标 = 第一个正常布局处理过的子节点 x 坐标(width 有值认为是正常布局过)
         const parentNodeX = firstVisibleChildNode?.x;
         // 父节点宽度 = 所有子节点宽度之和
         const parentNodeWidth = sumBy(parentNode.children, 'width');
