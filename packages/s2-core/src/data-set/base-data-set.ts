@@ -118,7 +118,7 @@ export abstract class BaseDataSet {
     return this.displayData;
   }
 
-  public isEmptyDataSet() {
+  public isEmpty() {
     return isEmpty(this.getDisplayDataSet());
   }
 

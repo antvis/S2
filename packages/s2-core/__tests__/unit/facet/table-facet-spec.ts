@@ -62,7 +62,7 @@ jest.mock('@/sheet-type', () => {
           clearHoverTimer: jest.fn(),
         },
         dataSet: {
-          isEmptyDataSet: jest.fn(),
+          isEmpty: jest.fn(),
         },
       };
     }),
@@ -82,7 +82,7 @@ jest.mock('@/data-set/table-data-set', () => {
         getCellData: () => 1,
         getFieldMeta: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
-        isEmptyDataSet: jest.fn(),
+        isEmpty: jest.fn(),
       };
     }),
   };

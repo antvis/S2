@@ -1130,7 +1130,7 @@ export class TableFacet extends BaseFacet {
     }
 
     // https://github.com/antvis/S2/issues/2255
-    const indexes = this.spreadsheet.dataSet.isEmptyDataSet()
+    const indexes = this.spreadsheet.dataSet.isEmpty()
       ? ([] as unknown as Indexes)
       : calculateInViewIndexes(
           scrollX,

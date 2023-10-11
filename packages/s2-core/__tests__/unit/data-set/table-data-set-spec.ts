@@ -101,7 +101,7 @@ describe('Table Mode Dataset Test', () => {
     });
 
     test('should get correctly empty dataset result', () => {
-      expect(dataSet.isEmptyDataSet()).toBeFalsy();
+      expect(dataSet.isEmpty()).toBeFalsy();
     });
   });
 
