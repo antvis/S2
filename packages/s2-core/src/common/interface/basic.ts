@@ -19,7 +19,7 @@ import type { DataItem } from './s2DataConfig';
 
 export type { GetCellMeta, LayoutResult } from './facet';
 
-/*
+/**
  * 第二个参数在以下情况会传入：
  * 1. data cell 格式化
  * 2. copy/export
@@ -154,9 +154,9 @@ export interface Total {
         /** 当子维度个数 <=1 时，仍然展示小计：默认 true */
         always: boolean;
       };
-  // 前端计算总计
+  /** 自定义总计 */
   calcTotals?: CalcTotals;
-  // 前端计算小计
+  /** 自定义小计 */
   calcSubTotals?: CalcTotals;
 
   /** 小计的汇总维度 */
@@ -167,25 +167,30 @@ export interface Total {
 
   /** 小计布局位置，默认下或者右 */
   reverseSubLayout: boolean;
-  // total's display name default = '总计'
+
+  /**
+   * 自定义总计展示名
+   * @default '总计'
+   */
   label?: string;
-  // sub label's display name, default = '小计'
+
+  /**
+   * 自定义小计展示名
+   * @default '小计'
+   */
   subLabel?: string;
 }
 
-/**
- * tableau的英文是这个，这里有个绕的概念
- * 如，某行维度需要展示小计，实际上是将对应的一列数据进行聚合，所以文案上显示的应该是“展示列小计”
- * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
- */
 export interface Totals {
   row?: Partial<Total>;
   col?: Partial<Total>;
 }
 
 export interface Sort {
-  /** 字段id，业务中一般是displayId */
+  /** 字段id */
   sortFieldId: string;
+
+  /** 排序方式 */
   sortMethod?: SortMethod;
 
   /** 自定义排序 */

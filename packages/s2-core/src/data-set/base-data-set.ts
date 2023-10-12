@@ -10,59 +10,72 @@ import {
   memoize,
   min,
 } from 'lodash';
+import type { CellMeta, CustomHeaderField, RowData } from '../common';
+import { CellType } from '../common';
 import type {
-  Data,
   Fields,
   FilterParam,
   Formatter,
   Meta,
-  S2CellType,
-  ViewMeta,
   RawData,
+  S2CellType,
   S2DataConfig,
   SortParams,
+  ViewMeta,
   ViewMetaData,
 } from '../common/interface';
-import type { Node } from '../facet/layout/node';
 import type { ValueRange } from '../common/interface/condition';
+import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import { CellType } from '../common';
-import type { CellMeta, RowData, CustomHeaderField } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
-import type { Query, TotalSelectionsOfMultiData } from './interface';
-import type { CellData } from './cell-data';
-import type { CellDataParams } from './index';
+import type { GetCellDataParams, Query } from './interface';
+import type { GetCellMultiDataParams } from './index';
 
 export abstract class BaseDataSet {
-  // 字段域信息
+  /**
+   * 字段信息
+   */
   public fields: Fields;
 
-  // 字段元信息，包含有字段名、格式化等
+  /**
+   * 字段元信息，包含有字段名、格式化、描述等
+   */
   public meta: Meta[];
 
-  // origin data
+  /**
+   * 原始数据
+   */
   public originData: RawData[];
 
-  // multidimensional array to indexes data
+  /**
+   * 二维索引数据
+   */
   public indexesData: RawData[][] | RawData[];
 
-  // 高级排序, 组内排序
+  /**
+   * 高级排序, 组内排序
+   */
   public sortParams: SortParams | undefined;
 
+  /**
+   * 筛选配置
+   */
   public filterParams: FilterParam[] | undefined;
 
-  // 透视表入口对象实例
+  /**
+   * 表格实例
+   */
   protected spreadsheet: SpreadSheet;
+
+  protected displayData: RawData[];
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
-
-  protected displayData: RawData[];
 
   private getField = (field: CustomHeaderField): string => {
     const realField = isString(field) ? field : field?.field;
@@ -179,6 +192,10 @@ export abstract class BaseDataSet {
     return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
+  /**
+   * 设置数据配置
+   * @param dataCfg
+   */
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta?.cache?.clear?.();
     const { fields, meta, data, sortParams, filterParams } =
@@ -193,7 +210,13 @@ export abstract class BaseDataSet {
     this.indexesData = [];
   }
 
-  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
+  /**
+   * 添加 (角头/数值虚拟字段) 格式化信息
+   */
+  public getFieldMetaWithExtraField(
+    meta: Meta[] = [],
+    defaultExtraFieldText: string,
+  ): Meta[] {
     const newMeta: Meta[] = [
       ...meta,
       generateExtraFieldMeta(
@@ -245,6 +268,7 @@ export abstract class BaseDataSet {
   public abstract processDataCfg(dataCfg: S2DataConfig): S2DataConfig;
 
   /**
+   * 获取指定字段下的维值
    * 1、query !== null
    * province  city => field
    *   辽宁省
@@ -258,38 +282,36 @@ export abstract class BaseDataSet {
    *  query param is not necessary, when just
    *  get some field's all dimension values
    *
-   * @param field current dimensions
-   * @param query dimension value query
+   * @param field
+   * @param query
    */
   public abstract getDimensionValues(field: string, query?: Query): string[];
 
   /**
-   * In most cases, this function to get the specific
-   * cross data cell data
-   * @param params
+   * 获取单个的单元格数据
    */
-  public abstract getCellData(params: CellDataParams): ViewMetaData | undefined;
+  public abstract getCellData(
+    params: GetCellDataParams,
+  ): ViewMetaData | undefined;
 
   /**
-   * To get a row or column cells data;
-   * if query is empty, return all data
-   * @param query
-   * @param totals @TotalSelectionsOfMultiData
-   * @param drillDownFields
+   * 获取批量的单元格数据
+   * 如果 query 为空, 则返回全量数据
    */
-  public abstract getMultiData(
-    query: Query,
-    totals?: TotalSelectionsOfMultiData,
-    drillDownFields?: string[],
-  ): Data[] | CellData[];
+  public abstract getCellMultiData(
+    params: GetCellMultiDataParams,
+  ): ViewMetaData[];
 
+  /**
+   * 是否超过 1 个数值
+   */
   public moreThanOneValue() {
     return this.fields?.values?.length! > 1;
   }
 
   /**
    * get a row cells data including cell
-   * @param cells
+   * @param cellMeta
    */
-  public abstract getRowData(cells: CellMeta): RowData;
+  public abstract getRowData(cellMeta: CellMeta): RowData;
 }

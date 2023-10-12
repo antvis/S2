@@ -191,7 +191,7 @@ describe('Pivot Dataset Test', () => {
       expect(cell2!.getOrigin()).toContainEntries([['number', 352]]);
     });
 
-    describe('getMultiData function', () => {
+    describe('getCellMultiData function', () => {
       beforeEach(() => {
         dataSet.setDataCfg(assembleDataCfg());
       });
@@ -204,86 +204,91 @@ describe('Pivot Dataset Test', () => {
           [EXTRA_FIELD]: 'number',
         };
 
-        expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
+        expect(dataSet.getCellMultiData({ query: specialQuery })).toHaveLength(
+          1,
+        );
         expect(
-          dataSet.getMultiData(specialQuery)[0].getOrigin(),
+          dataSet.getCellMultiData({ query: specialQuery })[0].getOrigin(),
         ).toContainEntries([['number', 7789]]);
       });
 
       test('should get all detail data when child dimension is not specified', () => {
         expect(
-          dataSet.getMultiData(
-            {
+          dataSet.getCellMultiData({
+            query: {
               province: '浙江省',
               type: '家具',
               sub_type: '桌子',
               [EXTRA_FIELD]: 'number',
             },
-            {
+            totals: {
               row: { totalDimensions: false },
               column: { totalDimensions: false },
             },
-          ),
+          }),
         ).toHaveLength(4);
 
         expect(
-          dataSet.getMultiData(
-            {
+          dataSet.getCellMultiData({
+            query: {
               type: '家具',
               sub_type: '桌子',
               [EXTRA_FIELD]: 'number',
             },
-            {
+            totals: {
               row: { totalDimensions: false },
               column: { totalDimensions: false },
             },
-          ),
+          }),
         ).toHaveLength(8);
 
         expect(
-          dataSet.getMultiData(
-            {
+          dataSet.getCellMultiData({
+            query: {
               type: '家具',
               [EXTRA_FIELD]: 'number',
             },
-            {
+            totals: {
               row: { totalDimensions: false },
               column: { totalDimensions: false },
             },
-          ),
+          }),
         ).toHaveLength(16);
 
         expect(
-          dataSet.getMultiData(
-            {
+          dataSet.getCellMultiData({
+            query: {
               [EXTRA_FIELD]: 'number',
             },
-            {
+            totals: {
               row: { totalDimensions: false },
               column: { totalDimensions: false },
             },
-          ),
+          }),
         ).toHaveLength(32);
       });
 
       test('should only query grand total data', () => {
         expect(
-          dataSet.getMultiData(
-            { [EXTRA_FIELD]: 'number' },
-            { row: { grandTotalOnly: true }, column: { grandTotalOnly: true } },
-          ),
+          dataSet.getCellMultiData({
+            query: { [EXTRA_FIELD]: 'number' },
+            totals: {
+              row: { grandTotalOnly: true },
+              column: { grandTotalOnly: true },
+            },
+          }),
         ).toHaveLength(1);
       });
 
       test('should query all grand total and sub total data in columns for all cities', () => {
         expect(
-          dataSet.getMultiData(
-            { [EXTRA_FIELD]: 'number' },
-            {
+          dataSet.getCellMultiData({
+            query: { [EXTRA_FIELD]: 'number' },
+            totals: {
               row: { totalDimensions: false },
               column: { grandTotalOnly: false, subTotalOnly: true },
             },
-          ),
+          }),
         ).toHaveLength(24);
       });
     });

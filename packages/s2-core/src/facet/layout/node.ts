@@ -6,6 +6,7 @@ import type {
   HiddenColumnsInfo,
   S2CellType,
 } from '../../common/interface';
+import type { Query } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
@@ -117,7 +118,7 @@ export class Node {
   public spreadsheet: SpreadSheet;
 
   // node self's query condition(represent where node stay)
-  public query?: Record<string, any>;
+  public query?: Query;
 
   public belongsCell?: S2CellType | null | undefined;
 

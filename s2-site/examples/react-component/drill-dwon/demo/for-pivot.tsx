@@ -41,9 +41,10 @@ fetch(
         new Promise((resolve) => {
           const dataSet = meta.spreadsheet.dataSet;
           const field = drillFields[0];
-          const rowDatas = dataSet.getMultiData(meta.query, true, true);
+          const rowData = dataSet.getCellMultiData({ query: meta.query });
           const drillDownData = [];
-          rowDatas.forEach((data) => {
+
+          rowData.forEach((data) => {
             const { city, number, province, sub_type: subType, type } = data;
             const number0 = Math.ceil(Math.random() * (number - 50)) + 50;
             const number1 = number - number0;
@@ -55,6 +56,7 @@ fetch(
               type,
               [field]: sex[0],
             };
+
             drillDownData.push(dataItem0);
             const dataItem1 = {
               city,

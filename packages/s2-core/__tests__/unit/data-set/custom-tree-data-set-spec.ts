@@ -101,7 +101,6 @@ describe('Custom Tree Dataset Test', () => {
               sub_type: '桌子',
               [EXTRA_FIELD]: 'measure-a',
             },
-            isTotals: true,
           })!
           .getOrigin(),
       ).toContainEntries([['measure-a', 1]]);
@@ -114,7 +113,6 @@ describe('Custom Tree Dataset Test', () => {
               sub_type: '椅子',
               [EXTRA_FIELD]: 'measure-e',
             },
-            isTotals: true,
           })!
           .getOrigin(),
       ).toContainEntries([['measure-e', 55]]);
