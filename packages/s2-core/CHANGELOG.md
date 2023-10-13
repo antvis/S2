@@ -1,3 +1,12 @@
+# [@antv/s2-v1.51.1](https://github.com/antvis/S2/compare/@antv/s2-v1.51.0...@antv/s2-v1.51.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* **layout:** 修复隐藏结点时对父节点的布局计算错误 close [#2355](https://github.com/antvis/S2/issues/2355) ([#2360](https://github.com/antvis/S2/issues/2360)) ([c8d2c94](https://github.com/antvis/S2/commit/c8d2c94c21527ae52ece3485524d374d09b1cba7))
+* **table-sheet:** 明细表数据为空时错误的展示一行空数据 close [#2255](https://github.com/antvis/S2/issues/2255) ([#2357](https://github.com/antvis/S2/issues/2357)) ([7751c49](https://github.com/antvis/S2/commit/7751c4968b69752243928cbcd2c50333b06b2c66))
+* 列头绘制多列文本时错误的使用了数值单元格的样式 close [#2359](https://github.com/antvis/S2/issues/2359) ([#2364](https://github.com/antvis/S2/issues/2364)) ([4953b4e](https://github.com/antvis/S2/commit/4953b4e430f3c1857ce6648bcdc2493c37bb1092))
+
 # [@antv/s2-v1.51.0](https://github.com/antvis/S2/compare/@antv/s2-v1.50.0...@antv/s2-v1.51.0) (2023-09-22)
 
 
