@@ -577,8 +577,8 @@ export class PivotDataSet extends BaseDataSet {
   getTotalGroupQueries(dimensions: string[], originQuery: DataType) {
     let queries = [originQuery];
     let existDimensionGroupKey = null;
-    for (let i = dimensions.length; i > 0; i--) {
-      const key = dimensions[i - 1];
+    for (let i = dimensions.length - 1; i >= 0; i--) {
+      const key = dimensions[i];
       if (keys(originQuery).includes(key)) {
         if (key !== EXTRA_FIELD) {
           existDimensionGroupKey = key;
@@ -587,8 +587,6 @@ export class PivotDataSet extends BaseDataSet {
         const allCurrentFieldDimensionValues =
           this.sortedDimensionValues[existDimensionGroupKey];
         let res = [];
-        const arrayLength =
-          allCurrentFieldDimensionValues[0].split(ID_SEPARATOR).length;
         for (const query of queries) {
           const resKeys = [];
           for (const dimValue of allCurrentFieldDimensionValues) {
@@ -601,14 +599,12 @@ export class PivotDataSet extends BaseDataSet {
               })
             ) {
               const arrTypeValue = dimValue.split(ID_SEPARATOR);
-              const currentKey = arrTypeValue[arrayLength - 2];
-              if (currentKey !== 'undefined') {
-                resKeys.push(currentKey);
-              }
+              const currentKey = arrTypeValue[i];
+              resKeys.push(currentKey);
             }
           }
           const queryList = uniq(resKeys).map((v) => {
-            return { ...query, [key]: v };
+            return { ...query, [key]: v === 'undefined' ? undefined : v };
           });
           res = concat(res, queryList);
         }

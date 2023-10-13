@@ -715,3 +715,80 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     ]);
   });
 });
+describe('GetSortByMeasureValues Total With Group Fallback Tests', () => {
+  let sheet: PivotSheet;
+  let dataSet: PivotDataSet;
+  const s2Options = {
+    totals: {
+      col: {
+        totalsGroupDimensions: ['city'],
+        showGrandTotals: true,
+      },
+    },
+  } as S2Options;
+
+  const dataConfig = {
+    ...sortData,
+    data: [
+      ...sortData.data,
+      {
+        city: '杭州',
+        type: '纸张',
+        price: '999',
+      },
+      {
+        city: '杭州',
+        type: '笔',
+        price: '666',
+      },
+    ],
+    fields: {
+      rows: ['type'],
+      columns: ['province', 'city'],
+      values: ['price'],
+    },
+  };
+
+  beforeEach(() => {
+    sheet = new PivotSheet(getContainer(), dataConfig, s2Options);
+    dataSet = new PivotDataSet(sheet);
+    dataSet.setDataCfg(dataConfig);
+    sheet.dataSet = dataSet;
+  });
+
+  test('should sort by col total whit group', () => {
+    sheet.render();
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: {
+        [EXTRA_FIELD]: 'price',
+        city: '杭州',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: '666',
+        city: '杭州',
+        price: '666',
+        type: '笔',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: '999',
+        city: '杭州',
+        price: '999',
+        type: '纸张',
+      },
+    ]);
+  });
+});
