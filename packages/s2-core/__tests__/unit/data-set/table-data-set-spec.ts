@@ -99,6 +99,10 @@ describe('Table Mode Dataset Test', () => {
     test('should get correct meta data', () => {
       expect(dataSet.meta).toEqual(expect.objectContaining([]));
     });
+
+    test('should get correctly empty dataset result', () => {
+      expect(dataSet.isEmpty()).toBeFalsy();
+    });
   });
 
   describe('test for query data', () => {

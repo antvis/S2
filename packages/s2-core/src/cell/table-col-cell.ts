@@ -77,6 +77,7 @@ export class TableColCell extends ColCell {
         y,
       };
     }
+
     return {
       x: position.x + x - scrollX,
       y: position.y + y,
