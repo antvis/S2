@@ -752,8 +752,6 @@ describe('GetSortByMeasureValues Total With Group Fallback Tests', () => {
   beforeEach(() => {
     sheet = new PivotSheet(getContainer(), dataConfig, s2Options);
     dataSet = new PivotDataSet(sheet);
-    dataSet.setDataCfg(dataConfig);
-    sheet.dataSet = dataSet;
   });
 
   test('should sort by col total whit group', () => {

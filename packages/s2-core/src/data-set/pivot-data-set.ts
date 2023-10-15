@@ -600,11 +600,13 @@ export class PivotDataSet extends BaseDataSet {
             ) {
               const arrTypeValue = dimValue.split(ID_SEPARATOR);
               const currentKey = arrTypeValue[i];
-              resKeys.push(currentKey);
+              if (currentKey !== 'undefined') {
+                resKeys.push(currentKey);
+              }
             }
           }
           const queryList = uniq(resKeys).map((v) => {
-            return { ...query, [key]: v === 'undefined' ? undefined : v };
+            return { ...query, [key]: v };
           });
           res = concat(res, queryList);
         }
@@ -658,6 +660,7 @@ export class PivotDataSet extends BaseDataSet {
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],
+    withMissedField?: boolean,
   ): DataType[] {
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
@@ -668,7 +671,8 @@ export class PivotDataSet extends BaseDataSet {
       : rows;
     // existDimensionGroup：当 undefined 维度后面有非 undefined，为维度分组场景，将非 undefined 维度前的维度填充为所有可能的维度值。
     // 如 [undefined , '杭州市' , undefined , 'number']
-    const existDimensionGroup = this.checkExistDimensionGroup(query);
+    const existDimensionGroup =
+      !withMissedField && this.checkExistDimensionGroup(query);
     let result = [];
     if (existDimensionGroup) {
       result = this.getGroupTotalMultiData(totalRows, query);
