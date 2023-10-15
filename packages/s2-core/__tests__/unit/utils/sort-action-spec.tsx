@@ -714,47 +714,39 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       },
     ]);
   });
-});
-describe('GetSortByMeasureValues Total With Group Fallback Tests', () => {
-  let sheet: PivotSheet;
-  let dataSet: PivotDataSet;
-  const s2Options = {
-    totals: {
-      col: {
-        totalsGroupDimensions: ['city'],
-        showGrandTotals: true,
-      },
-    },
-  } as S2Options;
-
-  const dataConfig = {
-    ...sortData,
-    data: [
-      ...sortData.data,
-      {
-        city: '杭州',
-        type: '纸张',
-        price: '999',
-      },
-      {
-        city: '杭州',
-        type: '笔',
-        price: '666',
-      },
-    ],
-    fields: {
-      rows: ['type'],
-      columns: ['province', 'city'],
-      values: ['price'],
-    },
-  };
-
-  beforeEach(() => {
-    sheet = new PivotSheet(getContainer(), dataConfig, s2Options);
-    dataSet = new PivotDataSet(sheet);
-  });
 
   test('should sort by col total whit group', () => {
+    const currentOptions = {
+      totals: {
+        col: {
+          totalsGroupDimensions: ['city'],
+          showGrandTotals: true,
+        },
+      },
+    } as S2Options;
+
+    const dataConfig = {
+      ...sortData,
+      data: [
+        ...sortData.data,
+        {
+          city: '杭州',
+          type: '纸张',
+          price: '999',
+        },
+        {
+          city: '杭州',
+          type: '笔',
+          price: '666',
+        },
+      ],
+      fields: {
+        rows: ['type'],
+        columns: ['province', 'city'],
+        values: ['price'],
+      },
+    };
+    sheet = new PivotSheet(getContainer(), dataConfig, currentOptions);
     sheet.render();
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {
@@ -768,25 +760,10 @@ describe('GetSortByMeasureValues Total With Group Fallback Tests', () => {
     };
 
     const params: SortActionParams = {
-      dataSet,
+      dataSet: sheet.dataSet,
       sortParam,
     };
     const measureValues = getSortByMeasureValues(params);
-    expect(measureValues).toEqual([
-      {
-        $$extra$$: 'price',
-        $$value$$: '666',
-        city: '杭州',
-        price: '666',
-        type: '笔',
-      },
-      {
-        $$extra$$: 'price',
-        $$value$$: '999',
-        city: '杭州',
-        price: '999',
-        type: '纸张',
-      },
-    ]);
+    expect(measureValues).toMatchSnapshot();
   });
 });
