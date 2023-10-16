@@ -171,7 +171,7 @@ export class TableDataSet extends BaseDataSet {
     return rowData[query.col];
   }
 
-  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
+  public getMultiData(query: DataType): DataType[] {
     return this.displayData;
   }
 

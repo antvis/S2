@@ -536,7 +536,11 @@ const partDrillDown: PartDrillDown = {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowData = dataSet
-        .getMultiData(meta?.query as DataType, true, true, [preDrillDownfield])
+        .getMultiData(meta?.query as DataType, {
+          isTotals: true,
+          isRow: true,
+          drillDownFields: [preDrillDownfield],
+        })
         .filter(
           (item) => item.sub_type && item.type && item[preDrillDownfield],
         );

@@ -657,11 +657,14 @@ export class PivotDataSet extends BaseDataSet {
 
   public getMultiData(
     query: DataType,
-    isTotals?: boolean,
-    isRow?: boolean,
-    drillDownFields?: string[],
-    withMissedField?: boolean,
+    option?: {
+      isTotals?: boolean;
+      isRow?: boolean;
+      drillDownFields?: string[];
+      withMissedField?: boolean;
+    },
   ): DataType[] {
+    const { isTotals, isRow, drillDownFields, withMissedField } = option;
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
     }
