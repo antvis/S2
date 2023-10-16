@@ -3,30 +3,23 @@
  * https://github.com/antvis/S2/issues/1736
  * Export dropdown visible state error
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { getMockSheetInstance, getContainer } from 'tests/util/helpers';
 import { waitFor } from '@testing-library/react';
+import React from 'react';
+import type { Root } from 'react-dom/client';
+import { getMockSheetInstance, renderComponent } from 'tests/util/helpers';
 import { Export } from '@/components/export';
 
 describe('header export component render tests', () => {
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = getContainer();
-  });
+  let unmount: Root['unmount'];
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
+    unmount?.();
   });
 
   test('should render export and dropdown keep invisible', async () => {
-    act(() => {
-      const sheet = getMockSheetInstance();
+    const sheet = getMockSheetInstance();
 
-      ReactDOM.render(<Export sheet={sheet} open={true} />, container);
-    });
+    unmount = renderComponent(<Export sheet={sheet} open />);
 
     await waitFor(() => {
       // export 组件
@@ -38,23 +31,20 @@ describe('header export component render tests', () => {
   });
 
   test('should render export dropdown menu', async () => {
-    act(() => {
-      const sheet = getMockSheetInstance();
+    const sheet = getMockSheetInstance();
 
-      ReactDOM.render(
-        <Export
-          sheet={sheet}
-          open={true}
-          dropdown={{
-            open: true,
-          }}
-        />,
-        container,
-      );
-    });
+    unmount = renderComponent(
+      <Export
+        sheet={sheet}
+        open
+        dropdown={{
+          open: true,
+        }}
+      />,
+    );
 
     await waitFor(() => {
-      // dropdown组件
+      // dropdown 组件
       expect(document.querySelector('.ant-dropdown')).toBeDefined();
     });
   });

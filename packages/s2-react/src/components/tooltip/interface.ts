@@ -11,6 +11,7 @@ export interface TooltipRenderProps<
 > extends TooltipShowOptions<T, Icon, Text> {
   readonly content?: T;
   readonly cell?: S2CellType | null;
+  readonly onMounted?: () => void;
 }
 
 export type TooltipInfosProps = {

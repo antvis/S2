@@ -1,7 +1,7 @@
 /**
  * table mode pivot test.
  */
-import { Canvas, Group } from '@antv/g';
+import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
@@ -27,7 +27,7 @@ jest.mock('@/sheet-type', () => {
         width: 100,
         height: 100,
         container: document.body,
-        renderer: new Renderer(),
+        renderer: new Renderer() as unknown as CanvasConfig['renderer'],
       });
 
       return {

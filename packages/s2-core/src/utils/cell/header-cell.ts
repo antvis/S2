@@ -31,7 +31,7 @@ const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
       ({
         ...actionIcon,
         icons: normalizeIcons(actionIcon.icons),
-      } as InternalFullyHeaderActionIcon),
+      }) as InternalFullyHeaderActionIcon,
   );
 
 const shouldShowActionIcons = (

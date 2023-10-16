@@ -91,7 +91,7 @@ describe('Interaction Event Controller Tests', () => {
         ({
           cellType: type,
           getMeta: () => {},
-        } as any);
+        }) as any;
 
       const dispatchEvent = () => {
         const evt = createFederatedMouseEvent(spreadsheet, eventType);
@@ -122,7 +122,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-      renderer: new Renderer() as CanvasConfig['renderer'],
+      renderer: new Renderer() as unknown as CanvasConfig['renderer'],
     });
     spreadsheet.facet = {
       panelBBox: {
@@ -138,7 +138,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.interaction.reset = jest.fn();
     spreadsheet.interaction.removeIntercepts = jest.fn();
     spreadsheet.interaction.intercepts.clear();
-    spreadsheet.getCell = () => ({} as any);
+    spreadsheet.getCell = () => ({}) as any;
     spreadsheet.options = s2Options;
     spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
@@ -146,7 +146,7 @@ describe('Interaction Event Controller Tests', () => {
         y: 0,
         width: 0,
         height: 0,
-      } as DOMRect);
+      }) as DOMRect;
 
     // acquire instance
     eventController = spreadsheet.interaction.eventController;
@@ -406,7 +406,7 @@ describe('Interaction Event Controller Tests', () => {
     evt.client.y = MOCK_CLIENT.y;
 
     spreadsheet.container.dispatchEvent(evt);
-    expect(contextMenu).toReturnWith(MOCK_CLIENT);
+    expect(contextMenu).toHaveReturnedWith(MOCK_CLIENT);
   });
 
   test('should emit global mouse up event', () => {
@@ -602,7 +602,7 @@ describe('Interaction Event Controller Tests', () => {
         y: 200,
         width: 200,
         height: 200,
-      } as DOMRect);
+      }) as DOMRect;
 
     window.dispatchEvent(
       new MouseEvent('click', {
@@ -645,7 +645,7 @@ describe('Interaction Event Controller Tests', () => {
         y: 0,
         width: 200,
         height: 200,
-      } as DOMRect);
+      }) as DOMRect;
 
     cTooltipChild.dispatchEvent(
       new MouseEvent('click', {
@@ -868,7 +868,7 @@ describe('Interaction Event Controller Tests', () => {
         ({
           cellType,
           getMeta: () => {},
-        } as any);
+        }) as any;
 
       const handler = jest.fn();
       const guiIcon = new GuiIcon({
@@ -920,7 +920,7 @@ describe('Interaction Event Controller Tests', () => {
         ({
           cellType,
           getMeta: () => {},
-        } as any);
+        }) as any;
 
       const handler = jest.fn();
 
@@ -972,7 +972,7 @@ describe('Interaction Event Controller Tests', () => {
         y: 200,
         width: 200,
         height: 200,
-      } as DOMRect);
+      }) as DOMRect;
 
     Array.from({ length: 3 }).forEach(() => {
       window.dispatchEvent(

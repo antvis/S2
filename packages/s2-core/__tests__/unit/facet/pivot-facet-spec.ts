@@ -1,7 +1,7 @@
 /**
  * pivot mode pivot test.
  */
-import { Canvas, Group, Rect } from '@antv/g';
+import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, find } from 'lodash';
 import { Renderer } from '@antv/g-canvas';
@@ -40,7 +40,7 @@ jest.mock('@/sheet-type', () => {
         width: 100,
         height: 100,
         container: document.body,
-        renderer: new Renderer(),
+        renderer: new Renderer() as unknown as CanvasConfig['renderer'],
       });
       const panelScrollGroup = new Group({}) as PanelScrollGroup;
 

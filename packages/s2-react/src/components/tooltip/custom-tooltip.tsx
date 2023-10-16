@@ -5,7 +5,7 @@ import {
   SpreadSheet,
 } from '@antv/s2';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot, type Root } from 'react-dom/client';
 import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
@@ -15,11 +15,13 @@ import { TooltipComponent } from './index';
 import './style.less';
 
 export class CustomTooltip extends BaseTooltip {
+  root: Root;
+
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
   }
 
-  private isMobileType() {
+  private isMobileDevice() {
     return isMobile(this.spreadsheet.options?.device);
   }
 
@@ -39,15 +41,16 @@ export class CustomTooltip extends BaseTooltip {
     };
 
     if (showOptions?.options?.forceRender) {
-      this.unmountComponentAtNode();
+      this.unmount();
     }
 
-    ReactDOM.render(
-      this.isMobileType() ? (
+    this.root ??= createRoot(this.container!);
+    this.root.render(
+      this.isMobileDevice() ? (
         <Drawer
           className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
           title={cell?.getActualText()}
-          visible={this.visible}
+          open={this.visible}
           closeIcon={<LeftOutlined />}
           placement="right"
           width={MOBILE_DRAWER_WIDTH}
@@ -55,32 +58,29 @@ export class CustomTooltip extends BaseTooltip {
             this.hide();
           }}
         >
-          <TooltipContext.Provider value={this.isMobileType()}>
+          <TooltipContext.Provider value={this.isMobileDevice()}>
             <TooltipComponent {...tooltipProps} content={content} />
           </TooltipContext.Provider>
         </Drawer>
       ) : (
         <TooltipComponent {...tooltipProps} content={content} />
       ),
-      this.container,
     );
   }
 
   hide() {
     super.hide();
-    if (this.container && this.isMobileType()) {
+    if (this.container && this.isMobileDevice()) {
       this.renderContent();
     }
   }
 
   destroy() {
-    this.unmountComponentAtNode();
+    this.unmount();
     super.destroy();
   }
 
-  private unmountComponentAtNode() {
-    if (this.container) {
-      ReactDOM.unmountComponentAtNode(this.container);
-    }
+  private unmount() {
+    this.root?.unmount();
   }
 }

@@ -21,11 +21,11 @@ import {
   totalData8,
   totalData9,
 } from '../data/data-accuracy';
-import { getContainer } from '../util/helpers';
+import { getContainer, renderComponent } from '../util/helpers';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
 import 'antd/dist/antd.min.css';
 
-let spreadsheet1: SpreadSheet;
+let spreadsheet: SpreadSheet;
 
 const setSpreadSheet = (
   dom: S2MountContainer,
@@ -36,7 +36,7 @@ const setSpreadSheet = (
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
 
   if (index === 1) {
-    spreadsheet1 = s2;
+    spreadsheet = s2;
   }
 
   return s2;
@@ -100,7 +100,7 @@ const getDataCfg = (index: number) =>
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  } as SheetComponentsProps['dataCfg']);
+  }) as SheetComponentsProps['dataCfg'];
 
 const getOptions = (): SheetComponentsProps['options'] => {
   return {
@@ -233,17 +233,16 @@ function MainLayout() {
 }
 
 describe('data accuracy two measures spec', () => {
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
-  });
-  spreadsheet1.setDataCfg(getDataCfg(6));
+  renderComponent(<MainLayout />);
+
+  spreadsheet.setDataCfg(getDataCfg(6));
+
   test('Totals + Details + Tow Measures', () => {
     expect(data6.length).toBe(8);
-    // expect(spreadsheet1.dataSet.originData.length).toBe(8);
-    expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
-    expect(spreadsheet1.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
+    expect(spreadsheet.dataSet.fields.valueInCols).toBe(true);
+    expect(spreadsheet.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
       true,
     );
-    expect(spreadsheet1.dataSet.fields.columns!.length).toBe(3);
+    expect(spreadsheet.dataSet.fields.columns!.length).toBe(3);
   });
 });

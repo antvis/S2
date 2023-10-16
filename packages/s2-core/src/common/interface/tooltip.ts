@@ -147,6 +147,7 @@ export type TooltipShowOptions<
       ) => T)
     | T;
   event?: CanvasEvent | MouseEvent;
+  onMounted?: () => void;
 };
 
 export type TooltipData = {

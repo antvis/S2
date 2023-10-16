@@ -4,6 +4,7 @@ import {
   DisplayObject,
   FederatedPointerEvent as CanvasEvent,
   runtime,
+  type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
@@ -283,27 +284,29 @@ export abstract class SpreadSheet extends EE {
 
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,
-  ) {
+  ): Promise<void> {
     const { content, event } = showOptions;
     const cell = this.getCell(event?.target);
     const displayContent = isFunction(content)
       ? content(cell!, showOptions)
       : content;
 
-    if (isMobile()) {
-      // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
-      delay(() => {
-        this.tooltip.show?.({
-          ...showOptions,
-          content: displayContent,
-        });
-      }, 50);
-    } else {
-      this.tooltip.show?.({
+    return new Promise((resolve) => {
+      const options: TooltipShowOptions<T> = {
         ...showOptions,
         content: displayContent,
-      });
-    }
+        onMounted: resolve,
+      };
+
+      if (isMobile()) {
+        // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
+        delay(() => {
+          this.tooltip.show?.(options);
+        }, 50);
+      } else {
+        this.tooltip.show?.(options);
+      }
+    });
   }
 
   public showTooltipWithInfo(
@@ -636,7 +639,7 @@ export abstract class SpreadSheet extends EE {
       width,
       height,
       devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
-      renderer: new Renderer(),
+      renderer: new Renderer() as unknown as CanvasConfig['renderer'],
       supportsCSSTransform: supportCSSTransform,
     });
 

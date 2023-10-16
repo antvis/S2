@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+
 import '@/components/tooltip/index.less';
 import {
   DeviceType,
@@ -10,21 +11,20 @@ import {
   type S2MountContainer,
   type S2Options,
 } from '@antv/s2';
-import { message, Space, Switch } from 'antd';
+import { waitFor } from '@testing-library/react';
+import { Space, Switch, message } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { waitFor } from '@testing-library/react';
-import { getContainer, getMockData } from '../util/helpers';
-import type { SwitcherFields } from '@/components/switcher/interface';
+import { getMockData, renderComponent } from '../util/helpers';
 import {
-  SheetComponent,
-  type SheetComponentOptions,
   type SheetComponentsProps,
-} from '@/components';
-import { Switcher } from '@/components/switcher';
+  type SheetComponentOptions,
+  Switcher,
+  SheetComponent,
+} from '../../src';
+import type { SwitcherFields } from '@/components/switcher/interface';
 
 let s2: TableSheet;
 
@@ -250,18 +250,14 @@ function MainLayout({ callback }: Props) {
 describe('table sheet normal spec', () => {
   test('getCellRange', async () => {
     let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
-    const container = getContainer();
 
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          callback={(params) => {
-            setShowPagination = params.setShowPagination;
-          }}
-        />,
-        container,
-      );
-    });
+    const unmount = renderComponent(
+      <MainLayout
+        callback={(params) => {
+          setShowPagination = params.setShowPagination;
+        }}
+      />,
+    );
 
     await waitFor(() => {
       expect(s2.facet.getCellRange()).toStrictEqual({
@@ -281,6 +277,6 @@ describe('table sheet normal spec', () => {
       });
     });
 
-    ReactDOM.unmountComponentAtNode(container);
+    unmount();
   });
 });

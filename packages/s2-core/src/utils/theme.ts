@@ -1,6 +1,6 @@
 import { PALETTE_MAP, STYLE_ELEMENT_ID } from '../common/constant';
 import type { Palette, ThemeName } from '../common/interface/theme';
-import DarkVars from '../styles/theme/dark.less';
+import DarkVars from '../styles/theme/dark.less?inline';
 import { injectCssText } from './inject-css-text';
 
 /**

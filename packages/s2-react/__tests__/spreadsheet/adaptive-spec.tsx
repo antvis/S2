@@ -1,10 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import type { SpreadSheet } from '@antv/s2';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer, sleep } from 'tests/util/helpers';
 import type { Adaptive } from '@antv/s2-shared';
+import React from 'react';
+import { act } from 'react-dom/test-utils';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer, renderComponent, sleep } from 'tests/util/helpers';
 import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentsProps } from '@/components';
 
@@ -65,21 +64,18 @@ describe('SheetComponent adaptive Tests', () => {
       height: 0,
     };
 
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          adaptive={{
-            getContainer: () => document.getElementById(containerId)!,
-            ...adaptive,
-          }}
-          containerId={containerId}
-          containerWidth={newContainerWidth}
-          containerHeight={newContainerHeight}
-          options={options}
-        />,
-        getContainer(),
-      );
-    });
+    renderComponent(
+      <MainLayout
+        adaptive={{
+          getContainer: () => document.getElementById(containerId)!,
+          ...adaptive,
+        }}
+        containerId={containerId}
+        containerWidth={newContainerWidth}
+        containerHeight={newContainerHeight}
+        options={options}
+      />,
+    );
 
     await sleep(1000);
 
@@ -91,12 +87,7 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   test('should use container width when table first rendered', async () => {
-    act(() => {
-      ReactDOM.render(
-        <MainLayout adaptive containerWidth={400} />,
-        getContainer(),
-      );
-    });
+    renderComponent(<MainLayout adaptive containerWidth={400} />);
 
     await sleep(1000);
 
@@ -105,17 +96,16 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   test('should use option width and height when table first rendered, and disable adaptive', async () => {
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          adaptive={false}
-          containerWidth={1000}
-          containerHeight={1000}
-        />,
-        getContainer(),
-      );
-    });
+    renderComponent(
+      <MainLayout
+        adaptive={false}
+        containerWidth={1000}
+        containerHeight={1000}
+      />,
+    );
+
     await sleep(1000);
+
     expect(s2!.options.width).toEqual(s2Options.width);
     expect(s2!.options.height).toEqual(s2Options.height);
     expect(s2!.container.getConfig().width).toEqual(s2Options.width);
@@ -127,19 +117,16 @@ describe('SheetComponent adaptive Tests', () => {
     const newContainerHeight = 500;
     const containerId = 'testContainer';
 
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          adaptive={{
-            getContainer: () => document.getElementById(containerId)!,
-          }}
-          containerId={containerId}
-          containerWidth={200}
-          containerHeight={200}
-        />,
-        getContainer(),
-      );
-    });
+    renderComponent(
+      <MainLayout
+        adaptive={{
+          getContainer: () => document.getElementById(containerId)!,
+        }}
+        containerId={containerId}
+        containerWidth={200}
+        containerHeight={200}
+      />,
+    );
 
     act(() => {
       const container = document.getElementById(containerId)!;
@@ -166,18 +153,14 @@ describe('SheetComponent adaptive Tests', () => {
     const newContainerHeight = 300;
     const containerId = 'resizeContainer';
 
-    // render by option
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          adaptive={{
-            getContainer: () => document.getElementById(containerId)!,
-          }}
-          containerId={containerId}
-        />,
-        getContainer(),
-      );
-    });
+    renderComponent(
+      <MainLayout
+        adaptive={{
+          getContainer: () => document.getElementById(containerId)!,
+        }}
+        containerId={containerId}
+      />,
+    );
 
     // parent size changed, trigger resize observer
     act(() => {
@@ -210,12 +193,7 @@ describe('SheetComponent adaptive Tests', () => {
     const containerId = 'resizeContainer';
 
     // render by option
-    act(() => {
-      ReactDOM.render(
-        <MainLayout adaptive={false} containerId={containerId} />,
-        getContainer(),
-      );
-    });
+    renderComponent(<MainLayout adaptive={false} containerId={containerId} />);
 
     // parent size changed, trigger resize observer
     act(() => {
@@ -241,12 +219,7 @@ describe('SheetComponent adaptive Tests', () => {
   test('should container height equal canvas height', async () => {
     const containerId = 'blockContainer';
 
-    act(() => {
-      ReactDOM.render(
-        <MainLayout adaptive containerId={containerId} />,
-        getContainer(),
-      );
-    });
+    renderComponent(<MainLayout adaptive containerId={containerId} />);
 
     await sleep(1000);
 
@@ -260,9 +233,8 @@ describe('SheetComponent adaptive Tests', () => {
 
   // https://github.com/antvis/S2/issues/901
   test('should use container width and height when options width and height is zero', async () => {
-    const { newContainerHeight, newContainerWidth } = await testAdaptiveConfig(
-      'testIssue901',
-    );
+    const { newContainerHeight, newContainerWidth } =
+      await testAdaptiveConfig('testIssue901');
 
     expect(s2!.options.width).toEqual(newContainerWidth);
     expect(s2!.options.height).toEqual(newContainerHeight);
@@ -316,18 +288,16 @@ describe('SheetComponent adaptive Tests', () => {
     container.style.height = `${newContainerHeight}px`;
     container.style.transform = 'scale(0.5)';
 
-    act(() => {
-      ReactDOM.render(
-        <MainLayout
-          adaptive={{
-            width: true,
-            height: true,
-            getContainer: () => container,
-          }}
-        />,
-        container,
-      );
-    });
+    renderComponent(
+      <MainLayout
+        adaptive={{
+          width: true,
+          height: true,
+          getContainer: () => container,
+        }}
+      />,
+      container,
+    );
 
     act(() => {
       window.dispatchEvent(new Event('resize'));

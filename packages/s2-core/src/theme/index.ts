@@ -167,7 +167,7 @@ export const getTheme = (
           left: 4,
         },
       },
-    } as DefaultCellTheme);
+    }) as DefaultCellTheme;
 
   return {
     // ------------- Headers -------------------

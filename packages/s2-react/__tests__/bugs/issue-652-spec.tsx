@@ -4,15 +4,13 @@
  * Wrong table width and height when enable adaptive
  *
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mockDataConfig from 'tests/data/simple-data.json';
 import type { SheetType } from '@antv/s2-shared';
-import { act } from 'react-dom/test-utils';
 import { waitFor } from '@testing-library/react';
-import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components/sheets';
+import React from 'react';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { renderComponent } from '../util/helpers';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
+import { SheetComponent } from '@/components/sheets';
 
 const s2Options: SheetComponentsProps['options'] = {
   width: 400,
@@ -46,22 +44,15 @@ describe('SheetComponent Correct Render Tests', () => {
   test.each(sheets)(
     'should correct render %o with empty options',
     async ({ sheetType, adaptive }) => {
-      const container = getContainer();
-
       function render() {
-        act(() => {
-          ReactDOM.render(
-            <MainLayout sheetType={sheetType} adaptive={adaptive} />,
-            container,
-          );
-        });
+        renderComponent(
+          <MainLayout sheetType={sheetType} adaptive={adaptive} />,
+        );
       }
 
       await waitFor(() => {
         expect(render).not.toThrow();
       });
-
-      ReactDOM.unmountComponentAtNode(container);
     },
   );
 });

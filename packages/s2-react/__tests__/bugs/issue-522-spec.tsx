@@ -4,14 +4,13 @@
  * The corner cell error rendering state
  *
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import type { SpreadSheet, Node } from '@antv/s2';
+
+import type { Node, SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import { getContainer } from '../util/helpers';
+import React from 'react';
 import dataCfg from '../data/data-issue-522.json';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
+import { renderComponent } from '../util/helpers';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let sheetInstance: SpreadSheet;
 
@@ -52,9 +51,8 @@ function MainLayout() {
 
 describe('spreadsheet normal spec', () => {
   test(`sampleForAllLevels shouldn't include total node`, async () => {
-    act(() => {
-      ReactDOM.render(<MainLayout />, getContainer());
-    });
+    renderComponent(<MainLayout />);
+
     await waitFor(() => {
       const { sampleNodesForAllLevels } =
         sheetInstance.facet.getLayoutResult().rowsHierarchy;

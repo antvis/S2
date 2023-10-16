@@ -73,7 +73,7 @@ describe('PanelBBox Tests', () => {
           ...extraOptions,
         },
       },
-    } as unknown as BaseFacet);
+    }) as unknown as BaseFacet;
 
   test('should return correct bbox when no scroll bar exist(small dataset)', () => {
     const facet = getMockFacet(200, 200);

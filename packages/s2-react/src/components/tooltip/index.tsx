@@ -22,7 +22,7 @@ import type { TooltipRenderProps } from './interface';
 import './index.less';
 
 export const TooltipComponent = (props: TooltipRenderProps) => {
-  const { data, options, content, cell } = props;
+  const { data, options, content, cell, onMounted } = props;
 
   const renderOperation = (
     operator:
@@ -112,10 +112,10 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     );
 
     return (
-      <>
+      <span ref={onMounted}>
         {renderOperation(operator)}
         {content ?? DefaultContent}
-      </>
+      </span>
     );
   };
 

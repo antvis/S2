@@ -66,12 +66,12 @@ describe('Tooltip Utils Tests', () => {
       getBoundingClientRect: () =>
         ({
           ...tooltipSize,
-        } as DOMRect),
+        }) as DOMRect,
     } as HTMLDivElement;
     s2.getCanvasElement().getBoundingClientRect = () =>
       ({
         ...containerSize,
-      } as DOMRect);
+      }) as DOMRect;
     s2.facet = {
       panelBBox: {
         maxX: containerSize.width,
@@ -81,7 +81,7 @@ describe('Tooltip Utils Tests', () => {
     document.body.getBoundingClientRect = () =>
       ({
         ...bodySize,
-      } as DOMRect);
+      }) as DOMRect;
   });
 
   describe('Tooltip Position Tests', () => {
@@ -229,7 +229,7 @@ describe('Tooltip Utils Tests', () => {
         [CellType.CORNER_CELL]: 'cornerCell',
         [CellType.MERGED_CELL]: 'mergedCell',
         [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
-      }[cellType] || '');
+      })[cellType] || '';
 
     test.each([
       CellType.ROW_CELL,

@@ -58,7 +58,7 @@ describe('<SheetComponent/> Tests', () => {
         }
 
         await waitFor(() => {
-          expect(init).not.toThrowError();
+          expect(init).not.toThrow();
         });
       },
     );

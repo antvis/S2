@@ -2,7 +2,7 @@
 import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
+import { getContainer, sleep } from 'tests/util/helpers';
 import { waitForRender } from 'tests/util';
 import type { BaseEvent } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
@@ -83,7 +83,7 @@ describe('PivotSheet Tests', () => {
         [CellType.CORNER_CELL]: 'cornerCell',
         [CellType.MERGED_CELL]: 'merged',
         [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
-      }[cellType]);
+      })[cellType];
 
     test('should support callback tooltip content for string', () => {
       s2.showTooltip({
@@ -97,6 +97,23 @@ describe('PivotSheet Tests', () => {
       expect(s2.tooltip.container!.innerHTML).toEqual(
         'custom callback content',
       );
+    });
+
+    test.only('should support callback after tooltip rendered', async () => {
+      const position = {
+        x: 10,
+        y: 10,
+      };
+
+      const onMounted = jest.fn();
+
+      await s2.showTooltip({
+        position,
+        content: 'content',
+        onMounted,
+      });
+
+      expect(onMounted).toHaveBeenCalledTimes(1);
     });
 
     test('should support callback tooltip content for element', () => {
@@ -143,7 +160,7 @@ describe('PivotSheet Tests', () => {
       expect(showTooltipSpy).toHaveBeenCalledTimes(1);
     });
 
-    test("should dont't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
+    test("should don't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
           enable: false,
@@ -1069,7 +1086,7 @@ describe('PivotSheet Tests', () => {
     // clear all canvas events
 
     // g5.0 destroy
-    expect(destroyFn).toBeCalled();
+    expect(destroyFn).toHaveBeenCalled();
     expect(document.body.contains(s2.getCanvasElement())).toBeFalse();
   });
 

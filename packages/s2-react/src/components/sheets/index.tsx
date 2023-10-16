@@ -54,11 +54,9 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
     const locale = getLang() === 'zh_CN' ? zhCN : enUS;
 
     return (
-      <React.StrictMode>
-        <SpreadSheetContext.Provider value={s2Instance!}>
-          <ConfigProvider locale={locale}>{CurrentSheet}</ConfigProvider>
-        </SpreadSheetContext.Provider>
-      </React.StrictMode>
+      <SpreadSheetContext.Provider value={s2Instance!}>
+        <ConfigProvider locale={locale}>{CurrentSheet}</ConfigProvider>
+      </SpreadSheetContext.Provider>
     );
   },
 );

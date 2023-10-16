@@ -1,21 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import path from 'path';
-import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
 import type { Canvas } from '@antv/g';
 import {
-  Store,
-  type S2Options,
-  SpreadSheet,
-  PivotSheet,
   BaseTooltip,
-  customMerge,
   DEFAULT_OPTIONS,
+  PivotSheet,
   RootInteraction,
+  SpreadSheet,
+  Store,
+  customMerge,
+  type S2Options,
   type ViewMeta,
 } from '@antv/s2';
+import { dsvFormat } from 'd3-dsv';
 import { omit } from 'lodash';
+import { createRoot, type Root } from 'react-dom/client';
+import { act } from 'react-dom/test-utils';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -151,5 +153,23 @@ export const createMockCellInfo = (
   return {
     mockCell,
     mockCellMeta,
+  };
+};
+
+export const renderComponent = (
+  Component: React.JSX.Element,
+  mountContainer?: HTMLDivElement,
+) => {
+  let root: Root;
+  const container = mountContainer || getContainer();
+
+  act(() => {
+    root = createRoot(container);
+    root.render(Component);
+  });
+
+  return () => {
+    root.unmount();
+    container?.remove();
   };
 };

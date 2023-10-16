@@ -110,12 +110,14 @@ export class BaseTooltip {
 
     if (typeof displayContent === 'string') {
       this.container.innerHTML = displayContent;
+      this.options.onMounted?.();
 
       return;
     }
 
     if (displayContent instanceof Element) {
       this.container.appendChild(displayContent as Element);
+      this.options.onMounted?.();
     }
   }
 

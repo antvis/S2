@@ -123,6 +123,6 @@ export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
   return result[0].content;
 };
 
-export { CopyableList, FormatOptions };
+export type { CopyableList, FormatOptions };
 export { assembleMatrix, getMaxRowLen, getNodeFormatData };
 export { getHeaderList };
