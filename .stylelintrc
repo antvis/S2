@@ -6,6 +6,7 @@
     "alpha-value-notation": null,
     "color-function-notation": null,
     "import-notation": null,
+    "media-feature-range-notation": "prefix",
     "function-no-unknown": [
       true,
       {

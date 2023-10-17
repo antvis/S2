@@ -111,6 +111,12 @@ export abstract class SpreadSheet extends EE {
    */
   private destroyed = false;
 
+  // @ts-ignore
+  private untypedOn = this.on;
+
+  // @ts-ignore
+  private untypedEmit = this.emit;
+
   public on = <K extends keyof EmitterType>(
     event: K,
     listener: EmitterType[K],
@@ -120,10 +126,6 @@ export abstract class SpreadSheet extends EE {
     event: K,
     ...args: Parameters<EmitterType[K]>
   ): boolean => this.untypedEmit(event, ...args);
-
-  private untypedOn = this.on;
-
-  private untypedEmit = this.emit;
 
   public constructor(
     dom: S2MountContainer,
