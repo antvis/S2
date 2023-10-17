@@ -79,7 +79,7 @@
       "eslint --fix"
     ],
     "*.less": [
-      "stylelint --syntax --fix"
+      "stylelint --custom-syntax --fix"
     ]
   },
   "devDependencies": {

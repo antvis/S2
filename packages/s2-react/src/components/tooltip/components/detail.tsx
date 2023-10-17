@@ -27,7 +27,13 @@ export const TooltipDetail: React.FC<TooltipDetailProps> = (
             <span
               className={`${TOOLTIP_PREFIX_CLS}-detail-item-val ${TOOLTIP_PREFIX_CLS}-highlight`}
             >
-              {icon ? <TooltipIcon icon={icon} width={8} height={7} /> : null}
+              {icon && (
+                <TooltipIcon
+                  icon={icon as React.ReactNode}
+                  width={8}
+                  height={7}
+                />
+              )}
               {value}
             </span>
           </div>

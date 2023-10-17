@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-function */
 import type { ViewMetaData } from '../common/interface/basic';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant/basic';
 import type { RawData } from '../common/interface/s2DataConfig';

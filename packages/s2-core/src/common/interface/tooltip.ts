@@ -124,11 +124,15 @@ export type TooltipDetailProps = {
   list: TooltipDetailListItem[] | null | undefined;
 };
 
-export type TooltipInterpretationOptions = {
+export type TooltipInterpretationOptions<
+  T = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> = {
   name: string;
-  icon?: Element | string;
-  text?: string;
-  render?: Element | string;
+  icon?: Icon;
+  text?: Text;
+  content?: T;
 };
 
 export type TooltipShowOptions<

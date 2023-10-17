@@ -32,13 +32,14 @@ export class CustomTooltip extends BaseTooltip {
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(showOptions?.event?.target);
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
-    const content = showOptions?.content ?? contentFromOptions;
+    const content = (showOptions?.content ??
+      contentFromOptions) as React.ReactNode;
 
-    const tooltipProps: TooltipRenderProps = {
+    const tooltipProps = {
       ...showOptions,
       cell,
       content,
-    };
+    } as TooltipRenderProps;
 
     if (showOptions?.options?.forceRender) {
       this.unmount();

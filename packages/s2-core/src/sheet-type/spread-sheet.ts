@@ -106,10 +106,6 @@ export abstract class SpreadSheet extends EE {
 
   public hdAdapter: HdAdapter;
 
-  private untypedOn = this.on;
-
-  private untypedEmit = this.emit;
-
   /**
    * 表格是否已销毁
    */
@@ -124,6 +120,10 @@ export abstract class SpreadSheet extends EE {
     event: K,
     ...args: Parameters<EmitterType[K]>
   ): boolean => this.untypedEmit(event, ...args);
+
+  private untypedOn = this.on;
+
+  private untypedEmit = this.emit;
 
   public constructor(
     dom: S2MountContainer,

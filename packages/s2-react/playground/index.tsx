@@ -113,7 +113,7 @@ function MainLayout() {
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
-  const scrollTimer = React.useRef<NodeJS.Timer>();
+  const scrollTimer = React.useRef<number>();
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
@@ -870,7 +870,7 @@ function MainLayout() {
                           animate: true,
                         },
                       });
-                    }, 500);
+                    }, 500) as unknown as number;
                   }}
                 >
                   {scrollTimer.current ? '停止滚动' : '循环滚动'}

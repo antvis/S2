@@ -1,13 +1,8 @@
 /* eslint-disable jest/expect-expect */
-import { createPivotSheet } from 'tests/util/helpers';
+import { Text, type Group } from '@antv/g';
 import { get } from 'lodash';
-import { Text, type Group, type Image } from '@antv/g';
-import type {
-  TextBaseline,
-  TextTheme,
-  ThemeCfg,
-} from '@/common/interface/theme';
-import type { PivotSheet } from '@/sheet-type';
+import { createPivotSheet } from 'tests/util/helpers';
+import type { RowCell } from '@/cell';
 import {
   CellType,
   EXTRA_COLUMN_FIELD,
@@ -16,8 +11,13 @@ import {
   type S2DataConfig,
   type TextAlign,
 } from '@/common';
-import type { RowCell } from '@/cell';
+import type {
+  TextBaseline,
+  TextTheme,
+  ThemeCfg,
+} from '@/common/interface/theme';
 import type { Node } from '@/facet/layout/node';
+import type { PivotSheet } from '@/sheet-type';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
@@ -164,7 +164,7 @@ describe('SpreadSheet Theme Tests', () => {
       });
       await s2.render();
       const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
-      const actionIcon = get(rowCell, 'actionIcons.[0]') as GuiIcon;
+      const actionIcon = get(rowCell, 'actionIcons.[0]') as unknown as GuiIcon;
       // @ts-ignore
       const cfg = actionIcon.cfg;
 
@@ -201,15 +201,15 @@ describe('SpreadSheet Theme Tests', () => {
 
         const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
 
-        const rowCellWidth = get(rowCell, 'meta.width');
-        const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
+        const rowCellWidth = rowCell.getMeta().width;
+        const actionIcon = rowCell.getActionIcons()[0];
         // @ts-ignore
         const actionIconCfg = actionIcon.cfg;
 
         expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
-          rowCellWidth,
-        );
+        expect(
+          (actionIconCfg.x as number) + (actionIconCfg.width as number),
+        ).toBeLessThanOrEqual(rowCellWidth);
       },
     );
   });

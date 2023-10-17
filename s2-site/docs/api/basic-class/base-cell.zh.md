@@ -17,6 +17,7 @@ cell.getActualText()
 | getStyle | 获取单元格样式 | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
 | getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [TextAndIconPosition](#textandiconposition) |
 | getActualText | 获取绘制的文本 | `() => string` |
+| getActualTextWidth | 获取绘制的文本宽度 | `() => number` |
 | cellType | 单元格类型 | [CellType](#celltypes) |
 | initCell | 初始化单元格 | `() => void` |
 | update | 更新单元格 | `() => void` |

@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import {
-  auto,
   EXTRA_FIELD,
   PivotSheet,
-  type S2DataConfig,
-  type S2Options,
   SpreadSheet,
+  auto,
   type RawData,
+  type S2DataConfig,
   type S2MountContainer,
+  type S2Options,
 } from '@antv/s2';
+import 'antd/dist/antd.min.css';
+import React from 'react';
 import {
   data10,
   data6,
@@ -21,9 +20,8 @@ import {
   totalData8,
   totalData9,
 } from '../data/data-accuracy';
-import { getContainer, renderComponent } from '../util/helpers';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
-import 'antd/dist/antd.min.css';
+import { renderComponent } from '../util/helpers';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let spreadsheet: SpreadSheet;
 
