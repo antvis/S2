@@ -95,7 +95,7 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.headerConfig;
+    const { scrollX = 0, position } = this.headerConfig || {};
 
     if (this.isFrozenCell()) {
       return {

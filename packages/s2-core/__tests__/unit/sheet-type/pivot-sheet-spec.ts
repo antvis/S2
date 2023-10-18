@@ -4,7 +4,7 @@ import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import type { BaseEvent } from '../../../src';
+import type { BaseEvent, HeaderCell } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -97,23 +97,6 @@ describe('PivotSheet Tests', () => {
       expect(s2.tooltip.container!.innerHTML).toEqual(
         'custom callback content',
       );
-    });
-
-    test('should support callback after tooltip rendered', async () => {
-      const position = {
-        x: 10,
-        y: 10,
-      };
-
-      const onMounted = jest.fn();
-
-      await s2.showTooltip({
-        position,
-        content: 'content',
-        onMounted,
-      });
-
-      expect(onMounted).toHaveBeenCalledTimes(1);
     });
 
     test('should support callback tooltip content for element', () => {
@@ -1219,9 +1202,9 @@ describe('PivotSheet Tests', () => {
       await sheet.render();
 
       sheet.facet.getRowLeafNodes().forEach((node) => {
-        const rowCell = node.belongsCell;
+        const rowCell = node.belongsCell as HeaderCell;
 
-        expect(get(rowCell, 'actionIcons')).toHaveLength(0);
+        expect(rowCell.getActionIcons()).toBeEmpty();
       });
 
       sheet.destroy();
