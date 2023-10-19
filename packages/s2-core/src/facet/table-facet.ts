@@ -43,7 +43,7 @@ import {
   getFrozenRowsForGrid,
   getRowsForGrid,
 } from '../utils/grid';
-import type { PanelIndexes } from '../utils/indexes';
+import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
@@ -1129,14 +1129,17 @@ export class TableFacet extends BaseFacet {
       }
     }
 
-    const indexes = calculateInViewIndexes(
-      scrollX,
-      scrollY,
-      this.viewCellWidths,
-      this.viewCellHeights,
-      finalViewport,
-      this.getRealScrollX(this.cornerBBox.width),
-    );
+    // https://github.com/antvis/S2/issues/2255
+    const indexes = this.spreadsheet.dataSet.isEmpty()
+      ? ([] as unknown as Indexes)
+      : calculateInViewIndexes(
+          scrollX,
+          scrollY,
+          this.viewCellWidths,
+          this.viewCellHeights,
+          finalViewport,
+          this.getRealScrollX(this.cornerBBox.width),
+        );
 
     this.panelScrollGroupIndexes = indexes;
 

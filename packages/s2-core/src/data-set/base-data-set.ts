@@ -3,6 +3,7 @@ import {
   find,
   get,
   identity,
+  isEmpty,
   isNil,
   map,
   max,
@@ -115,6 +116,10 @@ export abstract class BaseDataSet {
 
   public getDisplayDataSet() {
     return this.displayData;
+  }
+
+  public isEmpty() {
+    return isEmpty(this.getDisplayDataSet());
   }
 
   public getValueRangeByField(field: string): ValueRange {

@@ -13,9 +13,11 @@ import { DataCell, DEFAULT_STYLE, type Fields, Node } from '@/index';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+
 const actualDataSet = jest.requireActual(
   '@/data-set/base-data-set',
 ).BaseDataSet;
+
 jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
@@ -59,6 +61,9 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        dataSet: {
+          isEmpty: jest.fn(),
+        },
       };
     }),
   };
@@ -77,6 +82,7 @@ jest.mock('@/data-set/table-data-set', () => {
         getCellData: () => 1,
         getFieldMeta: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
+        isEmpty: jest.fn(),
       };
     }),
   };
