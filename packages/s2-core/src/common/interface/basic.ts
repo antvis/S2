@@ -151,12 +151,12 @@ export interface Total {
   /**
    * 是否显示总计
    */
-  showGrandTotals: boolean;
+  showGrandTotals?: boolean;
 
   /**
    *是否显示小计
    */
-  showSubTotals:
+  showSubTotals?:
     | boolean
     | {
         /** 当子维度个数 <=1 时，仍然展示小计：默认 true */
@@ -177,17 +177,17 @@ export interface Total {
    * 小计的汇总维度
    * @example subTotalsDimensions: ['province']
    */
-  subTotalsDimensions: string[];
+  subTotalsDimensions?: string[];
 
   /**
    * 总计布局位置，默认是下或右
    */
-  reverseGrandTotalsLayout: boolean;
+  reverseGrandTotalsLayout?: boolean;
 
   /**
    * 小计布局位置，默认是下或右
    */
-  reverseSubTotalsLayout: boolean;
+  reverseSubTotalsLayout?: boolean;
 
   /**
    * 总计展示名
@@ -208,8 +208,8 @@ export interface Total {
  * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
  */
 export interface Totals {
-  row?: Partial<Total>;
-  col?: Partial<Total>;
+  row?: Total;
+  col?: Total;
 }
 
 export interface Sort {

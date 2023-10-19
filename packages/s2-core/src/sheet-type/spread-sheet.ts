@@ -560,7 +560,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * 获取当前维度对应的汇总配置
    */
-  public getTotalsConfig(dimension: string): Partial<Total> {
+  public getTotalsConfig(dimension: string): Total {
     const { totals } = this.options;
     const { rows } = this.dataSet.fields;
 
