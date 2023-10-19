@@ -645,7 +645,6 @@ export class PivotDataSet extends BaseDataSet {
         rowDimensionValues,
         colDimensionValues,
         careUndefined: true,
-        isFirstCreate: true,
         rowFields: rows,
         colFields: columns as string[],
         rowPivotMeta: this.rowPivotMeta,
