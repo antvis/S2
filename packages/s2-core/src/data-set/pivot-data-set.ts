@@ -660,7 +660,7 @@ export class PivotDataSet extends BaseDataSet {
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],
-    withMissedField?: boolean,
+    includeTotalData?: boolean,
   ): DataType[] {
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
@@ -672,7 +672,7 @@ export class PivotDataSet extends BaseDataSet {
     // existDimensionGroup：当 undefined 维度后面有非 undefined，为维度分组场景，将非 undefined 维度前的维度填充为所有可能的维度值。
     // 如 [undefined , '杭州市' , undefined , 'number']
     const existDimensionGroup =
-      !withMissedField && this.checkExistDimensionGroup(query);
+      !includeTotalData && this.checkExistDimensionGroup(query);
     let result = [];
     if (existDimensionGroup) {
       result = this.getGroupTotalMultiData(totalRows, query);

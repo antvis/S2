@@ -201,14 +201,14 @@ export abstract class BaseDataSet {
    * @param isTotals
    * @param isRow
    * @param drillDownFields
-   * @param withMissedField 用于标记是否需要汇总数据混入其中，在排序功能中使用
+   * @param includeTotalData 用于标记是否包含汇总数据，例如在排序功能中需要汇总数据，在计算汇总值中只取明细数据
    */
   public abstract getMultiData(
     query: DataType,
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],
-    withMissedField?: boolean,
+    includeTotalData?: boolean,
   ): DataType[];
 
   public moreThanOneValue() {
