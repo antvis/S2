@@ -22,6 +22,7 @@ import type {
   ViewMetaData,
   RawData,
   RowCellCollapsedParams,
+  HeaderActionIcon,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -251,7 +252,8 @@ export interface PartDrillDownInfo {
   drillField: string;
 }
 
-export interface PartDrillDown<T = BaseDrillDownComponentProps> {
+export interface PartDrillDown<T = BaseDrillDownComponentProps>
+  extends Pick<HeaderActionIcon, 'displayCondition'> {
   // The configuration of drill down
   drillConfig: T;
   // The numbers of drill down result
@@ -261,6 +263,4 @@ export interface PartDrillDown<T = BaseDrillDownComponentProps> {
   clearDrillDown?: {
     rowId: string;
   };
-  // Decide the drill down icon show conditions.
-  displayCondition?: (meta: Node) => boolean;
 }

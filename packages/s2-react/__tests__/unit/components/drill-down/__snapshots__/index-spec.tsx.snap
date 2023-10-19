@@ -66,6 +66,11 @@ exports[`DrillDown Component Tests should render component 1`] = `
       </span>
     </span>
     <div
+      class="antv-s2-drill-down-extra"
+    >
+      extra
+    </div>
+    <div
       class="ant-empty antv-s2-drill-down-empty"
     >
       <div
@@ -138,7 +143,6 @@ exports[`DrillDown Component Tests should render component 1`] = `
         No data
       </div>
     </div>
-    extra
     <ul
       class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu"
       data-menu-list="true"

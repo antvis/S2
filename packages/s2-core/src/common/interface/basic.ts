@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as Event, Group } from '@antv/g';
-import type { CellType } from '../../common/constant';
+import type { MergedCell } from '../../cell';
 import type {
   CustomTreeNode,
   Data,
@@ -13,7 +13,7 @@ import type { CellData } from '../../data-set/cell-data';
 import type { BaseHeaderConfig, Frame } from '../../facet/header';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
-import type { MergedCell } from '../../cell';
+import type { CellType } from '../constant';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
 
@@ -233,19 +233,29 @@ export interface Pagination {
 }
 
 export interface CustomSVGIcon {
-  /** icon 名称 */
+  /**
+   * icon 名称
+   */
   name: string;
 
   /**
-   * 1、base 64
-   * 2、svg本地文件（兼容老方式，可以改颜色）
-   * 3、线上支持的图片地址
+   * @example 1、base64
+   * @example 2. svg本地文件 (兼容老方式, 可以改颜色)
+
+   import Icon from 'path/to/xxx.svg'
+
+   => { name: 'iconA', svg: Icon }
+   => { name: 'iconB', svg: '<svg>...</svg>' }
+
+   * @example 3. 线上支持的图片地址
+    带后缀: https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg
+    无后缀: https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*5nsESLuvc_EAAAAAAAAAAAAADmJ7AQ/original
    */
   svg: string;
 }
 
 export interface HeaderIconClickParams {
-  iconName: string;
+  name: string;
   meta: Node;
   event?: Event;
 }
@@ -256,44 +266,86 @@ export interface HeaderIconHoverParams extends HeaderIconClickParams {
   hovering: boolean;
 }
 
-export interface HeaderActionIconOptions {
-  iconName: string;
+export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
+  fill?: string;
+  name: string;
   x: number;
   y: number;
-  onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
-  onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
   isSortIcon?: boolean;
-  defaultHide?: boolean;
 }
 
-export type FullyIconName = {
-  name: string;
-  position: IconPosition;
+export type HeaderActionNameOptions = HeaderActionIconBaseOptions & {
+  /**
+   * icon 颜色配置
+   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色
+   */
   fill?: string;
+
+  /**
+   * icon 名称
+   */
+  name: string;
+
+  /**
+   * icon 相对文本的位置
+   * 可选: 'left' | 'right'
+   */
+  position?: IconPosition;
+
+  /**
+   * 是否是条件格式的 icon
+   */
   isConditionIcon?: boolean;
 };
-export type ActionIconName = string | FullyIconName;
 
-export interface HeaderActionIcon {
+export type HeaderActionName =
+  | string
+  | Omit<HeaderActionNameOptions, 'isConditionIcon'>;
+
+export interface HeaderActionIconBaseOptions {
   /**
-   * 已注册的 icon 类型或自定义的 icon 类型名
-   * 如果是 string[], 则默认 icon 位置为右侧
+   * 是否默认隐藏， 开启后 hover 后才显示,  关闭后则始终显示, 可根据当前单元格信息动态判断
+   * @example defaultHide: (meta, iconName) => meta.id === 'xxx'
+   * @default false
    */
-  icons: ActionIconName[];
-  // 所属的 cell 类型
-  belongsCell: Omit<CellType, 'dataCell'>;
-  /** 是否默认隐藏， true 为 hover后显示, false 为一直显示 */
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
-  /** 是否展示当前 iconNames 配置的 icon */
+
+  /**
+   * 是否展示, 可根据当前单元格信息动态判断
+   * @example displayCondition: (meta, iconName) => !meta.isTotals
+   */
   displayCondition?: (mete: Node, iconName: string) => boolean;
-  /** 点击回调函数 */
+
+  /**
+   * 点击回调函数
+   */
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
-  /** 悬停回调函数 */
+
+  /**
+   * 悬停回调函数
+   */
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
+}
+
+export interface HeaderActionIcon extends HeaderActionIconBaseOptions {
+  /**
+   * 内置 icon 或通过 @customSVGIcons 自定义的 icon 名称
+   * 如果是 string[], 则默认 icon 位置为右侧
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+   * @example icons: ['iconNameA', 'iconNameB']
+   * @example icons: [{ name: 'iconNameA', position: "left", fill: "red" }]
+   */
+  icons: HeaderActionName[];
+
+  /**
+   * 所属的 cell 类型, 即当前 icon 展示在哪种类型单元格中
+   * @example belongsCell: 'rowCell'
+   */
+  belongsCell: Omit<CellType, 'dataCell' | 'mergedCell' | 'seriesNumberCell'>;
 }
 
 export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
-  icons: FullyIconName[];
+  icons: HeaderActionNameOptions[];
   isSortIcon?: boolean;
 }
 

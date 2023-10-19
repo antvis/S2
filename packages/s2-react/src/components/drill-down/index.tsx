@@ -112,13 +112,13 @@ export const DrillDown: React.FC<DrillDownProps> = ({
           prefix={<SearchIcon />}
           allowClear
         />
+        <div className={`${DRILL_DOWN_PRE_CLASS}-extra`}>{extra}</div>
         {isEmpty(options) && (
           <Empty
             imageStyle={{ height: '64px' }}
             className={`${DRILL_DOWN_PRE_CLASS}-empty`}
           />
         )}
-        {extra}
         <Menu
           className={`${DRILL_DOWN_PRE_CLASS}-menu`}
           selectedKeys={drillFields}

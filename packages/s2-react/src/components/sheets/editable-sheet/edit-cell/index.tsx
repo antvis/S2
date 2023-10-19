@@ -17,7 +17,7 @@ import {
 } from '@antv/s2';
 import { isNil, pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetRef } from '../../../../context/SpreadSheetContext';
+import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import {
   invokeComponent,
   type InvokeComponentProps,
@@ -45,11 +45,11 @@ function EditCellComponent(
   props: InvokeComponentProps<{ cell: S2CellType } & onChangeProps>,
 ) {
   const { params, resolver } = props;
-  const spreadsheet = useSpreadSheetRef();
+  const s2 = useSpreadSheetInstance();
   const { cell, onChange, CustomComponent } = params;
 
   const { left, top, width, height } = useMemo(() => {
-    const rect = spreadsheet?.getCanvasElement().getBoundingClientRect();
+    const rect = s2?.getCanvasElement().getBoundingClientRect();
 
     const modified = {
       left: window.scrollX + rect.left,
@@ -59,7 +59,7 @@ function EditCellComponent(
     };
 
     return modified;
-  }, [spreadsheet]);
+  }, [s2]);
 
   const {
     x: cellLeft,
@@ -67,7 +67,7 @@ function EditCellComponent(
     width: cellWidth,
     height: cellHeight,
   } = useMemo(() => {
-    const scroll = spreadsheet.facet.getScrollOffset();
+    const scroll = s2.facet.getScrollOffset();
     const cellMeta = pick(cell?.getMeta(), ['x', 'y', 'width', 'height']);
 
     if (isNil(cellMeta.x) || isNil(cellMeta.y)) {
@@ -79,14 +79,14 @@ function EditCellComponent(
       };
     }
 
-    const sampleColNode = spreadsheet.facet.getColNodes()[0];
+    const sampleColNode = s2.facet.getColNodes()[0];
     const sampleColNodeHeight = sampleColNode?.height || 0;
 
     cellMeta.x -= scroll.scrollX || 0;
     cellMeta.y -= (scroll.scrollY || 0) - sampleColNodeHeight;
 
     return cellMeta;
-  }, [cell, spreadsheet]);
+  }, [cell, s2]);
 
   const [inputVal, setInputVal] = useState<DataItem>(
     cell?.getMeta()?.fieldValue,
@@ -115,11 +115,11 @@ function EditCellComponent(
 
     const { rowIndex, valueField } = cell.getMeta();
 
-    spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
-    spreadsheet.render(true);
+    s2.dataSet.originData[rowIndex][valueField] = inputVal;
+    s2.render(true);
 
     if (onChange) {
-      onChange(spreadsheet.dataSet.originData);
+      onChange(s2.dataSet.originData);
     }
 
     resolver(true);
@@ -160,7 +160,7 @@ function EditCellComponent(
       {CustomComponent ? (
         <CustomComponent
           cell={cell}
-          spreadsheet={spreadsheet}
+          spreadsheet={s2}
           value={inputVal}
           style={styleProps}
           onChange={changeValue}
@@ -185,7 +185,7 @@ function EditCellComponent(
 }
 
 const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
-  const spreadsheet = useSpreadSheetRef();
+  const spreadsheet = useSpreadSheetInstance();
 
   const onEditCell = useCallback(
     (event: GEvent) => {

@@ -1,13 +1,12 @@
-import { S2Event } from '@antv/s2';
 import type {
-  HeaderActionIconProps,
-  PartDrillDownDataCache,
-  S2Options,
   GEvent,
   Node,
+  PartDrillDownDataCache,
   PivotDataSet,
+  S2Options,
   SpreadSheet,
 } from '@antv/s2';
+import { S2Event, type HeaderActionIcon } from '@antv/s2';
 import { clone, filter, isEmpty, size } from 'lodash';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
@@ -138,24 +137,25 @@ export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
     : [];
 
   if (!isEmpty(partDrillDown)) {
-    const drillDownActionIcon = {
+    const drillDownActionIcon: HeaderActionIcon = {
+      icons: [
+        {
+          name: 'DrillDownIcon',
+          position: 'right',
+          onClick: ({ meta, event }) => {
+            meta.spreadsheet.store.set('drillDownNode', meta);
+            handleActionIconClick({
+              meta,
+              event,
+              callback,
+            });
+          },
+        },
+      ],
       belongsCell: 'rowCell',
-      icons: ['DrillDownIcon'],
-      defaultHide: true,
+      defaultHide: false,
       displayCondition:
-        partDrillDown.displayCondition || defaultPartDrillDownDisplayCondition,
-      onClick: (actionIconProps: HeaderActionIconProps) => {
-        const { iconName, meta, event } = actionIconProps;
-
-        if (iconName === 'DrillDownIcon') {
-          meta.spreadsheet.store.set('drillDownNode', meta);
-          handleActionIconClick({
-            meta,
-            event,
-            callback,
-          });
-        }
-      },
+        partDrillDown?.displayCondition || defaultPartDrillDownDisplayCondition,
     };
 
     nextHeaderIcons.push(drillDownActionIcon);

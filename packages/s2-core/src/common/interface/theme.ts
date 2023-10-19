@@ -1,7 +1,7 @@
 import type { LineStyleProps } from '@antv/g';
+import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
-import type { CellType } from '../../common/constant/interaction';
 import type { DeepRequired } from './util';
 
 // 文本内容的水平对齐方式, 默认 left
