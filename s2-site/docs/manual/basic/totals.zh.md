@@ -71,11 +71,11 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | showGrandTotals     | 是否显示总计             | `boolean`    | false  | ✓    |
 | showSubTotals       | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示。             | `boolean | { always: boolean }`    | false  | ✓    |
 | subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     | ✓    |
-| reverseLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| reverseSubLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
+| reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
+| reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
 | label               | 总计别名                 | `string`     |        |      |
 | subLabel            | 小计别名                 | `string`     |        |      |
-| calcTotals          | 计算总计                 | `CalcTotals` |        |      |
+| calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
 ```ts
@@ -84,15 +84,15 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
     },
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
     },
   },
@@ -159,7 +159,7 @@ const s2DataConfig = {
 
 #### 2. 计算出数据
 
-可以给 `totals` 下的 `row` 、 `col` 分别配置属性 `calcTotals` 、 `calcSubTotals` 来实现计算汇总数据
+可以给 `totals` 下的 `row` 、 `col` 分别配置属性 `calcGrandTotals` 、 `calcSubTotals` 来实现计算汇总数据
 
 ##### 1. 配置聚合方式
 
@@ -171,10 +171,10 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      calcTotals: {
+      calcGrandTotals: {
         aggregation: 'SUM',
       },
       calcSubTotals: {
@@ -184,10 +184,10 @@ const s2Options = {
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
-      calcTotals: {
+      calcGrandTotals: {
         aggregation: 'SUM',
       },
       calcSubTotals: {
@@ -208,10 +208,10 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      calcTotals: {
+      calcGrandTotals: {
         calcFunc: (query, data) => {},
       },
       calcSubTotals: {
@@ -221,10 +221,10 @@ const s2Options = {
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
-      calcTotals: {
+      calcGrandTotals: {
         calcFunc: (query, data) => {},
       },
       calcSubTotals: {

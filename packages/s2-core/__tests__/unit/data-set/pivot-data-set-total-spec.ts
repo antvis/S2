@@ -240,7 +240,7 @@ describe('Pivot Dataset Total Test', () => {
           totals: {
             row: {
               ...TOTALS_OPTIONS?.row,
-              calcTotals: {
+              calcGrandTotals: {
                 aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
@@ -249,7 +249,7 @@ describe('Pivot Dataset Total Test', () => {
             },
             col: {
               ...TOTALS_OPTIONS?.col,
-              calcTotals: {
+              calcGrandTotals: {
                 aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
@@ -359,7 +359,7 @@ describe('Pivot Dataset Total Test', () => {
                 showGrandTotals: true,
                 showSubTotals: true,
                 subTotalsDimensions: ['city'],
-                calcTotals: {
+                calcGrandTotals: {
                   aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
@@ -370,7 +370,7 @@ describe('Pivot Dataset Total Test', () => {
                 showGrandTotals: true,
                 showSubTotals: true,
                 subTotalsDimensions: ['type'],
-                calcTotals: {
+                calcGrandTotals: {
                   aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
@@ -447,7 +447,7 @@ describe('Pivot Dataset Total Test', () => {
           totals: {
             row: {
               ...TOTALS_OPTIONS?.row,
-              calcTotals: {
+              calcGrandTotals: {
                 calcFunc: calcFunc1,
               },
               calcSubTotals: {
@@ -456,7 +456,7 @@ describe('Pivot Dataset Total Test', () => {
             },
             col: {
               ...TOTALS_OPTIONS?.col,
-              calcTotals: {
+              calcGrandTotals: {
                 calcFunc: calcFunc2,
               },
               calcSubTotals: {

@@ -18,8 +18,8 @@ const s2Options: S2Options = {
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['col0', 'col1'],
     },
   },

@@ -71,11 +71,11 @@ object is **required** , *default: null* Function description: Subtotal calculat
 | showGrandTotals     | Whether to display the total                                                                                                                                                               | `boolean`    | false                 | ✓        |
 | showSubTotals       | Whether to display subtotals. When configured as an object, always controls whether to always display subtotals when there are less than 2 subdimensions, and does not display by default. | \`boolean    | { always: boolean }\` | false    |
 | subTotalsDimensions | Summary Dimensions for Subtotals                                                                                                                                                           | `string[]`   | \[]                   | ✓        |
-| reverseLayout       | total layout position, default bottom or right                                                                                                                                             | `boolean`    | false                 | ✓        |
-| reverseSubLayout    | Subtotal layout position, default bottom or right                                                                                                                                          | `boolean`    | false                 | ✓        |
+| reverseGrandTotalsLayout       | total layout position, default bottom or right                                                                                                                                             | `boolean`    | false                 | ✓        |
+| reverseSubTotalsLayout    | Subtotal layout position, default bottom or right                                                                                                                                          | `boolean`    | false                 | ✓        |
 | label               | total alias                                                                                                                                                                                | `string`     |                       |          |
 | subLabel            | subtotal alias                                                                                                                                                                             | `string`     |                       |          |
-| calcTotals          | calculate the total                                                                                                                                                                        | `CalcTotals` |                       |          |
+| calcGrandTotals          | calculate the total                                                                                                                                                                        | `CalcTotals` |                       |          |
 | calcSubTotals       | calculate subtotal                                                                                                                                                                         | `CalcTotals` |                       |          |
 
 ```ts
@@ -84,15 +84,15 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
     },
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
     },
   },
@@ -158,7 +158,7 @@ const s2DataConfig = {
 
 #### 2. Calculate the data
 
-You can configure attributes `calcTotals` and `calcSubTotals` for `row` and `col` under `totals` respectively to realize the calculation of summary data
+You can configure attributes `calcGrandTotals` and `calcSubTotals` for `row` and `col` under `totals` respectively to realize the calculation of summary data
 
 ##### 1. Configure aggregation mode
 
@@ -170,10 +170,10 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      calcTotals: {
+      calcGrandTotals: {
         aggregation: 'SUM',
       },
       calcSubTotals: {
@@ -183,10 +183,10 @@ const s2Options = {
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
-      calcTotals: {
+      calcGrandTotals: {
         aggregation: 'SUM',
       },
       calcSubTotals: {
@@ -207,10 +207,10 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      calcTotals: {
+      calcGrandTotals: {
         calcFunc: (query, data) => {},
       },
       calcSubTotals: {
@@ -220,10 +220,10 @@ const s2Options = {
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
-      calcTotals: {
+      calcGrandTotals: {
         calcFunc: (query, data) => {},
       },
       calcSubTotals: {

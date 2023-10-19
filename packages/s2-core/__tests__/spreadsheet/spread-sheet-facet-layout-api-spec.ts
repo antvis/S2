@@ -663,8 +663,8 @@ describe('Facet Layout API Tests', () => {
                 row: {
                   showGrandTotals: true,
                   showSubTotals: true,
-                  reverseLayout: true,
-                  reverseSubLayout: true,
+                  reverseGrandTotalsLayout: true,
+                  reverseSubTotalsLayout: true,
                 },
               },
             },
@@ -851,8 +851,8 @@ describe('Facet Layout API Tests', () => {
                 col: {
                   showGrandTotals: true,
                   showSubTotals: true,
-                  reverseLayout: true,
-                  reverseSubLayout: true,
+                  reverseGrandTotalsLayout: true,
+                  reverseSubTotalsLayout: true,
                 },
               },
             },

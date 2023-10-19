@@ -79,11 +79,11 @@ export function getAggregationAndCalcFuncByQuery(
   const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
   const { row, col } = totalsOptions || {};
   const {
-    calcTotals: rowCalcTotals = {},
+    calcGrandTotals: rowCalcTotals = {},
     calcSubTotals: rowCalcSubTotals = {},
   } = row || {};
   const {
-    calcTotals: colCalcTotals = {},
+    calcGrandTotals: colCalcTotals = {},
     calcSubTotals: colCalcSubTotals = {},
   } = col || {};
 

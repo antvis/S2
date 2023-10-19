@@ -455,8 +455,8 @@ function MainLayout() {
                         row: {
                           showGrandTotals: checked,
                           showSubTotals: checked,
-                          reverseLayout: true,
-                          reverseSubLayout: true,
+                          reverseGrandTotalsLayout: true,
+                          reverseSubTotalsLayout: true,
                           subTotalsDimensions: ['province'],
                         },
                       },
@@ -476,8 +476,8 @@ function MainLayout() {
                         col: {
                           showGrandTotals: checked,
                           showSubTotals: checked,
-                          reverseLayout: true,
-                          reverseSubLayout: true,
+                          reverseGrandTotalsLayout: true,
+                          reverseSubTotalsLayout: true,
                           subTotalsDimensions: ['type'],
                         },
                       },
