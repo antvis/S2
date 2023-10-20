@@ -71,7 +71,7 @@
     "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
-    "@antv/s2": "1.51.0-alpha.1",
+    "@antv/s2": "1.51.0",
     "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
