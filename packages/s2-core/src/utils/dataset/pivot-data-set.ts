@@ -13,6 +13,7 @@ import type {
   DataPathParams,
   DataType,
   PivotMeta,
+  Query,
   SortedDimensionValues,
   TotalStatus,
 } from '../../data-set/interface';
@@ -209,7 +210,7 @@ export function getDataPath(params: DataPathParams) {
  */
 export function getQueryDimValues(
   dimensions: string[],
-  query: DataType,
+  query: Query,
 ): string[] {
   return reduce(
     dimensions,

@@ -4,6 +4,8 @@ import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
 export type DataType = Record<string, any>;
 
+export type Query = Record<string, any>;
+
 export type PivotMetaValue = {
   // field level index
   level: number;
@@ -41,7 +43,7 @@ export type DataPathParams = {
 
 export interface CellDataParams {
   // search query
-  query: DataType;
+  query: Query;
   isTotals?: boolean;
   // use in part drill-down
   rowNode?: Node;
@@ -54,7 +56,7 @@ export interface CellDataParams {
 export interface CheckAccordQueryParams {
   // item of sortedDimensionValues,es: "浙江省[&]杭州市[&]家具[&]桌子"
   dimensionValues: string;
-  query: DataType;
+  query: Query;
   // rows or columns
   dimensions: string[];
   field: string;

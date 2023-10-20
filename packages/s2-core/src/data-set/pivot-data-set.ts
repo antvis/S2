@@ -66,6 +66,7 @@ import type {
   CheckAccordQueryParams,
   DataType,
   PivotMeta,
+  Query,
   SortedDimensionValues,
   TotalStatus,
 } from './interface';
@@ -335,7 +336,7 @@ export class PivotDataSet extends BaseDataSet {
 
   // rows :['province','city','type']
   // query: ['浙江省',undefined] => return: ['文具','家具']
-  public getTotalDimensionValues(field: string, query?: DataType): string[] {
+  public getTotalDimensionValues(field: string, query?: Query): string[] {
     const dimensions = this.getDimensionsByField(field);
     const allCurrentFieldDimensionValues = (
       this.sortedDimensionValues[field] || []
@@ -352,7 +353,7 @@ export class PivotDataSet extends BaseDataSet {
     );
   }
 
-  public getDimensionValues(field: string, query?: DataType): string[] {
+  public getDimensionValues(field: string, query?: Query): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
     let dimensions: string[] = [];
@@ -401,7 +402,7 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
-  getTotalValue(query: DataType, totalStatus?: TotalStatus) {
+  getTotalValue(query: Query, totalStatus?: TotalStatus) {
     const effectiveStatus = some(totalStatus);
     const status = effectiveStatus ? totalStatus : this.getTotalStatus(query);
     const { aggregation, calcFunc } =
@@ -489,7 +490,7 @@ export class PivotDataSet extends BaseDataSet {
     return currentData;
   };
 
-  public getTotalStatus = (query: DataType) => {
+  public getTotalStatus = (query: Query) => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
       if (isSubTotal) {
@@ -521,7 +522,7 @@ export class PivotDataSet extends BaseDataSet {
    * [undefined , '杭州市' , undefined , 'number'] => true
    * ['浙江省' , '杭州市' , undefined , 'number'] => true
    */
-  checkExistDimensionGroup(query: DataType): boolean {
+  checkExistDimensionGroup(query: Query): boolean {
     const { rows, columns } = this.fields;
     const check = (dimensions: string[]) => {
       let existDimensionValue = false;
@@ -574,7 +575,7 @@ export class PivotDataSet extends BaseDataSet {
    *      {'百事公司','可乐','undefined','price'},
    *    ]
    */
-  getTotalGroupQueries(dimensions: string[], originQuery: DataType) {
+  getTotalGroupQueries(dimensions: string[], originQuery: Query) {
     let queries = [originQuery];
     let existDimensionGroupKey = null;
     for (let i = dimensions.length; i > 0; i--) {
@@ -622,7 +623,7 @@ export class PivotDataSet extends BaseDataSet {
   // 有中间维度汇总的分组场景，将有中间 undefined 值的 query 处理为一组合法 query 后查询数据再合并
   private getGroupTotalMultiData(
     totalRows: string[],
-    originQuery: DataType,
+    originQuery: Query,
   ): DataType[] {
     const { rows, columns } = this.fields;
     let result = [];
@@ -657,7 +658,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getMultiData(
-    query: DataType,
+    query: Query,
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],

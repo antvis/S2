@@ -26,7 +26,7 @@ import {
 } from '../utils/condition/state-controller';
 import type { CellMeta, RowData } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
-import type { CellDataParams, DataType } from './index';
+import type { CellDataParams, DataType, Query } from './index';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -168,7 +168,7 @@ export abstract class BaseDataSet {
    * @param field current dimensions
    * @param query dimension value query
    */
-  public abstract getDimensionValues(field: string, query?: DataType): string[];
+  public abstract getDimensionValues(field: string, query?: Query): string[];
 
   /**
    * province  city  type
@@ -189,7 +189,7 @@ export abstract class BaseDataSet {
    */
   public abstract getTotalDimensionValues(
     field: string,
-    query?: DataType,
+    query?: Query,
   ): string[];
 
   /**
@@ -208,7 +208,7 @@ export abstract class BaseDataSet {
    * @param drillDownFields
    */
   public abstract getMultiData(
-    query: DataType,
+    query: Query,
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],
