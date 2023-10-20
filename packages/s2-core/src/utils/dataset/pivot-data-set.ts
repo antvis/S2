@@ -3,33 +3,23 @@ import {
   forEach,
   get,
   intersection,
+  isEmpty,
   isUndefined,
   last,
   reduce,
   set,
 } from 'lodash';
 import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import type { Meta } from '../../common/interface/basic';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
-  Query,
   SortedDimensionValues,
   TotalStatus,
 } from '../../data-set/interface';
-import type { Meta } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
-interface Param {
-  rows: string[];
-  columns: string[];
-  originData: DataType[];
-  indexesData: DataType[][] | DataType[];
-  totalData?: DataType[];
-  sortedDimensionValues: SortedDimensionValues;
-  rowPivotMeta?: PivotMeta;
-  colPivotMeta?: PivotMeta;
-}
 /**
  * Transform from origin single data to correct dimension values
  * data: {
@@ -45,19 +35,28 @@ interface Param {
  * @param record
  * @param dimensions
  */
+
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
 ): string[] {
-  return dimensions.map((dimension) => {
-    const dimensionValue = record[dimension];
-
-    // 保证 undefined 之外的数据都为 string 类型
-    if (dimensionValue === undefined) {
-      return dimensionValue;
-    }
-    return `${dimensionValue}`;
-  });
+  return reduce(
+    dimensions,
+    (res: string[], dimension: string) => {
+      if (dimension === EXTRA_FIELD) {
+        return res;
+      }
+      // push undefined when not exist
+      const value = record[dimension];
+      if (value === undefined) {
+        res.push(value);
+      } else {
+        res.push(String(value));
+      }
+      return res;
+    },
+    [],
+  );
 }
 
 /**
@@ -135,9 +134,21 @@ export function getDataPath(params: DataPathParams) {
     onFirstCreate,
     rowFields,
     colFields,
+    valueFields,
     rowPivotMeta,
     colPivotMeta,
   } = params;
+
+  const appendValues = () => {
+    const map = new Map();
+    valueFields?.forEach((v, idx) => {
+      map.set(v, {
+        level: idx,
+        children: new Map(),
+      });
+    });
+    return map;
+  };
 
   // 根据行、列维度值生成对应的 path路径，有两个情况
   // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
@@ -157,7 +168,10 @@ export function getDataPath(params: DataPathParams) {
         if (isFirstCreate) {
           currentMeta.set(value, {
             level: currentMeta.size,
-            children: new Map(),
+            children:
+              dimensionValues[i + 1] === EXTRA_FIELD
+                ? appendValues()
+                : new Map(),
           });
           onFirstCreate?.({
             isRow,
@@ -201,43 +215,26 @@ export function getDataPath(params: DataPathParams) {
   );
   return rowPath.concat(...colPath);
 }
-
-/**
- * 获取查询结果中的纬度值
- * @param dimensions [province, city]
- * @param query { province: '四川省', city: '成都市', type: '办公用品' }
- * @returns ['四川省', '成都市']
- */
-export function getQueryDimValues(
-  dimensions: string[],
-  query: Query,
-): string[] {
-  return reduce(
-    dimensions,
-    (res: string[], dimension: string) => {
-      // push undefined when not exist
-      res.push(query[dimension]);
-      return res;
-    },
-    [],
-  );
+interface Param {
+  rows: string[];
+  columns: string[];
+  values: string[];
+  originData: DataType[];
+  indexesData: DataType[][] | DataType[];
+  totalData?: DataType[];
+  sortedDimensionValues: SortedDimensionValues;
+  rowPivotMeta?: PivotMeta;
+  colPivotMeta?: PivotMeta;
 }
 
 /**
  * 转换原始数据为二维数组数据
- * @param rows
- * @param columns
- * @param originData
- * @param indexesData
- * @param totalData
- * @param sortedDimensionValues
- * @param rowPivotMeta
- * @param colPivotMeta
  */
 export function transformIndexesData(params: Param) {
   const {
     rows,
     columns,
+    values,
     originData = [],
     indexesData = [],
     totalData = [],
@@ -274,6 +271,11 @@ export function transformIndexesData(params: Param) {
 
   const allData = originData.concat(totalData);
   allData.forEach((data) => {
+    // 空数据没有意义，直接跳过
+    if (!data || isEmpty(data)) {
+      return;
+    }
+
     const rowDimensionValues = transformDimensionsValues(data, rows);
     const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({
@@ -286,6 +288,7 @@ export function transformIndexesData(params: Param) {
       careUndefined: totalData?.length > 0,
       rowFields: rows,
       colFields: columns,
+      valueFields: values,
     });
     paths.push(path);
     set(indexesData, path, data);

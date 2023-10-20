@@ -37,6 +37,7 @@ export type DataPathParams = {
   // use in row tree mode to append fields information
   rowFields?: string[];
   colFields?: string[];
+  valueFields?: string[];
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 };

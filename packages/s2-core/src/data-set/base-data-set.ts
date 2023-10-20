@@ -10,6 +10,7 @@ import {
   memoize,
   min,
 } from 'lodash';
+import type { CellMeta, RowData } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -24,7 +25,6 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import type { CellMeta, RowData } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { CellDataParams, DataType, Query } from './index';
 

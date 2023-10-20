@@ -1,0 +1,48 @@
+{
+  "width": 1000,
+  "height": 800,
+  "hierarchyType": "grid",
+  "interaction": {
+    "enableCopy": true,
+    "overscrollBehavior": "none",
+    "scrollSpeedRatio": {
+      "horizontal": 1,
+      "vertical": 1
+    },
+    "linkFields": []
+  },
+  "totals": {
+    "row": {
+      "showGrandTotals": true,
+      "showSubTotals": {
+        "always": false
+      },
+      "reverseLayout": true,
+      "reverseSubLayout": true,
+      "subTotalsDimensions": ["province", "city"]
+    },
+    "col": {
+      "showGrandTotals": true,
+      "showSubTotals": {
+        "always": false
+      },
+      "reverseLayout": true,
+      "reverseSubLayout": true,
+      "subTotalsDimensions": ["type"]
+    }
+  },
+  "tooltip": {
+    "showTooltip": true,
+    "autoAdjustBoundary": "body"
+  },
+  "style": {
+    "layoutWidthType": "adaptive",
+    "collapsedRows": {},
+    "collapsedCols": {},
+    "cellCfg": {
+      "width": 96,
+      "height": 30
+    }
+  },
+  "frozenRowHeader": true
+}

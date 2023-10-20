@@ -26,9 +26,9 @@ import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, ViewMeta } from '../common/interface';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
+import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
-import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -102,18 +102,9 @@ export class PivotFacet extends BaseFacet {
         isTotals,
         totalStatus,
       });
-      let valueField: string;
-      let fieldValue = null;
-      if (!isEmpty(data)) {
-        valueField = get(data, [EXTRA_FIELD], '');
-        fieldValue = get(data, [VALUE_FIELD], null);
-        if (isTotals) {
-          valueField = get(dataQuery, [EXTRA_FIELD], '');
-          fieldValue = get(data, valueField, null);
-        }
-      } else {
-        valueField = get(dataQuery, [EXTRA_FIELD], '');
-      }
+
+      const valueField: string = dataQuery[EXTRA_FIELD];
+      const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
         spreadsheet,
