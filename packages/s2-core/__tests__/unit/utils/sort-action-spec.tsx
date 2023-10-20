@@ -714,4 +714,56 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       },
     ]);
   });
+
+  test('should sort by col total whit group', () => {
+    const currentOptions = {
+      totals: {
+        col: {
+          totalsGroupDimensions: ['city'],
+          showGrandTotals: true,
+        },
+      },
+    } as S2Options;
+
+    const dataConfig = {
+      ...sortData,
+      data: [
+        ...sortData.data,
+        {
+          city: '杭州',
+          type: '纸张',
+          price: '999',
+        },
+        {
+          city: '杭州',
+          type: '笔',
+          price: '666',
+        },
+      ],
+      fields: {
+        rows: ['type'],
+        columns: ['province', 'city'],
+        values: ['price'],
+      },
+    };
+    sheet = new PivotSheet(getContainer(), dataConfig, currentOptions);
+    sheet.render();
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: {
+        [EXTRA_FIELD]: 'price',
+        city: '杭州',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet: sheet.dataSet,
+      sortParam,
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toMatchSnapshot();
+  });
 });
