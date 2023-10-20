@@ -9,7 +9,12 @@ import {
   reduce,
   set,
 } from 'lodash';
-import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import {
+  EXTRA_FIELD,
+  ID_SEPARATOR,
+  ROOT_ID,
+  TOTAL_VALUE,
+} from '../../common/constant';
 import type { Meta } from '../../common/interface/basic';
 import type {
   DataPathParams,
@@ -48,8 +53,8 @@ export function transformDimensionsValues(
       }
       // push undefined when not exist
       const value = record[dimension];
-      if (value === undefined) {
-        res.push(value);
+      if (!(dimension in record)) {
+        res.push(TOTAL_VALUE);
       } else {
         res.push(String(value));
       }
@@ -150,9 +155,9 @@ export function getDataPath(params: DataPathParams) {
     return map;
   };
 
-  // 根据行、列维度值生成对应的 path路径，有两个情况
-  // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
-  // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
+  // 根据行、列维度值生成对应的 path 路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
+  // 如果是汇总格子: path = [0,0,0,0] path中会存在 0 的值
+  // 如果是明细格子: path = [1,1,1] 数字均不为 0
   const getPath = (
     dimensionValues: string[],
     isRow = true,
@@ -164,10 +169,11 @@ export function getDataPath(params: DataPathParams) {
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
+      const isTotal = isUndefined(value);
       if (!currentMeta.has(value)) {
         if (isFirstCreate) {
           currentMeta.set(value, {
-            level: currentMeta.size,
+            level: isTotal ? 0 : currentMeta.size + 1,
             children:
               dimensionValues[i + 1] === EXTRA_FIELD
                 ? appendValues()
