@@ -306,6 +306,9 @@ export class Node {
 
   public isTotalRoot?: boolean;
 
+  /**
+   * @deprecated 已废弃, 该属性只记录相邻一级的隐藏信息，将会在未来版本中移除
+   */
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
 
   public extra?: Record<string, any>;

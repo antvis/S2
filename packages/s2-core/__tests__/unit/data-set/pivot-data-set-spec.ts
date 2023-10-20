@@ -158,6 +158,10 @@ describe('Pivot Dataset Test', () => {
         getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
       ).toEqual(['number', 'number', 'number', 'number']);
     });
+
+    test('should get correctly empty dataset result', () => {
+      expect(dataSet.isEmpty()).toBeFalsy();
+    });
   });
 
   describe('test for query data', () => {

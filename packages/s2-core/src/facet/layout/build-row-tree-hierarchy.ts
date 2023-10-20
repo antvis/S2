@@ -20,7 +20,13 @@ const addTotals = (
   // TODO valueInCol = false and one or more values
   if (totalsConfig.showGrandTotals) {
     const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-    fieldValues[func](new TotalClass(totalsConfig.label, false, true));
+    fieldValues[func](
+      new TotalClass({
+        label: totalsConfig.label,
+        isSubTotals: false,
+        isGrandTotals: true,
+      }),
+    );
   }
 };
 

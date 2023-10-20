@@ -9,6 +9,7 @@ import {
   set,
 } from 'lodash';
 import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import type { Meta } from '../../common/interface/basic';
 import type {
   DataPathParams,
   DataType,
@@ -16,7 +17,6 @@ import type {
   SortedDimensionValues,
   TotalStatus,
 } from '../../data-set/interface';
-import type { Meta } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 
 interface Param {
@@ -344,7 +344,7 @@ export function generateExtraFieldMeta(
   return extraFieldMeta;
 }
 
-export function getTotalStatusByRowCol(row: Node, col: Node): TotalStatus {
+export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
   return {
     isRowTotal: row.isGrandTotals,
     isRowSubTotal: row.isSubTotals,

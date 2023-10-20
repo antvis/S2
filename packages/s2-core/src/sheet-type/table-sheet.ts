@@ -123,6 +123,7 @@ export class TableSheet extends SpreadSheet {
       }
       return new TableDataCell(facet, this);
     };
+
     return {
       ...this.options,
       ...fields,

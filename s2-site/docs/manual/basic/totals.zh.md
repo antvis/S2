@@ -51,7 +51,7 @@ order: 5
 
 按维度进行 小计/总计 的汇总计算，用于进行某一维度的数据对比分析等。
 
-<Playground path='analysis/totals/demo/dimension-group.ts' rid='pivot-hide-columns' height='400'></playground>
+<Playground path='analysis/totals/demo/dimension-group.ts' rid='pivot-total-group' height='400'></playground>
 
 #### 行总计小计分组
 
@@ -61,7 +61,7 @@ order: 5
 
 #### 列总计小计分组
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4Ek5QbkWAuQAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="row" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4Ek5QbkWAuQAAAAAAAAAAAAADmJ7AQ/original" width="600"  alt="col" />
 
 ## 使用
 
@@ -93,8 +93,8 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | subLabel                               | 小计别名                                               | `string`     |                    |      |
 | calcTotals                             | 计算总计                                               | `CalcTotals` |                    |      |
 | calcSubTotals                          | 计算小计                                               | `CalcTotals` |                    |      |
-| totalsDimensionsGroup                  | 总计的分组维度                                            |`string[]`    |                    |      |
-| subTotalsDimensionsGroup               | 小计的分组维度                                            |  `string[]`            |                    |      |
+| totalsGroupDimensions                  | 总计的分组维度                                            |`string[]`    |                    |      |
+| subTotalsGroupDimensions               | 小计的分组维度                                            |  `string[]`            |                    |      |
 
 ```ts
 const s2Options = {
@@ -105,8 +105,8 @@ const s2Options = {
       reverseLayout: true,
       reverseSubLayout: true,
       subTotalsDimensions: ['province'],
-      totalsDimensionsGroup: ['city'],
-      subTotalsDimensionsGroup: ['type', 'sub_type'],    
+      totalsGroupDimensions: ['city'],
+      subTotalsGroupDimensions: ['type', 'sub_type'],    
     },
     col: {
       showGrandTotals: true,

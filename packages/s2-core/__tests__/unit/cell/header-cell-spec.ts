@@ -92,6 +92,7 @@ describe('header cell formatter test', () => {
         label: '总计',
         isTotals: true,
         isGrandTotals: true,
+        isTotalRoot: true,
       });
 
       const rowSubTotalNode = new Node({

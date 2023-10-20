@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetSortByMeasureValues Total Fallback Tests should sort by col total whit group 1`] = `
+Array [
+  Object {
+    "$$extra$$": "price",
+    "$$value$$": "666",
+    "city": "杭州",
+    "price": "666",
+    "type": "笔",
+  },
+  Object {
+    "$$extra$$": "price",
+    "$$value$$": "999",
+    "city": "杭州",
+    "price": "999",
+    "type": "纸张",
+  },
+]
+`;
