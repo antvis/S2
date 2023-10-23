@@ -26,8 +26,9 @@ s2.dataSet.getFieldName('type')
 | getDisplayDataSet   | 获取当前显示的数据集               | () => [DataType[]](#datatype)                                |                                             |
 | getDimensionValues  | 获取维值                           | (filed: string, query?: [DataType](#datatype) ) => string[]  |                                             |
 | getCellData         | 获取单个的单元格数据               | (params: [CellDataParams](#celldataparams)) => [DataType[]](#datatype) |                                             |
-| getMultiData        | 获取批量的单元格数据               | (query: [DataType](#datatype), isTotals?: boolean, isRow?: boolean, drillDownFields?: string[]) => [DataType[]](#datatype) |                                             |
+| getMultiData        | 获取批量的单元格数据               | (query: [DataType](#datatype), isTotals?: boolean, isRow?: boolean, drillDownFields?: string[], includeTotalData:boolean) => [DataType[]](#datatype) |                                             |
 | moreThanOneValue    | 是否超过 1 个数值                  | () => [ViewMeta](#viewmeta)                                  |                                             |
+| isEmpty    | 是否为空数据集                 | () => `boolean`                                 |      `@antv/s2-v1.51.1`                                       |
 
 ### DataType
 

@@ -357,9 +357,7 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle = cell.getStyle(
-    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
-  );
+  const cellStyle = cell.getStyle(cell.cellType || CellTypes.DATA_CELL);
 
   let textStyle: TextTheme;
   if (isMeasureField) {

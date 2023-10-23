@@ -25,8 +25,8 @@ object is **required** , *default: null* Function description: Subtotal calculat
 | subLabel                                                                             | subtotal alias                                                                                        | `string`     |          |          |     |
 | calcTotals                                                                           | calculate the total                                                                                   | `CalcTotals` |          |          |     |
 | calcSubTotals                                                                        | calculate subtotal                                                                                    | `CalcTotals` |          |          |     |
-| totalsDimensionsGroup                  | grouping dimension of the total                                                                       |`string[]`    |                    |      |
-| subTotalsDimensionsGroup               | grouping dimension of the subtotal                                                                    |  `string[]`            |                    |      |
+| totalsGroupDimensions                  | grouping dimension of the total                                                                       |`string[]`    |                    |      |
+| subTotalsGroupDimensions               | grouping dimension of the subtotal                                                                    |  `string[]`            |                    |      |
 
 ```typescript
  const s2Options = {
@@ -37,8 +37,8 @@ object is **required** , *default: null* Function description: Subtotal calculat
       reverseLayout: true,
       reverseSubLayout: true,
       subTotalsDimensions: [ 'province' ],
-      totalsDimensionsGroup: ['city'],
-      subTotalsDimensionsGroup: ['type', 'sub_type'],
+      totalsGroupDimensions: ['city'],
+      subTotalsGroupDimensions: ['type', 'sub_type'],
     },
     col: {
       showGrandTotals: true,

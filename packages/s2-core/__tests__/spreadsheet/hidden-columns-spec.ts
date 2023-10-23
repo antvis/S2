@@ -347,6 +347,34 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsInfo).toBeTruthy();
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
+    // https://github.com/antvis/S2/issues/2355
+    test('should render correctly x and width after hide columns when there is only one value for the higher-level dimension.', () => {
+      const nodeId = 'root[&]笔[&]义乌[&]price';
+
+      pivotSheet.setOptions({
+        style: {
+          colCfg: {
+            width: 100,
+          },
+        },
+      });
+      const data = pivotSheet.dataCfg.data.map((i) => ({ ...i, cost: 0 }));
+      pivotSheet.setDataCfg({
+        data,
+        fields: {
+          values: ['cost', 'price'],
+        },
+      });
+      pivotSheet.render();
+
+      pivotSheet.interaction.hideColumns([nodeId]);
+      const rootNode = pivotSheet
+        .getColumnNodes()
+        .find((node) => node.id === 'root[&]笔');
+
+      expect(rootNode.width).toEqual(300);
+      expect(rootNode.x).toEqual(0);
+    });
 
     // https://github.com/antvis/S2/issues/2194
     test('should render correctly when always hidden last column', () => {

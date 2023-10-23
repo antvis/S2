@@ -1,4 +1,5 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { MergedCell } from '../../cell';
 import type { CellTypes } from '../../common/constant';
 import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
@@ -12,7 +13,6 @@ import type { BaseHeaderConfig } from '../../facet/header/base';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
-import type { MergedCell } from '../../cell';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
 
@@ -152,9 +152,9 @@ export interface Total {
   // sub label's display name, default = '小计'
   subLabel?: string;
   /** 总计分组维度 */
-  totalsDimensionsGroup?: string[];
+  totalsGroupDimensions?: string[];
   /** 小计分组维度 */
-  subTotalsDimensionsGroup?: string[];
+  subTotalsGroupDimensions?: string[];
 }
 
 /**
