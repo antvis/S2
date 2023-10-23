@@ -1,4 +1,5 @@
-import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
+import { every, get, isUndefined, keys, reduce } from 'lodash';
+import { TOTAL_VALUE } from '../common/constant/basic';
 import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (
@@ -27,8 +28,8 @@ export const getListBySorted = (
   });
 };
 
-export const filterUndefined = (values: string[]) => {
-  return filter(values, (t) => !isUndefined(t) && t !== 'undefined');
+export const filterTotal = (values: string[] = []) => {
+  return values.filter((v) => v !== TOTAL_VALUE);
 };
 
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
@@ -108,7 +109,7 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
  * @returns
  */
 export const isTotalData = (ids: string[], data: Data): boolean => {
-  return !every(ids, (id) => data[id]);
+  return !every(ids, (id) => id in data);
 };
 
 /**

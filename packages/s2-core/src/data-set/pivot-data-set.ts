@@ -40,14 +40,13 @@ import type {
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
-  filterUndefined,
+  filterTotal,
   flatten as customFlatten,
   flattenDeep as customFlattenDeep,
   getAggregationAndCalcFuncByQuery,
   getFieldKeysByDimensionValues,
   getListBySorted,
   isEveryUndefined,
-  isTotalData,
   splitTotal,
 } from '../utils/data-set-operate';
 import {
@@ -165,7 +164,6 @@ export class PivotDataSet extends BaseDataSet {
       originData,
       totalData,
       indexesData: this.indexesData,
-
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
@@ -329,7 +327,7 @@ export class PivotDataSet extends BaseDataSet {
         field,
       }),
     );
-    return filterUndefined(
+    return filterTotal(
       uniq(getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues])),
     );
   }
@@ -371,16 +369,16 @@ export class PivotDataSet extends BaseDataSet {
       if (isEmpty(sortedMeta)) {
         return [];
       }
-      return filterUndefined(getListBySorted([...meta.keys()], sortedMeta));
+      return filterTotal(getListBySorted([...meta.keys()], sortedMeta));
     }
 
     if (this.sortedDimensionValues[field]) {
-      return filterUndefined(
+      return filterTotal(
         getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
       );
     }
 
-    return filterUndefined([...meta.keys()]);
+    return filterTotal([...meta.keys()]);
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
@@ -429,6 +427,7 @@ export class PivotDataSet extends BaseDataSet {
     if (!isTotals || isDrillDown) {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
+
     const rowDimensionValues = transformDimensionsValues(query, rows);
     const colDimensionValues = transformDimensionsValues(
       query,
@@ -437,8 +436,6 @@ export class PivotDataSet extends BaseDataSet {
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined:
-        isTotals || isTotalData([].concat(originRows).concat(columns), query),
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
@@ -447,7 +444,10 @@ export class PivotDataSet extends BaseDataSet {
       // 如果已经有数据则取已有数据
       return DataHandler.createProxyData(data, query[EXTRA_FIELD]);
     }
-    return isTotals ? this.getTotalValue(query, totalStatus) : data;
+
+    if (isTotals) {
+      return this.getTotalValue(query, totalStatus);
+    }
   }
 
   getCustomData = (path: number[]) => {
@@ -630,9 +630,6 @@ export class PivotDataSet extends BaseDataSet {
       const path = getDataPath({
         rowDimensionValues,
         colDimensionValues,
-        careUndefined: true,
-        rowFields: rows,
-        colFields: columns as string[],
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
@@ -646,7 +643,7 @@ export class PivotDataSet extends BaseDataSet {
     query: Query,
     isTotals?: boolean,
     isRow?: boolean,
-    drillDownFields?: string[],
+    drillDownFields: string[] = [],
     includeTotalData?: boolean,
   ): DataType[] {
     if (isEmpty(query)) {
@@ -672,9 +669,6 @@ export class PivotDataSet extends BaseDataSet {
       const path = getDataPath({
         rowDimensionValues,
         colDimensionValues,
-        careUndefined: true,
-        rowFields: rows,
-        colFields: columns as string[],
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });

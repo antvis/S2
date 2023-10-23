@@ -13,7 +13,7 @@ import { PivotDataSet } from './pivot-data-set';
 export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {
     const { query } = params;
-    const { columns, rows } = this.fields;
+    const { rows, columns } = this.fields;
     const rowDimensionValues = transformDimensionsValues(query, rows);
     // 透视表下columns只支持简单结构
     const colDimensionValues = transformDimensionsValues(
@@ -25,10 +25,6 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
-      isFirstCreate: true,
-      careUndefined: true,
-      rowFields: rows,
-      colFields: columns as string[],
     });
     const data = get(this.indexesData, path);
     if (data) {

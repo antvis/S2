@@ -35,13 +35,14 @@ describe('PivotDataSet util test', () => {
   });
 
   test('for transformIndexesData function', () => {
-    const { rows, columns } = dataCfg.fields;
+    const { rows, columns, values } = dataCfg.fields;
     const sortedDimensionValues = {};
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
     const result = transformIndexesData({
       rows,
       columns: columns as string[],
+      values,
       originData: dataCfg.data,
       totalData: [],
       indexesData: [],
@@ -105,7 +106,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: true,
-      careUndefined: false,
       rowFields: rows,
       colFields: columns,
     });
@@ -124,7 +124,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: false,
-      careUndefined: false,
     });
     expect(rowPivotMeta.size).toEqual(0);
     expect(colPivotMeta.size).toEqual(0);
@@ -142,7 +141,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: true,
-      careUndefined: false,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
@@ -162,7 +160,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: true,
-      careUndefined: false,
       rowFields: rows,
       colFields: columns,
     });

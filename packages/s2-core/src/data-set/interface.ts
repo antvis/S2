@@ -25,15 +25,11 @@ export type DataPathParams = {
   isFirstCreate?: boolean;
   // callback when pivot map create node
   onFirstCreate?: (params: {
-    // 是否是行头字段
-    isRow: boolean;
     // 维度 id，如 city
     dimension: string;
     // 维度数组 ['四川省', '成都市']
     dimensionPath: string[];
   }) => void;
-  // use for multiple data queries（path contains undefined）
-  careUndefined?: boolean;
   // use in row tree mode to append fields information
   rowFields?: string[];
   colFields?: string[];

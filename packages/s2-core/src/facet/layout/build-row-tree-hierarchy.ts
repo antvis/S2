@@ -2,7 +2,7 @@ import { isNumber } from 'lodash';
 import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
-import { filterUndefined, getListBySorted } from '../../utils/data-set-operate';
+import { filterTotal, getListBySorted } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
 import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
@@ -53,7 +53,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
-  const unsortedDimValues = filterUndefined(Array.from(pivotMeta.keys()));
+  const unsortedDimValues = filterTotal(Array.from(pivotMeta.keys()));
   const dimValues = getListBySorted(
     unsortedDimValues,
     sortedDimensionValues,
