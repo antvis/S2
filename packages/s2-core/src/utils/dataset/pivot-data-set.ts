@@ -1,13 +1,4 @@
-import {
-  find,
-  forEach,
-  get,
-  intersection,
-  isEmpty,
-  last,
-  reduce,
-  set,
-} from 'lodash';
+import { find, forEach, get, intersection, isEmpty, last, set } from 'lodash';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
@@ -43,26 +34,22 @@ import type { Node } from '../../facet/layout/node';
 
 export function transformDimensionsValues(
   record: DataType,
-  dimensions: string[],
+  dimensions: string[] = [],
   placeholder: string = TOTAL_VALUE,
 ): string[] {
-  return reduce(
-    dimensions,
-    (res: string[], dimension: string) => {
-      if (dimension === EXTRA_FIELD) {
-        return res;
-      }
-      // push undefined when not exist
-      const value = record[dimension];
-      if (!(dimension in record)) {
-        res.push(placeholder);
-      } else {
-        res.push(String(value));
-      }
+  return dimensions.reduce((res: string[], dimension: string) => {
+    if (dimension === EXTRA_FIELD) {
       return res;
-    },
-    [],
-  );
+    }
+    // push undefined when not exist
+    const value = record[dimension];
+    if (!(dimension in record)) {
+      res.push(placeholder);
+    } else {
+      res.push(String(value));
+    }
+    return res;
+  }, []);
 }
 
 /**
@@ -197,16 +184,18 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
+  const totalLength = rowDimensionValues.length + colDimensionValues.length;
   const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta);
   const colPath = getPath(colFields, colDimensionValues, colPivotMeta);
-  return rowPath.concat(...colPath);
+
+  return [totalLength, ...rowPath, ...colPath];
 }
 interface Param {
   rows: string[];
   columns: string[];
   values: string[];
   originData: DataType[];
-  indexesData: DataType[][] | DataType[];
+  indexesData: Record<number, DataType[][] | DataType[]>;
   totalData?: DataType[];
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
@@ -222,8 +211,8 @@ export function transformIndexesData(params: Param) {
     columns,
     values,
     originData = [],
-    indexesData = [],
     totalData = [],
+    indexesData = {},
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,

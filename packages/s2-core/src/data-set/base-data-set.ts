@@ -42,7 +42,7 @@ export abstract class BaseDataSet {
   public totalData: DataType[];
 
   // multidimensional array to indexes data
-  public indexesData: DataType[][] | DataType[];
+  public indexesData: Record<number, DataType[][] | DataType[]>;
 
   // 高级排序, 组内排序
   public sortParams: SortParams;
@@ -100,7 +100,7 @@ export abstract class BaseDataSet {
     this.sortParams = sortParams;
     this.filterParams = filterParams;
     this.displayData = this.originData;
-    this.indexesData = [];
+    this.indexesData = {};
   }
 
   public processMeta(meta: Meta[] = [], defaultExtraFieldText: string) {
