@@ -297,18 +297,22 @@ export const drawInterval = (cell: DataCell) => {
 };
 
 /**
- *  绘制单元格内的 mini子弹图
+ *  绘制单元格内的 mini 子弹图
  */
 export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
   const { x, y, height, width, spreadsheet } = cell.getMeta();
 
   if (isEmpty(value)) {
-    renderText(cell, [], {
-      x: x + width - dataCellStyle.cell.padding.right,
-      y: y + height / 2,
-      text: getEmptyPlaceholder(cell, spreadsheet.options.placeholder)!,
-      ...dataCellStyle.text,
+    // TODO: cell.renderTextShape()
+    renderText({
+      group: cell,
+      style: {
+        x: x + width - dataCellStyle.cell.padding.right,
+        y: y + height / 2,
+        text: getEmptyPlaceholder(cell, spreadsheet.options.placeholder)!,
+        ...dataCellStyle.text,
+      },
     });
 
     return;
@@ -400,11 +404,14 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     fontParam: dataCellStyle.text,
   });
 
-  renderText(cell, [], {
-    x: positionX - padding.right,
-    y: y + height / 2,
-    text,
-    ...dataCellStyle.text,
+  renderText({
+    group: cell,
+    style: {
+      x: positionX - padding.right,
+      y: y + height / 2,
+      text,
+      ...dataCellStyle.text,
+    },
   });
 };
 

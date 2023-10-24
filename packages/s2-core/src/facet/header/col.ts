@@ -6,7 +6,6 @@ import {
   KEY_GROUP_COL_SCROLL,
 } from '../../common/constant';
 import type { S2CellType } from '../../common/interface';
-import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { BaseHeader } from './base';
@@ -24,6 +23,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     super(cfg);
 
     this.initScrollGroup();
+  }
+
+  protected getCellInstance(node: Node): S2CellType {
+    const { spreadsheet } = node;
+    const { colCell } = node.spreadsheet.options;
+
+    return (
+      colCell?.(node, spreadsheet, this.headerConfig) ||
+      new ColCell(node, spreadsheet, this.headerConfig)
+    );
   }
 
   private initScrollGroup() {
@@ -66,14 +75,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.background?.remove();
   }
 
-  protected getCellInstance(
-    node: Node,
-    spreadsheet: SpreadSheet,
-    headerConfig: ColHeaderConfig,
-  ): S2CellType {
-    return new ColCell(node, spreadsheet, headerConfig);
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected getCellGroup(node: Node): Group {
     return this.scrollGroup;
@@ -91,14 +92,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const { nodes, spreadsheet } = this.headerConfig;
-    const { colCell } = spreadsheet.options;
+    const { nodes } = this.headerConfig;
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
-        const cell =
-          colCell?.(node, spreadsheet, this.headerConfig) ||
-          this.getCellInstance(node, spreadsheet, this.headerConfig);
+        const cell = this.getCellInstance(node);
 
         node.belongsCell = cell;
 

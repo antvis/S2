@@ -9,6 +9,7 @@ export class Tab extends PureComponent<AttributeTreeProps> {
   renderTabPane = (childrenConfig: AttributeComponentProps[]) => {
     return map(childrenConfig, (configItem, idx) => {
       const { displayName, children } = configItem;
+
       return (
         <Tabs.TabPane tab={displayName} key={`${displayName}-${idx}`}>
           {map(children, (childConfigItem, idx) => {
@@ -27,6 +28,7 @@ export class Tab extends PureComponent<AttributeTreeProps> {
 
   render() {
     const { config } = this.props;
+
     return (
       <Tabs className="flex-tabs">{this.renderTabPane(config.children)}</Tabs>
     );

@@ -146,7 +146,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
 
-      // sortParam的query，和type本身可能会 undefined
+      // sortParam 的 query，和 type 本身可能会 undefined
       return (
         query &&
         isEqual(sortParam?.query, query) &&

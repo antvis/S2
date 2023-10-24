@@ -5,6 +5,7 @@ import type {
   Polygon,
   Rect,
   Text,
+  TextStyleProps,
 } from '@antv/g';
 import { Group } from '@antv/g';
 import {
@@ -17,8 +18,8 @@ import {
   isNumber,
   keys,
   pickBy,
+  sumBy,
 } from 'lodash';
-import type { SimpleBBox } from '../engine';
 import {
   CellType,
   DEFAULT_FONT_COLOR,
@@ -27,31 +28,43 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
+import type { GuiIcon } from '../common/icons/gui-icon';
 import {
+  CellBorderPosition,
+  CellClipBox,
+  type Condition,
+  type ConditionMappingResult,
+  type Conditions,
   type DefaultCellTheme,
   type FormatResult,
-  type ResizeInteractionOptions,
+  type HeaderActionNameOptions,
+  type IconCondition,
+  type IconPosition,
+  type InteractionStateTheme,
+  type InternalFullyCellTheme,
+  type InternalFullyTheme,
+  type RenderTextShapeOptions,
   type ResizeArea,
+  type ResizeInteractionOptions,
   type S2CellType,
   type StateShapeLayer,
   type TextTheme,
-  type Conditions,
-  type Condition,
-  type ConditionMappingResult,
-  CellClipBox,
-  CellBorderPosition,
-  type InteractionStateTheme,
-  type HeaderActionNameOptions,
-  type IconPosition,
-  type InternalFullyTheme,
-  type InternalFullyCellTheme,
-  type IconCondition,
 } from '../common/interface';
+import type { ViewMeta } from '../common/interface/basic';
+import type { SimpleBBox } from '../engine';
+import type { CustomText } from '../engine/CustomText';
+import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
 } from '../utils/cell/cell';
+import {
+  getIconTotalWidth,
+  type GroupedIcons,
+} from '../utils/cell/header-cell';
+import { shouldReverseFontColor } from '../utils/color';
+import { getIconPosition } from '../utils/condition/condition';
 import {
   renderIcon,
   renderLine,
@@ -59,19 +72,12 @@ import {
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { isMobile } from '../utils/is-mobile';
-import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
-import type { GuiIcon } from '../common/icons/gui-icon';
-import type { CustomText } from '../engine/CustomText';
-import { shouldReverseFontColor } from '../utils/color';
-import { getIconPosition } from '../utils/condition/condition';
-import {
-  getIconTotalWidth,
-  type GroupedIcons,
-} from '../utils/cell/header-cell';
 import { checkIsLinkField } from '../utils/interaction/link-field';
-import type { Node } from '../facet/layout/node';
-import type { ViewMeta } from '../common/interface/basic';
+import { isMobile } from '../utils/is-mobile';
+import {
+  getDisplayText,
+  getEmptyPlaceholder as getEmptyPlaceholderInner,
+} from '../utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -94,11 +100,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // link text underline shape
   protected linkFieldShape: Line;
 
-  // actualText
   protected actualText: string;
 
-  // actual text width after be ellipsis
-  protected actualTextWidth = 0;
+  protected originalText: string;
 
   protected conditions: Conditions;
 
@@ -112,52 +116,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
-
-  public constructor(
-    meta: T,
-    spreadsheet: SpreadSheet,
-    ...restOptions: unknown[]
-  ) {
-    super({});
-    this.meta = meta;
-    this.spreadsheet = spreadsheet;
-    this.theme = spreadsheet.theme;
-    this.conditions = this.spreadsheet.options.conditions!;
-    this.groupedIcons = { left: [], right: [] };
-    this.handleRestOptions(...restOptions);
-    if (this.shouldInit()) {
-      this.initCell();
-    }
-  }
-
-  public getMeta(): T {
-    return this.meta;
-  }
-
-  public setMeta(viewMeta: T) {
-    this.meta = viewMeta;
-  }
-
-  public getIconStyle() {
-    return this.theme[this.cellType]?.icon;
-  }
-
-  public getActualText() {
-    return this.actualText;
-  }
-
-  public getFieldValue() {
-    return this.getFormattedFieldValue().formattedValue;
-  }
-
-  /**
-   * in case there are more params to be handled
-   * @param options any type's rest params
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected handleRestOptions(...options: unknown[]) {
-    // default do nothing
-  }
 
   /* -------------------------------------------------------------------------- */
   /*           abstract functions that must be implemented by subtype           */
@@ -198,9 +156,129 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     condition: Condition,
   ): ConditionMappingResult | undefined | null;
 
+  public constructor(
+    meta: T,
+    spreadsheet: SpreadSheet,
+    ...restOptions: unknown[]
+  ) {
+    super({});
+    this.meta = meta;
+    this.spreadsheet = spreadsheet;
+    this.theme = spreadsheet.theme;
+    this.conditions = this.spreadsheet.options.conditions!;
+    this.groupedIcons = { left: [], right: [] };
+    this.handleRestOptions(...restOptions);
+    if (this.shouldInit()) {
+      this.initCell();
+    }
+  }
+
+  /**
+   * in case there are more params to be handled
+   * @param options any type's rest params
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected handleRestOptions(...options: unknown[]) {}
+
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
+
+  public getMeta(): T {
+    return this.meta;
+  }
+
+  public setMeta(viewMeta: T) {
+    this.meta = viewMeta;
+  }
+
+  public getIconStyle() {
+    return this.theme[this.cellType]?.icon;
+  }
+
+  /**
+   * 获取实际渲染的文本 (含省略号)
+   */
+  public getActualText(): string {
+    return this.actualText;
+  }
+
+  /**
+   * 实际渲染的文本宽度, 如果是多行文本, 取最大的一行宽度
+   */
+  public getActualTextWidth(): number {
+    return this.textShape?.getComputedTextLength() || 0;
+  }
+
+  /**
+   * 实际渲染的文本宽度, 如果是多行文本, 取每一行文本高度的总和)
+   * @alias getMultiLineActualTextHeight
+   */
+  public getActualTextHeight(): number {
+    return this.getMultiLineActualTextHeight();
+  }
+
+  /**
+   * 获取实际渲染的多行文本 (含省略号)
+   */
+  public getMultiLineActualTexts(): string[] {
+    return this.textShape?.parsedStyle.metrics?.lines || [];
+  }
+
+  /**
+   * 实际渲染的多行文本宽度 (每一行文本宽度的总和)
+   */
+  public getMultiLineActualTextWidth(): number {
+    return sumBy(this.getTextLineBoundingRects(), 'width') || 0;
+  }
+
+  /**
+   * 实际渲染的多行文本高度 (每一行文本高度的总和)
+   * @alias getActualTextHeight
+   */
+  public getMultiLineActualTextHeight(): number {
+    return sumBy(this.getTextLineBoundingRects(), 'height') || 0;
+  }
+
+  /**
+   * 获取原始的文本 (不含省略号)
+   */
+  public getOriginalText(): string {
+    return this.originalText;
+  }
+
+  /**
+   * 文本是否溢出 (有省略号)
+   */
+  public isTextOverflowing() {
+    return this.textShape?.isOverflowing();
+  }
+
+  /**
+   * 是否是多行文本
+   */
+  public isMultiLineText() {
+    return this.getTextLineBoundingRects().length > 1;
+  }
+
+  public getEmptyPlaceholder() {
+    const {
+      options: { placeholder },
+    } = this.spreadsheet;
+
+    return getEmptyPlaceholderInner(this, placeholder);
+  }
+
+  /**
+   * 获取文本包围盒
+   */
+  public getTextLineBoundingRects() {
+    return this.textShape?.getLineBoundingRects() || [];
+  }
+
+  public getFieldValue() {
+    return this.getFormattedFieldValue().formattedValue;
+  }
 
   protected shouldInit() {
     const { width, height } = this.meta;
@@ -313,34 +391,61 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
   }
 
-  protected drawTextShape() {
-    const { formattedValue } = this.getFormattedFieldValue();
-    const maxTextWidth = this.getMaxTextWidth();
-    const textStyle = this.getTextStyle();
-    const {
-      options: { placeholder },
-      measureTextWidth,
-    } = this.spreadsheet;
-    const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
-    const ellipsisText = getEllipsisText({
-      measureTextWidth,
-      text: formattedValue,
-      maxWidth: maxTextWidth,
-      fontParam: textStyle,
-      placeholder: emptyPlaceholder,
+  public renderTextShape(
+    style: TextStyleProps,
+    options?: RenderTextShapeOptions,
+  ): CustomText {
+    const text = getDisplayText(style.text, this.getEmptyPlaceholder());
+
+    this.textShape = renderText({
+      group: this,
+      textShape: options?.shallowRender ? undefined : this.textShape,
+      style: {
+        ...style,
+        text,
+      },
     });
 
-    this.actualText = ellipsisText;
-    this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+    this.addTextShape(this.textShape);
+
+    if (options?.shallowRender) {
+      return this.textShape;
+    }
+
+    // 兼容多行文本
+    const actualText = this.getMultiLineActualTexts().join('');
+
+    this.actualText = actualText;
+    this.originalText = text;
+
+    return this.textShape;
+  }
+
+  public drawTextShape(options?: RenderTextShapeOptions) {
+    // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号 https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
+    const maxTextWidth = Math.max(this.getMaxTextWidth(), 0);
+    const textStyle = this.getTextStyle();
+
+    // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
+    const textShape = this.renderTextShape(
+      {
+        ...textStyle,
+        x: 0,
+        y: 0,
+        text: this.getFieldValue(),
+        wordWrapWidth: maxTextWidth,
+      },
+      options,
+    );
+
+    if (options?.shallowRender) {
+      return;
+    }
+
     const position = this.getTextPosition();
 
-    this.textShape = renderText(this, [this.textShape], {
-      x: position.x,
-      y: position.y,
-      text: ellipsisText,
-      ...textStyle,
-    }) as CustomText;
-    this.textShapes.push(this.textShape);
+    textShape.attr('x', position.x);
+    textShape.attr('y', position.y);
   }
 
   protected drawLinkFieldShape(
@@ -351,20 +456,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return;
     }
 
-    const device = this.spreadsheet.options.device;
+    const { device } = this.spreadsheet.options;
 
     // 配置了链接跳转
     if (!isMobile(device)) {
       const textStyle = this.getTextStyle();
       const position = this.getTextPosition();
+      const actualTextWidth = this.getActualTextWidth();
 
       // 默认居左，其他align方式需要调整
       let startX = position.x;
 
       if (textStyle.textAlign === 'center') {
-        startX -= this.actualTextWidth / 2;
+        startX -= actualTextWidth / 2;
       } else if (textStyle.textAlign === 'right') {
-        startX -= this.actualTextWidth;
+        startX -= actualTextWidth;
       }
 
       const { bottom: maxY } = this.textShape.getBBox();
@@ -373,7 +479,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         x1: startX,
         y1: maxY + 1,
         // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
-        x2: startX + this.actualTextWidth,
+        x2: startX + actualTextWidth,
         y2: maxY + 1,
         stroke: linkFillColor,
         lineWidth: 1,
@@ -383,7 +489,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape.style.fill = linkFillColor;
     this.textShape.style.cursor = 'pointer';
     this.textShape.appendInfo = {
-      // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+      // 标记为行头(明细表行头其实就是 Data Cell)文本，方便做链接跳转直接识别
       isLinkFieldText: true,
       cellData: this.meta,
     };

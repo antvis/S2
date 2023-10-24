@@ -7,7 +7,7 @@ import { size, find } from 'lodash';
 import { Renderer } from '@antv/g-canvas';
 import { getMockPivotMeta } from './util';
 import { Node } from '@/facet/layout/node';
-import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
+import { DEFAULT_TREE_ROW_CELL_WIDTH } from '@/common/constant/options';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -239,11 +239,11 @@ describe('Pivot Mode Facet Test', () => {
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
-      expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_WIDTH);
+      expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_CELL_WIDTH);
       expect(rowCell?.width).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
-        expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
+        expect(node.width).toBe(DEFAULT_TREE_ROW_CELL_WIDTH);
         expect(node.height).toBe(dataCell!.height!);
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);

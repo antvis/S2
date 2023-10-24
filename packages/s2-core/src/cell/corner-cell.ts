@@ -1,35 +1,35 @@
 import type { PointLike } from '@antv/g';
-import { isEmpty, last, max } from 'lodash';
+import { last } from 'lodash';
 import {
   CellType,
-  ELLIPSIS_SYMBOL,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
+import type {
+  FormatResult,
+  RenderTextShapeOptions,
+  TextTheme,
+} from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface';
-import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
+import { CustomRect } from '../engine';
+import type { CornerHeaderConfig } from '../facet/header/interface';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
 } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import { renderText, renderTreeIcon } from '../utils/g-renders';
+import { renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
-import { isIPhoneX } from '../utils/is-mobile';
-import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
-import type { CornerHeaderConfig } from '../facet/header/interface';
-import { CustomRect } from '../engine';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
-  /* 角头类型 */
   public cornerType: CornerNodeType;
 
   protected declare headerConfig: CornerHeaderConfig;
@@ -61,52 +61,11 @@ export class CornerCell extends HeaderCell {
     this.drawResizeArea();
   }
 
-  protected drawTextShape() {
+  public drawTextShape(options?: RenderTextShapeOptions) {
     const { x, y, height, width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-
     const textStyle = this.getTextStyle();
-    const cornerText = this.getCornerText();
-
+    const cornerText = this.getFieldValue();
     const maxWidth = this.getMaxTextWidth();
-    const emptyPlaceholder = getEmptyPlaceholder(
-      this.meta,
-      this.spreadsheet.options.placeholder,
-    );
-    const { measureTextWidth } = this.spreadsheet;
-    const text = getEllipsisText({
-      measureTextWidth,
-      text: cornerText,
-      maxWidth,
-      fontParam: textStyle,
-      placeholder: emptyPlaceholder,
-    });
-
-    this.actualText = text;
-    const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
-
-    let firstLine: string = text;
-    let secondLine = '';
-
-    // 存在文字的省略号 & 展示为tree结构
-    if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
-      // 剪裁到 ... 最有点的后1个像素位置
-      const lastIndex = ellipseIndex + (isIPhoneX() ? 1 : 0);
-
-      firstLine = cornerText.slice(0, lastIndex);
-      secondLine = cornerText.slice(lastIndex);
-      // 第二行重新计算...逻辑
-      secondLine = getEllipsisText({
-        measureTextWidth,
-        text: secondLine,
-        maxWidth,
-        fontParam: textStyle,
-      });
-    }
-
-    this.actualTextWidth = max([
-      measureTextWidth(firstLine, textStyle),
-      measureTextWidth(secondLine, textStyle),
-    ])!;
 
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: {
@@ -116,34 +75,23 @@ export class CornerCell extends HeaderCell {
         height,
       },
       textAlign: textStyle.textAlign!,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       groupedIcons: this.groupedIcons,
       iconStyle: this.getIconStyle()!,
     });
 
-    const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
+    const textY = y + height / 2;
 
-    // first line
-    this.addTextShape(
-      renderText(this, [this.textShapes[0]], {
+    this.renderTextShape(
+      {
+        ...textStyle,
         x: textX,
         y: textY,
-        text: firstLine,
-        ...textStyle,
-      }),
+        text: cornerText,
+        wordWrapWidth: maxWidth,
+      },
+      options,
     );
-
-    // second line
-    if (!isEmpty(secondLine)) {
-      this.addTextShape(
-        renderText(this, [this.textShapes[1]], {
-          x: textX,
-          y: y + height * 0.75,
-          text: secondLine,
-          ...textStyle,
-        }),
-      );
-    }
 
     const { size = 0 } = this.getStyle()!.icon!;
     const iconY = getVerticalIconPosition(
@@ -341,17 +289,11 @@ export class CornerCell extends HeaderCell {
     };
   }
 
-  // corner cell 不需要使用formatter进行格式化
+  // CornerCell 不需要使用 formatter 进行格式化
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
       this.spreadsheet.dataSet.getFieldName(this.meta.field),
     );
-  }
-
-  protected getCornerText(): string {
-    const { formattedValue } = this.getFormattedFieldValue();
-
-    return formattedValue;
   }
 }

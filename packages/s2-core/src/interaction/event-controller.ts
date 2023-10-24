@@ -6,9 +6,7 @@ import {
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
-
 import { GuiIcon } from '../common';
-
 import {
   CellType,
   GEventType,

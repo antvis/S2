@@ -10,8 +10,15 @@ import { mockGridAnalysisDataCfg } from '../../__tests__/data/grid-analysis-data
 export const mockGridAnalysisOptions: SheetComponentOptions = {
   width: 1600,
   height: 600,
+  interaction: {
+    selectedCellsSpotlight: true,
+  },
   style: {
     layoutWidthType: 'colAdaptive',
+    rowCell: {
+      width: 80,
+      height: 100,
+    },
     dataCell: {
       width: 400,
       height: 100,

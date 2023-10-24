@@ -1,4 +1,4 @@
-import type { LineStyleProps } from '@antv/g';
+import type { LineStyleProps, TextStyleProps } from '@antv/g';
 import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
@@ -40,7 +40,7 @@ export interface PaletteMeta {
 }
 
 export interface Palette extends PaletteMeta {
-  /*
+  /**
    * 基础色值（共15个）
    *
    * 1. 角头字体、列头字体
@@ -58,7 +58,6 @@ export interface Palette extends PaletteMeta {
    * 13. 横向大分割线
    * 14. 数据格字体
    * 15. 行头字体、数据格交互色(hover)
-   *
    */
   basicColors: string[];
 }
@@ -108,24 +107,28 @@ export interface TextAlignStyle {
   textBaseline?: TextBaseline;
 }
 
-export interface TextTheme extends TextAlignStyle {
-  /** 字体 */
-  fontFamily?: string;
-
+export interface TextTheme
+  extends TextAlignStyle,
+    Pick<
+      TextStyleProps,
+      | 'fontFamily'
+      | 'fontSize'
+      | 'fontWeight'
+      | 'fill'
+      | 'opacity'
+      | 'wordWrap'
+      | 'maxLines'
+      | 'lineHeight'
+      | 'textOverflow'
+    > {
   /** 字体大小 */
   fontSize?: number;
-
-  /** 字体粗细 */
-  fontWeight?: number | 'normal' | 'bold' | 'bolder' | 'lighter';
 
   /** 字体颜色 */
   fill?: string;
 
   /** 链接文本颜色 */
   linkTextFill?: string;
-
-  /** 字体透明度 */
-  opacity?: number;
 }
 
 export interface CellTheme {
@@ -195,6 +198,12 @@ export interface ResizeArea {
 
   /** 交互态 */
   interactionState?: InteractionState;
+
+  /** 单元格可拖拽最小宽度 */
+  minCellWidth?: number;
+
+  /** 单元格可拖拽最小高度 */
+  minCellHeight?: number;
 }
 
 export interface ScrollBarTheme {

@@ -1,6 +1,6 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
-import { TableSeriesNumberCell, TableDataCell } from '../cell';
+import { TableSeriesNumberCell, TableDataCell, TableColCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
@@ -350,7 +350,10 @@ export class TableFacet extends BaseFacet {
   }
 
   private getColNodeHeight(colNode: Node) {
-    return this.getDefaultColNodeHeight(colNode);
+    const colCell = new TableColCell(colNode, colNode.spreadsheet, {});
+    const defaultHeight = this.getDefaultColNodeHeight(colNode);
+
+    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   private calculateColNodesCoordinate(

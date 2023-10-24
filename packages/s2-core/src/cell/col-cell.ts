@@ -42,6 +42,10 @@ export class ColCell extends HeaderCell {
     return CellType.COL_CELL;
   }
 
+  public getHeaderConfig(): ColHeaderConfig {
+    return this.headerConfig;
+  }
+
   protected getBorderPositions(): CellBorderPosition[] {
     return [CellBorderPosition.TOP, CellBorderPosition.RIGHT];
   }
@@ -103,7 +107,7 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): PointLike {
     const { isLeaf } = this.meta;
-    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig;
+    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig || {};
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const textStyle = this.getTextStyle();
@@ -121,7 +125,7 @@ export class ColCell extends HeaderCell {
     if (isLeaf) {
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBox,
-        textWidth: this.actualTextWidth,
+        textWidth: this.getActualTextWidth(),
         textAlign: textStyle.textAlign!,
         groupedIcons: this.groupedIcons,
         iconStyle,
@@ -170,7 +174,7 @@ export class ColCell extends HeaderCell {
         {
           align: normalizeTextAlign(textAlign!),
           size: {
-            textSize: this.actualTextWidth,
+            textSize: this.getActualTextWidth(),
             iconStartSize: this.getActionAndConditionIconWidth('left'),
             iconEndSize: this.getActionAndConditionIconWidth('right'),
           },
@@ -282,7 +286,8 @@ export class ColCell extends HeaderCell {
   }
 
   private getResizeAreaWidth() {
-    const { cornerWidth = 0, viewportWidth: headerWidth } = this.headerConfig;
+    const { cornerWidth = 0, viewportWidth: headerWidth } =
+      this.headerConfig || {};
 
     return (
       Frame.getVerticalBorderWidth(this.spreadsheet) + cornerWidth + headerWidth
@@ -297,10 +302,9 @@ export class ColCell extends HeaderCell {
       cornerWidth = 0,
       height: headerHeight,
       width: headerWidth,
-      spreadsheet,
-    } = this.headerConfig;
+    } = this.headerConfig || {};
 
-    const scrollContainsRowHeader = !spreadsheet.isFrozenRowHeader();
+    const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -325,11 +329,11 @@ export class ColCell extends HeaderCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.headerConfig;
+    const { scrollX = 0, position } = this.headerConfig || {};
 
     return {
-      x: position.x + x - scrollX,
-      y: position.y + y,
+      x: position?.x + x - scrollX,
+      y: position?.y + y,
     };
   }
 

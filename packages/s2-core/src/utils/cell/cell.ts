@@ -51,7 +51,7 @@ export const getVerticalIconPosition = (
   }
 };
 
-// 获取text及其跟随icon的位置坐标
+// 获取 text 及其跟随 icon 的位置坐标
 export const getHorizontalTextIconPosition = (options: {
   bbox: SimpleBBox;
   textWidth: number;

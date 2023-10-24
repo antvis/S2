@@ -1,4 +1,6 @@
 import { Group } from '@antv/g';
+import type { S2CellType } from '../../common';
+import type { Node } from '../layout/node';
 import type { BaseHeaderConfig } from './interface';
 
 /**
@@ -7,6 +9,17 @@ import type { BaseHeaderConfig } from './interface';
  * use {@see headerConfig} instead
  */
 export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
+  // header all cells layout
+  protected abstract layout(): void;
+
+  // header group offset
+  protected abstract offset(): void;
+
+  // header group clip
+  protected abstract clip(): void;
+
+  protected abstract getCellInstance(node: Node): S2CellType;
+
   // protected offset: number;
   protected headerConfig: T;
 
@@ -65,15 +78,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     this.headerConfig.scrollX = rowHeaderScrollX;
     this.render(type);
   }
-
-  // header all cells layout
-  protected abstract layout(): void;
-
-  // header group offset
-  protected abstract offset(): void;
-
-  // header group clip
-  protected abstract clip(): void;
 
   public clear() {
     super.removeChildren();

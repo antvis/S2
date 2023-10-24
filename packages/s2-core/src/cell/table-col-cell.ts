@@ -36,12 +36,12 @@ export class TableColCell extends ColCell {
   protected isFrozenCell() {
     const { colCount = 0, trailingColCount = 0 } =
       this.spreadsheet.options.frozen!;
-    const colNodes = this.spreadsheet.facet.getColNodes(0);
+    const colNodes = this.spreadsheet.facet?.getColNodes(0);
     const { colIndex } = getNodeRoot(this.meta);
 
     return (
       isFrozenCol(colIndex, colCount) ||
-      isFrozenTrailingCol(colIndex, trailingColCount, colNodes.length)
+      isFrozenTrailingCol(colIndex, trailingColCount, colNodes?.length)
     );
   }
 
@@ -62,7 +62,7 @@ export class TableColCell extends ColCell {
       scrollY,
       width: headerWidth,
       height: headerHeight,
-    } = this.headerConfig;
+    } = this.headerConfig || {};
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
 
@@ -95,18 +95,18 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.headerConfig;
+    const { scrollX = 0, position } = this.headerConfig || {};
 
     if (this.isFrozenCell()) {
       return {
-        x: position.x + x,
-        y: position.y + y,
+        x: position?.x + x,
+        y: position?.y + y,
       };
     }
 
     return {
-      x: position.x + x - scrollX,
-      y: position.y + y,
+      x: position?.x + x - scrollX,
+      y: position?.y + y,
     };
   }
 

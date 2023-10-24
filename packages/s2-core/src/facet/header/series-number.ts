@@ -1,17 +1,31 @@
 import { Rect } from '@antv/g';
-import { each, isEmpty } from 'lodash';
+import { each } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
+import type { S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
-import { translateGroup } from '../utils';
 import type { Hierarchy } from '../layout/hierarchy';
-import type { S2CellType } from '../../common/interface';
 import type { Node } from '../layout/node';
+import { translateGroup } from '../utils';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
+  constructor(cfg: BaseHeaderConfig) {
+    super(cfg);
+  }
+
+  protected getCellInstance(node: Node): S2CellType {
+    const { spreadsheet } = node;
+    const { seriesNumberCell } = spreadsheet.options;
+
+    return (
+      seriesNumberCell?.(node, spreadsheet, this.headerConfig) ||
+      new SeriesNumberCell(node, spreadsheet, this.headerConfig)
+    );
+  }
+
   /**
    * Get seriesNumber header by config
    */
@@ -49,10 +63,6 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     });
   }
 
-  constructor(cfg: BaseHeaderConfig) {
-    super(cfg);
-  }
-
   public clip(): void {
     const { width, height, viewportHeight } = this.headerConfig;
 
@@ -67,13 +77,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const {
-      nodes,
-      scrollY = 0,
-      viewportHeight,
-      spreadsheet,
-    } = this.headerConfig;
-    const seriesNumberCell = spreadsheet?.options?.seriesNumberCell;
+    const { nodes, scrollY = 0, viewportHeight } = this.headerConfig;
 
     each(nodes, (node) => {
       const { y, height: cellHeight } = node;
@@ -83,21 +87,12 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         viewportPosition: scrollY,
         viewportSize: viewportHeight,
       });
-      // 按需渲染：视窗内的才渲染
 
       if (!isHeaderCellInViewport) {
         return;
       }
 
-      let cell: S2CellType | null = null;
-
-      if (seriesNumberCell) {
-        cell = seriesNumberCell(node, spreadsheet, this.headerConfig);
-      }
-
-      if (isEmpty(cell)) {
-        cell = new SeriesNumberCell(node, spreadsheet, this.headerConfig);
-      }
+      const cell = this.getCellInstance(node);
 
       node.belongsCell = cell;
       this.appendChild(cell);

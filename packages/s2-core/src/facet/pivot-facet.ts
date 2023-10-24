@@ -16,9 +16,9 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { SeriesNumberCell } from '../cell';
+import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
-  DEFAULT_TREE_ROW_WIDTH,
+  DEFAULT_TREE_ROW_CELL_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type IconTheme,
   type MultiData,
@@ -181,9 +181,7 @@ export class PivotFacet extends BaseFacet {
 
     let currentCollIndex = 0;
 
-    for (let i = 0; i < colNodes.length; i++) {
-      const currentNode = colNodes[i];
-
+    colNodes.forEach((currentNode) => {
       if (currentNode.isLeaf) {
         currentNode.colIndex = currentCollIndex;
         currentCollIndex += 1;
@@ -213,8 +211,9 @@ export class PivotFacet extends BaseFacet {
         currentNode.isGrandTotals && currentNode.isLeaf
           ? colsHierarchy.height
           : this.getColNodeHeight(currentNode);
+
       layoutCoordinate(this.spreadsheet, null, currentNode);
-    }
+    });
 
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustColLeafNodesHeight({
@@ -363,7 +362,7 @@ export class PivotFacet extends BaseFacet {
       );
     }
 
-    /*
+    /**
      * 4. 自适应 adaptive
      * 4.1 树状自定义
      */
@@ -375,8 +374,18 @@ export class PivotFacet extends BaseFacet {
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
 
+  private getRowNodeHeight(rowNode: Node): number {
+    const rowCell = new RowCell(rowNode, rowNode.spreadsheet, {});
+    const defaultHeight = this.getRowCellHeight(rowNode);
+
+    return this.getCellAdaptiveHeight(rowCell, defaultHeight);
+  }
+
   private getColNodeHeight(colNode: Node): number {
-    return this.getDefaultColNodeHeight(colNode);
+    const colCell = new ColCell(colNode, colNode.spreadsheet, {});
+    const defaultHeight = this.getDefaultColNodeHeight(colNode);
+
+    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   /**
@@ -465,7 +474,7 @@ export class PivotFacet extends BaseFacet {
       if (isLeaf) {
         // 1. 普通树状结构, 叶子节点各占一行, 2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const nodeHeight = this.getRowCellHeight(currentNode);
+        const nodeHeight = this.getRowNodeHeight(currentNode);
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
@@ -820,7 +829,7 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme?.padding?.left! +
       this.rowCellTheme?.padding?.right!;
 
-    return Math.max(DEFAULT_TREE_ROW_WIDTH, maxLabelWidth);
+    return Math.max(DEFAULT_TREE_ROW_CELL_WIDTH, maxLabelWidth);
   }
 
   /**
@@ -891,7 +900,6 @@ export class PivotFacet extends BaseFacet {
       rowNodeWidth > fieldNameNodeWidth ? maxLabel : fieldName,
     );
 
-    // return max
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 

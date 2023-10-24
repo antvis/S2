@@ -11,10 +11,10 @@ import type { SpreadSheet } from '../../sheet-type';
 import { getFrozenColWidth } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import {
-  isFrozenCol,
-  isFrozenTrailingCol,
   getFrozenLeafNodesCount,
   getLeftLeafNode,
+  isFrozenCol,
+  isFrozenTrailingCol,
   translateGroupX,
 } from '../utils';
 import { ColHeader } from './col';
@@ -32,6 +32,23 @@ export class TableColHeader extends ColHeader {
     super(cfg);
 
     this.initFrozenColGroups();
+  }
+
+  protected getCellInstance(node: Node) {
+    const { spreadsheet } = node;
+    const { seriesNumberCell, colCell } = spreadsheet.options;
+
+    const args: [Node, SpreadSheet, ColHeaderConfig] = [
+      node,
+      spreadsheet,
+      this.headerConfig,
+    ];
+
+    if (node.field === SERIES_NUMBER_FIELD) {
+      return seriesNumberCell?.(...args) || new TableCornerCell(...args);
+    }
+
+    return colCell?.(...args) || new TableColCell(...args);
   }
 
   private initFrozenColGroups() {
@@ -88,16 +105,6 @@ export class TableColHeader extends ColHeader {
       );
 
     resizerArea?.removeChildren();
-  }
-
-  protected getCellInstance(
-    item: Node,
-    spreadsheet: SpreadSheet,
-    headerConfig: ColHeaderConfig,
-  ) {
-    return item.field === SERIES_NUMBER_FIELD
-      ? new TableCornerCell(item, spreadsheet, headerConfig)
-      : new TableColCell(item, spreadsheet, headerConfig);
   }
 
   private getColFrozenOptionsByNode(node: Node) {

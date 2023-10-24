@@ -72,7 +72,6 @@
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
     "@antv/event-emitter": "^0.1.3",
-    "@antv/g": "^5.15.2",
     "@antv/s2": "workspace:*",
     "@antv/s2-shared": "workspace:*",
     "@testing-library/react": "^12.1.4",

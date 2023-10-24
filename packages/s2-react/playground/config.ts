@@ -215,7 +215,8 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
   height: 600,
-  hierarchyType: 'grid',
+  hierarchyType: 'tree',
+  showDefaultHeaderActionIcon: true,
   // showSeriesNumber: false,
   frozen: {
     rowHeader: true,
@@ -224,7 +225,7 @@ export const s2Options: SheetComponentOptions = {
     // colCount: 1,
     // trailingColCount: 1,
   },
-  cornerText: '测试',
+  cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
     enableCopy: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
@@ -267,15 +268,24 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   style: {
-    rowCell: {
-      height: 50,
-    },
+    // rowCell: {
+    //   width: 100,
+    //   height: 50,
+    // },
     colCell: {
+      width(node) {
+        if (node?.colIndex === 0) {
+          return 40;
+        }
+
+        return null;
+      },
+      // height: 60,
       hideValue: false,
     },
-    dataCell: {
-      height: 50,
-    },
+    // dataCell: {
+    //   height: 50,
+    // },
   },
 };
 

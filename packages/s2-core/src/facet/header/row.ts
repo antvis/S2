@@ -15,6 +15,16 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     super(cfg);
   }
 
+  protected getCellInstance(node: Node): S2CellType {
+    const { spreadsheet } = node;
+    const { rowCell } = spreadsheet.options;
+
+    return (
+      rowCell?.(node, spreadsheet, this.headerConfig) ||
+      new RowCell(node, spreadsheet, this.headerConfig)
+    );
+  }
+
   protected layout() {
     const {
       nodes,
@@ -67,7 +77,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   protected offset() {
     const { scrollX = 0, scrollY = 0, position } = this.headerConfig;
 
-    // 向右多移动的seriesNumberWidth是序号的宽度
+    // 向右多移动的 seriesNumberWidth 是序号的宽度
     translateGroup(this, position.x - scrollX, position.y - scrollY);
   }
 

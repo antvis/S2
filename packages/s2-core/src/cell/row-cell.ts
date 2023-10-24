@@ -12,6 +12,7 @@ import {
   CellBorderPosition,
   CellClipBox,
   type AreaRange,
+  type RenderTextShapeOptions,
   type ViewMeta,
 } from '../common/interface';
 import {
@@ -101,7 +102,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    // 折叠行头时因scrollY没变，导致底层出现空白
+    // 折叠行头时因 scrollY 没变，导致底层出现空白
     if (!isCollapsed) {
       const { scrollY: oldScrollY } = this.spreadsheet.facet.getScrollOffset();
       // 可视窗口高度
@@ -131,7 +132,6 @@ export class RowCell extends HeaderCell {
     });
   }
 
-  // draw tree icon
   protected drawTreeIcon() {
     if (!this.showTreeIcon()) {
       return;
@@ -162,7 +162,7 @@ export class RowCell extends HeaderCell {
       },
     });
 
-    // in mobile, we use this cell
+    // 移动端, 点击热区为整个单元格
     if (isMobile()) {
       this.addEventListener('click', () => {
         this.emitCollapseEvent();
@@ -203,10 +203,11 @@ export class RowCell extends HeaderCell {
     return (!isLeaf && level === 0) || isTotals;
   }
 
-  // draw text
-  protected drawTextShape() {
-    super.drawTextShape();
-    this.drawLinkField(this.meta);
+  public drawTextShape(options?: RenderTextShapeOptions) {
+    super.drawTextShape(options);
+    if (!options?.shallowRender) {
+      this.drawLinkField(this.meta);
+    }
   }
 
   protected drawResizeAreaInLeaf() {
@@ -388,10 +389,10 @@ export class RowCell extends HeaderCell {
 
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
-      iconStyle: iconStyle!,
+      iconStyle,
     });
 
     const iconY = getVerticalIconPosition(

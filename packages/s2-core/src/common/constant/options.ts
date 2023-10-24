@@ -18,27 +18,30 @@ export enum LayoutWidthTypes {
 
 export const SPLIT_LINE_WIDTH = 1;
 
-export const DEFAULT_TREE_ROW_WIDTH = 120;
+export const DEFAULT_TREE_ROW_CELL_WIDTH = 120;
 
-export const DEFAULT_STYLE: Readonly<S2Style> = {
+export const DEFAULT_STYLE: S2Style = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
-  dataCell: {
-    width: 96,
-    height: 30,
-  },
   rowCell: {
+    width: 120,
     showTreeLeafNodeAlignDot: false,
     widthByField: null,
     heightByField: null,
   },
   colCell: {
-    height: 30,
+    // height: 30,
+    height: 40,
     widthByField: null,
     heightByField: null,
   },
-};
+  dataCell: {
+    width: 96,
+    // height: 30,
+    height: 40,
+  },
+} as const;
 
-export const DEFAULT_OPTIONS: Readonly<S2Options> = {
+export const DEFAULT_OPTIONS: S2Options = {
   width: 600,
   height: 480,
   debug: false,
@@ -108,7 +111,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
 
 const mobileWidth = document.documentElement.clientWidth;
 
-export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
+export const DEFAULT_MOBILE_OPTIONS: S2Options = {
   width: mobileWidth - 40,
   height: 380,
   style: {
@@ -126,4 +129,4 @@ export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
     rangeSelection: false,
   },
   device: DeviceType.MOBILE,
-};
+} as const;

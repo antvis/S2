@@ -26,6 +26,7 @@ import {
   ColCell,
   CornerCell,
   DataCell,
+  HeaderCell,
   MergedCell,
   RowCell,
   SeriesNumberCell,
@@ -297,6 +298,22 @@ export abstract class BaseFacet {
       this.getCellCustomSize(colNode, colCell?.height) ??
       0
     );
+  }
+
+  protected getCellAdaptiveHeight(cell: HeaderCell, defaultHeight: number) {
+    if (!cell) {
+      return defaultHeight;
+    }
+
+    const { padding } = cell.getStyle().cell;
+
+    cell.drawTextShape({
+      shallowRender: true,
+    });
+    const textHeight = cell.getActualTextHeight();
+    const adaptiveHeight = textHeight + padding.top + padding.bottom;
+
+    return textHeight > defaultHeight ? adaptiveHeight : defaultHeight;
   }
 
   hideScrollBar = () => {

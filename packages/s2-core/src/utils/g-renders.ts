@@ -9,7 +9,6 @@ import {
   Polygon,
   Polyline,
   Rect,
-  Text,
   type CircleStyleProps,
   type DisplayObject,
   type LineStyleProps,
@@ -18,7 +17,7 @@ import {
   type RectStyleProps,
   type TextStyleProps,
 } from '@antv/g';
-import { forEach, isArray, isEmpty, isFunction } from 'lodash';
+import { isArray, isEmpty, isFunction } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import { CustomText } from '../engine/CustomText';
 
@@ -53,18 +52,18 @@ export function renderCircle(group: Group, style: CircleStyleProps): Circle {
   );
 }
 
-export function renderText<T>(
-  group: Group,
-  shapes: DisplayObject[],
-  attrs: TextStyleProps,
-  appendInfo?: T,
-): Text {
-  if (!isEmpty(shapes) && group) {
-    forEach(shapes, (shape: DisplayObject) => {
-      if (group.contains(shape)) {
-        group.removeChild(shape);
-      }
-    });
+export function renderText<T>(options: {
+  group: Group;
+  textShape?: DisplayObject;
+  style: TextStyleProps;
+  appendInfo?: T;
+}): CustomText {
+  const { group, textShape, style, appendInfo } = options;
+
+  if (textShape && group) {
+    if (group.contains(textShape)) {
+      group.removeChild(textShape);
+    }
   }
 
   return group?.appendChild(
@@ -79,12 +78,12 @@ export function renderText<T>(
           fontVariant: 'normal',
           fontStyle: 'normal',
           lineWidth: 1,
-          ...attrs,
+          ...style,
         },
       },
       appendInfo || ({} as T),
     ),
-  );
+  ) as CustomText;
 }
 
 export function renderLine(group: Group, options: LineStyleProps): Line {

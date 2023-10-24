@@ -1,6 +1,5 @@
 import { i18n } from '../i18n';
 
-// 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
@@ -29,7 +28,6 @@ export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 export const PANEL_GROUP_GROUP_CONTAINER_Z_INDEX = 1;
 export const PANEL_GROUP_SCROLL_GROUP_Z_INDEX = 1;
 export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 2;
-export const PANEL_GROUP_HOVER_BOX_GROUP_Z_INDEX = 1;
 
 // group's key
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
@@ -50,28 +48,14 @@ export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
 export const KEY_GROUP_FROZEN_COL_RESIZE_AREA = 'colFrozenResizeAreaGroup';
-export const KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA =
-  'colHorizontalResizeAreaGroup';
 export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
-export const TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY =
-  'table-col-horizontal-resize-area';
-
-export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
 export const EMPTY_PLACEHOLDER = '-';
-
-export const PADDING_TOP = 0;
-export const PADDING_RIGHT = 1;
-export const PADDING_DOWN = 2;
-export const PADDING_LEFT = 3;
-
-export const MIN_CELL_WIDTH = 28;
-export const MIN_CELL_HEIGHT = 16;
 
 // data precision
 export const PRECISION = 16;
@@ -96,5 +80,6 @@ export const getDefaultSeriesNumberText = (defaultText?: string) =>
   defaultText ?? i18n('序号');
 
 export const getDefaultCornerText = () => i18n('指标');
+
 // 省略号
 export const ELLIPSIS_SYMBOL = '...';

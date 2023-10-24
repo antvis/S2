@@ -630,13 +630,14 @@ export abstract class SpreadSheet extends EE {
       devicePixelRatio = 1,
     } = this.options;
 
-    // base canvas group
+    const renderer = new Renderer();
+
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
-      renderer: new Renderer(),
+      renderer,
       supportsCSSTransform: supportCSSTransform,
     });
 

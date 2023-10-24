@@ -1,10 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
-import type {
-  DefaultCellTheme,
-  InternalFullyTheme,
-  ThemeCfg,
-} from '../common/interface';
+import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -15,7 +11,7 @@ import { getPalette } from '../utils/theme';
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
-): InternalFullyTheme => {
+): S2Theme => {
   const {
     basicColors,
     semanticColors,
@@ -25,149 +21,163 @@ export const getTheme = (
   const isTable = themeCfg?.spreadsheet?.isTableMode();
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
 
-  const getDataCell = () =>
-    ({
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: boldTextDefaultFontWeight,
-        fill: basicColors[13],
-        opacity: 1,
-        textAlign: 'right',
-        textBaseline: 'middle',
-        linkTextFill: basicColors[6],
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: 'normal',
-        fill: basicColors[13],
-        opacity: 1,
-        textAlign: 'right',
-        textBaseline: 'middle',
-        linkTextFill: basicColors[6],
-      },
-      cell: {
-        // ----------- background color -----------
-        crossBackgroundColor: basicColors[1],
-        backgroundColor: basicColors[8],
-        backgroundColorOpacity: 1,
-        // ----------- border color --------------
-        horizontalBorderColor: basicColors[9],
-        horizontalBorderColorOpacity: 1,
-        verticalBorderColor: basicColors[9],
-        verticalBorderColorOpacity: 1,
-        // ----------- border width --------------
-        horizontalBorderWidth: 1,
-        verticalBorderWidth: 1,
-        // -------------- layout -----------------
-        padding: {
-          top: 8,
-          right: 8,
-          bottom: 8,
-          left: 8,
-        },
+  const getHeaderCellTextOverflow = () => ({
+    wordWrap: true,
+    maxLines: 2,
+    textOverflow: 'ellipsis',
+  });
 
-        /* ---------- interaction state ----------- */
-        interactionState: {
-          // -------------- hover -------------------
-          hover: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-          },
-          // -------------- keep hover -------------------
-          hoverFocus: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-            borderColor: basicColors[14],
-            borderWidth: 1,
-            borderOpacity: 1,
-          },
-          // -------------- selected -------------------
-          selected: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-          },
-          // -------------- unselected -------------------
-          unselected: {
-            backgroundOpacity: 0.3,
-            textOpacity: 0.3,
-            opacity: 0.3,
-          },
-          // -------------- searchResult -------------------
-          searchResult: {
-            backgroundColor: otherColors?.results ?? basicColors[2],
-            backgroundOpacity: 1,
-          },
-          // -------------- highlight -------------------
-          highlight: {
-            backgroundColor: otherColors?.highlight ?? basicColors[6],
-            backgroundOpacity: 1,
-          },
-          // -------------- prepare select --------------
-          prepareSelect: {
-            borderColor: basicColors[14],
-            borderOpacity: 1,
-            borderWidth: 1,
-          },
+  const getDataCellTextOverflow = () => ({
+    wordWrap: true,
+    maxLines: 1,
+    textOverflow: 'ellipsis',
+  });
+
+  // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
+  const getDataCell = (): DefaultCellTheme => ({
+    bolderText: {
+      fontFamily: FONT_FAMILY,
+      fontSize: 12,
+      fontWeight: boldTextDefaultFontWeight,
+      fill: basicColors[13],
+      opacity: 1,
+      textAlign: 'right',
+      textBaseline: 'middle',
+      linkTextFill: basicColors[6],
+      ...getDataCellTextOverflow(),
+    },
+    text: {
+      fontFamily: FONT_FAMILY,
+      fontSize: 12,
+      fontWeight: 'normal',
+      fill: basicColors[13],
+      opacity: 1,
+      textAlign: 'right',
+      textBaseline: 'middle',
+      linkTextFill: basicColors[6],
+      ...getDataCellTextOverflow(),
+    },
+    cell: {
+      // ----------- background color -----------
+      crossBackgroundColor: basicColors[1],
+      backgroundColor: basicColors[8],
+      backgroundColorOpacity: 1,
+      // ----------- border color --------------
+      horizontalBorderColor: basicColors[9],
+      horizontalBorderColorOpacity: 1,
+      verticalBorderColor: basicColors[9],
+      verticalBorderColorOpacity: 1,
+      // ----------- border width --------------
+      horizontalBorderWidth: 1,
+      verticalBorderWidth: 1,
+      // -------------- layout -----------------
+      padding: {
+        top: 8,
+        right: 8,
+        bottom: 8,
+        left: 8,
+      },
+
+      /* ---------- interaction state ----------- */
+      interactionState: {
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: basicColors[2],
+          backgroundOpacity: 0.6,
+        },
+        // -------------- keep hover -------------------
+        hoverFocus: {
+          backgroundColor: basicColors[2],
+          backgroundOpacity: 0.6,
+          borderColor: basicColors[14],
+          borderWidth: 1,
+          borderOpacity: 1,
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: basicColors[2],
+          backgroundOpacity: 0.6,
+        },
+        // -------------- unselected -------------------
+        unselected: {
+          backgroundOpacity: 0.3,
+          textOpacity: 0.3,
+          opacity: 0.3,
+        },
+        // -------------- searchResult -------------------
+        searchResult: {
+          backgroundColor: otherColors?.results ?? basicColors[2],
+          backgroundOpacity: 1,
+        },
+        // -------------- highlight -------------------
+        highlight: {
+          backgroundColor: otherColors?.highlight ?? basicColors[6],
+          backgroundOpacity: 1,
+        },
+        // -------------- prepare select --------------
+        prepareSelect: {
+          borderColor: basicColors[14],
+          borderOpacity: 1,
+          borderWidth: 1,
         },
       },
-      // ------------- mini chart ---------------
-      miniChart: {
-        // ------------- line graph -----------------
-        line: {
-          point: {
-            size: 2.2,
-            fill: basicColors[6],
-            opacity: 1,
-          },
-          linkLine: {
-            size: 1.5,
-            fill: basicColors[6],
-            opacity: 0.6,
-          },
-        },
-        // ------------- bar graph -----------------
-        bar: {
-          intervalPadding: 4,
+    },
+    // ------------- mini chart ---------------
+    miniChart: {
+      // ------------- line graph -----------------
+      line: {
+        point: {
+          size: 2.2,
           fill: basicColors[6],
           opacity: 1,
         },
-        // ------------- bullet graph -----------------
-        bullet: {
-          progressBar: {
-            widthPercent: 0.6,
-            height: 10,
-            innerHeight: 6,
-          },
-          comparativeMeasure: {
-            width: 1,
-            height: 12,
-            fill: basicColors[13],
-            opacity: 0.25,
-          },
-          rangeColors: {
-            good: semanticColors?.green,
-            satisfactory: semanticColors.yellow,
-            bad: semanticColors.red,
-          },
-          backgroundColor: '#E9E9E9',
-        },
-        // ------------ interval bar graph -----------------
-        interval: {
-          height: INTERVAL_BAR_HEIGHT,
-          fill: basicColors[7],
+        linkLine: {
+          size: 1.5,
+          fill: basicColors[6],
+          opacity: 0.6,
         },
       },
-      icon: {
-        fill: basicColors[13],
-        size: 10,
-        margin: {
-          right: 4,
-          left: 4,
-        },
+      // ------------- bar graph -----------------
+      bar: {
+        intervalPadding: 4,
+        fill: basicColors[6],
+        opacity: 1,
       },
-    } as DefaultCellTheme);
+      // ------------- bullet graph -----------------
+      bullet: {
+        progressBar: {
+          widthPercent: 0.6,
+          height: 10,
+          innerHeight: 6,
+        },
+        comparativeMeasure: {
+          width: 1,
+          height: 12,
+          fill: basicColors[13],
+          opacity: 0.25,
+        },
+        rangeColors: {
+          good: semanticColors?.green,
+          satisfactory: semanticColors.yellow,
+          bad: semanticColors.red,
+        },
+        backgroundColor: '#E9E9E9',
+      },
+      // ------------ interval bar graph -----------------
+      interval: {
+        height: INTERVAL_BAR_HEIGHT,
+        fill: basicColors[7],
+      },
+    },
+    icon: {
+      fill: basicColors[13],
+      size: 10,
+      margin: {
+        right: 4,
+        left: 4,
+      },
+    },
+  });
 
   return {
     // ------------- Headers -------------------
@@ -180,6 +190,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -189,6 +200,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------
@@ -229,6 +241,9 @@ export const getTheme = (
         opacity: 1,
         textBaseline: 'middle',
         textAlign: 'center',
+        ...getHeaderCellTextOverflow(),
+        // 序号不换行
+        maxLines: 1,
       },
       measureText: {
         fontFamily: FONT_FAMILY,
@@ -239,6 +254,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -249,6 +265,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -260,6 +277,7 @@ export const getTheme = (
         textBaseline: 'middle',
         // default align center for row cell in table mode
         textAlign: isTable ? 'center' : 'left',
+        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------
@@ -334,9 +352,11 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
-        // 默认数值字段和 dataCell 数值对齐
+        // 默认列头的数值字段和 dataCell 数值对齐
         textAlign: 'right',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
+        // maxLines: 1,
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -346,6 +366,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -355,6 +376,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
+        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------
@@ -435,6 +457,8 @@ export const getTheme = (
       guideLineColor: basicColors[7],
       guideLineDisableColor: 'rgba(0,0,0,0.25)',
       guideLineDash: [3, 3],
+      minCellWidth: 42,
+      minCellHeight: 40,
 
       /* ---------- interaction state ----------- */
       interactionState: {
@@ -480,5 +504,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  } as InternalFullyTheme;
+  };
 };

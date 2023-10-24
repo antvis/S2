@@ -1,5 +1,5 @@
-import { Rect, type Group, type PointLike } from '@antv/g';
-import { includes, isEmpty } from 'lodash';
+import { Rect, type PointLike } from '@antv/g';
+import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
@@ -18,6 +18,20 @@ import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
  * Corner Header for SpreadSheet
  */
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
+  constructor(cfg: CornerHeaderConfig) {
+    super(cfg);
+  }
+
+  protected getCellInstance(node: Node): S2CellType {
+    const { spreadsheet } = node;
+    const { cornerCell } = spreadsheet.options;
+
+    return (
+      cornerCell?.(node, spreadsheet, this.headerConfig) ||
+      new CornerCell(node, spreadsheet, this.headerConfig)
+    );
+  }
+
   /**
    * Get corner Header by config
    */
@@ -213,10 +227,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     return cornerNodes;
   }
 
-  constructor(cfg: CornerHeaderConfig) {
-    super(cfg);
-  }
-
   /**
    *  Make cornerHeader scroll with hScrollBar
    * @param scrollX
@@ -237,7 +247,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   protected renderCells() {
     const { nodes, spreadsheet } = this.headerConfig;
     const cornerHeader = spreadsheet.options?.cornerHeader;
-    const cornerCell = spreadsheet?.options?.cornerCell;
 
     if (cornerHeader) {
       cornerHeader(
@@ -250,23 +259,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     nodes.forEach((node) => {
-      let cell: Group | null = null;
-
-      if (cornerCell) {
-        cell = cornerCell(
-          node,
-          this.headerConfig.spreadsheet,
-          this.headerConfig,
-        );
-      }
-
-      if (isEmpty(cell)) {
-        cell = new CornerCell(
-          node,
-          this.headerConfig.spreadsheet,
-          this.headerConfig,
-        );
-      }
+      const cell = this.getCellInstance(node);
 
       this.appendChild(cell);
     });

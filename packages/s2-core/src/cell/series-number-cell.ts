@@ -102,7 +102,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
     const { textX } = getHorizontalTextIconPosition({
       bbox: textArea,
       textAlign: textStyle.textAlign!,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       iconStyle: this.getIconStyle()!,
       groupedIcons: this.groupedIcons,
     });
