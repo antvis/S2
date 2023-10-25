@@ -553,6 +553,7 @@ export const drawObjectText = (
         contentBoxes[i][j],
         curStyle!.textBaseline!,
       );
+
       const iconY = getVerticalIconPosition(
         iconStyle.size!,
         textY,

@@ -47,6 +47,7 @@ describe('Interaction Hover Tests', () => {
 
         return mockCell;
       },
+      isTextOverflowing: jest.fn(),
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
       cellType: 'dataCell',
@@ -306,6 +307,7 @@ describe('Interaction Hover Tests', () => {
           },
           getActualText: () => 'test',
           getFieldValue: () => 'test',
+          isTextOverflowing: jest.fn(),
           cellType: 'dataCell',
         } as any);
 

@@ -17,7 +17,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = node;
+    const { spreadsheet } = this.headerConfig;
     const { seriesNumberCell } = spreadsheet.options;
 
     return (

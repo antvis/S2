@@ -16,7 +16,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = node;
+    const { spreadsheet } = this.headerConfig;
     const { rowCell } = spreadsheet.options;
 
     return (

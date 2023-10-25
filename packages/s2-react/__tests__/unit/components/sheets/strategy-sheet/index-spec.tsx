@@ -383,7 +383,7 @@ describe('<StrategySheet/> Tests', () => {
     const fn = jest.fn();
 
     class CustomRowCell extends RowCell {
-      protected drawTextShape() {
+      public drawTextShape() {
         fn();
 
         return super.drawTextShape();
@@ -405,7 +405,7 @@ describe('<StrategySheet/> Tests', () => {
     const fn = jest.fn();
 
     class CustomColCell extends StrategySheetColCell {
-      protected drawTextShape() {
+      public drawTextShape() {
         fn();
 
         return super.drawTextShape();
@@ -427,7 +427,7 @@ describe('<StrategySheet/> Tests', () => {
     const fn = jest.fn();
 
     class CustomDataCell extends StrategySheetDataCell {
-      protected drawTextShape() {
+      public drawTextShape() {
         fn();
 
         return super.drawTextShape();

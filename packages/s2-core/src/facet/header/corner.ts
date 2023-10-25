@@ -23,7 +23,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = node;
+    const { spreadsheet } = this.headerConfig;
     const { cornerCell } = spreadsheet.options;
 
     return (

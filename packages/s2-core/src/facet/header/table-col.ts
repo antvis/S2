@@ -35,7 +35,7 @@ export class TableColHeader extends ColHeader {
   }
 
   protected getCellInstance(node: Node) {
-    const { spreadsheet } = node;
+    const { spreadsheet } = this.headerConfig;
     const { seriesNumberCell, colCell } = spreadsheet.options;
 
     const args: [Node, SpreadSheet, ColHeaderConfig] = [

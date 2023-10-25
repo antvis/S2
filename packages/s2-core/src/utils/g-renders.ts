@@ -52,6 +52,9 @@ export function renderCircle(group: Group, style: CircleStyleProps): Circle {
   );
 }
 
+/**
+ * @description 如果在单元格内绘制, 是使用 cell.renderTextShape(options)
+ */
 export function renderText<T>(options: {
   group: Group;
   textShape?: DisplayObject;

@@ -25,7 +25,7 @@ export class StrategySheetColCell extends ColCell {
     super(meta, spreadsheet, headerConfig);
   }
 
-  protected drawTextShape() {
+  public drawTextShape() {
     const meta = this.getMeta();
     const value = safeJsonParse(meta?.value) as MultiData;
 

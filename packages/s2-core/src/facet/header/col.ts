@@ -26,8 +26,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = node;
-    const { colCell } = node.spreadsheet.options;
+    const { spreadsheet } = this.headerConfig;
+    const { colCell } = spreadsheet.options;
 
     return (
       colCell?.(node, spreadsheet, this.headerConfig) ||
