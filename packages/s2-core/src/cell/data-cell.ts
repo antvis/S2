@@ -263,12 +263,20 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected shouldHideRowSubtotalData() {
+    const { rowId, rowIndex } = this.meta;
+    // 如果该格子是被下钻的格子，下钻格子本身来说是明细格子，因为下钻变成了小计格子，是应该展示的
+    const drillDownIdPathMap = this.spreadsheet.store.get('drillDownIdPathMap');
+
+    if (drillDownIdPathMap?.has(rowId)) {
+      return false;
+    }
+
     const { row = {} } = this.spreadsheet.options.totals ?? {};
-    const { rowIndex } = this.meta;
     const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
     // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
-    // 不过能否查到实际的数据，都不应该展示
+    // 不管能否查到实际的数据，都不应该展示
+
     return (
       this.spreadsheet.options.hierarchyType === 'tree' &&
       !row.showSubTotals &&
