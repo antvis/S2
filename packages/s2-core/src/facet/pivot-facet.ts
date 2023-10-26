@@ -294,6 +294,7 @@ export class PivotFacet extends BaseFacet {
         cell: colCellStyle,
         icon: colIconStyle,
       } = this.spreadsheet.theme.colCell;
+      const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
       // leaf node rough width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
@@ -307,7 +308,10 @@ export class PivotFacet extends BaseFacet {
         colIconStyle,
       );
       const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+        this.spreadsheet.measureTextWidthRoughly(
+          leafNodeLabel,
+          colCellTextStyle,
+        ) + iconWidth;
 
       // 采样 50 个 label，逐个计算找出最长的 label
       let maxDataLabel: string;
@@ -334,8 +338,10 @@ export class PivotFacet extends BaseFacet {
                 cellData[EXTRA_FIELD],
               )?.(valueData) ?? valueData;
             const cellLabel = `${formattedValue}`;
-            const cellLabelWidth =
-              this.spreadsheet.measureTextWidthRoughly(cellLabel);
+            const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
+              cellLabel,
+              dataCellTextStyle,
+            );
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
@@ -345,7 +351,6 @@ export class PivotFacet extends BaseFacet {
         }
       }
 
-      // compare result
       const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
@@ -354,10 +359,20 @@ export class PivotFacet extends BaseFacet {
         'Max Label In Col:',
         col.field,
         maxLabel,
+        maxDataLabelWidth,
       );
 
+      // 取列头/数值字体最大的文本宽度 https://github.com/antvis/S2/issues/2385
+      const maxTextWidth = this.spreadsheet.measureTextWidth(maxLabel, {
+        ...colCellTextStyle,
+        fontSize: Math.max(
+          dataCellTextStyle.fontSize,
+          colCellTextStyle.fontSize,
+        ),
+      });
+
       return (
-        this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
+        maxTextWidth +
         colCellStyle.padding?.left +
         colCellStyle.padding?.right +
         appendedWidth
