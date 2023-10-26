@@ -102,7 +102,6 @@ export const s2Options: SheetComponentOptions = {
   ],
   hierarchyType: 'grid',
   style: {
-    layoutWidthType: 'compact',
     colCfg: {
       hideMeasureColumn: false,
     },
@@ -117,13 +116,7 @@ export const s2Options: SheetComponentOptions = {
 
 export const s2ThemeConfig: ThemeCfg = {
   name: 'default',
-  theme: {
-    dataCell: {
-      text: {
-        fontSize: 20,
-      },
-    },
-  },
+  theme: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
