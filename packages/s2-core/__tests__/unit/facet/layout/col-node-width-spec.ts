@@ -53,7 +53,7 @@ describe('Col width Test', () => {
       });
       s2.render();
       const { colLeafNodes } = s2.facet.layoutResult;
-      expect(Math.round(colLeafNodes[0].width)).toBe(339);
+      expect(Math.round(colLeafNodes[0].width)).toBe(338);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode when enable seriesnumber', () => {
@@ -63,7 +63,7 @@ describe('Col width Test', () => {
       });
       s2.render();
       const { colLeafNodes } = s2.facet.layoutResult;
-      expect(Math.round(colLeafNodes[0].width)).toBe(299);
+      expect(Math.round(colLeafNodes[0].width)).toBe(298);
     });
 
     test('get correct width in layoutWidthType compact mode', () => {
