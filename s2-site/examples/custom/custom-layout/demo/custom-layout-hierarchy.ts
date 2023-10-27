@@ -45,6 +45,28 @@ fetch(
           },
         ],
       ],
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+        },
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '类别',
+        },
+        {
+          field: 'sub_type',
+          name: '子类别',
+        },
+      ],
     };
 
     const s2Options = {
