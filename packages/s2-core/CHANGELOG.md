@@ -1,3 +1,13 @@
+# [@antv/s2-v1.51.2](https://github.com/antvis/S2/compare/@antv/s2-v1.51.1...@antv/s2-v1.51.2) (2023-10-27)
+
+
+### Bug Fixes
+
+* **interaction:** 修复拖动水平滚动条后单元格选中状态被重置 close [#2376](https://github.com/antvis/S2/issues/2376) ([#2380](https://github.com/antvis/S2/issues/2380)) ([b2e9700](https://github.com/antvis/S2/commit/b2e97008122f5320342fd069a08f6e821a5c9ad6))
+* **layout:** 修复在紧凑模式列头宽度未按文本自适应 close [#2385](https://github.com/antvis/S2/issues/2385) ([#2392](https://github.com/antvis/S2/issues/2392)) ([2edd99c](https://github.com/antvis/S2/commit/2edd99c367116bad661a02893a303311787eb647))
+* 修复分组汇总时，按汇总排序获取排序数据为空 ([#2370](https://github.com/antvis/S2/issues/2370)) ([2443762](https://github.com/antvis/S2/commit/24437622e1b259288bf7f8f3505837088a6e1b9d))
+* 修复树状角头，当有存在icon时，内容与box宽度恰好相等，出现换行 close [#2389](https://github.com/antvis/S2/issues/2389) ([#2390](https://github.com/antvis/S2/issues/2390)) ([19497b3](https://github.com/antvis/S2/commit/19497b34aaa9bd19ca5f410926f3035f1aa76d09))
+
 # [@antv/s2-v1.51.1](https://github.com/antvis/S2/compare/@antv/s2-v1.51.0...@antv/s2-v1.51.1) (2023-10-13)
 
 
