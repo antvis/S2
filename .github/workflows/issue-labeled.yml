@@ -105,7 +105,7 @@ jobs:
           body: |
             你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 但人力资源有限, 短期内无法支持, 请关注后续发布日志。当然, 如果能贡献 PR 帮助我们改进, 不胜感激！
 
-            Hello, @${{ github.vent.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
+            Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
 
       - name: Rejected
         if: github.event.label.name == '❌ won''t support'
