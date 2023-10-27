@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { ScrollType } from '../../src/ui/scrollbar';
+import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
@@ -880,4 +880,52 @@ describe('Scroll Tests', () => {
 
     expect(errorSpy).toBeCalledTimes(1);
   });
+
+  // https://github.com/antvis/S2/issues/2376
+  test.each(['hScrollBar', 'hRowScrollBar'])(
+    'should not reset interaction state after %s scrollbar thumb or track clicked',
+    (scrollbarName) => {
+      const containsMock = jest
+        .spyOn(HTMLElement.prototype, 'contains')
+        .mockImplementation(() => true);
+
+      const reset = jest.fn();
+
+      const scrollbar = s2.facet[scrollbarName] as ScrollBar;
+      const colCell = s2.getColumnLeafNodes()[0].belongsCell;
+
+      s2.on(S2Event.GLOBAL_RESET, reset);
+      s2.interaction.selectHeaderCell({
+        cell: colCell,
+      });
+
+      expect(s2.interaction.isSelectedState()).toBeTruthy();
+
+      const { maxX, maxY } = s2.facet?.panelBBox || {};
+      const { x, y } = canvas.getBoundingClientRect() || {};
+
+      // 滚动条
+      window.dispatchEvent(
+        new MouseEvent('click', {
+          clientX: x + scrollbar.position.x,
+          // 在滚动条内点击
+          clientY: y + scrollbar.position.y + scrollbar.theme.size - 2,
+        } as MouseEventInit),
+      );
+
+      // 滑动轨道
+      window.dispatchEvent(
+        new MouseEvent('click', {
+          // 右下角滑道点击
+          clientX: x + maxX - 2,
+          clientY: y + maxY + 2,
+        } as MouseEventInit),
+      );
+
+      expect(s2.interaction.isSelectedState()).toBeTruthy();
+      expect(reset).not.toHaveBeenCalled();
+
+      containsMock.mockReset();
+    },
+  );
 });
