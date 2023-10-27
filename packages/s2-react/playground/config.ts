@@ -110,6 +110,7 @@ export const s2Options: SheetComponentOptions = {
     },
     cellCfg: {
       height: 50,
+      width: 200,
     },
   },
 };

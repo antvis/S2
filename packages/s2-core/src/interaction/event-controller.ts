@@ -207,21 +207,32 @@ export class EventController {
       // 比如实际 400 * 300 => hd (800 * 600)
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
       const { width, height } = this.getContainerRect();
+
       return (
         canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
         event.clientY <= y + height
       );
     }
+
     return false;
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
-    const { width, height } = this.spreadsheet.options;
+    const { facet, options } = this.spreadsheet;
+    const scrollBar = facet.hRowScrollBar || facet.hScrollBar;
+    const { maxX, maxY } = facet?.panelBBox || {};
+    const { width, height } = options;
+
+    /**
+     * https://github.com/antvis/S2/issues/2376
+     * 横向的滚动条在表格外 (Canvas 内), 点击滚动条(含滑道区域) 不应该重置交互
+     */
+    const trackHeight = scrollBar?.theme?.size || 0;
+
     return {
       width: Math.min(width, maxX),
-      height: Math.min(height, maxY),
+      height: Math.min(height, maxY + trackHeight),
     };
   }
 
