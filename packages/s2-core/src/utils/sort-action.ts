@@ -252,7 +252,13 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
-  const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
+  const dataList = dataSet.getMultiData(
+    query,
+    undefined,
+    undefined,
+    undefined,
+    true,
+  ); // 按 query 查出所有数据
   const columns = getLeafColumnsWithKey(fields.columns);
   /**
    * 按明细数据

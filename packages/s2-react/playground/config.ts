@@ -1,5 +1,5 @@
 import { isUpDataValue, type Columns } from '@antv/s2';
-import type { S2DataConfig } from '@antv/s2';
+import type { S2DataConfig, ThemeCfg } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import {
@@ -110,8 +110,14 @@ export const s2Options: SheetComponentOptions = {
     },
     cellCfg: {
       height: 50,
+      width: 200,
     },
   },
+};
+
+export const s2ThemeConfig: ThemeCfg = {
+  name: 'default',
+  theme: {},
 };
 
 export const sliderOptions: SliderSingleProps = {

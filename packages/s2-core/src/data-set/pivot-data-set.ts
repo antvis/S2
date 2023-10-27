@@ -577,8 +577,8 @@ export class PivotDataSet extends BaseDataSet {
   getTotalGroupQueries(dimensions: string[], originQuery: DataType) {
     let queries = [originQuery];
     let existDimensionGroupKey = null;
-    for (let i = dimensions.length; i > 0; i--) {
-      const key = dimensions[i - 1];
+    for (let i = dimensions.length - 1; i >= 0; i--) {
+      const key = dimensions[i];
       if (keys(originQuery).includes(key)) {
         if (key !== EXTRA_FIELD) {
           existDimensionGroupKey = key;
@@ -587,8 +587,6 @@ export class PivotDataSet extends BaseDataSet {
         const allCurrentFieldDimensionValues =
           this.sortedDimensionValues[existDimensionGroupKey];
         let res = [];
-        const arrayLength =
-          allCurrentFieldDimensionValues[0].split(ID_SEPARATOR).length;
         for (const query of queries) {
           const resKeys = [];
           for (const dimValue of allCurrentFieldDimensionValues) {
@@ -601,7 +599,7 @@ export class PivotDataSet extends BaseDataSet {
               })
             ) {
               const arrTypeValue = dimValue.split(ID_SEPARATOR);
-              const currentKey = arrTypeValue[arrayLength - 2];
+              const currentKey = arrTypeValue[i];
               if (currentKey !== 'undefined') {
                 resKeys.push(currentKey);
               }
@@ -662,6 +660,7 @@ export class PivotDataSet extends BaseDataSet {
     isTotals?: boolean,
     isRow?: boolean,
     drillDownFields?: string[],
+    includeTotalData?: boolean,
   ): DataType[] {
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
@@ -672,7 +671,8 @@ export class PivotDataSet extends BaseDataSet {
       : rows;
     // existDimensionGroup：当 undefined 维度后面有非 undefined，为维度分组场景，将非 undefined 维度前的维度填充为所有可能的维度值。
     // 如 [undefined , '杭州市' , undefined , 'number']
-    const existDimensionGroup = this.checkExistDimensionGroup(query);
+    const existDimensionGroup =
+      !includeTotalData && this.checkExistDimensionGroup(query);
     let result = [];
     if (existDimensionGroup) {
       result = this.getGroupTotalMultiData(totalRows, query);

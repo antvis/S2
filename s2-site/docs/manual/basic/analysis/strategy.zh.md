@@ -176,7 +176,13 @@ const s2Options = {
 
 <Playground path='react-component/sheet/demo/strategy-mini-chart.tsx' rid='container2'></playground>
 
-配置如下：
+### 在普通透视表中使用
+
+如果不依赖 `React`, 想在 `@antv/s2` 普通的透视表中使用 mini 图，可以参考这个 [示例](/zh/examples/custom/custom-cell/#mini-chart)
+
+<Playground path='custom/custom-cell/demo/mini-chart.ts' rid='container3'></playground>
+
+### API
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 

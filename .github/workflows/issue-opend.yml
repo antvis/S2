@@ -20,9 +20,9 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, please edit your issue title. a concise issue title will save everyone time. please do not leave the title as the body or empty.
 
-      # 如果是 bug 的 issue, 但是基本的版本号,表格类型, 描述都没有, 直接关闭, 不多BB.
-      - name: check bug report issue body
-        if: contains(github.event.issue.title, '🐛') == true && contains(github.event.issue.body, 'Version') == false && contains(github.event.issue.body, 'Sheet Type') == false && contains(github.event.issue.body, 'Description') == false
+      # 如果 issue 的提交者无视模版, 连基本的版本号,表格类型, 描述都没有, 直接自动关闭, 不多BB.
+      - name: check issue body
+        if: contains(github.event.issue.body, 'Version') == false && contains(github.event.issue.body, 'Sheet Type') == false && contains(github.event.issue.body, 'Description') == false
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,add-labels,close-issue'

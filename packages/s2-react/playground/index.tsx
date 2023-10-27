@@ -67,6 +67,7 @@ import {
   tableSheetDataCfg,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
+  s2ThemeConfig,
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
@@ -172,9 +173,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] =
     React.useState<SheetComponentsProps['showPagination']>(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'default',
-  });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>(s2ThemeConfig);
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
