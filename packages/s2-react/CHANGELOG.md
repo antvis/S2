@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.44.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.0...@antv/s2-react-v1.44.1) (2023-10-27)
+
+
+### Bug Fixes
+
+* **interaction:** 修复拖动水平滚动条后单元格选中状态被重置 close [#2376](https://github.com/antvis/S2/issues/2376) ([#2380](https://github.com/antvis/S2/issues/2380)) ([b2e9700](https://github.com/antvis/S2/commit/b2e97008122f5320342fd069a08f6e821a5c9ad6))
+* **layout:** 修复在紧凑模式列头宽度未按文本自适应 close [#2385](https://github.com/antvis/S2/issues/2385) ([#2392](https://github.com/antvis/S2/issues/2392)) ([2edd99c](https://github.com/antvis/S2/commit/2edd99c367116bad661a02893a303311787eb647))
+
 # [@antv/s2-react-v1.44.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.43.0...@antv/s2-react-v1.44.0) (2023-09-22)
 
 
