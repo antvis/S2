@@ -45,14 +45,43 @@ export type DataPathParams = {
 
 export type DataPath = (number | string)[];
 
-export interface CellDataParams {
-  // search query
+export interface GetCellDataParams {
+  /**
+   * 查询条件
+   */
   query: Query;
+
+  /**
+   * 是否是汇总节点
+   */
   isTotals?: boolean;
-  // use in part drill-down
+
+  /**
+   * 行头节点, 用于下钻场景
+   */
   rowNode?: Node;
-  // mark row's cell
+
+  /**
+   * 是否是行头
+   */
   isRow?: boolean;
+}
+
+export interface GetCellMultiDataParams {
+  /**
+   * 查询条件
+   */
+  query: Query;
+
+  /**
+   * 汇总
+   */
+  totals?: TotalSelectionsOfMultiData;
+
+  /**
+   * 下钻
+   */
+  drillDownFields?: string[];
 }
 
 export interface SortActionParams {

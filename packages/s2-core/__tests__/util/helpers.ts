@@ -81,7 +81,7 @@ export const createFakeSpreadSheet = () => {
   });
   s2.dataSet = {
     ...s2.dataCfg,
-    getMultiData() {
+    getCellMultiData() {
       return [];
     },
   } as unknown as any;
@@ -128,7 +128,7 @@ export const createFakeSpreadSheet = () => {
   s2.dataSet = {
     getFieldDescription: jest.fn(),
     getCustomFieldDescription: jest.fn(),
-    getMultiData: jest.fn(() => []),
+    getCellMultiData: jest.fn(() => []),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();

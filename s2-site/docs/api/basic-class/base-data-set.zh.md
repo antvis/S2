@@ -25,8 +25,8 @@ s2.dataSet.getFieldName('type')
 | setDataCfg          | 设置数据配置                       | (dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), reset?: boolean) => void | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
 | getDisplayDataSet   | 获取当前显示的数据集               | () => [DataType[]](#datatype)                                |                                             |
 | getDimensionValues  | 获取维值                           | (filed: string, query?: [DataType](#datatype) ) => string[]  |                                             |
-| getCellData         | 获取单个的单元格数据               | (params: [CellDataParams](#celldataparams)) => [DataType[]](#datatype) |                                             |
-| getMultiData        | 获取批量的单元格数据               | (query: [DataType](#datatype), isTotals?: boolean, isRow?: boolean, drillDownFields?: string[]) => [DataType[]](#datatype) |                                             |
+| getCellData         | 获取单个的单元格数据               | (params: [GetCellDataParams](#getcelldataparams)) => [DataType[]](#datatype) |                                             |
+| getCellMultiData        | 获取批量的单元格数据               | (params: [GetCellMultiDataParams](#getcellmultidataparams)) => [DataType[]](#datatype) |                                             |
 | moreThanOneValue    | 是否超过 1 个数值                  | () => [ViewMeta](#viewmeta)                                  |                                             |
 
 ### DataType
@@ -35,18 +35,70 @@ s2.dataSet.getFieldName('type')
 type DataType = Record<string, unknown>;
 ```
 
-### CellDataParams
+### TotalSelection
 
 ```ts
-interface CellDataParams {
-  // search query
-  query: DataType;
+type TotalSelection = {
+  grandTotalOnly?: boolean;
+  subTotalOnly?: boolean;
+  totalDimensions?: boolean | string[];
+};
+
+```
+
+```ts
+type TotalSelectionsOfMultiData = {
+  row?: TotalSelection;
+  column?: TotalSelection;
+};
+```
+
+### GetCellDataParams
+
+```ts
+interface GetCellDataParams {
+  /**
+   * 查询条件
+   */
+  query: Query;
+
+  /**
+   * 是否是汇总节点
+   */
   isTotals?: boolean;
-  // use in part drill-down
+
+  /**
+   * 行头节点，用于下钻场景
+   */
   rowNode?: Node;
-  // mark row's cell
+
+  /**
+   * 是否是行头
+   */
   isRow?: boolean;
 }
+```
+
+### GetCellMultiDataParams
+
+```ts
+interface GetCellMultiDataParams {
+  /**
+   * 查询条件
+   */
+  query: Query;
+
+  /**
+   * 汇总
+   */
+  totals?: TotalSelectionsOfMultiData;
+
+  /**
+   * 下钻
+   */
+  drillDownFields?: string[];
+}
+
 ```
 
 `markdown:docs/common/custom/customTreeNode.zh.md`

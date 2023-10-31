@@ -285,7 +285,7 @@ export const getSortByMeasureValues = (
   const { fields } = dataSet!;
   const { sortByMeasure, query, sortFieldId } = sortParam!;
   // 按 query 查出所有数据
-  const dataList = dataSet!.getMultiData(query);
+  const dataList = dataSet!.getCellMultiData({ query: query! });
   const columns = getLeafColumnsWithKey(fields.columns);
 
   /**
@@ -308,7 +308,7 @@ export const getSortByMeasureValues = (
   /**
    * 按汇总值进行排序
    * 需要过滤出符合要求的 “汇总数据”
-   * 因为 getMultiData 会查询出 query 及其子维度的所有数据
+   * 因为 getCellMultiData 会查询出 query 及其子维度的所有数据
    * 如 query={ type: 'xx' } 会包含 { type: 'xx', subType: '*' } 的数据
    */
   const isSortFieldInRow = includes(fields.rows, sortFieldId);

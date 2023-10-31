@@ -7,11 +7,11 @@ import {
   transformDimensionsValues,
 } from '../utils/dataset/pivot-data-set';
 import { CellData } from './cell-data';
-import type { CellDataParams } from './interface';
+import type { GetCellMultiDataParams } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  getCellData(params: CellDataParams) {
+  getCellData(params: GetCellMultiDataParams) {
     const { query } = params;
     const { columns, rows } = this.fields;
     const rowDimensionValues = transformDimensionsValues(
@@ -37,7 +37,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
   }
 
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    /*
+    /**
      * 自定义行头有如下几个特点
      * 1、rows配置必须是空，需要额外添加 $$extra$$ 定位数据（标记指标的id）
      * 2、要有配置 fields.rowCustomTree(行头结构)
@@ -45,7 +45,10 @@ export class CustomTreePivotDataSet extends PivotDataSet {
      */
 
     const updatedDataCfg = super.processDataCfg(dataCfg);
-    const newMeta: Meta[] = this.processMeta(dataCfg.meta, i18n('指标'));
+    const newMeta: Meta[] = this.getFieldMetaWithExtraField(
+      dataCfg.meta,
+      i18n('指标'),
+    );
 
     return {
       ...updatedDataCfg,

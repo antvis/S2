@@ -23,7 +23,7 @@ export const StrategySheet: React.FC<
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
-  const [showConditions, setShowConditions] = React.useState(false);
+  const [showConditions, setShowConditions] = React.useState(true);
 
   const conditions: SheetComponentOptions['conditions'] = {
     text: [

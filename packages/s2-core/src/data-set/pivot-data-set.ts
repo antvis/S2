@@ -18,13 +18,15 @@ import {
   uniq,
   unset,
 } from 'lodash';
+import type { CellMeta } from '../common';
 import {
   EXTRA_FIELD,
+  MULTI_VALUE,
   NODE_ID_SEPARATOR,
   TOTAL_VALUE,
-  MULTI_VALUE,
   VALUE_FIELD,
 } from '../common/constant';
+import { DataSelectType } from '../common/constant/total';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
@@ -35,10 +37,10 @@ import type {
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
   RawData,
+  RowData,
   S2DataConfig,
   TotalsStatus,
   ViewMeta,
-  RowData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
@@ -59,12 +61,11 @@ import {
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
-import { DataSelectType } from '../common/constant/total';
-import type { CellMeta } from '../common';
-import { CellData } from './cell-data';
 import { BaseDataSet } from './base-data-set';
+import { CellData } from './cell-data';
 import type {
-  CellDataParams,
+  GetCellDataParams,
+  GetCellMultiDataParams,
   PivotMeta,
   Query,
   SortedDimensionValues,
@@ -296,7 +297,7 @@ export class PivotDataSet extends BaseDataSet {
         : uniq([...rows, EXTRA_FIELD]);
     }
 
-    const newMeta: Meta[] = this.processMeta(meta, i18n('数值'));
+    const newMeta: Meta[] = this.getFieldMetaWithExtraField(meta, i18n('数值'));
 
     return {
       data,
@@ -379,7 +380,7 @@ export class PivotDataSet extends BaseDataSet {
 
     // 前端计算汇总值
     if (calcAction || !!calcFunc) {
-      const data = this.getMultiData(query);
+      const data = this.getCellMultiData({ query });
       let totalValue: number | null = null;
 
       if (calcFunc) {
@@ -395,7 +396,7 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  public getCellData(params: CellDataParams) {
+  public getCellData(params: GetCellDataParams) {
     const { query = {}, rowNode, isTotals = false } = params || {};
 
     const { rows: originRows, columns } = this.fields;
@@ -494,7 +495,7 @@ export class PivotDataSet extends BaseDataSet {
   protected getQueryExtraFields(query: Query) {
     const { values } = this.fields;
 
-    return query[EXTRA_FIELD] ? [query[EXTRA_FIELD]] : values;
+    return query?.[EXTRA_FIELD] ? [query[EXTRA_FIELD]] : values;
   }
 
   protected getTotalSelectionByDimensions(
@@ -539,11 +540,8 @@ export class PivotDataSet extends BaseDataSet {
     return rowSelectTypes.concat(columnSelectTypes);
   }
 
-  public getMultiData(
-    query: Query = {},
-    totals?: TotalSelectionsOfMultiData,
-    drillDownFields?: string[],
-  ) {
+  public getCellMultiData(params: GetCellMultiDataParams) {
+    const { query, totals, drillDownFields } = params;
     const { path, rows, columns } = this.getMultiDataQueryPath(
       query,
       drillDownFields,
@@ -646,7 +644,7 @@ export class PivotDataSet extends BaseDataSet {
     return isNumber(customValueOrder);
   }
 
-  public getRowData(cell: CellMeta): RowData {
-    return this.getMultiData(cell.rowQuery);
+  public getRowData(cellMeta: CellMeta): RowData {
+    return this.getCellMultiData({ query: cellMeta.rowQuery! });
   }
 }

@@ -35,7 +35,10 @@ export const partDrillDown: PartDrillDown = {
       const field = drillFields[0];
 
       const rowData = dataSet
-        .getMultiData(meta.query, {}, [preDrillDownfield])
+        .getCellMultiData({
+          query: meta.query!,
+          drillDownFields: [preDrillDownfield],
+        })
         .filter(
           (item) =>
             item.getValueByField('type') && item.getValueByField('sub_type'),

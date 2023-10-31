@@ -627,7 +627,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="字段标记开"
                   unCheckedChildren="字段标记关"
-                  checked={!!mergedOptions.conditions}
+                  checked={!isEmpty(mergedOptions.conditions)}
                   onChange={(checked) => {
                     updateOptions({
                       conditions: checked ? s2ConditionsOptions : null,

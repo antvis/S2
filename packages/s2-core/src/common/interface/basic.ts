@@ -202,19 +202,16 @@ export interface Total {
   subTotalsLabel?: string;
 }
 
-/**
- * tableau的英文是这个，这里有个绕的概念
- * 如，某行维度需要展示小计，实际上是将对应的一列数据进行聚合，所以文案上显示的应该是“展示列小计”
- * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
- */
 export interface Totals {
   row?: Total;
   col?: Total;
 }
 
 export interface Sort {
-  /** 字段id，业务中一般是displayId */
+  /** 字段id */
   sortFieldId: string;
+
+  /** 排序方式 */
   sortMethod?: SortMethod;
 
   /** 自定义排序 */

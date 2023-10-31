@@ -2,19 +2,18 @@
 /* eslint-disable no-console */
 import {
   CellType,
-  type S2DataConfig,
-  type S2Options,
-  type Query,
   type Data,
   type RawData,
+  type S2DataConfig,
+  type S2Options,
 } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
   SheetType,
 } from '@antv/s2-shared';
-import { defineComponent, reactive, ref, shallowRef } from 'vue';
 import { forEach, random } from 'lodash';
+import { defineComponent, reactive, ref, shallowRef } from 'vue';
 import { SheetComponent } from '../src';
 
 const dataConfig1: S2DataConfig = {
@@ -545,9 +544,10 @@ const partDrillDown: PartDrillDown = {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowData = (
-        dataSet.getMultiData(meta?.query as Query, undefined, [
-          preDrillDownfield,
-        ]) as Data[]
+        dataSet.getCellMultiData({
+          query: meta?.query,
+          drillDownFields: [preDrillDownfield],
+        }) as Data[]
       ).filter(
         (item) => item!.sub_type && item!.type && item![preDrillDownfield],
       );
