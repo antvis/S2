@@ -60,8 +60,8 @@
     "@ant-design/icons": ">=4.7.0",
     "@antv/s2": ">=1.0.0",
     "antd": ">=4.16.13",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
   "dependencies": {
     "ahooks": "^3.1.13",

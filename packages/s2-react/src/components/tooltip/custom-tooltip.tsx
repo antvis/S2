@@ -5,17 +5,30 @@ import {
   SpreadSheet,
 } from '@antv/s2';
 import React from 'react';
+// eslint-disable-next-line react/no-deprecated
+import { unmountComponentAtNode, render, version } from 'react-dom';
 import { createRoot, type Root } from 'react-dom/client';
 import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import { startsWith } from 'lodash';
 import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
 import type { TooltipRenderProps } from './interface';
 import { TooltipContext } from './context';
 import { TooltipComponent } from './index';
 import './style.less';
 
-export class CustomTooltip extends BaseTooltip {
+/**
+ * 自定义 Tooltip 组件, 兼容 React 18 参考如下
+ * @ref https://github.com/react-component/util/blob/677d3ac177d147572b65af63e67a7796a5104f4c/src/React/render.ts#L69-L106
+ */
+export class CustomTooltip extends BaseTooltip<
+  React.ReactNode,
+  React.ReactNode,
+  React.ReactNode
+> {
   root: Root;
+
+  isLegacyReactVersion = !createRoot || !startsWith(version, '18');
 
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
@@ -45,28 +58,34 @@ export class CustomTooltip extends BaseTooltip {
       this.unmount();
     }
 
-    this.root ??= createRoot(this.container!);
-    this.root.render(
-      this.isMobileDevice() ? (
-        <Drawer
-          className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
-          title={cell?.getActualText()}
-          open={this.visible}
-          closeIcon={<LeftOutlined />}
-          placement="right"
-          width={MOBILE_DRAWER_WIDTH}
-          onClose={() => {
-            this.hide();
-          }}
-        >
-          <TooltipContext.Provider value={this.isMobileDevice()}>
-            <TooltipComponent {...tooltipProps} content={content} />
-          </TooltipContext.Provider>
-        </Drawer>
-      ) : (
-        <TooltipComponent {...tooltipProps} content={content} />
-      ),
+    const Content = this.isMobileDevice() ? (
+      <Drawer
+        className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
+        title={cell?.getActualText()}
+        open={this.visible}
+        closeIcon={<LeftOutlined />}
+        placement="right"
+        width={MOBILE_DRAWER_WIDTH}
+        onClose={() => {
+          this.hide();
+        }}
+      >
+        <TooltipContext.Provider value={this.isMobileDevice()}>
+          <TooltipComponent {...tooltipProps} content={content} />
+        </TooltipContext.Provider>
+      </Drawer>
+    ) : (
+      <TooltipComponent {...tooltipProps} content={content} />
     );
+
+    if (this.isLegacyReactVersion) {
+      render(Content, this.container);
+
+      return;
+    }
+
+    this.root ??= createRoot(this.container!);
+    this.root.render(Content);
   }
 
   hide() {
@@ -82,6 +101,15 @@ export class CustomTooltip extends BaseTooltip {
   }
 
   private unmount() {
-    this.root?.unmount();
+    if (this.isLegacyReactVersion && this.container!) {
+      unmountComponentAtNode(this.container);
+
+      return;
+    }
+
+    // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
+    Promise.resolve().then(() => {
+      this.root?.unmount();
+    });
   }
 }

@@ -1,4 +1,19 @@
 /* eslint-disable no-console */
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { version as antdVersion } from 'antd';
+import { version as s2Version } from '@antv/s2';
+
+console.log(`================== [S2 REACT TEST ENV] ====================`);
+console.table({
+  react: React.version,
+  'react-dom': ReactDOM.version,
+  antd: antdVersion,
+  s2: s2Version,
+});
+console.log(`====================================================`);
+
 ['time', 'info', 'warn'].forEach((type) => {
   jest.spyOn(console, type).mockImplementation(() => {});
 });
@@ -18,4 +33,4 @@ jest.spyOn(console, 'error').mockImplementation((msg) => {
 
 // https://react.dev/blog/2022/03/08/react-18-upgrade-guide#configuring-your-testing-environment
 // eslint-disable-next-line no-undef
-globalThis.IS_REACT_ACT_ENVIRONMENT = false;
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;

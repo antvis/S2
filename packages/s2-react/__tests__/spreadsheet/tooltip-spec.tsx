@@ -254,13 +254,57 @@ describe('SheetComponent Tooltip Tests', () => {
 
     const callback = jest.fn();
 
-    s2.showTooltip({
-      position: { x: 0, y: 0 },
-      content: () => <div>1</div>,
-    }).then(callback);
-
-    await sleep(100);
+    await s2
+      .showTooltip({
+        position: { x: 0, y: 0 },
+        content: () => <div>1</div>,
+      })
+      .then(callback);
 
     expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not throw ReactDOM.render is no longer supported warning', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await sleep(1000);
+
+    await s2.showTooltip({
+      position: {
+        x: 0,
+        y: 0,
+      },
+      content: <div>1</div>,
+    });
+
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      `Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot`,
+    );
+
+    errorSpy.mockRestore();
+  });
+
+  test('should not throw ReactDOM 18 async unmount warning', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await sleep(1000);
+
+    await s2.showTooltip({
+      position: {
+        x: 0,
+        y: 0,
+      },
+      content: <div>1</div>,
+    });
+
+    await sleep(500);
+
+    s2.destroyTooltip();
+
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      `Warning: Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.`,
+    );
+
+    errorSpy.mockRestore();
   });
 });
