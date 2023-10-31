@@ -445,7 +445,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      ) as InteractionStateTheme;
+      ) as unknown as InteractionStateTheme;
 
       if (interactionStateTheme) {
         this.toggleConditionIntervalShapeOpacity(

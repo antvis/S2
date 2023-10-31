@@ -47,7 +47,7 @@ export default defineConfig({
   // 开发配置
   root,
   server: {
-    port: 3000,
+    port: 3001,
     hmr: true,
   },
 

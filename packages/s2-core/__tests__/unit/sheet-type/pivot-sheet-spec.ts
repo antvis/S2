@@ -2,20 +2,24 @@
 import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
 import { waitForRender } from 'tests/util';
-import type { BaseEvent } from '../../../src';
+import { getContainer } from 'tests/util/helpers';
+import type { BaseEvent, HeaderCell } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
+import { BaseTooltip } from '@/ui/tooltip';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import type { GEvent } from '@/index';
+import { Node } from '@/facet/layout/node';
 import {
   CellType,
-  getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
   S2Event,
-  setLang,
   TOOLTIP_CONTAINER_CLS,
+  getIcon,
+  setLang,
   type CustomSVGIcon,
   type HiddenColumnsInfo,
   type LangType,
@@ -24,11 +28,7 @@ import {
   type S2Options,
   type TooltipShowOptions,
 } from '@/common';
-import { Node } from '@/facet/layout/node';
-import type { GEvent } from '@/index';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { BaseTooltip } from '@/ui/tooltip';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import type { CornerCell } from '@/cell/corner-cell';
 
 jest.mock('@/utils/hide-columns');
 
@@ -83,7 +83,7 @@ describe('PivotSheet Tests', () => {
         [CellType.CORNER_CELL]: 'cornerCell',
         [CellType.MERGED_CELL]: 'merged',
         [CellType.SERIES_NUMBER_CELL]: 'seriesNumberCell',
-      }[cellType]);
+      })[cellType];
 
     test('should support callback tooltip content for string', () => {
       s2.showTooltip({
@@ -143,7 +143,7 @@ describe('PivotSheet Tests', () => {
       expect(showTooltipSpy).toHaveBeenCalledTimes(1);
     });
 
-    test("should dont't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
+    test("should don't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
       Object.defineProperty(s2.options, 'tooltip', {
         value: {
           enable: false,
@@ -1069,7 +1069,7 @@ describe('PivotSheet Tests', () => {
     // clear all canvas events
 
     // g5.0 destroy
-    expect(destroyFn).toBeCalled();
+    expect(destroyFn).toHaveBeenCalled();
     expect(document.body.contains(s2.getCanvasElement())).toBeFalse();
   });
 
@@ -1202,9 +1202,9 @@ describe('PivotSheet Tests', () => {
       await sheet.render();
 
       sheet.facet.getRowLeafNodes().forEach((node) => {
-        const rowCell = node.belongsCell;
+        const rowCell = node.belongsCell as HeaderCell;
 
-        expect(get(rowCell, 'actionIcons')).toHaveLength(0);
+        expect(rowCell.getActionIcons()).toBeEmpty();
       });
 
       sheet.destroy();

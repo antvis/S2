@@ -1,23 +1,23 @@
+import type { SpreadSheet } from '@antv/s2';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import type { SpreadSheet } from '@antv/s2';
-import { MobileSheet } from '../../../../../src/components/sheets/mobile-sheet';
-import { SheetComponent } from '../../../../../src/components/sheets';
 import { CustomTooltip } from '../../../../../src';
+import { SheetComponent } from '../../../../../src/components/sheets';
+import { MobileSheet } from '../../../../../src/components/sheets/mobile-sheet';
 import * as mockDataConfig from '../../../../data/simple-data.json';
 
 describe('Mobile Tooltip Different Tests', () => {
   test('SheetComponent hide tooltip do not trigger renderContent', async () => {
     let s2: SpreadSheet;
-    let customTooltipInstance;
+    let customTooltipInstance: CustomTooltip;
 
     render(
       <SheetComponent
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            render: (s) => {
-              customTooltipInstance = new CustomTooltip(s);
+            render: (spreadsheet) => {
+              customTooltipInstance = new CustomTooltip(spreadsheet);
               customTooltipInstance.renderContent = jest.fn();
 
               return customTooltipInstance;
@@ -49,8 +49,8 @@ describe('Mobile Tooltip Different Tests', () => {
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            render: (s) => {
-              customTooltipInstance = new CustomTooltip(s);
+            render: (spreadsheet) => {
+              customTooltipInstance = new CustomTooltip(spreadsheet);
               customTooltipInstance.renderContent = jest.fn();
 
               return customTooltipInstance;
@@ -82,8 +82,8 @@ describe('Mobile Tooltip Different Tests', () => {
         dataCfg={mockDataConfig}
         options={{
           tooltip: {
-            render: (s) => {
-              customTooltipInstance = new CustomTooltip(s);
+            render: (spreadsheet) => {
+              customTooltipInstance = new CustomTooltip(spreadsheet);
               customTooltipInstance.renderContent = jest.fn();
 
               return customTooltipInstance;

@@ -143,7 +143,7 @@ export class TableDataSet extends BaseDataSet {
           data,
           [func || sortFieldId],
           [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-        );
+        ) as RawData[];
       }
 
       if (restData.length) {

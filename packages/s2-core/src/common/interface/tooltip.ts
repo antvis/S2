@@ -124,11 +124,15 @@ export type TooltipDetailProps = {
   list: TooltipDetailListItem[] | null | undefined;
 };
 
-export type TooltipInterpretationOptions = {
+export type TooltipInterpretationOptions<
+  T = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> = {
   name: string;
-  icon?: Element | string;
-  text?: string;
-  render?: Element | string;
+  icon?: Icon;
+  text?: Text;
+  content?: T;
 };
 
 export type TooltipShowOptions<
@@ -147,6 +151,7 @@ export type TooltipShowOptions<
       ) => T)
     | T;
   event?: CanvasEvent | MouseEvent;
+  onMounted?: () => void;
 };
 
 export type TooltipData = {
@@ -223,7 +228,7 @@ export interface BaseTooltipConfig<
    * 自定义 Tooltip 类
    * @see https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-tooltip
    */
-  render?: (spreadsheet: SpreadSheet) => BaseTooltip;
+  render?: (spreadsheet: SpreadSheet) => BaseTooltip<T, Icon, Text>;
 
   /**
    * 自定义坐标
@@ -233,7 +238,7 @@ export interface BaseTooltipConfig<
   /**
    * 自定义挂载容器, 默认 body
    */
-  getContainer?: () => HTMLElement;
+  getContainer?: () => HTMLElement | null;
 
   /**
    * 容器类名

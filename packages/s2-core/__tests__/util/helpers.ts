@@ -2,7 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas, FederatedMouseEvent, FederatedPointerEvent } from '@antv/g';
+import {
+  Canvas,
+  FederatedMouseEvent,
+  FederatedPointerEvent,
+  type CanvasConfig,
+} from '@antv/g';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
@@ -43,7 +48,9 @@ export const getContainer = () => {
 };
 
 export const sleep = async (timeout = 0) => {
-  await new Promise((resolve) => setTimeout(resolve, timeout));
+  await new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
 };
 
 export const createFakeSpreadSheet = () => {
@@ -77,7 +84,7 @@ export const createFakeSpreadSheet = () => {
     width: DEFAULT_OPTIONS.width!,
     height: DEFAULT_OPTIONS.height!,
     container,
-    renderer: new Renderer(),
+    renderer: new Renderer() as unknown as CanvasConfig['renderer'],
   });
   s2.dataSet = {
     ...s2.dataCfg,

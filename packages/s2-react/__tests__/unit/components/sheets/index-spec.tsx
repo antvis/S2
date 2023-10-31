@@ -7,10 +7,8 @@ import {
 import type { SheetType } from '@antv/s2-shared';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import { SheetComponent, type SheetComponentsProps } from '../../../../src';
-import { getContainer } from '../../../util/helpers';
+import { getContainer, renderComponent } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
   describe('Render Tests', () => {
@@ -21,7 +19,6 @@ describe('<SheetComponent/> Tests', () => {
     });
 
     afterEach(() => {
-      ReactDOM.unmountComponentAtNode(container);
       container.remove();
     });
 
@@ -49,16 +46,14 @@ describe('<SheetComponent/> Tests', () => {
       'should render successfully for %s sheet',
       async (sheetType) => {
         function init() {
-          act(() => {
-            ReactDOM.render(
-              <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
-              container,
-            );
-          });
+          renderComponent(
+            <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
+            container,
+          );
         }
 
         await waitFor(() => {
-          expect(init).not.toThrowError();
+          expect(init).not.toThrow();
         });
       },
     );
@@ -86,27 +81,23 @@ describe('<SheetComponent/> Tests', () => {
         });
         const onDestroy = jest.fn();
 
-        act(() => {
-          ReactDOM.render(
-            <SheetComponent
-              sheetType={sheetType}
-              options={{ width: 200, height: 200 }}
-              dataCfg={null as unknown as S2DataConfig}
-              onMounted={onMounted}
-              onDestroy={onDestroy}
-            />,
-            container,
-          );
-        });
+        const unmount = renderComponent(
+          <SheetComponent
+            sheetType={sheetType}
+            options={{ width: 200, height: 200 }}
+            dataCfg={null as unknown as S2DataConfig}
+            onMounted={onMounted}
+            onDestroy={onDestroy}
+          />,
+          container,
+        );
 
         await waitFor(() => {
           expect(onMounted).toHaveBeenCalledWith(onMountedRef!);
           expect(onDestroy).not.toHaveBeenCalled();
         });
 
-        act(() => {
-          ReactDOM.unmountComponentAtNode(container);
-        });
+        unmount?.();
 
         await waitFor(() => {
           expect(onDestroy).toHaveBeenCalledTimes(1);
@@ -134,17 +125,13 @@ describe('<SheetComponent/> Tests', () => {
         );
       }
 
-      act(() => {
-        ReactDOM.render(<Component sheetType={'pivot'} />, container);
-      });
+      renderComponent(<Component sheetType={'pivot'} />, container);
 
       await waitFor(() => {
         expect(spreadSheet!).toBeInstanceOf(PivotSheet);
       });
 
-      act(() => {
-        ReactDOM.render(<Component sheetType={'table'} />, container);
-      });
+      renderComponent(<Component sheetType={'table'} />, container);
 
       await waitFor(() => {
         expect(spreadSheet!).toBeInstanceOf(TableSheet);

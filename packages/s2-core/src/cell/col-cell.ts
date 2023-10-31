@@ -103,7 +103,7 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): PointLike {
     const { isLeaf } = this.meta;
-    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig;
+    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig || {};
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const textStyle = this.getTextStyle();

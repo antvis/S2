@@ -265,7 +265,10 @@ export class EventController {
   }
 
   private activeResizeArea(event: CanvasEvent) {
-    const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+    const appendInfo = get(
+      event.target,
+      'attrs.appendInfo',
+    ) as unknown as ResizeInfo;
 
     if (appendInfo?.isResizeMask) {
       return;

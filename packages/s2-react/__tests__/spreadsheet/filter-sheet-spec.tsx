@@ -10,9 +10,8 @@ import {
 } from '@antv/s2';
 import { Button, Space } from 'antd';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData, sleep } from '../util/helpers';
+import { getMockData, renderComponent, sleep } from '../util/helpers';
 import {
   SheetComponent,
   type SheetComponentOptions,
@@ -142,9 +141,7 @@ function MainLayout() {
 }
 
 describe('table sheet filter spec', () => {
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
-  });
+  renderComponent(<MainLayout />);
 
   test('filter customer_type values', async () => {
     spreadSheet.emit(S2Event.RANGE_FILTER, {

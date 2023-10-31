@@ -9,7 +9,7 @@ import { TooltipIcon } from './icon';
 export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
   props,
 ) => {
-  const { name, icon, text, render } = props;
+  const { name, icon, text, content } = props;
 
   const renderName = () =>
     name && (
@@ -20,13 +20,15 @@ export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
 
   const renderText = () => text && <div>{text}</div>;
 
-  const renderElement = () => <ReactElement content={render} />;
+  const renderElement = () => (
+    <ReactElement content={content as React.ReactNode} />
+  );
 
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-interpretation`}>
       <div className={`${TOOLTIP_PREFIX_CLS}-interpretation-head`}>
         <TooltipIcon
-          icon={icon}
+          icon={icon as React.ReactNode}
           className={`${TOOLTIP_PREFIX_CLS}-interpretation-icon`}
         />
         {renderName()}

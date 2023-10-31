@@ -1,9 +1,13 @@
+/* eslint-disable no-empty-function */
 import type { ViewMetaData } from '../common/interface/basic';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant/basic';
 import type { RawData } from '../common/interface/s2DataConfig';
 
 export class CellData {
-  constructor(private raw: RawData, private extraField: string) {}
+  constructor(
+    private raw: RawData,
+    private extraField: string,
+  ) {}
 
   static getCellDataList(raw: RawData, extraFields: string[]) {
     return extraFields.map((field) => new CellData(raw, field));

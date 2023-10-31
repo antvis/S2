@@ -25,7 +25,10 @@ describe('Tooltip Component Tests', () => {
           options={{
             onlyShowOperator: true,
             operator: {
-              menus: getTooltipOperatorSortMenus(),
+              menus: getTooltipOperatorSortMenus() as TooltipOperatorMenu<
+                React.ReactNode,
+                React.ReactNode
+              >[],
               defaultSelectedKeys: [key],
             },
           }}
@@ -99,14 +102,15 @@ describe('Tooltip Common Components Tests', () => {
   });
 
   test('render hide icon: TooltipOperator', () => {
-    const hiddenMenus = [
-      {
-        key: 'hiddenColumns',
-        text: '隐藏',
-        icon: 'EyeOutlined',
-        onClick: 'ƒ onClick() {}',
-      },
-    ] as unknown as TooltipOperatorMenu[];
+    const hiddenMenus: TooltipOperatorMenu<React.ReactNode, React.ReactNode>[] =
+      [
+        {
+          key: 'hiddenColumns',
+          text: '隐藏',
+          icon: 'EyeOutlined',
+          onClick: jest.fn(),
+        },
+      ];
 
     const { asFragment, getByText, container } = render(
       <TooltipOperator

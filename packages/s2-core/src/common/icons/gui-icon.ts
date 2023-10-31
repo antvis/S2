@@ -35,6 +35,10 @@ export class GuiIcon extends Group {
     this.render();
   }
 
+  public getCfg(): GuiIconCfg {
+    return this.cfg;
+  }
+
   // 获取 Image 实例，使用缓存，以避免滚动时因重复的 new Image() 耗时导致的闪烁问题
   /* 异步获取 image 实例 */
   public getImage(

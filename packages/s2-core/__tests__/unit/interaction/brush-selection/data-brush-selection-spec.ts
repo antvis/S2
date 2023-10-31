@@ -133,7 +133,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       ({
         colLeafNodes: mockColLeafNodes,
         rowLeafNodes: mockRowLeafNodes,
-      } as LayoutResult);
+      }) as LayoutResult;
     s2.facet.getColLeafNodes = () => mockColLeafNodes;
     s2.facet.getRowLeafNodes = () => mockRowLeafNodes;
     s2.facet.foregroundGroup = new Group();
@@ -336,7 +336,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       getBBox: () =>
         ({
           width: VSCROLLBAR_WIDTH,
-        } as any),
+        }) as any,
     } as any;
     let result = brushSelectionInstance.formatBrushPointForScroll({
       x: 20,

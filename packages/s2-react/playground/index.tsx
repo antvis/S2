@@ -37,14 +37,14 @@ import {
   Tag,
   Tooltip,
   type RadioChangeEvent,
-  version,
+  version as AntdVersion,
   Divider,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce, isEmpty, isBoolean } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
@@ -113,7 +113,7 @@ function MainLayout() {
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
-  const scrollTimer = React.useRef<NodeJS.Timer>();
+  const scrollTimer = React.useRef<number>();
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
@@ -870,7 +870,7 @@ function MainLayout() {
                           animate: true,
                         },
                       });
-                    }, 500);
+                    }, 500) as unknown as number;
                   }}
                 >
                   {scrollTimer.current ? '停止滚动' : '循环滚动'}
@@ -1125,7 +1125,10 @@ function MainLayout() {
                       {corePkg.name}: <Tag>{corePkg.version}</Tag>
                     </span>
                     <span>
-                      antd: <Tag>{version}</Tag>
+                      antd: <Tag>{AntdVersion}</Tag>
+                    </span>
+                    <span>
+                      react: <Tag>{React.version}</Tag>
                     </span>
                     <span>
                       lang: <Tag>{getLang()}</Tag>
@@ -1219,4 +1222,4 @@ function MainLayout() {
   );
 }
 
-ReactDOM.render(<MainLayout />, document.getElementById('root'));
+createRoot(document.getElementById('root')!).render(<MainLayout />);

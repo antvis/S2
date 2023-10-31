@@ -23,32 +23,30 @@ export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
   }, [props.themeCfg?.name]);
 
   return (
-    <React.StrictMode>
-      <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
-        <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
-          {header && (
-            <Header
-              {...header}
-              sheet={s2Ref.current!}
-              style={{
-                width: options?.width,
-              }}
-              dataCfg={getSafetyDataConfig(dataCfg)}
-              options={getSheetComponentOptions(options!)}
-            />
-          )}
-          <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-          {pagination.showPagination && (
-            <S2Pagination
-              pagination={pagination.pagination}
-              onChange={pagination.onChange}
-              onShowSizeChange={pagination.onShowSizeChange}
-            />
-          )}
-          {props.children}
-        </div>
-      </Spin>
-    </React.StrictMode>
+    <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
+      <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+        {header && (
+          <Header
+            {...header}
+            sheet={s2Ref.current!}
+            style={{
+              width: options?.width,
+            }}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSheetComponentOptions(options!)}
+          />
+        )}
+        <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
+        {pagination.showPagination && (
+          <S2Pagination
+            pagination={pagination.pagination}
+            onChange={pagination.onChange}
+            onShowSizeChange={pagination.onShowSizeChange}
+          />
+        )}
+        {props.children}
+      </div>
+    </Spin>
   );
 });
 

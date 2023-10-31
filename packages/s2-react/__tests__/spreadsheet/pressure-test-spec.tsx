@@ -8,10 +8,8 @@ import {
 } from '@antv/s2';
 import 'antd/dist/antd.min.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { getContainer } from '../util/helpers';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
+import { renderComponent } from '../util/helpers';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 const data: RawData[] = [];
 
@@ -97,26 +95,21 @@ const getOptions = (): SheetComponentsProps['options'] => {
 
 function MainLayout(props: SheetComponentsProps) {
   return (
-    <div>
-      <SheetComponent
-        dataCfg={props.dataCfg}
-        adaptive={false}
-        options={props.options}
-        spreadsheet={onMounted}
-      />
-    </div>
+    <SheetComponent
+      dataCfg={props.dataCfg}
+      adaptive={false}
+      options={props.options}
+      spreadsheet={onMounted}
+    />
   );
 }
 
 describe('spreadsheet normal spec', () => {
-  test('demo', () => {
-    expect(1).toBe(1);
-  });
-
-  act(() => {
-    ReactDOM.render(
+  test('performance tests', () => {
+    renderComponent(
       <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      getContainer(),
     );
+
+    expect(1).toBe(1);
   });
 });

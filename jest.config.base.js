@@ -16,7 +16,17 @@ module.exports = {
   transformIgnorePatterns: [],
   testRegex: '/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js|vue)?$',
   transform: {
-    '\\.(t|j)sx?$': '@swc/jest',
+    '\\.(t|j)sx?$': [
+      '@swc/jest',
+      {
+        jsc: {
+          transform: {
+            // https://swc.rs/docs/configuration/compilation#jsctransformusedefineforclassfields
+            useDefineForClassFields: false,
+          },
+        },
+      },
+    ],
     '\\.vue$': 'vue-jest',
     '\\.(less|css)$': 'jest-less-loader',
     '\\.svg$': 'jest-raw-loader',

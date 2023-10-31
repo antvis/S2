@@ -5,21 +5,36 @@ import {
   SpreadSheet,
 } from '@antv/s2';
 import React from 'react';
-import ReactDOM from 'react-dom';
+// eslint-disable-next-line react/no-deprecated
+import { unmountComponentAtNode, render, version } from 'react-dom';
+import { createRoot, type Root } from 'react-dom/client';
 import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import { startsWith } from 'lodash';
 import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
 import type { TooltipRenderProps } from './interface';
 import { TooltipContext } from './context';
 import { TooltipComponent } from './index';
 import './style.less';
 
-export class CustomTooltip extends BaseTooltip {
+/**
+ * 自定义 Tooltip 组件, 兼容 React 18 参考如下
+ * @ref https://github.com/react-component/util/blob/677d3ac177d147572b65af63e67a7796a5104f4c/src/React/render.ts#L69-L106
+ */
+export class CustomTooltip extends BaseTooltip<
+  React.ReactNode,
+  React.ReactNode,
+  React.ReactNode
+> {
+  root: Root;
+
+  isLegacyReactVersion = !startsWith(version, '18');
+
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
   }
 
-  private isMobileType() {
+  private isMobileDevice() {
     return isMobile(this.spreadsheet.options?.device);
   }
 
@@ -30,57 +45,71 @@ export class CustomTooltip extends BaseTooltip {
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(showOptions?.event?.target);
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
-    const content = showOptions?.content ?? contentFromOptions;
+    const content = (showOptions?.content ??
+      contentFromOptions) as React.ReactNode;
 
-    const tooltipProps: TooltipRenderProps = {
+    const tooltipProps = {
       ...showOptions,
       cell,
       content,
-    };
+    } as TooltipRenderProps;
 
     if (showOptions?.options?.forceRender) {
-      this.unmountComponentAtNode();
+      this.unmount();
     }
 
-    ReactDOM.render(
-      this.isMobileType() ? (
-        <Drawer
-          className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
-          title={cell?.getActualText()}
-          visible={this.visible}
-          closeIcon={<LeftOutlined />}
-          placement="right"
-          width={MOBILE_DRAWER_WIDTH}
-          onClose={() => {
-            this.hide();
-          }}
-        >
-          <TooltipContext.Provider value={this.isMobileType()}>
-            <TooltipComponent {...tooltipProps} content={content} />
-          </TooltipContext.Provider>
-        </Drawer>
-      ) : (
-        <TooltipComponent {...tooltipProps} content={content} />
-      ),
-      this.container,
+    const Content = this.isMobileDevice() ? (
+      <Drawer
+        className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
+        title={cell?.getActualText()}
+        open={this.visible}
+        closeIcon={<LeftOutlined />}
+        placement="right"
+        width={MOBILE_DRAWER_WIDTH}
+        onClose={() => {
+          this.hide();
+        }}
+      >
+        <TooltipContext.Provider value={this.isMobileDevice()}>
+          <TooltipComponent {...tooltipProps} content={content} />
+        </TooltipContext.Provider>
+      </Drawer>
+    ) : (
+      <TooltipComponent {...tooltipProps} content={content} />
     );
+
+    if (this.isLegacyReactVersion) {
+      render(Content, this.container);
+
+      return;
+    }
+
+    this.root ??= createRoot(this.container!);
+    this.root.render(Content);
   }
 
   hide() {
     super.hide();
-    if (this.container && this.isMobileType()) {
+    if (this.container && this.isMobileDevice()) {
       this.renderContent();
     }
   }
 
   destroy() {
-    this.unmountComponentAtNode();
+    this.unmount();
     super.destroy();
   }
 
-  private unmountComponentAtNode() {
-    if (this.container) {
-      ReactDOM.unmountComponentAtNode(this.container);
+  private unmount() {
+    if (this.isLegacyReactVersion && this.container!) {
+      unmountComponentAtNode(this.container);
+
+      return;
     }
+
+    // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
+    Promise.resolve().then(() => {
+      this.root?.unmount();
+    });
   }
 }

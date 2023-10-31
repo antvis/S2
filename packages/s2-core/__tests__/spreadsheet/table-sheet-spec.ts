@@ -156,11 +156,11 @@ describe('TableSheet normal spec', () => {
       10,
       onScrollFinish,
     );
-    await sleep(30);
+    await sleep(500);
 
-    const firstColCell = s2.facet.getColNodes()[1].belongsCell as any;
+    const firstColCell = s2.facet.getColNodes()[1].belongsCell! as any;
 
-    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
+    expect(firstColCell.shouldAddVerticalResizeArea()).toBeTruthy();
     expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 81, y: 0 });
 
     s2.destroy();

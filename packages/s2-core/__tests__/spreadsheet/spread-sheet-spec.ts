@@ -297,7 +297,7 @@ describe('SpreadSheet Tests', () => {
 
         s2.destroy();
 
-        expect(destroyFn).toBeCalled();
+        expect(destroyFn).toHaveBeenCalled();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
         expect(document.body.style.overscrollBehavior).toBeFalsy();
       },
@@ -398,7 +398,7 @@ describe('SpreadSheet Tests', () => {
           }, 1000);
         });
 
-        expect(destroyFn).toBeCalled();
+        expect(destroyFn).toHaveBeenCalled();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
 
         s2.destroy();

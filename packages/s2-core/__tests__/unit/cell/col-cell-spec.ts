@@ -59,7 +59,8 @@ describe('Col Cell Tests', () => {
 
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
-        const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
+        // @ts-ignore
+        const getTextPosition = colCell.getTextPosition.bind(colCell);
 
         expect(getTextPosition()).toEqual({
           x: textX,

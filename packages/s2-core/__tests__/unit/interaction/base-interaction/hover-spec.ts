@@ -50,7 +50,7 @@ describe('Interaction Hover Tests', () => {
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
       cellType: 'dataCell',
-    } as any);
+    }) as any;
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
@@ -307,7 +307,7 @@ describe('Interaction Hover Tests', () => {
           getActualText: () => 'test',
           getFieldValue: () => 'test',
           cellType: 'dataCell',
-        } as any);
+        }) as any;
 
       const cellEvent = {
         target: {

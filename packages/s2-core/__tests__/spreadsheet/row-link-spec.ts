@@ -96,7 +96,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
       cellData: rowNode,
       record: {
@@ -122,7 +122,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'city',
       cellData: rowNode,
       record: {
@@ -149,7 +149,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
       cellData: rowNode,
       record: {

@@ -116,7 +116,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
-  onDataCellSelectMove?: (metas: ViewMetaData[]) => void;
+  onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

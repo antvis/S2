@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import {
-  auto,
   EXTRA_FIELD,
   PivotSheet,
-  type S2DataConfig,
-  type S2Options,
   SpreadSheet,
+  auto,
   type RawData,
+  type S2DataConfig,
   type S2MountContainer,
+  type S2Options,
 } from '@antv/s2';
+import 'antd/dist/antd.min.css';
+import React from 'react';
 import {
   data10,
   data6,
@@ -21,11 +20,10 @@ import {
   totalData8,
   totalData9,
 } from '../data/data-accuracy';
-import { getContainer } from '../util/helpers';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
-import 'antd/dist/antd.min.css';
+import { renderComponent } from '../util/helpers';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 
-let spreadsheet1: SpreadSheet;
+let spreadsheet: SpreadSheet;
 
 const setSpreadSheet = (
   dom: S2MountContainer,
@@ -36,7 +34,7 @@ const setSpreadSheet = (
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
 
   if (index === 1) {
-    spreadsheet1 = s2;
+    spreadsheet = s2;
   }
 
   return s2;
@@ -100,7 +98,7 @@ const getDataCfg = (index: number) =>
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  } as SheetComponentsProps['dataCfg']);
+  }) as SheetComponentsProps['dataCfg'];
 
 const getOptions = (): SheetComponentsProps['options'] => {
   return {
@@ -233,17 +231,16 @@ function MainLayout() {
 }
 
 describe('data accuracy two measures spec', () => {
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
-  });
-  spreadsheet1.setDataCfg(getDataCfg(6));
+  renderComponent(<MainLayout />);
+
+  spreadsheet.setDataCfg(getDataCfg(6));
+
   test('Totals + Details + Tow Measures', () => {
     expect(data6.length).toBe(8);
-    // expect(spreadsheet1.dataSet.originData.length).toBe(8);
-    expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
-    expect(spreadsheet1.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
+    expect(spreadsheet.dataSet.fields.valueInCols).toBe(true);
+    expect(spreadsheet.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
       true,
     );
-    expect(spreadsheet1.dataSet.fields.columns!.length).toBe(3);
+    expect(spreadsheet.dataSet.fields.columns!.length).toBe(3);
   });
 });

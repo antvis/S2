@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /**
  * 将在core 层 S2Event 已经定义的事件，同步到 vue 和 react 中
  * ！注意自己检查生成结果和格式化一下
@@ -5,7 +6,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { default as inquirer } from 'inquirer';
-import { default as _ } from 'lodash';
+import { camelCase } from 'lodash';
 
 const symbol = '// ============== Auto 自动生成的 ================';
 
@@ -21,11 +22,11 @@ const insertEventIntoFile = (filePath, template) => {
 };
 
 const getVueEventName = (eventName) => {
-  return _.camelCase(eventName);
+  return camelCase(eventName);
 };
 
 const getReactEventName = (eventName) => {
-  return `on${eventName.charAt(0).toUpperCase()}${_.camelCase(
+  return `on${eventName.charAt(0).toUpperCase()}${camelCase(
     eventName.slice(1),
   )}`;
 };

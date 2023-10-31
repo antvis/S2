@@ -113,7 +113,7 @@ describe('Drill Down Test', () => {
         fetchData,
         spreadsheet: mockInstance,
         drillItemsNum,
-      } as DrillDownParams);
+      }) as DrillDownParams;
 
     // drillDownNum = undefined
     handleDrillDown(getDrillDownParams());

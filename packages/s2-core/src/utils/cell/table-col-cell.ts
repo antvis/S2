@@ -51,7 +51,7 @@ export const getExtraPaddingForExpandIcon = (
       hasNextSiblingCell = true;
     }
   });
-  const iconSize = get(style, 'icon.size');
+  const iconSize = get(style, 'icon.size') as number;
 
   // 图标本身宽度 + 主题配置的 icon margin
   return {
@@ -76,8 +76,8 @@ export const getOccupiedWidthForTableCol = (
   );
 
   return (
-    padding.left +
-    padding.right +
+    padding!.left! +
+    padding!.right! +
     iconsWidth +
     expandIconPadding.left +
     expandIconPadding.right +
