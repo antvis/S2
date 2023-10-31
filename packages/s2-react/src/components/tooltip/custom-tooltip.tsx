@@ -28,7 +28,7 @@ export class CustomTooltip extends BaseTooltip<
 > {
   root: Root;
 
-  isLegacyReactVersion = !createRoot || !startsWith(version, '18');
+  isLegacyReactVersion = !startsWith(version, '18');
 
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);

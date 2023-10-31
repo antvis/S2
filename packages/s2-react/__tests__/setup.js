@@ -1,17 +1,5 @@
 /* eslint-disable no-console */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { version as antdVersion } from 'antd';
-
-console.log(`================== [S2 REACT TEST ENV] ====================`);
-console.table({
-  react: React.version,
-  'react-dom': ReactDOM.version,
-  antd: antdVersion,
-});
-console.log(`====================================================`);
-
 ['time', 'info', 'warn'].forEach((type) => {
   jest.spyOn(console, type).mockImplementation(() => {});
 });
