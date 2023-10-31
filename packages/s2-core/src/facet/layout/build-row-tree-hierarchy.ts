@@ -22,9 +22,11 @@ const addTotals = (
    * TODO valueInCol = false and one or more values
    */
   if (totalsConfig?.showGrandTotals) {
-    const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
+    const func = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
 
-    fieldValues[func](new TotalClass(totalsConfig.label!, false, true));
+    fieldValues[func](
+      new TotalClass(totalsConfig.grandTotalsLabel!, false, true),
+    );
   }
 };
 

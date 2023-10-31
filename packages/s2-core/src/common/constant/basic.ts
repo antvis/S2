@@ -96,5 +96,6 @@ export const getDefaultSeriesNumberText = (defaultText?: string) =>
   defaultText ?? i18n('序号');
 
 export const getDefaultCornerText = () => i18n('指标');
+
 // 省略号
 export const ELLIPSIS_SYMBOL = '...';

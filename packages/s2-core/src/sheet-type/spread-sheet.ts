@@ -19,7 +19,6 @@ import {
   some,
   values,
 } from 'lodash';
-import { injectThemeVars } from '../utils/theme';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -48,7 +47,6 @@ import type {
   TooltipOptions,
   TooltipShowOptions,
   Total,
-  Totals,
 } from '../common/interface';
 import { Store } from '../common/store';
 import type { BaseDataSet } from '../data-set';
@@ -67,6 +65,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '../utils/merge';
+import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 
 /**
@@ -77,28 +76,20 @@ import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
-  // theme config
   public theme: InternalFullyTheme;
 
-  // store some temporary data
   public store = new Store();
 
-  // the original data config
   public dataCfg: S2DataConfig;
 
-  // Spreadsheet's configurations
   public options: S2Options;
 
   public dataSet: BaseDataSet;
 
-  /**
-   * Facet: determine how to render headers/cell
-   */
   public facet: BaseFacet;
 
   public tooltip: BaseTooltip;
 
-  // the base container, contains all groups
   public container: Canvas;
 
   public interaction: RootInteraction;
@@ -240,36 +231,18 @@ export abstract class SpreadSheet extends EE {
 
   public abstract getDataSet(): BaseDataSet;
 
-  /**
-   * 是否开启冻结行列头效果
-   */
   public abstract enableFrozenHeaders(): boolean;
 
-  /**
-   * Check if is pivot mode
-   */
   public abstract isPivotMode(): boolean;
 
   public abstract isCustomRowFields(): boolean;
 
-  /**
-   * tree type must be in strategy mode
-   */
   public abstract isHierarchyTreeType(): boolean;
 
-  /**
-   * Scroll Freeze Row Header
-   */
   public abstract isFrozenRowHeader(): boolean;
 
-  /**
-   * Check if is pivot mode
-   */
   public abstract isTableMode(): boolean;
 
-  /**
-   * Check if the value is in the columns
-   */
   public abstract isValueInCols(): boolean;
 
   protected abstract buildFacet(): void;
@@ -558,16 +531,16 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
-  // 获取当前cell实例
+  // 获取当前 cell 实例
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,
   ): T | null {
     let parent = target;
 
-    // 一直索引到g顶层的canvas来检查是否在指定的cell中
+    // 一直索引到 g 顶层的 canvas 来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
       if (parent instanceof BaseCell) {
-        // 在单元格中，返回true
+        // 在单元格中，返回 true
         return parent as T;
       }
 
@@ -577,7 +550,7 @@ export abstract class SpreadSheet extends EE {
     return null;
   }
 
-  // 获取当前cell类型
+  // 获取当前 cell 类型
   public getCellType(target: CellEventTarget) {
     const cell = this.getCell(target);
 
@@ -585,10 +558,9 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * get total's config by dimension id
-   * @param dimension unique dimension id
+   * 获取当前维度对应的汇总配置
    */
-  public getTotalsConfig(dimension: string): Partial<Totals['row']> {
+  public getTotalsConfig(dimension: string): Total {
     const { totals } = this.options;
     const { rows } = this.dataSet.fields;
 
@@ -597,6 +569,7 @@ export abstract class SpreadSheet extends EE {
       includes(rows, dimension) ? 'row' : 'col',
       {},
     ) as Total;
+
     const showSubTotals =
       totalConfig.showSubTotals &&
       includes(totalConfig.subTotalsDimensions, dimension)
@@ -606,10 +579,10 @@ export abstract class SpreadSheet extends EE {
     return {
       showSubTotals,
       showGrandTotals: totalConfig.showGrandTotals,
-      reverseLayout: totalConfig.reverseLayout,
-      reverseSubLayout: totalConfig.reverseSubLayout,
-      label: totalConfig.label || i18n('总计'),
-      subLabel: totalConfig.subLabel || i18n('小计'),
+      reverseGrandTotalsLayout: totalConfig.reverseGrandTotalsLayout,
+      reverseSubTotalsLayout: totalConfig.reverseSubTotalsLayout,
+      grandTotalsLabel: totalConfig.grandTotalsLabel || i18n('总计'),
+      subTotalsLabel: totalConfig.subTotalsLabel || i18n('小计'),
     };
   }
 

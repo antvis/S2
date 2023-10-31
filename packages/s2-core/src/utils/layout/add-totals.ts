@@ -15,8 +15,8 @@ export const addTotals = (params: TotalParams) => {
   if (isFirstField) {
     // check to see if grand total is added
     if (totalsConfig?.showGrandTotals) {
-      action = totalsConfig.reverseLayout ? 'unshift' : 'push';
-      totalValue = new TotalClass(totalsConfig.label!, false, true);
+      action = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
+      totalValue = new TotalClass(totalsConfig.grandTotalsLabel!, false, true);
     }
   } else if (
     /**
@@ -29,8 +29,8 @@ export const addTotals = (params: TotalParams) => {
       get(totalsConfig, 'showSubTotals.always') !== false) &&
     currentField !== EXTRA_FIELD
   ) {
-    action = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
-    totalValue = new TotalClass(totalsConfig.subLabel!, true);
+    action = totalsConfig.reverseSubTotalsLayout ? 'unshift' : 'push';
+    totalValue = new TotalClass(totalsConfig.subTotalsLabel!, true);
   }
 
   if (action) {

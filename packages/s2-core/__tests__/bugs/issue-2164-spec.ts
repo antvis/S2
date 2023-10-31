@@ -19,7 +19,7 @@ const s2Options: S2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
+      reverseGrandTotalsLayout: true,
     },
   },
 };

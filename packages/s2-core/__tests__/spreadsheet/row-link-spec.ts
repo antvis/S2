@@ -11,7 +11,7 @@ const s2Options: S2Options = {
     row: {
       showSubTotals: true,
       subTotalsDimensions: ['province'],
-      reverseSubLayout: true,
+      reverseSubTotalsLayout: true,
     },
   },
   interaction: {

@@ -21,14 +21,14 @@ const s2Options: S2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
     },
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
     },
   },
 };

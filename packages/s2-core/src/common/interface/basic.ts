@@ -139,51 +139,72 @@ export enum Aggregation {
 export interface CalcTotals {
   /** 聚合方式 */
   aggregation?: Aggregation;
-  /** 自定义计算 */
-  calcFunc?: (query: Query, arr: CellData[]) => number;
+
+  /**
+   * 自定义计算汇总
+   * @see https://s2.antv.antgroup.com/examples/analysis/totals/#custom
+   */
+  calcFunc?: (query: Query, data: CellData[]) => number;
 }
 
 export interface Total {
-  /** 是否显示总计 */
-  showGrandTotals: boolean;
+  /**
+   * 是否显示总计
+   */
+  showGrandTotals?: boolean;
 
-  /** 是否显示小计 */
-  showSubTotals:
+  /**
+   *是否显示小计
+   */
+  showSubTotals?:
     | boolean
     | {
         /** 当子维度个数 <=1 时，仍然展示小计：默认 true */
         always: boolean;
       };
-  /** 自定义总计 */
-  calcTotals?: CalcTotals;
-  /** 自定义小计 */
+
+  /**
+   * 自定义计算总计
+   */
+  calcGrandTotals?: CalcTotals;
+
+  /**
+   * 自定义计算小计
+   */
   calcSubTotals?: CalcTotals;
 
-  /** 小计的汇总维度 */
-  subTotalsDimensions: string[];
-
-  /** 总计布局位置，默认是下或右 */
-  reverseLayout: boolean;
-
-  /** 小计布局位置，默认下或者右 */
-  reverseSubLayout: boolean;
+  /**
+   * 小计的汇总维度
+   * @example subTotalsDimensions: ['province']
+   */
+  subTotalsDimensions?: string[];
 
   /**
-   * 自定义总计展示名
-   * @default '总计'
+   * 总计布局位置，默认是下或右
    */
-  label?: string;
+  reverseGrandTotalsLayout?: boolean;
 
   /**
-   * 自定义小计展示名
-   * @default '小计'
+   * 小计布局位置，默认是下或右
    */
-  subLabel?: string;
+  reverseSubTotalsLayout?: boolean;
+
+  /**
+   * 总计展示名
+   * @default "总计"
+   */
+  grandTotalsLabel?: string;
+
+  /**
+   * 小计展示名
+   * @default "小计"
+   */
+  subTotalsLabel?: string;
 }
 
 export interface Totals {
-  row?: Partial<Total>;
-  col?: Partial<Total>;
+  row?: Total;
+  col?: Total;
 }
 
 export interface Sort {

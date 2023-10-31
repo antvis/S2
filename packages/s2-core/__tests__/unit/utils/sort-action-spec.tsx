@@ -484,7 +484,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         calcSubTotals: {
           aggregation: 'SUM',
         },
-        calcTotals: {
+        calcGrandTotals: {
           aggregation: 'SUM',
         },
       },
@@ -492,7 +492,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         showSubTotals: true,
         showGrandTotals: true,
         subTotalsDimensions: ['type'],
-        calcTotals: {
+        calcGrandTotals: {
           aggregation: 'SUM',
         },
         calcSubTotals: {

@@ -21,11 +21,11 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 | showGrandTotals     | 是否显示总计             | `boolean`    | `false` |      |
 | showSubTotals       | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示             | `boolean \| { always: boolean }`    | `false` |      |
 | subTotalsDimensions | 小计的汇总维度           | `string[]`   | `[]`    |      |
-| reverseLayout       | 总计布局位置，默认下或右 | `boolean`    | `false` |      |
-| reverseSubLayout    | 小计布局位置，默认下或右 | `boolean`    | `false` |      |
+| reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | `false` |      |
+| reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | `false` |      |
 | label               | 总计别名                 | `string`     |         |       |
 | subLabel            | 小计别名                 | `string`     |         |       |
-| calcTotals          | 自定义计算总计                 | [CalcTotals](#calctotals) |         |       |
+| calcGrandTotals          | 自定义计算总计                 | [CalcTotals](#calctotals) |         |       |
 | calcSubTotals       | 自定义计算小计                 | [CalcTotals](#calctotals) |         |       |
 
 ## CalcTotals
