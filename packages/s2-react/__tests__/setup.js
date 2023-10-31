@@ -3,14 +3,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { version as antdVersion } from 'antd';
-import { version as s2Version } from '@antv/s2';
 
 console.log(`================== [S2 REACT TEST ENV] ====================`);
 console.table({
   react: React.version,
   'react-dom': ReactDOM.version,
   antd: antdVersion,
-  s2: s2Version,
 });
 console.log(`====================================================`);
 
