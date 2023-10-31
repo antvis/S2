@@ -345,14 +345,14 @@ describe('SpreadSheet Theme Tests', () => {
             col: {
               showGrandTotals: true,
               showSubTotals: true,
-              reverseLayout: true,
-              reverseSubLayout: false,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: false,
             },
             row: {
               showGrandTotals: true,
               showSubTotals: true,
-              reverseLayout: true,
-              reverseSubLayout: false,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: false,
             },
           },
         });

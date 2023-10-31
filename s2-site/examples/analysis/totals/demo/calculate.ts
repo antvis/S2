@@ -39,10 +39,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         row: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
-          calcTotals: {
+          calcGrandTotals: {
             aggregation: 'SUM',
           },
           calcSubTotals: {
@@ -52,10 +52,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         col: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
-          calcTotals: {
+          calcGrandTotals: {
             aggregation: 'SUM',
           },
           calcSubTotals: {

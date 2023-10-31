@@ -35,6 +35,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       const sum = data.reduce((pre, next) => {
         return pre + next[next[EXTRA_FIELD]];
       }, 0);
+
       return sum * 2;
     };
 
@@ -46,10 +47,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         row: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
-          calcTotals: {
+          calcGrandTotals: {
             calcFunc,
           },
           calcSubTotals: {
@@ -59,10 +60,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         col: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
-          calcTotals: {
+          calcGrandTotals: {
             calcFunc,
           },
           calcSubTotals: {

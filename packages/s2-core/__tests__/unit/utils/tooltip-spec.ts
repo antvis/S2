@@ -401,16 +401,16 @@ describe('Tooltip Utils Tests', () => {
     const rowTotalOptions: Total = {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: false,
-      reverseSubLayout: false,
+      reverseGrandTotalsLayout: false,
+      reverseSubTotalsLayout: false,
       subTotalsDimensions: ['province'],
     };
 
     const colTotalOptions: Total = {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
     };
 

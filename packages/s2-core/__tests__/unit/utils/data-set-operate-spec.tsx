@@ -73,7 +73,7 @@ describe('Data Set Operate Test', () => {
     beforeEach(() => {
       totalsOptions = {
         row: {
-          calcTotals: {
+          calcGrandTotals: {
             aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
@@ -81,7 +81,7 @@ describe('Data Set Operate Test', () => {
           },
         },
         col: {
-          calcTotals: {
+          calcGrandTotals: {
             calcFunc: () => 'colTotals',
           },
           calcSubTotals: {

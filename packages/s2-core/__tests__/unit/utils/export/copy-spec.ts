@@ -586,10 +586,10 @@ describe('Pivot Table Core Data Process', () => {
         row: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
-          calcTotals: {
+          calcGrandTotals: {
             aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
@@ -599,10 +599,10 @@ describe('Pivot Table Core Data Process', () => {
         col: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
-          calcTotals: {
+          calcGrandTotals: {
             aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
