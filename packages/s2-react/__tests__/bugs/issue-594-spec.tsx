@@ -3,14 +3,13 @@
  * https://github.com/antvis/S2/issues/594
  * Wrong ref when sheet type changed
  */
-import React, { type MutableRefObject } from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
+import { S2Event, SpreadSheet, TableSheet } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { waitFor } from '@testing-library/react';
+import React, { type MutableRefObject } from 'react';
+import { act } from 'react-dom/test-utils';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { renderComponent } from 'tests/util/helpers';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
 
@@ -65,9 +64,7 @@ describe('SheetComponent Ref Tests', () => {
   });
 
   test('should get spreadsheet instance by', async () => {
-    act(() => {
-      ReactDOM.render(<MainLayout sheetType="pivot" />, getContainer());
-    });
+    renderComponent(<MainLayout sheetType="pivot" />);
 
     await waitFor(() => {
       expect(s2).toBeInstanceOf(SpreadSheet);
@@ -76,9 +73,7 @@ describe('SheetComponent Ref Tests', () => {
   });
 
   test('should get table spreadsheet instance', async () => {
-    act(() => {
-      ReactDOM.render(<MainLayout sheetType="table" />, getContainer());
-    });
+    renderComponent(<MainLayout sheetType="table" />);
 
     await waitFor(() => {
       expect(s2).toBeInstanceOf(TableSheet);
@@ -87,12 +82,7 @@ describe('SheetComponent Ref Tests', () => {
   });
 
   test('should register events when sheet type updated', async () => {
-    act(() => {
-      ReactDOM.render(
-        <MainLayout sheetType="pivot" toggleSheetType />,
-        getContainer(),
-      );
-    });
+    renderComponent(<MainLayout sheetType="pivot" toggleSheetType />);
 
     // toggle sheet type
     act(() => {

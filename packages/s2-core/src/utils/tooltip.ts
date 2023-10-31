@@ -485,7 +485,9 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const isTableMode = spreadsheet.isTableMode();
 
   if (isTableMode && options?.onlyShowCellText) {
-    const selectedCellsData = spreadsheet.dataSet.getMultiData({});
+    const selectedCellsData = spreadsheet.dataSet.getCellMultiData({
+      query: {},
+    });
 
     return [{ selectedData: selectedCellsData as Data[], name: '', value: '' }];
   }

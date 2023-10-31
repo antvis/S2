@@ -26,7 +26,9 @@ export const ReactElement: React.FC<ReactElementProps> = (props) => {
 
   // DOM/字符串
   const htmlNode =
-    typeof content !== 'string' ? (content as Element)?.innerHTML : content;
+    typeof content !== 'string'
+      ? (content as unknown as Element)?.innerHTML
+      : content;
 
   return (
     <span {...commonProps} dangerouslySetInnerHTML={{ __html: htmlNode }} />

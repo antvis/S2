@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import * as mockDataConfig from '../data/simple-data.json';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
-import { getContainer } from '../util/helpers';
+import * as mockDataConfig from '../data/simple-data.json';
+import { getContainer, renderComponent } from '../util/helpers';
 
 const s2Options: SheetComponentsProps['options'] = {
   width: 600,
@@ -34,29 +32,24 @@ describe('Spread Sheet Tests', () => {
     });
 
     test('should display scroll bar if s2Options.width more than browser window width', () => {
-      act(() => {
-        ReactDOM.render(
-          <SheetComponent
-            options={{
-              ...s2Options,
-              width: window.innerWidth + 100,
-            }}
-            dataCfg={mockDataConfig}
-          />,
-          container,
-        );
-      });
+      renderComponent(
+        <SheetComponent
+          options={{
+            ...s2Options,
+            width: window.innerWidth + 100,
+          }}
+          dataCfg={mockDataConfig}
+        />,
+        container,
+      );
 
       expect(hasScrollBar(container)).toBeTruthy();
     });
 
     test.skip('should hidden scroll bar if window width more than s2Options.width', () => {
-      act(() => {
-        ReactDOM.render(
-          <SheetComponent options={s2Options} dataCfg={mockDataConfig} />,
-          container,
-        );
-      });
+      renderComponent(
+        <SheetComponent options={s2Options} dataCfg={mockDataConfig} />,
+      );
 
       expect(hasScrollBar(container)).toBeFalsy();
     });

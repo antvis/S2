@@ -150,7 +150,7 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
 
       if (
         source[rowIndex] &&
-        typeof source[rowIndex][valueField] !== undefined
+        typeof source[rowIndex][valueField] !== 'undefined'
       ) {
         source[rowIndex][valueField] = fieldValue;
       }
@@ -185,7 +185,10 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
     }
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
-    const { top, left } = get(event, 'target.style', {});
+    const { top, left } = get(event, 'target.style', {}) as {
+      top: string;
+      left: string;
+    };
     const allCells = spreadsheet.facet.getDataCells();
     const targetCell = allCells.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),

@@ -109,7 +109,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   const meta = cell.getMeta()
 
   // 获取当前行数据
-  const rowData = s2.dataSet.getMultiData(meta.query)
+  const rowData = s2.dataSet.getCellMultiData(meta.query)
   // 获取当前行头单元格数据：
   const rowCellData = s2.dataSet.getCellData({ query: meta.query })
   // 获取当前行头维值
@@ -158,7 +158,7 @@ const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
 const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
-const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
+const data = s2.dataSet.getCellMultiData({...rowCellNode.query,...colCellNode.query})
 
   /**
   [

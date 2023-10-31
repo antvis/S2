@@ -54,7 +54,7 @@ describe('Theme Color Tests', () => {
       generatePalette();
     }
 
-    expect(renderEmptyPalette).not.toThrowError();
+    expect(renderEmptyPalette).not.toThrow();
   });
 
   test('should not throw error when receive empty brand color', () => {
@@ -62,7 +62,7 @@ describe('Theme Color Tests', () => {
       generateStandardColors(undefined as unknown as string);
     }
 
-    expect(renderStandardColors).not.toThrowError();
+    expect(renderStandardColors).not.toThrow();
   });
 
   test('should get standard color if brand color is empty', () => {

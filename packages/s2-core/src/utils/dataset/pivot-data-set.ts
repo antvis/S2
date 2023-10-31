@@ -163,7 +163,7 @@ export function getDataPath(params: DataPathParams): DataPath {
 
       const meta = currentMeta.get(value);
 
-      // 只出现在 getMultiData 中， 使用特殊的 value 指明当前复合选择
+      // 只出现在 getCellMultiData 中， 使用特殊的 value 指明当前复合选择
       if (value === MULTI_VALUE) {
         path.push(value);
       } else {

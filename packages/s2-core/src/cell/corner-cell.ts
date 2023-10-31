@@ -188,7 +188,7 @@ export class CornerCell extends HeaderCell {
       scrollY = 0,
       width: headerWidth,
       height: headerHeight,
-    } = this.headerConfig;
+    } = this.headerConfig || {};
     const { x, y, width, height } = this.getBBoxByType();
     const { cornerType } = this.meta;
 

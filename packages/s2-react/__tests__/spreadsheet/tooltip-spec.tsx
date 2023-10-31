@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { SpreadSheet, BaseTooltip, S2Event, GEvent } from '@antv/s2';
-import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { act } from 'react-dom/test-utils';
 import { StarOutlined } from '@ant-design/icons';
-import { SheetComponent } from '@/components/sheets';
-import type { SheetComponentOptions } from '@/components/sheets/interface';
+import { BaseTooltip, GEvent, S2Event, SpreadSheet } from '@antv/s2';
+import React from 'react';
+import type { Root } from 'react-dom/client';
+import { act } from 'react-dom/test-utils';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { createMockCellInfo, renderComponent, sleep } from 'tests/util/helpers';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
+import type { SheetComponentOptions } from '@/components/sheets/interface';
+import { SheetComponent } from '@/components/sheets';
 
 const s2Options: SheetComponentOptions = {
   width: 200,
@@ -36,16 +36,14 @@ function MainLayout() {
 }
 
 describe('SheetComponent Tooltip Tests', () => {
-  const container = getContainer();
+  let unmount: Root['unmount'];
 
   beforeEach(() => {
-    act(() => {
-      ReactDOM.render(<MainLayout />, container);
-    });
+    unmount = renderComponent(<MainLayout />);
   });
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
+    unmount?.();
   });
 
   // https://github.com/antvis/S2/issues/828
@@ -55,8 +53,14 @@ describe('SheetComponent Tooltip Tests', () => {
 
     await sleep(1000);
 
-    const showTooltip = () => {
-      s2.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
+    const showTooltip = async () => {
+      await s2.showTooltip({
+        position: {
+          x: 0,
+          y: 0,
+        },
+        content: '111',
+      });
     };
 
     act(() => {
@@ -64,7 +68,8 @@ describe('SheetComponent Tooltip Tests', () => {
         expect(showTooltip).not.toThrow();
       });
     });
-    showTooltip();
+
+    await showTooltip();
 
     expect(errorSpy).not.toHaveBeenCalledWith(
       `Uncaught DOMException: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.`,
@@ -91,15 +96,20 @@ describe('SheetComponent Tooltip Tests', () => {
     await sleep(1000);
     const content = <div id="custom-content">content</div>;
 
-    s2.showTooltip({ position: { x: 0, y: 0 }, content });
+    await s2.showTooltip({
+      position: { x: 0, y: 0 },
+      content,
+    });
 
-    expect(s2.tooltip.container!.querySelector('#custom-content')).toBeTruthy();
+    expect(
+      s2.tooltip.container!.querySelector('#custom-content')?.innerHTML,
+    ).toEqual('content');
   });
 
   test('should support callback tooltip content for string', async () => {
     await sleep(1000);
 
-    s2.showTooltip({
+    await s2.showTooltip({
       position: {
         x: 10,
         y: 10,
@@ -107,7 +117,7 @@ describe('SheetComponent Tooltip Tests', () => {
       content: () => 'custom callback content',
     });
 
-    expect(s2.tooltip.container!.innerHTML).toEqual('custom callback content');
+    expect(s2.tooltip.container!.innerText).toEqual('custom callback content');
   });
 
   test('should support callback tooltip content for element', async () => {
@@ -117,7 +127,7 @@ describe('SheetComponent Tooltip Tests', () => {
       <div id="custom-callback-content">custom callback content</div>
     );
 
-    s2.showTooltip({
+    await s2.showTooltip({
       position: {
         x: 10,
         y: 10,
@@ -190,21 +200,22 @@ describe('SheetComponent Tooltip Tests', () => {
     async ({ forceRender }) => {
       await sleep(1000);
 
-      const unmountComponentAtNodeSpy = jest.spyOn(
+      const unmountSpy = jest.spyOn(
         s2.tooltip as CustomTooltip,
         // @ts-ignore
-        'unmountComponentAtNode',
+        'unmount',
       );
 
       act(() => {
-        s2.showTooltip({ position: { x: 0, y: 0 }, options: { forceRender } });
+        s2.showTooltip({
+          position: { x: 0, y: 0 },
+          options: { forceRender },
+        });
         s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
         s2.hideTooltip();
       });
 
-      expect(unmountComponentAtNodeSpy).toHaveBeenCalledTimes(
-        forceRender ? 2 : 0,
-      );
+      expect(unmountSpy).toHaveBeenCalledTimes(forceRender ? 2 : 0);
 
       s2.tooltip.destroy();
     },
@@ -213,7 +224,7 @@ describe('SheetComponent Tooltip Tests', () => {
   test('should support render ReactNode for operator menus', async () => {
     await sleep(1000);
 
-    s2.showTooltip({
+    await s2.showTooltip({
       position: { x: 0, y: 0 },
       options: {
         operator: {
@@ -236,5 +247,64 @@ describe('SheetComponent Tooltip Tests', () => {
     expect(customMenuTextNode).toBeTruthy();
     expect(customMenuTextNode?.innerHTML).toEqual('text');
     expect(container?.querySelector('.menu-icon')).toBeTruthy();
+  });
+
+  test('should get tooltip container after async rendered', async () => {
+    await sleep(1000);
+
+    const callback = jest.fn();
+
+    await s2
+      .showTooltip({
+        position: { x: 0, y: 0 },
+        content: () => <div>1</div>,
+      })
+      .then(callback);
+
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not throw ReactDOM.render is no longer supported warning', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await sleep(1000);
+
+    await s2.showTooltip({
+      position: {
+        x: 0,
+        y: 0,
+      },
+      content: <div>1</div>,
+    });
+
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      `Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot`,
+    );
+
+    errorSpy.mockRestore();
+  });
+
+  test('should not throw ReactDOM 18 async unmount warning', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await sleep(1000);
+
+    await s2.showTooltip({
+      position: {
+        x: 0,
+        y: 0,
+      },
+      content: <div>1</div>,
+    });
+
+    await sleep(500);
+
+    s2.destroyTooltip();
+
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      `Warning: Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.`,
+    );
+
+    errorSpy.mockRestore();
   });
 });

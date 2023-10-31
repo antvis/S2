@@ -14,16 +14,28 @@ import {
 import './index.less';
 
 /**
- * Base tooltips component
+ * Tooltip 基类
+ * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
+ * @example
+ * import CustomTooltip extends BaseTooltip {
+      renderContent() {}
+      show() {}
+      hide() {}
+      destroy() {}
+  }
  */
-export class BaseTooltip {
+export class BaseTooltip<
+  Content = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> {
   public visible = false;
 
   public spreadsheet: SpreadSheet;
 
   public container: HTMLElement | null;
 
-  public options: TooltipShowOptions;
+  public options: TooltipShowOptions<Content, Icon, Text>;
 
   public position: TooltipPosition = { x: 0, y: 0 };
 
@@ -31,13 +43,17 @@ export class BaseTooltip {
     this.spreadsheet = spreadsheet;
   }
 
-  public show<T = Element | string>(options: TooltipShowOptions<T>) {
+  public show<T = Content>(options: TooltipShowOptions<T>) {
     const { position, content, event } = options;
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
 
     this.visible = true;
-    this.options = options as unknown as TooltipShowOptions;
+    this.options = options as unknown as TooltipShowOptions<
+      Content,
+      Icon,
+      Text
+    >;
     const container = this.getContainer();
 
     this.renderContent<T>(content as T);
@@ -110,12 +126,14 @@ export class BaseTooltip {
 
     if (typeof displayContent === 'string') {
       this.container.innerHTML = displayContent;
+      this.options.onMounted?.();
 
       return;
     }
 
     if (displayContent instanceof Element) {
       this.container.appendChild(displayContent as Element);
+      this.options.onMounted?.();
     }
   }
 

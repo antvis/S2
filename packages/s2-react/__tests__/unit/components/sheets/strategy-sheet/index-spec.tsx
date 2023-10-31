@@ -10,11 +10,9 @@ import {
   RowCell,
 } from '@antv/s2';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import { get } from 'lodash';
 import { waitFor } from '@testing-library/react';
-import { getContainer } from '../../../../util/helpers';
+import { getContainer, renderComponent } from '../../../../util/helpers';
 import {
   StrategySheetDataConfig,
   StrategyOptions,
@@ -36,7 +34,6 @@ describe('<StrategySheet/> Tests', () => {
   });
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
     container.remove();
   });
 
@@ -44,25 +41,23 @@ describe('<StrategySheet/> Tests', () => {
     options: SheetComponentOptions | null,
     dataCfg?: S2DataConfig,
   ) => {
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          sheetType="strategy"
-          options={customMerge(
-            {
-              width: 200,
-              height: 200,
-            },
-            options,
-          )}
-          dataCfg={dataCfg as S2DataConfig}
-          onMounted={(instance) => {
-            s2 = instance;
-          }}
-        />,
-        container,
-      );
-    });
+    renderComponent(
+      <SheetComponent
+        sheetType="strategy"
+        options={customMerge(
+          {
+            width: 200,
+            height: 200,
+          },
+          options,
+        )}
+        dataCfg={dataCfg as S2DataConfig}
+        onMounted={(instance) => {
+          s2 = instance;
+        }}
+      />,
+      container,
+    );
   };
 
   test('should overwrite strategy sheet tooltip data cell content', async () => {
@@ -249,9 +244,6 @@ describe('<StrategySheet/> Tests', () => {
   describe('StrategySheet Export Tests', () => {
     beforeEach(() => {
       renderStrategySheet(StrategyOptions, StrategySheetDataConfig);
-    });
-    afterEach(() => {
-      ReactDOM.unmountComponentAtNode(container);
     });
 
     test('should export correct data', async () => {

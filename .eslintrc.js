@@ -24,7 +24,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: { tsconfigRootDir: __dirname },
-  plugins: ['prettier', '@typescript-eslint', 'import', 'vue'],
+  plugins: ['@typescript-eslint', 'import', 'vue'],
   settings: {
     jest: {
       version: 26,
@@ -131,6 +131,8 @@ module.exports = {
     curly: [2, 'all'],
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
+    'vue/no-reserved-component-names': 0,
+    'vue/prefer-import-from-vue': 1,
     'no-nested-ternary': [2],
     'no-restricted-imports': [
       2,

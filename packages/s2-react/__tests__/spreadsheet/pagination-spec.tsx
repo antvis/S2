@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { type LangType, setLang, type Pagination, SpreadSheet } from '@antv/s2';
+import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import * as mockDataConfig from '../data/simple-data.json';
-import { SheetComponent, type SheetComponentsProps } from '../../src';
-import { getContainer } from '../util/helpers';
 import 'antd/dist/antd.min.css';
+import React from 'react';
+import type { Root } from 'react-dom/client';
+import { SheetComponent, type SheetComponentsProps } from '../../src';
+import * as mockDataConfig from '../data/simple-data.json';
+import { renderComponent } from '../util/helpers';
 
 const s2Options: SheetComponentsProps['options'] = {
   width: 600,
@@ -19,15 +18,10 @@ const s2Options: SheetComponentsProps['options'] = {
 };
 
 describe('Pagination Tests', () => {
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = getContainer();
-  });
+  let unmount: Root['unmount'];
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    container?.remove();
+    unmount?.();
   });
 
   // https://github.com/antvis/S2/issues/1697
@@ -49,19 +43,16 @@ describe('Pagination Tests', () => {
 
       let spreadsheet: SpreadSheet;
 
-      act(() => {
-        ReactDOM.render(
-          <SheetComponent
-            options={s2Options}
-            dataCfg={mockDataConfig as any}
-            showPagination
-            onMounted={(instance) => {
-              spreadsheet = instance;
-            }}
-          />,
-          container,
-        );
-      });
+      unmount = renderComponent(
+        <SheetComponent
+          options={s2Options}
+          dataCfg={mockDataConfig as any}
+          showPagination
+          onMounted={(instance) => {
+            spreadsheet = instance;
+          }}
+        />,
+      );
 
       await waitFor(() => {
         expect(spreadsheet).toBeDefined();
@@ -79,27 +70,24 @@ describe('Pagination Tests', () => {
   test('should receive antd <Pagination/> component extra props', async () => {
     let spreadsheet: SpreadSheet;
 
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          options={{
-            ...s2Options,
-            pagination: {
-              ...s2Options.pagination,
-              current: 2,
-              showSizeChanger: false,
-              showQuickJumper: true,
-            } as Pagination,
-          }}
-          dataCfg={mockDataConfig as any}
-          showPagination
-          onMounted={(instance) => {
-            spreadsheet = instance;
-          }}
-        />,
-        container,
-      );
-    });
+    unmount = renderComponent(
+      <SheetComponent
+        options={{
+          ...s2Options,
+          pagination: {
+            ...s2Options.pagination,
+            current: 2,
+            showSizeChanger: false,
+            showQuickJumper: true,
+          } as Pagination,
+        }}
+        dataCfg={mockDataConfig as any}
+        showPagination
+        onMounted={(instance) => {
+          spreadsheet = instance;
+        }}
+      />,
+    );
 
     await waitFor(() => {
       expect(spreadsheet).toBeDefined();

@@ -66,7 +66,7 @@ describe('RootInteraction Tests', () => {
           x: 1,
         };
       },
-    } as unknown as DataCell);
+    }) as unknown as DataCell;
 
   beforeAll(() => {
     MockSpreadSheet.mockClear();

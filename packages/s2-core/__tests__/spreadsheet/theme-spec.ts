@@ -1,28 +1,26 @@
 /* eslint-disable jest/expect-expect */
+import { Text, type Group } from '@antv/g';
 import { createPivotSheet } from 'tests/util/helpers';
-import { get } from 'lodash';
-import { Text, type Group, type Image } from '@antv/g';
+import type { RowCell } from '@/cell';
+import {
+  CellType,
+  EXTRA_COLUMN_FIELD,
+  EXTRA_FIELD,
+  type S2DataConfig,
+  type TextAlign,
+} from '@/common';
 import type {
   TextBaseline,
   TextTheme,
   ThemeCfg,
 } from '@/common/interface/theme';
-import type { PivotSheet } from '@/sheet-type';
-import {
-  CellType,
-  EXTRA_COLUMN_FIELD,
-  EXTRA_FIELD,
-  GuiIcon,
-  type S2DataConfig,
-  type TextAlign,
-} from '@/common';
-import type { RowCell } from '@/cell';
 import type { Node } from '@/facet/layout/node';
+import type { PivotSheet } from '@/sheet-type';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     s2 = createPivotSheet(
       {
         headerActionIcons: [
@@ -40,8 +38,8 @@ describe('SpreadSheet Theme Tests', () => {
     await s2.render();
   });
 
-  afterAll(() => {
-    s2.destroy();
+  afterEach(() => {
+    // s2.destroy();
   });
 
   describe('Theme Default Value Tests', () => {
@@ -127,7 +125,7 @@ describe('SpreadSheet Theme Tests', () => {
     });
   });
 
-  describe('Custom SVG Icon Tests', () => {
+  describe('Custom SVG Icons Tests', () => {
     test('should set custom SVG icon size and color', async () => {
       const iconInfo = {
         name: 'filter',
@@ -149,24 +147,23 @@ describe('SpreadSheet Theme Tests', () => {
           },
         ],
       });
-      s2.setThemeCfg({
-        theme: {
-          rowCell: {
-            icon: {
-              size: iconInfo.size,
-              fill: iconInfo.fill,
-            },
-            text: {
-              fill: 'green',
-            },
+      s2.setTheme({
+        rowCell: {
+          icon: {
+            size: iconInfo.size,
+            fill: iconInfo.fill,
+          },
+          text: {
+            fill: 'green',
           },
         },
       });
+
       await s2.render();
-      const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
-      const actionIcon = get(rowCell, 'actionIcons.[0]') as GuiIcon;
-      // @ts-ignore
-      const cfg = actionIcon.cfg;
+
+      const rowCell = s2.facet.getRowCells()[0];
+      const actionIcon = rowCell.getActionIcons()[0];
+      const cfg = actionIcon.getCfg();
 
       expect(actionIcon.name).toEqual(iconInfo.name);
       expect(cfg.fill).toEqual(iconInfo.fill);
@@ -201,15 +198,14 @@ describe('SpreadSheet Theme Tests', () => {
 
         const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
 
-        const rowCellWidth = get(rowCell, 'meta.width');
-        const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
-        // @ts-ignore
-        const actionIconCfg = actionIcon.cfg;
+        const rowCellWidth = rowCell.getMeta().width;
+        const actionIcon = rowCell.getActionIcons()[0];
+        const actionIconCfg = actionIcon.getCfg();
 
         expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
-          rowCellWidth,
-        );
+        expect(
+          (actionIconCfg.x as number) + (actionIconCfg.width as number),
+        ).toBeLessThanOrEqual(rowCellWidth);
       },
     );
   });
@@ -345,14 +341,14 @@ describe('SpreadSheet Theme Tests', () => {
             col: {
               showGrandTotals: true,
               showSubTotals: true,
-              reverseLayout: true,
-              reverseSubLayout: false,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: false,
             },
             row: {
               showGrandTotals: true,
               showSubTotals: true,
-              reverseLayout: true,
-              reverseSubLayout: false,
+              reverseGrandTotalsLayout: true,
+              reverseSubTotalsLayout: false,
             },
           },
         });

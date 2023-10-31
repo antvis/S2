@@ -1,18 +1,15 @@
-import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
-import React from 'react';
 import {
-  auto,
   EXTRA_FIELD,
-  type S2DataConfig,
-  type S2Options,
-  SpreadSheet,
   PivotSheet,
+  SpreadSheet,
+  auto,
   type RawData,
+  type S2DataConfig,
   type S2MountContainer,
+  type S2Options,
 } from '@antv/s2';
-import { getContainer } from '../util/helpers';
+import 'antd/dist/antd.min.css';
+import React from 'react';
 import {
   data1,
   data2,
@@ -25,13 +22,15 @@ import {
   totalData5,
   totalData6,
 } from '../data/data-accuracy';
+import { renderComponent } from '../util/helpers';
 import {
-  SheetComponent,
-  type SheetComponentOptions,
   type SheetComponentsProps,
-} from '@/components';
+  type SheetComponentOptions,
+  SheetComponent,
+} from '../../src';
 
-let spreadsheet1: SpreadSheet;
+let spreadsheet: SpreadSheet;
+
 const setSpreadSheet = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
@@ -41,7 +40,7 @@ const setSpreadSheet = (
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
 
   if (index === 1) {
-    spreadsheet1 = s2;
+    spreadsheet = s2;
   }
 
   return s2;
@@ -109,7 +108,7 @@ const getDataCfg = (index: number) =>
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  } as SheetComponentsProps['dataCfg']);
+  }) as SheetComponentsProps['dataCfg'];
 
 const getOptions = (): SheetComponentOptions => {
   return {
@@ -124,15 +123,15 @@ const getOptions = (): SheetComponentOptions => {
       row: {
         showGrandTotals: true,
         showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
+        reverseGrandTotalsLayout: true,
+        reverseSubTotalsLayout: true,
         subTotalsDimensions: ['province', 'city'],
       },
       col: {
         showGrandTotals: true,
         showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
+        reverseGrandTotalsLayout: true,
+        reverseSubTotalsLayout: true,
         subTotalsDimensions: ['subCategory', 'category'],
       },
     },
@@ -235,17 +234,17 @@ function MainLayout() {
 }
 
 describe('data accuracy one measure spec', () => {
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
-  });
-  spreadsheet1.setDataCfg(getDataCfg(1));
+  renderComponent(<MainLayout />);
+
+  spreadsheet.setDataCfg(getDataCfg(1));
+
   test('Totals + Details + Single Measure', () => {
     expect(data1.length).toBe(4);
-    expect(spreadsheet1.dataSet.originData.length).toBe(4);
-    expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
-    expect(spreadsheet1.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
+    expect(spreadsheet.dataSet.originData.length).toBe(4);
+    expect(spreadsheet.dataSet.fields.valueInCols).toBe(true);
+    expect(spreadsheet.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
       true,
     );
-    expect(spreadsheet1.dataSet.fields.rows!.includes(EXTRA_FIELD)).toBe(false);
+    expect(spreadsheet.dataSet.fields.rows!.includes(EXTRA_FIELD)).toBe(false);
   });
 });

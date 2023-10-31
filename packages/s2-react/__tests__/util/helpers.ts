@@ -4,6 +4,8 @@ import path from 'path';
 import { PivotSheet, SpreadSheet, type ViewMeta } from '@antv/s2';
 import { dsvFormat } from 'd3-dsv';
 import { omit } from 'lodash';
+import { createRoot, type Root } from 'react-dom/client';
+import { act } from 'react-dom/test-utils';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -86,5 +88,25 @@ export const createMockCellInfo = (
   return {
     mockCell,
     mockCellMeta,
+  };
+};
+
+export const renderComponent = (
+  Component: React.JSX.Element,
+  mountContainer?: HTMLDivElement,
+) => {
+  let root: Root;
+  const container = mountContainer || getContainer();
+
+  act(() => {
+    root = createRoot(container);
+    root.render(Component);
+  });
+
+  return () => {
+    act(() => {
+      root.unmount();
+      container?.remove();
+    });
   };
 };

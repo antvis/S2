@@ -124,7 +124,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should return correct formatted value', () => {
-      const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
+      const formatter: Formatter = (_, data) => `${get(data, 'value')! * 10}`;
 
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       const dataCell = new DataCell(meta, s2);
@@ -347,7 +347,7 @@ describe('Data Cell Tests', () => {
       const dataCell = findDataCell(s2, 'cost');
 
       expect(
-        (get(dataCell, 'backgroundShape') as Rect).parsedStyle.fill,
+        (get(dataCell, 'backgroundShape') as unknown as Rect).parsedStyle.fill,
       ).toBeColor('#fffae6');
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         DEFAULT_FONT_COLOR,
@@ -391,7 +391,7 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(anotherMeta, s2);
 
       expect(
-        get(dataCell, 'conditionIntervalShape.parsedStyle.width') +
+        get(dataCell, 'conditionIntervalShape.parsedStyle.width')! +
           s2.theme.dataCell!.cell!.horizontalBorderWidth,
       ).toEqual(cellWidth);
     });

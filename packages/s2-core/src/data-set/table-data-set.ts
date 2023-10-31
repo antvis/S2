@@ -3,7 +3,7 @@ import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig, RawData, Data } from '../common/interface';
 import type { CellMeta } from '../common';
 import type { RowData } from '../common/interface/basic';
-import type { CellDataParams, Query } from './interface';
+import type { GetCellMultiDataParams, Query } from './interface';
 import { BaseDataSet } from './base-data-set';
 
 export class TableDataSet extends BaseDataSet {
@@ -143,7 +143,7 @@ export class TableDataSet extends BaseDataSet {
           data,
           [func || sortFieldId],
           [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-        );
+        ) as RawData[];
       }
 
       if (restData.length) {
@@ -163,7 +163,7 @@ export class TableDataSet extends BaseDataSet {
     return [];
   }
 
-  public getCellData({ query }: CellDataParams): Data {
+  public getCellData({ query }: GetCellMultiDataParams): Data {
     if (this.displayData.length === 0 && query['rowIndex'] === 0) {
       return;
     }
@@ -177,11 +177,11 @@ export class TableDataSet extends BaseDataSet {
     return rowData[query['col']] as unknown as Data;
   }
 
-  public getMultiData(): Data[] {
+  public getCellMultiData(): Data[] {
     return this.displayData as Data[];
   }
 
-  public getRowData(cell: CellMeta): RowData {
-    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
+  public getRowData(cellMeta: CellMeta): RowData {
+    return this.getCellData({ query: { rowIndex: cellMeta.rowIndex } });
   }
 }

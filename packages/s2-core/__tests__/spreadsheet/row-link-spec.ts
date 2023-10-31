@@ -11,7 +11,7 @@ const s2Options: S2Options = {
     row: {
       showSubTotals: true,
       subTotalsDimensions: ['province'],
-      reverseSubLayout: true,
+      reverseSubTotalsLayout: true,
     },
   },
   interaction: {
@@ -96,7 +96,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
       cellData: rowNode,
       record: {
@@ -122,7 +122,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'city',
       cellData: rowNode,
       record: {
@@ -149,7 +149,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
       cellData: rowNode,
       record: {

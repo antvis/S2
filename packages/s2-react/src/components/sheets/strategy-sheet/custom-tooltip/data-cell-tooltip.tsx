@@ -56,11 +56,13 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
     <div className={cls(tooltipCls(), tooltipCls('data'))}>
       <div className={tooltipCls('header')}>
         <span className={'header-label'}>{rowName}</span>
-        <span>{value ?? emptyPlaceholder}</span>
+        <span>{(value as React.ReactNode) ?? emptyPlaceholder}</span>
       </div>
       {showOriginalValue && (
         <div className={tooltipCls('original-value')}>
-          {isNil(originalValue) ? emptyPlaceholder : originalValue}
+          {isNil(originalValue)
+            ? emptyPlaceholder
+            : (originalValue as React.ReactNode)}
         </div>
       )}
       {!isEmpty(derivedValues) && (

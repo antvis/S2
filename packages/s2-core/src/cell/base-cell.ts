@@ -514,7 +514,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const stateStyles = get(
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
-    ) as InteractionStateTheme;
+    ) as unknown as InteractionStateTheme;
 
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(

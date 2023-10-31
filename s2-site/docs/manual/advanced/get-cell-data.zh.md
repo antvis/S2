@@ -4,7 +4,7 @@ order: 9
 ---
 
 :::warning{title='提示'}
-阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot)等章节
+阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot) 等章节
 :::
 
 在实际的业务场景中，我们往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
@@ -121,7 +121,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   const meta = cell.getMeta()
 
   // 获取当前行数据
-  const rowData = s2.dataSet.getMultiData(meta.query)
+  const rowData = s2.dataSet.getCellMultiData({ query: meta.query })
   // 获取当前行头单元格数据：
   const rowCellData = s2.dataSet.getCellData({ query: meta.query })
   // 获取当前行头维值
@@ -131,7 +131,6 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   console.log('当前行头单元格数据：', rowCellData)
   console.log('当前行头维值：', dimensionValues)
 })
-
 
 ```
 
@@ -148,9 +147,12 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   // 获取当前单元格元数据
   const meta = cell.getMeta()
   // 获取当前行数据
-  const rowData = s2.dataSet.getMultiData(meta.query)
+  const rowData = s2.dataSet.getCellMultiData({ query: meta.rowQuery })
+  // 获取当前列数据
+  const colData = s2.dataSet.getCellMultiData({ query: meta.colQuery })
 
   console.log('当前行数据', rowData)
+  console.log('当前行数据', colData)
   console.log('当前单元格数据', meta.data)
   /**
     {
@@ -198,7 +200,12 @@ const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
 const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
-const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query})
+const data = s2.dataSet.getCellMultiData({
+  query: {
+    ...rowCellNode.query,
+    ...colCellNode.query
+  }
+})
 
 /**
   [

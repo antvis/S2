@@ -5,6 +5,7 @@ import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
 import * as mockData from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
+import type { Query } from '../../../src/data-set/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import {
   type S2DataConfig,
@@ -240,7 +241,7 @@ describe('Pivot Dataset Total Test', () => {
           totals: {
             row: {
               ...TOTALS_OPTIONS?.row,
-              calcTotals: {
+              calcGrandTotals: {
                 aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
@@ -249,7 +250,7 @@ describe('Pivot Dataset Total Test', () => {
             },
             col: {
               ...TOTALS_OPTIONS?.col,
-              calcTotals: {
+              calcGrandTotals: {
                 aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
@@ -359,7 +360,7 @@ describe('Pivot Dataset Total Test', () => {
                 showGrandTotals: true,
                 showSubTotals: true,
                 subTotalsDimensions: ['city'],
-                calcTotals: {
+                calcGrandTotals: {
                   aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
@@ -370,7 +371,7 @@ describe('Pivot Dataset Total Test', () => {
                 showGrandTotals: true,
                 showSubTotals: true,
                 subTotalsDimensions: ['type'],
-                calcTotals: {
+                calcGrandTotals: {
                   aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
@@ -447,7 +448,7 @@ describe('Pivot Dataset Total Test', () => {
           totals: {
             row: {
               ...TOTALS_OPTIONS?.row,
-              calcTotals: {
+              calcGrandTotals: {
                 calcFunc: calcFunc1,
               },
               calcSubTotals: {
@@ -456,7 +457,7 @@ describe('Pivot Dataset Total Test', () => {
             },
             col: {
               ...TOTALS_OPTIONS?.col,
-              calcTotals: {
+              calcGrandTotals: {
                 calcFunc: calcFunc2,
               },
               calcSubTotals: {
@@ -552,8 +553,8 @@ describe('Pivot Dataset Total Test', () => {
       });
     });
 
-    test('getMultiData function', () => {
-      const specialQuery = {
+    test('getCellMultiData function', () => {
+      const specialQuery: Query = {
         province: '浙江省',
         city: '杭州市',
         type: '家具',
@@ -561,37 +562,45 @@ describe('Pivot Dataset Total Test', () => {
         [EXTRA_FIELD]: 'number',
       };
 
-      expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
+      expect(dataSet.getCellMultiData({ query: specialQuery })).toHaveLength(1);
       expect(
-        dataSet.getMultiData(specialQuery)[0].getOrigin(),
+        dataSet.getCellMultiData({ query: specialQuery })[0].getOrigin(),
       ).toContainEntries([['number', 7789]]);
       expect(
-        dataSet.getMultiData({
-          province: '浙江省',
-          type: '家具',
-          sub_type: '桌子',
-          [EXTRA_FIELD]: 'number',
+        dataSet.getCellMultiData({
+          query: {
+            province: '浙江省',
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
         }),
       ).toHaveLength(5);
 
       expect(
-        dataSet.getMultiData({
-          type: '家具',
-          sub_type: '桌子',
-          [EXTRA_FIELD]: 'number',
+        dataSet.getCellMultiData({
+          query: {
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
         }),
       ).toHaveLength(11);
 
       expect(
-        dataSet.getMultiData({
-          type: '家具',
-          [EXTRA_FIELD]: 'number',
+        dataSet.getCellMultiData({
+          query: {
+            type: '家具',
+            [EXTRA_FIELD]: 'number',
+          },
         }),
       ).toHaveLength(33);
 
       expect(
-        dataSet.getMultiData({
-          [EXTRA_FIELD]: 'number',
+        dataSet.getCellMultiData({
+          query: {
+            [EXTRA_FIELD]: 'number',
+          },
         }),
       ).toHaveLength(77);
     });

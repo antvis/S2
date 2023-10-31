@@ -8,6 +8,7 @@
   "no-duplicate-heading": false,
   "link-fragments": false,
   "code-block-style": false,
+  "no-bare-urls": false,
   "MD003": {
     "style": "atx"
   },

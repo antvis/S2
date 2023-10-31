@@ -27,4 +27,4 @@ export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderCfgProps,
   SheetComponentOptions
->;
+> & { children?: React.ReactNode };

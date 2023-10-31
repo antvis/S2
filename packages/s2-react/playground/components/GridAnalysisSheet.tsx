@@ -33,7 +33,7 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
         mapping: (value, cellInfo) => {
           const { colIndex } = cellInfo;
 
-          if (colIndex! <= 1) {
+          if (+colIndex! <= 1) {
             return {
               fill: '#000',
             };

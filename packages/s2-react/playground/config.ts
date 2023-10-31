@@ -120,7 +120,7 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
     {
       field: 'number',
       mapping(value) {
-        if (value <= 3000) {
+        if (+value <= 3000) {
           return {
             fill: '#065',
             fontWeight: 800,
@@ -128,7 +128,7 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
           };
         }
 
-        if (value > 3000) {
+        if (+value > 3000) {
           return {
             fill: '#000',
             opacity: 0.4,
@@ -215,8 +215,8 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
   height: 600,
-  hierarchyType: 'tree',
-  showDefaultHeaderActionIcon: true,
+  hierarchyType: 'grid',
+  supportCSSTransform: true,
   // showSeriesNumber: false,
   frozen: {
     rowHeader: true,

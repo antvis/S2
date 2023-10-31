@@ -10,15 +10,13 @@ import { Radio, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { cloneDeep, merge } from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { getContainer } from '../util/helpers';
 import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
+import { renderComponent } from '../util/helpers';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let sheet: SpreadSheet;
 const onMounted = (
@@ -232,12 +230,7 @@ function MainLayout(props: SheetComponentsProps) {
 }
 
 describe('spreadsheet multiple values cell spec', () => {
-  act(() => {
-    ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      getContainer(),
-    );
-  });
+  renderComponent(<MainLayout dataCfg={getDataCfg()} options={getOptions()} />);
 
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions!;

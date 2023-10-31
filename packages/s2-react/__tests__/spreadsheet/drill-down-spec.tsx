@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
 import { customMerge, GuiIcon, Node, RowCell, SpreadSheet } from '@antv/s2';
-import { get, noop } from 'lodash';
 import { waitFor } from '@testing-library/react';
+import { get, noop } from 'lodash';
+import React from 'react';
+import type { Root } from 'react-dom/client';
+import { SheetComponent, type SheetComponentsProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
-import { type SheetComponentsProps, SheetComponent } from '../../src';
-import { getContainer } from '../util/helpers';
+import { getContainer, renderComponent } from '../util/helpers';
 
 const s2Options: SheetComponentsProps['options'] = {
   width: 600,
@@ -49,33 +48,32 @@ const findDrillDownIcon = (instance: SpreadSheet) => {
 
 describe('Spread Sheet Drill Down Tests', () => {
   let container: HTMLDivElement;
+  let unmount: Root['unmount'];
 
   beforeEach(() => {
     container = getContainer();
   });
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    container?.remove();
+    unmount?.();
   });
 
   test('should render drill down icon', async () => {
     let s2Instance: SpreadSheet | null = null;
 
     // 首次 render
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          options={s2Options}
-          dataCfg={mockDataConfig}
-          onMounted={(instance) => {
-            s2Instance = instance;
-          }}
-          partDrillDown={partDrillDownParams}
-        />,
-        container,
-      );
-    });
+
+    unmount = renderComponent(
+      <SheetComponent
+        options={s2Options}
+        dataCfg={mockDataConfig}
+        onMounted={(instance) => {
+          s2Instance = instance;
+        }}
+        partDrillDown={partDrillDownParams}
+      />,
+      container,
+    );
 
     await waitFor(() => {
       expect(findDrillDownIcon(s2Instance!)).toBeDefined();
@@ -86,29 +84,28 @@ describe('Spread Sheet Drill Down Tests', () => {
     s2Instance!.store.set('drillItemsNum', EXPECT_DRILL_ITEMS_NUM);
 
     // update options.headerActionIcons
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          options={{
-            ...s2Options,
-            headerActionIcons: [
-              {
-                icons: ['SortDown'],
-                belongsCell: 'colCell',
-                displayCondition: (meta: Node) => meta.isLeaf,
-                onClick: noop,
-              },
-            ],
-          }}
-          dataCfg={mockDataConfig}
-          onMounted={(instance) => {
-            s2Instance = instance;
-          }}
-          partDrillDown={partDrillDownParams}
-        />,
-        container,
-      );
-    });
+
+    unmount = renderComponent(
+      <SheetComponent
+        options={{
+          ...s2Options,
+          headerActionIcons: [
+            {
+              icons: ['SortDown'],
+              belongsCell: 'colCell',
+              displayCondition: (meta: Node) => meta.isLeaf,
+              onClick: noop,
+            },
+          ],
+        }}
+        dataCfg={mockDataConfig}
+        onMounted={(instance) => {
+          s2Instance = instance;
+        }}
+        partDrillDown={partDrillDownParams}
+      />,
+      container,
+    );
 
     await waitFor(() => {
       expect(findDrillDownIcon(s2Instance!)).toBeDefined();
@@ -124,23 +121,20 @@ describe('Spread Sheet Drill Down Tests', () => {
   test('should render drill down icon and not show sort icon if value is empty', async () => {
     let s2: SpreadSheet;
 
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          options={s2Options}
-          dataCfg={customMerge(mockDataConfig, {
-            fields: {
-              values: [],
-            },
-          })}
-          onMounted={(instance) => {
-            s2 = instance;
-          }}
-          partDrillDown={partDrillDownParams}
-        />,
-        container,
-      );
-    });
+    unmount = renderComponent(
+      <SheetComponent
+        options={s2Options}
+        dataCfg={customMerge(mockDataConfig, {
+          fields: {
+            values: [],
+          },
+        })}
+        onMounted={(instance) => {
+          s2 = instance;
+        }}
+        partDrillDown={partDrillDownParams}
+      />,
+    );
 
     await waitFor(() => {
       const rowNodes = s2!.facet
@@ -158,22 +152,19 @@ describe('Spread Sheet Drill Down Tests', () => {
   test('should not render drill down icon is displayCondition return false', async () => {
     let s2: SpreadSheet;
 
-    act(() => {
-      ReactDOM.render(
-        <SheetComponent
-          options={s2Options}
-          dataCfg={mockDataConfig}
-          onMounted={(instance) => {
-            s2 = instance;
-          }}
-          partDrillDown={{
-            ...partDrillDownParams,
-            displayCondition: () => false,
-          }}
-        />,
-        container,
-      );
-    });
+    unmount = renderComponent(
+      <SheetComponent
+        options={s2Options}
+        dataCfg={mockDataConfig}
+        onMounted={(instance) => {
+          s2 = instance;
+        }}
+        partDrillDown={{
+          ...partDrillDownParams,
+          displayCondition: () => false,
+        }}
+      />,
+    );
 
     await waitFor(() => {
       const rowNodes = s2!.facet.getRowNodes();

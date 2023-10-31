@@ -63,7 +63,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   /** left icon 绘制起始坐标 */
   protected leftIconPosition: PointLike;
 
-  /** left icon 绘制起始坐标 */
+  /** right icon 绘制起始坐标 */
   protected rightIconPosition: PointLike;
 
   protected abstract isBolderText(): boolean;
@@ -100,7 +100,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected generateIconConfig() {
     this.conditionIconMappingResult = this.getIconConditionResult();
 
-    const { sortParam } = this.headerConfig;
+    const { sortParam } = this.headerConfig || {};
     // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
 
     if (this.showSortIcon()) {
@@ -454,6 +454,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public getActionIcons() {
-    return this.actionIcons;
+    return this.actionIcons || [];
   }
 }

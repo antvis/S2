@@ -3,7 +3,6 @@ title: 维度下钻
 order: 13
 ---
 
-
 S2 提供的「维度下钻」的能力，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/J7bnG8lcf/xiazuan.gif" height="400" alt="preview" />
@@ -48,9 +47,10 @@ const PartDrillDown = {
     new Promise((resolve) => {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
-      const rowDatas = dataSet.getMultiData(meta.query, true, true);
+      const rowData = dataSet.getCellMultiData({ query: meta.query });
       const drillDownData = [];
-      rowDatas.forEach((data) => {
+
+      rowData.forEach((data) => {
         const { city, number, province, sub_type: subType, type } = data;
         const number0 = Math.ceil(Math.random() * (number - 50)) + 50;
         const number1 = number - number0;
