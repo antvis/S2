@@ -4,7 +4,7 @@ order: 8
 ---
 
 :::warning{title="一些建议"}
-**在提出问题前，请确保你已经仔细阅读了一遍文档，查看了相关图表示例，并且已经查看了常见问题。**
+**在提出问题前，请确保你已经仔细阅读了一遍文档，查看了相关图表示例，并且已经查看了常见问题和 Issues。**
 :::
 
 ## 1. 使用问题
@@ -254,17 +254,7 @@ s2.setTheme({
 
 目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
 
-### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
-
-目前，S2 由三个包构成
-
-- `@antv/s2`: 基于 `canvas` 和 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 开发，提供基本的表格展示/交互等能力
-- `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
-- `@antv/s2-vue`: 基于 `Vue3` 和 `@antv/s2` 封装，提供配套的分析组件
-
-也就是说 `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等框架中使用。
-
-以下是版本概览：
+### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
@@ -322,6 +312,8 @@ s2.setTheme({
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
 
 ### 有讨论群吗？
+
+交流群不提供任何答疑，有任何问题请直接提交 [Issue](https://github.com/antvis/S2/issues/new/choose) 或者 [Discussion](https://github.com/antvis/S2/discussions/new?category=q-a), 当然，也期待你的 [Pull request](https://github.com/antvis/S2/pulls).
 
 <embed src="@/docs/common/contact-us.zh.md"></embed>
 
