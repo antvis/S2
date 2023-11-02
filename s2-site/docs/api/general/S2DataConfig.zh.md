@@ -68,7 +68,7 @@ object **必选**,_default：null_
 | columns        | 列维度列表         | [Columns[]](#columns) | `[]`   |      |
 | values         | 指标维度列表       | `string[]` | `[]`   |      |
 | valueInCols    | 指标维度是否在列头   | `boolean`  | `true` |      |
-| customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始） [查看示例](/zh/examples/custom/custom-layout/#custom-value-order) | `number`  | - |      |
+| customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始，**仅支持单指标**） [查看示例](/zh/examples/custom/custom-layout/#custom-value-order) | `number`  | - |      |
 
 ### Meta
 
