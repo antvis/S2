@@ -68,6 +68,7 @@ import {
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
   s2ThemeConfig,
+  pivotSheetDataCfgForCompactMode,
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
@@ -334,37 +335,7 @@ function MainLayout() {
             },
           },
         });
-        setDataCfg(
-          customMerge(pivotSheetDataCfg, {
-            data: [
-              ...pivotSheetDataCfg.data,
-              {
-                province: '浙江',
-                city: '杭州',
-                type: '笔',
-                price: '11111111',
-              },
-              {
-                province: '浙江',
-                city: '杭州',
-                type: '纸张',
-                price: '2',
-              },
-              {
-                province: '浙江',
-                city: '舟山',
-                type: '笔',
-                price: '2',
-              },
-              {
-                province: '浙江',
-                city: '舟山',
-                type: '纸张',
-                price: '133.333',
-              },
-            ],
-          }),
-        );
+        setDataCfg(pivotSheetDataCfgForCompactMode);
         break;
 
       default:
