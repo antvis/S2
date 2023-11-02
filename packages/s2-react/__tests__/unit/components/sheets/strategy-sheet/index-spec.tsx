@@ -18,7 +18,7 @@ import {
   SheetComponent,
   SheetComponentOptions,
 } from '../../../../../src/components';
-import { getContainer } from '../../../../util/helpers';
+import { getContainer, sleep } from '../../../../util/helpers';
 import {
   StrategyOptions,
   StrategySheetDataConfig,
@@ -36,6 +36,7 @@ describe('<StrategySheet/> Tests', () => {
     ReactDOM.unmountComponentAtNode(container);
     container.remove();
   });
+
   const renderStrategySheet = (
     options: SheetComponentOptions | null,
     dataCfg?: S2DataConfig,
@@ -74,7 +75,7 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options);
 
-    expect(s2.options.tooltip.data.content).toEqual(content);
+    expect(s2.options.tooltip!.data!.content).toEqual(content);
   });
 
   test('should replace hierarchyType with "customTree" when rows is empty and contains custom tree items', () => {
@@ -114,16 +115,21 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, s2DataConfig);
 
-    expect(s2.options.style.colCfg.hideMeasureColumn).toBeTruthy();
+    expect(s2.options.style!.colCfg!.hideMeasureColumn).toBeTruthy();
   });
 
   test('should enable hidden columns operation', () => {
     renderStrategySheet(null);
 
-    expect(s2.options.tooltip.operation.hiddenColumns).toBeTruthy();
+    expect(s2.options.tooltip!.operation!.hiddenColumns).toBeTruthy();
   });
 
-  test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+  test.each([
+    CellTypes.ROW_CELL,
+    CellTypes.COL_CELL,
+    CellTypes.DATA_CELL,
+    CellTypes.CORNER_CELL,
+  ])(
     'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
     (cellType) => {
       const content = `${cellType} test content`;
@@ -131,6 +137,7 @@ describe('<StrategySheet/> Tests', () => {
         [CellTypes.ROW_CELL]: 'row',
         [CellTypes.COL_CELL]: 'col',
         [CellTypes.DATA_CELL]: 'data',
+        [CellTypes.CORNER_CELL]: 'corner',
       }[cellType];
 
       renderStrategySheet({
@@ -149,6 +156,28 @@ describe('<StrategySheet/> Tests', () => {
       expect(s2.tooltip.container.innerText).toEqual(content);
     },
   );
+
+  test('should get current cell custom tooltip content', () => {
+    renderStrategySheet({
+      tooltip: {
+        showTooltip: true,
+        row: {
+          content: () => <div>{CellTypes.ROW_CELL}</div>,
+        },
+        data: {
+          content: () => <div>{CellTypes.DATA_CELL}</div>,
+        },
+      },
+    });
+
+    jest.spyOn(s2, 'getCellType').mockReturnValueOnce(CellTypes.COL_CELL);
+
+    s2.showTooltipWithInfo({} as GEvent, []);
+
+    [CellTypes.ROW_CELL, CellTypes.DATA_CELL].forEach((content) => {
+      expect(s2.tooltip.container.innerText).not.toEqual(content);
+    });
+  });
 
   test('should render correctly KPI bullet column measure text', () => {
     renderStrategySheet(
@@ -209,7 +238,7 @@ describe('<StrategySheet/> Tests', () => {
 
     expect(textList).toEqual([cornerExtraFieldText, '日期']);
 
-    expect(cornerNode.label).toEqual(cornerExtraFieldText);
+    expect(cornerNode!.label).toEqual(cornerExtraFieldText);
   });
 
   test('should format corner date field', () => {
