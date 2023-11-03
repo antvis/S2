@@ -139,6 +139,8 @@ export interface CellTheme {
   miniBarChartHeight?: number;
   /* @deprecated 已废弃， 请用 miniChartTheme.interval.fill 代替 */
   miniBarChartFillColor?: string;
+  /** 单元格边线虚线 */
+  borderDash?: number[];
 }
 
 export interface IconTheme {
@@ -214,6 +216,8 @@ export interface SplitLine {
     /* 线性变化右侧颜色 */
     right: string;
   };
+  /** 分割线虚线 */
+  borderDash?: number[];
 }
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */

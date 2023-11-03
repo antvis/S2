@@ -134,6 +134,7 @@ s2.setTheme({
 | showShadow                   | 分割线是否显示外阴影（行列冻结情况下）                    | `boolean`                              | `true`                                                   |      |
 | shadowWidth                  | 阴影宽度                                                  | `number`                               | 10                                                       |      |
 | shadowColors                 | `left` : 线性变化左侧颜色 <br> `right` : 线性变化右侧颜色 | `{left: string,` <br> `right: string}` | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` |      |
+| borderDash                 | 分割线虚线 | `number[]` | `[]` |      |
 
 #### TextTheme
 
@@ -173,6 +174,7 @@ s2.setTheme({
 | interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/zh/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | miniBarChartHeight           | 单元格内条件格式-迷你条形图高度         | `number`                                        | 12     |      |
 | miniBarChartFillColor        | 单元格内条件格式-迷你条形图默认填充颜色 | `string`                                        | -      |      |
+| borderDash        | 单元格边线虚线 | `number[]`                                        | `[]`      |      |
 
 #### IconTheme
 

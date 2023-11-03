@@ -70,6 +70,7 @@ export class GridGroup extends Group {
           strokeOpacity: style.verticalBorderColorOpacity,
           lineWidth: verticalBorderWidth,
           lineCap: SQUARE_LINE_CAP,
+          lineDash: style.borderDash,
         },
       );
     });
@@ -90,6 +91,7 @@ export class GridGroup extends Group {
           strokeOpacity: style.horizontalBorderColorOpacity,
           lineWidth: horizontalBorderWidth,
           lineCap: SQUARE_LINE_CAP,
+          lineDash: style.borderDash,
         },
       );
     });

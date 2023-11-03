@@ -667,12 +667,14 @@ export class TableFacet extends BaseFacet {
       lineWidth: style?.verticalBorderWidth,
       stroke: style?.verticalBorderColor,
       opacity: style?.verticalBorderColorOpacity,
+      lineDash: style?.borderDash,
     };
 
     const horizontalBorderStyle = {
       lineWidth: style?.horizontalBorderWidth,
       stroke: style?.horizontalBorderColor,
       opacity: style?.horizontalBorderColorOpacity,
+      lineDash: style?.borderDash,
     };
 
     if (frozenColCount > 0) {

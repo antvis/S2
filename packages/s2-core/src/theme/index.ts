@@ -55,6 +55,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 8,
@@ -198,6 +200,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -268,6 +272,8 @@ export const getTheme = (
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -362,6 +368,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -461,6 +469,7 @@ export const getTheme = (
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
       },
+      borderDash: [],
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
