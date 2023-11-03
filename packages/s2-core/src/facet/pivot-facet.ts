@@ -36,7 +36,8 @@ import {
   getIndexRangeWithOffsets,
   getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
-import { getCellWidth, safeJsonParse } from '../utils/text';
+import { getCellWidth } from '../utils/text';
+import { safeJsonParse } from '../utils';
 import { BaseFacet } from './base-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -720,13 +721,13 @@ export class PivotFacet extends BaseFacet {
 
   private getColLabelLength(col: Node, rowLeafNodes: Node[]) {
     // 如果 label 字段形如 "["xx","xxx"]"，直接获取其长度
-    const labels = safeJsonParse(col?.value);
+    const labels = safeJsonParse<string[]>(col?.value);
 
     if (isArray(labels)) {
       return labels.length;
     }
 
-    // 采样前50，根据指标个数获取单元格列宽
+    // 采样前 50，根据指标个数获取单元格列宽
     let maxLength = 1;
 
     for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {

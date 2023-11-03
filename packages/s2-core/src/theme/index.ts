@@ -29,11 +29,11 @@ export const getTheme = (
 
   const getDataCellTextOverflow = () => ({
     wordWrap: true,
+    // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
     maxLines: 1,
     textOverflow: 'ellipsis',
   });
 
-  // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
   const getDataCell = (): DefaultCellTheme => ({
     bolderText: {
       fontFamily: FONT_FAMILY,

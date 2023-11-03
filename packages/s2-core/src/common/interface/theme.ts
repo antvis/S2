@@ -73,6 +73,7 @@ export interface Background {
   opacity?: number;
   color?: string;
 }
+
 export interface InteractionStateTheme {
   /** 背景透明度 */
   backgroundOpacity?: number;

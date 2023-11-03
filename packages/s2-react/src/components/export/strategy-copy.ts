@@ -26,7 +26,7 @@ import {
   sortBy,
 } from 'lodash';
 
-/*
+/**
  * Process the multi-measure with single-lines
  */
 const processObjectValueInRow = (
@@ -39,8 +39,9 @@ const processObjectValueInRow = (
 
   return get(data, ['values', 0]);
 };
+
 const getHeaderLabel = (val: string) => {
-  const label = safeJsonParse(val);
+  const label = safeJsonParse<string[]>(val);
 
   if (isArray(label)) {
     return label;

@@ -19,12 +19,12 @@ import {
 } from '../common/constant';
 import {
   CellClipBox,
-  type Condition,
   type DataCellStyle,
   type MultiData,
   type S2CellType,
   type S2Options,
   type SimpleData,
+  type TextCondition,
   type ViewMeta,
 } from '../common/interface';
 import type {
@@ -347,8 +347,8 @@ const getCurrentTextStyle = ({
   meta: ViewMeta;
   data: string | number;
   textStyle?: TextTheme;
-  textCondition?: Condition;
-}) => {
+  textCondition?: TextCondition;
+}): TextTheme => {
   const style = textCondition?.mapping?.(data, {
     rowIndex,
     colIndex,
@@ -463,10 +463,6 @@ export const drawObjectText = (
     );
     const labelStyle = dataCellStyle.bolderText;
 
-    /*
-     * TODO 把padding计算在内
-     * const { padding } = dataCellStyle.cell;
-     */
     labelHeight = totalTextHeight / (textValues.length + 1);
 
     cell.renderTextShape(
@@ -541,38 +537,35 @@ export const drawObjectText = (
         groupedIcons[iconCfg.position].push(iconCfg);
       }
 
-      const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
-        bbox: contentBoxes[i][j],
-        textAlign: curStyle.textAlign!,
-        textWidth: 0,
-        iconStyle,
-        groupedIcons,
-      });
-
-      const textY = getVerticalTextPosition(
-        contentBoxes[i][j],
-        curStyle!.textBaseline!,
-      );
-
-      const iconY = getVerticalIconPosition(
-        iconStyle.size!,
-        textY,
-        curStyle.fontSize!,
-        curStyle.textBaseline!,
-      );
-
       cell.renderTextShape(
         {
           ...curStyle,
-          x: textX,
-          y: textY,
+          x: 0,
+          y: 0,
           // 多列文本不换行
           maxLines: 1,
           text: curText,
           wordWrapWidth: maxTextWidth,
         },
-        { shallowRender: true },
+        {
+          shallowRender: true,
+        },
       );
+
+      const actualTextWidth = cell.getActualTextWidth();
+      const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
+        bbox: contentBoxes[i][j],
+        textAlign: curStyle.textAlign!,
+        textWidth: actualTextWidth,
+        iconStyle,
+        groupedIcons,
+      });
+      const textY = getVerticalTextPosition(
+        contentBoxes[i][j],
+        curStyle!.textBaseline!,
+      );
+
+      cell.updateTextPosition({ x: textX, y: textY });
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
@@ -583,6 +576,12 @@ export const drawObjectText = (
         });
 
         const iconX = iconCfg?.position === 'left' ? leftIconX : rightIconX;
+        const iconY = getVerticalIconPosition(
+          iconStyle.size!,
+          textY,
+          curStyle.fontSize!,
+          curStyle.textBaseline!,
+        );
 
         if (attrs) {
           const iconShape = renderIcon(cell, {
@@ -606,11 +605,3 @@ export const drawObjectText = (
  */
 export const getCellWidth = (dataCell: DataCellStyle, labelSize = 1) =>
   dataCell?.width! * labelSize;
-
-export const safeJsonParse = (val: string) => {
-  try {
-    return JSON.parse(val);
-  } catch (err) {
-    return null;
-  }
-};

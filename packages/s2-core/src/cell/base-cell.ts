@@ -421,13 +421,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.textShape;
   }
 
+  public updateTextPosition(position?: PointLike) {
+    const defaultPosition = this.getTextPosition();
+
+    this.textShape?.attr('x', position?.x ?? defaultPosition?.x);
+    this.textShape?.attr('y', position?.y ?? defaultPosition?.y);
+  }
+
   public drawTextShape(options?: RenderTextShapeOptions) {
     // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号 https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
     const maxTextWidth = Math.max(this.getMaxTextWidth(), 0);
     const textStyle = this.getTextStyle();
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
-    const textShape = this.renderTextShape(
+    this.renderTextShape(
       {
         ...textStyle,
         x: 0,
@@ -442,10 +449,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return;
     }
 
-    const position = this.getTextPosition();
-
-    textShape.attr('x', position.x);
-    textShape.attr('y', position.y);
+    this.updateTextPosition();
   }
 
   protected drawLinkFieldShape(

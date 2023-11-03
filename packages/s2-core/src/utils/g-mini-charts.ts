@@ -3,7 +3,9 @@
  * https://github.com/antvis/g
  */
 
-import { get, isEmpty, isNil, map, max, min } from 'lodash';
+import { isEmpty, isNil, map, max, min } from 'lodash';
+import type { DataCell } from '..';
+import { CellType, MiniChartTypes } from '../common/constant';
 import {
   CellClipBox,
   type BaseChartData,
@@ -11,19 +13,19 @@ import {
   type MiniChartData,
   type S2CellType,
 } from '../common/interface';
-import type { DefaultCellTheme, RangeColors } from '../common/interface/theme';
+import type {
+  DefaultCellTheme,
+  InternalFullyCellTheme,
+  RangeColors,
+} from '../common/interface/theme';
+import { getIntervalScale } from '../utils/condition/condition';
+import { parseNumberWithPrecision } from '../utils/formatter';
 import {
   renderCircle,
-  renderPolyline,
   renderLine,
+  renderPolyline,
   renderRect,
-  renderText,
 } from '../utils/g-renders';
-import { CellType, MiniChartTypes } from '../common/constant';
-import { parseNumberWithPrecision } from '../utils/formatter';
-import { getIntervalScale } from '../utils/condition/condition';
-import type { DataCell } from '..';
-import { getEllipsisText, getEmptyPlaceholder } from './text';
 
 interface FractionDigitsOptions {
   min: number;
@@ -242,7 +244,7 @@ export const transformRatioToPercent = (
 // ========================= 条件格式柱图相关 ==============================
 
 /**
- *  绘制单元格内的 条件格式 柱图
+ * 绘制单元格内的 条件格式 柱图
  */
 export const drawInterval = (cell: DataCell) => {
   if (isEmpty(cell)) {
@@ -297,22 +299,20 @@ export const drawInterval = (cell: DataCell) => {
 };
 
 /**
- *  绘制单元格内的 mini 子弹图
+ * 绘制单元格内的 mini 子弹图
  */
 export const drawBullet = (value: BulletValue, cell: S2CellType) => {
-  const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
-  const { x, y, height, width, spreadsheet } = cell.getMeta();
+  const dataCellStyle: InternalFullyCellTheme = cell.getStyle(
+    CellType.DATA_CELL,
+  );
+  const { x, y, height, width } = cell.getMeta();
 
   if (isEmpty(value)) {
-    // TODO: cell.renderTextShape()
-    renderText({
-      group: cell,
-      style: {
-        x: x + width - dataCellStyle.cell.padding.right,
-        y: y + height / 2,
-        text: getEmptyPlaceholder(cell, spreadsheet.options.placeholder)!,
-        ...dataCellStyle.text,
-      },
+    cell.renderTextShape({
+      ...dataCellStyle.text,
+      x: x + width - dataCellStyle.cell.padding.right,
+      y: y + height / 2,
+      text: '',
     });
 
     return;
@@ -341,7 +341,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const padding = dataCellStyle.cell.padding;
   const contentWidth = width - padding.left - padding.right;
 
-  // 子弹图先占位(bulletWidth)，剩下空间给文字(measureWidth)
+  // 子弹图先占位 (bulletWidth)，剩下空间给文字 (measureWidth)
   const bulletWidth = widthPercent * contentWidth;
   const measureWidth = contentWidth - bulletWidth;
 
@@ -362,11 +362,6 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   });
 
   // 2. 进度条
-  const getRangeColor = get(
-    cell.getMeta(),
-    'spreadsheet.options.bullet.getRangeColor',
-  );
-
   const displayBulletWidth = Math.max(
     Math.min(bulletWidth * displayMeasure, bulletWidth),
     0,
@@ -377,9 +372,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
     width: displayBulletWidth,
     height: progressBar.innerHeight,
-    fill:
-      getRangeColor?.(displayMeasure, displayTarget) ??
-      getBulletRangeColor(displayMeasure, displayTarget, rangeColors),
+    fill: getBulletRangeColor(displayMeasure, displayTarget, rangeColors),
   });
 
   // 3.测量标记线
@@ -391,27 +384,20 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     x2: lineX,
     y2:
       y + (height - comparativeMeasure.height) / 2 + comparativeMeasure.height,
-    stroke: comparativeMeasure?.fill || comparativeMeasure?.color,
+    stroke: comparativeMeasure?.fill,
     lineWidth: comparativeMeasure.width,
     opacity: comparativeMeasure?.opacity,
   });
 
   // 4.绘制指标
-  const text = getEllipsisText({
-    measureTextWidth: spreadsheet.measureTextWidth,
-    text: measurePercent,
-    maxWidth: measureWidth - padding.right,
-    fontParam: dataCellStyle.text,
-  });
+  const maxTextWidth = measureWidth - padding.right;
 
-  renderText({
-    group: cell,
-    style: {
-      x: positionX - padding.right,
-      y: y + height / 2,
-      text,
-      ...dataCellStyle.text,
-    },
+  cell.renderTextShape({
+    ...dataCellStyle.text,
+    x: positionX - padding.right,
+    y: y + height / 2,
+    text: measurePercent,
+    wordWrapWidth: maxTextWidth,
   });
 };
 
