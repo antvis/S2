@@ -121,6 +121,8 @@ export interface TextTheme
       | 'maxLines'
       | 'lineHeight'
       | 'textOverflow'
+      | 'fontStyle'
+      | 'fontVariant'
     > {
   /** 字体大小 */
   fontSize?: number;

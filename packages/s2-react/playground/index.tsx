@@ -1092,7 +1092,7 @@ function MainLayout() {
                 </Tooltip>
               </Space>
             </Collapse.Panel>
-            <Collapse.Panel header="宽高调整热区配置" key="resize">
+            <Collapse.Panel header="宽高调整/热区配置" key="resize">
               <ResizeConfig
                 options={mergedOptions}
                 setOptions={setOptions}

@@ -1,6 +1,7 @@
 import {
   filter,
   find,
+  first,
   forEach,
   get,
   isArray,
@@ -30,6 +31,7 @@ import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
@@ -37,7 +39,6 @@ import {
   getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
 import { getCellWidth } from '../utils/text';
-import { safeJsonParse } from '../utils';
 import { BaseFacet } from './base-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -174,9 +175,25 @@ export class PivotFacet extends BaseFacet {
 
     let preLeafNode = Node.blankNode();
     const colNodes = colsHierarchy.getNodes();
+    const sampleNodesForAllLevels = colsHierarchy.sampleNodesForAllLevels.map(
+      (node) => {
+        const maxHeightNode = maxBy(
+          colsHierarchy.getNodes(node.level),
+          (levelSampleNode) => {
+            return this.getColNodeHeight(levelSampleNode, colsHierarchy);
+          },
+        )!;
 
+        return maxHeightNode!;
+      },
+    );
+
+    colsHierarchy.sampleNodesForAllLevels = sampleNodesForAllLevels;
     colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
-      levelSampleNode.height = this.getColNodeHeight(levelSampleNode);
+      levelSampleNode.height = this.getColNodeHeight(
+        levelSampleNode,
+        colsHierarchy,
+      );
       colsHierarchy.height += levelSampleNode.height;
     });
 
@@ -200,18 +217,21 @@ export class PivotFacet extends BaseFacet {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
-        const preLevelSample = colsHierarchy.sampleNodesForAllLevels.find(
-          (node) => node.level === currentNode.level - 1,
+        // 之前是采样每一级第一个节点, 现在是采样每一级高度最大的节点, 但是初始化布局时只有第一个节点有值, 所以这里需要适配下
+        const preLevelSample = first(
+          colsHierarchy.getNodes(currentNode.level - 1),
         );
 
         currentNode.y = preLevelSample?.y! + preLevelSample?.height! ?? 0;
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
+      const colNodeHeight = this.getColNodeHeight(currentNode, colsHierarchy);
+
       currentNode.height =
         currentNode.isGrandTotals && currentNode.isLeaf
           ? colsHierarchy.height
-          : this.getColNodeHeight(currentNode);
+          : colNodeHeight;
 
       layoutCoordinate(this.spreadsheet, null, currentNode);
     });
@@ -382,11 +402,18 @@ export class PivotFacet extends BaseFacet {
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);
   }
 
-  private getColNodeHeight(colNode: Node): number {
+  private getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy): number {
     const colCell = new ColCell(colNode, colNode.spreadsheet, {});
     const defaultHeight = this.getDefaultColNodeHeight(colNode);
+    const sampleMaxHeight =
+      colsHierarchy?.sampleNodesForAllLevels.find(
+        (node) => node.level === colNode.level,
+      )?.height || 0;
 
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
+    return this.getCellAdaptiveHeight(
+      colCell,
+      Math.max(defaultHeight, sampleMaxHeight),
+    );
   }
 
   /**

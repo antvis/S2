@@ -1565,6 +1565,7 @@ export abstract class BaseFacet {
     });
 
     colsHierarchy.sampleNodesForAllLevels = nodes;
+    colsHierarchy.height = sumBy(nodes, 'height');
   }
 
   /**

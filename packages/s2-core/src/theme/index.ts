@@ -1,6 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
-import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
+import type {
+  DefaultCellTheme,
+  S2Theme,
+  TextTheme,
+  ThemeCfg,
+} from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -21,13 +26,13 @@ export const getTheme = (
   const isTable = themeCfg?.spreadsheet?.isTableMode();
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
 
-  const getHeaderCellTextOverflow = () => ({
+  const getHeaderCellTextOverflow = (): TextTheme => ({
     wordWrap: true,
     maxLines: 2,
     textOverflow: 'ellipsis',
   });
 
-  const getDataCellTextOverflow = () => ({
+  const getDataCellTextOverflow = (): TextTheme => ({
     wordWrap: true,
     // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
     maxLines: 1,
