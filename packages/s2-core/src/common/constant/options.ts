@@ -23,7 +23,6 @@ export const DEFAULT_TREE_ROW_CELL_WIDTH = 120;
 export const DEFAULT_STYLE: S2Style = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
   rowCell: {
-    // width: 120,
     showTreeLeafNodeAlignDot: false,
     widthByField: null,
     heightByField: null,

@@ -267,26 +267,7 @@ export const s2Options: SheetComponentOptions = {
       ],
     },
   },
-  style: {
-    // rowCell: {
-    //   width: 100,
-    //   height: 50,
-    // },
-    colCell: {
-      width(node) {
-        if (node?.colIndex === 0) {
-          return 40;
-        }
-
-        return null;
-      },
-      // height: 60,
-      hideValue: false,
-    },
-    // dataCell: {
-    //   height: 50,
-    // },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {

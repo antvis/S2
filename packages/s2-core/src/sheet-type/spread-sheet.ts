@@ -53,7 +53,6 @@ import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
-import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
@@ -67,6 +66,7 @@ import {
 } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { getTheme } from '../theme';
 
 /**
  * 关闭 CSS 解析的开关，可以提升首屏性能,

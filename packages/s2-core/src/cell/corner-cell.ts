@@ -269,7 +269,7 @@ export class CornerCell extends HeaderCell {
 
     return {
       ...textStyle,
-      // 角头因为要折行，所以在都是按照middle来计算，这里写死，不然用户配置了baseline，会导致计算错误
+      // 角头因为要折行，所以在都是按照 middle 来计算，这里写死，不然用户配置了 baseline，会导致计算错误
       textBaseline: 'middle',
     };
   }

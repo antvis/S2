@@ -28,7 +28,7 @@ export const getTheme = (
 
   const getHeaderCellTextOverflow = (): TextTheme => ({
     wordWrap: true,
-    maxLines: 2,
+    maxLines: 1,
     textOverflow: 'ellipsis',
   });
 

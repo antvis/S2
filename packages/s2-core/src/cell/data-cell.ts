@@ -251,9 +251,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
-    const textStyle = isTotals
-      ? this.theme.dataCell?.bolderText
-      : this.theme.dataCell?.text;
+    const { dataCell } = this.theme;
+    const textStyle = isTotals ? dataCell?.bolderText : dataCell?.text;
 
     return this.getContainConditionMappingResultTextStyle(textStyle);
   }
