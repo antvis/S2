@@ -460,6 +460,7 @@ export class ColCell extends HeaderCell {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
+      borderDash,
     } = this.theme.splitLine;
     const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
 
@@ -475,6 +476,7 @@ export class ColCell extends HeaderCell {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
         strokeOpacity: horizontalBorderColorOpacity,
+        lineDash: borderDash,
       },
     );
   }

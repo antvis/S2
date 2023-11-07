@@ -38,7 +38,7 @@
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
 4. 如果你的改动是修复 bug, 还可以在提交信息后面加上 `close #issue 号`, 这样可以在 pr 合并后，可以自动关闭对应的 issue, 比如 `fix: render bug close #123`
-5. 确保加上了对应的单元测试和文档 (如有必要)
+5. 确保加上了对应的单元测试和文档 (如果有 `Snapshot` UI 快照 (.snap 文件)更新, 可以运行 `yarn core:test -- -u` 和 `yarn react:test -- -u` 自动更新, 并一起提交上来, 请勿手动编辑)
 6. 所有 Lint 和 Test 检查通过后，并且 review 通过，我们会合并你的 pr.
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/ssOxFrycD/86339514-5f9a-4101-8690-e47c97cd8af5.png)
