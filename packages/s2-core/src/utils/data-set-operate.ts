@@ -1,6 +1,6 @@
-import { every, get, isUndefined, keys, reduce } from 'lodash';
+import { get, isUndefined, keys } from 'lodash';
 import { TOTAL_VALUE } from '../common/constant/basic';
-import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
+import type { Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (
   list: string[],
@@ -101,34 +101,6 @@ export const getFieldKeysByDimensionValues = (
 export const sortByItems = (arr1: string[], arr2: string[]) => {
   return arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
 };
-
-/**
- * 判断是普通单元格数据还是总计或小计
- * @param ids
- * @param data
- * @returns
- */
-export const isTotalData = (ids: string[], data: Data): boolean => {
-  return !every(ids, (id) => id in data);
-};
-
-/**
- * split total data from origin list data.
- */
-export function splitTotal(rawData: Data[], fields: Fields): Data[] {
-  const { rows, columns } = fields;
-
-  return reduce(
-    rawData,
-    (result: Data[], data: Data) => {
-      if (isTotalData([].concat(rows).concat(columns), data)) {
-        result.push(data);
-      }
-      return result;
-    },
-    [],
-  );
-}
 
 export function getAggregationAndCalcFuncByQuery(
   totalsStatus: TotalsStatus,

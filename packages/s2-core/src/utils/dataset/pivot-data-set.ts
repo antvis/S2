@@ -1,8 +1,20 @@
-import { find, forEach, get, intersection, isEmpty, last, set } from 'lodash';
+import {
+  find,
+  flatMap,
+  forEach,
+  get,
+  intersection,
+  isArray,
+  isEmpty,
+  isNull,
+  last,
+  set,
+} from 'lodash';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
   MULTI_VALUE,
+  QueryDataType,
   ROOT_ID,
   TOTAL_VALUE,
 } from '../../common/constant';
@@ -10,11 +22,16 @@ import type { Meta } from '../../common/interface/basic';
 import type {
   DataPathParams,
   DataType,
+  FlattingIndexesData,
   PivotMeta,
   SortedDimensionValues,
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
+
+export function shouldQueryMultiData(pathValue: string | number) {
+  return pathValue === MULTI_VALUE;
+}
 
 /**
  * Transform from origin single data to correct dimension values
@@ -131,6 +148,13 @@ export function getDataPath(params: DataPathParams) {
     colPivotMeta,
   } = params;
 
+  const getDimensionPrefix = () => {
+    return rowFields
+      .concat(colFields)
+      .filter((i) => i !== EXTRA_FIELD)
+      .join(ID_SEPARATOR);
+  };
+
   const appendValues = () => {
     const map = new Map();
     valueFields?.forEach((v, idx) => {
@@ -154,7 +178,7 @@ export function getDataPath(params: DataPathParams) {
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
-      if (isFirstCreate && !currentMeta.has(value)) {
+      if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
         const isTotal = value === TOTAL_VALUE;
 
         currentMeta.set(value, {
@@ -168,12 +192,12 @@ export function getDataPath(params: DataPathParams) {
           dimensionPath: dimensionValues.slice(0, i + 1),
         });
       }
-      const meta = currentMeta.get(value);
+      const meta = currentMeta?.get(value);
 
       path.push(value === MULTI_VALUE ? value : meta?.level);
 
       if (meta) {
-        if (isFirstCreate && meta.childField !== dimensions?.[i + i]) {
+        if (isFirstCreate && meta.childField !== dimensions?.[i + 1]) {
           // mark the child field
           // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
           meta.childField = dimensions?.[i + 1];
@@ -184,19 +208,17 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const totalLength = rowDimensionValues.length + colDimensionValues.length;
   const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta);
   const colPath = getPath(colFields, colDimensionValues, colPivotMeta);
 
-  return [totalLength, ...rowPath, ...colPath];
+  return [getDimensionPrefix(), ...rowPath, ...colPath];
 }
 interface Param {
   rows: string[];
   columns: string[];
   values: string[];
-  originData: DataType[];
-  indexesData: Record<number, DataType[][] | DataType[]>;
-  totalData?: DataType[];
+  data: DataType[];
+  indexesData: Record<string, DataType[][] | DataType[]>;
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
@@ -210,8 +232,7 @@ export function transformIndexesData(params: Param) {
     rows,
     columns,
     values,
-    originData = [],
-    totalData = [],
+    data = [],
     indexesData = {},
     sortedDimensionValues,
     rowPivotMeta,
@@ -244,15 +265,14 @@ export function transformIndexesData(params: Param) {
     );
   };
 
-  const allData = originData.concat(totalData);
-  allData.forEach((data) => {
+  data.forEach((item) => {
     // 空数据没有意义，直接跳过
-    if (!data || isEmpty(data)) {
+    if (!item || isEmpty(item)) {
       return;
     }
 
-    const rowDimensionValues = transformDimensionsValues(data, rows);
-    const colDimensionValues = transformDimensionsValues(data, columns);
+    const rowDimensionValues = transformDimensionsValues(item, rows);
+    const colDimensionValues = transformDimensionsValues(item, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -265,7 +285,7 @@ export function transformIndexesData(params: Param) {
       onFirstCreate,
     });
     paths.push(path);
-    set(indexesData, path, data);
+    set(indexesData, path, item);
   });
 
   return {
@@ -329,4 +349,141 @@ export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
     isColTotal: col.isGrandTotals,
     isColSubTotal: col.isSubTotals,
   };
+}
+
+/**
+ * 检查 getMultiData 时，传入的 query 是否是包含总计、小计分组的场景
+ * MULTI_VALUE 后面再出现具体的名字，就表明是分组场景
+ * 以 rows: [province, city] 为例
+ * 如果是: [四川, MULTI_VALUE] => 代表获取四川下面的所有 city
+ * 如果是: [MULTI_VALUE, 成都] => 这种结果就是所有成都的小计分组
+ *    每个 province 下面的 city 都不一样的
+ *    就算换成 [province, sex] => [MULTI_VALUE, 女] 这样的形式，去获取所有 province 下的女性，但是每个 province 下的女性的 index 也可能不同
+ *    需要将其拓展成多个结构 =>  [MULTI_VALUE, 女] => [[四川，女], [北京，女], ....] => [[1,1],[2,1],[3,2]....]
+ */
+export function existDimensionTotalGroup(path: string[]) {
+  let multiIdx = null;
+  for (let i = 0; i < path.length; i++) {
+    const element = path[i];
+    if (element === MULTI_VALUE) {
+      multiIdx = i;
+    } else if (!isNull(multiIdx) && multiIdx < i) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function satisfyDimensionValues(
+  dimensionValues: string[],
+  sortedDimensionValue: string,
+  fieldIdx: number,
+) {
+  return sortedDimensionValue.split(ID_SEPARATOR).every((value, idx) => {
+    // 只检查截止到目标 field 为止的内容
+    if (idx > fieldIdx) {
+      return true;
+    }
+    // 不包含总计、小计维度，只获取具体的维度
+    if (value === TOTAL_VALUE) {
+      return false;
+    }
+
+    const dimension = dimensionValues[idx];
+    // 如果是 MULTI_VALUE， 则说明是获取全部维度
+    if (dimension === MULTI_VALUE) {
+      return true;
+    }
+
+    return value === dimension;
+  });
+}
+
+export function flattenDimensionValues(
+  fields: string[],
+  dimensionValues: string[],
+  sortedDimensionValues: SortedDimensionValues,
+) {
+  fields = fields.filter((i) => i !== EXTRA_FIELD);
+
+  if (!existDimensionTotalGroup(dimensionValues)) {
+    return [dimensionValues];
+  }
+
+  let queries = [dimensionValues];
+  let hadMultiBefore = false;
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i];
+    const value = dimensionValues[i];
+    if (value === MULTI_VALUE) {
+      hadMultiBefore = true;
+    } else if (hadMultiBefore) {
+      const temp = [];
+      const allSortedDimensionValues = sortedDimensionValues[field];
+      for (const sortedValues of allSortedDimensionValues) {
+        for (const query of queries) {
+          if (satisfyDimensionValues(query, sortedValues, i)) {
+            const newQuery = sortedValues
+              .split(ID_SEPARATOR)
+              .slice(0, i)
+              .concat(query.slice(i));
+            temp.push(newQuery);
+          }
+        }
+      }
+      queries = temp;
+    }
+  }
+  return queries;
+}
+
+export function getFlattenDimensionValues(params: {
+  rowDimensionValues: string[];
+  colDimensionValues: string[];
+  rowFields: string[];
+  colFields: string[];
+  sortedDimensionValue: SortedDimensionValues;
+}) {
+  const {
+    rowFields,
+    rowDimensionValues,
+    colFields,
+    colDimensionValues,
+    sortedDimensionValue,
+  } = params;
+  const rowQueries = flattenDimensionValues(
+    rowFields,
+    rowDimensionValues,
+    sortedDimensionValue,
+  );
+  const colQueries = flattenDimensionValues(
+    colFields,
+    colDimensionValues,
+    sortedDimensionValue,
+  );
+  return {
+    rowQueries,
+    colQueries,
+  };
+}
+
+export function flattenIndexesData(
+  data: FlattingIndexesData,
+  queryType: QueryDataType,
+): FlattingIndexesData {
+  if (!data) {
+    return [];
+  }
+  if (!isArray(data)) {
+    return [data];
+  }
+  return flatMap(data, (dimensionData) => {
+    if (!isArray(dimensionData)) {
+      return [dimensionData];
+    }
+    // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
+    const startIdx = queryType === QueryDataType.DetailOnly ? 1 : 0;
+    const length = queryType === QueryDataType.TotalOnly ? 1 : undefined;
+    return dimensionData.slice(startIdx, length).filter(Boolean);
+  });
 }

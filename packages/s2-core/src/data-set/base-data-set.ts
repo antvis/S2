@@ -10,7 +10,7 @@ import {
   memoize,
   min,
 } from 'lodash';
-import type { CellMeta, RowData } from '../common';
+import type { CellMeta, Data, RowData } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -26,7 +26,7 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
-import type { CellDataParams, DataType, Query } from './index';
+import type { CellDataParams, DataType, MultiDataParams, Query } from './index';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -42,7 +42,7 @@ export abstract class BaseDataSet {
   public totalData: DataType[];
 
   // multidimensional array to indexes data
-  public indexesData: Record<number, DataType[][] | DataType[]>;
+  public indexesData: Record<string, DataType[][] | DataType[]>;
 
   // 高级排序, 组内排序
   public sortParams: SortParams;
@@ -200,21 +200,13 @@ export abstract class BaseDataSet {
   public abstract getCellData(params: CellDataParams): DataType;
 
   /**
-   * To get a row or column cells data;
-   * if query is empty, return all data
+   * 获取符合 query 的所有单元格数据，如果 query 为空，返回空数组
    * @param query
-   * @param isTotals
-   * @param isRow
-   * @param drillDownFields
-   * @param includeTotalData 用于标记是否包含汇总数据，例如在排序功能中需要汇总数据，在计算汇总值中只取明细数据
+   * @param params 默认获取符合 query 的所有数据，包括小计总计等汇总数据；
+   *               如果只希望获取明细数据，请使用 { queryType: QueryDataType.DetailOnly }
+   *               如果只希望获取汇总数据，请使用 { queryType: QueryDataType.TotalOnly }
    */
-  public abstract getMultiData(
-    query: Query,
-    isTotals?: boolean,
-    isRow?: boolean,
-    drillDownFields?: string[],
-    includeTotalData?: boolean,
-  ): DataType[];
+  public abstract getMultiData(query: Query, params?: MultiDataParams): Data[];
 
   public moreThanOneValue() {
     return this.fields?.values?.length > 1;

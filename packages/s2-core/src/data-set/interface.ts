@@ -1,3 +1,4 @@
+import type { QueryDataType } from '../common/constant/query';
 import type { SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
@@ -21,6 +22,11 @@ export type SortedDimensionValues = Record<string, string[]>;
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
+  rowPivotMeta: PivotMeta;
+  colPivotMeta: PivotMeta;
+  rowFields: string[];
+  colFields: string[];
+  valueFields?: string[];
   // first create data path
   isFirstCreate?: boolean;
   // callback when pivot map create node
@@ -30,12 +36,6 @@ export type DataPathParams = {
     // 维度数组 ['四川省', '成都市']
     dimensionPath: string[];
   }) => void;
-  // use in row tree mode to append fields information
-  rowFields?: string[];
-  colFields?: string[];
-  valueFields?: string[];
-  rowPivotMeta?: PivotMeta;
-  colPivotMeta?: PivotMeta;
 };
 
 export interface CellDataParams {
@@ -74,3 +74,10 @@ export interface SortActionParams {
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }
+
+export interface MultiDataParams {
+  drillDownFields?: string[];
+  queryType?: QueryDataType;
+}
+
+export type FlattingIndexesData = DataType[][] | DataType[] | DataType;

@@ -8,15 +8,14 @@ export function getMockPivotMeta() {
   const sortedDimensionValues = {};
   const rawRowPivotMeta = new Map();
   const rawColPivotMeta = new Map();
-  const rawIndexesData = [];
+  const rawIndexesData = {};
   const { fields, data, totalData } = assembleDataCfg();
   return transformIndexesData({
     rows: fields.rows,
     columns: fields.columns,
     values: fields.values,
-    originData: data,
+    data: data.concat(totalData),
     indexesData: rawIndexesData,
-    totalData,
     sortedDimensionValues,
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,

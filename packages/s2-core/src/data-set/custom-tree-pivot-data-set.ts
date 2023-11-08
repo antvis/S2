@@ -25,6 +25,8 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
+      rowFields: rows,
+      colFields: columns as string[],
     });
     const data = get(this.indexesData, path);
     if (data) {
