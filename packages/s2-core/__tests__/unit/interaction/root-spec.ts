@@ -231,12 +231,12 @@ describe('RootInteraction Tests', () => {
     expect(unmergeCell).toHaveBeenCalled();
   });
 
-  test('should call hideColumns', () => {
+  test('should call hideColumns', async () => {
     const hideColumnsSpy = jest
       .spyOn(rootInteraction, 'hideColumns')
-      .mockImplementation(() => {});
+      .mockImplementation(() => Promise.resolve());
 
-    rootInteraction.hideColumns(['field1']);
+    await rootInteraction.hideColumns(['field1']);
     expect(hideColumnsSpy).toHaveBeenCalledTimes(1);
   });
 

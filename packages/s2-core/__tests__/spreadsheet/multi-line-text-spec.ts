@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet, type SpreadSheet } from '../../src';
 import type { DefaultCellTheme, S2CellType, S2Options } from '../../src/common';
@@ -50,6 +51,44 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
   };
 
+  const expectHierarchyHeight = (
+    height: number,
+    lastLevelY: number = 60,
+    lastLevelHeight: number = 30,
+  ) => {
+    const { colsHierarchy } = s2.facet.getLayoutResult();
+
+    expect(colsHierarchy.height).toEqual(height);
+    expect(colsHierarchy.sampleNodesForAllLevels).toHaveLength(3);
+    expect(colsHierarchy.sampleNodeForLastLevel?.y).toEqual(lastLevelY);
+    expect(colsHierarchy.sampleNodeForLastLevel?.height).toEqual(
+      lastLevelHeight,
+    );
+  };
+
+  const setupTotalsOptions = (showGrandTotals = true, showSubTotals = true) => {
+    s2.setOptions({
+      totals: {
+        col: {
+          showGrandTotals,
+          showSubTotals,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['type'],
+        },
+        row: {
+          showGrandTotals,
+          showSubTotals,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
+          subTotalsDimensions: ['province'],
+        },
+      },
+    });
+
+    s2.changeSheetSize(600, 400);
+  };
+
   const getCells = () => [
     s2.facet.getCornerCells(),
     s2.facet.getSeriesNumberCells(),
@@ -71,6 +110,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     getCells().forEach((cells) => {
       expect(mapCells(cells)).toMatchSnapshot();
     });
+    expectHierarchyHeight(90);
   });
 
   test('should custom two max text lines', async () => {
@@ -80,6 +120,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     getCells().forEach((cells) => {
       expect(mapCells(cells)).toMatchSnapshot();
     });
+    expectHierarchyHeight(118, 80, 38);
   });
 
   test('should custom three max text lines', async () => {
@@ -89,9 +130,11 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     getCells().forEach((cells) => {
       expect(mapCells(cells)).toMatchSnapshot();
     });
+
+    expectHierarchyHeight(165, 112, 53);
   });
 
-  test('should custom text overflow text', async () => {
+  test('should render custom text overflow text', async () => {
     const cellTheme: DefaultCellTheme = {
       text: {
         textOverflow: '@@@',
@@ -119,6 +162,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     getCells().forEach((cells) => {
       expect(mapCells(cells)).toMatchSnapshot();
     });
+    expectHierarchyHeight(90);
   });
 
   test('should not render word wrap text', async () => {
@@ -151,6 +195,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         expect(cell.getActualText()).not.toContain('...');
       });
     });
+    expectHierarchyHeight(90);
   });
 
   test('should force adaptive adjust cell height if custom cell style less than actual text height', async () => {
@@ -177,6 +222,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     getCells().forEach((cells) => {
       expect(mapCells(cells)).toMatchSnapshot();
     });
+    expectHierarchyHeight(118, 80, 38);
   });
 
   test('should not adaptive adjust cell height if custom cell style more than actual text height', async () => {
@@ -211,5 +257,36 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         expect(cell.getMeta().height).toEqual(CUSTOM_CELL_HEIGHT);
       });
     });
+
+    expectHierarchyHeight(210, 140, 70);
+  });
+
+  test('should render correctly layout if enable totals', async () => {
+    setupTotalsOptions();
+    await s2.render(false);
+
+    expectHierarchyHeight(90, 60, 30);
+  });
+
+  test('should render correctly layout if enable totals for multiple text lines', async () => {
+    setupTotalsOptions();
+    updateTheme(3);
+    await s2.render(false);
+
+    expectHierarchyHeight(165, 112, 53);
+  });
+
+  test('should render correctly layout if only enable grand totals', async () => {
+    setupTotalsOptions(true, false);
+    await s2.render(false);
+
+    expectHierarchyHeight(90, 60, 30);
+  });
+
+  test('should render correctly layout if only enable sub totals', async () => {
+    setupTotalsOptions(false, true);
+    await s2.render(false);
+
+    expectHierarchyHeight(90, 60, 30);
   });
 });

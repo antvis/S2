@@ -323,8 +323,8 @@ describe('Hide Columns Tests', () => {
     ]);
   });
 
-  test('should hidden group columns', () => {
-    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1', '3']);
+  test('should hidden group columns', async () => {
+    await hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1', '3']);
 
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
@@ -344,18 +344,18 @@ describe('Hide Columns Tests', () => {
     ]);
   });
 
-  test('should skip hidden group columns if hidden column fields not change', () => {
-    hideColumnsByThunkGroup(mockSpreadSheetInstance, []);
+  test('should skip hidden group columns if hidden column fields not change', async () => {
+    await hideColumnsByThunkGroup(mockSpreadSheetInstance, []);
 
     expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
   });
 
-  test('should clear hidden group columns detail and options if hidden column fields isEmpty and enable force update', () => {
+  test('should clear hidden group columns detail and options if hidden column fields isEmpty and enable force update', async () => {
     mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [
       null,
     ] as unknown as HiddenColumnsInfo[]);
 
-    hideColumnsByThunkGroup(mockSpreadSheetInstance, [], true);
+    await hideColumnsByThunkGroup(mockSpreadSheetInstance, [], true);
 
     expect(mockSpreadSheetInstance.render).toHaveReturnedTimes(1);
     expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);

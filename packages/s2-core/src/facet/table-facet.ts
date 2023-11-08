@@ -349,9 +349,9 @@ export class TableFacet extends BaseFacet {
     return dataCell?.width ?? 0;
   }
 
-  private getColNodeHeight(colNode: Node) {
-    const colCell = new TableColCell(colNode, colNode.spreadsheet, {});
-    const defaultHeight = this.getDefaultColNodeHeight(colNode);
+  private getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+    const colCell = new TableColCell(colNode, this.spreadsheet, {});
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
@@ -364,7 +364,7 @@ export class TableFacet extends BaseFacet {
     const allNodes = colsHierarchy.getNodes();
 
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.height = this.getColNodeHeight(levelSample);
+      levelSample.height = this.getColNodeHeight(levelSample, colsHierarchy);
       colsHierarchy.height += levelSample.height;
     }
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
@@ -393,7 +393,7 @@ export class TableFacet extends BaseFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode);
+      currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
     }
 
     const topLevelNodes = colsHierarchy.getNodes(0);

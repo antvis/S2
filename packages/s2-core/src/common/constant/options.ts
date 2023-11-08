@@ -28,13 +28,13 @@ export const DEFAULT_STYLE: S2Style = {
     heightByField: null,
   },
   colCell: {
-    height: 40,
+    height: 30,
     widthByField: null,
     heightByField: null,
   },
   dataCell: {
     width: 96,
-    height: 40,
+    height: 30,
   },
 } as const;
 

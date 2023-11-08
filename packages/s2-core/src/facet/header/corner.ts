@@ -126,9 +126,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
 
-    /*
-     * check if show series number node
-     */
     if (seriesNumberWidth) {
       const sNode: Node = new Node({
         id: '',
@@ -148,7 +145,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerNodes.push(sNode);
     }
 
-    // spreadsheet type tree mode
     if (spreadsheet.isHierarchyTreeType()) {
       const cornerText = this.getTreeCornerText(options);
       const cornerNode: Node = new Node({

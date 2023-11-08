@@ -52,7 +52,7 @@ export const TOTALS_OPTIONS: S2Options['totals'] = {
  */
 export const waitForRender = async (
   spreadsheet: SpreadSheet,
-  executeBlock: () => void,
+  executeBlock: () => void | Promise<void>,
 ) => {
   const renderPromise = new Promise((r) => {
     spreadsheet.once(S2Event.LAYOUT_AFTER_RENDER, () => r(true));

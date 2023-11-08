@@ -240,6 +240,22 @@ export const s2Options: SheetComponentOptions = {
       colResizeType: ResizeType.CURRENT,
     },
   },
+  // totals: {
+  //   col: {
+  //     showGrandTotals: true,
+  //     showSubTotals: false,
+  //     reverseGrandTotalsLayout: true,
+  //     reverseSubTotalsLayout: true,
+  //     subTotalsDimensions: ['type'],
+  //   },
+  //   row: {
+  //     showGrandTotals: true,
+  //     showSubTotals: true,
+  //     reverseGrandTotalsLayout: true,
+  //     reverseSubTotalsLayout: true,
+  //     subTotalsDimensions: ['province'],
+  //   },
+  // },
   // mergedCellsInfo: [
   //   [
   //     { colIndex: 1, rowIndex: 1, showText: true },

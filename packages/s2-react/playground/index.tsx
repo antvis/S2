@@ -40,7 +40,6 @@ import {
   version as AntdVersion,
   Divider,
 } from 'antd';
-import 'antd/dist/antd.min.css';
 import { debounce, isEmpty, isBoolean } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
@@ -68,6 +67,7 @@ import { partDrillDown } from './drill-down';
 import './index.less';
 import { MobileSheetComponent } from './components/Mobile';
 import { onSheetMounted } from './utils';
+import 'antd/dist/antd.min.css';
 
 const { TabPane } = Tabs;
 

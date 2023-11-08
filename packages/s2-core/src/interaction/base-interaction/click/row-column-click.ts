@@ -178,7 +178,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
    * 2. [displaySiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
    * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可
    */
-  public hideSelectedColumns() {
+  public async hideSelectedColumns(): Promise<void> {
     const { interaction } = this.spreadsheet;
 
     const selectedColumnNodes = interaction
@@ -190,7 +190,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     ) as string[];
 
     // 兼容多选
-    hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
+    await hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
   private handleExpandIconClick(node: Node) {
