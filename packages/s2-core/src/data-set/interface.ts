@@ -31,6 +31,7 @@ export type DataPathParams = {
   isFirstCreate?: boolean;
   // callback when pivot map create node
   onFirstCreate?: (params: {
+    careRepeated: boolean;
     // 维度 id，如 city
     dimension: string;
     // 维度数组 ['四川省', '成都市']

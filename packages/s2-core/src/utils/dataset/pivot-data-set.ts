@@ -173,6 +173,7 @@ export function getDataPath(params: DataPathParams) {
     dimensions: string[],
     dimensionValues: string[],
     pivotMeta: PivotMeta,
+    careRepeated: boolean,
   ): number[] => {
     let currentMeta = pivotMeta;
     const path = [];
@@ -190,6 +191,7 @@ export function getDataPath(params: DataPathParams) {
         onFirstCreate?.({
           dimension: dimensions?.[i],
           dimensionPath: dimensionValues.slice(0, i + 1),
+          careRepeated,
         });
       }
       const meta = currentMeta?.get(value);
@@ -208,8 +210,8 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta);
-  const colPath = getPath(colFields, colDimensionValues, colPivotMeta);
+  const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta, false);
+  const colPath = getPath(colFields, colDimensionValues, colPivotMeta, true);
 
   return [getDimensionPrefix(), ...rowPath, ...colPath];
 }
@@ -248,8 +250,8 @@ export function transformIndexesData(params: Param) {
   /**
    * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
    */
-  const onFirstCreate = ({ dimension, dimensionPath }) => {
-    if (repeatedDimensionSet.has(dimension)) {
+  const onFirstCreate = ({ dimension, dimensionPath, careRepeated }) => {
+    if (careRepeated && repeatedDimensionSet.has(dimension)) {
       // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
       // 所有重复字段的维度值无需再加入到 sortedDimensionValues
       return;
