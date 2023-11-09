@@ -1,6 +1,6 @@
 import { set, keys } from 'lodash';
 import {
-  flattenDeep as customFlattenDeep,
+  customFlattenDeep,
   getListBySorted,
   getAggregationAndCalcFuncByQuery,
 } from '@/utils/data-set-operate';
@@ -23,26 +23,6 @@ describe('Data Set Operate Test', () => {
 
     it('test custom flattenDeep', () => {
       expect(keys(customFlattenDeep(data))).toBeArrayOfSize(8);
-    });
-  });
-
-  describe('Dataset Operate Test That Data Has undefined', () => {
-    beforeEach(() => {
-      const paths = [
-        [0, 0],
-        [0, 1],
-        [1, 0],
-        [1, 1],
-        [undefined, undefined],
-        [0, undefined],
-      ];
-      paths.forEach((item, index) => {
-        set(data, [...item], [index, index + 1]);
-      });
-    });
-
-    it('test custom flattenDeep', () => {
-      expect(keys(customFlattenDeep(data))).toBeArrayOfSize(11);
     });
   });
 

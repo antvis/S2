@@ -4,7 +4,12 @@
 import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
+import {
+  EXTRA_FIELD,
+  QueryDataType,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+} from '@/common/constant';
 import { Aggregation, type S2DataConfig } from '@/common/interface';
 import { Store } from '@/common/store';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -733,21 +738,30 @@ describe('Pivot Dataset Total Test', () => {
 
     test('get correct MultiData when query need to be processed', () => {
       expect(
-        dataSet.getMultiData({
-          province: '浙江省',
-          sub_type: '桌子',
-        }),
+        dataSet.getMultiData(
+          {
+            province: '浙江省',
+            sub_type: '桌子',
+          },
+          { queryType: QueryDataType.DetailOnly },
+        ),
       ).toMatchSnapshot();
       expect(
-        dataSet.getMultiData({
-          province: '浙江省',
-          sub_type: '杭州市',
-        }),
+        dataSet.getMultiData(
+          {
+            province: '浙江省',
+            sub_type: '杭州市',
+          },
+          { queryType: QueryDataType.DetailOnly },
+        ),
       ).toMatchSnapshot();
       expect(
-        dataSet.getMultiData({
-          sub_type: '桌子',
-        }),
+        dataSet.getMultiData(
+          {
+            sub_type: '桌子',
+          },
+          { queryType: QueryDataType.DetailOnly },
+        ),
       ).toMatchSnapshot();
     });
   });

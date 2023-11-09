@@ -531,4 +531,4 @@ export interface GridInfo {
   rows: number[];
 }
 
-export type RowData = Data | Data[] | DataItem;
+export type RowData = Data | DataType;

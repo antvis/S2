@@ -29,7 +29,7 @@ import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
-import { flattenDeep } from '../data-set-operate';
+import { customFlattenDeep } from '../data-set-operate';
 import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
 import { getEmptyPlaceholder } from '../text';
 
@@ -763,7 +763,7 @@ export const getDataByRowData = (
   } else if (spreadsheet.isPivotMode()) {
     // 透视表的数据加上行头、列头才有意义，这里会以行头、列头、数据值的顺序将每一个单元格构造成一行
     const columnOrdered = [...rows, ...columns, ...values];
-    const rowDataFlatten = flattenDeep(rowData);
+    const rowDataFlatten = customFlattenDeep(rowData);
     // 去掉小计
     const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
       [...rows, ...columns].every((field) => !isNil(data[field as string])),

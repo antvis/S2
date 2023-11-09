@@ -1,4 +1,8 @@
-import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant/basic';
+import {
+  EXTRA_FIELD,
+  ORIGIN_FIELD,
+  VALUE_FIELD,
+} from '../../common/constant/basic';
 import type { Data } from '../../common/interface/s2DataConfig';
 
 export class DataHandler implements ProxyHandler<Data> {
@@ -16,14 +20,25 @@ export class DataHandler implements ProxyHandler<Data> {
     this.extraField = extraField;
   }
 
-  get(target: Data, p: string) {
-    if (p === EXTRA_FIELD) {
+  get(target: Data, key: string) {
+    if (key === ORIGIN_FIELD) {
+      return target;
+    }
+
+    if (key === EXTRA_FIELD) {
       return this.extraField;
     }
-    if (p === VALUE_FIELD) {
+    if (key === VALUE_FIELD) {
       return target[this.extraField];
     }
-    return target[p];
+    return target[key];
+  }
+
+  has(target: Data, key: string) {
+    if (key === EXTRA_FIELD || key === VALUE_FIELD) {
+      return true;
+    }
+    return key in target;
   }
 
   ownKeys(target: Data): string[] {

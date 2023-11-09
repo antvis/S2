@@ -79,7 +79,7 @@ export function transformDimensionsValues(
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
     const splitArr = item?.split(ID_SEPARATOR);
-    return splitArr[splitArr?.length - 1] || item;
+    return splitArr[splitArr?.length - 1] ?? item;
   });
 }
 
@@ -182,10 +182,18 @@ export function getDataPath(params: DataPathParams) {
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
         const isTotal = value === TOTAL_VALUE;
 
+        let level;
+        if (isTotal) {
+          level = 0;
+        } else if (currentMeta.has(TOTAL_VALUE)) {
+          level = currentMeta.size;
+        } else {
+          level = currentMeta.size + 1;
+        }
         currentMeta.set(value, {
-          level: isTotal ? 0 : currentMeta.size + 1,
+          level,
           children:
-            dimensionValues[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
+            dimensions[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
         });
 
         onFirstCreate?.({
@@ -380,21 +388,24 @@ export function satisfyDimensionValues(
   dimensionValues: string[],
   sortedDimensionValue: string,
   fieldIdx: number,
+  queryType: QueryDataType,
 ) {
   return sortedDimensionValue.split(ID_SEPARATOR).every((value, idx) => {
     // 只检查截止到目标 field 为止的内容
     if (idx > fieldIdx) {
       return true;
     }
-    // 不包含总计、小计维度，只获取具体的维度
-    if (value === TOTAL_VALUE) {
-      return false;
-    }
 
     const dimension = dimensionValues[idx];
-    // 如果是 MULTI_VALUE， 则说明是获取全部维度
+
     if (dimension === MULTI_VALUE) {
-      return true;
+      if (queryType === QueryDataType.All) {
+        return true;
+      }
+      if (queryType === QueryDataType.DetailOnly && value !== TOTAL_VALUE) {
+        return true;
+      }
+      return false;
     }
 
     return value === dimension;
@@ -405,6 +416,7 @@ export function flattenDimensionValues(
   fields: string[],
   dimensionValues: string[],
   sortedDimensionValues: SortedDimensionValues,
+  queryType: QueryDataType = QueryDataType.All,
 ) {
   fields = fields.filter((i) => i !== EXTRA_FIELD);
 
@@ -424,7 +436,7 @@ export function flattenDimensionValues(
       const allSortedDimensionValues = sortedDimensionValues[field];
       for (const sortedValues of allSortedDimensionValues) {
         for (const query of queries) {
-          if (satisfyDimensionValues(query, sortedValues, i)) {
+          if (satisfyDimensionValues(query, sortedValues, i, queryType)) {
             const newQuery = sortedValues
               .split(ID_SEPARATOR)
               .slice(0, i)
@@ -445,6 +457,7 @@ export function getFlattenDimensionValues(params: {
   rowFields: string[];
   colFields: string[];
   sortedDimensionValue: SortedDimensionValues;
+  queryType: QueryDataType;
 }) {
   const {
     rowFields,
@@ -452,16 +465,19 @@ export function getFlattenDimensionValues(params: {
     colFields,
     colDimensionValues,
     sortedDimensionValue,
+    queryType,
   } = params;
   const rowQueries = flattenDimensionValues(
     rowFields,
     rowDimensionValues,
     sortedDimensionValue,
+    queryType,
   );
   const colQueries = flattenDimensionValues(
     colFields,
     colDimensionValues,
     sortedDimensionValue,
+    queryType,
   );
   return {
     rowQueries,
@@ -485,7 +501,6 @@ export function flattenIndexesData(
     }
     // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
     const startIdx = queryType === QueryDataType.DetailOnly ? 1 : 0;
-    const length = queryType === QueryDataType.TotalOnly ? 1 : undefined;
-    return dimensionData.slice(startIdx, length).filter(Boolean);
+    return dimensionData.slice(startIdx).filter(Boolean);
   });
 }

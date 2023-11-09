@@ -25,7 +25,7 @@ describe('Empty String Row Value Tests', () => {
 
   test('should get correct row hierarchy with empty row node', () => {
     const layoutResult = s2.facet.layoutResult;
-    expect(layoutResult.rowNodes).toHaveLength(8);
-    expect(layoutResult.rowLeafNodes).toHaveLength(5);
+    expect(layoutResult.rowNodes).toHaveLength(7);
+    expect(layoutResult.rowLeafNodes).toHaveLength(4);
   });
 });

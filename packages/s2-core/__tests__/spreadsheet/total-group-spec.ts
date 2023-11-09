@@ -11,7 +11,6 @@ describe('Total Group Dimension Test', () => {
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options as S2Options);
     s2.render();
-    window.s2 = s2;
   });
 
   test('should get correct result', () => {

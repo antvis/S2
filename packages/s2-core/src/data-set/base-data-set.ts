@@ -182,7 +182,6 @@ export abstract class BaseDataSet {
    * @param query
    * @param params 默认获取符合 query 的所有数据，包括小计总计等汇总数据；
    *               如果只希望获取明细数据，请使用 { queryType: QueryDataType.DetailOnly }
-   *               如果只希望获取汇总数据，请使用 { queryType: QueryDataType.TotalOnly }
    */
   public abstract getMultiData(query: Query, params?: MultiDataParams): Data[];
 

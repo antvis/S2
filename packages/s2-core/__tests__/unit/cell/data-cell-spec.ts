@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { find, get } from 'lodash';
+import { find, get, keys } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell';
@@ -387,9 +387,11 @@ describe('Data Cell Tests', () => {
               field: 'cost',
               mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
-                const resultData = find(originData, dataInfo);
-                expect(resultData).toEqual(dataInfo);
+                const resultData = find(originData, (item) =>
+                  keys(item).every((key) => item[key] === dataInfo[key]),
+                );
                 expect(value).toEqual(resultData.cost);
+                expect(value).toEqual(dataInfo[VALUE_FIELD]);
                 return {
                   fill: '#fffae6',
                 };

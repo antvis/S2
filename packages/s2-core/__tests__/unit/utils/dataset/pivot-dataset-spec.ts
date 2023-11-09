@@ -49,7 +49,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
     });
-    expect(result.indexesData).toHaveLength(2);
     expect(result.paths).toHaveLength(32);
     expect(get(result.indexesData, result.paths[0])).toEqual({
       city: '杭州市',
@@ -96,6 +95,7 @@ describe('PivotDataSet util test', () => {
     const colDimensionValues = ['家具', '桌子'];
     const rows = ['province', 'city'];
     const columns = ['type', 'sub_type'];
+    const prefix = 'province[&]city[&]type[&]sub_type';
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
 
@@ -108,49 +108,7 @@ describe('PivotDataSet util test', () => {
       rowFields: rows,
       colFields: columns,
     });
-    expect(result).toEqual([0, 0, 0, 0]);
-  });
-
-  test('for getDataPath function when not isFirstCreate and without rowFields or colFields', () => {
-    const rowDimensionValues = ['浙江省', '杭州市'];
-    const colDimensionValues = ['家具', '桌子'];
-    const rowPivotMeta = new Map();
-    const colPivotMeta = new Map();
-    const rows = ['province', 'city'];
-    const columns = ['type', 'sub_type'];
-
-    getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      rowFields: rows,
-      colFields: columns,
-      isFirstCreate: false,
-    });
-    expect(rowPivotMeta.size).toEqual(0);
-    expect(colPivotMeta.size).toEqual(0);
-  });
-
-  test('for getDataPath function when isFirstCreate and without rowFields or colFields', () => {
-    const rowDimensionValues = ['浙江省', '杭州市'];
-    const colDimensionValues = ['家具', '桌子'];
-    const rowPivotMeta = new Map();
-    const colPivotMeta = new Map();
-    const rows = ['province', 'city'];
-    const columns = ['type', 'sub_type'];
-
-    getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      rowFields: rows,
-      colFields: columns,
-      isFirstCreate: true,
-    });
-    expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
-    expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
+    expect(result).toEqual([prefix, 1, 1, 1, 1]);
   });
 
   test('for getDataPath function when isFirstCreate and with rowFields or colFields', () => {

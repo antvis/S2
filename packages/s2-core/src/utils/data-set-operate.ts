@@ -1,4 +1,4 @@
-import { get, isUndefined, keys } from 'lodash';
+import { isArray, flattenDeep } from 'lodash';
 import { TOTAL_VALUE } from '../common/constant/basic';
 import type { Totals, TotalsStatus } from '../common/interface';
 
@@ -32,20 +32,13 @@ export const filterTotal = (values: string[] = []) => {
   return values.filter((v) => v !== TOTAL_VALUE);
 };
 
-export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
-  keys(data)?.reduce((pre, next) => {
-    const item = get(data, next);
-    if (Array.isArray(item)) {
-      pre = pre.concat(flattenDeep(item));
-    } else {
-      pre?.push(item);
-    }
-
-    return pre;
-  }, []);
-
-export const isEveryUndefined = (data: string[] | undefined[]) => {
-  return data?.every((item) => isUndefined(item));
+export const customFlattenDeep = (
+  data: Record<any, any>[] | Record<any, any>,
+) => {
+  if (!isArray(data)) {
+    return [data];
+  }
+  return flattenDeep(data);
 };
 
 export const getFieldKeysByDimensionValues = (

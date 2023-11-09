@@ -59,14 +59,14 @@ describe('Pivot Dataset Test', () => {
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
-      expect(rowPivotMeta.get('浙江省').level).toEqual(0);
+      expect(rowPivotMeta.get('浙江省').level).toEqual(1);
       expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
       ]);
-      expect(rowPivotMeta.get('四川省').level).toEqual(1);
+      expect(rowPivotMeta.get('四川省').level).toEqual(2);
       expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
         '成都市',
         '绵阳市',
@@ -79,7 +79,7 @@ describe('Pivot Dataset Test', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(0);
+      expect(colPivotMeta.get('家具').level).toEqual(1);
       expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
         '桌子',
         '沙发',
@@ -87,7 +87,7 @@ describe('Pivot Dataset Test', () => {
       expect([
         ...colPivotMeta.get('家具').children.get('桌子').children.keys(),
       ]).toEqual(['number']);
-      expect(colPivotMeta.get('办公用品').level).toEqual(1);
+      expect(colPivotMeta.get('办公用品').level).toEqual(2);
       expect([...colPivotMeta.get('办公用品').children.keys()]).toEqual([
         '笔',
         '纸张',
@@ -96,32 +96,27 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
-      expect(get(indexesData, '0.0.0.0.0')).toEqual({
+      const prefix = 'province[&]city[&]type[&]sub_type';
+      expect(get(indexesData, [prefix, 1, 1, 1, 1])).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 7789,
       });
-      expect(get(indexesData, '0.1.1.0.0')).toEqual({
+      expect(get(indexesData, [prefix, 1, 2, 2, 1])).toEqual({
         province: '浙江省',
         city: '绍兴市',
         type: '办公用品',
         sub_type: '笔',
         number: 1304,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 1304,
       });
-      expect(get(indexesData, '1.0.0.1.0')).toEqual({
+      expect(get(indexesData, [prefix, 2, 1, 1, 2])).toEqual({
         province: '四川省',
         city: '成都市',
         type: '家具',
         sub_type: '沙发',
         number: 2451,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 2451,
       });
     });
 
@@ -132,7 +127,6 @@ describe('Pivot Dataset Test', () => {
         'city',
         'type',
         'sub_type',
-        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues.province),
@@ -154,9 +148,6 @@ describe('Pivot Dataset Test', () => {
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
       ).toEqual(['桌子', '沙发', '笔', '纸张']);
-      expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
-      ).toEqual(['number', 'number', 'number', 'number']);
     });
 
     test('should get correctly empty dataset result', () => {
@@ -277,12 +268,7 @@ describe('Pivot Dataset Test', () => {
         '笔',
         '纸张',
       ]);
-      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual([
-        'number',
-        'number',
-        'number',
-        'number',
-      ]);
+
       expect(dataSet.getDimensionValues('empty')).toEqual([]);
       // with query
       expect(

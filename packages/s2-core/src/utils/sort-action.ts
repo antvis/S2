@@ -258,7 +258,7 @@ export const getSortByMeasureValues = (
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
   const dataList = dataSet.getMultiData(query, {
-    queryType: QueryDataType.DetailOnly,
+    queryType: QueryDataType.All,
   }); // 按 query 查出所有数据
   const columns = getLeafColumnsWithKey(fields.columns);
   /**
