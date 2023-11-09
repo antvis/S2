@@ -1,5 +1,4 @@
 import {
-  concat,
   each,
   every,
   filter,
@@ -10,17 +9,15 @@ import {
   get,
   has,
   includes,
+  indexOf,
   isArray,
   isEmpty,
   isNumber,
   isObject,
-  isUndefined,
-  keys,
   map,
   some,
   uniq,
   unset,
-  values,
 } from 'lodash';
 import {
   MULTI_VALUE,
@@ -28,12 +25,7 @@ import {
   type CellMeta,
   type Data,
 } from '../common';
-import {
-  EXTRA_FIELD,
-  ID_SEPARATOR,
-  TOTAL_VALUE,
-  VALUE_FIELD,
-} from '../common/constant';
+import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
@@ -46,18 +38,14 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
-import {
-  filterTotal,
-  flatten as customFlatten,
-  getAggregationAndCalcFuncByQuery,
-  getListBySorted,
-} from '../utils/data-set-operate';
+import { getAggregationAndCalcFuncByQuery } from '../utils/data-set-operate';
 import {
   deleteMetaById,
   flattenIndexesData,
   getDataPath,
   getDimensionsWithoutPathPre,
   getFlattenDimensionValues,
+  satisfyDimensionValues,
   shouldQueryMultiData,
   transformDimensionsValues,
   transformIndexesData,
@@ -68,7 +56,6 @@ import { handleSortAction } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
-  CheckAccordQueryParams,
   DataType,
   FlattingIndexesData,
   MultiDataParams,
@@ -307,72 +294,26 @@ export class PivotDataSet extends BaseDataSet {
     return [];
   }
 
-  // rows :['province','city','type']
-  // query: ['浙江省',undefined] => return: ['文具','家具']
-  public getTotalDimensionValues(field: string, query?: Query): string[] {
+  public getDimensionValues(field: string, query: Query = {}): string[] {
     const dimensions = this.getDimensionsByField(field);
+
+    if (isEmpty(dimensions)) {
+      return [];
+    }
+
+    const idx = indexOf(dimensions, field);
+    const dimensionValues = transformDimensionsValues(
+      query,
+      dimensions,
+      MULTI_VALUE,
+    );
+
     const allCurrentFieldDimensionValues = (
       this.sortedDimensionValues[field] || []
     ).filter((dimValue) =>
-      this.checkAccordQueryWithDimensionValue({
-        dimensionValues: dimValue,
-        query,
-        dimensions,
-        field,
-      }),
+      satisfyDimensionValues(dimensionValues, dimValue, idx),
     );
-    return filterTotal(
-      uniq(getDimensionsWithoutPathPre([...allCurrentFieldDimensionValues])),
-    );
-  }
-
-  public getDimensionValues(field: string, query?: Query): string[] {
-    const { rows = [], columns = [] } = this.fields || {};
-    let meta: PivotMeta = new Map();
-    let dimensions: string[] = [];
-    if (includes(rows, field)) {
-      meta = this.rowPivotMeta;
-      dimensions = rows;
-    } else if (includes(columns, field)) {
-      meta = this.colPivotMeta;
-      dimensions = columns as string[];
-    }
-    if (!isEmpty(query)) {
-      let sortedMeta = [];
-      const dimensionValuePath = [];
-      for (const dimension of dimensions) {
-        const value = get(query, dimension);
-        dimensionValuePath.push(`${value}`);
-        const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
-        if (meta.has(value) && !isUndefined(value)) {
-          const childField = meta.get(value)?.childField;
-          meta = meta.get(value).children;
-          if (
-            find(this.sortParams, (item) => item.sortFieldId === childField) &&
-            this.sortedDimensionValues[childField]
-          ) {
-            const dimensionValues = this.sortedDimensionValues[
-              childField
-            ]?.filter((item) => item?.startsWith(cacheKey));
-            sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
-          } else {
-            sortedMeta = [...meta.keys()];
-          }
-        }
-      }
-      if (isEmpty(sortedMeta)) {
-        return [];
-      }
-      return filterTotal(getListBySorted([...meta.keys()], sortedMeta));
-    }
-
-    if (this.sortedDimensionValues[field]) {
-      return filterTotal(
-        getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
-      );
-    }
-
-    return filterTotal([...meta.keys()]);
+    return uniq(getDimensionsWithoutPathPre(allCurrentFieldDimensionValues));
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
@@ -387,7 +328,9 @@ export class PivotDataSet extends BaseDataSet {
 
     // 前端计算汇总值
     if (calcAction || calcFunc) {
-      const data = this.getMultiData(query);
+      const data = this.getMultiData(query, {
+        queryType: QueryDataType.DetailOnly,
+      });
       let totalValue: number;
       if (calcFunc) {
         totalValue = calcFunc(query, data);
@@ -446,30 +389,6 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  getCustomData = (path: number[]) => {
-    let hadUndefined = false;
-    let currentData: DataType | DataType[] | DataType[][] = this.indexesData;
-
-    for (let i = 0; i < path.length; i++) {
-      const current = path[i];
-      if (hadUndefined) {
-        if (isUndefined(current)) {
-          currentData = customFlatten(currentData) as [];
-        } else {
-          currentData = values(currentData)?.map(
-            (d) => d && get(d, current),
-          ) as [];
-        }
-      } else if (isUndefined(current)) {
-        hadUndefined = true;
-      } else {
-        currentData = currentData?.[current];
-      }
-    }
-
-    return currentData;
-  };
-
   public getTotalStatus = (query: Query) => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
@@ -496,107 +415,6 @@ export class PivotDataSet extends BaseDataSet {
       isColSubTotal: isTotals(columns as string[], true),
     };
   };
-
-  /**
-   * 检查是否属于需要填充中间汇总维度的场景
-   * [undefined , '杭州市' , undefined , 'number'] => true
-   * ['浙江省' , '杭州市' , undefined , 'number'] => true
-   */
-  checkExistDimensionGroup(query: Query): boolean {
-    const { rows, columns } = this.fields;
-    const check = (dimensions: string[]) => {
-      let existDimensionValue = false;
-      for (let i = dimensions.length; i > 0; i--) {
-        const key = dimensions[i - 1];
-        if (keys(query).includes(key)) {
-          if (key !== EXTRA_FIELD) {
-            existDimensionValue = true;
-          }
-        } else if (existDimensionValue) {
-          return true;
-        }
-      }
-      return false;
-    };
-    return check(rows) || check(columns as string[]);
-  }
-
-  /**
-   * 检查 DimensionValue 是否符合 query 条件
-   * dimensions = ['province','city']
-   * query = [province: '杭州市', type: '文具']
-   * field = 'sub_type'
-   * DimensionValue: 浙江省[&]杭州市[&]家具[&]桌子 => true
-   * DimensionValue: 四川省[&]成都市[&]文具[&]笔 => false
-   */
-  checkAccordQueryWithDimensionValue(params: CheckAccordQueryParams): boolean {
-    const { dimensionValues, query, dimensions, field } = params;
-    for (const [index, dimension] of dimensions.entries()) {
-      const queryValue = get(query, dimension);
-      if (queryValue) {
-        const arrTypeValue = dimensionValues.split(ID_SEPARATOR);
-        const dimensionValue = arrTypeValue[index];
-        if (dimensionValue !== queryValue) {
-          return false;
-        }
-      }
-      if (field === dimension) {
-        break;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * 补足分组汇总场景的前置 undefined
-   * {undefined,'可乐','undefined','price'}
-   * => [
-   *      {'可口公司','可乐','undefined','price'}，
-   *      {'百事公司','可乐','undefined','price'},
-   *    ]
-   */
-  getTotalGroupQueries(dimensions: string[], originQuery: Query) {
-    let queries = [originQuery];
-    let existDimensionGroupKey = null;
-    for (let i = dimensions.length - 1; i >= 0; i--) {
-      const key = dimensions[i];
-      if (keys(originQuery).includes(key)) {
-        if (key !== EXTRA_FIELD) {
-          existDimensionGroupKey = key;
-        }
-      } else if (existDimensionGroupKey) {
-        const allCurrentFieldDimensionValues =
-          this.sortedDimensionValues[existDimensionGroupKey];
-        let res = [];
-        for (const query of queries) {
-          const resKeys = [];
-          for (const dimValue of allCurrentFieldDimensionValues) {
-            if (
-              this.checkAccordQueryWithDimensionValue({
-                dimensionValues: dimValue,
-                query,
-                dimensions,
-                field: existDimensionGroupKey,
-              })
-            ) {
-              const arrTypeValue = dimValue.split(ID_SEPARATOR);
-              const currentKey = arrTypeValue[i];
-              if (currentKey !== 'undefined') {
-                resKeys.push(currentKey);
-              }
-            }
-          }
-          const queryList = uniq(resKeys).map((v) => {
-            return { ...query, [key]: v };
-          });
-          res = concat(res, queryList);
-        }
-        queries = res;
-        existDimensionGroupKey = key;
-      }
-    }
-    return queries;
-  }
 
   protected getQueryExtraFields(query: Query) {
     const { values } = this.fields;

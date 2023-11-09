@@ -50,7 +50,7 @@ export function shouldQueryMultiData(pathValue: string | number) {
  */
 
 export function transformDimensionsValues(
-  record: DataType,
+  record: DataType = {},
   dimensions: string[] = [],
   placeholder: string = TOTAL_VALUE,
 ): string[] {

@@ -44,36 +44,6 @@ export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
     return pre;
   }, []);
 
-export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
-  const result = [];
-
-  if (Array.isArray(data)) {
-    // 总计小计在数组里面，以 undefine作为key, 直接forEach的话会漏掉总计小计
-    const containsTotal = 'undefined' in data;
-    const itemLength = data.length + (containsTotal ? 1 : 0);
-
-    let i = 0;
-    while (i < itemLength) {
-      // eslint-disable-next-line dot-notation
-      const current = i === data.length ? data['undefined'] : data[i];
-      i++;
-
-      if (current && 'undefined' in current) {
-        keys(current).forEach((ki) => {
-          result.push(current[ki]);
-        });
-      } else if (Array.isArray(current)) {
-        result.push(...current);
-      } else {
-        result.push(current);
-      }
-    }
-  } else {
-    result.push(data);
-  }
-  return result;
-};
-
 export const isEveryUndefined = (data: string[] | undefined[]) => {
   return data?.every((item) => isUndefined(item));
 };

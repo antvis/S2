@@ -43,9 +43,8 @@ describe('PivotDataSet util test', () => {
       rows,
       columns: columns as string[],
       values,
-      originData: dataCfg.data,
-      totalData: [],
-      indexesData: [],
+      data: dataCfg.data,
+      indexesData: {},
       sortedDimensionValues,
       rowPivotMeta,
       colPivotMeta,
@@ -117,12 +116,16 @@ describe('PivotDataSet util test', () => {
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
+    const rows = ['province', 'city'];
+    const columns = ['type', 'sub_type'];
 
     getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
+      rowFields: rows,
+      colFields: columns,
       isFirstCreate: false,
     });
     expect(rowPivotMeta.size).toEqual(0);
@@ -134,12 +137,16 @@ describe('PivotDataSet util test', () => {
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
+    const rows = ['province', 'city'];
+    const columns = ['type', 'sub_type'];
 
     getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
+      rowFields: rows,
+      colFields: columns,
       isFirstCreate: true,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();

@@ -32,7 +32,7 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
     : totalsConfig.subTotalsGroupDimensions;
   if (dimensionGroup?.includes(currentField)) {
     query = getDimsCondition(parentNode);
-    const dimValues = dataSet.getTotalDimensionValues(currentField, query);
+    const dimValues = dataSet.getDimensionValues(currentField, query);
     fieldValues.push(
       ...(dimValues || []).map(
         (value) =>

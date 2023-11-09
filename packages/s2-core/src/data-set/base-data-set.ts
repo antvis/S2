@@ -171,28 +171,6 @@ export abstract class BaseDataSet {
   public abstract getDimensionValues(field: string, query?: Query): string[];
 
   /**
-   * province  city  type
-   *   辽宁省
-   *          达州市   A
-   *                  B
-   *          芜湖市   C
-   *  浙江省
-   *          杭州市   B
-   *                  D
-   *          宁波市   E
-   * query = {province: "浙江省"}
-   * field = 'type'
-   * *  => [B,D,E]
-   *
-   * @param field current dimensions
-   * @param query dimension value query
-   */
-  public abstract getTotalDimensionValues(
-    field: string,
-    query?: Query,
-  ): string[];
-
-  /**
    * In most cases, this function to get the specific
    * cross data cell data
    * @param params

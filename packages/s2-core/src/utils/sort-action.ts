@@ -13,7 +13,12 @@ import {
   toUpper,
   uniq,
 } from 'lodash';
-import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
+import {
+  EXTRA_FIELD,
+  ID_SEPARATOR,
+  QueryDataType,
+  TOTAL_VALUE,
+} from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
 import type { DataType, SortActionParams } from '../data-set/interface';
@@ -252,13 +257,9 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
-  const dataList = dataSet.getMultiData(
-    query,
-    undefined,
-    undefined,
-    undefined,
-    true,
-  ); // 按 query 查出所有数据
+  const dataList = dataSet.getMultiData(query, {
+    queryType: QueryDataType.DetailOnly,
+  }); // 按 query 查出所有数据
   const columns = getLeafColumnsWithKey(fields.columns);
   /**
    * 按明细数据
