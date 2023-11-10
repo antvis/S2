@@ -1,4 +1,4 @@
-import { isUpDataValue, type Columns } from '@antv/s2';
+import { isUpDataValue, type Columns, customMerge } from '@antv/s2';
 import type { S2DataConfig, ThemeCfg } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -45,6 +45,36 @@ export const pivotSheetDataCfg: S2DataConfig = {
   meta,
   fields,
 };
+
+export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
+  data: [
+    ...pivotSheetDataCfg.data,
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
+      price: '11111111',
+    },
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '纸张',
+      price: '2',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '笔',
+      price: '2',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '纸张',
+      price: '133.333',
+    },
+  ],
+});
 
 export const s2Options: SheetComponentOptions = {
   debug: true,

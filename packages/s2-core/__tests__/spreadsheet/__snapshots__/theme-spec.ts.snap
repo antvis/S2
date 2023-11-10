@@ -19,6 +19,7 @@ Object {
     "cell": Object {
       "backgroundColor": "#E0E9FD",
       "backgroundColorOpacity": 1,
+      "borderDash": Array [],
       "horizontalBorderColor": "#CCDBFC",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
@@ -102,6 +103,7 @@ Object {
     "cell": Object {
       "backgroundColor": "#E0E9FD",
       "backgroundColorOpacity": 1,
+      "borderDash": Array [],
       "horizontalBorderColor": "#CCDBFC",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
@@ -147,6 +149,7 @@ Object {
     "cell": Object {
       "backgroundColor": "#FFFFFF",
       "backgroundColorOpacity": 1,
+      "borderDash": Array [],
       "crossBackgroundColor": "#F5F8FE",
       "horizontalBorderColor": "#E0E9FD",
       "horizontalBorderColorOpacity": 1,
@@ -273,6 +276,7 @@ Object {
     "cell": Object {
       "backgroundColor": "#FFFFFF",
       "backgroundColorOpacity": 1,
+      "borderDash": Array [],
       "crossBackgroundColor": "#F5F8FE",
       "horizontalBorderColor": "#E0E9FD",
       "horizontalBorderColorOpacity": 1,
@@ -420,6 +424,7 @@ Object {
     "cell": Object {
       "backgroundColor": "#F5F8FE",
       "backgroundColorOpacity": 1,
+      "borderDash": Array [],
       "horizontalBorderColor": "#E0E9FD",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
@@ -512,6 +517,7 @@ Object {
     "trackColor": "rgba(0,0,0,0.01)",
   },
   "splitLine": Object {
+    "borderDash": Array [],
     "horizontalBorderColor": "#326EF4",
     "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,

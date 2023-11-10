@@ -2,26 +2,30 @@
 title: 快速上手
 order: 1
 ---
+
 ## 📦 安装
 
-### npm | yarn 安装
+### 使用 npm 或 yarn 或 pnpm 安装
 
 ```bash
 # npm
-$ npm install @antv/s2
+$ npm install @antv/s2 --save
 
 # yarn
-$ yarn add @antv/s2
+$ yarn add @antv/s2 --save
+
+# pnpm
+$ pnpm install @antv/s2 --save
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ yarn add @antv/s2 @antv/s2-react
+$ yarn add @antv/s2 @antv/s2-react --save
 
 # Vue3
-$ yarn add @antv/s2 @antv/s2-vue
+$ yarn add @antv/s2 @antv/s2-vue --save
 ```
 
 ### 浏览器引入（不推荐）
@@ -33,6 +37,8 @@ $ yarn add @antv/s2 @antv/s2-vue
 ## 🔨 使用
 
 创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
+
+### 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
@@ -184,7 +190,8 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](examples/gallery#category-表格组件)
+, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -193,8 +200,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-
-const container = document.getElementById('container');
 
 ReactDOM.render(
   <SheetComponent
@@ -206,17 +211,18 @@ ReactDOM.render(
 
 ```
 
-#### 注意事项
+:::warning{title='注意事项'}
+`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
-`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
-
-```ts
-yarn add antd @ant-design/icons
+```bash
+yarn add antd @ant-design/icons --save
 ```
 
 ```ts
 import 'antd/dist/antd.min.css';
 ```
+
+:::
 
 ​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 
@@ -267,19 +273,25 @@ createApp(App).mount('#app');
 
 ```
 
-#### 注意事项
+:::warning{title='注意事项'}
 
-`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
-```ts
-yarn add ant-design-vue
+```bash
+yarn add ant-design-vue --save
 ```
+
+:::
 
 ```ts
 import "@antv/s2-vue/dist/style.min.css";
 ```
 
 ​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
+
+## TypeScript
+
+`S2` 使用 `TypeScript` 开发，提供完整的类型定义文件，配合 `VS Code` 等编辑器可以获得良好的类型提示。
 
 ## ⌨️ 本地开发
 

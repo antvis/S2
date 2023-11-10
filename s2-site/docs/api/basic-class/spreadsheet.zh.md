@@ -58,7 +58,7 @@ s2.isPivotMode()
 | updatePagination | 更新分页                                                                                                                   | (pagination: [Pagination](/docs/api/general/S2Options#pagination)) => void |    |
 | getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
 | changeSheetSize （别名：changeSize) | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
-| getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
+| getLayoutWidthType | 获取单元格宽度布局类型。[详情](/api/general/s2-options#style) | () => `adaptive \| colAdaptive \| compact` |    |
 | getRowNodes | 获取行头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
 | getRowLeafNodes | 获取行头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | getColumnNodes | 获取列头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
