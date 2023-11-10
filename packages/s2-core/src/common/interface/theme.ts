@@ -97,7 +97,9 @@ export interface TextAlignCfg {
   textBaseline?: TextBaseline;
 }
 
-export interface TextTheme extends TextAlignCfg {
+export interface TextTheme
+  extends TextAlignCfg,
+    Pick<ShapeAttrs, 'fontStyle' | 'fontVariant'> {
   /* 字体 */
   fontFamily?: string;
   /* 字体大小 */
