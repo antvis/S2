@@ -83,6 +83,14 @@
         "en": "custom mini chart"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "data-cell-placeholder.ts",
+      "title": {
+        "zh": "自定义空数据单元格占位符",
+        "en": "custom cell placeholder"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B-VMT7kCWL0AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

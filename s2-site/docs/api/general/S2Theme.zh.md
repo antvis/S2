@@ -149,6 +149,8 @@ s2.setTheme({
 | fontFamily   | 字体                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
 | fontWeight   | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 | `number` \| `string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
+| fontStyle   | 字体样式    | `normal \| italic \| oblique`        |  `normal` |
+| fontVariant | 字体变体  | `normal \| small-caps \| string`    |  `normal`  |
 | fill         | 字体颜色                                                                       | `string`                      | -                                                                                                 |      |
 | linkTextFill | 链接文本颜色                                                                   | `string`                      | -                                                                                                 |      |
 | opacity      | 字体透明度                                                                     | `number`                      | 1                                                                                                 |      |
