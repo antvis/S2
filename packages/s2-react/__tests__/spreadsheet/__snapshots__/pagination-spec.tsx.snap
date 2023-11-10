@@ -159,7 +159,7 @@ exports[`Pagination Tests should render locale text for { locale: 'en_US', page:
       </button>
     </li>
     <li
-      class="ant-pagination-item ant-pagination-item-1 ant-pagination-item-active"
+      class="ant-pagination-item ant-pagination-item-1 ant-pagination-item-disabled"
       tabindex="0"
       title="1"
     >
@@ -170,24 +170,13 @@ exports[`Pagination Tests should render locale text for { locale: 'en_US', page:
       </a>
     </li>
     <li
-      class="ant-pagination-item ant-pagination-item-2"
-      tabindex="0"
-      title="2"
-    >
-      <a
-        rel="nofollow"
-      >
-        2
-      </a>
-    </li>
-    <li
-      aria-disabled="false"
-      class="ant-pagination-next"
-      tabindex="0"
+      aria-disabled="true"
+      class="ant-pagination-next ant-pagination-disabled"
       title="Next Page"
     >
       <button
         class="ant-pagination-item-link"
+        disabled=""
         tabindex="-1"
         type="button"
       >
@@ -282,10 +271,10 @@ exports[`Pagination Tests should render locale text for { locale: 'en_US', page:
   </ul>
   <span
     class="antv-s2-pagination-count"
-    title="Total2"
+    title="Total0"
   >
     Total
-    2
+     - 
   </span>
 </div>
 `;
