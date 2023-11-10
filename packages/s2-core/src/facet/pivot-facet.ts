@@ -1,5 +1,4 @@
 import {
-  compact,
   filter,
   find,
   forEach,
@@ -239,36 +238,6 @@ export class PivotFacet extends BaseFacet {
   }
 
   /**
-   * 将每一层级的采样节点更新为高度最大的节点 (未隐藏, 非汇总节点)
-   */
-  private updateColsHierarchySampleMaxHeightNodes(colsHierarchy: Hierarchy) {
-    const sampleMaxHeightNodesForAllLevels =
-      colsHierarchy.sampleNodesForAllLevels.map((sampleNode) => {
-        const maxHeightNode = maxBy(
-          colsHierarchy
-            .getNodes(sampleNode.level)
-            .filter((node) => !node.isTotals),
-          (levelSampleNode) => {
-            return this.getColNodeHeight(levelSampleNode, colsHierarchy);
-          },
-        )!;
-
-        return maxHeightNode!;
-      });
-
-    colsHierarchy.sampleNodesForAllLevels = compact(
-      sampleMaxHeightNodesForAllLevels,
-    );
-    colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
-      levelSampleNode.height = this.getColNodeHeight(
-        levelSampleNode,
-        colsHierarchy,
-      );
-      colsHierarchy.height += levelSampleNode.height;
-    });
-  }
-
-  /**
    * Auto Auto Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
@@ -421,7 +390,7 @@ export class PivotFacet extends BaseFacet {
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);
   }
 
-  private getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy): number {
+  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy): number {
     if (!colNode) {
       return 0;
     }

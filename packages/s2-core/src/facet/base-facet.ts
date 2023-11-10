@@ -8,6 +8,7 @@ import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
   clamp,
+  compact,
   concat,
   debounce,
   each,
@@ -19,6 +20,7 @@ import {
   isNil,
   isUndefined,
   last,
+  maxBy,
   reduce,
   sumBy,
 } from 'lodash';
@@ -176,6 +178,11 @@ export abstract class BaseFacet {
     colIndex: number,
   ): ViewMeta | null;
 
+  protected abstract getColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+  ): number;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
 
@@ -324,6 +331,36 @@ export abstract class BaseFacet {
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
     return textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+  }
+
+  /**
+   * 将每一层级的采样节点更新为高度最大的节点 (未隐藏, 非汇总节点)
+   */
+  protected updateColsHierarchySampleMaxHeightNodes(colsHierarchy: Hierarchy) {
+    const sampleMaxHeightNodesForAllLevels =
+      colsHierarchy.sampleNodesForAllLevels.map((sampleNode) => {
+        const maxHeightNode = maxBy(
+          colsHierarchy
+            .getNodes(sampleNode.level)
+            .filter((node) => !node.isTotals),
+          (levelSampleNode) => {
+            return this.getColNodeHeight(levelSampleNode, colsHierarchy);
+          },
+        )!;
+
+        return maxHeightNode!;
+      });
+
+    colsHierarchy.sampleNodesForAllLevels = compact(
+      sampleMaxHeightNodesForAllLevels,
+    );
+    colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
+      levelSampleNode.height = this.getColNodeHeight(
+        levelSampleNode,
+        colsHierarchy,
+      );
+      colsHierarchy.height += levelSampleNode.height;
+    });
   }
 
   hideScrollBar = () => {

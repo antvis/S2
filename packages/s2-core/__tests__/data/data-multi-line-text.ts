@@ -1,6 +1,6 @@
 import type { S2DataConfig } from '../../src';
 
-export const MultiLineTextDataCfg: S2DataConfig = {
+export const PivotSheetMultiLineTextDataCfg: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
@@ -522,4 +522,11 @@ export const MultiLineTextDataCfg: S2DataConfig = {
       number: 78868,
     },
   ],
+};
+
+export const TableSheetMultiLineTextDataCfg = {
+  ...PivotSheetMultiLineTextDataCfg,
+  fields: {
+    columns: ['province', 'city', 'type', 'sub_type', 'number'],
+  },
 };

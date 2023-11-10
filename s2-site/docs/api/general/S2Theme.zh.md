@@ -145,14 +145,17 @@ s2.setTheme({
 
 | 参数         | 说明                                                                           | 类型                          | 默认值                                                                                            | 必选 |
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
-| textAlign    | 文本内容的对齐方式                                                             | `left` \| `center` \| `right` | -                                                                                                 |      |
-| textBaseline | 绘制文本时的基线                                                               | `top` \| `middle` \| `bottom` | -                                                                                                 |      |
+| textAlign    | 文本内容的对齐方式                                                             | `left \| center \| right` | -                                                                                                 |      |
+| textBaseline | 绘制文本时的基线                                                               | `top \| middle \| bottom` | -                                                                                                 |      |
 | fontFamily   | 字体                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
-| fontWeight   | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 | `number` \| `string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
+| fontWeight   | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 | `number \| string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
 | fill         | 字体颜色                                                                       | `string`                      | -                                                                                                 |      |
 | linkTextFill | 链接文本颜色                                                                   | `string`                      | -                                                                                                 |      |
 | opacity      | 字体透明度                                                                     | `number`                      | 1                                                                                                 |      |
+| wordWrap      | 文本是否自动换行 （数值单元格不建议换行）。[了解更多](https://g.antv.antgroup.com/api/basic/text#wordwrap)                                                                    | `boolean`                      | `true`                                                                                                 |      |
+| maxLines      | 最大行数，文本超出后将被截断 （数值单元格不建议换行），需要配合 `wordWrap` 和 `textOverflow` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#maxlines)                                                                      | `number`                      | `1`                                                                                                 |      |
+| textOverflow      | 自定义隐藏的文本溢出内容，例如直接裁剪、追加省略号或一个自定义字符串，需要配合 `wordWrap` 和 `maxLines` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#textoverflow)                                                                 | `string`                      | `ellipsis`                                                                                                |      |
 
 #### CellTheme
 

@@ -69,6 +69,8 @@ import { MobileSheetComponent } from './components/Mobile';
 import { onSheetMounted } from './utils';
 import 'antd/dist/antd.min.css';
 
+type TableSheetColumnType = 'single' | 'multiple';
+
 const { TabPane } = Tabs;
 
 const CustomTooltip = () => (
@@ -107,9 +109,12 @@ function MainLayout() {
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
     [],
   );
-  const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
-    'single' | 'multiple'
-  >('multiple');
+  const [tableSheetColumnType, setTableSheetColumnType] =
+    React.useState<TableSheetColumnType>(
+      (localStorage.getItem(
+        'debugTableSheetColumnType',
+      ) as TableSheetColumnType) || 'single',
+    );
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
