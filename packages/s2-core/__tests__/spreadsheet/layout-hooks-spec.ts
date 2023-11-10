@@ -136,10 +136,6 @@ const s2Options: S2Options = {
       collapseAll: false,
       width: 120,
     },
-    colCell: {
-      widthByField: {},
-      heightByField: {},
-    },
     dataCell: {
       height: 32,
     },
@@ -164,7 +160,7 @@ describe('layout hooks spec', () => {
 
   test('layout arrange hook', () => {
     const rowLeafNodes = s2.facet.getRowLeafNodes();
-    let arrangeValues;
+    let arrangeValues: string[];
 
     if (s2.isHierarchyTreeType()) {
       arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.value);
@@ -177,7 +173,7 @@ describe('layout hooks spec', () => {
 
   test('layout hierarchy hook', () => {
     const rowLeafNodes = s2.facet.getRowLeafNodes();
-    let addValues;
+    let addValues: string[];
 
     if (s2.isHierarchyTreeType()) {
       addValues = rowLeafNodes.slice(5, 8).map((v) => v.value);

@@ -153,13 +153,13 @@ export class EventController {
     const { interaction } = this.spreadsheet;
 
     if (
-      interaction.hasIntercepts([
+      interaction?.hasIntercepts?.([
         InterceptType.DATA_CELL_BRUSH_SELECTION,
         InterceptType.COL_CELL_BRUSH_SELECTION,
         InterceptType.ROW_CELL_BRUSH_SELECTION,
       ])
     ) {
-      interaction.removeIntercepts([
+      interaction?.removeIntercepts?.([
         InterceptType.DATA_CELL_BRUSH_SELECTION,
         InterceptType.ROW_CELL_BRUSH_SELECTION,
         InterceptType.COL_CELL_BRUSH_SELECTION,
@@ -176,7 +176,7 @@ export class EventController {
     }
 
     this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
-    interaction.reset();
+    interaction?.reset();
   }
 
   private isMouseEvent(event: Event): event is MouseEvent {

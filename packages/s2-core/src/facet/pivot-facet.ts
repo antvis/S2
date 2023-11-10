@@ -415,7 +415,7 @@ export class PivotFacet extends BaseFacet {
   }
 
   private getRowNodeHeight(rowNode: Node): number {
-    const rowCell = new RowCell(rowNode, rowNode.spreadsheet, {});
+    const rowCell = new RowCell(rowNode, this.spreadsheet, {});
     const defaultHeight = this.getRowCellHeight(rowNode);
 
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);

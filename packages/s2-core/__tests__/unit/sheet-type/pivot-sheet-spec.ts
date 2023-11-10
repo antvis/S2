@@ -935,7 +935,7 @@ describe('PivotSheet Tests', () => {
       .mockImplementation((_, __, options) => {
         return {
           forceRender: options?.forceRender,
-        };
+        } as unknown as void;
       });
 
     const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });

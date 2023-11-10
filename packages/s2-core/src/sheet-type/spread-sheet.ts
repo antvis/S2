@@ -287,7 +287,7 @@ export abstract class SpreadSheet extends EE {
     event: CanvasEvent | MouseEvent,
     cellInfos: TooltipData[],
     options?: TooltipOptions,
-  ) {
+  ): Promise<void> | void {
     const { enable: showTooltip, content } = getTooltipOptions(this, event)!;
 
     if (!showTooltip) {
@@ -307,7 +307,7 @@ export abstract class SpreadSheet extends EE {
         },
       });
 
-    this.showTooltip({
+    return this.showTooltip({
       data: tooltipData,
       position: {
         x: event.clientX,

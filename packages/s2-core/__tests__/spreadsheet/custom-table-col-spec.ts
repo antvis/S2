@@ -62,7 +62,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   test('should render custom layout column nodes', () => {
