@@ -29,7 +29,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
     "@antv/dumi-theme-antv": "^0.3.20",
-    "@antv/g-canvas": "^1.11.19",
+    "@antv/g-canvas": "^1.11.22",
     "@antv/s2": "next",
     "@antv/s2-react": "next",
     "antd": "^4.24.14",

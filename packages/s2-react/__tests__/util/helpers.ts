@@ -83,6 +83,9 @@ export const createMockCellInfo = (
     getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
     getActualText: jest.fn(),
+    update: jest.fn(),
+    updateByState: jest.fn(),
+    isTextOverflowing: jest.fn(),
   } as any;
 
   return {

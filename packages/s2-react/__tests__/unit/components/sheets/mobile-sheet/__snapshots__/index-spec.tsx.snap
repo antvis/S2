@@ -17,7 +17,7 @@ exports[`MobileSheet Tests get mobile default fragment 1`] = `
         >
           <canvas
             height="600"
-            style="width: 300px; height: 300px; display: block;"
+            style="width: 300px; height: 300px; touch-action: none; display: block;"
             width="600"
           />
         </div>
