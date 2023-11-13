@@ -26,7 +26,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
       s2.render();
 
       const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;
-      expect(Math.round(rowsHierarchyWidth)).toEqual(123);
+      expect(Math.round(rowsHierarchyWidth)).toEqual(124);
 
       // 行头维度均更改为较长的 name
       const newDataCfg: S2DataConfig = {
@@ -48,6 +48,40 @@ describe('SpreadSheet Tree Mode Tests', () => {
       expect(s2.facet.layoutResult.rowsHierarchy.width).not.toEqual(
         rowsHierarchyWidth,
       );
+    });
+
+    // https://github.com/antvis/S2/issues/2389
+    test('the corner should only have one line with action icon', () => {
+      // 行头维度更改为较长的 name
+      const newDataCfg: S2DataConfig = {
+        ...mockDataConfig,
+        meta: [
+          {
+            field: 'province',
+            name: '省1234567890份',
+          },
+          {
+            field: 'city',
+            name: '城1234567890市',
+          },
+        ],
+      };
+      // 添加icon
+      const newS2Options: S2Options = {
+        ...s2Options,
+        headerActionIcons: [
+          {
+            iconNames: ['SortDownSelected'],
+            belongsCell: 'cornerCell',
+          },
+        ],
+      };
+      const s2 = new PivotSheet(container, newDataCfg, newS2Options);
+      s2.render();
+
+      // 检查文本是否只有一行
+      const textLen = s2.facet.cornerHeader.cfg.children[0].textShapes.length;
+      expect(textLen).toEqual(1);
     });
   });
 });

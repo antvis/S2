@@ -134,6 +134,7 @@ s2.setTheme({
 | showShadow                   | 分割线是否显示外阴影（行列冻结情况下）                    | `boolean`                              | `true`                                                   |      |
 | shadowWidth                  | 阴影宽度                                                  | `number`                               | 10                                                       |      |
 | shadowColors                 | `left` : 线性变化左侧颜色 <br> `right` : 线性变化右侧颜色 | `{left: string,` <br> `right: string}` | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` |      |
+| borderDash                 | 分割线虚线 | `number[]` | `[]` |      |
 
 #### TextTheme
 
@@ -148,6 +149,8 @@ s2.setTheme({
 | fontFamily   | 字体                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
 | fontWeight   | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 | `number` \| `string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
+| fontStyle   | 字体样式    | `normal \| italic \| oblique`        |  `normal` |
+| fontVariant | 字体变体  | `normal \| small-caps \| string`    |  `normal`  |
 | fill         | 字体颜色                                                                       | `string`                      | -                                                                                                 |      |
 | linkTextFill | 链接文本颜色                                                                   | `string`                      | -                                                                                                 |      |
 | opacity      | 字体透明度                                                                     | `number`                      | 1                                                                                                 |      |
@@ -173,6 +176,7 @@ s2.setTheme({
 | interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/zh/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | miniBarChartHeight           | 单元格内条件格式-迷你条形图高度         | `number`                                        | 12     |      |
 | miniBarChartFillColor        | 单元格内条件格式-迷你条形图默认填充颜色 | `string`                                        | -      |      |
+| borderDash        | 单元格边线虚线 | `number[]`                                        | `[]`      |      |
 
 #### IconTheme
 

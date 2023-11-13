@@ -14,24 +14,24 @@ import {
 } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import {
+  type CellMeta,
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
+  type RowData,
   SERIES_NUMBER_FIELD,
   VALUE_FIELD,
-  type CellMeta,
-  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import { flattenDeep } from '../data-set-operate';
-import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
 import { getEmptyPlaceholder } from '../text';
+import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {

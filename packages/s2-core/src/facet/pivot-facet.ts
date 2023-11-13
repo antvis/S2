@@ -26,9 +26,9 @@ import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, ViewMeta } from '../common/interface';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
-import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
+import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -294,6 +294,7 @@ export class PivotFacet extends BaseFacet {
         cell: colCellStyle,
         icon: colIconStyle,
       } = this.spreadsheet.theme.colCell;
+      const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
       // leaf node rough width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
@@ -307,7 +308,10 @@ export class PivotFacet extends BaseFacet {
         colIconStyle,
       );
       const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+        this.spreadsheet.measureTextWidthRoughly(
+          leafNodeLabel,
+          colCellTextStyle,
+        ) + iconWidth;
 
       // 采样 50 个 label，逐个计算找出最长的 label
       let maxDataLabel: string;
@@ -334,8 +338,10 @@ export class PivotFacet extends BaseFacet {
                 cellData[EXTRA_FIELD],
               )?.(valueData) ?? valueData;
             const cellLabel = `${formattedValue}`;
-            const cellLabelWidth =
-              this.spreadsheet.measureTextWidthRoughly(cellLabel);
+            const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
+              cellLabel,
+              dataCellTextStyle,
+            );
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
@@ -345,7 +351,6 @@ export class PivotFacet extends BaseFacet {
         }
       }
 
-      // compare result
       const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
@@ -354,10 +359,20 @@ export class PivotFacet extends BaseFacet {
         'Max Label In Col:',
         col.field,
         maxLabel,
+        maxDataLabelWidth,
       );
 
+      // 取列头/数值字体最大的文本宽度 https://github.com/antvis/S2/issues/2385
+      const maxTextWidth = this.spreadsheet.measureTextWidth(maxLabel, {
+        ...colCellTextStyle,
+        fontSize: Math.max(
+          dataCellTextStyle.fontSize,
+          colCellTextStyle.fontSize,
+        ),
+      });
+
       return (
-        this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
+        maxTextWidth +
         colCellStyle.padding?.left +
         colCellStyle.padding?.right +
         appendedWidth
@@ -745,8 +760,11 @@ export class PivotFacet extends BaseFacet {
       .join('/');
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell;
-    // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
+    // 初始化角头时，保证其在树形模式下不换行
+    // 给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
+    // 额外增加 1，当内容和容器宽度恰好相等时会出现换行
     const maxLabelWidth =
+      1 +
       this.spreadsheet.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
       cornerIconStyle.size * 2 +
       cornerIconStyle.margin?.left +

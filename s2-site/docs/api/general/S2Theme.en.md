@@ -132,6 +132,7 @@ Function description: Split line style
 | showShadow                   | Whether to display the outer shadow of the dividing line (in the case of frozen rows and columns) | `boolean`                         | `true`                                                |          |
 | shadowWidth                  | shadow width                                                                                      | `number`                          | 10                                                    |          |
 | shadowColors                 | `left` : change the left color linearly `right` : change the color of the right side linearly     | `{left: string,` `right: string}` | `{left: 'rgba(0,0,0,0.1)',` `right: 'rgba(0,0,0,0)'}` |          |
+| borderDash                 | Split line dash | `number[]` | `[]` |      |
 
 #### TextTheme
 
@@ -171,6 +172,7 @@ Function description: Cell general theme
 | interactionState             | cell interaction state                                                  | [InteractionStateTheme](#interactionstatetheme) | -        |          |
 | miniBarChartHeight           | In-Cell Conditional Formatting - Sparkline Bar Height                   | `number`                                        | 12       |          |
 | miniBarChartFillColor        | In-cell conditional formatting - default fill color for mini bar charts | `string`                                        | -        |          |
+| borderDash        | cell border dash | `number[]`                                        | `[]`      |      |
 
 #### IconTheme
 

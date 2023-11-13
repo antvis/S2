@@ -5,12 +5,20 @@
   },
   "demos": [
     {
+      "filename": "adaptive.ts",
+      "title": {
+        "zh": "行列等宽布局 (默认)",
+        "en": "Adaptive (Default)"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cEkDC%26g%24xj/df31b66d-4a76-4e69-be5a-f467af2d337d.png"
+    },
+    {
       "filename": "compact.ts",
       "title": {
         "zh": "紧凑布局",
         "en": "Compact"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/yzBFZaMMLH/55a2d580-1121-468e-9d0b-25f3e9ae25df.png"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NN_lTpAqhQkAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "colAdaptive.ts",
