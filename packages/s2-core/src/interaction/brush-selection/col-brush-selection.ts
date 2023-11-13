@@ -102,7 +102,7 @@ export class ColBrushSelection extends BaseBrushSelection {
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
+      stateName: InteractionStateName.BRUSH_SELECTED,
       onUpdateCells: this.onUpdateCells,
     });
 
