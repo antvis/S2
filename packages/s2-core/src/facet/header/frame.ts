@@ -65,6 +65,7 @@ export class Frame extends Group {
         stroke: splitLine.verticalBorderColor,
         lineWidth: splitLine.verticalBorderWidth,
         opacity: splitLine.verticalBorderColorOpacity,
+        lineDash: splitLine.borderDash,
       },
     });
   }
@@ -94,6 +95,7 @@ export class Frame extends Group {
         stroke: splitLine.horizontalBorderColor,
         lineWidth: splitLine.horizontalBorderWidth,
         opacity: splitLine.horizontalBorderColorOpacity,
+        lineDash: splitLine.borderDash,
       },
     });
   }

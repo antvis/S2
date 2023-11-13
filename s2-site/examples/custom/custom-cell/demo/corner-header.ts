@@ -8,13 +8,17 @@ import { get } from 'lodash';
  */
 class CustomCornerHeader extends Group {
   node;
+
   backgroundShape;
+
   textShape;
+
   constructor(node) {
     super({});
     this.node = node;
     this.initCornerHeader();
   }
+
   initCornerHeader() {
     this.initBg();
     this.initText();
@@ -77,6 +81,5 @@ fetch(
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    // 使用
     s2.render();
   });

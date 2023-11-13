@@ -67,6 +67,8 @@ import {
   tableSheetDataCfg,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
+  s2ThemeConfig,
+  pivotSheetDataCfgForCompactMode,
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
@@ -167,9 +169,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] =
     React.useState<SheetComponentsProps['showPagination']>(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'default',
-  });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>(s2ThemeConfig);
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
@@ -320,6 +320,27 @@ function MainLayout() {
     );
   }, [tableSheetColumnType]);
 
+  useUpdateEffect(() => {
+    switch (options.style.layoutWidthType) {
+      case 'compact':
+        updateOptions({
+          style: {
+            cellCfg: {
+              width: 200,
+            },
+          },
+        });
+        setDataCfg(pivotSheetDataCfgForCompactMode);
+        break;
+
+      default:
+        updateOptions({
+          style: DEFAULT_STYLE,
+        });
+        setDataCfg(pivotSheetDataCfg);
+    }
+  }, [options.style.layoutWidthType]);
+
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(
@@ -437,7 +458,7 @@ function MainLayout() {
                 <Tooltip title="布局类型">
                   <Radio.Group
                     onChange={onLayoutWidthTypeChange}
-                    defaultValue="adaptive"
+                    defaultValue={options.style.layoutWidthType}
                   >
                     <Radio.Button value="adaptive">行列等宽</Radio.Button>
                     <Radio.Button value="colAdaptive">列等宽</Radio.Button>
@@ -445,7 +466,10 @@ function MainLayout() {
                   </Radio.Group>
                 </Tooltip>
                 <Tooltip title="主题">
-                  <Radio.Group onChange={onThemeChange} defaultValue="default">
+                  <Radio.Group
+                    onChange={onThemeChange}
+                    defaultValue={themeCfg.name}
+                  >
                     <Radio.Button value="default">默认</Radio.Button>
                     <Radio.Button value="gray">简约灰</Radio.Button>
                     <Radio.Button value="colorful">多彩蓝</Radio.Button>

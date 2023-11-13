@@ -47,6 +47,8 @@ S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图�
 | fontSize      | `number`          | 文字大小                                                                                                     |
 | fontFamily    | `string`          | 文字字体                                                                                                     |
 | fontWeight    | `number`          | 字体粗细                                                                                                     |
+| fontStyle    | `normal \| italic \| oblique`           | 字体样式                                                                                                     |
+| fontVariant    | `normal \| small-caps \| string`           | 字体变体                                                                                                     |
 | lineHeight    | `number`          | 文字的行高                                                                                                   |
 | textAlign     | `center` \| `left` \| `right` \| `start` \| `end`          | 设置文本内容的对齐方式 |
 | textBaseline  | `top` \| `middle` \| `bottom` \| `alphabetic` \| `hanging`          | 设置在绘制文本时使用的当前文本基线|
