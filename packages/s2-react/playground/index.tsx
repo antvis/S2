@@ -3,13 +3,13 @@
 /* eslint-disable no-console */
 import {
   BaseTooltip,
-  DEFAULT_STYLE,
-  Node,
-  SpreadSheet,
   customMerge,
+  DEFAULT_STYLE,
   generatePalette,
   getLang,
   getPalette,
+  Node,
+  SpreadSheet,
   type DataType,
   type HeaderActionIconProps,
   type InteractionCellHighlight,
@@ -70,7 +70,6 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
-
 class ResetTooltip extends BaseTooltip {
   renderContent() {
     ReactDOM.render(<>Reset Tooltip</>, this.container);
@@ -104,15 +103,11 @@ const partDrillDown: PartDrillDown = {
   fetchData: (meta, drillFields) =>
     new Promise<PartDrillDownInfo>((resolve) => {
       // 弹窗 -> 选择 -> 请求数据
-      const preDrillDownfield =
-        meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowDatas = dataSet
-        .getMultiData(meta.query, true, true, [preDrillDownfield])
-        .filter(
-          (item) => item.sub_type && item.type && item[preDrillDownfield],
-        );
+        .getMultiData(meta.query)
+        .filter((item) => item.sub_type && item.type);
       console.log(rowDatas);
       const drillDownData: DataType[] = [];
       forEach(rowDatas, (data: DataType) => {
@@ -328,7 +323,6 @@ function MainLayout() {
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(
-    {},
     {
       pagination: showPagination && {
         pageSize,
