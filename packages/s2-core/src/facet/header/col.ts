@@ -2,7 +2,7 @@ import type { IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
 import { ColCell } from '../../cell';
 import {
-  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
@@ -28,7 +28,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     super(cfg);
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
-      zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+      zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
     });
   }
 
