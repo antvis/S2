@@ -60,7 +60,7 @@ export abstract class FrozenFacet extends BaseFacet {
     },
   };
 
-  public panelScrollGroupIndexes = [];
+  public panelScrollGroupIndexes: Indexes = [];
 
   public constructor(cfg: SpreadSheetFacetCfg) {
     super(cfg);

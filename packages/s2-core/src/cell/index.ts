@@ -9,6 +9,8 @@ import { TableColCell } from './table-col-cell';
 import { TableCornerCell } from './table-corner-cell';
 import { TableDataCell } from './table-data-cell';
 import { TableSeriesCell } from './table-series-cell';
+import { FrozenRowCell } from './frozen-row-cell';
+import { SeriesNumberCell } from './series-number-cell';
 
 export {
   TableCornerCell,
@@ -22,4 +24,6 @@ export {
   CornerCell,
   BaseCell,
   HeaderCell,
+  FrozenRowCell,
+  SeriesNumberCell,
 };

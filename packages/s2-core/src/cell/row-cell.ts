@@ -168,8 +168,7 @@ export class RowCell extends HeaderCell {
         if (!isCollapsed) {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
           // 可视窗口高度
-          const viewportHeight =
-            this.spreadsheet.facet.panelBBox.viewportHeight || 0;
+          const viewportHeight = this.headerConfig.viewportHeight || 0;
           // 被折叠项的高度
           const deleteHeight = getAllChildrenNodeHeight(this.meta);
           // 折叠后真实高度
@@ -282,7 +281,8 @@ export class RowCell extends HeaderCell {
     } = this.headerConfig;
 
     const resizeAreaBBox = {
-      x,
+      // fix: When horizontally scrolling and closing the entire frozen header, the resize area is being removed prematurely.
+      x: x + seriesNumberWidth,
       y: y + height - resizeStyle.size / 2,
       width,
       height: resizeStyle.size,
