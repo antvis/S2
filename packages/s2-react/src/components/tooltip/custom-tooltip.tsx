@@ -55,12 +55,12 @@ export class CustomTooltip extends BaseTooltip<
     } as TooltipRenderProps;
 
     if (showOptions?.options?.forceRender) {
-      this.unmount();
+      this.forceClearContent();
     }
 
     const Content = this.isMobileDevice() ? (
       <Drawer
-        className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
+        rootClassName={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
         title={cell?.getActualText()}
         open={this.visible}
         closeIcon={<LeftOutlined />}
@@ -98,6 +98,16 @@ export class CustomTooltip extends BaseTooltip<
   destroy() {
     this.unmount();
     super.destroy();
+  }
+
+  private forceClearContent() {
+    if (this.isLegacyReactVersion) {
+      this.unmount();
+
+      return;
+    }
+
+    this.root?.render(null);
   }
 
   private unmount() {

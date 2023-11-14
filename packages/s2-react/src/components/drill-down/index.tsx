@@ -1,5 +1,5 @@
 import React, { type ReactNode, useEffect, useState } from 'react';
-import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
+import { Button, Empty, Input, Menu, type MenuProps } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
@@ -11,6 +11,7 @@ import {
   SearchIcon,
   TextIcon,
 } from '../icons/index';
+import { ConfigProvider } from '../config-provider';
 
 import '@antv/s2-shared/src/styles/drill-down.less';
 
@@ -91,6 +92,16 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     setOptions(getOptions());
   }, [disabledFields]);
 
+  const menusItems: MenuProps['items'] = options.map((option) => {
+    return {
+      key: option.value,
+      label: option.name,
+      disabled: option.disabled,
+      className: `${DRILL_DOWN_PRE_CLASS}-menu-item`,
+      icon: option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type!],
+    };
+  });
+
   return (
     <ConfigProvider>
       <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
@@ -123,20 +134,8 @@ export const DrillDown: React.FC<DrillDownProps> = ({
           className={`${DRILL_DOWN_PRE_CLASS}-menu`}
           selectedKeys={drillFields}
           onSelect={handleSelect}
-        >
-          {options.map((option) => (
-            <Menu.Item
-              key={option.value}
-              disabled={option.disabled}
-              className={`${DRILL_DOWN_PRE_CLASS}-menu-item`}
-              icon={
-                option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type!]
-              }
-            >
-              {option.name}
-            </Menu.Item>
-          ))}
-        </Menu>
+          items={menusItems}
+        />
       </div>
     </ConfigProvider>
   );

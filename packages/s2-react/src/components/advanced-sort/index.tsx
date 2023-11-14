@@ -20,7 +20,6 @@ import {
   uniq,
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
-
 import {
   ADVANCED_SORT_PRE_CLS,
   getSortRuleOptions,
@@ -297,6 +296,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           <div
             className={`${ADVANCED_SORT_PRE_CLS}-dimension-item`}
             key={item.field}
+            title={item.name}
             onClick={() => {
               handleDimension(item);
             }}
@@ -432,7 +432,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       </Button>
       <Modal
         title={text || i18n('高级排序')}
-        visible={isSortVisible}
+        open={isSortVisible}
         onOk={onFinish}
         onCancel={handleModal}
         okText={i18n('确定')}
@@ -447,7 +447,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       </Modal>
       <Modal
         title={i18n('手动排序')}
-        visible={isCustomVisible}
+        open={isCustomVisible}
         onOk={customSort}
         onCancel={customCancel}
         okText={i18n('确定')}

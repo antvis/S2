@@ -1,15 +1,15 @@
 import {
-  copyData as getSheetData,
-  copyToClipboard,
-  download,
+  AsyncRequestThreshold,
+  NewTab,
   S2_PREFIX_CLS,
   SpreadSheet,
-  i18n,
-  NewTab,
-  AsyncRequestThreshold,
   asyncGetAllPlainData,
+  copyToClipboard,
+  download,
+  copyData as getSheetData,
+  i18n,
 } from '@antv/s2';
-import { Dropdown, Menu, message, type DropDownProps } from 'antd';
+import { Dropdown, message, type DropDownProps, Button } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import { DotIcon } from '../icons';
@@ -55,8 +55,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
-  const isAsyncRequest =
-    true || sheet?.dataCfg?.data?.length >= AsyncRequestThreshold;
+  const isAsyncRequest = sheet?.dataCfg?.data?.length >= AsyncRequestThreshold;
 
   const copyData = async (isFormat: boolean) => {
     const data = isAsyncRequest
@@ -97,38 +96,46 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     }
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="copyOriginal" onClick={() => copyData(false)}>
-        {copyOriginalText}
-      </Menu.Item>
-      <Menu.Item key="copyFormat" onClick={() => copyData(true)}>
-        {copyFormatText}
-      </Menu.Item>
-      <Menu.Item key="downloadOriginal" onClick={() => downloadData(false)}>
-        {downloadOriginalText}
-      </Menu.Item>
-      <Menu.Item key="downloadFormat" onClick={() => downloadData(true)}>
-        {downloadFormatText}
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <Dropdown
-      overlay={menu}
+      menu={{
+        items: [
+          {
+            key: 'copyOriginal',
+            label: copyOriginalText,
+            onClick: () => {
+              copyData(false);
+            },
+          },
+          {
+            key: 'copyFormat',
+            label: copyFormatText,
+            onClick: () => {
+              copyData(true);
+            },
+          },
+          {
+            key: 'downloadOriginal',
+            label: downloadOriginalText,
+            onClick: () => {
+              downloadData(false);
+            },
+          },
+          {
+            key: 'downloadFormat',
+            label: downloadFormatText,
+            onClick: () => {
+              downloadData(true);
+            },
+          },
+        ],
+      }}
       trigger={['click']}
       className={cx(PRE_CLASS, className)}
       {...restProps}
       {...dropdown}
     >
-      <a
-        className="ant-dropdown-link"
-        key="export"
-        onClick={(e) => e.preventDefault()}
-      >
-        {icon || <DotIcon />}
-      </a>
+      <Button type="text">{icon || <DotIcon />}</Button>
     </Dropdown>
   );
 });

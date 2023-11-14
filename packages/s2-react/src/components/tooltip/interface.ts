@@ -3,6 +3,7 @@ import type {
   TooltipShowOptions,
   TooltipOperatorMenu as S2TooltipOperatorMenu,
 } from '@antv/s2';
+import type { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 export interface TooltipRenderProps<
   T = React.ReactNode,
@@ -21,7 +22,8 @@ export type TooltipInfosProps = {
 export type TooltipOperatorMenu = S2TooltipOperatorMenu<
   React.ReactNode,
   React.ReactNode
->;
+> &
+  ItemType;
 
 export type TooltipIconProps = {
   icon: React.ReactNode;

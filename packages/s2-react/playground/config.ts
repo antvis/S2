@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   CellType,
   ResizeType,
@@ -255,12 +256,29 @@ export const s2Options: SheetComponentOptions = {
       hiddenColumns: true,
       menus: [
         {
+          key: 'a-1',
+          label: '操作-1',
+          icon: 'Plus',
+          onClick: (cell) => {
+            console.log('操作-1', cell);
+          },
+          children: [
+            {
+              key: 'a-2',
+              label: '操作-2',
+              icon: 'Minus',
+              onClick: (cell) => {
+                console.log('操作-2', cell);
+              },
+            },
+          ],
+        },
+        {
           key: 'trend',
-          text: '趋势',
+          label: '趋势',
           icon: 'Trend',
           visible: (cell) => cell.cellType === CellType.DATA_CELL,
           onClick: (cell) => {
-            // eslint-disable-next-line no-console
             console.log('趋势图 icon 点击: ', cell);
           },
         },

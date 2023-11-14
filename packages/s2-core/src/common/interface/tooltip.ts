@@ -17,7 +17,7 @@ export interface TooltipOperatorMenu<Icon = Element | string, Text = string> {
   /** 自定义 icon */
   icon?: Icon;
   /** 名称 */
-  text?: Text;
+  label?: Text;
   /** 点击回调 */
   onClick?: (cell: S2CellType) => void;
   /** 是否显示 */

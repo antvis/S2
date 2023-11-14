@@ -18,7 +18,7 @@ import {
   type SheetComponentsProps,
 } from '@/components';
 
-import 'antd/dist/antd.min.css';
+// import 'antd/dist/antd.min.css';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 

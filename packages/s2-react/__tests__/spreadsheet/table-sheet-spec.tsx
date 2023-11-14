@@ -13,7 +13,9 @@ import {
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import { Space, Switch, message } from 'antd';
-import 'antd/dist/antd.min.css';
+
+// import 'antd/dist/antd.min.css';
+
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import { act } from 'react-dom/test-utils';

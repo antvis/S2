@@ -37,7 +37,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     return (
       <TooltipOperator
         {...operator}
-        onClick={operator.onClick as (params: { key: string }) => void}
+        onClick={operator.onClick}
         onlyShowOperator={onlyShowOperator!}
         cell={cell!}
       />

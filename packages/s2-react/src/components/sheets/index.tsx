@@ -1,10 +1,7 @@
 import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
-import zhCN from 'antd/es/locale/zh_CN';
-import enUS from 'antd/es/locale/en_US';
-import { getLang } from '@antv/s2';
-import { ConfigProvider } from 'antd';
 import { SpreadSheetContext } from '../../context/SpreadSheetContext';
+import { ConfigProvider } from '../config-provider';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
@@ -51,11 +48,9 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
       }
     }, [sheetType, sheetProps]);
 
-    const locale = getLang() === 'zh_CN' ? zhCN : enUS;
-
     return (
       <SpreadSheetContext.Provider value={s2Instance!}>
-        <ConfigProvider locale={locale}>{CurrentSheet}</ConfigProvider>
+        <ConfigProvider>{CurrentSheet}</ConfigProvider>
       </SpreadSheetContext.Provider>
     );
   },
