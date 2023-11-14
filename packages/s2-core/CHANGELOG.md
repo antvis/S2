@@ -1,3 +1,10 @@
+# [@antv/s2-v1.52.0](https://github.com/antvis/S2/compare/@antv/s2-v1.51.2...@antv/s2-v1.52.0) (2023-11-10)
+
+
+### Features
+
+* 支持透视表明细表单元格虚线&分割线虚线([#2400](https://github.com/antvis/S2/issues/2400)) ([#2401](https://github.com/antvis/S2/issues/2401)) ([432c0c7](https://github.com/antvis/S2/commit/432c0c766e993b2124f3cc372c0d4776fed690d1))
+
 # [@antv/s2-v1.51.2](https://github.com/antvis/S2/compare/@antv/s2-v1.51.1...@antv/s2-v1.51.2) (2023-10-27)
 
 
