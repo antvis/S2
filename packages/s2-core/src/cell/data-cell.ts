@@ -393,7 +393,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-  // dataCell根据state 改变当前样式，
+  // dataCell 根据 state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);

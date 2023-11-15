@@ -415,6 +415,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:
+      case InteractionStateName.BRUSH_SELECTED:
         this.handleSelect(cells, stateInfo?.nodes);
         break;
       case InteractionStateName.HOVER_FOCUS:

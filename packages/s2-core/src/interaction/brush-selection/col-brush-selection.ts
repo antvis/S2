@@ -96,16 +96,14 @@ export class ColBrushSelection extends BaseBrushSelection {
     );
   }
 
-  // 最终刷选的cell
+  // 最终刷选的 cell
   protected updateSelectedCells() {
     const { interaction } = this.spreadsheet;
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
-      },
+      stateName: InteractionStateName.BRUSH_SELECTED,
+      onUpdateCells: this.onUpdateCells,
     });
 
     this.spreadsheet.emit(
