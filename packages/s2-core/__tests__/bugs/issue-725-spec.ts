@@ -45,8 +45,8 @@ describe('Group Sort When Have Same Child Measure', () => {
       '家具产品',
     ]);
     expect(dataSet.getDimensionValues('type', { city: '抚顺' })).toEqual([
-      '办公用品',
       '家具产品',
+      '办公用品',
     ]);
   });
 });
