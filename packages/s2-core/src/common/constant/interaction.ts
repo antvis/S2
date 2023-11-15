@@ -18,6 +18,7 @@ export enum InteractionName {
 export enum InteractionStateName {
   ALL_SELECTED = 'allSelected',
   SELECTED = 'selected',
+  BRUSH_SELECTED = 'brushSelected',
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
