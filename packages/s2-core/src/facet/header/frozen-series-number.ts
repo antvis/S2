@@ -1,4 +1,4 @@
-import { RowCell, SeriesNumberCell } from '@antv/s2';
+import { RowCell, SeriesNumberCell } from '../../cell';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
