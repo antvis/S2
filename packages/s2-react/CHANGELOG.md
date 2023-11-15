@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.44.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.1...@antv/s2-react-v1.44.2) (2023-11-10)
+
+
+### Bug Fixes
+
+* 修复趋势分析表自定义列头 tooltip 后错误的使用行头的 tooltip ([#2399](https://github.com/antvis/S2/issues/2399)) ([0310c2f](https://github.com/antvis/S2/commit/0310c2f7f6ea054a79f0fc71b972ee1d3dd1c649))
+
 # [@antv/s2-react-v1.44.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.0...@antv/s2-react-v1.44.1) (2023-10-27)
 
 
