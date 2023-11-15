@@ -301,7 +301,7 @@ export const getSortByMeasureValues = (
   });
 
   const totalDataList = dataList.filter((dataItem) => {
-    const dataItemKeys = new Set(keys(dataItem[ORIGIN_FIELD]));
+    const dataItemKeys = new Set(Object.keys(dataItem[ORIGIN_FIELD]));
     if (!dataItemKeys.has(sortFieldId)) {
       // 若排序数据中都不含被排序字段，则过滤
       // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
