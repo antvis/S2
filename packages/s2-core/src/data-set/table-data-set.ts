@@ -150,7 +150,7 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getDimensionValues(field: string, query?: Query): string[] {
+  public getDimensionValues(): string[] {
     return [];
   }
 

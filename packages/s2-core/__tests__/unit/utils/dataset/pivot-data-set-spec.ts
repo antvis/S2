@@ -83,26 +83,39 @@ describe('pivot-data-set utils test', () => {
         {
           childField: 'city',
           level: 1,
+          id: '四川省',
           children: new Map([
             [
               '成都市',
               {
                 childField: 'type',
                 level: 1,
+                id: '四川省[&]成都市',
                 children: new Map([
                   [
                     '家具',
                     {
                       childField: 'subType',
                       level: 1,
+                      id: '四川省[&]成都市[&]家具',
                       children: new Map([
                         [
                           '桌子',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            id: '四川省[&]成都市[&]家具[&]桌子',
+                            level: 1,
+                            children: new Map(),
+                          },
                         ],
                         [
                           '沙发',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '四川省[&]成都市[&]家具[&]沙发',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -112,14 +125,25 @@ describe('pivot-data-set utils test', () => {
                     {
                       childField: 'subType',
                       level: 2,
+                      id: '四川省[&]成都市[&]办公用品',
                       children: new Map([
                         [
                           '笔',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '四川省[&]成都市[&]办公用品[&]笔',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '纸张',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '四川省[&]成都市[&]办公用品[&]纸张',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -132,20 +156,33 @@ describe('pivot-data-set utils test', () => {
               {
                 childField: 'type',
                 level: 2,
+                id: '四川省[&]绵阳市',
                 children: new Map([
                   [
                     '家具',
                     {
                       childField: 'subType',
                       level: 1,
+                      id: '四川省[&]绵阳市[&]家具',
                       children: new Map([
                         [
                           '桌子',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '四川省[&]绵阳市[&]家具[&]桌子',
+
+                            children: new Map(),
+                          },
                         ],
                         [
                           '沙发',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '四川省[&]绵阳市[&]家具[&]沙发',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -155,14 +192,26 @@ describe('pivot-data-set utils test', () => {
                     {
                       childField: 'subType',
                       level: 2,
+                      id: '四川省[&]绵阳市[&]办公用品',
                       children: new Map([
                         [
                           '笔',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+
+                            id: '四川省[&]绵阳市[&]办公用品[&]笔',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '纸张',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '四川省[&]绵阳市[&]办公用品[&]纸张',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -178,26 +227,39 @@ describe('pivot-data-set utils test', () => {
         {
           childField: 'city',
           level: 2,
+          id: '浙江省',
           children: new Map([
             [
               '杭州市',
               {
                 childField: 'type',
                 level: 1,
+                id: '浙江省[&]杭州市',
                 children: new Map([
                   [
                     '家具',
                     {
                       childField: 'subType',
                       level: 1,
+                      id: '浙江省[&]杭州市[&]家具',
                       children: new Map([
                         [
                           '桌子',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '浙江省[&]杭州市[&]家具[&]桌子',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '沙发',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '浙江省[&]杭州市[&]家具[沙发]桌子',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -207,14 +269,25 @@ describe('pivot-data-set utils test', () => {
                     {
                       childField: 'subType',
                       level: 2,
+                      id: '浙江省[&]杭州市[&]办公用品',
                       children: new Map([
                         [
                           '笔',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '浙江省[&]杭州市[&]办公用品[&]笔',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '纸张',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '浙江省[&]杭州市[&]办公用品[&]纸张',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -227,20 +300,32 @@ describe('pivot-data-set utils test', () => {
               {
                 childField: 'type',
                 level: 2,
+                id: '浙江省[&]舟山市',
                 children: new Map([
                   [
                     '家具',
                     {
                       childField: 'subType',
                       level: 1,
+                      id: '浙江省[&]舟山市[&]家具',
                       children: new Map([
                         [
                           '桌子',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '浙江省[&]舟山市[&]家具[&]桌子',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '沙发',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '浙江省[&]舟山市[&]家具[&]沙发',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -250,14 +335,25 @@ describe('pivot-data-set utils test', () => {
                     {
                       childField: 'subType',
                       level: 2,
+                      id: '浙江省[&]舟山市[&]办公用品',
                       children: new Map([
                         [
                           '笔',
-                          { childFiled: null, level: 1, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 1,
+                            id: '浙江省[&]舟山市[&]办公用品[&]笔',
+                            children: new Map(),
+                          },
                         ],
                         [
                           '纸张',
-                          { childFiled: null, level: 2, children: new Map() },
+                          {
+                            childFiled: null,
+                            level: 2,
+                            id: '浙江省[&]舟山市[&]办公用品[&]纸张',
+                            children: new Map(),
+                          },
                         ],
                       ]),
                     },
@@ -268,7 +364,7 @@ describe('pivot-data-set utils test', () => {
           ]),
         },
       ],
-    ]);
+    ]) as unknown as PivotMeta;
   });
 
   test(`should return false if doesn't exist total group`, () => {
@@ -306,61 +402,74 @@ describe('pivot-data-set utils test', () => {
 
   test(`should return flatten dimension values if doesn't exist total group`, () => {
     expect(
-      flattenDimensionValues(
+      flattenDimensionValues({
         fields,
-        ['四川省', '成都市', '办公用品', '纸张'],
+        pivotMeta,
         sortedDimensionValues,
-      ),
+        dimensionValues: ['四川省', '成都市', '办公用品', '纸张'],
+      }),
     ).toEqual([['四川省', '成都市', '办公用品', '纸张']]);
 
     expect(
-      flattenDimensionValues(
+      flattenDimensionValues({
         fields,
-        ['四川省', '成都市', MULTI_VALUE, MULTI_VALUE],
+        pivotMeta,
         sortedDimensionValues,
-      ),
+        dimensionValues: ['四川省', '成都市', MULTI_VALUE, MULTI_VALUE],
+      }),
     ).toEqual([['四川省', '成都市', MULTI_VALUE, MULTI_VALUE]]);
   });
 
   test(`should return flatten dimension values if exist total group`, () => {
-    expect(
-      flattenDimensionValues(
-        fields,
-        [MULTI_VALUE, '成都市', MULTI_VALUE, MULTI_VALUE],
-        sortedDimensionValues,
-      ),
-    ).toEqual([['四川省', '成都市', MULTI_VALUE, MULTI_VALUE]]);
-
-    expect(
-      flattenDimensionValues(
-        fields,
-        [MULTI_VALUE, MULTI_VALUE, '办公用品', MULTI_VALUE],
-        sortedDimensionValues,
-      ),
-    ).toEqual([
-      ['四川省', '成都市', '办公用品', MULTI_VALUE],
-      ['四川省', '绵阳市', '办公用品', MULTI_VALUE],
-      ['浙江省', '杭州市', '办公用品', MULTI_VALUE],
-      ['浙江省', '舟山市', '办公用品', MULTI_VALUE],
+    const result1 = flattenDimensionValues({
+      fields,
+      pivotMeta,
+      sortedDimensionValues,
+      dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, MULTI_VALUE],
+    });
+    expect(result1).toEqual([
+      ['四川省', '成都市', '家具', '桌子'],
+      ['四川省', '成都市', '家具', '沙发'],
+      ['四川省', '成都市', '办公用品', '笔'],
+      ['四川省', '成都市', '办公用品', '纸张'],
     ]);
 
-    expect(
-      flattenDimensionValues(
-        fields,
-        ['四川省', MULTI_VALUE, '办公用品', MULTI_VALUE],
-        sortedDimensionValues,
-      ),
-    ).toEqual([
-      ['四川省', '成都市', '办公用品', MULTI_VALUE],
-      ['四川省', '绵阳市', '办公用品', MULTI_VALUE],
+    const result2 = flattenDimensionValues({
+      fields,
+      pivotMeta,
+      sortedDimensionValues,
+      dimensionValues: [MULTI_VALUE, MULTI_VALUE, '办公用品', MULTI_VALUE],
+    });
+    expect(result2).toEqual([
+      ['四川省', '成都市', '办公用品', '笔'],
+      ['四川省', '成都市', '办公用品', '纸张'],
+      ['四川省', '绵阳市', '办公用品', '笔'],
+      ['四川省', '绵阳市', '办公用品', '纸张'],
+      ['浙江省', '杭州市', '办公用品', '笔'],
+      ['浙江省', '杭州市', '办公用品', '纸张'],
+      ['浙江省', '舟山市', '办公用品', '笔'],
+      ['浙江省', '舟山市', '办公用品', '纸张'],
     ]);
 
-    expect(
-      flattenDimensionValues(
-        fields,
-        [MULTI_VALUE, '成都市', MULTI_VALUE, '纸张'],
-        sortedDimensionValues,
-      ),
-    ).toEqual([['四川省', '成都市', '办公用品', '纸张']]);
+    const result3 = flattenDimensionValues({
+      fields,
+      pivotMeta,
+      sortedDimensionValues,
+      dimensionValues: ['四川省', MULTI_VALUE, '办公用品', MULTI_VALUE],
+    });
+    expect(result3).toEqual([
+      ['四川省', '成都市', '办公用品', '笔'],
+      ['四川省', '成都市', '办公用品', '纸张'],
+      ['四川省', '绵阳市', '办公用品', '笔'],
+      ['四川省', '绵阳市', '办公用品', '纸张'],
+    ]);
+
+    const result4 = flattenDimensionValues({
+      fields,
+      pivotMeta,
+      sortedDimensionValues,
+      dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, '纸张'],
+    });
+    expect(result4).toEqual([['四川省', '成都市', '办公用品', '纸张']]);
   });
 });

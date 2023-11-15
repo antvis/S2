@@ -8,10 +8,12 @@ export type DataType = Record<string, any>;
 export type Query = Record<string, any>;
 
 export type PivotMetaValue = {
-  // field level index
+  // 当前维度结合父级维度生成的完整 id 信息
+  id: string;
+  // 当前维度
+  value: string;
   level: number;
   children: PivotMeta;
-  // field name
   childField?: string;
 };
 
@@ -34,8 +36,8 @@ export type DataPathParams = {
     careRepeated: boolean;
     // 维度 id，如 city
     dimension: string;
-    // 维度数组 ['四川省', '成都市']
-    dimensionPath: string[];
+    // 完整维度信息：'四川省[&]成都市'
+    dimensionPath: string;
   }) => void;
 };
 
@@ -74,6 +76,13 @@ export interface SortActionParams {
   measureValues?: string[] | DataType[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
+}
+
+export interface SortPivotMetaParams {
+  pivotMeta: PivotMeta;
+  dimensions: string[];
+  sortedDimensionValues: string[];
+  sortFieldId: string;
 }
 
 export interface MultiDataParams {

@@ -3,13 +3,16 @@ import {
   flatMap,
   forEach,
   get,
+  indexOf,
   intersection,
   isArray,
   isEmpty,
   isNull,
   last,
   set,
+  sortBy,
 } from 'lodash';
+import type { PickEssential } from '../../common/interface/utils';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
@@ -24,12 +27,14 @@ import type {
   DataType,
   FlattingIndexesData,
   PivotMeta,
+  PivotMetaValue,
   SortedDimensionValues,
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
+import { generateId } from '../layout';
 
-export function shouldQueryMultiData(pathValue: string | number) {
+export function isMultiValue(pathValue: string | number) {
   return pathValue === MULTI_VALUE;
 }
 
@@ -155,11 +160,13 @@ export function getDataPath(params: DataPathParams) {
       .join(ID_SEPARATOR);
   };
 
-  const appendValues = () => {
+  const appendValues = (parent: string) => {
     const map = new Map();
-    valueFields?.forEach((v, idx) => {
-      map.set(v, {
-        level: idx,
+    valueFields?.forEach((value, level) => {
+      map.set(value, {
+        id: generateId(parent, value),
+        value,
+        level,
         children: new Map(),
       });
     });
@@ -190,21 +197,29 @@ export function getDataPath(params: DataPathParams) {
         } else {
           level = currentMeta.size + 1;
         }
+
+        const id = dimensionValues
+          .slice(0, i + 1)
+          .map((it) => String(it))
+          .join(ID_SEPARATOR);
+
         currentMeta.set(value, {
+          id,
+          value,
           level,
           children:
-            dimensions[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
+            dimensions[i + 1] === EXTRA_FIELD ? appendValues(id) : new Map(),
         });
 
         onFirstCreate?.({
           dimension: dimensions?.[i],
-          dimensionPath: dimensionValues.slice(0, i + 1),
+          dimensionPath: id,
           careRepeated,
         });
       }
       const meta = currentMeta?.get(value);
 
-      path.push(value === MULTI_VALUE ? value : meta?.level);
+      path.push(isMultiValue(value) ? value : meta?.level);
 
       if (meta) {
         if (isFirstCreate && meta.childField !== dimensions?.[i + 1]) {
@@ -268,11 +283,7 @@ export function transformIndexesData(params: Param) {
     (
       sortedDimensionValues[dimension] ||
       (sortedDimensionValues[dimension] = [])
-    ).push(
-      // 拼接维度路径
-      // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
-      dimensionPath.map((it) => `${it}`).join(ID_SEPARATOR),
-    );
+    ).push(dimensionPath);
   };
 
   data.forEach((item) => {
@@ -375,7 +386,7 @@ export function existDimensionTotalGroup(path: string[]) {
   let multiIdx = null;
   for (let i = 0; i < path.length; i++) {
     const element = path[i];
-    if (element === MULTI_VALUE) {
+    if (isMultiValue(element)) {
       multiIdx = i;
     } else if (!isNull(multiIdx) && multiIdx < i) {
       return true;
@@ -384,101 +395,120 @@ export function existDimensionTotalGroup(path: string[]) {
   return false;
 }
 
-export function satisfyDimensionValues(
-  dimensionValues: string[],
-  sortedDimensionValue: string,
-  fieldIdx: number,
-  queryType: QueryDataType,
-) {
-  return sortedDimensionValue.split(ID_SEPARATOR).every((value, idx) => {
-    // 只检查截止到目标 field 为止的内容
-    if (idx > fieldIdx) {
-      return true;
+export function getSatisfiedPivotMetaValues(params: {
+  pivotMeta: PivotMeta;
+  dimensionValues: string[];
+  fieldIdx: number;
+  queryType: QueryDataType;
+  fields: string[];
+  sortedDimensionValues: SortedDimensionValues;
+}) {
+  const {
+    pivotMeta,
+    dimensionValues,
+    fieldIdx,
+    queryType,
+    fields,
+    sortedDimensionValues,
+  } = params;
+  const rootContainer = {
+    children: pivotMeta,
+  } as PivotMetaValue;
+
+  let metaValueList = [rootContainer];
+
+  function flattenMetaValue(list: PivotMetaValue[], field: string) {
+    const allValues = flatMap(list, (metaValue) => {
+      const values = [...metaValue.children.values()];
+      return queryType === QueryDataType.All
+        ? values
+        : values.filter((v) => v.value !== TOTAL_VALUE);
+    });
+    if (list.length > 1) {
+      // 从不同父维度中获取的子维度需要再排一次，比如province => city 按照字母倒序，那么在获取了所有 province 的 city 后需要再排一次
+      const sortedDimensionValue = sortedDimensionValues[field] ?? [];
+      return sortBy(allValues, (item) =>
+        indexOf(sortedDimensionValue, item.id),
+      );
     }
+    return allValues;
+  }
 
-    const dimension = dimensionValues[idx];
-
-    if (dimension === MULTI_VALUE) {
-      if (queryType === QueryDataType.All) {
-        return true;
-      }
-      if (queryType === QueryDataType.DetailOnly && value !== TOTAL_VALUE) {
-        return true;
-      }
-      return false;
+  for (let i = 0; i <= fieldIdx; i++) {
+    const dimensionValue = dimensionValues[i];
+    const field = fields[i];
+    if (!dimensionValue || dimensionValue === MULTI_VALUE) {
+      metaValueList = flattenMetaValue(metaValueList, field);
+    } else {
+      metaValueList = metaValueList
+        .map((v) => v.children.get(dimensionValue))
+        .filter(Boolean);
     }
+  }
 
-    return value === dimension;
-  });
+  return metaValueList;
 }
 
-export function flattenDimensionValues(
-  fields: string[],
-  dimensionValues: string[],
-  sortedDimensionValues: SortedDimensionValues,
-  queryType: QueryDataType = QueryDataType.All,
-) {
-  fields = fields.filter((i) => i !== EXTRA_FIELD);
-
+export function flattenDimensionValues(params: {
+  dimensionValues: string[];
+  pivotMeta: PivotMeta;
+  fields: string[];
+  sortedDimensionValues: SortedDimensionValues;
+  queryType?: QueryDataType;
+}) {
+  const {
+    dimensionValues,
+    pivotMeta,
+    fields,
+    sortedDimensionValues,
+    queryType = QueryDataType.All,
+  } = params;
   if (!existDimensionTotalGroup(dimensionValues)) {
     return [dimensionValues];
   }
 
-  let queries = [dimensionValues];
-  let hadMultiBefore = false;
-  for (let i = 0; i < fields.length; i++) {
-    const field = fields[i];
-    const value = dimensionValues[i];
-    if (value === MULTI_VALUE) {
-      hadMultiBefore = true;
-    } else if (hadMultiBefore) {
-      const temp = [];
-      const allSortedDimensionValues = sortedDimensionValues[field];
-      for (const sortedValues of allSortedDimensionValues) {
-        for (const query of queries) {
-          if (satisfyDimensionValues(query, sortedValues, i, queryType)) {
-            const newQuery = sortedValues
-              .split(ID_SEPARATOR)
-              .slice(0, i)
-              .concat(query.slice(i));
-            temp.push(newQuery);
-          }
-        }
-      }
-      queries = temp;
-    }
-  }
-  return queries;
+  const metaValues = getSatisfiedPivotMetaValues({
+    pivotMeta,
+    dimensionValues,
+    fieldIdx: dimensionValues.length - 1,
+    queryType,
+    fields,
+    sortedDimensionValues,
+  });
+
+  return metaValues.map((v) => v.id.split(ID_SEPARATOR));
 }
 
-export function getFlattenDimensionValues(params: {
-  rowDimensionValues: string[];
-  colDimensionValues: string[];
-  rowFields: string[];
-  colFields: string[];
-  sortedDimensionValue: SortedDimensionValues;
-  queryType: QueryDataType;
-}) {
+export function getFlattenDimensionValues(
+  params: PickEssential<DataPathParams> & {
+    sortedDimensionValues: SortedDimensionValues;
+    queryType: QueryDataType;
+  },
+) {
   const {
     rowFields,
     rowDimensionValues,
+    rowPivotMeta,
     colFields,
     colDimensionValues,
-    sortedDimensionValue,
+    colPivotMeta,
     queryType,
+    sortedDimensionValues,
   } = params;
-  const rowQueries = flattenDimensionValues(
-    rowFields,
-    rowDimensionValues,
-    sortedDimensionValue,
+  const rowQueries = flattenDimensionValues({
+    dimensionValues: rowDimensionValues,
+    pivotMeta: rowPivotMeta,
+    fields: rowFields,
+    sortedDimensionValues,
     queryType,
-  );
-  const colQueries = flattenDimensionValues(
-    colFields,
-    colDimensionValues,
-    sortedDimensionValue,
+  });
+  const colQueries = flattenDimensionValues({
+    dimensionValues: colDimensionValues,
+    pivotMeta: colPivotMeta,
+    fields: colFields,
+    sortedDimensionValues,
     queryType,
-  );
+  });
   return {
     rowQueries,
     colQueries,

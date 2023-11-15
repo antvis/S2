@@ -43,16 +43,15 @@ import {
   deleteMetaById,
   flattenIndexesData,
   getDataPath,
-  getDimensionsWithoutPathPre,
   getFlattenDimensionValues,
-  satisfyDimensionValues,
-  shouldQueryMultiData,
+  getSatisfiedPivotMetaValues,
+  isMultiValue,
   transformDimensionsValues,
   transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import { DataHandler } from '../utils/dataset/proxy-handler';
 import { calcActionByType } from '../utils/number-calculate';
-import { handleSortAction } from '../utils/sort-action';
+import { handleSortAction, getSortedPivotMeta } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
@@ -246,8 +245,31 @@ export class PivotDataSet extends BaseDataSet {
         isSortByMeasure: !isEmpty(sortByMeasure),
       });
       this.sortedDimensionValues[sortFieldId] = result;
+      this.handlePivotMetaSort(sortFieldId, result);
     });
   };
+
+  protected handlePivotMetaSort(
+    sortFieldId: string,
+    sortedDimensionValues: string[],
+  ) {
+    const { rows, columns } = this.fields;
+    if (includes(rows, sortFieldId)) {
+      this.rowPivotMeta = getSortedPivotMeta({
+        pivotMeta: this.rowPivotMeta,
+        dimensions: rows,
+        sortFieldId,
+        sortedDimensionValues,
+      });
+    } else if (includes(columns, sortFieldId)) {
+      this.colPivotMeta = getSortedPivotMeta({
+        pivotMeta: this.colPivotMeta,
+        dimensions: columns as string[],
+        sortFieldId,
+        sortedDimensionValues,
+      });
+    }
+  }
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
@@ -283,43 +305,46 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
-  public getDimensionsByField(field: string): string[] {
+  protected getFieldsAndPivotMetaByField(field: string) {
     const { rows = [], columns = [] } = this.fields || {};
-    if (includes(rows, field)) {
-      return rows;
+    if (rows.includes(field)) {
+      return {
+        dimensions: rows,
+        pivotMeta: this.rowPivotMeta,
+      };
     }
-    if (includes(columns, field)) {
-      return columns as string[];
+    if (columns.includes(field)) {
+      return {
+        dimensions: columns as string[],
+        pivotMeta: this.colPivotMeta,
+      };
     }
-    return [];
+    return {};
   }
 
   public getDimensionValues(field: string, query: Query = {}): string[] {
-    const dimensions = this.getDimensionsByField(field);
+    const { pivotMeta, dimensions } = this.getFieldsAndPivotMetaByField(field);
 
-    if (isEmpty(dimensions)) {
+    if (!pivotMeta || !dimensions) {
       return [];
     }
 
-    const idx = indexOf(dimensions, field);
     const dimensionValues = transformDimensionsValues(
       query,
       dimensions,
       MULTI_VALUE,
     );
 
-    const allCurrentFieldDimensionValues =
-      this.sortedDimensionValues[field] ?? [];
+    const values = getSatisfiedPivotMetaValues({
+      pivotMeta,
+      dimensionValues,
+      fields: dimensions,
+      fieldIdx: indexOf(dimensions, field),
+      queryType: QueryDataType.DetailOnly,
+      sortedDimensionValues: this.sortedDimensionValues,
+    });
 
-    const target = allCurrentFieldDimensionValues.filter((dimValue) =>
-      satisfyDimensionValues(
-        dimensionValues,
-        dimValue,
-        idx,
-        QueryDataType.DetailOnly,
-      ),
-    );
-    return uniq(getDimensionsWithoutPathPre(target));
+    return uniq(values.map((v) => v.value));
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
@@ -505,9 +530,11 @@ export class PivotDataSet extends BaseDataSet {
     const { rowQueries, colQueries } = getFlattenDimensionValues({
       rowDimensionValues,
       colDimensionValues,
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
       rowFields: totalRows,
       colFields: columns as string[],
-      sortedDimensionValue: this.sortedDimensionValues,
+      sortedDimensionValues: this.sortedDimensionValues,
       queryType,
     });
 
@@ -529,12 +556,12 @@ export class PivotDataSet extends BaseDataSet {
         for (let i = 0; i < path.length; i++) {
           const current = path[i];
           if (hadMultiField) {
-            if (shouldQueryMultiData(current)) {
+            if (isMultiValue(current)) {
               result = flattenIndexesData(result, queryType);
             } else {
               result = map(result, (item) => item[current]).filter(Boolean);
             }
-          } else if (shouldQueryMultiData(current)) {
+          } else if (isMultiValue(current)) {
             hadMultiField = true;
             result = [result];
             i--;

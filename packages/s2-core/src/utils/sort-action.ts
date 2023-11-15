@@ -2,6 +2,7 @@ import {
   compact,
   concat,
   endsWith,
+  flatMap,
   includes,
   indexOf,
   isEmpty,
@@ -9,6 +10,7 @@ import {
   isNil,
   keys,
   map,
+  sortBy,
   split,
   toUpper,
   uniq,
@@ -21,7 +23,13 @@ import {
 } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
-import type { DataType, SortActionParams } from '../data-set/interface';
+import type {
+  DataType,
+  PivotMeta,
+  PivotMetaValue,
+  SortActionParams,
+  SortPivotMetaParams,
+} from '../data-set/interface';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 import { getLeafColumnsWithKey } from '../facet/utils';
@@ -30,7 +38,7 @@ export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
-const canTobeNumber = (a?: string | number) => !isNaN(Number(a));
+const couldConvertToNumber = (a?: string | number) => !isNaN(Number(a));
 
 /**
  * 执行排序
@@ -52,7 +60,7 @@ export const sortAction = (
       if (key) {
         a = pre[key] as string | number;
         b = next[key] as string | number;
-        if (canTobeNumber(a) && canTobeNumber(b)) {
+        if (couldConvertToNumber(a) && couldConvertToNumber(b)) {
           return (Number(a) - Number(b)) * sort;
         }
         if (a && specialValues?.includes(a?.toString())) {
@@ -373,4 +381,35 @@ export const getSortTypeIcon = (sortParam: SortParam, isSortCell?: boolean) => {
   if (isSortCell) {
     return 'SortDown';
   }
+};
+
+/**
+ * 对 pivot meta 中的内容进行排序，返回新的 sorted pivot meta
+ */
+export const getSortedPivotMeta = (params: SortPivotMetaParams) => {
+  const { pivotMeta, dimensions, sortedDimensionValues, sortFieldId } = params;
+  const rootContainer = {
+    children: pivotMeta,
+  } as PivotMetaValue;
+  let metaValueList = [rootContainer];
+
+  for (const dimension of dimensions) {
+    if (dimension !== sortFieldId) {
+      metaValueList = flatMap(metaValueList, (metaValue) => {
+        return [...metaValue.children.values()];
+      });
+    } else {
+      metaValueList.forEach((metaValue) => {
+        const values = [...metaValue.children.values()];
+
+        const entities = sortBy(values, (value) => {
+          return indexOf(sortedDimensionValues, value.id);
+        }).map((value) => [value.value, value] as [string, PivotMetaValue]);
+
+        metaValue.children = new Map(entities) as PivotMeta;
+      });
+      break;
+    }
+  }
+  return rootContainer.children;
 };
