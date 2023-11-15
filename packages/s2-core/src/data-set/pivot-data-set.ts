@@ -482,20 +482,18 @@ export class PivotDataSet extends BaseDataSet {
   ): Data[];
 
   public getMultiData(
-    query: Query,
+    query: Query = {},
     params?: MultiDataParams | boolean,
     isRow?: boolean,
     drillDownFields: string[] = [],
     includeTotalData = true,
   ) {
     if (isEmpty(query)) {
-      // 如果查询的 query 为空，以前是返回所有打平的数据，但是这样的场景其实没有意义，如果用户想获取全量数据，可以直接从 data 中获取
+      // 如果查询的 query 为空，这样的场景其实没有意义，如果用户想获取全量数据，可以直接从 data 中获取
       // eslint-disable-next-line no-console
       console.warn(
         `query: ${query} shouldn't be empty, you can get all data from dataCfg if you're intended.\n you should use { EXTRA_FIELD: xxx} as least if you want query all specific value data`,
       );
-
-      return [];
     }
 
     // 配置转换

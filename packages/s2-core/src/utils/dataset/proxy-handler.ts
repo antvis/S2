@@ -45,10 +45,13 @@ export class DataHandler implements ProxyHandler<Data> {
     return Object.keys(target).concat(EXTRA_FIELD, VALUE_FIELD);
   }
 
-  getOwnPropertyDescriptor(): PropertyDescriptor {
-    return {
-      configurable: true,
-      enumerable: true,
-    };
+  getOwnPropertyDescriptor(target: Data, key: string): PropertyDescriptor {
+    if (key === EXTRA_FIELD || key === VALUE_FIELD) {
+      return {
+        configurable: true,
+        enumerable: true,
+      };
+    }
+    return Object.getOwnPropertyDescriptor(target, key);
   }
 }

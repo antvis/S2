@@ -1,6 +1,5 @@
 import {
   compact,
-  concat,
   endsWith,
   flatMap,
   includes,
@@ -18,6 +17,7 @@ import {
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
+  ORIGIN_FIELD,
   QueryDataType,
   TOTAL_VALUE,
 } from '../common/constant';
@@ -265,24 +265,20 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    const dataList = dataSet.getMultiData(query, {
+      queryType: QueryDataType.DetailOnly,
+    });
+    return dataList;
+  }
+
   const dataList = dataSet.getMultiData(query, {
     queryType: QueryDataType.All,
-  }); // 按 query 查出所有数据
-  const columns = getLeafColumnsWithKey(fields.columns);
-  /**
-   * 按明细数据
-   * 需要过滤查询出的总/小计“汇总数据”
-   */
-  if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = concat(fields.rows, columns);
+  });
 
-    return dataList.filter((dataItem) => {
-      const dataItemKeys = new Set(keys(dataItem));
-      // 过滤出包含所有行列维度的数据
-      // 若缺失任意 field，则是汇总数据，需要过滤掉
-      return rowColFields.every((field) => dataItemKeys.has(field));
-    });
-  }
+  // 按 query 查出所有数据
+  const columns = getLeafColumnsWithKey(fields.columns);
 
   /**
    * 按汇总值进行排序
@@ -305,7 +301,7 @@ export const getSortByMeasureValues = (
   });
 
   const totalDataList = dataList.filter((dataItem) => {
-    const dataItemKeys = new Set(keys(dataItem));
+    const dataItemKeys = new Set(keys(dataItem[ORIGIN_FIELD]));
     if (!dataItemKeys.has(sortFieldId)) {
       // 若排序数据中都不含被排序字段，则过滤
       // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
