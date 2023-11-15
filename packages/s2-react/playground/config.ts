@@ -83,6 +83,8 @@ export const s2Options: SheetComponentOptions = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
+    copyWithHeader: true,
+    copyWithFormat: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {

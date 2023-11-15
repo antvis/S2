@@ -77,14 +77,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return this.scrollGroup;
   }
 
-  protected isColCellInRect(item: Node): boolean {
+  protected isColCellInRect(node: Node): boolean {
     const { spreadsheet, cornerWidth, width, scrollX } = this.headerConfig;
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
-      width + scrollX > item.x &&
+      width + scrollX > node.x &&
       scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
-        item.x + item.width
+        node.x + node.width
     );
   }
 
