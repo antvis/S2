@@ -335,4 +335,17 @@ export class Node {
     }
     return leafChild;
   }
+
+  /**
+   * 获取树状模式下，当前节点以及其所有子节点的高度总和
+   * */
+  public getTotalHeightForTreeHierarchy(): number {
+    if (this.height === 0 || isEmpty(this.children)) {
+      return this.height;
+    }
+    return this.children.reduce(
+      (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
+      this.height,
+    );
+  }
 }
