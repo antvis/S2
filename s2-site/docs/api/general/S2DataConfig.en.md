@@ -116,5 +116,6 @@ Function description: used to support custom data cell rendering of multiple ind
 
 | 属性名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------- | ---------| -------| ------|------|
-| name | 列字段 id 或分组 id   | string |       | ✓ |
+| key | 列字段 id 或分组 id   | string |       | ✓ |
+| rowSpan | 合并单元格行数，配置后则优先按照 rowSpan 规划列头单元格高度   | number |       |  |
 | children | 分组下面的子级  | Array\<ColumnNode \| string\> |       |  |

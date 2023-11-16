@@ -1,0 +1,50 @@
+{
+  "fields": {
+    "columns": [
+      {
+        "key": "price",
+        "rowSpan": 2,
+        "children": [
+          {
+            "key": "cost",
+            "rowSpan": 1
+          }
+        ]
+      },
+      "province",
+      {
+        "key": "city",
+        "rowSpan": 1,
+        "children": [
+          {
+            "key": "type",
+            "rowSpan": 2
+          }
+        ]
+      }
+    ]
+  },
+  "data": [
+    {
+      "province": "浙江",
+      "city": "义乌",
+      "type": "笔",
+      "price": 1,
+      "cost": 2
+    },
+    {
+      "province": "浙江",
+      "city": "义乌",
+      "type": "笔",
+      "price": 1,
+      "cost": 2
+    },
+    {
+      "province": "浙江",
+      "city": "杭州",
+      "type": "笔",
+      "price": 1,
+      "cost": 2
+    }
+  ]
+}

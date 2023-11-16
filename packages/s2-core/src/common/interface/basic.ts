@@ -106,6 +106,7 @@ export interface Fields {
 export interface ColumnNode {
   key: string;
   children?: Columns;
+  rowSpan?: number;
 }
 
 export interface TotalsStatus {
