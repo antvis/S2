@@ -46,7 +46,7 @@ export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
-export const KEY_GROUP_ROW_HEADER_FROZEN = 'RowHeaderFrozenGroup';
+export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
