@@ -554,6 +554,39 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(5);
       });
+
+      test('hiding the column totals should not hide the row totals', () => {
+        sheet.render();
+        const nodeId = 'root[&]总计';
+        const preRowNodes = sheet.facet.layoutResult.rowNodes;
+        const preColumnNodes = sheet.facet.layoutResult.colNodes;
+        sheet.interaction.hideColumns([nodeId]);
+
+        expect(sheet.facet.layoutResult.rowNodes[0].id).toBe(nodeId);
+        expect(sheet.facet.layoutResult.rowNodes.length).toBe(
+          preRowNodes.length,
+        );
+        expect(sheet.facet.layoutResult.colNodes.length).toBe(
+          preColumnNodes.length - 1,
+        );
+      });
+
+      test('hiding the column totals should not hide the row totals tree', () => {
+        sheet.setOptions({ hierarchyType: 'tree' });
+        sheet.render();
+        const nodeId = 'root[&]总计';
+        const preRowNodes = sheet.facet.layoutResult.rowNodes;
+        const preColumnNodes = sheet.facet.layoutResult.colNodes;
+        sheet.interaction.hideColumns([nodeId]);
+
+        expect(sheet.facet.layoutResult.rowNodes[0].id).toBe(nodeId);
+        expect(sheet.facet.layoutResult.rowNodes.length).toBe(
+          preRowNodes.length,
+        );
+        expect(sheet.facet.layoutResult.colNodes.length).toBe(
+          preColumnNodes.length - 1,
+        );
+      });
     });
   });
 });
