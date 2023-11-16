@@ -45,6 +45,7 @@ export const layoutHierarchy = (
 
   if (
     hiddenColumnNode &&
+    // fix: Only hiding the column headers is supported to prevent the row subtotals from being hidden when the IDs of the row totals and column totals are the same.
     facetCfg.columns.find((field) => field === currentNode.field)
   ) {
     return false;
