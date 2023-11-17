@@ -107,6 +107,22 @@
         "en": "Reaching the boundary of a scrolling area"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
+    },
+    {
+      "filename": "frozen-pivot-grid.ts",
+      "title": {
+        "zh": "交叉平铺模式冻结总计行",
+        "en": "pivot mode freezes total rows"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
+    },
+    {
+      "filename": "frozen-pivot-tree.ts",
+      "title": {
+        "zh": "交叉树状模式冻结首行",
+        "en": "tree mode freezes head rows"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
     }
   ]
 }

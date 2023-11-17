@@ -54,6 +54,7 @@ const s2Options = {
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
 | supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 | devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
+| frozenEntireHeadRowPivot | `boolean` |  |   `false` | 交叉表模式冻结首行(整行) |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 

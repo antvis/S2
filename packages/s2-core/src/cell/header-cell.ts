@@ -48,7 +48,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected abstract isBolderText(): boolean;
 
-  protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
+  protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig, unknown]) {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;

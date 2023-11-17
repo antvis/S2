@@ -78,6 +78,8 @@ export interface S2BasicOptions<
   supportCSSTransform?: boolean;
   // custom device pixel ratio, default "window.devicePixelRatio"
   devicePixelRatio?: number;
+  // pivot sheet type: frozen head row, default false
+  frozenEntireHeadRowPivot?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
