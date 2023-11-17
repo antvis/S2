@@ -276,6 +276,16 @@ describe('Tooltip Utils Tests', () => {
       (cellType) => {
         const type = getCellNameByType(cellType);
 
+        const cellTooltipOptions: Tooltip = {
+          enable: true,
+          operation: {
+            hiddenColumns: false,
+            menu: {
+              items: [{ key: 'menu-b', label: 'menu-b' }],
+            },
+          },
+        };
+
         const tooltip: Tooltip = {
           enable: false,
           content: '',
@@ -283,15 +293,11 @@ describe('Tooltip Utils Tests', () => {
             hiddenColumns: true,
             sort: true,
             tableSort: true,
-            menus: [{ key: 'menu-a', text: 'menu-a' }],
-          },
-          [type]: {
-            enable: true,
-            operation: {
-              hiddenColumns: false,
-              menus: [{ key: 'menu-b', text: 'menu-b' }],
+            menu: {
+              items: [{ key: 'menu-a', label: 'menu-a' }],
             },
           },
+          [type]: cellTooltipOptions,
         };
 
         const spreadsheet = {
@@ -333,59 +339,61 @@ describe('Tooltip Utils Tests', () => {
       ];
 
       const operation: Tooltip['operation'] = {
-        onClick,
-        menus: [
-          { key: 'menu-0', text: '默认显示(未声明visible属性)' },
-          { key: 'menu-1', text: '默认显示', visible: true },
-          { key: 'menu-2', text: '默认隐藏', visible: false },
-          { key: 'menu-3', text: '动态始终显示', visible: () => true },
-          { key: 'menu-4', text: '动态始终显示', visible: () => false },
-          {
-            key: 'menu-5',
-            text: '动态显示',
-            visible: (cell) => cell.cellType === CellType.DATA_CELL,
-          },
-          {
-            key: 'menu-6',
-            text: '动态隐藏',
-            visible: (cell) => cell.cellType !== CellType.DATA_CELL,
-          },
-          {
-            key: 'menu-7',
-            text: '父节点显示, 子节点隐藏',
-            visible: true,
-            children: [
-              {
-                key: 'menu-7-1',
-                text: '父节点显示, 子节点隐藏',
-                visible: false,
-              },
-            ],
-          },
-          {
-            key: 'menu-8',
-            text: '父节点隐藏, 子节点显示 (应该父,子都不显示)',
-            visible: false,
-            children: [
-              {
-                key: 'menu-8-1',
-                text: '父节点隐藏, 子节点显示',
-                visible: true,
-              },
-            ],
-          },
-        ],
+        menu: {
+          onClick,
+          items: [
+            { key: 'menu-0', label: '默认显示(未声明visible属性)' },
+            { key: 'menu-1', label: '默认显示', visible: true },
+            { key: 'menu-2', label: '默认隐藏', visible: false },
+            { key: 'menu-3', label: '动态始终显示', visible: () => true },
+            { key: 'menu-4', label: '动态始终显示', visible: () => false },
+            {
+              key: 'menu-5',
+              label: '动态显示',
+              visible: (cell) => cell.cellType === CellType.DATA_CELL,
+            },
+            {
+              key: 'menu-6',
+              label: '动态隐藏',
+              visible: (cell) => cell.cellType !== CellType.DATA_CELL,
+            },
+            {
+              key: 'menu-7',
+              label: '父节点显示, 子节点隐藏',
+              visible: true,
+              children: [
+                {
+                  key: 'menu-7-1',
+                  label: '父节点显示, 子节点隐藏',
+                  visible: false,
+                },
+              ],
+            },
+            {
+              key: 'menu-8',
+              label: '父节点隐藏, 子节点显示 (应该父,子都不显示)',
+              visible: false,
+              children: [
+                {
+                  key: 'menu-8-1',
+                  label: '父节点隐藏, 子节点显示',
+                  visible: true,
+                },
+              ],
+            },
+          ],
+        },
       };
       const operator = getTooltipVisibleOperator(operation, {
         cell: mockCell,
         defaultMenus,
       });
-      const visibleSubMenus = operator.menus?.find(
+      const visibleSubMenus = operator.menu?.items?.find(
         ({ key }) => key === 'menu-7',
       );
 
-      expect(operator.onClick).toEqual(onClick);
-      expect(operator.menus?.map(({ key }) => key)).toEqual([
+      expect(operator.menu?.onClick).toEqual(onClick);
+      expect(operator.menu?.items?.map(({ key }) => key)).toEqual([
         'default-menu',
         'menu-0',
         'menu-1',

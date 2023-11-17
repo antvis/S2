@@ -1,35 +1,37 @@
-import * as mockDataConfig from 'tests/data/simple-data.json';
+import { DownCircleOutlined } from '@ant-design/icons';
 import {
   BaseTooltip,
-  getTooltipOperatorSortMenus,
   SpreadSheet,
+  getTooltipOperatorSortMenus,
   type S2CellType,
-  type TooltipOperatorMenu,
+  type TooltipOperatorMenuItem,
 } from '@antv/s2';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import * as mockDataConfig from 'tests/data/simple-data.json';
 import { CustomTooltip, TooltipComponent } from '../../../../src';
 import { MobileSheet } from '../../../../src/components/sheets/mobile-sheet';
-import { TooltipOperator } from '../../../../src/components/tooltip/components/operator';
 import { TooltipDetail } from '../../../../src/components/tooltip/components/detail';
 import { TooltipHead } from '../../../../src/components/tooltip/components/head-info';
+import { TooltipOperator } from '../../../../src/components/tooltip/components/operator';
 import { TooltipSummary } from '../../../../src/components/tooltip/components/summary';
+import type { TooltipOperatorMenuItems } from '../../../../src/components/tooltip/interface';
 
 describe('Tooltip Component Tests', () => {
   // https://github.com/antvis/S2/issues/1716
   test.each(getTooltipOperatorSortMenus())(
     'should render sort menu and select %o menu',
-    ({ key, text }) => {
+    ({ key, label }) => {
       const { asFragment } = render(
         <TooltipComponent
           options={{
             onlyShowOperator: true,
             operator: {
-              menus: getTooltipOperatorSortMenus() as TooltipOperatorMenu<
-                React.ReactNode,
-                React.ReactNode
-              >[],
-              defaultSelectedKeys: [key],
+              menu: {
+                items:
+                  getTooltipOperatorSortMenus() as TooltipOperatorMenuItems,
+                defaultSelectedKeys: [key],
+              },
             },
           }}
           cell={null as unknown as S2CellType}
@@ -48,7 +50,7 @@ describe('Tooltip Component Tests', () => {
       );
 
       expect(selectedMenu).toHaveLength(1);
-      expect(selectedMenu[0]?.textContent).toContain(text);
+      expect(selectedMenu[0]?.textContent).toContain(label);
     },
   );
 });
@@ -77,20 +79,22 @@ describe('Tooltip Common Components Tests', () => {
   test('render sort tooltip: TooltipOperator', () => {
     const mockCell = jest.fn();
     const mockMenuClick = jest.fn();
-    const menus = [
-      { key: 'asc', icon: 'groupAsc', text: '组内升序' },
-      { key: 'desc', icon: 'groupDesc', text: '组内降序' },
-      { key: 'none', text: '不排序' },
+    const menus: TooltipOperatorMenuItems = [
+      { key: 'asc', icon: 'groupAsc', label: '组内升序' },
+      { key: 'desc', icon: 'groupDesc', label: '组内降序' },
+      { key: 'none', label: '不排序' },
     ];
 
     const { asFragment, getByText } = render(
       <TooltipOperator
-        menus={menus}
+        menu={{
+          items: menus,
+          onClick: mockMenuClick,
+          defaultSelectedKeys: [menus[0].key],
+        }}
         key={'tooltipOperator'}
         cell={mockCell as unknown as S2CellType}
         onlyShowOperator={true}
-        onClick={mockMenuClick}
-        defaultSelectedKeys={[menus[0].key]}
       />,
     );
 
@@ -102,31 +106,57 @@ describe('Tooltip Common Components Tests', () => {
   });
 
   test('render hide icon: TooltipOperator', () => {
-    const hiddenMenus: TooltipOperatorMenu<React.ReactNode, React.ReactNode>[] =
-      [
-        {
-          key: 'hiddenColumns',
-          text: '隐藏',
-          icon: 'EyeOutlined',
-          onClick: jest.fn(),
-        },
-      ];
+    const hiddenMenus: TooltipOperatorMenuItem<
+      React.ReactNode,
+      React.ReactNode
+    >[] = [
+      {
+        key: 'hiddenColumns',
+        label: '隐藏',
+        icon: 'EyeOutlined',
+        onClick: jest.fn(),
+      },
+    ];
 
     const { asFragment, getByText, container } = render(
       <TooltipOperator
         onlyShowOperator={false}
-        menus={hiddenMenus}
+        menu={{
+          items: hiddenMenus,
+        }}
         cell={jest.fn() as unknown as S2CellType}
       />,
     );
 
     expect(asFragment()).toMatchSnapshot();
-    expect(getByText('隐藏').className).toContain(
-      'antv-s2-tooltip-operator-text',
-    );
+    expect(getByText('隐藏').className).toContain('ant-menu-title-content');
     expect(container.querySelector('svg')!.getAttribute('data-icon')).toBe(
       'eye',
     );
+  });
+
+  test('render custom react component icon', () => {
+    const hiddenMenus: TooltipOperatorMenuItems = [
+      {
+        key: 'react component icon',
+        label: 'react component icon',
+        icon: <DownCircleOutlined />,
+        onClick: jest.fn(),
+      },
+    ];
+
+    const { asFragment, container } = render(
+      <TooltipOperator
+        onlyShowOperator={false}
+        menu={{
+          items: hiddenMenus,
+        }}
+        cell={jest.fn() as unknown as S2CellType}
+      />,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+    expect(container.querySelector('.anticon-down-circle')).toBeTruthy();
   });
 
   test('render TooltipDetail', () => {

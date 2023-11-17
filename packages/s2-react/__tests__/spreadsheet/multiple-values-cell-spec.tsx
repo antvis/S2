@@ -8,8 +8,6 @@ import {
 } from '@antv/s2';
 import { Radio, Switch } from 'antd';
 
-// import 'antd/dist/antd.min.css';
-
 import { cloneDeep, merge } from 'lodash';
 import React from 'react';
 import {

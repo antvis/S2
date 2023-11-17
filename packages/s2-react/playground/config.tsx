@@ -1,21 +1,23 @@
 /* eslint-disable no-console */
+import { GithubOutlined } from '@ant-design/icons';
 import {
   CellType,
   ResizeType,
-  type S2TableSheetFrozenOptions,
   type CustomHeaderField,
-  type S2DataConfig,
   type CustomTreeNode,
+  type S2DataConfig,
+  type S2TableSheetFrozenOptions,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import type { SheetComponentOptions } from '../src/components';
+import React from 'react';
 import {
   data,
   fields,
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+import type { SheetComponentOptions } from '../src/components';
 
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
@@ -212,6 +214,56 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
   trailingColCount: 1,
 };
 
+export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
+  operation: {
+    hiddenColumns: true,
+    menu: {
+      mode: 'horizontal',
+      onClick(info, cell) {
+        console.log('菜单点击: ', info, cell);
+      },
+      items: [
+        {
+          key: 'a-1',
+          label: '操作-1',
+          icon: 'Plus',
+          onClick: (info, cell) => {
+            console.log('操作-1', info, cell);
+          },
+          children: [
+            {
+              key: 'a-1-1',
+              label: '操作-1-1',
+              icon: 'Minus',
+              visible: (cell) => cell.cellType === CellType.COL_CELL,
+              onClick: (info, cell) => {
+                console.log('操作-1-1', info, cell);
+              },
+            },
+          ],
+        },
+        {
+          key: 'a-2',
+          label: '操作-2',
+          icon: <GithubOutlined />,
+          onClick: (info, cell) => {
+            console.log('操作-2', info, cell);
+          },
+        },
+        {
+          key: 'trend',
+          label: '趋势',
+          icon: 'Trend',
+          visible: (cell) => cell.cellType === CellType.DATA_CELL,
+          onClick: (info, cell) => {
+            console.log('趋势图 icon 点击: ', info, cell);
+          },
+        },
+      ],
+    },
+  },
+};
+
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
@@ -251,40 +303,7 @@ export const s2Options: SheetComponentOptions = {
   //     { colIndex: 2, rowIndex: 2, showText: true },
   //   ],
   // ],
-  tooltip: {
-    operation: {
-      hiddenColumns: true,
-      menus: [
-        {
-          key: 'a-1',
-          label: '操作-1',
-          icon: 'Plus',
-          onClick: (cell) => {
-            console.log('操作-1', cell);
-          },
-          children: [
-            {
-              key: 'a-2',
-              label: '操作-2',
-              icon: 'Minus',
-              onClick: (cell) => {
-                console.log('操作-2', cell);
-              },
-            },
-          ],
-        },
-        {
-          key: 'trend',
-          label: '趋势',
-          icon: 'Trend',
-          visible: (cell) => cell.cellType === CellType.DATA_CELL,
-          onClick: (cell) => {
-            console.log('趋势图 icon 点击: ', cell);
-          },
-        },
-      ],
-    },
-  },
+  tooltip: S2TooltipOptions,
   style: {
     rowCell: {
       height: 50,

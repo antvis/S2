@@ -1,8 +1,8 @@
 import EE from '@antv/event-emitter';
 import {
   Canvas,
-  DisplayObject,
   FederatedPointerEvent as CanvasEvent,
+  DisplayObject,
   runtime,
   type CanvasConfig,
 } from '@antv/g';
@@ -21,11 +21,18 @@ import {
   values,
 } from 'lodash';
 import { BaseCell } from '../cell';
-import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
+import {
+  InterceptType,
+  MIN_DEVICE_PIXEL_RATIO,
+  S2Event,
+  getTooltipOperatorSortMenus,
+  getTooltipOperatorTableSortMenus,
+} from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import { i18n } from '../common/i18n';
 import { registerIcon } from '../common/icons/factory';
 import type {
+  BaseTooltipOperatorMenuOptions,
   CellEventTarget,
   CustomSVGIcon,
   EmitterType,
@@ -43,8 +50,11 @@ import type {
   S2Theme,
   SortMethod,
   ThemeCfg,
+  ThemeName,
   TooltipContentType,
   TooltipData,
+  TooltipOperatorMenuItems,
+  TooltipOperatorOptions,
   TooltipOptions,
   TooltipShowOptions,
   Total,
@@ -77,6 +87,8 @@ import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
+  public themeName: ThemeName;
+
   public theme: InternalFullyTheme;
 
   public store = new Store();
@@ -117,6 +129,35 @@ export abstract class SpreadSheet extends EE {
     event: K,
     ...args: Parameters<EmitterType[K]>
   ): boolean => this.untypedEmit(event, ...args);
+
+  protected abstract bindEvents(): void;
+
+  public abstract getDataSet(): BaseDataSet;
+
+  public abstract enableFrozenHeaders(): boolean;
+
+  public abstract isPivotMode(): boolean;
+
+  public abstract isCustomRowFields(): boolean;
+
+  public abstract isHierarchyTreeType(): boolean;
+
+  public abstract isFrozenRowHeader(): boolean;
+
+  public abstract isTableMode(): boolean;
+
+  public abstract isValueInCols(): boolean;
+
+  protected abstract buildFacet(): void;
+
+  public abstract clearDrillDownData(
+    rowNodeId?: string,
+    preventRender?: boolean,
+  ): void;
+
+  // public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
+
+  public abstract groupSortByMethod(sortMethod: SortMethod, meta: Node): void;
 
   public constructor(
     dom: S2MountContainer,
@@ -230,36 +271,10 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
-  protected abstract bindEvents(): void;
-
-  public abstract getDataSet(): BaseDataSet;
-
-  public abstract enableFrozenHeaders(): boolean;
-
-  public abstract isPivotMode(): boolean;
-
-  public abstract isCustomRowFields(): boolean;
-
-  public abstract isHierarchyTreeType(): boolean;
-
-  public abstract isFrozenRowHeader(): boolean;
-
-  public abstract isTableMode(): boolean;
-
-  public abstract isValueInCols(): boolean;
-
-  protected abstract buildFacet(): void;
-
-  public abstract clearDrillDownData(
-    rowNodeId?: string,
-    preventRender?: boolean,
-  ): void;
-
-  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
-
-  public showTooltip<T = TooltipContentType>(
-    showOptions: TooltipShowOptions<T>,
-  ): Promise<void> {
+  public showTooltip<
+    T = TooltipContentType,
+    Menu = BaseTooltipOperatorMenuOptions,
+  >(showOptions: TooltipShowOptions<T, Menu>): Promise<void> {
     const { content, event } = showOptions;
     const cell = this.getCell(event?.target);
     const displayContent = isFunction(content)
@@ -267,7 +282,7 @@ export abstract class SpreadSheet extends EE {
       : content;
 
     return new Promise((resolve) => {
-      const options: TooltipShowOptions<T> = {
+      const options: TooltipShowOptions<T, Menu> = {
         ...showOptions,
         content: displayContent,
         onMounted: resolve,
@@ -438,16 +453,29 @@ export abstract class SpreadSheet extends EE {
     removeOffscreenCanvas();
   }
 
+  private setThemeName(name: ThemeName) {
+    this.themeName = name;
+  }
+
   public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
     const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
 
     this.theme = customMerge(newTheme, theme);
+    this.setThemeName(themeCfg?.name!);
     injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {
     this.theme = customMerge(this.theme, theme);
+  }
+
+  public getTheme(): InternalFullyTheme {
+    return this.theme;
+  }
+
+  public getThemeName() {
+    return this.themeName;
   }
 
   /**
@@ -763,5 +791,33 @@ export abstract class SpreadSheet extends EE {
     const selectedSortMethod = get(sortMethodMap, nodeId);
 
     return selectedSortMethod ? [selectedSortMethod] : [];
+  }
+
+  public handleGroupSort(event: CanvasEvent, meta: Node) {
+    event.stopPropagation();
+    this.interaction.addIntercepts([InterceptType.HOVER]);
+
+    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
+    const menuItems: TooltipOperatorMenuItems = this.isTableMode()
+      ? getTooltipOperatorTableSortMenus()
+      : getTooltipOperatorSortMenus();
+
+    const operator: TooltipOperatorOptions = {
+      menu: {
+        defaultSelectedKeys,
+        items: menuItems,
+        onClick: ({ key: sortMethod }) => {
+          this.groupSortByMethod(sortMethod as SortMethod, meta);
+          this.emit(S2Event.RANGE_SORTED, event);
+        },
+      },
+    };
+
+    this.showTooltipWithInfo(event, [], {
+      operator,
+      onlyShowOperator: true,
+      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
+      forceRender: true,
+    });
   }
 }

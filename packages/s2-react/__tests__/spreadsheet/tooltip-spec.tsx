@@ -5,6 +5,7 @@ import type { Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, renderComponent, sleep } from 'tests/util/helpers';
+import type { TooltipOperatorMenuOptions } from '../../src/components/tooltip/interface';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 import type { SheetComponentOptions } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
@@ -224,19 +225,19 @@ describe('SheetComponent Tooltip Tests', () => {
   test('should support render ReactNode for operator menus', async () => {
     await sleep(1000);
 
-    await s2.showTooltip({
+    await s2.showTooltip<React.ReactNode, TooltipOperatorMenuOptions>({
       position: { x: 0, y: 0 },
       options: {
         operator: {
-          menus: [
-            {
-              key: 'menu-a',
-              // @ts-ignore
-              text: <div className="menu-text">text</div>,
-              // @ts-ignore
-              icon: <StarOutlined className="menu-icon" />,
-            },
-          ],
+          menu: {
+            items: [
+              {
+                key: 'menu-a',
+                label: <div className="menu-text">text</div>,
+                icon: <StarOutlined className="menu-icon" />,
+              },
+            ],
+          },
         },
       },
     });

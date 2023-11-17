@@ -1,35 +1,42 @@
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
-import { Menu, type MenuProps } from 'antd';
+import { Menu } from 'antd';
 import type { ItemType } from 'antd/lib/menu/hooks/useItems';
+import cls from 'classnames';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
-import type { TooltipOperatorMenu } from '../interface';
+import type {
+  TooltipOperatorMenuItem,
+  TooltipOperatorMenuInfo,
+  TooltipOperatorProps,
+} from '../interface';
 import { TooltipIcon } from './icon';
 
 import '@antv/s2-shared/src/styles/tooltip/operator.less';
 
-interface TooltipOperatorProps
-  extends BaseTooltipOperatorProps<React.ReactNode, React.ReactNode> {
-  onClick?: MenuProps['onClick'];
-}
-
-export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
-  (props) => {
+export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
+  React.memo((props) => {
     const {
-      menus,
       onlyShowOperator,
-      onClick: onMenuClick,
       cell,
-      defaultSelectedKeys,
+      menu: {
+        className,
+        items: menus,
+        onClick,
+        defaultSelectedKeys,
+        ...otherMenuProps
+      },
     } = props;
 
     if (isEmpty(menus)) {
       return null;
     }
 
-    const renderMenu = (menu: TooltipOperatorMenu): ItemType => {
-      const { key, label, children, onClick } = menu;
+    const onMenuClick = (info: TooltipOperatorMenuInfo) => {
+      onClick?.(info, cell);
+    };
+
+    const renderMenu = (menu: TooltipOperatorMenuItem): ItemType => {
+      const { key, label, children, onClick: onTitleClick } = menu;
       const subMenus = map(children, renderMenu) as unknown as ItemType[];
 
       return {
@@ -43,8 +50,8 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
         ),
         popupClassName: `${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`,
         onTitleClick: (info) => {
-          onClick?.(cell);
-          onMenuClick?.(info as any);
+          onTitleClick?.(info as any, cell);
+          onMenuClick?.(info);
         },
         children: subMenus,
       };
@@ -53,17 +60,15 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
     const renderMenus = () => {
       const items = map(menus, renderMenu) as unknown as ItemType[];
 
-      // TODO: 透传 antd menu 参数
       return (
         <Menu
           mode={onlyShowOperator ? 'vertical' : 'horizontal'}
-          className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
-          onClick={(...args) => {
-            onMenuClick?.(...args);
-          }}
+          className={cls(`${TOOLTIP_PREFIX_CLS}-operator-menus`, className)}
+          onClick={onMenuClick}
           defaultSelectedKeys={defaultSelectedKeys}
           items={items}
           selectable={onlyShowOperator}
+          {...otherMenuProps}
         />
       );
     };
@@ -71,5 +76,11 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-operator`}>{renderMenus()}</div>
     );
+  });
+
+TooltipOperator.displayName = 'TooltipOperator';
+TooltipOperator.defaultProps = {
+  menu: {
+    items: [],
   },
-);
+};

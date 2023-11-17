@@ -272,12 +272,14 @@ describe('merge test', () => {
         enable: false,
         operation: {
           sort: false,
-          menus: [
-            {
-              key: 'custom',
-              text: 'custom',
-            },
-          ],
+          menu: {
+            items: [
+              {
+                key: 'custom',
+                label: 'custom',
+              },
+            ],
+          },
         },
       },
     });

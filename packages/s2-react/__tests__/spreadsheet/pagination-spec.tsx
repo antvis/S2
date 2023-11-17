@@ -1,8 +1,5 @@
 import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-
-// import 'antd/dist/antd.min.css';
-
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { SheetComponent, type SheetComponentsProps } from '../../src';

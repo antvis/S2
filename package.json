@@ -16,6 +16,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "bootstrap": "pnpm install",
+    "bootstrap:ci": "pnpm install --cli --frozen-lockfile",
     "prepare": "husky install",
     "clean": "pnpm -r --parallel exec rm -rf node_modules && rm -rf node_modules",
     "clean:lock-file": "rm -rf pnpm-lock.yaml",

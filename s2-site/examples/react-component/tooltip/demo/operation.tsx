@@ -15,18 +15,24 @@ fetch(
       tooltip: {
         operation: {
           hiddenColumns: true,
-          menus: [
-            {
-              key: 'trend',
-              text: '趋势',
-              icon: 'Trend',
-              // 数值单元格展示
-              enable: (cell) => cell.cellType === CellType.DATA_CELL,
-              onClick: (cell) => {
-                console.log('趋势图 icon 点击: ', cell);
-              },
+          // 其他配置, 透传 Antd Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+          menu: {
+            onClick(info, cell) {
+              console.log('菜单项点击:', info, cell);
             },
-          ],
+            items: [
+              {
+                key: 'trend',
+                text: '趋势',
+                icon: 'Trend',
+                // 数值单元格展示
+                visible: (cell) => cell.cellType === CellType.DATA_CELL,
+                onClick: (info, cell) => {
+                  console.log('趋势图 icon 点击: ', info, cell);
+                },
+              },
+            ],
+          },
         },
       },
     };

@@ -68,7 +68,7 @@ describe('TableSheet Tests', () => {
         },
       );
 
-      s2.onSortTooltipClick('asc', {
+      s2.groupSortByMethod('asc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -92,7 +92,7 @@ describe('TableSheet Tests', () => {
         field: 'cost',
       } as Node;
 
-      s2.onSortTooltipClick('desc', node);
+      s2.groupSortByMethod('desc', node);
 
       expect(s2.store.get('sortMethodMap')).toEqual({
         city: 'asc',
@@ -110,7 +110,7 @@ describe('TableSheet Tests', () => {
         },
       ]);
 
-      s2.onSortTooltipClick('desc', {
+      s2.groupSortByMethod('desc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -146,7 +146,7 @@ describe('TableSheet Tests', () => {
         ],
       });
 
-      s2.onSortTooltipClick('asc', {
+      s2.groupSortByMethod('asc', {
         id: 'cost',
         field: 'cost',
       } as Node);

@@ -84,23 +84,31 @@ object **必选**,_default：null_ 功能描述： tooltip 部分配置
 
 #### TooltipOperatorOptions
 
-object **可选**,_default：null_ 功能描述： tooltip 操作栏配置
+object **可选**,_default：null_ 功能描述： tooltip 操作栏配置 （如果是 `@antv/s2-react` 配置等同于 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api))
 
 | 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
 | ------- | -------------------------------------------- | ------ | ------ | ------------------------------------------------------------------------------------------ |
-| menus   | [TooltipOperatorMenu[]](#tooltipoperatormenu)  |     |        | 操作项列表  |
+| menu   | [TooltipOperatorMenuOptions](#tooltipoperatormenuoptions)  |     |        | 操作项菜单配置  |
+
+#### TooltipOperatorMenuOptions
+
+object **可选**,_default：null_ 功能描述： tooltip 操作栏菜单配置 （如果是 `@antv/s2-react` 配置等同于 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api))
+
+| 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
+| ------- | -------------------------------------------- | ------ | ------ | ------------------------------------------------------------------------------------------ |
+| items   | [TooltipOperatorMenuItem[]](#tooltipoperatormenuitem)  |     |        | 操作项列表  |
 | onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
 | defaultSelectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组，透传 `antd` `Menu` 组件的 [defaultSelectedKeys](https://ant.design/components/menu-cn/#Menu)  |
 
-##### TooltipOperatorMenu
+##### TooltipOperatorMenuItem
 
 object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 
 | 参数     | 类型                                        | 必选  | 默认值 | 功能描述       |
 | -------- | ------------------------------------------- | ------ | ------ | -------------- |
 | key      | `string`                                    |   ✓   |        | 唯一标识       |
-| text     | `ReactNode \| string`   |       |        | 名称           |
-| icon     | `ReactNode \| string`   |       |        | 自定义图标     |
-| visible  | `boolean \| (cell) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
-| onClick  | (`cell`: [S2CellType](/docs/api/basic-class/base-cell): ) => void                           |       |        | 点击事件回调  (cell 为当前 tooltip 对应的单元格）   |
-| children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |
+| label     | `ReactNode \| string`   |       |        | 名称           |
+| icon     | `ReactNode \| Element \| string`   |       |        | 自定义图标     |
+| visible  | `boolean \| (cell: S2CellType) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
+| onClick  | (`info`: `{ key: string, [key: string]: unknown; }` , `cell`: [S2CellType](/docs/api/basic-class/base-cell)) => void                           |       |        | 点击事件回调  (`info` 为当前点击的菜单项，`cell` 为当前 tooltip 对应的单元格）   |
+| children | [TooltipOperatorMenuItem[]](#tooltipoperatormenuitem) |       |        | 子菜单列表     |

@@ -9,7 +9,7 @@ object **可选**,_default：null_ 功能描述： tooltip 配置
 
 | 参数               | 说明   | 类型      | 默认值 | 必选 |
 | ------------------ | ----------- | ----------- | ------ | --- |
-| showTooltip        | 是否展示 tooltip                                             | `boolean`                               | `true` |      |
+| enable        | 是否展示 tooltip                                             | `boolean`                               | `true` |      |
 | operation          | tooltip 操作配置项    | [TooltipOperation](#tooltipoperation)   | -      |      |
 | rowCell                | 行头单元格配置    | [BaseTooltipConfig](#basetooltipconfig) | -      |      |
 | colCell                | 列头单元格配置     | [BaseTooltipConfig](#basetooltipconfig) | -      |      |
@@ -29,7 +29,7 @@ object **可选**,_default：null_ 功能描述： tooltip 基础通用配置
 
 | 参数             | 说明                    | 类型                                  | 默认值 | 必选 |
 | ---------------- | ----------------------- | ------------------------------------- | ------ | --- |
-| showTooltip      | 是否展示 tooltip        | `boolean`                             | `false` |      |
+| enable      | 是否展示 tooltip        | `boolean`                             | `true` |      |
 | operation        | tooltip 操作配置项      | [TooltipOperation](#tooltipoperation) | -      |      |
 | content | 自定义 tooltip 内容 | `ReactNode \| Element \| string \|` 或者 `(cell, defaultTooltipShowOptions) => ReactNode \| Element \| string`                       | -      |      |
 
@@ -40,7 +40,7 @@ object **可选**,_default：null_ 功能描述： tooltip 坐标信息
 | 参数             | 说明                    | 类型                                  | 默认值 | 必选 |
 | ---------------- | ----------------------- | ------------------------------------- | ------ | --- |
 | position      | 默认经过计算（默认偏移量 + autoAdjustBoundary）后的 Tooltip 位置坐标  |  [TooltipPosition](#tooltipposition)  |  | ✓|
-| event      | 当前点击事件信息 | Event | | ✓|
+| event      | 当前点击事件信息 | Event | | ✓ |
 
 ### TooltipOperation
 
@@ -48,8 +48,7 @@ object **可选**,_default：null_ 功能描述： tooltip 操作配置项
 
 | 参数          | 说明                          | 类型      | 默认值  | 必选 |
 | ------------- | ----------------------------- | --------- | ------- | --- |
-| hiddenColumns | 是否开启隐藏列（叶子节点有效）   | `boolean` | `false`  |      |
+| hiddenColumns | 是否开启隐藏列（叶子节点有效）   | `boolean` | `true`  |      |
 | sort          | 是否开启组内排序              | `boolean` | `false` |      |
 | tableSort     | 是否开启明细表列头排序         | `boolean` | `false` |      |
-| menus         | 自定义操作配置项         | [TooltipOperatorMenu[]](#tooltipoperatormenu) | `-` |      |
-| onClick       | 操作项点击回调函数         | `({ item, key, keyPath, domEvent }) => void` | `-` |      |
+| menu         | 自定义操作栏菜单配置项         | [TooltipOperatorMenuOptions](#tooltipoperatormenuoptions)  | `-` |      |

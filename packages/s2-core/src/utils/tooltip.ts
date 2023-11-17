@@ -50,12 +50,13 @@ import type {
 import type { S2CellType } from '../common/interface/interaction';
 import type {
   BaseTooltipConfig,
+  BaseTooltipOperatorMenuOptions,
   SummaryParam,
   TooltipData,
   TooltipDataParam,
   TooltipHeadInfo,
   TooltipOperation,
-  TooltipOperatorMenu,
+  TooltipOperatorMenuItems,
   TooltipOperatorOptions,
   TooltipOptions,
   TooltipPosition,
@@ -122,14 +123,17 @@ export const getAutoAdjustPosition = ({
   };
 };
 
-export const getTooltipDefaultOptions = <
-  Icon = Element | string,
-  Text = string,
->(
-  options?: TooltipOptions<Icon, Text>,
-): TooltipOptions<Icon, Text> => {
+export const getTooltipDefaultOptions = <Menu = BaseTooltipOperatorMenuOptions>(
+  options?: TooltipOptions<Menu>,
+) => {
   return {
-    operator: { onClick: noop, menus: [] },
+    operator: {
+      menu: {
+        onClick: noop,
+        items: [],
+        defaultSelectedKeys: [],
+      },
+    },
     enableFormat: true,
     ...options,
   };
@@ -707,11 +711,11 @@ export const getTooltipOptions = (
 
 export const getTooltipVisibleOperator = (
   operation: TooltipOperation,
-  options: { defaultMenus?: TooltipOperatorMenu[]; cell: S2CellType },
+  options: { defaultMenus?: TooltipOperatorMenuItems; cell: S2CellType },
 ): TooltipOperatorOptions => {
   const { defaultMenus = [], cell } = options;
 
-  const getDisplayMenus = (menus: TooltipOperatorMenu[] = []) =>
+  const getDisplayMenus = (menus: TooltipOperatorMenuItems = []) =>
     menus
       .filter((menu) =>
         isFunction(menu.visible) ? menu.visible(cell) : menu.visible ?? true,
@@ -723,11 +727,14 @@ export const getTooltipVisibleOperator = (
 
         return menu;
       });
-  const displayMenus = getDisplayMenus(operation?.menus);
+
+  const displayMenus = getDisplayMenus(operation?.menu?.items);
 
   return {
-    onClick: operation?.onClick,
-    menus: compact([...defaultMenus, ...displayMenus]),
+    menu: {
+      ...operation?.menu,
+      items: compact([...defaultMenus, ...displayMenus]),
+    },
   };
 };
 

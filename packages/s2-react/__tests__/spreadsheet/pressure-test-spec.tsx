@@ -6,9 +6,6 @@ import {
   type S2MountContainer,
   type S2Options,
 } from '@antv/s2';
-
-// import 'antd/dist/antd.min.css';
-
 import React from 'react';
 import { renderComponent } from '../util/helpers';
 import { type SheetComponentsProps, SheetComponent } from '../../src';

@@ -2,30 +2,32 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+  DEFAULT_STYLE,
+  Node,
+  SpreadSheet,
   customMerge,
   generatePalette,
   getDefaultSeriesNumberText,
   getLang,
   getPalette,
-  Node,
-  SpreadSheet,
   type CustomHeaderFields,
   type HeaderActionIconProps,
+  type InteractionCellSelectedHighlightOptions,
   type InteractionOptions,
   type S2DataConfig,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightOptions,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
 import { useUpdateEffect } from 'ahooks';
 import {
+  version as AntdVersion,
   Button,
   Collapse,
   DatePicker,
+  Divider,
   Input,
   Popover,
   Radio,
@@ -37,13 +39,8 @@ import {
   Tag,
   Tooltip,
   type RadioChangeEvent,
-  version as AntdVersion,
-  Divider,
 } from 'antd';
-
-// import 'antd/dist/antd.min.css';
-
-import { debounce, isEmpty, isBoolean } from 'lodash';
+import { debounce, isBoolean, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import { createRoot } from 'react-dom/client';
@@ -52,25 +49,27 @@ import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
+import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { MobileSheetComponent } from './components/Mobile';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
+import { Links } from './components/links';
 import {
+  TableSheetFrozenOptions,
   defaultOptions,
   pivotSheetDataCfg,
   s2ConditionsOptions,
   s2Options,
   sliderOptions,
   tableSheetDataCfg,
-  TableSheetFrozenOptions,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
 } from './config';
 import { partDrillDown } from './drill-down';
-import './index.less';
-import { MobileSheetComponent } from './components/Mobile';
 import { onSheetMounted } from './utils';
-import { EditableSheet } from './components/EditableSheet';
+
+import './index.less';
 
 const CustomTooltip = () => (
   <div>
@@ -341,6 +340,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
+      <Links />
       <Tabs
         defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}
         type="card"
@@ -534,12 +534,6 @@ function MainLayout() {
                         />
                       </Tooltip>
                       <Switch
-                        checkedChildren="容器宽高自适应开"
-                        unCheckedChildren="容器宽高自适应关"
-                        defaultChecked={Boolean(adaptive)}
-                        onChange={setAdaptive}
-                      />
-                      <Switch
                         checkedChildren="显示序号"
                         unCheckedChildren="不显示序号"
                         checked={mergedOptions.showSeriesNumber}
@@ -711,6 +705,23 @@ function MainLayout() {
                         checked={showCustomTooltip}
                         onChange={setShowCustomTooltip}
                       />
+                      <Tooltip title="操作项菜单类型, 透传 https://ant-design.antgroup.com/components/menu-cn#api">
+                        <Switch
+                          checkedChildren="操作项-水平展示"
+                          unCheckedChildren="操作项-垂直展示"
+                          onChange={(checked) => {
+                            updateOptions({
+                              tooltip: {
+                                operation: {
+                                  menu: {
+                                    mode: checked ? 'horizontal' : 'vertical',
+                                  },
+                                },
+                              },
+                            });
+                          }}
+                        />
+                      </Tooltip>
                       <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                         <Select
                           defaultValue={
@@ -735,6 +746,12 @@ function MainLayout() {
                         宽高配置
                         <Divider type="vertical" />
                       </span>
+                      <Switch
+                        checkedChildren="容器宽高自适应开"
+                        unCheckedChildren="容器宽高自适应关"
+                        defaultChecked={Boolean(adaptive)}
+                        onChange={setAdaptive}
+                      />
                       <Input
                         style={{ width: 150 }}
                         onChange={onSizeChange('width')}
@@ -1180,6 +1197,7 @@ function MainLayout() {
                     }}
                     onAfterRender={logHandler('onAfterRender')}
                     onRangeSort={logHandler('onRangeSort')}
+                    onRangeSorted={logHandler('onRangeSorted')}
                     onMounted={onSheetMounted}
                     onDestroy={logHandler('onDestroy', () => {
                       clearInterval(scrollTimer.current!);

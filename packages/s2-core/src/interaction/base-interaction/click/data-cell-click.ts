@@ -67,9 +67,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
 
       if (interaction.isSelectedCell(cell)) {
-        /*
-         * 双击时不触发选择态reset
-         * g5.0 mouseup 底层监听的是 pointerup，detail为0，需自行判断是否双击
+        /**
+         * 双击时不触发选择态 reset
+         * g5.0 mouseup 底层监听的是 pointerup，detail 为 0，需自行判断是否双击
          */
         if (this.clickCount <= 1) {
           interaction.reset();

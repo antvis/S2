@@ -67,3 +67,5 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
     );
   },
 );
+
+TooltipSummary.displayName = 'TooltipSummary';

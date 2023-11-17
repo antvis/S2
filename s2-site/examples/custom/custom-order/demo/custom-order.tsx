@@ -81,14 +81,16 @@ const App = () => {
       onClick: (props) => {
         const { meta, event } = props;
         const operator = {
-          onClick: ({ key }) => {
-            handleSortCallback(meta, key);
-            meta.spreadsheet.hideTooltip();
+          menu: {
+            onClick: ({ key }) => {
+              handleSortCallback(meta, key);
+              meta.spreadsheet.hideTooltip();
+            },
+            items: MENUS,
           },
-          menus: MENUS,
         };
 
-        // 自定义 tooltip 配置，展示 toolTip
+        // 自定义 tooltip 配置，展示 tooltip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,
           onlyShowCellText: true,

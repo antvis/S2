@@ -12,7 +12,10 @@ import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { startsWith } from 'lodash';
 import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
-import type { TooltipRenderProps } from './interface';
+import type {
+  TooltipOperatorMenuOptions,
+  TooltipRenderProps,
+} from './interface';
 import { TooltipContext } from './context';
 import { TooltipComponent } from './index';
 import './style.less';
@@ -23,8 +26,7 @@ import './style.less';
  */
 export class CustomTooltip extends BaseTooltip<
   React.ReactNode,
-  React.ReactNode,
-  React.ReactNode
+  TooltipOperatorMenuOptions
 > {
   root: Root;
 

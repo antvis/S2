@@ -4,7 +4,11 @@ import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import type { BaseEvent, HeaderCell } from '../../../src';
+import type {
+  BaseEvent,
+  BaseTooltipOperatorMenuOptions,
+  HeaderCell,
+} from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -364,8 +368,8 @@ describe('PivotSheet Tests', () => {
           super(spreadsheet);
         }
 
-        public show<T = string | Element>(
-          showOptions: TooltipShowOptions<T>,
+        public show<T = string | Element, M = BaseTooltipOperatorMenuOptions>(
+          showOptions: TooltipShowOptions<T, M>,
         ): void {
           customShow(showOptions);
         }

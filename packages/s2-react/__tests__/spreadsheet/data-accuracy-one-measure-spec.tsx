@@ -9,8 +9,6 @@ import {
   type S2Options,
 } from '@antv/s2';
 
-// import 'antd/dist/antd.min.css';
-
 import React from 'react';
 import {
   data1,
