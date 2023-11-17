@@ -176,7 +176,7 @@ describe('merge test', () => {
   });
 
   test('should get safety options', () => {
-    // 加这个测试可以防止 本地跑demo 修改了默认配置 直接提交
+    // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
     expect(omit(getSafetyOptions(null), ['devicePixelRatio']))
       .toMatchInlineSnapshot(`
       Object {
@@ -256,7 +256,9 @@ describe('merge test', () => {
           "enable": false,
           "operation": Object {
             "hiddenColumns": false,
-            "menus": Array [],
+            "menu": Object {
+              "items": Array [],
+            },
             "sort": false,
           },
         },
@@ -290,12 +292,14 @@ describe('merge test', () => {
         "enable": false,
         "operation": Object {
           "hiddenColumns": false,
-          "menus": Array [
-            Object {
-              "key": "custom",
-              "text": "custom",
-            },
-          ],
+          "menu": Object {
+            "items": Array [
+              Object {
+                "key": "custom",
+                "label": "custom",
+              },
+            ],
+          },
           "sort": false,
         },
       }

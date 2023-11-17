@@ -39,14 +39,14 @@ describe('Tooltip Component Tests', () => {
         />,
       );
 
-      expect(asFragment).toMatchSnapshot();
+      expect(asFragment()).toMatchSnapshot();
 
       expect(screen.getByText('组内升序')).toBeDefined();
       expect(screen.getByText('组内降序')).toBeDefined();
       expect(screen.getByText('不排序')).toBeDefined();
 
       const selectedMenu = Array.from(
-        document.querySelectorAll('.ant-menu-item-selected'),
+        document.querySelectorAll('.ant-menu-submenu-selected'),
       );
 
       expect(selectedMenu).toHaveLength(1);
@@ -100,9 +100,7 @@ describe('Tooltip Common Components Tests', () => {
 
     expect(asFragment()).toMatchSnapshot();
     expect(getByText('组内升序')).toBeTruthy();
-    expect(getByText('不排序').className).toContain(
-      'antv-s2-tooltip-operator-text',
-    );
+    expect(getByText('不排序').className).toContain('ant-menu-title-content');
   });
 
   test('render hide icon: TooltipOperator', () => {

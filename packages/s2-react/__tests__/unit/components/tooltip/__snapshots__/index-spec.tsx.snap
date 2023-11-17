@@ -365,7 +365,9 @@ exports[`Tooltip Common Components Tests render sort tooltip: TooltipOperator 1`
           </span>
           <span
             class="ant-menu-title-content"
-          />
+          >
+            组内升序
+          </span>
           <i
             class="ant-menu-submenu-arrow"
           />
@@ -422,7 +424,9 @@ exports[`Tooltip Common Components Tests render sort tooltip: TooltipOperator 1`
           </span>
           <span
             class="ant-menu-title-content"
-          />
+          >
+            组内降序
+          </span>
           <i
             class="ant-menu-submenu-arrow"
           />
@@ -443,7 +447,9 @@ exports[`Tooltip Common Components Tests render sort tooltip: TooltipOperator 1`
         >
           <span
             class="ant-menu-title-content"
-          />
+          >
+            不排序
+          </span>
           <i
             class="ant-menu-submenu-arrow"
           />
@@ -458,8 +464,485 @@ exports[`Tooltip Common Components Tests render sort tooltip: TooltipOperator 1`
 </DocumentFragment>
 `;
 
-exports[`Tooltip Component Tests should render sort menu and select { key: 'asc', icon: 'groupAsc', label: '组内升序' } menu 1`] = `[Function]`;
+exports[`Tooltip Component Tests should render sort menu and select { key: 'asc', icon: 'groupAsc', label: '组内升序' } menu 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-tooltip-operator"
+  >
+    <ul
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-1adbn6x"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
+    >
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical ant-menu-submenu-selected"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-asc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-asc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17670"
+              style=""
+              t="1557124695786"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 62.976h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17671"
+              />
+              
 
-exports[`Tooltip Component Tests should render sort menu and select { key: 'desc', icon: 'groupDesc', label: '组内降序' } menu 1`] = `[Function]`;
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内升序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-desc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-desc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17779"
+              style=""
+              t="1557124710652"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 856.96a8 8 0 0 1-12.544 0l-112-141.952A8 8 0 0 1 64 702.08h76.032V172.032c0-4.416 3.584-8 7.936-8h56.064c4.352 0 7.936 3.584 7.936 8v529.984H288c6.72 0 10.496 7.808 6.272 12.992l-112 141.888z m209.728-626.944h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17780"
+              />
+              
 
-exports[`Tooltip Component Tests should render sort menu and select { key: 'none', label: '不排序' } menu 1`] = `[Function]`;
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内降序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-none-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-none"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            不排序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Tooltip Component Tests should render sort menu and select { key: 'desc', icon: 'groupDesc', label: '组内降序' } menu 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-tooltip-operator"
+  >
+    <ul
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-1adbn6x"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
+    >
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-asc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-asc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17670"
+              style=""
+              t="1557124695786"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 62.976h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17671"
+              />
+              
+
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内升序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical ant-menu-submenu-selected"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-desc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-desc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17779"
+              style=""
+              t="1557124710652"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 856.96a8 8 0 0 1-12.544 0l-112-141.952A8 8 0 0 1 64 702.08h76.032V172.032c0-4.416 3.584-8 7.936-8h56.064c4.352 0 7.936 3.584 7.936 8v529.984H288c6.72 0 10.496 7.808 6.272 12.992l-112 141.888z m209.728-626.944h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17780"
+              />
+              
+
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内降序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-none-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-none"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            不排序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Tooltip Component Tests should render sort menu and select { key: 'none', label: '不排序' } menu 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-tooltip-operator"
+  >
+    <ul
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-1adbn6x"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
+    >
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-asc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-asc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17670"
+              style=""
+              t="1557124695786"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 62.976h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17671"
+              />
+              
+
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内升序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-desc-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-desc"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="antv-s2-html-icon antv-s2-tooltip-operator-icon ant-menu-item-icon"
+          >
+            <svg
+              class="icon"
+              height="14"
+              p-id="17779"
+              style=""
+              t="1557124710652"
+              version="1.1"
+              viewBox="0 0 1024 1024"
+              width="14"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              
+  
+              <defs>
+                
+    
+                <style
+                  type="text/css"
+                />
+                
+  
+              </defs>
+              
+  
+              <path
+                d="M182.272 856.96a8 8 0 0 1-12.544 0l-112-141.952A8 8 0 0 1 64 702.08h76.032V172.032c0-4.416 3.584-8 7.936-8h56.064c4.352 0 7.936 3.584 7.936 8v529.984H288c6.72 0 10.496 7.808 6.272 12.992l-112 141.888z m209.728-626.944h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z"
+                p-id="17780"
+              />
+              
+
+            </svg>
+          </span>
+          <span
+            class="ant-menu-title-content"
+          >
+            组内降序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+      <li
+        class="ant-menu-submenu ant-menu-submenu-vertical ant-menu-submenu-selected"
+        role="none"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-none-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-none"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            class="ant-menu-title-content"
+          >
+            不排序
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </div>
+</DocumentFragment>
+`;

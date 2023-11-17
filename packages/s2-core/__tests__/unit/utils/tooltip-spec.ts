@@ -33,6 +33,7 @@ import {
   type TooltipSummaryOptions,
   PivotSheet,
   type S2DataConfig,
+  type S2Options,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 import type { BBox } from '@/engine';
@@ -312,16 +313,20 @@ describe('Tooltip Utils Tests', () => {
           [type],
         );
 
-        expect(tooltipOptions).toEqual({
+        const expectTooltipOptions: S2Options['tooltip'] = {
           enable: true,
           content: '',
           operation: {
             hiddenColumns: false,
             sort: true,
             tableSort: true,
-            menus: [{ key: 'menu-b', text: 'menu-b' }],
+            menu: {
+              items: [{ key: 'menu-b', label: 'menu-b' }],
+            },
           },
-        });
+        };
+
+        expect(tooltipOptions).toEqual(expectTooltipOptions);
       },
     );
 

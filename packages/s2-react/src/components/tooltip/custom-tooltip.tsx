@@ -102,7 +102,7 @@ export class CustomTooltip extends BaseTooltip<
     super.destroy();
   }
 
-  private forceClearContent() {
+  forceClearContent() {
     if (this.isLegacyReactVersion) {
       this.unmount();
 
@@ -112,7 +112,7 @@ export class CustomTooltip extends BaseTooltip<
     this.root?.render(null);
   }
 
-  private unmount() {
+  unmount() {
     if (this.isLegacyReactVersion && this.container!) {
       unmountComponentAtNode(this.container);
 

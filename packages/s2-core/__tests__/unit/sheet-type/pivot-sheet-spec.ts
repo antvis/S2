@@ -8,6 +8,7 @@ import type {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
   HeaderCell,
+  TooltipOptions,
 } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
@@ -908,22 +909,26 @@ describe('PivotSheet Tests', () => {
       const groupDescText = isEnUS ? 'Group DESC' : '组内降序';
       const groupNoneText = isEnUS ? 'No order' : '不排序';
 
-      expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
-        expect.anything(),
-        expect.anything(),
-        {
-          onlyShowOperator: true,
-          forceRender: true,
-          operator: {
-            menus: [
-              { icon: 'groupAsc', key: 'asc', text: groupAscText },
-              { icon: 'groupDesc', key: 'desc', text: groupDescText },
-              { key: 'none', text: groupNoneText },
+      const options: TooltipOptions = {
+        onlyShowOperator: true,
+        forceRender: true,
+        operator: {
+          menu: {
+            items: [
+              { icon: 'groupAsc', key: 'asc', label: groupAscText },
+              { icon: 'groupDesc', key: 'desc', label: groupDescText },
+              { key: 'none', label: groupNoneText },
             ],
             onClick: expect.anything(),
             defaultSelectedKeys: [],
           },
         },
+      };
+
+      expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.anything(),
+        options,
       );
       sheet.destroy();
     },
