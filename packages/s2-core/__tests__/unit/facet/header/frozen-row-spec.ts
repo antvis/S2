@@ -32,140 +32,73 @@ const s2 = createPivotSheet({
     height: 50,
   },
 });
-describe('Frozen Row Header Tests Grid Mode', () => {
+describe('Frozen Row Header Test', () => {
   let facet;
-  beforeEach(() => {
-    s2.setOptions({ hierarchyType: 'grid' });
-    s2.render();
-    facet = s2.facet as PivotFacet;
-  });
-  test('get header after render', () => {
-    expect(facet.rowHeader instanceof FrozenRowHeader).toBeTrue();
-    expect(facet.rowHeader.frozenHeadGroup).toBeTruthy();
-    expect(facet.rowHeader.scrollGroup).toBeTruthy();
 
-    expect(facet.rowHeader.frozenHeadGroup.getChildren()).toHaveLength(1);
-    const frozenRowCell = facet.rowHeader.frozenHeadGroup.getChildren()[0];
+  test.each(['grid', 'tree'])(
+    'frozen row header group api',
+    (hierarchyType: 'grid' | 'tree') => {
+      s2.setOptions({ hierarchyType });
+      s2.render();
+      facet = s2.facet as PivotFacet;
 
-    expect(frozenRowCell instanceof RowCell).toBeTrue();
-    expect(frozenRowCell.meta.height).toEqual(30);
+      expect(facet.rowHeader instanceof FrozenRowHeader).toBeTrue();
+      expect(facet.rowHeader.frozenHeadGroup).toBeTruthy();
+      expect(facet.rowHeader.scrollGroup).toBeTruthy();
 
-    expect(facet.rowHeader.scrollGroup.getChildren()).toHaveLength(3);
-    const scrollCell = facet.rowHeader.scrollGroup.getChildren()[0];
+      expect(facet.rowHeader.frozenHeadGroup.getChildren()).toHaveLength(1);
+      const frozenRowCell = facet.rowHeader.frozenHeadGroup.getChildren()[0];
 
-    expect(scrollCell instanceof FrozenRowCell).toBeTrue();
-    expect(frozenRowCell.meta.height).toEqual(30);
-  });
+      expect(frozenRowCell instanceof RowCell).toBeTrue();
+      expect(frozenRowCell.meta.height).toEqual(30);
 
-  test('frozen header api is it correct?', () => {
-    const rowHeader = facet.rowHeader;
-    expect(rowHeader.getFrozenRowHeight()).toBe(30);
+      expect(facet.rowHeader.scrollGroup.getChildren()).toHaveLength(3);
+      const scrollCell = facet.rowHeader.scrollGroup.getChildren()[0];
 
-    expect(
-      rowHeader.isFrozenRow({
-        rowIndex: 0,
-      }),
-    ).toBe(true);
-    expect(
-      rowHeader.isFrozenRow({
-        rowIndex: -1,
-      }),
-    ).toBe(false);
+      expect(scrollCell instanceof FrozenRowCell).toBeTrue();
+      expect(frozenRowCell.meta.height).toEqual(30);
 
-    expect(rowHeader.getFrozenRowCount()).toBe(1);
-  });
+      const rowHeader = facet.rowHeader;
+      expect(rowHeader.getFrozenRowHeight()).toBe(30);
+
+      expect(
+        rowHeader.isFrozenRow({
+          rowIndex: 0,
+        }),
+      ).toBe(true);
+      expect(
+        rowHeader.isFrozenRow({
+          rowIndex: -1,
+        }),
+      ).toBe(false);
+
+      expect(rowHeader.getFrozenRowCount()).toBe(1);
+    },
+  );
 });
 
-describe('Frozen Row Header Tests Tree Mode', () => {
+describe('Frozen Series Number Test', () => {
   let facet;
-  beforeEach(() => {
-    s2.setOptions({ hierarchyType: 'tree' });
-    s2.render();
-    facet = s2.facet as PivotFacet;
-  });
-  test('get header after render', () => {
-    expect(facet.rowHeader instanceof FrozenRowHeader).toBeTrue();
-    expect(facet.rowHeader.frozenHeadGroup).toBeTruthy();
-    expect(facet.rowHeader.scrollGroup).toBeTruthy();
+  test.each(['grid', 'tree'])(
+    'series number test',
+    (hierarchyType: 'grid' | 'tree') => {
+      s2.setOptions({ hierarchyType });
+      s2.render();
+      facet = s2.facet as PivotFacet;
+      expect(facet.rowIndexHeader instanceof FrozenSeriesNumber).toBe(true);
 
-    expect(facet.rowHeader.frozenHeadGroup.getChildren()).toHaveLength(1);
-    const frozenRowCell = facet.rowHeader.frozenHeadGroup.getChildren()[0];
+      const seriesNumberCell =
+        facet.rowIndexHeader.frozenHeadGroup.getChildren();
+      expect(seriesNumberCell).toHaveLength(1);
 
-    expect(frozenRowCell instanceof RowCell).toBeTrue();
-    expect(frozenRowCell.meta.height).toEqual(30);
+      expect(
+        facet.rowIndexHeader.scrollGroup.getChildren()[0] instanceof
+          SeriesNumberCell,
+      ).toBe(true);
 
-    expect(facet.rowHeader.scrollGroup.getChildren()).toHaveLength(3);
-    const scrollCell = facet.rowHeader.scrollGroup.getChildren()[0];
+      expect(seriesNumberCell[0] instanceof SeriesNumberCell).toBe(true);
 
-    expect(scrollCell instanceof FrozenRowCell).toBeTrue();
-    expect(frozenRowCell.meta.height).toEqual(30);
-  });
-
-  test('frozen header api is it correct?', () => {
-    const rowHeader = facet.rowHeader;
-    expect(rowHeader.getFrozenRowHeight()).toBe(30);
-
-    expect(
-      rowHeader.isFrozenRow({
-        rowIndex: 0,
-      }),
-    ).toBe(true);
-    expect(
-      rowHeader.isFrozenRow({
-        rowIndex: -1,
-      }),
-    ).toBe(false);
-
-    expect(rowHeader.getFrozenRowCount()).toBe(1);
-  });
-});
-
-describe('Frozen Series Number Tests Tree Mode', () => {
-  let facet;
-  beforeEach(() => {
-    s2.setOptions({ hierarchyType: 'tree' });
-    s2.render();
-    facet = s2.facet as PivotFacet;
-  });
-
-  test('FrozenSeriesNumber Header Tests', () => {
-    expect(facet.rowIndexHeader instanceof FrozenSeriesNumber).toBe(true);
-
-    const seriesNumberCell = facet.rowIndexHeader.frozenHeadGroup.getChildren();
-    expect(seriesNumberCell).toHaveLength(1);
-
-    expect(
-      facet.rowIndexHeader.scrollGroup.getChildren()[0] instanceof
-        SeriesNumberCell,
-    ).toBe(true);
-
-    expect(seriesNumberCell[0] instanceof SeriesNumberCell).toBe(true);
-
-    expect(seriesNumberCell[0].meta.height).toBe(30);
-  });
-});
-
-describe('Frozen Series Number Tests Grid Mode', () => {
-  let facet;
-  beforeEach(() => {
-    s2.setOptions({ hierarchyType: 'grid' });
-    s2.render();
-    facet = s2.facet as PivotFacet;
-  });
-
-  test('FrozenSeriesNumber Header Tests', () => {
-    expect(facet.rowIndexHeader instanceof FrozenSeriesNumber).toBe(true);
-
-    const seriesNumberCell = facet.rowIndexHeader.frozenHeadGroup.getChildren();
-    expect(seriesNumberCell).toHaveLength(1);
-
-    expect(
-      facet.rowIndexHeader.scrollGroup.getChildren()[0] instanceof
-        SeriesNumberCell,
-    ).toBe(true);
-
-    expect(seriesNumberCell[0] instanceof SeriesNumberCell).toBe(true);
-
-    expect(seriesNumberCell[0].meta.height).toBe(30);
-  });
+      expect(seriesNumberCell[0].meta.height).toBe(30);
+    },
+  );
 });

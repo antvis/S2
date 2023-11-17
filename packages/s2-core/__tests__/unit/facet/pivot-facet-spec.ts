@@ -485,205 +485,107 @@ describe('Pivot Mode Facet Test', () => {
   });
 });
 
-describe('Pivot Mode Facet frozen entire row', () => {
-  const s2: SpreadSheet = new MockSpreadSheet();
-  const dataSet: PivotDataSet = new MockPivotDataSet(s2);
-  s2.dataSet = dataSet;
-  s2.interaction = new RootInteraction(s2);
-  const facet: PivotFacet = new PivotFacet({
-    spreadsheet: s2,
-    dataSet,
-    dataCell: (fct) => new DataCell(fct, s2),
-    ...assembleDataCfg().fields,
-    valueInCols: true,
-    ...assembleOptions({
-      frozenEntireHeadRowPivot: true,
-      totals: {
-        row: {
-          showGrandTotals: true,
-          reverseLayout: true,
+describe.each(['grid', 'tree'])(
+  'Pivot Mode Facet frozen entire row',
+  (hierarchyType: 'grid' | 'tree') => {
+    const s2: SpreadSheet = new MockSpreadSheet();
+    const dataSet: PivotDataSet = new MockPivotDataSet(s2);
+    s2.dataSet = dataSet;
+    s2.interaction = new RootInteraction(s2);
+    const facet: PivotFacet = new PivotFacet({
+      spreadsheet: s2,
+      dataSet,
+      dataCell: (fct) => new DataCell(fct, s2),
+      ...assembleDataCfg().fields,
+      valueInCols: true,
+      ...assembleOptions({
+        frozenEntireHeadRowPivot: true,
+        totals: {
+          row: {
+            showGrandTotals: true,
+            reverseLayout: true,
+          },
         },
-      },
-      frozenColCount: 2,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
-    }),
-    ...DEFAULT_STYLE,
-  });
-
-  test('should get correct frozenOptions', () => {
-    expect(getFrozenOptionsPivot(facet.cfg)).toStrictEqual({
-      frozenRowCount: 1,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
-    });
-
-    expect(
-      getFrozenOptionsPivot({
-        ...{
-          ...facet.cfg,
-          showSeriesNumber: true,
-        },
+        frozenColCount: 2,
+        frozenRowCount: 2,
+        frozenTrailingColCount: 2,
+        frozenTrailingRowCount: 2,
       }),
-    ).toStrictEqual({
-      frozenRowCount: 1,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
+      ...DEFAULT_STYLE,
+      hierarchyType,
     });
-  });
 
-  test('should get correct frozenInfo', () => {
-    facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
-        width: 0,
-      },
-      [FrozenGroup.FROZEN_ROW]: {
-        height: 30,
-        range: [0, 0],
-      },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
-        width: 0,
-      },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
-        height: 0,
-      },
-    });
-  });
+    test('should get correct frozenOptions', () => {
+      expect(getFrozenOptionsPivot(facet.cfg)).toStrictEqual({
+        frozenRowCount: 1,
+        frozenColCount: 0,
+        frozenTrailingColCount: 0,
+        frozenTrailingRowCount: 0,
+      });
 
-  test('should get correct xy indexes with frozen', () => {
-    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-      center: [0, 3, 1, 7],
-      frozenCol: [0, -1, 1, 7],
-      frozenRow: [0, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 1, 7],
-      frozenTrailingRow: [0, 3, 8, 7],
+      expect(
+        getFrozenOptionsPivot({
+          ...{
+            ...facet.cfg,
+            showSeriesNumber: true,
+          },
+        }),
+      ).toStrictEqual({
+        frozenRowCount: 1,
+        frozenColCount: 0,
+        frozenTrailingColCount: 0,
+        frozenTrailingRowCount: 0,
+      });
     });
-    expect(facet.calculateXYIndexes(110, 30)).toStrictEqual({
-      center: [1, 3, 2, 7],
-      frozenCol: [0, -1, 2, 7],
-      frozenRow: [1, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 2, 7],
-      frozenTrailingRow: [1, 3, 8, 7],
-    });
-  });
 
-  test('should get correct indexes with row height gt canvas height', () => {
-    const originHeight = facet.panelBBox.viewportHeight;
-    facet.panelBBox.viewportHeight = 10;
-    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-      center: [0, 3, 1, 0],
-      frozenCol: [0, -1, 1, 0],
-      frozenRow: [0, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 1, 0],
-      frozenTrailingRow: [0, 3, 8, 7],
-    });
-    // reset
-    facet.panelBBox.viewportHeight = originHeight;
-  });
-});
-
-describe('Pivot Mode Facet frozen entire row tree mode', () => {
-  const s2: SpreadSheet = new MockSpreadSheet();
-  const dataSet: PivotDataSet = new MockPivotDataSet(s2);
-  s2.dataSet = dataSet;
-  s2.interaction = new RootInteraction(s2);
-  const facet: PivotFacet = new PivotFacet({
-    spreadsheet: s2,
-    dataSet,
-    dataCell: (fct) => new DataCell(fct, s2),
-    ...assembleDataCfg().fields,
-    valueInCols: true,
-    ...assembleOptions({
-      frozenEntireHeadRowPivot: true,
-      totals: {
-        row: {
-          showGrandTotals: true,
-          reverseLayout: true,
+    test('should get correct frozenInfo', () => {
+      facet.calculateFrozenGroupInfo();
+      expect(facet.frozenGroupInfo).toStrictEqual({
+        [FrozenGroup.FROZEN_COL]: {
+          width: 0,
         },
-      },
-      frozenColCount: 2,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
-    }),
-    ...DEFAULT_STYLE,
-    hierarchyType: 'tree',
-  });
-
-  test('should get correct frozenOptions', () => {
-    expect(getFrozenOptionsPivot(facet.cfg)).toStrictEqual({
-      frozenRowCount: 1,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
-    });
-
-    expect(
-      getFrozenOptionsPivot({
-        ...{
-          ...facet.cfg,
-          showSeriesNumber: true,
+        [FrozenGroup.FROZEN_ROW]: {
+          height: 30,
+          range: [0, 0],
         },
-      }),
-    ).toStrictEqual({
-      frozenRowCount: 1,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
+        [FrozenGroup.FROZEN_TRAILING_COL]: {
+          width: 0,
+        },
+        [FrozenGroup.FROZEN_TRAILING_ROW]: {
+          height: 0,
+        },
+      });
     });
-  });
 
-  test('should get correct frozenInfo', () => {
-    facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
-        width: 0,
-      },
-      [FrozenGroup.FROZEN_ROW]: {
-        height: 30,
-        range: [0, 0],
-      },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
-        width: 0,
-      },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
-        height: 0,
-      },
+    test('should get correct xy indexes with frozen', () => {
+      expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+        center: [0, 3, 1, 7],
+        frozenCol: [0, -1, 1, 7],
+        frozenRow: [0, 3, 0, 0],
+        frozenTrailingCol: [4, 3, 1, 7],
+        frozenTrailingRow: [0, 3, 8, 7],
+      });
+      expect(facet.calculateXYIndexes(110, 30)).toStrictEqual({
+        center: [1, 3, 2, 7],
+        frozenCol: [0, -1, 2, 7],
+        frozenRow: [1, 3, 0, 0],
+        frozenTrailingCol: [4, 3, 2, 7],
+        frozenTrailingRow: [1, 3, 8, 7],
+      });
     });
-  });
 
-  test('should get correct xy indexes with frozen', () => {
-    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-      center: [0, 3, 1, 7],
-      frozenCol: [0, -1, 1, 7],
-      frozenRow: [0, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 1, 7],
-      frozenTrailingRow: [0, 3, 8, 7],
+    test('should get correct indexes with row height gt canvas height', () => {
+      const originHeight = facet.panelBBox.viewportHeight;
+      facet.panelBBox.viewportHeight = 10;
+      expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+        center: [0, 3, 1, 0],
+        frozenCol: [0, -1, 1, 0],
+        frozenRow: [0, 3, 0, 0],
+        frozenTrailingCol: [4, 3, 1, 0],
+        frozenTrailingRow: [0, 3, 8, 7],
+      });
+      // reset
+      facet.panelBBox.viewportHeight = originHeight;
     });
-    expect(facet.calculateXYIndexes(110, 30)).toStrictEqual({
-      center: [1, 3, 2, 7],
-      frozenCol: [0, -1, 2, 7],
-      frozenRow: [1, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 2, 7],
-      frozenTrailingRow: [1, 3, 8, 7],
-    });
-  });
-
-  test('should get correct indexes with row height gt canvas height', () => {
-    const originHeight = facet.panelBBox.viewportHeight;
-    facet.panelBBox.viewportHeight = 10;
-    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-      center: [0, 3, 1, 0],
-      frozenCol: [0, -1, 1, 0],
-      frozenRow: [0, 3, 0, 0],
-      frozenTrailingCol: [4, 3, 1, 0],
-      frozenTrailingRow: [0, 3, 8, 7],
-    });
-    // reset
-    facet.panelBBox.viewportHeight = originHeight;
-  });
-});
+  },
+);
