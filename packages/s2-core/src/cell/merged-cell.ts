@@ -14,6 +14,10 @@ import { DataCell } from './data-cell';
 export class MergedCell extends DataCell {
   public cells: S2CellType[];
 
+  public get cellType() {
+    return CellType.MERGED_CELL;
+  }
+
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
@@ -24,10 +28,6 @@ export class MergedCell extends DataCell {
 
   handleRestOptions(...[cells]: [S2CellType[]]) {
     this.cells = cells;
-  }
-
-  public get cellType() {
-    return CellType.MERGED_CELL;
   }
 
   public update() {}

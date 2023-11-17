@@ -22,6 +22,10 @@ export class SeriesNumberCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
   }
 
+  public getHeaderConfig() {
+    return this.headerConfig || {};
+  }
+
   public get cellType() {
     return CellType.ROW_CELL;
   }

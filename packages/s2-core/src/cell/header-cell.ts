@@ -45,8 +45,10 @@ import {
 import { renderIcon } from '../utils/g-renders';
 import { getSortTypeIcon } from '../utils/sort-action';
 
-export abstract class HeaderCell extends BaseCell<Node> {
-  protected headerConfig: BaseHeaderConfig;
+export abstract class HeaderCell<
+  T extends BaseHeaderConfig = BaseHeaderConfig,
+> extends BaseCell<Node> {
+  protected headerConfig: T;
 
   protected actionIconConfig: InternalFullyHeaderActionIcon | undefined;
 
@@ -68,8 +70,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected abstract isBolderText(): boolean;
 
-  protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
+  public getHeaderConfig() {
+    return this.headerConfig || ({} as T);
+  }
+
+  protected handleRestOptions(...[headerConfig]: [T]) {
     this.headerConfig = { ...headerConfig };
+
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams || [];
     // 该单元格是否为需要展示排序 icon 单元格
@@ -100,9 +107,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected generateIconConfig() {
     this.conditionIconMappingResult = this.getIconConditionResult();
 
-    const { sortParam } = this.headerConfig || {};
-    // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
+    const { sortParam } = this.getHeaderConfig();
 
+    // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
     if (this.showSortIcon()) {
       this.actionIconConfig = {
         icons: [{ name: get(sortParam, 'type', 'none'), position: 'right' }],
@@ -143,7 +150,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const isEmptyValues = isEmpty(dataCfg.fields.values);
 
     if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
-      const { sortParam } = this.headerConfig;
+      const { sortParam } = this.getHeaderConfig();
       const query = this.meta.query;
 
       // sortParam 的 query，和 type 本身可能会 undefined

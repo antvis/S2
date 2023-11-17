@@ -62,7 +62,7 @@ export class TableColCell extends ColCell {
       scrollY,
       width: headerWidth,
       height: headerHeight,
-    } = this.headerConfig || {};
+    } = this.getHeaderConfig();
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
 
@@ -95,7 +95,7 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.headerConfig || {};
+    const { scrollX = 0, position } = this.getHeaderConfig();
 
     if (this.isFrozenCell()) {
       return {

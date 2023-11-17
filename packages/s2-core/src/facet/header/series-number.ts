@@ -12,17 +12,18 @@ import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  constructor(cfg: BaseHeaderConfig) {
-    super(cfg);
+  constructor(config: BaseHeaderConfig) {
+    super(config);
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = this.headerConfig;
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
     const { seriesNumberCell } = spreadsheet.options;
 
     return (
-      seriesNumberCell?.(node, spreadsheet, this.headerConfig) ||
-      new SeriesNumberCell(node, spreadsheet, this.headerConfig)
+      seriesNumberCell?.(node, spreadsheet, headerConfig) ||
+      new SeriesNumberCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -64,7 +65,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public clip(): void {
-    const { width, height, viewportHeight } = this.headerConfig;
+    const { width, height, viewportHeight } = this.getHeaderConfig();
 
     this.style.clipPath = new Rect({
       style: {
@@ -77,7 +78,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const { nodes, scrollY = 0, viewportHeight } = this.headerConfig;
+    const { nodes, scrollY = 0, viewportHeight } = this.getHeaderConfig();
 
     each(nodes, (node) => {
       const { y, height: cellHeight } = node;
@@ -100,12 +101,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollY = 0, scrollX = 0, position } = this.headerConfig;
+    const { scrollY = 0, scrollX = 0, position } = this.getHeaderConfig();
 
     translateGroup(this, position.x - scrollX, position.y - scrollY);
   }
 
   public getNodes(): Node[] {
-    return this.headerConfig.nodes || [];
+    const { nodes } = this.getHeaderConfig();
+
+    return nodes || [];
   }
 }

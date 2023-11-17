@@ -35,15 +35,9 @@ import {
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
-export class ColCell extends HeaderCell {
-  protected declare headerConfig: ColHeaderConfig;
-
+export class ColCell extends HeaderCell<ColHeaderConfig> {
   public get cellType() {
     return CellType.COL_CELL;
-  }
-
-  public getHeaderConfig(): ColHeaderConfig {
-    return this.headerConfig;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -107,7 +101,7 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): PointLike {
     const { isLeaf } = this.meta;
-    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig || {};
+    const { width, cornerWidth = 0, scrollX = 0 } = this.getHeaderConfig();
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const textStyle = this.getTextStyle();
@@ -287,7 +281,7 @@ export class ColCell extends HeaderCell {
 
   private getResizeAreaWidth() {
     const { cornerWidth = 0, viewportWidth: headerWidth } =
-      this.headerConfig || {};
+      this.getHeaderConfig();
 
     return (
       Frame.getVerticalBorderWidth(this.spreadsheet) + cornerWidth + headerWidth
@@ -302,7 +296,7 @@ export class ColCell extends HeaderCell {
       cornerWidth = 0,
       height: headerHeight,
       width: headerWidth,
-    } = this.headerConfig || {};
+    } = this.getHeaderConfig();
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const resizeStyle = this.getResizeAreaStyle();
@@ -329,7 +323,7 @@ export class ColCell extends HeaderCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.headerConfig || {};
+    const { scrollX = 0, position } = this.getHeaderConfig();
 
     return {
       x: position?.x + x - scrollX,

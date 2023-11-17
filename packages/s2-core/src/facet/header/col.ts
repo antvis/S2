@@ -19,14 +19,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected background: DisplayObject;
 
-  constructor(cfg: ColHeaderConfig) {
-    super(cfg);
+  constructor(config: ColHeaderConfig) {
+    super(config);
 
     this.initScrollGroup();
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = this.headerConfig;
+    const { spreadsheet } = this.getHeaderConfig();
     const { colCell } = spreadsheet.options;
 
     return (
@@ -58,7 +58,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { height, spreadsheet } = this.headerConfig;
+    const { height, spreadsheet } = this.getHeaderConfig();
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
@@ -81,7 +81,12 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected isColCellInRect(node: Node): boolean {
-    const { spreadsheet, cornerWidth, width, scrollX = 0 } = this.headerConfig;
+    const {
+      spreadsheet,
+      cornerWidth,
+      width,
+      scrollX = 0,
+    } = this.getHeaderConfig();
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
@@ -92,7 +97,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const { nodes } = this.headerConfig;
+    const { nodes } = this.getHeaderConfig();
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
@@ -108,7 +113,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected offset() {
-    const { position, scrollX = 0 } = this.headerConfig;
+    const { position, scrollX = 0 } = this.getHeaderConfig();
 
     // 暂时不考虑移动 y
     translateGroupX(this.scrollGroup, position.x - scrollX);

@@ -18,17 +18,18 @@ import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
  * Corner Header for SpreadSheet
  */
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
-  constructor(cfg: CornerHeaderConfig) {
-    super(cfg);
+  constructor(config: CornerHeaderConfig) {
+    super(config);
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = this.headerConfig;
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
     const { cornerCell } = spreadsheet.options;
 
     return (
-      cornerCell?.(node, spreadsheet, this.headerConfig) ||
-      new CornerCell(node, spreadsheet, this.headerConfig)
+      cornerCell?.(node, spreadsheet, headerConfig) ||
+      new CornerCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -241,7 +242,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected renderCells() {
-    const { nodes, spreadsheet } = this.headerConfig;
+    const { nodes, spreadsheet } = this.getHeaderConfig();
     const cornerHeader = spreadsheet.options?.cornerHeader;
 
     if (cornerHeader) {
@@ -262,13 +263,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollX = 0 } = this.headerConfig;
+    const { scrollX = 0 } = this.getHeaderConfig();
 
     translateGroupX(this, -scrollX);
   }
 
   protected clip(): void {
-    const { width, height } = this.headerConfig;
+    const { width, height } = this.getHeaderConfig();
 
     this.style.clipPath = new Rect({
       style: {

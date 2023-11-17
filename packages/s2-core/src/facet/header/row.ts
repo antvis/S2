@@ -11,17 +11,18 @@ import type { RowHeaderConfig } from './interface';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
-  constructor(cfg: RowHeaderConfig) {
-    super(cfg);
+  constructor(config: RowHeaderConfig) {
+    super(config);
   }
 
   protected getCellInstance(node: Node): S2CellType {
-    const { spreadsheet } = this.headerConfig;
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
     const { rowCell } = spreadsheet.options;
 
     return (
-      rowCell?.(node, spreadsheet, this.headerConfig) ||
-      new RowCell(node, spreadsheet, this.headerConfig)
+      rowCell?.(node, spreadsheet, headerConfig) ||
+      new RowCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -34,7 +35,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY = 0,
       scrollX = 0,
       position,
-    } = this.headerConfig;
+    } = this.getHeaderConfig();
 
     const rowCell = spreadsheet?.options?.rowCell;
     // row'cell only show when visible
@@ -75,14 +76,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollX = 0, scrollY = 0, position } = this.headerConfig;
+    const { scrollX = 0, scrollY = 0, position } = this.getHeaderConfig();
 
     // 向右多移动的 seriesNumberWidth 是序号的宽度
     translateGroup(this, position.x - scrollX, position.y - scrollY);
   }
 
   protected clip(): void {
-    const { width, height, viewportHeight } = this.headerConfig;
+    const { width, height, viewportHeight } = this.getHeaderConfig();
 
     this.style.clipPath = new Rect({
       style: {

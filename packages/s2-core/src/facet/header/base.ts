@@ -23,13 +23,13 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   // protected offset: number;
   protected headerConfig: T;
 
-  protected constructor(cfg: T) {
+  protected constructor(config: T) {
     super();
-    this.headerConfig = cfg;
+    this.headerConfig = config;
   }
 
   public getHeaderConfig() {
-    return this.headerConfig;
+    return this.headerConfig || ({} as T);
   }
 
   /**

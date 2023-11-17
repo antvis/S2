@@ -7,7 +7,6 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import type { RowHeaderConfig } from '../facet/header';
 import {
   CellBorderPosition,
   CellClipBox,
@@ -15,6 +14,8 @@ import {
   type RenderTextShapeOptions,
   type ViewMeta,
 } from '../common/interface';
+import { CustomRect } from '../engine';
+import type { RowHeaderConfig } from '../facet/header';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -26,16 +27,13 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
-import { CustomRect } from '../engine';
 import type { SimpleBBox } from './../engine/interface';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
-import { HeaderCell } from './header-cell';
-import { normalizeTextAlign } from './../utils/normalize';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { normalizeTextAlign } from './../utils/normalize';
+import { HeaderCell } from './header-cell';
 
-export class RowCell extends HeaderCell {
-  protected declare headerConfig: RowHeaderConfig;
-
+export class RowCell extends HeaderCell<RowHeaderConfig> {
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -235,7 +233,7 @@ export class RowCell extends HeaderCell {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
-    } = this.headerConfig;
+    } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
       x,
@@ -359,7 +357,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.getHeaderConfig();
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();

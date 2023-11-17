@@ -29,19 +29,15 @@ import {
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
-export class CornerCell extends HeaderCell {
-  public cornerType: CornerNodeType;
-
-  protected declare headerConfig: CornerHeaderConfig;
+export class CornerCell extends HeaderCell<CornerHeaderConfig> {
+  public get cellType() {
+    return CellType.CORNER_CELL;
+  }
 
   protected isBolderText() {
     const { cornerType } = this.meta;
 
     return cornerType === CornerNodeType.Col;
-  }
-
-  public get cellType() {
-    return CellType.CORNER_CELL;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -188,7 +184,7 @@ export class CornerCell extends HeaderCell {
       scrollY = 0,
       width: headerWidth,
       height: headerHeight,
-    } = this.headerConfig || {};
+    } = this.getHeaderConfig();
     const { x, y, width, height } = this.getBBoxByType();
     const { cornerType } = this.meta;
 
