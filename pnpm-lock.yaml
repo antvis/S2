@@ -440,6 +440,12 @@ importers:
       '@antv/g-canvas':
         specifier: ^0.5.12
         version: 0.5.13
+      '@antv/g-plugin-a11y':
+        specifier: ^0.6.19
+        version: 0.6.19
+      '@antv/g-plugin-rough-canvas-renderer':
+        specifier: ^1.9.24
+        version: 1.9.24
       '@antv/s2':
         specifier: next
         version: link:../packages/s2-core
@@ -830,7 +836,6 @@ packages:
       '@antv/g-plugin-image-loader': 1.3.19
       '@antv/util': 3.3.5
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-canvas@1.9.41:
     resolution: {integrity: sha512-3y6XzfQ69XcZu53HUsJAIzDMPIHs1k7mB9QL5FiaxvDGt2yeDWMrCihKZdNN2C0pVuItneMAZRNhj7ZKmybHvg==}
@@ -913,7 +918,6 @@ packages:
       gl-matrix: 3.4.3
       rbush: 3.0.1
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-math@0.1.9:
     resolution: {integrity: sha512-KHMSfPfZ5XHM1PZnG42Q2gxXfOitYveNTA7L61lR6mhZ8Y/aExsYmHqaKBsSarU0z+6WLrl9C07PQJZaw0uljQ==}
@@ -935,14 +939,12 @@ packages:
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-a11y@0.6.19:
     resolution: {integrity: sha512-XxpxQ9eD7XG2kwE8EfDq+crsGgxm61g3U8nFbmakt0PX+uJVJ5jiEGKhyhENdhk2VUjPIAyKhOxU3wQpJmiyTg==}
     dependencies:
       '@antv/g-lite': 1.2.19
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-canvas-path-generator@1.1.46:
     resolution: {integrity: sha512-YbV2FHflEUQKdN1cQP0vZNRk51lPlYP68IAGJty7LlFh6oIssBSY9fDyYotD9wTg3rn7V2cFSYCJUBxl53FlAg==}
@@ -961,7 +963,6 @@ packages:
       '@antv/g-math': 2.0.2
       '@antv/util': 3.3.5
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-canvas-picker@1.10.21:
     resolution: {integrity: sha512-6Vt21POTJ8MO3VrGFyOEInDgGAPOe9HYhod67R8Q6yG3iKbuWCNeqNP5V5po5lNF5joFRfw08Bp3rY3VdJqZNg==}
@@ -973,7 +974,6 @@ packages:
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-canvas-picker@1.8.45:
     resolution: {integrity: sha512-wFZ5xK3RlXfk2qV/hvfyWlfVWTJTuch1CSNZycFAxUmBw3T2eoTq5fWqj81ZnF/T75DiG/8L7aB901BaGfiC8A==}
@@ -1009,7 +1009,6 @@ packages:
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-dom-interaction@1.7.45:
     resolution: {integrity: sha512-14sLKemcCxObQDQPSVjNqD9k7uVvf8OfeCJQCza7IadWqdQPEyvFfhCw458hxW+wQm8zqT6rki0Z3RGZW2SPDw==}
@@ -1024,7 +1023,6 @@ packages:
     dependencies:
       '@antv/g-lite': 1.2.19
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-html-renderer@1.7.49:
     resolution: {integrity: sha512-pwP+bjybMHCMcHpIaVZV26obrNMnbI9YZB+4B1MbDHOYRtlE/NHFnNluDIAV7WiyePjp+gUOjqzeox7WNV+C1Q==}
@@ -1043,7 +1041,6 @@ packages:
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-image-loader@1.1.47:
     resolution: {integrity: sha512-GBVA2RfBehkGRcetVW99SPlP7MHhBl89JEueZjyPLx9KdpTZ6z++vnknK/2IVcCKlho41t/IJyarsAGsCwLdQg==}
@@ -1061,7 +1058,6 @@ packages:
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-plugin-rough-canvas-renderer@1.9.24:
     resolution: {integrity: sha512-P0Jxv+zxc+4VrPWzAxEoyutqYlaFgf06l8xPuUy4AjbA56RheglDIgQqBLn+6DLRrhXziXt0tYKtHyKjERMGwQ==}
@@ -1071,7 +1067,6 @@ packages:
       '@antv/util': 3.3.5
       roughjs: 4.6.6
       tslib: 2.6.2
-    dev: true
 
   /@antv/g-web-animations-api@1.0.34(@antv/g-lite@1.0.51):
     resolution: {integrity: sha512-svqHWdC1jEoEla8yW2EzHaac7Lg2vnzvowSpMjYk/lIZyr9FvZ5flR5e84wLkYF91Q+hx3ouvn2DrRNVhNA2yQ==}
@@ -10028,7 +10023,6 @@ packages:
 
   /eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
-    dev: true
 
   /events@1.1.1:
     resolution: {integrity: sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==}
@@ -11341,7 +11335,6 @@ packages:
 
   /hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
-    dev: true
 
   /handle-thing@2.0.1:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
@@ -16541,7 +16534,6 @@ packages:
 
   /path-data-parser@0.1.0:
     resolution: {integrity: sha512-NOnmBpt5Y2RWbuv0LMzsayp3lVylAHLPUTut412ZA3l+C4uw4ZVkQbjShYCQ8TCpUMdPapr4YjUqLYD6v68j+w==}
-    dev: true
 
   /path-exists@3.0.0:
     resolution: {integrity: sha512-bpC7GYwiDYQ4wYLe+FA8lhRjhQCMcQGuSgGGqDkg/QerRWw9CmGRT0iSOVRSZJ29NMLZgIzqaljJ63oaL4NIJQ==}
@@ -16740,14 +16732,12 @@ packages:
 
   /points-on-curve@0.2.0:
     resolution: {integrity: sha512-0mYKnYYe9ZcqMCWhUjItv/oHjvgEsfKvnUTg8sAtnHr3GVy7rGkXCb6d5cSyqrWqL4k81b9CPg3urd+T7aop3A==}
-    dev: true
 
   /points-on-path@0.2.1:
     resolution: {integrity: sha512-25ClnWWuw7JbWZcgqY/gJ4FQWadKxGWk+3kR/7kD0tCaDtPPMj7oHu2ToLaVhfpnHrZzYby2w6tUA0eOIuUg8g==}
     dependencies:
       path-data-parser: 0.1.0
       points-on-curve: 0.2.0
-    dev: true
 
   /posix-character-classes@0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==}
@@ -19701,7 +19691,6 @@ packages:
       path-data-parser: 0.1.0
       points-on-curve: 0.2.0
       points-on-path: 0.2.1
-    dev: true
 
   /rsvp@4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}

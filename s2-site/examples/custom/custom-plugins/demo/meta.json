@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "G 5.0 插件",
+    "en": "G 5.0 plugins"
+  },
+  "demos": [
+    {
+      "filename": "custom-g-plugins.ts",
+      "title": {
+        "zh": "自定义 AntV/G 5.0 插件和配置",
+        "en": "custom AntV/G 5.0 plugins and config"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Ag6SSYgDpeYAAAAAAAAAAAAADmJ7AQ/original"
+    }
+  ]
+}
