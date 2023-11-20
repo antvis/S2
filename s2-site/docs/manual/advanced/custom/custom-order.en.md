@@ -84,12 +84,13 @@ const s2Options = {
 * Customize the `tooltip` display after the `icon` is clicked
 
 ```jsx
-const MENUS = [
-  { key: SortMethodType.none, text: '不排序' },
-  { key: SortMethodType.asc, text: '升序', icon: 'GroupAsc' },
-  { key: SortMethodType.desc, text: '降序', icon: 'GroupDesc' },
-  { key: SortMethodType.custom, text: '自定义排序', icon: 'Trend' },
+const items = [
+  { key: SortMethodType.none, label: '不排序' },
+  { key: SortMethodType.asc, label: '升序', icon: 'GroupAsc' },
+  { key: SortMethodType.desc, label: '降序', icon: 'GroupDesc' },
+  { key: SortMethodType.custom, label: '自定义排序', icon: 'Trend' },
 ];
+
 const s2Options = {
   // 设置自定义 `icon` 的展示条件
   headerActionIcons: [
@@ -104,7 +105,9 @@ const s2Options = {
         const { meta, event } = props;
         const operator = {
           // 配置 tooltip 中展示的内容
-          menus: MENUS,
+          menu: {
+            items
+          },
         };
         // 自定义 tooltip 配置，展示 toolTip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
@@ -160,7 +163,9 @@ const s2Options = {
             handleSortCallback(meta, key);
             meta.spreadsheet.hideTooltip();
           },
-          menus: MENUS,
+          menu: {
+            items
+          },
         };
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,

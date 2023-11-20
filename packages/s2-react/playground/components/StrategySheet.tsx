@@ -16,10 +16,12 @@ import {
   StrategyOptions,
   StrategySheetDataConfig,
 } from '../../__tests__/data/strategy-data';
+import { usePlaygroundContext } from '../context/playground.context';
 
 export const StrategySheet: React.FC<
   Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
 > = React.forwardRef((props, ref) => {
+  const context = usePlaygroundContext();
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -84,7 +86,6 @@ export const StrategySheet: React.FC<
 
   return (
     <SheetComponent
-      {...props}
       ref={ref}
       sheetType="strategy"
       dataCfg={strategyDataCfg}
@@ -127,6 +128,8 @@ export const StrategySheet: React.FC<
           </>
         ),
       }}
+      {...props}
+      {...context}
     />
   );
 });

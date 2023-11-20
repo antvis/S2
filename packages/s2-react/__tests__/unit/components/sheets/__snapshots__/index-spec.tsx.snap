@@ -3,7 +3,7 @@
 exports[`<SheetComponent/> Tests Render Tests should render editable sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-1adbn6x"
   >
     <div
       class="ant-spin-container"
@@ -29,18 +29,20 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space ant-space-horizontal ant-space-align-center"
-                style="gap: 8px;"
+                class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <button
-                    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
-                    <div />
+                    <span
+                      class="ant-btn-icon"
+                    >
+                      <div />
+                    </span>
                     <span>
                       行列切换
                     </span>
@@ -48,16 +50,19 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                 </div>
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <div
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
-                      <div />
+                      <span
+                        class="ant-btn-icon"
+                      >
+                        <div />
+                      </span>
                       <span>
                         高级排序
                       </span>
@@ -67,11 +72,12 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                 <div
                   class="ant-space-item"
                 >
-                  <a
-                    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+                  <button
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    type="button"
                   >
                     <div />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -94,7 +100,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-1adbn6x"
           >
             <li
               aria-disabled="true"
@@ -176,7 +182,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer ant-select-single ant-select-show-arrow"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-1adbn6x ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -185,7 +191,6 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                     class="ant-select-selection-search"
                   >
                     <input
-                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
                       aria-autocomplete="list"
                       aria-controls="rc_select_TEST_OR_SSR_list"
                       aria-expanded="false"
@@ -195,11 +200,8 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="rc_select_TEST_OR_SSR"
-                      readonly=""
                       role="combobox"
-                      style="opacity: 0;"
                       type="search"
-                      unselectable="on"
                       value=""
                     />
                   </span>
@@ -265,7 +267,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
 exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-1adbn6x"
   >
     <div
       class="ant-spin-container"
@@ -291,18 +293,20 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space ant-space-horizontal ant-space-align-center"
-                style="gap: 8px;"
+                class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <button
-                    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
-                    <div />
+                    <span
+                      class="ant-btn-icon"
+                    >
+                      <div />
+                    </span>
                     <span>
                       行列切换
                     </span>
@@ -310,16 +314,19 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                 </div>
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <div
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
-                      <div />
+                      <span
+                        class="ant-btn-icon"
+                      >
+                        <div />
+                      </span>
                       <span>
                         高级排序
                       </span>
@@ -329,11 +336,12 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                 <div
                   class="ant-space-item"
                 >
-                  <a
-                    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+                  <button
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    type="button"
                   >
                     <div />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -356,7 +364,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-1adbn6x"
           >
             <li
               aria-disabled="true"
@@ -438,7 +446,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer ant-select-single ant-select-show-arrow"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-1adbn6x ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -447,7 +455,6 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                     class="ant-select-selection-search"
                   >
                     <input
-                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
                       aria-autocomplete="list"
                       aria-controls="rc_select_TEST_OR_SSR_list"
                       aria-expanded="false"
@@ -457,11 +464,8 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="rc_select_TEST_OR_SSR"
-                      readonly=""
                       role="combobox"
-                      style="opacity: 0;"
                       type="search"
-                      unselectable="on"
                       value=""
                     />
                   </span>
@@ -517,7 +521,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
 exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-1adbn6x"
   >
     <div
       class="ant-spin-container"
@@ -543,18 +547,20 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space ant-space-horizontal ant-space-align-center"
-                style="gap: 8px;"
+                class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <button
-                    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
-                    <div />
+                    <span
+                      class="ant-btn-icon"
+                    >
+                      <div />
+                    </span>
                     <span>
                       行列切换
                     </span>
@@ -562,16 +568,19 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                 </div>
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <div
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
-                      <div />
+                      <span
+                        class="ant-btn-icon"
+                      >
+                        <div />
+                      </span>
                       <span>
                         高级排序
                       </span>
@@ -581,11 +590,12 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                 <div
                   class="ant-space-item"
                 >
-                  <a
-                    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+                  <button
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    type="button"
                   >
                     <div />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -608,7 +618,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-1adbn6x"
           >
             <li
               aria-disabled="true"
@@ -690,7 +700,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer ant-select-single ant-select-show-arrow"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-1adbn6x ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -699,7 +709,6 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                     class="ant-select-selection-search"
                   >
                     <input
-                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
                       aria-autocomplete="list"
                       aria-controls="rc_select_TEST_OR_SSR_list"
                       aria-expanded="false"
@@ -709,11 +718,8 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="rc_select_TEST_OR_SSR"
-                      readonly=""
                       role="combobox"
-                      style="opacity: 0;"
                       type="search"
-                      unselectable="on"
                       value=""
                     />
                   </span>
@@ -769,7 +775,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
 exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-1adbn6x"
   >
     <div
       class="ant-spin-container"
@@ -795,18 +801,20 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space ant-space-horizontal ant-space-align-center"
-                style="gap: 8px;"
+                class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <button
-                    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
-                    <div />
+                    <span
+                      class="ant-btn-icon"
+                    >
+                      <div />
+                    </span>
                     <span>
                       行列切换
                     </span>
@@ -814,16 +822,19 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                 </div>
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <div
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
-                      <div />
+                      <span
+                        class="ant-btn-icon"
+                      >
+                        <div />
+                      </span>
                       <span>
                         高级排序
                       </span>
@@ -833,11 +844,12 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                 <div
                   class="ant-space-item"
                 >
-                  <a
-                    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+                  <button
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    type="button"
                   >
                     <div />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -860,7 +872,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-1adbn6x"
           >
             <li
               aria-disabled="true"
@@ -942,7 +954,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer ant-select-single ant-select-show-arrow"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-1adbn6x ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -951,7 +963,6 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                     class="ant-select-selection-search"
                   >
                     <input
-                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
                       aria-autocomplete="list"
                       aria-controls="rc_select_TEST_OR_SSR_list"
                       aria-expanded="false"
@@ -961,11 +972,8 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="rc_select_TEST_OR_SSR"
-                      readonly=""
                       role="combobox"
-                      style="opacity: 0;"
                       type="search"
-                      unselectable="on"
                       value=""
                     />
                   </span>
@@ -1021,7 +1029,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
 exports[`<SheetComponent/> Tests Render Tests should render table sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-1adbn6x"
   >
     <div
       class="ant-spin-container"
@@ -1047,18 +1055,20 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space ant-space-horizontal ant-space-align-center"
-                style="gap: 8px;"
+                class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <button
-                    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
-                    <div />
+                    <span
+                      class="ant-btn-icon"
+                    >
+                      <div />
+                    </span>
                     <span>
                       行列切换
                     </span>
@@ -1066,16 +1076,19 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                 </div>
                 <div
                   class="ant-space-item"
-                  style=""
                 >
                   <div
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
-                      <div />
+                      <span
+                        class="ant-btn-icon"
+                      >
+                        <div />
+                      </span>
                       <span>
                         高级排序
                       </span>
@@ -1085,11 +1098,12 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                 <div
                   class="ant-space-item"
                 >
-                  <a
-                    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+                  <button
+                    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    type="button"
                   >
                     <div />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1112,7 +1126,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-1adbn6x"
           >
             <li
               aria-disabled="true"
@@ -1194,7 +1208,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer ant-select-single ant-select-show-arrow"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-1adbn6x ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -1203,7 +1217,6 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                     class="ant-select-selection-search"
                   >
                     <input
-                      aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
                       aria-autocomplete="list"
                       aria-controls="rc_select_TEST_OR_SSR_list"
                       aria-expanded="false"
@@ -1213,11 +1226,8 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="rc_select_TEST_OR_SSR"
-                      readonly=""
                       role="combobox"
-                      style="opacity: 0;"
                       type="search"
-                      unselectable="on"
                       value=""
                     />
                   </span>

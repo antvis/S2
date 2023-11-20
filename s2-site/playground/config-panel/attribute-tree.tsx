@@ -13,6 +13,7 @@ import { AttributeTreeProps, AttributeComponentProps } from './types';
 
 function titleCase(type: string) {
   const s = camelCase(type);
+
   return s ? `${s[0].toUpperCase()}${s.substring(1)}` : s;
 }
 
@@ -39,14 +40,17 @@ export class AttributeTree extends PureComponent<AttributeTreeProps> {
       (relation) => relation.toAttributeId === config?.attributeId,
     );
     const status: string[] = [];
+
     forEach(filterRelations, ({ fromAttributeId, value, operator, action }) => {
       const fromAttributeValue = get(attributes, fromAttributeId);
+
       if (operator === 'EQUAL' && fromAttributeValue === value) {
         status.push(action);
       } else if (operator === 'EMPTY' && isEmpty(fromAttributeValue)) {
         status.push(action);
       }
     });
+
     return status;
   };
 

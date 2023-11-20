@@ -236,40 +236,45 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 操作项
 
-除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip`
-对应的 [单元格信息](/docs/api/basic-class/base-cell)
+除了默认提供的操作项，还可以配置 `operation.menu` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到当前 `tooltip`
+对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
 
 ```ts
 const s2Options = {
   tooltip: {
     operation: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          onClick: (cell) => {
-            console.log('操作 1 点击');
-            console.log('tooltip 对应的单元格：', cell)
-          },
-          children: [ {
-            key: 'custom-a-a',
-            text: '操作 1-1',
+      menu: {
+        onClick: (info, cell) => {
+          console.log('菜单项点击：', info, cell);
+        },
+        items: [
+          {
+            key: 'custom-a',
+            label: '操作 1',
             icon: 'Trend',
-            onClick: (cell) => {
-              console.log('操作 1-1 点击');
+            onClick: (info, cell) => {
+              console.log('操作 1 点击');
+              console.log('tooltip 对应的单元格：', info, cell)
             },
-          } ]
-        },
-        {
-          key: 'custom-b',
-          text: '操作 2',
-          icon: 'EyeOutlined',
-          onClick: (cell) => {
-            console.log('操作 2 点击');
+            children: [ {
+              key: 'custom-a-a',
+              label: '操作 1-1',
+              icon: 'Trend',
+              onClick: (info, cell) => {
+                console.log('操作 1-1 点击', info, cell);
+              },
+            } ]
           },
-        },
-      ],
+          {
+            key: 'custom-b',
+            label: '操作 2',
+            icon: 'EyeOutlined',
+            onClick: (info, cell) => {
+              console.log('操作 2 点击', info, cell);
+            },
+          },
+        ],
+      }
     },
   },
 };
@@ -281,24 +286,26 @@ const s2Options = {
 const s2Options = {
   tooltip: {
     operation: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          enable: false,
-        },
-        {
-          key: 'custom-b',
-          text: '操作 2',
-          icon: 'EyeOutlined',
-          enable: (cell) => {
-            // 根据单元格信息动态显示，如：叶子节点不显示
-            const meta = cell.getMeta()
-            return meta.isLeaf
+      menu: {
+        items: [
+          {
+            key: 'custom-a',
+            label: '操作 1',
+            icon: 'Trend',
+            visible: false,
           },
-        },
-      ],
+          {
+            key: 'custom-b',
+            label: '操作 2',
+            icon: 'EyeOutlined',
+            visible: (cell) => {
+              // 根据单元格信息动态显示，如：叶子节点不显示
+              const meta = cell.getMeta()
+              return meta.isLeaf
+            },
+          },
+        ],
+      }
     },
   },
 };
@@ -310,7 +317,7 @@ const s2Options = {
 
 <br/>
 
-如果使用的是 `@antv/s2-react`, 那么 `text` 和 `icon` 还支持任意 `ReactNode`
+如果使用的是 `@antv/s2-react`, 那么 `label` 和 `icon` 还支持任意 `ReactNode`, 菜单项透传 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api)
 
 ```tsx
 import { StarOutlined } from '@ant-design/icons';
@@ -318,12 +325,18 @@ import { StarOutlined } from '@ant-design/icons';
 const s2Options = {
   tooltip: {
     operation: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: <div>操作 1</div>,
-          icon: <StarOutlined/>,
-        }
+      menu: {
+        // 可以使用 antd 的配置项 https://ant-design.antgroup.com/components/menu-cn#api
+        mode: "vertical",
+        subMenuOpenDelay: 0.2,
+        items: [
+          {
+            key: 'custom-a',
+            label: <div>操作 1</div>,
+            icon: <StarOutlined/>,
+          }
+        ]
+      }
     },
   },
 };
@@ -491,7 +504,7 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
 
-##### `createVNode` 自定义类的方式(推荐)
+##### `createVNode` 自定义类的方式（推荐）
 
 ```typescript
 // TooltipContent.vue
@@ -722,19 +735,21 @@ tooltip: {
       instance.showTooltip = (tooltipOptions) => {
         const { options } = tooltipOptions;
         const customOperator = {
-          onClick: ({ key }) => {
-            console.log('任意菜单项点击', key);
-          },
-          menus: [
-            {
-              key: 'trend',
-              icon: 'trend',
-              text: '趋势',
-              onClick: () => {
-                console.log('当前菜单项点击')
-              }
+          menu: {
+            onClick: ({ key }) => {
+              console.log('任意菜单项点击', key);
             },
-          ],
+            items: [
+              {
+                key: 'trend',
+                icon: 'trend',
+                label: '趋势',
+                onClick: (info, cell) => {
+                  console.log('当前菜单项点击：', info, cell)
+                }
+              },
+            ],
+          }
         };
         instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
       };

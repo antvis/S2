@@ -218,10 +218,6 @@ ReactDOM.render(
 yarn add antd @ant-design/icons
 ```
 
-```ts
-import 'antd/dist/antd.min.css';
-```
-
 ​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 
 #### 表格移动端组件使用

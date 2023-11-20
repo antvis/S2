@@ -1,8 +1,9 @@
 <script lang="ts">
 import {
-  type TooltipOperatorMenu,
-  type S2CellType,
   TOOLTIP_PREFIX_CLS,
+  type TooltipOperatorMenuInfo,
+  type S2CellType,
+  type TooltipBaseOperatorMenuItem,
 } from '@antv/s2';
 import { Menu } from 'ant-design-vue';
 import { isEmpty } from 'lodash';
@@ -11,7 +12,7 @@ import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 
 interface TooltipOperatorMenuProps {
-  menu: TooltipOperatorMenu;
+  menu: TooltipBaseOperatorMenuItem;
   cell: S2CellType;
 }
 
@@ -19,8 +20,9 @@ export default defineComponent({
   name: 'TooltipOperatorMenu',
   props: ['menu', 'cell'] as unknown as GetInitProps<TooltipOperatorMenuProps>,
   setup(props) {
+    const { menu, cell } = props;
     const onMenuTitleClick = () => {
-      props.menu.onClick?.(props.cell);
+      props.menu.onClick?.(menu as TooltipOperatorMenuInfo, cell);
     };
 
     return {
@@ -52,14 +54,14 @@ export default defineComponent({
         <TooltipOperatorMenu :menu="subMenu" :cell="cell" />
       </template>
       <template v-else>
-        <MenuItem :title="subMenu.text" :key="subMenu.key">
+        <MenuItem :title="subMenu.label" :key="subMenu.key">
           <TooltipOperatorTitle :menu="subMenu" @click="onMenuTitleClick" />
         </MenuItem>
       </template>
     </template>
   </SubMenu>
   <!-- v-if/else branches must use unique keys. -->
-  <MenuItem v-if="isEmpty(menu.children)" :title="menu.text" :key="menu.key">
+  <MenuItem v-if="isEmpty(menu.children)" :title="menu.label" :key="menu.key">
     <TooltipOperatorTitle :menu="menu" @click="onMenuTitleClick" />
   </MenuItem>
 </template>

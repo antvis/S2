@@ -1,4 +1,9 @@
-import { DEFAULT_MOBILE_OPTIONS, DeviceType, LayoutWidthTypes } from '@antv/s2';
+import {
+  DEFAULT_MOBILE_OPTIONS,
+  DeviceType,
+  LayoutWidthTypes,
+  type S2Options,
+} from '@antv/s2';
 import { omit, pick } from 'lodash';
 import {
   getBaseSheetComponentOptions,
@@ -87,7 +92,9 @@ describe('Options Tests', () => {
           "enable": true,
           "operation": Object {
             "hiddenColumns": true,
-            "menus": Array [],
+            "menu": Object {
+              "items": Array [],
+            },
             "sort": true,
           },
         },
@@ -98,20 +105,23 @@ describe('Options Tests', () => {
   });
 
   test('should get custom options', () => {
-    const options = getBaseSheetComponentOptions({
+    const tooltipOptions: S2Options = {
       tooltip: {
         enable: false,
         operation: {
           sort: false,
-          menus: [
-            {
-              key: 'custom',
-              text: 'custom',
-            },
-          ],
+          menu: {
+            items: [
+              {
+                key: 'custom',
+                label: 'custom',
+              },
+            ],
+          },
         },
       },
-    });
+    };
+    const options = getBaseSheetComponentOptions(tooltipOptions);
 
     expect(options.tooltip).toMatchInlineSnapshot(`
       Object {
@@ -119,12 +129,14 @@ describe('Options Tests', () => {
         "enable": false,
         "operation": Object {
           "hiddenColumns": true,
-          "menus": Array [
-            Object {
-              "key": "custom",
-              "text": "custom",
-            },
-          ],
+          "menu": Object {
+            "items": Array [
+              Object {
+                "key": "custom",
+                "label": "custom",
+              },
+            ],
+          },
           "sort": false,
         },
       }

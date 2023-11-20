@@ -212,10 +212,6 @@ ReactDOM.render(
 yarn add antd @ant-design/icons
 ```
 
-```ts
-import 'antd/dist/antd.min.css';
-```
-
 ​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
 
 #### Table mobile component usage

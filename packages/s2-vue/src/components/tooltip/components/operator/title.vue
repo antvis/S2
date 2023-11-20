@@ -1,6 +1,6 @@
 <script lang="ts">
 import {
-  type TooltipOperatorMenu,
+  type TooltipBaseOperatorMenuItem,
   TOOLTIP_PREFIX_CLS,
   getIcon,
 } from '@antv/s2';
@@ -8,7 +8,7 @@ import { computed, defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';
 
 interface TooltipOperatorTitleProps {
-  menu: TooltipOperatorMenu;
+  menu: TooltipBaseOperatorMenuItem;
 }
 
 export default defineComponent({
@@ -32,7 +32,7 @@ export default defineComponent({
       v-html="icon"
       :class="`${TOOLTIP_PREFIX_CLS}-operator-icon`"
     />
-    <span :class="`${TOOLTIP_PREFIX_CLS}-operator-text`">{{ menu.text }}</span>
+    <span :class="`${TOOLTIP_PREFIX_CLS}-operator-text`">{{ menu.label }}</span>
   </span>
 </template>
 

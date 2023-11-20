@@ -1,14 +1,14 @@
-import { isEmpty } from 'lodash';
-import React from 'react';
-import { getTooltipDefaultOptions } from '@antv/s2';
 import type {
   TooltipDetailListItem,
-  TooltipOperatorOptions,
-  TooltipSummaryOptions,
-  TooltipNameTipsOptions,
-  TooltipHeadInfo as TooltipHeadInfoType,
+  TooltipHeadInfo,
   TooltipInterpretationOptions,
+  TooltipNameTipsOptions,
+  TooltipSummaryOptions,
 } from '@antv/s2';
+import { getTooltipDefaultOptions } from '@antv/s2';
+import { isEmpty } from 'lodash';
+import React from 'react';
+import { TooltipDescription } from './components/description';
 import { TooltipDetail } from './components/detail';
 import { TooltipHead } from './components/head-info';
 import { TooltipInfos } from './components/infos';
@@ -16,108 +16,112 @@ import { TooltipInterpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
 import { TooltipSimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
-import { TooltipDescription } from './components/description';
-import type { TooltipRenderProps } from './interface';
+import type {
+  TooltipOperatorMenuOptions,
+  TooltipOperatorOptions,
+  TooltipRenderProps,
+} from './interface';
 
 import './index.less';
 
-export const TooltipComponent = (props: TooltipRenderProps) => {
-  const { data, options, content, cell, onMounted } = props;
+export const TooltipComponent: React.FC<TooltipRenderProps> = React.memo(
+  (props) => {
+    const { data, options, content, cell, onMounted } = props;
 
-  const renderOperation = (
-    operator:
-      | TooltipOperatorOptions<React.ReactNode, React.ReactNode>
-      | undefined,
-    onlyShowOperator?: boolean,
-  ) => {
-    if (!operator) {
-      return null;
-    }
+    const renderOperation = (
+      operator: TooltipOperatorOptions,
+      onlyShowOperator?: boolean,
+    ) => {
+      if (!operator) {
+        return null;
+      }
 
-    return (
-      <TooltipOperator
-        {...operator}
-        onClick={operator.onClick as (params: { key: string }) => void}
-        onlyShowOperator={onlyShowOperator!}
-        cell={cell!}
-      />
-    );
-  };
+      return (
+        <TooltipOperator
+          {...operator}
+          menu={operator.menu!}
+          onlyShowOperator={onlyShowOperator!}
+          cell={cell!}
+        />
+      );
+    };
 
-  const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
-    const { name, tips } = nameTip || {};
+    const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
+      const { name, tips } = nameTip || {};
 
-    return <TooltipSimpleTips name={name} tips={tips} />;
-  };
+      return <TooltipSimpleTips name={name} tips={tips} />;
+    };
 
-  const renderSummary = (summaries: TooltipSummaryOptions[] | undefined) =>
-    !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
+    const renderSummary = (summaries: TooltipSummaryOptions[] | undefined) =>
+      !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
 
-  const renderHeadInfo = (headInfo: TooltipHeadInfoType | undefined | null) => {
-    const { cols = [], rows = [] } = headInfo || {};
+    const renderHeadInfo = (headInfo: TooltipHeadInfo | undefined | null) => {
+      const { cols = [], rows = [] } = headInfo || {};
 
-    return (
-      (!isEmpty(cols) || !isEmpty(rows)) && (
-        <TooltipHead cols={cols} rows={rows} />
-      )
-    );
-  };
+      return (
+        (!isEmpty(cols) || !isEmpty(rows)) && (
+          <TooltipHead cols={cols} rows={rows} />
+        )
+      );
+    };
 
-  const renderDetail = (details: TooltipDetailListItem[] | null | undefined) =>
-    !isEmpty(details) && <TooltipDetail list={details} />;
+    const renderDetail = (
+      details: TooltipDetailListItem[] | null | undefined,
+    ) => !isEmpty(details) && <TooltipDetail list={details} />;
 
-  const renderInfos = (infos: string | undefined) =>
-    infos && <TooltipInfos infos={infos} />;
+    const renderInfos = (infos: string | undefined) =>
+      infos && <TooltipInfos infos={infos} />;
 
-  const renderInterpretation = (
-    interpretation: TooltipInterpretationOptions | undefined,
-  ) => interpretation && <TooltipInterpretation {...interpretation} />;
+    const renderInterpretation = (
+      interpretation: TooltipInterpretationOptions | undefined,
+    ) => interpretation && <TooltipInterpretation {...interpretation} />;
 
-  const renderDescription = (description: string | undefined) => (
-    <TooltipDescription description={description} />
-  );
-
-  const renderContent = () => {
-    const { operator, onlyShowOperator } = getTooltipDefaultOptions<
-      React.ReactNode,
-      React.ReactNode
-    >(options);
-
-    const {
-      summaries,
-      headInfo,
-      details,
-      interpretation,
-      infos,
-      tips,
-      name,
-      description,
-    } = data || {};
-    const nameTip: TooltipNameTipsOptions = { name, tips };
-
-    if (onlyShowOperator) {
-      return renderOperation(operator, true);
-    }
-
-    const DefaultContent = (
-      <>
-        {renderNameTips(nameTip)}
-        {renderSummary(summaries)}
-        {renderInterpretation(interpretation)}
-        {renderHeadInfo(headInfo)}
-        {renderDetail(details)}
-        {renderInfos(infos)}
-        {renderDescription(description)}
-      </>
+    const renderDescription = (description: string | undefined) => (
+      <TooltipDescription description={description} />
     );
 
-    return (
-      <span ref={onMounted}>
-        {renderOperation(operator)}
-        {content ?? DefaultContent}
-      </span>
-    );
-  };
+    const renderContent = () => {
+      const { operator, onlyShowOperator } =
+        getTooltipDefaultOptions<TooltipOperatorMenuOptions>(options);
 
-  return renderContent();
-};
+      const {
+        summaries,
+        headInfo,
+        details,
+        interpretation,
+        infos,
+        tips,
+        name,
+        description,
+      } = data || {};
+      const nameTip: TooltipNameTipsOptions = { name, tips };
+
+      if (onlyShowOperator) {
+        return renderOperation(operator, true);
+      }
+
+      const DefaultContent = (
+        <>
+          {renderNameTips(nameTip)}
+          {renderSummary(summaries)}
+          {renderInterpretation(interpretation)}
+          {renderHeadInfo(headInfo)}
+          {renderDetail(details)}
+          {renderInfos(infos)}
+          {renderDescription(description)}
+        </>
+      );
+
+      return (
+        <span ref={onMounted}>
+          {renderOperation(operator)}
+          {content ?? DefaultContent}
+        </span>
+      );
+    };
+
+    return renderContent();
+  },
+);
+
+TooltipComponent.displayName = 'TooltipComponent';
