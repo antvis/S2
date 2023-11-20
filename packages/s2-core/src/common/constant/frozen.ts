@@ -26,10 +26,10 @@ export const FrozenCellGroupMap = {
 };
 
 export interface FrozenOpts {
-  frozenRowCount: number;
-  frozenColCount: number;
-  frozenTrailingRowCount: number;
-  frozenTrailingColCount: number;
+  frozenRowCount?: number;
+  frozenColCount?: number;
+  frozenTrailingRowCount?: number;
+  frozenTrailingColCount?: number;
 }
 
 export interface FrozenCellIndex {

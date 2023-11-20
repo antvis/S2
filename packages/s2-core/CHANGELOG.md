@@ -1,3 +1,20 @@
+# [@antv/s2-v1.53.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.53.0-alpha.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* **copy:** 修复刷选复制行列头时, 数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
+* **interaction:** 修复行列头圈选后滑出可视范围后, 错误的选择了数值单元格 close [#2340](https://github.com/antvis/S2/issues/2340) ([#2411](https://github.com/antvis/S2/issues/2411)) ([3c0884b](https://github.com/antvis/S2/commit/3c0884b4c95efc65279db375327860a3b4335af8))
+* lint error fixed ([c8d7391](https://github.com/antvis/S2/commit/c8d7391845b0cd231e5a28f2cd35947b4a88a40d))
+* test case optimize ([1b32ad3](https://github.com/antvis/S2/commit/1b32ad34bbcda3aed60a814e7c4b8592b4761915))
+* 修复交叉模式下 行序号位置不正确&总计行未添加行序号 ([#2412](https://github.com/antvis/S2/issues/2412)) ([55359af](https://github.com/antvis/S2/commit/55359af64d08492298187c2ef15d0a780440d1fd))
+* 修复隐藏列总计时行总计也被隐藏问题 ([#2417](https://github.com/antvis/S2/issues/2417)) ([3b771c0](https://github.com/antvis/S2/commit/3b771c0df436ef3687f6e20968cf5aa20680e732))
+
+
+### Features
+
+* the pivot table supports freezing the first row as a whole ([dd61601](https://github.com/antvis/S2/commit/dd61601b7aab505eafeaa5ad8faf98baea295ed4))
+
 # [@antv/s2-v1.52.0](https://github.com/antvis/S2/compare/@antv/s2-v1.51.2...@antv/s2-v1.52.0) (2023-11-10)
 
 

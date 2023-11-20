@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.44.3-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3-alpha.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* **copy:** 修复刷选复制行列头时, 数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
+
 # [@antv/s2-react-v1.44.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.1...@antv/s2-react-v1.44.2) (2023-11-10)
 
 

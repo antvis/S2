@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2-react",
-  "version": "1.44.2",
+  "version": "1.44.3-alpha.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -71,7 +71,7 @@
     "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
-    "@antv/s2": "*",
+    "@antv/s2": "1.53.0-alpha.1",
     "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
