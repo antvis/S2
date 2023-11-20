@@ -65,9 +65,10 @@ import {
   tableSheetSingleColumns,
 } from './config';
 import { partDrillDown } from './drill-down';
-import './index.less';
 import { MobileSheetComponent } from './components/Mobile';
 import { onSheetMounted } from './utils';
+import { PluginsSheet } from './components/Plugins';
+import './index.less';
 
 const { TabPane } = Tabs;
 
@@ -1216,6 +1217,9 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="移动端表格" key="mobile">
           <MobileSheetComponent />
+        </TabPane>
+        <TabPane tab="G 5.0 插件系统" key="rough">
+          <PluginsSheet />
         </TabPane>
       </Tabs>
     </div>

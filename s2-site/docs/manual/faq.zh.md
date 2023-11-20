@@ -34,11 +34,15 @@ order: 8
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
-可以开启 `supportCSSTransform` 属性
+可以开启 [AntV/G](https://g.antv.antgroup.com/api/canvas/options#supportscsstransform) 渲染引起的 `supportsCSSTransform` 属性
 
 ```ts
 const s2Options = {
-  supportCSSTransform: true
+  transformCanvasConfig() {
+    return {
+      supportsCSSTransform: true
+    }
+  }
 }
 ```
 
@@ -164,6 +168,25 @@ s2.render(false)
 ### S2 支持对表格进行编辑吗？
 
 请查看 [编辑模式示例](/examples/case/data-preview#excel)
+
+### 如何注册 `AntV/G` 渲染引擎的插件？
+
+了解 `AntV/G` [插件系统](https://g.antv.antgroup.com/plugins/intro).
+
+```ts
+import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
+
+const s2Options = {
+  transformCanvasConfig(renderer) {
+    console.log('当前已注册插件：', renderer.getPlugins(), renderer.getConfig());
+    renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
+
+    return {
+      supportsCSSTransform: true,
+    };
+  },
+}
+```
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 

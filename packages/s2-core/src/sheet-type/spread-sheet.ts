@@ -601,21 +601,22 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const {
-      width,
-      height,
-      supportCSSTransform,
-      devicePixelRatio = 1,
-    } = this.options;
+    const { width, height, transformCanvasConfig } = this.options;
 
-    // base canvas group
+    const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
+    const canvasConfig = transformCanvasConfig?.(renderer, this);
+    const devicePixelRatio = Math.max(
+      canvasConfig?.devicePixelRatio || window.devicePixelRatio,
+      MIN_DEVICE_PIXEL_RATIO,
+    );
+
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
-      devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
-      renderer: new Renderer() as unknown as CanvasConfig['renderer'],
-      supportsCSSTransform: supportCSSTransform,
+      renderer,
+      devicePixelRatio,
+      ...canvasConfig,
     });
 
     this.updateContainerStyle();

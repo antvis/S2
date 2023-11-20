@@ -31,11 +31,15 @@ The original domestic mirror [https://antv-s2.gitee.io](https://antv-s2.gitee.io
 
 ### After the parent element uses `transform: scale` , the mouse coordinates of the chart respond incorrectly
 
-`supportCSSTransform` property can be turned on
+`supportsCSSTransform` property can be turned on
 
 ```ts
 const s2Options = {
-  supportCSSTransform: true
+  transformCanvasConfig() {
+    return {
+      supportsCSSTransform: true
+    }
+  }
 }
 ```
 
@@ -208,7 +212,7 @@ Please read [the must-read before submitting an Issue](https://github.com/antvis
 
 * What are your expectations? What is the current behavior?
 
-> It is expected to be "no problem", but currently it is "problem". This description is no different from what you said. Please try to be as specific as possible. For example: the`数据不正确：预期应该是xx, 实际是xx. 布局错误：节点应该显示在行头，实际出现在了列头。`
+> It is expected to be "no problem", but currently it is "problem". This description is no different from what you said. Please try to be as specific as possible. For example: the`数据不正确：预期应该是 xx, 实际是 xx. 布局错误：节点应该显示在行头，实际出现在了列头。`
 
 * Try to erase some nouns and descriptions with your own business semantics
 

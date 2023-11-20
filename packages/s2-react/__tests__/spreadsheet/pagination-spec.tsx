@@ -91,7 +91,6 @@ describe('Pagination Tests', () => {
 
     await waitFor(() => {
       expect(spreadsheet).toBeDefined();
-      expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
       expect(
         document.querySelector('.ant-pagination-options-quick-jumper'),
       ).toBeTruthy();

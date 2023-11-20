@@ -216,7 +216,11 @@ export const s2Options: SheetComponentOptions = {
   width: 800,
   height: 600,
   hierarchyType: 'grid',
-  supportCSSTransform: true,
+  transformCanvasConfig() {
+    return {
+      supportsCSSTransform: true,
+    };
+  },
   // showSeriesNumber: false,
   frozen: {
     rowHeader: true,

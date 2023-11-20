@@ -18,14 +18,18 @@ const s2Options: S2Options = {
 };
 
 describe('SpreadSheet Tests', () => {
+  beforeEach(() => {
+    window.devicePixelRatio = 1;
+  });
+
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -84,7 +88,11 @@ describe('SpreadSheet Tests', () => {
       async ({ devicePixelRatio }) => {
         const s2 = new PivotSheet(container, mockDataConfig, {
           ...s2Options,
-          devicePixelRatio,
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio,
+            };
+          },
         });
 
         await s2.render();
@@ -103,7 +111,11 @@ describe('SpreadSheet Tests', () => {
     test('should render sheet if custom DPR less than zero', async () => {
       const s2 = new PivotSheet(container, mockDataConfig, {
         ...s2Options,
-        devicePixelRatio: 0,
+        transformCanvasConfig() {
+          return {
+            devicePixelRatio: 0,
+          };
+        },
       });
 
       await s2.render();
@@ -274,11 +286,11 @@ describe('SpreadSheet Tests', () => {
   describe('Destroy Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -427,11 +439,11 @@ describe('SpreadSheet Tests', () => {
   describe('Sheet Config Change Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
