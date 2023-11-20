@@ -141,7 +141,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       <div
         class="ant-empty-description"
       >
-        暂无数据
+        No data
       </div>
     </div>
     <ul

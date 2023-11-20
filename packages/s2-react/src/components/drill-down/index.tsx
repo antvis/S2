@@ -1,17 +1,16 @@
-import React, { type ReactNode, useEffect, useState } from 'react';
+import { i18n } from '@antv/s2';
+import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
+import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
 import { Button, Empty, Input, Menu, type MenuProps } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
-import { i18n } from '@antv/s2';
-import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
+import React, { useEffect, useState, type ReactNode } from 'react';
 import {
   CalendarIcon,
   LocationIcon,
   SearchIcon,
   TextIcon,
 } from '../icons/index';
-import { ConfigProvider } from '../config-provider';
 
 import '@antv/s2-shared/src/styles/drill-down.less';
 
@@ -103,40 +102,38 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   });
 
   return (
-    <ConfigProvider>
-      <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
-        <header className={`${DRILL_DOWN_PRE_CLASS}-header`}>
-          <div>{titleText}</div>
-          <Button
-            type="link"
-            disabled={isEmpty(drillFields)}
-            onClick={handleClear}
-          >
-            {clearButtonText}
-          </Button>
-        </header>
-        <Input
-          className={`${DRILL_DOWN_PRE_CLASS}-search`}
-          placeholder={searchText}
-          onChange={handleSearch}
-          onPressEnter={handleSearch}
-          prefix={<SearchIcon />}
-          allowClear
+    <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
+      <header className={`${DRILL_DOWN_PRE_CLASS}-header`}>
+        <div>{titleText}</div>
+        <Button
+          type="link"
+          disabled={isEmpty(drillFields)}
+          onClick={handleClear}
+        >
+          {clearButtonText}
+        </Button>
+      </header>
+      <Input
+        className={`${DRILL_DOWN_PRE_CLASS}-search`}
+        placeholder={searchText}
+        onChange={handleSearch}
+        onPressEnter={handleSearch}
+        prefix={<SearchIcon />}
+        allowClear
+      />
+      <div className={`${DRILL_DOWN_PRE_CLASS}-extra`}>{extra}</div>
+      {isEmpty(options) && (
+        <Empty
+          imageStyle={{ height: '64px' }}
+          className={`${DRILL_DOWN_PRE_CLASS}-empty`}
         />
-        <div className={`${DRILL_DOWN_PRE_CLASS}-extra`}>{extra}</div>
-        {isEmpty(options) && (
-          <Empty
-            imageStyle={{ height: '64px' }}
-            className={`${DRILL_DOWN_PRE_CLASS}-empty`}
-          />
-        )}
-        <Menu
-          className={`${DRILL_DOWN_PRE_CLASS}-menu`}
-          selectedKeys={drillFields}
-          onSelect={handleSelect}
-          items={menusItems}
-        />
-      </div>
-    </ConfigProvider>
+      )}
+      <Menu
+        className={`${DRILL_DOWN_PRE_CLASS}-menu`}
+        selectedKeys={drillFields}
+        onSelect={handleSelect}
+        items={menusItems}
+      />
+    </div>
   );
 };

@@ -18,7 +18,7 @@ export const paletteDark: Palette = {
     '#7899ff',
     '#7899ff',
     '#f0f0f0',
-    '#ffffff',
+    '#dcdcdc',
   ],
   semanticColors: { red: '#FF4D4F', green: '#29A294', yellow: '#FAAD14' },
 };

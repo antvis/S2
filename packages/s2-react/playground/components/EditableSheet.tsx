@@ -6,7 +6,7 @@ import {
   type SheetComponentsProps,
 } from '../../src/components';
 import { tableSheetDataCfg } from '../config';
-import { onSheetMounted } from '../utils';
+import { usePlaygroundContext } from '../context/playground.context';
 
 export const options: SheetComponentOptions = {
   width: 600,
@@ -18,12 +18,17 @@ export const options: SheetComponentOptions = {
 
 export const EditableSheet: React.FC<
   Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => (
-  <SheetComponent
-    sheetType="editable"
-    dataCfg={tableSheetDataCfg}
-    options={options}
-    ref={ref}
-    onMounted={onSheetMounted}
-  />
-));
+> = React.forwardRef((props, ref) => {
+  const context = usePlaygroundContext();
+
+  return (
+    <SheetComponent
+      sheetType="editable"
+      dataCfg={tableSheetDataCfg}
+      options={options}
+      ref={ref}
+      {...props}
+      {...context}
+    />
+  );
+});

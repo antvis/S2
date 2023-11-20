@@ -12,7 +12,7 @@ import { ChartSheet } from './chart-sheet';
 
 const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
   (props, ref) => {
-    const { sheetType } = props;
+    const { sheetType, themeCfg } = props;
 
     const [s2Instance, setS2Instance] = React.useState<SpreadSheet | null>(
       null,
@@ -50,7 +50,9 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
 
     return (
       <SpreadSheetContext.Provider value={s2Instance!}>
-        <ConfigProvider>{CurrentSheet}</ConfigProvider>
+        <ConfigProvider themeName={themeCfg?.name}>
+          {CurrentSheet}
+        </ConfigProvider>
       </SpreadSheetContext.Provider>
     );
   },

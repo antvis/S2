@@ -8,6 +8,7 @@ import {
 import { customTreeFields } from '../../__tests__/data/custom-tree-fields';
 import { customTreeData } from '../../__tests__/data/data-custom-trees';
 import { meta } from '../../__tests__/data/mock-dataset.json';
+import { usePlaygroundContext } from '../context/playground.context';
 
 export const customTreeDataCfg: S2DataConfig = {
   meta,
@@ -25,12 +26,17 @@ export const customTreeOptions: SheetComponentOptions = {
 type CustomTreeProps = Partial<SheetComponentsProps>;
 
 export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
-  (props, ref) => (
-    <SheetComponent
-      {...props}
-      dataCfg={customTreeDataCfg}
-      options={customTreeOptions}
-      ref={ref}
-    />
-  ),
+  (props, ref) => {
+    const context = usePlaygroundContext();
+
+    return (
+      <SheetComponent
+        dataCfg={customTreeDataCfg}
+        options={customTreeOptions}
+        ref={ref}
+        {...props}
+        {...context}
+      />
+    );
+  },
 );

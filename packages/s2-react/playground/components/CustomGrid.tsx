@@ -14,6 +14,7 @@ import {
 } from '../../src';
 import { meta } from '../../__tests__/data/mock-dataset.json';
 import { onSheetMounted } from '../utils';
+import { usePlaygroundContext } from '../context/playground.context';
 import { ResizeConfig } from './ResizeConfig';
 
 export const customRowGridOptions: SheetComponentOptions = {
@@ -84,6 +85,7 @@ type CustomGridProps = Partial<SheetComponentsProps>;
 
 export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
   (props, ref) => {
+    const context = usePlaygroundContext();
     const [customType, setCustomType] = React.useState<CustomType>(
       (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
         CustomType.Row,
@@ -97,6 +99,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     });
     const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
       name: 'default',
+      ...context.themeCfg,
     });
     const [sheetType, setSheetType] =
       React.useState<SheetComponentsProps['sheetType']>('pivot');
@@ -169,6 +172,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
 
         <SheetComponent
           {...props}
+          {...context}
           sheetType={sheetType}
           dataCfg={dataCfg}
           options={options}

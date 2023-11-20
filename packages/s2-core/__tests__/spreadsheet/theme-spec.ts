@@ -13,6 +13,7 @@ import type {
   TextBaseline,
   TextTheme,
   ThemeCfg,
+  ThemeName,
 } from '@/common/interface/theme';
 import type { Node } from '@/facet/layout/node';
 import type { PivotSheet } from '@/sheet-type';
@@ -65,6 +66,17 @@ describe('SpreadSheet Theme Tests', () => {
       expect(s2.theme).toMatchSnapshot();
       expect(s2.theme).toEqual(s2.getTheme());
     });
+
+    test.each(['dark', 'gray', 'colorful', 'default'] as ThemeName[])(
+      'should get %s theme',
+      (name) => {
+        s2.setThemeCfg({
+          name,
+        });
+
+        expect(s2.theme).toMatchSnapshot();
+      },
+    );
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
