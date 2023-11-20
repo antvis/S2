@@ -1,7 +1,7 @@
 import React from 'react';
 import type { SpreadSheet } from '@antv/s2';
 
-export const SpreadSheetContext = React.createContext<SpreadSheet | undefined>(
+export const SpreadSheetContext = React.createContext<SpreadSheet>(
   null as unknown as SpreadSheet,
 );
 

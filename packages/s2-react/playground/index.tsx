@@ -256,6 +256,10 @@ function MainLayout() {
     );
   }, [sheetType, tableSheetColumnType]);
 
+  const onSheetDestroy = logHandler('onDestroy', () => {
+    clearInterval(scrollTimer.current!);
+  });
+
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(
@@ -346,6 +350,7 @@ function MainLayout() {
         value={{
           ref: s2Ref,
           onMounted: onSheetMounted,
+          onDestroy: onSheetDestroy,
           themeCfg,
         }}
       >
@@ -1247,9 +1252,7 @@ function MainLayout() {
                         onRangeSort={logHandler('onRangeSort')}
                         onRangeSorted={logHandler('onRangeSorted')}
                         onMounted={onSheetMounted}
-                        onDestroy={logHandler('onDestroy', () => {
-                          clearInterval(scrollTimer.current!);
-                        })}
+                        onDestroy={onSheetDestroy}
                         onColCellClick={onColCellClick}
                         onRowCellClick={logHandler('onRowCellClick')}
                         onCornerCellClick={logHandler(
