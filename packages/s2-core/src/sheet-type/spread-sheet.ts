@@ -23,7 +23,6 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
-  MIN_DEVICE_PIXEL_RATIO,
   S2Event,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
@@ -633,17 +632,12 @@ export abstract class SpreadSheet extends EE {
 
     const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
     const canvasConfig = transformCanvasConfig?.(renderer, this);
-    const devicePixelRatio = Math.max(
-      canvasConfig?.devicePixelRatio || window.devicePixelRatio,
-      MIN_DEVICE_PIXEL_RATIO,
-    );
 
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       renderer,
-      devicePixelRatio,
       ...canvasConfig,
     });
 

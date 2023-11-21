@@ -272,6 +272,8 @@ export const s2Options: SheetComponentOptions = {
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
+      // devicePixelRatio: 3,
+      // cursor: 'crosshair',
     };
   },
   // showSeriesNumber: false,

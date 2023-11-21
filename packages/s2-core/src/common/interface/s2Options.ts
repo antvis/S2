@@ -151,7 +151,7 @@ export interface S2BasicOptions<
   transformCanvasConfig?: (
     renderer: CanvasConfig['renderer'],
     spreadsheet: SpreadSheet,
-  ) => Partial<CanvasConfig> | null | undefined;
+  ) => (Partial<CanvasConfig> | null | undefined) | void;
 
   /** *********** 自定义单元格 hooks **************** */
   /**
