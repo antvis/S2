@@ -13,6 +13,7 @@ import type {
   TextBaseline,
   TextTheme,
   ThemeCfg,
+  ThemeName,
 } from '@/common/interface/theme';
 import type { Node } from '@/facet/layout/node';
 import type { PivotSheet } from '@/sheet-type';
@@ -39,7 +40,7 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   describe('Theme Default Value Tests', () => {
@@ -51,9 +52,31 @@ describe('SpreadSheet Theme Tests', () => {
       CellType.MERGED_CELL,
     ];
 
+    test('should get theme name', () => {
+      expect(s2.getThemeName()).toEqual('default');
+
+      s2.setThemeCfg({
+        name: 'dark',
+      });
+
+      expect(s2.getThemeName()).toEqual('dark');
+    });
+
     test('should get default theme', () => {
       expect(s2.theme).toMatchSnapshot();
+      expect(s2.theme).toEqual(s2.getTheme());
     });
+
+    test.each(['dark', 'gray', 'colorful', 'default'] as ThemeName[])(
+      'should get %s theme',
+      (name) => {
+        s2.setThemeCfg({
+          name,
+        });
+
+        expect(s2.theme).toMatchSnapshot();
+      },
+    );
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",

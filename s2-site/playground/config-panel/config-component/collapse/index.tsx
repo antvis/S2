@@ -9,6 +9,7 @@ export class Collapse extends PureComponent<AttributeTreeProps> {
   renderPanel = (childrenConfig: AttributeComponentProps[]) => {
     return map(childrenConfig, (childConfig, idx) => {
       const { displayName, children } = childConfig;
+
       return (
         <AntdCollapse.Panel key={`${displayName}-${idx}`} header={displayName}>
           {map(children, (childConfigItem, idx) => {
@@ -27,6 +28,7 @@ export class Collapse extends PureComponent<AttributeTreeProps> {
 
   render() {
     const { config } = this.props;
+
     return (
       <div className="playground-collapse">
         <AntdCollapse expandIconPosition="right" bordered={false} ghost={true}>

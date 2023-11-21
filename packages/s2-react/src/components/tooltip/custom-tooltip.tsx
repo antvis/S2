@@ -5,15 +5,18 @@ import {
   SpreadSheet,
 } from '@antv/s2';
 import React from 'react';
-// eslint-disable-next-line react/no-deprecated
-import { unmountComponentAtNode, render, version } from 'react-dom';
-import { createRoot, type Root } from 'react-dom/client';
-import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import { Drawer } from 'antd';
 import { startsWith } from 'lodash';
+// eslint-disable-next-line react/no-deprecated
+import { render, unmountComponentAtNode, version } from 'react-dom';
+import { createRoot, type Root } from 'react-dom/client';
 import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
-import type { TooltipRenderProps } from './interface';
-import { TooltipContext } from './context';
+import { ConfigProvider } from '../config-provider';
+import type {
+  TooltipOperatorMenuOptions,
+  TooltipRenderProps,
+} from './interface';
 import { TooltipComponent } from './index';
 import './style.less';
 
@@ -23,8 +26,7 @@ import './style.less';
  */
 export class CustomTooltip extends BaseTooltip<
   React.ReactNode,
-  React.ReactNode,
-  React.ReactNode
+  TooltipOperatorMenuOptions
 > {
   root: Root;
 
@@ -55,12 +57,12 @@ export class CustomTooltip extends BaseTooltip<
     } as TooltipRenderProps;
 
     if (showOptions?.options?.forceRender) {
-      this.unmount();
+      this.forceClearContent();
     }
 
     const Content = this.isMobileDevice() ? (
       <Drawer
-        className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
+        rootClassName={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
         title={cell?.getActualText()}
         open={this.visible}
         closeIcon={<LeftOutlined />}
@@ -70,22 +72,25 @@ export class CustomTooltip extends BaseTooltip<
           this.hide();
         }}
       >
-        <TooltipContext.Provider value={this.isMobileDevice()}>
-          <TooltipComponent {...tooltipProps} content={content} />
-        </TooltipContext.Provider>
+        <TooltipComponent {...tooltipProps} content={content} />
       </Drawer>
     ) : (
       <TooltipComponent {...tooltipProps} content={content} />
     );
 
+    const themeName = this.spreadsheet.getThemeName();
+    const TooltipContent = (
+      <ConfigProvider themeName={themeName}>{Content}</ConfigProvider>
+    );
+
     if (this.isLegacyReactVersion) {
-      render(Content, this.container);
+      render(TooltipContent, this.container);
 
       return;
     }
 
     this.root ??= createRoot(this.container!);
-    this.root.render(Content);
+    this.root.render(TooltipContent);
   }
 
   hide() {
@@ -100,7 +105,17 @@ export class CustomTooltip extends BaseTooltip<
     super.destroy();
   }
 
-  private unmount() {
+  forceClearContent() {
+    if (this.isLegacyReactVersion) {
+      this.unmount();
+
+      return;
+    }
+
+    this.root?.render(null);
+  }
+
+  unmount() {
     if (this.isLegacyReactVersion && this.container!) {
       unmountComponentAtNode(this.container);
 

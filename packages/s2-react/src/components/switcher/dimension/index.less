@@ -7,8 +7,9 @@
 @highlight-gray-color: rgba(0, 0, 0, 0.25);
 
 .@{switcher-cls-prefix}-dimension {
-  width: 185px;
   background-color: transparent;
+  display: flex;
+  flex-direction: column;
 
   &.long-dimension {
     grid-row: span 2;
@@ -19,7 +20,6 @@
     align-items: center;
     margin-bottom: @normal-span;
     justify-content: space-between;
-    height: 18px;
 
     .title {
       span {
@@ -31,6 +31,8 @@
     }
 
     .expand-option {
+      font-size: 12px;
+
       .description {
         margin-left: 4px;
       }
@@ -38,12 +40,11 @@
   }
 
   &-items {
-    height: calc(100% - 22px);
+    flex: 1;
     min-height: 120px;
-    max-height: 160px;
     padding: @normal-span;
     border: 1px solid @gray-color;
-    border-radius: 3px;
+    border-radius: 4px;
     overflow-y: auto;
     background: var(~'@{css-var-prefix}-block-background');
 
@@ -64,9 +65,5 @@
     &::-webkit-scrollbar {
       width: 6px;
     }
-  }
-
-  &-long-items {
-    max-height: 358px;
   }
 }

@@ -5,7 +5,7 @@ import {
   TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
 
-export const TooltipHead: React.FC<TooltipHeadInfo> = (props) => {
+export const TooltipHead: React.FC<TooltipHeadInfo> = React.memo((props) => {
   const { rows = [], cols = [] } = props;
 
   return (
@@ -15,4 +15,6 @@ export const TooltipHead: React.FC<TooltipHeadInfo> = (props) => {
       {rows.map((item: TooltipDetailListItem) => item.value)?.join(` / `)}
     </div>
   );
-};
+});
+
+TooltipHead.displayName = 'TooltipHead';

@@ -1,28 +1,29 @@
 import type {
-  S2DataConfig,
-  S2Options,
+  BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
-  TargetCellInfo,
-  ResizeParams,
-  Node,
-  SpreadSheet,
-  ThemeCfg,
-  LayoutResult,
-  SortParams,
   DataCell,
   GEvent,
-  HiddenColumnsInfo,
-  ResizeInfo,
-  S2CellType,
-  TooltipOperatorOptions,
-  S2RenderOptions,
-  S2MountContainer,
-  TooltipContentType,
-  Pagination,
-  ViewMetaData,
-  RawData,
-  RowCellCollapsedParams,
   HeaderActionIcon,
+  HiddenColumnsInfo,
+  LayoutResult,
+  Node,
+  Pagination,
+  RawData,
+  ResizeInfo,
+  ResizeParams,
+  RowCellCollapsedParams,
+  S2CellType,
+  S2DataConfig,
+  S2MountContainer,
+  S2Options,
+  S2RenderOptions,
+  SortParams,
+  SpreadSheet,
+  TargetCellInfo,
+  ThemeCfg,
+  TooltipContentType,
+  TooltipOperatorOptions,
+  ViewMetaData,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -218,9 +219,9 @@ export interface ResizeEffectParams {
 }
 
 // Tooltip 操作项
-export interface TooltipOperatorProps<Icon = Element | string, Text = string>
-  extends Omit<TooltipOperatorOptions<Icon, Text>, 'onClick'> {
-  onlyShowOperator: boolean;
+export interface TooltipOperatorProps<Menu = BaseTooltipOperatorMenuOptions>
+  extends TooltipOperatorOptions<Menu> {
+  onlyShowOperator?: boolean;
   cell: S2CellType;
 }
 

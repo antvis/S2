@@ -26,7 +26,9 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.options = {
       tooltip: {
         operation: {
-          menus: [],
+          menu: {
+            items: [],
+          },
         },
       },
       interaction: {

@@ -1,11 +1,11 @@
-import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-table-data.json';
+import { getContainer } from 'tests/util/helpers';
 import { TableDataSet } from '../../../src/data-set';
 import { TableFacet } from '../../../src/facet';
-import type { GEvent } from '@/index';
-import { TableSheet } from '@/sheet-type';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
+import type { GEvent, TooltipOptions } from '@/index';
+import { TableSheet } from '@/sheet-type';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;
@@ -68,7 +68,7 @@ describe('TableSheet Tests', () => {
         },
       );
 
-      s2.onSortTooltipClick('asc', {
+      s2.groupSortByMethod('asc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -92,7 +92,7 @@ describe('TableSheet Tests', () => {
         field: 'cost',
       } as Node;
 
-      s2.onSortTooltipClick('desc', node);
+      s2.groupSortByMethod('desc', node);
 
       expect(s2.store.get('sortMethodMap')).toEqual({
         city: 'asc',
@@ -110,7 +110,7 @@ describe('TableSheet Tests', () => {
         },
       ]);
 
-      s2.onSortTooltipClick('desc', {
+      s2.groupSortByMethod('desc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -146,7 +146,7 @@ describe('TableSheet Tests', () => {
         ],
       });
 
-      s2.onSortTooltipClick('asc', {
+      s2.groupSortByMethod('asc', {
         id: 'cost',
         field: 'cost',
       } as Node);
@@ -194,22 +194,26 @@ describe('TableSheet Tests', () => {
         const groupDescText = isEnUS ? 'DESC' : '降序';
         const groupNoneText = isEnUS ? 'No order' : '不排序';
 
-        expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
-          expect.anything(),
-          expect.anything(),
-          {
-            forceRender: true,
-            onlyShowOperator: true,
-            operator: {
-              menus: [
-                { icon: 'groupAsc', key: 'asc', text: groupAscText },
-                { icon: 'groupDesc', key: 'desc', text: groupDescText },
-                { key: 'none', text: groupNoneText },
+        const options: TooltipOptions = {
+          onlyShowOperator: true,
+          forceRender: true,
+          operator: {
+            menu: {
+              items: [
+                { icon: 'groupAsc', key: 'asc', label: groupAscText },
+                { icon: 'groupDesc', key: 'desc', label: groupDescText },
+                { key: 'none', label: groupNoneText },
               ],
               onClick: expect.anything(),
               defaultSelectedKeys: [],
             },
           },
+        };
+
+        expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
+          expect.anything(),
+          expect.anything(),
+          options,
         );
         sheet.destroy();
       },

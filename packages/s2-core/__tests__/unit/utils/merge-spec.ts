@@ -253,7 +253,9 @@ describe('merge test', () => {
           "enable": false,
           "operation": Object {
             "hiddenColumns": false,
-            "menus": Array [],
+            "menu": Object {
+              "items": Array [],
+            },
             "sort": false,
           },
         },
@@ -269,12 +271,14 @@ describe('merge test', () => {
         enable: false,
         operation: {
           sort: false,
-          menus: [
-            {
-              key: 'custom',
-              text: 'custom',
-            },
-          ],
+          menu: {
+            items: [
+              {
+                key: 'custom',
+                label: 'custom',
+              },
+            ],
+          },
         },
       },
     });
@@ -285,12 +289,14 @@ describe('merge test', () => {
         "enable": false,
         "operation": Object {
           "hiddenColumns": false,
-          "menus": Array [
-            Object {
-              "key": "custom",
-              "text": "custom",
-            },
-          ],
+          "menu": Object {
+            "items": Array [
+              Object {
+                "key": "custom",
+                "label": "custom",
+              },
+            ],
+          },
           "sort": false,
         },
       }

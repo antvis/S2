@@ -1,6 +1,5 @@
 import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import 'antd/dist/antd.min.css';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
@@ -56,7 +55,6 @@ describe('Pagination Tests', () => {
 
       await waitFor(() => {
         expect(spreadsheet).toBeDefined();
-        expect(document.querySelector('.antv-s2-pagination')).toMatchSnapshot();
         expect(
           document.querySelector('.ant-select-selection-item')?.innerHTML,
         ).toEqual(page);

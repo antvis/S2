@@ -10,10 +10,23 @@
   color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
   background: var(~'@{css-var-prefix}-tooltip-operator-background', #f9f9f9);
   font-size: @tooltip-menu-font-size;
-  line-height: 32px;
-  padding: 0 12px;
+  line-height: @tooltip-menu-item-height;
   border: 0;
   cursor: pointer;
+
+  // menu hover 时的下划线
+  // .ant-menu-submenu {
+  //   &::after {
+  //     border: none !important;
+  //     transition: none !important;
+  //     background: transparent !important;
+  //   }
+  // }
+
+  .ant-menu-horizontal:not(.ant-menu-dark) {
+    background: transparent;
+    line-height: @tooltip-menu-item-height;
+  }
 
   .ant-dropdown-trigger,
   &-dropdown {
@@ -22,21 +35,22 @@
 
   &-menus.ant-menu-vertical.ant-menu {
     font-size: @tooltip-menu-font-size;
-    line-height: 32px;
     color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
     border: 0;
-    margin: 0 -12px;
+    user-select: none;
+    padding: 4px;
 
     .ant-menu-item {
-      height: 30px;
+      height: @tooltip-menu-item-height;
     }
 
-    .ant-menu-item:not(:last-child) {
-      margin: 0;
-    }
+    // .ant-menu-item:not(:last-child) {
+    //   margin: 0;
+    // }
 
     .ant-menu-submenu > .ant-menu-submenu-title {
-      height: 30px;
+      height: @tooltip-menu-item-height;
+      width: 100%;
 
       .ant-menu-submenu-arrow {
         color: var(
@@ -54,10 +68,9 @@
       .with-menu-item-color();
 
       font-size: @tooltip-menu-font-size;
-      line-height: 32px;
+      line-height: @tooltip-menu-item-height;
       padding: 0 12px;
       border: 0;
-      margin: 0;
     }
 
     .ant-dropdown-menu-submenu,
@@ -67,9 +80,9 @@
       .ant-menu-submenu-title {
         .with-menu-item-color();
 
-        padding: 0 12px;
+        padding: 0 0 0 12px;
         font-size: @tooltip-menu-font-size;
-        line-height: 32px;
+        line-height: @tooltip-menu-item-height;
         margin: 0;
 
         .ant-dropdown-menu-title-content,
@@ -86,14 +99,15 @@
       .with-menu-item-color();
 
       font-size: @tooltip-menu-font-size;
-      line-height: 32px;
+      line-height: @tooltip-menu-item-height;
       padding: 0 12px;
     }
 
     .ant-menu-vertical .ant-menu-item {
       margin: 0;
-      height: 30px;
-      line-height: 32px;
+      height: @tooltip-menu-item-height;
+      line-height: @tooltip-menu-item-height;
+      width: 100%;
     }
 
     .ant-menu-vertical .ant-menu-item:not(:last-child) {
@@ -103,7 +117,6 @@
 
   &-icon {
     vertical-align: middle;
-    margin-right: 4px;
 
     svg {
       width: @tooltip-menu-font-size;
@@ -120,7 +133,7 @@
       font-size: @tooltip-menu-font-size;
 
       .ant-menu-item {
-        height: 36px;
+        height: @tooltip-menu-item-height;
       }
     }
 
@@ -128,7 +141,7 @@
     &-menus.ant-menu-vertical {
       .ant-dropdown-menu-item,
       .ant-menu-item {
-        line-height: 36px;
+        line-height: @tooltip-menu-item-height;
       }
 
       .ant-dropdown-menu-submenu,

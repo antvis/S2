@@ -4,6 +4,7 @@
   width: 260px;
   min-height: 20px;
   position: relative;
+  color: var(--antv-s2-font-70, #fff);
 
   &-header {
     display: flex;
@@ -29,11 +30,15 @@
     margin: 0 16px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 2px;
-    background-color: #fff;
 
     input,
     span {
       font-size: 12px;
+    }
+
+    &,
+    .ant-input::placeholder {
+      background-color: var(--antv-s2-block-background, #fff);
     }
   }
 

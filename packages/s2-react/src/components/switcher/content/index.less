@@ -25,12 +25,12 @@
   }
 
   &-three-dimensions {
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 160px);
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
   }
 
   &-one-dimension {
-    grid-template-rows: 1fr;
+    grid-template-rows: 160px;
     grid-template-columns: 1fr;
   }
 
@@ -38,6 +38,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0 10px;
 
     &-reset-button {
       &.ant-btn {

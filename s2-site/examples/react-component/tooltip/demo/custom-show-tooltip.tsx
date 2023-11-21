@@ -38,19 +38,21 @@ fetch(
               };
             });
             const customOperator = {
-              onClick: ({ key }) => {
-                console.log('任意菜单项点击', key);
-              },
-              menus: [
-                {
-                  id: 'trend',
-                  icon: 'trend',
-                  text: '趋势',
-                  onClick: () => {
-                    console.log('当前菜单项点击');
-                  },
+              menu: {
+                onClick: (info, cell) => {
+                  console.log('任意菜单项点击', info, cell);
                 },
-              ],
+                items: [
+                  {
+                    id: 'trend',
+                    icon: 'trend',
+                    text: '趋势',
+                    onClick: (info, cell) => {
+                      console.log('当前菜单项点击:', info, cell);
+                    },
+                  },
+                ],
+              },
             };
             const customOptions = {
               ...tooltipOptions,
@@ -69,6 +71,7 @@ fetch(
                 operator: customOperator,
               },
             };
+
             instance.tooltip.show(customOptions);
           };
         }}

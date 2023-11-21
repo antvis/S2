@@ -11,8 +11,8 @@ import type {
 } from '../../common/interface/basic';
 import type {
   LayoutArrange,
-  LayoutCoordinate,
   LayoutCellMeta,
+  LayoutCoordinate,
   LayoutHierarchy,
   LayoutSeriesNumberNodes,
 } from '../../common/interface/hooks';
@@ -29,13 +29,16 @@ import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';
-import type { Tooltip, TooltipContentType } from './tooltip';
+import type {
+  BaseTooltipOperatorMenuOptions,
+  Tooltip,
+  TooltipContentType,
+} from './tooltip';
 
 export interface S2BasicOptions<
   T = TooltipContentType,
   P = Pagination,
-  Icon = Element | string,
-  Text = string,
+  Menu = BaseTooltipOperatorMenuOptions,
 > {
   /**
    * 表格宽度
@@ -62,7 +65,7 @@ export interface S2BasicOptions<
    * 提示信息
    * @see https://s2.antv.antgroup.com/manual/basic/tooltip
    */
-  tooltip?: Tooltip<T, Icon, Text> | null;
+  tooltip?: Tooltip<T, Menu> | null;
 
   /**
    * 交互配置
@@ -309,9 +312,8 @@ export interface S2PivotSheetOptions {
 export interface S2Options<
   T = TooltipContentType,
   P = Pagination,
-  Icon = Element | string,
-  Text = string,
-> extends S2BasicOptions<T, P, Icon, Text>,
+  Menu = BaseTooltipOperatorMenuOptions,
+> extends S2BasicOptions<T, P, Menu>,
     S2PivotSheetOptions {
   /**
    * 行列冻结

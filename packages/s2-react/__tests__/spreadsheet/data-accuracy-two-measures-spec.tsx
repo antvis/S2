@@ -8,7 +8,6 @@ import {
   type S2MountContainer,
   type S2Options,
 } from '@antv/s2';
-import 'antd/dist/antd.min.css';
 import React from 'react';
 import {
   data10,
@@ -83,6 +82,7 @@ const getDataCfg = (index: number) =>
       values: ['price', 'account'],
       valueInCols: true,
     },
+
     meta: [
       {
         field: 'price',
@@ -95,6 +95,7 @@ const getDataCfg = (index: number) =>
         formatter: (v: number) => auto(v),
       },
     ],
+
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],

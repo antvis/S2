@@ -21,24 +21,26 @@
     background-color: var(~'@{css-var-prefix}-container-background', #fff);
   }
   .@{advanced-sort-cls-prefix}-sider-layout.ant-layout-sider {
-    border-right: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
+    border-right: 1px solid var(~'@{css-var-prefix}-border', #f0f0f0);
     background: var(~'@{css-var-prefix}-container-background', #fff);
   }
 
   .@{advanced-sort-cls-prefix}-sider-layout {
     .@{advanced-sort-cls-prefix}-title {
       font-size: 12px;
-      padding: 8px 16px;
-      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
+      padding: 8px 16px 8px 0;
+      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #f0f0f0);
     }
     .@{advanced-sort-cls-prefix}-dimension-item {
       height: 32px;
-      padding: 8px 5px;
+      padding: 8px 6px 8px 0;
       cursor: pointer;
       align-items: center;
       color: var(~'@{css-var-prefix}-font-65', rgba(0, 0, 0, 0.65));
       font-size: 12px;
-      margin-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -48,7 +50,7 @@
     .@{advanced-sort-cls-prefix}-title {
       font-size: 12px;
       padding: 8px 16px;
-      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
+      border-bottom: 1px solid var(~'@{css-var-prefix}-border', #f0f0f0);
     }
 
     .@{advanced-sort-cls-prefix}-custom-form.ant-form {
@@ -105,12 +107,16 @@
       font-size: 12px;
       text-align: center;
       background-color: var(~'@{css-var-prefix}-block-background', #fafafa);
-      border: 1px solid var(~'@{css-var-prefix}-border', #d9d9d9);
-      border-radius: 2px 0 0 2px;
+      border: 1px solid var(~'@{css-var-prefix}-border', #f0f0f0);
+      border-radius: 4px 0 0 4px;
       height: 24px;
       display: inline-block;
       line-height: 21px;
       margin-left: 8px;
+
+      & + .ant-select .ant-select-selector {
+        border-radius: 0 4px 4px 0;
+      }
     }
   }
 

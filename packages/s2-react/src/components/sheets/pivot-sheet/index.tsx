@@ -12,6 +12,7 @@ import { usePivotSheetUpdate } from '../../../hooks';
 import { DrillDown } from '../../drill-down';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
+import { ConfigProvider } from '../../config-provider';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -25,12 +26,14 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     const onDrillDownIconClick = useLatest<ActionIconCallback>(
       ({ sheetInstance, cacheDrillFields, disabledFields, event }) => {
         const content = (
-          <DrillDown
-            {...partDrillDown?.drillConfig}
-            setDrillFields={setDrillFields}
-            drillFields={cacheDrillFields}
-            disabledFields={disabledFields}
-          />
+          <ConfigProvider themeName={s2?.getThemeName()}>
+            <DrillDown
+              {...partDrillDown?.drillConfig}
+              setDrillFields={setDrillFields}
+              drillFields={cacheDrillFields}
+              disabledFields={disabledFields}
+            />
+          </ConfigProvider>
         );
 
         if (event) {

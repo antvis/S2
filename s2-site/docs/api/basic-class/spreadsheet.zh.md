@@ -44,6 +44,8 @@ s2.isPivotMode()
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名）                                                                                            | (themeCfg: [ThemeCfg](/docs/api/general/S2Theme/#themecfg)) => void |    |
 | setTheme | 更新主题 （只包含主题 scheme)                                                                                                    | (theme: [S2Theme](/docs/api/general/S2Theme/#s2theme)) => void |    |
+| getTheme | 获取主题 （只包含主题 scheme)                                                                                                    | ( ) => [S2Theme](/docs/api/general/S2Theme/#s2theme) |    |
+| getThemeName | 获取主题名                                                                                                    | ( ) => `default \| colorful \| gray \| dark` |    |
 | updatePagination | 更新分页                                                                                                                   | (pagination: [Pagination](/docs/api/general/S2Options#pagination)) => void |    |
 | getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |

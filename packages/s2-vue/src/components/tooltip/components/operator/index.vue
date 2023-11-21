@@ -1,5 +1,9 @@
 <script lang="ts">
-import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import {
+  type TooltipOperatorMenuInfo,
+  type TooltipBaseOperatorMenuItem,
+  TOOLTIP_PREFIX_CLS,
+} from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
@@ -15,19 +19,25 @@ interface TooltipOperatorProps extends BaseTooltipOperatorProps {
 export default defineComponent({
   name: 'TooltipOperator',
   props: [
-    'menus',
+    'menu',
     'onlyShowOperator',
-    'onClick',
     'cell',
   ] as unknown as GetInitProps<TooltipOperatorProps>,
-  setup(_, { emit }) {
+  setup(props) {
+    const { menu, cell } = props;
     const onMenuClick: MenuClickEventHandler = (menuInfo) => {
-      emit('click', menuInfo);
+      menu?.onClick?.(menuInfo as unknown as TooltipOperatorMenuInfo, cell);
+    };
+
+    const onMenuTitleClick = (subMenu: TooltipBaseOperatorMenuItem) => () => {
+      subMenu?.onClick(subMenu as TooltipOperatorMenuInfo, cell);
     };
 
     return {
       TOOLTIP_PREFIX_CLS,
       onMenuClick,
+      onMenuTitleClick,
+      menus: menu?.items,
     };
   },
   components: {
@@ -54,7 +64,7 @@ export default defineComponent({
     <template v-else>
       <template v-for="menu in menus" :key="menu.key">
         <Dropdown :class="`${TOOLTIP_PREFIX_CLS}-operator-dropdown`">
-          <TooltipOperatorTitle :menu="menu" @click="menu.onClick?.(cell)" />
+          <TooltipOperatorTitle :menu="menu" @click="onMenuTitleClick(menu)" />
           <template #overlay>
             <Menu
               :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"

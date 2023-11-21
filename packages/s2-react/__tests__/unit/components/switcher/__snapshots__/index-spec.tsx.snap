@@ -3,10 +3,14 @@
 exports[`switcher component test should render component 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+    class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
     type="button"
   >
-    <div />
+    <span
+      class="ant-btn-icon"
+    >
+      <div />
+    </span>
     <span>
       title
     </span>

@@ -1,6 +1,7 @@
 import { isNil } from 'lodash';
 import { TOOLTIP_CONTAINER_CLS } from '../../common/constant/tooltip';
 import type {
+  BaseTooltipOperatorMenuOptions,
   TooltipContentType,
   TooltipPosition,
   TooltipShowOptions,
@@ -26,8 +27,7 @@ import './index.less';
  */
 export class BaseTooltip<
   Content = TooltipContentType,
-  Icon = Element | string,
-  Text = string,
+  Menu = BaseTooltipOperatorMenuOptions,
 > {
   public visible = false;
 
@@ -35,7 +35,7 @@ export class BaseTooltip<
 
   public container: HTMLElement | null;
 
-  public options: TooltipShowOptions<Content, Icon, Text>;
+  public options: TooltipShowOptions<Content, Menu>;
 
   public position: TooltipPosition = { x: 0, y: 0 };
 
@@ -43,17 +43,13 @@ export class BaseTooltip<
     this.spreadsheet = spreadsheet;
   }
 
-  public show<T = Content>(options: TooltipShowOptions<T>) {
+  public show<T = Content, M = Menu>(options: TooltipShowOptions<T, M>) {
     const { position, content, event } = options;
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
 
     this.visible = true;
-    this.options = options as unknown as TooltipShowOptions<
-      Content,
-      Icon,
-      Text
-    >;
+    this.options = options as unknown as TooltipShowOptions<Content, Menu>;
     const container = this.getContainer();
 
     this.renderContent<T>(content as T);

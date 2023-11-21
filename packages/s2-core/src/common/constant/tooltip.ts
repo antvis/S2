@@ -1,7 +1,8 @@
 import { S2_PREFIX_CLS } from '../../common/constant/classnames';
 import { i18n } from '../../common/i18n';
 import type {
-  TooltipOperatorMenu,
+  TooltipBaseOperatorMenuItem,
+  TooltipOperatorMenuItems,
   TooltipPosition,
 } from '../../common/interface';
 
@@ -19,44 +20,46 @@ export const TOOLTIP_POSITION_OFFSET: TooltipPosition = {
   y: 10,
 };
 
-export const getTooltipOperatorHiddenColumnsMenu = (): TooltipOperatorMenu => {
-  return {
-    key: 'hiddenColumns',
-    text: i18n('隐藏'),
-    icon: 'EyeOutlined',
+export const getTooltipOperatorHiddenColumnsMenu =
+  (): TooltipBaseOperatorMenuItem => {
+    return {
+      key: 'hiddenColumns',
+      label: i18n('隐藏'),
+      icon: 'EyeOutlined',
+    };
   };
-};
 
-export const getTooltipOperatorSortMenus = (): TooltipOperatorMenu[] => [
+export const getTooltipOperatorSortMenus = (): TooltipOperatorMenuItems => [
   {
     key: 'asc',
     icon: 'groupAsc',
-    text: i18n('组内升序'),
+    label: i18n('组内升序'),
   },
   {
     key: 'desc',
     icon: 'groupDesc',
-    text: i18n('组内降序'),
+    label: i18n('组内降序'),
   },
   {
     key: 'none',
-    text: i18n('不排序'),
+    label: i18n('不排序'),
   },
 ];
 
-export const getTooltipOperatorTableSortMenus = (): TooltipOperatorMenu[] => [
-  {
-    key: 'asc',
-    icon: 'groupAsc',
-    text: i18n('升序'),
-  },
-  {
-    key: 'desc',
-    icon: 'groupDesc',
-    text: i18n('降序'),
-  },
-  {
-    key: 'none',
-    text: i18n('不排序'),
-  },
-];
+export const getTooltipOperatorTableSortMenus =
+  (): TooltipOperatorMenuItems => [
+    {
+      key: 'asc',
+      icon: 'groupAsc',
+      label: i18n('升序'),
+    },
+    {
+      key: 'desc',
+      icon: 'groupDesc',
+      label: i18n('降序'),
+    },
+    {
+      key: 'none',
+      label: i18n('不排序'),
+    },
+  ];
