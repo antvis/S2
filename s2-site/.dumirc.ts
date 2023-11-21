@@ -291,7 +291,17 @@ export default defineConfig({
       },
       image:
         'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
+      imageStyle: {
+        marginLeft: 0,
+      },
       buttons: [
+        {
+          text: {
+            zh: '开始使用',
+            en: 'Getting Started',
+          },
+          link: `/manual/getting-started`,
+        },
         {
           text: {
             zh: '图表示例',
@@ -299,13 +309,6 @@ export default defineConfig({
           },
           link: `/examples`,
           type: 'primary',
-        },
-        {
-          text: {
-            zh: '开始使用',
-            en: 'Getting Started',
-          },
-          link: `/manual/getting-started`,
         },
       ],
     },
