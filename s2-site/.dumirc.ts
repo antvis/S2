@@ -294,18 +294,18 @@ export default defineConfig({
       buttons: [
         {
           text: {
+            zh: '开始使用',
+            en: 'Getting Started',
+          },
+          link: `/manual/getting-started`,
+        },
+        {
+          text: {
             zh: '图表示例',
             en: 'Examples',
           },
           link: `/examples`,
           type: 'primary',
-        },
-        {
-          text: {
-            zh: '开始使用',
-            en: 'Getting Started',
-          },
-          link: `/manual/getting-started`,
         },
       ],
     },
