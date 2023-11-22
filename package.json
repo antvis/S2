@@ -154,7 +154,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-visualizer": "^5.9.2",
-    "semantic-release": "^22.0.6",
+    "semantic-release": "^19.0.5",
     "semantic-release-monorepo": "^7.0.5",
     "semver": "^7.5.4",
     "stylelint": "^15.11.0",
