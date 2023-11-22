@@ -21,24 +21,25 @@ exports[`Header Component Tests should render component 1`] = `
         class="antv-s2-header-heading-extra"
       >
         <div
-          class="ant-space ant-space-horizontal ant-space-align-center"
-          style="gap: 8px;"
+          class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
         >
           <div
             class="ant-space-item"
-            style=""
           >
             extra
           </div>
           <div
             class="ant-space-item"
-            style=""
           >
             <button
-              class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+              class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
               type="button"
             >
-              <div />
+              <span
+                class="ant-btn-icon"
+              >
+                <div />
+              </span>
               <span>
                 行列切换
               </span>
@@ -46,16 +47,19 @@ exports[`Header Component Tests should render component 1`] = `
           </div>
           <div
             class="ant-space-item"
-            style=""
           >
             <div
               class="antv-s2-advanced-sort"
             >
               <button
-                class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                 type="button"
               >
-                <div />
+                <span
+                  class="ant-btn-icon"
+                >
+                  <div />
+                </span>
                 <span>
                   高级排序
                 </span>
@@ -65,11 +69,12 @@ exports[`Header Component Tests should render component 1`] = `
           <div
             class="ant-space-item"
           >
-            <a
-              class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+            <button
+              class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+              type="button"
             >
               <div />
-            </a>
+            </button>
           </div>
         </div>
       </div>

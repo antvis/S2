@@ -7,8 +7,8 @@ import {
   getTooltipOperatorHiddenColumnsMenu,
 } from '../../../common/constant';
 import type {
+  TooltipBaseOperatorMenuItem,
   TooltipOperation,
-  TooltipOperatorMenu,
   TooltipOperatorOptions,
 } from '../../../common/interface';
 import type { Node } from '../../../facet/layout/node';
@@ -139,7 +139,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       cellMeta.isLeaf &&
       operation.hiddenColumns;
 
-    const hiddenColumnsMenu: TooltipOperatorMenu = {
+    const hiddenColumnsMenu: TooltipBaseOperatorMenuItem = {
       ...TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
       onClick: () => {
         this.hideSelectedColumns();

@@ -44,18 +44,16 @@ export default defineComponent({
 <template>
   <template v-if="onlyShowOperator">
     <TooltipOperator
-      :menus="operator?.menus || []"
+      :menu="operator?.menu"
       :onlyShowOperator="true"
       :cell="cell"
-      @click="operator?.onClick"
     />
   </template>
   <template v-else>
     <TooltipOperator
-      :menus="operator?.menus || []"
+      :menu="operator?.menu"
       :onlyShowOperator="false"
       :cell="cell"
-      @click="operator?.onClick"
     />
 
     <template v-if="content">

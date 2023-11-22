@@ -85,27 +85,31 @@ const s2Options = {
 - 自定义 `icon` 点击后的 `tooltip` 展示
 
 ```jsx
-const MENUS = [
-  { key: SortMethodType.none, text: '不排序' },
-  { key: SortMethodType.asc, text: '升序', icon: 'GroupAsc' },
-  { key: SortMethodType.desc, text: '降序', icon: 'GroupDesc' },
-  { key: SortMethodType.custom, text: '自定义排序', icon: 'Trend' },
+const items = [
+  { key: SortMethodType.none, label: '不排序' },
+  { key: SortMethodType.asc, label: '升序', icon: 'GroupAsc' },
+  { key: SortMethodType.desc, label: '降序', icon: 'GroupDesc' },
+  { key: SortMethodType.custom, label: '自定义排序', icon: 'Trend' },
 ];
+
 const s2Options = {
   // 设置自定义 `icon` 的展示条件
   headerActionIcons: [
     {
-      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
-      icons: [ 'customKingIcon' ],
+      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon, https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+      icons: ['customKingIcon'],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,
       // icon 点击之后的执行函数
       onClick: (props) => {
         const { meta, event } = props;
+        // https://s2.antv.antgroup.com/manual/basic/tooltip
         const operator = {
-          // 配置 tooltip 中展示的内容
-          menus: MENUS,
+          // 配置 tooltip 中的操作项
+          menu: {
+            items,
+          }
         };
         // 自定义 tooltip 配置，展示 toolTip
         meta.spreadsheet.showTooltipWithInfo(event, [], {
@@ -161,7 +165,9 @@ const s2Options = {
             handleSortCallback(meta, key);
             meta.spreadsheet.hideTooltip();
           },
-          menus: MENUS,
+          menu: {
+            items
+          },
         };
         meta.spreadsheet.showTooltipWithInfo(event, [], {
           operator,

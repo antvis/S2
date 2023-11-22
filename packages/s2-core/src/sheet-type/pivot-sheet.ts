@@ -1,18 +1,11 @@
-import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { clone, isString, last } from 'lodash';
 import { DataCell } from '../cell';
-import {
-  EXTRA_FIELD,
-  getTooltipOperatorSortMenus,
-  InterceptType,
-  S2Event,
-} from '../common/constant';
+import { EXTRA_FIELD, S2Event } from '../common/constant';
 import type {
   RowCellCollapsedParams,
   RowCellStyle,
   SortMethod,
   SortParam,
-  TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
 import { BaseDataSet, PivotDataSet } from '../data-set';
@@ -153,7 +146,7 @@ export class PivotSheet extends SpreadSheet {
 
     let sortValue = value;
 
-    // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
+    // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的 query, 所以多指标时请不要这么用……
     if (hideValue && this.isValueInCols()) {
       sortValue = this.dataSet.fields.values![0];
       sortQuery![EXTRA_FIELD] = sortValue;
@@ -174,37 +167,11 @@ export class PivotSheet extends SpreadSheet {
 
     const sortParams: SortParam[] = [...prevSortParams, sortParam];
 
-    // 触发排序事件
     this.emit(S2Event.RANGE_SORT, sortParams);
     this.setDataCfg({
       ...this.dataCfg,
       sortParams,
     });
     this.render();
-  }
-
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
-    event.stopPropagation();
-    this.interaction.addIntercepts([InterceptType.HOVER]);
-
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
-
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const sortMethod = key as unknown as SortMethod;
-
-        this.groupSortByMethod(sortMethod, meta);
-        this.emit(S2Event.RANGE_SORTED, event);
-      },
-      menus: getTooltipOperatorSortMenus(),
-      defaultSelectedKeys,
-    };
-
-    this.showTooltipWithInfo(event, [], {
-      operator,
-      onlyShowOperator: true,
-      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-      forceRender: true,
-    });
   }
 }

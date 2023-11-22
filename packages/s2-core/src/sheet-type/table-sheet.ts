@@ -1,16 +1,6 @@
-import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { TableDataCell, TableSeriesNumberCell } from '../cell';
-import {
-  getTooltipOperatorTableSortMenus,
-  InterceptType,
-  S2Event,
-} from '../common/constant';
-import type {
-  SortMethod,
-  SortParam,
-  TooltipOperatorOptions,
-  ViewMeta,
-} from '../common/interface';
+import { S2Event } from '../common/constant';
+import type { SortMethod, SortParam, ViewMeta } from '../common/interface';
 import { BaseDataSet, TableDataSet } from '../data-set';
 import { TableFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
@@ -109,7 +99,7 @@ export class TableSheet extends SpreadSheet {
     this.off(S2Event.RANGE_FILTER);
   }
 
-  public onSortTooltipClick = (sortMethod: SortMethod, meta: Node) => {
+  public groupSortByMethod = (sortMethod: SortMethod, meta: Node) => {
     const { field } = meta;
 
     const sortParam: SortParam = {
@@ -118,27 +108,6 @@ export class TableSheet extends SpreadSheet {
     };
 
     this.updateSortMethodMap(meta.id, sortMethod);
-    // 触发排序事件
     this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
-
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
-    event.stopPropagation();
-    this.interaction.addIntercepts([InterceptType.HOVER]);
-
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key: sortMethod }) => {
-        this.onSortTooltipClick(sortMethod, meta);
-      },
-      menus: getTooltipOperatorTableSortMenus(),
-      defaultSelectedKeys,
-    };
-
-    this.showTooltipWithInfo(event, [], {
-      operator,
-      onlyShowOperator: true,
-      forceRender: true,
-    });
-  }
 }

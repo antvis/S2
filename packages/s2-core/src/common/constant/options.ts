@@ -52,7 +52,9 @@ export const DEFAULT_OPTIONS: S2Options = {
     operation: {
       hiddenColumns: false,
       sort: false,
-      menus: [],
+      menu: {
+        items: [],
+      },
     },
   },
   interaction: {

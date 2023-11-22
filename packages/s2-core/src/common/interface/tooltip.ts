@@ -1,43 +1,65 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type * as CSS from 'csstype';
+import type { Data, Point, S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type {
-  Data,
-  Point,
-  S2CellType,
-  SortMethod,
-} from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
 
 export type TooltipDataItem = Data;
 
-export interface TooltipOperatorMenu<Icon = Element | string, Text = string> {
+export interface TooltipOperatorMenuInfo {
+  key: string;
+  [key: string]: unknown;
+}
+
+export type TooltipOperatorClickHandler = (
+  info: TooltipOperatorMenuInfo,
+  cell: S2CellType | undefined | null,
+) => void;
+
+export interface TooltipOperatorMenuItem<Icon, Text> {
   /** 唯一标识 */
   key: string;
   /** 自定义 icon */
   icon?: Icon;
   /** 名称 */
-  text?: Text;
+  label?: Text;
   /** 点击回调 */
-  onClick?: (cell: S2CellType) => void;
+  onClick?: TooltipOperatorClickHandler;
   /** 是否显示 */
   visible?: boolean | ((cell: S2CellType) => boolean);
   /** 子菜单 */
-  children?: TooltipOperatorMenu<Icon, Text>[];
+  children?: TooltipOperatorMenuItem<Icon, Text>[];
 }
 
-export type TooltipOperatorClickHandler = (params: {
-  key: SortMethod;
-  [key: string]: unknown;
-}) => void;
+export type TooltipBaseOperatorMenuItem = TooltipOperatorMenuItem<
+  Element | string,
+  string
+>;
 
-export interface TooltipOperatorOptions<
-  Icon = Element | string,
-  Text = string,
-> {
+export type TooltipOperatorMenuItems = TooltipBaseOperatorMenuItem[];
+
+export interface TooltipOperatorMenuOptions<Icon, Text> {
+  /**
+   * 菜单内容
+   */
+  items?: TooltipOperatorMenuItem<Icon, Text>[];
+
+  /**
+   * 菜单项点击
+   */
   onClick?: TooltipOperatorClickHandler;
-  menus?: TooltipOperatorMenu<Icon, Text>[];
+
+  /**
+   * 默认选中的菜单项 key
+   */
   defaultSelectedKeys?: string[];
+}
+
+export interface TooltipOperatorOptions<Menu = BaseTooltipOperatorMenuOptions> {
+  /**
+   * 菜单项配置
+   */
+  menu?: Menu;
 }
 
 export type TooltipPosition = Point;
@@ -48,7 +70,7 @@ export type TooltipDetailListItem = {
   icon?: Element | string;
 };
 
-export interface TooltipOptions<Icon = Element | string, Text = string> {
+export interface TooltipOptions<Menu = BaseTooltipOperatorMenuOptions> {
   /**
    * 是否隐藏汇总项
    * @example "数量(总和) 999"
@@ -58,7 +80,7 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   /**
    * 顶部操作项
    */
-  operator?: TooltipOperatorOptions<Icon, Text>;
+  operator?: TooltipOperatorOptions<Menu>;
 
   /**
    * 是否是小计/总计
@@ -137,17 +159,16 @@ export type TooltipInterpretationOptions<
 
 export type TooltipShowOptions<
   T = TooltipContentType,
-  Icon = Element | string,
-  Text = string,
+  Menu = BaseTooltipOperatorMenuOptions,
 > = {
   position: TooltipPosition;
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
-  options?: TooltipOptions<Icon, Text>;
+  options?: TooltipOptions<Menu>;
   content?:
     | ((
         cell: S2CellType,
-        defaultTooltipShowOptions: TooltipShowOptions<T, Icon, Text>,
+        defaultTooltipShowOptions: TooltipShowOptions<T, Menu>,
       ) => T)
     | T;
   event?: CanvasEvent | MouseEvent;
@@ -196,8 +217,7 @@ export type TooltipContentType = Element | string | undefined | null;
 
 export interface BaseTooltipConfig<
   T = TooltipContentType,
-  Icon = Element | string,
-  Text = string,
+  Menu = BaseTooltipOperatorMenuOptions,
 > {
   /**
    * 是否开启 tooltip, 在点击/悬停/停留/刷选/多选等场景会显示
@@ -217,7 +237,7 @@ export interface BaseTooltipConfig<
    * 自定义操作项
    * @see https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89
    */
-  operation?: TooltipOperation<Icon, Text>;
+  operation?: TooltipOperation<Menu>;
 
   /**
    * 显示边界, 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能
@@ -228,7 +248,7 @@ export interface BaseTooltipConfig<
    * 自定义 Tooltip 类
    * @see https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-tooltip
    */
-  render?: (spreadsheet: SpreadSheet) => BaseTooltip<T, Icon, Text>;
+  render?: (spreadsheet: SpreadSheet) => BaseTooltip<T, Menu>;
 
   /**
    * 自定义坐标
@@ -256,34 +276,38 @@ export interface TooltipPositionInfo {
   event: CanvasEvent | MouseEvent;
 }
 
+export type BaseTooltipOperatorMenuOptions = TooltipOperatorMenuOptions<
+  Element | string,
+  string
+>;
+
 export interface Tooltip<
   T = TooltipContentType,
-  Icon = Element | string,
-  Text = string,
-> extends BaseTooltipConfig<T, Icon, Text> {
+  Menu = BaseTooltipOperatorMenuOptions,
+> extends BaseTooltipConfig<T, Menu> {
   /**
    * Tooltip 行头单元格配置
    */
-  rowCell?: BaseTooltipConfig<T, Icon, Text>;
+  rowCell?: BaseTooltipConfig<T, Menu>;
 
   /**
    * Tooltip 列头单元格配置
    */
-  colCell?: BaseTooltipConfig<T, Icon, Text>;
+  colCell?: BaseTooltipConfig<T, Menu>;
 
   /**
    * Tooltip 角头单元格配置
    */
-  cornerCell?: BaseTooltipConfig<T, Icon, Text>;
+  cornerCell?: BaseTooltipConfig<T, Menu>;
 
   /**
    * Tooltip 数值单元格配置
    */
-  dataCell?: BaseTooltipConfig<T, Icon, Text>;
+  dataCell?: BaseTooltipConfig<T, Menu>;
 }
 
-export interface TooltipOperation<Icon = Element | string, Text = string>
-  extends TooltipOperatorOptions<Icon, Text> {
+export interface TooltipOperation<Menu = BaseTooltipOperatorMenuOptions>
+  extends TooltipOperatorOptions<Menu> {
   /**
    * 隐藏列 (叶子节点有效)
    */

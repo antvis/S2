@@ -236,40 +236,45 @@ s2. showTooltip({
 
 #### Customize Tooltip action items
 
-In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items, which support nesting, and you can also listen to their respective `onClick` click events, and you can get the current `tooltip`
+In addition to the operation items provided by default, you can also configure `operation.menu` custom operation items, which support nesting, and you can also listen to their respective `onClick` click events, and you can get the current `tooltip`
 Corresponding [cell information](/docs/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
    tooltip: {
      operation: {
-       menus: [
-         {
-           key: 'custom-a',
-           text: 'Operation 1',
-           icon: 'Trend',
-           onClick: (cell) => {
-             console.log('operation 1 click');
-             console.log('The cell corresponding to the tooltip:', cell)
-           },
-           children: [ {
-             key: 'custom-a-a',
-             text: 'Operation 1-1',
-             icon: 'Trend',
-             onClick: (cell) => {
-               console.log('operation 1-1 click');
-             },
-           }]
-         },
-         {
-           key: 'custom-b',
-           text: 'Operation 2',
-           icon: 'EyeOutlined',
-           onClick: (cell) => {
-             console.log('operation 2 click');
-           },
-         },
-       ],
+       menu: {
+        onClick: (info, cell) => {
+          console.log('menu click', info, cell);
+        },
+        items: [
+          {
+            key: 'custom-a',
+            text: 'Operation 1',
+            icon: 'Trend',
+            onClick: (info, cell) => {
+              console.log('operation 1 click');
+              console.log('The cell corresponding to the tooltip:', info, cell)
+            },
+            children: [ {
+              key: 'custom-a-a',
+              text: 'Operation 1-1',
+              icon: 'Trend',
+              onClick: (info, cell) => {
+                console.log('operation 1-1 click:', info, cell);
+              },
+            }]
+          },
+          {
+            key: 'custom-b',
+            text: 'Operation 2',
+            icon: 'EyeOutlined',
+            onClick: (info, cell) => {
+              console.log('operation 2 click:', info, cell);
+            },
+          },
+        ],
+       }
      },
    },
 };
@@ -281,24 +286,26 @@ You can also control whether the current operation item is displayed through the
 const s2Options = {
    tooltip: {
      operation: {
-       menus: [
-         {
-           key: 'custom-a',
-           text: 'Operation 1',
-           icon: 'Trend',
-           enable: false,
-         },
-         {
-           key: 'custom-b',
-           text: 'Operation 2',
-           icon: 'EyeOutlined',
-           enable: (cell) => {
-             // Display dynamically according to cell information, such as: leaf nodes are not displayed
-             const meta = cell. getMeta()
-             return meta.isLeaf
-           },
-         },
-       ],
+        menu: {
+          items: [
+            {
+              key: 'custom-a',
+              text: 'Operation 1',
+              icon: 'Trend',
+              visible: false,
+            },
+            {
+              key: 'custom-b',
+              text: 'Operation 2',
+              icon: 'EyeOutlined',
+              visible: (cell) => {
+                // Display dynamically according to cell information, such as: leaf nodes are not displayed
+                const meta = cell. getMeta()
+                return meta.isLeaf
+              },
+            },
+          ],
+        }
      },
    },
 };
@@ -318,13 +325,16 @@ import { StarOutlined } from '@ant-design/icons';
 const s2Options = {
    tooltip: {
      operation: {
-       menus: [
-         {
-           key: 'custom-a',
-           text: <div>Operation 1</div>,
-           icon: <StarOutlined/>,
-         }
-     },
+        menu: {
+          items: [
+            {
+              key: 'custom-a',
+              text: <div>Operation 1</div>,
+              icon: <StarOutlined/>,
+            }
+          ]
+        }
+     }
    },
 };
 ```
@@ -722,19 +732,21 @@ Axis list, display `row/column header` names in data cells, see [TooltipHeadInfo
       instance.showTooltip = (tooltipOptions) => {
         const { options } = tooltipOptions;
         const customOperator = {
-          onClick: ({ key }) => {
-            console.log('click any menu item', key);
-          },
-          menus: [
-            {
-              key: 'trend',
-              icon: 'trend',
-              text: 'Trend',
-              onClick: () => {
-                console.log('Current menu item clicked')
-              }
+          menu: {
+            onClick: ({ key }) => {
+              console.log('click any menu item', key);
             },
-          ],
+            items: [
+              {
+                key: 'trend',
+                icon: 'trend',
+                text: 'Trend',
+                onClick: (info, cell) => {
+                  console.log('Current menu item clicked:', info, cell)
+                }
+              },
+            ],
+          }
         };
         instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
       };

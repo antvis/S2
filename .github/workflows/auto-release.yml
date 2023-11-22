@@ -49,7 +49,7 @@ jobs:
             }
 
       - name: Install dependencies
-        run: pnpm bootstrap
+        run: pnpm bootstrap:ci
 
       - name: Build
         run: pnpm build

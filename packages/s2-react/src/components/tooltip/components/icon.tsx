@@ -4,7 +4,7 @@ import { HtmlIcon } from '../../../common/icons';
 import { ReactElement } from '../../../common/react-element';
 import type { TooltipIconProps } from '../interface';
 
-export const TooltipIcon: React.FC<TooltipIconProps> = (props) => {
+export const TooltipIcon: React.FC<TooltipIconProps> = React.memo((props) => {
   const { icon, ...attrs } = props;
 
   if (!icon) {
@@ -18,4 +18,6 @@ export const TooltipIcon: React.FC<TooltipIconProps> = (props) => {
   }
 
   return <ReactElement content={icon} {...attrs} />;
-};
+});
+
+TooltipIcon.displayName = 'TooltipIcon';

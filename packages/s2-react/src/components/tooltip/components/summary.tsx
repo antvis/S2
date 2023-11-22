@@ -1,13 +1,19 @@
-import React, { useContext } from 'react';
-import { size, sumBy } from 'lodash';
-import { i18n, type TooltipSummaryProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import {
+  TOOLTIP_PREFIX_CLS,
+  i18n,
+  isMobile,
+  type TooltipSummaryProps,
+} from '@antv/s2';
 import cls from 'classnames';
-import { TooltipContext } from '../context';
+import { size, sumBy } from 'lodash';
+import React from 'react';
+import { useSpreadSheetInstance } from '../../../context/SpreadSheetContext';
 
 export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
   (props) => {
     const { summaries = [] } = props;
-    const isMobile = useContext(TooltipContext);
+    const s2 = useSpreadSheetInstance();
+    const isMobileDevice = isMobile(s2?.options?.device);
 
     const renderSelected = () => {
       const count = sumBy(summaries, (item) => size(item?.selectedData));
@@ -15,7 +21,7 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
       return (
         <div
           className={`${TOOLTIP_PREFIX_CLS}-summary-item`}
-          style={isMobile ? { marginBottom: '6px' } : {}}
+          style={isMobileDevice ? { marginBottom: '6px' } : {}}
         >
           <span className={`${TOOLTIP_PREFIX_CLS}-selected`}>
             {count} {i18n('项')}
@@ -67,3 +73,5 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
     );
   },
 );
+
+TooltipSummary.displayName = 'TooltipSummary';

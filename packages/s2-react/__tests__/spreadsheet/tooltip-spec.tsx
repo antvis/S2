@@ -5,6 +5,7 @@ import type { Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, renderComponent, sleep } from 'tests/util/helpers';
+import type { TooltipOperatorMenuOptions } from '../../src/components/tooltip/interface';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 import type { SheetComponentOptions } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
@@ -195,48 +196,22 @@ describe('SheetComponent Tooltip Tests', () => {
     errorSpy.mockRestore();
   });
 
-  test.each([{ forceRender: true }, { forceRender: false }])(
-    'should not unmount component after show tooltip and %o',
-    async ({ forceRender }) => {
-      await sleep(1000);
-
-      const unmountSpy = jest.spyOn(
-        s2.tooltip as CustomTooltip,
-        // @ts-ignore
-        'unmount',
-      );
-
-      act(() => {
-        s2.showTooltip({
-          position: { x: 0, y: 0 },
-          options: { forceRender },
-        });
-        s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
-        s2.hideTooltip();
-      });
-
-      expect(unmountSpy).toHaveBeenCalledTimes(forceRender ? 2 : 0);
-
-      s2.tooltip.destroy();
-    },
-  );
-
   test('should support render ReactNode for operator menus', async () => {
     await sleep(1000);
 
-    await s2.showTooltip({
+    await s2.showTooltip<React.ReactNode, TooltipOperatorMenuOptions>({
       position: { x: 0, y: 0 },
       options: {
         operator: {
-          menus: [
-            {
-              key: 'menu-a',
-              // @ts-ignore
-              text: <div className="menu-text">text</div>,
-              // @ts-ignore
-              icon: <StarOutlined className="menu-icon" />,
-            },
-          ],
+          menu: {
+            items: [
+              {
+                key: 'menu-a',
+                label: <div className="menu-text">text</div>,
+                icon: <StarOutlined className="menu-icon" />,
+              },
+            ],
+          },
         },
       },
     });
@@ -307,4 +282,35 @@ describe('SheetComponent Tooltip Tests', () => {
 
     errorSpy.mockRestore();
   });
+
+  test.each([{ forceRender: true }, { forceRender: false }])(
+    'should not unmount component after show tooltip and %o',
+    async ({ forceRender }) => {
+      await sleep(1000);
+
+      const forceClearContentSpy = jest
+        .spyOn(s2.tooltip as CustomTooltip, 'forceClearContent')
+        .mockImplementationOnce(() => {});
+
+      const unmountSpy = jest
+        .spyOn(s2.tooltip as CustomTooltip, 'unmount')
+        .mockImplementationOnce(() => {});
+
+      act(async () => {
+        await s2.showTooltip({
+          position: { x: 0, y: 0 },
+          options: { forceRender },
+        });
+        s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
+        s2.hideTooltip();
+      });
+
+      expect(forceClearContentSpy).toHaveBeenCalledTimes(forceRender ? 1 : 0);
+
+      // React 18 unmount 只能调用一次, 所以 forceRender 不应该通过 unmount 的方式来触发
+      expect(unmountSpy).toHaveBeenCalledTimes(0);
+
+      s2.tooltip.destroy();
+    },
+  );
 });

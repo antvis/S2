@@ -5,13 +5,13 @@ import type {
   TooltipShowOptions,
   ViewMeta,
 } from '@antv/s2';
+import type { TooltipOperatorMenuOptions } from '../../../tooltip/interface';
 
 export interface CustomTooltipProps {
   cell: S2CellType<Node | ViewMeta>;
   defaultTooltipShowOptions?: TooltipShowOptions<
     React.ReactNode,
-    React.ReactNode,
-    React.ReactNode
+    TooltipOperatorMenuOptions
   >;
   label?:
     | React.ReactNode

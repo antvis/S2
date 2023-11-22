@@ -56,8 +56,9 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
         </div>
         {expandable && (
           <div className={'expand-option'}>
-            <Checkbox checked={expandChildren} onChange={onUpdateExpand} />
-            <span className="description">{expandText}</span>
+            <Checkbox checked={expandChildren} onChange={onUpdateExpand}>
+              {expandText}
+            </Checkbox>
           </div>
         )}
       </div>

@@ -520,6 +520,7 @@ const fieldMap = {
   channel: ['物美', '华联'],
   sex: ['男', '女'],
 };
+
 const partDrillDown: PartDrillDown = {
   drillConfig: {
     dataSet: [
@@ -545,11 +546,12 @@ const partDrillDown: PartDrillDown = {
       const field = drillFields[0];
       const rowData = (
         dataSet.getCellMultiData({
-          query: meta?.query,
+          query: meta?.query!,
           drillDownFields: [preDrillDownfield],
         }) as Data[]
       ).filter(
-        (item) => item!.sub_type && item!.type && item![preDrillDownfield],
+        (item) =>
+          item!['sub_type'] && item!['type'] && item![preDrillDownfield],
       );
 
       console.log(rowData);
@@ -609,47 +611,49 @@ export default defineComponent({
         operation: {
           hiddenColumns: true,
           sort: true,
-          onClick: (...args: any[]) => {
-            console.log('menuClick', ...args);
-          },
-          menus: [
-            {
-              key: 'trend',
-              text: '趋势',
-              icon: 'Trend',
-              enable: (cell) => cell.cellType === CellType.DATA_CELL,
-              onClick(cell) {
-                // eslint-disable-next-line no-console
-                console.log('趋势图 icon 点击: ', cell);
-              },
+          menu: {
+            onClick: (info, cell) => {
+              console.log('menuClick', info, cell);
             },
-            {
-              key: '1',
-              icon: 'Trend',
-              text: '菜单1',
-              onClick(cell: any) {
-                console.log('cell-1: ', cell);
-              },
-              children: [
-                {
-                  key: '1-1',
-                  icon: 'Trend',
-                  text: '菜单1-1',
-                  onClick(cell: any) {
-                    console.log('cell-1-1: ', cell);
-                  },
+            items: [
+              {
+                key: 'trend',
+                icon: 'Trend',
+                label: '趋势',
+                visible: (cell) => cell.cellType === CellType.DATA_CELL,
+                onClick(info, cell) {
+                  // eslint-disable-next-line no-console
+                  console.log('趋势图 icon 点击: ', info, cell);
                 },
-              ],
-            },
-            {
-              key: '2',
-              icon: 'Trend',
-              text: '菜单2',
-              onClick(cell: any) {
-                console.log('cell-2: ', cell);
               },
-            },
-          ],
+              {
+                key: '1',
+                icon: 'Trend',
+                label: '菜单1',
+                onClick(info, cell) {
+                  console.log('cell-1: ', cell);
+                },
+                children: [
+                  {
+                    key: '1-1',
+                    icon: 'Trend',
+                    label: '菜单1-1',
+                    onClick(info, cell) {
+                      console.log('cell-1-1: ', cell);
+                    },
+                  },
+                ],
+              },
+              {
+                key: '2',
+                icon: 'Trend',
+                label: '菜单2',
+                onClick(info, cell) {
+                  console.log('cell-2: ', cell);
+                },
+              },
+            ],
+          },
         },
       },
     }) as unknown as S2Options;

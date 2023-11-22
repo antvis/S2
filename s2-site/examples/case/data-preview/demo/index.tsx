@@ -434,7 +434,7 @@ const App = ({ data }) => {
       />
       <Modal
         title="列设置"
-        visible={colModalVisible}
+        open={colModalVisible}
         className="antv-s2-data-preview-demo-modal"
         onCancel={() => {
           setColModalVisible(false);
@@ -665,9 +665,10 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
               {'全选'}
             </Checkbox>
 
-            {searchedFieldData.map((item) => {
+            {searchedFieldData.map((item, i) => {
               return (
                 <Checkbox
+                  key={i}
                   className="check-item"
                   checked={!filtered[item]}
                   onChange={(e) => {
