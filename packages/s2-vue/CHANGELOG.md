@@ -1,3 +1,53 @@
+# [@antv/s2-vue-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.7...@antv/s2-vue-v2.0.0-next.8) (2023-11-22)
+
+
+### Features
+
+* 支持 antd v5 ([#2413](https://github.com/antvis/S2/issues/2413)) ([299c7bf](https://github.com/antvis/S2/commit/299c7bfe2e86838153273c92dd6d2b72917cfdea))
+* 支持 React 18 (兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
+
+
+### BREAKING CHANGES
+
+* antd v5, 组件层级样式升级
+
+* feat: 更新操作项菜单类型和文档
+
+* chore: 修复 s2-vue 类型
+
+* chore: ci
+
+* test: 单测修复
+
+* test: 单测修复
+
+* feat: 兼容暗黑模式
+
+* feat: 兼容暗黑模式
+* 支持 React 18
+
+* fix: 修复 lint 和 test
+
+* fix: 修复打包问题
+
+* chore: pnpm v8
+
+* chore: autoInstallPeers pnpm v8
+
+* test: 修复 swc/jest 导致的单测问题
+
+* fix: 修复打包问题
+
+* test: 更新 react 快照
+
+* feat: 兼容 React 16/17
+
+* test: 更新 react 快照
+
+* test: 更新 react 快照
+
+* test: 更新 react 快照
+
 # [@antv/s2-vue-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.6...@antv/s2-vue-v2.0.0-next.7) (2023-07-17)
 
 # [@antv/s2-vue-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.5...@antv/s2-vue-v2.0.0-next.6) (2023-04-23)
