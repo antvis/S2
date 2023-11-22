@@ -53,7 +53,6 @@ import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
-import { MobileSheetComponent } from './components/Mobile';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
 import { Links } from './components/links';
@@ -69,7 +68,10 @@ import {
   tableSheetSingleColumns,
 } from './config';
 import { partDrillDown } from './drill-down';
+import { MobileSheetComponent } from './components/Mobile';
 import { onSheetMounted } from './utils';
+import { PluginsSheet } from './components/Plugins';
+import './index.less';
 
 type TableSheetColumnType = 'single' | 'multiple';
 
@@ -1340,6 +1342,11 @@ function MainLayout() {
                 key: 'mobile',
                 label: '移动端表格',
                 children: <MobileSheetComponent />,
+              },
+              {
+                key: 'plugins',
+                label: 'G 5.0 插件系统',
+                children: <PluginsSheet />,
               },
             ]}
           ></Tabs>

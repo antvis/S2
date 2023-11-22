@@ -100,7 +100,7 @@ export class HdAdapter {
   private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const {
       container,
-      options: { width, height, devicePixelRatio },
+      options: { width, height },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
     const lastRatio = container.getConfig().devicePixelRatio;
@@ -113,11 +113,7 @@ export class HdAdapter {
      * 缩放时, 以向上取整后的缩放比为准
      * 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
      */
-    const pixelRatio = Math.max(
-      ratio,
-      devicePixelRatio!,
-      MIN_DEVICE_PIXEL_RATIO,
-    );
+    const pixelRatio = Math.max(ratio, lastRatio!, MIN_DEVICE_PIXEL_RATIO);
 
     // https://github.com/antvis/G/issues/1143
     container.getConfig().devicePixelRatio = pixelRatio;

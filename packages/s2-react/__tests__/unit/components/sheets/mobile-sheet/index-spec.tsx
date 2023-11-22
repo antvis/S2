@@ -12,7 +12,14 @@ describe('MobileSheet Tests', () => {
     render(
       <MobileSheet
         dataCfg={mockDataConfig}
-        options={{ height: 300, devicePixelRatio: 2 }}
+        options={{
+          height: 300,
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio: 2,
+            };
+          },
+        }}
         onMounted={(s) => {
           s2 = s;
         }}
@@ -40,7 +47,11 @@ describe('MobileSheet Tests', () => {
           height: 300,
           width: 300,
           hdAdapter: false,
-          devicePixelRatio: 2,
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio: 2,
+            };
+          },
         }}
       />,
     );

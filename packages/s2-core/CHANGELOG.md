@@ -1,11 +1,9 @@
 # [@antv/s2-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.7...@antv/s2-v2.0.0-next.8) (2023-07-17)
 
-
 ### Bug Fixes
 
 * 修复 meta name 同名时，hoverFocus 出错的问题 ([#2180](https://github.com/antvis/S2/issues/2180)) ([1480528](https://github.com/antvis/S2/commit/1480528c119f33fe40bc08e52e7abf87e9f9a797))
 * 修复导出数据分隔符有误的问题 ([#2241](https://github.com/antvis/S2/issues/2241)) ([ec0a31c](https://github.com/antvis/S2/commit/ec0a31c4fc660b44176b074d4cc8c098dbe95eb4))
-
 
 ### Features
 
@@ -19,7 +17,6 @@
 * 适配g5.0异步渲染 ([#2251](https://github.com/antvis/S2/issues/2251)) ([069d03d](https://github.com/antvis/S2/commit/069d03d299429c2ffab3e20d56ecd6bb30119ffd))
 
 # [@antv/s2-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.6...@antv/s2-v2.0.0-next.7) (2023-04-28)
-
 
 ### Bug Fixes
 
@@ -38,7 +35,6 @@
 * 行头过宽且不冻结时滚动条渲染错误 ([#2173](https://github.com/antvis/S2/issues/2173)) ([ab79ea0](https://github.com/antvis/S2/commit/ab79ea0664046bc6479a717d7b3b0ee7efe05b31))
 * 避免s2实例被污染 ([8c44a85](https://github.com/antvis/S2/commit/8c44a85a678eadaab3fb2a66b5b02a123f74c9bb))
 
-
 ### Features
 
 * icon支持更新name与fill ([#2138](https://github.com/antvis/S2/issues/2138)) ([d000aea](https://github.com/antvis/S2/commit/d000aeac332676cfa15d9986ec7f4be948c565d0))
@@ -56,7 +52,7 @@
 
 ### Bug Fixes
 
-* 传入 g 的 supportCSSTransform 改为 supportsCSSTransform ([7531aab](https://github.com/antvis/S2/commit/7531aab7fd12a35533d95267a818dfd3f821ece0))
+* 传入 g 的 supportsCSSTransform 改为 supportsCSSTransform ([7531aab](https://github.com/antvis/S2/commit/7531aab7fd12a35533d95267a818dfd3f821ece0))
 
 ### Features
 
@@ -989,7 +985,7 @@
 ### Features
 
 * **facet:** add scrollBarPosition option ([#997](https://github.com/antvis/S2/issues/997)) ([8937dc8](https://github.com/antvis/S2/commit/8937dc84255c68b9d5b75255263866b8c1c359aa))
-* 增加 supportCSSTransform 设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
+* 增加 supportsCSSTransform 设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
 
 # [@antv/s2-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0...@antv/s2-v1.5.0) (2022-01-07)
 

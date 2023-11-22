@@ -104,8 +104,6 @@ export const DEFAULT_OPTIONS: S2Options = {
   cornerText: '',
   cornerExtraFieldText: '',
   placeholder: EMPTY_PLACEHOLDER,
-  supportCSSTransform: false,
-  devicePixelRatio: window.devicePixelRatio,
 };
 
 const mobileWidth = document.documentElement.clientWidth;

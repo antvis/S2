@@ -48,8 +48,7 @@ const s2Options = {
 | filterDisplayDataItem | [FilterDataItemCallback](#filterdataitemcallback) |  |    | 过滤数据 |
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
-| supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
-| devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
+| transformCanvasConfig | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |  |   `-` | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro)  |
 
 <embed src="@/docs/common/frozen.zh.md"></embed>
 

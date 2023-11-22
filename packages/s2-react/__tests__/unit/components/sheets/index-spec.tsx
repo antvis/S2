@@ -32,7 +32,15 @@ describe('<SheetComponent/> Tests', () => {
 
     const commonSheetProps: SheetComponentsProps = {
       // CI 环境和 本地 DPR 不一致
-      options: { width: 200, height: 200, devicePixelRatio: 2 },
+      options: {
+        width: 200,
+        height: 200,
+        transformCanvasConfig() {
+          return {
+            devicePixelRatio: 2,
+          };
+        },
+      },
       dataCfg: null as unknown as S2DataConfig,
       showPagination: true,
       header: {

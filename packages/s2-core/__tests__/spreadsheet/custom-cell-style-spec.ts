@@ -17,8 +17,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   const s2Options: S2Options = {
     width: 600,
     height: 400,
-    devicePixelRatio: 1,
     hierarchyType: 'grid',
+    transformCanvasConfig() {
+      return {
+        devicePixelRatio: 1,
+      };
+    },
   };
 
   const mapNodeSize = (nodes: Node[] | ViewMeta[]) =>

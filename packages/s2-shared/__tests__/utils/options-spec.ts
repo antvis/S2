@@ -4,7 +4,7 @@ import {
   LayoutWidthTypes,
   type S2Options,
 } from '@antv/s2';
-import { omit, pick } from 'lodash';
+import { pick } from 'lodash';
 import {
   getBaseSheetComponentOptions,
   getMobileSheetComponentOptions,
@@ -12,7 +12,7 @@ import {
 
 describe('Options Tests', () => {
   test('should get safety options', () => {
-    const options = omit(getBaseSheetComponentOptions(), ['devicePixelRatio']);
+    const options = getBaseSheetComponentOptions();
 
     expect(options).toMatchInlineSnapshot(`
       Object {
@@ -86,7 +86,6 @@ describe('Options Tests', () => {
             "widthByField": null,
           },
         },
-        "supportCSSTransform": false,
         "tooltip": Object {
           "autoAdjustBoundary": "body",
           "enable": true,

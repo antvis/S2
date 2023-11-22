@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer, sleep } from 'tests/util/helpers';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 import { pick } from 'lodash';
-import { CanvasEvent } from '@antv/g';
+import { CanvasEvent, type CanvasContext } from '@antv/g';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import {
   DEFAULT_OPTIONS,
@@ -18,14 +18,18 @@ const s2Options: S2Options = {
 };
 
 describe('SpreadSheet Tests', () => {
+  beforeEach(() => {
+    window.devicePixelRatio = 1;
+  });
+
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -84,7 +88,11 @@ describe('SpreadSheet Tests', () => {
       async ({ devicePixelRatio }) => {
         const s2 = new PivotSheet(container, mockDataConfig, {
           ...s2Options,
-          devicePixelRatio,
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio,
+            };
+          },
         });
 
         await s2.render();
@@ -103,7 +111,11 @@ describe('SpreadSheet Tests', () => {
     test('should render sheet if custom DPR less than zero', async () => {
       const s2 = new PivotSheet(container, mockDataConfig, {
         ...s2Options,
-        devicePixelRatio: 0,
+        transformCanvasConfig() {
+          return {
+            devicePixelRatio: 0,
+          };
+        },
       });
 
       await s2.render();
@@ -274,11 +286,11 @@ describe('SpreadSheet Tests', () => {
   describe('Destroy Sheet Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -427,11 +439,11 @@ describe('SpreadSheet Tests', () => {
   describe('Sheet Config Change Tests', () => {
     let container: HTMLElement;
 
-    beforeAll(() => {
+    beforeEach(() => {
       container = getContainer();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       container?.remove();
     });
 
@@ -551,6 +563,69 @@ describe('SpreadSheet Tests', () => {
         expect(s2.measureTextHeight(text, null)).toEqual(0);
         expect(s2.measureTextHeight(text, font)).not.toBeLessThanOrEqual(0);
       });
+    });
+  });
+
+  describe('Custom G Canvas Plugins & Options Tests', () => {
+    test('should custom canvas options', async () => {
+      const DPR = 3;
+      const s2 = createPivotSheet({
+        ...s2Options,
+        transformCanvasConfig() {
+          return {
+            supportsCSSTransform: true,
+            devicePixelRatio: DPR,
+            cursor: 'crosshair',
+          };
+        },
+      });
+
+      await s2.render();
+
+      const { width, height } = s2.getCanvasElement();
+      const { supportsCSSTransform, devicePixelRatio, cursor } =
+        s2.container.getConfig();
+
+      expect(width).toStrictEqual(s2Options.width! * devicePixelRatio!);
+      expect(height).toStrictEqual(s2Options.height! * devicePixelRatio!);
+      expect(supportsCSSTransform).toBeTruthy();
+      expect(cursor).toEqual('crosshair');
+    });
+
+    test('should register custom canvas plugins', async () => {
+      let s2Instance = null;
+
+      const s2 = createPivotSheet({
+        ...s2Options,
+        transformCanvasConfig(renderer, spreadsheet) {
+          renderer.registerPlugin({
+            name: 'custom',
+            init: jest.fn(),
+            destroy: jest.fn(),
+            context: {} as CanvasContext,
+          });
+
+          s2Instance = spreadsheet;
+        },
+      });
+
+      await s2.render();
+
+      const { renderer } = s2.container.getConfig();
+
+      const pluginsNames = renderer?.getPlugins().map(({ name }) => name);
+
+      expect(pluginsNames).toEqual([
+        'canvas-context-register',
+        'image-loader',
+        'canvas-path-generator',
+        'canvas-renderer',
+        'dom-interaction',
+        'canvas-picker',
+        'html-renderer',
+        'custom',
+      ]);
+      expect(s2Instance).toEqual(s2);
     });
   });
 });

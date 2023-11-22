@@ -104,6 +104,10 @@ const renderByZoomScale = debounce((e) => {
 
 ```ts
 const s2Options = {
-  devicePixelRatio: 2
+  transformCanvasConfig() {
+    return {
+      devicePixelRatio: 2
+    }
+  }
 }
 ```

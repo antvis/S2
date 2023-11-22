@@ -4,6 +4,7 @@ import {
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
   runtime,
+  type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
@@ -22,7 +23,6 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
-  MIN_DEVICE_PIXEL_RATIO,
   S2Event,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
@@ -632,22 +632,17 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const {
-      width,
-      height,
-      supportCSSTransform,
-      devicePixelRatio = 1,
-    } = this.options;
+    const { width, height, transformCanvasConfig } = this.options;
 
-    const renderer = new Renderer();
+    const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
+    const canvasConfig = transformCanvasConfig?.(renderer, this);
 
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
-      devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
       renderer,
-      supportsCSSTransform: supportCSSTransform,
+      ...canvasConfig,
     });
 
     this.updateContainerStyle();

@@ -1,3 +1,4 @@
+import type { CanvasConfig } from '@antv/g';
 import type {
   CellCallback,
   CornerHeaderCallback,
@@ -121,20 +122,36 @@ export interface S2BasicOptions<
    */
   placeholder?: ((meta: Record<string, any>) => string) | string;
 
-  /**
-   * 是否支持 CSS 的 transform 属性
-   */
-  supportCSSTransform?: boolean;
-
-  /**
-   * 自定义 DPR, 默认 "window.devicePixelRatio"
-   */
-  devicePixelRatio?: number;
+  // /**
+  //  * 自定义 DPR, 默认 "window.devicePixelRatio"
+  //  */
+  // devicePixelRatio?: number;
 
   /**
    * 设备类型: pc / mobile
    */
   device?: DeviceType;
+
+  /**
+   * 自定义 AntV/G 渲染引擎配置参数 & 插件注册
+   * @see https://g.antv.antgroup.com/plugins/intro
+   * @see https://g.antv.antgroup.com/api/canvas/options
+   * @example
+    import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
+
+    transformCanvasConfig(renderer) {
+      console.log('当前已注册插件：', renderer.getPlugins(), renderer.getConfig());
+      renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
+
+      return {
+        supportsCSSTransform: true,
+      };
+    },
+   */
+  transformCanvasConfig?: (
+    renderer: CanvasConfig['renderer'],
+    spreadsheet: SpreadSheet,
+  ) => (Partial<CanvasConfig> | null | undefined) | void;
 
   /** *********** 自定义单元格 hooks **************** */
   /**

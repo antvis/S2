@@ -13,8 +13,12 @@ describe.skip('HD Adapter Tests', () => {
   const s2Options: S2Options = {
     width: 600,
     height: 600,
-    devicePixelRatio: DPR,
     hdAdapter: true,
+    transformCanvasConfig() {
+      return {
+        devicePixelRatio: DPR,
+      };
+    },
   };
 
   let s2: SpreadSheet;

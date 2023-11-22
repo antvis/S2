@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import type { S2DataConfig } from '@/common';
 import {
   customMerge,
@@ -177,8 +176,7 @@ describe('merge test', () => {
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
-    expect(omit(getSafetyOptions(null), ['devicePixelRatio']))
-      .toMatchInlineSnapshot(`
+    expect(getSafetyOptions(null)).toMatchInlineSnapshot(`
       Object {
         "conditions": Object {},
         "cornerExtraFieldText": "",
@@ -250,7 +248,6 @@ describe('merge test', () => {
             "widthByField": null,
           },
         },
-        "supportCSSTransform": false,
         "tooltip": Object {
           "autoAdjustBoundary": "body",
           "enable": false,
