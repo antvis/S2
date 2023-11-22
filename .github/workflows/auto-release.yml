@@ -11,6 +11,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
+    strategy:
+      matrix:
+        node-version: [20] # semantic-release 需要 >= 16 的 Node.js 环境
 
     steps:
       - uses: actions/checkout@v3
@@ -25,10 +28,10 @@ jobs:
         with:
           version: 8
 
-      - name: Use Node.js 16
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16 # semantic-release 需要 >= 16 的 Node.js 环境
+          node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
       # 发布开始通知
