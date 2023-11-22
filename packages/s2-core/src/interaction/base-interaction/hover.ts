@@ -144,7 +144,9 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   }
 
   private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType | null) {
-    if (!cell || cell.getActualText() === cell.getFieldValue()) {
+    if (!cell || !cell.isTextOverflowing()) {
+      this.spreadsheet.hideTooltip();
+
       return;
     }
 
@@ -191,7 +193,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+      const cell = this.spreadsheet.getCell(event.target);
 
       if (isEmpty(cell)) {
         return;
@@ -210,6 +212,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
+
+      this.showEllipsisTooltip(event, cell);
 
       if (interactionOptions?.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to

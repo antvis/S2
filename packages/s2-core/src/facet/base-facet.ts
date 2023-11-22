@@ -8,6 +8,7 @@ import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
   clamp,
+  compact,
   concat,
   debounce,
   each,
@@ -19,6 +20,7 @@ import {
   isNil,
   isUndefined,
   last,
+  maxBy,
   reduce,
   sumBy,
 } from 'lodash';
@@ -26,6 +28,7 @@ import {
   ColCell,
   CornerCell,
   DataCell,
+  HeaderCell,
   MergedCell,
   RowCell,
   SeriesNumberCell,
@@ -175,6 +178,11 @@ export abstract class BaseFacet {
     colIndex: number,
   ): ViewMeta | null;
 
+  protected abstract getColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+  ): number;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
 
@@ -288,15 +296,71 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getDefaultColNodeHeight(colNode: Node): number {
+  protected getDefaultColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+  ): number {
     const { colCell } = this.spreadsheet.options.style!;
 
+    // 当前层级高度最大的单元格
+    const sampleMaxHeight =
+      colsHierarchy?.sampleNodesForAllLevels?.find(
+        (node) => node.level === colNode.level,
+      )?.height || 0;
+
     // 优先级: 列头拖拽 > 列头自定义高度 > 通用单元格高度
-    return (
+    const defaultHeight =
       this.getColCellDraggedHeight(colNode) ??
       this.getCellCustomSize(colNode, colCell?.height) ??
-      0
+      0;
+
+    return Math.max(defaultHeight, sampleMaxHeight);
+  }
+
+  protected getCellAdaptiveHeight(cell: HeaderCell, defaultHeight: number) {
+    if (!cell) {
+      return defaultHeight;
+    }
+
+    const { padding } = cell.getStyle().cell;
+
+    cell.drawTextShape({
+      shallowRender: true,
+    });
+    const textHeight = cell.getActualTextHeight();
+    const adaptiveHeight = textHeight + padding.top + padding.bottom;
+
+    return textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+  }
+
+  /**
+   * 将每一层级的采样节点更新为高度最大的节点 (未隐藏, 非汇总节点)
+   */
+  protected updateColsHierarchySampleMaxHeightNodes(colsHierarchy: Hierarchy) {
+    const sampleMaxHeightNodesForAllLevels =
+      colsHierarchy.sampleNodesForAllLevels.map((sampleNode) => {
+        const maxHeightNode = maxBy(
+          colsHierarchy
+            .getNodes(sampleNode.level)
+            .filter((node) => !node.isTotals),
+          (levelSampleNode) => {
+            return this.getColNodeHeight(levelSampleNode, colsHierarchy);
+          },
+        )!;
+
+        return maxHeightNode!;
+      });
+
+    colsHierarchy.sampleNodesForAllLevels = compact(
+      sampleMaxHeightNodesForAllLevels,
     );
+    colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
+      levelSampleNode.height = this.getColNodeHeight(
+        levelSampleNode,
+        colsHierarchy,
+      );
+      colsHierarchy.height += levelSampleNode.height;
+    });
   }
 
   hideScrollBar = () => {
@@ -1548,6 +1612,7 @@ export abstract class BaseFacet {
     });
 
     colsHierarchy.sampleNodesForAllLevels = nodes;
+    colsHierarchy.height = sumBy(nodes, 'height');
   }
 
   /**

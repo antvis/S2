@@ -11,10 +11,10 @@ import type { SpreadSheet } from '../../sheet-type';
 import { getFrozenColWidth } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import {
-  isFrozenCol,
-  isFrozenTrailingCol,
   getFrozenLeafNodesCount,
   getLeftLeafNode,
+  isFrozenCol,
+  isFrozenTrailingCol,
   translateGroupX,
 } from '../utils';
 import { ColHeader } from './col';
@@ -28,17 +28,36 @@ export class TableColHeader extends ColHeader {
 
   public frozenTrailingColGroup: Group;
 
-  constructor(cfg: ColHeaderConfig) {
-    super(cfg);
+  constructor(config: ColHeaderConfig) {
+    super(config);
 
     this.initFrozenColGroups();
   }
 
+  protected getCellInstance(node: Node) {
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
+    const { seriesNumberCell, colCell } = spreadsheet.options;
+
+    const args: [Node, SpreadSheet, ColHeaderConfig] = [
+      node,
+      spreadsheet,
+      headerConfig,
+    ];
+
+    if (node.field === SERIES_NUMBER_FIELD) {
+      return seriesNumberCell?.(...args) || new TableCornerCell(...args);
+    }
+
+    return colCell?.(...args) || new TableColCell(...args);
+  }
+
   private initFrozenColGroups() {
+    const headerConfig = this.getHeaderConfig();
     const {
       colCount: frozenColCount,
       trailingColCount: frozenTrailingColCount,
-    } = this.headerConfig.spreadsheet.options.frozen!;
+    } = headerConfig.spreadsheet.options.frozen!;
 
     if (frozenColCount) {
       this.frozenColGroup = this.appendChild(
@@ -60,7 +79,7 @@ export class TableColHeader extends ColHeader {
   }
 
   protected isFrozenCell(meta: Node) {
-    const { spreadsheet } = this.headerConfig;
+    const { spreadsheet } = this.getHeaderConfig();
     const {
       colCount: frozenColCount = 0,
       trailingColCount: frozenTrailingColCount = 0,
@@ -80,7 +99,7 @@ export class TableColHeader extends ColHeader {
     this.frozenTrailingColGroup?.removeChildren();
     this.frozenColGroup?.removeChildren();
 
-    const { spreadsheet } = this.headerConfig;
+    const { spreadsheet } = this.getHeaderConfig();
     // 额外清除冻结列的 Resizer Area
     const resizerArea =
       spreadsheet.facet?.foregroundGroup.getElementById<Group>(
@@ -90,18 +109,8 @@ export class TableColHeader extends ColHeader {
     resizerArea?.removeChildren();
   }
 
-  protected getCellInstance(
-    item: Node,
-    spreadsheet: SpreadSheet,
-    headerConfig: ColHeaderConfig,
-  ) {
-    return item.field === SERIES_NUMBER_FIELD
-      ? new TableCornerCell(item, spreadsheet, headerConfig)
-      : new TableColCell(item, spreadsheet, headerConfig);
-  }
-
   private getColFrozenOptionsByNode(node: Node) {
-    const { spreadsheet } = this.headerConfig;
+    const { spreadsheet } = this.getHeaderConfig();
     const { colCount = 0, trailingColCount = 0 } = spreadsheet.options.frozen!;
 
     const leftLeafNode = getLeftLeafNode(node);
@@ -168,7 +177,7 @@ export class TableColHeader extends ColHeader {
   }
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
-    const { width, height, spreadsheet } = this.headerConfig;
+    const { width, height, spreadsheet } = this.getHeaderConfig();
     const topLevelNodes = spreadsheet.facet.getColNodes(0);
     const { frozenColWidth, frozenTrailingColWidth } = getFrozenColWidth(
       topLevelNodes,
@@ -187,7 +196,7 @@ export class TableColHeader extends ColHeader {
   protected override offset() {
     super.offset();
 
-    const { position } = this.headerConfig;
+    const { position } = this.getHeaderConfig();
 
     translateGroupX(this.frozenColGroup, position.x);
     translateGroupX(this.frozenTrailingColGroup, position.x);

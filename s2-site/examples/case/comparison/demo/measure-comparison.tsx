@@ -203,34 +203,27 @@ class CustomDataCell extends DataCell {
       this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
     );
 
-    if (tagName) {
-      const { getCustomFormattedValue, getCustomTextStyle } =
-        this.textConfig[tagName] || {};
-      const { formattedValue: defaultFormattedValue } =
-        this.getFormattedFieldValue();
-      let formattedValue = defaultFormattedValue;
-
-      if (getCustomFormattedValue) {
-        formattedValue = getCustomFormattedValue(fieldValue);
-      }
-
-      const textStyle = this.getTextStyle();
-
-      this.actualTextWidth = measureTextWidth(formattedValue, textStyle);
-      const position = this.getTextPosition();
-
-      this.textShape = this.addShape('text', {
-        attrs: {
-          x: position.x,
-          y: position.y,
-          text: formattedValue,
-          ...textStyle,
-          ...(getCustomTextStyle(fieldValue, textStyle) || {}),
-        },
-      });
-    } else {
-      super.drawTextShape();
+    if (!tagName) {
+      return super.drawTextShape();
     }
+
+    const { getCustomFormattedValue, getCustomTextStyle } =
+      this.textConfig[tagName] || {};
+    const { formattedValue: defaultFormattedValue } =
+      this.getFormattedFieldValue();
+
+    const formattedValue =
+      getCustomFormattedValue?.(fieldValue) ?? defaultFormattedValue;
+    const textStyle = this.getTextStyle();
+    const position = this.getTextPosition();
+
+    this.renderTextShape({
+      x: position.x,
+      y: position.y,
+      text: formattedValue,
+      ...textStyle,
+      ...(getCustomTextStyle(fieldValue, textStyle) || {}),
+    });
   }
 
   drawLeftBorder() {

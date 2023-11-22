@@ -391,9 +391,12 @@ export const StrategyOptions: SheetComponentOptions = {
   interaction: {
     selectedCellsSpotlight: true,
     resize: {
-      disable: (resizeInfo) =>
-        resizeInfo.meta.value === '净增完成度' &&
-        resizeInfo.resizedWidth! < resizeInfo.width,
+      disable: (resizeInfo) => {
+        return (
+          resizeInfo.meta.value === '净增完成度' &&
+          resizeInfo.resizedWidth! <= 280
+        );
+      },
     },
   },
   headerActionIcons: [

@@ -277,7 +277,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     expect(s2.render).toHaveBeenCalled();
   });
 
-  test('should hidden columns correctly', () => {
+  test('should hidden columns correctly', async () => {
     const resetSpy = jest
       .spyOn(s2.interaction, 'reset')
       .mockImplementationOnce(() => {});
@@ -287,7 +287,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     s2.on(S2Event.COL_CELL_HIDDEN, columnsHidden);
 
     // trigger hidden icon click
-    rowColumnClick.hideSelectedColumns();
+    await rowColumnClick.hideSelectedColumns();
 
     // emit event
     expect(columnsHidden).toHaveBeenCalledWith(

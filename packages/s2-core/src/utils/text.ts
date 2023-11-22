@@ -19,17 +19,21 @@ import {
 } from '../common/constant';
 import {
   CellClipBox,
-  type Condition,
   type DataCellStyle,
   type MultiData,
   type S2CellType,
   type S2Options,
   type SimpleData,
+  type TextCondition,
   type ViewMeta,
 } from '../common/interface';
-import type { Padding, TextTheme } from '../common/interface/theme';
+import type {
+  InternalFullyCellTheme,
+  Padding,
+  TextTheme,
+} from '../common/interface/theme';
 import type { SimpleBBox } from '../engine';
-import { renderIcon, renderText } from '../utils/g-renders';
+import { renderIcon } from '../utils/g-renders';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -38,6 +42,16 @@ import {
 import type { GroupedIcons } from './cell/header-cell';
 import { getIconPosition } from './condition/condition';
 import { renderMiniChart } from './g-mini-charts';
+
+export const getDisplayText = (
+  text: string | number | null | undefined,
+  placeholder?: string,
+) => {
+  const empty = placeholder ?? EMPTY_PLACEHOLDER;
+
+  // [null, undefined, ''] will return empty
+  return isNil(text) || text === '' ? empty : `${text}`;
+};
 
 /**
  * 获取文本的 ... 文本。
@@ -48,6 +62,7 @@ import { renderMiniChart } from './g-mini-charts';
  * @param text 需要计算的文本, 由于历史原因 除了支持string，还支持空值,number和数组等
  * @param maxWidth
  * @param font
+ * @deprecated
  */
 export const getEllipsisTextInner = (
   measureTextWidth: (text: number | string, font: unknown) => number,
@@ -144,6 +159,7 @@ export const getEllipsisTextInner = (
  * @param maxWidth
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
+ * @deprecated
  */
 export const getEllipsisText = ({
   measureTextWidth,
@@ -161,10 +177,9 @@ export const getEllipsisText = ({
   placeholder?: string;
 }) => {
   let font: TextTheme = {} as TextTheme;
-  const empty = placeholder ?? EMPTY_PLACEHOLDER;
-  // [null, undefined, ''] will return empty
-  const finalText = isNil(text) || text === '' ? empty : `${text}`;
   let priority = priorityParam;
+
+  const finalText = getDisplayText(text, placeholder);
 
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -296,7 +311,7 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle = cell.getStyle(
+  const cellStyle: InternalFullyCellTheme = cell.getStyle(
     isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
   );
 
@@ -332,8 +347,8 @@ const getCurrentTextStyle = ({
   meta: ViewMeta;
   data: string | number;
   textStyle?: TextTheme;
-  textCondition?: Condition;
-}) => {
+  textCondition?: TextCondition;
+}): TextTheme => {
   const style = textCondition?.mapping?.(data, {
     rowIndex,
     colIndex,
@@ -425,7 +440,8 @@ export const drawObjectText = (
   const meta = cell.getMeta() as ViewMeta;
   const text = multiData || (meta.fieldValue as MultiData);
   const { values: textValues } = text;
-  const { options, measureTextWidth } = meta.spreadsheet;
+  const { options } = meta.spreadsheet;
+
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
   const textCondition = options?.conditions?.text?.[0];
   const iconCondition = options?.conditions?.icon?.[0];
@@ -442,28 +458,26 @@ export const drawObjectText = (
 
   // 绘制单元格主标题
   if (text?.label) {
-    const dataCellStyle = cell.getStyle(CellType.DATA_CELL);
-    const labelStyle = dataCellStyle!.bolderText!;
+    const dataCellStyle: InternalFullyCellTheme = cell.getStyle(
+      CellType.DATA_CELL,
+    );
+    const labelStyle = dataCellStyle.bolderText;
 
-    /*
-     * TODO 把padding计算在内
-     * const { padding } = dataCellStyle.cell;
-     */
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    const textShape = renderText(cell, [], {
-      x,
-      y: y + labelHeight / 2,
-      text: getEllipsisText({
-        measureTextWidth,
+    cell.renderTextShape(
+      {
+        ...labelStyle,
+        x,
+        y: y + labelHeight / 2,
         text: text.label,
-        maxWidth: totalTextWidth,
-        fontParam: labelStyle,
-      }),
-      ...labelStyle,
-    });
-
-    cell.addTextShape(textShape);
+        maxLines: 1,
+        wordWrapWidth: totalTextWidth,
+        wordWrap: true,
+        textOverflow: 'ellipsis',
+      },
+      { shallowRender: true },
+    );
   }
 
   // 绘制指标
@@ -472,6 +486,7 @@ export const drawObjectText = (
   const iconStyle = cellStyle?.icon;
   const iconCfg = iconCondition &&
     iconCondition.mapping! && {
+      name: '',
       size: iconStyle?.size,
       margin: iconStyle?.margin,
       position: getIconPosition(iconCondition),
@@ -506,7 +521,6 @@ export const drawObjectText = (
           })
         : textStyle!;
 
-      const emptyPlaceholder = getEmptyPlaceholder(meta, options.placeholder);
       const maxTextWidth =
         contentBoxes[i][j].width -
         iconStyle.size -
@@ -514,24 +528,31 @@ export const drawObjectText = (
           ? iconStyle.margin.right
           : iconStyle.margin.left);
 
-      const ellipsisText = getEllipsisText({
-        measureTextWidth,
-        text: curText,
-        maxWidth: maxTextWidth,
-        fontParam: curStyle,
-        placeholder: emptyPlaceholder,
-      });
-      const actualTextWidth = measureTextWidth(ellipsisText, curStyle);
-
       const groupedIcons: GroupedIcons = {
         left: [],
         right: [],
       };
 
       if (iconCfg) {
-        groupedIcons[iconCfg.position].push(iconCfg as any);
+        groupedIcons[iconCfg.position].push(iconCfg);
       }
 
+      cell.renderTextShape(
+        {
+          ...curStyle,
+          x: 0,
+          y: 0,
+          // 多列文本不换行
+          maxLines: 1,
+          text: curText,
+          wordWrapWidth: maxTextWidth,
+        },
+        {
+          shallowRender: true,
+        },
+      );
+
+      const actualTextWidth = cell.getActualTextWidth();
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBoxes[i][j],
         textAlign: curStyle.textAlign!,
@@ -539,33 +560,12 @@ export const drawObjectText = (
         iconStyle,
         groupedIcons,
       });
-
       const textY = getVerticalTextPosition(
         contentBoxes[i][j],
         curStyle!.textBaseline!,
       );
-      const iconY = getVerticalIconPosition(
-        iconStyle.size!,
-        textY,
-        curStyle.fontSize!,
-        curStyle.textBaseline!,
-      );
 
-      const textShape = renderText(
-        cell,
-        [],
-        {
-          x: textX,
-          y: textY,
-          text: ellipsisText,
-          ...curStyle,
-        },
-        {
-          originalText: curText,
-        },
-      );
-
-      cell.addTextShape(textShape);
+      cell.updateTextPosition({ x: textX, y: textY });
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
@@ -576,6 +576,12 @@ export const drawObjectText = (
         });
 
         const iconX = iconCfg?.position === 'left' ? leftIconX : rightIconX;
+        const iconY = getVerticalIconPosition(
+          iconStyle.size!,
+          textY,
+          curStyle.fontSize!,
+          curStyle.textBaseline!,
+        );
 
         if (attrs) {
           const iconShape = renderIcon(cell, {
@@ -599,11 +605,3 @@ export const drawObjectText = (
  */
 export const getCellWidth = (dataCell: DataCellStyle, labelSize = 1) =>
   dataCell?.width! * labelSize;
-
-export const safeJsonParse = (val: string) => {
-  try {
-    return JSON.parse(val);
-  } catch (err) {
-    return null;
-  }
-};

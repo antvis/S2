@@ -313,8 +313,15 @@ export class RootInteraction {
     unmergeCell(this.spreadsheet, removedCells);
   };
 
-  public hideColumns(hiddenColumnFields: string[] = [], forceRender = true) {
-    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
+  public async hideColumns(
+    hiddenColumnFields: string[] = [],
+    forceRender = true,
+  ): Promise<void> {
+    await hideColumnsByThunkGroup(
+      this.spreadsheet,
+      hiddenColumnFields,
+      forceRender,
+    );
   }
 
   private getBrushSelectionInfo(

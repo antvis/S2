@@ -260,7 +260,7 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 0,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      resizedWidth: 40,
+      resizedWidth: 42,
       resizedHeight: 0,
       size: 3,
       meta: {
@@ -304,9 +304,9 @@ describe('Interaction Row Column Resize Tests', () => {
       info: resizeInfo,
       style: {
         colCell: {
-          width: 40,
+          width: resizeInfo.resizedWidth!,
           widthByField: {
-            [resizeInfo.meta.field!]: 40,
+            [resizeInfo.meta.field!]: resizeInfo.resizedWidth!,
           },
         },
       },
@@ -317,11 +317,11 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // update style options
     expect(s2.options.style!.colCell).toEqual({
-      width: 40,
+      width: resizeInfo.resizedWidth!,
       height: 30,
       heightByField: null,
       widthByField: {
-        [resizeInfo.meta.field!]: 40,
+        [resizeInfo.meta.field!]: resizeInfo.resizedWidth!,
       },
     });
 
@@ -768,7 +768,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(disable).toHaveBeenCalledWith({
       ...resizeInfo,
       resizedWidth: 0,
-      resizedHeight: 16,
+      resizedHeight: 40,
     });
 
     emitResizeEvent(

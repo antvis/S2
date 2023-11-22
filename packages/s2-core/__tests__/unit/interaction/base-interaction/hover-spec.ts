@@ -1,5 +1,9 @@
 import { omit } from 'lodash';
-import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
+import {
+  createFakeSpreadSheet,
+  createFederatedMouseEvent,
+  sleep,
+} from 'tests/util/helpers';
 import type { GEvent } from '@/index';
 import type { CellEventTarget, S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
@@ -47,6 +51,7 @@ describe('Interaction Hover Tests', () => {
 
         return mockCell;
       },
+      isTextOverflowing: jest.fn(() => true),
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
       cellType: 'dataCell',
@@ -166,12 +171,9 @@ describe('Interaction Hover Tests', () => {
     // click date cell before will trigger hover focus
     await sleep(HOVER_FOCUS_DURATION - 200);
 
-    const mockEvent = {
-      preventDefault: () => {},
-      originalEvent: {},
-    };
+    const event = createFederatedMouseEvent(s2, OriginEventType.MOUSE_DOWN);
 
-    s2.container.emit(OriginEventType.MOUSE_DOWN, mockEvent);
+    s2.container.dispatchEvent(event);
 
     await sleep(200);
 
@@ -304,8 +306,9 @@ describe('Interaction Hover Tests', () => {
 
             return mockCell;
           },
-          getActualText: () => 'test',
+          getActualText: () => `test`,
           getFieldValue: () => 'test',
+          isTextOverflowing: jest.fn(() => false),
           cellType: 'dataCell',
         }) as any;
 

@@ -12,6 +12,7 @@ import {
   type HeaderActionNameOptions,
   type IconCondition,
   type InteractionStateTheme,
+  type RenderTextShapeOptions,
 } from '../common/interface';
 import type {
   CellMeta,
@@ -199,10 +200,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
-  // draw text
-  protected drawTextShape() {
-    super.drawTextShape();
-    this.drawLinkField(this.meta);
+  public drawTextShape(options?: RenderTextShapeOptions) {
+    super.drawTextShape(options);
+
+    if (!options?.shallowRender) {
+      this.drawLinkField(this.meta);
+    }
   }
 
   protected initCell() {
@@ -248,9 +251,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
-    const textStyle = isTotals
-      ? this.theme.dataCell?.bolderText
-      : this.theme.dataCell?.text;
+    const { dataCell } = this.theme;
+    const textStyle = isTotals ? dataCell?.bolderText : dataCell?.text;
 
     return this.getContainConditionMappingResultTextStyle(textStyle);
   }
@@ -316,7 +318,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: contentBox,
       iconStyle,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
     });

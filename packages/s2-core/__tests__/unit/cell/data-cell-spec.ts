@@ -5,13 +5,13 @@ import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { DataCell } from '@/cell';
 import type { TextAlign } from '@/common';
 import {
+  CellType,
   GuiIcon,
-  type Formatter,
-  type ViewMeta,
   S2Event,
+  type Formatter,
   type OriginalEvent,
   type S2CellType,
-  CellType,
+  type ViewMeta,
 } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
@@ -21,7 +21,6 @@ import {
 import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { renderText } from '@/utils/g-renders';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -189,9 +188,8 @@ describe('Data Cell Tests', () => {
 
     test('should add text shape', () => {
       const dataCell = new DataCell(meta, s2);
-      const textShape = renderText(dataCell, [], { x: 0, y: 0, text: 'test' });
 
-      dataCell.addTextShape(textShape);
+      dataCell.renderTextShape({ x: 0, y: 0, text: 'test' });
 
       expect(dataCell.getTextShapes()).toHaveLength(2);
     });
@@ -209,6 +207,7 @@ describe('Data Cell Tests', () => {
       expect(dataCell.getConditionIconShapes()).toBeEmpty();
     });
   });
+
   describe('Condition by formattedValue Tests', () => {
     const s2 = createPivotSheet(
       {

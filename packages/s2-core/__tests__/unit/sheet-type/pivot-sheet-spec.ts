@@ -40,7 +40,7 @@ jest.mock('@/utils/hide-columns');
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 
 const mockHideColumnsByThunkGroup =
-  hideColumnsByThunkGroup as jest.Mock<PivotSheet>;
+  hideColumnsByThunkGroup as unknown as jest.Mock<PivotSheet>;
 
 const originalDataCfg = cloneDeep(dataCfg);
 
@@ -944,7 +944,7 @@ describe('PivotSheet Tests', () => {
       .mockImplementation((_, __, options) => {
         return {
           forceRender: options?.forceRender,
-        };
+        } as unknown as void;
       });
 
     const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });

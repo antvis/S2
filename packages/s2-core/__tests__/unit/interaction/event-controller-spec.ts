@@ -137,6 +137,7 @@ describe('Interaction Event Controller Tests', () => {
     );
     spreadsheet.interaction.reset = jest.fn();
     spreadsheet.interaction.removeIntercepts = jest.fn();
+    spreadsheet.interaction.hasIntercepts = jest.fn();
     spreadsheet.interaction.intercepts.clear();
     spreadsheet.getCell = () => ({}) as any;
     spreadsheet.options = s2Options;
@@ -483,6 +484,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.interaction.addIntercepts([
       InterceptType.DATA_CELL_BRUSH_SELECTION,
     ]);
+    spreadsheet.interaction.hasIntercepts = jest.fn(() => true);
     const reset = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -491,6 +493,7 @@ describe('Interaction Event Controller Tests', () => {
 
     expect(spreadsheet.interaction.removeIntercepts).toHaveBeenCalled();
     expect(reset).not.toHaveBeenCalled();
+    spreadsheet.interaction.hasIntercepts = jest.fn();
   });
 
   test('should not reset if current mouse on the canvas container', () => {

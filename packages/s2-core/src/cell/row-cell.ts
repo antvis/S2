@@ -7,13 +7,15 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import type { RowHeaderConfig } from '../facet/header';
 import {
   CellBorderPosition,
   CellClipBox,
   type AreaRange,
+  type RenderTextShapeOptions,
   type ViewMeta,
 } from '../common/interface';
+import { CustomRect } from '../engine';
+import type { RowHeaderConfig } from '../facet/header';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -25,16 +27,13 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
-import { CustomRect } from '../engine';
 import type { SimpleBBox } from './../engine/interface';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
-import { HeaderCell } from './header-cell';
-import { normalizeTextAlign } from './../utils/normalize';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { normalizeTextAlign } from './../utils/normalize';
+import { HeaderCell } from './header-cell';
 
-export class RowCell extends HeaderCell {
-  protected declare headerConfig: RowHeaderConfig;
-
+export class RowCell extends HeaderCell<RowHeaderConfig> {
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -101,7 +100,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    // 折叠行头时因scrollY没变，导致底层出现空白
+    // 折叠行头时因 scrollY 没变，导致底层出现空白
     if (!isCollapsed) {
       const { scrollY: oldScrollY } = this.spreadsheet.facet.getScrollOffset();
       // 可视窗口高度
@@ -131,7 +130,6 @@ export class RowCell extends HeaderCell {
     });
   }
 
-  // draw tree icon
   protected drawTreeIcon() {
     if (!this.showTreeIcon()) {
       return;
@@ -162,7 +160,7 @@ export class RowCell extends HeaderCell {
       },
     });
 
-    // in mobile, we use this cell
+    // 移动端, 点击热区为整个单元格
     if (isMobile()) {
       this.addEventListener('click', () => {
         this.emitCollapseEvent();
@@ -203,10 +201,11 @@ export class RowCell extends HeaderCell {
     return (!isLeaf && level === 0) || isTotals;
   }
 
-  // draw text
-  protected drawTextShape() {
-    super.drawTextShape();
-    this.drawLinkField(this.meta);
+  public drawTextShape(options?: RenderTextShapeOptions) {
+    super.drawTextShape(options);
+    if (!options?.shallowRender) {
+      this.drawLinkField(this.meta);
+    }
   }
 
   protected drawResizeAreaInLeaf() {
@@ -234,7 +233,7 @@ export class RowCell extends HeaderCell {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
-    } = this.headerConfig;
+    } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
       x,
@@ -358,7 +357,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.getHeaderConfig();
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
@@ -388,10 +387,10 @@ export class RowCell extends HeaderCell {
 
     const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
       bbox: textArea,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       textAlign: textStyle.textAlign!,
       groupedIcons: this.groupedIcons,
-      iconStyle: iconStyle!,
+      iconStyle,
     });
 
     const iconY = getVerticalIconPosition(
