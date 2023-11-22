@@ -13,6 +13,7 @@ import {
   Switch,
   Tooltip,
   type RadioChangeEvent,
+  Divider,
 } from 'antd';
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React from 'react';
@@ -119,7 +120,11 @@ export const ResizeConfig: React.FC<{
 
   return (
     <>
-      <Space>
+      <Space className="filter-container">
+        <span className="label">
+          热区配置
+          <Divider type="vertical" />
+        </span>
         <Switch
           checkedChildren="宽高调整热区开"
           unCheckedChildren="宽高调整热区关"
@@ -148,8 +153,11 @@ export const ResizeConfig: React.FC<{
           />
         </Tooltip>
       </Space>
-
-      <Space>
+      <Space className="filter-container">
+        <span className="label">
+          换行配置
+          <Divider type="vertical" />
+        </span>
         <Tooltip title="最大行数，文本超出后将被截断">
           <Radio.Group onChange={onMaxLinesChange} defaultValue={1}>
             {Array.from({ length: 6 }).map((_, i) => {

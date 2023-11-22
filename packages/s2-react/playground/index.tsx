@@ -70,7 +70,6 @@ import {
 } from './config';
 import { partDrillDown } from './drill-down';
 import { onSheetMounted } from './utils';
-import 'antd/dist/antd.min.css';
 
 type TableSheetColumnType = 'single' | 'multiple';
 
@@ -99,7 +98,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'dark',
+    name: 'default',
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);

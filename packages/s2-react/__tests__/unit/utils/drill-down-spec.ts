@@ -105,7 +105,7 @@ describe('Drill Down Test', () => {
     cityNode.spreadsheet = mockInstance;
   });
 
-  test('should set correct drillDownNum', () => {
+  test('should set correct drilldownNum', () => {
     const getDrillDownParams = (drillItemsNum?: number) =>
       ({
         rows: mockDataCfg.fields.rows,
