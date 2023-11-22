@@ -4,6 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, renderComponent, sleep } from 'tests/util/helpers';
+import { waitFor } from '@testing-library/react';
 import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentsProps } from '@/components';
 
@@ -89,10 +90,10 @@ describe('SheetComponent adaptive Tests', () => {
   test('should use container width when table first rendered', async () => {
     renderComponent(<MainLayout adaptive containerWidth={400} />);
 
-    await sleep(1000);
-
-    expect(s2!.options.width).toEqual(400);
-    expect(s2!.container.getConfig().width).toEqual(400);
+    await waitFor(() => {
+      expect(s2!.options.width).toEqual(400);
+      expect(s2!.container.getConfig().width).toEqual(400);
+    });
   });
 
   test('should use option width and height when table first rendered, and disable adaptive', async () => {
@@ -104,12 +105,12 @@ describe('SheetComponent adaptive Tests', () => {
       />,
     );
 
-    await sleep(1000);
-
-    expect(s2!.options.width).toEqual(s2Options.width);
-    expect(s2!.options.height).toEqual(s2Options.height);
-    expect(s2!.container.getConfig().width).toEqual(s2Options.width);
-    expect(s2!.container.getConfig().height).toEqual(s2Options.height);
+    await waitFor(() => {
+      expect(s2!.options.width).toEqual(s2Options.width);
+      expect(s2!.options.height).toEqual(s2Options.height);
+      expect(s2!.container.getConfig().width).toEqual(s2Options.width);
+      expect(s2!.container.getConfig().height).toEqual(s2Options.height);
+    });
   });
 
   test('should update table width and height when container resize', async () => {
@@ -139,12 +140,12 @@ describe('SheetComponent adaptive Tests', () => {
       window.dispatchEvent(new Event('resize'));
     });
 
-    await sleep(1000);
-
-    expect(s2!.options.width).toEqual(newContainerWidth);
-    expect(s2!.options.height).toEqual(newContainerHeight);
-    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
-    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+    await waitFor(() => {
+      expect(s2!.options.width).toEqual(newContainerWidth);
+      expect(s2!.options.height).toEqual(newContainerHeight);
+      expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
+      expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+    });
   });
 
   // https://github.com/antvis/S2/issues/792
@@ -172,19 +173,19 @@ describe('SheetComponent adaptive Tests', () => {
         );
     });
 
-    await sleep(1000);
+    await waitFor(() => {
+      const canvas = s2!.getCanvasElement();
 
-    const canvas = s2!.getCanvasElement();
+      // render by resized parent container
+      expect(s2!.options.width).toEqual(newContainerWidth);
+      expect(s2!.options.height).toEqual(newContainerHeight);
+      expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+      expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
 
-    // render by resized parent container
-    expect(s2!.options.width).toEqual(newContainerWidth);
-    expect(s2!.options.height).toEqual(newContainerHeight);
-    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
-    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
-
-    // update canvas width
-    expect(canvas.style.width).toEqual(`${newContainerWidth}px`);
-    expect(canvas.style.height).toEqual(`${newContainerHeight}px`);
+      // update canvas width
+      expect(canvas.style.width).toEqual(`${newContainerWidth}px`);
+      expect(canvas.style.height).toEqual(`${newContainerHeight}px`);
+    });
   });
 
   test("should don't update canvas size when container resize but disable adaptive", async () => {
@@ -205,14 +206,14 @@ describe('SheetComponent adaptive Tests', () => {
         );
     });
 
-    await sleep(1000);
+    await waitFor(() => {
+      const canvas = s2!.getCanvasElement() as HTMLCanvasElement;
 
-    const canvas = s2!.getCanvasElement() as HTMLCanvasElement;
-
-    expect(s2!.options.width).toEqual(200);
-    expect(s2!.container.getConfig().width).toEqual(200);
-    expect(canvas.style.width).toEqual(`200px`);
-    expect(canvas.style.height).toEqual(`200px`);
+      expect(s2!.options.width).toEqual(200);
+      expect(s2!.container.getConfig().width).toEqual(200);
+      expect(canvas.style.width).toEqual(`200px`);
+      expect(canvas.style.height).toEqual(`200px`);
+    });
   });
 
   // canvas need to set "display: block", otherwise have `5px` difference with container
@@ -221,14 +222,14 @@ describe('SheetComponent adaptive Tests', () => {
 
     renderComponent(<MainLayout adaptive containerId={containerId} />);
 
-    await sleep(1000);
+    await waitFor(() => {
+      const container = document.getElementById(containerId)!;
+      const canvas = s2!.getCanvasElement();
 
-    const container = document.getElementById(containerId)!;
-    const canvas = s2!.getCanvasElement();
+      const { height: containerHeight } = container.getBoundingClientRect();
 
-    const { height: containerHeight } = container.getBoundingClientRect();
-
-    expect(`${Math.round(containerHeight)}px`).toEqual(canvas.style.height);
+      expect(`${Math.round(containerHeight)}px`).toEqual(canvas.style.height);
+    });
   });
 
   // https://github.com/antvis/S2/issues/901
@@ -303,9 +304,9 @@ describe('SheetComponent adaptive Tests', () => {
       window.dispatchEvent(new Event('resize'));
     });
 
-    await sleep(1000);
-
-    expect(s2!.options.width).toEqual(newContainerWidth);
-    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+    await waitFor(() => {
+      expect(s2!.options.width).toEqual(newContainerWidth);
+      expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+    });
   });
 });

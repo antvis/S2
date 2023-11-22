@@ -1,5 +1,9 @@
 import { isObject } from 'lodash';
-import { DataCell, drawObjectText } from '@antv/s2';
+import {
+  DataCell,
+  drawObjectText,
+  type RenderTextShapeOptions,
+} from '@antv/s2';
 
 /**
  * Cell for panelGroup area
@@ -9,14 +13,11 @@ import { DataCell, drawObjectText } from '@antv/s2';
  * --------------------------------------
  */
 export class StrategySheetDataCell extends DataCell {
-  /**
-   * Render cell main text
-   */
-  protected drawTextShape() {
+  public drawTextShape(options?: RenderTextShapeOptions) {
     if (isObject(this.getMeta().fieldValue)) {
       drawObjectText(this);
     } else {
-      super.drawTextShape();
+      super.drawTextShape(options);
     }
   }
 }

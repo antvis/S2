@@ -1,6 +1,6 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
-import { TableSeriesNumberCell, TableDataCell } from '../cell';
+import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
@@ -349,23 +349,24 @@ export class TableFacet extends BaseFacet {
     return dataCell?.width ?? 0;
   }
 
-  private getColNodeHeight(colNode: Node) {
-    return this.getDefaultColNodeHeight(colNode);
+  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+    const colCell = new TableColCell(colNode, this.spreadsheet, {});
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   private calculateColNodesCoordinate(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
-    let preLeafNode = Node.blankNode();
-    const allNodes = colsHierarchy.getNodes();
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
 
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.height = this.getColNodeHeight(levelSample);
-      colsHierarchy.height += levelSample.height;
-    }
-    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
+    let preLeafNode = Node.blankNode();
     let currentCollIndex = 0;
+
+    const allNodes = colsHierarchy.getNodes();
+    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
@@ -390,7 +391,7 @@ export class TableFacet extends BaseFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode);
+      currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
     }
 
     const topLevelNodes = colsHierarchy.getNodes(0);

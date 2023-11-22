@@ -1,6 +1,6 @@
 import { isEmpty, isObject } from 'lodash';
 import { CellType } from '../common/constant';
-import type { ViewMeta } from '../common/interface';
+import type { RenderTextShapeOptions, ViewMeta } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type { SpreadSheet } from '../sheet-type';
 import { renderPolygon } from '../utils/g-renders';
@@ -14,6 +14,10 @@ import { DataCell } from './data-cell';
 export class MergedCell extends DataCell {
   public cells: S2CellType[];
 
+  public get cellType() {
+    return CellType.MERGED_CELL;
+  }
+
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
@@ -24,10 +28,6 @@ export class MergedCell extends DataCell {
 
   handleRestOptions(...[cells]: [S2CellType[]]) {
     this.cells = cells;
-  }
-
-  public get cellType() {
-    return CellType.MERGED_CELL;
   }
 
   public update() {}
@@ -54,10 +54,7 @@ export class MergedCell extends DataCell {
     });
   }
 
-  /**
-   * Render data text
-   */
-  public drawTextShape() {
+  public drawTextShape(options?: RenderTextShapeOptions) {
     if (isEmpty(this.meta)) {
       return;
     }
@@ -65,7 +62,7 @@ export class MergedCell extends DataCell {
     if (isObject(this.meta.fieldValue)) {
       drawObjectText(this);
     } else {
-      super.drawTextShape();
+      super.drawTextShape(options);
     }
   }
 }

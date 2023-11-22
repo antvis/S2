@@ -63,7 +63,6 @@ import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
-import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
@@ -77,6 +76,7 @@ import {
 } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { getTheme } from '../theme';
 
 /**
  * 关闭 CSS 解析的开关，可以提升首屏性能,
@@ -302,7 +302,7 @@ export abstract class SpreadSheet extends EE {
     event: CanvasEvent | MouseEvent,
     cellInfos: TooltipData[],
     options?: TooltipOptions,
-  ) {
+  ): Promise<void> | void {
     const { enable: showTooltip, content } = getTooltipOptions(this, event)!;
 
     if (!showTooltip) {
@@ -322,7 +322,7 @@ export abstract class SpreadSheet extends EE {
         },
       });
 
-    this.showTooltip({
+    return this.showTooltip({
       data: tooltipData,
       position: {
         x: event.clientX,
@@ -384,7 +384,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  private doRender(reloadData = true, options: S2RenderOptions = {}) {
+  private async doRender(reloadData = true, options: S2RenderOptions = {}) {
     // 防止表格卸载后, 再次调用 render 函数的报错
     if (
       !this.getCanvasElement() ||
@@ -408,8 +408,9 @@ export abstract class SpreadSheet extends EE {
     }
 
     this.buildFacet();
+
     if (reBuildHiddenColumnsDetail) {
-      this.initHiddenColumnsDetail();
+      await this.initHiddenColumnsDetail();
     }
 
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
@@ -424,13 +425,16 @@ export abstract class SpreadSheet extends EE {
     this.doRender(reloadData, options);
   }
 
-  public async render(reloadData?: boolean, options?: S2RenderOptions) {
+  public async render(
+    reloadData?: boolean,
+    options?: S2RenderOptions,
+  ): Promise<void> {
     if (this.destroyed) {
       return;
     }
 
     await this.container.ready;
-    this.doRender(reloadData, options);
+    await this.doRender(reloadData, options);
   }
 
   public destroy() {
@@ -654,7 +658,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
-  private initHiddenColumnsDetail = () => {
+  private async initHiddenColumnsDetail() {
     const { hiddenColumnFields } = this.options.interaction!;
     const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
 
@@ -663,8 +667,8 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    hideColumnsByThunkGroup(this, hiddenColumnFields, true);
-  };
+    await hideColumnsByThunkGroup(this, hiddenColumnFields, true);
+  }
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();

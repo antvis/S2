@@ -113,12 +113,12 @@ export const getHiddenColumnsThunkGroup = (
  * 重置交互: 比如选中当前列, 显示高亮背景色, 隐藏后需要取消高亮
  * 钩子: 提供当前被隐藏的列, 和全量的隐藏组
  */
-export const hideColumns = (
+export const hideColumns = async (
   spreadsheet: SpreadSheet,
   selectedColumnFields: string[] = [],
   forceRender = false,
 ) => {
-  const renderByHiddenColumns = (
+  const renderByHiddenColumns = async (
     hiddenColumnFields: string[] = [],
     hiddenColumnsDetail: HiddenColumnsInfo[] = [],
   ) => {
@@ -129,11 +129,11 @@ export const hideColumns = (
     });
     spreadsheet.interaction.reset();
     spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
-    spreadsheet.render(false, { reBuildHiddenColumnsDetail: false });
+    await spreadsheet.render(false, { reBuildHiddenColumnsDetail: false });
   };
 
   if (isEmpty(selectedColumnFields) && forceRender) {
-    renderByHiddenColumns();
+    await renderByHiddenColumns();
 
     return;
   }
@@ -175,7 +175,7 @@ export const hideColumns = (
     hiddenColumnsDetail,
   );
 
-  renderByHiddenColumns(hiddenColumnFields, hiddenColumnsDetail);
+  await renderByHiddenColumns(hiddenColumnFields, hiddenColumnsDetail);
 };
 
 /**
@@ -199,14 +199,14 @@ export const getColumns = (spreadsheet: SpreadSheet) => {
  * @param hiddenColumnFields 隐藏的列头字段
  * @param forceRender 隐藏的列头字段为空时, 是否强制更新
  */
-export const hideColumnsByThunkGroup = (
+export const hideColumnsByThunkGroup = async (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
   // 隐藏列为空时, 有可能是隐藏后又展开 ( [] => ['A'] => []), 所以需要更新一次, 将渲染的展开icon, 隐藏列信息等清空
   if (isEmpty(hiddenColumnFields) && forceRender) {
-    hideColumns(spreadsheet, hiddenColumnFields, true);
+    await hideColumns(spreadsheet, hiddenColumnFields, true);
   }
 
   const columns = getColumns(spreadsheet);
@@ -216,9 +216,11 @@ export const hideColumnsByThunkGroup = (
     hiddenColumnFields,
   );
 
-  hiddenColumnsGroup.forEach((fields) => {
-    hideColumns(spreadsheet, fields, forceRender);
-  });
+  await Promise.all(
+    hiddenColumnsGroup.map(async (fields) => {
+      await hideColumns(spreadsheet, fields, forceRender);
+    }),
+  );
 };
 
 export const isLastColumnAfterHidden = (

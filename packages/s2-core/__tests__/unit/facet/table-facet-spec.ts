@@ -46,12 +46,13 @@ jest.mock('@/sheet-type', () => {
         isTableMode: jest.fn().mockReturnValue(true),
         isPivotMode: jest.fn(),
         getTotalsConfig: jest.fn(),
-        getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
+        getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
         facet: {
           getColLeafNodes: jest.fn().mockReturnValue([]),
           getColNodes: jest.fn().mockReturnValue([]),
           getHiddenColumnsInfo: jest.fn(),
+          getColNodeHeight: jest.fn(),
         },
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
@@ -59,6 +60,8 @@ jest.mock('@/sheet-type', () => {
         hideTooltip: jest.fn(),
         interaction: {
           clearHoverTimer: jest.fn(),
+          getState: jest.fn(),
+          getCells: jest.fn(() => []),
         },
         enableFrozenHeaders() {
           return false;

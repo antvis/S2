@@ -30,15 +30,15 @@ export const tableSheetSingleColumns: CustomHeaderField[] = [
 export const tableSheetMultipleColumns: CustomTreeNode[] = [
   {
     field: 'area',
-    title: '地区',
+    title: '地区地区地区地区地区地区地区地区地区',
     children: [
       {
         field: 'province',
-        title: '省份',
+        title: '省份省份省份省份省份省份省份省份省份',
         children: [
           {
             field: 'type',
-            title: '类型',
+            title: '类型类型类型类型类型类型类型类型类型类型',
           },
         ],
       },
@@ -284,7 +284,7 @@ export const s2Options: SheetComponentOptions = {
     // colCount: 1,
     // trailingColCount: 1,
   },
-  cornerText: '测试',
+  cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
     enableCopy: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
@@ -299,6 +299,22 @@ export const s2Options: SheetComponentOptions = {
       colResizeType: ResizeType.CURRENT,
     },
   },
+  // totals: {
+  //   col: {
+  //     showGrandTotals: true,
+  //     showSubTotals: false,
+  //     reverseGrandTotalsLayout: true,
+  //     reverseSubTotalsLayout: true,
+  //     subTotalsDimensions: ['type'],
+  //   },
+  //   row: {
+  //     showGrandTotals: true,
+  //     showSubTotals: true,
+  //     reverseGrandTotalsLayout: true,
+  //     reverseSubTotalsLayout: true,
+  //     subTotalsDimensions: ['province'],
+  //   },
+  // },
   // mergedCellsInfo: [
   //   [
   //     { colIndex: 1, rowIndex: 1, showText: true },
@@ -310,17 +326,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    rowCell: {
-      height: 50,
-    },
-    colCell: {
-      hideValue: false,
-    },
-    dataCell: {
-      height: 50,
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -73,6 +73,8 @@ import { onSheetMounted } from './utils';
 import { PluginsSheet } from './components/Plugins';
 import './index.less';
 
+type TableSheetColumnType = 'single' | 'multiple';
+
 import './index.less';
 
 const CustomTooltip = () => (
@@ -98,7 +100,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'dark',
+    name: 'default',
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
@@ -111,9 +113,12 @@ function MainLayout() {
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
     [],
   );
-  const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
-    'single' | 'multiple'
-  >('multiple');
+  const [tableSheetColumnType, setTableSheetColumnType] =
+    React.useState<TableSheetColumnType>(
+      (localStorage.getItem(
+        'debugTableSheetColumnType',
+      ) as TableSheetColumnType) || 'single',
+    );
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);

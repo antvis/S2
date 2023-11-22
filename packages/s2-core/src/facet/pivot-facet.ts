@@ -16,9 +16,9 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { SeriesNumberCell } from '../cell';
+import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
-  DEFAULT_TREE_ROW_WIDTH,
+  DEFAULT_TREE_ROW_CELL_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type IconTheme,
   type MultiData,
@@ -30,13 +30,14 @@ import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
   getIndexRangeWithOffsets,
   getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
-import { getCellWidth, safeJsonParse } from '../utils/text';
+import { getCellWidth } from '../utils/text';
 import { BaseFacet } from './base-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -156,6 +157,14 @@ export class PivotFacet extends BaseFacet {
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
   };
 
+  private getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
+    // 之前是采样每一级第一个节点, 现在 sampleNodesForAllLevels 是采样每一级高度最大的节点
+    // 但是初始化布局时只有第一个节点有值, 所以这里需要适配下
+    return colsHierarchy
+      .getNodes(colNode.level - 1)
+      .find((node) => !node.isTotals);
+  }
+
   private calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
     this.calculateRowNodesCoordinate(layoutResult);
     this.calculateColNodesCoordinate(layoutResult);
@@ -171,22 +180,17 @@ export class PivotFacet extends BaseFacet {
     const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
       layoutResult;
 
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+
     let preLeafNode = Node.blankNode();
+    let currentColIndex = 0;
+
     const colNodes = colsHierarchy.getNodes();
 
-    colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
-      levelSampleNode.height = this.getColNodeHeight(levelSampleNode);
-      colsHierarchy.height += levelSampleNode.height;
-    });
-
-    let currentCollIndex = 0;
-
-    for (let i = 0; i < colNodes.length; i++) {
-      const currentNode = colNodes[i];
-
+    colNodes.forEach((currentNode) => {
       if (currentNode.isLeaf) {
-        currentNode.colIndex = currentCollIndex;
-        currentCollIndex += 1;
+        currentNode.colIndex = currentColIndex;
+        currentColIndex += 1;
         currentNode.x = preLeafNode.x + preLeafNode.width;
         currentNode.width = this.calculateColLeafNodesWidth(
           currentNode,
@@ -201,20 +205,24 @@ export class PivotFacet extends BaseFacet {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
-        const preLevelSample = colsHierarchy.sampleNodesForAllLevels.find(
-          (node) => node.level === currentNode.level - 1,
+        const preLevelSample = this.getPreLevelSampleNode(
+          currentNode,
+          colsHierarchy,
         );
 
         currentNode.y = preLevelSample?.y! + preLevelSample?.height! ?? 0;
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
+      const colNodeHeight = this.getColNodeHeight(currentNode, colsHierarchy);
+
       currentNode.height =
         currentNode.isGrandTotals && currentNode.isLeaf
           ? colsHierarchy.height
-          : this.getColNodeHeight(currentNode);
+          : colNodeHeight;
+
       layoutCoordinate(this.spreadsheet, null, currentNode);
-    }
+    });
 
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustColLeafNodesHeight({
@@ -224,7 +232,7 @@ export class PivotFacet extends BaseFacet {
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
 
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
-      this.adjustTotalNodesCoordinate(colsHierarchy);
+      this.adjustGrandTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
     }
   }
@@ -363,7 +371,7 @@ export class PivotFacet extends BaseFacet {
       );
     }
 
-    /*
+    /**
      * 4. 自适应 adaptive
      * 4.1 树状自定义
      */
@@ -375,8 +383,22 @@ export class PivotFacet extends BaseFacet {
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
 
-  private getColNodeHeight(colNode: Node): number {
-    return this.getDefaultColNodeHeight(colNode);
+  private getRowNodeHeight(rowNode: Node): number {
+    const rowCell = new RowCell(rowNode, this.spreadsheet, {});
+    const defaultHeight = this.getRowCellHeight(rowNode);
+
+    return this.getCellAdaptiveHeight(rowCell, defaultHeight);
+  }
+
+  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy): number {
+    if (!colNode) {
+      return 0;
+    }
+
+    const colCell = new ColCell(colNode, this.spreadsheet, {});
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   /**
@@ -465,7 +487,7 @@ export class PivotFacet extends BaseFacet {
       if (isLeaf) {
         // 1. 普通树状结构, 叶子节点各占一行, 2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const nodeHeight = this.getRowCellHeight(currentNode);
+        const nodeHeight = this.getRowNodeHeight(currentNode);
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
@@ -504,7 +526,7 @@ export class PivotFacet extends BaseFacet {
       });
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(this.spreadsheet.options.totals?.row)) {
-        this.adjustTotalNodesCoordinate(rowsHierarchy, true);
+        this.adjustGrandTotalNodesCoordinate(rowsHierarchy, true);
         this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
       }
     }
@@ -541,7 +563,7 @@ export class PivotFacet extends BaseFacet {
    * @param hierarchy Hierarchy
    * @param isRowHeader boolean
    */
-  private adjustTotalNodesCoordinate(
+  private adjustGrandTotalNodesCoordinate(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
   ) {
@@ -577,7 +599,7 @@ export class PivotFacet extends BaseFacet {
       const grandTotalChildrenHeight = grandTotalChildren?.[0]?.height ?? 0;
 
       grandTotalNode.height = hierarchy.height - grandTotalChildrenHeight;
-      // 调整其叶子结点位置, 以非小计行为准
+      // 调整其叶子节点位置, 以非小计行为准
       const positionY =
         find(hierarchy.getNodes(maxLevel), (node: Node) => !node.isTotalMeasure)
           ?.y || 0;
@@ -599,7 +621,7 @@ export class PivotFacet extends BaseFacet {
   ) {
     const subTotalNodes = hierarchy
       .getNodes()
-      .filter((node: Node) => node.isSubTotals);
+      .filter((node) => node.isSubTotals);
 
     if (isEmpty(subTotalNodes)) {
       return;
@@ -608,7 +630,7 @@ export class PivotFacet extends BaseFacet {
     const { maxLevel } = hierarchy;
 
     forEach(subTotalNodes, (subTotalNode: Node) => {
-      const subTotalNodeChildren = subTotalNode.children;
+      const subTotalChildNode = subTotalNode.children;
 
       if (isRowHeader) {
         // 填充行总单元格宽度
@@ -618,8 +640,8 @@ export class PivotFacet extends BaseFacet {
           'width',
         );
 
-        // 调整其叶子结点位置
-        forEach(subTotalNodeChildren, (node: Node) => {
+        // 调整其叶子节点位置
+        forEach(subTotalChildNode, (node: Node) => {
           node.x = hierarchy.getNodes(maxLevel)[0].x;
         });
       } else {
@@ -629,22 +651,17 @@ export class PivotFacet extends BaseFacet {
           subTotalNode.level,
           'height',
         );
-        const subTotalNodeChildrenHeight =
-          subTotalNodeChildren?.[0]?.height ?? 0;
+        const subTotalNodeChildrenHeight = subTotalChildNode?.[0]?.height ?? 0;
 
         subTotalNode.height = totalHeight - subTotalNodeChildrenHeight;
-        // 调整其叶子结点位置,以非小计单元格为准
-        forEach(subTotalNodeChildren, (node: Node) => {
-          node.y = hierarchy.getNodes(maxLevel)[0].y;
-        });
-        // 调整其叶子结点位置, 以非小计行为准
+        // 调整其叶子节点位置, 以非小计行为准
         const positionY =
           find(
             hierarchy.getNodes(maxLevel),
             (node: Node) => !node.isTotalMeasure,
           )?.y || 0;
 
-        forEach(subTotalNodeChildren, (node: Node) => {
+        forEach(subTotalChildNode, (node: Node) => {
           node.y = positionY;
         });
       }
@@ -711,13 +728,13 @@ export class PivotFacet extends BaseFacet {
 
   private getColLabelLength(col: Node, rowLeafNodes: Node[]) {
     // 如果 label 字段形如 "["xx","xxx"]"，直接获取其长度
-    const labels = safeJsonParse(col?.value);
+    const labels = safeJsonParse<string[]>(col?.value);
 
     if (isArray(labels)) {
       return labels.length;
     }
 
-    // 采样前50，根据指标个数获取单元格列宽
+    // 采样前 50，根据指标个数获取单元格列宽
     let maxLength = 1;
 
     for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
@@ -820,7 +837,7 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme?.padding?.left! +
       this.rowCellTheme?.padding?.right!;
 
-    return Math.max(DEFAULT_TREE_ROW_WIDTH, maxLabelWidth);
+    return Math.max(DEFAULT_TREE_ROW_CELL_WIDTH, maxLabelWidth);
   }
 
   /**
@@ -891,7 +908,6 @@ export class PivotFacet extends BaseFacet {
       rowNodeWidth > fieldNameNodeWidth ? maxLabel : fieldName,
     );
 
-    // return max
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 

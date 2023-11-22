@@ -7,8 +7,6 @@ import type {
 } from '../common';
 import {
   InterceptType,
-  MIN_CELL_HEIGHT,
-  MIN_CELL_WIDTH,
   ResizeAreaEffect,
   ResizeDirectionType,
   ResizeType,
@@ -491,11 +489,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       end: ResizeGuideLinePath;
     },
   ) {
+    const { minCellWidth } = this.getResizeAreaTheme();
     let nextOffsetX = offsetX - this.resizeStartPosition.offsetX!;
 
-    if (resizeInfo.width + nextOffsetX < MIN_CELL_WIDTH) {
+    if (resizeInfo.width + nextOffsetX < minCellWidth) {
       // 禁止拖到最小宽度
-      nextOffsetX = -(resizeInfo.width - MIN_CELL_WIDTH);
+      nextOffsetX = -(resizeInfo.width - minCellWidth);
     }
 
     const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + nextOffsetX;
@@ -518,10 +517,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       end: ResizeGuideLinePath;
     },
   ) {
+    const { minCellHeight } = this.getResizeAreaTheme();
     let nextOffsetY = offsetY - this.resizeStartPosition.offsetY!;
 
-    if (resizeInfo.height + nextOffsetY < MIN_CELL_HEIGHT) {
-      nextOffsetY = -(resizeInfo.height - MIN_CELL_HEIGHT);
+    if (resizeInfo.height + nextOffsetY < minCellHeight) {
+      nextOffsetY = -(resizeInfo.height - minCellHeight);
     }
 
     const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + nextOffsetY;

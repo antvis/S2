@@ -1,5 +1,5 @@
-import { Rect, type Group, type PointLike } from '@antv/g';
-import { includes, isEmpty } from 'lodash';
+import { Rect, type PointLike } from '@antv/g';
+import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
@@ -18,6 +18,21 @@ import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
  * Corner Header for SpreadSheet
  */
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
+  constructor(config: CornerHeaderConfig) {
+    super(config);
+  }
+
+  protected getCellInstance(node: Node): S2CellType {
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
+    const { cornerCell } = spreadsheet.options;
+
+    return (
+      cornerCell?.(node, spreadsheet, headerConfig) ||
+      new CornerCell(node, spreadsheet, headerConfig)
+    );
+  }
+
   /**
    * Get corner Header by config
    */
@@ -112,9 +127,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
 
-    /*
-     * check if show series number node
-     */
     if (seriesNumberWidth) {
       const sNode: Node = new Node({
         id: '',
@@ -134,7 +146,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerNodes.push(sNode);
     }
 
-    // spreadsheet type tree mode
     if (spreadsheet.isHierarchyTreeType()) {
       const cornerText = this.getTreeCornerText(options);
       const cornerNode: Node = new Node({
@@ -213,10 +224,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     return cornerNodes;
   }
 
-  constructor(cfg: CornerHeaderConfig) {
-    super(cfg);
-  }
-
   /**
    *  Make cornerHeader scroll with hScrollBar
    * @param scrollX
@@ -235,9 +242,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected renderCells() {
-    const { nodes, spreadsheet } = this.headerConfig;
+    const { nodes, spreadsheet } = this.getHeaderConfig();
     const cornerHeader = spreadsheet.options?.cornerHeader;
-    const cornerCell = spreadsheet?.options?.cornerCell;
 
     if (cornerHeader) {
       cornerHeader(
@@ -250,36 +256,20 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     nodes.forEach((node) => {
-      let cell: Group | null = null;
-
-      if (cornerCell) {
-        cell = cornerCell(
-          node,
-          this.headerConfig.spreadsheet,
-          this.headerConfig,
-        );
-      }
-
-      if (isEmpty(cell)) {
-        cell = new CornerCell(
-          node,
-          this.headerConfig.spreadsheet,
-          this.headerConfig,
-        );
-      }
+      const cell = this.getCellInstance(node);
 
       this.appendChild(cell);
     });
   }
 
   protected offset() {
-    const { scrollX = 0 } = this.headerConfig;
+    const { scrollX = 0 } = this.getHeaderConfig();
 
     translateGroupX(this, -scrollX);
   }
 
   protected clip(): void {
-    const { width, height } = this.headerConfig;
+    const { width, height } = this.getHeaderConfig();
 
     this.style.clipPath = new Rect({
       style: {

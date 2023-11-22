@@ -22,6 +22,10 @@ export class SeriesNumberCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
   }
 
+  public getHeaderConfig() {
+    return this.headerConfig || {};
+  }
+
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -102,7 +106,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
     const { textX } = getHorizontalTextIconPosition({
       bbox: textArea,
       textAlign: textStyle.textAlign!,
-      textWidth: this.actualTextWidth,
+      textWidth: this.getActualTextWidth(),
       iconStyle: this.getIconStyle()!,
       groupedIcons: this.groupedIcons,
     });

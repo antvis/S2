@@ -92,7 +92,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
         >
           <canvas
             height="400"
-            style="width: 200px; height: 200px; display: block;"
+            style="width: 200px; height: 200px; touch-action: none; display: block;"
             width="400"
           />
         </div>
@@ -356,7 +356,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
         >
           <canvas
             height="400"
-            style="width: 200px; height: 200px; display: block;"
+            style="width: 200px; height: 200px; touch-action: none; display: block;"
             width="400"
           />
         </div>
@@ -610,7 +610,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
         >
           <canvas
             height="400"
-            style="width: 200px; height: 200px; display: block;"
+            style="width: 200px; height: 200px; touch-action: none; display: block;"
             width="400"
           />
         </div>
@@ -864,7 +864,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
         >
           <canvas
             height="400"
-            style="width: 200px; height: 200px; display: block;"
+            style="width: 200px; height: 200px; touch-action: none; display: block;"
             width="400"
           />
         </div>
@@ -1118,7 +1118,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
         >
           <canvas
             height="400"
-            style="width: 200px; height: 200px; display: block;"
+            style="width: 200px; height: 200px; touch-action: none; display: block;"
             width="400"
           />
         </div>
