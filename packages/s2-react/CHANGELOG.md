@@ -1,3 +1,63 @@
+# [@antv/s2-react-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.7...@antv/s2-react-v2.0.0-next.8) (2023-11-22)
+
+
+### Features
+
+* headerActionIcons 支持细粒度配置 & 修复异步渲染导致无法获取实例的问题 ([#2301](https://github.com/antvis/S2/issues/2301)) ([b2d6f1f](https://github.com/antvis/S2/commit/b2d6f1fb04d3fa73129669fc7d2dec84943252db))
+* **layout:** 单元格支持渲染多行文本 ([#2383](https://github.com/antvis/S2/issues/2383)) ([e3b919a](https://github.com/antvis/S2/commit/e3b919a4f37d600a0f516944edf4eed8b2c0174d))
+* 支持 antd v5 ([#2413](https://github.com/antvis/S2/issues/2413)) ([299c7bf](https://github.com/antvis/S2/commit/299c7bfe2e86838153273c92dd6d2b72917cfdea))
+* 支持 React 18 (兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
+* 支持自定义 G 5.0 插件和配置 ([#2423](https://github.com/antvis/S2/issues/2423)) ([cc6c47f](https://github.com/antvis/S2/commit/cc6c47fd0927125bbc378fe6914becfcbe1b0acd))
+
+
+### BREAKING CHANGES
+
+* 移除 devicePixelRatio 和 supportsCSSTransform
+
+* docs: 增加文档
+
+* test: update
+
+* test: 增加单测
+* antd v5, 组件层级样式升级
+
+* feat: 更新操作项菜单类型和文档
+
+* chore: 修复 s2-vue 类型
+
+* chore: ci
+
+* test: 单测修复
+
+* test: 单测修复
+
+* feat: 兼容暗黑模式
+
+* feat: 兼容暗黑模式
+* 支持 React 18
+
+* fix: 修复 lint 和 test
+
+* fix: 修复打包问题
+
+* chore: pnpm v8
+
+* chore: autoInstallPeers pnpm v8
+
+* test: 修复 swc/jest 导致的单测问题
+
+* fix: 修复打包问题
+
+* test: 更新 react 快照
+
+* feat: 兼容 React 16/17
+
+* test: 更新 react 快照
+
+* test: 更新 react 快照
+
+* test: 更新 react 快照
+
 # [@antv/s2-react-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.6...@antv/s2-react-v2.0.0-next.7) (2023-07-17)
 
 ### Features
