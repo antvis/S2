@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
-    "@antv/dumi-theme-antv": "^0.4.2",
+    "@antv/dumi-theme-antv": "^0.4.3",
     "@antv/g-canvas": "^0.5.12",
     "@antv/s2": "^1.52.0",
     "@antv/s2-react": "^1.44.2",

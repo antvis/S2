@@ -6,7 +6,7 @@ export default defineConfig({
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
   ],
-  title: 'S2', // 网站header标题
+  title: 'S2', // 网站 header 标题
   favicons: [
     'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
   ], // 网站 favicon
@@ -279,7 +279,7 @@ export default defineConfig({
     detail: {
       engine: {
         zh: 'S2',
-        en: 'S2'
+        en: 'S2',
       },
       title: {
         zh: 'S2·多维交叉分析表格',
@@ -314,32 +314,32 @@ export default defineConfig({
       ],
     },
     /** 新闻公告，优先选择配置的，如果没有配置则使用远程的！ */
-    news: [
-      {
-        type: {
-          zh: '论坛',
-          en: 'Forum',
-        },
-        title: {
-          zh: 'AntV 芒种日 图新物：GraphInsight 发布',
-          en: 'AntV New Product Launch: GraphInsight',
-        },
-        date: '2022.06.06',
-        link: 'https://github.com/antvis/GraphInsight',
-      },
-      {
-        type: {
-          zh: '论坛',
-          en: 'Forum',
-        },
-        title: {
-          zh: 'SEE Conf 2022 支付宝体验科技大会',
-          en: 'Alipay Experience Technology Conference',
-        },
-        date: '2022.01.08',
-        link: 'https://seeconf.antfin.com/',
-      },
-    ],
+    // news: [
+    //   {
+    //     type: {
+    //       zh: '论坛',
+    //       en: 'Forum',
+    //     },
+    //     title: {
+    //       zh: 'AntV 芒种日 图新物：GraphInsight 发布',
+    //       en: 'AntV New Product Launch: GraphInsight',
+    //     },
+    //     date: '2022.06.06',
+    //     link: 'https://github.com/antvis/GraphInsight',
+    //   },
+    //   {
+    //     type: {
+    //       zh: '论坛',
+    //       en: 'Forum',
+    //     },
+    //     title: {
+    //       zh: 'SEE Conf 2022 支付宝体验科技大会',
+    //       en: 'Alipay Experience Technology Conference',
+    //     },
+    //     date: '2022.01.08',
+    //     link: 'https://seeconf.antfin.com/',
+    //   },
+    // ],
     /** 首页特性介绍 */
     features: [
       {
