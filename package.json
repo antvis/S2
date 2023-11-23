@@ -167,5 +167,8 @@
     "vue-jest": "^5.0.0-alpha.10"
   },
   "license": "MIT",
-  "repository": "git@github.com:antvis/S2.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  }
 }
