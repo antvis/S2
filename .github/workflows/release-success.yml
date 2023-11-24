@@ -15,7 +15,7 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [18]
 
     steps:
       - uses: actions/checkout@v4
