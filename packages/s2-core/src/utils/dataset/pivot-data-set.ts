@@ -32,7 +32,6 @@ import type {
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
-import { generateId } from '../layout';
 
 export function isMultiValue(pathValue: string | number) {
   return pathValue === MULTI_VALUE;
@@ -60,10 +59,6 @@ export function transformDimensionsValues(
   placeholder: string = TOTAL_VALUE,
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
-    if (dimension === EXTRA_FIELD) {
-      return res;
-    }
-    // push undefined when not exist
     const value = record[dimension];
     if (!(dimension in record)) {
       res.push(placeholder);
@@ -72,6 +67,41 @@ export function transformDimensionsValues(
     }
     return res;
   }, []);
+}
+
+export function transformDimensionsValuesWithExtraFields(
+  record: DataType = {},
+  dimensions: string[] = [],
+  values: string[] = [],
+) {
+  const result = [];
+
+  function transform(data: DataType, fields: string[], valueField?: string) {
+    return fields.reduce((res: string[], dimension: string) => {
+      const value = data[dimension];
+      if (!(dimension in data)) {
+        if (dimension === EXTRA_FIELD && valueField) {
+          res.push(valueField);
+        } else {
+          res.push(TOTAL_VALUE);
+        }
+      } else {
+        res.push(String(value));
+      }
+      return res;
+    }, []);
+  }
+
+  if (isEmpty(values)) {
+    result.push(transform(record, dimensions));
+  }
+  values.forEach((value) => {
+    if (value in record) {
+      result.push(transform(record, dimensions, value));
+    }
+  });
+
+  return result;
 }
 
 /**
@@ -148,7 +178,6 @@ export function getDataPath(params: DataPathParams) {
     onFirstCreate,
     rowFields,
     colFields,
-    valueFields,
     rowPivotMeta,
     colPivotMeta,
   } = params;
@@ -158,19 +187,6 @@ export function getDataPath(params: DataPathParams) {
       .concat(colFields)
       .filter((i) => i !== EXTRA_FIELD)
       .join(ID_SEPARATOR);
-  };
-
-  const appendValues = (parent: string) => {
-    const map = new Map();
-    valueFields?.forEach((value, level) => {
-      map.set(value, {
-        id: generateId(parent, value),
-        value,
-        level,
-        children: new Map(),
-      });
-    });
-    return map;
   };
 
   // 根据行、列维度值生成对应的 path 路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
@@ -186,7 +202,13 @@ export function getDataPath(params: DataPathParams) {
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
+
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
+        const id = dimensionValues
+          .slice(0, i + 1)
+          .map((it) => String(it))
+          .join(ID_SEPARATOR);
+
         const isTotal = value === TOTAL_VALUE;
 
         let level;
@@ -198,34 +220,29 @@ export function getDataPath(params: DataPathParams) {
           level = currentMeta.size + 1;
         }
 
-        const id = dimensionValues
-          .slice(0, i + 1)
-          .map((it) => String(it))
-          .join(ID_SEPARATOR);
-
         currentMeta.set(value, {
           id,
           value,
           level,
-          children:
-            dimensions[i + 1] === EXTRA_FIELD ? appendValues(id) : new Map(),
+          children: new Map(),
         });
-
         onFirstCreate?.({
           dimension: dimensions?.[i],
           dimensionPath: id,
           careRepeated,
         });
       }
+
       const meta = currentMeta?.get(value);
 
       path.push(isMultiValue(value) ? value : meta?.level);
 
       if (meta) {
-        if (isFirstCreate && meta.childField !== dimensions?.[i + 1]) {
+        const childDimension = dimensions?.[i + 1];
+        if (isFirstCreate && meta.childField !== childDimension) {
           // mark the child field
           // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
-          meta.childField = dimensions?.[i + 1];
+          meta.childField = childDimension;
         }
         currentMeta = meta?.children;
       }
@@ -242,6 +259,7 @@ interface Param {
   rows: string[];
   columns: string[];
   values: string[];
+  valueInCols: boolean;
   data: DataType[];
   indexesData: Record<string, DataType[][] | DataType[]>;
   sortedDimensionValues: SortedDimensionValues;
@@ -257,6 +275,7 @@ export function transformIndexesData(params: Param) {
     rows,
     columns,
     values,
+    valueInCols,
     data = [],
     indexesData = {},
     sortedDimensionValues,
@@ -273,7 +292,7 @@ export function transformIndexesData(params: Param) {
   /**
    * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
    */
-  const onFirstCreate = ({ dimension, dimensionPath, careRepeated }) => {
+  const onFirstCreate = ({ dimension, dimensionPath, careRepeated = true }) => {
     if (careRepeated && repeatedDimensionSet.has(dimension)) {
       // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
       // 所有重复字段的维度值无需再加入到 sortedDimensionValues
@@ -292,21 +311,33 @@ export function transformIndexesData(params: Param) {
       return;
     }
 
-    const rowDimensionValues = transformDimensionsValues(item, rows);
-    const colDimensionValues = transformDimensionsValues(item, columns);
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      rowFields: rows,
-      colFields: columns,
-      valueFields: values,
-      isFirstCreate: true,
-      onFirstCreate,
-    });
-    paths.push(path);
-    set(indexesData, path, item);
+    const multiRowDimensionValues = transformDimensionsValuesWithExtraFields(
+      item,
+      rows,
+      valueInCols ? undefined : values,
+    );
+    const multiColDimensionValues = transformDimensionsValuesWithExtraFields(
+      item,
+      columns,
+      valueInCols ? values : undefined,
+    );
+
+    for (const rowDimensionValues of multiRowDimensionValues) {
+      for (const colDimensionValues of multiColDimensionValues) {
+        const path = getDataPath({
+          rowDimensionValues,
+          colDimensionValues,
+          rowPivotMeta,
+          colPivotMeta,
+          rowFields: rows,
+          colFields: columns,
+          isFirstCreate: true,
+          onFirstCreate,
+        });
+        paths.push(path);
+        set(indexesData, path, item);
+      }
+    }
   });
 
   return {

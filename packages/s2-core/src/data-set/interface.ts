@@ -1,5 +1,5 @@
 import type { QueryDataType } from '../common/constant/query';
-import type { SortParam } from '../common/interface';
+import type { Data, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
@@ -28,12 +28,11 @@ export type DataPathParams = {
   colPivotMeta: PivotMeta;
   rowFields: string[];
   colFields: string[];
-  valueFields?: string[];
   // first create data path
   isFirstCreate?: boolean;
   // callback when pivot map create node
   onFirstCreate?: (params: {
-    careRepeated: boolean;
+    careRepeated?: boolean;
     // 维度 id，如 city
     dimension: string;
     // 完整维度信息：'四川省[&]成都市'

@@ -87,11 +87,12 @@ export class PivotDataSet extends BaseDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, values } = this.fields;
+      const { rows, columns, values, valueInCols } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
         columns: columns as string[],
         values,
+        valueInCols,
         data: this.originData.concat(this.totalData),
         indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
@@ -115,7 +116,7 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns, values } = this.fields;
+    const { columns, values, valueInCols } = this.fields;
     const currentRowFields = Node.getFieldPath(rowNode, true);
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
@@ -142,6 +143,7 @@ export class PivotDataSet extends BaseDataSet {
       rows: nextRowFields,
       columns: columns as string[],
       values,
+      valueInCols,
       data: drillDownData,
       indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
