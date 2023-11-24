@@ -19,5 +19,6 @@ export function getMockPivotMeta() {
     sortedDimensionValues,
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,
+    valueInCols: true,
   });
 }

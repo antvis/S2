@@ -84,7 +84,7 @@ describe('Pivot Dataset Total Test', () => {
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
       expect(
-        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 0, 0]),
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 0, 0, 1]),
       ).toEqual({
         province: '浙江省',
         city: '杭州市',
@@ -92,7 +92,7 @@ describe('Pivot Dataset Total Test', () => {
       });
 
       expect(
-        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 2, 0]),
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 2, 0, 1]),
       ).toEqual({
         province: '浙江省',
         city: '杭州市',
@@ -100,14 +100,14 @@ describe('Pivot Dataset Total Test', () => {
         number: 2288,
       });
       expect(
-        get(indexesData, ['province[&]city[&]type[&]sub_type', 2, 0, 2, 0]),
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 2, 0, 2, 0, 1]),
       ).toEqual({
         province: '四川省',
         type: '办公用品',
         number: 18479,
       });
       expect(
-        get(indexesData, ['province[&]city[&]type[&]sub_type', 0, 0, 0, 0]),
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 0, 0, 0, 0, 1]),
       ).toEqual({
         number: 78868,
       });
@@ -120,6 +120,7 @@ describe('Pivot Dataset Total Test', () => {
         'city',
         'type',
         'sub_type',
+        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues.province),
@@ -152,6 +153,17 @@ describe('Pivot Dataset Total Test', () => {
         TOTAL_VALUE,
         TOTAL_VALUE,
         TOTAL_VALUE,
+      ]);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
+      ).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
       ]);
     });
   });

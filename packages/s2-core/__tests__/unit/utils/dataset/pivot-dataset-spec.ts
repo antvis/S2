@@ -48,6 +48,7 @@ describe('PivotDataSet util test', () => {
       sortedDimensionValues,
       rowPivotMeta,
       colPivotMeta,
+      valueInCols: true,
     });
     expect(result.paths).toHaveLength(32);
     expect(get(result.indexesData, result.paths[0])).toEqual({
@@ -107,6 +108,7 @@ describe('PivotDataSet util test', () => {
       isFirstCreate: true,
       rowFields: rows,
       colFields: columns,
+      prefix,
     });
     expect(result).toEqual([prefix, 1, 1, 1, 1]);
   });

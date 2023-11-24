@@ -584,9 +584,10 @@ export class PivotDataSet extends BaseDataSet {
 
     const extraFields = this.getQueryExtraFields(query);
 
-    return flatMap(all.filter(Boolean), (item) =>
-      DataHandler.createProxyDataList(item, extraFields),
-    );
+    // 多个 extra field 有时对应的同一个对象，需要进行去重
+    return flatMap(uniq(all), (item) => {
+      return item ? DataHandler.createProxyDataList(item, extraFields) : [];
+    });
   }
 
   public getFieldFormatter(field: string, cellMeta?: ViewMeta): Formatter {

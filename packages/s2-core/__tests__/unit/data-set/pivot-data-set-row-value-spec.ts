@@ -93,21 +93,21 @@ describe('Pivot Mode Test When Value In Row', () => {
     test('should get correct indexesData', () => {
       const prefix = 'province[&]city[&]type[&]sub_type';
       const indexesData = dataSet.indexesData;
-      expect(get(indexesData, [prefix, 1, 1, 1, 1])).toEqual({
+      expect(get(indexesData, [prefix, 1, 1, 1, 1, 1])).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
       });
-      expect(get(indexesData, [prefix, 1, 2, 1, 2])).toEqual({
+      expect(get(indexesData, [prefix, 1, 2, 1, 1, 2])).toEqual({
         province: '浙江省',
         city: '绍兴市',
         type: '家具',
         sub_type: '沙发',
         number: 632,
       });
-      expect(get(indexesData, [prefix, 2, 1, 1, 2])).toEqual({
+      expect(get(indexesData, [prefix, 2, 1, 1, 1, 2])).toEqual({
         province: '四川省',
         city: '成都市',
         type: '家具',
@@ -121,6 +121,7 @@ describe('Pivot Mode Test When Value In Row', () => {
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
+        EXTRA_FIELD,
         'type',
         'sub_type',
       ]);
