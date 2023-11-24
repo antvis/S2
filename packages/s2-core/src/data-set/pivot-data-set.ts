@@ -43,6 +43,7 @@ import {
   deleteMetaById,
   flattenIndexesData,
   getDataPath,
+  getDataPathPrefix,
   getFlattenDimensionValues,
   getSatisfiedPivotMetaValues,
   isMultiValue,
@@ -410,6 +411,7 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
       rowFields: rows,
       colFields: columns as string[],
+      prefix: getDataPathPrefix(rows, columns as string[]),
     });
     const data = get(this.indexesData, path);
     if (data) {
@@ -538,6 +540,7 @@ export class PivotDataSet extends BaseDataSet {
       queryType,
     });
 
+    const prefix = getDataPathPrefix(totalRows, columns as string[]);
     const all: Data[] = [];
 
     for (const rowQuery of rowQueries) {
@@ -549,6 +552,7 @@ export class PivotDataSet extends BaseDataSet {
           colPivotMeta: this.colPivotMeta,
           rowFields: totalRows,
           colFields: columns as string[],
+          prefix,
         });
 
         let hadMultiField = false;

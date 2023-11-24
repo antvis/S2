@@ -151,6 +151,13 @@ export function getDimensionsWithParentPath(
     ?.filter((item) => item);
 }
 
+export function getDataPathPrefix(rowFields: string[], colFields: string[]) {
+  return rowFields
+    .concat(colFields)
+    .filter((i) => i !== EXTRA_FIELD)
+    .join(ID_SEPARATOR);
+}
+
 /**
  * Transform a single data to path
  * {
@@ -180,14 +187,8 @@ export function getDataPath(params: DataPathParams) {
     colFields,
     rowPivotMeta,
     colPivotMeta,
+    prefix = '',
   } = params;
-
-  const getDimensionPrefix = () => {
-    return rowFields
-      .concat(colFields)
-      .filter((i) => i !== EXTRA_FIELD)
-      .join(ID_SEPARATOR);
-  };
 
   // 根据行、列维度值生成对应的 path 路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
   // 如果是汇总格子: path = [0, 0, 0, 0] path 中会存在 0 的值
@@ -253,7 +254,7 @@ export function getDataPath(params: DataPathParams) {
   const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta, false);
   const colPath = getPath(colFields, colDimensionValues, colPivotMeta, true);
 
-  return [getDimensionPrefix(), ...rowPath, ...colPath];
+  return [prefix, ...rowPath, ...colPath];
 }
 interface Param {
   rows: string[];
@@ -305,6 +306,8 @@ export function transformIndexesData(params: Param) {
     ).push(dimensionPath);
   };
 
+  const prefix = getDataPathPrefix(rows, columns as string[]);
+
   data.forEach((item) => {
     // 空数据没有意义，直接跳过
     if (!item || isEmpty(item)) {
@@ -333,6 +336,7 @@ export function transformIndexesData(params: Param) {
           colFields: columns,
           isFirstCreate: true,
           onFirstCreate,
+          prefix,
         });
         paths.push(path);
         set(indexesData, path, item);

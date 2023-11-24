@@ -38,6 +38,7 @@ export type DataPathParams = {
     // 完整维度信息：'四川省[&]成都市'
     dimensionPath: string;
   }) => void;
+  prefix?: string;
 };
 
 export interface CellDataParams {

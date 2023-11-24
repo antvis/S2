@@ -4,6 +4,7 @@ import { i18n } from '../common/i18n';
 import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
+  getDataPathPrefix,
   transformDimensionsValues,
 } from '../utils/dataset/pivot-data-set';
 import { DataHandler } from '../utils/dataset/proxy-handler';
@@ -20,6 +21,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       query,
       columns as string[],
     );
+
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -27,6 +29,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       colPivotMeta: this.colPivotMeta,
       rowFields: rows,
       colFields: columns as string[],
+      prefix: getDataPathPrefix(rows, columns as string[]),
     });
     const data = get(this.indexesData, path);
     if (data) {
