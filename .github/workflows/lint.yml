@@ -39,7 +39,7 @@ jobs:
         run: yarn build
 
       - name: Bundle size limit
-        run: yarn build:size-limit
+        run: yarn size-limit
         env:
           CI: true
           BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}

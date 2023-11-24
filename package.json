@@ -35,6 +35,7 @@
     "vue:test": "yarn workspace @antv/s2-vue test",
     "vue:watch": " yarn workspace @antv/s2-vue watch",
     "build": "lerna run build --include-dependencies --stream",
+    "build:cjs": "lerna run build:cjs --include-dependencies --stream",
     "build:esm": "lerna run build:esm --include-dependencies --stream",
     "build:umd": "lerna run build:umd --include-dependencies --stream",
     "size-limit": "lerna run size-limit --stream",
