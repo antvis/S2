@@ -45,9 +45,10 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
@@ -75,14 +76,15 @@
     "vue": "^3.2.31",
     "vue-tsc": "^0.34.11"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "650 kB"
+      "import": "{ createComponent }",
+      "limit": "20 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "205 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

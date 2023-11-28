@@ -13,13 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     # 自动发布成功后
     if: github.event.workflow_run.conclusion == 'success'
-    steps:
-      - uses: actions/checkout@v3
+    strategy:
+      matrix:
+        node-version: [18]
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
       - name: Git bootstrap
@@ -59,7 +63,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "📢 开始自动部署旧版官网(https://s2.antv.vision) 📢 ",
+                "title": "📢 开始自动部署旧版官网 (https://s2.antv.vision) 📢 ",
                 "text": "🔗 请点击链接查看详情",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"

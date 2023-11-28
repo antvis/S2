@@ -1,4 +1,4 @@
-name: test
+name: 💯 test
 
 on: [pull_request]
 
@@ -18,7 +18,7 @@ jobs:
         node-version: [18]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Python 3.11 和 node-gyp 有兼容问题, 导致无法安装依赖
       # https://github.com/slint-ui/slint/commit/a9c48e33502fdebc36c5aa2f4f516c2218424679#diff-944291df2c9c06359d37cc8833d182d705c9e8c3108e7cfe132d61a06e9133dd
@@ -27,7 +27,7 @@ jobs:
           python-version: '3.10'
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
@@ -40,9 +40,10 @@ jobs:
           yarn test:ci-coverage
 
       - name: Upload test coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
           verbose: true
 
       - name: Workflow failed alert
