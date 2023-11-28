@@ -118,3 +118,25 @@ jobs:
             你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, S2 作为开源框架，只会进行通用能力的增强和自定义接口的开放。你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
 
             Hello, @${{ github.event.issue.user.login }}, After our repeated discussions, your needs are too customized and not suitable for implementing directly to S2. As an open source framework, S2 will only enhance general capabilities and open custom interfaces. You can implement it yourself through the customization capabilities provided by S2, thank you for your understanding.
+
+      - name: Supported or fixed in next
+        if: github.event.label.name == '✨ supported or fixed in next'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，该功能或缺陷已经在 `2.0 next 版本` 中支持或修复，`next` 版本目前处于内测中, 感谢你的支持与理解。
+
+            如有任何 `2.0 版本` 问题，请前往[讨论区](https://github.com/antvis/S2/discussions/1933)，正式版预计年底发布 (文档施工中 🚧), 抢先试用:
+
+            ```bash
+            yarn add @antv/s2@next
+            yarn add @antv/s2-react@next
+            yarn add @antv/s2-vue@next
+            ```
+
+            Hello, @${{ github.event.issue.user.login }}, This feature or flaw has been supported or fixed in `2.0 next version`, `next` version is currently in private beta, thank you for your support and understanding.
+
+            Any `2.0` version issues, please go to [discussion](https://github.com/antvis/S2/discussions/1933), which released the official version is expected to the end (document 🚧) during construction, the first trial:

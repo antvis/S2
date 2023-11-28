@@ -11,9 +11,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
+    strategy:
+      matrix:
+        node-version: [20]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Python 3.11 和 node-gyp 有兼容问题, 导致无法安装依赖
       # https://github.com/slint-ui/slint/commit/a9c48e33502fdebc36c5aa2f4f516c2218424679#diff-944291df2c9c06359d37cc8833d182d705c9e8c3108e7cfe132d61a06e9133dd
@@ -21,10 +24,10 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: 16 # semantic-release 需要 >= 16 的 Node.js 环境
+          node-version: ${{ matrix.node-version }} # semantic-release 需要 >= 16 的 Node.js 环境
           cache: 'yarn'
 
       # 发布开始通知
@@ -37,7 +40,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🚑 开始自动发布 🚑",
+                "title": "🚑 开始自动发布 (${{ github.head_ref || github.ref_name }}) 🚑",
                 "text": "🔗 请点击链接查看详情",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"
@@ -69,7 +72,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🚨 自动发布失败",
+                "title": "🚨 自动发布失败 (${{ github.head_ref || github.ref_name }})",
                 "text": "🔗 请点击链接查看具体原因, 及时修复, 尝试点击右上角 [Re-run all jobs] 重试, 或手动发布 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PRSkSqsE_vYAAAAAAAAAAAAADmJ7AQ/original"

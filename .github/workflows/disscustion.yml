@@ -1,5 +1,5 @@
 
-name: Discussions
+name: 💬 Discussions
 
 on:
   discussion:
@@ -21,6 +21,6 @@ jobs:
                 "title": "📢 用户: ${{ github.event.discussion.user.login }} 创建了讨论：(${{ github.event.discussion.title }})",
                 "text": "👀 点击查看",
                 "messageUrl": "${{ github.event.discussion.html_url }}",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
