@@ -118,7 +118,6 @@ export class Node {
       }
       return fieldPath.reverse();
     }
-    return [];
   }
 
   /**

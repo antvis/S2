@@ -391,11 +391,11 @@ export class PivotDataSet extends BaseDataSet {
     // 判断当前是否为下钻节点
     // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
     const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
-      (parentPath) => rowNode.id.startsWith(parentPath),
+      (parentPath) => rowNode?.id.startsWith(parentPath),
     );
 
     // 如果是下钻结点，行维度在 originRows 中并不存在
-    if (!isTotals || isDrillDown) {
+    if (rowNode && isDrillDown) {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
 
