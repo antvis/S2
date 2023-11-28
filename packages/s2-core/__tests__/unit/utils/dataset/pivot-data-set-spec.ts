@@ -421,55 +421,154 @@ describe('pivot-data-set utils test', () => {
   });
 
   test(`should return flatten dimension values if exist total group`, () => {
-    const result1 = flattenDimensionValues({
-      fields,
-      pivotMeta,
-      sortedDimensionValues,
-      dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, MULTI_VALUE],
-    });
-    expect(result1).toEqual([
-      ['四川省', '成都市', '家具', '桌子'],
-      ['四川省', '成都市', '家具', '沙发'],
-      ['四川省', '成都市', '办公用品', '笔'],
-      ['四川省', '成都市', '办公用品', '纸张'],
-    ]);
+    expect(
+      flattenDimensionValues({
+        fields,
+        pivotMeta,
+        sortedDimensionValues,
+        dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, '纸张'],
+      }),
+    ).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "纸张",
+        ],
+      ]
+    `);
 
-    const result2 = flattenDimensionValues({
-      fields,
-      pivotMeta,
-      sortedDimensionValues,
-      dimensionValues: [MULTI_VALUE, MULTI_VALUE, '办公用品', MULTI_VALUE],
-    });
-    expect(result2).toEqual([
-      ['四川省', '成都市', '办公用品', '笔'],
-      ['四川省', '成都市', '办公用品', '纸张'],
-      ['四川省', '绵阳市', '办公用品', '笔'],
-      ['四川省', '绵阳市', '办公用品', '纸张'],
-      ['浙江省', '杭州市', '办公用品', '笔'],
-      ['浙江省', '杭州市', '办公用品', '纸张'],
-      ['浙江省', '舟山市', '办公用品', '笔'],
-      ['浙江省', '舟山市', '办公用品', '纸张'],
-    ]);
+    expect(
+      flattenDimensionValues({
+        fields,
+        pivotMeta,
+        sortedDimensionValues,
+        dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, MULTI_VALUE],
+      }),
+    ).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "四川省",
+          "成都市",
+          "家具",
+          "桌子",
+        ],
+        Array [
+          "四川省",
+          "成都市",
+          "家具",
+          "沙发",
+        ],
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "纸张",
+        ],
+      ]
+    `);
 
-    const result3 = flattenDimensionValues({
-      fields,
-      pivotMeta,
-      sortedDimensionValues,
-      dimensionValues: ['四川省', MULTI_VALUE, '办公用品', MULTI_VALUE],
-    });
-    expect(result3).toEqual([
-      ['四川省', '成都市', '办公用品', '笔'],
-      ['四川省', '成都市', '办公用品', '纸张'],
-      ['四川省', '绵阳市', '办公用品', '笔'],
-      ['四川省', '绵阳市', '办公用品', '纸张'],
-    ]);
+    expect(
+      flattenDimensionValues({
+        fields,
+        pivotMeta,
+        sortedDimensionValues,
+        dimensionValues: [MULTI_VALUE, MULTI_VALUE, '办公用品', MULTI_VALUE],
+      }),
+    ).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "纸张",
+        ],
+        Array [
+          "四川省",
+          "绵阳市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "四川省",
+          "绵阳市",
+          "办公用品",
+          "纸张",
+        ],
+        Array [
+          "浙江省",
+          "杭州市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "浙江省",
+          "杭州市",
+          "办公用品",
+          "纸张",
+        ],
+        Array [
+          "浙江省",
+          "舟山市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "浙江省",
+          "舟山市",
+          "办公用品",
+          "纸张",
+        ],
+      ]
+    `);
 
-    const result4 = flattenDimensionValues({
-      fields,
-      pivotMeta,
-      sortedDimensionValues,
-      dimensionValues: [MULTI_VALUE, '成都市', MULTI_VALUE, '纸张'],
-    });
-    expect(result4).toEqual([['四川省', '成都市', '办公用品', '纸张']]);
+    expect(
+      flattenDimensionValues({
+        fields,
+        pivotMeta,
+        sortedDimensionValues,
+        dimensionValues: ['四川省', MULTI_VALUE, '办公用品', MULTI_VALUE],
+      }),
+    ).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "四川省",
+          "成都市",
+          "办公用品",
+          "纸张",
+        ],
+        Array [
+          "四川省",
+          "绵阳市",
+          "办公用品",
+          "笔",
+        ],
+        Array [
+          "四川省",
+          "绵阳市",
+          "办公用品",
+          "纸张",
+        ],
+      ]
+    `);
   });
 });

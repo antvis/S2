@@ -1,4 +1,5 @@
 import { getContainer } from 'tests/util/helpers';
+import { map } from 'lodash';
 import { s2Options, dataCfg } from '../data/total-group-data';
 import { PivotSheet } from '@/sheet-type';
 import { EXTRA_FIELD, VALUE_FIELD, type S2Options } from '@/common';
@@ -20,8 +21,24 @@ describe('Total Group Dimension Test', () => {
     s2.render();
 
     const { rowLeafNodes, getCellMeta } = s2.facet.layoutResult;
-    expect(rowLeafNodes[0].id).toEqual('root[&]总计[&]家具');
-    expect(rowLeafNodes[1].id).toEqual('root[&]总计[&]办公用品');
+    expect(map(rowLeafNodes, 'id')).toMatchInlineSnapshot(`
+      Array [
+        "root[&]总计[&]家具",
+        "root[&]总计[&]办公用品",
+        "root[&]浙江省[&]小计[&]家具",
+        "root[&]浙江省[&]小计[&]办公用品",
+        "root[&]浙江省[&]杭州市[&]家具",
+        "root[&]浙江省[&]杭州市[&]办公用品",
+        "root[&]浙江省[&]舟山市[&]家具",
+        "root[&]浙江省[&]舟山市[&]办公用品",
+        "root[&]四川省[&]小计[&]家具",
+        "root[&]四川省[&]小计[&]办公用品",
+        "root[&]四川省[&]成都市[&]家具",
+        "root[&]四川省[&]成都市[&]办公用品",
+        "root[&]四川省[&]绵阳市[&]家具",
+        "root[&]四川省[&]绵阳市[&]办公用品",
+      ]
+    `);
 
     expect(getCellMeta(0, 0).data).toEqual({
       type: '家具',
@@ -52,10 +69,26 @@ describe('Total Group Dimension Test', () => {
     s2.render();
 
     const { rowLeafNodes, getCellMeta } = s2.facet.layoutResult;
-    expect(rowLeafNodes[0].id).toEqual('root[&]总计[&]杭州市');
-    expect(rowLeafNodes[1].id).toEqual('root[&]总计[&]舟山市');
-    expect(rowLeafNodes[2].id).toEqual('root[&]总计[&]成都市');
-    expect(rowLeafNodes[3].id).toEqual('root[&]总计[&]绵阳市');
+    expect(map(rowLeafNodes, 'id')).toMatchInlineSnapshot(`
+      Array [
+        "root[&]总计[&]杭州市",
+        "root[&]总计[&]舟山市",
+        "root[&]总计[&]成都市",
+        "root[&]总计[&]绵阳市",
+        "root[&]浙江省[&]小计[&]家具",
+        "root[&]浙江省[&]小计[&]办公用品",
+        "root[&]浙江省[&]杭州市[&]家具",
+        "root[&]浙江省[&]杭州市[&]办公用品",
+        "root[&]浙江省[&]舟山市[&]家具",
+        "root[&]浙江省[&]舟山市[&]办公用品",
+        "root[&]四川省[&]小计[&]家具",
+        "root[&]四川省[&]小计[&]办公用品",
+        "root[&]四川省[&]成都市[&]家具",
+        "root[&]四川省[&]成都市[&]办公用品",
+        "root[&]四川省[&]绵阳市[&]家具",
+        "root[&]四川省[&]绵阳市[&]办公用品",
+      ]
+    `);
 
     expect(getCellMeta(0, 0).data).toEqual({
       city: '杭州市',
