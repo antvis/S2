@@ -2,7 +2,7 @@ import {
   EXTRA_FIELD,
   ORIGIN_FIELD,
   VALUE_FIELD,
-} from '../../common/constant/basic';
+} from '../../common/constant/field';
 import type { Data } from '../../common/interface/s2DataConfig';
 
 export class DataHandler implements ProxyHandler<Data> {

@@ -13,7 +13,7 @@ import {
   type S2CellType,
   CellTypes,
 } from '@/common';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,

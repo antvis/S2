@@ -1,4 +1,4 @@
-import { MULTI_VALUE } from '@/common/constant/basic';
+import { MULTI_VALUE } from '@/common/constant/field';
 import type { PivotMeta, SortedDimensionValues } from '@/data-set/interface';
 import {
   existDimensionTotalGroup,

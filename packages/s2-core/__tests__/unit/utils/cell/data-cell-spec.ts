@@ -1,4 +1,4 @@
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import type {
   FilterDataItemCallback,
   MappingDataItemCallback,

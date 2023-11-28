@@ -1,5 +1,5 @@
 import { isArray, flattenDeep } from 'lodash';
-import { TOTAL_VALUE } from '../common/constant/basic';
+import { TOTAL_VALUE } from '../common/constant/field';
 import type { Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (

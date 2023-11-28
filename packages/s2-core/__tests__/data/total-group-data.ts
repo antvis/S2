@@ -1,4 +1,6 @@
-export const s2Options = {
+import { Aggregation, type S2DataConfig, type S2Options } from '@/common';
+
+export const s2Options: S2Options = {
   width: 800,
   height: 600,
   // 配置行小计总计显示,且按维度分组（列小计总计同理）
@@ -10,10 +12,10 @@ export const s2Options = {
       reverseSubLayout: true,
       subTotalsDimensions: ['province'],
       calcTotals: {
-        aggregation: 'SUM',
+        aggregation: Aggregation.SUM,
       },
       calcSubTotals: {
-        aggregation: 'SUM',
+        aggregation: Aggregation.SUM,
       },
       totalsGroupDimensions: ['type'],
       subTotalsGroupDimensions: ['type'],
@@ -24,17 +26,17 @@ export const s2Options = {
       reverseLayout: true,
       reverseSubLayout: true,
       calcTotals: {
-        aggregation: 'SUM',
+        aggregation: Aggregation.SUM,
       },
       calcSubTotals: {
-        aggregation: 'SUM',
+        aggregation: Aggregation.SUM,
       },
       totalsGroupDimensions: ['sub_type'],
     },
   },
 };
 
-export const dataCfg = {
+export const dataCfg: S2DataConfig = {
   fields: {
     rows: ['province', 'city', 'type'],
     columns: ['sub_type'],
