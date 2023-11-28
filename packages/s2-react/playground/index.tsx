@@ -1227,6 +1227,7 @@ function MainLayout() {
               fields: customTreeFields,
             }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
+            onMounted={onSheetMounted}
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
