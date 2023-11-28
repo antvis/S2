@@ -18,6 +18,15 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const s2Ref = React.useRef<SpreadSheet | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
+  const shouldInit = React.useRef(true);
+
+  const isDevMode = React.useMemo(() => {
+    try {
+      return process.env['NODE_ENV'] !== 'production';
+    } catch {
+      return false;
+    }
+  }, []);
 
   const {
     spreadsheet: customSpreadSheet,
@@ -58,15 +67,15 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const buildSpreadSheet = React.useCallback(async () => {
     setLoading(true);
 
-    const spreadsheet = renderSpreadSheet(containerRef.current!);
+    const s2 = renderSpreadSheet(containerRef.current!);
 
-    spreadsheet.setThemeCfg(props.themeCfg);
-    await spreadsheet.render();
+    s2.setThemeCfg(props.themeCfg);
+    await s2.render();
     setLoading(false);
-    s2Ref.current = spreadsheet;
+    s2Ref.current = s2;
 
-    /*
-     * 子 hooks 内使用了 s2Ref.current 作为 dep
+    /**
+     * 子 hooks 内使用了 s2Ref.current 作为 deps
      * forceUpdate 一下保证子 hooks 能 rerender
      */
     forceUpdate();
@@ -74,9 +83,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
-  // init
   React.useEffect(() => {
+    // 兼容 React 18 StrictMode 开发环境下渲染两次
+    if (isDevMode && !shouldInit.current) {
+      return;
+    }
+
     buildSpreadSheet();
+    shouldInit.current = false;
 
     return () => {
       s2Ref.current?.destroy?.();

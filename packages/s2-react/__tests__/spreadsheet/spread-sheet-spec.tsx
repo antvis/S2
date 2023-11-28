@@ -1,4 +1,5 @@
 import React from 'react';
+import { waitFor } from '@testing-library/react';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
 import { getContainer, renderComponent } from '../util/helpers';
@@ -31,7 +32,7 @@ describe('Spread Sheet Tests', () => {
       container?.remove();
     });
 
-    test('should display scroll bar if s2Options.width more than browser window width', () => {
+    test('should display scroll bar if s2Options.width more than browser window width', async () => {
       renderComponent(
         <SheetComponent
           options={{
@@ -43,7 +44,9 @@ describe('Spread Sheet Tests', () => {
         container,
       );
 
-      expect(hasScrollBar(container)).toBeTruthy();
+      await waitFor(() => {
+        expect(hasScrollBar(container)).toBeTruthy();
+      });
     });
 
     test.skip('should hidden scroll bar if window width more than s2Options.width', () => {
@@ -52,6 +55,31 @@ describe('Spread Sheet Tests', () => {
       );
 
       expect(hasScrollBar(container)).toBeFalsy();
+    });
+
+    test('should only mount container once in strict mode for React 18', async () => {
+      // eslint-disable-next-line no-console
+      console.table(process.env);
+      const onMounted = jest.fn();
+
+      renderComponent(
+        <React.StrictMode>
+          <SheetComponent
+            options={s2Options}
+            dataCfg={mockDataConfig}
+            onMounted={onMounted}
+          />
+          ,
+        </React.StrictMode>,
+        container,
+      );
+
+      await waitFor(() => {
+        expect(
+          Array.from(document.querySelectorAll('.antv-s2-container canvas')),
+        ).toHaveLength(1);
+        expect(onMounted).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
