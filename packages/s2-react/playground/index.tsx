@@ -69,6 +69,7 @@ import {
   tableSheetSingleColumns,
   s2ThemeConfig,
   pivotSheetDataCfgForCompactMode,
+  testDataCfg,
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
@@ -1155,7 +1156,7 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg}
+              dataCfg={testDataCfg}
               options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}

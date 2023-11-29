@@ -18,6 +18,7 @@ import type { ColCell } from '../cell';
 import {
   CellTypes,
   ELLIPSIS_SYMBOL,
+  EMPTY_FIELD_VALUE,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
 import type {
@@ -205,9 +206,11 @@ export const getEllipsisText = ({
   placeholder?: string;
 }) => {
   let font = {};
-  const empty = placeholder ?? EMPTY_PLACEHOLDER;
-  // [null, undefined, ''] will return empty
-  const finalText = isNil(text) || text === '' ? empty : `${text}`;
+  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
+  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  const finalText = isEmptyText ? emptyPlaceholder : `${text}`;
+
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];

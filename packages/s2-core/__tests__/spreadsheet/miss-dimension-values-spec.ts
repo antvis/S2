@@ -1,82 +1,8 @@
-import { isUpDataValue, type Columns, customMerge } from '@antv/s2';
-import type { S2DataConfig, ThemeCfg } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '@antv/s2-shared';
-import type { SliderSingleProps } from 'antd';
-import {
-  data,
-  totalData,
-  meta,
-  fields,
-} from '../__tests__/data/mock-dataset.json';
-import type { SheetComponentOptions } from '../src/components';
+import { getContainer } from 'tests/util/helpers';
+import { EMPTY_FIELD_VALUE, type S2DataConfig, type S2Options } from '@/common';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
-export const tableSheetSingleColumns: Columns = [
-  'province',
-  'city',
-  'type',
-  'sub_type',
-  'number',
-];
-
-export const tableSheetMultipleColumns: Columns = [
-  {
-    key: 'area',
-    children: ['province', 'city'],
-  },
-  'type',
-  {
-    key: 'money',
-    children: [{ key: 'price' }, 'number'],
-  },
-];
-
-export const tableSheetDataCfg: S2DataConfig = {
-  data,
-  totalData,
-  meta,
-  fields: {
-    columns: tableSheetSingleColumns,
-  },
-};
-
-export const pivotSheetDataCfg: S2DataConfig = {
-  data,
-  totalData,
-  meta,
-  fields,
-};
-
-export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
-  data: [
-    ...pivotSheetDataCfg.data,
-    {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '11111111',
-    },
-    {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '2',
-    },
-    {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '133.333',
-    },
-  ],
-});
-
-export const s2Options: SheetComponentOptions = {
+const s2Options: S2Options = {
   debug: true,
   width: 600,
   height: 400,
@@ -109,27 +35,9 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   showDefaultHeaderActionIcon: false,
-  colCell: null,
 };
 
-export const s2ThemeConfig: ThemeCfg = {
-  name: 'default',
-  theme: {},
-};
-
-export const sliderOptions: SliderSingleProps = {
-  min: 0,
-  max: 10,
-  step: 0.1,
-  marks: {
-    0.2: '0.2',
-    1: '1 (默认)',
-    2: '2',
-    10: '10',
-  },
-};
-
-export const testDataCfg = {
+const testDataCfg: S2DataConfig = {
   meta: [
     {
       field: '2d7feabd-76a2-4c11-8f24-79764af936b4',
@@ -228,12 +136,12 @@ export const testDataCfg = {
     },
     {
       '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '分享裂变',
+      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-x',
       'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 409090,
     },
     {
       '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '分享裂变',
+      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-x',
       'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 111111,
     },
     {
@@ -263,41 +171,76 @@ export const testDataCfg = {
   ],
 };
 
-export const mockGridAnalysisOptions: SheetComponentOptions = {
-  width: 1600,
-  height: 600,
-  style: {
-    layoutWidthType: 'colAdaptive',
-    cellCfg: {
-      width: 400,
-      height: 100,
-      valuesCfg: {
-        widthPercent: [40, 0.2, 0.2, 0.2],
-      },
-    },
-  },
-  tooltip: { showTooltip: false },
-  interaction: {
-    selectedCellsSpotlight: true,
-  },
-  conditions: {
-    text: [
-      {
-        mapping: (value, cellInfo) => {
-          const { colIndex } = cellInfo;
-          if (colIndex <= 1) {
-            return {
-              fill: '#000',
-            };
-          }
-          return {
-            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-          };
-        },
-      },
-    ],
-  },
-};
+describe('Miss Dimension Values Tests', () => {
+  let s2: SpreadSheet;
 
-export const defaultOptions =
-  getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);
+  beforeEach(() => {
+    s2 = new PivotSheet(getContainer(), testDataCfg, s2Options);
+    s2.render();
+  });
+
+  test('should get correctly empty dimension values', () => {
+    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
+
+    expect(emptyDimensionValueNode.value).toEqual(EMPTY_FIELD_VALUE);
+    expect(emptyDimensionValueNode.id).toEqual(
+      `root[&]总计[&]${EMPTY_FIELD_VALUE}`,
+    );
+    expect(emptyDimensionValueNode.belongsCell.getActualText()).toEqual('-');
+  });
+
+  test('should get correctly empty dimension values and use custom placeholder text', () => {
+    const placeholder = '*';
+
+    s2.setOptions({
+      placeholder,
+    });
+    s2.render(false);
+
+    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
+    expect(emptyDimensionValueNode.belongsCell.getActualText()).toEqual(
+      placeholder,
+    );
+  });
+
+  test('should get correctly dimension data and ignore empty dimension value', () => {
+    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
+
+    const data = s2.dataSet.getMultiData(emptyDimensionValueNode.query);
+    const dimensionValues = s2.dataSet.getDimensionValues(
+      emptyDimensionValueNode.field,
+    );
+    const emptyDimensionDataCell =
+      s2.interaction.getPanelGroupAllDataCells()[0];
+
+    expect(emptyDimensionValueNode.query).toEqual(
+      emptyDimensionValueNode.parent.query,
+    );
+    expect(emptyDimensionDataCell.getMeta().fieldValue).toEqual(1732771);
+    expect(data).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          Object {
+            "$$extra$$": "c5ce4e54-795a-42b3-9cc8-e8b685da44ee",
+            "$$value$$": 1732771,
+            "2d7feabd-76a2-4c11-8f24-79764af936b4": "总计",
+            "c5ce4e54-795a-42b3-9cc8-e8b685da44ee": 1732771,
+          },
+        ],
+      ]
+    `);
+    expect(dimensionValues).toMatchInlineSnapshot(`
+      Array [
+        "维值-2",
+        "维值-3",
+        "测试-2",
+        "测试-3",
+        "测试-4",
+        "测试-5",
+        "测试-x",
+        "测试-7",
+        "测试-8",
+      ]
+    `);
+  });
+});

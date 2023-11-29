@@ -1,5 +1,5 @@
 import { isEmpty, isUndefined } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
+import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
 import { addTotals } from '../../utils/layout/add-totals';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
 import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node';
@@ -52,7 +52,7 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
     query = getDimsCondition(parentNode);
     fieldValues.push(...values.map((v) => new TotalMeasure(v)));
   } else if (whetherLeafByLevel({ facetCfg, level: index, fields })) {
-    // 如果最后一级没有分组维度，则将上一个结点设为叶子结点
+    // 如果最后一级没有分组维度，则将上一个结点设为叶子节点
     parentNode.isLeaf = true;
     hierarchy.pushIndexNode(parentNode);
     parentNode.rowIndex = hierarchy.getIndexNodes().length - 1;
@@ -80,9 +80,8 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
 
   const { dataSet, spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
-  const fieldName = dataSet.getFieldName(currentField);
 
-  let query = {};
+  let query: Record<string, unknown> = {};
 
   // field(dimension)'s all values
   query = getDimsCondition(parentNode, true);
@@ -103,7 +102,7 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     if (currentField === EXTRA_FIELD) {
       fieldValues.push(...dataSet.fields?.values);
     } else {
-      fieldValues.push(fieldName);
+      fieldValues.push(EMPTY_FIELD_VALUE);
     }
   }
 
