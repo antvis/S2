@@ -56,7 +56,7 @@ import { MobileSheetComponent } from './components/Mobile';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
-import { Links } from './components/links';
+import { LinkGroup } from './components/LinkGroup';
 import {
   TableSheetFrozenOptions,
   defaultOptions,
@@ -71,6 +71,7 @@ import {
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
 import { onSheetMounted } from './utils';
+import { ChartSheet } from './components/ChartSheet';
 import './index.less';
 
 type TableSheetColumnType = 'single' | 'multiple';
@@ -362,7 +363,7 @@ function MainLayout() {
         }}
       >
         <div className="playground">
-          <Links />
+          <LinkGroup />
           <Tabs
             defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}
             type="card"
@@ -1411,8 +1412,13 @@ function MainLayout() {
                 label: 'G 5.0 插件系统',
                 children: <PluginsSheet />,
               },
+              {
+                key: 'chart',
+                label: '绘制 G2 图表',
+                children: <ChartSheet />,
+              },
             ]}
-          ></Tabs>
+          />
         </div>
       </PlaygroundContext.Provider>
     </ConfigProvider>

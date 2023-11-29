@@ -89,6 +89,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.DATA_CELL_SELECT_MOVE, props.onDataCellSelectMove, s2);
+  useS2Event(S2Event.DATA_CELL_RENDER, props.onDataCellRender, s2);
 
   // ============== Corner Cell ====================
   useCellEvent(S2Event.CORNER_CELL_HOVER, props.onCornerCellHover, s2);

@@ -1275,24 +1275,26 @@ export abstract class BaseFacet {
     this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
-  addCell = (cell: S2CellType<ViewMeta>) => {
+  addDataCell = (cell: DataCell) => {
     this.panelScrollGroup?.appendChild(cell);
+    this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_MOUNTED, cell);
   };
 
-  realCellRender = (scrollX: number, scrollY: number) => {
+  realDataCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
 
     DebuggerUtil.getInstance().logger(
-      'realCellRender:',
+      'realDataCellRender:',
       this.preCellIndexes,
       indexes,
     );
-    const { add, remove } = diffPanelIndexes(this.preCellIndexes!, indexes);
+    const { add: willAddDataCells, remove: willRemoveDataCells } =
+      diffPanelIndexes(this.preCellIndexes!, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
-      each(add, ([i, j]) => {
+      each(willAddDataCells, ([i, j]) => {
         const viewMeta = this.getCellMeta(j, i);
 
         if (viewMeta) {
@@ -1300,29 +1302,33 @@ export abstract class BaseFacet {
 
           // mark cell for removing
           cell.name = `${i}-${j}`;
-          this.addCell(cell);
+          this.addDataCell(cell);
         }
       });
-      const allCells = getAllChildCells(
-        this.panelGroup.children,
+      const allDataCells = getAllChildCells<DataCell>(
+        this.panelGroup.children as DataCell[],
         DataCell,
-      ) as DataCell[];
+      );
 
       // remove cell from panelCell
-      each(remove, ([i, j]) => {
-        const findOne = find(allCells, (cell) => cell.name === `${i}-${j}`);
+      each(willRemoveDataCells, ([i, j]) => {
+        const mountedDataCell = find(
+          allDataCells,
+          (cell) => cell.name === `${i}-${j}`,
+        );
 
-        findOne?.remove();
+        mountedDataCell?.remove();
       });
 
       DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+        `Render Cell Panel: ${allDataCells?.length}, Add: ${willAddDataCells?.length}, Remove: ${willRemoveDataCells?.length}`,
       );
     });
+
     this.preCellIndexes = indexes;
     this.spreadsheet.emit(S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER, {
-      add,
-      remove,
+      add: willAddDataCells,
+      remove: willRemoveDataCells,
       spreadsheet: this.spreadsheet,
     });
   };
@@ -1549,7 +1555,7 @@ export abstract class BaseFacet {
     this.spreadsheet.hideTooltip();
     this.spreadsheet.interaction.clearHoverTimer();
 
-    this.realCellRender(scrollX, scrollY);
+    this.realDataCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
     if (!skipScrollEvent) {

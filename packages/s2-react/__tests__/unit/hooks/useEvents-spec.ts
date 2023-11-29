@@ -250,6 +250,10 @@ const cellEventCases = [
     name: 'onDataCellSelectMove',
   },
   {
+    event: S2Event.DATA_CELL_RENDER,
+    name: 'onDataCellRender',
+  },
+  {
     event: S2Event.CORNER_CELL_HOVER,
     name: 'onCornerCellHover',
   },

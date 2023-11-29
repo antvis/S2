@@ -1,5 +1,5 @@
-import type { FederatedPointerEvent as Event, Group } from '@antv/g';
-import type { MergedCell } from '../../cell';
+import type { FederatedPointerEvent as Event } from '@antv/g';
+import type { DataCell, MergedCell } from '../../cell';
 import type {
   CustomTreeNode,
   Data,
@@ -376,7 +376,7 @@ export type CellCallback<T extends BaseHeaderConfig> = (
   headerConfig: T,
 ) => S2CellType;
 
-export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
+export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
 
 export type MergedCellCallback = (
   spreadsheet: SpreadSheet,
@@ -501,13 +501,6 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
-
-export type RenderHandler = (
-  options: Record<string, unknown>,
-  context: {
-    group: Group;
-  },
-) => void;
 
 export interface Point {
   x: number;

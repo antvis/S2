@@ -9,7 +9,7 @@ import {
 import { FloatButton } from 'antd';
 import React from 'react';
 
-export const Links = () => {
+export const LinkGroup = () => {
   return (
     <FloatButton.Group
       shape="circle"

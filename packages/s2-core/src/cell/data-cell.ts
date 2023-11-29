@@ -1,5 +1,14 @@
 import type { PointLike } from '@antv/g';
-import { find, findLast, first, get, isEmpty, isEqual, merge } from 'lodash';
+import {
+  find,
+  findLast,
+  first,
+  get,
+  isEmpty,
+  isEqual,
+  isObject,
+  merge,
+} from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellType,
@@ -22,6 +31,8 @@ import type {
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
+  MultiData,
+  BaseChartData,
 } from '../common/interface';
 import {
   getHorizontalTextIconPosition,
@@ -59,6 +70,27 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public get cellType() {
     return CellType.DATA_CELL;
+  }
+
+  public isMultiData() {
+    return isObject(this.getMeta().fieldValue);
+  }
+
+  public getRenderChartData(): BaseChartData {
+    const { fieldValue } = this.meta;
+
+    return (fieldValue as MultiData)?.values as BaseChartData;
+  }
+
+  public getRenderChartOptions() {
+    const chartData = this.getRenderChartData();
+    const cellArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
+    return {
+      ...cellArea,
+      ...chartData,
+      autoFit: true,
+    };
   }
 
   protected getBorderPositions(): CellBorderPosition[] {

@@ -1,40 +1,44 @@
-import { customMerge, renderToMountedCell, type S2CellType } from '@antv/s2';
-import { isEmpty, isFunction } from 'lodash';
+import { customMerge } from '@antv/s2';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
-import { ChartCell } from './chart-cell';
+import { ChartSheetDataCell } from './custom-cell';
 
 export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options, renderConfig, ...restProps } = props;
-    const s2Options = React.useMemo(
-      () =>
-        customMerge<SheetComponentOptions>(options, {
-          dataCell: ChartCell,
-          showDefaultHeaderActionIcon: false,
-        }),
-      [options],
-    );
+    const { options: defaultOptions, ...restProps } = props;
+    const s2Options = React.useMemo<SheetComponentOptions>(() => {
+      const options: SheetComponentOptions = {
+        dataCell: (viewMeta) =>
+          new ChartSheetDataCell(viewMeta, viewMeta.spreadsheet),
+        showDefaultHeaderActionIcon: false,
+        interaction: {
+          hoverFocus: false,
+        },
+        // TODO: 刷选时获取不到正确的 tooltip 配置
+        tooltip: {
+          // cornerCell: {
+          //   enable: true,
+          // },
+          // colCell: {
+          //   enable: true,
+          // },
+          // rowCell: {
+          //   enable: true,
+          // },
+          // enable: false,
+          enable: true,
+          dataCell: {
+            enable: false,
+          },
+        },
+      };
 
-    const onLayoutCellMounted = (cell: S2CellType) => {
-      if (isEmpty(renderConfig) || !isFunction(renderConfig?.render)) {
-        return;
-      }
+      return customMerge<SheetComponentOptions>(defaultOptions, options);
+    }, [defaultOptions]);
 
-      renderToMountedCell(
-        cell,
-        renderConfig?.render,
-        renderConfig?.renderOptions,
-      );
-    };
-
-    return (
-      <BaseSheet
-        options={s2Options}
-        onLayoutCellMounted={onLayoutCellMounted}
-        {...restProps}
-      />
-    );
+    return <BaseSheet {...restProps} options={s2Options} />;
   },
 );
+
+ChartSheet.displayName = 'ChartSheet';

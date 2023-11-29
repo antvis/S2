@@ -1,4 +1,3 @@
-import { isObject } from 'lodash';
 import {
   DataCell,
   drawObjectText,
@@ -14,10 +13,10 @@ import {
  */
 export class StrategySheetDataCell extends DataCell {
   public drawTextShape(options?: RenderTextShapeOptions) {
-    if (isObject(this.getMeta().fieldValue)) {
-      drawObjectText(this);
-    } else {
-      super.drawTextShape(options);
+    if (this.isMultiData()) {
+      return drawObjectText(this);
     }
+
+    super.drawTextShape(options);
   }
 }

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
 import { DragCopyPoint } from './drag-copy';
-import { EditCell } from './edit-cell';
+import { EditCell } from './custom-cell';
 
 export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {

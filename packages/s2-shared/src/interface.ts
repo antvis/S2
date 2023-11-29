@@ -54,7 +54,6 @@ export type LayoutPaginationParams = {
 };
 
 export interface BaseSheetComponentProps<
-  RenderHandler = unknown,
   PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
@@ -69,7 +68,6 @@ export interface BaseSheetComponentProps<
   options?: Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
-  renderConfig?: RenderHandler;
   adaptive?: Adaptive;
   showPagination?:
     | boolean
@@ -118,6 +116,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
+  onDataCellRender?: (dataCell: DataCell) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

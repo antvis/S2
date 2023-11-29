@@ -10,10 +10,12 @@ export interface BaseChartData {
    * 类型
    */
   type: MiniChartTypes;
+
   /**
    * 数据
    */
   data: RawData[];
+
   /**
    * 坐标轴数据
    */
@@ -21,6 +23,8 @@ export interface BaseChartData {
     x: keyof RawData;
     y: keyof RawData;
   };
+
+  [key: string]: unknown;
 }
 
 /* 子弹图数据结构 */
@@ -29,10 +33,12 @@ export interface BulletValue {
    * 类型
    */
   type: MiniChartTypes.Bullet;
+
   /**
    * 当前值
    */
   measure: number | string;
+
   /**
    * 目标值
    */
