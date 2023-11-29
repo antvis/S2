@@ -1,6 +1,6 @@
 import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { find, get } from 'lodash';
+import { find, get, isEmpty } from 'lodash';
 import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellTypes,
@@ -130,6 +130,7 @@ export class RowCell extends HeaderCell {
     ) {
       return;
     }
+
     return get(this.meta, 'parent.belongsCell.treeIcon.cfg');
   }
 

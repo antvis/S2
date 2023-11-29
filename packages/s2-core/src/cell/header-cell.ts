@@ -74,6 +74,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.hasDefaultHiddenIcon = false;
   }
 
+  public getTreeIcon(): GuiIcon {
+    return this.treeIcon;
+  }
+
   protected getInteractiveBorderShapeStyle(border: number) {
     const { x, y, height, width } = this.getCellArea();
     return {
