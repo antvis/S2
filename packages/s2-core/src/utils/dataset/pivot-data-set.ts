@@ -14,6 +14,7 @@ import {
 } from 'lodash';
 import type { PickEssential } from '../../common/interface/utils';
 import {
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   MULTI_VALUE,
@@ -94,12 +95,22 @@ export function transformDimensionsValuesWithExtraFields(
 
   if (isEmpty(values)) {
     result.push(transform(record, dimensions));
+  } else {
+    values.forEach((value) => {
+      if (value in record) {
+        result.push(transform(record, dimensions, value));
+      }
+    });
   }
-  values.forEach((value) => {
-    if (value in record) {
-      result.push(transform(record, dimensions, value));
-    }
-  });
+
+  /**
+   * result 为空时，就是命中了数组置于当前维度，但是当前的数据中并没有包含任何 values 配置，给一个默认维度用于占位
+   * 主要用于处理趋势分析表中只存在日期列头，不存在任何值的情况：
+   * ref: @see packages/s2-react/__tests__/unit/components/sheets/strategy-sheet/index-spec.tsx
+   */
+  if (isEmpty(result)) {
+    result.push(transform(record, dimensions, EMPTY_EXTRA_FIELD_PLACEHOLDER));
+  }
 
   return result;
 }
@@ -455,9 +466,11 @@ export function getSatisfiedPivotMetaValues(params: {
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
       const values = [...metaValue.children.values()];
-      return queryType === QueryDataType.All
-        ? values
-        : values.filter((v) => v.value !== TOTAL_VALUE);
+      return values.filter(
+        (v) =>
+          v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
+          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
+      );
     });
     if (list.length > 1) {
       // 从不同父维度中获取的子维度需要再排一次，比如province => city 按照字母倒序，那么在获取了所有 province 的 city 后需要再排一次

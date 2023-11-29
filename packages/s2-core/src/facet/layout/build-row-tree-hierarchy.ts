@@ -1,7 +1,7 @@
 import { isNumber } from 'lodash';
 import { i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
-import { filterTotal } from '../../utils/data-set-operate';
+import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
 import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
@@ -43,7 +43,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
 
-  const dimValues = filterTotal(Array.from(pivotMeta.keys()));
+  const dimValues = filterOutDetail(Array.from(pivotMeta.keys()));
 
   let fieldValues: FieldValue[] = layoutArrange(
     dimValues,

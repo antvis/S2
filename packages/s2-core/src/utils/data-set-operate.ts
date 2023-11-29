@@ -1,5 +1,8 @@
 import { isArray, flattenDeep } from 'lodash';
-import { TOTAL_VALUE } from '../common/constant/field';
+import {
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  TOTAL_VALUE,
+} from '../common/constant/field';
 import type { Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (
@@ -28,8 +31,10 @@ export const getListBySorted = (
   });
 };
 
-export const filterTotal = (values: string[] = []) => {
-  return values.filter((v) => v !== TOTAL_VALUE);
+export const filterOutDetail = (values: string[] = []) => {
+  return values.filter(
+    (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  );
 };
 
 export const customFlattenDeep = (

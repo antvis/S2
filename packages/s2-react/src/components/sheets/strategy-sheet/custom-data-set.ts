@@ -14,7 +14,6 @@ export class StrategyDataSet extends CustomTreePivotDataSet {
 
     return {
       ...updatedDataCfg,
-
       meta: newMeta,
     };
   }
