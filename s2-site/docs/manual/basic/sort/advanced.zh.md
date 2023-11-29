@@ -116,7 +116,7 @@ export const AdvancedSortDemo = () => {
 | 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
 | ------- | ------------------------------------------ | --- | ----- | --------- |
 | label    | `string`                                    |      | ✓      | 规则名称   |
-| value    | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | ✓    |        | 规则值     |
+| value    | `'sortMethod' \| 'sortBy' \| 'sortByMeasure'` | ✓    |        | 规则值     |
 | children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />

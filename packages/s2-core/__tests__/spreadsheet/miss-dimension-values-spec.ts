@@ -1,5 +1,10 @@
 import { getContainer } from 'tests/util/helpers';
-import { EMPTY_FIELD_VALUE, type S2DataConfig, type S2Options } from '@/common';
+import {
+  EMPTY_FIELD_VALUE,
+  ORIGIN_FIELD,
+  type S2DataConfig,
+  type S2Options,
+} from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
@@ -234,17 +239,11 @@ describe('Miss Dimension Values Tests', () => {
       emptyDimensionValueNode.parent.query,
     );
     expect(emptyDimensionDataCell.getMeta().fieldValue).toEqual(1732771);
-    expect(data).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
-            "$$extra$$": "number",
-            "$$value$$": 1732771,
-            "first": "总计",
-            "number": 1732771,
-          },
-        ],
-      ]
+    expect(data[0][ORIGIN_FIELD]).toMatchInlineSnapshot(`
+      Object {
+        "2d7feabd-76a2-4c11-8f24-79764af936b4": "总计",
+        "c5ce4e54-795a-42b3-9cc8-e8b685da44ee": 1732771,
+      }
     `);
     expect(dimensionValues).toMatchInlineSnapshot(`
       Array [

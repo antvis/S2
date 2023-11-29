@@ -13,12 +13,11 @@ import {
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { merge } from 'lodash';
 import {
   SheetComponent,
   SheetComponentOptions,
 } from '../../../../../src/components';
-import { getContainer, sleep } from '../../../../util/helpers';
+import { getContainer } from '../../../../util/helpers';
 import {
   StrategyOptions,
   StrategySheetDataConfig,

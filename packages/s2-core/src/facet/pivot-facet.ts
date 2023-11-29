@@ -23,6 +23,7 @@ import {
   FrozenGroup,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  ORIGIN_FIELD,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
@@ -218,18 +219,9 @@ export class PivotFacet extends FrozenFacet {
         isTotals,
         totalStatus,
       });
-      let valueField: string;
-      let fieldValue = null;
-      if (!isEmpty(data)) {
-        valueField = get(data, [EXTRA_FIELD], '');
-        fieldValue = get(data, [VALUE_FIELD], null);
-        if (isTotals) {
-          valueField = get(dataQuery, [EXTRA_FIELD], '');
-          fieldValue = get(data, valueField, null);
-        }
-      } else {
-        valueField = get(dataQuery, [EXTRA_FIELD], '');
-      }
+
+      const valueField: string = dataQuery[EXTRA_FIELD];
+      const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
         spreadsheet,
@@ -813,7 +805,7 @@ export class PivotFacet extends FrozenFacet {
         totalStatus: getHeaderTotalStatus(rowNode, col),
       });
 
-      const cellDataKeys = keys(cellData);
+      const cellDataKeys = keys(cellData?.[ORIGIN_FIELD]);
       for (let j = 0; j < cellDataKeys.length; j++) {
         const dataValue: MultiData = cellData[cellDataKeys[j]];
 

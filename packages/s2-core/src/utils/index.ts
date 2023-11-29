@@ -1,4 +1,3 @@
-export { splitTotal } from './data-set-operate';
 export { auto } from './formatter';
 export * from './layout';
 export * from './text';
