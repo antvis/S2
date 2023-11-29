@@ -48,8 +48,8 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
     name: 'onRangeFiltered',
   },
   {
-    event: S2Event.LAYOUT_CELL_MOUNTED,
-    name: 'onLayoutCellMounted',
+    event: S2Event.LAYOUT_CELL_RENDER,
+    name: 'onLayoutCellRender',
   },
   {
     event: S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
@@ -161,6 +161,7 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
 });
 
 const cellEventCases = [
+  // ============== Row Cell ====================
   {
     event: S2Event.ROW_CELL_HOVER,
     name: 'onRowCellHover',
@@ -185,6 +186,12 @@ const cellEventCases = [
     event: S2Event.ROW_CELL_MOUSE_MOVE,
     name: 'onRowCellMouseMove',
   },
+  {
+    event: S2Event.ROW_CELL_RENDER,
+    name: 'onRowCellRender',
+  },
+
+  // ============== Col Cell ====================
   {
     event: S2Event.COL_CELL_HOVER,
     name: 'onColCellHover',
@@ -217,6 +224,12 @@ const cellEventCases = [
     event: S2Event.COL_CELL_HIDDEN,
     name: 'onColCellHidden',
   },
+  {
+    event: S2Event.COL_CELL_RENDER,
+    name: 'onColCellRender',
+  },
+
+  // ============== Data Cell ====================
   {
     event: S2Event.DATA_CELL_HOVER,
     name: 'onDataCellHover',
@@ -253,6 +266,8 @@ const cellEventCases = [
     event: S2Event.DATA_CELL_RENDER,
     name: 'onDataCellRender',
   },
+
+  // ============== Corner Cell ====================
   {
     event: S2Event.CORNER_CELL_HOVER,
     name: 'onCornerCellHover',
@@ -278,6 +293,12 @@ const cellEventCases = [
     name: 'onCornerCellMouseMove',
   },
   {
+    event: S2Event.CORNER_CELL_RENDER,
+    name: 'onCornerCellRender',
+  },
+
+  // ============== Merged Cells ====================
+  {
     event: S2Event.MERGED_CELLS_HOVER,
     name: 'onMergedCellsHover',
   },
@@ -300,6 +321,16 @@ const cellEventCases = [
   {
     event: S2Event.MERGED_CELLS_MOUSE_MOVE,
     name: 'onMergedCellsMouseMove',
+  },
+  {
+    event: S2Event.MERGED_CELLS_RENDER,
+    name: 'onMergedCellsRender',
+  },
+
+  // ============== SeriesNumber Cell ====================
+  {
+    event: S2Event.SERIES_NUMBER_CELL_RENDER,
+    name: 'onSeriesNumberCellRender',
   },
 ].map((i) => {
   return {

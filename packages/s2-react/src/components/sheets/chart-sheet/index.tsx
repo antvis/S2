@@ -15,6 +15,18 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
         interaction: {
           hoverFocus: false,
         },
+        style: {
+          colCell: {
+            hideValue: true,
+          },
+          rowCell: {
+            width: 100,
+          },
+          dataCell: {
+            width: 400,
+            height: 400,
+          },
+        },
         // TODO: 刷选时获取不到正确的 tooltip 配置
         tooltip: {
           // cornerCell: {
@@ -28,9 +40,6 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
           // },
           // enable: false,
           enable: true,
-          dataCell: {
-            enable: false,
-          },
         },
       };
 

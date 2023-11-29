@@ -370,11 +370,11 @@ export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
   isSortIcon?: boolean;
 }
 
-export type CellCallback<T extends BaseHeaderConfig> = (
+export type CellCallback<T extends BaseHeaderConfig, K extends S2CellType> = (
   node: Node,
   spreadsheet: SpreadSheet,
   headerConfig: T,
-) => S2CellType;
+) => K;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
 

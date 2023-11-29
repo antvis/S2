@@ -27,18 +27,7 @@ const options: SheetComponentOptions = {
     multiSelection: true,
     overscrollBehavior: 'none',
   },
-  style: {
-    colCell: {
-      hideValue: true,
-    },
-    rowCell: {
-      width: 100,
-    },
-    dataCell: {
-      width: 500,
-      height: 400,
-    },
-  },
+  style: {},
 };
 
 const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {

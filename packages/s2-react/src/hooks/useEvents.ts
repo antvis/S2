@@ -63,6 +63,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.ROW_CELL_SCROLL, props.onRowCellScroll, s2);
   useS2Event(S2Event.ROW_CELL_COLLAPSED, props.onRowCellCollapsed, s2);
   useS2Event(S2Event.ROW_CELL_ALL_COLLAPSED, props.onRowCellAllCollapsed, s2);
+  useS2Event(S2Event.ROW_CELL_RENDER, props.onRowCellRender, s2);
 
   // ============== Col Cell ====================
   useCellEvent(S2Event.COL_CELL_HOVER, props.onColCellHover, s2);
@@ -74,6 +75,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.COL_CELL_MOUSE_MOVE, props.onColCellMouseMove, s2);
   useS2Event(S2Event.COL_CELL_EXPANDED, props.onColCellExpanded, s2);
   useS2Event(S2Event.COL_CELL_HIDDEN, props.onColCellHidden, s2);
+  useS2Event(S2Event.COL_CELL_RENDER, props.onColCellRender, s2);
 
   // ============== Data Cell ====================
   useCellEvent(S2Event.DATA_CELL_HOVER, props.onDataCellHover, s2);
@@ -107,6 +109,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.CORNER_CELL_MOUSE_DOWN, props.onCornerCellMouseDown, s2);
   useCellEvent(S2Event.CORNER_CELL_MOUSE_UP, props.onCornerCellMouseUp, s2);
   useCellEvent(S2Event.CORNER_CELL_MOUSE_MOVE, props.onCornerCellMouseMove, s2);
+  useS2Event(S2Event.CORNER_CELL_RENDER, props.onCornerCellRender, s2);
 
   // ============== Merged Cells ====================
   useCellEvent(S2Event.MERGED_CELLS_HOVER, props.onMergedCellsHover, s2);
@@ -121,7 +124,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     props.onMergedCellsContextMenu,
     s2,
   );
-
   useCellEvent(
     S2Event.MERGED_CELLS_MOUSE_DOWN,
     props.onMergedCellsMouseDown,
@@ -131,6 +133,14 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(
     S2Event.MERGED_CELLS_MOUSE_MOVE,
     props.onMergedCellsMouseMove,
+    s2,
+  );
+  useS2Event(S2Event.MERGED_CELLS_RENDER, props.onMergedCellsRender, s2);
+
+  /** ================ SeriesNumber Cell ================  */
+  useS2Event(
+    S2Event.SERIES_NUMBER_CELL_RENDER,
+    props.onSeriesNumberCellRender,
     s2,
   );
 
@@ -149,7 +159,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.LAYOUT_PAGINATION, props.onLayoutPagination, s2);
-  useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);
+  useS2Event(S2Event.LAYOUT_CELL_RENDER, props.onLayoutCellRender, s2);
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);
   useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2, true);

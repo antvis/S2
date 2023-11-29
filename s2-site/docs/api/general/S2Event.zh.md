@@ -17,7 +17,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 });
 ```
 
-### 行头
+### 行头单元格 (RowCell)
 
 | 名称         | 事件名                                | 描述                       |
 | ----------- | ------------------------------------ | ------------------------- |
@@ -32,8 +32,9 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标松开     | `S2Event.ROW_CELL_MOUSE_UP`           | 行头单元格鼠标松开         |
 | 滚动         | `S2Event.ROW_CELL_SCROLL`            | 行头单元格滚动         |
 | 行头刷选     | `S2Event.ROW_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）    |
+| 单元格渲染                 | `S2Event.ROW_CELL_RENDER`       | 行头单元格布局渲染完成事件                  |
 
-### 列头
+### 列头单元格 (ColCell)
 
 | 名称     | 事件名                          | 描述               |
 | ------- | ------------------------------ | ----------------- |
@@ -45,8 +46,9 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
 | 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） |
+| 单元格渲染                 | `S2Event.COL_CELL_RENDER`       | 列头单元格布局渲染完成事件                  |
 
-### 数值单元格
+### 数值单元格 (DataCell)
 
 | 名称           | 事件名                               | 描述                                    |
 | ------------- | ----------------------------------- | -------------------------------------- |
@@ -58,8 +60,9 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
+| 单元格渲染                 | `S2Event.DATA_CELL_RENDER`       | 数值单元格布局渲染完成事件                  |
 
-### 角头
+### 角头单元格 (CornerCell)
 
 | 名称     | 事件名                             | 描述               |
 | ------- | --------------------------------- | ----------------- |
@@ -70,6 +73,26 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 角头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 角头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 角头单元格鼠标松开 |
+| 单元格渲染                 | `S2Event.CORNER_CELL_RENDER`       | 角头单元格布局渲染完成事件                  |
+
+### 合并单元格 (MergedCells)
+
+| 名称     | 事件名                             | 描述               |
+| ------- | --------------------------------- | ----------------- |
+| 点击     | `S2Event.CORNER_CELL_CLICK`        | 合并单元格点击     |
+| 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 合并单元格双击     |
+| 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 合并单元格右键     |
+| 悬停     | `S2Event.CORNER_CELL_HOVER`        | 合并单元格悬停     |
+| 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 合并单元格鼠标按下 |
+| 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 合并单元格鼠标移动 |
+| 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 合并单元格鼠标松开 |
+| 单元格渲染                 | `S2Event.MERGED_CELLS_RENDER`       | 合并单元格布局渲染完成事件                  |
+
+### 序号单元格 (SeriesNumberCell)
+
+| 名称     | 事件名                             | 描述               |
+| ------- | --------------------------------- | ----------------- |
+| 单元格渲染                 | `S2Event.SERIES_NUMBER_CELL_RENDER`       | 序号单元格布局渲染完成事件                  |
 
 ### 宽高拖拽调整
 
@@ -98,6 +121,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 开始渲染                 | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()`                   |
 | 渲染完成                 | `S2Event.LAYOUT_AFTER_RENDER`       | render 完成的事件，即 `s2.render()`                  |
 | 表格销毁                 | `S2Event.LAYOUT_DESTROY`       | 表格销毁后或 调用 `s2.destroy()` 触发                  |
+| 单元格渲染                 | `S2Event.LAYOUT_CELL_RENDER`       | 单个单元格布局渲染完成事件                  |
 
 ### 全局
 
