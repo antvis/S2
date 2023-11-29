@@ -80,36 +80,71 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 400,
-  hierarchyType: 'grid',
-  totals: {
-    row: {
-      showGrandTotals: false,
-      showSubTotals: {
-        always: false,
+  showSeriesNumber: false,
+  interaction: {
+    enableCopy: true,
+    copyWithHeader: true,
+    copyWithFormat: true,
+    // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
+    overscrollBehavior: 'none',
+    brushSelection: {
+      data: true,
+      col: true,
+      row: true,
+    },
+  },
+  tooltip: {
+    operation: {
+      trend: true,
+    },
+  },
+  conditions: {
+    text: [],
+    interval: [
+      {
+        field: 'number',
+        mapping() {
+          return {
+            fill: '#80BFFF',
+            // 自定义柱状图范围
+            isCompare: true,
+            maxValue: 8000,
+            minValue: 300,
+          };
+        },
       },
-      reverseLayout: false,
-      reverseSubLayout: false,
-      subTotalsDimensions: [
-        '2d7feabd-76a2-4c11-8f24-79764af936b4',
-        '30b4b32d-d69a-4772-b7f9-84cd54cf0cec',
-      ],
-    },
-    col: {
-      showGrandTotals: false,
-      showSubTotals: false,
-      reverseLayout: false,
-      reverseSubLayout: false,
-      subTotalsDimensions: [],
-    },
+    ],
   },
+  headerActionIcons: [
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'colCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'cornerCell',
+      defaultHide: true,
+    },
+  ],
+  hierarchyType: 'grid',
   style: {
-    layoutWidthType: 'adaptive',
+    colCfg: {
+      hideMeasureColumn: false,
+    },
+    rowCfg: {
+      width: 100,
+    },
     cellCfg: {
-      height: 30,
+      height: 50,
+      width: 200,
     },
   },
-  showDefaultHeaderActionIcon: false,
-  colCell: null,
 };
 
 export const s2ThemeConfig: ThemeCfg = {

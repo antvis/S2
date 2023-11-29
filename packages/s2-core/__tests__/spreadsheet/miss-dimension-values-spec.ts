@@ -1,5 +1,4 @@
 import { getContainer } from 'tests/util/helpers';
-import type { RowCell } from '../../src';
 import { EMPTY_FIELD_VALUE, type S2DataConfig, type S2Options } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
@@ -243,17 +242,5 @@ describe('Miss Dimension Values Tests', () => {
         "测试-8",
       ]
     `);
-  });
-
-  test('should not render tree icon if only have root dimension values', () => {
-    s2.setOptions({
-      hierarchyType: 'tree',
-    });
-    s2.render(false);
-
-    const emptyDimensionValueNode = s2.getRowLeafNodes()[0];
-    expect(
-      (emptyDimensionValueNode.belongsCell as RowCell).getTreeIcon(),
-    ).toBeFalsy();
   });
 });

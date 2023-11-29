@@ -111,11 +111,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected showTreeIcon() {
-    const { isLeaf, children } = this.meta;
-
-    return (
-      this.spreadsheet.isHierarchyTreeType() && !isLeaf && !isEmpty(children)
-    );
+    return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
   }
 
   protected showTreeLeafNodeAlignDot() {
@@ -134,6 +130,7 @@ export class RowCell extends HeaderCell {
     ) {
       return;
     }
+
     return get(this.meta, 'parent.belongsCell.treeIcon.cfg');
   }
 
