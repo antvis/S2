@@ -1,3 +1,15 @@
+# [@antv/s2-v1.53.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0-alpha.1...@antv/s2-v1.53.0-alpha.2) (2023-11-29)
+
+
+### Bug Fixes
+
+* 修复维度缺失部分维值时, 行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
+
+
+### Features
+
+* **perf:** 优化 dataset 数据结构转化性能 ([#2379](https://github.com/antvis/S2/issues/2379)) ([924da53](https://github.com/antvis/S2/commit/924da531cab013211f12fafadb4aa3f402738f2f)), closes [#2353](https://github.com/antvis/S2/issues/2353) [#2355](https://github.com/antvis/S2/issues/2355) [#2360](https://github.com/antvis/S2/issues/2360) [#2355](https://github.com/antvis/S2/issues/2355) [#2362](https://github.com/antvis/S2/issues/2362) [#2363](https://github.com/antvis/S2/issues/2363) [#2255](https://github.com/antvis/S2/issues/2255) [#2357](https://github.com/antvis/S2/issues/2357) [#2255](https://github.com/antvis/S2/issues/2255) [#2359](https://github.com/antvis/S2/issues/2359) [#2364](https://github.com/antvis/S2/issues/2364) [#2370](https://github.com/antvis/S2/issues/2370)
+
 # [@antv/s2-v1.53.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.53.0-alpha.1) (2023-11-17)
 
 
