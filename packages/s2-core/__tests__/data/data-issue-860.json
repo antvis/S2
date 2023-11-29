@@ -32,24 +32,13 @@
       "date": "2021-12-01",
       "city": "A市",
       "type": "电子",
-      "a_sum": 6
-    },
-    {
-      "date": "2021-12-01",
-      "city": "A市",
-      "type": "电子",
+      "a_sum": 6,
       "b_sum": 6
     },
     {
       "date": "2021-12-01",
       "city": "A市",
       "type": "",
-      "b_sum": 6
-    },
-    {
-      "date": "2021-12-01",
-      "city": "A市",
-      "type": "undefined",
       "b_sum": 6
     },
     {

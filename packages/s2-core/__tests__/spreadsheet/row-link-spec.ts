@@ -32,12 +32,6 @@ const s2DataCfg = {
       city: '义乌1',
       type: '笔',
       price: 1,
-    },
-
-    {
-      province: '浙江',
-      city: '义乌1',
-      type: '笔',
       cost: 2,
     },
     {
@@ -123,7 +117,7 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
-    expect(linkFieldJump).toBeCalledWith({
+    expect(linkFieldJump).toHaveBeenLastCalledWith({
       key: 'city',
       cellData: rowNode,
       record: {
@@ -131,6 +125,7 @@ describe('Row Text Link Tests', () => {
         city: '义乌1',
         type: '笔',
         price: 1,
+        cost: 2,
         $$extra$$: 'price',
         $$value$$: 1,
         rowIndex: 1,

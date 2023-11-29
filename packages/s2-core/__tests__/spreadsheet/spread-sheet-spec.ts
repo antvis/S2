@@ -425,16 +425,6 @@ describe('SpreadSheet Tests', () => {
 
       expect(s2.dataSet.totalData).toEqual([
         {
-          $$extra$$: 'price',
-          $$value$$: 3,
-          cost: 6,
-          price: 3,
-          province: '浙江',
-          type: '笔',
-        },
-        {
-          $$extra$$: 'cost',
-          $$value$$: 6,
           cost: 6,
           price: 3,
           province: '浙江',
@@ -472,30 +462,11 @@ describe('SpreadSheet Tests', () => {
       );
       s2.render();
 
-      const totalDataSet = [
-        {
-          $$extra$$: 'price',
-          $$value$$: 3,
-          cost: 6,
-          price: 3,
-          province: '浙江',
-          type: '笔',
-        },
-        {
-          $$extra$$: 'cost',
-          $$value$$: 6,
-          cost: 6,
-          price: 3,
-          province: '浙江',
-          type: '笔',
-        },
-      ];
-
       // 改变 totalData 为 undefined 再次渲染
       s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, false);
       s2.render();
 
-      expect(s2.dataSet.totalData).toEqual(totalDataSet);
+      expect(s2.dataSet.totalData).toEqual(totalData);
       expect(s2.dataCfg.fields).toEqual({
         ...mockDataConfig.fields,
         customTreeItems: [],

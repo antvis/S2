@@ -6,7 +6,7 @@ import 'antd/es/cascader/style/index.css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/21ffc284-50a2-4a30-8bb0-b2f9ac4a8fbc.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
 )
   .then((res) => res.json())
   .then((data) => {

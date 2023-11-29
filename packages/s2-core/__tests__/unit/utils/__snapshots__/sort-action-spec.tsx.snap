@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetSortByMeasureValues Total Fallback Tests should sort by col total whit group 1`] = `
+exports[`total group dimension sort test should sort by col total with group 1`] = `
 Array [
   Object {
     "$$extra$$": "price",

@@ -1,8 +1,7 @@
 import { isNumber } from 'lodash';
-import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
-import type { PivotDataSet } from '../../data-set';
+import { i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
-import { filterUndefined, getListBySorted } from '../../utils/data-set-operate';
+import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
 import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
@@ -30,8 +29,6 @@ const addTotals = (
   }
 };
 
-const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
-
 /**
  * Only row header has tree hierarchy, in this scene:
  * 1、value in rows is not work => valueInCols is ineffective
@@ -41,32 +38,12 @@ const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
     params;
-  const {
-    spreadsheet,
-    dataSet,
-    collapsedRows,
-    hierarchyCollapse,
-    rowExpandDepth,
-  } = facetCfg;
+  const { spreadsheet, collapsedRows, hierarchyCollapse, rowExpandDepth } =
+    facetCfg;
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
-  const sortedDimensionValues =
-    (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
-  const unsortedDimValues = filterUndefined(Array.from(pivotMeta.keys()));
-  const dimValues = getListBySorted(
-    unsortedDimValues,
-    sortedDimensionValues,
-    (dimVal) => {
-      // 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
-      // unsortedDimValues：['成都', '绵阳']
-      // sortedDimensionValues: ['四川[&]成都']
-      if (ROOT_ID === parentId) {
-        return dimVal;
-      }
-      return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
-    },
-  );
+  const dimValues = filterOutDetail(Array.from(pivotMeta.keys()));
 
   let fieldValues: FieldValue[] = layoutArrange(
     dimValues,

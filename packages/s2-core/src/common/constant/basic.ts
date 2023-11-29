@@ -1,11 +1,3 @@
-// 值字段的 id 是固定的！
-export const VALUE_FIELD = '$$value$$';
-export const EXTRA_FIELD = '$$extra$$';
-export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
-export const TOTAL_VALUE = '$$total$$';
-export const SERIES_NUMBER_FIELD = '$$series_number$$';
-export const EMPTY_FIELD_VALUE = '$$empty_field_value$$';
-
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
 // foregroundGroup 上的 children 层叠顺序

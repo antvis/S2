@@ -1,10 +1,10 @@
-import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
+import { each, filter, isFunction, isObject, orderBy } from 'lodash';
 import { isAscSort, isDescSort } from '..';
-import type { S2DataConfig } from '../common/interface';
 import type { CellMeta } from '../common';
+import type { S2DataConfig } from '../common/interface';
 import type { RowData } from '../common/interface/basic';
-import type { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from './base-data-set';
+import type { CellDataParams, DataType, Query } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   // data that goes into canvas (aka sorted & filtered)
@@ -150,11 +150,7 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getTotalDimensionValues(field: string, query?: DataType): string[] {
-    return [];
-  }
-
-  public getDimensionValues(field: string, query?: DataType): string[] {
+  public getDimensionValues(): string[] {
     return [];
   }
 
@@ -171,7 +167,7 @@ export class TableDataSet extends BaseDataSet {
     return rowData[query.col];
   }
 
-  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
+  public getMultiData(): DataType[] {
     return this.displayData;
   }
 

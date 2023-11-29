@@ -71,7 +71,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
   // 1.1. spread-sheet defined group and added panelGroup
 
-  // 1.2. prepare froznGroup info and init frozenGroup position
+  // 1.2. prepare frozenGroup info and init frozenGroup position
   public calculateFrozenGroupInfo() {
     const {
       frozenColCount,
