@@ -170,5 +170,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/S2.git"
+  },
+  "tnpm": {
+    "mode": "pnpm"
   }
 }
