@@ -211,12 +211,12 @@ export const getListItem = (
 
   const formatter = getFieldFormatter(spreadsheet, field);
 
-  // 暂时对 object 类型 data 不作处理，上层通过自定义 tooltip 的方式去自行定制
-  let dataValue = getFieldValueOfViewMetaData(data, field);
+  // 非数值类型的 data 不展示 (趋势分析表/迷你图/G2 图表)，上层通过自定义 tooltip 的方式去自行定制
+  const dataValue = getFieldValueOfViewMetaData(data, field);
+  const displayDataValue = isObject(dataValue) ? null : dataValue;
 
-  dataValue = isObject(dataValue) ? JSON.stringify(dataValue) : dataValue;
   const value = formatter(
-    valueField || dataValue,
+    valueField || displayDataValue,
     useCompleteDataForFormatter ? data : undefined,
   );
 

@@ -33,6 +33,7 @@ import type {
   ViewMetaIndexType,
   MultiData,
   BaseChartData,
+  ThemeName,
 } from '../common/interface';
 import {
   getHorizontalTextIconPosition,
@@ -85,11 +86,22 @@ export class DataCell extends BaseCell<ViewMeta> {
   public getRenderChartOptions() {
     const chartData = this.getRenderChartData();
     const cellArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const themeName = this.spreadsheet.getThemeName();
+
+    // 兼容 G2 主题: S2 和 G2 的主题名转换
+    // https://g2.antv.antgroup.com/manual/core/theme
+    const g2ThemeType: Record<ThemeName, string> = {
+      default: 'light',
+      colorful: 'light',
+      gray: 'light',
+      dark: 'dark',
+    };
 
     return {
+      autoFit: true,
+      theme: { type: g2ThemeType[themeName] },
       ...cellArea,
       ...chartData,
-      autoFit: true,
     };
   }
 

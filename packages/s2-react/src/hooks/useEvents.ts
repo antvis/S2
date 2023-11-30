@@ -15,7 +15,7 @@ export const useCellEvent = (
   handler: ((data: TargetCellInfo) => void) | undefined,
   s2: SpreadSheet,
 ) => {
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const handlerFn = (event: GEvent) => {
       handler?.(getBaseCellData(event));
     };
@@ -34,7 +34,7 @@ export const useS2Event = (
   s2: SpreadSheet,
   emitBeforeOff = false,
 ) => {
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const handlerFn: EmitterType[S2Event] = (...args: any[]) => {
       handler?.(...args);
     };

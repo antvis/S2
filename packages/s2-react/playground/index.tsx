@@ -360,6 +360,7 @@ function MainLayout() {
           onMounted: onSheetMounted,
           onDestroy: onSheetDestroy,
           themeCfg,
+          setThemeCfg,
         }}
       >
         <div className="playground">

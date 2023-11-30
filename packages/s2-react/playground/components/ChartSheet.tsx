@@ -1,17 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { SpreadSheet } from '@antv/s2';
 import { renderToMountedElement, stdlib } from '@antv/g2';
+import { SpreadSheet } from '@antv/s2';
 import React from 'react';
+import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import {
   SheetComponent,
   type SheetComponentOptions,
   type SheetComponentsProps,
 } from '../../src/components';
 import { usePlaygroundContext } from '../context/playground.context';
-import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 
 const options: SheetComponentOptions = {
-  height: 1000,
+  height: 900,
   interaction: {
     enableCopy: true,
     brushSelection: {
@@ -53,8 +53,13 @@ export const ChartSheet: React.FC<
       dataCfg={ChartDataConfig}
       options={options}
       ref={ref}
-      adaptive
+      adaptive={true}
       onDataCellRender={onDataCellRender}
+      header={{
+        title: 'S2 & G2',
+        description: '单元格内绘制 G2 图表',
+        exportCfg: { open: true },
+      }}
     />
   );
 });
