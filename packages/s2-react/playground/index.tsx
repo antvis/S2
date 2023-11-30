@@ -1093,6 +1093,60 @@ function MainLayout() {
                                   </Select>
                                 </Tooltip>
                               </Space>
+                              <Space className="filter-container">
+                                <span className="label">
+                                  复制
+                                  <Divider type="vertical" />
+                                </span>
+                                <Tooltip title="单选/多选/刷选单元格后, 使用 Ctrl/Cmd + C 复制">
+                                  <Switch
+                                    checkedChildren="允许复制"
+                                    unCheckedChildren="禁用复制"
+                                    checked={
+                                      mergedOptions.interaction?.enableCopy
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          enableCopy: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="复制包含其对应行列头的数据">
+                                  <Switch
+                                    checkedChildren="复制包含其对应行列头的数据"
+                                    unCheckedChildren="复制不包含其对应行列头的数据"
+                                    checked={
+                                      mergedOptions.interaction?.copyWithHeader
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          copyWithHeader: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="对应 s2DataConfig.meta">
+                                  <Switch
+                                    checkedChildren="复制带格式后的数据"
+                                    unCheckedChildren="复制未格式化的数据"
+                                    checked={
+                                      mergedOptions.interaction?.copyWithFormat
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          copyWithFormat: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                              </Space>
                             </>
                           ),
                         },

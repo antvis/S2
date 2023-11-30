@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Data Cell Tests Data Cell Formatter & Method Tests should get empty chart data 1`] = `
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get empty chart data and default options 1`] = `
 Object {
   "autoFit": true,
   "height": 83,
@@ -13,7 +13,7 @@ Object {
 }
 `;
 
-exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data 1`] = `
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data and all options 1`] = `
 Object {
   "autoFit": true,
   "data": Array [
@@ -31,7 +31,7 @@ Object {
 }
 `;
 
-exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data 2`] = `
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data and all options 2`] = `
 Object {
   "autoFit": true,
   "data": Array [

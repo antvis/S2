@@ -704,9 +704,16 @@ export const getTooltipOptions = (
     return null;
   }
 
+  const { options, interaction } = spreadsheet;
   const cellType = spreadsheet.getCellType?.(event?.target);
 
-  return getTooltipOptionsByCellType(spreadsheet.options.tooltip!, cellType!);
+  // 如果没有 cellType, 说明是刷选丢失 event target 的场景, 此时从产生过交互状态的单元格里取, 避免刷选读取不到争取 tooltip 配置的问题
+  const sampleCell = interaction.getInteractedCells()[0];
+
+  return getTooltipOptionsByCellType(
+    options.tooltip!,
+    cellType || sampleCell.cellType!,
+  );
 };
 
 export const getTooltipVisibleOperator = (

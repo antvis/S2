@@ -27,18 +27,7 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
             height: 400,
           },
         },
-        // TODO: 刷选时获取不到正确的 tooltip 配置
         tooltip: {
-          // cornerCell: {
-          //   enable: true,
-          // },
-          // colCell: {
-          //   enable: true,
-          // },
-          // rowCell: {
-          //   enable: true,
-          // },
-          // enable: false,
           enable: true,
         },
       };

@@ -14,6 +14,7 @@ const options: SheetComponentOptions = {
   height: 900,
   interaction: {
     enableCopy: true,
+    copyWithFormat: true,
     brushSelection: {
       rowCell: true,
       colCell: true,

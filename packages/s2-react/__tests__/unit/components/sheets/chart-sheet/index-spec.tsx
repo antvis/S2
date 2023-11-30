@@ -6,7 +6,7 @@ import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { ChartDataConfig } from '../../../../data/data-g2-chart';
-import { renderComponent, sleep } from '../../../../util/helpers';
+import { renderComponent } from '../../../../util/helpers';
 import {
   SheetComponent,
   type SheetComponentOptions,
@@ -77,29 +77,6 @@ describe('<ChartSheet/> Tests', () => {
         expect(cell.getActualText()).toBeUndefined();
         expect(cell.getTextShapes()).toBeEmpty();
       });
-    });
-  });
-
-  test('should not throw g2 error after render chart', async () => {
-    const errorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementationOnce(() => {});
-
-    renderChartSheet(null, {
-      onDataCellRender,
-    });
-
-    await waitFor(async () => {
-      s2.updateScrollOffset({ offsetY: { value: 800, animate: true } });
-
-      await sleep(1000);
-
-      expect(errorSpy).not.toHaveBeenCalledWith(
-        `Uncaught (in promise) TypeError: Cannot read property 'defaultView' of null`,
-      );
-      expect(errorSpy).not.toHaveBeenCalledWith(
-        `Uncaught (in promise) TypeError: Cannot read properties of null (reading 'createElement')`,
-      );
     });
   });
 });

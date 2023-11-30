@@ -7,14 +7,29 @@ import {
   isEmpty,
   isEqual,
   isObject,
+  isPlainObject,
   merge,
 } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
+import type {
+  BaseChartData,
+  CellMeta,
+  Condition,
+  ConditionMappingResult,
+  FormatResult,
+  MiniChartData,
+  MultiData,
+  TextTheme,
+  ThemeName,
+  ViewMeta,
+  ViewMetaIndexType,
+} from '../common/interface';
 import {
   CellBorderPosition,
   CellClipBox,
@@ -23,18 +38,7 @@ import {
   type InteractionStateTheme,
   type RenderTextShapeOptions,
 } from '../common/interface';
-import type {
-  CellMeta,
-  Condition,
-  FormatResult,
-  ConditionMappingResult,
-  TextTheme,
-  ViewMeta,
-  ViewMetaIndexType,
-  MultiData,
-  BaseChartData,
-  ThemeName,
-} from '../common/interface';
+import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -45,12 +49,10 @@ import {
   shouldUpdateBySelectedCellsHighlight,
   updateBySelectedCellsHighlight,
 } from '../utils/cell/data-cell';
-import { getIconPosition } from '../utils/condition/condition';
-import { updateShapeAttr } from '../utils/g-renders';
-import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
-import { drawInterval } from '../utils/g-mini-charts';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import { groupIconsByPosition } from '../utils/cell/header-cell';
+import { getIconPosition } from '../utils/condition/condition';
+import { drawInterval } from '../utils/g-mini-charts';
+import { updateShapeAttr } from '../utils/g-renders';
 import type { RawData } from './../common/interface/s2DataConfig';
 
 /**
@@ -74,7 +76,17 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public isMultiData() {
-    return isObject(this.getMeta().fieldValue);
+    const fieldValue = this.getFieldValue();
+
+    return isObject(fieldValue);
+  }
+
+  public isChartData() {
+    const fieldValue = this.getFieldValue();
+
+    return isPlainObject(
+      (fieldValue as unknown as MultiData<MiniChartData>)?.values,
+    );
   }
 
   public getRenderChartData(): BaseChartData {
