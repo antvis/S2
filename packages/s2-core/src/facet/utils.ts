@@ -540,46 +540,34 @@ export const areAllFieldsEmpty = (fields: Fields) => {
  * @param options
  * @returns
  */
-export const getFrozenOptionsPivot = (
+export const getFrozenRowCfgPivot = (
   options: Pick<
     SpreadSheetFacetCfg,
-    | 'hierarchyType'
-    | 'totals'
-    | 'pagination'
-    | 'frozenEntireHeadRowPivot'
-    | 'showSeriesNumber'
-    | 'valueInCols'
+    'frozenFirstRowPivot' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
   >,
-): S2TableSheetOptions => {
-  const {
-    totals,
-    valueInCols,
-    pagination,
-    frozenEntireHeadRowPivot,
-    hierarchyType,
-    showSeriesNumber,
-  } = options;
-  let frozenRowCount = 0;
-  const { showGrandTotals, reverseLayout } = totals?.row || {};
-  const grandTotalInHeadRow = showGrandTotals && reverseLayout;
+  rowNodes: Node[],
+): S2TableSheetOptions & {
+  frozenRowHeight: number;
+  enableFrozenFirstRow: boolean;
+} => {
+  const { pagination, frozenFirstRowPivot, hierarchyType, showSeriesNumber } =
+    options;
   const enablePagination = pagination && pagination.pageSize;
-  if (enablePagination || !frozenEntireHeadRowPivot) {
-    frozenRowCount = 0;
-  } else if (hierarchyType === 'grid') {
-    if (grandTotalInHeadRow && valueInCols) {
-      frozenRowCount = 1;
-    }
-  } else if (hierarchyType === 'tree') {
-    frozenRowCount = 1;
-    if (showSeriesNumber && !grandTotalInHeadRow) {
-      frozenRowCount = 0;
+  let enableFrozenFirstRow = false;
+  const headNode = rowNodes?.[0];
+  if (!enablePagination && frozenFirstRowPivot) {
+    // first node no children: entire row
+    enableFrozenFirstRow = headNode?.children?.length === 0;
+    if (hierarchyType === 'tree' && !enableFrozenFirstRow) {
+      enableFrozenFirstRow = !showSeriesNumber;
     }
   }
-
   return {
-    frozenRowCount,
+    frozenRowCount: enableFrozenFirstRow ? 1 : 0,
     frozenColCount: 0,
     frozenTrailingColCount: 0,
     frozenTrailingRowCount: 0,
+    enableFrozenFirstRow,
+    frozenRowHeight: enableFrozenFirstRow ? headNode.height : 0,
   };
 };

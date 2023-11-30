@@ -3,16 +3,11 @@ title: 交叉模式冻结首行
 order: 10
 ---
 
-Currently, only the ability to freeze the first row as a whole is provided, mainly for the following scenarios:
-
-- Scenario 1: Tree mode with the first row frozen. Enabling row numbering without enabling row totals is not supported.
-- Scenario 2: Tile mode with values in the column header, enabling row totals and top positioning.
-
-For both of these scenarios, pagination is not supported. The freezing of the first row can be controlled by passing these properties in the s2Options:
+Currently, only the ability to freeze the first row is provided. Constraints are as follows: the first row does not have multiple rows of child nodes. Additionally, pagination scenarios are not supported at the moment. Freezing the entire first row can be controlled by passing these properties in s2Options:
 
 ```ts
 const s2Options = {
-  frozenEntireHeadRowPivot: boolean; 
+  frozenFirstRowPivot: boolean; 
   totals: {
     row: {
       showGrandTotals: true,

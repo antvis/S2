@@ -1,7 +1,7 @@
 import type { Condition, MappingResult, TextTheme } from '../common';
-import { RowCell } from './row-cell';
+import { FrozenRowCell } from './frozen-row-cell';
 
-export class SeriesNumberCell extends RowCell {
+export class SeriesNumberCell extends FrozenRowCell {
   protected initCell(): void {
     this.drawBackgroundShape();
     this.drawRectBorder();

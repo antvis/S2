@@ -54,29 +54,24 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     return this;
   }
 
-  protected onItemReady(item: Node): Node {
-    return item;
-  }
-
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
     each(data, (item: Node) => {
       if (this.rowCellInRect(item) && item.height !== 0) {
         let cell: S2CellType;
-        const newItem = this.onItemReady(item);
         // 首先由外部控制UI展示
         if (rowCell) {
-          cell = rowCell(newItem, spreadsheet, this.headerConfig);
+          cell = rowCell(item, spreadsheet, this.headerConfig);
         }
         // 如果外部没处理，就用默认的
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
-            cell = this.createCellInstance(newItem);
+            cell = this.createCellInstance(item);
           }
         }
-        newItem.belongsCell = cell;
-        const group = this.getCellGroup(newItem);
+        item.belongsCell = cell;
+        const group = this.getCellGroup(item);
         group.add(cell);
       }
     });

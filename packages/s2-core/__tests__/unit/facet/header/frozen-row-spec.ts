@@ -4,14 +4,14 @@ import { DEFAULT_STYLE } from '@/common';
 
 import { FrozenRowCell, RowCell, SeriesNumberCell } from '@/cell';
 import type { PivotFacet } from '@/facet';
-import { FrozenRowHeader } from '@/facet/header';
-import { FrozenSeriesNumber } from '@/facet/header/frozen-series-number';
+import { PivotRowHeader } from '@/facet/header';
+import { SeriesNumberHeader } from '@/facet/header/series-number';
 
 const s2 = createPivotSheet({
   ...assembleDataCfg().fields,
   valueInCols: true,
   ...assembleOptions({
-    frozenEntireHeadRowPivot: true,
+    frozenFirstRowPivot: true,
     totals: {
       row: {
         showGrandTotals: true,
@@ -42,7 +42,7 @@ describe('Frozen Row Header Test', () => {
       s2.render();
       facet = s2.facet as PivotFacet;
 
-      expect(facet.rowHeader instanceof FrozenRowHeader).toBeTrue();
+      expect(facet.rowHeader instanceof PivotRowHeader).toBeTrue();
       expect(facet.rowHeader.frozenHeadGroup).toBeTruthy();
       expect(facet.rowHeader.scrollGroup).toBeTruthy();
 
@@ -59,7 +59,7 @@ describe('Frozen Row Header Test', () => {
       expect(frozenRowCell.meta.height).toEqual(30);
 
       const rowHeader = facet.rowHeader;
-      expect(rowHeader.getFrozenRowHeight()).toBe(30);
+      expect(rowHeader.getFrozenFirstRowHeight()).toBe(30);
 
       expect(
         rowHeader.isFrozenRow({
@@ -71,8 +71,6 @@ describe('Frozen Row Header Test', () => {
           rowIndex: -1,
         }),
       ).toBe(false);
-
-      expect(rowHeader.getFrozenRowCount()).toBe(1);
     },
   );
 });
@@ -85,7 +83,7 @@ describe('Frozen Series Number Test', () => {
       s2.setOptions({ hierarchyType });
       s2.render();
       facet = s2.facet as PivotFacet;
-      expect(facet.rowIndexHeader instanceof FrozenSeriesNumber).toBe(true);
+      expect(facet.rowIndexHeader instanceof SeriesNumberHeader).toBe(true);
 
       const seriesNumberCell =
         facet.rowIndexHeader.frozenHeadGroup.getChildren();

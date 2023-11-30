@@ -19,13 +19,12 @@ import {
   ColHeader,
   CornerHeader,
   Frame,
-  FrozenRowHeader,
+  PivotRowHeader,
   RowHeader,
 } from '@/facet/header';
 import type { Fields, ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
-import { areAllFieldsEmpty, getFrozenOptionsPivot } from '@/facet/utils';
-import { FrozenGroup } from '@/common/constant';
+import { areAllFieldsEmpty } from '@/facet/utils';
 
 jest.mock('@/interaction/root');
 
@@ -257,9 +256,10 @@ describe('Pivot Mode Facet Test', () => {
       const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
 
       expect(
-        rowHeader instanceof FrozenRowHeader || rowHeader instanceof RowHeader,
+        rowHeader instanceof PivotRowHeader || rowHeader instanceof RowHeader,
       ).toBeTrue();
-      expect(rowHeader.cfg.children).toHaveLength(10);
+
+      expect(rowHeader.cfg.children[0].getChildren()).toHaveLength(10);
       expect(rowHeader.cfg.visible).toBeTrue();
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
@@ -274,7 +274,6 @@ describe('Pivot Mode Facet Test', () => {
       const { backgroundGroup } = facet;
 
       const rect = get(backgroundGroup, 'cfg.children[0]');
-
       expect(backgroundGroup.cfg.children).toHaveLength(3);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();
@@ -484,108 +483,3 @@ describe('Pivot Mode Facet Test', () => {
     expect(facet.getHiddenColumnsInfo(node)).toEqual(hiddenColumnsInfo);
   });
 });
-
-describe.each(['grid', 'tree'])(
-  'Pivot Mode Facet frozen entire row',
-  (hierarchyType: 'grid' | 'tree') => {
-    const s2: SpreadSheet = new MockSpreadSheet();
-    const dataSet: PivotDataSet = new MockPivotDataSet(s2);
-    s2.dataSet = dataSet;
-    s2.interaction = new RootInteraction(s2);
-    const facet: PivotFacet = new PivotFacet({
-      spreadsheet: s2,
-      dataSet,
-      dataCell: (fct) => new DataCell(fct, s2),
-      ...assembleDataCfg().fields,
-      valueInCols: true,
-      ...assembleOptions({
-        frozenEntireHeadRowPivot: true,
-        totals: {
-          row: {
-            showGrandTotals: true,
-            reverseLayout: true,
-          },
-        },
-        frozenColCount: 2,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 2,
-        frozenTrailingRowCount: 2,
-      }),
-      ...DEFAULT_STYLE,
-      hierarchyType,
-    });
-
-    test('should get correct frozenOptions', () => {
-      expect(getFrozenOptionsPivot(facet.cfg)).toStrictEqual({
-        frozenRowCount: 1,
-        frozenColCount: 0,
-        frozenTrailingColCount: 0,
-        frozenTrailingRowCount: 0,
-      });
-
-      expect(
-        getFrozenOptionsPivot({
-          ...{
-            ...facet.cfg,
-            showSeriesNumber: true,
-          },
-        }),
-      ).toStrictEqual({
-        frozenRowCount: 1,
-        frozenColCount: 0,
-        frozenTrailingColCount: 0,
-        frozenTrailingRowCount: 0,
-      });
-    });
-
-    test('should get correct frozenInfo', () => {
-      facet.calculateFrozenGroupInfo();
-      expect(facet.frozenGroupInfo).toStrictEqual({
-        [FrozenGroup.FROZEN_COL]: {
-          width: 0,
-        },
-        [FrozenGroup.FROZEN_ROW]: {
-          height: 30,
-          range: [0, 0],
-        },
-        [FrozenGroup.FROZEN_TRAILING_COL]: {
-          width: 0,
-        },
-        [FrozenGroup.FROZEN_TRAILING_ROW]: {
-          height: 0,
-        },
-      });
-    });
-
-    test('should get correct xy indexes with frozen', () => {
-      expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-        center: [0, 3, 1, 7],
-        frozenCol: [0, -1, 1, 7],
-        frozenRow: [0, 3, 0, 0],
-        frozenTrailingCol: [4, 3, 1, 7],
-        frozenTrailingRow: [0, 3, 8, 7],
-      });
-      expect(facet.calculateXYIndexes(110, 30)).toStrictEqual({
-        center: [1, 3, 2, 7],
-        frozenCol: [0, -1, 2, 7],
-        frozenRow: [1, 3, 0, 0],
-        frozenTrailingCol: [4, 3, 2, 7],
-        frozenTrailingRow: [1, 3, 8, 7],
-      });
-    });
-
-    test('should get correct indexes with row height gt canvas height', () => {
-      const originHeight = facet.panelBBox.viewportHeight;
-      facet.panelBBox.viewportHeight = 10;
-      expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
-        center: [0, 3, 1, 0],
-        frozenCol: [0, -1, 1, 0],
-        frozenRow: [0, 3, 0, 0],
-        frozenTrailingCol: [4, 3, 1, 0],
-        frozenTrailingRow: [0, 3, 8, 7],
-      });
-      // reset
-      facet.panelBBox.viewportHeight = originHeight;
-    });
-  },
-);

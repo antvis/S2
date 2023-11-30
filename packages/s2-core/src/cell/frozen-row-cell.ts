@@ -1,101 +1,80 @@
-import {
-  KEY_GROUP_ROW_RESIZE_AREA,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-} from '../common/constant';
-import {
-  getOrCreateResizeAreaGroupById,
-  getResizeAreaAttrs,
-  shouldAddResizeArea,
-} from '../utils/interaction/resize';
+import type { SimpleBBox } from '@antv/g-canvas';
+import { getAdjustPosition } from '../utils/text-absorption';
+import { getFrozenRowCfgPivot } from '../facet/utils';
 import type { BaseHeaderConfig } from '../facet/header/base';
 import { RowCell } from './row-cell';
 
+/**
+ * Adapting the frozen first row for cells pivot table
+ */
 export class FrozenRowCell extends RowCell {
-  private frozenRowHeight: number;
+  /**
+   * To indicate whether the current node is a frozen node
+   *
+   * PS: It is a specific config for the cell node, so it should not be extended in the headerConfig.
+   */
+  protected frozenRowCell: boolean;
 
   protected handleRestOptions(
-    ...[headerConfig, ...options]: [BaseHeaderConfig, number]
+    ...[headerConfig, ...options]: [BaseHeaderConfig, boolean]
   ) {
     super.handleRestOptions(headerConfig, options);
-    this.frozenRowHeight = options[0];
+    this.frozenRowCell = options[0];
   }
 
-  protected drawResizeAreaInLeaf(): void {
+  protected getAdjustTextAreaHeight(
+    textArea: SimpleBBox,
+    scrollY: number,
+    viewportHeight: number,
+  ): number {
+    const correctY = textArea.y - this.getFrozenFirstRowHeight();
+    let adjustTextAreaHeight = textArea.height;
     if (
-      !this.meta.isLeaf ||
-      !this.shouldDrawResizeAreaByType('rowCellVertical', this)
+      !this.spreadsheet.facet.vScrollBar &&
+      correctY + textArea.height > scrollY + viewportHeight
     ) {
-      return;
+      adjustTextAreaHeight = scrollY + viewportHeight - correctY;
     }
+    return adjustTextAreaHeight;
+  }
 
-    const { x, y, width, height } = this.getCellArea();
-    const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_ROW_RESIZE_AREA,
+  protected calculateTextY({
+    textArea,
+    adjustTextAreaHeight,
+  }: {
+    textArea: SimpleBBox;
+    adjustTextAreaHeight: number;
+  }): number {
+    const { scrollY, viewportHeight } = this.headerConfig;
+    const { fontSize } = this.getTextStyle();
+    return getAdjustPosition(
+      textArea.y,
+      adjustTextAreaHeight,
+      // viewportLeft: start at the frozen row position
+      scrollY + this.getFrozenFirstRowHeight(),
+      viewportHeight,
+      fontSize,
     );
+  }
 
-    const {
-      position,
-      seriesNumberWidth,
-      width: headerWidth,
-      viewportHeight: headerHeight,
-      scrollX,
-      scrollY,
-    } = this.headerConfig;
-
-    // const frozenRowHeight = this.getFrozenRowHeight();
-    const resizeAreaBBox = {
-      // fix: When horizontally scrolling and closing the entire frozen header, the resize area is being removed prematurely.
-      x: x + seriesNumberWidth,
-      // packages/s2-core/src/facet/header/frozen-row.ts The y-coordinate has been decreased by the height of the frozen rows. need plus frozenRowHeight
-      y: y + this.frozenRowHeight + height - resizeStyle.size / 2,
-      width,
-      height: resizeStyle.size,
+  protected getResizeClipAreaBBox(): SimpleBBox {
+    return {
+      ...super.getResizeClipAreaBBox(),
+      y: this.getFrozenFirstRowHeight(),
     };
+  }
 
-    const resizeClipAreaBBox = {
-      x: 0,
-      // There are frozen rows, so the clip should start from the position of the frozen rows.
-      y: this.frozenRowHeight,
-      width: headerWidth,
-      height: headerHeight,
-    };
-
-    if (
-      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
-        scrollX,
-        scrollY,
-      })
-    ) {
-      return;
+  private getFrozenFirstRowHeight(): number {
+    if (this.frozenRowCell) {
+      // frozen row cell
+      return 0;
     }
-
-    const offsetX = position?.x + x - scrollX + seriesNumberWidth;
-    const offsetY = position?.y + y + this.frozenRowHeight - scrollY;
-
-    const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
-      ? headerWidth - seriesNumberWidth - (x - scrollX)
-      : width;
-
-    resizeArea.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: this.meta.id,
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX,
-          offsetY,
-          width,
-          height,
-          meta: this.meta,
-        }),
-        x: offsetX,
-        y: offsetY + height - resizeStyle.size / 2,
-        width: resizeAreaWidth,
-      },
-    });
+    const { spreadsheet } = this.headerConfig;
+    const { facet } = spreadsheet;
+    const { frozenRowHeight } = getFrozenRowCfgPivot(
+      spreadsheet.options,
+      facet?.layoutResult?.rowNodes,
+    );
+    return frozenRowHeight;
   }
 }

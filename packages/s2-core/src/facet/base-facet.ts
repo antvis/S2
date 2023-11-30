@@ -1275,13 +1275,13 @@ export abstract class BaseFacet {
   }
 
   protected getSeriesNumberHeader(): BaseHeader<BaseHeaderConfig> {
-    return SeriesNumberHeader.getSeriesNumberHeader(
-      this.panelBBox,
-      this.getSeriesNumberWidth(),
-      this.layoutResult.rowsHierarchy.getNodes(0),
-      this.spreadsheet,
-      this.cornerBBox.width,
-    );
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      viewportBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      spreadsheet: this.spreadsheet,
+      cornerWidth: this.cornerBBox.width,
+    });
   }
 
   protected getCenterFrame(): Frame {
