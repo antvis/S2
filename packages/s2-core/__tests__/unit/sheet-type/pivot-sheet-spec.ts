@@ -3,7 +3,7 @@ import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
-import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 import type {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
@@ -535,6 +535,7 @@ describe('PivotSheet Tests', () => {
     sheet.on(S2Event.LAYOUT_CELL_RENDER, layoutCellRender);
 
     await sheet.render();
+    await sleep(500);
 
     expect(dataCellRender).toHaveBeenCalledTimes(8);
     expect(layoutCellRender).toHaveBeenCalledTimes(20);

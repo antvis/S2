@@ -712,7 +712,7 @@ export const getTooltipOptions = (
 
   return getTooltipOptionsByCellType(
     options.tooltip!,
-    cellType || sampleCell.cellType!,
+    cellType || sampleCell?.cellType!,
   );
 };
 
