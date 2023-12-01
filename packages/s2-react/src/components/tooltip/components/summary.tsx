@@ -33,7 +33,8 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
           >
             {name ? (
               <span className={`${TOOLTIP_PREFIX_CLS}-summary-key`}>
-                {name} （{i18n('总和')})
+                {name}
+                {i18n('总和')}
               </span>
             ) : (
               <span className={`${TOOLTIP_PREFIX_CLS}-summary-key`}>
