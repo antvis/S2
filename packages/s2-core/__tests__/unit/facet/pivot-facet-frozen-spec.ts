@@ -5,7 +5,7 @@ import { createPivotSheet } from 'tests/util/helpers';
 import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
 
-import type { SpreadSheet } from '@antv/s2';
+import type { PivotSheet, SpreadSheet } from '@antv/s2';
 import { FrozenRowCell, SeriesNumberCell } from '@/cell';
 import { getFrozenRowCfgPivot } from '@/facet/utils';
 import {
@@ -39,7 +39,7 @@ const disableFrozenFistRowOption = {
   frozenRowHeight: 0,
 };
 
-let s2;
+let s2: PivotSheet;
 
 describe('test getFrozenRowCfgPivot', () => {
   beforeEach(() => {

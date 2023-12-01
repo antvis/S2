@@ -111,18 +111,18 @@
     {
       "filename": "frozen-pivot-grid.ts",
       "title": {
-        "zh": "交叉平铺模式冻结总计行",
-        "en": "pivot mode freezes total rows"
+        "zh": "透视表 - 平铺模式冻结首行",
+        "en": "pivot mode freezes head rows"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ge0_S5iMB-wAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "frozen-pivot-tree.ts",
       "title": {
-        "zh": "交叉树状模式冻结首行",
+        "zh": "透视表 - 树状模式冻结首行",
         "en": "tree mode freezes head rows"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ncdCT7NB2I0AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

@@ -7,6 +7,8 @@ import type {
   ColumnNode,
   Columns,
   Pagination,
+  S2Options,
+  S2PivotSheetOptions,
   S2TableSheetOptions,
   ScrollSpeedRatio,
   SpreadSheetFacetCfg,
@@ -542,7 +544,7 @@ export const areAllFieldsEmpty = (fields: Fields) => {
  */
 export const getFrozenRowCfgPivot = (
   options: Pick<
-    SpreadSheetFacetCfg,
+    S2Options,
     'frozenFirstRowPivot' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
   >,
   rowNodes: Node[],
@@ -558,7 +560,8 @@ export const getFrozenRowCfgPivot = (
   if (!enablePagination && frozenFirstRowPivot) {
     // first node no children: entire row
     enableFrozenFirstRow = headNode?.children?.length === 0;
-    if (hierarchyType === 'tree' && !enableFrozenFirstRow) {
+    const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';
+    if (treeMode && !enableFrozenFirstRow) {
       enableFrozenFirstRow = !showSeriesNumber;
     }
   }

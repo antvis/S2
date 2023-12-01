@@ -120,7 +120,7 @@ export abstract class BaseFacet {
 
   public cornerHeader: CornerHeader;
 
-  public rowIndexHeader: BaseHeader<BaseHeaderConfig>;
+  public rowIndexHeader: SeriesNumberHeader;
 
   public centerFrame: Frame;
 
@@ -1274,7 +1274,7 @@ export abstract class BaseFacet {
     return this.cornerHeader;
   }
 
-  protected getSeriesNumberHeader(): BaseHeader<BaseHeaderConfig> {
+  protected getSeriesNumberHeader(): SeriesNumberHeader {
     return SeriesNumberHeader.getSeriesNumberHeader({
       viewportBBox: this.panelBBox,
       seriesNumberWidth: this.getSeriesNumberWidth(),

@@ -290,7 +290,7 @@ export class RowCell extends HeaderCell {
     } = this.headerConfig;
 
     const resizeAreaBBox = {
-      // fix: When horizontally scrolling and closing the entire frozen header, the resize area is being removed prematurely.
+      // fix: When scrolling without the entire frozen header horizontally, the resize area would be removed permanently.
       x: x + seriesNumberWidth,
       y: y + height - resizeStyle.size / 2,
       width,

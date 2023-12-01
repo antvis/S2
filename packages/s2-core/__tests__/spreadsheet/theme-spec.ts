@@ -473,7 +473,7 @@ describe('SpreadSheet Theme Tests', () => {
         const textOfSeriesCell = getTextShape(seriesCell);
 
         expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual(textBaseline);
         expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
     );

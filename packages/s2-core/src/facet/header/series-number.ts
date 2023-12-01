@@ -46,6 +46,7 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
         : node.height;
       sNode.width = seriesNumberWidth;
       sNode.rowIndex = node.rowIndex;
+      sNode.isLeaf = true;
       seriesNodes.push(sNode);
     });
     const { facet } = spreadsheet;

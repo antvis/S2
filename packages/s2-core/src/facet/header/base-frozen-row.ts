@@ -14,9 +14,9 @@ import {
 import { RowHeader, type RowHeaderConfig } from './row';
 
 export class BaseFrozenRowHeader extends RowHeader {
-  protected scrollGroup: IGroup;
+  public scrollGroup: IGroup;
 
-  protected frozenHeadGroup: IGroup;
+  public frozenHeadGroup: IGroup;
 
   constructor(cfg: RowHeaderConfig) {
     super(cfg);
@@ -98,7 +98,7 @@ export class BaseFrozenRowHeader extends RowHeader {
     });
   }
 
-  protected isFrozenRow(item: Node): boolean {
+  public isFrozenRow(item: Node): boolean {
     const { spreadsheet } = this.headerConfig;
     const { facet } = spreadsheet;
     const { frozenRowCount } = getFrozenRowCfgPivot(
@@ -110,7 +110,7 @@ export class BaseFrozenRowHeader extends RowHeader {
     );
   }
 
-  protected getFrozenFirstRowHeight(): number {
+  public getFrozenFirstRowHeight(): number {
     const { spreadsheet } = this.headerConfig;
     const { facet } = spreadsheet;
     const { frozenRowHeight } = getFrozenRowCfgPivot(
