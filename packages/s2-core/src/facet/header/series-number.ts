@@ -37,18 +37,18 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     leafNodes.forEach((node: Node): void => {
       // 1、is spreadsheet and node is not total(grand or sub)
       // 2、is listSheet
-      if (!node.isTotals || isHierarchyTreeType) {
-        const sNode = new Node({
-          id: '',
-          key: '',
-          value: `${seriesNodes.length + 1}`,
-        });
-        sNode.x = node.x;
-        sNode.y = node.y;
-        sNode.height = node.height;
-        sNode.width = seriesNumberWidth;
-        seriesNodes.push(sNode);
-      }
+      const sNode = new Node({
+        id: '',
+        key: '',
+        value: `${seriesNodes.length + 1}`,
+      });
+      sNode.x = node.x;
+      sNode.y = node.y;
+      sNode.height = isHierarchyTreeType
+        ? node.getTotalHeightForTreeHierarchy()
+        : node.height;
+      sNode.width = seriesNumberWidth;
+      seriesNodes.push(sNode);
     });
     return new SeriesNumberHeader({
       width: cornerWidth,

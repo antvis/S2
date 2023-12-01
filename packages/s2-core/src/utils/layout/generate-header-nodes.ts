@@ -1,5 +1,9 @@
 import { isBoolean } from 'lodash';
-import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
+import {
+  EMPTY_FIELD_VALUE,
+  EXTRA_FIELD,
+  SERIES_NUMBER_FIELD,
+} from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
 import type {
@@ -33,12 +37,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
     let value: string;
-    let nodeQuery;
+    let nodeQuery: Record<string, unknown>;
     let isLeaf = false;
     let isGrandTotals = false;
     let isSubTotals = false;
     let isTotalRoot = false;
     let adjustedField = currentField;
+
     if (isTotals) {
       const totalClass = fieldValue as TotalClass;
       isGrandTotals = totalClass.isGrandTotals;
@@ -72,7 +77,11 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
-      nodeQuery = { ...query, [currentField]: value };
+      // 子维度的维值为空时, 使用父级节点的 query, 避免查询不到数据
+      nodeQuery =
+        value === EMPTY_FIELD_VALUE
+          ? { ...query }
+          : { ...query, [currentField]: value };
       isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
     }
     const uniqueId = generateId(parentNode.id, value);

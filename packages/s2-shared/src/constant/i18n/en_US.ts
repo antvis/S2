@@ -30,7 +30,7 @@ export const EN_US: Record<string, string> = {
   '按以下规则进行排序（优先级由低到高）':
     'Order according to the following rules (from low to high priority)',
   按: 'By',
-  说明: 'Description',
+  说明: 'Description: ',
 
   // export
   复制原始数据: 'Copy raw data',

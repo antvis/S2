@@ -4,7 +4,6 @@ import {
   filter,
   forEach,
   isEmpty,
-  isEqual,
   isNil,
   map,
   max,
@@ -12,26 +11,26 @@ import {
   reduce,
   zip,
 } from 'lodash';
-import type { ColCell, RowCell } from '../../cell';
+import type { ColCell, HeaderCell, RowCell } from '../../cell';
 import {
-  type CellMeta,
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
-  type RowData,
   SERIES_NUMBER_FIELD,
   VALUE_FIELD,
+  type CellMeta,
+  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import { flattenDeep } from '../data-set-operate';
-import { getEmptyPlaceholder } from '../text';
 import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
+import { getEmptyPlaceholder } from '../text';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -148,13 +147,22 @@ export const convertString = (v: string) => {
  * @param headerId
  * @param startLevel 层级
  */
-const getHeaderList = (headerId: string, startLevel?: number) => {
+const getHeaderMeasureFields = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }
   headerList.shift(); // 去除 root
   return headerList;
+};
+
+const getHeaderMeasureFieldNames = (
+  fields: string[],
+  spreadsheet: SpreadSheet,
+): string[] => {
+  return map(fields, (field) => {
+    return spreadsheet.dataSet.getFieldName(field);
+  });
 };
 
 type MatrixTransformer = (data: string[][]) => CopyableItem;
@@ -423,8 +431,12 @@ const getPivotWithHeaderCopyData = (
   leafRowNodes: Node[],
   leafColNodes: Node[],
 ): Copyable => {
-  const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
-  const colMatrix = zip(...map(leafColNodes, (n) => getHeaderList(n.id)));
+  const rowMatrix = map(leafRowNodes, (node) =>
+    getHeaderMeasureFields(node.id),
+  );
+  const colMatrix = zip(
+    ...map(leafColNodes, (node) => getHeaderMeasureFields(node.id)),
+  );
   const dataMatrix = getDataMatrix(leafRowNodes, leafColNodes, spreadsheet);
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
@@ -620,17 +632,23 @@ const getDataWithHeaderMatrix = (
   const colMatrix = zip(
     ...map(cellMetaMatrix[0], (cellMeta) => {
       const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
-      return getHeaderList(colId);
+      return getHeaderMeasureFieldNames(
+        getHeaderMeasureFields(colId),
+        spreadsheet,
+      );
     }),
   );
 
   const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
     const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
-    return getHeaderList(rowId);
+    return getHeaderMeasureFieldNames(
+      getHeaderMeasureFields(rowId),
+      spreadsheet,
+    );
   });
 
   const dataMatrix = map(cellMetaMatrix, (cellsMeta) => {
-    return map(cellsMeta, (it) => format(it, displayData, spreadsheet));
+    return map(cellsMeta, (meta) => format(meta, displayData, spreadsheet));
   });
 
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
@@ -682,25 +700,18 @@ function getTotalCellMatrixId(meta: Node, maxLevel: number) {
 }
 
 function getCellMatrix(
-  lastLevelCells: Array<RowCell | ColCell>,
+  lastLevelCells: Array<HeaderCell>,
   maxLevel: number,
   allLevel: Set<number>,
 ) {
-  return map(lastLevelCells, (cell: RowCell | ColCell) => {
+  return map(lastLevelCells, (cell) => {
     const meta = cell.getMeta();
-    const { id, label, isTotals } = meta;
-    let cellId = id;
-
-    if (isTotals) {
-      cellId = getTotalCellMatrixId(meta, maxLevel);
-    }
+    const { id, isTotals, spreadsheet } = meta;
+    const cellId = isTotals ? getTotalCellMatrixId(meta, maxLevel) : id;
 
     // 将指标维度单元格的标签替换为实际文本
-    const actualText = cell.getActualText();
-    const headerList = getHeaderList(cellId, allLevel.size);
-    return map(headerList, (header) =>
-      isEqual(header, label) ? actualText : header,
-    );
+    const headerFields = getHeaderMeasureFields(cellId, allLevel.size);
+    return getHeaderMeasureFieldNames(headerFields, spreadsheet);
   });
 }
 

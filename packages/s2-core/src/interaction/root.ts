@@ -144,7 +144,10 @@ export class RootInteraction {
   }
 
   public isSelectedState() {
-    return this.isStateOf(InteractionStateName.SELECTED);
+    return (
+      this.isStateOf(InteractionStateName.SELECTED) ||
+      this.isStateOf(InteractionStateName.BRUSH_SELECTED)
+    );
   }
 
   public isAllSelectedState() {

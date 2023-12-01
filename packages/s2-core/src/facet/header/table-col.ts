@@ -1,7 +1,7 @@
 import type { IGroup } from '@antv/g-canvas';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
@@ -35,14 +35,14 @@ export class TableColHeader extends ColHeader {
     if (frozenColCount) {
       this.frozenColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
       });
     }
 
     if (frozenTrailingColCount) {
       this.frozenTrailingColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
       });
     }
   }

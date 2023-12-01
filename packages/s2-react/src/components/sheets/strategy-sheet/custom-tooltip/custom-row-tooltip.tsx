@@ -22,7 +22,8 @@ export const StrategySheetRowTooltip: React.FC<CustomTooltipProps> = ({
       <div className={tooltipCls('value')}>{rowName}</div>
       {description && (
         <div className={tooltipCls('description')}>
-          {i18n('说明')}: {description}
+          {i18n('说明')}
+          {description}
         </div>
       )}
     </div>

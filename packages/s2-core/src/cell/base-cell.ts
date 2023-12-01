@@ -14,6 +14,7 @@ import {
 } from 'lodash';
 import {
   CellTypes,
+  EMPTY_FIELD_VALUE,
   InteractionStateName,
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
@@ -135,7 +136,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public getFieldValue() {
-    return this.getFormattedFieldValue().formattedValue;
+    const { formattedValue } = this.getFormattedFieldValue();
+
+    if (formattedValue === EMPTY_FIELD_VALUE) {
+      return this.getActualText();
+    }
+    return formattedValue;
   }
 
   /**
