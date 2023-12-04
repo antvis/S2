@@ -1,8 +1,7 @@
 import type { IGroup } from '@antv/g-canvas';
-import { get } from 'lodash';
 import type { Node } from '../layout/node';
 import {
-  getFrozenOptionsPivot,
+  getFrozenRowCfgPivot,
   translateGroup,
   translateGroupX,
 } from '../utils';
@@ -15,9 +14,9 @@ import {
 import { RowHeader, type RowHeaderConfig } from './row';
 
 export class BaseFrozenRowHeader extends RowHeader {
-  protected scrollGroup: IGroup;
+  public scrollGroup: IGroup;
 
-  protected frozenHeadGroup: IGroup;
+  public frozenHeadGroup: IGroup;
 
   constructor(cfg: RowHeaderConfig) {
     super(cfg);
@@ -47,7 +46,8 @@ export class BaseFrozenRowHeader extends RowHeader {
 
   protected rowCellInRectYDir(item: Node): boolean {
     const { viewportHeight, scrollY } = this.headerConfig;
-    return viewportHeight + scrollY > item.y && scrollY < item.y + item.height;
+    const itemY = item.y - this.getFrozenFirstRowHeight();
+    return viewportHeight + scrollY > itemY && scrollY < itemY + item.height;
   }
 
   protected rowCellInRect(item: Node): boolean {
@@ -68,26 +68,21 @@ export class BaseFrozenRowHeader extends RowHeader {
   protected offset() {
     const { scrollX, scrollY, position, seriesNumberWidth } = this.headerConfig;
     // 向右多移动的seriesNumberWidth是序号的宽度
-    translateGroup(
-      this.scrollGroup,
-      position.x - scrollX + seriesNumberWidth,
-      position.y + this.getFrozenRowHeight() - scrollY,
-    );
-    translateGroupX(
-      this.frozenHeadGroup,
-      position.x - scrollX + seriesNumberWidth,
-    );
+    const translateX = position.x - scrollX + seriesNumberWidth;
+    translateGroup(this.scrollGroup, translateX, position.y - scrollY);
+    translateGroupX(this.frozenHeadGroup, translateX);
   }
 
   public clip(): void {
     const { width, viewportHeight, scrollX, scrollY, seriesNumberWidth } =
       this.headerConfig;
+    // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
+    const clipX = scrollX - seriesNumberWidth;
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
-        x: scrollX - seriesNumberWidth,
-        y: scrollY,
+        x: clipX,
+        y: scrollY + this.getFrozenFirstRowHeight(),
         width,
         height: viewportHeight,
       },
@@ -95,44 +90,38 @@ export class BaseFrozenRowHeader extends RowHeader {
     this.frozenHeadGroup.setClip({
       type: 'rect',
       attrs: {
-        x: scrollX - seriesNumberWidth,
+        x: clipX,
         y: 0,
         width: this.headerConfig.width,
-        height: this.getFrozenRowHeight(),
+        height: this.getFrozenFirstRowHeight(),
       },
     });
   }
 
-  protected getFrozenRowHeight = () => {
-    // get row head height TODO: There may be a better solution
-    const frozenCount = this.getFrozenRowCount();
-    let sum = 0;
-    for (let i = 0, len = frozenCount; i < len; i++) {
-      sum += get(
-        this.headerConfig.spreadsheet,
-        `facet.layoutResult.rowNodes[${i}].height`,
-        0,
-      );
-    }
-    return sum;
-  };
-
-  protected isFrozenRow(item: Node): boolean {
-    const frozenRowCount = this.getFrozenRowCount();
+  public isFrozenRow(item: Node): boolean {
+    const { spreadsheet } = this.headerConfig;
+    const { facet } = spreadsheet;
+    const { frozenRowCount } = getFrozenRowCfgPivot(
+      spreadsheet.options,
+      facet.layoutResult?.rowNodes,
+    );
     return (
       frozenRowCount > 0 && item.rowIndex >= 0 && item.rowIndex < frozenRowCount
     );
   }
 
-  protected getFrozenRowCount(): number {
+  public getFrozenFirstRowHeight(): number {
     const { spreadsheet } = this.headerConfig;
-    const { frozenRowCount } = getFrozenOptionsPivot(spreadsheet.facet?.cfg);
-    return frozenRowCount;
+    const { facet } = spreadsheet;
+    const { frozenRowHeight } = getFrozenRowCfgPivot(
+      spreadsheet.options,
+      facet.layoutResult?.rowNodes,
+    );
+    return frozenRowHeight;
   }
 
   public clear(): void {
     this.frozenHeadGroup.clear();
     this.scrollGroup.clear();
-    // super.clear();
   }
 }

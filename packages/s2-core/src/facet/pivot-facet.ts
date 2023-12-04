@@ -46,10 +46,8 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenOptionsPivot } from './utils';
-import { FrozenRowHeader, RowHeader } from './header';
-import { FrozenSeriesNumber } from './header/frozen-series-number';
-import type { BaseHeader, BaseHeaderConfig } from './header/base';
+import { getFrozenRowCfgPivot } from './utils';
+import { PivotRowHeader, RowHeader } from './header';
 
 export class PivotFacet extends FrozenFacet {
   protected updateFrozenGroupGrid(): void {
@@ -75,13 +73,13 @@ export class PivotFacet extends FrozenFacet {
   }
 
   protected getBizRevisedFrozenOptions(): S2TableSheetOptions {
-    return getFrozenOptionsPivot(this.cfg);
+    return getFrozenRowCfgPivot(this.cfg, this.layoutResult.rowNodes);
   }
 
   protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
     // remove previous splitline group
     this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
-    if (this.enableFrozenTotalRow()) {
+    if (this.enableFrozenFirstRow()) {
       // 在分页条件下需要额外处理 Y 轴滚动值
       const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
       const splitLineGroup = this.foregroundGroup.addGroup({
@@ -138,7 +136,7 @@ export class PivotFacet extends FrozenFacet {
       // 1. panelScrollGroup clip (default)
       // 2. frozenRowGroup clip
       this.panelScrollGroupClip(scrollX, scrollY);
-      if (this.enableFrozenTotalRow()) {
+      if (this.enableFrozenFirstRow()) {
         const paginationScrollY = this.getPaginationScrollY();
         frozenRowGroup.setClip({
           type: 'rect',
@@ -154,15 +152,6 @@ export class PivotFacet extends FrozenFacet {
     }
     super.clip(scrollX, scrollY);
   }
-
-  public getFrozenRowHeight = (): number => {
-    const { frozenRowCount } = this.getBizRevisedFrozenOptions();
-    let sum = 0;
-    for (let i = 0, len = frozenRowCount; i < len; i++) {
-      sum += get(this.layoutResult, `rowNodes[${i}].height`, 0);
-    }
-    return sum;
-  };
 
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell.cell;
@@ -1003,33 +992,19 @@ export class PivotFacet extends FrozenFacet {
 
   protected getRowHeader(): RowHeader {
     if (!this.rowHeader) {
-      if (this.enableFrozenTotalRow()) {
-        const { viewportHeight, ...otherProps } = this.getRowHeaderCfg();
-        return new FrozenRowHeader({
-          ...otherProps,
-          viewportHeight: viewportHeight - this.getFrozenRowHeight(),
-        });
-      }
-    }
-    return super.getRowHeader();
-  }
-
-  protected getSeriesNumberHeader(): BaseHeader<BaseHeaderConfig> {
-    if (this.enableFrozenTotalRow()) {
-      return FrozenSeriesNumber.getFrozenSeriesNumberHeader({
-        viewportBBox: this.panelBBox,
-        seriesNumberWidth: this.getSeriesNumberWidth(),
-        leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
-        spreadsheet: this.spreadsheet,
-        cornerWidth: this.cornerBBox.width,
-        frozenRowCount: this.getBizRevisedFrozenOptions().frozenRowCount,
-        frozenRowHeight: this.getFrozenRowHeight(),
+      const { viewportHeight, ...otherProps } = this.getRowHeaderCfg();
+      const { frozenRowHeight } = getFrozenRowCfgPivot(
+        this.cfg,
+        this.layoutResult.rowNodes,
+      );
+      return new PivotRowHeader({
+        ...otherProps,
+        viewportHeight: viewportHeight - frozenRowHeight,
       });
     }
-    return super.getSeriesNumberHeader();
   }
 
-  public enableFrozenTotalRow(): boolean {
+  public enableFrozenFirstRow(): boolean {
     return !!this.getBizRevisedFrozenOptions().frozenRowCount;
   }
 }

@@ -126,8 +126,10 @@ export interface S2TableSheetOptions {
 }
 
 // Pivot sheet options
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface S2PivotSheetOptions {}
+export interface S2PivotSheetOptions {
+  // pivot sheet type: frozen head row, default false
+  frozenFirstRowPivot?: boolean;
+}
 
 export interface S2Options<
   T = TooltipContentType,

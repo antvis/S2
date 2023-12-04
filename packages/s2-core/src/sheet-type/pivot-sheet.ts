@@ -244,7 +244,7 @@ export class PivotSheet extends SpreadSheet {
     this.panelGroup.add(this.frozenRowGroup);
   }
 
-  protected isCellType(cell?: any): boolean {
+  protected isCellType(cell?: CanvasEvent['target']): boolean {
     return cell instanceof BaseCell && !(cell instanceof SeriesNumberCell);
   }
 }

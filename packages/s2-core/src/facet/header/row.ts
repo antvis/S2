@@ -72,11 +72,11 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         // 如果外部没处理，就用默认的
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
-            cell = this.createCellInstance(newItem);
+            cell = this.createCellInstance(item);
           }
         }
-        newItem.belongsCell = cell;
-        const group = this.getCellGroup(newItem);
+        item.belongsCell = cell;
+        const group = this.getCellGroup(item);
         group.add(cell);
       }
     });

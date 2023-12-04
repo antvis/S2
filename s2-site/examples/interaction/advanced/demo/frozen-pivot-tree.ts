@@ -11,7 +11,7 @@ fetch(
       width: 600,
       height: 300,
       hierarchyType: 'tree',
-      frozenEntireHeadRowPivot: true,
+      frozenFirstRowPivot: true,
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 

@@ -480,12 +480,6 @@ export abstract class FrozenFacet extends BaseFacet {
     }
 
     if (frozenTrailingColCount > 0) {
-      // const width = colLeafNodes.reduceRight((prev, item, idx) => {
-      //   if (idx >= colLeafNodes.length - frozenTrailingColCount) {
-      //     return prev + item.width;
-      //   }
-      //   return prev;
-      // }, 0);
       const { x } = colLeafNodes[colLeafNodes.length - frozenTrailingColCount];
       const height = frozenTrailingRowCount ? panelHeight : viewportHeight;
       renderLine(

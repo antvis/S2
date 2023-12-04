@@ -1,7 +1,8 @@
-import type { Condition, MappingResult, TextTheme } from '../common';
-import { RowCell } from './row-cell';
+import type { Point } from '@antv/g-canvas';
+import type { Condition, IconTheme, MappingResult, TextTheme } from '../common';
+import { FrozenRowCell } from './frozen-row-cell';
 
-export class SeriesNumberCell extends RowCell {
+export class SeriesNumberCell extends FrozenRowCell {
   protected initCell(): void {
     this.drawBackgroundShape();
     this.drawRectBorder();
@@ -9,8 +10,19 @@ export class SeriesNumberCell extends RowCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const style = super.getTextStyle();
-    return { ...style, textAlign: 'center' };
+    return this.getStyle()?.seriesText;
+  }
+
+  protected getTextPosition(): Point {
+    return super.getTextPosition();
+  }
+
+  protected getActionIconsCount(): number {
+    return 0;
+  }
+
+  public getIconStyle(): IconTheme {
+    return undefined;
   }
 
   protected drawResizeAreaInLeaf(): void {}

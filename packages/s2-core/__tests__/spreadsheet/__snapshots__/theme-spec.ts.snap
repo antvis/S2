@@ -493,7 +493,7 @@ Object {
       "linkTextFill": "#326EF4",
       "opacity": 1,
       "textAlign": "center",
-      "textBaseline": "middle",
+      "textBaseline": "top",
     },
     "text": Object {
       "fill": "#000000",

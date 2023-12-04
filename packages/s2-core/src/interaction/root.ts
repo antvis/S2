@@ -21,7 +21,7 @@ import type {
   S2CellType,
   SelectHeaderCellInfo,
 } from '../common/interface';
-import { ColHeader, RowHeader } from '../facet/header';
+import { ColHeader, RowHeader, SeriesNumberHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -219,7 +219,10 @@ export class RootInteraction {
 
   public getAllRowHeaderCells(): RowCell[] {
     const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
-    const rowHeader = children.find((group) => group instanceof RowHeader);
+    const rowHeader = children.find(
+      (group) =>
+        group instanceof RowHeader && !(group instanceof SeriesNumberHeader), // series cell not belong to row header cell
+    );
     const headerChildren = rowHeader?.cfg?.children || [];
 
     return getAllChildCells<RowCell>(headerChildren, RowCell).filter(

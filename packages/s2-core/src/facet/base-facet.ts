@@ -1274,14 +1274,14 @@ export abstract class BaseFacet {
     return this.cornerHeader;
   }
 
-  protected getSeriesNumberHeader(): BaseHeader<BaseHeaderConfig> {
-    return SeriesNumberHeader.getSeriesNumberHeader(
-      this.panelBBox,
-      this.getSeriesNumberWidth(),
-      this.layoutResult.rowsHierarchy.getNodes(0),
-      this.spreadsheet,
-      this.cornerBBox.width,
-    );
+  protected getSeriesNumberHeader(): SeriesNumberHeader {
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      viewportBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      spreadsheet: this.spreadsheet,
+      cornerWidth: this.cornerBBox.width,
+    });
   }
 
   protected getCenterFrame(): Frame {

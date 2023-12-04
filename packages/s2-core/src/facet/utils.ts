@@ -1,21 +1,20 @@
 import type { IGroup, SimpleBBox } from '@antv/g-canvas';
 import { findIndex, isEmpty, isNil } from 'lodash';
-
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
   ColumnNode,
   Columns,
+  Fields,
   Pagination,
+  S2Options,
   S2TableSheetOptions,
   ScrollSpeedRatio,
-  SpreadSheetFacetCfg,
 } from '../common/interface';
-import type { Fields } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
-import type { Node } from './layout/node';
 import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -540,46 +539,35 @@ export const areAllFieldsEmpty = (fields: Fields) => {
  * @param options
  * @returns
  */
-export const getFrozenOptionsPivot = (
+export const getFrozenRowCfgPivot = (
   options: Pick<
-    SpreadSheetFacetCfg,
-    | 'hierarchyType'
-    | 'totals'
-    | 'pagination'
-    | 'frozenEntireHeadRowPivot'
-    | 'showSeriesNumber'
-    | 'valueInCols'
+    S2Options,
+    'frozenFirstRowPivot' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
   >,
-): S2TableSheetOptions => {
-  const {
-    totals,
-    valueInCols,
-    pagination,
-    frozenEntireHeadRowPivot,
-    hierarchyType,
-    showSeriesNumber,
-  } = options;
-  let frozenRowCount = 0;
-  const { showGrandTotals, reverseLayout } = totals?.row || {};
-  const grandTotalInHeadRow = showGrandTotals && reverseLayout;
+  rowNodes: Node[],
+): S2TableSheetOptions & {
+  frozenRowHeight: number;
+  enableFrozenFirstRow: boolean;
+} => {
+  const { pagination, frozenFirstRowPivot, hierarchyType, showSeriesNumber } =
+    options;
   const enablePagination = pagination && pagination.pageSize;
-  if (enablePagination || !frozenEntireHeadRowPivot) {
-    frozenRowCount = 0;
-  } else if (hierarchyType === 'grid') {
-    if (grandTotalInHeadRow && valueInCols) {
-      frozenRowCount = 1;
-    }
-  } else if (hierarchyType === 'tree') {
-    frozenRowCount = 1;
-    if (showSeriesNumber && !grandTotalInHeadRow) {
-      frozenRowCount = 0;
+  let enableFrozenFirstRow = false;
+  const headNode = rowNodes?.[0];
+  if (!enablePagination && frozenFirstRowPivot) {
+    // first node no children: entire row
+    enableFrozenFirstRow = headNode?.children?.length === 0;
+    const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';
+    if (treeMode && !enableFrozenFirstRow) {
+      enableFrozenFirstRow = !showSeriesNumber;
     }
   }
-
   return {
-    frozenRowCount,
+    frozenRowCount: enableFrozenFirstRow ? 1 : 0,
     frozenColCount: 0,
     frozenTrailingColCount: 0,
     frozenTrailingRowCount: 0,
+    enableFrozenFirstRow,
+    frozenRowHeight: enableFrozenFirstRow ? headNode.height : 0,
   };
 };

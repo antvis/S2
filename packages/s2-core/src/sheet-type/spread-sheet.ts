@@ -575,7 +575,7 @@ export abstract class SpreadSheet extends EE {
     return this.options?.mappingDisplayDataItem;
   }
 
-  protected isCellType(cell?: any) {
+  protected isCellType(cell?: CanvasEvent['target']) {
     return cell instanceof BaseCell;
   }
 

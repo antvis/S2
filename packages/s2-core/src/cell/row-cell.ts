@@ -256,6 +256,16 @@ export class RowCell extends HeaderCell {
     });
   }
 
+  protected getResizeClipAreaBBox(): SimpleBBox {
+    const { width, viewportHeight } = this.headerConfig;
+    return {
+      x: 0,
+      y: 0,
+      width,
+      height: viewportHeight,
+    };
+  }
+
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
@@ -275,25 +285,19 @@ export class RowCell extends HeaderCell {
       position,
       seriesNumberWidth,
       width: headerWidth,
-      viewportHeight: headerHeight,
       scrollX,
       scrollY,
     } = this.headerConfig;
 
     const resizeAreaBBox = {
-      // fix: When horizontally scrolling and closing the entire frozen header, the resize area is being removed prematurely.
+      // fix: When scrolling without the entire frozen header horizontally, the resize area would be removed permanently.
       x: x + seriesNumberWidth,
       y: y + height - resizeStyle.size / 2,
       width,
       height: resizeStyle.size,
     };
 
-    const resizeClipAreaBBox = {
-      x: 0,
-      y: 0,
-      width: headerWidth,
-      height: headerHeight,
-    };
+    const resizeClipAreaBBox = this.getResizeClipAreaBBox();
 
     if (
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
@@ -450,6 +454,24 @@ export class RowCell extends HeaderCell {
     return adjustTextAreaHeight;
   }
 
+  protected calculateTextY({
+    textArea,
+    adjustTextAreaHeight,
+  }: {
+    textArea: SimpleBBox;
+    adjustTextAreaHeight: number;
+  }): number {
+    const { scrollY, viewportHeight } = this.headerConfig;
+    const { fontSize } = this.getTextStyle();
+    return getAdjustPosition(
+      textArea.y,
+      adjustTextAreaHeight,
+      scrollY,
+      viewportHeight,
+      fontSize,
+    );
+  }
+
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
     const { scrollY, viewportHeight } = this.headerConfig;
@@ -459,15 +481,7 @@ export class RowCell extends HeaderCell {
       scrollY,
       viewportHeight,
     );
-
-    const { fontSize } = this.getTextStyle();
-    const textY = getAdjustPosition(
-      textArea.y,
-      adjustTextAreaHeight,
-      scrollY,
-      viewportHeight,
-      fontSize,
-    );
+    const textY = this.calculateTextY({ textArea, adjustTextAreaHeight });
     const textX = getTextAndFollowingIconPosition(
       textArea,
       this.getTextStyle(),
