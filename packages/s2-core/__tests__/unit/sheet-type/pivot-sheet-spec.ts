@@ -706,7 +706,7 @@ describe('PivotSheet Tests', () => {
 
     const clearDrillDownDataSpy = jest
       .spyOn(s2.dataSet, 'clearDrillDownData' as any)
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
 
     s2.clearDrillDownData();
 
@@ -718,6 +718,22 @@ describe('PivotSheet Tests', () => {
     expect(
       s2.interaction.hasIntercepts([InterceptType.BRUSH_SELECTION]),
     ).toBeFalsy();
+
+    renderSpy.mockRestore();
+  });
+
+  test(`shouldn't rerender without drill down data`, () => {
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+
+    const clearDrillDownDataSpy = jest
+      .spyOn(s2.dataSet, 'clearDrillDownData' as any)
+      .mockImplementation(() => false);
+
+    s2.clearDrillDownData();
+
+    expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(1);
+    // rerender
+    expect(renderSpy).toHaveBeenCalledTimes(0);
 
     renderSpy.mockRestore();
   });
