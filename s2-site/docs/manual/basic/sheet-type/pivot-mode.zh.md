@@ -107,6 +107,8 @@ s2.render();
 - 分页场景暂不支持。
 `s2Options` 中配置 `frozenFirstRowPivot` 开启首行冻结能力
 
+:::
+
 ```ts
 const s2Options = {
   // 是否开启冻结首行
@@ -120,8 +122,6 @@ const s2Options = {
   },
 }
 ```
-
-效果如图：
 
 #### 平铺模式
 
