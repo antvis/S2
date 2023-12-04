@@ -1,3 +1,17 @@
+# [@antv/s2-v1.53.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0-alpha.2...@antv/s2-v1.53.0-alpha.3) (2023-12-04)
+
+
+### Bug Fixes
+
+* 修复中英文标点符号 ([#2442](https://github.com/antvis/S2/issues/2442)) ([17a2d00](https://github.com/antvis/S2/commit/17a2d00f13ff1db4cc8236176b2a26c5212a2dbd))
+* 修复缺失维度所生成的 query 多了 empty extra value 字段 ([#2444](https://github.com/antvis/S2/issues/2444)) ([3439da8](https://github.com/antvis/S2/commit/3439da88eb8f72d1cf00a6190eda6d4cd2a8c187))
+
+
+### Features
+
+* **perf:** 去除初始化时，多余的 drilldown 渲染链路 ([#2446](https://github.com/antvis/S2/issues/2446)) ([76d6990](https://github.com/antvis/S2/commit/76d6990c9cf7933ecafefc1571572191c163b526))
+* 交叉表支持冻结首行能力 ([#2416](https://github.com/antvis/S2/issues/2416)) ([b81b795](https://github.com/antvis/S2/commit/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412))
+
 # [@antv/s2-v1.53.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0-alpha.1...@antv/s2-v1.53.0-alpha.2) (2023-11-29)
 
 ### Bug Fixes
