@@ -723,7 +723,7 @@ describe('PivotSheet Tests', () => {
   });
 
   test(`shouldn't rerender without drill down data`, () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
 
     const clearDrillDownDataSpy = jest
       .spyOn(s2.dataSet, 'clearDrillDownData' as any)
@@ -734,8 +734,6 @@ describe('PivotSheet Tests', () => {
     expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(1);
     // rerender
     expect(renderSpy).toHaveBeenCalledTimes(0);
-
-    renderSpy.mockRestore();
   });
 
   test('should get extra field text', () => {
