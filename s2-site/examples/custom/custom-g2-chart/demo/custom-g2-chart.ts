@@ -124,6 +124,11 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // 监听数值单元格渲染完成后, 使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
 s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
+  // 普通数值单元格正常展示
+  if (!cell.isChartData()) {
+    return;
+  }
+
   // 获取 G2 渲染到 S2 单元格内所需配置
   const chartOptions = cell.getRenderChartOptions();
 

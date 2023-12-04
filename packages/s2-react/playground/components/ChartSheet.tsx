@@ -32,6 +32,11 @@ const options: SheetComponentOptions = {
 };
 
 const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
+  // 普通数值单元格正常展示
+  if (!cell.isChartData()) {
+    return;
+  }
+
   const chartOptions = cell.getRenderChartOptions();
 
   // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib

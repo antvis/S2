@@ -118,6 +118,11 @@ s2.render();
 
 ```ts
 s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
+  // 如果是普通数值单元格正常展示
+  if (!cell.isChartData()) {
+    return;
+  }
+
   const chartOptions = cell.getRenderChartOptions();
 
   renderToMountedElement(chartOptions, {
@@ -138,6 +143,11 @@ import { renderToMountedElement, stdlib } from '@antv/g2';
 
 function App() {
   const onDataCellRender = (cell) => {
+    // 如果是普通数值单元格正常展示
+    if (!cell.isChartData()) {
+      return;
+    }
+
     const chartOptions = cell.getRenderChartOptions();
 
     renderToMountedElement(chartOptions, {
