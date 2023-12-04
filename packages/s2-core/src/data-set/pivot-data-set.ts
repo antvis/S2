@@ -171,7 +171,7 @@ export class PivotDataSet extends BaseDataSet {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
     if (!idPathMap) {
-      return;
+      return false;
     }
     const drillDownDataCache = store.get(
       'drillDownDataCache',
@@ -225,6 +225,7 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     store.set('drillDownIdPathMap', idPathMap);
+    return true;
   }
 
   /**
