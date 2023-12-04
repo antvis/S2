@@ -89,8 +89,8 @@ export class PivotSheet extends SpreadSheet {
 
   public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
-      this.dataSet.clearDrillDownData(rowNodeId);
-      if (!preventRender) {
+      const cleaned = this.dataSet.clearDrillDownData(rowNodeId);
+      if (cleaned && !preventRender) {
         // 重置当前交互
         this.interaction.reset();
         this.render(false);
