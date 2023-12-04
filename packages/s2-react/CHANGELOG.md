@@ -1,28 +1,25 @@
 # [@antv/s2-react-v1.45.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.3-alpha.1...@antv/s2-react-v1.45.0-alpha.1) (2023-11-29)
 
-
 ### Features
 
 * **perf:** 优化 dataset 数据结构转化性能 ([#2379](https://github.com/antvis/S2/issues/2379)) ([924da53](https://github.com/antvis/S2/commit/924da531cab013211f12fafadb4aa3f402738f2f)), closes [#2353](https://github.com/antvis/S2/issues/2353) [#2355](https://github.com/antvis/S2/issues/2355) [#2360](https://github.com/antvis/S2/issues/2360) [#2355](https://github.com/antvis/S2/issues/2355) [#2362](https://github.com/antvis/S2/issues/2362) [#2363](https://github.com/antvis/S2/issues/2363) [#2255](https://github.com/antvis/S2/issues/2255) [#2357](https://github.com/antvis/S2/issues/2357) [#2255](https://github.com/antvis/S2/issues/2255) [#2359](https://github.com/antvis/S2/issues/2359) [#2364](https://github.com/antvis/S2/issues/2364) [#2370](https://github.com/antvis/S2/issues/2370)
 
 # [@antv/s2-react-v1.44.3-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3-alpha.1) (2023-11-17)
-# [@antv/s2-react-v1.44.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3) (2023-12-01)
 
+# [@antv/s2-react-v1.44.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3) (2023-12-01)
 
 ### Bug Fixes
 
-* **copy:** 修复刷选复制行列头时, 数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
+* **copy:** 修复刷选复制行列头时，数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
 * 修复中英文标点符号 ([#2442](https://github.com/antvis/S2/issues/2442)) ([17a2d00](https://github.com/antvis/S2/commit/17a2d00f13ff1db4cc8236176b2a26c5212a2dbd))
 
 # [@antv/s2-react-v1.44.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.1...@antv/s2-react-v1.44.2) (2023-11-10)
-
 
 ### Bug Fixes
 
 * 修复趋势分析表自定义列头 tooltip 后错误的使用行头的 tooltip ([#2399](https://github.com/antvis/S2/issues/2399)) ([0310c2f](https://github.com/antvis/S2/commit/0310c2f7f6ea054a79f0fc71b972ee1d3dd1c649))
 
 # [@antv/s2-react-v1.44.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.0...@antv/s2-react-v1.44.1) (2023-10-27)
-
 
 ### Bug Fixes
 
@@ -31,7 +28,6 @@
 
 # [@antv/s2-react-v1.44.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.43.0...@antv/s2-react-v1.44.0) (2023-09-22)
 
-
 ### Features
 
 * 对比值无波动时也显示灰色 ([#2351](https://github.com/antvis/S2/issues/2351)) ([12f2d02](https://github.com/antvis/S2/commit/12f2d0268d447ec99a1227ffedd5ed266d93e86b))
@@ -39,11 +35,9 @@
 
 # [@antv/s2-react-v1.43.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.42.1...@antv/s2-react-v1.43.0) (2023-09-09)
 
-
 ### Bug Fixes
 
 * **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
-
 
 ### Features
 

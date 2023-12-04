@@ -1,28 +1,25 @@
 # [@antv/s2-v1.53.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0-alpha.1...@antv/s2-v1.53.0-alpha.2) (2023-11-29)
 
-
 ### Bug Fixes
 
-* 修复维度缺失部分维值时, 行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
-
+* 修复维度缺失部分维值时，行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
 
 ### Features
 
 * **perf:** 优化 dataset 数据结构转化性能 ([#2379](https://github.com/antvis/S2/issues/2379)) ([924da53](https://github.com/antvis/S2/commit/924da531cab013211f12fafadb4aa3f402738f2f)), closes [#2353](https://github.com/antvis/S2/issues/2353) [#2355](https://github.com/antvis/S2/issues/2355) [#2360](https://github.com/antvis/S2/issues/2360) [#2355](https://github.com/antvis/S2/issues/2355) [#2362](https://github.com/antvis/S2/issues/2362) [#2363](https://github.com/antvis/S2/issues/2363) [#2255](https://github.com/antvis/S2/issues/2255) [#2357](https://github.com/antvis/S2/issues/2357) [#2255](https://github.com/antvis/S2/issues/2255) [#2359](https://github.com/antvis/S2/issues/2359) [#2364](https://github.com/antvis/S2/issues/2364) [#2370](https://github.com/antvis/S2/issues/2370)
 
 # [@antv/s2-v1.53.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.53.0-alpha.1) (2023-11-17)
-# [@antv/s2-v1.52.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.52.1) (2023-12-01)
 
+# [@antv/s2-v1.52.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.52.1) (2023-12-01)
 
 ### Bug Fixes
 
-* **copy:** 修复刷选复制行列头时, 数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
-* **interaction:** 修复行列头圈选后滑出可视范围后, 错误的选择了数值单元格 close [#2340](https://github.com/antvis/S2/issues/2340) ([#2411](https://github.com/antvis/S2/issues/2411)) ([3c0884b](https://github.com/antvis/S2/commit/3c0884b4c95efc65279db375327860a3b4335af8))
+* **copy:** 修复刷选复制行列头时，数值单元格未格式化 & 存在省略号时未复制原始值 ([#2410](https://github.com/antvis/S2/issues/2410)) ([708fde4](https://github.com/antvis/S2/commit/708fde479bb48b941445b3adaf1f56cf5cb6b301))
+* **interaction:** 修复行列头圈选后滑出可视范围后，错误的选择了数值单元格 close [#2340](https://github.com/antvis/S2/issues/2340) ([#2411](https://github.com/antvis/S2/issues/2411)) ([3c0884b](https://github.com/antvis/S2/commit/3c0884b4c95efc65279db375327860a3b4335af8))
 * lint error fixed ([c8d7391](https://github.com/antvis/S2/commit/c8d7391845b0cd231e5a28f2cd35947b4a88a40d))
 * test case optimize ([1b32ad3](https://github.com/antvis/S2/commit/1b32ad34bbcda3aed60a814e7c4b8592b4761915))
 * 修复交叉模式下 行序号位置不正确&总计行未添加行序号 ([#2412](https://github.com/antvis/S2/issues/2412)) ([55359af](https://github.com/antvis/S2/commit/55359af64d08492298187c2ef15d0a780440d1fd))
 * 修复隐藏列总计时行总计也被隐藏问题 ([#2417](https://github.com/antvis/S2/issues/2417)) ([3b771c0](https://github.com/antvis/S2/commit/3b771c0df436ef3687f6e20968cf5aa20680e732))
-
 
 ### Features
 
@@ -30,29 +27,26 @@
 
 * 修复中英文标点符号 ([#2442](https://github.com/antvis/S2/issues/2442)) ([17a2d00](https://github.com/antvis/S2/commit/17a2d00f13ff1db4cc8236176b2a26c5212a2dbd))
 * 修复交叉模式下 行序号位置不正确&总计行未添加行序号 ([#2412](https://github.com/antvis/S2/issues/2412)) ([55359af](https://github.com/antvis/S2/commit/55359af64d08492298187c2ef15d0a780440d1fd))
-* 修复维度缺失部分维值时, 行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
+* 修复维度缺失部分维值时，行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
 * 修复缺失维度所生成的 query 多了 empty extra value 字段 ([#2444](https://github.com/antvis/S2/issues/2444)) ([3439da8](https://github.com/antvis/S2/commit/3439da88eb8f72d1cf00a6190eda6d4cd2a8c187))
 * 修复隐藏列总计时行总计也被隐藏问题 ([#2417](https://github.com/antvis/S2/issues/2417)) ([3b771c0](https://github.com/antvis/S2/commit/3b771c0df436ef3687f6e20968cf5aa20680e732))
 
 # [@antv/s2-v1.52.0](https://github.com/antvis/S2/compare/@antv/s2-v1.51.2...@antv/s2-v1.52.0) (2023-11-10)
 
-
 ### Features
 
-* 支持透视表明细表单元格虚线&分割线虚线([#2400](https://github.com/antvis/S2/issues/2400)) ([#2401](https://github.com/antvis/S2/issues/2401)) ([432c0c7](https://github.com/antvis/S2/commit/432c0c766e993b2124f3cc372c0d4776fed690d1))
+* 支持透视表明细表单元格虚线&分割线虚线 ([#2400](https://github.com/antvis/S2/issues/2400)) ([#2401](https://github.com/antvis/S2/issues/2401)) ([432c0c7](https://github.com/antvis/S2/commit/432c0c766e993b2124f3cc372c0d4776fed690d1))
 
 # [@antv/s2-v1.51.2](https://github.com/antvis/S2/compare/@antv/s2-v1.51.1...@antv/s2-v1.51.2) (2023-10-27)
-
 
 ### Bug Fixes
 
 * **interaction:** 修复拖动水平滚动条后单元格选中状态被重置 close [#2376](https://github.com/antvis/S2/issues/2376) ([#2380](https://github.com/antvis/S2/issues/2380)) ([b2e9700](https://github.com/antvis/S2/commit/b2e97008122f5320342fd069a08f6e821a5c9ad6))
 * **layout:** 修复在紧凑模式列头宽度未按文本自适应 close [#2385](https://github.com/antvis/S2/issues/2385) ([#2392](https://github.com/antvis/S2/issues/2392)) ([2edd99c](https://github.com/antvis/S2/commit/2edd99c367116bad661a02893a303311787eb647))
 * 修复分组汇总时，按汇总排序获取排序数据为空 ([#2370](https://github.com/antvis/S2/issues/2370)) ([2443762](https://github.com/antvis/S2/commit/24437622e1b259288bf7f8f3505837088a6e1b9d))
-* 修复树状角头，当有存在icon时，内容与box宽度恰好相等，出现换行 close [#2389](https://github.com/antvis/S2/issues/2389) ([#2390](https://github.com/antvis/S2/issues/2390)) ([19497b3](https://github.com/antvis/S2/commit/19497b34aaa9bd19ca5f410926f3035f1aa76d09))
+* 修复树状角头，当有存在 icon 时，内容与 box 宽度恰好相等，出现换行 close [#2389](https://github.com/antvis/S2/issues/2389) ([#2390](https://github.com/antvis/S2/issues/2390)) ([19497b3](https://github.com/antvis/S2/commit/19497b34aaa9bd19ca5f410926f3035f1aa76d09))
 
 # [@antv/s2-v1.51.1](https://github.com/antvis/S2/compare/@antv/s2-v1.51.0...@antv/s2-v1.51.1) (2023-10-13)
-
 
 ### Bug Fixes
 
@@ -62,7 +56,6 @@
 
 # [@antv/s2-v1.51.0](https://github.com/antvis/S2/compare/@antv/s2-v1.50.0...@antv/s2-v1.51.0) (2023-09-22)
 
-
 ### Features
 
 * 对比值无波动时也显示灰色 ([#2351](https://github.com/antvis/S2/issues/2351)) ([12f2d02](https://github.com/antvis/S2/commit/12f2d0268d447ec99a1227ffedd5ed266d93e86b))
@@ -70,13 +63,11 @@
 
 # [@antv/s2-v1.50.0](https://github.com/antvis/S2/compare/@antv/s2-v1.49.2...@antv/s2-v1.50.0) (2023-09-09)
 
-
 ### Bug Fixes
 
 * delete last method from lodash ([251b845](https://github.com/antvis/S2/commit/251b8457548b2c06358b422464c9f90fab2a3b78))
 * **interaction:** 修复行头滚动刷选范围判断错误 ([8b080af](https://github.com/antvis/S2/commit/8b080afccdd4bebc157e0d569d36b2b04175a522))
 * 修复树状模式下总计节点的指标节点没有被格式化数据 ([#2353](https://github.com/antvis/S2/issues/2353)) ([24b39ff](https://github.com/antvis/S2/commit/24b39ffadeff41fcbbad37c699aba7361b9f6c44))
-
 
 ### Features
 
