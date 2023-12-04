@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.45.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0-alpha.1...@antv/s2-react-v1.45.0-alpha.2) (2023-12-04)
+
+
+### Bug Fixes
+
+* 修复中英文标点符号 ([#2442](https://github.com/antvis/S2/issues/2442)) ([17a2d00](https://github.com/antvis/S2/commit/17a2d00f13ff1db4cc8236176b2a26c5212a2dbd))
+
+
+### Features
+
+* 交叉表支持冻结首行能力 ([#2416](https://github.com/antvis/S2/issues/2416)) ([b81b795](https://github.com/antvis/S2/commit/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412))
+
 # [@antv/s2-react-v1.45.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.3-alpha.1...@antv/s2-react-v1.45.0-alpha.1) (2023-11-29)
 
 ### Features
