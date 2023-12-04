@@ -11,6 +11,7 @@
 * **perf:** 优化 dataset 数据结构转化性能 ([#2379](https://github.com/antvis/S2/issues/2379)) ([924da53](https://github.com/antvis/S2/commit/924da531cab013211f12fafadb4aa3f402738f2f)), closes [#2353](https://github.com/antvis/S2/issues/2353) [#2355](https://github.com/antvis/S2/issues/2355) [#2360](https://github.com/antvis/S2/issues/2360) [#2355](https://github.com/antvis/S2/issues/2355) [#2362](https://github.com/antvis/S2/issues/2362) [#2363](https://github.com/antvis/S2/issues/2363) [#2255](https://github.com/antvis/S2/issues/2255) [#2357](https://github.com/antvis/S2/issues/2357) [#2255](https://github.com/antvis/S2/issues/2255) [#2359](https://github.com/antvis/S2/issues/2359) [#2364](https://github.com/antvis/S2/issues/2364) [#2370](https://github.com/antvis/S2/issues/2370)
 
 # [@antv/s2-v1.53.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.53.0-alpha.1) (2023-11-17)
+# [@antv/s2-v1.52.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.52.1) (2023-12-01)
 
 
 ### Bug Fixes
@@ -26,6 +27,12 @@
 ### Features
 
 * the pivot table supports freezing the first row as a whole ([dd61601](https://github.com/antvis/S2/commit/dd61601b7aab505eafeaa5ad8faf98baea295ed4))
+
+* 修复中英文标点符号 ([#2442](https://github.com/antvis/S2/issues/2442)) ([17a2d00](https://github.com/antvis/S2/commit/17a2d00f13ff1db4cc8236176b2a26c5212a2dbd))
+* 修复交叉模式下 行序号位置不正确&总计行未添加行序号 ([#2412](https://github.com/antvis/S2/issues/2412)) ([55359af](https://github.com/antvis/S2/commit/55359af64d08492298187c2ef15d0a780440d1fd))
+* 修复维度缺失部分维值时, 行维值以及对应的数值展示错误 ([#2436](https://github.com/antvis/S2/issues/2436)) ([1207fa0](https://github.com/antvis/S2/commit/1207fa041d1ab31f68785ff683a90954dda5c05c))
+* 修复缺失维度所生成的 query 多了 empty extra value 字段 ([#2444](https://github.com/antvis/S2/issues/2444)) ([3439da8](https://github.com/antvis/S2/commit/3439da88eb8f72d1cf00a6190eda6d4cd2a8c187))
+* 修复隐藏列总计时行总计也被隐藏问题 ([#2417](https://github.com/antvis/S2/issues/2417)) ([3b771c0](https://github.com/antvis/S2/commit/3b771c0df436ef3687f6e20968cf5aa20680e732))
 
 # [@antv/s2-v1.52.0](https://github.com/antvis/S2/compare/@antv/s2-v1.51.2...@antv/s2-v1.52.0) (2023-11-10)
 

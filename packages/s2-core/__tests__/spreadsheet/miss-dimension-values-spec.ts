@@ -20,10 +20,7 @@ const s2Options: S2Options = {
       },
       reverseLayout: false,
       reverseSubLayout: false,
-      subTotalsDimensions: [
-        '2d7feabd-76a2-4c11-8f24-79764af936b4',
-        '30b4b32d-d69a-4772-b7f9-84cd54cf0cec',
-      ],
+      subTotalsDimensions: ['first', 'second'],
     },
     col: {
       showGrandTotals: false,
@@ -45,133 +42,142 @@ const s2Options: S2Options = {
 const testDataCfg: S2DataConfig = {
   meta: [
     {
-      field: '2d7feabd-76a2-4c11-8f24-79764af936b4',
+      field: 'first',
       name: '一级维度',
     },
     {
-      field: '30b4b32d-d69a-4772-b7f9-84cd54cf0cec',
+      field: 'second',
       name: '二级维度',
     },
     {
-      field: 'c5ce4e54-795a-42b3-9cc8-e8b685da44ee',
+      field: 'third',
+      name: '三级维度',
+    },
+    {
+      field: 'number',
       name: '数值',
     },
   ],
   fields: {
-    rows: [
-      '2d7feabd-76a2-4c11-8f24-79764af936b4',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec',
-    ],
+    rows: ['first', 'second', 'third'],
     columns: [],
-    values: ['c5ce4e54-795a-42b3-9cc8-e8b685da44ee'],
+    values: ['number'],
     valueInCols: true,
   },
   data: [
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '总计',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 1732771,
+      first: '总计',
+      number: 1732771,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '维值-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '维值-2',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 172245,
+      first: '维值-1',
+      second: '维值-2',
+      third: '维度-3',
+      number: 172245,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '维值-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '维值-2',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 12222,
+      first: '维值-1',
+      second: '维值-2',
+      third: '维度-3',
+      number: 12222,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '维值-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '维值-3',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 11111,
+      first: '维值-1',
+      second: '维值-3',
+      third: '维值-3',
+      number: 11111,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '维值-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '维值-3',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 11111,
+      first: '维值-1',
+      second: '维值-3',
+      third: '维度-3',
+      number: 11111,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '维值-1',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 456,
+      first: '维值-1',
+      number: 456,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-2',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 12,
+      first: '测试-1',
+      second: '测试-2',
+      third: '维度-3',
+      number: 12,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-2',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 4444567,
+      first: '测试-1',
+      second: '测试-2',
+      third: '维度-3',
+      number: 4444567,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-3',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 111233,
+      first: '测试-1',
+      second: '测试-3',
+      number: 111233,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-3',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 785222,
+      first: '测试-1',
+      second: '测试-3',
+      number: 785222,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-4',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 6455644,
+      first: '测试-1',
+      second: '测试-4',
+      third: '维度-3',
+      number: 6455644,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-4',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 289898,
+      first: '测试-1',
+      second: '测试-4',
+      number: 289898,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-5',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 2222,
+      first: '测试-1',
+      second: '测试-5',
+      number: 2222,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-5',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 1111,
+      first: '测试-1',
+      second: '测试-5',
+      third: '维度-3',
+      number: 1111,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-1',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 125555,
+      first: '测试-1',
+      number: 125555,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-x',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 409090,
+      first: '测试-6',
+      second: '测试-x',
+      number: 409090,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-x',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 111111,
+      first: '测试-6',
+      second: '测试-x',
+      number: 111111,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-7',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 5555,
+      first: '测试-6',
+      second: '测试-7',
+      number: 5555,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-7',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 67878,
+      first: '测试-6',
+      second: '测试-7',
+      number: 67878,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-8',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 53445.464,
+      first: '测试-6',
+      second: '测试-8',
+      number: 53445.464,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      '30b4b32d-d69a-4772-b7f9-84cd54cf0cec': '测试-8',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 456.464,
+      first: '测试-6',
+      second: '测试-8',
+      number: 456.464,
     },
     {
-      '2d7feabd-76a2-4c11-8f24-79764af936b4': '测试-6',
-      'c5ce4e54-795a-42b3-9cc8-e8b685da44ee': 123.416,
+      first: '测试-6',
+      number: 123.416,
     },
   ],
 };
@@ -186,7 +192,6 @@ describe('Miss Dimension Values Tests', () => {
 
   test('should get correctly empty dimension values', () => {
     const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
-
     expect(emptyDimensionValueNode.value).toEqual(EMPTY_FIELD_VALUE);
     expect(emptyDimensionValueNode.id).toEqual(
       `root[&]总计[&]${EMPTY_FIELD_VALUE}`,
@@ -208,6 +213,18 @@ describe('Miss Dimension Values Tests', () => {
     );
   });
 
+  test('should generate correct query for empty node', () => {
+    const emptyDimensionValueNode1 = s2.facet.layoutResult.rowNodes[0];
+    expect(emptyDimensionValueNode1.query).toEqual({
+      first: '总计',
+    });
+
+    const emptyDimensionValueNode2 = s2.facet.layoutResult.rowNodes[1];
+    expect(emptyDimensionValueNode2.query).toEqual({
+      first: '总计',
+    });
+  });
+
   test('should get correctly dimension data and ignore empty dimension value', () => {
     const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
 
@@ -224,8 +241,8 @@ describe('Miss Dimension Values Tests', () => {
     expect(emptyDimensionDataCell.getMeta().fieldValue).toEqual(1732771);
     expect(data[0][ORIGIN_FIELD]).toMatchInlineSnapshot(`
       Object {
-        "2d7feabd-76a2-4c11-8f24-79764af936b4": "总计",
-        "c5ce4e54-795a-42b3-9cc8-e8b685da44ee": 1732771,
+        "first": "总计",
+        "number": 1732771,
       }
     `);
     expect(dimensionValues).toMatchInlineSnapshot(`
