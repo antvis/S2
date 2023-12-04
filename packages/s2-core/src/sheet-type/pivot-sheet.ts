@@ -1,9 +1,11 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { clone, last } from 'lodash';
-import { DataCell } from '../cell';
+import { BaseCell, DataCell, SeriesNumberCell } from '../cell';
 import {
   EXTRA_FIELD,
   InterceptType,
+  KEY_GROUP_PANEL_FROZEN_ROW,
+  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   getTooltipOperatorSortMenus,
 } from '../common/constant';
@@ -20,6 +22,7 @@ import { PivotDataSet } from '../data-set';
 import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
+import { FrozenGroup } from '../group/frozen-group';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
@@ -226,5 +229,22 @@ export class PivotSheet extends SpreadSheet {
       // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
       forceRender: true,
     });
+  }
+
+  protected initPanelGroupChildren(): void {
+    super.initPanelGroupChildren();
+    const commonParams = {
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      s2: this,
+    };
+    this.frozenRowGroup = new FrozenGroup({
+      KEY_GROUP_PANEL_FROZEN_ROW,
+      ...commonParams,
+    });
+    this.panelGroup.add(this.frozenRowGroup);
+  }
+
+  protected isCellType(cell?: CanvasEvent['target']): boolean {
+    return cell instanceof BaseCell && !(cell instanceof SeriesNumberCell);
   }
 }

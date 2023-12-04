@@ -14,28 +14,144 @@ import {
   size,
   sumBy,
 } from 'lodash';
+import type { Group } from '@antv/g-canvas';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type IconTheme,
   type MultiData,
+  FrozenGroup,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, ViewMeta } from '../common/interface';
+import type {
+  LayoutResult,
+  S2TableSheetOptions,
+  SplitLine,
+  ViewMeta,
+} from '../common/interface';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
-import { BaseFacet } from './base-facet';
+import { getRowsForGrid } from '../utils/grid';
+import { renderLine } from '..';
+import { FrozenFacet } from './frozen-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
+import { getFrozenRowCfgPivot } from './utils';
+import { PivotRowHeader, RowHeader } from './header';
 
-export class PivotFacet extends BaseFacet {
+export class PivotFacet extends FrozenFacet {
+  protected updateFrozenGroupGrid(): void {
+    [FrozenGroup.FROZEN_ROW].forEach((key) => {
+      if (!this.frozenGroupInfo[key].range) {
+        return;
+      }
+      let cols = [];
+      let rows = [];
+      if (key.toLowerCase().includes('row')) {
+        const [rowMin, rowMax] = this.frozenGroupInfo[key].range;
+        cols = this.gridInfo.cols;
+        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+      }
+      this.spreadsheet[`${key}Group`].updateGrid(
+        {
+          cols,
+          rows,
+        },
+        `${key}Group`,
+      );
+    });
+  }
+
+  protected getBizRevisedFrozenOptions(): S2TableSheetOptions {
+    return getFrozenRowCfgPivot(this.cfg, this.layoutResult.rowNodes);
+  }
+
+  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
+    // remove previous splitline group
+    this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
+    if (this.enableFrozenFirstRow()) {
+      // 在分页条件下需要额外处理 Y 轴滚动值
+      const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
+      const splitLineGroup = this.foregroundGroup.addGroup({
+        id: KEY_GROUP_FROZEN_SPLIT_LINE,
+        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+      });
+      const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+      const horizontalBorderStyle = {
+        lineWidth: style?.horizontalBorderWidth,
+        stroke: style?.horizontalBorderColor,
+        opacity: style?.horizontalBorderColorOpacity,
+      };
+      const { height: cornerHeight } = this.cornerBBox;
+
+      const cellRange = this.getCellRange();
+      const y =
+        cornerHeight +
+        this.getTotalHeightForRange(cellRange.start, cellRange.start);
+      const width =
+        this.panelBBox.viewportWidth +
+        this.layoutResult.rowsHierarchy.width +
+        this.getSeriesNumberWidth();
+      renderLine(
+        splitLineGroup as Group,
+        {
+          x1: 0,
+          x2: width,
+          y1: y,
+          y2: y,
+        },
+        {
+          ...horizontalBorderStyle,
+        },
+      );
+
+      if (style.showShadow && relativeScrollY > 0) {
+        splitLineGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y,
+            width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(90),
+          },
+        });
+      }
+    }
+  };
+
+  protected clip(scrollX: number, scrollY: number): void {
+    const { isFrozenRowHeader, frozenRowGroup } = this.spreadsheet;
+    if (!isFrozenRowHeader.call(this.spreadsheet)) {
+      // adapt: close the entire frozen header.
+      // 1. panelScrollGroup clip (default)
+      // 2. frozenRowGroup clip
+      this.panelScrollGroupClip(scrollX, scrollY);
+      if (this.enableFrozenFirstRow()) {
+        const paginationScrollY = this.getPaginationScrollY();
+        frozenRowGroup.setClip({
+          type: 'rect',
+          attrs: {
+            x: 0,
+            y: paginationScrollY,
+            width: this.panelBBox.width + scrollX,
+            height: frozenRowGroup.getBBox().height,
+          },
+        });
+      }
+      return;
+    }
+    super.clip(scrollX, scrollY);
+  }
+
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell.cell;
   }
@@ -880,5 +996,23 @@ export class PivotFacet extends BaseFacet {
         return getIndexRangeWithOffsets(heights, minHeight, maxHeight);
       },
     };
+  }
+
+  protected getRowHeader(): RowHeader {
+    if (!this.rowHeader) {
+      const { viewportHeight, ...otherProps } = this.getRowHeaderCfg();
+      const { frozenRowHeight } = getFrozenRowCfgPivot(
+        this.cfg,
+        this.layoutResult.rowNodes,
+      );
+      return new PivotRowHeader({
+        ...otherProps,
+        viewportHeight: viewportHeight - frozenRowHeight,
+      });
+    }
+  }
+
+  public enableFrozenFirstRow(): boolean {
+    return !!this.getBizRevisedFrozenOptions().frozenRowCount;
   }
 }
