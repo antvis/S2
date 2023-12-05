@@ -132,9 +132,9 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       const selected = jest.fn();
       s2.on(S2Event.GLOBAL_SELECTED, selected);
 
-      const isSelectedCellSpy = jest
+      jest
         .spyOn(s2.interaction, 'isSelectedCell')
-        .mockImplementation(() => false);
+        .mockImplementationOnce(() => false);
 
       s2.emit(event, {
         stopPropagation() {},
@@ -148,8 +148,6 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
       expect(selected).toHaveBeenCalled();
       expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTrue();
-
-      isSelectedCellSpy.mockRestore();
     },
   );
 

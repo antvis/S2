@@ -186,8 +186,12 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
     interaction.reset();
+    this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      interaction.getActiveCells(),
+    );
   }
 
   private isMouseEvent(event: Event): event is MouseEvent {
@@ -299,7 +303,7 @@ export class EventController {
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
 
-      // 仅捕获在canvas之外触发的事件     https://github.com/antvis/S2/issues/1592
+      // 仅捕获在 canvas 之外触发的事件 https://github.com/antvis/S2/issues/1592
       const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
         if (!this.spreadsheet.getCanvasElement()) {
           return false;

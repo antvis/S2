@@ -56,9 +56,15 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
 
       if (interaction.isSelectedCell(cell)) {
-        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail属性来判断是否是双击，双击时不触发选择态reset
+        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail 属性来判断是否是双击，双击时不触发选择态 reset
         if ((event.originalEvent as UIEvent)?.detail === 1) {
           interaction.reset();
+
+          // https://github.com/antvis/S2/issues/2447
+          this.spreadsheet.emit(
+            S2Event.GLOBAL_SELECTED,
+            interaction.getActiveCells(),
+          );
         }
         return;
       }
@@ -87,8 +93,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
             meta,
             spreadsheet,
           );
-          forEach(allRowHeaderCells, (cell: RowCell) => {
-            cell.updateByState(InteractionStateName.SELECTED);
+          forEach(allRowHeaderCells, (rowCell) => {
+            rowCell.updateByState(InteractionStateName.SELECTED);
           });
         }
       }

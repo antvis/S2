@@ -6,6 +6,7 @@ export class PivotRowHeader extends BaseFrozenRowHeader {
   protected createCellInstance(item: Node): RowCell {
     const { spreadsheet, scrollY } = this.headerConfig;
     const frozenRow = this.isFrozenRow(item);
+
     return new FrozenRowCell(
       item,
       spreadsheet,
