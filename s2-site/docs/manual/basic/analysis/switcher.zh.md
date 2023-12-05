@@ -32,18 +32,17 @@ const switcherFields = {
 
 ```js
 import React from "react";
-import ReactDOM from "react-dom";
 import { Switcher } from "@antv/s2-react";
 
 const onSubmit = (result) => {
   console.log("result:", result);
 };
 
-ReactDOM.render(
-  <Switcher {...switcherFields} onSubmit={onSubmit} />,
-  document.getElementById("container")
-);
-
+const App = () => {
+  return (
+    <Switcher {...switcherFields} onSubmit={onSubmit} />
+  )
+}
 ```
 
 <Playground path='react-component/switcher/demo/pure-switcher.tsx' rid='container'></playground>

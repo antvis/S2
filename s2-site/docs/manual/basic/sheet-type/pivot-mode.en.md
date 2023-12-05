@@ -102,11 +102,11 @@ pivotSheet.render();
 Translation: Currently, only the ability to freeze the first row is provided, which is different from freezing rows and columns in a detail table. Due to the complex layout caused by the grouping feature in a pivot table, and to ensure reasonable interaction, the following limitations are in place:
 
 The first row does not have any child nodes (suitable for scenarios where the total is placed at the top or for tree-like structures).
-Pagination scenarios are not currently supported. To enable freezing of the first row, set frozenFirstRowPivot in s2Options configuration.
+Pagination scenarios are not currently supported. To enable freezing of the first row, set frozenFirstRow in s2Options configuration.
 
 ```ts
 const s2Options = {
-  frozenFirstRowPivot: boolean; 
+  frozenFirstRow: boolean;
   totals: {
     row: {
       showGrandTotals: true,

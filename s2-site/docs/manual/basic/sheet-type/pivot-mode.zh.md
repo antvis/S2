@@ -83,7 +83,7 @@ ReactDOM.render(
 
 ​📊 查看 [React 版本透视表示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
 
-### 类方式
+### PivotSheet 类方式
 
 如果不打算依赖 `React`，可以在上面第三步之后直接调用：
 
@@ -97,23 +97,40 @@ s2.render();
 
 ​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。
 
-### 冻结首行 <Badge type="success">@antv/s2@^1.53.0 新增</Badge>
+## 特性
 
-:::info{title=""}
+### 冻结行头
 
-目前仅提供**冻结首行**能力，和[明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93)不同, 透视表由于带有分组的特性, 布局比较复杂, 考虑到交互合理性, 目前有如下限制
-
-- 首行不存在子节点 (适用于总计置于顶部, 树状模式等场景)。
-- 分页场景暂不支持。
-`s2Options` 中配置 `frozenFirstRowPivot` 开启首行冻结能力
-
-:::
+当行头固定时，行头的最大宽度占表格宽度的一半，但宽度超过一半时，行头会有一个独立的可滚动区域。
 
 ```ts
 const s2Options = {
-  // 是否开启冻结首行
-  frozenFirstRowPivot: boolean; 
-  // 平铺模式，需要开启行总计 & 位置置顶
+  frozenRowHeader: true,
+}
+```
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*u_JuQZOR4-cAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview">
+
+### 冻结首行 <Badge type="success">@antv/s2@^1.53.0 新增</Badge>
+
+:::info{title="注意"}
+
+目前仅提供**冻结首行**能力，和 [明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93) 不同，透视表由于带有分组的特性，布局比较复杂，考虑到交互合理性，目前有如下限制：
+
+- 首行不存在子节点（适用于总计置于顶部，只有单个维值，树状模式等场景）。
+- 分页场景暂不支持。
+
+`s2Options` 中配置 `frozenFirstRow` 开启首行冻结能力
+
+:::
+
+#### 平铺模式
+
+```ts
+const s2Options = {
+  frozenFirstRow: true,
+  hierarchyType: 'grid',
+  // 需要开启行总计 & 总计行置于顶部
   totals: {
     row: {
       showGrandTotals: true,
@@ -123,10 +140,19 @@ const s2Options = {
 }
 ```
 
-#### 平铺模式
-
 <Playground path='interaction/advanced/demo/frozen-pivot-grid.ts' rid='container-grid' height='300'></playground>
+
+<br/>
 
 #### 树状模式
 
+```ts
+const s2Options = {
+  frozenFirstRow: true,
+  hierarchyType: 'tree',
+}
+```
+
 <Playground path='interaction/advanced/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
+
+<br/>
