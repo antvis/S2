@@ -1,22 +1,22 @@
 /**
  * pivot mode pivot test.
  */
-import { createPivotSheet } from 'tests/util/helpers';
 import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
+import { createPivotSheet } from 'tests/util/helpers';
 
-import type { PivotSheet, SpreadSheet } from '@antv/s2';
+import type { PivotSheet, S2Options } from '@antv/s2';
 import { FrozenRowCell, SeriesNumberCell } from '@/cell';
-import { getFrozenRowCfgPivot } from '@/facet/utils';
 import {
   FrozenGroup,
   KEY_GROUP_ROW_HEADER_FROZEN,
   KEY_GROUP_ROW_SCROLL,
 } from '@/common';
 import type { FrozenFacet } from '@/facet/frozen-facet';
+import { getFrozenRowCfgPivot } from '@/facet/utils';
 
-const defaultOptions = {
-  frozenFirstRowPivot: true,
+const defaultS2Options: S2Options = {
+  frozenFirstRow: true,
   totals: {
     row: {
       showGrandTotals: true,
@@ -24,6 +24,7 @@ const defaultOptions = {
     },
   },
 };
+
 const enableFrozenFistRowOption = {
   frozenRowCount: 1,
   frozenColCount: 0,
@@ -32,6 +33,7 @@ const enableFrozenFistRowOption = {
   enableFrozenFirstRow: true,
   frozenRowHeight: 30,
 };
+
 const disableFrozenFistRowOption = {
   ...enableFrozenFistRowOption,
   frozenRowCount: 0,
@@ -43,7 +45,7 @@ let s2: PivotSheet;
 
 describe('test getFrozenRowCfgPivot', () => {
   beforeEach(() => {
-    s2 = createPivotSheet(defaultOptions, { useSimpleData: false });
+    s2 = createPivotSheet(defaultS2Options, { useSimpleData: false });
   });
 
   afterEach(() => {
@@ -76,7 +78,7 @@ describe('test getFrozenRowCfgPivot in tree', () => {
   beforeEach(() => {
     s2 = createPivotSheet(
       {
-        ...defaultOptions,
+        ...defaultS2Options,
         hierarchyType: 'tree',
         pagination: {
           pageSize: 0,
@@ -106,7 +108,7 @@ describe('test getFrozenRowCfgPivot in tree', () => {
   test('showSeriesNumber has totals', () => {
     s2.setOptions({
       showSeriesNumber: true,
-      ...defaultOptions,
+      ...defaultS2Options,
     });
     s2.render();
 
@@ -118,7 +120,7 @@ describe('test getFrozenRowCfgPivot in tree', () => {
 
 describe('test cell XYIndexes frozen first row', () => {
   beforeEach(() => {
-    s2 = createPivotSheet(defaultOptions, { useSimpleData: false });
+    s2 = createPivotSheet(defaultS2Options, { useSimpleData: false });
     s2.render();
   });
 
@@ -338,7 +340,7 @@ describe('test frozen group', () => {
   beforeEach(() => {
     s2 = createPivotSheet(
       {
-        ...defaultOptions,
+        ...defaultS2Options,
         showSeriesNumber: true,
       },
       { useSimpleData: false },

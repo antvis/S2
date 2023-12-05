@@ -10,7 +10,7 @@ fetch(
     const s2Options = {
       width: 600,
       height: 300,
-      frozenFirstRowPivot: true,
+      frozenFirstRow: true,
       totals: {
         row: {
           showGrandTotals: true,

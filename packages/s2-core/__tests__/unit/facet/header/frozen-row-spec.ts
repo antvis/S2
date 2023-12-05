@@ -9,12 +9,13 @@ import { SeriesNumberHeader } from '@/facet/header/series-number';
 const s2 = createPivotSheet(
   {
     ...DEFAULT_OPTIONS,
-    frozenFirstRowPivot: true,
+    frozenFirstRow: true,
     totals: { row: { showGrandTotals: true, reverseLayout: true } },
     showSeriesNumber: true,
   },
   { useSimpleData: false },
 );
+
 describe('Frozen Row Header Test', () => {
   test.each(['grid', 'tree'])(
     'frozen row header group api',

@@ -126,7 +126,8 @@ export interface S2TableSheetOptions {
 // Pivot sheet options
 export interface S2PivotSheetOptions {
   // pivot sheet type: frozen head row, default false
-  frozenFirstRowPivot?: boolean;
+  // TODO: 2.0 版本统一在 frozen: { ... } 命名空间下
+  frozenFirstRow?: boolean;
 }
 
 export interface S2Options<
