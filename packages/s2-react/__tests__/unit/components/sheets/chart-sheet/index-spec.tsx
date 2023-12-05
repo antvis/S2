@@ -79,4 +79,27 @@ describe('<ChartSheet/> Tests', () => {
       });
     });
   });
+
+  // TODO: G2 发布新版后修复
+  test.skip('should find canvas container for g2 library', async () => {
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    renderChartSheet(null, {
+      onDataCellRender,
+    });
+
+    await waitFor(() => {
+      expect(errorSpy).not.toHaveBeenCalledWith(
+        `Uncaught (in promise) TypeError: Cannot read property 'createElement' of null`,
+      );
+      expect(errorSpy).not.toHaveBeenCalledWith(
+        `Uncaught (in promise) TypeError: Cannot read property 'defaultView' of null`,
+      );
+      expect(errorSpy).not.toHaveBeenCalledWith(
+        `Uncaught Error: renderToMountedElement can't render chart to unmounted group.`,
+      );
+    });
+  });
 });

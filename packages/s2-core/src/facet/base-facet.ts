@@ -1278,8 +1278,10 @@ export abstract class BaseFacet {
   addDataCell = (cell: DataCell) => {
     this.panelScrollGroup?.appendChild(cell);
 
-    this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
-    this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+    setTimeout(() => {
+      this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
+      this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+    }, 100);
   };
 
   realDataCellRender = (scrollX: number, scrollY: number) => {
