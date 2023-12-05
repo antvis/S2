@@ -64,6 +64,7 @@ import {
   Frame,
   RowHeader,
   SeriesNumberHeader,
+  type RowHeaderConfig,
 } from './header';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
@@ -74,6 +75,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import type { BaseHeader, BaseHeaderConfig } from './header/base';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -1018,7 +1020,7 @@ export abstract class BaseFacet {
     });
   };
 
-  protected clip(scrollX: number, scrollY: number) {
+  protected panelScrollGroupClip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
@@ -1029,6 +1031,10 @@ export abstract class BaseFacet {
         height: this.panelBBox.height,
       },
     });
+  }
+
+  protected clip(scrollX: number, scrollY: number) {
+    this.panelScrollGroupClip(scrollX, scrollY);
   }
 
   /**
@@ -1210,22 +1216,26 @@ export abstract class BaseFacet {
     this.foregroundGroup.add(this.centerFrame);
   }
 
+  protected getRowHeaderCfg(): RowHeaderConfig {
+    const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
+    const seriesNumberWidth = this.getSeriesNumberWidth();
+    return {
+      width: this.cornerBBox.width,
+      height,
+      viewportWidth,
+      viewportHeight,
+      position: { x: 0, y },
+      data: this.layoutResult.rowNodes,
+      hierarchyType: this.cfg.hierarchyType,
+      linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
+      seriesNumberWidth,
+      spreadsheet: this.spreadsheet,
+    };
+  }
+
   protected getRowHeader(): RowHeader {
     if (!this.rowHeader) {
-      const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
-      const seriesNumberWidth = this.getSeriesNumberWidth();
-      return new RowHeader({
-        width: this.cornerBBox.width,
-        height,
-        viewportWidth,
-        viewportHeight,
-        position: { x: 0, y },
-        data: this.layoutResult.rowNodes,
-        hierarchyType: this.cfg.hierarchyType,
-        linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
-        seriesNumberWidth,
-        spreadsheet: this.spreadsheet,
-      });
+      return new RowHeader(this.getRowHeaderCfg());
     }
     return this.rowHeader;
   }
@@ -1265,13 +1275,13 @@ export abstract class BaseFacet {
   }
 
   protected getSeriesNumberHeader(): SeriesNumberHeader {
-    return SeriesNumberHeader.getSeriesNumberHeader(
-      this.panelBBox,
-      this.getSeriesNumberWidth(),
-      this.layoutResult.rowsHierarchy.getNodes(0),
-      this.spreadsheet,
-      this.cornerBBox.width,
-    );
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      viewportBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      spreadsheet: this.spreadsheet,
+      cornerWidth: this.cornerBBox.width,
+    });
   }
 
   protected getCenterFrame(): Frame {

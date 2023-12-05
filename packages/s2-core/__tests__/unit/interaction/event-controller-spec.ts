@@ -506,8 +506,11 @@ describe('Interaction Event Controller Tests', () => {
         maxY: 100,
       } as BBox,
     } as BaseFacet;
+
+    const selected = jest.fn();
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.on(S2Event.GLOBAL_SELECTED, selected);
 
     window.dispatchEvent(
       new MouseEvent('click', {
@@ -516,6 +519,7 @@ describe('Interaction Event Controller Tests', () => {
       } as MouseEventInit),
     );
 
+    expect(selected).toHaveBeenCalledWith([]);
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });
@@ -527,13 +531,17 @@ describe('Interaction Event Controller Tests', () => {
         maxY: 100,
       } as BBox,
     } as BaseFacet;
+
+    const selected = jest.fn();
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.on(S2Event.GLOBAL_SELECTED, selected);
 
     window.dispatchEvent(
       new KeyboardEvent('keydown', { key: InteractionKeyboardKey.ESC }),
     );
 
+    expect(selected).toHaveBeenCalledWith([]);
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });

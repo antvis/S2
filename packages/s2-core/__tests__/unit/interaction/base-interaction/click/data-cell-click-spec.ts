@@ -4,8 +4,7 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
-import type { InteractionCellHighlight } from '@antv/s2';
-import type { S2Options } from '@/common/interface';
+import type { InteractionCellHighlight, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
@@ -49,6 +48,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
+
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
       stateName: InteractionStateName.SELECTED,
@@ -82,7 +82,27 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
+
     expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell]);
+  });
+
+  // https://github.com/antvis/S2/issues/2447
+  test('should emit cell selected event when cell unselected', () => {
+    jest
+      .spyOn(s2.interaction, 'isSelectedCell')
+      .mockImplementationOnce(() => true);
+
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+      originalEvent: {
+        detail: 1,
+      },
+    } as unknown as GEvent);
+
+    expect(selected).toHaveBeenCalledWith([]);
   });
 
   test('should emit link field jump event when link field text click and not show tooltip', () => {

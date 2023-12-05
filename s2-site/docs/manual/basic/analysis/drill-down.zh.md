@@ -3,7 +3,6 @@ title: 维度下钻
 order: 13
 ---
 
-
 S2 提供的「维度下钻」的能力，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/J7bnG8lcf/xiazuan.gif" height="400" alt="preview" />
@@ -88,24 +87,25 @@ const PartDrillDown = {
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const s2Options = {
   hierarchyType: 'tree', // 树形结构
 };
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-    partDrillDown={PartDrillDown}
-  />,
-  document.getElementById('container'),
-);
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+      partDrillDown={PartDrillDown}
+    />
+  )
+}
 ```
 
-<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-down/demo/for-pivot.tsx' rid='container'></playground>
 
 ## 使用场景
 

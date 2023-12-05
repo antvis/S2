@@ -9,11 +9,10 @@ fetch(
 
     const s2Options = {
       width: 600,
-      height: 480,
-      // 冻结行头
-      // frozenRowHeader: true
+      height: 300,
+      hierarchyType: 'tree',
+      frozenFirstRow: true,
     };
-
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();

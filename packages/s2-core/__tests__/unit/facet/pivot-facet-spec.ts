@@ -15,7 +15,13 @@ import { CornerCell, DataCell } from '@/cell';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
-import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
+import {
+  ColHeader,
+  CornerHeader,
+  Frame,
+  PivotRowHeader,
+  RowHeader,
+} from '@/facet/header';
 import type { Fields, ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
 import { areAllFieldsEmpty } from '@/facet/utils';
@@ -249,8 +255,11 @@ describe('Pivot Mode Facet Test', () => {
     test('get header after render', () => {
       const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
 
-      expect(rowHeader instanceof RowHeader).toBeTrue();
-      expect(rowHeader.cfg.children).toHaveLength(10);
+      expect(
+        rowHeader instanceof PivotRowHeader || rowHeader instanceof RowHeader,
+      ).toBeTrue();
+
+      expect(rowHeader.cfg.children[0].getChildren()).toHaveLength(10);
       expect(rowHeader.cfg.visible).toBeTrue();
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
@@ -265,7 +274,6 @@ describe('Pivot Mode Facet Test', () => {
       const { backgroundGroup } = facet;
 
       const rect = get(backgroundGroup, 'cfg.children[0]');
-
       expect(backgroundGroup.cfg.children).toHaveLength(3);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();

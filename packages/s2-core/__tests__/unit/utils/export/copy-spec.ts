@@ -1,10 +1,9 @@
-import type { S2DataConfig } from '@antv/s2';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
+import type { S2DataConfig } from '../../../../src/common';
 import { TableSheet, PivotSheet } from '@/sheet-type';
-
 import {
   CellTypes,
   InteractionStateName,

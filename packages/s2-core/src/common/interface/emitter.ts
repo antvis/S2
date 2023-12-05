@@ -1,7 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import type { ColCell } from '../../cell/col-cell';
-import type { DataCell } from '../../cell/data-cell';
-import type { RowCell } from '../../cell/row-cell';
+import type { ColCell, DataCell, RowCell } from '../../cell';
 import type { S2Event } from '../../common/constant';
 import type {
   CellMeta,
