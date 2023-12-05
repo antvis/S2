@@ -18,7 +18,7 @@
     "@antv/s2": ">=1.0.0"
   },
   "devDependencies": {
-    "@antv/s2": "^1.33.1",
+    "@antv/s2": "1.53.0-beta.1",
     "lodash": "^4.17.21"
   }
 }
