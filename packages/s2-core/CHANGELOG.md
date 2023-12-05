@@ -1,3 +1,17 @@
+# [@antv/s2-v1.53.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.1...@antv/s2-v1.53.0-beta.1) (2023-12-05)
+
+
+### Bug Fixes
+
+* **interaction:** 修复数值单元格取消选中 & 点击空白处取消选中时没触发 GLOBAL_SELECTED 事件 ([#2449](https://github.com/antvis/S2/issues/2449)) ([07f7201](https://github.com/antvis/S2/commit/07f72012a6ec4dd00409f4962b8108f0b4e432fe)), closes [#2447](https://github.com/antvis/S2/issues/2447)
+* set version to beta5 ([7a23b76](https://github.com/antvis/S2/commit/7a23b769e475bb4520837fe062294b92a2715e9f))
+
+
+### Features
+
+* release 1.0.0-beta.5 ([#598](https://github.com/antvis/S2/issues/598)) ([cfb3a74](https://github.com/antvis/S2/commit/cfb3a744a2b5e5413f7ea678f8e3f0dfad9c343e))
+* 交叉表支持冻结首行能力 ([#2416](https://github.com/antvis/S2/issues/2416)) ([b81b795](https://github.com/antvis/S2/commit/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412))
+
 # [@antv/s2-v1.52.1](https://github.com/antvis/S2/compare/@antv/s2-v1.52.0...@antv/s2-v1.52.1) (2023-12-01)
 
 
