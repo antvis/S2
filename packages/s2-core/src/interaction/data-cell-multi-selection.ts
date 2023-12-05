@@ -86,7 +86,7 @@ export class DataCellMultiSelection
       event.stopPropagation();
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
-      const { interaction, options } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
 
       if (this.isMultiSelection && meta) {
         const selectedCells = this.getSelectedCells(cell);
@@ -94,6 +94,10 @@ export class DataCellMultiSelection
         if (isEmpty(selectedCells)) {
           interaction.clearState();
           this.spreadsheet.hideTooltip();
+          this.spreadsheet.emit(
+            S2Event.GLOBAL_SELECTED,
+            interaction.getActiveCells(),
+          );
           return;
         }
 
