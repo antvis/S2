@@ -99,17 +99,29 @@ s2.render();
 
 ## 特性
 
+### 展示形态
+
+默认支持 [平铺模式](/zh/examples/basic/pivot/#grid) 和 [树状模式](/zh/examples/basic/pivot/#tree) 两种展示形态。
+
+### 数据汇总
+
+支持 [小计/总计](/manual/basic/totals) 的透视能力。
+
 ### 冻结行头
 
-当行头固定时，行头的最大宽度占表格宽度的一半，但宽度超过一半时，行头会有一个独立的可滚动区域。
+当行头固定时，行头会有一个独立的可滚动区域，如果关闭冻结行头，则滚动区域为整个表格。
+
+<Playground path='interaction/basic/demo/frozen-row-header.ts' rid='frozen-row-header' height='300'></playground>
+
+<br/>
 
 ```ts
 const s2Options = {
-  frozenRowHeader: true,
+  frozenRowHeader: false, // 默认开启
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*u_JuQZOR4-cAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview">
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview">
 
 ### 冻结首行 <Badge type="success">@antv/s2@^1.53.0 新增</Badge>
 

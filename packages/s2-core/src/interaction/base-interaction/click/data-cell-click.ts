@@ -1,7 +1,6 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
-import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
@@ -87,8 +86,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
             meta,
             spreadsheet,
           );
-          forEach(allRowHeaderCells, (cell: RowCell) => {
-            cell.updateByState(InteractionStateName.SELECTED);
+          forEach(allRowHeaderCells, (rowCell) => {
+            rowCell.updateByState(InteractionStateName.SELECTED);
           });
         }
       }

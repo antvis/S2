@@ -4,13 +4,12 @@
 import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-
-import type { PivotSheet, S2Options } from '@antv/s2';
-import { FrozenRowCell, SeriesNumberCell } from '@/cell';
+import { type PivotSheet, RowCell, SeriesNumberCell } from '../../../src';
 import {
   FrozenGroup,
   KEY_GROUP_ROW_HEADER_FROZEN,
   KEY_GROUP_ROW_SCROLL,
+  type S2Options,
 } from '@/common';
 import type { FrozenFacet } from '@/facet/frozen-facet';
 import { getFrozenRowCfgPivot } from '@/facet/utils';
@@ -371,12 +370,10 @@ describe('test frozen group', () => {
         scrollHeaderGroup as IGroup
       ).getChildren();
       expect(frozenRowGroupChildren).toHaveLength(1);
-      expect(frozenRowGroupChildren[0] instanceof FrozenRowCell).toBe(true);
+      expect(frozenRowGroupChildren[0] instanceof RowCell).toBeTruthy();
       expect(get(frozenRowGroupChildren[0], 'meta.value')).toBe('总计');
       expect(scrollRowHeaderGroupChildren).toHaveLength(10);
-      expect(scrollRowHeaderGroupChildren[0] instanceof FrozenRowCell).toBe(
-        true,
-      );
+      expect(scrollRowHeaderGroupChildren[0] instanceof RowCell).toBeTruthy();
       expect(get(scrollRowHeaderGroupChildren[0], 'meta.value')).toBe('浙江省');
 
       // serial number header
