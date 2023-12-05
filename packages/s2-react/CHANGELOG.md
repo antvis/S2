@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.45.0-beta.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.3...@antv/s2-react-v1.45.0-beta.1) (2023-12-05)
+
+
+### Features
+
+* 交叉表支持冻结首行能力 ([#2416](https://github.com/antvis/S2/issues/2416)) ([b81b795](https://github.com/antvis/S2/commit/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412))
+
 # [@antv/s2-react-v1.44.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3) (2023-12-01)
 
 
