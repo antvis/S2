@@ -1,6 +1,7 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import type {
   BaseCell,
+  BaseRowCell,
   ColCell,
   CornerCell,
   DataCell,
@@ -27,6 +28,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | BaseRowCell
   | MergedCell
   | BaseCell<T>;
 

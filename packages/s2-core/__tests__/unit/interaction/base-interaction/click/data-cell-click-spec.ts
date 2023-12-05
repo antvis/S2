@@ -4,8 +4,7 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
-import type { InteractionCellHighlight } from '@antv/s2';
-import type { S2Options } from '@/common/interface';
+import type { InteractionCellHighlight, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,

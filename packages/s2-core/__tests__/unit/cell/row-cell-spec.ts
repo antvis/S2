@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-import type { RowCell } from '@antv/s2';
 import type { Group } from '@antv/g-canvas';
+import type { RowCell } from '../../../src/cell';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 

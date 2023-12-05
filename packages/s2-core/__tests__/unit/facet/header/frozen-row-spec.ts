@@ -1,8 +1,8 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
+import { RowCell } from '../../../../src/cell/row-cell';
 import { DEFAULT_OPTIONS } from '@/common';
-
-import { FrozenRowCell, SeriesNumberCell } from '@/cell';
+import { SeriesNumberCell } from '@/cell';
 import { PivotRowHeader } from '@/facet/header';
 import { SeriesNumberHeader } from '@/facet/header/series-number';
 
@@ -31,13 +31,13 @@ describe('Frozen Row Header Test', () => {
       expect(rowHeader.frozenHeadGroup.getChildren()).toHaveLength(1);
       const frozenRowCell = rowHeader.frozenHeadGroup.getChildren()[0];
 
-      expect(frozenRowCell instanceof FrozenRowCell).toBeTrue();
+      expect(frozenRowCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
       expect(rowHeader.scrollGroup.getChildren()).toHaveLength(10);
       const scrollCell = rowHeader.scrollGroup.getChildren()[0];
 
-      expect(scrollCell instanceof FrozenRowCell).toBeTrue();
+      expect(scrollCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
       expect(rowHeader.getFrozenFirstRowHeight()).toBe(30);
