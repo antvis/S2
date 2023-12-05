@@ -1,5 +1,5 @@
+import type { RowCell } from '../../../../src/cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import type { BaseRowCell } from '@/cell/base-row-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';
@@ -25,7 +25,7 @@ describe('State Controller Utils Tests', () => {
         id: `root[&]price`,
       };
     },
-  } as unknown as BaseRowCell;
+  } as unknown as RowCell;
 
   let mockInstance: SpreadSheet;
 
