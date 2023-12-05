@@ -3,7 +3,7 @@ import { RowCell } from '../../cell/row-cell';
 import { BaseFrozenRowHeader } from './base-frozen-row';
 
 export class PivotRowHeader extends BaseFrozenRowHeader {
-  protected createCellInstance(node: Node): RowCell {
+  public createCellInstance(node: Node): RowCell {
     const { spreadsheet, scrollY } = this.headerConfig;
     const frozenRow = this.isFrozenRow(node);
 
