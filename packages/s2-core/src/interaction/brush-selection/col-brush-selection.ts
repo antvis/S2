@@ -6,15 +6,12 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import type { OnUpdateCells } from '../../common/interface';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush col cell selection interaction
- */
 export class ColBrushSelection extends BaseBrushSelection {
   public displayedCells: ColCell[] = [];
 
@@ -27,10 +24,12 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseDown() {
-    [S2Event.COL_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
-      this.spreadsheet.on(e, (event: CanvasEvent) => {
-        super.mouseDown(event);
-      });
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().col) {
+        return;
+      }
+
+      super.mouseDown(event);
     });
   }
 
@@ -68,39 +67,43 @@ export class ColBrushSelection extends BaseBrushSelection {
     this.displayedCells = this.spreadsheet.interaction.getAllColHeaderCells();
   }
 
-  protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta();
-    const { x: headerX, y: headerY } = meta;
-    return {
-      ...super.getBrushPoint(event),
-      headerX,
-      headerY,
-    };
+  /**
+   * 用户判断 colCell 是否在当前刷选的范围内
+   * @param meta colCell 位置等属性存储的对象
+   * @returns boolean
+   */
+  protected isInBrushRange(meta: ViewMeta | Node) {
+    const { start, end } = this.getBrushRange();
+    const { scrollX } = this.spreadsheet.facet.getScrollOffset();
+
+    const cornerBBox = this.spreadsheet.facet.cornerBBox;
+    const { x = 0, y = 0, width = 0, height = 0 } = meta;
+
+    return this.rectanglesIntersect(
+      {
+        // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        minX: start.x - cornerBBox.width + scrollX,
+        minY: start.y,
+        maxX: end.x - cornerBBox.width + scrollX,
+        maxY: end.y,
+      },
+      {
+        minX: x,
+        maxX: x + width,
+        minY: y,
+        maxY: y + height,
+      },
+    );
   }
 
-  protected isInBrushRange = (meta: ViewMeta | Node) => {
-    const { start, end } = this.getBrushRange();
-    const { x = 0, y = 0 } = meta;
-
-    return (
-      x >= start.headerX &&
-      x <= end.headerX &&
-      y >= start.headerY &&
-      y <= end.headerY
-    );
-  };
-
-  // 最终刷选的cell
+  // 最终刷选的 cell
   protected updateSelectedCells() {
     const { interaction } = this.spreadsheet;
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
-      },
+      stateName: InteractionStateName.BRUSH_SELECTED,
+      onUpdateCells: this.onUpdateCells,
     });
 
     this.spreadsheet.emit(

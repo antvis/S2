@@ -3,7 +3,7 @@ title: 自定义目录树
 order: 2
 ---
 
-`S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种行头布局方式
+`S2` 默认提供 [平铺模式 (grid)](/examples/basic/pivot#grid) 和 [树状模式 (tree)](/examples/basic/pivot#tree) 两种行头布局方式
 
 如果都不满足的话，可以使用自定义目录树，来定制你的目录结构
 
@@ -13,7 +13,7 @@ const s2Options = {
 };
 ```
 
-<playground path='custom/custom-tree/demo/custom-tree.ts' rid='container' height='400'></playground>
+<Playground path='custom/custom-tree/demo/custom-tree.ts' rid='container' height='400'></playground>
 
 ## 前提
 
@@ -104,4 +104,4 @@ const s2Options = {
 
 ## 自定义树结构说明
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>

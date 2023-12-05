@@ -7,6 +7,8 @@ import {
   getCellWidth,
   getEmptyPlaceholder,
   getContentAreaForMultiData,
+  isZeroOrEmptyValue,
+  isUnchangedValue,
 } from '@/utils/text';
 
 const isHD = window.devicePixelRatio >= 2;
@@ -270,5 +272,72 @@ describe('Text Utils Tests', () => {
         },
       ],
     ]);
+  });
+});
+
+describe('isZeroOrEmptyValue', () => {
+  test('should return true for zero values', () => {
+    expect(isZeroOrEmptyValue('0.00%')).toBe(true);
+    expect(isZeroOrEmptyValue('-0.00%')).toBe(true);
+    expect(isZeroOrEmptyValue('0.0万亿')).toBe(true);
+    expect(isZeroOrEmptyValue('-0.0万亿')).toBe(true);
+    expect(isZeroOrEmptyValue('0.00万')).toBe(true);
+    expect(isZeroOrEmptyValue('-0.00万')).toBe(true);
+    expect(isZeroOrEmptyValue('0')).toBe(true);
+    expect(isZeroOrEmptyValue('-0')).toBe(true);
+    expect(isZeroOrEmptyValue(0)).toBe(true);
+    expect(isZeroOrEmptyValue(-0)).toBe(true);
+  });
+
+  test('should return false for non-zero values', () => {
+    expect(isZeroOrEmptyValue('0.5%')).toBe(false);
+    expect(isZeroOrEmptyValue('-0.5%')).toBe(false);
+    expect(isZeroOrEmptyValue('0.01万亿')).toBe(false);
+    expect(isZeroOrEmptyValue('-0.01万亿')).toBe(false);
+    expect(isZeroOrEmptyValue('1')).toBe(false);
+    expect(isZeroOrEmptyValue('-1')).toBe(false);
+    expect(isZeroOrEmptyValue(0.1)).toBe(false);
+    expect(isZeroOrEmptyValue(-0.1)).toBe(false);
+  });
+
+  test('should return true for non-numeric values', () => {
+    expect(isZeroOrEmptyValue('abc')).toBe(true);
+    expect(isZeroOrEmptyValue('')).toBe(true);
+    expect(isZeroOrEmptyValue(null)).toBe(true);
+    expect(isZeroOrEmptyValue(undefined)).toBe(true);
+  });
+});
+
+describe('isUnchangedValue', () => {
+  test('should return true for zero values', () => {
+    expect(isUnchangedValue(0, 123)).toBeTruthy();
+    expect(isUnchangedValue('0', 'abc')).toBeTruthy();
+  });
+
+  test('should return true for empty values', () => {
+    expect(isUnchangedValue('', 'abc')).toBeTruthy();
+    expect(isUnchangedValue(null, 123)).toBeTruthy();
+    expect(isUnchangedValue(undefined, 123)).toBeTruthy();
+  });
+
+  test('should return true for unchanged values', () => {
+    expect(isUnchangedValue('test', 'test')).toBeTruthy();
+    expect(isUnchangedValue(123, 123)).toBeTruthy();
+  });
+
+  test('should return true for numberless changed values', () => {
+    expect(isUnchangedValue('test', 'abc')).toBeTruthy();
+  });
+
+  test('should return false for numeric changed values', () => {
+    expect(isUnchangedValue(123, 456)).toBeFalsy();
+  });
+
+  test('should return true for negative zero', () => {
+    expect(isUnchangedValue(-0, 123)).toBeTruthy();
+  });
+
+  test('should return false for negative values', () => {
+    expect(isUnchangedValue(-123, 123)).toBeFalsy();
   });
 });

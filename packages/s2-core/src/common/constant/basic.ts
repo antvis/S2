@@ -4,13 +4,14 @@ export const EXTRA_FIELD = '$$extra$$';
 export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
 export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
+export const EMPTY_FIELD_VALUE = '$$empty_field_value$$';
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
 // foregroundGroup 上的 children 层叠顺序
 export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
-export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
-export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
+export const FRONT_GROUND_GROUP_SCROLL_Z_INDEX = 3;
+export const FRONT_GROUND_GROUP_FROZEN_Z_INDEX = 4;
 export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;
 export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 
@@ -45,6 +46,8 @@ export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
+export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
+export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';

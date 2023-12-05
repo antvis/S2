@@ -1,16 +1,4 @@
 import { findIndex } from 'lodash';
-import type { Node } from '../facet/layout/node';
-
-export const getSubTotalNodeWidthOrHeightByLevel = (
-  sampleNodesForAllLevels: Node[],
-  level: number,
-  key: 'width' | 'height',
-) => {
-  return sampleNodesForAllLevels
-    .filter((node: Node) => node.level >= level)
-    .map((value) => value[key])
-    .reduce((sum, current) => sum + current, 0);
-};
 
 /**
  * 根据视窗高度计算需要展示的数据数组下标
@@ -63,7 +51,7 @@ export const getIndexRangeWithOffsets = (
 };
 
 export const getAdjustedRowScrollX = (
-  hRowScrollX: number,
+  rowHeaderScrollX: number,
   cornerBBox: {
     width: number;
     originalWidth: number;
@@ -71,7 +59,7 @@ export const getAdjustedRowScrollX = (
 ): number => {
   const { width, originalWidth } = cornerBBox;
 
-  const scrollX = Math.min(originalWidth - width, hRowScrollX);
+  const scrollX = Math.min(originalWidth - width, rowHeaderScrollX);
 
   if (scrollX < 0) {
     return 0;

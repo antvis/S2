@@ -19,12 +19,17 @@ export interface MappingResult extends ValueRange {
    * @version 1.34.0
    */
   intelligentReverseTextColor?: boolean;
+  /**
+   * @description custom the interval condition's width
+   * @version 1.38.0
+   */
+  fieldValue?: number;
 }
 
 export type MappingFunction = (
   fieldValue: number | string,
   data: Record<string, any>,
-) => MappingResult;
+) => MappingResult | null | undefined;
 
 /**
  * One field can hold a condition

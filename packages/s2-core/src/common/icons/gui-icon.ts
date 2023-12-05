@@ -7,6 +7,8 @@ import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
 
+const SVG_CONTENT_TYPE = 'data:image/svg+xml';
+
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
@@ -30,36 +32,31 @@ export class GuiIcon extends Group {
 
   // 获取 Image 实例，使用缓存，以避免滚动时因重复的 new Image() 耗时导致的闪烁问题
   /* 异步获取 image 实例 */
-  private getImage(
+  public getImage(
     name: string,
     cacheKey: string,
     fill?: string,
   ): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject): void => {
+      let svg = getIcon(name);
+      if (!svg) {
+        return;
+      }
+
       const img = new Image();
-      // 成功
       img.onload = () => {
         ImageCache[cacheKey] = img;
         resolve(img);
       };
-      // 失败
-      img.onerror = (e) => {
-        reject(e);
-      };
-      let svg = getIcon(name);
+      img.onerror = reject;
 
       // 兼容三种情况
       // 1、base 64
       // 2、svg本地文件（兼容老方式，可以改颜色）
       // 3、线上支持的图片地址
-      if (
-        svg &&
-        (svg.includes('data:image/svg+xml') || this.hasSupportSuffix(svg))
-      ) {
-        // 传入 base64 字符串
-        // 或者 online 链接
+      if (svg.includes(SVG_CONTENT_TYPE) || this.isOnlineLink(svg)) {
         img.src = svg;
-      } else if (svg) {
+      } else {
         // 传入 svg 字符串（支持颜色fill）
         if (fill) {
           // 如果有fill，移除原来的 fill
@@ -75,15 +72,18 @@ export class GuiIcon extends Group {
         );
         // 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
         // https://www.chromestatus.com/features/5656049583390720
-        img.src = `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`;
+        img.src = `${SVG_CONTENT_TYPE};utf-8,${encodeURIComponent(svg)}`;
       }
     });
   }
 
-  hasSupportSuffix = (image: string) => {
-    return ['.png', '.jpg', '.gif', '.svg'].some((suffix) =>
-      image?.endsWith(suffix),
-    );
+  /**
+   * 1. https://xxx.svg
+   * 2. http://xxx.svg
+   * 3. //xxx.svg
+   */
+  public isOnlineLink = (src: string) => {
+    return /^(https?:)?(\/\/)/.test(src);
   };
 
   private render() {
@@ -97,8 +97,20 @@ export class GuiIcon extends Group {
       attrs: imageShapeAttrs,
     });
 
+    this.iconImageShape = image;
+    this.setImageAttrs({ name, fill });
+  }
+
+  public setImageAttrs(attrs: Partial<{ name: string; fill: string }>) {
+    let { name, fill } = attrs;
+    const { iconImageShape: image } = this;
+    // 保证 name 和 fill 都有值
+    name = name || image.attrs.name;
+    fill = fill || image.attrs.fill;
+
     const cacheKey = `${name}-${fill}`;
     const img = ImageCache[cacheKey];
+
     if (img) {
       // already in cache
       image.attr('img', img);
@@ -106,14 +118,17 @@ export class GuiIcon extends Group {
     } else {
       this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
+          // 加载完成后，当前 Cell 可能已经销毁了
+          if (this.destroyed) {
+            return;
+          }
           image.attr('img', value);
           this.addShape('image', image);
         })
-        .catch((err: Event) => {
+        .catch((event: Event) => {
           // eslint-disable-next-line no-console
-          console.warn(`GuiIcon ${name} load error`, err);
+          console.error(`GuiIcon ${name} load failed`, event);
         });
     }
-    this.iconImageShape = image;
   }
 }

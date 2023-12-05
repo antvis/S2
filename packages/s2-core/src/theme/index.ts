@@ -30,6 +30,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
+        linkTextFill: basicColors[6],
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -39,6 +40,7 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
+        linkTextFill: basicColors[6],
       },
       cell: {
         // ----------- background color -----------
@@ -53,6 +55,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 8,
@@ -196,6 +200,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -266,6 +272,8 @@ export const getTheme = (
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -360,6 +368,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -439,6 +449,8 @@ export const getTheme = (
       trackColor: 'rgba(0,0,0,0.01)',
       thumbHoverColor: 'rgba(0,0,0,0.25)',
       thumbColor: 'rgba(0,0,0,0.15)',
+      thumbHorizontalMinSize: 32,
+      thumbVerticalMinSize: 32,
       size: isMobile() ? 3 : 6,
       hoverSize: isMobile() ? 4 : 8,
       lineCap: 'round',
@@ -457,6 +469,7 @@ export const getTheme = (
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
       },
+      borderDash: [],
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {

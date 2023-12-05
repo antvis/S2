@@ -15,10 +15,18 @@
     {
       "filename": "time-spend-abstract.tsx",
       "title": {
-        "zh": "想如何度过一天(抽象版)",
+        "zh": "想如何度过一天 (抽象版)",
         "en": "How to spend the day"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/lN8USZvMEV/f6b5e06f-5def-4db8-a9c8-826e347d0fa1.png"
+    },
+    {
+      "filename": "lost-text.tsx",
+      "title": {
+        "zh": "消失的文字 (交互小游戏)",
+        "en": "Lost text"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*3WDCR7PZY6MAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

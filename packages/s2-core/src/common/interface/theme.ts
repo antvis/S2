@@ -97,7 +97,9 @@ export interface TextAlignCfg {
   textBaseline?: TextBaseline;
 }
 
-export interface TextTheme extends TextAlignCfg {
+export interface TextTheme
+  extends TextAlignCfg,
+    Pick<ShapeAttrs, 'fontStyle' | 'fontVariant'> {
   /* 字体 */
   fontFamily?: string;
   /* 字体大小 */
@@ -139,6 +141,8 @@ export interface CellTheme {
   miniBarChartHeight?: number;
   /* @deprecated 已废弃， 请用 miniChartTheme.interval.fill 代替 */
   miniBarChartFillColor?: string;
+  /** 单元格边线虚线 */
+  borderDash?: number[];
 }
 
 export interface IconTheme {
@@ -178,6 +182,10 @@ export interface ScrollBarTheme {
   thumbHoverColor?: string;
   /* 滚动条颜色 */
   thumbColor?: string;
+  /* 滚动条水平最小尺寸 */
+  thumbHorizontalMinSize?: number;
+  /* 滚动条垂直最小尺寸 */
+  thumbVerticalMinSize?: number;
   /* 滚动条尺寸 */
   size?: number;
   /* 滚动条 hover 态尺寸 */
@@ -210,6 +218,8 @@ export interface SplitLine {
     /* 线性变化右侧颜色 */
     right: string;
   };
+  /** 分割线虚线 */
+  borderDash?: number[];
 }
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
@@ -270,7 +280,7 @@ export interface ThemeCfg {
   name?: ThemeName;
 }
 
-/* 趋势分析表子弹图状态颜色 */
+/* 子弹图状态颜色 */
 export interface RangeColors {
   /* 满意 */
   good: string;

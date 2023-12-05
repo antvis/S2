@@ -26,6 +26,7 @@ import {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
+import { getLeafColumnsWithKey } from '../../facet/utils';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './copy';
 import { getCsvString } from './export-worker';
 
@@ -66,9 +67,11 @@ export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
       new ClipboardItem(
         [].concat(data).reduce((prev, copyable: CopyableItem) => {
           const { type, content } = copyable;
+          // eslint-disable-next-line no-control-regex
+          const contentToCopy = content.replace(/\x00/g, '');
           return {
             ...prev,
-            [type]: new Blob([content], { type }),
+            [type]: new Blob([contentToCopy], { type }),
           };
         }, {}),
       ),
@@ -152,13 +155,14 @@ const processValueInDetail = (
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
   const { columns } = sheetInstance.dataCfg?.fields;
+  const leafColumns = getLeafColumnsWithKey(columns || []);
   const res = [];
   for (const [index, record] of data.entries()) {
     let tempRows = [];
     if (!isFormat) {
-      tempRows = columns.map((v: string) => getCsvString(record[v]));
+      tempRows = leafColumns.map((v: string) => getCsvString(record[v]));
     } else {
-      tempRows = columns.map((v: string) => {
+      tempRows = leafColumns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
         return getCsvString(mainFormatter(record[v], record));
       });
@@ -259,9 +263,15 @@ const getPlaceholder = (
  */
 const processColHeaders = (headers: any[][]) => {
   const result = headers.map((header) =>
-    header.map((item) =>
-      isArray(item) ? item : [item, ...new Array(header[0].length - 1)],
-    ),
+    header.map((item) => {
+      if (isArray(item)) {
+        return item;
+      }
+      if (isArray(header[0])) {
+        return [item, ...new Array(header[0].length - 1)];
+      }
+      return item;
+    }),
   );
   return result;
 };

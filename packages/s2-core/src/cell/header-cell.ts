@@ -69,8 +69,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.actionIcons = [];
     this.hasDefaultHiddenIcon = false;
+  }
+
+  public getTreeIcon(): GuiIcon {
+    return this.treeIcon;
   }
 
   protected getInteractiveBorderShapeStyle(border: number) {
@@ -84,19 +89,29 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
+    const { label, isTotalRoot, isGrandTotals } = this.meta;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
     );
 
-    const isTableMode = this.spreadsheet.isTableMode();
     // 如果是 table mode，列头不需要被格式化
+    // 树状模式下，小计是父维度本身，需要被格式化，此时只有总计才不需要被格式化
+    // 平铺模式下，总计/小计 文字单元格，不需要被格式化
+    // 自定义树模式下，没有总计小计概念，isTotals 均为 false, 所以不受影响
+    let shouldFormat = true;
+    if (this.spreadsheet.isTableMode()) {
+      shouldFormat = false;
+    } else if (this.spreadsheet.isHierarchyTreeType()) {
+      shouldFormat = !(isGrandTotals && isTotalRoot);
+    } else {
+      shouldFormat = !isTotalRoot;
+    }
+
     const formattedValue =
-      formatter && !isTableMode
+      shouldFormat && formatter
         ? formatter(label, undefined, this.meta)
         : label;
-
     return {
       formattedValue,
       value: label,
@@ -328,6 +343,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
+
     const selectedNodeIds = map(nodes, 'id');
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
@@ -352,6 +368,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
+    return this.getBackgroundColorByCondition(
+      backgroundColor,
+      backgroundColorOpacity,
+    );
+  }
+
+  protected getBackgroundColorByCondition(
+    backgroundColor: string,
+    backgroundColorOpacity: number,
+  ) {
     let fill = backgroundColor;
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);
@@ -381,7 +407,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells();
+    const cells = interaction?.getCells([
+      CellTypes.CORNER_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.ROW_CELL,
+    ]);
 
     if (!first(cells)) {
       return;
@@ -389,6 +419,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:
+      case InteractionStateName.BRUSH_SELECTED:
         this.handleSelect(cells, stateInfo?.nodes);
         break;
       case InteractionStateName.HOVER_FOCUS:

@@ -9,7 +9,7 @@ import type {
   ShapeCfg,
   SimpleBBox,
 } from '@antv/g-canvas';
-import { forEach, isEmpty, isFunction, set } from 'lodash';
+import { forEach, isArray, isEmpty, isFunction, set } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
 
@@ -51,6 +51,8 @@ export function renderText(
   text: string,
   textStyle: TextTheme,
   extraStyle?: ShapeAttrs,
+  // 因为 text 为 ellipsisText
+  originalText?: string,
 ): IShape {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: IShape) => {
@@ -64,6 +66,7 @@ export function renderText(
       x,
       y,
       text,
+      originalText,
       ...textStyle,
       ...extraStyle,
     },
@@ -85,13 +88,17 @@ export function renderLine(
 }
 
 export function updateShapeAttr<K extends keyof ShapeAttrs>(
-  shape: IShape,
+  shapeGroup: IShape | GuiIcon | Array<IShape | GuiIcon>,
   attribute: K,
   value: ShapeAttrs[K],
 ) {
-  if (shape) {
-    set(shape, `attrs.${attribute}`, value);
+  if (isEmpty(shapeGroup)) {
+    return;
   }
+  const shapes = isArray(shapeGroup) ? shapeGroup : [shapeGroup];
+  shapes.forEach((shape) => {
+    set(shape, `attrs.${attribute}`, value);
+  });
 }
 
 export function updateFillOpacity(shape: IShape, opacity: number) {

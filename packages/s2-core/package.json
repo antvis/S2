@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-  "version": "1.33.1",
+  "version": "1.52.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -9,7 +9,7 @@
   "src": "src/index.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",
@@ -46,9 +46,10 @@
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
     "build:dts": "run-s dts:*",
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
     "sync-event": "node ./scripts/sync-event.mjs",
@@ -83,14 +84,15 @@
     "*.css",
     "dist/*"
   ],
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "200 kB"
+      "import": "{ createComponent }",
+      "limit": "200 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "5 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

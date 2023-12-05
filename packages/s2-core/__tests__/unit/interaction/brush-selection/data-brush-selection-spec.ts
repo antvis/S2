@@ -12,7 +12,6 @@ import {
   S2Event,
   SpreadSheet,
   type ViewMeta,
-  InterceptType,
   ScrollDirection,
   getScrollOffsetForCol,
   FrozenGroup,
@@ -96,7 +95,18 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
+    mockRootInteraction.getSelectedCellHighlight = () => ({
+      rowHeader: false,
+      colHeader: false,
+      currentRow: false,
+      currentCol: false,
+    });
     mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
@@ -132,34 +142,15 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
   });
 
-  test('should register events', () => {
-    expect(brushSelectionInstance.bindEvents).toBeDefined();
-  });
-
-  test('should not render invisible prepare select mask shape after rendered', () => {
-    expect(brushSelectionInstance.prepareSelectMaskShape).not.toBeDefined();
-  });
-
-  test('should init brush selection stage', () => {
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-  });
-
-  test('should render invisible prepare select mask shape after mouse down on the data cell', () => {
-    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-      x: 10,
-      y: 20,
-    });
-    expect(brushSelectionInstance.prepareSelectMaskShape).toBeDefined();
-    expect(
-      brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
-    ).toBeFalsy();
-  });
-
   test('should highlight relevant col&row header cell with selectedCellHighlight option toggled on', () => {
     mockSpreadSheetInstance.setOptions({
       interaction: { selectedCellHighlight: true },
+    });
+    mockRootInteraction.getSelectedCellHighlight = () => ({
+      rowHeader: true,
+      colHeader: true,
+      currentRow: false,
+      currentCol: false,
     });
 
     brushSelectionInstance.getBrushRange = () => {
@@ -197,6 +188,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
   });
+
   test('should get start brush point when mouse down', () => {
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
       x: 10,
@@ -239,60 +231,6 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     ).toHaveBeenCalled();
   });
 
-  // https://github.com/antvis/S2/issues/852
-  test('should clear brush selection state when mouse down and context menu clicked', () => {
-    const globalMouseUp = jest.fn();
-    mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
-
-    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-      x: 10,
-      y: 20,
-    });
-    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-      clientX: 12,
-      clientY: 22,
-    });
-
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.DRAGGED,
-    );
-
-    emitEvent(S2Event.GLOBAL_CONTEXT_MENU, {});
-
-    expect(globalMouseUp).not.toHaveBeenCalled();
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.HOVER,
-      ]),
-    ).toBeFalsy();
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
-      ]),
-    ).toBeFalsy();
-    expect(
-      brushSelectionInstance.hidePrepareSelectMaskShape,
-    ).toHaveReturnedTimes(1);
-  });
-
-  test('should skip brush selection if mouse move less than valid distance', () => {
-    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {});
-
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-    expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
-    expect(brushSelectionInstance.brushRangeCells).toHaveLength(0);
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.HOVER,
-      ]),
-    ).toBeFalsy();
-  });
-
   test('should get brush selection range cells', () => {
     const selectedFn = jest.fn();
     const brushSelectionFn = jest.fn();
@@ -327,7 +265,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     // show prepare brush selection mask
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
-      y: 20,
+      y: 30,
       width: 90,
       height: 180,
     });
@@ -483,13 +421,21 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       1, 8, 1, 8,
     ];
 
-    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
+      8,
+    );
+    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.SCROLL_UP)).toBe(1);
+    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.SCROLL_DOWN)).toBe(
+      7,
+    );
 
-    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
+      8,
+    );
+    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.SCROLL_UP)).toBe(1);
+    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.SCROLL_DOWN)).toBe(
+      7,
+    );
   });
 
   test('should get correct scroll offset for row and col', () => {
@@ -497,14 +443,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(200);
@@ -527,14 +473,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
       getScrollOffsetForCol(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(300);
@@ -548,14 +494,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(320);
@@ -577,14 +523,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.LEADING,
+        ScrollDirection.SCROLL_UP,
         mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
       getScrollOffsetForRow(
         7,
-        ScrollDirection.TRAILING,
+        ScrollDirection.SCROLL_DOWN,
         mockSpreadSheetInstance,
       ),
     ).toBe(420);
@@ -625,5 +571,34 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateXIndex(2)).toBe(2);
     expect(validateXIndex(8)).toBe(null);
     expect(validateXIndex(7)).toBe(7);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      data: false,
+      row: true,
+      col: true,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    mockSpreadSheetInstance.on(
+      S2Event.DATA_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
+
+    // ================== mouse move ==================
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 100,
+      clientY: 200,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

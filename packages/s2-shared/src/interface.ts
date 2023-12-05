@@ -1,29 +1,29 @@
 import type {
-  S2DataConfig,
-  S2Options,
+  CellMeta,
   CellScrollPosition,
-  TargetCellInfo,
-  ResizeParams,
-  Node,
-  SpreadSheet,
-  ThemeCfg,
-  ViewMeta,
-  LayoutResult,
-  SortParams,
-  DataCell,
+  CollapsedRowsType,
   Data,
+  DataCell,
+  DataType,
   GEvent,
   HiddenColumnsInfo,
-  CollapsedRowsType,
-  DataType,
-  ResizeInfo,
-  S2CellType,
-  TooltipOperatorOptions,
-  S2RenderOptions,
-  S2MountContainer,
-  CellMeta,
-  TooltipContentType,
+  LayoutResult,
+  Node,
   Pagination,
+  ResizeInfo,
+  ResizeParams,
+  S2CellType,
+  S2DataConfig,
+  S2MountContainer,
+  S2Options,
+  S2RenderOptions,
+  SortParams,
+  SpreadSheet,
+  TargetCellInfo,
+  ThemeCfg,
+  TooltipContentType,
+  TooltipOperatorOptions,
+  ViewMeta,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -45,10 +45,27 @@ export type SheetType =
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
+type _ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (pageSize: number) => void;
+      onChange?: (current: number) => void;
+    };
+
+type ShowPagination<OverrideShowPagination, Options> =
+  OverrideShowPagination extends true
+    ? Options extends {
+        pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
+      }
+      ? boolean | Pick<Options['pagination'], 'onShowSizeChange' | 'onChange'>
+      : _ShowPagination
+    : _ShowPagination;
+
 export interface BaseSheetComponentProps<
   PartialDrillDown = unknown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
+  OverrideShowPagination = false,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
@@ -61,12 +78,7 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
-  showPagination?:
-    | boolean
-    | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
-      };
+  showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
   header?: Header;
   /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
@@ -109,6 +121,7 @@ export interface BaseSheetComponentProps<
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -204,6 +217,11 @@ export interface BaseSheetComponentProps<
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================
+  onLayoutAfterRealDataCellRender?: (options: {
+    add: [number, number][];
+    remove: [number, number][];
+    spreadsheet: SpreadSheet;
+  }) => void;
   onRowCellBrushSelection?: (event: GEvent) => void;
   onColCellBrushSelection?: (event: GEvent) => void;
 }
@@ -217,8 +235,8 @@ export interface ResizeEffectParams {
 }
 
 // Tooltip 操作项
-export interface TooltipOperatorProps
-  extends Omit<TooltipOperatorOptions, 'onClick'> {
+export interface TooltipOperatorProps<Icon = Element | string, Text = string>
+  extends Omit<TooltipOperatorOptions<Icon, Text>, 'onClick'> {
   onlyMenu: boolean;
   cell: S2CellType;
 }

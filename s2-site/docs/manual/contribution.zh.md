@@ -34,7 +34,7 @@ order: 7
 
 ## Pull Request
 
-> 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考)
+> 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考）
 
 1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`

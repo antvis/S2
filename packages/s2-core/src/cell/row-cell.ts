@@ -1,6 +1,7 @@
 import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { find, get } from 'lodash';
+import { find, get, isEmpty } from 'lodash';
+import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -69,6 +70,15 @@ export class RowCell extends HeaderCell {
     this.update();
   }
 
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getCrossBackgroundColor(this.meta.rowIndex);
+    return this.getBackgroundColorByCondition(
+      backgroundColor,
+      backgroundColorOpacity,
+    );
+  }
+
   /**
    * 绘制hover悬停，刷选的外框
    */
@@ -120,6 +130,7 @@ export class RowCell extends HeaderCell {
     ) {
       return;
     }
+
     return get(this.meta, 'parent.belongsCell.treeIcon.cfg');
   }
 
@@ -223,14 +234,7 @@ export class RowCell extends HeaderCell {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShape();
-  }
-
-  protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.headerConfig;
-    const { linkTextFill } = this.getTextStyle();
-
-    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
+    this.drawLinkField(this.meta);
   }
 
   protected drawRectBorder() {
@@ -300,8 +304,8 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const offsetX = position.x + x - scrollX + seriesNumberWidth;
-    const offsetY = position.y + y - scrollY;
+    const offsetX = position?.x + x - scrollX + seriesNumberWidth;
+    const offsetY = position?.y + y - scrollY;
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - seriesNumberWidth - (x - scrollX)
@@ -421,7 +425,7 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
-  protected getTextArea() {
+  protected getTextArea(): SimpleBBox {
     const content = this.getContentArea();
     const textIndent = this.getTextIndent();
     return {
@@ -431,16 +435,37 @@ export class RowCell extends HeaderCell {
     };
   }
 
+  protected getAdjustTextAreaHeight(
+    textArea: SimpleBBox,
+    scrollY: number,
+    viewportHeight: number,
+  ): number {
+    let adjustTextAreaHeight = textArea.height;
+    if (
+      !this.spreadsheet.facet.vScrollBar &&
+      textArea.y + textArea.height > scrollY + viewportHeight
+    ) {
+      adjustTextAreaHeight = scrollY + viewportHeight - textArea.y;
+    }
+    return adjustTextAreaHeight;
+  }
+
   protected getTextPosition(): Point {
     const textArea = this.getTextArea();
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.headerConfig;
+
+    const adjustTextAreaHeight = this.getAdjustTextAreaHeight(
+      textArea,
+      scrollY,
+      viewportHeight,
+    );
 
     const { fontSize } = this.getTextStyle();
     const textY = getAdjustPosition(
       textArea.y,
-      textArea.height,
+      adjustTextAreaHeight,
       scrollY,
-      height,
+      viewportHeight,
       fontSize,
     );
     const textX = getTextAndFollowingIconPosition(

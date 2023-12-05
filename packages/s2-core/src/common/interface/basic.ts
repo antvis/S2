@@ -12,6 +12,7 @@ import type { BaseHeaderConfig } from '../../facet/header/base';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
+import type { MergedCell } from '../../cell';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
 
@@ -85,19 +86,26 @@ export interface Extra {
   remark: string;
 }
 
+export type Columns = Array<ColumnNode | string>;
+
 export interface Fields {
   // row fields
   rows?: string[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields
-  columns?: string[];
+  columns?: Columns;
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
+}
+
+export interface ColumnNode {
+  key: string;
+  children?: Columns;
 }
 
 export interface TotalsStatus {
@@ -143,6 +151,10 @@ export interface Total {
   label?: string;
   // sub label's display name, default = '小计'
   subLabel?: string;
+  /** 总计分组维度 */
+  totalsGroupDimensions?: string[];
+  /** 小计分组维度 */
+  subTotalsGroupDimensions?: string[];
 }
 
 /**
@@ -288,6 +300,12 @@ export type CellCallback<T extends BaseHeaderConfig> = (
 ) => S2CellType;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
+
+export type MergedCellCallback = (
+  spreadsheet: SpreadSheet,
+  cells: S2CellType[],
+  meta?: ViewMeta,
+) => MergedCell;
 
 export type FrameCallback = (cfg: FrameConfig) => Frame;
 
@@ -453,6 +471,10 @@ export interface LayoutResult {
 }
 
 export interface OffsetConfig {
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
   offsetX?: {
     value: number | undefined;
     animate?: boolean;
@@ -508,3 +530,5 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
+
+export type RowData = Data | DataType;

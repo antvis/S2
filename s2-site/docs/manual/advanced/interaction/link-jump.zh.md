@@ -30,6 +30,8 @@ const s2Options = {
 使用 `S2Event.GLOBAL_LINK_FIELD_JUMP` 监听链接点击
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   ...
@@ -38,9 +40,11 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ## 透视表
 
-支持将行头 `rows` 标记为链接样式，`columns` 和 `values` 无效
+支持将行头 `rows`, （数值 `values` <Badge type="success">@antv/s2@^1.44.0 新增</Badge>) 标记为链接样式，`columns` 暂不支持
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 const s2DataConfig = {
   fields: {
     rows: ['province', 'city'],
@@ -53,7 +57,7 @@ const s2Options = {
   width: 600,
   height: 600,
   interaction: {
-    linkFields: ['province', 'city'],
+    linkFields: ['province', 'city', 'price'],
   }
 };
 
@@ -69,14 +73,15 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/advanced/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
+<Playground path='interaction/advanced/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
 
 ## 明细表
 
 支持将行头 `columns` 标记为链接样式
 
 ```ts
-import { TableSheet } from '@antv/s2';
+import { S2Event } from '@antv/s2';
+
 const s2DataConfig = {
   fields: {
     columns: ['type', 'price', 'province', 'city'],
@@ -103,4 +108,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/advanced/demo/table-link-jump.ts' rid='container2' height='400'></playground>
+<Playground path='interaction/advanced/demo/table-link-jump.ts' rid='container2' height='400'></playground>

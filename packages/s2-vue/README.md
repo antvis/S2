@@ -12,7 +12,7 @@
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/latest.svg" alt="latest version">
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-vue" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/beta.svg" alt="beta version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/next.svg" alt="next version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>

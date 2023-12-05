@@ -1,6 +1,8 @@
-import { each, orderBy, filter, includes, isFunction } from 'lodash';
+import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig } from '../common/interface';
+import type { CellMeta } from '../common';
+import type { RowData } from '../common/interface/basic';
 import type { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from './base-data-set';
 
@@ -62,8 +64,9 @@ export class TableDataSet extends BaseDataSet {
 
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
+      const filteredValuesSet = new Set(filteredValues);
       const defaultFilterFunc = (row: DataType) =>
-        !includes(filteredValues, row[filterKey]);
+        !filteredValuesSet.has(row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
         ...filter(this.getMovableRows(), (row) => {
@@ -147,6 +150,10 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
+  public getTotalDimensionValues(field: string, query?: DataType): string[] {
+    return [];
+  }
+
   public getDimensionValues(field: string, query?: DataType): string[] {
     return [];
   }
@@ -158,7 +165,7 @@ export class TableDataSet extends BaseDataSet {
 
     const rowData = this.displayData[query.rowIndex];
 
-    if (!('col' in query)) {
+    if (!('col' in query) || !isObject(rowData)) {
       return rowData;
     }
     return rowData[query.col];
@@ -166,5 +173,9 @@ export class TableDataSet extends BaseDataSet {
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
     return this.displayData;
+  }
+
+  public getRowData(cell: CellMeta): RowData {
+    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
   }
 }

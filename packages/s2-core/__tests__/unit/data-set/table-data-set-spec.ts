@@ -63,7 +63,7 @@ describe('Table Mode Dataset Test', () => {
     dataSet.setDataCfg(dataCfg);
   });
 
-  afterAll(() => {});
+  afterEach(() => {});
 
   describe('meta config test', () => {
     test.each`
@@ -98,6 +98,10 @@ describe('Table Mode Dataset Test', () => {
 
     test('should get correct meta data', () => {
       expect(dataSet.meta).toEqual(expect.objectContaining([]));
+    });
+
+    test('should get correctly empty dataset result', () => {
+      expect(dataSet.isEmpty()).toBeFalsy();
     });
   });
 

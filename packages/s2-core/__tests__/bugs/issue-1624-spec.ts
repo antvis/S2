@@ -12,6 +12,7 @@ import { PivotSheet } from '@/sheet-type';
 const s2Options: S2Options = {
   width: 800,
   height: 600,
+  hdAdapter: false,
 };
 
 describe('Data Cell Border Tests', () => {
@@ -36,9 +37,11 @@ describe('Data Cell Border Tests', () => {
 
     await sleep(40);
 
-    // @ts-ignore
     const meta = dataCell.getCellArea();
-    const borderBbox = dataCell.getChildByIndex(2).getBBox();
+    // @ts-ignore
+    const borderBbox = dataCell.stateShapes
+      .get('interactiveBorderShape')
+      .getBBox();
 
     expect(meta.x).toEqual(borderBbox.x - borderWidth / 2);
     expect(meta.y).toEqual(borderBbox.y - borderWidth / 2);

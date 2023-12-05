@@ -43,6 +43,7 @@ import type {
   TooltipDetailListItem,
   Tooltip,
   ViewMeta,
+  TooltipSummaryOptionsValue,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -61,6 +62,7 @@ import type {
 } from '../common/interface/tooltip';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -119,13 +121,18 @@ export const getAutoAdjustPosition = ({
   };
 };
 
-export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
+export const getTooltipDefaultOptions = <
+  Icon = Element | string,
+  Text = string,
+>(
+  options?: TooltipOptions<Icon, Text>,
+): TooltipOptions<Icon, Text> => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
     enableFormat: true,
     ...options,
-  } as TooltipOptions;
+  };
 };
 
 export const getMergedQuery = (meta: ViewMeta) => {
@@ -241,7 +248,11 @@ export const getHeadInfo = (
   if (activeData) {
     const colFields = spreadsheet?.dataSet?.fields?.columns;
     const rowFields = spreadsheet?.dataSet?.fields?.rows;
-    colList = getFieldList(spreadsheet, colFields, activeData);
+    colList = getFieldList(
+      spreadsheet,
+      getLeafColumnsWithKey(colFields || []),
+      activeData,
+    );
     rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
 
@@ -443,7 +454,7 @@ export const getSelectedCellsData = (
 };
 
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
-  const { spreadsheet, getShowValue, targetCell, options = {} } = params;
+  const { spreadsheet, targetCell, options = {} } = params;
   const summaries: TooltipSummaryOptions[] = [];
   const summary: TooltipDataItem = {};
   const isTableMode = spreadsheet.isTableMode();
@@ -470,18 +481,20 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const name = getSummaryName(spreadsheet, field, options?.isTotals);
-    let value: number | string = getShowValue?.(selected, VALUE_FIELD);
+    let value: TooltipSummaryOptionsValue = '';
+    let originVal: TooltipSummaryOptionsValue = '';
 
-    if (isTableMode) {
-      value = '';
-    } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
+    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       const { placeholder } = spreadsheet.options;
       const emptyPlaceholder = getEmptyPlaceholder(summary, placeholder);
       // 如果选中的单元格都无数据，则显示"-" 或 options 里配置的占位符
       value = emptyPlaceholder;
+      originVal = emptyPlaceholder;
     } else {
       const currentFormatter = getFieldFormatter(spreadsheet, field);
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
+
+      originVal = dataSum;
       value =
         currentFormatter?.(dataSum, selected) ??
         parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems;
@@ -490,6 +503,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       selectedData: selected,
       name,
       value,
+      originValue: originVal,
     });
   });
 
@@ -516,13 +530,7 @@ export const getDescription = (targetCell: S2CellType): string => {
 };
 
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
-  const {
-    spreadsheet,
-    cellInfos = [],
-    options = {},
-    getShowValue,
-    targetCell,
-  } = params;
+  const { spreadsheet, cellInfos = [], options = {}, targetCell } = params;
 
   let summaries: TooltipSummaryOptions[] = null;
   let headInfo: TooltipHeadInfo = null;
@@ -537,7 +545,6 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       spreadsheet,
       options,
       targetCell,
-      getShowValue,
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover

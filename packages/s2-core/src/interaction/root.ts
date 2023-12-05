@@ -14,6 +14,7 @@ import type {
   BrushSelectionInfo,
   CellMeta,
   CustomInteraction,
+  InteractionCellHighlight,
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
@@ -38,14 +39,14 @@ import {
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
-import { EventController } from './event-controller';
-import { RangeSelection } from './range-selection';
-import { SelectedCellMove } from './selected-cell-move';
-import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { RowBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
 import { RowColumnResize } from './row-column-resize';
+import { SelectedCellMove } from './selected-cell-move';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -143,7 +144,10 @@ export class RootInteraction {
   }
 
   public isSelectedState() {
-    return this.isStateOf(InteractionStateName.SELECTED);
+    return (
+      this.isStateOf(InteractionStateName.SELECTED) ||
+      this.isStateOf(InteractionStateName.BRUSH_SELECTED)
+    );
   }
 
   public isAllSelectedState() {
@@ -167,9 +171,13 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells(): CellMeta[] {
+  public getCells(cellType?: CellTypes[]): CellMeta[] {
     const currentState = this.getState();
-    return currentState?.cells || [];
+    const cells = currentState?.cells || [];
+    if (isNil(cellType)) {
+      return cells;
+    }
+    return cells.filter((cell) => cellType.includes(cell.type));
   }
 
   // 获取 cells 中在可视区域内的实例列表
@@ -513,10 +521,13 @@ export class RootInteraction {
     this.setState(interactionStateInfo);
 
     // 更新单元格
-    if (onUpdateCells) {
-      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
-    } else {
+    const update = () => {
       this.updatePanelGroupAllDataCells();
+    };
+    if (onUpdateCells) {
+      onUpdateCells(this, update);
+    } else {
+      update();
     }
     this.draw();
   }
@@ -559,5 +570,83 @@ export class RootInteraction {
 
   public getHoverTimer() {
     return this.hoverTimer;
+  }
+
+  public getSelectedCellHighlight(): InteractionCellHighlight {
+    const { selectedCellHighlight } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(selectedCellHighlight)) {
+      return {
+        rowHeader: selectedCellHighlight,
+        colHeader: selectedCellHighlight,
+        currentRow: false,
+        currentCol: false,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = selectedCellHighlight ?? {};
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
+  }
+
+  public getHoverAfterScroll(): boolean {
+    return this.spreadsheet.options.interaction.hoverAfterScroll;
+  }
+
+  public getHoverHighlight(): InteractionCellHighlight {
+    const { hoverHighlight } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(hoverHighlight)) {
+      return {
+        rowHeader: hoverHighlight,
+        colHeader: hoverHighlight,
+        currentRow: hoverHighlight,
+        currentCol: hoverHighlight,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = hoverHighlight ?? {};
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
+  }
+
+  public getBrushSelection(): BrushSelection {
+    const { brushSelection } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(brushSelection)) {
+      return {
+        data: brushSelection,
+        row: brushSelection,
+        col: brushSelection,
+      };
+    }
+
+    const { data = false, row = false, col = false } = brushSelection ?? {};
+
+    return {
+      data,
+      row,
+      col,
+    };
   }
 }

@@ -64,7 +64,7 @@ class CustomDataCell extends DataCell {
   }
 }
 
-fetch('../data/time-spend.json')
+fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
   .then((res) => res.json())
   .then((s2DataConfig) => {
     const s2Theme = {

@@ -1,5 +1,5 @@
 {
-  "private": "true",
+  "private": true,
   "name": "@antv/s2-shared",
   "version": "1.0.0",
   "main": "src/index.ts",

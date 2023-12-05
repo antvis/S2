@@ -1,27 +1,34 @@
 import React from 'react';
-import cx from 'classnames';
-import { S2_PREFIX_CLS, type TooltipContentType } from '@antv/s2';
+import cls from 'classnames';
+import { S2_PREFIX_CLS } from '@antv/s2';
 
-interface Props {
-  content: TooltipContentType;
-  style?: any;
+interface ReactElementProps {
+  content: React.ReactNode;
+  style?: React.CSSProperties;
   className?: string;
 }
-export class ReactElement extends React.PureComponent<Props> {
-  render() {
-    const { style = {}, className, content } = this.props;
-    let htmlNode: string;
-    if (typeof content !== 'string') {
-      htmlNode = content?.innerHTML || '';
-    } else {
-      htmlNode = content;
-    }
+
+export const ReactElement: React.FC<ReactElementProps> = (props) => {
+  const { style = {}, className, content } = props;
+  const commonProps: JSX.IntrinsicElements['span'] = {
+    style,
+    className: cls(`${S2_PREFIX_CLS}-react-element`, className),
+  };
+
+  // React 组件
+  if (React.isValidElement(content)) {
     return (
-      <div
-        style={style}
-        className={cx(`${S2_PREFIX_CLS}-react-element`, className)}
-        dangerouslySetInnerHTML={{ __html: htmlNode }}
-      />
+      <span {...commonProps}>
+        <>{content}</>
+      </span>
     );
   }
-}
+
+  // DOM/字符串
+  const htmlNode =
+    typeof content !== 'string' ? (content as Element)?.innerHTML : content;
+
+  return (
+    <span {...commonProps} dangerouslySetInnerHTML={{ __html: htmlNode }} />
+  );
+};

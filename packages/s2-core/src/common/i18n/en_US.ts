@@ -1,7 +1,7 @@
 export const EN_US = {
   小计: 'Total',
   总计: 'Total',
-  总和: 'SUM',
+  总和: '(SUM)',
   项: 'items',
   已选择: 'selected',
   序号: 'Index',
@@ -16,4 +16,5 @@ export const EN_US = {
   升序: 'ASC',
   降序: 'DESC',
   不排序: 'No order',
+  '，': ', ',
 };

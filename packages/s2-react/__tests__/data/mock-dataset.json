@@ -31,6 +31,16 @@
       "field": "sub_type",
       "name": "子类别",
       "description": "子类别说明。。"
+    },
+    {
+      "field": "area",
+      "name": "地区",
+      "description": "地区说明。。"
+    },
+    {
+      "field": "money",
+      "name": "金额",
+      "description": "金额说明。。"
     }
   ],
   "data": [
@@ -70,7 +80,7 @@
       "sub_type": "沙发"
     },
     {
-      "number": 632,
+      "number": 632632632,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "家具",

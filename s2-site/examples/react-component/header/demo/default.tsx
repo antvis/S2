@@ -2,7 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
 import { Button } from 'antd';
-import { SheetComponent } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '@antv/s2-react';
+import { S2DataConfig, SortParams } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -10,7 +15,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       interaction: {
@@ -18,7 +23,7 @@ fetch(
       },
     };
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -29,9 +34,9 @@ fetch(
     };
 
     const SheetHeader = () => {
-      const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
-      const [sortParams, setSortParams] = React.useState([]);
-      const header = {
+      const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(s2DataConfig);
+      const [sortParams, setSortParams] = React.useState<SortParams>([]);
+      const header: SheetComponentsProps['header'] = {
         title: '表头标题',
         description: '表头描述',
         exportCfg: { open: true },
@@ -46,7 +51,7 @@ fetch(
         switcherCfg: { open: true },
         extra: (
           <Button size={'small'} style={{ verticalAlign: 'top' }}>
-            插入内容
+            自定义按钮
           </Button>
         ),
       };

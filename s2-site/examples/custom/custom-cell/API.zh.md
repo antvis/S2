@@ -3,4 +3,4 @@ title: API
 order: 7
 ---
 
-`markdown:docs/common/custom/dataCellCallback.zh.md`
+<embed src="@/docs/common/custom/dataCellCallback.zh.md"></embed>

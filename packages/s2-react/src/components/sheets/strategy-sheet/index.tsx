@@ -1,14 +1,13 @@
-import type { S2CellType } from '@antv/s2';
+import type { S2CellType, S2DataConfig } from '@antv/s2';
 import {
-  type ColHeaderConfig,
-  customMerge,
   Node,
-  type S2DataConfig,
-  type S2Options,
   SpreadSheet,
-  type ViewMeta,
+  customMerge,
+  type ColHeaderConfig,
   type MultiData,
+  type S2Options,
   type TooltipShowOptions,
+  type ViewMeta,
 } from '@antv/s2';
 import { isArray, isEmpty, isFunction, isNil, size } from 'lodash';
 import React from 'react';
@@ -114,7 +113,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           },
           col: {
             content: (cell, tooltipOptions) =>
-              getContent('row')(cell, tooltipOptions) ?? (
+              getContent('col')(cell, tooltipOptions) ?? (
                 <StrategySheetColTooltip cell={cell} />
               ),
           },

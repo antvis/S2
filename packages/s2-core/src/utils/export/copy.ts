@@ -4,25 +4,33 @@ import {
   filter,
   forEach,
   isEmpty,
+  isNil,
   map,
   max,
-  repeat,
+  orderBy,
+  reduce,
   zip,
 } from 'lodash';
+import type { ColCell, HeaderCell, RowCell } from '../../cell';
 import {
-  type CellMeta,
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
+  EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
+  SERIES_NUMBER_FIELD,
   VALUE_FIELD,
+  type CellMeta,
+  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
-import type { ColCell, RowCell } from '../../cell';
+import { flattenDeep } from '../data-set-operate';
+import { getHeaderTotalStatus } from '../dataset/pivot-data-set';
+import { getEmptyPlaceholder } from '../text';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -68,6 +76,23 @@ const getFormat = (colIndex: number, spreadsheet: SpreadSheet) => {
   return (v: string) => v;
 };
 
+/**
+ * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
+ * https://github.com/antvis/S2/issues/1955
+ * @param spreadsheet
+ */
+const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
+  const isHideMeasureColumn =
+    spreadsheet.options?.style?.colCfg?.hideMeasureColumn &&
+    spreadsheet.isValueInCols();
+  // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
+  return isHideMeasureColumn
+    ? {
+        [EXTRA_FIELD]: spreadsheet.dataCfg.fields.values[0],
+      }
+    : {};
+};
+
 const getValueFromMeta = (
   meta: CellMeta,
   displayData: DataType[],
@@ -75,10 +100,13 @@ const getValueFromMeta = (
 ) => {
   if (spreadsheet.isPivotMode()) {
     const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const measureQuery = compatibleHideMeasureColumn(spreadsheet);
+
     const cell = spreadsheet.dataSet.getCellData({
       query: {
         ...rowNode.query,
         ...colNode.query,
+        ...measureQuery,
       },
       rowNode,
       isTotals:
@@ -86,8 +114,9 @@ const getValueFromMeta = (
         rowNode.isTotalMeasure ||
         colNode.isTotals ||
         colNode.isTotalMeasure,
+      totalStatus: getHeaderTotalStatus(rowNode, colNode),
     });
-    return cell[VALUE_FIELD];
+    return cell?.[VALUE_FIELD] ?? '';
   }
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId];
@@ -105,7 +134,7 @@ const format = (
 export const convertString = (v: string) => {
   if (/\n/.test(v)) {
     // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
-    return '"' + v.replace(/\r\n?/g, '\n').replace(/"/g, "'") + '"';
+    return '"' + v.replace(/\r\n?/g, '\n') + '"';
   }
   return v;
 };
@@ -118,13 +147,22 @@ export const convertString = (v: string) => {
  * @param headerId
  * @param startLevel 层级
  */
-const getHeaderList = (headerId: string, startLevel?: number) => {
+const getHeaderMeasureFields = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }
   headerList.shift(); // 去除 root
   return headerList;
+};
+
+const getHeaderMeasureFieldNames = (
+  fields: string[],
+  spreadsheet: SpreadSheet,
+): string[] => {
+  return map(fields, (field) => {
+    return spreadsheet.dataSet.getFieldName(field);
+  });
 };
 
 type MatrixTransformer = (data: string[][]) => CopyableItem;
@@ -140,31 +178,6 @@ export type CopyableItem = {
 };
 
 export type Copyable = CopyableItem | CopyableItem[];
-
-function pickDataFromCopyable(
-  copyable: Copyable,
-  type: CopyMIMEType[],
-): string[];
-function pickDataFromCopyable(copyable: Copyable, type: CopyMIMEType): string;
-function pickDataFromCopyable(
-  copyable: Copyable,
-  type: CopyMIMEType | CopyMIMEType[],
-): string | string[];
-function pickDataFromCopyable(
-  copyable: Copyable,
-  type: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
-): string[] | string {
-  if (Array.isArray(type)) {
-    return ([].concat(copyable) as CopyableItem[])
-      .filter((item) => type.includes(item.type))
-      .map((item) => item.content);
-  }
-  return (
-    ([].concat(copyable) as CopyableItem[])
-      .filter((item) => item?.type === type)
-      .map((item) => item.content)[0] || ''
-  );
-}
 
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
@@ -196,6 +209,49 @@ const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
     )}</tbody></table>`,
   };
 };
+
+const transformers: {
+  [key in CopyMIMEType]: MatrixTransformer;
+} = {
+  [CopyMIMEType.PLAIN]: matrixPlainTextTransformer,
+  [CopyMIMEType.HTML]: matrixHtmlTransformer,
+};
+
+export function registerTransformer(
+  type: CopyMIMEType,
+  transformer: MatrixTransformer,
+) {
+  transformers[type] = transformer;
+}
+
+function getTransformer(type: CopyMIMEType) {
+  return transformers[type];
+}
+
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType[],
+): string[];
+function pickDataFromCopyable(copyable: Copyable, type: CopyMIMEType): string;
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType | CopyMIMEType[],
+): string | string[];
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
+): string[] | string {
+  if (Array.isArray(type)) {
+    return ([].concat(copyable) as CopyableItem[])
+      .filter((item) => type.includes(item.type))
+      .map((item) => item.content);
+  }
+  return (
+    ([].concat(copyable) as CopyableItem[])
+      .filter((item) => item?.type === type)
+      .map((item) => item.content)[0] || ''
+  );
+}
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
 const assembleMatrix = (
@@ -235,7 +291,10 @@ const assembleMatrix = (
     });
   }) as string[][];
 
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+  return [
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
+  ];
 };
 
 export const processCopyData = (
@@ -244,10 +303,18 @@ export const processCopyData = (
   spreadsheet: SpreadSheet,
 ): Copyable => {
   const matrix = cells.map((cols) =>
-    cols.map((item) => convertString(format(item, displayData, spreadsheet))),
+    cols.map((item) => {
+      if (!item) {
+        return '';
+      }
+      return convertString(format(item, displayData, spreadsheet));
+    }),
   );
 
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+  return [
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
+  ];
 };
 
 /**
@@ -306,15 +373,15 @@ const processTableColSelected = (
           formatter: getFormat(node.colIndex, spreadsheet),
         }));
 
-  const dataMatrix = displayData.map((row) => {
+  const matrix = displayData.map((row) => {
     return selectedFields.map(({ field, formatter }) =>
       convertString(formatter(row[field])),
     );
   });
 
   return [
-    matrixPlainTextTransformer(dataMatrix),
-    matrixHtmlTransformer(dataMatrix),
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
   ];
 };
 
@@ -336,8 +403,12 @@ const getDataMatrix = (
           rowNode.isTotalMeasure ||
           colNode.isTotals ||
           colNode.isTotalMeasure,
+        totalStatus: getHeaderTotalStatus(rowNode, colNode),
       });
-      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+      return getFormat(
+        colNode.colIndex,
+        spreadsheet,
+      )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
 };
@@ -347,10 +418,11 @@ const getPivotWithoutHeaderCopyData = (
   leafRows: Node[],
   leafCols: Node[],
 ): Copyable => {
-  const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
+  const matrix = getDataMatrix(leafRows, leafCols, spreadsheet);
+
   return [
-    matrixPlainTextTransformer(dataMatrix),
-    matrixHtmlTransformer(dataMatrix),
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
   ];
 };
 
@@ -359,8 +431,12 @@ const getPivotWithHeaderCopyData = (
   leafRowNodes: Node[],
   leafColNodes: Node[],
 ): Copyable => {
-  const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
-  const colMatrix = zip(...map(leafColNodes, (n) => getHeaderList(n.id)));
+  const rowMatrix = map(leafRowNodes, (node) =>
+    getHeaderMeasureFields(node.id),
+  );
+  const colMatrix = zip(
+    ...map(leafColNodes, (node) => getHeaderMeasureFields(node.id)),
+  );
   const dataMatrix = getDataMatrix(leafRowNodes, leafColNodes, spreadsheet);
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
@@ -383,7 +459,7 @@ const processPivotColSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -416,7 +492,14 @@ const processTableRowSelected = (
   const matrix = displayData
     .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
     .map((entry) => {
+      // 确保顺序和表格中的列顺序一致
+      const idxMap = spreadsheet.getColumnNodes().reduce((prev, curr, idx) => {
+        prev[curr.field] = idx;
+        return prev;
+      }, {});
+
       return Object.keys(entry)
+        .sort((a, b) => idxMap[a] - idxMap[b])
         .map((cName) =>
           spreadsheet.getColumnNodes().find((n) => n.field === cName),
         )
@@ -427,7 +510,11 @@ const processTableRowSelected = (
           ),
         );
     });
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
+
+  return [
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
+  ];
 };
 
 const processPivotRowSelected = (
@@ -436,7 +523,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -545,17 +632,23 @@ const getDataWithHeaderMatrix = (
   const colMatrix = zip(
     ...map(cellMetaMatrix[0], (cellMeta) => {
       const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
-      return getHeaderList(colId);
+      return getHeaderMeasureFieldNames(
+        getHeaderMeasureFields(colId),
+        spreadsheet,
+      );
     }),
   );
 
   const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
     const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
-    return getHeaderList(rowId);
+    return getHeaderMeasureFieldNames(
+      getHeaderMeasureFields(rowId),
+      spreadsheet,
+    );
   });
 
   const dataMatrix = map(cellMetaMatrix, (cellsMeta) => {
-    return map(cellsMeta, (it) => format(it, displayData, spreadsheet));
+    return map(cellsMeta, (meta) => format(meta, displayData, spreadsheet));
   });
 
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
@@ -585,20 +678,40 @@ function getLastLevelCells(
   });
 }
 
+/** 处理有合并单元格的复制（小记总计格）
+ *  维度1 ｜ 维度2  ｜ 维度3
+ *  总计           ｜  维度三
+ *  => 总计  总计  维度三
+ */
+function getTotalCellMatrixId(meta: Node, maxLevel: number) {
+  let nextNode = meta;
+  let lastNode = { level: maxLevel };
+  let cellId = nextNode.label;
+  while (nextNode.level >= 0) {
+    let repeatNumber = lastNode.level - nextNode.level;
+    while (repeatNumber > 0) {
+      cellId = `${nextNode.label}${ID_SEPARATOR}${cellId}`;
+      repeatNumber--;
+    }
+    lastNode = nextNode;
+    nextNode = nextNode.parent;
+  }
+  return cellId;
+}
+
 function getCellMatrix(
-  lastLevelCells: Array<RowCell | ColCell>,
+  lastLevelCells: Array<HeaderCell>,
   maxLevel: number,
   allLevel: Set<number>,
 ) {
-  return map(lastLevelCells, (cell: RowCell | ColCell) => {
+  return map(lastLevelCells, (cell) => {
     const meta = cell.getMeta();
-    const { id, label, isTotals, level } = meta;
-    let cellId = id;
-    // 为总计小计补齐高度
-    if (isTotals && level !== maxLevel) {
-      cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
-    }
-    return getHeaderList(cellId, allLevel.size);
+    const { id, isTotals, spreadsheet } = meta;
+    const cellId = isTotals ? getTotalCellMatrixId(meta, maxLevel) : id;
+
+    // 将指标维度单元格的标签替换为实际文本
+    const headerFields = getHeaderMeasureFields(cellId, allLevel.size);
+    return getHeaderMeasureFieldNames(headerFields, spreadsheet);
   });
 }
 
@@ -613,17 +726,73 @@ function getBrushHeaderCopyable(
 
   // 拼接选中行列头的内容矩阵
   const isCol = interactedCells[0].cellType === CellTypes.COL_CELL;
-  let cellMatrix = getCellMatrix(lastLevelCells, maxLevel, allLevels);
+  let matrix = getCellMatrix(lastLevelCells, maxLevel, allLevels);
 
   // 如果是列头，需要转置
   if (isCol) {
-    cellMatrix = zip(...cellMatrix);
+    matrix = zip(...matrix);
   }
   return [
-    matrixPlainTextTransformer(cellMatrix),
-    matrixHtmlTransformer(cellMatrix),
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
   ];
 }
+
+const tilePivotData = (
+  data,
+  columnOrdered,
+  defaultDataValue,
+): Array<string> => {
+  return map(columnOrdered, (field) => data[field] ?? defaultDataValue);
+};
+
+export const getDataByRowData = (
+  spreadsheet: SpreadSheet,
+  rowData: RowData,
+): Copyable => {
+  const {
+    options: { placeholder },
+    dataCfg: {
+      fields: { rows, columns, values },
+    },
+  } = spreadsheet;
+  const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
+  const column = spreadsheet.getColumnLeafNodes();
+  let matrix: string[][] = [];
+
+  if (spreadsheet.isTableMode()) {
+    const columnWithoutSeriesNumber = filter(
+      column,
+      (node) => node.field !== SERIES_NUMBER_FIELD,
+    );
+    // 按列头顺序复制
+    matrix = map(rowData, (rowDataItem) => {
+      return map(
+        columnWithoutSeriesNumber,
+        (node) => rowDataItem?.[node.field] ?? defaultDataValue,
+      );
+    });
+  } else if (spreadsheet.isPivotMode()) {
+    // 透视表的数据加上行头、列头才有意义，这里会以行头、列头、数据值的顺序将每一个单元格构造成一行
+    const columnOrdered = [...rows, ...columns, ...values];
+    const rowDataFlatten = flattenDeep(rowData);
+    // 去掉小计
+    const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
+      [...rows, ...columns].every((field) => !isNil(data[field as string])),
+    );
+    matrix = reduce(
+      rowDataFlattenWithoutTotal,
+      (ret, data) => {
+        return [...ret, tilePivotData(data, columnOrdered, defaultDataValue)];
+      },
+      [],
+    );
+  }
+  return [
+    getTransformer(CopyMIMEType.PLAIN)(matrix),
+    getTransformer(CopyMIMEType.HTML)(matrix),
+  ];
+};
 
 function getDataCellCopyable(
   spreadsheet: SpreadSheet,
@@ -633,13 +802,8 @@ function getDataCellCopyable(
 
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
   const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
-
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-    // 树状模式透视表之后实现
-    return;
-  }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
@@ -655,8 +819,14 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
+    const { currentRow } = spreadsheet.interaction.getSelectedCellHighlight();
 
-    if (spreadsheet.options.interaction?.copyWithHeader) {
+    if (currentRow) {
+      const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
+        spreadsheet.dataSet.getRowData(cell),
+      );
+      data = getDataByRowData(spreadsheet, rowData);
+    } else if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData,

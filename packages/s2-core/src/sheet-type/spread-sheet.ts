@@ -60,6 +60,7 @@ import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
@@ -68,7 +69,6 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -215,10 +215,12 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initInteraction() {
+    this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
 
   private initTooltip() {
+    this.tooltip?.destroy?.();
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
@@ -301,7 +303,7 @@ export abstract class SpreadSheet extends EE {
 
   public showTooltipWithInfo(
     event: CanvasEvent | MouseEvent,
-    data: TooltipData[],
+    cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
     const { showTooltip, content } = getTooltipOptions(this, event);
@@ -310,15 +312,17 @@ export abstract class SpreadSheet extends EE {
     }
 
     const targetCell = this.getCell(event?.target);
-    const tooltipData = getTooltipData({
-      spreadsheet: this,
-      cellInfos: data,
-      targetCell,
-      options: {
-        enableFormat: true,
-        ...options,
-      },
-    });
+    const tooltipData =
+      options?.data ??
+      getTooltipData({
+        spreadsheet: this,
+        cellInfos,
+        targetCell,
+        options: {
+          enableFormat: true,
+          ...options,
+        },
+      });
 
     this.showTooltip({
       data: tooltipData,
@@ -359,9 +363,14 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
-   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
+   * @param reset 是否使用传入的 dataCfg 重置已保存的 dataCfg
+   *
+   * @example setDataCfg(dataCfg, true) 直接使用传入的 DataCfg，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
+  public setDataCfg<T extends boolean = false>(
+    dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
+    reset?: T,
+  ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
       this.dataCfg = getSafetyDataConfig(dataCfg);
@@ -374,11 +383,17 @@ export abstract class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
+
     if (reset) {
       this.options = getSafetyOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
+
+    if (reset || options.tooltip?.renderTooltip) {
+      this.initTooltip();
+    }
+
     this.registerIcons();
   }
 
@@ -536,20 +551,23 @@ export abstract class SpreadSheet extends EE {
    * but offsetY(vertical scroll don't need animation)
    */
   public updateScrollOffset(offsetConfig: OffsetConfig) {
+    const config: OffsetConfig = {
+      offsetX: {
+        value: undefined,
+        animate: false,
+      },
+      offsetY: {
+        value: undefined,
+        animate: false,
+      },
+      rowHeaderOffsetX: {
+        value: undefined,
+        animate: false,
+      },
+    };
+
     this.facet.updateScrollOffset(
-      customMerge(
-        {
-          offsetX: {
-            value: undefined,
-            animate: false,
-          },
-          offsetY: {
-            value: undefined,
-            animate: false,
-          },
-        },
-        offsetConfig,
-      ) as OffsetConfig,
+      customMerge(config, offsetConfig) as OffsetConfig,
     );
   }
 
@@ -598,12 +616,12 @@ export abstract class SpreadSheet extends EE {
         ? totalConfig.showSubTotals
         : false;
     return {
+      label: i18n('总计'),
+      subLabel: i18n('小计'),
+      totalsGroupDimensions: [],
+      subTotalsGroupDimensions: [],
+      ...totalConfig,
       showSubTotals,
-      showGrandTotals: totalConfig.showGrandTotals,
-      reverseLayout: totalConfig.reverseLayout,
-      reverseSubLayout: totalConfig.reverseSubLayout,
-      label: totalConfig.label || i18n('总计'),
-      subLabel: totalConfig.subLabel || i18n('小计'),
     };
   }
 

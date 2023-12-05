@@ -1,13 +1,15 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
-import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import {
+  CellBorderPosition,
+  type InteractionStateTheme,
+} from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -20,15 +22,20 @@ import type {
   ViewMetaIndexType,
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
-import { includeCell } from '../utils/cell/data-cell';
+import {
+  includeCell,
+  shouldUpdateBySelectedCellsHighlight,
+  updateBySelectedCellsHighlight,
+} from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
-  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import { shouldReverseFontColor } from '../utils/color';
 
 /**
  * DataCell for panelGroup area
@@ -77,6 +84,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
+
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -88,7 +96,9 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includeCell(cells, this)) {
+        if (shouldUpdateBySelectedCellsHighlight(this.spreadsheet)) {
+          updateBySelectedCellsHighlight(cells, this, this.spreadsheet);
+        } else if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (
           this.spreadsheet.options.interaction.selectedCellsSpotlight
@@ -108,14 +118,17 @@ export class DataCell extends BaseCell<ViewMeta> {
       return;
     }
 
-    if (this.spreadsheet.options.interaction.hoverHighlight) {
+    const { currentRow, currentCol } =
+      this.spreadsheet.interaction.getHoverHighlight();
+
+    if (currentRow || currentCol) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.colIndex ||
-        currentRowIndex === currentHoverCell?.rowIndex
+        (currentCol && currentColIndex === currentHoverCell?.colIndex) ||
+        (currentRow && currentRowIndex === currentHoverCell?.rowIndex)
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -124,13 +137,21 @@ export class DataCell extends BaseCell<ViewMeta> {
       }
     }
 
-    if (isEqual(currentHoverCell.id, this.getMeta().id)) {
+    const { id, rowIndex, colIndex } = this.getMeta();
+
+    // fix issue: https://github.com/antvis/S2/issues/1781
+    if (
+      isEqual(currentHoverCell.id, id) &&
+      isEqual(currentHoverCell.rowIndex, rowIndex) &&
+      isEqual(currentHoverCell.colIndex, colIndex)
+    ) {
       this.updateByState(InteractionStateName.HOVER_FOCUS);
     }
   }
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    // 获取当前 interaction 记录的 Cells 元信息列表，不仅仅是数据单元格，也可能是行头或者列头。
     const cells = this.spreadsheet.interaction.getCells();
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
@@ -164,15 +185,22 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
+  // draw text
+  protected drawTextShape() {
+    super.drawTextShape();
+    this.drawLinkField(this.meta);
+  }
+
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
+    this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -189,13 +217,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
-    const isMoreThanThreshold =
-      tinycolor(backgroundColor).getBrightness() <=
-      FONT_COLOR_BRIGHTNESS_THRESHOLD;
-
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
-      isMoreThanThreshold &&
+      shouldReverseFontColor(backgroundColor) &&
       textStyle.fill === DEFAULT_FONT_COLOR &&
       intelligentReverseTextColor
     ) {
@@ -253,6 +277,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -276,16 +308,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const { crossBackgroundColor, backgroundColorOpacity } =
-      this.getStyle().cell;
-
-    let backgroundColor = this.getStyle().cell.backgroundColor;
-
-    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
-      // 隔行颜色的配置
-      // 偶数行展示灰色背景，因为index是从0开始的
-      backgroundColor = crossBackgroundColor;
-    }
+    const backgroundColorByCross = this.getCrossBackgroundColor(
+      this.meta.rowIndex,
+    );
+    let backgroundColor = backgroundColorByCross.backgroundColor;
+    const backgroundColorOpacity =
+      backgroundColorByCross.backgroundColorOpacity;
 
     if (this.shouldHideRowSubtotalData()) {
       return { backgroundColor, backgroundColorOpacity };
@@ -340,6 +368,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           height: height - margin * 2,
         },
         {
+          capture: false,
           visible: false,
         },
       ),
@@ -364,14 +393,26 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-  // dataCell根据state 改变当前样式，
+  // dataCell 根据 state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find(
-      (cell) => get(cell, indexType) === currentIndex,
-    );
+    let isEqualIndex = false;
+    // 明细表模式多级表头计算索引换一种策略
+    if (this.spreadsheet.isTableMode() && nodes.length) {
+      const leafs = nodes[0].hierarchy.getLeaves();
+      isEqualIndex = leafs.some((cell, i) => {
+        if (nodes.some((node) => node === cell)) {
+          return i === currentIndex;
+        }
+        return false;
+      });
+    } else {
+      isEqualIndex = [...nodes, ...cells].some(
+        (cell) => get(cell, indexType) === currentIndex,
+      );
+    }
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {
@@ -415,47 +456,42 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    const rowDataInfo = this.spreadsheet.isTableMode()
+      ? this.spreadsheet.dataSet.getCellData({
+          query: { rowIndex: this.meta.rowIndex },
+        })
+      : this.meta.data;
+    return condition?.mapping(value, rowDataInfo);
   }
 
   public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
-      const stateStyles = get(
+      const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
-      if (stateStyles) {
-        updateShapeAttr(
-          this.conditionIntervalShape,
-          SHAPE_STYLE_MAP.backgroundOpacity,
-          stateStyles.backgroundOpacity,
-        );
+      ) as InteractionStateTheme;
 
-        updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
-          SHAPE_STYLE_MAP.opacity,
-          stateStyles.opacity,
-        );
+      if (interactionStateTheme) {
+        this.toggleConditionIntervalShapeOpacity(interactionStateTheme.opacity);
       }
     }
   }
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+    this.toggleConditionIntervalShapeOpacity(1);
+  }
 
+  private toggleConditionIntervalShapeOpacity(opacity: number) {
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
+      opacity,
     );
 
-    updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
-      SHAPE_STYLE_MAP.opacity,
-      1,
-    );
+    updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 
   protected drawLeftBorder() {

@@ -7,9 +7,11 @@ redirect_from:
 
 表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
-如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/zh/docs/api/components/sheet-component)
+如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/docs/api/components/sheet-component)
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   console.log('rowCellClick', event)
 });
@@ -18,7 +20,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### 行头
 
 | 名称         | 事件名                                | 描述                       |
-| :----------- | :------------------------------------ | :------------------------- |
+| ----------- | ------------------------------------ | ------------------------- |
 | 展开树状结构 | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | 树状结构下，行头单元格展开 |
 | 点击         | `S2Event.ROW_CELL_CLICK`              | 行头单元格点击             |
 | 双击         | `S2Event.ROW_CELL_DOUBLE_CLICK`       | 行头单元格双击             |
@@ -33,7 +35,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### 列头
 
 | 名称     | 事件名                          | 描述               |
-| :------- | :------------------------------ | :----------------- |
+| ------- | ------------------------------ | ----------------- |
 | 点击     | `S2Event.COL_CELL_CLICK`        | 列头单元格点击     |
 | 双击     | `S2Event.COL_CELL_DOUBLE_CLICK` | 列头单元格双击     |
 | 右键     | `S2Event.COL_CELL_CONTEXT_MENU` | 列头单元格右键     |
@@ -41,12 +43,12 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标按下 | `S2Event.COL_CELL_MOUSE_DOWN`   | 列头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
-| 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） |
+| 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 |
 
 ### 数值单元格
 
 | 名称           | 事件名                               | 描述                                    |
-| :------------- | :----------------------------------- | :-------------------------------------- |
+| ------------- | ----------------------------------- | -------------------------------------- |
 | 点击           | `S2Event.DATA_CELL_CLICK`            | 数值单元格点击                          |
 | 双击           | `S2Event.DATA_CELL_DOUBLE_CLICK`     | 数值单元格双击                          |
 | 右键           | `S2Event.DATA_CELL_CONTEXT_MENU`      | 数值单元格右键                          |
@@ -56,11 +58,12 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
 | 趋势 icon 点击 | `S2Event.DATA_CELL_TREND_ICON_CLICK` | 数值单元格 tooltip 里面的趋势 icon 点击 |
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
+| 键盘方向键移动           | `S2Event.DATA_CELL_SELECT_MOVE`  | 数值单元格键盘方向键移动                          |
 
 ### 角头
 
 | 名称     | 事件名                             | 描述               |
-| :------- | :--------------------------------- | :----------------- |
+| ------- | --------------------------------- | ----------------- |
 | 点击     | `S2Event.CORNER_CELL_CLICK`        | 角头单元格点击     |
 | 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 角头单元格双击     |
 | 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 角头单元格右键     |
@@ -72,7 +75,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### 宽高拖拽调整
 
 | 名称                     | 事件名                             | 描述                                        |
-| :----------------------- | :--------------------------------- | :------------------------------------------ |
+| ----------------------- | --------------------------------- | ------------------------------------------ |
 | 单元格调整               | `S2Event.LAYOUT_RESIZE`            | 单元格宽高发生改变                          |
 | 序号列宽度改变            | `S2Event.LAYOUT_RESIZE_SERIES_WIDTH`            | 序号列宽度改变                          |
 | 调整单元格大小时鼠标按下 | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN` | 调整单元格大小鼠标按下，目前仅 行/列 头有效 |
@@ -87,8 +90,9 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### 布局
 
 | 名称                     | 事件名                             | 描述                                        |
-| :----------------------- | :--------------------------------- | :------------------------------------------ |
+| ----------------------- | --------------------------------- | ------------------------------------------ |
 | 表头布局完成                 | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                  |
+| 数值单元格布局完成                | `S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER`  | 当前可视范围数值单元格渲染完成后触发 |
 | 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
 | 分页                 | `S2Event.LAYOUT_PAGINATION`       | 分页事件           |
 | 收起行头                 | `S2Event.LAYOUT_COLLAPSE_ROWS`       |     树状模式下收起行头的事件回调           |
@@ -102,7 +106,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### 全局
 
 | 名称      | 事件名                             | 描述                                         |
-| :-------- | :--------------------------------- | :------------------------------------------- |
+| -------- | --------------------------------- | ------------------------------------------- |
 | 键盘按下  | `S2Event.GLOBAL_KEYBOARD_DOWN`     | 键盘按下                                     |
 | 键盘松开  | `S2Event.GLOBAL_KEYBOARD_UP`       | 键盘松开                                     |
 | 复制      | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                           |

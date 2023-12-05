@@ -1,11 +1,5 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import type {
-  InteractionStateName,
-  CellTypes,
-  InterceptType,
-  ScrollbarPositionType,
-} from '../constant';
-import type {
   BaseCell,
   ColCell,
   CornerCell,
@@ -15,11 +9,17 @@ import type {
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
+import type { RootInteraction } from '../../interaction';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { RootInteraction } from '../../interaction';
-import type { ResizeInteractionOptions } from './resize';
+import type {
+  CellTypes,
+  InteractionStateName,
+  InterceptType,
+  ScrollbarPositionType,
+} from '../constant';
 import type { ViewMeta } from './basic';
+import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -35,6 +35,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }
 
@@ -71,6 +72,13 @@ export type InteractionConstructor = new (
 export interface CustomInteraction {
   key: string;
   interaction: InteractionConstructor;
+}
+
+export interface Rect {
+  maxX: number;
+  minX: number;
+  maxY: number;
+  minY: number;
 }
 
 export interface BrushPoint {
@@ -128,11 +136,11 @@ export interface BrushSelectionInfo {
 
 export interface InteractionOptions {
   // record which row/col field need extra link info
-  linkFields?: string[];
+  linkFields?: string[] | ((meta: Node | ViewMeta) => boolean);
   // focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
+  hoverHighlight?: boolean | InteractionCellHighlight;
   // keep cell hovered after 800ms duration
   hoverFocus?: boolean | HoverFocusOptions;
   // enable Command + C to copy spread data
@@ -162,10 +170,19 @@ export interface InteractionOptions {
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // highlight col and row header for selected cell
-  selectedCellHighlight?: boolean;
+  selectedCellHighlight?: boolean | InteractionCellHighlight;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain';
+  // trigger hover after scroll
+  hoverAfterScroll?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
+}
+
+export interface InteractionCellHighlight {
+  rowHeader?: boolean; // 高亮行头
+  colHeader?: boolean; // 高亮列头
+  currentRow?: boolean; // 高亮选中单元格所在行
+  currentCol?: boolean; // 高亮选中单元格所在列
 }

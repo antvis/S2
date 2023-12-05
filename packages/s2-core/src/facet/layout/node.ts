@@ -1,6 +1,10 @@
 import { head, isEmpty, isEqual, omit } from 'lodash';
 import { ROOT_ID } from '../../common/constant/basic';
-import type { CornerNodeType, S2CellType } from '../../common/interface';
+import type {
+  CornerNodeType,
+  HiddenColumnsInfo,
+  S2CellType,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
@@ -17,6 +21,7 @@ export interface BaseNodeConfig {
   isSubTotals?: boolean;
   isCollapsed?: boolean;
   isGrandTotals?: boolean;
+  isTotalRoot?: boolean;
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
@@ -33,6 +38,7 @@ export interface BaseNodeConfig {
   height?: number;
   padding?: number;
   children?: Node[];
+  hiddenColumnsInfo?: HiddenColumnsInfo | null;
   // 额外的节点信息
   extra?: Record<string, any>;
 }
@@ -43,8 +49,6 @@ export interface BaseNodeConfig {
 export class Node {
   // node represent total measure
   public isTotalMeasure: boolean;
-
-  public config: BaseNodeConfig;
 
   constructor(cfg: BaseNodeConfig) {
     const {
@@ -59,6 +63,7 @@ export class Node {
       isGrandTotals,
       isSubTotals,
       isCollapsed,
+      isTotalRoot,
       hierarchy,
       isPivotMode,
       seriesNumberWidth,
@@ -92,19 +97,7 @@ export class Node {
     this.isLeaf = isLeaf;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
-    this.config = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      colIndex: -1,
-      children: [],
-      padding: 0,
-      id: '',
-      key: '',
-      value: '',
-      label: '',
-    };
+    this.isTotalRoot = isTotalRoot;
     this.extra = extra;
   }
 
@@ -311,6 +304,15 @@ export class Node {
 
   public isSubTotals?: boolean;
 
+  public isTotalRoot?: boolean;
+
+  /**
+   * @deprecated 已废弃, 该属性只记录相邻一级的隐藏信息，将会在未来版本中移除
+   */
+  public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
+
+  public extra?: Record<string, any>;
+
   [key: string]: any;
 
   public static rootNode(): Node {
@@ -332,5 +334,18 @@ export class Node {
       leafChild = head(leafChild.children);
     }
     return leafChild;
+  }
+
+  /**
+   * 获取树状模式下，当前节点以及其所有子节点的高度总和
+   * */
+  public getTotalHeightForTreeHierarchy(): number {
+    if (this.height === 0 || isEmpty(this.children)) {
+      return this.height;
+    }
+    return this.children.reduce(
+      (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
+      this.height,
+    );
   }
 }

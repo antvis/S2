@@ -1,5 +1,3 @@
-import { values } from 'lodash';
-
 export enum InteractionName {
   CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
@@ -20,6 +18,7 @@ export enum InteractionName {
 export enum InteractionStateName {
   ALL_SELECTED = 'allSelected',
   SELECTED = 'selected',
+  BRUSH_SELECTED = 'brushSelected',
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
@@ -53,6 +52,7 @@ export const SHAPE_STYLE_MAP = {
 // 设置属性的时候实际对应改变的shape映射
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
+  textShapes: ['textOpacity'],
   linkFieldShape: ['opacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
   interactiveBorderShape: ['borderColor', 'borderOpacity', 'borderWidth'],
@@ -110,6 +110,11 @@ export enum ScrollbarPositionType {
 }
 
 export enum ScrollDirection {
-  LEADING = 'leading',
-  TRAILING = 'trailing',
+  SCROLL_UP = 'scrollUp',
+  SCROLL_DOWN = 'scrollDown',
+}
+
+export enum ScrollDirectionRowIndexDiff {
+  SCROLL_UP = -1,
+  SCROLL_DOWN = 1,
 }

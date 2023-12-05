@@ -1,14 +1,14 @@
 {
   "private": false,
   "name": "@antv/s2-vue",
-  "version": "1.4.0-beta.1",
+  "version": "1.5.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "description": "use S2 with vue",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",
@@ -45,9 +45,10 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
@@ -75,14 +76,15 @@
     "vue": "^3.2.31",
     "vue-tsc": "^0.34.11"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "650 kB"
+      "import": "{ createComponent }",
+      "limit": "20 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "205 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

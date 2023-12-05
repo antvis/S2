@@ -73,7 +73,7 @@ describe('Row Text Link Tests', () => {
 
   let s2: PivotSheet;
   const linkFieldJump = jest.fn();
-  beforeAll(() => {
+  beforeEach(() => {
     container = getContainer();
     s2 = new PivotSheet(container, s2DataCfg, s2Options);
     s2.render();
@@ -96,6 +96,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'province',
+      cellData: rowNode,
       record: {
         province: '浙江',
         type: '笔',
@@ -124,6 +125,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'city',
+      cellData: rowNode,
       record: {
         province: '浙江',
         city: '义乌1',
@@ -152,6 +154,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'province',
+      cellData: rowNode,
       record: {
         province: '四川',
         type: '笔',

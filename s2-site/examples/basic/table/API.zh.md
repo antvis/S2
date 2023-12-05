@@ -4,8 +4,8 @@ order: 0
 ---
 # S2DataConfig
 
-`markdown:docs/api/general/S2DataConfig.en.md`
+<embed src="@/docs/api/general/S2DataConfig.en.md"></embed>
 
 # S2Options
 
-`markdown:docs/api/general/S2Options.en.md`
+<embed src="@/docs/api/general/S2Options.en.md"></embed>

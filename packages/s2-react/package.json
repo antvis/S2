@@ -1,14 +1,14 @@
 {
   "private": false,
   "name": "@antv/s2-react",
-  "version": "1.31.0",
+  "version": "1.44.3",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "description": "use S2 with react",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",
@@ -44,10 +44,11 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
     "watch": "rimraf esm && yarn build:esm -w",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
@@ -85,14 +86,15 @@
     "react-dom": "^17.0.2",
     "vite-plugin-svgr": "^2.1.0"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "650 kB"
+      "import": "{ createComponent }",
+      "limit": "70 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "205 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

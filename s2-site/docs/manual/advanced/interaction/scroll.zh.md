@@ -13,7 +13,7 @@ S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域�
 
 #### 自定义滚动速度
 
-可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看具体例子](/zh/examples/interaction/advanced#scroll-speed-ratio)
+可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看具体例子](/examples/interaction/advanced#scroll-speed-ratio)
 
 ```ts
 const s2Options = {
@@ -34,7 +34,7 @@ const s2Options = {
 
 对于自身和父容器都存在滚动条时，浏览器默认的滚动行为是：非边界不触发父容器滚动，到达边界后，触发父容器滚动，同时还可以配置 [overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) 改变默认行为。
 
-S2 是虚拟滚动，但是也**模拟**了浏览器的滚动行为，可配置 `overscrollBehavior` 控制非边界滚动行为。[查看例子](/zh/examples/interaction/advanced#overscroll-behavior)
+S2 是虚拟滚动，但是也**模拟**了浏览器的滚动行为，可配置 `overscrollBehavior` 控制非边界滚动行为。[查看例子](/examples/interaction/advanced#overscroll-behavior)
 
 ```ts
 const s2Options = {
@@ -76,11 +76,13 @@ const s2Options = {
 - `S2Event.GLOBAL_SCROLL`: 单元格滚动，数值/行头单元格滚动时都会触发
 - `S2Event.ROW_CELL_SCROLL`: 行头单元格滚动
 
-同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/zh/docs/api/components/sheet-component)
+同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/docs/api/components/sheet-component)
 
 需要注意的是：行头单元格只会在**固定行头时**才会显示滚动条，且只会有**水平滚动条**, 所以拿到的 `scrollY` 永远都是 `0`
 
 ```ts
+import { S2Event } from '@antv/s2';
+
 s2.on(S2Event.GLOBAL_SCROLL, (position) => {
   console.log('表格滚动', position) // { scrollX: 0, scrollY: 100 }
 })
@@ -94,5 +96,5 @@ s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
 
 参考以下例子：
 
-- [滚动至指定单元格](/zh/examples/interaction/advanced/#scroll-to-cell)
-- [循环滚动](/zh/examples/interaction/advanced#scroll-loop)
+- [滚动至指定单元格](/examples/interaction/advanced/#scroll-to-cell)
+- [循环滚动](/examples/interaction/advanced#scroll-loop)

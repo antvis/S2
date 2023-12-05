@@ -5,7 +5,7 @@ import {
   type LooseObject,
   Shape,
 } from '@antv/g-canvas';
-import { each, get, isEmpty, isNil } from 'lodash';
+import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
   CellTypes,
@@ -18,7 +18,7 @@ import {
 import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
-import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
+import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -50,6 +50,8 @@ export class EventController {
   public domEventListeners: EventListener[] = [];
 
   public isCanvasEffect = false;
+
+  public canvasMousemoveEvent: CanvasEvent;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -188,8 +190,13 @@ export class EventController {
     interaction.reset();
   }
 
+  private isMouseEvent(event: Event): event is MouseEvent {
+    // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
+    return hasIn(event, 'clientX') && hasIn(event, 'clientY');
+  }
+
   private isMouseOnTheCanvasContainer(event: Event) {
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       const canvas = this.spreadsheet.getCanvasElement();
       if (!canvas) {
         return false;
@@ -200,40 +207,52 @@ export class EventController {
       // 比如实际 400 * 300 => hd (800 * 600)
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
       const { width, height } = this.getContainerRect();
+
       return (
         canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
         event.clientY <= y + height
       );
     }
+
     return false;
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
-    const { width, height } = this.spreadsheet.options;
+    const { facet, options } = this.spreadsheet;
+    const scrollBar = facet.hRowScrollBar || facet.hScrollBar;
+    const { maxX, maxY } = facet?.panelBBox || {};
+    const { width, height } = options;
+
+    /**
+     * https://github.com/antvis/S2/issues/2376
+     * 横向的滚动条在表格外 (Canvas 内), 点击滚动条(含滑道区域) 不应该重置交互
+     */
+    const trackHeight = scrollBar?.theme?.size || 0;
+
     return {
       width: Math.min(width, maxX),
-      height: Math.min(height, maxY),
+      height: Math.min(height, maxY + trackHeight),
     };
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
+    const { tooltip } = this.spreadsheet;
+    if (!tooltip?.visible) {
       return false;
     }
 
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
-    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+    if (event.target instanceof Node) {
       return verifyTheElementInTooltip(
         this.spreadsheet.tooltip?.container,
         event.target,
       );
     }
 
-    if (event instanceof MouseEvent) {
+    if (this.isMouseEvent(event)) {
       return (
         event.clientX >= x &&
         event.clientX <= x + width &&
@@ -327,6 +346,8 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
+    this.canvasMousemoveEvent = event;
+
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);

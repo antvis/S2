@@ -40,6 +40,17 @@ export const layoutHierarchy = (
   currentNode: Node,
   hierarchy: Hierarchy,
 ): boolean => {
+  const hiddenColumnNode =
+    facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(currentNode);
+
+  if (
+    hiddenColumnNode &&
+    // fix: Only hiding the column headers is supported to prevent the row subtotals from being hidden when the IDs of the row totals and column totals are the same.
+    facetCfg.columns.find((field) => field === currentNode.field)
+  ) {
+    return false;
+  }
+
   let expandCurrentNode = true;
   const addNode = (node: Node, insetIndex = -1, hierarchyIndex = -1) => {
     if (insetIndex === -1) {
@@ -65,15 +76,15 @@ export const layoutHierarchy = (
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
       if (!isEmpty(unshiftNodes)) {
-        each(unshiftNodes, (v) => {
-          addNode(v);
+        each(unshiftNodes, (node) => {
+          addNode(node);
         });
         currentIndex = parentNode.children.length;
         hierarchyIndex = hierarchy.getNodes().length;
       }
       if (!isEmpty(pushNodes)) {
-        each(pushNodes, (v) => {
-          addNode(v);
+        each(pushNodes, (node) => {
+          addNode(node);
         });
       }
       if (!deleteNode) {

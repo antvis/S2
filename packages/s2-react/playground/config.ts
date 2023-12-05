@@ -1,5 +1,5 @@
-import { isUpDataValue } from '@antv/s2';
-import type { S2DataConfig } from '@antv/s2';
+import { isUpDataValue, type Columns, customMerge } from '@antv/s2';
+import type { S2DataConfig, ThemeCfg } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import {
@@ -10,12 +10,32 @@ import {
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 
+export const tableSheetSingleColumns: Columns = [
+  'province',
+  'city',
+  'type',
+  'sub_type',
+  'number',
+];
+
+export const tableSheetMultipleColumns: Columns = [
+  {
+    key: 'area',
+    children: ['province', 'city'],
+  },
+  'type',
+  {
+    key: 'money',
+    children: [{ key: 'price' }, 'number'],
+  },
+];
+
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
   fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'number'],
+    columns: tableSheetSingleColumns,
   },
 };
 
@@ -26,6 +46,36 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
+export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
+  data: [
+    ...pivotSheetDataCfg.data,
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
+      price: '11111111',
+    },
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '纸张',
+      price: '2',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '笔',
+      price: '2',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '纸张',
+      price: '133.333',
+    },
+  ],
+});
+
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
@@ -33,6 +83,8 @@ export const s2Options: SheetComponentOptions = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
+    copyWithHeader: true,
+    copyWithFormat: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
@@ -63,15 +115,41 @@ export const s2Options: SheetComponentOptions = {
       },
     ],
   },
+  headerActionIcons: [
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'colCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+    },
+    {
+      iconNames: ['SortDown'],
+      belongsCell: 'cornerCell',
+      defaultHide: true,
+    },
+  ],
   hierarchyType: 'grid',
   style: {
+    colCfg: {
+      hideMeasureColumn: false,
+    },
     rowCfg: {
-      width: 200,
+      width: 100,
     },
     cellCfg: {
       height: 50,
+      width: 200,
     },
   },
+};
+
+export const s2ThemeConfig: ThemeCfg = {
+  name: 'default',
+  theme: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
@@ -98,6 +176,10 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
         widthPercent: [40, 0.2, 0.2, 0.2],
       },
     },
+  },
+  tooltip: { showTooltip: false },
+  interaction: {
+    selectedCellsSpotlight: true,
   },
   conditions: {
     text: [

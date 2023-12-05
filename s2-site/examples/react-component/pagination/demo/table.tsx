@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-fetch('../data/basic-table-mode.json')
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
     const s2Options = {
@@ -50,11 +50,11 @@ fetch('../data/basic-table-mode.json')
         options={s2Options}
         sheetType="table"
         showPagination={{
-          onChange: (current) => {
-            console.log(current);
+          onChange: (current, pageSize) => {
+            console.log(current, pageSize);
           },
-          onShowSizeChange: (pageSize) => {
-            console.log(pageSize);
+          onShowSizeChange: (current, pageSize) => {
+            console.log(current, pageSize);
           },
         }}
       />,

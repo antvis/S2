@@ -18,6 +18,7 @@ import type { ColCell } from '../cell';
 import {
   CellTypes,
   ELLIPSIS_SYMBOL,
+  EMPTY_FIELD_VALUE,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
 import type {
@@ -205,9 +206,11 @@ export const getEllipsisText = ({
   placeholder?: string;
 }) => {
   let font = {};
-  const empty = placeholder ?? EMPTY_PLACEHOLDER;
-  // [null, undefined, ''] will return empty
-  const finalText = isNil(text) || text === '' ? empty : `${text}`;
+  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
+  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  const finalText = isEmptyText ? emptyPlaceholder : `${text}`;
+
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -299,6 +302,32 @@ export const isUpDataValue = (value: number | string): boolean => {
 };
 
 /**
+ * Determines whether the data is actually equal to 0 or empty or nil
+ * example: "0.00%" => true
+ * @param value
+ */
+export const isZeroOrEmptyValue = (value: number | string): boolean => {
+  return (
+    isNil(value) ||
+    value === '' ||
+    Number(String(value).replace(/[^0-9.]+/g, '')) === 0
+  );
+};
+
+/**
+ * Determines whether the data is actually equal to 0 or empty or nil or equals to compareValue
+ * example: "0.00%" => true
+ * @param value
+ * @param compareValue
+ */
+export const isUnchangedValue = (
+  value: number | string,
+  compareValue: number | string,
+): boolean => {
+  return isZeroOrEmptyValue(value) || value === compareValue;
+};
+
+/**
  * 根据单元格对齐方式计算文本的 x 坐标
  * @param x 单元格的 x 坐标
  * @param paddingRight
@@ -331,9 +360,7 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle = cell.getStyle(
-    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
-  );
+  const cellStyle = cell.getStyle(cell.cellType || CellTypes.DATA_CELL);
 
   let textStyle: TextTheme;
   if (isMeasureField) {
@@ -480,7 +507,7 @@ export const drawObjectText = (
     // const { padding } = dataCellStyle.cell;
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    renderText(
+    const textShape = renderText(
       cell,
       [],
       x,
@@ -493,6 +520,8 @@ export const drawObjectText = (
       }),
       labelStyle,
     );
+
+    cell.addTextShape(textShape);
   }
 
   // 绘制指标
@@ -558,14 +587,17 @@ export const drawObjectText = (
         iconCondition ? 1 : 0,
       );
 
-      renderText(
+      const textShape = renderText(
         cell,
         [],
         position.text.x,
         position.text.y,
         ellipsisText,
         curStyle,
+        {},
+        curText?.toString(),
       );
+      cell.addTextShape(textShape);
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
@@ -575,13 +607,14 @@ export const drawObjectText = (
           meta: cell?.getMeta() as ViewMeta,
         });
         if (attrs) {
-          renderIcon(cell, {
+          const iconShape = renderIcon(cell, {
             ...position.icon,
             name: attrs.icon,
             width: iconStyle?.size,
             height: iconStyle?.size,
             fill: attrs.fill,
           });
+          cell.addConditionIconShape(iconShape);
         }
       }
     }
@@ -592,9 +625,7 @@ export const drawObjectText = (
  * 根据 cellCfg 配置获取当前单元格宽度
  */
 export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
-  const { width } = cellCfg;
-  const cellWidth = width;
-  return cellWidth * labelSize;
+  return cellCfg?.width * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {

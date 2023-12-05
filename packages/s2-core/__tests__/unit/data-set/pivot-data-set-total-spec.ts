@@ -443,6 +443,62 @@ describe('Pivot Dataset Total Test', () => {
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);
       });
+
+      test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
+        const totalStatus = {
+          isRowTotal: true,
+          isColTotal: true,
+          isRowSubTotal: true,
+          isColSubTotal: true,
+        };
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+            totalStatus,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 18375]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              [EXTRA_FIELD]: 'number',
+            },
+            totalStatus,
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 43098]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            totalStatus,
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 26193]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+            totalStatus,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 32418]]);
+      });
+
       test('should get correct total cell data when totals calculated by calcFunc', () => {
         expect(
           dataSet.getCellData({
@@ -673,6 +729,190 @@ describe('Pivot Dataset Total Test', () => {
       expect(isRowSubTotal4).toBeTrue();
       expect(isColTotal4).toBeFalse();
       expect(isColSubTotal4).toBeTrue();
+    });
+  });
+
+  describe('test for total with dimension group', () => {
+    beforeEach(() => {
+      MockPivotSheet.mockClear();
+      const mockSheet = new MockPivotSheet();
+      mockSheet.store = new Store();
+      mockSheet.isValueInCols = () => true;
+      dataSet = new PivotDataSet(mockSheet);
+
+      dataCfg = assembleDataCfg({
+        meta: [],
+        fields: {
+          rows: ['province', 'city', 'type', 'sub_type'],
+          columns: [],
+        },
+      });
+      dataSet.setDataCfg(dataCfg);
+    });
+    test('should get correct total dimension values', () => {
+      expect(
+        dataSet.getTotalDimensionValues('sub_type', {
+          province: '浙江省',
+          city: undefined,
+        }),
+      ).toEqual(['桌子', '沙发', '笔', '纸张']);
+
+      expect(
+        dataSet.getTotalDimensionValues('sub_type', {
+          province: '浙江省',
+          city: undefined,
+        }),
+      ).toEqual(['桌子', '沙发', '笔', '纸张']);
+
+      expect(
+        dataSet.getTotalDimensionValues('sub_type', {
+          province: undefined,
+          city: undefined,
+          type: '办公用品',
+        }),
+      ).toEqual(['笔', '纸张']);
+
+      expect(dataSet.getTotalDimensionValues('city', {})).toEqual([
+        '杭州市',
+        '绍兴市',
+        '宁波市',
+        '舟山市',
+        '成都市',
+        '绵阳市',
+        '南充市',
+        '乐山市',
+      ]);
+
+      expect(
+        dataSet.getTotalDimensionValues('sub_type', {
+          province: undefined,
+          city: undefined,
+          type: undefined,
+        }),
+      ).toEqual(['桌子', '沙发', '笔', '纸张']);
+    });
+
+    test('should get correct boolean of grouping scenarios where query need to be processed', () => {
+      expect(
+        dataSet.checkExistDimensionGroup({
+          province: 'A',
+          type: 'A',
+          sub_type: 'A',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkExistDimensionGroup({
+          province: 'A',
+          sub_type: 'A',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkExistDimensionGroup({
+          province: 'A',
+          city: 'A',
+          sub_type: 'A',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkExistDimensionGroup({
+          city: 'A',
+          sub_type: 'A',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkExistDimensionGroup({
+          province: 'A',
+          city: 'A',
+        }),
+      ).toEqual(false);
+      expect(
+        dataSet.checkExistDimensionGroup({
+          province: 'A',
+          city: 'A',
+          type: 'A',
+        }),
+      ).toEqual(false);
+    });
+    test('should get correct boolean of dimensionValue is a query condition', () => {
+      expect(
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
+            province: '浙江省',
+            city: 'A',
+            type: 'Abc',
+          },
+          dimensions: dataCfg.fields.rows,
+          field: 'province',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
+            province: '浙江省',
+            city: '杭州市',
+            type: '家具',
+          },
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
+      ).toEqual(true);
+      expect(
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
+            province: '浙江省',
+            city: '不是杭州市',
+            type: '家具',
+          },
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
+      ).toEqual(false);
+      expect(
+        dataSet.checkAccordQueryWithDimensionValue({
+          dimensionValues: '浙江省[&]杭州市[&]家具[&]桌子',
+          query: {
+            province: '浙江省',
+          },
+          dimensions: dataCfg.fields.rows,
+          field: 'sub_type',
+        }),
+      ).toEqual(true);
+    });
+    test('get correct query list when query need to be processed', () => {
+      expect(
+        dataSet.getTotalGroupQueries(dataCfg.fields.rows, {
+          province: '浙江省',
+          sub_type: '桌子',
+        }),
+      ).toEqual([
+        { province: '浙江省', sub_type: '桌子', type: '家具', city: '杭州市' },
+        { province: '浙江省', sub_type: '桌子', type: '家具', city: '绍兴市' },
+        { province: '浙江省', sub_type: '桌子', type: '家具', city: '宁波市' },
+        { province: '浙江省', sub_type: '桌子', type: '家具', city: '舟山市' },
+      ]);
+    });
+
+    test('get correct MultiData when query need to be processed', () => {
+      expect(
+        dataSet.getMultiData({
+          province: '浙江省',
+          sub_type: '桌子',
+        }),
+      ).toMatchSnapshot();
+      expect(
+        dataSet.getMultiData({
+          province: '浙江省',
+          sub_type: '杭州市',
+        }),
+      ).toMatchSnapshot();
+      expect(
+        dataSet.getMultiData({
+          sub_type: '桌子',
+        }),
+      ).toMatchSnapshot();
     });
   });
 });

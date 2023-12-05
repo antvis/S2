@@ -29,11 +29,14 @@ export interface PartDrillDown {
 
 export type SheetComponentOptions = S2Options<
   ReactNode,
-  Pagination & AntdPaginationProps
+  Pagination & AntdPaginationProps,
+  ReactNode,
+  ReactNode
 >;
 
 export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderCfgProps,
-  SheetComponentOptions
+  SheetComponentOptions,
+  true
 >;

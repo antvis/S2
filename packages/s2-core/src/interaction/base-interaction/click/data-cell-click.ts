@@ -1,5 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
+import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
@@ -13,13 +15,15 @@ import type {
 } from '../../../common/interface';
 import {
   getCellMeta,
-  updateRowColCells,
+  afterSelectDataCells,
+  getRowCellForSelectedCell,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import { updateAllColHeaderCellState } from '../../../utils/interaction';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -30,7 +34,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
 
-      const { interaction, options } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
       interaction.clearHoverTimer();
 
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
@@ -62,12 +66,31 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
+        onUpdateCells: afterSelectDataCells,
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
 
-      if (options.interaction.selectedCellHighlight) {
-        updateRowColCells(meta);
+      // 点击单元格，高亮对应的行头、列头
+      const { rowId, colId, spreadsheet } = meta;
+      const { colHeader, rowHeader } = interaction.getSelectedCellHighlight();
+      if (colHeader) {
+        updateAllColHeaderCellState(
+          colId,
+          interaction.getAllColHeaderCells(),
+          InteractionStateName.SELECTED,
+        );
+      }
+      if (rowHeader) {
+        if (rowId) {
+          const allRowHeaderCells = getRowCellForSelectedCell(
+            meta,
+            spreadsheet,
+          );
+          forEach(allRowHeaderCells, (cell: RowCell) => {
+            cell.updateByState(InteractionStateName.SELECTED);
+          });
+        }
       }
     });
   }
@@ -139,6 +162,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
       key,
+      cellData,
       record: Object.assign({ rowIndex: cellData.rowIndex }, record),
     });
   }

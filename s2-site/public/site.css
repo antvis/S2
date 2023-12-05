@@ -1,0 +1,27 @@
+.index-case-logo {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: 150px !important;
+  height: 80px;
+}
+
+.index-cases-image {
+  height: 450px !important;
+  width: 820px;
+  margin: 0 30px 38px;
+  box-shadow: 0 6px 20px 0 rgb(0 0 0 / 10%);
+  border-radius: 16px;
+  background: #fafbfc;
+}
+
+.dumi-default-source-code {
+  margin: 20px 0;
+}
+
+.dumi-default-table {
+  margin: 0;
+}
+
+img[alt='preview'] {
+  margin: 10px 0;
+}

@@ -9,16 +9,20 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL"
+name: 🏨 CodeQL
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, alpha, beta, next ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ master ]
+    branches: [ master, alpha, beta, next ]
   schedule:
     - cron: '38 0 * * 2'
+
+concurrency:
+  group: ${{github.workflow}}-${{github.event_name}}-${{github.ref}}
+  cancel-in-progress: true
 
 jobs:
   analyze:

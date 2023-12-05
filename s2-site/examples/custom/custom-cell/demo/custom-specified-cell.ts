@@ -1,7 +1,8 @@
-import { PivotSheet, DataCell, ColCell } from '@antv/s2';
+/* eslint-disable max-classes-per-file */
+import { PivotSheet, DataCell, ColCell, CornerCell, RowCell } from '@antv/s2';
 
 /**
- * 自定义 DataCell，给特定单元格设置背景色, 文字大小, 颜色
+ * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
  * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
@@ -26,6 +27,7 @@ class CustomDataCell extends DataCell {
         ...defaultTextStyle,
         fontSize: 16,
         fill: '#396',
+        textAlign: 'left',
       };
     }
 
@@ -36,6 +38,7 @@ class CustomDataCell extends DataCell {
         fontSize: 14,
         fontWeight: 700,
         fill: '#f63',
+        textAlign: 'center',
       };
     }
 
@@ -49,6 +52,7 @@ class CustomDataCell extends DataCell {
         fontWeight: 200,
         fill: '#dcdcdc',
         opacity: 0.9,
+        textAlign: 'right',
       };
     }
 
@@ -58,7 +62,7 @@ class CustomDataCell extends DataCell {
 }
 
 /**
- * 自定义 ColCell, 给特定单元格设置文字大小, 颜色
+ * 自定义 ColCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
  * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
  */
 class CustomColCell extends ColCell {
@@ -66,11 +70,12 @@ class CustomColCell extends ColCell {
     const defaultTextStyle = super.getTextStyle();
 
     // 指定列
-    if (this.meta.rowIndex % 2 === 0) {
+    if (this.meta.colIndex % 2 === 0) {
       return {
         ...defaultTextStyle,
         fontSize: 16,
         fill: '#396',
+        textAlign: 'left',
       };
     }
 
@@ -79,6 +84,7 @@ class CustomColCell extends ColCell {
       return {
         ...defaultTextStyle,
         fill: 'pink',
+        textAlign: 'center',
       };
     }
 
@@ -87,10 +93,86 @@ class CustomColCell extends ColCell {
       return {
         ...defaultTextStyle,
         fontSize: 22,
+        textAlign: 'right',
       };
     }
 
     // 使用默认处理
+    return super.getTextStyle();
+  }
+}
+
+/**
+ * 自定义 CornerCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
+ */
+class CustomCornerCell extends CornerCell {
+  getBackgroundColor() {
+    // 特定数据
+    if (this.meta.field === 'province') {
+      return {
+        backgroundColor: 'red',
+        backgroundColorOpacity: 0.2,
+      };
+    }
+
+    return super.getBackgroundColor();
+  }
+
+  getTextStyle() {
+    const defaultTextStyle = super.getTextStyle();
+
+    if (this.meta.field === 'type') {
+      return {
+        ...defaultTextStyle,
+        fill: '#06a',
+        fontSize: 20,
+        fontWeight: 200,
+      };
+    }
+
+    return super.getTextStyle();
+  }
+}
+
+/**
+ * 自定义 RowCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ */
+class CustomRowCell extends RowCell {
+  getBackgroundColor() {
+    // 特定数据
+    if (this.meta.field === 'province') {
+      return {
+        backgroundColor: 'red',
+        backgroundColorOpacity: 0.2,
+      };
+    }
+
+    return super.getBackgroundColor();
+  }
+
+  getTextStyle() {
+    const defaultTextStyle = super.getTextStyle();
+
+    if (this.meta.field === 'type') {
+      return {
+        ...defaultTextStyle,
+        fill: '#06a',
+        fontSize: 20,
+        fontWeight: 200,
+      };
+    }
+
+    if (this.meta.rowIndex >= 1) {
+      return {
+        ...defaultTextStyle,
+        fill: '#dcdcdc',
+        fontSize: 20,
+        fontWeight: 700,
+      };
+    }
+
     return super.getTextStyle();
   }
 }
@@ -113,16 +195,20 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      cornerCell: (node, spreadsheet, headerConfig) => {
+        return new CustomCornerCell(node, spreadsheet, headerConfig);
       },
-      // rowCell 同理, 请参考示例
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
+      },
+      rowCell: (node, spreadsheet, headerConfig) => {
+        return new CustomRowCell(node, spreadsheet, headerConfig);
+      },
+      dataCell: (viewMeta) => {
+        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    // 使用
     s2.render();
   });

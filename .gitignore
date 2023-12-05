@@ -7,6 +7,7 @@
 *.log
 *.zip
 coverage
+yarn-error.log
 
 # Mac files
 .DS_Store
@@ -14,12 +15,7 @@ coverage
 # site
 s2-site/dist
 s2-site/node_modules/
-dist/s2-site.d.ts
-temp/
-
-# gatsby files
 s2-site/.cache/
-s2-site/public
 
 # packages
 packages/s2-*/lib/

@@ -10,7 +10,7 @@
     "site"
   ],
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/s2"
@@ -20,39 +20,44 @@
   },
   "scripts": {
     "start": "yarn develop",
-    "develop": "gatsby develop --open -H 0.0.0.0",
-    "build": "yarn clean && gatsby build --prefix-paths",
-    "clean": "gatsby clean",
-    "preview": "gatsby serve",
-    "deploy": "yarn build && gh-pages -d public",
+    "develop": "dumi dev",
+    "build": "dumi build",
+    "clean": "rimraf .dumi",
+    "preview": "dumi preview",
+    "deploy": "dumi build &&  cp ./CNAME ./dist/CNAME && gh-pages -d dist",
     "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"
   },
-  "resolutions": {
-    "monaco-editor-webpack-plugin": "2.0.0",
-    "monaco-editor": "0.21.0",
-    "sharp": "0.29.0",
-    "normalize-url": "^4.5.1"
-  },
   "dependencies": {
+    "@ant-design/icons": "^4.8.1",
+    "@antv/dumi-theme-antv": "^0.4.3",
     "@antv/g-canvas": "^0.5.12",
-    "@antv/gatsby-theme-antv": "1.1.18-beta.1",
-    "@antv/s2": "latest",
-    "@antv/s2-react": "latest",
-    "copy-to-clipboard": "^3.3.1",
-    "gatsby": "^2.24.2",
+    "@antv/s2": "^1.52.0",
+    "@antv/s2-react": "^1.44.2",
+    "antd": "^4.24.14",
+    "copy-to-clipboard": "^3.3.3",
+    "dumi": "^2.2.14",
     "gh-pages": "^3.1.0",
     "lodash": "^4.17.21",
-    "ptz-i18n": "^1.0.0",
-    "react": "^16.10.2",
-    "react-color": "^2.19.3",
-    "react-dom": "^16.10.2",
-    "react-i18next": "^11.5.0"
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",
+    "hast-util-to-html": "^8.0.3",
+    "micromark-extension-directive": "^2.1.2",
+    "rehype-document": "^6.1.0",
+    "rehype-format": "^4.0.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-remark": "^9.1.2",
+    "rehype-stringify": "^9.0.3",
+    "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "remark-stringify": "^10.0.2",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.1"
+  },
+  "tnpm": {
+    "mode": "yarn",
+    "lockfile": "enable"
   }
 }

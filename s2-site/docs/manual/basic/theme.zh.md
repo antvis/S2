@@ -5,7 +5,7 @@ order: 6
 
 ## 简介
 
-S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。
+S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2theme)
 
 ### 色彩
 
@@ -23,16 +23,16 @@ S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主�
 
 ### 色板 Palette
 
-色板的定义为 [Palette](/zh/docs/api/general/S2Theme#palette)，当生成主题 schema 时会从中取用颜色，而它的颜色则来自于标准色板中，Palette 的关键属性有：
+色板的定义为 [Palette](/docs/api/general/S2Theme#palette)，当生成主题 schema 时会从中取用颜色，而它的颜色则来自于标准色板中，Palette 的关键属性有：
 
 - basicColors：基础颜色，共 15 个色彩位，本质上确定了表格的配色方案，生成主题 schema 时会从 basicColors 固定索引上取色，如行头背景颜色固定会取 `basicColors[1]` 的颜色
 - basicColorRelations：basicColors 与标准色板的对应关系，如内置的 colorful 主题中，行头背景色 `basicColors[1]` 是取用标准色板中的索引 0 的颜色
 
 由此 S2 保证了，所有绘制时使用的颜色均来自于主题色或主题色的派生颜色。这样使表格界面颜色统一，也便于用户根据自己需要的主题色，生成个性化主题。
 
-### 主题 schema
+### 主题 Schema
 
-主题 schema 的定义为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细等。整个 schema 中，所有的颜色会从 [Palette](/zh/docs/api/general/S2Theme#palette) 中取用：
+主题 schema 的定义为 [S2Theme](/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细、文字大小、文字对齐方式等。整个 schema 中，所有的颜色会从 [Palette](/docs/api/general/S2Theme#palette) 中取用：
 
 - basicColors：基础颜色，如角/列/行头背景，字体/icon 颜色
 - semanticColors：语义颜色，如红色、绿色指代的色值
@@ -51,7 +51,7 @@ s2.render(false);
 
 ## 自定义主题
 
-实例对象上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) 的参数，你可以：
+s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/docs/api/general/S2Theme#themecfg) 的参数，你可以：
 
 - 通过 ThemeCfg.name 使用预置主题
 - 通过 ThemeCfg.palette 自定义色板生成主题
@@ -104,13 +104,13 @@ S2 内置 3 套主题效果：
   </tbody>
 </table>
 
-​📊 查看更多 [主题示例](/zh/examples/theme/default#default)。
+​📊 查看更多 [主题示例](/examples/theme/default#default)。
 
-### 自定义 schema
+### 自定义 Schema
 
 如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你需要为 `setThemeCfg` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
+此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 schema 配置](/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -121,21 +121,77 @@ const customTheme = {
   },
 };
 
+// s2.setThemeCfg({ theme: customTheme })
 s2.setTheme(customTheme)
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
+<Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
+
+<br/>
+
+#### 自定义单元格对齐方式
+
+[查看详情](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) 和 [完整 API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    text: {
+      textAlign: 'left',
+    },
+    bolderText: {
+      textAlign: 'left',
+    },
+  },
+});
+```
+
+#### 自定义单元格背景色
+
+查看 [完整 API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    cell: {
+      backgroundColor: '#dcdcdc',
+    },
+  },
+});
+```
+
+#### 自定义滚动条样式
+
+查看 [完整 API](/api/general/s2theme#scrollbartheme)
+
+```ts
+s2.setTheme({
+  scrollBar: {
+    thumbColor: '#666',
+    thumbHorizontalMinSize: 20,
+    thumbVerticalMinSize: 20,
+  },
+});
+```
+
+#### 自定义交互样式
+
+[查看文档](/manual/advanced/interaction/basic#%E8%B0%83%E6%95%B4%E4%BA%A4%E4%BA%92%E4%B8%BB%E9%A2%98) [查看示例](/zh/examples/interaction/basic#state-theme)
+
+<Playground path='interaction/basic/demo/state-theme.ts' rid='state-theme' height='300'></playground>
+
+<br/>
 
 ### 自定义色板
 
-自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/zh/docs/api/general/S2Theme#palette)：
+自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/docs/api/general/S2Theme#palette)：
 
 #### 自选色板颜色
 
 你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
 
-另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
+另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -167,7 +223,7 @@ s2.setThemeCfg({ palette: s2Palette });
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
+<Playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
 
 #### 按主题色自动生成
 
@@ -190,12 +246,10 @@ const newPalette = generatePalette({ ...palette, brandColor: themeColor });
 s2.setThemeCfg({
   palette: newPalette,
 });
-
-s2.setThemeCfg({ palette: s2Palette });
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
+<Playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
 
 ## 预置主题色板对照表
 
@@ -259,7 +313,7 @@ s2.render(false);
             行头单元格图标颜色</br>
         </td>
         <td style="text-align: left;">
-            rowCell.cell.icon.fill</br>
+            rowCell.icon.fill</br>
         </td>
     </tr>
     <tr>
@@ -321,7 +375,7 @@ s2.render(false);
             行头单元格鼠标悬停态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            rowCell.interactionState.hover.backgroundColor</br>
+            rowCell.cell.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -329,7 +383,7 @@ s2.render(false);
             行头单元格鼠标选中态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            rowCell.interactionState.selected.backgroundColor</br>
+            rowCell.cell.interactionState.selected.backgroundColor</br>
         </td>
     </tr>
  <tr>
@@ -337,7 +391,7 @@ s2.render(false);
             数据单元格鼠标悬停态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hover.backgroundColor</br>
+            dataCell.cell.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -345,7 +399,7 @@ s2.render(false);
             数据单元格鼠标悬停聚焦态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hoverFocus.backgroundColor</br>
+            dataCell.cell.interactionState.hoverFocus.backgroundColor</br>
         </td>
     </tr>
      <tr>
@@ -353,7 +407,7 @@ s2.render(false);
             数据单元格鼠标选中态背景填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.selected.backgroundColor</br>
+            dataCell.cell.interactionState.selected.backgroundColor</br>
         </td>
     </tr>
     <tr>
@@ -406,14 +460,22 @@ s2.render(false);
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #326EF4; color:white;"> #326EF4</td>
-        <td style="text-align: center; background: #565C64; color:white; "> #565C64</td>
-        <td style="text-align: center;  background: #2C60D4; color:white;"> #2C60D4</td>
+        <td rowspan=2 style="text-align: center; background: #326EF4; color:white;"> #326EF4</td>
+        <td rowspan=2 style="text-align: center; background: #565C64; color:white; "> #565C64</td>
+        <td rowspan=2 style="text-align: center;  background: #2C60D4; color:white;"> #2C60D4</td>
         <td style="text-align: left;">
             行头单元格链接文本颜色 </br>
         </td>
         <td style="text-align: left;">
             rowCell.text.linkTextFill</br>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+            行头单元格链接粗体文本颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            rowCell.bolderText.linkTextFill</br>
         </td>
     </tr>
     <tr>
@@ -424,7 +486,7 @@ s2.render(false);
             数据单元格柱状图填充色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.cell.miniBarChartFillColor</br>
+            miniChart.bar.fill</br>
         </td>
     </tr>
        <tr>
@@ -448,7 +510,7 @@ s2.render(false);
             resize 热区悬停态背景颜色 </br>
         </td>
         <td style="text-align: left;">
-            resizeArea.interactionState.hover。backgroundColor</br>
+            resizeArea.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
     <tr>
@@ -582,9 +644,9 @@ s2.render(false);
         </td>
     </tr>
     <tr>
-        <td rowspan=5 style="text-align: center; background: #000000; color: white; "> #000000</td>
-        <td rowspan=5 style="text-align: center; background: #000000; color: white;"> #000000</td>
-        <td rowspan=5 style="text-align: center;  background: #000000; color: white;"> #000000</td>
+        <td rowspan=4 style="text-align: center; background: #000000; color: white; "> #000000</td>
+        <td rowspan=4 style="text-align: center; background: #000000; color: white;"> #000000</td>
+        <td rowspan=4 style="text-align: center;  background: #000000; color: white;"> #000000</td>
         <td style="text-align: left;">
            行头单元格粗体文本颜色 </br>
         </td>
@@ -594,26 +656,10 @@ s2.render(false);
     </tr>
      <tr>
         <td style="text-align: left;">
-           行头单元格粗体链接文本颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            rowCell.bolderText.linkTextFill</br>
-        </td>
-    </tr>
-      <tr>
-        <td style="text-align: left;">
-           行头单元格链接文本颜色 </br>
-        </td>
-        <td style="text-align: left;">
-            rowCell.text.linkTextFill</br>
-        </td>
-    </tr>
-     <tr>
-        <td style="text-align: left;">
            数据单元格鼠标悬停聚焦态边框颜色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.hoverFocus.borderColor</br>
+            dataCell.cell.interactionState.hoverFocus.borderColor</br>
         </td>
     </tr>
      <tr>
@@ -621,7 +667,7 @@ s2.render(false);
            数据单元格鼠标刷选预中态边框颜色 </br>
         </td>
         <td style="text-align: left;">
-            dataCell.interactionState.prepareSelect.borderColor</br>
+            dataCell.cell.interactionState.prepareSelect.borderColor</br>
         </td>
     </tr>
     <tr>

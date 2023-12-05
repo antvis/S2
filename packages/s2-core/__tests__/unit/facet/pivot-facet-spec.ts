@@ -4,19 +4,21 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
-import { DEFAULT_TREE_ROW_WIDTH } from './../../../src/common/constant/options';
 import { getMockPivotMeta } from './util';
+import { Node } from '@/facet/layout/node';
+import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotFacet } from '@/facet/pivot-facet';
-import { DataCell } from '@/cell';
+import { CornerCell, DataCell } from '@/cell';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
-import type { ViewMeta } from '@/common/interface/basic';
+import type { Fields, ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
+import { areAllFieldsEmpty } from '@/facet/utils';
 
 jest.mock('@/interaction/root');
 
@@ -65,6 +67,7 @@ jest.mock('@/sheet-type', () => {
           layoutResult: {
             rowLeafNodes: [],
           },
+          getHiddenColumnsInfo: jest.fn(),
         },
         getCanvasElement: () => container.get('el'),
         hideTooltip: jest.fn(),
@@ -196,6 +199,7 @@ describe('Pivot Mode Facet Test', () => {
     s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
     const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
     const mockDataSet = new MockPivotDataSet(s2);
+    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields
     const treeFacet = new PivotFacet({
       spreadsheet: s2,
       dataSet: mockDataSet,
@@ -206,7 +210,7 @@ describe('Pivot Mode Facet Test', () => {
     });
     const { rowsHierarchy } = treeFacet.layoutResult;
 
-    afterAll(() => {
+    afterEach(() => {
       spy.mockRestore();
     });
 
@@ -234,15 +238,17 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct layer after render', () => {
-    facet.render();
-    const {
-      rowHeader,
-      cornerHeader,
-      columnHeader,
-      centerFrame,
-      backgroundGroup,
-    } = facet;
+    beforeEach(() => {
+      facet.render();
+    });
+
+    afterEach(() => {
+      facet.render();
+    });
+
     test('get header after render', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
+
       expect(rowHeader instanceof RowHeader).toBeTrue();
       expect(rowHeader.cfg.children).toHaveLength(10);
       expect(rowHeader.cfg.visible).toBeTrue();
@@ -256,9 +262,11 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('get background after render', () => {
+      const { backgroundGroup } = facet;
+
       const rect = get(backgroundGroup, 'cfg.children[0]');
 
-      expect(backgroundGroup.cfg.children).toHaveLength(1);
+      expect(backgroundGroup.cfg.children).toHaveLength(3);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();
     });
@@ -269,6 +277,105 @@ describe('Pivot Mode Facet Test', () => {
       expect(panelScrollGroup.cfg.children).toHaveLength(32);
       expect(panelScrollGroup.cfg.visible).toBeTrue();
       expect(get(sampleDataCell, 'meta.data.number')).toBe(7789);
+    });
+  });
+
+  describe('should get none layer when dataCfg.fields is empty', () => {
+    const fields: Fields = {
+      rows: [],
+      columns: [],
+      values: [],
+      customTreeItems: [],
+      valueInCols: false,
+    };
+    const container = new Canvas({
+      width: 100,
+      height: 100,
+      container: document.body,
+    });
+    // 所以我需要重置 Spreadsheet  中的 dataCfg.fields
+    const spreadsheet = Object.assign({}, s2, {
+      dataCfg: { fields },
+      panelGroup: container.addGroup(),
+      foregroundGroup: container.addGroup(),
+      backgroundGroup: container.addGroup(),
+    });
+
+    const mockDataSet = new MockPivotDataSet(spreadsheet);
+    const newFacet = new PivotFacet({
+      spreadsheet,
+      dataSet: mockDataSet,
+      ...fields,
+      ...assembleOptions(),
+    });
+
+    beforeEach(() => {
+      newFacet.render();
+    });
+
+    afterEach(() => {
+      newFacet.destroy();
+    });
+
+    test('areAllFieldsEmpty execution result is true', () => {
+      expect(areAllFieldsEmpty(fields)).toBeTrue();
+    });
+
+    test('can not get header after render', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = newFacet;
+
+      expect(rowHeader).toBeFalsy();
+      expect(cornerHeader).toBeFalsy();
+      expect(columnHeader).toBeFalsy();
+      expect(centerFrame).toBeFalsy();
+    });
+
+    test('can not get series number after render', () => {
+      const { backgroundGroup, rowIndexHeader } = newFacet;
+      const rect = get(backgroundGroup, 'cfg.children[0]');
+
+      expect(rect).toBeFalsy();
+      expect(rowIndexHeader).toBeFalsy();
+    });
+
+    test('can not get cell after render', () => {
+      const { panelGroup } = spreadsheet;
+
+      expect(panelGroup.cfg.children).toBeEmpty();
+    });
+  });
+
+  describe('should get correct result when enable series number', () => {
+    const mockDataSet = new MockPivotDataSet(s2);
+    const seriesNumberFacet = new PivotFacet({
+      spreadsheet: s2,
+      dataSet: mockDataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      ...DEFAULT_STYLE,
+      showSeriesNumber: true,
+    });
+
+    beforeEach(() => {
+      seriesNumberFacet.render();
+    });
+
+    afterEach(() => {
+      seriesNumberFacet.destroy();
+    });
+
+    test('render corrent corner header', () => {
+      const { cornerHeader } = seriesNumberFacet;
+
+      expect(cornerHeader instanceof CornerHeader).toBeTrue();
+      expect(cornerHeader.cfg.children).toHaveLength(3);
+      expect(cornerHeader.cfg.visible).toBeTrue();
+
+      expect(
+        cornerHeader
+          .getChildren()
+          .every((cell: CornerCell) => cell.getMeta().spreadsheet),
+      ).toBeTrue();
     });
   });
 
@@ -351,5 +458,20 @@ describe('Pivot Mode Facet Test', () => {
     customWidthFacet.layoutResult.rowNodes.forEach((node) => {
       expect(node.width).toStrictEqual(400);
     });
+  });
+
+  test('should get hidden columns info', () => {
+    const node = new Node({ id: '1', key: '1', value: '1' });
+
+    expect(facet.getHiddenColumnsInfo(node)).toBeNull();
+
+    const hiddenColumnsInfo = {
+      hideColumnNodes: [node],
+      displaySiblingNode: null,
+    };
+
+    s2.store.set('hiddenColumnsDetail', [hiddenColumnsInfo]);
+
+    expect(facet.getHiddenColumnsInfo(node)).toEqual(hiddenColumnsInfo);
   });
 });

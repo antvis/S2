@@ -1,34 +1,33 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isEmpty, map } from 'lodash';
-import type { RowCell } from '../../cell';
+import type { Point } from '@antv/g-canvas';
+import { isNil, last, map } from 'lodash';
+import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
+  ScrollDirection,
 } from '../../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type {
+  BrushRange,
+  OnUpdateCells,
+  ViewMeta,
+} from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
-import type { OnUpdateCells } from '../../common/interface';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush selection interaction
- */
 export class RowBrushSelection extends BaseBrushSelection {
-  public displayedCells: RowCell[] = [];
-
-  public brushRangeCells: RowCell[] = [];
-
   protected bindMouseDown() {
-    [S2Event.ROW_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
-      this.spreadsheet.on(e, (event: CanvasEvent) => {
-        super.mouseDown(event);
-      });
+    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().row) {
+        return;
+      }
+
+      super.mouseDown(event);
     });
   }
 
-  protected isPointInCanvas(point: { x: number; y: number }) {
+  protected isPointInCanvas(point: Point) {
     // 获取行头的区域范围
     const { height: maxY } = this.spreadsheet.facet.getCanvasHW();
     const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
@@ -39,7 +38,7 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseMove() {
-    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -47,11 +46,9 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
-        event.originalEvent,
-      );
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      if (!this.isPointInCanvas(pointInCanvas)) {
+      if (this.autoBrushScroll(pointInCanvas, true)) {
         return;
       }
 
@@ -63,50 +60,50 @@ export class RowBrushSelection extends BaseBrushSelection {
     this.displayedCells = this.spreadsheet.interaction.getAllRowHeaderCells();
   }
 
-  protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta();
-    const { x: headerX, y: headerY } = meta;
-    return {
-      ...super.getBrushPoint(event),
-      headerX,
-      headerY,
-    };
-  }
-
   protected isInBrushRange = (meta: ViewMeta | Node) => {
+    // start、end 都是相对位置
     const { start, end } = this.getBrushRange();
-    const { x = 0, y = 0 } = meta;
+    const { scrollY, rowHeaderScrollX } =
+      this.spreadsheet.facet.getScrollOffset();
+    const { cornerBBox } = this.spreadsheet.facet;
+    // 绝对位置，不随滚动条变化
+    const { x = 0, y = 0, width = 0, height = 0 } = meta;
 
-    return (
-      x >= start.headerX &&
-      x <= end.headerX &&
-      y >= start.headerY &&
-      y <= end.headerY
+    return this.rectanglesIntersect(
+      {
+        // 行头过长时，可以单独进行滚动，所以需要加上滚动的距离
+        minX: start.x + rowHeaderScrollX,
+        // 由于刷选的时候，是以行头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        minY: start.y - cornerBBox.height + scrollY,
+        maxX: end.x + rowHeaderScrollX,
+        maxY: end.y - cornerBBox.height + scrollY,
+      },
+      {
+        minX: x,
+        maxX: x + width,
+        minY: y,
+        maxY: y + height,
+      },
     );
   };
 
-  // 最终刷选的cell
+  // 最终刷选的 cells
   protected updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const selectedRowNodes = this.getSelectedRowNodes();
+    const scrollBrushRangeCells =
+      this.getScrollBrushRangeCells(selectedRowNodes);
+    const selectedCellMetas = map(scrollBrushRangeCells, getCellMeta);
 
-    interaction.changeState({
-      cells: map(this.brushRangeCells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
-      },
+    this.spreadsheet.interaction.changeState({
+      cells: selectedCellMetas,
+      stateName: InteractionStateName.BRUSH_SELECTED,
+      onUpdateCells: this.onUpdateCells,
     });
 
-    this.spreadsheet.emit(
+    this.emitBrushSelectionEvent(
       S2Event.ROW_CELL_BRUSH_SELECTION,
-      this.brushRangeCells,
+      scrollBrushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
   }
 
   protected addBrushIntercepts() {
@@ -118,4 +115,72 @@ export class RowBrushSelection extends BaseBrushSelection {
   protected onUpdateCells: OnUpdateCells = (root) => {
     return root.updateCells(root.getAllRowHeaderCells());
   };
+
+  private getSelectedRowNodes = (): Node[] => {
+    return this.spreadsheet.getRowNodes().filter(this.isInBrushRange);
+  };
+
+  private getScrollBrushRangeCells(nodes: Node[]) {
+    return nodes.map((node) => {
+      const visibleCell = this.getVisibleBrushRangeCells(node.id);
+
+      if (visibleCell) {
+        return visibleCell;
+      }
+
+      // TODO: 先暂时不考虑自定义单元格的情况, next 分支把这些单元格 (包括自定义单元格) 都放在了 s2.options.rowCell 里
+      return new RowCell(node, this.spreadsheet);
+    });
+  }
+
+  /**
+     * 行头的非叶子节点滚动刷选, 以当前节点所对应 [可视范围] 内叶子节点为基准
+     * 例: 当前刷选 [浙江省] 行头的这一列, 向 🔽 滚动以 [纸张] 为准, 向 🔼滚动以 [桌子] 为准
+       ---------------------------------------
+     * |       | 杭州市 | 家具    | 🔼 [桌子]   |
+     * |       |       |        | 沙发   |
+     * |       |       | 办公用品 | 笔    |
+     * |       |       |         | 纸张  |
+     * | 浙江省 |       |         |      |
+     * |       | 绍兴市 | 家具     | 桌子  |
+     * |       |       |         | 沙发  |
+     * |       |       | 办公用品 | 笔    |
+     * |       |       |         | 🔽 [纸张] |
+     * -------------------------------------
+     */
+  private getVisibleRowLeafCellByScrollDirection = (dir: ScrollDirection) => {
+    const rowCell = this.spreadsheet.interaction.getAllRowHeaderCells();
+
+    if (dir === ScrollDirection.SCROLL_DOWN) {
+      return last(rowCell);
+    }
+
+    return rowCell.find((cell) => {
+      const meta = cell.getMeta();
+      return meta.isLeaf;
+    });
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
+    // 行头叶子节点, 按默认逻辑处理即可
+    if (!isNil(this.endBrushPoint.rowIndex)) {
+      return this.getDefaultWillScrollToRowIndex(dir);
+    }
+
+    const visibleCell = this.getVisibleRowLeafCellByScrollDirection(dir);
+    const lastRowIndex = visibleCell?.getMeta()?.rowIndex ?? 0;
+    const nextRowIndex = lastRowIndex + this.getWillScrollRowIndexDiff(dir);
+    return this.validateYIndex(nextRowIndex);
+  };
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    const { minY } = this.spreadsheet.facet.panelBBox;
+    const x = brushRange.start.x;
+    const y = Math.max(brushRange.start.y, minY);
+
+    return {
+      x,
+      y,
+    };
+  }
 }

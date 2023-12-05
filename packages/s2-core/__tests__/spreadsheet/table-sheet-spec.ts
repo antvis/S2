@@ -1,11 +1,14 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import {
   TableSheet,
   type S2Options,
   type S2DataConfig,
   ResizeType,
   ColCell,
+  TableDataCell,
 } from '@/index';
+import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -43,7 +46,8 @@ const meta = [
   },
 ];
 
-const newLineText = `1\t\n2`;
+const newLineText = `"### 问题摘要
+- **会话地址**："`;
 
 const dataCfg: S2DataConfig = {
   fields: {
@@ -122,7 +126,7 @@ describe('TableSheet normal spec', () => {
     expect(s2.facet.getScrollOffset()).toStrictEqual({
       scrollY: 10,
       scrollX: 10,
-      hRowScrollX: 0,
+      rowHeaderScrollX: 0,
     });
     expect(onScrollFinish).toBeCalled();
 
@@ -154,16 +158,39 @@ describe('TableSheet normal spec', () => {
     s2.destroy();
   });
 
+  test('should support custom layoutCoordinate calls', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+    });
+
+    s2.setOptions({
+      layoutCoordinate: (s2, rowNode, colNode) => {
+        colNode.width = 50;
+      },
+    });
+    s2.render();
+    expect(s2.facet.layoutResult.colsHierarchy.width).toBe(850);
+
+    s2.destroy();
+  });
+
   test('should be able to resize last column', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
 
     await sleep(30);
 
+    let columnNodes = s2.getColumnNodes();
+    let lastColumnCell = columnNodes[columnNodes.length - 1]
+      .belongsCell as ColCell;
+    const startCellWidth = lastColumnCell.getMeta().width;
+
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
     s2.getCanvasElement().dispatchEvent(
       new MouseEvent('mousedown', {
-        clientX: x + width - 1,
+        clientX: x + width,
         clientY: top + 25,
       }),
     );
@@ -185,10 +212,33 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300);
 
-    const columnNodes = s2.getColumnNodes();
-    const lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
+    columnNodes = s2.getColumnNodes();
+    lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell;
+    const endCellWidth = lastColumnCell.getMeta().width;
 
-    expect(lastColumnCell.getMeta().width).toBe(199);
+    expect(endCellWidth - startCellWidth).toBe(100);
+  });
+
+  test('should render link shape', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenRowCount: 0,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+      frozenTrailingRowCount: 0,
+    });
+    s2.render();
+
+    const orderIdDataCell = (
+      s2.facet.panelGroup.findAllByName(
+        'panelScrollGroup',
+      )[0] as PanelScrollGroup
+    )
+      .getChildren()
+      .find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
+
+    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+
+    s2.destroy();
   });
 });

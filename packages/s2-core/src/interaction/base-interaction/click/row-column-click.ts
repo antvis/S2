@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { difference } from 'lodash';
+import { difference, findLast } from 'lodash';
 import {
   CellTypes,
   InterceptType,
@@ -20,7 +20,10 @@ import {
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
 } from '../../../utils/hide-columns';
-import { isMultiSelectionKey } from '../../../utils/interaction/select-event';
+import {
+  isMouseEventWithMeta,
+  isMultiSelectionKey,
+} from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
@@ -36,6 +39,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.bindColCellClick();
     this.bindRowCellClick();
     this.bindTableColExpand();
+    this.bindMouseMove();
+  }
+
+  public reset() {
+    this.isMultiSelection = false;
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
   private bindKeyboardDown() {
@@ -52,8 +61,16 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
-        this.isMultiSelection = false;
-        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.reset();
+      }
+    });
+  }
+
+  private bindMouseMove() {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
+      // 当快捷键被系统拦截后，按需补充调用一次 reset
+      if (this.isMultiSelection && !isMouseEventWithMeta(event)) {
+        this.reset();
       }
     });
   }
@@ -188,8 +205,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       'hiddenColumnsDetail',
       [],
     );
+
+    // 当前单元格的前/后节点都被隐藏时, 会出现两个展开按钮, 优先展开靠右的
     const { hideColumnNodes = [] } =
-      lastHiddenColumnsDetail.find(({ displaySiblingNode }) =>
+      findLast(lastHiddenColumnsDetail, ({ displaySiblingNode }) =>
         isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
       ) || {};
 

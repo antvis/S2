@@ -1,0 +1,26 @@
+
+name: 💬 Discussions
+
+on:
+  discussion:
+    types: [created]
+
+jobs:
+  discussion-created:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DingTalk Notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "📢 用户: ${{ github.event.discussion.user.login }} 创建了讨论：(${{ github.event.discussion.title }})",
+                "text": "👀 点击查看",
+                "messageUrl": "${{ github.event.discussion.html_url }}",
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
+              }
+            }
