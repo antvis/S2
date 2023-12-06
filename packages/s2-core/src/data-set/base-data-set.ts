@@ -26,6 +26,7 @@ import {
 } from '../utils/condition/state-controller';
 import type { CellMeta, RowData } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
+import type { Indexes } from '../utils/indexes';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -120,6 +121,11 @@ export abstract class BaseDataSet {
 
   public isEmpty() {
     return isEmpty(this.getDisplayDataSet());
+  }
+
+  // https://github.com/antvis/S2/issues/2255
+  public getEmptyViewIndexes(): Indexes {
+    return [];
   }
 
   public getValueRangeByField(field: string): ValueRange {
