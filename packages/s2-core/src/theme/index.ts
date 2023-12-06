@@ -227,7 +227,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: 'top',
+        textBaseline: isTable ? 'middle' : 'top',
         textAlign: 'center',
       },
       measureText: {
