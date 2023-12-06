@@ -31,7 +31,7 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     ...dataCfg,
   );
 
-export const TOTALS_OPTIONS = {
+export const TOTALS_OPTIONS: S2Options['totals'] = {
   row: {
     showGrandTotals: true,
     showSubTotals: true,

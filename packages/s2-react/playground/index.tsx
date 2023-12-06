@@ -346,19 +346,6 @@ function MainLayout() {
     }
   }, [options.style.layoutWidthType]);
 
-  React.useEffect(() => {
-    s2Ref.current?.setDataCfg({
-      sortParams: [
-        {
-          sortFieldId: 'number',
-          sortMethod: 'ASC',
-        },
-      ],
-    });
-
-    s2Ref.current.render(true);
-  }, [sheetType]);
-
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(

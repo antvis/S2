@@ -1,5 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { createPivotSheet } from 'tests/util/helpers';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import type { Group, IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
 import type {
@@ -52,8 +52,14 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.MERGED_CELL,
     ];
 
-    test('should get default theme', () => {
+    test('should get pivot sheet default theme', () => {
       expect(s2.theme).toMatchSnapshot();
+    });
+
+    test('should get table sheet theme', () => {
+      const tableSheet = createTableSheet(null);
+
+      expect(tableSheet.theme).toMatchSnapshot();
     });
 
     test.each(CELL_TYPES)(
