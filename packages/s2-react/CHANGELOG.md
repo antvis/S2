@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.45.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0-alpha.2...@antv/s2-react-v1.45.0-alpha.3) (2023-12-07)
+
+
+### Bug Fixes
+
+* **table-sheet:** 修复明细表排序后开启行列冻结, 冻结行展示错误 close [#2388](https://github.com/antvis/S2/issues/2388) ([#2453](https://github.com/antvis/S2/issues/2453)) ([741e27a](https://github.com/antvis/S2/commit/741e27aab78b4b415d5f9e49760b401c93a84ca9))
+
 # [@antv/s2-react-v1.45.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0-alpha.1...@antv/s2-react-v1.45.0-alpha.2) (2023-12-04)
 
 
