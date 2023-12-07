@@ -54,9 +54,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     return this;
   }
 
+  protected getCustomRowCell() {
+    const { spreadsheet } = this.headerConfig;
+    return spreadsheet?.facet?.cfg?.rowCell;
+  }
+
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-    const rowCell = spreadsheet?.facet?.cfg?.rowCell;
+    const rowCell = this.getCustomRowCell();
     each(data, (item: Node) => {
       if (this.rowCellInRect(item) && item.height !== 0) {
         let cell: S2CellType;
