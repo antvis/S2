@@ -51,7 +51,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('杭州市');
@@ -60,7 +60,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 2,
-            col: 'number',
+            field: 'number',
           },
         }),
       ).toEqual(3877);
@@ -69,7 +69,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 5,
-            col: 'sub_type',
+            field: 'sub_type',
           },
         }),
       ).toEqual('沙发');
@@ -87,7 +87,7 @@ describe('Table Mode Dataset Test', () => {
       expect(
         emptyDataSet.getCellData({
           query: {
-            col: 'sub_type',
+            field: 'sub_type',
             rowIndex: 0,
           },
         }),
@@ -110,7 +110,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('成都市');
@@ -129,7 +129,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('杭州市');
@@ -151,7 +151,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('成都市');
@@ -171,7 +171,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'number',
+            field: 'number',
           },
         }),
       ).toEqual(245);

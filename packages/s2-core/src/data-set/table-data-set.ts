@@ -1,4 +1,4 @@
-import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
+import { each, orderBy, filter, isFunction, isObject, hasIn } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig } from '../common/interface';
 import type { CellMeta } from '../common';
@@ -165,17 +165,33 @@ export class TableDataSet extends BaseDataSet {
 
     const rowData = this.displayData[query.rowIndex];
 
-    if (!('col' in query) || !isObject(rowData)) {
+    if (!hasIn(query, 'field') || !isObject(rowData)) {
       return rowData;
     }
-    return rowData[query.col];
+    return rowData[query.field];
   }
 
-  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return this.displayData;
+  public getMultiData(query: DataType): DataType[] {
+    if (!query) {
+      return this.displayData;
+    }
+
+    const rowData = this.displayData[query.rowIndex]
+      ? [this.displayData[query.rowIndex]]
+      : this.displayData;
+
+    if (!hasIn(query, 'field')) {
+      return rowData;
+    }
+
+    return rowData.map((item) => item[query.field]);
   }
 
   public getRowData(cell: CellMeta): RowData {
-    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
+    return this.getCellData({
+      query: {
+        rowIndex: cell.rowIndex,
+      },
+    });
   }
 }

@@ -40,10 +40,10 @@ import type {
   AutoAdjustPositionOptions,
   Data,
   LayoutResult,
-  TooltipDetailListItem,
   Tooltip,
-  ViewMeta,
+  TooltipDetailListItem,
   TooltipSummaryOptionsValue,
+  ViewMeta,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -60,9 +60,9 @@ import type {
   TooltipPosition,
   TooltipSummaryOptions,
 } from '../common/interface/tooltip';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
-import { getLeafColumnsWithKey } from '../facet/utils';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -460,7 +460,12 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const isTableMode = spreadsheet.isTableMode();
 
   if (isTableMode && options?.showSingleTips) {
-    const selectedCellsData = spreadsheet.dataSet.getMultiData({});
+    const meta = targetCell.getMeta();
+    // 如果是列头, 获取当前列所有数据, 其他则获取当前整行 (1条数据)
+    const selectedCellsData = meta?.field
+      ? spreadsheet.dataSet.getMultiData({ field: meta.field })
+      : [spreadsheet.dataSet.getRowData(meta)];
+
     return [{ selectedData: selectedCellsData, name: '', value: '' }];
   }
 
