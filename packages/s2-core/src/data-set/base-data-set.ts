@@ -51,7 +51,7 @@ export abstract class BaseDataSet {
   public filterParams: FilterParam[];
 
   // 透视表入口对象实例
-  protected spreadsheet: SpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;

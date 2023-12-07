@@ -1,7 +1,7 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
 import { RowCell } from '../../../../src/cell/row-cell';
-import { DEFAULT_OPTIONS, type S2PivotSheetOptions } from '@/common';
+import { DEFAULT_OPTIONS } from '@/common';
 import { SeriesNumberCell } from '@/cell';
 import { PivotRowHeader } from '@/facet/header';
 import { SeriesNumberHeader } from '@/facet/header/series-number';
@@ -9,10 +9,10 @@ import { SeriesNumberHeader } from '@/facet/header/series-number';
 const s2 = createPivotSheet(
   {
     ...DEFAULT_OPTIONS,
-    frozenFirstRowPivot: true,
+    frozenFirstRow: true,
     totals: { row: { showGrandTotals: true, reverseLayout: true } },
     showSeriesNumber: true,
-  } as S2PivotSheetOptions,
+  },
   { useSimpleData: false },
 );
 
