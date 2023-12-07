@@ -70,7 +70,7 @@ const s2DataConfig = {
 
 ### 安装 G2
 
-:::warning{title="该功能依赖 G2 的 5.x 版本，请确保使用了正确的版本 "}
+:::warning{title="该功能依赖 G2 的 `5.x` 版本，请确保使用了正确的版本 "}
 
 ```bash
 yarn add @antv/g2 --save
@@ -90,7 +90,6 @@ import { renderToMountedElement } from '@antv/g2';
 
 ```ts
 import { PivotSheet, DataCell } from '@antv/s2';
-import { renderToMountedElement, stdlib } from '@antv/g2';
 
 class ChartSheetDataCell extends DataCell {
   public drawTextShape(options) {
@@ -117,6 +116,8 @@ s2.render();
 :::
 
 ```ts
+import { renderToMountedElement, stdlib } from '@antv/g2';
+
 s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
   // 如果是普通数值单元格正常展示
   if (!cell.isChartData()) {
@@ -135,7 +136,7 @@ s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
 
 ### 在 `@antv/s2-react` 使用
 
-如果希望在 `React` 中使用，除了上诉的方式外，也可以直接使用 `<SheetComponent sheetType="chart"/>`, 内部封装了 `自定义 DateCell` 的步骤
+如果希望在 `React` 中使用，除了上诉的方式外，也可以直接使用 `<SheetComponent sheetType="chart" />`, 内部封装了 `自定义 DateCell` 的步骤
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
@@ -158,7 +159,11 @@ function App() {
   };
 
   return (
-    <SheetComponent dataCfg={s2DataConfig} sheetType="chart" onDataCellRender={onDataCellRender} />
+    <SheetComponent
+      sheetType="chart"
+      dataCfg={s2DataConfig}
+      onDataCellRender={onDataCellRender}
+    />
   )
 }
 ```

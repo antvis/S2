@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { renderToMountedElement, stdlib } from '@antv/g2';
-import { SpreadSheet } from '@antv/s2';
+import { SpreadSheet, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import {
@@ -24,11 +24,26 @@ const options: SheetComponentOptions = {
     selectedCellHighlight: true,
     selectedCellsSpotlight: true,
     hoverFocus: true,
-    hoverHighlight: true,
+    hoverHighlight: false,
     multiSelection: true,
     overscrollBehavior: 'none',
   },
   style: {},
+};
+
+const theme: ThemeCfg['theme'] = {
+  dataCell: {
+    cell: {
+      interactionState: {
+        hoverFocus: {
+          borderOpacity: 0,
+        },
+        selected: {
+          borderOpacity: 0,
+        },
+      },
+    },
+  },
 };
 
 const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
@@ -56,6 +71,7 @@ export const ChartSheet: React.FC<
       {...props}
       {...context}
       sheetType="chart"
+      themeCfg={{ theme }}
       dataCfg={ChartDataConfig}
       options={options}
       ref={ref}
