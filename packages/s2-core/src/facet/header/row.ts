@@ -46,11 +46,11 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     ); // right
   }
 
-  protected createCellInstance(item: Node) {
-    return new RowCell(item, this.headerConfig.spreadsheet, this.headerConfig);
+  public createCellInstance(node: Node) {
+    return new RowCell(node, this.headerConfig.spreadsheet, this.headerConfig);
   }
 
-  protected getCellGroup(item: Node): IGroup {
+  protected getCellGroup(node: Node): IGroup {
     return this;
   }
 

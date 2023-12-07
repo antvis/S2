@@ -1,5 +1,5 @@
+import type { RowCell } from '../../../../src/cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import type { RowCell } from '@/cell/row-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';

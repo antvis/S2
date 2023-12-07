@@ -19,7 +19,7 @@ const s2Options = {
 />
 ```
 
-​📊 查看 [React 版下钻 demo](/examples/react-component/drill-dwon#for-pivot)
+​📊 查看 [React 版下钻 demo](/examples/react-component/drill-down#for-pivot)
 
 ## Vue 下钻组件
 

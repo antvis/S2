@@ -32,9 +32,9 @@ const s2Options = {
 | style | [Style](#style) |  |    | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等 |
 | frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 （明细表有效） |
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
-| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
-| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
-| frozenFirstRowPivot | `boolean` |  |   `false` | 首行不存在子节点时, 冻结首行, 适用于聚合模式总计置于顶部冻结总计行, 树状模式冻结首行等场景 (透视表有效) | `@antv/s2@1.53.0` |
+| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数（明细表有效） |
+| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数（明细表有效） |
+| frozenFirstRow | `boolean` |  |   `false` | 首行不存在子节点时，冻结首行（透视表有效）, 适用于聚合模式总计置于顶部冻结总计行，树状模式冻结首行等场景。| `@antv/s2@^1.53.0` |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter) |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder |  `string \| (meta: Record<string, any>) => string` |    |  | 空单元格的填充内容 |
@@ -52,8 +52,8 @@ const s2Options = {
 | layoutDataPosition | [layoutDataPosition](#layoutdataposition)   |  |  | 自定义数据 |
 | filterDisplayDataItem | [FilterDataItemCallback](#filterdataitemcallback) |  |    | 过滤数据 |
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
-| dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
-| supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
+| dataSet | [DataSet](#dataset) |  |  | 自定义数据集 |
+| supportCSSTransform | `boolean` |  | `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 | devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
 | frozenEntireHeadRowPivot | `boolean` |  |   `false` | 交叉表模式冻结首行(整行) |
 

@@ -98,7 +98,7 @@ export class BaseFrozenRowHeader extends RowHeader {
     });
   }
 
-  public isFrozenRow(item: Node): boolean {
+  public isFrozenRow(node: Node): boolean {
     const { spreadsheet } = this.headerConfig;
     const { facet } = spreadsheet;
     const { frozenRowCount } = getFrozenRowCfgPivot(
@@ -106,7 +106,7 @@ export class BaseFrozenRowHeader extends RowHeader {
       facet.layoutResult?.rowNodes,
     );
     return (
-      frozenRowCount > 0 && item.rowIndex >= 0 && item.rowIndex < frozenRowCount
+      frozenRowCount > 0 && node.rowIndex >= 0 && node.rowIndex < frozenRowCount
     );
   }
 

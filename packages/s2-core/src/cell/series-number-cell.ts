@@ -1,8 +1,8 @@
 import type { Point } from '@antv/g-canvas';
 import type { Condition, IconTheme, MappingResult, TextTheme } from '../common';
-import { FrozenRowCell } from './frozen-row-cell';
+import { RowCell } from './row-cell';
 
-export class SeriesNumberCell extends FrozenRowCell {
+export class SeriesNumberCell extends RowCell {
   protected initCell(): void {
     this.drawBackgroundShape();
     this.drawRectBorder();

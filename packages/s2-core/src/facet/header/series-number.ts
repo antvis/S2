@@ -72,10 +72,10 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
     });
   }
 
-  protected createCellInstance(item: Node): RowCell {
-    const frozenRow = this.isFrozenRow(item);
-    const cell = new SeriesNumberCell(
-      item,
+  public createCellInstance(node: Node): RowCell {
+    const frozenRow = this.isFrozenRow(node);
+    return new SeriesNumberCell(
+      node,
       this.headerConfig.spreadsheet,
       {
         ...this.headerConfig,
@@ -83,6 +83,5 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
       },
       frozenRow,
     );
-    return cell;
   }
 }

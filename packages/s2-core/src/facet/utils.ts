@@ -542,19 +542,19 @@ export const areAllFieldsEmpty = (fields: Fields) => {
 export const getFrozenRowCfgPivot = (
   options: Pick<
     S2Options,
-    'frozenFirstRowPivot' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
+    'frozenFirstRow' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
   >,
   rowNodes: Node[],
 ): S2TableSheetOptions & {
   frozenRowHeight: number;
   enableFrozenFirstRow: boolean;
 } => {
-  const { pagination, frozenFirstRowPivot, hierarchyType, showSeriesNumber } =
+  const { pagination, frozenFirstRow, hierarchyType, showSeriesNumber } =
     options;
   const enablePagination = pagination && pagination.pageSize;
   let enableFrozenFirstRow = false;
   const headNode = rowNodes?.[0];
-  if (!enablePagination && frozenFirstRowPivot) {
+  if (!enablePagination && frozenFirstRow) {
     // first node no children: entire row
     enableFrozenFirstRow = headNode?.children?.length === 0;
     const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';

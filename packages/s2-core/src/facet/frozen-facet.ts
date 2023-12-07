@@ -199,17 +199,17 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    // https://github.com/antvis/S2/issues/2255
-    const indexes = this.spreadsheet.dataSet?.isEmpty?.()
-      ? ([] as unknown as Indexes)
-      : calculateInViewIndexes(
-          scrollX,
-          scrollY,
-          this.viewCellWidths,
-          this.viewCellHeights,
-          finalViewport,
-          this.getRealScrollX(this.cornerBBox.width),
-        );
+    const indexes =
+      this.spreadsheet.isTableMode() && this.spreadsheet.dataSet?.isEmpty?.()
+        ? this.spreadsheet.dataSet.getEmptyViewIndexes()
+        : calculateInViewIndexes(
+            scrollX,
+            scrollY,
+            this.viewCellWidths,
+            this.viewCellHeights,
+            finalViewport,
+            this.getRealScrollX(this.cornerBBox.width),
+          );
 
     this.panelScrollGroupIndexes = indexes;
 

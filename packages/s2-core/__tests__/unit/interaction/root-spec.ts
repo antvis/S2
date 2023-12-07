@@ -26,6 +26,7 @@ import {
   DataCellBrushSelection,
   ColBrushSelection,
   RowBrushSelection,
+  S2Event,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -170,9 +171,9 @@ describe('RootInteraction Tests', () => {
 
   // https://github.com/antvis/S2/issues/1243
   test('should multi selected header cells', () => {
-    const isEqualStateNameSpy = jest
+    jest
       .spyOn(rootInteraction, 'isEqualStateName')
-      .mockImplementation(() => false);
+      .mockImplementationOnce(() => false);
 
     const mockCellA = createMockCellInfo('test-A').mockCell;
     const mockCellB = createMockCellInfo('test-B').mockCell;
@@ -204,8 +205,6 @@ describe('RootInteraction Tests', () => {
 
     // 取消选中
     expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
-
-    isEqualStateNameSpy.mockRestore();
   });
 
   test('should call merge cells', () => {

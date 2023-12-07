@@ -1,4 +1,4 @@
-import type { Node } from '@antv/s2';
+import type { Node } from '../../../../src';
 import { CellTypes, type HeaderActionIcon } from '@/common';
 import { getActionIconConfig } from '@/utils/cell/header-cell';
 

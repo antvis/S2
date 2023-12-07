@@ -1,13 +1,14 @@
 import type { Node } from '../layout/node';
-import { FrozenRowCell, RowCell } from '../../cell';
+import { RowCell } from '../../cell/row-cell';
 import { BaseFrozenRowHeader } from './base-frozen-row';
 
 export class PivotRowHeader extends BaseFrozenRowHeader {
-  protected createCellInstance(item: Node): RowCell {
+  public createCellInstance(node: Node): RowCell {
     const { spreadsheet, scrollY } = this.headerConfig;
-    const frozenRow = this.isFrozenRow(item);
-    return new FrozenRowCell(
-      item,
+    const frozenRow = this.isFrozenRow(node);
+
+    return new RowCell(
+      node,
       spreadsheet,
       {
         ...this.headerConfig,
