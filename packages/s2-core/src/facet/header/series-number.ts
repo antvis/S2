@@ -46,6 +46,7 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
         : node.height;
       sNode.width = seriesNumberWidth;
       sNode.rowIndex = node.rowIndex;
+      sNode.spreadsheet = spreadsheet;
       sNode.isLeaf = true;
       seriesNodes.push(sNode);
     });
@@ -83,5 +84,9 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
       },
       frozenRow,
     );
+  }
+
+  protected override getCustomRowCell() {
+    return null;
   }
 }
