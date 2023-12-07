@@ -3,7 +3,7 @@
  */
 import { assembleDataCfg } from 'tests/util';
 import type { S2DataConfig } from '@/common/interface';
-import { TableSheet } from '@/sheet-type';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 
 jest.mock('@/sheet-type');
@@ -11,7 +11,9 @@ jest.mock('@/facet/layout/node');
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
+  let s2: SpreadSheet;
   let dataSet: TableDataSet;
+
   const mockNumberFormatter = jest.fn().mockReturnValue('number');
   const mockSubTypeFormatter = jest.fn().mockReturnValue('sub_type');
   const mockTypeFormatter = jest.fn().mockReturnValue('type');
@@ -56,9 +58,12 @@ describe('Table Mode Dataset Test', () => {
       },
     ],
   };
+
   beforeEach(() => {
     MockTableSheet.mockClear();
-    dataSet = new TableDataSet(new MockTableSheet());
+
+    s2 = new MockTableSheet();
+    dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);
   });
