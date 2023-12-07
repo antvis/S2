@@ -434,16 +434,29 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const textStyle = this.getTextStyle();
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
-    this.renderTextShape(
+    const textShape = this.renderTextShape(
       {
         ...textStyle,
         x: 0,
         y: 0,
         text: this.getFieldValue(),
         wordWrapWidth: maxTextWidth,
+        // maxLines: 2,
       },
       options,
     );
+
+    if (
+      textShape.parsedStyle.maxLines > 1 &&
+      textShape.parsedStyle.metrics?.width < maxTextWidth
+    ) {
+      console.log(
+        this.getFieldValue(),
+        textShape.parsedStyle.metrics?.width,
+        maxTextWidth,
+      );
+      textShape.attr('maxLines', 1);
+    }
 
     if (options?.shallowRender) {
       return;

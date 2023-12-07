@@ -527,10 +527,17 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 获取 <canvas/> HTML元素
+   * 获取 G Canvas 实例
+   */
+  public getCanvas(): Canvas {
+    return this.container;
+  }
+
+  /**
+   * 获取 <canvas/> HTML 元素
    */
   public getCanvasElement(): HTMLCanvasElement {
-    return this.container
+    return this.getCanvas()
       .getContextService()
       .getDomElement() as HTMLCanvasElement;
   }

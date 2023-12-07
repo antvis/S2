@@ -374,7 +374,7 @@ function MainLayout() {
                 children: (
                   <>
                     <Collapse
-                      defaultActiveKey={['filter']}
+                      defaultActiveKey={['filter', 'resize']}
                       items={[
                         {
                           key: 'filter',
