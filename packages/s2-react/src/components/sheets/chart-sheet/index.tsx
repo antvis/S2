@@ -1,4 +1,4 @@
-import { customMerge } from '@antv/s2';
+import { customMerge, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
@@ -6,7 +6,12 @@ import { ChartSheetDataCell } from './custom-cell';
 
 export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options: defaultOptions, ...restProps } = props;
+    const {
+      options: defaultOptions,
+      themeCfg: defaultThemeCfg,
+      ...restProps
+    } = props;
+
     const s2Options = React.useMemo<SheetComponentOptions>(() => {
       const options: SheetComponentOptions = {
         dataCell: (viewMeta) =>
@@ -14,6 +19,9 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
         showDefaultHeaderActionIcon: false,
         interaction: {
           hoverFocus: false,
+          brushSelection: {
+            dataCell: false,
+          },
         },
         style: {
           colCell: {
@@ -35,7 +43,28 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
       return customMerge<SheetComponentOptions>(defaultOptions, options);
     }, [defaultOptions]);
 
-    return <BaseSheet {...restProps} options={s2Options} />;
+    const themeCfg = React.useMemo<ThemeCfg>(() => {
+      const theme: ThemeCfg['theme'] = {
+        dataCell: {
+          cell: {
+            interactionState: {
+              hoverFocus: {
+                borderOpacity: 0,
+              },
+              selected: {
+                borderOpacity: 0,
+              },
+            },
+          },
+        },
+      };
+
+      return customMerge<ThemeCfg>(defaultThemeCfg, {
+        theme,
+      });
+    }, [defaultThemeCfg]);
+
+    return <BaseSheet {...restProps} options={s2Options} themeCfg={themeCfg} />;
   },
 );
 

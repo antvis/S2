@@ -18,7 +18,7 @@ const options: SheetComponentOptions = {
     brushSelection: {
       rowCell: true,
       colCell: true,
-      dataCell: true,
+      dataCell: false,
     },
     selectedCellMove: true,
     selectedCellHighlight: true,
@@ -32,18 +32,7 @@ const options: SheetComponentOptions = {
 };
 
 const theme: ThemeCfg['theme'] = {
-  dataCell: {
-    cell: {
-      interactionState: {
-        hoverFocus: {
-          borderOpacity: 0,
-        },
-        selected: {
-          borderOpacity: 0,
-        },
-      },
-    },
-  },
+  dataCell: {},
 };
 
 const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
