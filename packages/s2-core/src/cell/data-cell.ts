@@ -11,6 +11,7 @@ import {
   merge,
 } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
+import { G2_THEME_TYPE } from '../common';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import {
   CellType,
@@ -26,7 +27,6 @@ import type {
   MiniChartData,
   MultiData,
   TextTheme,
-  ThemeName,
   ViewMeta,
   ViewMetaIndexType,
 } from '../common/interface';
@@ -100,18 +100,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const cellArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const themeName = this.spreadsheet.getThemeName();
 
-    // 兼容 G2 主题: S2 和 G2 的主题名转换
-    // https://g2.antv.antgroup.com/manual/core/theme
-    const g2ThemeType: Record<ThemeName, string> = {
-      default: 'light',
-      colorful: 'light',
-      gray: 'light',
-      dark: 'dark',
-    };
-
     return {
       autoFit: true,
-      theme: { type: g2ThemeType[themeName] },
+      theme: { type: G2_THEME_TYPE[themeName] },
       ...cellArea,
       ...chartData,
     };
