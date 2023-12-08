@@ -256,11 +256,11 @@ export class TableFacet extends FrozenFacet {
       }
 
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
-        data = rowIndex + 1;
+        data = `${rowIndex + 1}`;
       } else {
         data = dataSet.getCellData({
           query: {
-            col: col.field,
+            field: col.field,
             rowIndex,
           },
         });

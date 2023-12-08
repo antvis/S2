@@ -24,9 +24,10 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import type { CellMeta, RowData } from '../common';
+import type { CellMeta, RowData, ViewMeta } from '../common';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
+import type { Node } from '../facet/layout/node';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -228,7 +229,6 @@ export abstract class BaseDataSet {
 
   /**
    * get a row cells data including cell
-   * @param cells
    */
-  public abstract getRowData(cells: CellMeta): RowData;
+  public abstract getRowData(cellMeta: CellMeta | ViewMeta | Node): RowData;
 }

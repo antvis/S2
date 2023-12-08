@@ -81,7 +81,7 @@ export const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
   frozenFirstRow: false,
-  showSeriesNumber: false,
+  showSeriesNumber: true,
   interaction: {
     enableCopy: true,
     copyWithHeader: true,

@@ -171,6 +171,7 @@ export const createMockCellInfo = (
     getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
     updateByState: jest.fn(),
+    isTextOverflowing: jest.fn(),
   } as unknown as S2CellType;
 
   return {
