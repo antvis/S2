@@ -10,7 +10,7 @@ import {
   memoize,
   min,
 } from 'lodash';
-import type { CellMeta, Data, RowData } from '../common';
+import type { CellMeta, Data, RowData, ViewMeta } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -27,6 +27,7 @@ import {
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
+import type { Node } from '../facet/layout/node';
 import type { CellDataParams, DataType, MultiDataParams, Query } from './index';
 
 export abstract class BaseDataSet {
@@ -197,7 +198,6 @@ export abstract class BaseDataSet {
 
   /**
    * get a row cells data including cell
-   * @param cells
    */
-  public abstract getRowData(cells: CellMeta): RowData;
+  public abstract getRowData(cellMeta: CellMeta | ViewMeta | Node): RowData;
 }

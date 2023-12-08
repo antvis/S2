@@ -2,6 +2,7 @@ import {
   createFakeSpreadSheet,
   createMockCellInfo,
   createPivotSheet,
+  createTableSheet,
   getContainer,
 } from 'tests/util/helpers';
 import type { BBox } from '@antv/g-canvas';
@@ -794,6 +795,159 @@ describe('Tooltip Utils Tests', () => {
           s2.destroy();
         },
       );
+    });
+
+    describe('Tooltip Get Data Tests For TableSheet', () => {
+      beforeEach(() => {
+        s2 = createTableSheet(
+          { showSeriesNumber: true },
+          { useSimpleData: false },
+        );
+        s2.render();
+      });
+
+      afterEach(() => {
+        s2.destroy();
+      });
+
+      test('should get correctly summaries of selected col cell', () => {
+        const typeColCell = s2.getColumnLeafNodes()[1].belongsCell;
+        const subTypeColCell = s2.getColumnLeafNodes()[2].belongsCell;
+
+        expect(getMockTooltipData(typeColCell)).toMatchInlineSnapshot(`
+          Object {
+            "description": "类别说明。。",
+            "details": null,
+            "headInfo": null,
+            "infos": undefined,
+            "interpretation": undefined,
+            "name": undefined,
+            "summaries": Array [
+              Object {
+                "name": "",
+                "selectedData": Array [
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "家具",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                  "办公用品",
+                ],
+                "value": "",
+              },
+            ],
+            "tips": undefined,
+          }
+        `);
+        expect(getMockTooltipData(subTypeColCell)).toMatchInlineSnapshot(`
+          Object {
+            "description": "子类别说明。。",
+            "details": null,
+            "headInfo": null,
+            "infos": undefined,
+            "interpretation": undefined,
+            "name": undefined,
+            "summaries": Array [
+              Object {
+                "name": "",
+                "selectedData": Array [
+                  "桌子",
+                  "桌子",
+                  "桌子",
+                  "桌子",
+                  "沙发",
+                  "沙发",
+                  "沙发",
+                  "沙发",
+                  "笔",
+                  "笔",
+                  "笔",
+                  "笔",
+                  "纸张",
+                  "纸张",
+                  "纸张",
+                  "纸张",
+                  "桌子",
+                  "桌子",
+                  "桌子",
+                  "桌子",
+                  "沙发",
+                  "沙发",
+                  "沙发",
+                  "沙发",
+                  "笔",
+                  "笔",
+                  "笔",
+                  "笔",
+                  "纸张",
+                  "纸张",
+                  "纸张",
+                  "纸张",
+                ],
+                "value": "",
+              },
+            ],
+            "tips": undefined,
+          }
+        `);
+      });
+
+      test('should get correctly summaries of selected series number cell', () => {
+        const seriesCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
+        expect(getMockTooltipData(seriesCell)).toMatchInlineSnapshot(`
+          Object {
+            "description": undefined,
+            "details": null,
+            "headInfo": null,
+            "infos": undefined,
+            "interpretation": undefined,
+            "name": undefined,
+            "summaries": Array [
+              Object {
+                "name": "",
+                "selectedData": Array [
+                  Object {
+                    "city": "杭州市",
+                    "number": 7789,
+                    "province": "浙江省",
+                    "sub_type": "桌子",
+                    "type": "家具",
+                  },
+                ],
+                "value": "",
+              },
+            ],
+            "tips": undefined,
+          }
+        `);
+      });
     });
   });
 

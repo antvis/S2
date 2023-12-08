@@ -14,6 +14,7 @@ import {
 } from 'lodash';
 import {
   CellTypes,
+  ELLIPSIS_SYMBOL,
   EMPTY_FIELD_VALUE,
   InteractionStateName,
   SHAPE_ATTRS_MAP,
@@ -133,6 +134,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public getActualText() {
     return this.actualText;
+  }
+
+  // TODO: 2.0 使用 G 内置的方法
+  public isTextOverflowing() {
+    return this.getActualText().includes(ELLIPSIS_SYMBOL);
   }
 
   public getFieldValue() {

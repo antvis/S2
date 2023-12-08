@@ -1,7 +1,8 @@
 import type { QueryDataType } from '../common/constant/query';
-import type { Data, SortParam } from '../common/interface';
+import type { SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
+
 // TODO add object data value
 export type DataType = Record<string, any>;
 
