@@ -1,3 +1,18 @@
+# [@antv/s2-v1.54.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0...@antv/s2-v1.54.0-alpha.1) (2023-12-08)
+
+
+### Bug Fixes
+
+* lint error fixed ([c8d7391](https://github.com/antvis/S2/commit/c8d7391845b0cd231e5a28f2cd35947b4a88a40d))
+* test case optimize ([1b32ad3](https://github.com/antvis/S2/commit/1b32ad34bbcda3aed60a814e7c4b8592b4761915))
+
+
+### Features
+
+* **perf:** 优化 dataset 数据结构转化性能 ([#2379](https://github.com/antvis/S2/issues/2379)) ([924da53](https://github.com/antvis/S2/commit/924da531cab013211f12fafadb4aa3f402738f2f)), closes [#2353](https://github.com/antvis/S2/issues/2353) [#2355](https://github.com/antvis/S2/issues/2355) [#2360](https://github.com/antvis/S2/issues/2360) [#2355](https://github.com/antvis/S2/issues/2355) [#2362](https://github.com/antvis/S2/issues/2362) [#2363](https://github.com/antvis/S2/issues/2363) [#2255](https://github.com/antvis/S2/issues/2255) [#2357](https://github.com/antvis/S2/issues/2357) [#2255](https://github.com/antvis/S2/issues/2255) [#2359](https://github.com/antvis/S2/issues/2359) [#2364](https://github.com/antvis/S2/issues/2364) [#2370](https://github.com/antvis/S2/issues/2370)
+* **perf:** 去除初始化时，多余的 drilldown 渲染链路 ([#2446](https://github.com/antvis/S2/issues/2446)) ([76d6990](https://github.com/antvis/S2/commit/76d6990c9cf7933ecafefc1571572191c163b526))
+* the pivot table supports freezing the first row as a whole ([dd61601](https://github.com/antvis/S2/commit/dd61601b7aab505eafeaa5ad8faf98baea295ed4))
+
 # [@antv/s2-v1.53.0](https://github.com/antvis/S2/compare/@antv/s2-v1.52.1...@antv/s2-v1.53.0) (2023-12-08)
 
 
