@@ -1,10 +1,10 @@
-import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
+import { each, filter, hasIn, isFunction, isObject, orderBy } from 'lodash';
 import { isAscSort, isDescSort } from '..';
-import type { S2DataConfig } from '../common/interface';
 import type { CellMeta } from '../common';
+import type { S2DataConfig } from '../common/interface';
 import type { RowData } from '../common/interface/basic';
-import type { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from './base-data-set';
+import type { CellDataParams, DataType } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   // data that goes into canvas (aka sorted & filtered)
@@ -24,12 +24,12 @@ export class TableDataSet extends BaseDataSet {
    * 返回顶部冻结行
    * @returns
    */
-  protected getStartRows() {
+  protected getStartFrozenRows(displayData: DataType[]): DataType[] {
     const { frozenRowCount } = this.spreadsheet.options || {};
     if (!frozenRowCount) {
       return [];
     }
-    const { displayData } = this;
+
     return displayData.slice(0, frozenRowCount);
   }
 
@@ -37,29 +37,25 @@ export class TableDataSet extends BaseDataSet {
    * 返回底部冻结行
    * @returns
    */
-  protected getEndRows() {
+  protected getEndFrozenRows(displayData: DataType[]): DataType[] {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
-    // 没有冻结行时返回空数组
     if (!frozenTrailingRowCount) {
       return [];
     }
-    const { displayData } = this;
 
     return displayData.slice(-frozenTrailingRowCount);
   }
 
-  /**
-   * 返回可移动的非冻结行
-   * @returns
-   */
-  protected getMovableRows(): DataType[] {
-    const { displayData } = this;
-    const { frozenTrailingRowCount, frozenRowCount } =
-      this.spreadsheet.options || {};
-    return displayData.slice(
-      frozenRowCount || 0,
-      -frozenTrailingRowCount || undefined,
+  protected getDisplayData(displayData: DataType[]): DataType[] {
+    const startFrozenRows = this.getStartFrozenRows(displayData);
+    const endFrozenRows = this.getEndFrozenRows(displayData);
+
+    const data = displayData.slice(
+      startFrozenRows.length || 0,
+      -endFrozenRows.length || undefined,
     );
+
+    return [...startFrozenRows, ...data, ...endFrozenRows];
   }
 
   handleDimensionValueFilter = () => {
@@ -67,16 +63,15 @@ export class TableDataSet extends BaseDataSet {
       const filteredValuesSet = new Set(filteredValues);
       const defaultFilterFunc = (row: DataType) =>
         !filteredValuesSet.has(row[filterKey]);
-      this.displayData = [
-        ...this.getStartRows(),
-        ...filter(this.getMovableRows(), (row) => {
-          if (customFilter) {
-            return customFilter(row) && defaultFilterFunc(row);
-          }
-          return defaultFilterFunc(row);
-        }),
-        ...this.getEndRows(),
-      ];
+
+      const filteredData = filter(this.displayData, (row) => {
+        if (customFilter) {
+          return customFilter(row) && defaultFilterFunc(row);
+        }
+        return defaultFilterFunc(row);
+      });
+
+      this.displayData = this.getDisplayData(filteredData);
     });
   };
 
@@ -89,7 +84,7 @@ export class TableDataSet extends BaseDataSet {
         return;
       }
 
-      let data = this.getMovableRows();
+      let data = this.displayData;
 
       const restData = [];
       if (query) {
@@ -142,11 +137,7 @@ export class TableDataSet extends BaseDataSet {
       }
 
       // For frozen options
-      this.displayData = [
-        ...this.getStartRows(),
-        ...sortedData,
-        ...this.getEndRows(),
-      ];
+      this.displayData = this.getDisplayData(sortedData);
     });
   };
 
@@ -165,17 +156,33 @@ export class TableDataSet extends BaseDataSet {
 
     const rowData = this.displayData[query.rowIndex];
 
-    if (!('col' in query) || !isObject(rowData)) {
+    if (!hasIn(query, 'field') || !isObject(rowData)) {
       return rowData;
     }
-    return rowData[query.col];
+    return rowData[query.field];
   }
 
-  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return this.displayData;
+  public getMultiData(query: DataType): DataType[] {
+    if (!query) {
+      return this.displayData;
+    }
+
+    const rowData = this.displayData[query.rowIndex]
+      ? [this.displayData[query.rowIndex]]
+      : this.displayData;
+
+    if (!hasIn(query, 'field')) {
+      return rowData;
+    }
+
+    return rowData.map((item) => item[query.field]);
   }
 
   public getRowData(cell: CellMeta): RowData {
-    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
+    return this.getCellData({
+      query: {
+        rowIndex: cell.rowIndex,
+      },
+    });
   }
 }

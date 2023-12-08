@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-import type { RowCell } from '@antv/s2';
+import type { Group } from '@antv/g-canvas';
+import type { RowCell } from '../../../src/cell';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -34,7 +35,9 @@ describe('Row Cell Tests', () => {
         });
         s2.render();
 
-        const provinceCell = s2.facet.rowHeader.getChildByIndex(0) as RowCell;
+        const provinceCell = (
+          s2.facet.rowHeader.getChildByIndex(0) as Group
+        ).getChildByIndex(0) as RowCell;
         const { minX, maxX } = (provinceCell as any).linkFieldShape.getBBox();
 
         // 宽度相当
@@ -67,7 +70,8 @@ describe('Row Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(1);
+      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
+      const rowCell = scrollGroup.getChildByIndex(1);
       expect(get(rowCell, 'textShape.attrs.fill')).toEqual('#5083F5');
     });
 
@@ -88,7 +92,8 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(1);
+      const scrollRowGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
+      const rowCell = scrollRowGroup.getChildByIndex(1);
       expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -109,7 +114,8 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(0);
+      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
+      const rowCell = scrollGroup.getChildByIndex(0);
       expect(get(rowCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
     });
   });
@@ -135,9 +141,10 @@ describe('Row Cell Tests', () => {
     });
     s2.render();
     test('should draw right condition background shape', () => {
-      const rowCell0 = s2.facet.rowHeader.getChildByIndex(0);
-      const rowCell1 = s2.facet.rowHeader.getChildByIndex(1);
-      const rowCell2 = s2.facet.rowHeader.getChildByIndex(2);
+      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
+      const rowCell0 = scrollGroup.getChildByIndex(0);
+      const rowCell1 = scrollGroup.getChildByIndex(1);
+      const rowCell2 = scrollGroup.getChildByIndex(2);
       expect(get(rowCell0, 'actualText')).toEqual('浙江');
       expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
       expect(get(rowCell1, 'actualText')).toEqual('义乌');

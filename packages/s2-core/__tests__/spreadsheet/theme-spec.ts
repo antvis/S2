@@ -1,6 +1,6 @@
 /* eslint-disable jest/expect-expect */
-import { createPivotSheet } from 'tests/util/helpers';
-import type { IGroup, ShapeAttrs } from '@antv/g-canvas';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
+import type { Group, IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
 import type {
   TextBaseline,
@@ -52,8 +52,14 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.MERGED_CELL,
     ];
 
-    test('should get default theme', () => {
+    test('should get pivot sheet default theme', () => {
       expect(s2.theme).toMatchSnapshot();
+    });
+
+    test('should get table sheet theme', () => {
+      const tableSheet = createTableSheet(null);
+
+      expect(tableSheet.theme).toMatchSnapshot();
     });
 
     test.each(CELL_TYPES)(
@@ -157,7 +163,9 @@ describe('SpreadSheet Theme Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getFirst() as RowCell;
+      const rowCell = (
+        s2.facet.rowHeader.getChildByIndex(0) as Group
+      ).getFirst() as RowCell;
       const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
 
       expect(actionIconCfg.fill).toEqual(iconInfo.fill);
@@ -191,7 +199,9 @@ describe('SpreadSheet Theme Tests', () => {
         s2.setThemeCfg(getRowCellThemeCfg(align));
         s2.render();
 
-        const rowCell = s2.facet.rowHeader.getFirst() as RowCell;
+        const rowCell = (
+          s2.facet.rowHeader.getChildByIndex(0) as Group
+        ).getFirst() as RowCell;
 
         const rowCellWidth = get(rowCell, 'meta.width');
         const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
@@ -458,13 +468,18 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.render();
 
-        const rowCell = s2.facet.rowHeader.getChildByIndex(0) as IGroup; // 浙江省
+        const rowCell = (
+          s2.facet.rowHeader.getChildByIndex(0) as Group
+        ).getFirst() as IGroup; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
 
-        const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
+        const seriesCell = (
+          s2.facet.rowIndexHeader.getChildByIndex(0) as Group
+        ).getFirst() as IGroup; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
+
         expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual(textBaseline);
         expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
     );

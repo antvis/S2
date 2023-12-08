@@ -843,6 +843,24 @@ function MainLayout() {
                   }}
                   disabled={sheetType === 'table'}
                 />
+                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式">
+                  <Switch
+                    checkedChildren="冻结首行开"
+                    unCheckedChildren="冻结首行关"
+                    defaultChecked={mergedOptions.frozenFirstRow}
+                    onChange={(checked) => {
+                      updateOptions({
+                        frozenFirstRow: checked,
+                      });
+                    }}
+                    disabled={
+                      sheetType === 'table' ||
+                      (mergedOptions.hierarchyType === 'grid' &&
+                        (!mergedOptions?.totals?.row?.showGrandTotals ||
+                          !mergedOptions?.totals?.row?.reverseLayout))
+                    }
+                  />
+                </Tooltip>
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"

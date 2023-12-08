@@ -1,8 +1,6 @@
 import { TableSheet } from '@antv/s2';
 
-fetch(
-  'https://assets.antv.antgroup.com/s2/basic-table-mode.json',
-)
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
@@ -39,7 +37,9 @@ fetch(
       width: 600,
       height: 480,
       showSeriesNumber: true,
+      // seriesNumberText: '自定义序号标题',
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();

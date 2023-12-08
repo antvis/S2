@@ -1,9 +1,9 @@
 import type { SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
+
 // TODO add object data value
 export type DataType = Record<string, any>;
-
 export type PivotMetaValue = {
   // field level index
   level: number;

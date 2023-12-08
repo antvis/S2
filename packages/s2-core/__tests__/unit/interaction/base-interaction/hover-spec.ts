@@ -28,6 +28,7 @@ describe('Interaction Hover Tests', () => {
   const mockTooltipParams = [
     [{ value: undefined, valueField: undefined }],
     {
+      enableFormat: true,
       enterable: true,
       hideSummary: true,
       isTotals: undefined,
@@ -49,6 +50,7 @@ describe('Interaction Hover Tests', () => {
       },
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
+      isTextOverflowing: () => true,
       cellType: 'dataCell',
     } as any);
 
@@ -339,6 +341,7 @@ describe('Interaction Hover Tests', () => {
           },
           getActualText: () => 'test',
           getFieldValue: () => 'test',
+          isTextOverflowing: jest.fn(() => false),
           cellType: 'dataCell',
         } as any);
 

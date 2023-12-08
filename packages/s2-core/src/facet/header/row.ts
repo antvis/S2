@@ -1,5 +1,6 @@
 import type { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
+import type { IGroup } from '@antv/g-canvas';
 import { RowCell } from '../../cell';
 import type { S2CellType, S2Options, ViewMeta } from '../../common/interface';
 import type { Node } from '../layout/node';
@@ -33,29 +34,36 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     }
   }
 
-  protected layout() {
-    const {
-      data,
-      spreadsheet,
-      width,
-      viewportHeight,
-      seriesNumberWidth,
-      scrollY,
-      scrollX,
-    } = this.headerConfig;
+  // row'cell only show when visible
+  protected rowCellInRect(item: Node): boolean {
+    const { width, viewportHeight, seriesNumberWidth, scrollY, scrollX } =
+      this.headerConfig;
+    return (
+      viewportHeight + scrollY > item.y && // bottom
+      scrollY < item.y + item.height && // top
+      width - seriesNumberWidth + scrollX > item.x && // left
+      scrollX - seriesNumberWidth < item.x + item.width
+    ); // right
+  }
 
-    const rowCell = spreadsheet?.facet?.cfg?.rowCell;
-    // row'cell only show when visible
-    const rowCellInRect = (item: Node): boolean => {
-      return (
-        viewportHeight + scrollY > item.y && // bottom
-        scrollY < item.y + item.height && // top
-        width - seriesNumberWidth + scrollX > item.x && // left
-        scrollX - seriesNumberWidth < item.x + item.width
-      ); // right
-    };
+  public createCellInstance(node: Node) {
+    return new RowCell(node, this.headerConfig.spreadsheet, this.headerConfig);
+  }
+
+  protected getCellGroup(node: Node): IGroup {
+    return this;
+  }
+
+  protected getCustomRowCell() {
+    const { spreadsheet } = this.headerConfig;
+    return spreadsheet?.facet?.cfg?.rowCell;
+  }
+
+  protected layout() {
+    const { data, spreadsheet } = this.headerConfig;
+    const rowCell = this.getCustomRowCell();
     each(data, (item: Node) => {
-      if (rowCellInRect(item) && item.height !== 0) {
+      if (this.rowCellInRect(item) && item.height !== 0) {
         let cell: S2CellType;
         // 首先由外部控制UI展示
         if (rowCell) {
@@ -64,11 +72,12 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         // 如果外部没处理，就用默认的
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
-            cell = new RowCell(item, spreadsheet, this.headerConfig);
+            cell = this.createCellInstance(item);
           }
         }
         item.belongsCell = cell;
-        this.add(cell);
+        const group = this.getCellGroup(item);
+        group.add(cell);
       }
     });
   }

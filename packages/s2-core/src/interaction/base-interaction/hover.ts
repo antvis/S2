@@ -141,7 +141,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   }
 
   private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType) {
-    if (!cell || cell.getActualText() === cell.getFieldValue()) {
+    if (!cell || !cell.isTextOverflowing()) {
       return;
     }
 
@@ -152,7 +152,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       enterable: true,
       hideSummary: true,
       showSingleTips,
-      enableFormat: this.spreadsheet.isPivotMode(),
+      enableFormat: true,
     };
     const data = this.getCellData(meta, showSingleTips);
     this.spreadsheet.showTooltipWithInfo(event, data, options);
@@ -201,10 +201,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (interaction.isActiveCell(cell)) {
         return;
       }
+
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
+      this.showEllipsisTooltip(event, cell);
 
       const { rowHeader, colHeader } = interaction.getHoverHighlight();
       if (rowHeader || colHeader) {

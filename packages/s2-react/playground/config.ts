@@ -77,10 +77,11 @@ export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
 });
 
 export const s2Options: SheetComponentOptions = {
-  debug: true,
+  debug: false,
   width: 600,
   height: 400,
-  showSeriesNumber: false,
+  frozenFirstRow: false,
+  showSeriesNumber: true,
   interaction: {
     enableCopy: true,
     copyWithHeader: true,
@@ -142,7 +143,7 @@ export const s2Options: SheetComponentOptions = {
     },
     cellCfg: {
       height: 50,
-      width: 200,
+      width: 100,
     },
   },
 };

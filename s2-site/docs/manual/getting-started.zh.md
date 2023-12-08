@@ -195,7 +195,7 @@ s2.render();
 
 #### 表格组件使用
 
-```ts
+```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';

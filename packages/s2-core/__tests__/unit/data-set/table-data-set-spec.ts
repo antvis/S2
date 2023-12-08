@@ -3,7 +3,7 @@
  */
 import { assembleDataCfg } from 'tests/util';
 import type { S2DataConfig } from '@/common/interface';
-import { TableSheet } from '@/sheet-type';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 
 jest.mock('@/sheet-type');
@@ -11,7 +11,9 @@ jest.mock('@/facet/layout/node');
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
+  let s2: SpreadSheet;
   let dataSet: TableDataSet;
+
   const mockNumberFormatter = jest.fn().mockReturnValue('number');
   const mockSubTypeFormatter = jest.fn().mockReturnValue('sub_type');
   const mockTypeFormatter = jest.fn().mockReturnValue('type');
@@ -56,9 +58,12 @@ describe('Table Mode Dataset Test', () => {
       },
     ],
   };
+
   beforeEach(() => {
     MockTableSheet.mockClear();
-    dataSet = new TableDataSet(new MockTableSheet());
+
+    s2 = new MockTableSheet();
+    dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);
   });
@@ -106,7 +111,7 @@ describe('Table Mode Dataset Test', () => {
   });
 
   describe('test for query data', () => {
-    test('getCellData function', () => {
+    test('#getCellData', () => {
       expect(
         dataSet.getCellData({
           query: { rowIndex: 0 },
@@ -123,7 +128,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('杭州市');
@@ -132,7 +137,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 2,
-            col: 'number',
+            field: 'number',
           },
         }),
       ).toEqual(3877);
@@ -141,10 +146,82 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 5,
-            col: 'sub_type',
+            field: 'sub_type',
           },
         }),
       ).toEqual('沙发');
+    });
+
+    test('#getMultiData by empty query', () => {
+      expect(dataSet.getMultiData(null)).toMatchSnapshot();
+      expect(dataSet.getMultiData(null)).toEqual(dataSet.getMultiData({}));
+    });
+
+    test('#getMultiData by rowIndex query', () => {
+      expect(
+        dataSet.getMultiData({
+          rowIndex: 0,
+        }),
+      ).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "city": "杭州市",
+            "number": 7789,
+            "province": "浙江省",
+            "sub_type": "桌子",
+            "type": "家具",
+          },
+        ]
+      `);
+
+      expect(
+        dataSet.getMultiData({
+          rowIndex: -1,
+        }),
+      ).toMatchSnapshot();
+    });
+
+    test('#getMultiData by field query', () => {
+      expect(
+        dataSet.getMultiData({
+          field: 'city',
+        }),
+      ).toMatchSnapshot();
+
+      expect(
+        dataSet.getMultiData({
+          field: 'number',
+        }),
+      ).toMatchSnapshot();
+
+      expect(
+        dataSet.getMultiData({
+          field: 'sub_type',
+        }),
+      ).toMatchSnapshot();
+    });
+
+    test('#getMultiData by field and rowIndex query', () => {
+      expect(
+        dataSet.getMultiData({
+          field: 'city',
+          rowIndex: 0,
+        }),
+      ).toEqual(['杭州市']);
+
+      expect(
+        dataSet.getMultiData({
+          field: 'number',
+          rowIndex: 2,
+        }),
+      ).toEqual([3877]);
+
+      expect(
+        dataSet.getMultiData({
+          field: 'sub_type',
+          rowIndex: 3,
+        }),
+      ).toEqual(['桌子']);
     });
   });
 });

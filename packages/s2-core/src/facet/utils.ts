@@ -7,7 +7,11 @@ import type {
   ColumnNode,
   Columns,
   Pagination,
+  S2Options,
+  S2PivotSheetOptions,
+  S2TableSheetOptions,
   ScrollSpeedRatio,
+  SpreadSheetFacetCfg,
 } from '../common/interface';
 import type { Fields } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
@@ -531,4 +535,42 @@ export const areAllFieldsEmpty = (fields: Fields) => {
     isEmpty(fields.values) &&
     isEmpty(fields.customTreeItems)
   );
+};
+
+/**
+ * get frozen options pivot-sheet (business limit)
+ * @param options
+ * @returns
+ */
+export const getFrozenRowCfgPivot = (
+  options: Pick<
+    S2Options,
+    'frozenFirstRow' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
+  >,
+  rowNodes: Node[],
+): S2TableSheetOptions & {
+  frozenRowHeight: number;
+  enableFrozenFirstRow: boolean;
+} => {
+  const { pagination, frozenFirstRow, hierarchyType, showSeriesNumber } =
+    options;
+  const enablePagination = pagination && pagination.pageSize;
+  let enableFrozenFirstRow = false;
+  const headNode = rowNodes?.[0];
+  if (!enablePagination && frozenFirstRow) {
+    // first node no children: entire row
+    enableFrozenFirstRow = headNode?.children?.length === 0;
+    const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';
+    if (treeMode && !enableFrozenFirstRow) {
+      enableFrozenFirstRow = !showSeriesNumber;
+    }
+  }
+  return {
+    frozenRowCount: enableFrozenFirstRow ? 1 : 0,
+    frozenColCount: 0,
+    frozenTrailingColCount: 0,
+    frozenTrailingRowCount: 0,
+    enableFrozenFirstRow,
+    frozenRowHeight: enableFrozenFirstRow ? headNode.height : 0,
+  };
 };

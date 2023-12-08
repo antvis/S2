@@ -1,18 +1,20 @@
 /**
  * table mode data-set test.
  */
-import { orderBy, uniq } from 'lodash';
+import { first, last, orderBy, uniq } from 'lodash';
 import { assembleDataCfg } from '../../util';
 import type { S2DataConfig } from '@/common/interface';
-import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
+import { TableSheet } from '@/sheet-type';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
+
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
   let dataSet: TableDataSet;
+
   const dataCfg: S2DataConfig = {
     ...assembleDataCfg({}),
     meta: [],
@@ -20,11 +22,15 @@ describe('Table Mode Dataset Test', () => {
       columns: ['province', 'city', 'type', 'sub_type', 'number'],
     },
   };
+
   beforeEach(() => {
-    MockTableSheet.mockClear();
     dataSet = new TableDataSet(new MockTableSheet());
 
     dataSet.setDataCfg(dataCfg);
+  });
+
+  afterEach(() => {
+    MockTableSheet.mockClear();
   });
 
   describe('test base dataset structure', () => {
@@ -51,7 +57,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('杭州市');
@@ -60,7 +66,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 2,
-            col: 'number',
+            field: 'number',
           },
         }),
       ).toEqual(3877);
@@ -69,7 +75,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 5,
-            col: 'sub_type',
+            field: 'sub_type',
           },
         }),
       ).toEqual('沙发');
@@ -87,7 +93,7 @@ describe('Table Mode Dataset Test', () => {
       expect(
         emptyDataSet.getCellData({
           query: {
-            col: 'sub_type',
+            field: 'sub_type',
             rowIndex: 0,
           },
         }),
@@ -110,11 +116,12 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('成都市');
     });
+
     it('should getCellData with customFilter', () => {
       dataSet.setDataCfg({
         ...dataCfg,
@@ -129,7 +136,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('杭州市');
@@ -151,7 +158,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'city',
+            field: 'city',
           },
         }),
       ).toEqual('成都市');
@@ -171,7 +178,7 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 0,
-            col: 'number',
+            field: 'number',
           },
         }),
       ).toEqual(245);
@@ -279,6 +286,119 @@ describe('Table Mode Dataset Test', () => {
       ];
       dataSet.handleDimensionValuesSort();
       expect([...result, ...rest]).toStrictEqual(dataSet.getDisplayDataSet());
+    });
+
+    it('should asc sort by number field', () => {
+      const sortFieldId = 'number';
+
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'asc',
+        },
+      ];
+
+      dataSet.handleDimensionValuesSort();
+
+      expect(dataSet.getDisplayDataSet()).toHaveLength(32);
+      expect(dataSet.getDisplayDataSet()).toMatchSnapshot();
+    });
+
+    it('should desc sort by number field', () => {
+      const sortFieldId = 'number';
+
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'desc',
+        },
+      ];
+
+      dataSet.handleDimensionValuesSort();
+
+      expect(dataSet.getDisplayDataSet()).toHaveLength(32);
+      expect(dataSet.getDisplayDataSet()).toMatchSnapshot();
+    });
+
+    // https://github.com/antvis/S2/issues/2388
+    it('should frozen correctly desc sorted data', () => {
+      const sortFieldId = 'number';
+
+      Object.defineProperty(dataSet.spreadsheet, 'options', {
+        value: {
+          frozenRowCount: 1,
+          frozenTrailingRowCount: 1,
+        },
+      });
+
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'desc',
+        },
+      ];
+
+      dataSet.handleDimensionValuesSort();
+
+      expect(dataSet.getDisplayDataSet()).toHaveLength(32);
+      expect(first(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
+        Object {
+          "city": "杭州市",
+          "number": 7789,
+          "province": "浙江省",
+          "sub_type": "桌子",
+          "type": "家具",
+        }
+      `);
+      expect(last(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
+        Object {
+          "city": "绵阳市",
+          "number": 245,
+          "province": "四川省",
+          "sub_type": "笔",
+          "type": "办公用品",
+        }
+      `);
+    });
+
+    it('should frozen correctly asc sorted data', () => {
+      const sortFieldId = 'number';
+
+      Object.defineProperty(dataSet.spreadsheet, 'options', {
+        value: {
+          frozenRowCount: 1,
+          frozenTrailingRowCount: 1,
+        },
+      });
+
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'asc',
+        },
+      ];
+
+      dataSet.handleDimensionValuesSort();
+
+      expect(dataSet.getDisplayDataSet()).toHaveLength(32);
+      expect(first(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
+        Object {
+          "city": "绵阳市",
+          "number": 245,
+          "province": "四川省",
+          "sub_type": "笔",
+          "type": "办公用品",
+        }
+      `);
+      expect(last(dataSet.getDisplayDataSet())).toMatchInlineSnapshot(`
+        Object {
+          "city": "杭州市",
+          "number": 7789,
+          "province": "浙江省",
+          "sub_type": "桌子",
+          "type": "家具",
+        }
+      `);
     });
   });
 });

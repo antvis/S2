@@ -96,3 +96,30 @@ pivotSheet.render();
 ```
 
 ​📊 View [the pivot table of the demo class](/examples/basic/pivot#grid) .
+
+### FrozenFirstRow <Badge type="success">@antv/s2@^1.53.0 new feature</Badge>
+
+Translation: Currently, only the ability to freeze the first row is provided, which is different from freezing rows and columns in a detail table. Due to the complex layout caused by the grouping feature in a pivot table, and to ensure reasonable interaction, the following limitations are in place:
+
+The first row does not have any child nodes (suitable for scenarios where the total is placed at the top or for tree-like structures).
+Pagination scenarios are not currently supported. To enable freezing of the first row, set frozenFirstRow in s2Options configuration.
+
+```ts
+const s2Options = {
+  frozenFirstRow: boolean;
+  totals: {
+    row: {
+      showGrandTotals: true,
+      reverseLayout: true,
+    },
+  },
+}
+```
+
+picture & demo：
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ncdCT7NB2I0AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ge0_S5iMB-wAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
+
+<Playground path='interaction/advanced/demo/frozen-pivot-grid.ts' rid='container' height='300'></playground>
+<Playground path='interaction/advanced/demo/frozen-pivot-tree.ts' rid='container' height='300'></playground>

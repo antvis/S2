@@ -16,7 +16,7 @@ order: 9
 <details>
 <summary>点击查看趋势分析表 options 配置</summary>
 
-```js
+```ts
 const s2Options = {
   width: 600,
   height: 480,
@@ -56,21 +56,20 @@ const s2Options = {
 
 </details>
 
-```ts
+```tsx
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataCfg}
-    options={s2Options}
-    sheetType="strategy"
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataCfg}
+      options={s2Options}
+      sheetType="strategy"
+    />
+  )
+}
 ```
 
 <Playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>

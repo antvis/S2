@@ -575,6 +575,10 @@ export abstract class SpreadSheet extends EE {
     return this.options?.mappingDisplayDataItem;
   }
 
+  protected isCellType(cell?: CanvasEvent['target']) {
+    return cell instanceof BaseCell;
+  }
+
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
     target: CanvasEvent['target'],
@@ -582,7 +586,7 @@ export abstract class SpreadSheet extends EE {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
-      if (parent instanceof BaseCell) {
+      if (this.isCellType(parent)) {
         // 在单元格中，返回true
         return parent as T;
       }
