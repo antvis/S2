@@ -1,4 +1,17 @@
-# [@antv/s2-react-v1.45.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0-alpha.2...@antv/s2-react-v1.45.0-alpha.3) (2023-12-07)
+# [@antv/s2-react-v1.45.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.3...@antv/s2-react-v1.45.0) (2023-12-08)
+
+
+### Bug Fixes
+
+* **table-sheet:** 修复明细表 tooltip 展示了错误的汇总数据的问题 ([#2457](https://github.com/antvis/S2/issues/2457)) ([51bc110](https://github.com/antvis/S2/commit/51bc1105d8c52bd46cc89dfe2698b0fe42745c69))
+* **table-sheet:** 修复明细表排序后开启行列冻结, 冻结行展示错误 close [#2388](https://github.com/antvis/S2/issues/2388) ([#2453](https://github.com/antvis/S2/issues/2453)) ([741e27a](https://github.com/antvis/S2/commit/741e27aab78b4b415d5f9e49760b401c93a84ca9))
+
+
+### Features
+
+* 交叉表支持冻结首行能力 ([#2416](https://github.com/antvis/S2/issues/2416)) ([b81b795](https://github.com/antvis/S2/commit/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412))
+
+# [@antv/s2-react-v1.44.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.2...@antv/s2-react-v1.44.3) (2023-12-01)
 
 
 ### Bug Fixes
