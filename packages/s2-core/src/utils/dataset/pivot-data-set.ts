@@ -14,7 +14,6 @@ import {
 } from 'lodash';
 import type { PickEssential } from '../../common/interface/utils';
 import {
-  EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   MULTI_VALUE,
@@ -57,9 +56,18 @@ export function isMultiValue(pathValue: string | number) {
 export function transformDimensionsValues(
   record: DataType = {},
   dimensions: string[] = [],
-  placeholder: string = TOTAL_VALUE,
+  {
+    placeholder = TOTAL_VALUE,
+    excludeExtra = false,
+  }: {
+    placeholder?: string;
+    excludeExtra?: boolean;
+  } = {},
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
+    if (dimension === EXTRA_FIELD && excludeExtra) {
+      return res;
+    }
     const value = record[dimension];
     if (!(dimension in record)) {
       res.push(placeholder);
@@ -101,15 +109,6 @@ export function transformDimensionsValuesWithExtraFields(
         result.push(transform(record, dimensions, value));
       }
     });
-  }
-
-  /**
-   * result 为空时，就是命中了数组置于当前维度，但是当前的数据中并没有包含任何 values 配置，给一个默认维度用于占位
-   * 主要用于处理趋势分析表中只存在日期列头，不存在任何值的情况：
-   * ref: @see packages/s2-react/__tests__/unit/components/sheets/strategy-sheet/index-spec.tsx
-   */
-  if (isEmpty(result)) {
-    result.push(transform(record, dimensions, EMPTY_EXTRA_FIELD_PLACEHOLDER));
   }
 
   return result;
@@ -270,13 +269,14 @@ export function getDataPath(params: DataPathParams) {
 interface Param {
   rows: string[];
   columns: string[];
-  values: string[];
+  values?: string[];
   valueInCols: boolean;
   data: DataType[];
   indexesData: Record<string, DataType[][] | DataType[]>;
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
+  shouldFlatten?: boolean;
 }
 
 /**
@@ -293,6 +293,7 @@ export function transformIndexesData(params: Param) {
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
+    shouldFlatten = true,
   } = params;
   const paths = [];
 
@@ -319,7 +320,7 @@ export function transformIndexesData(params: Param) {
 
   const prefix = getDataPathPrefix(rows, columns as string[]);
 
-  data.forEach((item) => {
+  const flattenData = (item: DataType) => {
     // 空数据没有意义，直接跳过
     if (!item || isEmpty(item)) {
       return;
@@ -353,7 +354,37 @@ export function transformIndexesData(params: Param) {
         set(indexesData, path, item);
       }
     }
-  });
+  };
+
+  const handleData = (item: DataType) => {
+    // 空数据没有意义，直接跳过
+    if (!item || isEmpty(item)) {
+      return;
+    }
+
+    const rowDimensionValues = transformDimensionsValues(item, rows, {
+      excludeExtra: true,
+    });
+    const colDimensionValues = transformDimensionsValues(item, columns, {
+      excludeExtra: true,
+    });
+    const path = getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      rowPivotMeta,
+      colPivotMeta,
+      rowFields: rows,
+      colFields: columns,
+      isFirstCreate: true,
+      onFirstCreate,
+      prefix,
+    });
+    paths.push(path);
+    set(indexesData, path, item);
+    paths.push(path);
+  };
+
+  data.forEach(shouldFlatten ? flattenData : handleData);
 
   return {
     paths,
@@ -466,10 +497,8 @@ export function getSatisfiedPivotMetaValues(params: {
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
       const values = [...metaValue.children.values()];
-      return values.filter(
-        (v) =>
-          v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
-          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
+      return values.filter((v) =>
+        queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE,
       );
     });
     if (list.length > 1) {

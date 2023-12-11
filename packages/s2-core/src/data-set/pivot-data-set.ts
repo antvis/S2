@@ -84,26 +84,46 @@ export class PivotDataSet extends BaseDataSet {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
+    const { rows } = this.fields;
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    this.transformIndexesData(this.originData.concat(this.totalData), rows);
+    this.handleDimensionValuesSort();
+  }
+
+  protected transformDimensionsValues(
+    record: DataType = {},
+    dimensions: string[] = [],
+    placeholder = TOTAL_VALUE,
+  ) {
+    return transformDimensionsValues(record, dimensions, {
+      placeholder,
+    });
+  }
+
+  protected transformIndexesData(data: DataType[], rows: string[]) {
+    const { columns, values, valueInCols } = this.fields;
+
+    let result;
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, valueInCols } = this.fields;
-      const { indexesData } = transformIndexesData({
+      result = transformIndexesData({
         rows,
         columns: columns as string[],
-        values: this.getValues(),
+        values,
         valueInCols,
-        data: this.originData.concat(this.totalData),
+        data,
         indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
-      this.indexesData = indexesData;
+      this.indexesData = result.indexesData;
+      this.rowPivotMeta = result.rowPivotMeta;
+      this.colPivotMeta = result.colPivotMeta;
+      this.sortedDimensionValues = result.sortedDimensionValues;
     });
-
-    this.handleDimensionValuesSort();
+    return result;
   }
 
   getValues() {
@@ -122,7 +142,6 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns, values, valueInCols } = this.fields;
     const currentRowFields = Node.getFieldPath(rowNode, true);
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
@@ -139,27 +158,10 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     // 3、转换数据
-    const {
-      paths: drillDownDataPaths,
-      indexesData,
-      rowPivotMeta,
-      colPivotMeta,
-      sortedDimensionValues,
-    } = transformIndexesData({
-      rows: nextRowFields,
-      columns: columns as string[],
-      values,
-      valueInCols,
-      data: drillDownData,
-      indexesData: this.indexesData,
-      sortedDimensionValues: this.sortedDimensionValues,
-      rowPivotMeta: this.rowPivotMeta,
-      colPivotMeta: this.colPivotMeta,
-    });
-    this.indexesData = indexesData;
-    this.rowPivotMeta = rowPivotMeta;
-    this.colPivotMeta = colPivotMeta;
-    this.sortedDimensionValues = sortedDimensionValues;
+    const { paths: drillDownDataPaths } = this.transformIndexesData(
+      drillDownData,
+      nextRowFields,
+    );
 
     // 4、record data paths by nodeId
     // set new drill-down data path
@@ -338,7 +340,7 @@ export class PivotDataSet extends BaseDataSet {
       return [];
     }
 
-    const dimensionValues = transformDimensionsValues(
+    const dimensionValues = this.transformDimensionsValues(
       query,
       dimensions,
       MULTI_VALUE,
@@ -405,8 +407,8 @@ export class PivotDataSet extends BaseDataSet {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
 
-    const rowDimensionValues = transformDimensionsValues(query, rows);
-    const colDimensionValues = transformDimensionsValues(
+    const rowDimensionValues = this.transformDimensionsValues(query, rows);
+    const colDimensionValues = this.transformDimensionsValues(
       query,
       columns as string[],
     );
@@ -524,12 +526,12 @@ export class PivotDataSet extends BaseDataSet {
       ? rows.concat(actualDrillDownFields)
       : rows;
 
-    const rowDimensionValues = transformDimensionsValues(
+    const rowDimensionValues = this.transformDimensionsValues(
       query,
       totalRows,
       MULTI_VALUE,
     );
-    const colDimensionValues = transformDimensionsValues(
+    const colDimensionValues = this.transformDimensionsValues(
       query,
       columns as string[],
       MULTI_VALUE,

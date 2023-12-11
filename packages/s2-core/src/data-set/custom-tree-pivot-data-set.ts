@@ -1,23 +1,61 @@
 import { get } from 'lodash';
-import { EXTRA_FIELD } from '../common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
+import { EXTRA_FIELD, TOTAL_VALUE } from '../common/constant';
 import { i18n } from '../common/i18n';
 import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   getDataPathPrefix,
   transformDimensionsValues,
+  transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import { DataHandler } from '../utils/dataset/proxy-handler';
 import type { CellDataParams, DataType } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
+  protected transformDimensionsValues(
+    record: DataType = {},
+    dimensions: string[] = [],
+    placeholder = TOTAL_VALUE,
+  ) {
+    return transformDimensionsValues(record, dimensions, {
+      placeholder,
+      excludeExtra: true,
+    });
+  }
+
+  protected transformIndexesData(data: DataType[], rows: string[]) {
+    const { columns, valueInCols } = this.fields;
+
+    let result;
+    DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
+      result = transformIndexesData({
+        rows,
+        columns: columns as string[],
+        values: [],
+        valueInCols,
+        data,
+        indexesData: this.indexesData,
+        sortedDimensionValues: this.sortedDimensionValues,
+        rowPivotMeta: this.rowPivotMeta,
+        colPivotMeta: this.colPivotMeta,
+        shouldFlatten: false,
+      });
+      this.indexesData = result.indexesData;
+      this.rowPivotMeta = result.rowPivotMeta;
+      this.colPivotMeta = result.colPivotMeta;
+      this.sortedDimensionValues = result.sortedDimensionValues;
+    });
+    return result;
+  }
+
   getCellData(params: CellDataParams): DataType {
     const { query } = params;
     const { rows, columns } = this.fields;
-    const rowDimensionValues = transformDimensionsValues(query, rows);
+    const rowDimensionValues = this.transformDimensionsValues(query, rows);
     // 透视表下columns只支持简单结构
-    const colDimensionValues = transformDimensionsValues(
+    const colDimensionValues = this.transformDimensionsValues(
       query,
       columns as string[],
     );
@@ -53,12 +91,5 @@ export class CustomTreePivotDataSet extends PivotDataSet {
         valueInCols: false,
       },
     };
-  }
-
-  getValues() {
-    // 交叉模式下，values 会被传入用于生成 pivotMeta 结构
-    // 在 customTree 模式下， customTree 对应的 rows 只包含 extra，不需要像交叉模式那样从 一行数据里面获取对应 values 然后生成一对多的结构
-    // 所以传入一个空的 values 结构即可
-    return [];
   }
 }
