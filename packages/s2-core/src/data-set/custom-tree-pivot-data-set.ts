@@ -54,4 +54,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       },
     };
   }
+
+  getValues() {
+    // 交叉模式下，values 会被传入用于生成 pivotMeta 结构
+    // 在 customTree 模式下， customTree 对应的 rows 只包含 extra，不需要像交叉模式那样从 一行数据里面获取对应 values 然后生成一对多的结构
+    // 所以传入一个空的 values 结构即可
+    return [];
+  }
 }

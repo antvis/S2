@@ -88,11 +88,11 @@ export class PivotDataSet extends BaseDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, values, valueInCols } = this.fields;
+      const { rows, columns, valueInCols } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
         columns: columns as string[],
-        values,
+        values: this.getValues(),
         valueInCols,
         data: this.originData.concat(this.totalData),
         indexesData: this.indexesData,
@@ -104,6 +104,11 @@ export class PivotDataSet extends BaseDataSet {
     });
 
     this.handleDimensionValuesSort();
+  }
+
+  getValues() {
+    const { values } = this.fields;
+    return values;
   }
 
   /**
