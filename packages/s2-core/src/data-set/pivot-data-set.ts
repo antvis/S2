@@ -92,7 +92,7 @@ export class PivotDataSet extends BaseDataSet {
     this.handleDimensionValuesSort();
   }
 
-  protected transformDimensionsValues(
+  public transformDimensionsValues(
     record: DataType = {},
     dimensions: string[] = [],
     placeholder = TOTAL_VALUE,
@@ -102,7 +102,7 @@ export class PivotDataSet extends BaseDataSet {
     });
   }
 
-  protected transformIndexesData(data: DataType[], rows: string[]) {
+  public transformIndexesData(data: DataType[], rows: string[]) {
     const { columns, values, valueInCols } = this.fields;
 
     let result;

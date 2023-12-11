@@ -14,7 +14,7 @@ import type { CellDataParams, DataType } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  protected transformDimensionsValues(
+  transformDimensionsValues(
     record: DataType = {},
     dimensions: string[] = [],
     placeholder = TOTAL_VALUE,
@@ -25,7 +25,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     });
   }
 
-  protected transformIndexesData(data: DataType[], rows: string[]) {
+  transformIndexesData(data: DataType[], rows: string[]) {
     const { columns, valueInCols } = this.fields;
 
     let result;
