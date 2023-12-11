@@ -351,10 +351,11 @@ export class PivotFacet extends FrozenFacet {
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node = null;
+    let i = 0;
     const leafNodes = colLeafNodes.slice(0);
 
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parentNode = node.parent;
       if (prevColParent !== parentNode && parentNode) {
         leafNodes.push(parentNode);
@@ -642,20 +643,21 @@ export class PivotFacet extends FrozenFacet {
    * @param rowLeafNodes
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
-    // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent = null;
+    let i = 0;
     const leafNodes = rowLeafNodes.slice(0);
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parent = node.parent;
       if (prevRowParent !== parent && parent) {
         leafNodes.push(parent);
         // parent's y = first child's y
         parent.y = parent.children[0].y;
         // parent's height = all children's height
-        parent.height = parent.children
-          .map((value) => value.height)
-          .reduce((sum, current) => sum + current, 0);
+        parent.height = parent.children.reduce(
+          (sum, current) => sum + current.height,
+          0,
+        );
         prevRowParent = parent;
       }
     }
