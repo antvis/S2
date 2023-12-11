@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0-alpha.1...@antv/s2-v1.54.0-alpha.2) (2023-12-11)
+
+
+### Performance Improvements
+
+* 优化自动计算单元格坐标时的性能 ([#2463](https://github.com/antvis/S2/issues/2463)) ([210dda7](https://github.com/antvis/S2/commit/210dda789f6c39fd850b00997202da4582e337d9))
+
 # [@antv/s2-v1.54.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0...@antv/s2-v1.54.0-alpha.1) (2023-12-08)
 
 
