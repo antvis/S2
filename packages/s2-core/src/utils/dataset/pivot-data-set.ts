@@ -274,7 +274,7 @@ interface Param {
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
-  getExistValuesByDataItem: (data: DataType, values: string[]) => string[];
+  getExistValuesByDataItem?: (data: DataType, values: string[]) => string[];
 }
 
 export interface TransformResult {

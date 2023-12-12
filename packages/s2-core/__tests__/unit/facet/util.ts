@@ -1,5 +1,8 @@
 import { assembleDataCfg } from 'tests/util';
-import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
+import {
+  getExistValues,
+  transformIndexesData,
+} from '@/utils/dataset/pivot-data-set';
 
 /**
  * 获取 Mock 数据
@@ -20,5 +23,6 @@ export function getMockPivotMeta() {
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,
     valueInCols: true,
+    getExistValuesByDataItem: getExistValues,
   });
 }
