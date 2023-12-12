@@ -317,6 +317,7 @@ describe('Interaction Hover Tests', () => {
       await sleep(HOVER_FOCUS_DURATION + 200);
 
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+      expect(s2.hideTooltip).toHaveBeenCalled();
     },
   );
 

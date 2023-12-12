@@ -138,7 +138,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // TODO: 2.0 使用 G 内置的方法
   public isTextOverflowing() {
-    return this.getActualText().includes(ELLIPSIS_SYMBOL);
+    const text = this.getActualText();
+    if (text) {
+      return includes(text, ELLIPSIS_SYMBOL);
+    }
+
+    // 多列文本, 或者自定义单元格等没有 textShape 的场景, 暂时还是保持原来的写法
+    return text !== this.getFieldValue();
   }
 
   public getFieldValue() {
