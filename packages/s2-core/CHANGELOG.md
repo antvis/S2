@@ -1,3 +1,15 @@
+# [@antv/s2-v1.54.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0-alpha.2...@antv/s2-v1.54.0-alpha.3) (2023-12-12)
+
+
+### Bug Fixes
+
+* 修复多列文本单元格 hover 时报错 ([#2472](https://github.com/antvis/S2/issues/2472)) ([0684ab5](https://github.com/antvis/S2/commit/0684ab598a66a301fc34308dfe751cd8cce082f4))
+
+
+### Performance Improvements
+
+* 优化 customTree 包含大量 values 生成结构时性能 ([#2469](https://github.com/antvis/S2/issues/2469)) ([56677c5](https://github.com/antvis/S2/commit/56677c5c4e8701851c14652c44ea2f379d571b7f))
+
 # [@antv/s2-v1.54.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0-alpha.1...@antv/s2-v1.54.0-alpha.2) (2023-12-11)
 
 
