@@ -3,7 +3,7 @@
 exports[`Export Component Tests should render component 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export test"
+    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export test"
     type="button"
   >
     <div />

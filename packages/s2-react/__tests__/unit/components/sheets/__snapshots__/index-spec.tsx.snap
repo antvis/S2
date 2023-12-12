@@ -3,7 +3,7 @@
 exports[`<SheetComponent/> Tests Render Tests should render editable sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-2q8sxy"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-p7e5j5"
   >
     <div
       class="ant-spin-container"
@@ -29,13 +29,13 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space css-dev-only-do-not-override-2q8sxy ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+                class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
                     <span
@@ -55,7 +55,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
                       <span
@@ -73,7 +73,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
                     type="button"
                   >
                     <div />
@@ -100,7 +100,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-2q8sxy"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-p7e5j5"
           >
             <li
               aria-disabled="true"
@@ -182,7 +182,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-2q8sxy ant-select-single ant-select-show-arrow ant-select-show-search"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-p7e5j5 ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -267,7 +267,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
 exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-2q8sxy"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-p7e5j5"
   >
     <div
       class="ant-spin-container"
@@ -293,13 +293,13 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space css-dev-only-do-not-override-2q8sxy ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+                class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
                     <span
@@ -319,7 +319,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
                       <span
@@ -337,7 +337,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
                     type="button"
                   >
                     <div />
@@ -364,7 +364,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-2q8sxy"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-p7e5j5"
           >
             <li
               aria-disabled="true"
@@ -446,7 +446,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-2q8sxy ant-select-single ant-select-show-arrow ant-select-show-search"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-p7e5j5 ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -521,7 +521,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
 exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-2q8sxy"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-p7e5j5"
   >
     <div
       class="ant-spin-container"
@@ -547,13 +547,13 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space css-dev-only-do-not-override-2q8sxy ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+                class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
                     <span
@@ -573,7 +573,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
                       <span
@@ -591,7 +591,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
                     type="button"
                   >
                     <div />
@@ -618,7 +618,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-2q8sxy"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-p7e5j5"
           >
             <li
               aria-disabled="true"
@@ -700,7 +700,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-2q8sxy ant-select-single ant-select-show-arrow ant-select-show-search"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-p7e5j5 ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -775,7 +775,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
 exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-2q8sxy"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-p7e5j5"
   >
     <div
       class="ant-spin-container"
@@ -801,13 +801,13 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space css-dev-only-do-not-override-2q8sxy ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+                class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
                     <span
@@ -827,7 +827,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
                       <span
@@ -845,7 +845,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
                     type="button"
                   >
                     <div />
@@ -872,7 +872,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-2q8sxy"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-p7e5j5"
           >
             <li
               aria-disabled="true"
@@ -954,7 +954,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-2q8sxy ant-select-single ant-select-show-arrow ant-select-show-search"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-p7e5j5 ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"
@@ -1029,7 +1029,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
 exports[`<SheetComponent/> Tests Render Tests should render table sheet by snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-2q8sxy"
+    class="ant-spin-nested-loading antv-s2-spin css-dev-only-do-not-override-p7e5j5"
   >
     <div
       class="ant-spin-container"
@@ -1055,13 +1055,13 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
               class="antv-s2-header-heading-extra"
             >
               <div
-                class="ant-space css-dev-only-do-not-override-2q8sxy ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+                class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
               >
                 <div
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                     type="button"
                   >
                     <span
@@ -1081,7 +1081,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                     class="antv-s2-advanced-sort"
                   >
                     <button
-                      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                       type="button"
                     >
                       <span
@@ -1099,7 +1099,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
                   class="ant-space-item"
                 >
                   <button
-                    class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-text ant-dropdown-trigger antv-s2-export"
+                    class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
                     type="button"
                   >
                     <div />
@@ -1126,7 +1126,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-2q8sxy"
+            class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-p7e5j5"
           >
             <li
               aria-disabled="true"
@@ -1208,7 +1208,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
             >
               <div
                 aria-label="页码"
-                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-2q8sxy ant-select-single ant-select-show-arrow ant-select-show-search"
+                class="ant-select ant-select-sm ant-pagination-options-size-changer css-dev-only-do-not-override-p7e5j5 ant-select-single ant-select-show-arrow ant-select-show-search"
               >
                 <div
                   class="ant-select-selector"

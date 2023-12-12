@@ -6,7 +6,7 @@ exports[`AdvancedSort Component Tests should render component 1`] = `
     class="antv-s2-advanced-sort test"
   >
     <button
-      class="ant-btn css-dev-only-do-not-override-2q8sxy ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+      class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
       type="button"
     >
       <span
