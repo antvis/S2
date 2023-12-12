@@ -21,7 +21,7 @@ exports[`Header Component Tests should render component 1`] = `
         class="antv-s2-header-heading-extra"
       >
         <div
-          class="ant-space css-dev-only-do-not-override-1adbn6x ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+          class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
         >
           <div
             class="ant-space-item"
@@ -32,7 +32,7 @@ exports[`Header Component Tests should render component 1`] = `
             class="ant-space-item"
           >
             <button
-              class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+              class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
               type="button"
             >
               <span
@@ -52,7 +52,7 @@ exports[`Header Component Tests should render component 1`] = `
               class="antv-s2-advanced-sort"
             >
               <button
-                class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
                 type="button"
               >
                 <span
@@ -70,7 +70,7 @@ exports[`Header Component Tests should render component 1`] = `
             class="ant-space-item"
           >
             <button
-              class="ant-btn css-dev-only-do-not-override-1adbn6x ant-btn-text ant-dropdown-trigger antv-s2-export"
+              class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
               type="button"
             >
               <div />

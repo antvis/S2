@@ -4,8 +4,8 @@ import { ColCell } from '../../cell/col-cell';
 import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
+  S2Event,
 } from '../../common/constant';
-import type { S2CellType } from '../../common/interface';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { BaseHeader } from './base';
@@ -25,7 +25,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.initScrollGroup();
   }
 
-  protected getCellInstance(node: Node): S2CellType {
+  protected getCellInstance(node: Node) {
     const { spreadsheet } = this.getHeaderConfig();
     const { colCell } = spreadsheet.options;
 
@@ -97,7 +97,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const { nodes } = this.getHeaderConfig();
+    const { nodes, spreadsheet } = this.getHeaderConfig();
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
@@ -108,6 +108,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         const group = this.getCellGroup(node);
 
         group?.appendChild(cell);
+        spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);
+        spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
       }
     });
   }

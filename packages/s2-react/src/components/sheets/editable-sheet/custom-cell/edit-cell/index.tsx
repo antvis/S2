@@ -16,12 +16,12 @@ import {
   type S2CellType,
 } from '@antv/s2';
 import { isNil, pick } from 'lodash';
-import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
+import { useS2Event } from '../../../../../hooks';
+import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
 import {
   invokeComponent,
   type InvokeComponentProps,
-} from '../../../../utils/invokeComponent';
+} from '../../../../../utils/invokeComponent';
 import './index.less';
 
 export interface CustomProps {
@@ -184,7 +184,7 @@ function EditCellComponent(
   );
 }
 
-const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
+export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
   const spreadsheet = useSpreadSheetInstance();
 
   const onEditCell = useCallback(
@@ -206,5 +206,3 @@ const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
 
   return null;
 });
-
-export { EditCell };

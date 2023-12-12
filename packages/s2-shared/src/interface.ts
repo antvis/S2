@@ -1,11 +1,14 @@
 import type {
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
+  ColCell,
+  CornerCell,
   DataCell,
   GEvent,
   HeaderActionIcon,
   HiddenColumnsInfo,
   LayoutResult,
+  MergedCell,
   Node,
   Pagination,
   RawData,
@@ -17,6 +20,7 @@ import type {
   S2MountContainer,
   S2Options,
   S2RenderOptions,
+  SeriesNumberCell,
   SortParams,
   SpreadSheet,
   TargetCellInfo,
@@ -54,7 +58,6 @@ export type LayoutPaginationParams = {
 };
 
 export interface BaseSheetComponentProps<
-  RenderHandler = unknown,
   PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
@@ -69,7 +72,6 @@ export interface BaseSheetComponentProps<
   options?: Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
-  renderConfig?: RenderHandler;
   adaptive?: Adaptive;
   showPagination?:
     | boolean
@@ -93,6 +95,7 @@ export interface BaseSheetComponentProps<
   onRowCellCollapsed?: (params: RowCellCollapsedParams) => void;
   onRowCellAllCollapsed?: (isCollapsed: boolean) => void;
   onRowCellScroll?: (position: CellScrollPosition) => void;
+  onRowCellRender?: (cell: ColCell) => void;
 
   // ============== Col Cell ====================
   onColCellHover?: (data: TargetCellInfo) => void;
@@ -108,6 +111,8 @@ export interface BaseSheetComponentProps<
     hiddenColumnsDetail: HiddenColumnsInfo[];
   }) => void;
 
+  onColCellRender?: (cell: ColCell) => void;
+
   // ============== Data Cell ====================
   onDataCellHover?: (data: TargetCellInfo) => void;
   onDataCellClick?: (data: TargetCellInfo) => void;
@@ -118,6 +123,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
+  onDataCellRender?: (cell: DataCell) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -127,6 +133,7 @@ export interface BaseSheetComponentProps<
   onCornerCellMouseDown?: (data: TargetCellInfo) => void;
   onCornerCellMouseUp?: (data: TargetCellInfo) => void;
   onCornerCellMouseMove?: (data: TargetCellInfo) => void;
+  onCornerCellRender?: (cell: CornerCell) => void;
 
   // ============== Merged Cells ====================
   onMergedCellsHover?: (data: TargetCellInfo) => void;
@@ -136,6 +143,10 @@ export interface BaseSheetComponentProps<
   onMergedCellsMouseDown?: (data: TargetCellInfo) => void;
   onMergedCellsMouseUp?: (data: TargetCellInfo) => void;
   onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
+  onMergedCellsRender?: (cell: MergedCell) => void;
+
+  /** ================ SeriesNumber Cell ================  */
+  onSeriesNumberCellRender?: (cell: SeriesNumberCell) => void;
 
   // ============== Sort ====================
   onRangeSort?: (params: SortParams) => void;
@@ -151,7 +162,7 @@ export interface BaseSheetComponentProps<
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onLayoutPagination?: (data: LayoutPaginationParams) => void;
-  onLayoutCellMounted?: (cell: S2CellType) => void;
+  onLayoutCellRender?: <T extends S2CellType = S2CellType>(cell: T) => void;
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
   onMounted?: (spreadsheet: SpreadSheet) => void;

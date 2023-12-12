@@ -129,7 +129,7 @@ export const getCellBoxByType = (
   borderPositions: CellBorderPosition[],
   cellStyle: CellTheme,
   boxType: CellClipBox,
-) => {
+): SimpleBBox => {
   if (boxType === CellClipBox.BORDER_BOX) {
     return bbox;
   }

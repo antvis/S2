@@ -28,18 +28,19 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@antv/dumi-theme-antv": "^0.4.3",
-    "@antv/g-canvas": "^1.11.24",
+    "@antv/dumi-theme-antv": "^0.4.4",
+    "@antv/g-canvas": "^1.11.25",
+    "@antv/g-plugin-a11y": "^0.6.20",
+    "@antv/g-plugin-rough-canvas-renderer": "^1.9.25",
+    "@antv/g2": "^5.1.11",
     "@antv/s2": "next",
     "@antv/s2-react": "next",
-    "antd": "^5.11.2",
+    "antd": "^5.12.2",
     "copy-to-clipboard": "^3.3.3",
-    "dumi": "^2.2.14",
-    "gh-pages": "^3.1.0",
+    "dumi": "^2.2.15",
+    "gh-pages": "^6.1.0",
     "lodash": "^4.17.21",
-    "react-color": "^2.19.3",
-    "@antv/g-plugin-a11y": "^0.6.19",
-    "@antv/g-plugin-rough-canvas-renderer": "^1.9.24"
+    "react-color": "^2.19.3"
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",
@@ -59,7 +60,6 @@
     "unist-util-visit": "^4.1.1"
   },
   "tnpm": {
-    "mode": "yarn",
-    "lockfile": "enable"
+    "mode": "pnpm"
   }
 }

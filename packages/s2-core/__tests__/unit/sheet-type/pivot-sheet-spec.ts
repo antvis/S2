@@ -3,7 +3,7 @@ import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 import type {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
@@ -498,7 +498,7 @@ describe('PivotSheet Tests', () => {
     expect(afterRender).toHaveBeenCalledTimes(1);
   });
 
-  test('should emit after real dataCell render', async () => {
+  test('should emit after real dataCell render event', async () => {
     const afterRealDataCellRender = jest.fn();
     const sheet = new PivotSheet(container, dataCfg, s2Options);
 
@@ -509,6 +509,36 @@ describe('PivotSheet Tests', () => {
     await sheet.render();
 
     expect(afterRealDataCellRender).toHaveBeenCalledTimes(1);
+  });
+
+  test('should emit data cell render event', async () => {
+    const cornerCellRender = jest.fn();
+    const rowCellRender = jest.fn();
+    const colCellRender = jest.fn();
+    const dataCellRender = jest.fn();
+    const seriesNumberCellRender = jest.fn();
+    const layoutCellRender = jest.fn();
+
+    const sheet = createPivotSheet(
+      {
+        ...s2Options,
+        showSeriesNumber: true,
+      },
+      { useSimpleData: false },
+    );
+
+    sheet.on(S2Event.CORNER_CELL_RENDER, cornerCellRender);
+    sheet.on(S2Event.ROW_CELL_RENDER, rowCellRender);
+    sheet.on(S2Event.COL_CELL_RENDER, colCellRender);
+    sheet.on(S2Event.DATA_CELL_RENDER, dataCellRender);
+    sheet.on(S2Event.SERIES_NUMBER_CELL_RENDER, seriesNumberCellRender);
+    sheet.on(S2Event.LAYOUT_CELL_RENDER, layoutCellRender);
+
+    await sheet.render();
+    await sleep(500);
+
+    expect(dataCellRender).toHaveBeenCalledTimes(8);
+    expect(layoutCellRender).toHaveBeenCalledTimes(20);
   });
 
   test('should updatePagination', () => {

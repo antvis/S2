@@ -81,7 +81,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       }, [dataCfg]);
 
     const s2Options = React.useMemo<SheetComponentOptions>(
-      () => customMerge(strategySheetOptions, options),
+      () => customMerge<SheetComponentOptions>(strategySheetOptions, options),
       [options, strategySheetOptions],
     );
 

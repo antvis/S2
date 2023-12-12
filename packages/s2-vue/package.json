@@ -87,5 +87,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "tnpm": {
+    "mode": "pnpm"
   }
 }

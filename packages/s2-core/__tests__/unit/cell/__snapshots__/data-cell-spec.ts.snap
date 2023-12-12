@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get empty chart data and default options 1`] = `
+Object {
+  "autoFit": true,
+  "height": 83,
+  "theme": Object {
+    "type": "light",
+  },
+  "width": 83,
+  "x": NaN,
+  "y": NaN,
+}
+`;
+
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data and all options 1`] = `
+Object {
+  "autoFit": true,
+  "data": Array [
+    Object {
+      "genre": "Sports",
+      "sold": 275,
+    },
+  ],
+  "encode": Object {
+    "color": "genre",
+    "x": "genre",
+    "y": "sold",
+  },
+  "type": "interval",
+}
+`;
+
+exports[`Data Cell Tests Data Cell Formatter & Method Tests should get multiple chart data and all options 2`] = `
+Object {
+  "autoFit": true,
+  "data": Array [
+    Object {
+      "genre": "Sports",
+      "sold": 275,
+    },
+  ],
+  "encode": Object {
+    "color": "genre",
+    "x": "genre",
+    "y": "sold",
+  },
+  "height": 83,
+  "theme": Object {
+    "type": "dark",
+  },
+  "type": "interval",
+  "width": 83,
+  "x": 8,
+  "y": 208,
+}
+`;

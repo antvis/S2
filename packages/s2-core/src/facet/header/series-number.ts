@@ -1,12 +1,12 @@
 import { Rect } from '@antv/g';
 import { each } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
-import type { S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
+import { S2Event } from '../../common';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
@@ -16,7 +16,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     super(config);
   }
 
-  protected getCellInstance(node: Node): S2CellType {
+  protected getCellInstance(node: Node) {
     const headerConfig = this.getHeaderConfig();
     const { spreadsheet } = headerConfig;
     const { seriesNumberCell } = spreadsheet.options;
@@ -78,7 +78,12 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const { nodes, scrollY = 0, viewportHeight } = this.getHeaderConfig();
+    const {
+      nodes,
+      scrollY = 0,
+      viewportHeight,
+      spreadsheet,
+    } = this.getHeaderConfig();
 
     each(nodes, (node) => {
       const { y, height: cellHeight } = node;
@@ -97,6 +102,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
       node.belongsCell = cell;
       this.appendChild(cell);
+      spreadsheet.emit(S2Event.SERIES_NUMBER_CELL_RENDER, cell);
+      spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
     });
   }
 

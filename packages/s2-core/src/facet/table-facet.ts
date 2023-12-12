@@ -946,7 +946,7 @@ export class TableFacet extends BaseFacet {
     };
   };
 
-  addCell = (cell: S2CellType<ViewMeta>) => {
+  addDataCell = (cell: S2CellType<ViewMeta>) => {
     const {
       rowCount: frozenRowCount = 0,
       colCount: frozenColCount = 0,

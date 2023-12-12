@@ -143,6 +143,8 @@ const expectScrollBrush = async (
   const allCells = s2.interaction.getCells();
   const lastCell = allCells[allCells.length - 1];
 
+  await sleep(500);
+
   expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
   expect(brushRange.start.colIndex).toBe(allCells[0].colIndex);
   expect(brushRange.start.rowIndex).toBe(allCells[0].rowIndex);
@@ -238,6 +240,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     } as any);
 
     await emitBrushEvent(s2, 200, 200);
+    await sleep(500);
 
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     expect(s2.interaction.getCells()).not.toBeEmpty();
@@ -280,6 +283,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
 
     // 只刷选 [省份]
     await emitBrushEvent(s2, 100, 200);
+    await sleep(500);
 
     // 只选中 [浙江省, 四川省]
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);

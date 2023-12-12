@@ -65,7 +65,7 @@ Function description: The props parameter of the React SheetComponent component
 | onRangeSorted | A callback event is triggered when the sorting in the group ends (for now, only pivot tables are supported) | (event: CanvasEvent ) => void; | | |
 | onRangeFilter | Trigger callback event when filtering | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | onRangeFiltered | Trigger callback event after filtering | (data: DataType[] ) => void; | | |
-| onLayoutCellMounted | The header layout cell mount completed event | cell: S2CellType | | |
+| onLayoutCellRender | The header layout cell mount completed event | cell: S2CellType | | |
 | onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
@@ -178,7 +178,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onRangeSorted | A callback event is triggered when the sorting in the group ends (for now, only pivot tables are supported) | (event: CanvasEvent ) => void; | | |
 | onRangeFilter | Trigger callback event when filtering | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | onRangeFiltered | Trigger callback event after filtering | (data: DataType[] ) => void; | | |
-| onLayoutCellMounted | The header layout cell mount completed event | cell: S2CellType | | |
+| onLayoutCellRender | The header layout cell mount completed event | cell: S2CellType | | |
 | onLayoutAfterHeaderLayout | Header layout structure preparation completion event | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; | | |
 | onLayoutPagination | pagination event | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | Cell scroll event (**Deprecated, please use `onScroll` instead**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |

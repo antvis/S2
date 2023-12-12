@@ -60,6 +60,11 @@ describe('Spread Sheet Tests', () => {
     test('should only mount container once in strict mode for React 18', async () => {
       // eslint-disable-next-line no-console
       console.table(process.env);
+
+      const containerId = 'mounted-react-18';
+
+      container.id = containerId;
+
       const onMounted = jest.fn();
 
       renderComponent(
@@ -76,7 +81,11 @@ describe('Spread Sheet Tests', () => {
 
       await waitFor(() => {
         expect(
-          Array.from(document.querySelectorAll('.antv-s2-container canvas')),
+          Array.from(
+            document
+              .getElementById(containerId)!
+              .querySelectorAll('.antv-s2-container canvas'),
+          ),
         ).toHaveLength(1);
         expect(onMounted).toHaveBeenCalledTimes(1);
       });

@@ -17,6 +17,7 @@ import type { FilterParam, SortParams, S2Style } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { CopyableList } from '../../utils/export/interface';
 import type { Node } from '../../facet/layout/node';
+import type { CornerCell, MergedCell, SeriesNumberCell } from '../../cell';
 import type { ResizeInfo } from './resize';
 
 type CanvasEventHandler = (event: CanvasEvent) => void;
@@ -78,6 +79,7 @@ export interface EmitterType {
   [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: (DataCell | CellMeta)[]) => void;
   [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
+  [S2Event.DATA_CELL_RENDER]: (cell: DataCell) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -93,6 +95,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_COLLAPSED__PRIVATE]: (data: RowCellCollapsedParams) => void;
   [S2Event.ROW_CELL_ALL_COLLAPSED]: (isCollapsed: boolean) => void;
   [S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE]: (isCollapsed: boolean) => void;
+  [S2Event.ROW_CELL_RENDER]: (cell: RowCell) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -108,6 +111,7 @@ export interface EmitterType {
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;
+  [S2Event.COL_CELL_RENDER]: (cell: ColCell) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
@@ -117,6 +121,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_RENDER]: (cell: CornerCell) => void;
 
   /** ================ Merged Cells ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
@@ -126,6 +131,10 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_CLICK]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_RENDER]: (cell: MergedCell) => void;
+
+  /** ================ SeriesNumber Cell ================  */
+  [S2Event.SERIES_NUMBER_CELL_RENDER]: (cell: SeriesNumberCell) => void;
 
   /** ================ Layout ================  */
   [S2Event.LAYOUT_PAGINATION]: (data: {
@@ -140,7 +149,7 @@ export interface EmitterType {
     remove: [number, number][];
     spreadsheet: SpreadSheet;
   }) => void;
-  [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;
+  [S2Event.LAYOUT_CELL_RENDER]: <T extends S2CellType>(cell: T) => void;
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
   [S2Event.LAYOUT_DESTROY]: () => void;

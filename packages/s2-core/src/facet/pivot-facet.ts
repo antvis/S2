@@ -27,7 +27,7 @@ import {
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult } from '../common/interface';
+import type { LayoutResult, SimpleData } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import type { SpreadSheet } from '../sheet-type';
 import { safeJsonParse } from '../utils';
@@ -763,7 +763,7 @@ export class PivotFacet extends BaseFacet {
       for (let j = 0; j < cellDataKeys.length; j++) {
         const dataValue: MultiData = get(cellData, cellDataKeys[j]);
 
-        const valueSize = size(get(dataValue?.values, '0'));
+        const valueSize = size(get(dataValue?.values as SimpleData[][], '0'));
 
         if (valueSize > maxLength) {
           // greater length
