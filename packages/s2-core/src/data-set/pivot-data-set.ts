@@ -44,11 +44,13 @@ import {
   flattenIndexesData,
   getDataPath,
   getDataPathPrefix,
+  getExistValues,
   getFlattenDimensionValues,
   getSatisfiedPivotMetaValues,
   isMultiValue,
   transformDimensionsValues,
   transformIndexesData,
+  type TransformResult,
 } from '../utils/dataset/pivot-data-set';
 import { DataHandler } from '../utils/dataset/proxy-handler';
 import { calcActionByType } from '../utils/number-calculate';
@@ -75,6 +77,10 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
+  getExistValuesByDataItem(data: DataType, values: string[]) {
+    return getExistValues(data, values);
+  }
+
   /**
    * When data related config changed, we need
    * 1、re-process config
@@ -84,26 +90,41 @@ export class PivotDataSet extends BaseDataSet {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
+    const { rows } = this.fields;
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    this.transformIndexesData(this.originData.concat(this.totalData), rows);
+    this.handleDimensionValuesSort();
+  }
+
+  public transformIndexesData(
+    data: DataType[],
+    rows: string[],
+  ): TransformResult {
+    const { columns, values, valueInCols } = this.fields;
+
+    let result: TransformResult;
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, values, valueInCols } = this.fields;
-      const { indexesData } = transformIndexesData({
+      result = transformIndexesData({
         rows,
         columns: columns as string[],
         values,
         valueInCols,
-        data: this.originData.concat(this.totalData),
+        data,
         indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
+        getExistValuesByDataItem: this.getExistValuesByDataItem,
       });
-      this.indexesData = indexesData;
+      this.indexesData = result.indexesData;
+      this.rowPivotMeta = result.rowPivotMeta;
+      this.colPivotMeta = result.colPivotMeta;
+      this.sortedDimensionValues = result.sortedDimensionValues;
     });
 
-    this.handleDimensionValuesSort();
+    return result;
   }
 
   /**
@@ -117,7 +138,6 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns, values, valueInCols } = this.fields;
     const currentRowFields = Node.getFieldPath(rowNode, true);
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
@@ -134,27 +154,10 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     // 3、转换数据
-    const {
-      paths: drillDownDataPaths,
-      indexesData,
-      rowPivotMeta,
-      colPivotMeta,
-      sortedDimensionValues,
-    } = transformIndexesData({
-      rows: nextRowFields,
-      columns: columns as string[],
-      values,
-      valueInCols,
-      data: drillDownData,
-      indexesData: this.indexesData,
-      sortedDimensionValues: this.sortedDimensionValues,
-      rowPivotMeta: this.rowPivotMeta,
-      colPivotMeta: this.colPivotMeta,
-    });
-    this.indexesData = indexesData;
-    this.rowPivotMeta = rowPivotMeta;
-    this.colPivotMeta = colPivotMeta;
-    this.sortedDimensionValues = sortedDimensionValues;
+    const { paths: drillDownDataPaths } = this.transformIndexesData(
+      drillDownData,
+      nextRowFields,
+    );
 
     // 4、record data paths by nodeId
     // set new drill-down data path

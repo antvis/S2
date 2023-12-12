@@ -57,7 +57,7 @@ export function isMultiValue(pathValue: string | number) {
 export function transformDimensionsValues(
   record: DataType = {},
   dimensions: string[] = [],
-  placeholder: string = TOTAL_VALUE,
+  placeholder = TOTAL_VALUE,
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
     const value = record[dimension];
@@ -70,10 +70,19 @@ export function transformDimensionsValues(
   }, []);
 }
 
+export function getExistValues(data: DataType, values: string[]) {
+  const result = values.filter((v) => v in data);
+  if (isEmpty(result)) {
+    result.push(EMPTY_EXTRA_FIELD_PLACEHOLDER);
+  }
+
+  return result;
+}
+
 export function transformDimensionsValuesWithExtraFields(
   record: DataType = {},
   dimensions: string[] = [],
-  values: string[] = [],
+  values?: string[],
 ) {
   const result = [];
 
@@ -93,25 +102,13 @@ export function transformDimensionsValuesWithExtraFields(
     }, []);
   }
 
-  if (isEmpty(values)) {
-    result.push(transform(record, dimensions));
-  } else {
+  if (values) {
     values.forEach((value) => {
-      if (value in record) {
-        result.push(transform(record, dimensions, value));
-      }
+      result.push(transform(record, dimensions, value));
     });
+  } else {
+    result.push(transform(record, dimensions));
   }
-
-  /**
-   * result 为空时，就是命中了数组置于当前维度，但是当前的数据中并没有包含任何 values 配置，给一个默认维度用于占位
-   * 主要用于处理趋势分析表中只存在日期列头，不存在任何值的情况：
-   * ref: @see packages/s2-react/__tests__/unit/components/sheets/strategy-sheet/index-spec.tsx
-   */
-  if (isEmpty(result)) {
-    result.push(transform(record, dimensions, EMPTY_EXTRA_FIELD_PLACEHOLDER));
-  }
-
   return result;
 }
 
@@ -277,12 +274,21 @@ interface Param {
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
+  getExistValuesByDataItem?: (data: DataType, values: string[]) => string[];
+}
+
+export interface TransformResult {
+  paths: (string | number)[];
+  indexesData: Record<string, DataType[][] | DataType[]>;
+  rowPivotMeta: PivotMeta;
+  colPivotMeta: PivotMeta;
+  sortedDimensionValues: SortedDimensionValues;
 }
 
 /**
  * 转换原始数据为二维数组数据
  */
-export function transformIndexesData(params: Param) {
+export function transformIndexesData(params: Param): TransformResult {
   const {
     rows,
     columns,
@@ -293,6 +299,7 @@ export function transformIndexesData(params: Param) {
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
+    getExistValuesByDataItem,
   } = params;
   const paths = [];
 
@@ -319,21 +326,25 @@ export function transformIndexesData(params: Param) {
 
   const prefix = getDataPathPrefix(rows, columns as string[]);
 
-  data.forEach((item) => {
+  data.forEach((item: DataType) => {
     // 空数据没有意义，直接跳过
     if (!item || isEmpty(item)) {
       return;
     }
 
+    const existValues = getExistValuesByDataItem
+      ? getExistValuesByDataItem(item, values)
+      : getExistValues(item, values);
+
     const multiRowDimensionValues = transformDimensionsValuesWithExtraFields(
       item,
       rows,
-      valueInCols ? undefined : values,
+      valueInCols ? null : existValues,
     );
     const multiColDimensionValues = transformDimensionsValuesWithExtraFields(
       item,
       columns,
-      valueInCols ? values : undefined,
+      valueInCols ? existValues : null,
     );
 
     for (const rowDimensionValues of multiRowDimensionValues) {
