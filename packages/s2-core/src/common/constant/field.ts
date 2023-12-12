@@ -7,3 +7,4 @@ export const TOTAL_VALUE = '$$total$$';
 export const MULTI_VALUE = '$$multi$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
 export const EMPTY_FIELD_VALUE = '$$empty_field_value$$';
+export const EMPTY_EXTRA_FIELD_PLACEHOLDER = '$$empty_extra_placeholder$$';

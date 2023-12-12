@@ -44,6 +44,7 @@ import {
   flattenIndexesData,
   getDataPath,
   getDataPathPrefix,
+  getExistValues,
   getFlattenDimensionValues,
   getSatisfiedPivotMetaValues,
   isMultiValue,
@@ -75,6 +76,10 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
+  getExistValuesByDataItem(data: DataType, values: string[]) {
+    return getExistValues(data, values);
+  }
+
   /**
    * When data related config changed, we need
    * 1、re-process config
@@ -92,16 +97,6 @@ export class PivotDataSet extends BaseDataSet {
     this.handleDimensionValuesSort();
   }
 
-  public transformDimensionsValues(
-    record: DataType = {},
-    dimensions: string[] = [],
-    placeholder = TOTAL_VALUE,
-  ) {
-    return transformDimensionsValues(record, dimensions, {
-      placeholder,
-    });
-  }
-
   public transformIndexesData(data: DataType[], rows: string[]) {
     const { columns, values, valueInCols } = this.fields;
 
@@ -117,18 +112,15 @@ export class PivotDataSet extends BaseDataSet {
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
+        getExistValuesByDataItem: this.getExistValuesByDataItem,
       });
       this.indexesData = result.indexesData;
       this.rowPivotMeta = result.rowPivotMeta;
       this.colPivotMeta = result.colPivotMeta;
       this.sortedDimensionValues = result.sortedDimensionValues;
     });
-    return result;
-  }
 
-  getValues() {
-    const { values } = this.fields;
-    return values;
+    return result;
   }
 
   /**
@@ -340,7 +332,7 @@ export class PivotDataSet extends BaseDataSet {
       return [];
     }
 
-    const dimensionValues = this.transformDimensionsValues(
+    const dimensionValues = transformDimensionsValues(
       query,
       dimensions,
       MULTI_VALUE,
@@ -407,8 +399,8 @@ export class PivotDataSet extends BaseDataSet {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
 
-    const rowDimensionValues = this.transformDimensionsValues(query, rows);
-    const colDimensionValues = this.transformDimensionsValues(
+    const rowDimensionValues = transformDimensionsValues(query, rows);
+    const colDimensionValues = transformDimensionsValues(
       query,
       columns as string[],
     );
@@ -526,12 +518,12 @@ export class PivotDataSet extends BaseDataSet {
       ? rows.concat(actualDrillDownFields)
       : rows;
 
-    const rowDimensionValues = this.transformDimensionsValues(
+    const rowDimensionValues = transformDimensionsValues(
       query,
       totalRows,
       MULTI_VALUE,
     );
-    const colDimensionValues = this.transformDimensionsValues(
+    const colDimensionValues = transformDimensionsValues(
       query,
       columns as string[],
       MULTI_VALUE,

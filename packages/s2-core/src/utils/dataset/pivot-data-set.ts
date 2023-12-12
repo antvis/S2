@@ -14,6 +14,7 @@ import {
 } from 'lodash';
 import type { PickEssential } from '../../common/interface/utils';
 import {
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   MULTI_VALUE,
@@ -56,18 +57,9 @@ export function isMultiValue(pathValue: string | number) {
 export function transformDimensionsValues(
   record: DataType = {},
   dimensions: string[] = [],
-  {
-    placeholder = TOTAL_VALUE,
-    excludeExtra = false,
-  }: {
-    placeholder?: string;
-    excludeExtra?: boolean;
-  } = {},
+  placeholder = TOTAL_VALUE,
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
-    if (dimension === EXTRA_FIELD && excludeExtra) {
-      return res;
-    }
     const value = record[dimension];
     if (!(dimension in record)) {
       res.push(placeholder);
@@ -78,10 +70,19 @@ export function transformDimensionsValues(
   }, []);
 }
 
+export function getExistValues(data: DataType, values: string[]) {
+  const result = values.filter((v) => v in data);
+  if (isEmpty(result)) {
+    result.push(EMPTY_EXTRA_FIELD_PLACEHOLDER);
+  }
+
+  return result;
+}
+
 export function transformDimensionsValuesWithExtraFields(
   record: DataType = {},
   dimensions: string[] = [],
-  values: string[] = [],
+  values?: string[],
 ) {
   const result = [];
 
@@ -101,16 +102,13 @@ export function transformDimensionsValuesWithExtraFields(
     }, []);
   }
 
-  if (isEmpty(values)) {
-    result.push(transform(record, dimensions));
-  } else {
+  if (values) {
     values.forEach((value) => {
-      if (value in record) {
-        result.push(transform(record, dimensions, value));
-      }
+      result.push(transform(record, dimensions, value));
     });
+  } else {
+    result.push(transform(record, dimensions));
   }
-
   return result;
 }
 
@@ -269,14 +267,14 @@ export function getDataPath(params: DataPathParams) {
 interface Param {
   rows: string[];
   columns: string[];
-  values?: string[];
+  values: string[];
   valueInCols: boolean;
   data: DataType[];
   indexesData: Record<string, DataType[][] | DataType[]>;
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
-  shouldFlatten?: boolean;
+  getExistValuesByDataItem: (data: DataType, values: string[]) => string[];
 }
 
 /**
@@ -293,7 +291,7 @@ export function transformIndexesData(params: Param) {
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
-    shouldFlatten = true,
+    getExistValuesByDataItem,
   } = params;
   const paths = [];
 
@@ -320,21 +318,25 @@ export function transformIndexesData(params: Param) {
 
   const prefix = getDataPathPrefix(rows, columns as string[]);
 
-  const flattenData = (item: DataType) => {
+  data.forEach((item: DataType) => {
     // 空数据没有意义，直接跳过
     if (!item || isEmpty(item)) {
       return;
     }
 
+    const existValues = getExistValuesByDataItem
+      ? getExistValuesByDataItem(item, values)
+      : getExistValues(item, values);
+
     const multiRowDimensionValues = transformDimensionsValuesWithExtraFields(
       item,
       rows,
-      valueInCols ? undefined : values,
+      valueInCols ? null : existValues,
     );
     const multiColDimensionValues = transformDimensionsValuesWithExtraFields(
       item,
       columns,
-      valueInCols ? values : undefined,
+      valueInCols ? existValues : null,
     );
 
     for (const rowDimensionValues of multiRowDimensionValues) {
@@ -354,37 +356,7 @@ export function transformIndexesData(params: Param) {
         set(indexesData, path, item);
       }
     }
-  };
-
-  const handleData = (item: DataType) => {
-    // 空数据没有意义，直接跳过
-    if (!item || isEmpty(item)) {
-      return;
-    }
-
-    const rowDimensionValues = transformDimensionsValues(item, rows, {
-      excludeExtra: true,
-    });
-    const colDimensionValues = transformDimensionsValues(item, columns, {
-      excludeExtra: true,
-    });
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      rowFields: rows,
-      colFields: columns,
-      isFirstCreate: true,
-      onFirstCreate,
-      prefix,
-    });
-    paths.push(path);
-    set(indexesData, path, item);
-    paths.push(path);
-  };
-
-  data.forEach(shouldFlatten ? flattenData : handleData);
+  });
 
   return {
     paths,
@@ -497,8 +469,10 @@ export function getSatisfiedPivotMetaValues(params: {
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
       const values = [...metaValue.children.values()];
-      return values.filter((v) =>
-        queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE,
+      return values.filter(
+        (v) =>
+          v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
+          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
       );
     });
     if (list.length > 1) {
