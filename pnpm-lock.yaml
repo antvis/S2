@@ -258,14 +258,14 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3
       '@antv/g':
-        specifier: ^5.18.21
-        version: 5.18.21
+        specifier: ^5.18.23
+        version: 5.18.23
       '@antv/g-canvas':
-        specifier: ^1.11.24
-        version: 1.11.24
+        specifier: ^1.11.25
+        version: 1.11.25
       '@antv/g-lite':
-        specifier: ^1.2.19
-        version: 1.2.19
+        specifier: ^1.2.20
+        version: 1.2.20
       d3-ease:
         specifier: ^3.0.1
         version: 3.0.1
@@ -286,23 +286,23 @@ importers:
         specifier: ^9.3.3
         version: 9.3.3
       '@types/d3-dsv':
-        specifier: ^3.0.0
-        version: 3.0.1
+        specifier: ^3.0.7
+        version: 3.0.7
       '@types/d3-ease':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.2
+        version: 3.0.2
       '@types/d3-interpolate':
-        specifier: ^3.0.1
-        version: 3.0.1
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/d3-timer':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.2
+        version: 3.0.2
       '@types/tinycolor2':
-        specifier: ^1.4.4
-        version: 1.4.4
+        specifier: ^1.4.6
+        version: 1.4.6
       csstype:
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.1.3
+        version: 3.1.3
       d3-dsv:
         specifier: ^1.1.1
         version: 1.2.0
@@ -332,14 +332,14 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3
       '@antv/g':
-        specifier: ^5.18.22
-        version: 5.18.22
+        specifier: ^5.18.23
+        version: 5.18.23
       '@antv/g-plugin-a11y':
-        specifier: ^0.6.19
-        version: 0.6.19
+        specifier: ^0.6.20
+        version: 0.6.20
       '@antv/g-plugin-rough-canvas-renderer':
-        specifier: ^1.9.24
-        version: 1.9.24
+        specifier: ^1.9.25
+        version: 1.9.25
       '@antv/g2':
         specifier: ^5.1.11
         version: 5.1.11
@@ -354,28 +354,31 @@ importers:
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
       '@testing-library/react-hooks':
         specifier: ^8.0.1
-        version: 8.0.1(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
+        version: 8.0.1(@types/react@18.2.43)(react-dom@18.2.0)(react@18.2.0)
       '@types/d3-dsv':
-        specifier: ^3.0.4
+        specifier: ^3.0.7
         version: 3.0.7
       '@types/react':
-        specifier: 18.2.28
-        version: 18.2.28
+        specifier: 18.2.43
+        version: 18.2.43
       '@types/react-beautiful-dnd':
-        specifier: ^13.1.5
+        specifier: ^13.1.7
         version: 13.1.7
       '@types/react-color':
-        specifier: ^3.0.7
+        specifier: ^3.0.10
         version: 3.0.10
       '@types/react-dom':
-        specifier: 18.2.13
-        version: 18.2.13
+        specifier: 18.2.17
+        version: 18.2.17
       antd:
-        specifier: ^5.11.5
-        version: 5.12.1(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.12.2
+        version: 5.12.2(react-dom@18.2.0)(react@18.2.0)
       d3-dsv:
         specifier: ^1.1.1
         version: 1.2.0
+      rc-pagination:
+        specifier: ^4.0.3
+        version: 4.0.3(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -442,16 +445,16 @@ importers:
         version: 5.2.6(react-dom@18.2.0)(react@18.2.0)
       '@antv/dumi-theme-antv':
         specifier: ^0.4.4
-        version: 0.4.4(@babel/core@7.23.2)(dumi@2.2.14)
+        version: 0.4.4(@babel/core@7.23.2)(dumi@2.2.15)
       '@antv/g-canvas':
-        specifier: ^1.11.24
-        version: 1.11.24
+        specifier: ^1.11.25
+        version: 1.11.25
       '@antv/g-plugin-a11y':
-        specifier: ^0.6.19
-        version: 0.6.19
+        specifier: ^0.6.20
+        version: 0.6.20
       '@antv/g-plugin-rough-canvas-renderer':
-        specifier: ^1.9.24
-        version: 1.9.24
+        specifier: ^1.9.25
+        version: 1.9.25
       '@antv/g2':
         specifier: ^5.1.11
         version: 5.1.11
@@ -462,14 +465,14 @@ importers:
         specifier: next
         version: link:../packages/s2-react
       antd:
-        specifier: ^5.12.1
-        version: 5.12.1(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.12.2
+        version: 5.12.2(react-dom@18.2.0)(react@18.2.0)
       copy-to-clipboard:
         specifier: ^3.3.3
         version: 3.3.3
       dumi:
-        specifier: ^2.2.14
-        version: 2.2.14(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2)
+        specifier: ^2.2.15
+        version: 2.2.15(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2)
       gh-pages:
         specifier: ^6.1.0
         version: 6.1.0
@@ -659,8 +662,8 @@ packages:
     dependencies:
       '@ctrl/tinycolor': 3.6.1
 
-  /@ant-design/cssinjs@1.18.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-NXzfnNjJgpn+L6d0cD2cS14Tsqs46Bsua6PwVMlmN+F0OEoa9PhJRwUWmI+HyIrc4cgVZVfQTDpXC0p07Jmglw==}
+  /@ant-design/cssinjs@1.18.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1JURAPrsjK1GwpqByTq3bJ7nF7lbMKDZpehqeR2n8/IR5O58/W1U4VcOeaw5ZyTHri3tEMcom7dyP2tvxpW54g==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
@@ -746,7 +749,7 @@ packages:
   /@antv/component@1.0.0:
     resolution: {integrity: sha512-LSM6NZJqfnev/TYUvYsmQNHUUjw5gtrXFS4TjavstYSBIbQoCWa0BtE6lR9QblA1MBC+B5CTNc8MqiZRRzKogA==}
     dependencies:
-      '@antv/g': 5.18.22
+      '@antv/g': 5.18.23
       '@antv/scale': 0.4.13
       '@antv/util': 3.3.5
       svg-path-parser: 1.1.0
@@ -758,7 +761,7 @@ packages:
       '@antv/util': 2.0.17
       gl-matrix: 3.4.3
 
-  /@antv/dumi-theme-antv@0.4.4(@babel/core@7.23.2)(dumi@2.2.14):
+  /@antv/dumi-theme-antv@0.4.4(@babel/core@7.23.2)(dumi@2.2.15):
     resolution: {integrity: sha512-/5eB2bn9pZZmORcYFmQQ8xjgD22/W879E3XfHKvgYDNkYlxNUMmOknxiNbV5Pdf0s8oUgLEerKnSWqdkQc6Tvg==}
     peerDependencies:
       dumi: ^2.0.0
@@ -775,7 +778,7 @@ packages:
       codesandbox: 2.2.3
       d3-dsv: 3.0.1
       docsearch.js: 2.6.3
-      dumi: 2.2.14(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2)
+      dumi: 2.2.15(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2)
       front-matter: 4.0.2
       fs-extra: 10.1.0
       glob: 8.1.0
@@ -816,34 +819,45 @@ packages:
   /@antv/event-emitter@0.1.3:
     resolution: {integrity: sha512-4ddpsiHN9Pd4UIlWuKVK1C4IiZIdbwQvy9i7DUSI3xNJ89FPUFt8lxDYj8GzzfdllV0NkJTRxnG+FvLk0llidg==}
 
-  /@antv/g-camera-api@1.2.20:
-    resolution: {integrity: sha512-HapY48zFzDt43A3Z34kogApshwmUxQiXJKQ8XwB0UGzLc6ndMKGYx9tyXdMuozSqIQZ0AT5qasujYuu4h+6m7g==}
+  /@antv/g-camera-api@1.2.21:
+    resolution: {integrity: sha512-5qdqhRV8fYPsOiQkRWusVLWV8z2DycFKXShjrLkIhoZIXW0dpRwLs4ixc0BW0Gbj6Y37DwNx54dggRihhVyujQ==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
 
-  /@antv/g-canvas@1.11.24:
-    resolution: {integrity: sha512-BEgYZNN7ZXV3l4acZ/d3FoP+EBPeB/fQPInA+6iRf4gBfTsH/fSKNbqvHqV00hgtLHT/u3z16WyP7jcMH1vgHA==}
+  /@antv/g-canvas@1.11.25:
+    resolution: {integrity: sha512-8Fx7vpwYdUmaYPUn6fcVdgy/mXVzeymSBfrNXqu1O1jqhTtIUH5Jr8Ui+zTxf8NZkqh7pBFP8TRroXpIWTJ6JQ==}
     dependencies:
-      '@antv/g-lite': 1.2.19
-      '@antv/g-plugin-canvas-path-generator': 1.3.19
-      '@antv/g-plugin-canvas-picker': 1.10.21
-      '@antv/g-plugin-canvas-renderer': 1.9.21
-      '@antv/g-plugin-dom-interaction': 1.9.19
-      '@antv/g-plugin-html-renderer': 1.9.22
-      '@antv/g-plugin-image-loader': 1.3.19
+      '@antv/g-lite': 1.2.20
+      '@antv/g-plugin-canvas-path-generator': 1.3.20
+      '@antv/g-plugin-canvas-picker': 1.10.22
+      '@antv/g-plugin-canvas-renderer': 1.9.22
+      '@antv/g-plugin-dom-interaction': 1.9.20
+      '@antv/g-plugin-html-renderer': 1.9.23
+      '@antv/g-plugin-image-loader': 1.3.20
       '@antv/util': 3.3.5
       tslib: 2.6.2
 
-  /@antv/g-dom-mutation-observer-api@1.2.19:
-    resolution: {integrity: sha512-sBrwUIkcixEQIr1hhoRfCrZ80m6aNl/VbI0PhRGLDlkJRuoLd9pLn1uSQI042N7M5X7oLW4F9tbN1Aw3ahjT+Q==}
+  /@antv/g-dom-mutation-observer-api@1.2.20:
+    resolution: {integrity: sha512-J3EuEtWmIKGC44XWgJXG/nFnsjFY/oH9aAj1YaDVMtYREcyQOjb/aY9jdCfDmZBrNcMYeUHcsZEVhYwpc0wBcw==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
 
   /@antv/g-lite@1.2.19:
     resolution: {integrity: sha512-eHFkha7smINzzPCZ2znh10Fx47B7wGf9HM8I6srL5WJskgDYc7nQ2fs/azJcwoFdWxJLar3hugWi8azYkRTZNA==}
+    dependencies:
+      '@antv/g-math': 2.0.2
+      '@antv/util': 3.3.5
+      d3-color: 1.4.1
+      eventemitter3: 5.0.1
+      gl-matrix: 3.4.3
+      rbush: 3.0.1
+      tslib: 2.6.2
+
+  /@antv/g-lite@1.2.20:
+    resolution: {integrity: sha512-h/0Chyp87e4gEGQw9pn5n3489rGEgttlMVwuhRsYXcOGVAYR92+7/jkDYEArf2eVtSdko11pg+kJKhr0yWk7gA==}
     dependencies:
       '@antv/g-math': 2.0.2
       '@antv/util': 3.3.5
@@ -860,46 +874,46 @@ packages:
       gl-matrix: 3.4.3
       tslib: 2.6.2
 
-  /@antv/g-plugin-a11y@0.6.19:
-    resolution: {integrity: sha512-XxpxQ9eD7XG2kwE8EfDq+crsGgxm61g3U8nFbmakt0PX+uJVJ5jiEGKhyhENdhk2VUjPIAyKhOxU3wQpJmiyTg==}
+  /@antv/g-plugin-a11y@0.6.20:
+    resolution: {integrity: sha512-lKHcwA2NLibakR3Eoa6fSu4fFqumal+bUoFZCVHciHEUscrVDCFZfXdOFYiRxRQADEAI2H+PTQjV+yBV+GTOCw==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       tslib: 2.6.2
 
-  /@antv/g-plugin-canvas-path-generator@1.3.19:
-    resolution: {integrity: sha512-fJTtx1Th8JHaaShrfNdU9fmasR+u6qH2P6ItUnJS9Yp8d+/Q+yPVPC0YOgI/d9dMpl6wcdcRjSkIvm1upXH8Kw==}
+  /@antv/g-plugin-canvas-path-generator@1.3.20:
+    resolution: {integrity: sha512-q6jQpdRxJem4e3inmmTP4Uv03No5mzt1bT4OeA1bE3xVuD8l3yBNKu1We6bfdp+1PcfLnDAmvGosQL/sMneiRQ==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/g-math': 2.0.2
       '@antv/util': 3.3.5
       tslib: 2.6.2
 
-  /@antv/g-plugin-canvas-picker@1.10.21:
-    resolution: {integrity: sha512-6Vt21POTJ8MO3VrGFyOEInDgGAPOe9HYhod67R8Q6yG3iKbuWCNeqNP5V5po5lNF5joFRfw08Bp3rY3VdJqZNg==}
+  /@antv/g-plugin-canvas-picker@1.10.22:
+    resolution: {integrity: sha512-gj6caACxuuNP1oy3kG5RCLMHfmlyvPnaxkQ9Sv/Rfe39I6xpqNNiAfP3vZbSZqBDyKkhdjHJMjdELEJ24seAJg==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/g-math': 2.0.2
-      '@antv/g-plugin-canvas-path-generator': 1.3.19
-      '@antv/g-plugin-canvas-renderer': 1.9.21
-      '@antv/util': 3.3.5
-      gl-matrix: 3.4.3
-      tslib: 2.6.2
-
-  /@antv/g-plugin-canvas-renderer@1.9.21:
-    resolution: {integrity: sha512-XvV0zhDQUOdhY6p1LjQ9oNX80rc0AODjx4deEflGShSSX+lRtlxf3ovZEeeWA2qV7EGint3BsywZiyv9/nf66A==}
-    dependencies:
-      '@antv/g-lite': 1.2.19
-      '@antv/g-math': 2.0.2
-      '@antv/g-plugin-canvas-path-generator': 1.3.19
-      '@antv/g-plugin-image-loader': 1.3.19
+      '@antv/g-plugin-canvas-path-generator': 1.3.20
+      '@antv/g-plugin-canvas-renderer': 1.9.22
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
 
-  /@antv/g-plugin-dom-interaction@1.9.19:
-    resolution: {integrity: sha512-4owDqeRLGwImB2FM0sW0g1Yw1GQSqALHBJVlyWRbJy6o64EgDOrKvNzs7oeL2rqzvGZSLIVeJPxJrJ2koEYymw==}
+  /@antv/g-plugin-canvas-renderer@1.9.22:
+    resolution: {integrity: sha512-XsEA0LslLKP0Vc7+YOLF1sk7Y2kL1g7Ip9tdiOjLdnl2ZeMOnx7FlOfL0UC9MpQGyM/SwNCmth8gk47KBdo8Yg==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
+      '@antv/g-math': 2.0.2
+      '@antv/g-plugin-canvas-path-generator': 1.3.20
+      '@antv/g-plugin-image-loader': 1.3.20
+      '@antv/util': 3.3.5
+      gl-matrix: 3.4.3
+      tslib: 2.6.2
+
+  /@antv/g-plugin-dom-interaction@1.9.20:
+    resolution: {integrity: sha512-0saRodsOwKIu8G2C8D6adxHysJkcQV9ATJ6QCN2mlqpyL+KWvghon1jibBR0cOQusL7f0baxWttkBgepbYPt1w==}
+    dependencies:
+      '@antv/g-lite': 1.2.20
       tslib: 2.6.2
 
   /@antv/g-plugin-dragndrop@1.8.19:
@@ -909,43 +923,35 @@ packages:
       '@antv/util': 3.3.5
       tslib: 2.6.2
 
-  /@antv/g-plugin-html-renderer@1.9.22:
-    resolution: {integrity: sha512-+vGFscjEa6yWxJzqPOmkGL5WjrfT0jDlRBzsF1UczeMNEM8zFQu5/VXL8LlCDOnOTJEo3UpkzrUT0fQe4mHaAA==}
+  /@antv/g-plugin-html-renderer@1.9.23:
+    resolution: {integrity: sha512-z4YKoI+K28wQCHWHDciAlY+U4EXAiJ9gyhjFUtkC1OQIeRsuPdoBLwp4lVCrbaliYVjdFfhov4SkG9trU0NEUw==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
 
-  /@antv/g-plugin-image-loader@1.3.19:
-    resolution: {integrity: sha512-82YBFax1DeNY8S8FsudlkuxTcg/6LBnHdp2vHHvZWDCmCP0BU0+neRQMIqC2b13mn+7zRiGXg0DllwnJEWBZ8g==}
+  /@antv/g-plugin-image-loader@1.3.20:
+    resolution: {integrity: sha512-9ZJfV3/MWlRT4VbuiUtdXPf1pwdmV8HLQlcl/HakN9z9jEA2tPMXuWvcIghDnAGsb+ii2bUNEeZZgbWtHyjwVA==}
     dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/util': 3.3.5
       gl-matrix: 3.4.3
       tslib: 2.6.2
 
-  /@antv/g-plugin-rough-canvas-renderer@1.9.24:
-    resolution: {integrity: sha512-P0Jxv+zxc+4VrPWzAxEoyutqYlaFgf06l8xPuUy4AjbA56RheglDIgQqBLn+6DLRrhXziXt0tYKtHyKjERMGwQ==}
+  /@antv/g-plugin-rough-canvas-renderer@1.9.25:
+    resolution: {integrity: sha512-BDdZpEhpN86uKnKWKaERP/T33L8LlrVVDYwue06GehdSdr7/MwS6qoPNsNZfs0KShdZA/Z6nJ2MW5o1v4hgf7w==}
     dependencies:
-      '@antv/g-canvas': 1.11.24
-      '@antv/g-lite': 1.2.19
+      '@antv/g-canvas': 1.11.25
+      '@antv/g-lite': 1.2.20
       '@antv/util': 3.3.5
       roughjs: 4.6.6
       tslib: 2.6.2
 
-  /@antv/g-web-animations-api@1.2.19:
-    resolution: {integrity: sha512-Px4Lj5wDkGTaj4BkazdcWVgWdV98oIumljKjSFyrrEdkV/Xq+f7LgSOIA6zBFQ6MQpt7PS6DtYWdmSQKjynPWw==}
+  /@antv/g-web-animations-api@1.2.21:
+    resolution: {integrity: sha512-3LkPDOjpMjQ9b/mYoGgsoocWEOvDIUW2GpoLClbyd0vcIc97EujXVUobUIu7jvFQgvucgTnaxDLkAGDzuPaFvg==}
     dependencies:
-      '@antv/g-lite': 1.2.19
-      '@antv/util': 3.3.5
-      tslib: 2.6.2
-    dev: false
-
-  /@antv/g-web-animations-api@1.2.20:
-    resolution: {integrity: sha512-Hs0zJUs2lMSL9BoRnOMsXt3eGuLr0yiETGDXDhv858YS4t0Dw+CHmGUct+pNIaOK/OgF1s9xtmJjRITXntWgpg==}
-    dependencies:
-      '@antv/g-lite': 1.2.19
+      '@antv/g-lite': 1.2.20
       '@antv/util': 3.3.5
       tslib: 2.6.2
 
@@ -955,8 +961,8 @@ packages:
       '@antv/component': 1.0.0
       '@antv/coord': 0.4.7
       '@antv/event-emitter': 0.1.3
-      '@antv/g': 5.18.22
-      '@antv/g-canvas': 1.11.24
+      '@antv/g': 5.18.23
+      '@antv/g-canvas': 1.11.25
       '@antv/g-plugin-dragndrop': 1.8.19
       '@antv/path-util': 3.0.1
       '@antv/scale': 0.4.13
@@ -975,22 +981,13 @@ packages:
       fmin: 0.0.2
       pdfast: 0.2.0
 
-  /@antv/g@5.18.21:
-    resolution: {integrity: sha512-+RFiVeMgmPL94U4/wN3HUwxYmkOq2msrPAg38NeGG6Mwo4DOW2nEZqoQCpDFxzmTRwKM984b24epcEPv+wNy+g==}
+  /@antv/g@5.18.23:
+    resolution: {integrity: sha512-6O+ODt1w0FC4w98J00Ao7rtqztkV7AWqKF69kog3RqQWh40rYpM7JIfR0cFUAdHf8GLRyr4m+RQR+TZlt+QVEw==}
     dependencies:
-      '@antv/g-camera-api': 1.2.20
-      '@antv/g-dom-mutation-observer-api': 1.2.19
-      '@antv/g-lite': 1.2.19
-      '@antv/g-web-animations-api': 1.2.19
-    dev: false
-
-  /@antv/g@5.18.22:
-    resolution: {integrity: sha512-l6ttQEy4413F6ONFq3m0GmdS3ge5ZTSBp50G7FmuCifoI2gIAtBiuI2IohdhhchwYIMdNN4PC+iJ4bedor3kWw==}
-    dependencies:
-      '@antv/g-camera-api': 1.2.20
-      '@antv/g-dom-mutation-observer-api': 1.2.19
-      '@antv/g-lite': 1.2.19
-      '@antv/g-web-animations-api': 1.2.20
+      '@antv/g-camera-api': 1.2.21
+      '@antv/g-dom-mutation-observer-api': 1.2.20
+      '@antv/g-lite': 1.2.20
+      '@antv/g-web-animations-api': 1.2.21
 
   /@antv/path-util@3.0.1:
     resolution: {integrity: sha512-tpvAzMpF9Qm6ik2YSMqICNU5tco5POOW7S4XoxZAI/B0L26adU+Md/SmO0BBo2SpuywKvzPH3hPT3xmoyhr04Q==}
@@ -1009,7 +1006,7 @@ packages:
   /@antv/util@2.0.17:
     resolution: {integrity: sha512-o6I9hi5CIUvLGDhth0RxNSFDRwXeywmt6ExR4+RmVAzIi48ps6HUy+svxOCayvrPBN37uE6TAc2KDofRo0nK9Q==}
     dependencies:
-      csstype: 3.1.2
+      csstype: 3.1.3
       tslib: 2.6.2
 
   /@antv/util@3.3.5:
@@ -4205,7 +4202,7 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/react-hooks@8.0.1(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0):
+  /@testing-library/react-hooks@8.0.1(@types/react@18.2.43)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Aqhl2IVmLt8IovEVarNDFuJDVWVvhnr9/GCU6UUnrYXwgDFF9h2L2o2P9KBni1AST5sT6riAyoukFLyjQUgD/g==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -4222,7 +4219,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.20.7
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-error-boundary: 3.1.4(react@18.2.0)
@@ -4237,7 +4234,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.5
       '@testing-library/dom': 9.3.3
-      '@types/react-dom': 18.2.13
+      '@types/react-dom': 18.2.17
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
@@ -4307,26 +4304,22 @@ packages:
     resolution: {integrity: sha512-HKuicPHJuvPgCD+np6Se9MQvS6OCbJmOjGvylzMJRlDwUXjKTTXs6Pwgk79O09Vj/ho3u1ofXnhFOaEWWPrlwA==}
     dev: true
 
-  /@types/d3-dsv@3.0.1:
-    resolution: {integrity: sha512-76pBHCMTvPLt44wFOieouXcGXWOF0AJCceUvaFkxSZEu4VDUdv93JfpMa6VGNFs01FHfuP4a5Ou68eRG1KBfTw==}
-    dev: true
-
   /@types/d3-dsv@3.0.7:
     resolution: {integrity: sha512-n6QBF9/+XASqcKK6waudgL0pf/S5XHPPI8APyMLLUHd8NqouBGLsU8MgtO7NINGtPBtk9Kko/W4ea0oAspwh9g==}
     dev: true
 
-  /@types/d3-ease@3.0.0:
-    resolution: {integrity: sha512-aMo4eaAOijJjA6uU+GIeW018dvy9+oH5Y2VPPzjjfxevvGQ/oRDs+tfYC9b50Q4BygRR8yE2QCLsrT0WtAVseA==}
+  /@types/d3-ease@3.0.2:
+    resolution: {integrity: sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA==}
     dev: true
 
-  /@types/d3-interpolate@3.0.1:
-    resolution: {integrity: sha512-jx5leotSeac3jr0RePOH1KdR9rISG91QIE4Q2PYTu4OymLTZfA3SrnURSLzKH48HmXVUru50b8nje4E79oQSQw==}
+  /@types/d3-interpolate@3.0.4:
+    resolution: {integrity: sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==}
     dependencies:
       '@types/d3-color': 3.1.0
     dev: true
 
-  /@types/d3-timer@3.0.0:
-    resolution: {integrity: sha512-HNB/9GHqu7Fo8AQiugyJbv6ZxYz58wef0esl4Mv828w1ZKpAshw/uFWVDUcIB9KKFeFKoxS3cHY07FFgtTRZ1g==}
+  /@types/d3-timer@3.0.2:
+    resolution: {integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==}
     dev: true
 
   /@types/debug@4.1.7:
@@ -4381,7 +4374,7 @@ packages:
   /@types/hoist-non-react-statics@3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
       hoist-non-react-statics: 3.3.2
     dev: false
 
@@ -4525,42 +4518,42 @@ packages:
   /@types/react-beautiful-dnd@13.1.7:
     resolution: {integrity: sha512-jQZLov9OkD0xRQkqz8/lx66bHYAYv+g4+POBqnH5Jtt/xo4MygzM879Q9sxAiosPBdNj1JYTdbPxDn3dNRYgow==}
     dependencies:
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
     dev: true
 
   /@types/react-color@3.0.10:
     resolution: {integrity: sha512-6K5BAn3zyd8lW8UbckIAVeXGxR82Za9jyGD2DBEynsa7fKaguLDVtjfypzs7fgEV7bULgs7uhds8A8v1wABTvQ==}
     dependencies:
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
       '@types/reactcss': 1.2.6
     dev: true
 
-  /@types/react-dom@18.2.13:
-    resolution: {integrity: sha512-eJIUv7rPP+EC45uNYp/ThhSpE16k22VJUknt5OLoH9tbXoi8bMhwLf5xRuWMywamNbWzhrSmU7IBJfPup1+3fw==}
+  /@types/react-dom@18.2.17:
+    resolution: {integrity: sha512-rvrT/M7Df5eykWFxn6MYt5Pem/Dbyc1N8Y0S9Mrkw2WFCRiqUgw9P7ul2NpwsXCSM1DVdENzdG9J5SreqfAIWg==}
     dependencies:
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
     dev: true
 
   /@types/react-redux@7.1.25:
     resolution: {integrity: sha512-bAGh4e+w5D8dajd6InASVIyCo4pZLJ66oLb80F9OBLO1gKESbZcRCJpTT6uLXX+HAB57zw1WTdwJdAsewuTweg==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
       hoist-non-react-statics: 3.3.2
       redux: 4.2.0
     dev: false
 
-  /@types/react@18.2.28:
-    resolution: {integrity: sha512-ad4aa/RaaJS3hyGz0BGegdnSRXQBkd1CCYDCdNjBPg90UUpLgo+WlJqb9fMYUxtehmzF3PJaTWqRZjko6BRzBg==}
+  /@types/react@18.2.43:
+    resolution: {integrity: sha512-nvOV01ZdBdd/KW6FahSbcNplt2jCJfyWdTos61RYHV+FVv5L/g9AOX1bmbVcWcLFL8+KHQfh1zVIQrud6ihyQA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
-      csstype: 3.1.2
+      csstype: 3.1.3
 
   /@types/reactcss@1.2.6:
     resolution: {integrity: sha512-qaIzpCuXNWomGR1Xq8SCFTtF4v8V27Y6f+b9+bzHiv087MylI/nTCqqdChNeWS7tslgROmYB7yeiruWX7WnqNg==}
     dependencies:
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
     dev: true
 
   /@types/resolve@1.20.2:
@@ -4606,8 +4599,8 @@ packages:
     resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
     dev: true
 
-  /@types/tinycolor2@1.4.4:
-    resolution: {integrity: sha512-FYK4mlLxUUajo/mblv7EUDHku20qT6ThYNsGZsTHilcHRvIkF8WXqtZO+DVTYkpHWCaAT97LueV59H/5Ve3bGA==}
+  /@types/tinycolor2@1.4.6:
+    resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
     dev: true
 
   /@types/unist@2.0.6:
@@ -4746,6 +4739,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.48.0
       '@typescript-eslint/visitor-keys': 5.48.0
+    dev: true
 
   /@typescript-eslint/scope-manager@5.62.0:
     resolution: {integrity: sha512-VXuvVvZeQCQb5Zgf4HAxc04q5j+WrNAtNh9OwCsCgpKqESMTu3tF/jhZ3xG6T4NZwWl65Bg8KuS2uEvhSfLl0w==}
@@ -4806,6 +4800,7 @@ packages:
   /@typescript-eslint/types@5.48.0:
     resolution: {integrity: sha512-UTe67B0Ypius0fnEE518NB2N8gGutIlTojeTg4nt0GQvikReVkurqxd2LvYa9q9M5MQ6rtpNyWTBxdscw40Xhw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
 
   /@typescript-eslint/types@5.62.0:
     resolution: {integrity: sha512-87NVngcbVXUahrRTqIK27gD2t5Cu1yuCXxbLcFtCzZGlfyVWWh8mLHkoxzjsB6DDNnvdL+fW8MiwPEJyGJQDgQ==}
@@ -4836,6 +4831,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@typescript-eslint/typescript-estree@5.62.0(typescript@5.2.2):
     resolution: {integrity: sha512-CmcQ6uY7b9y694lKdRB8FEel7JbU/40iSAPomu++SjLMntB+2Leay2LO6i8VnJk58MtE9/nQSFIH6jpyRWyYzA==}
@@ -4897,6 +4893,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - typescript
+    dev: true
 
   /@typescript-eslint/utils@5.62.0(eslint@8.52.0)(typescript@5.2.2):
     resolution: {integrity: sha512-n8oxjeb5aIbPFEtmQxQYOLI0i9n5ySBEY/ZEHHZqKQSFnxio1rv6dthascc9dLuwrL0RC5mPCxB7vnAVGAYWAQ==}
@@ -4943,6 +4940,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.48.0
       eslint-visitor-keys: 3.4.3
+    dev: true
 
   /@typescript-eslint/visitor-keys@5.62.0:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
@@ -5604,7 +5602,7 @@ packages:
     dependencies:
       '@vue/runtime-core': 3.3.4
       '@vue/shared': 3.3.4
-      csstype: 3.1.2
+      csstype: 3.1.3
 
   /@vue/server-renderer@3.3.4(vue@3.3.4):
     resolution: {integrity: sha512-Q6jDDzR23ViIb67v+vM1Dqntu+HUexQcsWKhhQa4ARVzxOY2HbC7QRW/ggkDBd5BU+uM1sV6XOAP0b216o34JQ==}
@@ -6085,14 +6083,14 @@ packages:
       scroll-into-view-if-needed: 2.2.31
     dev: false
 
-  /antd@5.12.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-lDTg4U/4MxDD4OK0sLM3D0ge+5nHKj27dUj4ufF1FhQKPcRkVnkCWJ43gb1Cn+S3ybvz7yfsiEv0v+QqWJgPlA==}
+  /antd@5.12.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-lJ4pdBRboN2Tl5hXTqgxUjGIercB2YIK7Z8fVDushgrJ55RhywJjvcQVnBmuxcSPuWEF2Yu8SNBVAnaV4EqzWA==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
       '@ant-design/colors': 7.0.0
-      '@ant-design/cssinjs': 1.18.0(react-dom@18.2.0)(react@18.2.0)
+      '@ant-design/cssinjs': 1.18.1(react-dom@18.2.0)(react@18.2.0)
       '@ant-design/icons': 5.2.6(react-dom@18.2.0)(react@18.2.0)
       '@ant-design/react-slick': 1.0.2(react@18.2.0)
       '@babel/runtime': 7.23.5
@@ -6116,10 +6114,10 @@ packages:
       rc-input: 1.3.6(react-dom@18.2.0)(react@18.2.0)
       rc-input-number: 8.4.0(react-dom@18.2.0)(react@18.2.0)
       rc-mentions: 2.9.1(react-dom@18.2.0)(react@18.2.0)
-      rc-menu: 9.12.2(react-dom@18.2.0)(react@18.2.0)
+      rc-menu: 9.12.4(react-dom@18.2.0)(react@18.2.0)
       rc-motion: 2.9.0(react-dom@18.2.0)(react@18.2.0)
       rc-notification: 5.3.0(react-dom@18.2.0)(react@18.2.0)
-      rc-pagination: 4.0.1(react-dom@18.2.0)(react@18.2.0)
+      rc-pagination: 4.0.3(react-dom@18.2.0)(react@18.2.0)
       rc-picker: 3.14.6(dayjs@1.11.7)(react-dom@18.2.0)(react@18.2.0)
       rc-progress: 3.5.1(react-dom@18.2.0)(react@18.2.0)
       rc-rate: 2.12.0(react-dom@18.2.0)(react@18.2.0)
@@ -8310,6 +8308,9 @@ packages:
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
 
+  /csstype@3.1.3:
+    resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
   /current-script-polyfill@1.0.0:
     resolution: {integrity: sha512-qv8s+G47V6Hq+g2kRE5th+ASzzrL7b6l+tap1DHKK25ZQJv3yIFhH96XaQ7NGL+zRW3t/RDbweJf/dJDe5Z5KA==}
     dev: false
@@ -8960,8 +8961,8 @@ packages:
     resolution: {integrity: sha512-a/Y5lf0G6gwsEQ9hop/n03CcjmHsGBk384Cz/AEX6mRYrfSpUx/lQvP9HLoXkCzScl9PL1sSmLPnMkgaXDCZLA==}
     dev: false
 
-  /dumi@2.2.14(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-RM2T5kJvYhOsp0lOwlIUxXtY8YLWKpq2HAQeVUZJj20xqn2UXQuohpAxQhxKvTtzE+k0WE8mEzVShIM/3cW6YA==}
+  /dumi@2.2.15(@babel/core@7.23.2)(@types/node@20.8.9)(eslint@8.52.0)(jest@26.6.3)(postcss-less@6.0.0)(prettier@3.0.3)(rollup@4.1.5)(stylelint@15.11.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-O6bUZvqYictU1p5kuwD26Vrn4g5HuMaw41GBhjEEG0rjAveNvnQdgJBJS6YarNCTTLJ9fUZ4t86aBt31MUCTHw==}
     hasBin: true
     peerDependencies:
       react: '>=16.8'
@@ -9007,7 +9008,7 @@ packages:
       prismjs: 1.29.0
       raw-loader: 4.0.2
       rc-motion: 2.9.0(react-dom@18.2.0)(react@18.2.0)
-      rc-tabs: 12.13.1
+      rc-tabs: 12.14.1(react-dom@18.2.0)(react@18.2.0)
       rc-tree: 5.8.2(react-dom@18.2.0)(react@18.2.0)
       react-copy-to-clipboard: 5.1.0
       react-error-boundary: 4.0.11
@@ -9882,7 +9883,7 @@ packages:
         optional: true
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.52.0)(typescript@5.2.2)
-      '@typescript-eslint/utils': 5.48.0(eslint@8.52.0)(typescript@5.2.2)
+      '@typescript-eslint/utils': 5.62.0(eslint@8.52.0)(typescript@5.2.2)
       eslint: 8.52.0
       jest: 26.6.3
     transitivePeerDependencies:
@@ -10051,6 +10052,7 @@ packages:
     dependencies:
       eslint: 8.52.0
       eslint-visitor-keys: 2.1.0
+    dev: true
 
   /eslint-visitor-keys@2.1.0:
     resolution: {integrity: sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==}
@@ -15875,7 +15877,7 @@ packages:
       react-dom: '*'
     dependencies:
       css-tree: 1.1.3
-      csstype: 3.1.2
+      csstype: 3.1.3
       fastest-stable-stringify: 2.0.2
       inline-style-prefixer: 6.0.4
       react: 18.2.0
@@ -18629,14 +18631,14 @@ packages:
       '@rc-component/trigger': 1.18.2(react-dom@18.2.0)(react@18.2.0)
       classnames: 2.3.2
       rc-input: 1.3.6(react-dom@18.2.0)(react@18.2.0)
-      rc-menu: 9.12.2(react-dom@18.2.0)(react@18.2.0)
+      rc-menu: 9.12.4(react-dom@18.2.0)(react@18.2.0)
       rc-textarea: 1.5.3(react-dom@18.2.0)(react@18.2.0)
       rc-util: 5.38.1(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  /rc-menu@9.12.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-NzloFH2pRUYmQ3S/YbJAvRkgCZaLvq0sRa5rgJtuIHLfPPprNHNyepeSlT64+dbVqI4qRWL44VN0lUCldCbbfg==}
+  /rc-menu@9.12.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-t2NcvPLV1mFJzw4F21ojOoRVofK2rWhpKPx69q2raUsiHPDP6DDevsBILEYdsIegqBeSXoWs2bf6CueBKg3BFg==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -18733,8 +18735,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /rc-pagination@4.0.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-udrYHGTVXBm5HxE+RYeu9P9o+M7aZSFMwGd2OvYupvSI/wt1jzn2arHb30/nwpJ7tV876BkvJQBvctMH4fDmLw==}
+  /rc-pagination@4.0.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-s1MNwyU83AgycikYckRdpmkN+4ZZuul0E0YdDp7dMgcjg/d2fak767ZIbLP4Q5YPPla7NDorfVFTvGQAPj6jXA==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -19031,22 +19033,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  /rc-tabs@12.13.1:
-    resolution: {integrity: sha512-83u3l2QkO0UznCzdBLEk9WnNcT+imtmDmMT993sUUEOGnNQAmqOdev0XjeqrcvsAMe9CDpAWDFd7L/RZw+LVJQ==}
-    engines: {node: '>=8.x'}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.23.5
-      classnames: 2.3.2
-      rc-dropdown: 4.1.0(react-dom@18.2.0)(react@18.2.0)
-      rc-menu: 9.12.2(react-dom@18.2.0)(react@18.2.0)
-      rc-motion: 2.9.0(react-dom@18.2.0)(react@18.2.0)
-      rc-resize-observer: 1.4.0(react-dom@18.2.0)(react@18.2.0)
-      rc-util: 5.38.1(react-dom@18.2.0)(react@18.2.0)
-    dev: false
-
   /rc-tabs@12.14.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-1xlE7JQNYxD5RwBsM7jf2xSdUrkmTSDFLFEm2gqAgnsRlOGydEzXXNAVTOT6QcgM1G/gCm+AgG+FYPUGb4Hs4g==}
     engines: {node: '>=8.x'}
@@ -19057,7 +19043,7 @@ packages:
       '@babel/runtime': 7.23.5
       classnames: 2.3.2
       rc-dropdown: 4.1.0(react-dom@18.2.0)(react@18.2.0)
-      rc-menu: 9.12.2(react-dom@18.2.0)(react@18.2.0)
+      rc-menu: 9.12.4(react-dom@18.2.0)(react@18.2.0)
       rc-motion: 2.9.0(react-dom@18.2.0)(react@18.2.0)
       rc-resize-observer: 1.4.0(react-dom@18.2.0)(react@18.2.0)
       rc-util: 5.38.1(react-dom@18.2.0)(react@18.2.0)
@@ -19392,7 +19378,7 @@ packages:
       '@formatjs/intl-displaynames': 6.6.4
       '@formatjs/intl-listformat': 7.5.3
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.2.28
+      '@types/react': 18.2.43
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 10.5.8
       tslib: 2.6.2
