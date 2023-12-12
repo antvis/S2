@@ -277,10 +277,18 @@ interface Param {
   getExistValuesByDataItem: (data: DataType, values: string[]) => string[];
 }
 
+export interface TransformResult {
+  paths: (string | number)[];
+  indexesData: Record<string, DataType[][] | DataType[]>;
+  rowPivotMeta: PivotMeta;
+  colPivotMeta: PivotMeta;
+  sortedDimensionValues: SortedDimensionValues;
+}
+
 /**
  * 转换原始数据为二维数组数据
  */
-export function transformIndexesData(params: Param) {
+export function transformIndexesData(params: Param): TransformResult {
   const {
     rows,
     columns,

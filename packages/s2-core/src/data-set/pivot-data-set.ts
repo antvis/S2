@@ -50,6 +50,7 @@ import {
   isMultiValue,
   transformDimensionsValues,
   transformIndexesData,
+  type TransformResult,
 } from '../utils/dataset/pivot-data-set';
 import { DataHandler } from '../utils/dataset/proxy-handler';
 import { calcActionByType } from '../utils/number-calculate';
@@ -97,10 +98,13 @@ export class PivotDataSet extends BaseDataSet {
     this.handleDimensionValuesSort();
   }
 
-  public transformIndexesData(data: DataType[], rows: string[]) {
+  public transformIndexesData(
+    data: DataType[],
+    rows: string[],
+  ): TransformResult {
     const { columns, values, valueInCols } = this.fields;
 
-    let result;
+    let result: TransformResult;
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       result = transformIndexesData({
         rows,
