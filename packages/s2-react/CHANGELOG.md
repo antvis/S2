@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.46.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.0-alpha.1...@antv/s2-react-v1.46.0-alpha.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复字段描述为英文时展示不全 ([#2466](https://github.com/antvis/S2/issues/2466)) ([70ebc50](https://github.com/antvis/S2/commit/70ebc508e58104bacc287b8c7a10ff6cadda2013))
+
+
+### Performance Improvements
+
+* 优化 customTree 包含大量 values 生成结构时性能 ([#2469](https://github.com/antvis/S2/issues/2469)) ([56677c5](https://github.com/antvis/S2/commit/56677c5c4e8701851c14652c44ea2f379d571b7f))
+
 # [@antv/s2-react-v1.46.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0...@antv/s2-react-v1.46.0-alpha.1) (2023-12-08)
 
 
