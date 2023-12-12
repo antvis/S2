@@ -36,7 +36,6 @@ export const filterOutDetail = (values: string[] = []) => {
     (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
   );
 };
-
 export const customFlattenDeep = (
   data: Record<any, any>[] | Record<any, any>,
 ) => {
