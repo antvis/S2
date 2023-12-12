@@ -1,3 +1,15 @@
+# [@antv/s2-react-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.8...@antv/s2-react-v2.0.0-next.9) (2023-12-12)
+
+
+### Bug Fixes
+
+* 修复 React 18 StrictMode 同时挂载两个表格的问题 ([#2432](https://github.com/antvis/S2/issues/2432)) ([7c4da43](https://github.com/antvis/S2/commit/7c4da435976076e5babe21012524694986286210))
+
+
+### Features
+
+* 支持在单元格内渲染 G2 图表 ([#2437](https://github.com/antvis/S2/issues/2437)) ([497f941](https://github.com/antvis/S2/commit/497f9414b89fce01b60db9b6c2eb4292ffe69c1d))
+
 # [@antv/s2-react-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.7...@antv/s2-react-v2.0.0-next.8) (2023-11-22)
 
 
