@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0-alpha.3...@antv/s2-v1.54.0-alpha.4) (2023-12-13)
+
+
+### Bug Fixes
+
+* 去除 data cell hover 的 ellipsisTooltip 展示逻辑 ([#2474](https://github.com/antvis/S2/issues/2474)) ([857682e](https://github.com/antvis/S2/commit/857682eae9d479aa862104dc036f601baabfd0f8))
+
 # [@antv/s2-v1.54.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0-alpha.2...@antv/s2-v1.54.0-alpha.3) (2023-12-12)
 
 
