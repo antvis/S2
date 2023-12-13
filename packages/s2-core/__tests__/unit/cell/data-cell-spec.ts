@@ -99,7 +99,7 @@ describe('Data Cell Tests', () => {
     );
   });
 
-  describe('Data Cell Formatter Tests', () => {
+  describe('Data Cell Formatter & Method Tests', () => {
     beforeEach(() => {
       const container = document.createElement('div');
 
@@ -136,6 +136,64 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(meta, s2);
 
       expect(dataCell.getTextShape().attr('fill')).toEqual(DEFAULT_FONT_COLOR);
+    });
+
+    test('should get empty chart data and default options', () => {
+      const dataCell = new DataCell(meta, s2);
+
+      expect(dataCell.isMultiData()).toBeFalsy();
+      expect(dataCell.isChartData()).toBeFalsy();
+      expect(dataCell.getRenderChartData()).toBeUndefined();
+      expect(dataCell.getRenderChartOptions()).toMatchSnapshot();
+    });
+
+    test('should get correctly cell data status', () => {
+      const multipleMeta = {
+        fieldValue: {
+          values: [1, 2, 3],
+        },
+      } as unknown as ViewMeta;
+
+      const dataCell = new DataCell(multipleMeta, s2);
+
+      expect(dataCell.isMultiData()).toBeTruthy();
+      expect(dataCell.isChartData()).toBeFalsy();
+    });
+
+    test('should get multiple chart data and all options', () => {
+      s2.setThemeCfg({ name: 'dark' });
+
+      const multipleMeta = {
+        fieldValue: {
+          values: {
+            type: 'interval',
+            autoFit: true,
+            data: [
+              {
+                genre: 'Sports',
+                sold: 275,
+              },
+            ],
+            encode: {
+              x: 'genre',
+              y: 'sold',
+              color: 'genre',
+            },
+          },
+        },
+        value: 'value',
+        width: 100,
+        height: 100,
+        x: 0,
+        y: 200,
+      } as unknown as ViewMeta;
+
+      const dataCell = new DataCell(multipleMeta, s2);
+
+      expect(dataCell.isMultiData()).toBeTruthy();
+      expect(dataCell.isChartData()).toBeTruthy();
+      expect(dataCell.getRenderChartData()).toMatchSnapshot();
+      expect(dataCell.getRenderChartOptions()).toMatchSnapshot();
     });
   });
 
@@ -254,6 +312,7 @@ describe('Data Cell Tests', () => {
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#D03050');
     });
   });
+
   describe('Condition Tests', () => {
     const s2 = createPivotSheet({
       conditions: {
@@ -530,8 +589,6 @@ describe('Data Cell Tests', () => {
   });
 
   describe('Data Cell Interaction', () => {
-    // let s2: SpreadSheet;
-
     beforeEach(async () => {
       s2 = createPivotSheet({
         showSeriesNumber: true,
@@ -541,6 +598,11 @@ describe('Data Cell Tests', () => {
       });
       await s2.render();
     });
+
+    afterEach(() => {
+      s2.destroy();
+    });
+
     const emitEvent = (type: S2Event, event: Partial<OriginalEvent>) => {
       s2.emit(type, {
         originalEvent: event,

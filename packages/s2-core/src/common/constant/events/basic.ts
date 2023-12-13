@@ -11,6 +11,8 @@ export enum S2Event {
   ROW_CELL_BRUSH_SELECTION = 'row-cell:brush-selection',
   ROW_CELL_COLLAPSED = 'row-cell:collapsed',
   ROW_CELL_ALL_COLLAPSED = 'row-cell:all-collapsed',
+  ROW_CELL_RENDER = 'row-cell:render',
+
   // 内部用来通信的 event
   ROW_CELL_COLLAPSED__PRIVATE = 'row-cell:collapsed__private',
   ROW_CELL_ALL_COLLAPSED__PRIVATE = 'row-cell:all-collapsed__private',
@@ -26,6 +28,7 @@ export enum S2Event {
   COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
   COL_CELL_EXPANDED = 'col-cell:expanded',
   COL_CELL_HIDDEN = 'col-cell:hidden',
+  COL_CELL_RENDER = 'col-cell:render',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
@@ -37,6 +40,7 @@ export enum S2Event {
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
   DATA_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
   DATA_CELL_SELECT_MOVE = 'data-cell:select-move',
+  DATA_CELL_RENDER = 'data-cell:render',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_HOVER = 'corner-cell:hover',
@@ -46,6 +50,7 @@ export enum S2Event {
   CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
   CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
+  CORNER_CELL_RENDER = 'corner-cell:render',
 
   /** ================ Merged Cells ================  */
   MERGED_CELLS_HOVER = 'merged-cells:hover',
@@ -55,6 +60,10 @@ export enum S2Event {
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
   MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
   MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
+  MERGED_CELLS_RENDER = 'merged-cells:render',
+
+  /** ================ SeriesNumber Cell ================  */
+  SERIES_NUMBER_CELL_RENDER = 'series-number-cell:render',
 
   /** ================ Sort ================  */
   RANGE_SORT = 'sort:range-sort',
@@ -66,7 +75,7 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
-  LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
+  LAYOUT_CELL_RENDER = 'layout:cell-render',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_AFTER_REAL_DATA_CELL_RENDER = 'layout:after-real-data-cell-render',
   LAYOUT_AFTER_RENDER = 'layout:after-render',

@@ -1,9 +1,9 @@
 import { Rect } from '@antv/g';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import type { S2CellType } from '../../common/interface';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
+import { S2Event } from '../../common';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
 
@@ -15,7 +15,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     super(config);
   }
 
-  protected getCellInstance(node: Node): S2CellType {
+  protected getCellInstance(node: Node): RowCell {
     const headerConfig = this.getHeaderConfig();
     const { spreadsheet } = headerConfig;
     const { rowCell } = spreadsheet.options;
@@ -54,7 +54,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     each(nodes, (node) => {
       if (rowCellInRect(node) && node.height !== 0) {
-        let cell: S2CellType | null = null;
+        let cell: RowCell | null = null;
 
         // 首先由外部控制UI展示
         if (rowCell) {
@@ -70,6 +70,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
         if (cell) {
           this.appendChild(cell);
+          spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);
+          spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
         }
       }
     });

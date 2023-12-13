@@ -17,5 +17,8 @@
   "devDependencies": {
     "@antv/s2": "workspace:*",
     "lodash": "^4.17.21"
+  },
+  "tnpm": {
+    "mode": "pnpm"
   }
 }

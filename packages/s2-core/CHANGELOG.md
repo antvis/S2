@@ -1,3 +1,10 @@
+# [@antv/s2-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.9...@antv/s2-v2.0.0-next.10) (2023-12-12)
+
+
+### Features
+
+* 支持在单元格内渲染 G2 图表 ([#2437](https://github.com/antvis/S2/issues/2437)) ([497f941](https://github.com/antvis/S2/commit/497f9414b89fce01b60db9b6c2eb4292ffe69c1d))
+
 # [@antv/s2-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.8...@antv/s2-v2.0.0-next.9) (2023-11-22)
 
 

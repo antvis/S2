@@ -34,6 +34,7 @@ import {
   PivotSheet,
   type S2DataConfig,
   type S2Options,
+  type TooltipOperatorMenuItems,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 import type { BBox } from '@/engine';
@@ -256,6 +257,9 @@ describe('Tooltip Utils Tests', () => {
           options: {
             tooltip,
           },
+          interaction: {
+            getInteractedCells: jest.fn(() => []),
+          },
         } as unknown as SpreadSheet;
 
         expect(getTooltipOptions(spreadsheet, {} as Event)).toEqual({
@@ -306,6 +310,9 @@ describe('Tooltip Utils Tests', () => {
           options: {
             tooltip,
           },
+          interaction: {
+            getInteractedCells: jest.fn(() => []),
+          },
         } as unknown as SpreadSheet;
 
         const tooltipOptions = omit(
@@ -330,16 +337,43 @@ describe('Tooltip Utils Tests', () => {
       },
     );
 
+    test('should use interacted cell type if cannot get current cell type', () => {
+      const mockInteractedCell = { cellType: CellType.DATA_CELL };
+
+      const tooltip: Tooltip = {
+        enable: true,
+        [CellType.DATA_CELL]: {
+          enable: false,
+        },
+        content: '',
+        operation: {},
+      };
+
+      const spreadsheet = {
+        getCellType: () => undefined,
+        options: {
+          tooltip,
+        },
+        interaction: {
+          getInteractedCells: jest.fn(() => [mockInteractedCell]),
+        },
+      } as unknown as SpreadSheet;
+
+      const tooltipOptions = getTooltipOptions(spreadsheet, {} as Event);
+
+      expect(tooltipOptions?.enable).toBeFalsy();
+    });
+
     test('should filter not displayed tooltip operation menus', () => {
       const mockCell = {
         cellType: CellType.DATA_CELL,
       } as unknown as S2CellType;
       const onClick = jest.fn();
 
-      const defaultMenus = [
+      const defaultMenus: TooltipOperatorMenuItems = [
         {
           key: 'default-menu',
-          text: 'default-menu',
+          label: 'default-menu',
         },
       ];
 

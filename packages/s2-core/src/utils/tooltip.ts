@@ -211,12 +211,12 @@ export const getListItem = (
 
   const formatter = getFieldFormatter(spreadsheet, field);
 
-  // 暂时对 object 类型 data 不作处理，上层通过自定义 tooltip 的方式去自行定制
-  let dataValue = getFieldValueOfViewMetaData(data, field);
+  // 非数值类型的 data 不展示 (趋势分析表/迷你图/G2 图表)，上层通过自定义 tooltip 的方式去自行定制
+  const dataValue = getFieldValueOfViewMetaData(data, field);
+  const displayDataValue = isObject(dataValue) ? null : dataValue;
 
-  dataValue = isObject(dataValue) ? JSON.stringify(dataValue) : dataValue;
   const value = formatter(
-    valueField || dataValue,
+    valueField || displayDataValue,
     useCompleteDataForFormatter ? data : undefined,
   );
 
@@ -704,9 +704,16 @@ export const getTooltipOptions = (
     return null;
   }
 
+  const { options, interaction } = spreadsheet;
   const cellType = spreadsheet.getCellType?.(event?.target);
 
-  return getTooltipOptionsByCellType(spreadsheet.options.tooltip!, cellType!);
+  // 如果没有 cellType, 说明是刷选丢失 event target 的场景, 此时从产生过交互状态的单元格里取, 避免刷选读取不到争取 tooltip 配置的问题
+  const sampleCell = interaction.getInteractedCells()[0];
+
+  return getTooltipOptionsByCellType(
+    options.tooltip!,
+    cellType || sampleCell?.cellType!,
+  );
 };
 
 export const getTooltipVisibleOperator = (

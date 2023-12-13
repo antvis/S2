@@ -215,6 +215,7 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
+  enable: true,
   operation: {
     hiddenColumns: true,
     menu: {
@@ -287,6 +288,7 @@ export const s2Options: SheetComponentOptions = {
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
     enableCopy: true,
+    copyWithFormat: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {

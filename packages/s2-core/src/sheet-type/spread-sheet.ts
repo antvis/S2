@@ -154,8 +154,6 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  // public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
-
   public abstract groupSortByMethod(sortMethod: SortMethod, meta: Node): void;
 
   public constructor(

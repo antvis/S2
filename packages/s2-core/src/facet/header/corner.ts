@@ -7,6 +7,7 @@ import type { CornerBBox } from '../bbox/cornerBBox';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
+import { S2Event } from '../../common';
 import {
   getDefaultCornerText,
   getDefaultSeriesNumberText,
@@ -22,7 +23,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     super(config);
   }
 
-  protected getCellInstance(node: Node): S2CellType {
+  protected getCellInstance(node: Node): CornerCell {
     const headerConfig = this.getHeaderConfig();
     const { spreadsheet } = headerConfig;
     const { cornerCell } = spreadsheet.options;
@@ -259,6 +260,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       const cell = this.getCellInstance(node);
 
       this.appendChild(cell);
+      spreadsheet.emit(S2Event.CORNER_CELL_RENDER, cell);
+      spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
     });
   }
 

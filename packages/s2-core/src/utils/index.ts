@@ -9,7 +9,6 @@ export * from './export/index';
 export * from './export/copy';
 export * from './interaction';
 export * from './g-renders';
-export * from './custom-render';
 export * from './g-mini-charts';
 export * from './merge';
 export * from './is-mobile';

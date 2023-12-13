@@ -1,16 +1,18 @@
-import { find, isEmpty, map, slice, zip } from 'lodash';
+import { find, isEmpty, isPlainObject, map, slice, zip } from 'lodash';
 import {
   AsyncRenderThreshold,
-  type CellMeta,
-  type DataItem,
   EXTRA_FIELD,
   VALUE_FIELD,
+  type CellMeta,
+  type DataItem,
+  type MiniChartData,
+  type MultiData,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import type {
-  CopyableList,
   CopyAllDataParams,
+  CopyableList,
   MeasureQuery,
   SheetCopyConstructorParams,
 } from '../interface';
@@ -22,6 +24,7 @@ import {
   getSelectedRows,
 } from '../method';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
+import { BaseDataCellCopy } from './base-data-cell-copy';
 import {
   assembleMatrix,
   completeMatrix,
@@ -30,7 +33,6 @@ import {
   getNodeFormatData,
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
-import { BaseDataCellCopy } from './base-data-cell-copy';
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
@@ -229,7 +231,13 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       dataSet,
     );
 
-    return formatter(cellData?.[VALUE_FIELD] ?? '');
+    const fieldValue = cellData?.[VALUE_FIELD];
+    const isChartData = isPlainObject(
+      (fieldValue as MultiData<MiniChartData>)?.values,
+    );
+    const value = isChartData ? '' : fieldValue;
+
+    return formatter(value ?? '');
   };
 
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {

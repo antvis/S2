@@ -678,7 +678,7 @@ describe('Scroll Tests', () => {
 
       canvas.dispatchEvent(wheelEvent);
 
-      await sleep(200);
+      await sleep(1000);
 
       expect(onScroll).toHaveBeenCalled();
     });

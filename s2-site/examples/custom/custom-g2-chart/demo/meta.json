@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "单元格内绘制 G2 图表",
+    "en": "Render G2 Charts"
+  },
+  "demos": [
+    {
+      "filename": "custom-g2-chart.ts",
+      "title": {
+        "zh": "单元格内绘制 G2 图表",
+        "en": "render G2 charts"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*y9mfQqk9XwYAAAAAAAAAAAAADmJ7AQ/original"
+    }
+  ]
+}

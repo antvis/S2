@@ -140,6 +140,8 @@ describe('SpreadSheet Tests', () => {
       s2.updateScrollOffset({
         offsetX: { value: 30 },
       });
+      await sleep(500);
+
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
         Object {
@@ -165,6 +167,8 @@ describe('SpreadSheet Tests', () => {
       s2.updateScrollOffset({
         offsetY: { value: 20 },
       });
+
+      await sleep(500);
       expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
         Object {
@@ -200,6 +204,8 @@ describe('SpreadSheet Tests', () => {
       s2.updateScrollOffset({
         rowHeaderOffsetX: { value: 30 },
       });
+
+      await sleep(500);
       expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
         Object {
@@ -230,6 +236,9 @@ describe('SpreadSheet Tests', () => {
         offsetX: { value: 30 },
         rowHeaderOffsetX: { value: 40 },
       });
+
+      await sleep(500);
+
       expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
       expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);

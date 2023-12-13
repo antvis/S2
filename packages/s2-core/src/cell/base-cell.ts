@@ -317,7 +317,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return resize?.[type];
   }
 
-  public getBBoxByType(type = CellClipBox.BORDER_BOX) {
+  public getBBoxByType(type = CellClipBox.BORDER_BOX): SimpleBBox {
     const bbox: SimpleBBox = {
       x: this.meta.x,
       y: this.meta.y,
