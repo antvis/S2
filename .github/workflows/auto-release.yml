@@ -50,8 +50,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build
-        run: yarn build
+      # - name: Build
+      #   run: yarn build
 
       # 自动发布完成后 触发 github.release.published 事件
       # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
