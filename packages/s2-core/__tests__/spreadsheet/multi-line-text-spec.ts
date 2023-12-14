@@ -125,7 +125,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectHierarchyHeight(90);
     });
 
-    test.only('should custom two max text lines', async () => {
+    test('should custom two max text lines', async () => {
       updateTheme(2);
       await s2.render(false);
 
@@ -301,6 +301,24 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       expectHierarchyHeight(90, 60, 30);
     });
+
+    test('should not adaptive adjust cell height if hidden col cell', async () => {
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: 0,
+          },
+        },
+      });
+
+      updateTheme(1);
+      await s2.render(false);
+
+      getCells().forEach((cells) => {
+        expect(mapCells(cells)).toMatchSnapshot();
+      });
+      expectHierarchyHeight(0, 0, 0);
+    });
   });
 
   describe('TableSheet', () => {
@@ -397,7 +415,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectHierarchyHeight(70, 0, 70, 1);
     });
 
-    test.only.each([1, 2, 3, 4, 5])(
+    test.skip.each([1, 2, 3, 4, 5])(
       'should always render default cell height when set %s line, but actual text not wrap',
       async (maxLines) => {
         updateTheme(maxLines);

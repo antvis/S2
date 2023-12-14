@@ -7,11 +7,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import type {
-  FormatResult,
-  RenderTextShapeOptions,
-  TextTheme,
-} from '../common/interface';
+import type { FormatResult, TextTheme } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import { CustomRect } from '../engine';
@@ -57,7 +53,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.drawResizeArea();
   }
 
-  public drawTextShape(options?: RenderTextShapeOptions) {
+  public drawTextShape() {
     const { x, y, height, width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textStyle = this.getTextStyle();
     const cornerText = this.getFieldValue();
@@ -78,16 +74,13 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
 
     const textY = y + height / 2;
 
-    this.renderTextShape(
-      {
-        ...textStyle,
-        x: textX,
-        y: textY,
-        text: cornerText,
-        wordWrapWidth: maxWidth,
-      },
-      options,
-    );
+    this.renderTextShape({
+      ...textStyle,
+      x: textX,
+      y: textY,
+      text: cornerText,
+      wordWrapWidth: maxWidth,
+    });
 
     const { size = 0 } = this.getStyle()!.icon!;
     const iconY = getVerticalIconPosition(

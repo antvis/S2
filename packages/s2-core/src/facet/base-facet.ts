@@ -324,34 +324,13 @@ export abstract class BaseFacet {
 
     const { padding } = cell.getStyle().cell;
 
-    cell.drawTextShape({
-      shallowRender: true,
-    });
+    cell.drawTextShape();
 
+    const { parsedStyle } = cell.getTextShape();
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    if (cell.cellType === 'colCell') {
-      console.log(
-        'getCellAdaptiveHeight =>',
-        textHeight,
-        defaultHeight,
-        cell.getFieldValue(),
-        cell.getTextLineBoundingRects(),
-        cell.getTextShape().parsedStyle.maxLines,
-        cell.getTextShape().parsedStyle.metrics,
-        cell.getTextShape().parsedStyle.metrics?.width,
-        cell.getMaxTextWidth(),
-      );
-    }
-
-    const { parsedStyle } = cell.getTextShape();
-
-    const inValid =
-      parsedStyle.maxLines > 1 &&
-      parsedStyle.metrics?.width < cell.getMaxTextWidth();
-
-    return !inValid && textHeight >= defaultHeight
+    return parsedStyle?.maxLines! > 1 && textHeight >= defaultHeight
       ? adaptiveHeight
       : defaultHeight;
   }

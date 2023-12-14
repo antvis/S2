@@ -36,7 +36,6 @@ import {
   type HeaderActionNameOptions,
   type IconCondition,
   type InteractionStateTheme,
-  type RenderTextShapeOptions,
 } from '../common/interface';
 import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import {
@@ -247,10 +246,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
-  public drawTextShape(options?: RenderTextShapeOptions) {
-    super.drawTextShape(options);
+  public drawTextShape() {
+    super.drawTextShape();
 
-    if (!options?.shallowRender) {
+    if (!this.isShallowRender()) {
       this.drawLinkField(this.meta);
     }
   }

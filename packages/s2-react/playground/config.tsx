@@ -11,6 +11,7 @@ import {
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import React from 'react';
+import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
 import {
   data,
   fields,
@@ -70,6 +71,8 @@ export const pivotSheetDataCfg: S2DataConfig = {
   meta,
   fields,
 };
+
+export const pivotSheetMultiLineTextDataCfg = PivotSheetMultiLineTextDataCfg;
 
 export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   text: [

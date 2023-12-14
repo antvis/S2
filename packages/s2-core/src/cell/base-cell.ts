@@ -196,6 +196,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType]?.icon;
   }
 
+  public isShallowRender() {
+    return false;
+  }
+
   /**
    * 获取实际渲染的文本 (含省略号)
    */
@@ -396,10 +400,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     options?: RenderTextShapeOptions,
   ): CustomText {
     const text = getDisplayText(style.text, this.getEmptyPlaceholder());
+    const shallowRender = options?.shallowRender || this.isShallowRender();
 
     this.textShape = renderText({
       group: this,
-      textShape: options?.shallowRender ? undefined : this.textShape,
+      textShape: shallowRender ? undefined : this.textShape,
       style: {
         ...style,
         text,
@@ -408,7 +413,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
     this.addTextShape(this.textShape);
 
-    if (options?.shallowRender) {
+    if (shallowRender) {
       return this.textShape;
     }
 
@@ -428,37 +433,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape?.attr('y', position?.y ?? defaultPosition?.y);
   }
 
-  public drawTextShape(options?: RenderTextShapeOptions) {
+  public drawTextShape() {
     // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号 https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
     const maxTextWidth = Math.max(this.getMaxTextWidth(), 0);
     const textStyle = this.getTextStyle();
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
-    const textShape = this.renderTextShape(
-      {
-        ...textStyle,
-        x: 0,
-        y: 0,
-        text: this.getFieldValue(),
-        wordWrapWidth: maxTextWidth,
-        // maxLines: 2,
-      },
-      options,
-    );
+    this.renderTextShape({
+      ...textStyle,
+      x: 0,
+      y: 0,
+      text: this.getFieldValue(),
+      wordWrapWidth: maxTextWidth,
+    });
 
-    if (
-      textShape.parsedStyle.maxLines > 1 &&
-      textShape.parsedStyle.metrics?.width < maxTextWidth
-    ) {
-      console.log(
-        this.getFieldValue(),
-        textShape.parsedStyle.metrics?.width,
-        maxTextWidth,
-      );
-      textShape.attr('maxLines', 1);
-    }
-
-    if (options?.shallowRender) {
+    if (this.isShallowRender()) {
       return;
     }
 

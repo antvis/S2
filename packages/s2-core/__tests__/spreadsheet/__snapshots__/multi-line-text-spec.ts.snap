@@ -1625,6 +1625,385 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 1`] = `
+Array [
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 80,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 272,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 272,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": "3",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 3`] = `
+Array [
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 192,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+  Object {
+    "actualText": undefined,
+    "actualTextHeight": 0,
+    "actualTextWidth": 0,
+    "height": 0,
+    "multiLineActualTexts": Array [],
+    "originalText": undefined,
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 4`] = `
+Array [
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 96,
+  },
+  Object {
+    "actualText": "浙江省浙江...",
+    "actualTextHeight": 16,
+    "actualTextWidth": 71,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省浙江...",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 96,
+  },
+  Object {
+    "actualText": "四川省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 120,
+    "multiLineActualTexts": Array [
+      "四川省",
+    ],
+    "originalText": "四川省",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should not adaptive adjust cell height if hidden col cell 5`] = `
+Array [
+  Object {
+    "actualText": "2367236723...",
+    "actualTextHeight": 15,
+    "actualTextWidth": 77,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2367236723...",
+    ],
+    "originalText": "236723672361111",
+    "width": 96,
+  },
+  Object {
+    "actualText": "3877",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "3877",
+    ],
+    "originalText": "3877",
+    "width": 96,
+  },
+  Object {
+    "actualText": "4342",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "4342",
+    ],
+    "originalText": "4342",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1723",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1723",
+    ],
+    "originalText": "1723",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1822",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1822",
+    ],
+    "originalText": "1822",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1943",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1943",
+    ],
+    "originalText": "1943",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2330",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2330",
+    ],
+    "originalText": "2330",
+    "width": 96,
+  },
+  Object {
+    "actualText": "632",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "632",
+    ],
+    "originalText": "632",
+    "width": 96,
+  },
+  Object {
+    "actualText": "7234",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "7234",
+    ],
+    "originalText": "7234",
+    "width": 96,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": "834",
+    "width": 96,
+  },
+  Object {
+    "actualText": "5343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "5343",
+    ],
+    "originalText": "5343",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2451",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2451",
+    ],
+    "originalText": "2451",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2244",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2244",
+    ],
+    "originalText": "2244",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2333",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2333",
+    ],
+    "originalText": "2333",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2445",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "2445",
+    ],
+    "originalText": "2445",
+    "width": 96,
+  },
+]
+`;
+
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should not render word wrap text 1`] = `
 Array [
   Object {

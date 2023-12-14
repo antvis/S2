@@ -350,7 +350,9 @@ export class TableFacet extends BaseFacet {
   }
 
   protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
-    const colCell = new TableColCell(colNode, this.spreadsheet, {});
+    const colCell = new TableColCell(colNode, this.spreadsheet, {
+      shallowRender: true,
+    });
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     return this.getCellAdaptiveHeight(colCell, defaultHeight);

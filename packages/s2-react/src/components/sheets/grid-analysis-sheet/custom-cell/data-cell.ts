@@ -1,8 +1,4 @@
-import {
-  DataCell,
-  drawObjectText,
-  type RenderTextShapeOptions,
-} from '@antv/s2';
+import { DataCell, drawObjectText } from '@antv/s2';
 
 /**
  * Cell for panelGroup area
@@ -13,11 +9,11 @@ import {
  * --------------------------------------
  */
 export class GridAnalysisSheetDataCell extends DataCell {
-  public drawTextShape(options?: RenderTextShapeOptions) {
+  public drawTextShape() {
     if (this.isMultiData()) {
       return drawObjectText(this);
     }
 
-    super.drawTextShape(options);
+    super.drawTextShape();
   }
 }
