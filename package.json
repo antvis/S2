@@ -108,6 +108,7 @@
     "@rollup/plugin-typescript": "^8.2.5",
     "@rushstack/eslint-patch": "^1.1.3",
     "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@size-limit/esbuild": "^11.0.0",
     "@size-limit/esbuild-why": "^11.0.0",
