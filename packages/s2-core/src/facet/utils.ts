@@ -565,12 +565,13 @@ export const getFrozenRowCfgPivot = (
       enableFrozenFirstRow = !showSeriesNumber;
     }
   }
+  const effectiveFrozenFirstRow = enableFrozenFirstRow && !!headNode;
   return {
-    frozenRowCount: enableFrozenFirstRow ? 1 : 0,
+    frozenRowCount: effectiveFrozenFirstRow ? 1 : 0,
     frozenColCount: 0,
     frozenTrailingColCount: 0,
     frozenTrailingRowCount: 0,
     enableFrozenFirstRow,
-    frozenRowHeight: enableFrozenFirstRow ? headNode.height : 0,
+    frozenRowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
   };
 };
