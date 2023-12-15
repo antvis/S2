@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.46.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0...@antv/s2-react-v1.46.0) (2023-12-15)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复字段描述为英文时展示不全 ([#2466](https://github.com/antvis/S2/issues/2466)) ([70ebc50](https://github.com/antvis/S2/commit/70ebc508e58104bacc287b8c7a10ff6cadda2013))
+
+
+### Features
+
+* **perf:** 优化 dataset 数据结构转化，以及交互过程中 layout性能 ([#2476](https://github.com/antvis/S2/issues/2476)) ([6fa8fbb](https://github.com/antvis/S2/commit/6fa8fbb054dc1dd9964b33a5ac8ec0d7fbee723e))
+
 # [@antv/s2-react-v1.45.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.44.3...@antv/s2-react-v1.45.0) (2023-12-08)
 
 
