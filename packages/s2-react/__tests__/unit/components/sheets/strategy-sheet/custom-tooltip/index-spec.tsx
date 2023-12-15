@@ -77,4 +77,28 @@ describe('StrategySheet Tooltip Tests', () => {
     expect(screen.getAllByText('customDerivedValue')).toHaveLength(3);
     expect(screen.getAllByText('customDerivedValue')).toMatchSnapshot();
   });
+
+  // cli 的方式得到的结果是错, 基于 test:live 就是对的, 不知道为啥
+  test.skip('should render overflow wrap description for row tooltip', () => {
+    const description = `test_`.repeat(40);
+    const mockDescCellInfo = createMockCellInfo('test', {
+      extra: {
+        description,
+      },
+    });
+
+    const { container } = render(
+      <StrategySheetRowTooltip
+        cell={mockDescCellInfo.mockCell}
+        label="test row label"
+      />,
+    );
+
+    const { width, height } = container!
+      .querySelector('.s2-strategy-sheet-tooltip-description-text')!
+      .getBoundingClientRect();
+
+    expect(Math.floor(width)).toBeCloseTo(937);
+    expect(Math.floor(height)).toBeCloseTo(37);
+  });
 });

@@ -142,6 +142,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType) {
     if (!cell || !cell.isTextOverflowing()) {
+      this.spreadsheet.hideTooltip();
       return;
     }
 
@@ -206,7 +207,6 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
-      this.showEllipsisTooltip(event, cell);
 
       const { rowHeader, colHeader } = interaction.getHoverHighlight();
       if (rowHeader || colHeader) {
