@@ -23,6 +23,7 @@ import {
   FrozenGroup,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  ORIGIN_FIELD,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
@@ -218,18 +219,9 @@ export class PivotFacet extends FrozenFacet {
         isTotals,
         totalStatus,
       });
-      let valueField: string;
-      let fieldValue = null;
-      if (!isEmpty(data)) {
-        valueField = get(data, [EXTRA_FIELD], '');
-        fieldValue = get(data, [VALUE_FIELD], null);
-        if (isTotals) {
-          valueField = get(dataQuery, [EXTRA_FIELD], '');
-          fieldValue = get(data, valueField, null);
-        }
-      } else {
-        valueField = get(dataQuery, [EXTRA_FIELD], '');
-      }
+
+      const valueField: string = dataQuery[EXTRA_FIELD];
+      const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
         spreadsheet,
@@ -359,10 +351,11 @@ export class PivotFacet extends FrozenFacet {
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node = null;
+    let i = 0;
     const leafNodes = colLeafNodes.slice(0);
 
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parentNode = node.parent;
       if (prevColParent !== parentNode && parentNode) {
         leafNodes.push(parentNode);
@@ -650,20 +643,21 @@ export class PivotFacet extends FrozenFacet {
    * @param rowLeafNodes
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
-    // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent = null;
+    let i = 0;
     const leafNodes = rowLeafNodes.slice(0);
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parent = node.parent;
       if (prevRowParent !== parent && parent) {
         leafNodes.push(parent);
         // parent's y = first child's y
         parent.y = parent.children[0].y;
         // parent's height = all children's height
-        parent.height = parent.children
-          .map((value) => value.height)
-          .reduce((sum, current) => sum + current, 0);
+        parent.height = parent.children.reduce(
+          (sum, current) => sum + current.height,
+          0,
+        );
         prevRowParent = parent;
       }
     }
@@ -813,7 +807,7 @@ export class PivotFacet extends FrozenFacet {
         totalStatus: getHeaderTotalStatus(rowNode, col),
       });
 
-      const cellDataKeys = keys(cellData);
+      const cellDataKeys = keys(cellData?.[ORIGIN_FIELD]);
       for (let j = 0; j < cellDataKeys.length; j++) {
         const dataValue: MultiData = cellData[cellDataKeys[j]];
 

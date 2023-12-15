@@ -4,7 +4,7 @@ import type { CellMeta } from '../common';
 import type { S2DataConfig } from '../common/interface';
 import type { RowData } from '../common/interface/basic';
 import { BaseDataSet } from './base-data-set';
-import type { CellDataParams, DataType } from './interface';
+import type { CellDataParams, DataType, Query } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   // data that goes into canvas (aka sorted & filtered)
@@ -141,11 +141,7 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getTotalDimensionValues(field: string, query?: DataType): string[] {
-    return [];
-  }
-
-  public getDimensionValues(field: string, query?: DataType): string[] {
+  public getDimensionValues(): string[] {
     return [];
   }
 
@@ -162,7 +158,7 @@ export class TableDataSet extends BaseDataSet {
     return rowData[query.field];
   }
 
-  public getMultiData(query: DataType): DataType[] {
+  public getMultiData(query: Query): DataType[] {
     if (!query) {
       return this.displayData;
     }

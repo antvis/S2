@@ -49,17 +49,16 @@ describe('Custom Tree Dataset Test', () => {
       expect(dataSet.fields.values).toEqual(values);
     });
 
-    test('should get correct row pivot meta', () => {
+    test('should get empty row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(values);
-      expect(rowPivotMeta.get('measure-a').level).toEqual(0);
     });
 
     test('should get correct col pivot meta', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(0);
+      expect(colPivotMeta.get('家具').level).toEqual(1);
       expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
         '桌子',
         '椅子',
@@ -67,27 +66,27 @@ describe('Custom Tree Dataset Test', () => {
     });
 
     test('should get correct indexesData', () => {
+      const prefix = 'type[&]sub_type';
       const indexesData = dataSet.indexesData;
-      expect(get(indexesData, '0.0.0')).toEqual({
+      expect(get(indexesData, [prefix, 1, 1, 1])).toEqual({
         type: '家具',
         sub_type: '桌子',
         'measure-a': 1,
-        [EXTRA_FIELD]: 'measure-a',
-        [VALUE_FIELD]: 1,
+        'measure-b': 2,
+        'measure-c': 3,
+        'measure-d': 4,
+        'measure-e': 5,
+        'measure-f': 6,
       });
-      expect(get(indexesData, '0.0.1')).toEqual({
+      expect(get(indexesData, [prefix, 1, 1, 2])).toEqual({
         type: '家具',
         sub_type: '椅子',
         'measure-a': 11,
-        [EXTRA_FIELD]: 'measure-a',
-        [VALUE_FIELD]: 11,
-      });
-      expect(get(indexesData, '5.0.1')).toEqual({
-        type: '家具',
-        sub_type: '椅子',
+        'measure-b': 22,
+        'measure-c': 33,
+        'measure-d': 44,
+        'measure-e': 55,
         'measure-f': 66,
-        [EXTRA_FIELD]: 'measure-f',
-        [VALUE_FIELD]: 66,
       });
     });
   });
