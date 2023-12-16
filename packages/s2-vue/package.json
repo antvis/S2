@@ -67,7 +67,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@antv/s2": "1.54.0-alpha.4",
+    "@antv/s2": "1.54.0-alpha.5",
     "@antv/s2-shared": "*",
     "@testing-library/vue": "^6.5.1",
     "@vue/tsconfig": "^0.1.3",
