@@ -496,7 +496,7 @@ export function getSatisfiedPivotMetaValues(params: {
   for (let i = 0; i <= fieldIdx; i++) {
     const dimensionValue = dimensionValues[i];
     const field = fields[i];
-    if (!dimensionValue || dimensionValue === MULTI_VALUE) {
+    if (isMultiValue(dimensionValue)) {
       metaValueList = flattenMetaValue(metaValueList, field);
     } else {
       metaValueList = metaValueList
