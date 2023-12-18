@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.1](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0...@antv/s2-v1.54.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* 修复行头字段为空字符串时, getDimensionValues 获取数据错误的问题 ([#2482](https://github.com/antvis/S2/issues/2482)) ([e39d5c5](https://github.com/antvis/S2/commit/e39d5c5f7feb3229f0b731a1816ca5809dffd3a5))
+
 # [@antv/s2-v1.54.0](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0...@antv/s2-v1.54.0) (2023-12-15)
 
 
