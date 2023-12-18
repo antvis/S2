@@ -1,3 +1,16 @@
+# [@antv/s2-v1.54.0](https://github.com/antvis/S2/compare/@antv/s2-v1.53.0...@antv/s2-v1.54.0) (2023-12-15)
+
+
+### Bug Fixes
+
+* 修复初始化渲染未完成时headNode NPE问题 ([#2479](https://github.com/antvis/S2/issues/2479)) ([15b11b1](https://github.com/antvis/S2/commit/15b11b1d683459c0d8a5acd0784c4058d54dbb8f))
+* 修复多列文本单元格 hover 时报错 ([#2472](https://github.com/antvis/S2/issues/2472)) ([0684ab5](https://github.com/antvis/S2/commit/0684ab598a66a301fc34308dfe751cd8cce082f4))
+
+
+### Features
+
+* **perf:** 优化 dataset 数据结构转化，以及交互过程中 layout性能 ([#2476](https://github.com/antvis/S2/issues/2476)) ([6fa8fbb](https://github.com/antvis/S2/commit/6fa8fbb054dc1dd9964b33a5ac8ec0d7fbee723e))
+
 # [@antv/s2-v1.53.0](https://github.com/antvis/S2/compare/@antv/s2-v1.52.1...@antv/s2-v1.53.0) (2023-12-08)
 
 
