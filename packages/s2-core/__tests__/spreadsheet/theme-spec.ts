@@ -1,7 +1,19 @@
 /* eslint-disable jest/expect-expect */
+<<<<<<< HEAD
 import { Text, type Group } from '@antv/g';
 import { createPivotSheet } from 'tests/util/helpers';
 import type { RowCell } from '@/cell';
+=======
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
+import type { Group, IGroup, ShapeAttrs } from '@antv/g-canvas';
+import { get } from 'lodash';
+import type {
+  TextBaseline,
+  TextTheme,
+  ThemeCfg,
+} from '@/common/interface/theme';
+import type { PivotSheet } from '@/sheet-type';
+>>>>>>> origin/master
 import {
   CellType,
   EXTRA_COLUMN_FIELD,
@@ -21,7 +33,11 @@ import type { PivotSheet } from '@/sheet-type';
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
 
+<<<<<<< HEAD
   beforeEach(async () => {
+=======
+  beforeEach(() => {
+>>>>>>> origin/master
     s2 = createPivotSheet(
       {
         headerActionIcons: [
@@ -52,6 +68,7 @@ describe('SpreadSheet Theme Tests', () => {
       CellType.MERGED_CELL,
     ];
 
+<<<<<<< HEAD
     test('should get theme name', () => {
       expect(s2.getThemeName()).toEqual('default');
 
@@ -63,13 +80,28 @@ describe('SpreadSheet Theme Tests', () => {
     });
 
     test('should get default theme', () => {
+=======
+    test('should get pivot sheet default theme', () => {
+>>>>>>> origin/master
       expect(s2.theme).toMatchSnapshot();
       expect(s2.theme).toEqual(s2.getTheme());
     });
 
+<<<<<<< HEAD
     test.each(['dark', 'gray', 'colorful', 'default'] as ThemeName[])(
       'should get %s theme',
       (name) => {
+=======
+    test('should get table sheet theme', () => {
+      const tableSheet = createTableSheet(null);
+
+      expect(tableSheet.theme).toMatchSnapshot();
+    });
+
+    test.each(CELL_TYPES)(
+      "should assign the same color for %s's text and icon",
+      (cellType: CellTypes) => {
+>>>>>>> origin/master
         s2.setThemeCfg({
           name,
         });
@@ -181,6 +213,14 @@ describe('SpreadSheet Theme Tests', () => {
           },
         },
       });
+<<<<<<< HEAD
+=======
+      s2.render();
+      const rowCell = (
+        s2.facet.rowHeader.getChildByIndex(0) as Group
+      ).getFirst() as RowCell;
+      const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
+>>>>>>> origin/master
 
       await s2.render();
 
@@ -219,7 +259,13 @@ describe('SpreadSheet Theme Tests', () => {
         s2.setThemeCfg(getRowCellThemeCfg(align));
         await s2.render();
 
+<<<<<<< HEAD
         const rowCell = s2.facet.rowHeader!.children[0] as RowCell;
+=======
+        const rowCell = (
+          s2.facet.rowHeader.getChildByIndex(0) as Group
+        ).getFirst() as RowCell;
+>>>>>>> origin/master
 
         const rowCellWidth = rowCell.getMeta().width;
         const actionIcon = rowCell.getActionIcons()[0];
@@ -488,6 +534,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         await s2.render();
 
+<<<<<<< HEAD
         const rowCell = s2.facet.rowHeader!.children[0] as Group; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
 
@@ -496,6 +543,21 @@ describe('SpreadSheet Theme Tests', () => {
 
         expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);
         expect(textOfSeriesCell?.attr('textBaseline')).toEqual(textBaseline);
+=======
+        const rowCell = (
+          s2.facet.rowHeader.getChildByIndex(0) as Group
+        ).getFirst() as IGroup; // 浙江省
+        const textOfRowCell = getTextShape(rowCell);
+
+        const seriesCell = (
+          s2.facet.rowIndexHeader.getChildByIndex(0) as Group
+        ).getFirst() as IGroup; // 序号1
+        const textOfSeriesCell = getTextShape(seriesCell);
+
+        expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual(textBaseline);
+        expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
+>>>>>>> origin/master
       },
     );
   });

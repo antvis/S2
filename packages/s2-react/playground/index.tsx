@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+<<<<<<< HEAD
   DEFAULT_STYLE,
   Node,
   SpreadSheet,
@@ -13,6 +14,19 @@ import {
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellSelectedHighlightOptions,
+=======
+  BaseTooltip,
+  customMerge,
+  DEFAULT_STYLE,
+  generatePalette,
+  getLang,
+  getPalette,
+  Node,
+  SpreadSheet,
+  type DataType,
+  type HeaderActionIconProps,
+  type InteractionCellHighlight,
+>>>>>>> origin/master
   type InteractionOptions,
   type S2DataConfig,
   type TargetCellInfo,
@@ -43,6 +57,7 @@ import {
 import { debounce, isBoolean, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
+<<<<<<< HEAD
 import { createRoot } from 'react-dom/client';
 import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
@@ -57,6 +72,24 @@ import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
 import { LinkGroup } from './components/LinkGroup';
+=======
+import ReactDOM from 'react-dom';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
+import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
+import {
+  StrategyOptions,
+  StrategySheetDataConfig,
+} from '../__tests__/data/strategy-data';
+import reactPkg from '../package.json';
+import type {
+  PartDrillDown,
+  PartDrillDownInfo,
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '../src';
+import { SheetComponent } from '../src';
+>>>>>>> origin/master
 import {
   TableSheetFrozenOptions,
   defaultOptions,
@@ -68,14 +101,97 @@ import {
   tableSheetDataCfg,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
+  s2ThemeConfig,
+  pivotSheetDataCfgForCompactMode,
 } from './config';
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
 import { onSheetMounted } from './utils';
 import { ChartSheet } from './components/ChartSheet';
 import './index.less';
+<<<<<<< HEAD
 
 type TableSheetColumnType = 'single' | 'multiple';
+=======
+import { ResizeConfig } from './resize';
+class ResetTooltip extends BaseTooltip {
+  renderContent() {
+    ReactDOM.render(<>Reset Tooltip</>, this.container);
+  }
+}
+
+const { TabPane } = Tabs;
+
+const fieldMap = {
+  channel: ['物美', '华联'],
+  sex: ['男', '女'],
+};
+
+const partDrillDown: PartDrillDown = {
+  drillConfig: {
+    dataSet: [
+      {
+        name: '销售渠道',
+        value: 'channel',
+        type: 'text',
+      },
+      {
+        name: '客户性别',
+        value: 'sex',
+        type: 'text',
+      },
+    ],
+    extra: <div>test</div>,
+  },
+  // drillItemsNum: 1,
+  fetchData: (meta, drillFields) =>
+    new Promise<PartDrillDownInfo>((resolve) => {
+      // 弹窗 -> 选择 -> 请求数据
+      const dataSet = meta.spreadsheet.dataSet;
+      const field = drillFields[0];
+      const rowDatas = dataSet
+        .getMultiData(meta.query)
+        .filter((item) => item.sub_type && item.type);
+      console.log(rowDatas);
+      const drillDownData: DataType[] = [];
+      forEach(rowDatas, (data: DataType) => {
+        const { number, sub_type: subType, type } = data;
+        const number0 = random(50, number);
+        const number1 = number - number0;
+        const dataItem0 = {
+          ...meta.query,
+          number: number0,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field][0],
+        };
+        drillDownData.push(dataItem0);
+        const dataItem1 = {
+          ...meta.query,
+          number: number1,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field][1],
+        };
+
+        drillDownData.push(dataItem1);
+      });
+      console.log(drillDownData);
+      resolve({
+        drillField: field,
+        drillData: drillDownData,
+      });
+    }),
+};
+
+const onSheetMounted = (s2: SpreadSheet) => {
+  console.log('onSheetMounted: ', s2);
+  // @ts-ignore
+  window.s2 = s2;
+  // @ts-ignore
+  window.g_instances = [s2.container];
+};
+>>>>>>> origin/master
 
 const CustomTooltip = () => (
   <div>
@@ -94,14 +210,18 @@ const ActionIconTooltip = ({ name }: { name: React.ReactNode }) => (
 function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
+<<<<<<< HEAD
   const [sheetType, setSheetType] = React.useState<SheetType>(
     (localStorage.getItem('debugSheetType') as SheetType) || 'pivot',
   );
   const [showPagination, setShowPagination] = React.useState(false);
+=======
+  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
+  const [showPagination, setShowPagination] =
+    React.useState<SheetComponentsProps['showPagination']>(false);
+>>>>>>> origin/master
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'default',
-  });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>(s2ThemeConfig);
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
@@ -110,6 +230,7 @@ function MainLayout() {
   const [dataCfg, setDataCfg] = React.useState<Partial<S2DataConfig>>(
     sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg,
   );
+<<<<<<< HEAD
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
     [],
   );
@@ -119,6 +240,13 @@ function MainLayout() {
         'debugTableSheetColumnType',
       ) as TableSheetColumnType) || 'single',
     );
+=======
+  const [columnOptions, setColumnOptions] = React.useState([]);
+  const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
+    'single' | 'multiple'
+  >('single');
+  const [pageSize, setPageSize] = React.useState(10);
+>>>>>>> origin/master
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -269,13 +397,33 @@ function MainLayout() {
     clearInterval(scrollTimer.current!);
   });
 
+  useUpdateEffect(() => {
+    switch (options.style.layoutWidthType) {
+      case 'compact':
+        updateOptions({
+          style: {
+            cellCfg: {
+              width: 200,
+            },
+          },
+        });
+        setDataCfg(pivotSheetDataCfgForCompactMode);
+        break;
+
+      default:
+        updateOptions({
+          style: DEFAULT_STYLE,
+        });
+        setDataCfg(pivotSheetDataCfg);
+    }
+  }, [options.style.layoutWidthType]);
+
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(
-    {},
     {
       pagination: showPagination && {
-        pageSize: 10,
+        pageSize,
         current: 1,
       },
       tooltip: {
@@ -364,6 +512,7 @@ function MainLayout() {
           setThemeCfg,
         }}
       >
+<<<<<<< HEAD
         <div className="playground">
           <LinkGroup />
           <Tabs
@@ -925,6 +1074,550 @@ function MainLayout() {
                                         ({ id }) =>
                                           id === 'root[&]四川省[&]成都市',
                                       );
+=======
+        <TabPane tab="基础表" key="basic">
+          <Collapse defaultActiveKey={['filter', 'interaction']}>
+            <Collapse.Panel header="筛选器" key="filter">
+              <Space>
+                <Tooltip title="表格类型">
+                  <Radio.Group
+                    onChange={onSheetTypeChange}
+                    defaultValue={sheetType}
+                  >
+                    <Radio.Button value="pivot">透视表</Radio.Button>
+                    <Radio.Button value="table">明细表</Radio.Button>
+                  </Radio.Group>
+                </Tooltip>
+                {sheetType === 'table' && (
+                  <Tooltip title="明细表多级表头">
+                    <Radio.Group
+                      onChange={onTableColumnTypeChange}
+                      defaultValue={tableSheetColumnType}
+                    >
+                      <Radio.Button value="single">单列头</Radio.Button>
+                      <Radio.Button value="multiple">多列头</Radio.Button>
+                    </Radio.Group>
+                  </Tooltip>
+                )}
+                <Tooltip title="布局类型">
+                  <Radio.Group
+                    onChange={onLayoutWidthTypeChange}
+                    defaultValue={options.style.layoutWidthType}
+                  >
+                    <Radio.Button value="adaptive">行列等宽</Radio.Button>
+                    <Radio.Button value="colAdaptive">列等宽</Radio.Button>
+                    <Radio.Button value="compact">紧凑</Radio.Button>
+                  </Radio.Group>
+                </Tooltip>
+                <Tooltip title="主题">
+                  <Radio.Group
+                    onChange={onThemeChange}
+                    defaultValue={themeCfg.name}
+                  >
+                    <Radio.Button value="default">默认</Radio.Button>
+                    <Radio.Button value="gray">简约灰</Radio.Button>
+                    <Radio.Button value="colorful">多彩蓝</Radio.Button>
+                  </Radio.Group>
+                </Tooltip>
+              </Space>
+              <Space>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      tooltip: {
+                        renderTooltip: (spreadsheet) =>
+                          new ResetTooltip(spreadsheet),
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                  style={{ marginLeft: 20 }}
+                >
+                  自定义 Tooltip (s2.setOptions)
+                </Button>
+
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.setOptions({
+                      interaction: {
+                        brushSelection: false,
+                      },
+                    });
+                    s2Ref.current?.render();
+                  }}
+                >
+                  禁用刷选 (s2.setOptions)
+                </Button>
+
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <ChromePicker
+                        color={themeColor}
+                        onChangeComplete={(color) => {
+                          setThemeColor(color.hex);
+                          const palette = getPalette(themeCfg.name);
+                          const newPalette = generatePalette({
+                            ...palette,
+                            brandColor: color.hex,
+                          });
+                          setThemeCfg({
+                            name: themeCfg.name,
+                            palette: newPalette,
+                          });
+                        }}
+                      />
+                    </>
+                  }
+                >
+                  <Button size="small">主题色调整</Button>
+                </Popover>
+                <Button
+                  danger
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.destroy();
+                    s2Ref.current?.render();
+                  }}
+                >
+                  卸载组件 (s2.destroy)
+                </Button>
+              </Space>
+              <Space style={{ margin: '20px 0', display: 'flex' }}>
+                <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
+                  <Select
+                    defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
+                    onChange={onAutoAdjustBoundaryChange}
+                    style={{ width: 230 }}
+                    size="small"
+                  >
+                    <Select.Option value="container">
+                      container (表格区域)
+                    </Select.Option>
+                    <Select.Option value="body">
+                      body (浏览器可视区域)
+                    </Select.Option>
+                    <Select.Option value="">关闭</Select.Option>
+                  </Select>
+                </Tooltip>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('width')}
+                  defaultValue={mergedOptions.width}
+                  suffix="px"
+                  prefix="宽度"
+                  size="small"
+                />
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('height')}
+                  defaultValue={mergedOptions.height}
+                  suffix="px"
+                  prefix="高度"
+                  size="small"
+                />
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.changeSheetSize(400, 400);
+                    s2Ref.current?.render(false);
+                  }}
+                >
+                  改变表格大小 (s2.changeSheetSize)
+                </Button>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={(e) => setPageSize(+e.target.value)}
+                  defaultValue={pageSize}
+                  suffix="条"
+                  prefix="每页条数"
+                  size="small"
+                />
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <div style={{ width: '600px' }}>
+                        水平滚动速率 ：
+                        <Slider
+                          {...sliderOptions}
+                          defaultValue={
+                            mergedOptions.interaction.scrollSpeedRatio
+                              .horizontal
+                          }
+                          onChange={onScrollSpeedRatioChange('horizontal')}
+                        />
+                        垂直滚动速率 ：
+                        <Slider
+                          {...sliderOptions}
+                          defaultValue={
+                            mergedOptions.interaction.scrollSpeedRatio.vertical
+                          }
+                          onChange={onScrollSpeedRatioChange('vertical')}
+                        />
+                      </div>
+                    </>
+                  }
+                >
+                  <Button size="small">滚动速率调整</Button>
+                </Popover>
+                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
+                  <Select
+                    defaultValue={mergedOptions.interaction.overscrollBehavior}
+                    onChange={onOverscrollBehaviorChange}
+                    style={{ width: 150 }}
+                    size="small"
+                  >
+                    <Select.Option value="auto">auto</Select.Option>
+                    <Select.Option value="contain">contain</Select.Option>
+                    <Select.Option value="none">none</Select.Option>
+                  </Select>
+                </Tooltip>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    const rowNode = s2Ref.current
+                      ?.getRowNodes()
+                      .find(({ id }) => id === 'root[&]四川省[&]成都市');
+
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: rowNode?.y,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动至 [成都市]
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: 0,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动到顶部
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      rowHeaderOffsetX: {
+                        value: 100,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动行头
+                </Button>
+                <Button
+                  size="small"
+                  danger
+                  onClick={() => {
+                    if (
+                      scrollTimer.current ||
+                      !s2Ref.current.facet.vScrollBar
+                    ) {
+                      clearInterval(scrollTimer.current);
+                      return;
+                    }
+                    scrollTimer.current = setInterval(() => {
+                      const { scrollY } = s2Ref.current.facet.getScrollOffset();
+                      if (s2Ref.current.facet.isScrollToBottom(scrollY)) {
+                        console.log('滚动到底部');
+                        s2Ref.current.updateScrollOffset({
+                          offsetY: {
+                            value: 0,
+                            animate: false,
+                          },
+                        });
+                        return;
+                      }
+                      s2Ref.current.updateScrollOffset({
+                        offsetY: {
+                          value: scrollY + 50,
+                          animate: true,
+                        },
+                      });
+                    }, 500);
+                  }}
+                >
+                  {scrollTimer.current ? '停止滚动' : '循环滚动'}
+                </Button>
+              </Space>
+              <Space
+                style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap' }}
+              >
+                <Switch
+                  checkedChildren="渲染组件"
+                  unCheckedChildren="卸载组件"
+                  defaultChecked={render}
+                  onChange={onToggleRender}
+                />
+                <Switch
+                  checkedChildren="调试模式开"
+                  unCheckedChildren="调试模式关"
+                  defaultChecked={mergedOptions.debug}
+                  onChange={(checked) => {
+                    updateOptions({ debug: checked });
+                  }}
+                />
+                <Switch
+                  checkedChildren="树形"
+                  unCheckedChildren="平铺"
+                  checked={mergedOptions.hierarchyType === 'tree'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      hierarchyType: checked ? 'tree' : 'grid',
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Tooltip title="树状模式生效">
+                  <Switch
+                    checkedChildren="收起子节点"
+                    unCheckedChildren="展开子节点"
+                    disabled={mergedOptions.hierarchyType !== 'tree'}
+                    checked={mergedOptions.style.hierarchyCollapse}
+                    onChange={(checked) => {
+                      updateOptions({
+                        style: {
+                          hierarchyCollapse: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Switch
+                  checkedChildren="数值挂列头"
+                  unCheckedChildren="数值挂行头"
+                  defaultChecked={dataCfg.fields?.valueInCols}
+                  onChange={(checked) => {
+                    updateDataCfg({
+                      fields: {
+                        valueInCols: checked,
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="隐藏数值"
+                  unCheckedChildren="显示数值"
+                  defaultChecked={mergedOptions.style.colCfg?.hideMeasureColumn}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        colCfg: {
+                          hideMeasureColumn: checked,
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="显示行小计/总计"
+                  unCheckedChildren="隐藏行小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.row?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        row: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['province'],
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="显示列小计/总计"
+                  unCheckedChildren="隐藏列小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.col?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        col: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['type'],
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="冻结行头开"
+                  unCheckedChildren="冻结行头关"
+                  defaultChecked={mergedOptions.frozenRowHeader}
+                  onChange={(checked) => {
+                    updateOptions({
+                      frozenRowHeader: checked,
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式">
+                  <Switch
+                    checkedChildren="冻结首行开"
+                    unCheckedChildren="冻结首行关"
+                    defaultChecked={mergedOptions.frozenFirstRow}
+                    onChange={(checked) => {
+                      updateOptions({
+                        frozenFirstRow: checked,
+                      });
+                    }}
+                    disabled={
+                      sheetType === 'table' ||
+                      (mergedOptions.hierarchyType === 'grid' &&
+                        (!mergedOptions?.totals?.row?.showGrandTotals ||
+                          !mergedOptions?.totals?.row?.reverseLayout))
+                    }
+                  />
+                </Tooltip>
+                <Switch
+                  checkedChildren="容器宽高自适应开"
+                  unCheckedChildren="容器宽高自适应关"
+                  defaultChecked={Boolean(adaptive)}
+                  onChange={setAdaptive}
+                />
+                <Switch
+                  checkedChildren="显示序号"
+                  unCheckedChildren="不显示序号"
+                  checked={mergedOptions.showSeriesNumber}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showSeriesNumber: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="分页"
+                  unCheckedChildren="不分页"
+                  checked={showPagination as boolean}
+                  onChange={setShowPagination}
+                />
+                <Switch
+                  checkedChildren="汇总"
+                  unCheckedChildren="无汇总"
+                  checked={showTotals}
+                  onChange={setShowTotals}
+                />
+                <Switch
+                  checkedChildren="默认actionIcons"
+                  unCheckedChildren="自定义actionIcons"
+                  checked={mergedOptions.showDefaultHeaderActionIcon}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showDefaultHeaderActionIcon: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="开启Tooltip"
+                  unCheckedChildren="关闭Tooltip"
+                  checked={mergedOptions.tooltip.showTooltip}
+                  onChange={(checked) => {
+                    updateOptions({
+                      tooltip: {
+                        showTooltip: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="自定义Tooltip"
+                  unCheckedChildren="默认Tooltip"
+                  checked={showCustomTooltip}
+                  onChange={setShowCustomTooltip}
+                />
+                <Switch
+                  checkedChildren="打开链接跳转"
+                  unCheckedChildren="无链接跳转"
+                  checked={!!mergedOptions.interaction.linkFields.length}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        linkFields: checked
+                          ? ['province', 'city', 'number']
+                          : [],
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="隐藏列头"
+                  unCheckedChildren="显示列头"
+                  checked={mergedOptions.style?.colCfg?.height === 0}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        colCfg: {
+                          height: checked
+                            ? 0
+                            : s2Options.style.colCfg.height ??
+                              DEFAULT_STYLE.colCfg.height,
+                        },
+                      },
+                    });
+                  }}
+                />
+              </Space>
+            </Collapse.Panel>
+            <Collapse.Panel header="交互配置" key="interaction">
+              <Space>
+                <Tooltip title="高亮选中单元格">
+                  <Switch
+                    checkedChildren="选中聚光灯开"
+                    unCheckedChildren="选中聚光灯关"
+                    checked={mergedOptions.interaction.selectedCellsSpotlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          selectedCellsSpotlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="高亮选中单元格行为，演示这里旧配置优先级最高">
+                  <Select
+                    style={{ width: 260 }}
+                    placeholder="单元格选中高亮"
+                    allowClear
+                    mode="multiple"
+                    onChange={(type) => {
+                      let selectedCellHighlight:
+                        | boolean
+                        | InteractionCellHighlight = false;
+                      const oldIdx = type.findIndex((typeItem) =>
+                        isBoolean(typeItem),
+                      );
+>>>>>>> origin/master
 
                                     clearInterval(scrollTimer.current!);
                                     s2Ref.current?.updateScrollOffset({
@@ -975,6 +1668,7 @@ function MainLayout() {
                                     ) {
                                       clearInterval(scrollTimer.current!);
 
+<<<<<<< HEAD
                                       return;
                                     }
 
@@ -1149,6 +1843,292 @@ function MainLayout() {
                                 </Tooltip>
                               </Space>
                             </>
+=======
+                      updateOptions({
+                        interaction: {
+                          selectedCellHighlight,
+                        },
+                      });
+                    }}
+                  >
+                    <Select.Option value={true}>
+                      （旧）高亮选中单元格所在行列头
+                    </Select.Option>
+                    <Select.Option value="rowHeader">
+                      rowHeader: 高亮所在行头
+                    </Select.Option>
+                    <Select.Option value="colHeader">
+                      colHeader: 高亮所在列头
+                    </Select.Option>
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
+                    </Select.Option>
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
+                    </Select.Option>
+                  </Select>
+                </Tooltip>
+                <Tooltip title="高亮当前行列单元格">
+                  <Select
+                    style={{ width: 260 }}
+                    placeholder="单元格悬停高亮"
+                    allowClear
+                    mode="multiple"
+                    defaultValue={[mergedOptions.interaction.hoverHighlight]}
+                    onChange={(type) => {
+                      let hoverHighlight: boolean | InteractionCellHighlight =
+                        false;
+
+                      const oldIdx = type.findIndex((typeItem) =>
+                        isBoolean(typeItem),
+                      );
+
+                      if (oldIdx > -1) {
+                        hoverHighlight = type[oldIdx];
+                      } else {
+                        hoverHighlight = {
+                          rowHeader: false,
+                          colHeader: false,
+                          currentCol: false,
+                          currentRow: false,
+                        };
+                        type.forEach((i) => {
+                          // @ts-ignore
+                          hoverHighlight[i] = true;
+                        });
+                      }
+
+                      updateOptions({
+                        interaction: {
+                          hoverHighlight,
+                        },
+                      });
+                    }}
+                  >
+                    <Select.Option value={true}>
+                      （旧）高亮单元格所在行列以及行列头
+                    </Select.Option>
+                    <Select.Option value="rowHeader">
+                      rowHeader: 高亮所在行头
+                    </Select.Option>
+                    <Select.Option value="colHeader">
+                      colHeader: 高亮所在列头
+                    </Select.Option>
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
+                    </Select.Option>
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
+                    </Select.Option>
+                  </Select>
+                </Tooltip>
+                <Tooltip title="在数值单元格悬停800ms,显示tooltip">
+                  <Switch
+                    checkedChildren="hover聚焦开"
+                    unCheckedChildren="hover聚焦关"
+                    checked={mergedOptions.interaction.hoverFocus as boolean}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverFocus: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="滚动后自动触发悬停状态">
+                  <Switch
+                    checkedChildren="滚动悬停开"
+                    unCheckedChildren="滚动悬停关"
+                    checked={mergedOptions.interaction.hoverAfterScroll}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverAfterScroll: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+                  <Switch
+                    checkedChildren="自动重置交互样式开"
+                    unCheckedChildren="自动重置交互样式关"
+                    defaultChecked={
+                      mergedOptions?.interaction?.autoResetSheetStyle
+                    }
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          autoResetSheetStyle: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
+                  <Select
+                    style={{ width: 180 }}
+                    defaultValue={mergedOptions.style.rowExpandDepth}
+                    placeholder="默认行头展开层级"
+                    onChange={(level) => {
+                      updateOptions({
+                        style: {
+                          rowExpandDepth: level,
+                        },
+                      });
+                    }}
+                  >
+                    <Select.Option value={0}>第一级</Select.Option>
+                    <Select.Option value={1}>第二级</Select.Option>
+                    <Select.Option value={2}>第三级</Select.Option>
+                  </Select>
+                </Tooltip>
+                <Tooltip
+                  title={
+                    <>
+                      <p>默认隐藏列 </p>
+                      <p>明细表: 列头指定 field: number</p>
+                      <p>透视表: 列头指定id: root[&]家具[&]沙发[&]number</p>
+                    </>
+                  }
+                >
+                  <Select
+                    style={{ width: 300 }}
+                    defaultValue={mergedOptions.interaction.hiddenColumnFields}
+                    mode="multiple"
+                    placeholder="默认隐藏列"
+                    onChange={(fields) => {
+                      updateOptions({
+                        interaction: {
+                          hiddenColumnFields: fields,
+                        },
+                      });
+                    }}
+                  >
+                    {columnOptions.map((column) => {
+                      return (
+                        <Select.Option value={column} key={column}>
+                          {column}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Tooltip>
+              </Space>
+            </Collapse.Panel>
+            <Collapse.Panel header="宽高调整热区配置" key="resize">
+              <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
+            </Collapse.Panel>
+          </Collapse>
+          {render && (
+            <SheetComponent
+              dataCfg={dataCfg}
+              options={mergedOptions}
+              sheetType={sheetType}
+              adaptive={adaptive}
+              ref={s2Ref}
+              themeCfg={themeCfg}
+              partDrillDown={partDrillDown}
+              showPagination={showPagination}
+              header={{
+                title: (
+                  <a href="https://github.com/antvis/S2">
+                    {reactPkg.name} playground
+                  </a>
+                ),
+                description: (
+                  <Space>
+                    <span>
+                      {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
+                    </span>
+                    <span>
+                      {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                    </span>
+                    <span>
+                      lang: <Tag>{getLang()}</Tag>
+                    </span>
+                  </Space>
+                ),
+                switcherCfg: { open: true },
+                exportCfg: { open: true },
+                advancedSortCfg: { open: true },
+              }}
+              onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
+              onAfterRender={logHandler('onAfterRender')}
+              onRangeSort={logHandler('onRangeSort')}
+              onMounted={onSheetMounted}
+              onDestroy={logHandler('onDestroy', () => {
+                clearInterval(scrollTimer.current);
+              })}
+              onColCellClick={onColCellClick}
+              onRowCellClick={logHandler('onRowCellClick')}
+              onCornerCellClick={logHandler('onCornerCellClick', (cellInfo) => {
+                if (!showCustomTooltip) {
+                  return;
+                }
+                s2Ref.current.showTooltip({
+                  position: {
+                    x: cellInfo.event.clientX,
+                    y: cellInfo.event.clientY,
+                  },
+                  content: 'click',
+                });
+              })}
+              onDataCellClick={logHandler('onDataCellClick')}
+              onLayoutResize={logHandler('onLayoutResize')}
+              onCopied={logHandler('onCopied')}
+              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              onSelected={logHandler('onSelected')}
+              onScroll={logHandler('onScroll')}
+              onRowCellScroll={logHandler('onRowCellScroll')}
+              onLinkFieldJump={logHandler('onLinkFieldJump', () => {
+                window.open(
+                  'https://s2.antv.antgroup.com/zh/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                );
+              })}
+              onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}
+              onColCellBrushSelection={logHandler('onColCellBrushSelection')}
+              onRowCellBrushSelection={logHandler('onRowCellBrushSelection')}
+            />
+          )}
+        </TabPane>
+        <TabPane tab="自定义目录树" key="customTree">
+          <SheetComponent
+            dataCfg={{
+              data: dataCustomTrees,
+              fields: customTreeFields,
+            }}
+            options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
+            onMounted={onSheetMounted}
+          />
+        </TabPane>
+        <TabPane tab="趋势分析表" key="strategy">
+          <SheetComponent
+            sheetType="strategy"
+            dataCfg={strategyDataCfg}
+            options={StrategyOptions}
+            onRowCellClick={logHandler('onRowCellClick')}
+            onMounted={onSheetMounted}
+            header={{
+              title: '趋势分析表',
+              description: '支持子弹图',
+              switcherCfg: { open: true },
+              exportCfg: { open: true },
+              extra: (
+                <Switch
+                  checkedChildren="单列头"
+                  unCheckedChildren="多列头"
+                  checked={strategyDataCfg.fields.columns.length === 1}
+                  onChange={(checked) => {
+                    setStrategyDataCfg(
+                      customMerge(StrategySheetDataConfig, {
+                        fields: {
+                          columns: StrategySheetDataConfig.fields.columns.slice(
+                            0,
+                            checked ? 1 : 2,
+>>>>>>> origin/master
                           ),
                         },
                         {
@@ -1482,9 +2462,35 @@ function MainLayout() {
               },
             ]}
           />
+<<<<<<< HEAD
         </div>
       </PlaygroundContext.Provider>
     </ConfigProvider>
+=======
+        </TabPane>
+        <TabPane tab="网格分析表" key="gridAnalysis">
+          <SheetComponent
+            sheetType="gridAnalysis"
+            dataCfg={mockGridAnalysisDataCfg}
+            options={mockGridAnalysisOptions}
+            ref={s2Ref}
+            onMounted={onSheetMounted}
+          />
+        </TabPane>
+        <TabPane tab="编辑表" key="editable">
+          <SheetComponent
+            sheetType="editable"
+            dataCfg={tableSheetDataCfg}
+            options={mergedOptions}
+            ref={s2Ref}
+            themeCfg={themeCfg}
+            onMounted={onSheetMounted}
+            onDataCellEditEnd={logHandler('onDataCellEditEnd')}
+          />
+        </TabPane>
+      </Tabs>
+    </div>
+>>>>>>> origin/master
   );
 }
 

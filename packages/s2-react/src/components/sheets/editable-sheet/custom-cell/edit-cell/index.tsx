@@ -1,11 +1,21 @@
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
+import { Input } from 'antd';
+import { merge, pick } from 'lodash';
 import React, {
   memo,
+<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
   useRef,
   useState,
+=======
+  useCallback,
+>>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
   useEffect,
   useMemo,
-  useCallback,
+  useRef,
+  useState,
 } from 'react';
+<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
 import { Input } from 'antd';
 import {
   S2Event,
@@ -18,6 +28,10 @@ import {
 import { isNil, pick } from 'lodash';
 import { useS2Event } from '../../../../../hooks';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
+=======
+import { useS2Event } from '../../../../hooks';
+import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
+>>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
 import {
   invokeComponent,
   type InvokeComponentProps,
@@ -35,6 +49,7 @@ export interface CustomProps {
 
 type onChangeProps = {
   onChange?: (val: any[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -45,8 +60,14 @@ function EditCellComponent(
   props: InvokeComponentProps<{ cell: S2CellType } & onChangeProps>,
 ) {
   const { params, resolver } = props;
+<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
   const s2 = useSpreadSheetInstance();
   const { cell, onChange, CustomComponent } = params;
+=======
+  const spreadsheet = useSpreadSheetRef();
+  const { event, onChange, onDataCellEditEnd, CustomComponent } = params;
+  const cell: BaseCell<ViewMeta> = event.target.cfg.parent;
+>>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
 
   const { left, top, width, height } = useMemo(() => {
     const rect = s2?.getCanvasElement().getBoundingClientRect();
@@ -118,6 +139,15 @@ function EditCellComponent(
     s2.dataSet.originData[rowIndex][valueField] = inputVal;
     s2.render(true);
 
+    onDataCellEditEnd?.(
+      merge(cell.getMeta(), {
+        fieldValue: inputVal,
+        data: {
+          [valueField]: inputVal,
+        },
+      }),
+    );
+
     if (onChange) {
       onChange(s2.dataSet.originData);
     }
@@ -184,6 +214,7 @@ function EditCellComponent(
   );
 }
 
+<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
 export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
   const spreadsheet = useSpreadSheetInstance();
 
@@ -206,3 +237,27 @@ export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
 
   return null;
 });
+=======
+const EditCell = memo(
+  ({ onChange, onDataCellEditEnd, CustomComponent }: onChangeProps) => {
+    const spreadsheet = useSpreadSheetRef();
+
+    const cb = useCallback(
+      (e: CanvasEvent) => {
+        invokeComponent(
+          EditCellComponent,
+          { event: e, onChange, onDataCellEditEnd, CustomComponent },
+          spreadsheet,
+        );
+      },
+      [spreadsheet],
+    );
+
+    useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
+
+    return null;
+  },
+);
+
+export { EditCell };
+>>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx

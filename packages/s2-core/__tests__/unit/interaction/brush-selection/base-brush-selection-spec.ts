@@ -57,6 +57,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   beforeEach(async () => {
     MockRootInteraction.mockClear();
 
+<<<<<<< HEAD
     s2 = new PivotSheet(getContainer(), null as unknown as S2DataConfig, null);
     await s2.render();
     mockRootInteraction = new MockRootInteraction(s2);
@@ -65,6 +66,27 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     s2.showTooltipWithInfo = jest.fn();
     s2.interaction = mockRootInteraction;
     brushSelectionInstance = new DataCellBrushSelection(s2);
+=======
+    mockSpreadSheetInstance = new PivotSheet(
+      document.createElement('div'),
+      null,
+      null,
+    );
+    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
+    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
+    mockSpreadSheetInstance.foregroundGroup = new Group('');
+    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
+    mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
+    mockSpreadSheetInstance.render();
+    brushSelectionInstance = new DataCellBrushSelection(
+      mockSpreadSheetInstance,
+    );
+>>>>>>> origin/master
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();

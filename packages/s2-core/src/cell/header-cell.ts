@@ -82,7 +82,7 @@ export abstract class HeaderCell<
     return super.shouldInit() && !this.isShallowRender();
   }
 
-  protected handleRestOptions(...[headerConfig]: [T]) {
+  protected handleRestOptions(...[headerConfig]: [T, unknown]) {
     this.headerConfig = { ...headerConfig };
 
     const { value, query } = this.meta;
@@ -138,14 +138,33 @@ export abstract class HeaderCell<
     );
   }
 
-  protected getFormattedFieldValue(): FormatResult {
-    const { value, field } = this.meta;
 
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(field);
-    // TODO: formatter 简化成两个参数 formatter(value, this,meta)
-    const formattedValue = formatter!
-      ? formatter(value, undefined, this.meta)
-      : value;
+  protected getFormattedFieldValue(): FormatResult {
+    const { label, isTotalRoot, isGrandTotals, value } = this.meta;
+
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+
+    /**
+     * 如果是 table mode，列头不需要被格式化
+     * 树状模式下，小计是父维度本身，需要被格式化，此时只有总计才不需要被格式化
+     * 平铺模式下，总计/小计 文字单元格，不需要被格式化
+     * 自定义树模式下，没有总计小计概念，isTotals 均为 false, 所以不受影响
+     */
+    let shouldFormat = true;
+    if (this.spreadsheet.isTableMode()) {
+      shouldFormat = false;
+    } else if (this.spreadsheet.isHierarchyTreeType()) {
+      shouldFormat = !(isGrandTotals && isTotalRoot);
+    } else {
+      shouldFormat = !isTotalRoot;
+    }
+
+    const formattedValue =
+      shouldFormat && formatter
+        ? formatter(label, undefined, this.meta)
+        : label;
 
     return {
       formattedValue,
@@ -393,6 +412,7 @@ export abstract class HeaderCell<
     );
   }
 
+
   public toggleActionIcon(id: string) {
     if (this.getMeta().id === id) {
       const visibleActionIcons: GuiIcon[] = [];
@@ -415,7 +435,11 @@ export abstract class HeaderCell<
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells([CellType.COL_CELL, CellType.ROW_CELL]);
+    const cells = interaction?.getCells([
+      CellType.CORNER_CELL,
+      CellType.COL_CELL,
+      CellType.ROW_CELL,
+    ]);
 
     if (!first(cells)) {
       return;
@@ -423,6 +447,7 @@ export abstract class HeaderCell<
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:
+      case InteractionStateName.BRUSH_SELECTED:
         this.handleSelect(cells, stateInfo?.nodes);
         break;
       case InteractionStateName.HOVER_FOCUS:
@@ -467,7 +492,6 @@ export abstract class HeaderCell<
   public getTreeIcon() {
     return this.treeIcon;
   }
-
   public getActionIcons() {
     return this.actionIcons || [];
   }

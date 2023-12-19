@@ -2,7 +2,7 @@ import { Group, Rect, type DisplayObject } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
-  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
   S2Event,
 } from '../../common/constant';
@@ -39,7 +39,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.scrollGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_COL_SCROLL,
-        style: { zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX },
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
       }),
     );
   }

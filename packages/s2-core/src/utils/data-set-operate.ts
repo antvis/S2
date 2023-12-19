@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { every, flatMap, get, has, isArray, keys } from 'lodash';
 import {
   DataSelectType,
@@ -15,6 +16,14 @@ import type {
 import type { TotalSelectionsOfMultiData } from '../data-set/interface';
 import { customMerge } from './merge';
 import { filterExtraDimension } from './dataset/pivot-data-set';
+=======
+import { isArray, flattenDeep } from 'lodash';
+import {
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  TOTAL_VALUE,
+} from '../common/constant/field';
+import type { Totals, TotalsStatus } from '../common/interface';
+>>>>>>> origin/master
 
 export const getListBySorted = (
   list: string[],
@@ -65,6 +74,7 @@ export const getFieldKeysByDimensionValues = (
   return result;
 };
 
+<<<<<<< HEAD
 /**
  * arr1包含arr2，将arr2排到最后
  *
@@ -173,6 +183,34 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   } else {
     result.push(data);
   }
+=======
+export const filterOutDetail = (values: string[] = []) => {
+  return values.filter(
+    (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  );
+};
+export const customFlattenDeep = (
+  data: Record<any, any>[] | Record<any, any>,
+) => {
+  if (!isArray(data)) {
+    return [data];
+  }
+  return flattenDeep(data);
+};
+
+export const getFieldKeysByDimensionValues = (
+  dimensionValues: string[] | undefined[],
+  dimensions: string[] | undefined[],
+) => {
+  const result = [];
+  dimensionValues?.forEach((item, index) => {
+    if (item === undefined) {
+      if (dimensions[index]) {
+        result.push(dimensions[index]);
+      }
+    }
+  });
+>>>>>>> origin/master
 
   return result;
 };
@@ -181,10 +219,36 @@ export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
   keys(data)?.reduce((pre, next) => {
     const item = get(data, next);
 
+<<<<<<< HEAD
     if (Array.isArray(item)) {
       pre = pre.concat(flattenDeep(item));
     } else {
       pre?.push(item as unknown as never);
+=======
+export function getAggregationAndCalcFuncByQuery(
+  totalsStatus: TotalsStatus,
+  totalsOptions: Totals,
+) {
+  const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
+  const { row, col } = totalsOptions || {};
+  const {
+    calcTotals: rowCalcTotals = {},
+    calcSubTotals: rowCalcSubTotals = {},
+  } = row || {};
+  const {
+    calcTotals: colCalcTotals = {},
+    calcSubTotals: colCalcSubTotals = {},
+  } = col || {};
+  const getCalcTotals = (dimensionTotals, totalType) => {
+    if (
+      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
+      totalType
+    ) {
+      return {
+        aggregation: dimensionTotals.aggregation,
+        calcFunc: dimensionTotals.calcFunc,
+      };
+>>>>>>> origin/master
     }
 
     return pre;

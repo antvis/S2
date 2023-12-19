@@ -39,6 +39,7 @@ export interface TotalParams {
   spreadsheet: SpreadSheet;
 }
 
+<<<<<<< HEAD
 export interface HeaderNodesParams {
   spreadsheet: SpreadSheet;
   currentField: string;
@@ -48,6 +49,10 @@ export interface HeaderNodesParams {
   addMeasureInTotalQuery: boolean;
   hierarchy: Hierarchy;
   parentNode: Node;
+=======
+export interface HeaderNodesParams extends GridHeaderParams {
+  fieldValues: FieldValue[];
+>>>>>>> origin/master
   level: number;
   query: Record<string, any>;
 }
@@ -100,4 +105,10 @@ export interface CustomTreeHeaderParams {
   level: number;
   hierarchy: Hierarchy;
   tree: CustomTreeNode[];
+}
+
+export interface WhetherLeafParams {
+  facetCfg: SpreadSheetFacetCfg;
+  fields: string[];
+  level: number;
 }

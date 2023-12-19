@@ -58,6 +58,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
           rowCell: true,
         },
       },
+<<<<<<< HEAD
       style: {
         colCell: {
           height: 30,
@@ -74,6 +75,22 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     s2.interaction = mockRootInteraction;
     await s2.render();
     brushSelectionInstance = new RowCellBrushSelection(s2);
+=======
+    );
+    mockSpreadSheetInstance.container.getShape = jest.fn();
+    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
+    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
+    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;
+    mockRootInteraction.getAllRowHeaderCells = () => allRowHeaderCells;
+    mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: true,
+      col: true,
+    });
+    mockSpreadSheetInstance.render();
+    brushSelectionInstance = new RowBrushSelection(mockSpreadSheetInstance);
+>>>>>>> origin/master
 
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
@@ -249,5 +266,32 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
     // get brush range selected cells
     expect(brushSelectionInstance.brushRangeCells.length).toEqual(8);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      data: true,
+      row: false,
+      col: true,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    mockSpreadSheetInstance.on(
+      S2Event.ROW_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 90 });
+
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
+    // ================== mouse move ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

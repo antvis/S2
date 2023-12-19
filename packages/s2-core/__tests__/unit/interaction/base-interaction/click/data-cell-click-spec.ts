@@ -3,7 +3,12 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
+<<<<<<< HEAD
 import type { GEvent } from '@/index';
+=======
+import type { Event as GEvent } from '@antv/g-canvas';
+import type { InteractionCellHighlight, S2Options } from '@/common/interface';
+>>>>>>> origin/master
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
@@ -84,7 +89,27 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
+
     expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell]);
+  });
+
+  // https://github.com/antvis/S2/issues/2447
+  test('should emit cell selected event when cell unselected', () => {
+    jest
+      .spyOn(s2.interaction, 'isSelectedCell')
+      .mockImplementationOnce(() => true);
+
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+      originalEvent: {
+        detail: 1,
+      },
+    } as unknown as GEvent);
+
+    expect(selected).toHaveBeenCalledWith([]);
   });
 
   test('should emit link field jump event when link field text click and not show tooltip', () => {
@@ -172,4 +197,72 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(s2.interaction.isHoverFocusState()).toBeFalsy();
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
   });
+<<<<<<< HEAD
+=======
+
+  test('should highlight the column header cell and row header cell when data cell clicked', () => {
+    const headerCellId0 = 'header-0';
+    const headerCellId1 = 'header-1';
+    const columnNode: Array<Partial<Node>> = [
+      {
+        belongsCell: {
+          getMeta: () => ({
+            id: headerCellId0,
+            colIndex: -1,
+            rowIndex: -1,
+          }),
+        } as any,
+        id: headerCellId0,
+      },
+      {
+        belongsCell: {
+          getMeta: () => ({
+            id: headerCellId1,
+            colIndex: -1,
+            rowIndex: -1,
+          }),
+        } as any,
+        id: headerCellId1,
+      },
+    ];
+    s2.getColumnNodes = jest.fn(() => columnNode) as any;
+    s2.getRowNodes = jest.fn(() => []);
+
+    const firstDataCellInfo = createMockCellInfo(
+      `${headerCellId0}[&]first-data-cell`,
+    );
+    s2.getCell = () => firstDataCellInfo.mockCell as any;
+
+    s2.setOptions({
+      interaction: {
+        selectedCellHighlight: {
+          colHeader: true,
+          rowHeader: true,
+        } as InteractionCellHighlight,
+      },
+    });
+
+    const mockHeaderCellInfo = createMockCellInfo(headerCellId0, {
+      colIndex: columnNode[0].belongsCell.getMeta().colIndex,
+      rowIndex: columnNode[0].belongsCell.getMeta().rowIndex,
+    });
+
+    s2.interaction.updateCells = jest.fn();
+    s2.interaction.getAllColHeaderCells = jest.fn();
+    s2.interaction.getAllRowHeaderCells = jest.fn();
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    expect(s2.interaction.getState()).toEqual({
+      cells: [firstDataCellInfo.mockCellMeta],
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: expect.any(Function),
+    });
+    expect(s2.interaction.updateCells).toHaveBeenCalled();
+    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
+    expect(s2.interaction.getAllRowHeaderCells).toHaveBeenCalled();
+  });
+>>>>>>> origin/master
 });

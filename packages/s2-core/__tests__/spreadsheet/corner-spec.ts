@@ -49,6 +49,7 @@ describe('PivotSheet Corner Tests', () => {
         fields: {
           ...simpleDataConfig.fields,
           columns: [],
+          values: ['price'],
         },
       });
       s2.setOptions({
@@ -96,7 +97,18 @@ describe('PivotSheet Corner Tests', () => {
           },
         },
       });
+<<<<<<< HEAD
       await s2.render();
+=======
+      s2.setDataCfg({
+        ...simpleDataConfig,
+        fields: {
+          ...simpleDataConfig.fields,
+          values: ['price'],
+        },
+      });
+      s2.render();
+>>>>>>> origin/master
 
       const cornerNodes = s2.facet.getCornerNodes();
       const { colsHierarchy } = s2.facet.getLayoutResult();

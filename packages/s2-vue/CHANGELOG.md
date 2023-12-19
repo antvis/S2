@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 # [@antv/s2-vue-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.8...@antv/s2-vue-v2.0.0-next.9) (2023-12-12)
+=======
+# [@antv/s2-vue-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.5.0...@antv/s2-vue-v1.6.0) (2023-12-15)
+
+
+### Features
+
+* **perf:** 优化 dataset 数据结构转化，以及交互过程中 layout性能 ([#2476](https://github.com/antvis/S2/issues/2476)) ([6fa8fbb](https://github.com/antvis/S2/commit/6fa8fbb054dc1dd9964b33a5ac8ec0d7fbee723e))
+
+# [@antv/s2-vue-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v1.5.0) (2022-12-09)
+>>>>>>> origin/master
 
 
 ### Features

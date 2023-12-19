@@ -76,6 +76,7 @@ import {
 } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+<<<<<<< HEAD
 import { getTheme } from '../theme';
 
 /**
@@ -84,6 +85,8 @@ import { getTheme } from '../theme';
  * 而是要用 circle.style.r = 20;
  */
 runtime.enableCSSParsing = false;
+=======
+>>>>>>> origin/master
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -249,10 +252,12 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initInteraction() {
+    this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
 
   private initTooltip() {
+    this.tooltip?.destroy?.();
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
@@ -357,9 +362,14 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
-   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
+   * @param reset 是否使用传入的 dataCfg 重置已保存的 dataCfg
+   *
+   * @example setDataCfg(dataCfg, true) 直接使用传入的 DataCfg，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
+  public setDataCfg<T extends boolean = false>(
+    dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
+    reset?: T,
+  ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
       this.dataCfg = getSafetyDataConfig(dataCfg);
@@ -373,12 +383,20 @@ export abstract class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
+
     if (reset) {
       this.options = getSafetyOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
 
+<<<<<<< HEAD
+=======
+    if (reset || options.tooltip?.renderTooltip) {
+      this.initTooltip();
+    }
+
+>>>>>>> origin/master
     this.registerIcons();
   }
 
@@ -572,7 +590,19 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
+<<<<<<< HEAD
   // 获取当前 cell 实例
+=======
+  public getTooltipDataItemMappingCallback() {
+    return this.options?.mappingDisplayDataItem;
+  }
+
+  protected isCellType(cell?: CanvasEvent['target']) {
+    return cell instanceof BaseCell;
+  }
+
+  // 获取当前cell实例
+>>>>>>> origin/master
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,
   ): T | null {
@@ -580,8 +610,13 @@ export abstract class SpreadSheet extends EE {
 
     // 一直索引到 g 顶层的 canvas 来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
+<<<<<<< HEAD
       if (parent instanceof BaseCell) {
         // 在单元格中，返回 true
+=======
+      if (this.isCellType(parent)) {
+        // 在单元格中，返回true
+>>>>>>> origin/master
         return parent as T;
       }
 
@@ -618,12 +653,20 @@ export abstract class SpreadSheet extends EE {
         : false;
 
     return {
+      label: i18n('总计'),
+      subLabel: i18n('小计'),
+      totalsGroupDimensions: [],
+      subTotalsGroupDimensions: [],
+      ...totalConfig,
       showSubTotals,
+<<<<<<< HEAD
       showGrandTotals: totalConfig.showGrandTotals,
       reverseGrandTotalsLayout: totalConfig.reverseGrandTotalsLayout,
       reverseSubTotalsLayout: totalConfig.reverseSubTotalsLayout,
       grandTotalsLabel: totalConfig.grandTotalsLabel || i18n('总计'),
       subTotalsLabel: totalConfig.subTotalsLabel || i18n('小计'),
+=======
+>>>>>>> origin/master
     };
   }
 

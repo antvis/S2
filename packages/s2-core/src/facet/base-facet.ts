@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 import {
   FederatedWheelEvent,
   Group,
   Rect,
   type FederatedPointerEvent as GraphEvent,
 } from '@antv/g';
+=======
+import type { Event as GraphEvent } from '@antv/g-base';
+import type { IElement, IGroup } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
+import { Wheel, type GestureEvent } from '@antv/g-gesture';
+>>>>>>> origin/master
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -47,16 +54,20 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+<<<<<<< HEAD
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+=======
+  OriginEventType,
+>>>>>>> origin/master
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import {
-  DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
+  DebuggerUtil,
 } from '../common/debug';
 import type {
   AdjustLeafNodesParams,
@@ -83,7 +94,11 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
+<<<<<<< HEAD
 import { isMobile } from '../utils/is-mobile';
+=======
+import { isMobile, isWindows } from '../utils/is-mobile';
+>>>>>>> origin/master
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -92,17 +107,20 @@ import {
   Frame,
   RowHeader,
   SeriesNumberHeader,
+  type RowHeaderConfig,
 } from './header';
 import type { Hierarchy } from './layout/hierarchy';
 import type { ViewCellHeights } from './layout/interface';
 import { Node } from './layout/node';
 import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import {
+  areAllFieldsEmpty,
   calculateInViewIndexes,
   getCellRange,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import type { BaseHeader, BaseHeaderConfig } from './header/base';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -171,7 +189,15 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
+<<<<<<< HEAD
   public abstract getViewCellHeights(): ViewCellHeights;
+=======
+  public abstract getContentHeight(): number;
+
+  public abstract getViewCellHeights(
+    layoutResult: LayoutResult,
+  ): ViewCellHeights;
+>>>>>>> origin/master
 
   public abstract getCellMeta(
     rowIndex: number,
@@ -410,6 +436,7 @@ export abstract class BaseFacet {
       const { deltaX, deltaY, x, y } = ev;
 
       // The coordinates of mobile and pc are three times different
+      // TODO: 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, next 版本未复现
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -429,6 +456,10 @@ export abstract class BaseFacet {
    * Start render, call from outside
    */
   public render() {
+    if (areAllFieldsEmpty(this.spreadsheet.dataCfg.fields)) {
+      return;
+    }
+
     this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();
@@ -466,12 +497,15 @@ export abstract class BaseFacet {
     };
   }
 
+<<<<<<< HEAD
   public getContentHeight(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
     return rowsHierarchy.height + colsHierarchy.height;
   }
 
+=======
+>>>>>>> origin/master
   public updateScrollOffset(offsetConfig: OffsetConfig) {
     if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
       if (offsetConfig.rowHeaderOffsetX?.animate) {
@@ -710,19 +744,25 @@ export abstract class BaseFacet {
     );
 
     this.timer = timer((elapsed) => {
-      const ratio = Math.min(elapsed / duration, 1);
-      const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
+      try {
+        const ratio = Math.min(elapsed / duration, 1);
+        const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
 
-      this.setScrollOffset({
-        rowHeaderScrollX,
-        scrollX,
-        scrollY,
-      });
-      this.startScroll();
+        this.setScrollOffset({
+          rowHeaderScrollX,
+          scrollX,
+          scrollY,
+        });
+        this.startScroll();
 
-      if (elapsed > duration) {
+        if (elapsed > duration) {
+          this.timer.stop();
+          cb?.();
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
         this.timer.stop();
-        cb?.();
       }
     });
   };
@@ -1158,9 +1198,14 @@ export abstract class BaseFacet {
   };
 
   private stopScrollChaining = (event: WheelEvent) => {
-    event?.preventDefault?.();
+    if (event?.cancelable) {
+      event?.preventDefault?.();
+    }
     // 移动端的 prevent 存在于 originalEvent上
-    (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
+    const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
+    if (mobileEvent?.cancelable) {
+      mobileEvent?.preventDefault?.();
+    }
   };
 
   onWheel = (event: WheelEvent) => {
@@ -1168,8 +1213,9 @@ export abstract class BaseFacet {
     let { deltaX, deltaY, offsetX, offsetY } = event;
     const { shiftKey } = event;
 
-    // 按住shift时，固定为水平方向滚动
-    if (shiftKey) {
+    // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
+    // see https://github.com/antvis/S2/issues/2198
+    if (shiftKey && isWindows()) {
       offsetX = offsetX - deltaX + deltaY;
       deltaX = deltaY;
       offsetY -= deltaY;
@@ -1237,6 +1283,26 @@ export abstract class BaseFacet {
     });
   };
 
+<<<<<<< HEAD
+=======
+  protected panelScrollGroupClip(scrollX: number, scrollY: number) {
+    const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
+    this.spreadsheet.panelScrollGroup?.setClip({
+      type: 'rect',
+      attrs: {
+        x: isFrozenRowHeader ? scrollX : 0,
+        y: scrollY,
+        width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
+        height: this.panelBBox.height,
+      },
+    });
+  }
+
+  protected clip(scrollX: number, scrollY: number) {
+    this.panelScrollGroupClip(scrollX, scrollY);
+  }
+
+>>>>>>> origin/master
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
    * according to new scroll offset
@@ -1265,16 +1331,16 @@ export abstract class BaseFacet {
       scrollY,
       KEY_GROUP_ROW_INDEX_RESIZE_AREA,
     );
-    this.cornerHeader.onCorScroll(
+    this.cornerHeader?.onCorScroll(
       this.getRealScrollX(scrollX, hRowScroll),
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    this.centerFrame.onChangeShadowVisibility(
+    this.centerFrame?.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
     );
-    this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
+    this.centerFrame?.onBorderScroll(this.getRealScrollX(scrollX));
+    this.columnHeader?.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addDataCell = (cell: DataCell) => {
@@ -1431,6 +1497,7 @@ export abstract class BaseFacet {
     this.foregroundGroup.appendChild(this.centerFrame);
   }
 
+<<<<<<< HEAD
   protected getRowHeader(): RowHeader | null {
     if (!this.rowHeader) {
       const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
@@ -1445,6 +1512,28 @@ export abstract class BaseFacet {
         nodes: this.layoutResult.rowNodes,
         spreadsheet: this.spreadsheet,
       });
+=======
+  protected getRowHeaderCfg(): RowHeaderConfig {
+    const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
+    const seriesNumberWidth = this.getSeriesNumberWidth();
+    return {
+      width: this.cornerBBox.width,
+      height,
+      viewportWidth,
+      viewportHeight,
+      position: { x: 0, y },
+      data: this.layoutResult.rowNodes,
+      hierarchyType: this.cfg.hierarchyType,
+      linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
+      seriesNumberWidth,
+      spreadsheet: this.spreadsheet,
+    };
+  }
+
+  protected getRowHeader(): RowHeader {
+    if (!this.rowHeader) {
+      return new RowHeader(this.getRowHeaderCfg());
+>>>>>>> origin/master
     }
 
     return this.rowHeader;
@@ -1483,6 +1572,7 @@ export abstract class BaseFacet {
     );
   }
 
+<<<<<<< HEAD
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return (
       this.seriesNumberHeader ||
@@ -1494,6 +1584,16 @@ export abstract class BaseFacet {
         rowsHierarchy: this.layoutResult.rowsHierarchy,
       })
     );
+=======
+  protected getSeriesNumberHeader(): SeriesNumberHeader {
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      viewportBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      spreadsheet: this.spreadsheet,
+      cornerWidth: this.cornerBBox.width,
+    });
+>>>>>>> origin/master
   }
 
   protected getCenterFrame(): Frame {
@@ -1575,11 +1675,33 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
+<<<<<<< HEAD
     const { interaction } = this.spreadsheet;
 
+=======
+    const { interaction, container } = this.spreadsheet;
+>>>>>>> origin/master
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
-      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+      interaction.removeIntercepts([InterceptType.HOVER]);
+
+      if (interaction.getHoverAfterScroll()) {
+        // https://github.com/antvis/S2/issues/2222
+        const canvasMousemoveEvent =
+          interaction.eventController.canvasMousemoveEvent;
+        if (canvasMousemoveEvent) {
+          const { x, y } = canvasMousemoveEvent;
+          const shape = container.getShape(x, y);
+          if (shape) {
+            container.emit(OriginEventType.MOUSE_MOVE, {
+              ...canvasMousemoveEvent,
+              shape,
+              target: shape,
+              timestamp: performance.now(),
+            });
+          }
+        }
+      }
     }
   }, 300);
 
@@ -1608,7 +1730,7 @@ export abstract class BaseFacet {
     }
 
     return hiddenColumnsDetail.find((detail) =>
-      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

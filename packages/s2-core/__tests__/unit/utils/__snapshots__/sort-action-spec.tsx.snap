@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`total group dimension sort test should sort by col total with group 1`] = `
+Array [
+  Object {
+    "$$extra$$": "price",
+    "$$value$$": "666",
+    "city": "杭州",
+    "price": "666",
+    "type": "笔",
+  },
+  Object {
+    "$$extra$$": "price",
+    "$$value$$": "999",
+    "city": "杭州",
+    "price": "999",
+    "type": "纸张",
+  },
+]
+`;

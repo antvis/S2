@@ -15,6 +15,7 @@ import type { ColCell } from '../cell';
 import {
   CellType,
   ELLIPSIS_SYMBOL,
+  EMPTY_FIELD_VALUE,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
 import {
@@ -176,7 +177,16 @@ export const getEllipsisText = ({
   priorityParam?: string[];
   placeholder?: string;
 }) => {
+<<<<<<< HEAD
   let font: TextTheme = {} as TextTheme;
+=======
+  let font = {};
+  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
+  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  const finalText = isEmptyText ? emptyPlaceholder : `${text}`;
+
+>>>>>>> origin/master
   let priority = priorityParam;
 
   const finalText = getDisplayText(text, placeholder);
@@ -277,6 +287,32 @@ export const isUpDataValue = (value: number | string): boolean => {
 };
 
 /**
+ * Determines whether the data is actually equal to 0 or empty or nil
+ * example: "0.00%" => true
+ * @param value
+ */
+export const isZeroOrEmptyValue = (value: number | string): boolean => {
+  return (
+    isNil(value) ||
+    value === '' ||
+    Number(String(value).replace(/[^0-9.]+/g, '')) === 0
+  );
+};
+
+/**
+ * Determines whether the data is actually equal to 0 or empty or nil or equals to compareValue
+ * example: "0.00%" => true
+ * @param value
+ * @param compareValue
+ */
+export const isUnchangedValue = (
+  value: number | string,
+  compareValue: number | string,
+): boolean => {
+  return isZeroOrEmptyValue(value) || value === compareValue;
+};
+
+/**
  * 根据单元格对齐方式计算文本的 x 坐标
  * @param x 单元格的 x 坐标
  * @param padding @Padding
@@ -311,9 +347,13 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
+<<<<<<< HEAD
   const cellStyle: InternalFullyCellTheme = cell.getStyle(
     isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
   );
+=======
+  const cellStyle = cell.getStyle(cell.cellType || CellTypes.DATA_CELL);
+>>>>>>> origin/master
 
   let textStyle: TextTheme | undefined;
 

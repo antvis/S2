@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 import {
   type FederatedPointerEvent as CanvasEvent,
   type DisplayObject,
   type PointLike,
   Rect,
 } from '@antv/g';
+=======
+import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+>>>>>>> origin/master
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {

@@ -5,16 +5,32 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
+    // 增加几条长度不一致的 mock 数据
+    dataCfg.data.at(0).number = 11111111;
+    dataCfg.data.at(6).number = 7777;
+    dataCfg.data.at(-1).number = 666666;
+
     const container = document.getElementById('container');
 
     const s2Options = {
-      width: 400,
+      width: 600,
       height: 480,
       style: {
+        // 了解更多: https://s2.antv.antgroup.com/api/general/s2-options#style
         layoutWidthType: 'compact',
       },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    // 紧凑模式下, 列头宽度为实际内容宽度 (取当前列最大值, 采样每一列前 50 条数据)
+    s2.setTheme({
+      dataCell: {
+        text: {
+          fontSize: 16,
+        },
+      },
+    });
 
     s2.render();
   });

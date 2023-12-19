@@ -1,5 +1,6 @@
 import { Rect } from '@antv/g';
 import { each, isEmpty } from 'lodash';
+import type { IGroup } from '@antv/g-canvas';
 import { RowCell } from '../../cell';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
@@ -24,6 +25,23 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       rowCell?.(node, spreadsheet, headerConfig) ||
       new RowCell(node, spreadsheet, headerConfig)
     );
+  }
+
+    // row'cell only show when visible
+  protected rowCellInRect(item: Node): boolean {
+    const { width, viewportHeight, seriesNumberWidth, scrollY = 0, scrollX = 0 } =
+      this.getHeaderConfig();
+
+    return (
+      viewportHeight + scrollY > item.y && // bottom
+      scrollY < item.y + item.height && // top
+      width - seriesNumberWidth + scrollX > item.x && // left
+      scrollX - seriesNumberWidth < item.x + item.width
+    ); // right
+  }
+
+  protected getCellGroup(node: Node): IGroup {
+    return this;
   }
 
   protected layout() {

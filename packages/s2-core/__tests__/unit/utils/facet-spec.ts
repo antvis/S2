@@ -1,11 +1,11 @@
 import {
-  getSubTotalNodeWidthOrHeightByLevel,
   getIndexRangeWithOffsets,
   getAdjustedRowScrollX,
   getAdjustedScrollOffset,
 } from '@/utils/facet';
 
 describe('Facet util test', () => {
+<<<<<<< HEAD
   test('should get correct width of subTotal node', () => {
     const sampleNodesForAllLevels = [
       {
@@ -25,6 +25,8 @@ describe('Facet util test', () => {
     expect(getSubTotalNodeWidthOrHeightByLevel([], -1, 'width')).toEqual(0);
   });
 
+=======
+>>>>>>> origin/master
   test('should get correct index range for given offsets', () => {
     const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
 

@@ -38,7 +38,7 @@ s2.isPivotMode()
 | hideTooltip | 隐藏 tooltip                                                                                                             | `() => void` |    |
 | destroyTooltip | 销毁 tooltip                                                                                                             | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
-| setDataCfg | 更新数据配置                                                                                                                 | (dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), reset?: boolean ) => void | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
+| setDataCfg | 更新数据配置                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
 | setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
 | render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => Promise<void>` |    |
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |
@@ -48,8 +48,13 @@ s2.isPivotMode()
 | getThemeName | 获取主题名                                                                                                    | ( ) => `default \| colorful \| gray \| dark` |    |
 | updatePagination | 更新分页                                                                                                                   | (pagination: [Pagination](/docs/api/general/S2Options#pagination)) => void |    |
 | getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
+<<<<<<< HEAD
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
+=======
+| changeSheetSize （别名：changeSize) | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
+| getLayoutWidthType | 获取单元格宽度布局类型。[详情](/api/general/s2-options#style) | () => `adaptive \| colAdaptive \| compact` |    |
+>>>>>>> origin/master
 | getRowNodes | 获取行头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
 | getRowLeafNodes | 获取行头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | facet.getColNodes | 获取列头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |

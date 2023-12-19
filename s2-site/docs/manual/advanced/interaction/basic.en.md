@@ -187,6 +187,7 @@ When the mouse selects a cell or brushes a selected cell, the row and column hea
 // 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
+<<<<<<< HEAD
     selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader （兼容未拓展类型前的设计）
   }
 };
@@ -199,6 +200,20 @@ const S2Options = {
       colHeader: true,  // 选中单元格时，高亮列头
       rowCells: false,  // 选中单元格时，高亮当前行
       colCells: false,  // 选中单元格时，高亮当前列
+=======
+    selectedCellHighlight: true // default is false
+  }
+};
+
+// You can also configure the highlighting of header and cells in selectedCellHighlight separately
+const s2Options = {
+  interaction: {
+    selectedCellHighlight: {
+      rowHeader: true,  // Highlight row header when cell is selected
+      colHeader: true,  // Highlight column header when cells are selected
+      currentRow: false,  // Highlight the current row when a cell is selected
+      currentCol: false,  // Highlight the current column when a cell is selected
+>>>>>>> origin/master
     },
   },
 };

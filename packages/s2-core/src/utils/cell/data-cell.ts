@@ -3,7 +3,11 @@ import type { DataCell } from '../../cell';
 import type { SpreadSheet } from '../../sheet-type';
 import {
   InteractionStateName,
+<<<<<<< HEAD
   CellType,
+=======
+  CellTypes,
+>>>>>>> origin/master
   EMPTY_PLACEHOLDER,
 } from '../../common/constant';
 import type { CellMeta, S2CellType } from '../../common/interface';

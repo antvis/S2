@@ -1,6 +1,10 @@
 import { isNil, last, map } from 'lodash';
+<<<<<<< HEAD
 import { RowCell } from '../../cell';
 
+=======
+import { BaseRowCell, RowCell } from '../../cell';
+>>>>>>> origin/master
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
@@ -25,6 +29,10 @@ export class RowCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().row) {
+        return;
+      }
+
       super.mouseDown(event);
     });
   }
@@ -102,7 +110,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
 
     this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
-      stateName: InteractionStateName.SELECTED,
+      stateName: InteractionStateName.BRUSH_SELECTED,
       onUpdateCells: this.onUpdateCells,
     });
 
@@ -134,7 +142,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
       }
 
       // TODO: 先暂时不考虑自定义单元格的情况, next 分支把这些单元格 (包括自定义单元格) 都放在了 s2.options.rowCell 里
-      return new RowCell(node, this.spreadsheet);
+      return this.spreadsheet.facet.rowHeader.createCellInstance(node);
     });
   }
 

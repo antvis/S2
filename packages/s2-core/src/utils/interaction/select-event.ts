@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesNumberCell } from '../../cell';
+=======
+import { reduce, uniqBy } from 'lodash';
+import { ColCell, RowCell, TableSeriesCell } from '../../cell';
+>>>>>>> origin/master
 import {
   CellType,
   InteractionKeyboardKey,
@@ -15,10 +20,7 @@ import type {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { getDataCellId } from '../cell/data-cell';
-import {
-  getActiveHoverRowColCells,
-  updateAllColHeaderCellState,
-} from './hover-event';
+import { getActiveHoverRowColCells } from './hover-event';
 
 type HeaderGetter = {
   getter: typeof getRowHeaderByCellId;
@@ -29,6 +31,10 @@ export const isMultiSelectionKey = (e: KeyboardEvent) =>
   [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
     e.key as InteractionKeyboardKey,
   );
+
+export const isMouseEventWithMeta = (e: MouseEvent) => {
+  return e.ctrlKey || e.metaKey;
+};
 
 export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
@@ -105,6 +111,7 @@ export function getRowCellForSelectedCell(
   );
 }
 
+<<<<<<< HEAD
 export function updateRowColCells(meta: ViewMeta) {
   const { rowId, colId, spreadsheet } = meta;
   const { facet } = spreadsheet;
@@ -126,6 +133,14 @@ export function updateRowColCells(meta: ViewMeta) {
 
 export const getRowHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
   s2.facet.getRowNodes().filter((node: Node) => cellId.includes(node.id));
+=======
+export const getRowHeaderByCellId = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  return s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
+};
+>>>>>>> origin/master
 
 export const getColHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
   s2.facet.getColNodes().filter((node: Node) => cellId.includes(node.id));

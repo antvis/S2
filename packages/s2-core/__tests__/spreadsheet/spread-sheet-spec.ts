@@ -463,10 +463,22 @@ describe('SpreadSheet Tests', () => {
         s2Options,
       );
 
+<<<<<<< HEAD
       await s2.render();
 
       expect(s2.dataSet.originData).toHaveLength(3);
       expect(s2.dataCfg.meta).toHaveLength(1);
+=======
+      expect(s2.dataSet.totalData).toEqual([
+        {
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ]);
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+>>>>>>> origin/master
 
       // 改变 totalData 为 undefined 再次渲染
       s2.setDataCfg({ ...mockDataConfig, data: [] }, true);
@@ -484,17 +496,29 @@ describe('SpreadSheet Tests', () => {
         s2Options,
       );
 
+<<<<<<< HEAD
       await s2.render();
 
       expect(s2.dataSet.originData).toHaveLength(3);
       expect(s2.dataCfg.meta).toHaveLength(1);
 
+=======
+>>>>>>> origin/master
       // 改变 totalData 为 undefined 再次渲染
       s2.setDataCfg({ ...mockDataConfig, data: [] }, false);
       await s2.render();
 
+<<<<<<< HEAD
       expect(s2.dataSet.originData).toHaveLength(0);
       expect(s2.dataCfg.meta).toHaveLength(1);
+=======
+      expect(s2.dataSet.totalData).toEqual(totalData);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+>>>>>>> origin/master
       s2.destroy();
     });
 

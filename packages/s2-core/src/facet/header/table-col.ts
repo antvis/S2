@@ -1,7 +1,7 @@
 import { Group, Rect, type RectStyleProps } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
@@ -60,6 +60,7 @@ export class TableColHeader extends ColHeader {
     } = headerConfig.spreadsheet.options.frozen!;
 
     if (frozenColCount) {
+<<<<<<< HEAD
       this.frozenColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN,
@@ -75,6 +76,19 @@ export class TableColHeader extends ColHeader {
           style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
         }),
       );
+=======
+      this.frozenColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN,
+        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+      });
+    }
+
+    if (frozenTrailingColCount) {
+      this.frozenTrailingColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN_TRAILING,
+        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+      });
+>>>>>>> origin/master
     }
   }
 

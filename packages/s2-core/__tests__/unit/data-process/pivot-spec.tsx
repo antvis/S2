@@ -6,7 +6,10 @@ import { flattenDeep, get, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
+<<<<<<< HEAD
 import type { ViewMeta } from '../../../src/common';
+=======
+>>>>>>> origin/master
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -49,6 +52,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     test('should get correct indexes data', () => {
+<<<<<<< HEAD
       const ds = s2.dataSet as PivotDataSet;
       const indexesData = ds.indexesData;
 
@@ -57,34 +61,60 @@ describe('Pivot Table Core Data Process', () => {
       );
 
       expect(get(indexesData, '1.1.1.1')).toEqual({
+=======
+      const prefix = 'province[&]city[&]type[&]sub_type';
+
+      const indexesData = ds.indexesData;
+      expect(flattenDeep(indexesData[prefix]).filter(Boolean)).toHaveLength(
+        data.length,
+      );
+
+      expect(get(indexesData, [prefix, 1, 1, 1, 1, 1])).toEqual({
+>>>>>>> origin/master
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
       }); // 左上角
+<<<<<<< HEAD
       expect(get(indexesData, '1.1.2.2')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 1, 1, 2, 2, 1])).toEqual({
+>>>>>>> origin/master
         province: '浙江省',
         city: '杭州市',
         type: '办公用品',
         sub_type: '纸张',
         number: 1343,
       }); // 右上角
+<<<<<<< HEAD
       expect(get(indexesData, '2.4.1.1')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 2, 4, 1, 1, 1])).toEqual({
+>>>>>>> origin/master
         province: '四川省',
         city: '乐山市',
         type: '家具',
         sub_type: '桌子',
         number: 2330,
       }); // 左下角
+<<<<<<< HEAD
       expect(get(indexesData, '2.4.2.2')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 2, 4, 2, 2, 1])).toEqual({
+>>>>>>> origin/master
         province: '四川省',
         city: '乐山市',
         type: '办公用品',
         sub_type: '纸张',
         number: 352,
       }); // 右下角
+<<<<<<< HEAD
       expect(get(indexesData, '1.4.2.1')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 1, 4, 2, 1, 1])).toEqual({
+>>>>>>> origin/master
         province: '浙江省',
         city: '舟山市',
         type: '办公用品',

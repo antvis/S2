@@ -41,7 +41,11 @@ fetch(
         new Promise((resolve) => {
           const dataSet = meta.spreadsheet.dataSet;
           const field = drillFields[0];
+<<<<<<< HEAD:s2-site/examples/react-component/drill-dwon/demo/for-pivot.tsx
           const rowData = dataSet.getCellMultiData({ query: meta.query });
+=======
+          const rowDatas = dataSet.getMultiData(meta.query);
+>>>>>>> origin/master:s2-site/examples/react-component/drill-down/demo/for-pivot.tsx
           const drillDownData = [];
 
           rowData.forEach((data) => {

@@ -5,6 +5,7 @@ import {
   type MultiData,
   type SimpleData,
   type ViewMeta,
+  isUnchangedValue,
 } from '@antv/s2';
 import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
@@ -69,10 +70,21 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
+<<<<<<< HEAD:packages/s2-react/src/components/sheets/strategy-sheet/custom-tooltip/data-cell-tooltip.tsx
             {(derivedValues as SimpleData[]).map((derivedValue, i) => {
               const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
+=======
+            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
+              const isUnchanged = isUnchangedValue(
+                derivedValue,
+                value as SimpleDataItem,
+              );
+              const isUp =
+                !isUnchanged && isUpDataValue(derivedValue as string);
+              const isDown = !isUnchanged && !isUp;
+>>>>>>> origin/master:packages/s2-react/src/components/sheets/strategy-sheet/custom-tooltip/custom-data-tooltip.tsx
               const originalDerivedValue = derivedOriginalValues[
                 i
               ] as SimpleData;
@@ -88,7 +100,7 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
                       'derived-value-trend-down': isDown,
                     })}
                   >
-                    {!isNormal && (
+                    {!isUnchanged && (
                       <span className="derived-value-trend-icon"></span>
                     )}
                     {renderDerivedValue?.(
@@ -109,7 +121,12 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
       )}
       {rowDescription && (
         <div className={tooltipCls('description')}>
-          {i18n('说明')}: {rowDescription}
+          <span className={tooltipCls('description-label')}>
+            {i18n('说明')}
+          </span>
+          <span className={tooltipCls('description-text')}>
+            {rowDescription}
+          </span>
         </div>
       )}
     </div>

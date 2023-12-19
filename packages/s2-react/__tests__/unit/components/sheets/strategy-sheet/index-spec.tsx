@@ -1,21 +1,31 @@
 /* eslint-disable max-classes-per-file */
 import {
+<<<<<<< HEAD
   CellType,
+=======
+  CellTypes,
+  copyData,
+  CornerNodeType,
+>>>>>>> origin/master
   customMerge,
+  EXTRA_FIELD,
   getCellMeta,
   InteractionStateName,
-  SpreadSheet,
   type S2DataConfig,
+<<<<<<< HEAD
   type GEvent,
   RowCell,
+=======
+  SpreadSheet,
+>>>>>>> origin/master
 } from '@antv/s2';
 import React from 'react';
 import { get } from 'lodash';
 import { waitFor } from '@testing-library/react';
 import { getContainer, renderComponent } from '../../../../util/helpers';
 import {
-  StrategySheetDataConfig,
   StrategyOptions,
+  StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
 import {
   SheetComponent,
@@ -34,6 +44,10 @@ describe('<StrategySheet/> Tests', () => {
   });
 
   afterEach(() => {
+<<<<<<< HEAD
+=======
+    ReactDOM.unmountComponentAtNode(container);
+>>>>>>> origin/master
     container.remove();
   });
 
@@ -73,9 +87,13 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options);
 
+<<<<<<< HEAD
     await waitFor(() => {
       expect(s2!.options.tooltip!.dataCell!.content).toEqual(content);
     });
+=======
+    expect(s2.options.tooltip!.data!.content).toEqual(content);
+>>>>>>> origin/master
   });
 
   test('should hide value if only one value field', async () => {
@@ -92,14 +110,19 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, s2DataConfig);
 
+<<<<<<< HEAD
     await waitFor(() => {
       expect(s2.options!.style!.colCell!.hideValue).toBeTruthy();
     });
+=======
+    expect(s2.options.style!.colCfg!.hideMeasureColumn).toBeTruthy();
+>>>>>>> origin/master
   });
 
   test('should enable hidden columns operation', async () => {
     renderStrategySheet(null);
 
+<<<<<<< HEAD
     await waitFor(() => {
       expect(s2.options!.tooltip!.operation!.hiddenColumns).toBeTruthy();
     });
@@ -110,9 +133,29 @@ describe('<StrategySheet/> Tests', () => {
     CellType.COL_CELL,
     CellType.DATA_CELL,
   ] as const)(
+=======
+    expect(s2.options.tooltip!.operation!.hiddenColumns).toBeTruthy();
+  });
+
+  test.each([
+    CellTypes.ROW_CELL,
+    CellTypes.COL_CELL,
+    CellTypes.DATA_CELL,
+    CellTypes.CORNER_CELL,
+  ])(
+>>>>>>> origin/master
     'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
     async (cellType) => {
       const content = `${cellType} test content`;
+<<<<<<< HEAD
+=======
+      const cell = {
+        [CellTypes.ROW_CELL]: 'row',
+        [CellTypes.COL_CELL]: 'col',
+        [CellTypes.DATA_CELL]: 'data',
+        [CellTypes.CORNER_CELL]: 'corner',
+      }[cellType];
+>>>>>>> origin/master
 
       renderStrategySheet({
         tooltip: {
@@ -132,7 +175,33 @@ describe('<StrategySheet/> Tests', () => {
     },
   );
 
+<<<<<<< HEAD
   test('should render correctly KPI bullet column measure text', async () => {
+=======
+  test('should get current cell custom tooltip content', () => {
+    renderStrategySheet({
+      tooltip: {
+        showTooltip: true,
+        row: {
+          content: () => <div>{CellTypes.ROW_CELL}</div>,
+        },
+        data: {
+          content: () => <div>{CellTypes.DATA_CELL}</div>,
+        },
+      },
+    });
+
+    jest.spyOn(s2, 'getCellType').mockReturnValueOnce(CellTypes.COL_CELL);
+
+    s2.showTooltipWithInfo({} as GEvent, []);
+
+    [CellTypes.ROW_CELL, CellTypes.DATA_CELL].forEach((content) => {
+      expect(s2.tooltip.container.innerText).not.toEqual(content);
+    });
+  });
+
+  test('should render correctly KPI bullet column measure text', () => {
+>>>>>>> origin/master
     renderStrategySheet(
       {
         width: 6000,
@@ -167,7 +236,40 @@ describe('<StrategySheet/> Tests', () => {
     });
   });
 
+<<<<<<< HEAD
   test('should format corner date field', async () => {
+=======
+  test('should get custom corner extra field text', () => {
+    const cornerExtraFieldText = '自定义';
+    const s2DataCfg = {
+      fields: {
+        ...StrategySheetDataConfig.fields,
+        valueInCols: false,
+      },
+    };
+    const s2Options = {
+      cornerExtraFieldText,
+    };
+
+    renderStrategySheet(s2Options, {
+      ...StrategySheetDataConfig,
+      ...s2DataCfg,
+    });
+
+    const cornerNode = s2.facet
+      .getCornerNodes()
+      .find((node) => node.cornerType === CornerNodeType.Row);
+    const textList = s2.facet.cornerHeader
+      .getChildren()
+      .map((element) => (element as any).actualText);
+
+    expect(textList).toEqual([cornerExtraFieldText, '日期']);
+
+    expect(cornerNode!.label).toEqual(cornerExtraFieldText);
+  });
+
+  test('should format corner date field', () => {
+>>>>>>> origin/master
     renderStrategySheet(
       {
         width: 600,
@@ -184,6 +286,7 @@ describe('<StrategySheet/> Tests', () => {
       },
     );
 
+<<<<<<< HEAD
     await waitFor(() => {
       const textList = s2.facet.cornerHeader.children.map((element) =>
         get(element, 'actualText'),
@@ -239,6 +342,15 @@ describe('<StrategySheet/> Tests', () => {
 
       expect(rowNodes).toMatchSnapshot();
     });
+=======
+    const textList = s2.facet.cornerHeader
+      .getChildren()
+      .map((element) => (element as any).actualText);
+    const dataSetFields = s2.dataSet.fields;
+
+    expect(dataSetFields.rows).toEqual([EXTRA_FIELD]);
+    expect(textList).toEqual(['数值', '日期']);
+>>>>>>> origin/master
   });
 
   describe('StrategySheet Export Tests', () => {

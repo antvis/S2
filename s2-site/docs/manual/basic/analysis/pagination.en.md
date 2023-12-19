@@ -35,6 +35,17 @@ items to use it out of the box.
 |-----|-----|-----|-----|-----|
 | showPagination | Whether to display the default pagination<br> (only if the `pagination` attribute is configured in `options`, it will take effect) | `boolean` | `{ <br>onShowSizeChange?: (pageSize: number) => void,<br> >onChange?: (current: number) => void <br>}` | `false` |
 
+📢 It should be noted that in the @antv/s2-react version, the type of `showPagination` is:
+
+```ts
+type ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (current: number, pageSize: number) => void,
+      onChange?: (current: number, pageSize: number) => void
+    }
+```
+
 ### React version
 
 > The [Ant Design](https://ant.design/components/pagination-cn/) Pagination paging component is used, which

@@ -33,7 +33,7 @@ describe('Resize Utils Tests', () => {
 
   let s2: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockSpreadSheet.mockClear();
 
     s2 = new MockSpreadSheet();

@@ -4,6 +4,8 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { TargetCellInfo } from '@antv/s2';
 
+const CustomColCellTooltip = () => <div>col cell</div>;
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
@@ -13,6 +15,7 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
+<<<<<<< HEAD
         enable: true,
         rowCell: {
           enable: false,
@@ -31,13 +34,54 @@ fetch(
         const position = {
           x: cellInfo.event.clientX,
           y: cellInfo.event.clientY,
+=======
+        showTooltip: true,
+      },
+    };
+
+    const onColCellClick = ({ viewMeta, event }) => {
+      if (!viewMeta) {
+        return;
+      }
+      const { spreadsheet, id } = viewMeta;
+
+      // 点击列头的 [家具] 试试
+      if (id === 'root[&]家具') {
+        const position = {
+          x: event.clientX,
+          y: event.clientY,
+>>>>>>> origin/master
         };
-        spreadsheet.tooltip.show({
+
+        // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
+        spreadsheet.showTooltip({
           position,
-          content: <CustomTooltip />,
+          content: <CustomColCellTooltip />,
+          options: {
+            operator: {
+              menus: [
+                {
+                  key: 'custom-a',
+                  text: '操作1',
+                  icon: 'Trend',
+                  onClick: (cell) => {
+                    console.log('操作1点击', cell);
+                  },
+                  children: [
+                    {
+                      key: 'custom-a-a',
+                      text: '操作 1-1',
+                      icon: 'Trend',
+                      onClick: (cell) => {
+                        console.log('操作 1-1 点击', cell);
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
         });
-      } else {
-        spreadsheet.hideTooltip();
       }
     };
 

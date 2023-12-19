@@ -45,7 +45,7 @@ export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
 
 export const createMockCellInfo = (
   cellId: string,
-  { colIndex = 0, rowIndex = 0 } = {},
+  { colIndex = 0, rowIndex = 0, extra = {} } = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
@@ -75,6 +75,7 @@ export const createMockCellInfo = (
         getFieldName: jest.fn(),
       },
     } as unknown as SpreadSheet,
+    extra,
   };
   const mockCellMeta = omit(mockCellViewMeta, 'update');
   const mockCell = {
@@ -83,8 +84,11 @@ export const createMockCellInfo = (
     getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
     getActualText: jest.fn(),
+<<<<<<< HEAD
     update: jest.fn(),
     updateByState: jest.fn(),
+=======
+>>>>>>> origin/master
     isTextOverflowing: jest.fn(),
   } as any;
 

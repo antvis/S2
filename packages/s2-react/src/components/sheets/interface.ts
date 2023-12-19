@@ -20,5 +20,11 @@ export type SheetComponentOptions = S2Options<
 export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderCfgProps,
+<<<<<<< HEAD
   SheetComponentOptions
 > & { children?: React.ReactNode };
+=======
+  SheetComponentOptions,
+  true
+>;
+>>>>>>> origin/master

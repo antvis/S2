@@ -46,6 +46,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### value cell
 
+<<<<<<< HEAD
 | name           | event name                          | describe                    |
 | -------------- | ----------------------------------- | --------------------------- |
 | click          | `S2Event.DATA_CELL_CLICK`           | Value cell click            |
@@ -56,6 +57,20 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | mouse movement | `S2Event.DATA_CELL_MOUSE_MOVE`      | Numeric cell mouse movement |
 | mouse release  | `S2Event.DATA_CELL_MOUSE_UP`        | Value cell mouse release    |
 | Swipe          | `S2Event.DATA_CELL_BRUSH_SELECTION` | Value cell selection        |
+=======
+| name             | event name                           | describe                                                 |
+| :--------------- | :----------------------------------- | :------------------------------------------------------- |
+| click            | `S2Event.DATA_CELL_CLICK`            | Value cell click                                         |
+| double click     | `S2Event.DATA_CELL_DOUBLE_CLICK`     | Value cell double click                                  |
+| right click      | `S2Event.DATA_CELL_CONTEXT_MENU`     | right click value cell                                   |
+| hover            | `S2Event.DATA_CELL_HOVER`            | Value cell hover                                         |
+| mouse down       | `S2Event.DATA_CELL_MOUSE_DOWN`       | value cell mouse click                                   |
+| mouse movement   | `S2Event.DATA_CELL_MOUSE_MOVE`       | Numeric cell mouse movement                              |
+| mouse release    | `S2Event.DATA_CELL_MOUSE_UP`         | Value cell mouse release                                 |
+| trend icon click | `S2Event.DATA_CELL_TREND_ICON_CLICK` | Click on the trend icon in the tooltip of the value cell |
+| Swipe            | `S2Event.DATA_CELL_BRUSH_SELECTION`  | Value cell selection                                     |
+| Select move           | `S2Event.DATA_CELL_SELECT_MOVE`  | Value cell select move                          |
+>>>>>>> origin/master
 
 ### Corner head
 

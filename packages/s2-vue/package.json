@@ -1,7 +1,11 @@
 {
   "private": false,
   "name": "@antv/s2-vue",
+<<<<<<< HEAD
   "version": "2.0.0-next.9",
+=======
+  "version": "1.6.0",
+>>>>>>> origin/master
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -45,9 +49,10 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "test": "jest --passWithNoTests",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
@@ -75,14 +80,15 @@
     "vue": "^3.3.4",
     "vue-tsc": "^1.8.19"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "650 kB"
+      "import": "{ createComponent }",
+      "limit": "20 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "205 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

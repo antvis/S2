@@ -42,6 +42,7 @@ describe('Custom Tree Dataset Test', () => {
 
   describe('test base dataset structure', () => {
     test('should get correct field data', () => {
+      expect(dataCfg.fields.rows).toEqual([]);
       expect(dataSet.fields.rows).toEqual([EXTRA_FIELD]);
       expect(dataSet.fields.columns).toEqual(['type', 'sub_type']);
       expect(dataSet.fields.values).toEqual(values);
@@ -49,8 +50,12 @@ describe('Custom Tree Dataset Test', () => {
 
     test('should get empty row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
+<<<<<<< HEAD
 
       expect([...rowPivotMeta.keys()]).toEqual([]);
+=======
+      expect([...rowPivotMeta.keys()]).toEqual(values);
+>>>>>>> origin/master
     });
 
     test('should get correct col pivot meta', () => {
@@ -58,17 +63,27 @@ describe('Custom Tree Dataset Test', () => {
 
       expect([...colPivotMeta.keys()]).toEqual(['家具']);
 
+<<<<<<< HEAD
       expect(colPivotMeta.get('家具')!.level).toEqual(1);
       expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
+=======
+      expect(colPivotMeta.get('家具').level).toEqual(1);
+      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
+>>>>>>> origin/master
         '桌子',
         '椅子',
       ]);
     });
 
     test('should get correct indexesData', () => {
+      const prefix = 'type[&]sub_type';
       const indexesData = dataSet.indexesData;
+<<<<<<< HEAD
 
       expect(get(indexesData, '1.1')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 1, 1, 1])).toEqual({
+>>>>>>> origin/master
         type: '家具',
         sub_type: '桌子',
         'measure-a': 1,
@@ -78,7 +93,11 @@ describe('Custom Tree Dataset Test', () => {
         'measure-e': 5,
         'measure-f': 6,
       });
+<<<<<<< HEAD
       expect(get(indexesData, '1.2')).toEqual({
+=======
+      expect(get(indexesData, [prefix, 1, 1, 2])).toEqual({
+>>>>>>> origin/master
         type: '家具',
         sub_type: '椅子',
         'measure-a': 11,

@@ -41,11 +41,18 @@ import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
   Data,
+<<<<<<< HEAD
+=======
+  LayoutResult,
+>>>>>>> origin/master
   Tooltip,
   TooltipDetailListItem,
   TooltipSummaryOptionsValue,
   ViewMeta,
+<<<<<<< HEAD
   ViewMetaData,
+=======
+>>>>>>> origin/master
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -62,11 +69,19 @@ import type {
   TooltipPosition,
   TooltipSummaryOptions,
 } from '../common/interface/tooltip';
+<<<<<<< HEAD
 import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import type { Node as S2Node } from '../facet/layout/node';
 import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+=======
+import { getLeafColumnsWithKey } from '../facet/utils';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+>>>>>>> origin/master
 import { customMerge } from './merge';
 import { getEmptyPlaceholder } from './text';
 
@@ -488,12 +503,23 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const summary: Record<string, any> = {};
   const isTableMode = spreadsheet.isTableMode();
 
+<<<<<<< HEAD
   if (isTableMode && options?.onlyShowCellText) {
     const selectedCellsData = spreadsheet.dataSet.getCellMultiData({
       query: {},
     });
 
     return [{ selectedData: selectedCellsData as Data[], name: '', value: '' }];
+=======
+  if (isTableMode && options?.showSingleTips) {
+    const meta = targetCell.getMeta();
+    // 如果是列头, 获取当前列所有数据, 其他则获取当前整行 (1条数据)
+    const selectedCellsData = meta?.field
+      ? spreadsheet.dataSet.getMultiData({ field: meta.field })
+      : [spreadsheet.dataSet.getRowData(meta as ViewMeta)];
+
+    return [{ selectedData: selectedCellsData, name: '', value: '' }];
+>>>>>>> origin/master
   }
 
   // 拿到选择的所有 dataCell的数据

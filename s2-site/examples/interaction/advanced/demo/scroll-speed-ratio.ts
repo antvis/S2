@@ -30,7 +30,7 @@ function createSlider(s2) {
   document.querySelector('#container > canvas').before(slider);
 }
 
-fetch('https://assets.antv.antgroup.com/s2/basic.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');

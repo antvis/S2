@@ -26,6 +26,10 @@ export class ColCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.COL_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().col) {
+        return;
+      }
+
       super.mouseDown(event);
     });
   }
@@ -96,16 +100,21 @@ export class ColCellBrushSelection extends BaseBrushSelection {
     );
   }
 
-  // 最终刷选的cell
+  // 最终刷选的 cell
   protected updateSelectedCells() {
     const { interaction, facet } = this.spreadsheet;
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
+<<<<<<< HEAD
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
         root.updateCells(facet.getColCells());
       },
+=======
+      stateName: InteractionStateName.BRUSH_SELECTED,
+      onUpdateCells: this.onUpdateCells,
+>>>>>>> origin/master
     });
 
     this.spreadsheet.emit(

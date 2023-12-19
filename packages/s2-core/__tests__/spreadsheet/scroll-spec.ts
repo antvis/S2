@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { ScrollType } from '../../src/ui/scrollbar';
+import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
@@ -381,7 +381,67 @@ describe('Scroll Tests', () => {
     },
   );
 
+<<<<<<< HEAD
   test('should not trigger scroll event on passive renders', async () => {
+=======
+  // https://github.com/antvis/S2/issues/2222
+  test.each([
+    {
+      type: 'horizontal',
+      offset: {
+        scrollX: 20,
+        scrollY: 0,
+      },
+    },
+    {
+      type: 'vertical',
+      offset: {
+        scrollX: 0,
+        scrollY: 20,
+      },
+    },
+  ])(
+    'should trigger hover cells when hover cells after scroll by %o',
+    async ({ offset }) => {
+      s2.setOptions({
+        interaction: {
+          hoverAfterScroll: true,
+        },
+      });
+
+      s2.facet.cornerBBox.maxY = -9999;
+      s2.facet.panelBBox.minX = -9999;
+      s2.facet.panelBBox.minY = -9999;
+
+      const bbox = s2.getCanvasElement().getBoundingClientRect();
+      const mousemoveEvent = new MouseEvent('mousemove', {
+        clientX: bbox.left + 100,
+        clientY: bbox.top + 100,
+      });
+
+      canvas.dispatchEvent(mousemoveEvent);
+
+      s2.container.emit = jest.fn();
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: offset.scrollX,
+        deltaY: offset.scrollY,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+
+      // wait requestAnimationFrame and debounce
+      await sleep(1000);
+
+      expect(s2.container.emit).toHaveBeenCalledWith(
+        OriginEventType.MOUSE_MOVE,
+        expect.any(Object),
+      );
+    },
+  );
+
+  test('should not trigger scroll event on passive renders', () => {
+>>>>>>> origin/master
     const sheet = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
     });
@@ -639,7 +699,7 @@ describe('Scroll Tests', () => {
       ).toBeFalsy();
     });
 
-    test('should scroll horizontally when shift key is held', async () => {
+    test('should scroll horizontally when shift key is held on Windows', async () => {
       s2.setOptions({
         frozen: {
           rowHeader: true,
@@ -676,7 +736,14 @@ describe('Scroll Tests', () => {
         shiftKey: true,
       });
 
+      Object.defineProperty(window.navigator, 'userAgent', {
+        value: 'Windows',
+        configurable: true,
+        writable: true,
+      });
+
       canvas.dispatchEvent(wheelEvent);
+<<<<<<< HEAD
 
       await sleep(1000);
 
@@ -684,6 +751,37 @@ describe('Scroll Tests', () => {
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', async () => {
+=======
+      await sleep(200);
+      expect(onScroll).toHaveBeenCalled();
+    });
+
+    test('should not scroll horizontally when shift key is held on macOS', async () => {
+      const onScroll = jest.fn((...args) => {
+        expect(args[0].rowHeaderScrollX).toBeGreaterThan(0);
+        expect(args[0].scrollX).toBe(0);
+        expect(args[0].scrollY).toBe(0);
+      });
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: 0,
+        deltaY: 20,
+        shiftKey: true,
+      });
+
+      Object.defineProperty(window.navigator, 'userAgent', {
+        value: 'Mac OS',
+        configurable: true,
+        writable: true,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+      await sleep(200);
+      expect(onScroll).not.toHaveBeenCalled();
+    });
+
+    it('should not change init body overscrollBehavior style when render and destroyed', () => {
+>>>>>>> origin/master
       document.body.style.overscrollBehavior = 'none';
 
       const sheet = new PivotSheet(getContainer(), mockDataConfig, {
@@ -766,4 +864,92 @@ describe('Scroll Tests', () => {
 
     expect(errorSpy).not.toHaveBeenCalled();
   });
+
+  // https://github.com/antvis/S2/issues/2316
+  test('should not throw infinite error if spreadsheet is unmounted during scrolling', async () => {
+    s2.setOptions({
+      style: {
+        rowCfg: {
+          width: 200,
+        },
+        cellCfg: {
+          width: 30,
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    // 滚动时 unmount 表格实例
+    s2.facet.scrollWithAnimation(
+      {
+        offsetX: {
+          value: 10,
+          animate: true,
+        },
+        offsetY: {
+          value: 10,
+          animate: true,
+        },
+      },
+      200,
+    );
+    s2.destroy();
+
+    await sleep(500);
+
+    expect(errorSpy).toBeCalledTimes(1);
+  });
+
+  // https://github.com/antvis/S2/issues/2376
+  test.each(['hScrollBar', 'hRowScrollBar'])(
+    'should not reset interaction state after %s scrollbar thumb or track clicked',
+    (scrollbarName) => {
+      const containsMock = jest
+        .spyOn(HTMLElement.prototype, 'contains')
+        .mockImplementation(() => true);
+
+      const reset = jest.fn();
+
+      const scrollbar = s2.facet[scrollbarName] as ScrollBar;
+      const colCell = s2.getColumnLeafNodes()[0].belongsCell;
+
+      s2.on(S2Event.GLOBAL_RESET, reset);
+      s2.interaction.selectHeaderCell({
+        cell: colCell,
+      });
+
+      expect(s2.interaction.isSelectedState()).toBeTruthy();
+
+      const { maxX, maxY } = s2.facet?.panelBBox || {};
+      const { x, y } = canvas.getBoundingClientRect() || {};
+
+      // 滚动条
+      window.dispatchEvent(
+        new MouseEvent('click', {
+          clientX: x + scrollbar.position.x,
+          // 在滚动条内点击
+          clientY: y + scrollbar.position.y + scrollbar.theme.size - 2,
+        } as MouseEventInit),
+      );
+
+      // 滑动轨道
+      window.dispatchEvent(
+        new MouseEvent('click', {
+          // 右下角滑道点击
+          clientX: x + maxX - 2,
+          clientY: y + maxY + 2,
+        } as MouseEventInit),
+      );
+
+      expect(s2.interaction.isSelectedState()).toBeTruthy();
+      expect(reset).not.toHaveBeenCalled();
+
+      containsMock.mockReset();
+    },
+  );
 });

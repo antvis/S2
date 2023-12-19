@@ -2,7 +2,7 @@ import type {
   EXTRA_FIELD,
   MiniChartTypes,
   VALUE_FIELD,
-} from '../constant/basic';
+} from '../constant';
 import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {

@@ -14,6 +14,7 @@ import {
   type S2DataConfig,
   VALUE_FIELD,
 } from '@/common';
+<<<<<<< HEAD
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet, type SortActionParams } from '@/data-set';
 import { CellData } from '@/data-set/cell-data';
@@ -155,12 +156,157 @@ describe('Sort By Custom Test', () => {
       };
 
       expect(sortByCustom(params)).toEqual([
-        'Monday[&]morning',
+=======
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
+
+describe('Sort Action', () => {
+  test('sort action with number arr', () => {
+    const data = [1, 3, 2];
+    expect(sortAction(data, 'ASC')).toEqual([1, 2, 3]);
+    expect(sortAction(data, 'DESC')).toEqual([3, 2, 1]);
+  });
+
+  test('sort action with number-string and number arr', () => {
+    const data1 = ['11', '3', 2];
+    expect(sortAction(data1, 'ASC')).toEqual(['11', 2, '3']);
+    expect(sortAction(data1, 'DESC')).toEqual(['3', 2, '11']);
+
+    const data2 = ['11', '3', '2'];
+    expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '3']);
+    expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
+  });
+
+  test('sort action with zero and number arr', () => {
+    const data1 = [1, 6, -2, 0];
+    expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
+    expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
+
+    const data2 = ['0', 0, 2, -2];
+    expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
+    expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
+  });
+
+  test('sort action with string arr', () => {
+    const data = ['a', 'c', 'b'];
+    expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
+    expect(sortAction(data, 'DESC')).toEqual(['c', 'b', 'a']);
+
+    const data1 = ['啊', '哦', '嗯'];
+    expect(sortAction(data1, 'ASC')).toEqual(['啊', '嗯', '哦']);
+    expect(sortAction(data1, 'DESC')).toEqual(['哦', '嗯', '啊']);
+
+    const data2 = ['啊', '11', '2'];
+    expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
+    expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
+  });
+
+  test('object data sorted by key with zero', () => {
+    const data1 = [{ a: 1 }, { a: 0 }, { a: -3 }, { a: 2 }];
+    expect(sortAction(data1, 'ASC', 'a')).toEqual([
+      { a: -3 },
+      { a: 0 },
+      { a: 1 },
+      { a: 2 },
+    ]);
+    expect(sortAction(data1, 'DESC', 'a')).toEqual([
+      { a: 2 },
+      { a: 1 },
+      { a: 0 },
+      { a: -3 },
+    ]);
+  });
+
+  test('sort action with object arr', () => {
+    const data1 = [{ a: 1 }, { a: 3 }, { a: 2 }];
+    expect(sortAction(data1, 'ASC', 'a')).toEqual([
+      { a: 1 },
+      { a: 2 },
+      { a: 3 },
+    ]);
+    expect(sortAction(data1, 'DESC', 'a')).toEqual([
+      { a: 3 },
+      { a: 2 },
+      { a: 1 },
+    ]);
+
+    const data2 = [{ a: '11' }, { a: '3' }, { a: 2 }];
+    expect(sortAction(data2, 'ASC', 'a')).toEqual([
+      { a: 2 },
+      { a: '3' },
+      { a: '11' },
+    ]);
+    expect(sortAction(data2, 'DESC', 'a')).toEqual([
+      { a: '11' },
+      { a: '3' },
+      { a: 2 },
+    ]);
+
+    const data3 = [{ a: '-' }, { a: '3' }, { a: 2 }];
+    expect(sortAction(data3, 'ASC', 'a')).toEqual([
+      { a: '-' },
+      { a: 2 },
+      { a: '3' },
+    ]);
+    expect(sortAction(data3, 'DESC', 'a')).toEqual([
+      { a: '3' },
+      { a: 2 },
+      { a: '-' },
+    ]);
+
+    expect(
+      sortAction(
+        [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
+        'ASC',
+        'a',
+      ),
+    ).toEqual([{ a: undefined }, { a: '-' }, { a: 2 }, { a: '3' }]);
+
+    expect(
+      sortAction(
+        [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
+        'DESC',
+        'a',
+      ),
+    ).toEqual([{ a: '3' }, { a: 2 }, { a: '-' }, { a: undefined }]);
+    expect(sortAction([{ a: '' }, { a: '3' }, { a: 2 }], 'ASC', 'a')).toEqual([
+      { a: '' },
+      { a: 2 },
+      { a: '3' },
+    ]);
+  });
+});
+
+describe('Sort By Custom', () => {
+  test('sort by custom with equal sub node', () => {
+    const params = {
+      originValues: [
         'Monday[&]noon',
         'Monday[&]afternoon',
-        'Tuesday[&]morning',
-        'Tuesday[&]noon',
+>>>>>>> origin/master
+        'Monday[&]morning',
         'Tuesday[&]afternoon',
+        'Tuesday[&]noon',
+        'Tuesday[&]morning',
+      ],
+      sortByValues: ['morning', 'noon', 'afternoon'],
+    };
+    expect(sortByCustom(params)).toEqual([
+      'Monday[&]morning',
+      'Monday[&]noon',
+      'Monday[&]afternoon',
+      'Tuesday[&]morning',
+      'Tuesday[&]noon',
+      'Tuesday[&]afternoon',
+    ]);
+  });
+  test('sort by custom with repeated sub node', () => {
+    const params = {
+      originValues: [
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]afternoon',
+<<<<<<< HEAD
       ]);
     });
     test('sort by custom with repeated sub node', () => {
@@ -181,10 +327,12 @@ describe('Sort By Custom Test', () => {
         'Monday[&]noon',
         'Monday[&]afternoon',
         'Tuesday[&]morning',
+=======
+>>>>>>> origin/master
         'Tuesday[&]noon',
-        'Tuesday[&]afternoon',
-        'Wednesday[&]morning',
+        'Tuesday[&]morning',
         'Wednesday[&]afternoon',
+<<<<<<< HEAD
       ]);
     });
     test('sort by custom with unordered node', () => {
@@ -207,10 +355,44 @@ describe('Sort By Custom Test', () => {
         'Tuesday[&]morning',
         'Tuesday[&]noon',
         'Tuesday[&]afternoon',
+=======
+>>>>>>> origin/master
         'Wednesday[&]morning',
+      ],
+      sortByValues: ['morning', 'noon', 'afternoon'],
+    };
+    expect(sortByCustom(params)).toEqual([
+      'Monday[&]noon',
+      'Monday[&]afternoon',
+      'Tuesday[&]morning',
+      'Tuesday[&]noon',
+      'Tuesday[&]afternoon',
+      'Wednesday[&]morning',
+      'Wednesday[&]afternoon',
+    ]);
+  });
+  test('sort by custom with unordered node', () => {
+    const params = {
+      originValues: [
+        'Monday[&]afternoon',
+        'Tuesday[&]afternoon',
         'Wednesday[&]afternoon',
-      ]);
-    });
+        'Monday[&]noon',
+        'Tuesday[&]noon',
+        'Wednesday[&]morning',
+        'Tuesday[&]morning',
+      ],
+      sortByValues: ['morning', 'noon', 'afternoon'],
+    };
+    expect(sortByCustom(params)).toEqual([
+      'Monday[&]noon',
+      'Monday[&]afternoon',
+      'Tuesday[&]morning',
+      'Tuesday[&]noon',
+      'Tuesday[&]afternoon',
+      'Wednesday[&]morning',
+      'Wednesday[&]afternoon',
+    ]);
   });
 });
 
@@ -303,7 +485,11 @@ describe('Sort By Func Tests', () => {
 });
 
 describe('GetSortByMeasureValues Tests', () => {
+<<<<<<< HEAD
   let s2: PivotSheet;
+=======
+  let sheet: SpreadSheet;
+>>>>>>> origin/master
 
   beforeEach(async () => {
     const dataCfg: S2DataConfig = {
@@ -330,8 +516,12 @@ describe('GetSortByMeasureValues Tests', () => {
         },
       ] as any),
     };
+<<<<<<< HEAD
 
     s2 = new PivotSheet(getContainer(), dataCfg, {
+=======
+    sheet = new PivotSheet(getContainer(), dataCfg, {
+>>>>>>> origin/master
       totals: {
         row: {
           showGrandTotals: true,
@@ -344,11 +534,15 @@ describe('GetSortByMeasureValues Tests', () => {
         },
       },
     });
+<<<<<<< HEAD
     await s2.render();
+=======
+    sheet.render();
+>>>>>>> origin/master
   });
 
   afterEach(() => {
-    s2.destroy();
+    sheet.destroy();
   });
 
   test('should return detail data', () => {
@@ -364,7 +558,11 @@ describe('GetSortByMeasureValues Tests', () => {
     };
 
     const measureValues = getSortByMeasureValues({
+<<<<<<< HEAD
       dataSet: s2.dataSet as PivotDataSet,
+=======
+      dataSet: sheet.dataSet,
+>>>>>>> origin/master
       sortParam,
       originValues: ['纸张', '笔'],
     });
@@ -408,7 +606,11 @@ describe('GetSortByMeasureValues Tests', () => {
      * 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
      */
     const measureValues = getSortByMeasureValues({
+<<<<<<< HEAD
       dataSet: s2.dataSet as PivotDataSet,
+=======
+      dataSet: sheet.dataSet,
+>>>>>>> origin/master
       sortParam,
       originValues: ['纸张', '笔'],
     });
@@ -450,7 +652,11 @@ describe('GetSortByMeasureValues Tests', () => {
      * 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
      */
     const measureValues = getSortByMeasureValues({
+<<<<<<< HEAD
       dataSet: s2.dataSet as PivotDataSet,
+=======
+      dataSet: sheet.dataSet,
+>>>>>>> origin/master
       sortParam,
       originValues: ['纸张', '笔'],
     });
@@ -507,6 +713,10 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     dataSet = new PivotDataSet(sheet);
     dataSet.setDataCfg(sortData);
     sheet.dataSet = dataSet;
+  });
+
+  afterEach(() => {
+    sheet.destroy();
   });
 
   test('should sort by col total', () => {
@@ -770,5 +980,67 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         'price',
       ),
     ]);
+  });
+});
+
+describe('total group dimension sort test', () => {
+  let sheet: SpreadSheet;
+
+  beforeEach(() => {
+    const currentOptions = {
+      totals: {
+        col: {
+          totalsGroupDimensions: ['city'],
+          showGrandTotals: true,
+        },
+      },
+    } as S2Options;
+
+    const dataConfig = {
+      ...sortData,
+      data: [
+        ...sortData.data,
+        {
+          city: '杭州',
+          type: '纸张',
+          price: '999',
+        },
+        {
+          city: '杭州',
+          type: '笔',
+          price: '666',
+        },
+      ],
+      fields: {
+        rows: ['type'],
+        columns: ['province', 'city'],
+        values: ['price'],
+      },
+    };
+    sheet = new PivotSheet(getContainer(), dataConfig, currentOptions);
+    sheet.render();
+  });
+
+  afterEach(() => {
+    sheet.destroy();
+  });
+  test('should sort by col total with group', () => {
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: {
+        [EXTRA_FIELD]: 'price',
+        city: '杭州',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet: sheet.dataSet,
+      sortParam,
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toMatchSnapshot();
   });
 });

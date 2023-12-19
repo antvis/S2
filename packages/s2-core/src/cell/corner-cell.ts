@@ -40,8 +40,6 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     return [CellBorderPosition.TOP, CellBorderPosition.LEFT];
   }
 
-  public update() {}
-
   protected initCell() {
     super.initCell();
     this.resetTextAndConditionIconShapes();
@@ -51,6 +49,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.drawActionAndConditionIcons();
     this.drawBorders();
     this.drawResizeArea();
+    this.update();
   }
 
   public drawTextShape() {

@@ -1,13 +1,23 @@
 import type {
+<<<<<<< HEAD
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
   ColCell,
   CornerCell,
   DataCell,
+=======
+  CellMeta,
+  CellScrollPosition,
+  CollapsedRowsType,
+  Data,
+  DataCell,
+  DataType,
+>>>>>>> origin/master
   GEvent,
   HeaderActionIcon,
   HiddenColumnsInfo,
   LayoutResult,
+<<<<<<< HEAD
   MergedCell,
   Node,
   Pagination,
@@ -15,19 +25,32 @@ import type {
   ResizeInfo,
   ResizeParams,
   RowCellCollapsedParams,
+=======
+  Node,
+  Pagination,
+  ResizeInfo,
+  ResizeParams,
+>>>>>>> origin/master
   S2CellType,
   S2DataConfig,
   S2MountContainer,
   S2Options,
   S2RenderOptions,
+<<<<<<< HEAD
   SeriesNumberCell,
+=======
+>>>>>>> origin/master
   SortParams,
   SpreadSheet,
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
   TooltipOperatorOptions,
+<<<<<<< HEAD
   ViewMetaData,
+=======
+  ViewMeta,
+>>>>>>> origin/master
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -50,17 +73,36 @@ export type SheetType =
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
+<<<<<<< HEAD
 export type LayoutPaginationParams = {
   pageSize: number;
   pageCount: number;
   total: number;
   current: number;
 };
+=======
+type _ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (pageSize: number) => void;
+      onChange?: (current: number) => void;
+    };
+
+type ShowPagination<OverrideShowPagination, Options> =
+  OverrideShowPagination extends true
+    ? Options extends {
+        pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
+      }
+      ? boolean | Pick<Options['pagination'], 'onShowSizeChange' | 'onChange'>
+      : _ShowPagination
+    : _ShowPagination;
+>>>>>>> origin/master
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
+  OverrideShowPagination = false,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
@@ -73,12 +115,7 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
-  showPagination?:
-    | boolean
-    | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
-      };
+  showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
   header?: Header;
   /** 底表 render callback */
@@ -122,8 +159,13 @@ export interface BaseSheetComponentProps<
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
+<<<<<<< HEAD
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
   onDataCellRender?: (cell: DataCell) => void;
+=======
+  onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
+>>>>>>> origin/master
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

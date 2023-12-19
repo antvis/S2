@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
@@ -11,6 +12,13 @@ import {
   KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+=======
+import type { IElement, IGroup } from '@antv/g-canvas';
+import { get, isBoolean, isNumber, last, maxBy, set, values } from 'lodash';
+import { TableDataCell } from '../cell';
+import {
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+>>>>>>> origin/master
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
@@ -24,8 +32,12 @@ import type {
   FilterParam,
   LayoutResult,
   ResizeInteractionOptions,
+<<<<<<< HEAD
   S2CellType,
   SortParams,
+=======
+  SpreadSheetFacetCfg,
+>>>>>>> origin/master
   TableSortParam,
   ViewMeta,
   ViewMetaData,
@@ -37,16 +49,17 @@ import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
-import { renderLine } from '../utils/g-renders';
 import { getAllChildCells } from '../utils/get-all-child-cells';
+<<<<<<< HEAD
 import {
   getColsForGrid,
   getFrozenRowsForGrid,
   getRowsForGrid,
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
+=======
+>>>>>>> origin/master
 import { getValidFrozenOptions } from '../utils/layout/frozen';
-import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { Frame, type SeriesNumberHeader } from './header';
 import type { ColHeader } from './header/col';
@@ -57,14 +70,22 @@ import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
+<<<<<<< HEAD
   calculateInViewIndexes,
   getFrozenDataCellType,
   getFrozenLeafNodesCount,
   isFrozenTrailingRow,
   splitInViewIndexesWithFrozen,
   translateGroup,
+=======
+  isFrozenTrailingRow,
+  getFrozenLeafNodesCount,
+  isTopLevelNode,
+>>>>>>> origin/master
 } from './utils';
+import { FrozenFacet } from './frozen-facet';
 
+<<<<<<< HEAD
 export class TableFacet extends BaseFacet {
   public declare rowOffsets: number[];
 
@@ -91,6 +112,76 @@ export class TableFacet extends BaseFacet {
   };
 
   public panelScrollGroupIndexes: Indexes = [] as unknown as Indexes;
+=======
+export class TableFacet extends FrozenFacet {
+  protected updateRowResizeArea(): void {
+    const { foregroundGroup, options } = this.spreadsheet;
+    const resize = get(options, 'interaction.resize');
+
+    const shouldDrawResize = isBoolean(resize)
+      ? resize
+      : (resize as ResizeInteractionOptions)?.rowCellVertical;
+    if (!shouldDrawResize) {
+      return;
+    }
+
+    const rowResizeGroup = foregroundGroup.findById(KEY_GROUP_ROW_RESIZE_AREA);
+    const rowResizeFrozenGroup = foregroundGroup.findById(
+      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+    );
+    if (rowResizeGroup) {
+      rowResizeGroup.set('children', []);
+    }
+    if (rowResizeFrozenGroup) {
+      rowResizeFrozenGroup.set('children', []);
+    }
+
+    const allCells = getAllChildCells<TableDataCell>(
+      this.panelGroup.getChildren() as IElement[],
+      TableDataCell,
+    ).filter((cell: TableDataCell) => cell.shouldDrawResizeArea());
+
+    allCells?.forEach((cell) => {
+      cell.drawResizeArea();
+    });
+  }
+
+  protected clip(scrollX: number, scrollY: number): void {
+    super.clip(scrollX, scrollY);
+    this.clipResizeAreaGroup();
+  }
+
+  protected clipResizeAreaGroup() {
+    const rowResizeGroup = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+    if (rowResizeGroup) {
+      const colLeafNodes = this.layoutResult.colLeafNodes;
+      const { frozenRowGroup, frozenTrailingRowGroup } = this.spreadsheet;
+      let frozenRowGroupHeight = 0;
+      let frozenTrailingRowGroupHeight = 0;
+      if (frozenRowGroup) {
+        frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+      }
+      if (frozenTrailingRowGroup) {
+        frozenTrailingRowGroupHeight = frozenTrailingRowGroup.getBBox().height;
+      }
+      const panelScrollGroupHeight =
+        this.panelBBox.height -
+        frozenRowGroupHeight -
+        frozenTrailingRowGroupHeight;
+      rowResizeGroup.setClip({
+        type: 'rect',
+        attrs: {
+          x: 0,
+          y: frozenRowGroupHeight + this.cornerBBox.height,
+          width: colLeafNodes?.[0]?.width ?? 0,
+          height: panelScrollGroupHeight,
+        },
+      });
+    }
+  }
+>>>>>>> origin/master
 
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
@@ -99,6 +190,7 @@ export class TableFacet extends BaseFacet {
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
+<<<<<<< HEAD
   protected override initPanelGroups(): void {
     super.initPanelGroups();
     [
@@ -129,6 +221,16 @@ export class TableFacet extends BaseFacet {
   }
 
   private onSortHandler = (sortParams: SortParams) => {
+=======
+  public getContentHeight(): number {
+    const { getTotalHeight } = this.getViewCellHeights();
+    const { colsHierarchy } = this.layoutResult;
+
+    return getTotalHeight() + colsHierarchy.height;
+  }
+
+  private onSortHandler = (sortParams) => {
+>>>>>>> origin/master
     const s2 = this.spreadsheet;
     let params = sortParams;
 
@@ -188,7 +290,7 @@ export class TableFacet extends BaseFacet {
     if (oldIndex !== -1) {
       if (unFilter) {
         // remove filter params on current key if passed an empty filterValues field
-        oldConfig.splice(oldIndex);
+        oldConfig.splice(oldIndex, 1);
       } else {
         // if filter with same key already exists, replace it
         oldConfig[oldIndex] = params;
@@ -296,6 +398,7 @@ export class TableFacet extends BaseFacet {
         this.getTotalHeightForRange(rowIndex, cellRange.end);
     }
 
+<<<<<<< HEAD
     if (showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
     } else {
@@ -303,6 +406,26 @@ export class TableFacet extends BaseFacet {
         query: {
           col: colNode.field,
           rowIndex,
+=======
+      if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
+        data = `${rowIndex + 1}`;
+      } else {
+        data = dataSet.getCellData({
+          query: {
+            field: col.field,
+            rowIndex,
+          },
+        });
+      }
+      return {
+        spreadsheet,
+        x,
+        y,
+        width: col.width,
+        height: cellHeight,
+        data: {
+          [col.field]: data,
+>>>>>>> origin/master
         },
       });
     }
@@ -536,11 +659,15 @@ export class TableFacet extends BaseFacet {
     return colWidth;
   }
 
+<<<<<<< HEAD
   protected getDefaultCellHeight(): number {
     return this.getRowCellHeight(null as unknown as Node);
   }
 
   public getCellHeightByRowIndex(rowIndex: number) {
+=======
+  public getCellHeight(index: number) {
+>>>>>>> origin/master
     if (this.rowOffsets) {
       return this.getRowCellHeight({ id: String(rowIndex) } as Node);
     }
@@ -548,6 +675,7 @@ export class TableFacet extends BaseFacet {
     return this.getDefaultCellHeight();
   }
 
+<<<<<<< HEAD
   protected initRowOffsets() {
     const heightByField =
       this.spreadsheet.options.style?.rowCell?.heightByField;
@@ -570,6 +698,10 @@ export class TableFacet extends BaseFacet {
 
   public getViewCellHeights() {
     this.initRowOffsets();
+=======
+  public getViewCellHeights() {
+    const { dataSet } = this.cfg;
+>>>>>>> origin/master
 
     const defaultCellHeight = this.getDefaultCellHeight();
 
@@ -629,6 +761,7 @@ export class TableFacet extends BaseFacet {
     };
   }
 
+<<<<<<< HEAD
   protected translateFrozenGroups = () => {
     const { scrollY, scrollX } = this.getScrollOffset();
     const paginationScrollY = this.getPaginationScrollY();
@@ -873,6 +1006,12 @@ export class TableFacet extends BaseFacet {
 
   protected renderFrozenPanelCornerGroup = () => {
     const topLevelNodes = this.getTopLevelColNodes();
+=======
+  private renderFrozenPanelCornerGroup = () => {
+    const topLevelNodes = this.layoutResult.colNodes.filter((node) => {
+      return isTopLevelNode(node);
+    });
+>>>>>>> origin/master
     const cellRange = this.getCellRange();
 
     const {
@@ -928,6 +1067,7 @@ export class TableFacet extends BaseFacet {
     }
   };
 
+<<<<<<< HEAD
   getRealFrozenColumns = (
     frozenColCount: number,
     frozenTrailingColCount: number,
@@ -985,6 +1125,21 @@ export class TableFacet extends BaseFacet {
       group.appendChild(cell);
     }
   };
+=======
+  public init() {
+    super.init();
+    const { width, height } = this.panelBBox;
+    this.spreadsheet.panelGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: this.cornerBBox.height,
+        width,
+        height,
+      },
+    });
+  }
+>>>>>>> origin/master
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
@@ -1006,6 +1161,7 @@ export class TableFacet extends BaseFacet {
     return this.columnHeader;
   }
 
+<<<<<<< HEAD
   protected updateRowResizeArea() {
     const { resize } = this.spreadsheet.options.interaction!;
 
@@ -1042,10 +1198,12 @@ export class TableFacet extends BaseFacet {
     });
   }
 
+=======
+>>>>>>> origin/master
   public render() {
-    this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
+<<<<<<< HEAD
   }
 
   private getFrozenOptions = () => {
@@ -1110,6 +1268,8 @@ export class TableFacet extends BaseFacet {
         cellRange.end,
       ];
     }
+=======
+>>>>>>> origin/master
   }
 
   protected getRowHeader() {
@@ -1119,6 +1279,7 @@ export class TableFacet extends BaseFacet {
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return null;
   }
+<<<<<<< HEAD
 
   protected translateRelatedGroups(
     scrollX: number,
@@ -1347,4 +1508,6 @@ export class TableFacet extends BaseFacet {
       (cell) => cell instanceof TableSeriesNumberCell,
     );
   }
+=======
+>>>>>>> origin/master
 }

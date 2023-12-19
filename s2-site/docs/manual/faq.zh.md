@@ -4,7 +4,7 @@ order: 8
 ---
 
 :::warning{title="一些建议"}
-**在提出问题前，请确保你已经仔细阅读了一遍文档，查看了相关图表示例，并且已经查看了常见问题。**
+**在提出问题前，请确保你已经仔细阅读了一遍文档，查看了相关图表示例，并且已经查看了常见问题和 Issues。**
 :::
 
 ## 1. 使用问题
@@ -135,9 +135,69 @@ s2.render(false)
 
 请查看 [这篇文章](/docs/manual/advanced/get-cell-data)
 
-### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
+### 为什么 Tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 
 请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+
+### 如何在点击或悬停单元格的时候自定义 Tooltip?
+
+请查看相关文档和示例
+
+- [Tooltip 自定义教程](https://s2.antv.antgroup.com/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89)
+- [自定义点击显示 Tooltip](/examples/react-component/tooltip/#custom-click-show-tooltip)
+- [自定义悬停显示 Tooltip](/examples/react-component/tooltip/#custom-hover-show-tooltip)
+
+### 如何在 Tooltip 里自定义操作项？
+
+- 方式 1: 默认 tooltip 内容不变，通过 [自定义操作项](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-operation), 在内容上方增加自定义操作菜单。
+- 方式 2: 通过 [自定义 Tooltip 内容](https://s2.antv.antgroup.com/zh/examples/react-component/tooltip/#custom-content), 完全自定义组件内容。
+
+### React 组件，自定义显示 tooltip 后，内容未更新怎么回事？
+
+当手动调用实例方法 `s2.showTooltip` 时，如果内容是一个 React 自定义组件，且组件内容未更新时，可以尝试声明 `forceRender` 强制更新组件内容
+
+```ts
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"A"}/>
+})
+
+s2.showTooltip({
+  ...,
+  content: <YourComponent props={"B"} />
+  options: {
+    forceRender: true
+  }
+})
+```
+
+相关 issue: <https://github.com/antvis/S2/issues/1716>
+
+### 使用 React 组件，Tooltip 莫名其妙被隐藏，不展示了？
+
+```tsx
+<SheetComponent options={options} dataCfg={dataCfg}/>
+```
+
+- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/master/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
+
+- `场景 2`: S2 默认点击非表格区域，会隐藏 tooltip, 还原交互状态，请确保你自己的业务逻辑有无相应的 `click` 事件，看是否有被冒泡影响，尝试阻止冒泡
+
+```ts
+event.stopPropagation()
+```
+
+- `场景 3`: 手动调用 `s2.showTooltip` 展示 tooltip 后，点击内部的某个元素后，再次展示第二个 tooltip, 这个时候 tooltip 被隐藏，和场景 2 类似，请给 `click` 事件增加冒泡处理。
+
+```ts
+// 菜单 1-1 => click
+
+s2.showTooltip({ ... })
+
+// 菜单 1-1 => click
+event.stopPropagation()
+s2.showTooltip({ ... })
+```
 
 ### 如何在 Vue 中自定义 Tooltip?
 
@@ -165,10 +225,38 @@ s2.render(false)
 
 请查看 [使用文档](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
 
+### 如何关闭 hover 单元格出现的黑色边框？
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png)
+
+边框属于 `聚焦 (hoverFocus)` 交互状态的一种，可通过 [主题配置 - 交互通用主题](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename) 关闭。
+
+```ts
+s2.setTheme({
+  dataCell: {
+    cell: {
+      interactionState: {
+        hoverFocus: {
+          // 边框设置为透明
+          borderColor: 'transparent'
+          // 或者边框透明度设置为 0
+          // borderOpacity: 0
+        }
+      }
+    }
+  }
+})
+```
+
+### 如何修改选中，悬停，刷选等单元格交互主题配置？
+
+请 [查看文档](/manual/advanced/interaction/basic#%E8%B0%83%E6%95%B4%E4%BA%A4%E4%BA%92%E4%B8%BB%E9%A2%98) 和 [示例](/zh/examples/interaction/basic#state-theme)
+
 ### S2 支持对表格进行编辑吗？
 
-请查看 [编辑模式示例](/examples/case/data-preview#excel)
+请查看 [编辑模式示例](/examples/case/data-preview#excel) 和 [编辑表示例](https://s2.antv.antgroup.com/examples/react-component/sheet/#editable)
 
+<<<<<<< HEAD
 ### 如何注册 `AntV/G` 渲染引擎的插件？
 
 了解 `AntV/G` [插件系统](https://g.antv.antgroup.com/plugins/intro).
@@ -189,16 +277,11 @@ const s2Options = {
 ```
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
+=======
+目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
+>>>>>>> origin/master
 
-目前，S2 由三个包构成
-
-- `@antv/s2`: 基于 `canvas` 和 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 开发，提供基本的表格展示/交互等能力
-- `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
-- `@antv/s2-vue`: 基于 `Vue3` 和 `@antv/s2` 封装，提供配套的分析组件
-
-也就是说 `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等框架中使用。
-
-以下是版本概览：
+### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
@@ -256,6 +339,8 @@ const s2Options = {
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
 
 ### 有讨论群吗？
+
+交流群不提供任何答疑，有任何问题请直接提交 [Issue](https://github.com/antvis/S2/issues/new/choose) 或者 [Discussion](https://github.com/antvis/S2/discussions/new?category=q-a), 当然，也期待你的 [Pull request](https://github.com/antvis/S2/pulls).
 
 <embed src="@/docs/common/contact-us.zh.md"></embed>
 

@@ -29,6 +29,7 @@ export interface BaseNodeConfig {
   isSubTotals?: boolean;
   isCollapsed?: boolean | null;
   isGrandTotals?: boolean;
+  isTotalRoot?: boolean;
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
@@ -152,6 +153,7 @@ export class Node {
       isGrandTotals,
       isSubTotals,
       isCollapsed,
+      isTotalRoot,
       hierarchy,
       isPivotMode,
       seriesNumberWidth,
@@ -182,7 +184,11 @@ export class Node {
     this.isLeaf = isLeaf!;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
+<<<<<<< HEAD
     this.belongsCell = belongsCell;
+=======
+    this.isTotalRoot = isTotalRoot;
+>>>>>>> origin/master
     this.extra = extra;
   }
 
@@ -205,8 +211,11 @@ export class Node {
 
       return fieldPath.reverse();
     }
+<<<<<<< HEAD
 
     return [];
+=======
+>>>>>>> origin/master
   }
 
   /**
@@ -324,6 +333,57 @@ export class Node {
     });
   }
 
+<<<<<<< HEAD
+=======
+  // node is collapsed
+  public isCollapsed: boolean;
+
+  // node's children
+  public children: Node[] = [];
+
+  // node width adaptive mode need paddingLeft = paddingRight
+  public padding = 0;
+
+  // node's hierarchy
+  public hierarchy: Hierarchy;
+
+  // is pivot mode
+  public isPivotMode: boolean;
+
+  // series number width
+  public seriesNumberWidth: number;
+
+  // field key
+  public field: string;
+
+  // spreadsheet instance
+  public spreadsheet: SpreadSheet;
+
+  // node self's query condition(represent where node stay)
+  public query?: Record<string, any>;
+
+  public belongsCell?: S2CellType;
+
+  public inCollapseNode?: boolean;
+
+  public cornerType?: CornerNodeType;
+
+  public isGrandTotals?: boolean;
+
+  public isSubTotals?: boolean;
+
+  public isTotalRoot?: boolean;
+
+  /**
+   * @deprecated 已废弃, 该属性只记录相邻一级的隐藏信息，将会在未来版本中移除
+   */
+  public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
+
+  public extra?: Record<string, any>;
+
+  [key: string]: any;
+
+>>>>>>> origin/master
   public static rootNode(): Node {
     return new Node({
       id: ROOT_NODE_ID,
@@ -345,20 +405,30 @@ export class Node {
 
   /**
    * 获取树状模式下，当前节点以及其所有子节点的高度总和
+<<<<<<< HEAD
    *
    */
+=======
+   * */
+>>>>>>> origin/master
   public getTotalHeightForTreeHierarchy(): number {
     if (this.height === 0 || isEmpty(this.children)) {
       return this.height;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     return this.children.reduce(
       (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
       this.height,
     );
   }
+<<<<<<< HEAD
 
   public isSeriesNumberNode() {
     return this.field === SERIES_NUMBER_FIELD;
   }
+=======
+>>>>>>> origin/master
 }

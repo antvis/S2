@@ -32,6 +32,7 @@ const s2DataCfg = {
       city: '义乌1',
       type: '笔',
       price: 1,
+<<<<<<< HEAD
       cost: 9,
     },
     {
@@ -40,6 +41,9 @@ const s2DataCfg = {
       type: '笔',
       price: 10,
       cost: 99,
+=======
+      cost: 2,
+>>>>>>> origin/master
     },
     {
       province: '浙江',
@@ -75,8 +79,12 @@ describe('Row Text Link Tests', () => {
 
   let s2: PivotSheet;
   const linkFieldJump = jest.fn();
+<<<<<<< HEAD
 
   beforeAll(async () => {
+=======
+  beforeEach(() => {
+>>>>>>> origin/master
     container = getContainer();
     s2 = new PivotSheet(container, s2DataCfg, s2Options);
     await s2.render();
@@ -122,15 +130,27 @@ describe('Row Text Link Tests', () => {
       },
     } as any);
 
+<<<<<<< HEAD
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'city',
+=======
+    expect(linkFieldJump).toHaveBeenLastCalledWith({
+      key: 'city',
+>>>>>>> origin/master
       cellData: rowNode,
       record: {
         province: '浙江',
         city: '义乌1',
         type: '笔',
+<<<<<<< HEAD
         price: 10,
         cost: 99,
+=======
+        price: 1,
+        cost: 2,
+        $$extra$$: 'price',
+        $$value$$: 1,
+>>>>>>> origin/master
         rowIndex: 1,
       },
     });

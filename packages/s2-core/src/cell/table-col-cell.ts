@@ -149,12 +149,4 @@ export class TableColCell extends ColCell {
       fill: backgroundColor,
     });
   }
-
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    if (this.isFrozenCell()) {
-      viewport.start = 0;
-    }
-
-    return viewport;
-  }
 }

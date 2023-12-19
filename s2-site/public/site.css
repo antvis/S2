@@ -18,6 +18,10 @@
   margin: 20px 0;
 }
 
+.dumi-default-table {
+  margin: 0;
+}
+
 img[alt='preview'] {
   margin: 10px 0;
 }

@@ -47,7 +47,11 @@ const PartDrillDown = {
     new Promise((resolve) => {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
+<<<<<<< HEAD
       const rowData = dataSet.getCellMultiData({ query: meta.query });
+=======
+      const rowDatas = dataSet.getMultiData(meta.query);
+>>>>>>> origin/master
       const drillDownData = [];
 
       rowData.forEach((data) => {
@@ -88,24 +92,25 @@ const PartDrillDown = {
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const s2Options = {
   hierarchyType: 'tree', // 树形结构
 };
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-    partDrillDown={PartDrillDown}
-  />,
-  document.getElementById('container'),
-);
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+      partDrillDown={PartDrillDown}
+    />
+  )
+}
 ```
 
-<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-down/demo/for-pivot.tsx' rid='container'></playground>
 
 ## 使用场景
 

@@ -16,10 +16,10 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "✅ 旧官网(https://s2.antv.vision) 部署成功",
-                "text": "点击访问 https://s2.antv.vision/",
+                "title": "✅ 旧官网 (https://s2.antv.vision) 部署成功",
+                "text": "点击访问",
                 "messageUrl": "https://s2.antv.vision/",
-                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eel8Rp5jlAkAAAAAAAAAAAAADmJ7AQ/original"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
 

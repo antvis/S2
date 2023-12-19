@@ -1,29 +1,30 @@
-import type { SimpleBBox } from '../../engine';
-import type {
-  InteractionStateName,
-  CellType,
-  InterceptType,
-  ScrollbarPositionType,
-} from '../constant';
 import type {
   BaseCell,
+  BaseRowCell,
   ColCell,
   CornerCell,
   DataCell,
   MergedCell,
   RowCell,
   TableCornerCell,
-  TableSeriesNumberCell,
+  TableSeriesNumberCell
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
+import type { SeriesNumberCell } from '../../cell/series-number-cell';
+import type { SimpleBBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
+import type { RootInteraction } from '../../interaction';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { RootInteraction } from '../../interaction';
-import type { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { Transformer } from '../../utils/export/interface';
-import type { ResizeInteractionOptions } from './resize';
+import type {
+  CellType,
+  InteractionStateName,
+  InterceptType,
+  ScrollbarPositionType,
+} from '../constant';
 import type { ViewMeta } from './basic';
+import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -32,6 +33,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | CornerCell
   | RowCell
   | SeriesNumberCell
+  | BaseRowCell
   | MergedCell
   | TableCornerCell
   | TableSeriesNumberCell

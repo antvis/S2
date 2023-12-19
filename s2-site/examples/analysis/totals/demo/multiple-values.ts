@@ -1,7 +1,7 @@
 import { PivotSheet } from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/6eede6eb-8021-4da8-bb12-67891a5705b7.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -34,8 +34,14 @@ fetch(
           name: '成本',
         },
       ],
+      // 从  @antv/s2 1.53.0-alpha 开始，如果是多度量的场景，我们期望同一个数据里就包含了多个 values 属性，即：
+      // [{province: "四川", city: "成都", type: "商品", price: 100, cost: 80}]
+      // 而不是：
+      // [{province: "四川", city: "成都", type: "商品", price: 100}, {province: "四川", city: "成都", type: "商品", price: 100}]
       data,
     };
+
+    
 
     const s2Options = {
       width: 600,

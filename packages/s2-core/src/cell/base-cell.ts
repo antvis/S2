@@ -26,7 +26,7 @@ import {
   InteractionStateName,
   REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
-  SHAPE_STYLE_MAP,
+  SHAPE_STYLE_MAP
 } from '../common/constant';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import {
@@ -155,6 +155,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected abstract mappingValue(
     condition: Condition,
   ): ConditionMappingResult | undefined | null;
+
+  protected abstract getBackgroundColor(): {
+    backgroundColor: string | undefined;
+    backgroundColorOpacity: number | undefined;
+    intelligentReverseTextColor: boolean;
+  };
 
   public constructor(
     meta: T,
@@ -353,7 +359,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 绘制hover悬停，刷选的外框
+   * 绘制 hover 悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
     this.stateShapes.set(
@@ -361,15 +367,24 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       renderRect(this, {
         ...this.getBBoxByType(CellClipBox.PADDING_BOX),
         visibility: 'hidden',
+        pointerEvents: 'none'
       }),
     );
   }
 
-  protected abstract getBackgroundColor(): {
-    backgroundColor: string | undefined;
-    backgroundColorOpacity: number | undefined;
-    intelligentReverseTextColor: boolean;
-  };
+    /**
+   * 交互使用的背景色
+   */
+  protected drawInteractiveBgShape() {
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        ...this.getBBoxByType(),
+        visibility: 'hidden',
+      pointerEvents: 'none'
+      }),
+    );
+  }
 
   protected drawBackgroundShape() {
     const { backgroundColor, backgroundColorOpacity } =
@@ -382,18 +397,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
-  /**
-   * 交互使用的背景色
-   */
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(this, {
-        ...this.getBBoxByType(),
-        visibility: 'hidden',
-      }),
-    );
-  }
 
   public renderTextShape(
     style: TextStyleProps,
@@ -749,5 +752,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
 
     return getIconTotalWidth(this.groupedIcons[position], iconStyle);
+  }
+
+  protected getCrossBackgroundColor(rowIndex: number) {
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
+
+    if (crossBackgroundColor && rowIndex % 2 === 0) {
+      // 隔行颜色的配置
+      // 偶数行展示灰色背景，因为index是从0开始的
+      return { backgroundColorOpacity, backgroundColor: crossBackgroundColor };
+    }
+
+    return {
+      backgroundColorOpacity,
+      backgroundColor: this.getStyle().cell.backgroundColor,
+    };
   }
 }

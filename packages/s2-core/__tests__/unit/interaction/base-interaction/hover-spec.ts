@@ -32,6 +32,11 @@ describe('Interaction Hover Tests', () => {
   const mockTooltipParams = [
     [{ value: undefined, valueField: undefined }],
     {
+<<<<<<< HEAD
+=======
+      enableFormat: true,
+      enterable: true,
+>>>>>>> origin/master
       hideSummary: true,
       isTotals: undefined,
       onlyShowCellText: true,
@@ -54,6 +59,7 @@ describe('Interaction Hover Tests', () => {
       isTextOverflowing: jest.fn(() => true),
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
+      isTextOverflowing: () => true,
       cellType: 'dataCell',
     }) as any;
 
@@ -77,7 +83,7 @@ describe('Interaction Hover Tests', () => {
     mockCellUpdate.mockReset();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     mockCellUpdate.mockRestore();
   });
 
@@ -86,6 +92,15 @@ describe('Interaction Hover Tests', () => {
   });
 
   test('should trigger data cell hover', async () => {
+    const interactionGetHoverHighlightSpy = jest
+      .spyOn(s2.interaction, 'getHoverHighlight')
+      .mockImplementationOnce(() => ({
+        rowHeader: true,
+        colHeader: true,
+        currentRow: true,
+        currentCol: true,
+      }));
+
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
@@ -99,6 +114,37 @@ describe('Interaction Hover Tests', () => {
       stateName: InteractionStateName.HOVER_FOCUS,
     });
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+    expect(interactionGetHoverHighlightSpy).toHaveBeenCalled();
+  });
+
+  test('should trigger data cell hover depend on separate config', async () => {
+    s2.interaction.getAllColHeaderCells = jest.fn();
+    s2.interaction.getAllRowHeaderCells = jest.fn();
+
+    s2.setOptions({
+      interaction: {
+        hoverHighlight: {
+          colHeader: true,
+          rowHeader: false,
+        },
+      },
+    });
+
+    s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellMeta],
+      stateName: InteractionStateName.HOVER,
+    });
+
+    await sleep(1000);
+
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellMeta],
+      stateName: InteractionStateName.HOVER_FOCUS,
+    });
+
+    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
+    expect(s2.interaction.getAllRowHeaderCells).not.toHaveBeenCalled();
   });
 
   test('should not trigger data cell hover when hover cell not change', () => {
@@ -283,6 +329,7 @@ describe('Interaction Hover Tests', () => {
       await sleep(HOVER_FOCUS_DURATION + 200);
 
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+      expect(s2.hideTooltip).toHaveBeenCalled();
     },
   );
 

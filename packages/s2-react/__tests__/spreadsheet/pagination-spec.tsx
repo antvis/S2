@@ -1,10 +1,21 @@
 import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
+<<<<<<< HEAD
 import type { Root } from 'react-dom/client';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
 import { renderComponent } from '../util/helpers';
+=======
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import { LangType, S2Options, setLang, SpreadSheet } from '@antv/s2';
+import { getContainer, sleep } from 'tests/util/helpers';
+import * as mockDataConfig from '../data/simple-data.json';
+import { pivotSheetDataCfg } from '../../playground/config';
+import { SheetComponent } from '../../src';
+import 'antd/dist/antd.min.css';
+>>>>>>> origin/master
 
 const s2Options: SheetComponentsProps['options'] = {
   width: 600,
@@ -15,6 +26,8 @@ const s2Options: SheetComponentsProps['options'] = {
   },
   hierarchyType: 'grid',
 };
+
+let s2: SpreadSheet;
 
 describe('Pagination Tests', () => {
   let unmount: Root['unmount'];
@@ -96,5 +109,36 @@ describe('Pagination Tests', () => {
         document.querySelector('.ant-pagination-options-size-changer'),
       ).toBeFalsy();
     });
+  });
+
+  test('should row header cell render text position based on the actual cell height when pagination is show', async () => {
+    act(() => {
+      ReactDOM.render(
+        <SheetComponent
+          options={{
+            ...s2Options,
+            pagination: {
+              ...s2Options.pagination,
+              current: 1,
+              pageSize: 1,
+            },
+            height: 400,
+          }}
+          dataCfg={pivotSheetDataCfg as any}
+          onMounted={(instance) => {
+            s2 = instance;
+          }}
+          showPagination
+        />,
+        container,
+      );
+    });
+
+    await sleep(1000);
+
+    expect(
+      s2.foregroundGroup.cfg.children[0].headerConfig.data[0].belongsCell
+        .textShapes[0].attrs.y,
+    ).toBe(9);
   });
 });

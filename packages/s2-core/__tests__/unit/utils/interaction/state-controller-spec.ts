@@ -1,6 +1,11 @@
+import type { RowCell } from '../../../../src/cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
+<<<<<<< HEAD
 import type { RowCell } from '@/cell/row-cell';
 import { CellType, InteractionStateName } from '@/common/constant/interaction';
+=======
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+>>>>>>> origin/master
 import type { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';
 import { RootInteraction } from '@/interaction/root';

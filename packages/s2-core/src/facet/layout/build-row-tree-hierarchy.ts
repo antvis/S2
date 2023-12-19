@@ -1,8 +1,14 @@
 import { isNumber } from 'lodash';
+<<<<<<< HEAD
 import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import { filterTotal, getListBySorted } from '../../utils/data-set-operate';
+=======
+import { i18n } from '../../common';
+import type { SpreadSheet } from '../../sheet-type';
+import { filterOutDetail } from '../../utils/data-set-operate';
+>>>>>>> origin/master
 import { generateId } from '../../utils/layout/generate-id';
 import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
@@ -15,6 +21,7 @@ const addTotals = (
   fieldValues: FieldValue[],
 ) => {
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
+<<<<<<< HEAD
 
   /*
    * tree mode only has grand totals, but if there are subTotals configs,
@@ -26,12 +33,28 @@ const addTotals = (
 
     fieldValues[func](
       new TotalClass(totalsConfig.grandTotalsLabel!, false, true),
+=======
+  // tree mode only has grand totals, but if there are subTotals configs,
+  // it will display in cross-area cell
+  // TODO valueInCol = false and one or more values
+  if (totalsConfig.showGrandTotals) {
+    const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
+    fieldValues[func](
+      new TotalClass({
+        label: totalsConfig.label,
+        isSubTotals: false,
+        isGrandTotals: true,
+      }),
+>>>>>>> origin/master
     );
   }
 };
 
+<<<<<<< HEAD
 const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
 
+=======
+>>>>>>> origin/master
 /**
  * Only row header has tree hierarchy, in this scene:
  * 1、value in rows is not work => valueInCols is ineffective
@@ -39,6 +62,7 @@ const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
+<<<<<<< HEAD
   const {
     parentNode,
     currentField = '',
@@ -73,6 +97,16 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
     },
   );
+=======
+  const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
+    params;
+  const { spreadsheet, collapsedRows, hierarchyCollapse, rowExpandDepth } =
+    facetCfg;
+  const { query, id: parentId } = parentNode;
+  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
+
+  const dimValues = filterOutDetail(Array.from(pivotMeta.keys()));
+>>>>>>> origin/master
 
   let fieldValues: FieldValue[] = layoutArrange(
     spreadsheet,

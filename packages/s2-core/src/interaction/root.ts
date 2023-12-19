@@ -13,6 +13,7 @@ import type {
   BrushSelectionInfo,
   CellMeta,
   CustomInteraction,
+  InteractionCellHighlight,
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
@@ -20,7 +21,12 @@ import type {
   SelectHeaderCellInfo,
   InteractionCellSelectedHighlightOptions,
 } from '../common/interface';
+<<<<<<< HEAD
 import type { Node } from '../facet/layout/node';
+=======
+import { ColHeader, RowHeader, SeriesNumberHeader } from '../facet/header';
+import { Node } from '../facet/layout/node';
+>>>>>>> origin/master
 import type { SpreadSheet } from '../sheet-type';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
@@ -36,14 +42,23 @@ import {
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
+<<<<<<< HEAD
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { ColCellBrushSelection } from './brush-selection/col-brush-selection';
 import { RowCellBrushSelection } from './brush-selection/row-brush-selection';
+=======
+import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
+import { RowBrushSelection } from './brush-selection/row-brush-selection';
+>>>>>>> origin/master
 import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
 import { RowColumnResize } from './row-column-resize';
+import { SelectedCellMove } from './selected-cell-move';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -146,7 +161,10 @@ export class RootInteraction {
   }
 
   public isSelectedState() {
-    return this.isStateOf(InteractionStateName.SELECTED);
+    return (
+      this.isStateOf(InteractionStateName.SELECTED) ||
+      this.isStateOf(InteractionStateName.BRUSH_SELECTED)
+    );
   }
 
   public isAllSelectedState() {
@@ -206,10 +224,62 @@ export class RootInteraction {
     });
   }
 
+<<<<<<< HEAD
   public getUnSelectedDataCells() {
     return this.spreadsheet.facet
       .getDataCells()
       .filter((cell) => !this.isActiveCell(cell));
+=======
+  public getPanelGroupAllUnSelectedDataCells() {
+    return this.getPanelGroupAllDataCells().filter(
+      (cell) => !this.isActiveCell(cell),
+    );
+  }
+
+  public getPanelGroupAllDataCells(): DataCell[] {
+    return getAllChildCells(
+      this.spreadsheet.panelGroup?.getChildren() as IElement[],
+      DataCell,
+    );
+  }
+
+  public getAllRowHeaderCells(): RowCell[] {
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const rowHeader = children.find(
+      (group) =>
+        group instanceof RowHeader && !(group instanceof SeriesNumberHeader), // series cell not belong to row header cell
+    );
+    const headerChildren = rowHeader?.cfg?.children || [];
+
+    return getAllChildCells<RowCell>(headerChildren, RowCell).filter(
+      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+    );
+  }
+
+  public getAllColHeaderCells(): ColCell[] {
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const colHeader = children.find((group) => group instanceof ColHeader);
+    const headerChildren = colHeader?.cfg?.children || [];
+
+    return getAllChildCells<ColCell>(headerChildren, ColCell).filter(
+      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+    );
+  }
+
+  public getRowColActiveCells(ids: string[]) {
+    return concat<S2CellType>(
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
+    ).filter((item) => ids.includes(item.getMeta().id));
+  }
+
+  public getAllCells() {
+    return concat<S2CellType>(
+      this.getPanelGroupAllDataCells(),
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
+    );
+>>>>>>> origin/master
   }
 
   public selectAll = () => {
@@ -542,8 +612,13 @@ export class RootInteraction {
     return this.hoverTimer;
   }
 
+<<<<<<< HEAD
   public getSelectedCellHighlight(): InteractionCellSelectedHighlightOptions {
     const { selectedCellHighlight } = this.spreadsheet.options.interaction!;
+=======
+  public getSelectedCellHighlight(): InteractionCellHighlight {
+    const { selectedCellHighlight } = this.spreadsheet.options.interaction;
+>>>>>>> origin/master
 
     if (isBoolean(selectedCellHighlight)) {
       return {
@@ -567,6 +642,57 @@ export class RootInteraction {
       colHeader,
       currentRow,
       currentCol,
+    };
+  }
+
+  public getHoverAfterScroll(): boolean {
+    return this.spreadsheet.options.interaction.hoverAfterScroll;
+  }
+
+  public getHoverHighlight(): InteractionCellHighlight {
+    const { hoverHighlight } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(hoverHighlight)) {
+      return {
+        rowHeader: hoverHighlight,
+        colHeader: hoverHighlight,
+        currentRow: hoverHighlight,
+        currentCol: hoverHighlight,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = hoverHighlight ?? {};
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
+  }
+
+  public getBrushSelection(): BrushSelection {
+    const { brushSelection } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(brushSelection)) {
+      return {
+        data: brushSelection,
+        row: brushSelection,
+        col: brushSelection,
+      };
+    }
+
+    const { data = false, row = false, col = false } = brushSelection ?? {};
+
+    return {
+      data,
+      row,
+      col,
     };
   }
 }

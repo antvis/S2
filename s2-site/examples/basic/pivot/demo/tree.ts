@@ -7,12 +7,33 @@ fetch(
   .then((dataCfg) => {
     const container = document.getElementById('container');
 
+<<<<<<< HEAD
     const s2Options: S2Options = {
       width: 600,
       height: 480,
       hierarchyType: 'tree',
     };
 
+=======
+    const s2Options = {
+      width: 600,
+      height: 480,
+      hierarchyType: 'tree',
+      style: {
+        // 折叠全部
+        // hierarchyCollapse: true,
+
+        // 折叠浙江省下面所有的城市
+        collapsedRows: {
+          'root[&]浙江省': true,
+        },
+      },
+
+      // 冻结行头
+      // frozenRowHeader: true
+    };
+
+>>>>>>> origin/master
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();

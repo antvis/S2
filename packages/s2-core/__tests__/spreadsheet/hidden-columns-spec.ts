@@ -1,11 +1,17 @@
 import { difference, pick } from 'lodash';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
+<<<<<<< HEAD
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { waitForRender } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { customColGridSimpleFields } from '../data/custom-grid-simple-fields';
 import { customColMultipleColumns } from '../data/custom-table-col-fields';
+=======
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import { difference, get, pick } from 'lodash';
+import type { Node } from '@/facet/layout/node';
+>>>>>>> origin/master
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { HiddenColumnsInfo, S2Options } from '@/common';
 
@@ -419,6 +425,61 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsInfo).toBeTruthy();
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
+    // https://github.com/antvis/S2/issues/2355
+    test('should render correctly x and width after hide columns when there is only one value for the higher-level dimension.', () => {
+      const nodeId = 'root[&]笔[&]义乌[&]price';
+
+      pivotSheet.setOptions({
+        style: {
+          colCfg: {
+            width: 100,
+          },
+        },
+      });
+      const data = pivotSheet.dataCfg.data.map((i) => ({ ...i, cost: 0 }));
+      pivotSheet.setDataCfg({
+        data,
+        fields: {
+          values: ['cost', 'price'],
+        },
+      });
+      pivotSheet.render();
+
+      pivotSheet.interaction.hideColumns([nodeId]);
+      const rootNode = pivotSheet
+        .getColumnNodes()
+        .find((node) => node.id === 'root[&]笔');
+
+      expect(rootNode.width).toEqual(300);
+      expect(rootNode.x).toEqual(0);
+    });
+
+    // https://github.com/antvis/S2/issues/2194
+    test('should render correctly when always hidden last column', () => {
+      const sheet = createPivotSheet(
+        {
+          interaction: {
+            hiddenColumnFields: [],
+          },
+        },
+        { useSimpleData: false },
+      );
+      sheet.render();
+
+      // 模拟一列一列的手动隐藏最后一列
+      [
+        'root[&]办公用品[&]纸张[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]家具[&]沙发[&]number',
+      ].forEach((field) => {
+        sheet.interaction.hideColumns([field]);
+      });
+
+      expect(sheet.getColumnLeafNodes()).toHaveLength(1);
+      expect(sheet.getColumnLeafNodes()[0].id).toEqual(
+        'root[&]家具[&]桌子[&]number',
+      );
+    });
 
     test('should hide columns for multiple columns', async () => {
       const hiddenColumns = [
@@ -595,7 +656,11 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       });
 
       // https://github.com/antvis/S2/issues/1721
+<<<<<<< HEAD
       test('should hide grand totals node1', async () => {
+=======
+      test('should hide grand totals node', () => {
+>>>>>>> origin/master
         const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({
@@ -617,6 +682,26 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(5);
       });
+
+      test.each(['grid', 'tree'])(
+        'hiding the column totals should not hide the row totals for %s mode',
+        (hierarchyType: 'grid' | 'tree') => {
+          sheet.setOptions({ hierarchyType });
+          sheet.render();
+          const nodeId = 'root[&]总计';
+          const preRowNodes = sheet.facet.layoutResult.rowNodes;
+          const preColumnNodes = sheet.facet.layoutResult.colNodes;
+          sheet.interaction.hideColumns([nodeId]);
+
+          expect(sheet.facet.layoutResult.rowNodes[0].id).toBe(nodeId);
+          expect(sheet.facet.layoutResult.rowNodes.length).toBe(
+            preRowNodes.length,
+          );
+          expect(sheet.facet.layoutResult.colNodes.length).toBe(
+            preColumnNodes.length - 1,
+          );
+        },
+      );
     });
   });
 });

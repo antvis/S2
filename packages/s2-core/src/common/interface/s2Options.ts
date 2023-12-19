@@ -257,6 +257,10 @@ export interface S2PivotSheetFrozenOptions {
    * 当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0
    */
   rowHeader?: boolean | number;
+
+  // pivot sheet type: frozen head row, default false
+  // TODO: 2.0 版本统一在 frozen: { ... } 命名空间下
+  frozenFirstRow?: boolean;
 }
 
 export interface S2TableSheetFrozenOptions {

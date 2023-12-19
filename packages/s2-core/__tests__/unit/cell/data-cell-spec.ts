@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+<<<<<<< HEAD
 import type { Rect } from '@antv/g';
 import { find, get } from 'lodash';
+=======
+import { find, get, keys } from 'lodash';
+>>>>>>> origin/master
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { DataCell } from '@/cell';
 import type { TextAlign } from '@/common';
@@ -13,7 +17,7 @@ import {
   type S2CellType,
   type ViewMeta,
 } from '@/common';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
@@ -543,12 +547,20 @@ describe('Data Cell Tests', () => {
               field: 'cost',
               mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
+<<<<<<< HEAD
                 const resultData = find(originData, dataInfo);
 
                 expect(resultData).toEqual(dataInfo);
                 // @ts-ignore
                 expect(value).toEqual(resultData.cost);
 
+=======
+                const resultData = find(originData, (item) =>
+                  keys(item).every((key) => item[key] === dataInfo[key]),
+                );
+                expect(value).toEqual(resultData.cost);
+                expect(value).toEqual(dataInfo[VALUE_FIELD]);
+>>>>>>> origin/master
                 return {
                   fill: '#fffae6',
                 };

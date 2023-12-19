@@ -67,14 +67,18 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
+<<<<<<< HEAD
   beforeAll(async () => {
+=======
+  beforeEach(() => {
+>>>>>>> origin/master
     setLang('zh_CN');
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     await s2.render();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     container?.remove();
     s2?.destroy();
   });
@@ -130,7 +134,7 @@ describe('PivotSheet Tests', () => {
       s2.tooltip.destroy();
 
       // remove container
-      expect(s2.tooltip.container).toBe(null);
+      expect(s2.tooltip.container).toBeFalsy();
       // reset position
       expect(s2.tooltip.position).toEqual({
         x: 0,
@@ -478,7 +482,58 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.showSeriesNumber).toBeTruthy();
   });
 
+<<<<<<< HEAD
   test('should render sheet', async () => {
+=======
+  test('should init new tooltip', () => {
+    const tooltipDestorySpy = jest
+      .spyOn(s2.tooltip, 'destroy')
+      .mockImplementationOnce(() => {});
+
+    class CustomTooltip extends BaseTooltip {}
+
+    s2.setOptions({
+      tooltip: {
+        renderTooltip: (spreadsheet) => new CustomTooltip(spreadsheet),
+      },
+    });
+
+    expect(tooltipDestorySpy).toHaveBeenCalled();
+    expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
+  });
+
+  test('should refresh brush selection info', () => {
+    s2.setOptions({
+      interaction: {
+        brushSelection: true,
+      },
+    });
+
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: true,
+      col: true,
+    });
+
+    s2.setOptions({
+      interaction: {
+        brushSelection: {
+          data: true,
+          row: false,
+          col: false,
+        },
+      },
+    });
+
+    expect(s2.interaction.getBrushSelection()).toStrictEqual({
+      data: true,
+      row: false,
+      col: false,
+    });
+  });
+
+  test('should render sheet', () => {
+>>>>>>> origin/master
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
       .mockImplementation(() => {});
@@ -610,10 +665,16 @@ describe('PivotSheet Tests', () => {
     expect(s2.facet.foregroundGroup.children).toHaveLength(9);
 
     // panel scroll group
+<<<<<<< HEAD
     expect(s2.facet.panelGroup.children).toHaveLength(1);
     expect(
       s2.facet.panelGroup.getElementsByName(KEY_GROUP_PANEL_SCROLL),
     ).toHaveLength(1);
+=======
+    // contain panelScrollGroup and frozenRowGroup
+    expect(s2.panelGroup.getChildren()).toHaveLength(2);
+    expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
+>>>>>>> origin/master
   });
 
   test.each([
@@ -726,7 +787,7 @@ describe('PivotSheet Tests', () => {
 
     const clearDrillDownDataSpy = jest
       .spyOn(s2.dataSet, 'clearDrillDownData' as any)
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
 
     s2.clearDrillDownData();
 
@@ -742,7 +803,25 @@ describe('PivotSheet Tests', () => {
     renderSpy.mockRestore();
   });
 
+<<<<<<< HEAD
   test('should get extra field text', async () => {
+=======
+  test(`shouldn't rerender without drill down data`, () => {
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+
+    const clearDrillDownDataSpy = jest
+      .spyOn(s2.dataSet, 'clearDrillDownData' as any)
+      .mockImplementation(() => false);
+
+    s2.clearDrillDownData();
+
+    expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(1);
+    // rerender
+    expect(renderSpy).toHaveBeenCalledTimes(0);
+  });
+
+  test('should get extra field text', () => {
+>>>>>>> origin/master
     const pivotSheet = new PivotSheet(
       container,
       customMerge(originalDataCfg, {
@@ -994,7 +1073,7 @@ describe('PivotSheet Tests', () => {
       {
         query: undefined,
         sortByMeasure: nodeMeta.value,
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'asc',
       },
     ]);
@@ -1010,7 +1089,7 @@ describe('PivotSheet Tests', () => {
       {
         query: undefined,
         sortByMeasure: nodeMeta.value,
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'desc',
       },
     ]);
@@ -1042,7 +1121,7 @@ describe('PivotSheet Tests', () => {
       {
         query: { $$extra$$: 'price', type: '笔' },
         sortByMeasure: 'price',
-        sortFieldId: 'field',
+        sortFieldId: 'city',
         sortMethod: 'asc',
       },
     ]);
@@ -1063,7 +1142,10 @@ describe('PivotSheet Tests', () => {
     s2.store.set('test', 111);
 
     // restore mock...
-    (s2.tooltip.show as jest.Mock).mockRestore();
+    const tooltipShowSpy = jest
+      .spyOn(s2.tooltip, 'show')
+      .mockImplementationOnce(() => {});
+    tooltipShowSpy.mockRestore();
     s2.showTooltip({
       position: {
         x: 10,

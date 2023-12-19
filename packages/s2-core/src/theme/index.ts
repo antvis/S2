@@ -82,6 +82,7 @@ export const getTheme = (
         bottom: 8,
         left: 8,
       },
+<<<<<<< HEAD
 
       /* ---------- interaction state ----------- */
       interactionState: {
@@ -89,6 +90,39 @@ export const getTheme = (
         hover: {
           backgroundColor: basicColors[2],
           backgroundOpacity: 0.6,
+=======
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[13],
+        opacity: 1,
+        textAlign: 'right',
+        textBaseline: 'middle',
+        linkTextFill: basicColors[6],
+      },
+      cell: {
+        // ----------- background color -----------
+        crossBackgroundColor: basicColors[1],
+        backgroundColor: basicColors[8],
+        backgroundColorOpacity: 1,
+        // ----------- border color --------------
+        horizontalBorderColor: basicColors[9],
+        horizontalBorderColorOpacity: 1,
+        verticalBorderColor: basicColors[9],
+        verticalBorderColorOpacity: 1,
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
+        // -------------- layout -----------------
+        padding: {
+          top: 8,
+          right: 8,
+          bottom: 8,
+          left: 8,
+>>>>>>> origin/master
         },
         // -------------- keep hover -------------------
         hoverFocus: {
@@ -219,6 +253,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 4,
@@ -244,7 +280,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: 'middle',
+        textBaseline: isTable ? 'middle' : 'top',
         textAlign: 'center',
         ...getHeaderCellTextOverflow(),
         // 序号不换行
@@ -296,6 +332,8 @@ export const getTheme = (
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 4,
@@ -395,6 +433,8 @@ export const getTheme = (
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
+        // -------------- border dash -----------------
+        borderDash: [],
         // -------------- layout -----------------
         padding: {
           top: 4,
@@ -498,6 +538,7 @@ export const getTheme = (
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
       },
+      borderDash: [],
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {

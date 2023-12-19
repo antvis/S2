@@ -23,14 +23,18 @@ describe('TableSheet Tests', () => {
 
   let container: HTMLDivElement;
 
+<<<<<<< HEAD
   beforeAll(async () => {
+=======
+  beforeEach(() => {
+>>>>>>> origin/master
     container = getContainer();
     s2 = new TableSheet(container, dataCfg, s2Options);
     await s2.render();
     s2.store.set('sortMethodMap', null);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     container?.remove();
     s2?.destroy();
   });
@@ -95,15 +99,10 @@ describe('TableSheet Tests', () => {
       s2.groupSortByMethod('desc', node);
 
       expect(s2.store.get('sortMethodMap')).toEqual({
-        city: 'asc',
         cost: 'desc',
       });
       expect(s2.getMenuDefaultSelectedKeys(node.id)).toEqual(['desc']);
       expect(s2.dataCfg.sortParams).toEqual([
-        {
-          sortFieldId: 'city',
-          sortMethod: 'asc',
-        },
         {
           sortFieldId: 'cost',
           sortMethod: 'desc',
@@ -245,6 +244,7 @@ describe('TableSheet Tests', () => {
     expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 
+<<<<<<< HEAD
   test('should render custom table facet', async () => {
     const mockRender = jest.fn();
 
@@ -266,5 +266,9 @@ describe('TableSheet Tests', () => {
 
     expect(sheet.facet).toBeInstanceOf(TableFacet);
     expect(mockRender).toHaveBeenCalledTimes(1);
+=======
+  test('should get content height', () => {
+    expect(s2.getContentHeight()).toEqual(120);
+>>>>>>> origin/master
   });
 });

@@ -1,4 +1,5 @@
 import { findIndex } from 'lodash';
+<<<<<<< HEAD
 import type { Node } from '../facet/layout/node';
 
 export const getSubTotalNodeWidthOrHeightByLevel = (
@@ -10,6 +11,8 @@ export const getSubTotalNodeWidthOrHeightByLevel = (
     .filter((node: Node) => node.level >= level)
     .map((value) => value[key])
     .reduce((sum, current) => sum + current, 0);
+=======
+>>>>>>> origin/master
 
 /**
  * 根据视窗高度计算需要展示的数据数组下标

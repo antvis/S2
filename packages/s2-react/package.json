@@ -1,7 +1,11 @@
 {
   "private": false,
   "name": "@antv/s2-react",
+<<<<<<< HEAD
   "version": "2.0.0-next.9",
+=======
+  "version": "1.46.0",
+>>>>>>> origin/master
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -44,10 +48,15 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+<<<<<<< HEAD
     "watch": "rimraf esm && pnpm build:esm -w",
+=======
+    "build:size-limit": "size-limit",
+    "build:size-limit-json": "yarn build:size-limit --json",
+    "watch": "rimraf esm && yarn build:esm -w",
+>>>>>>> origin/master
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
-    "bundle:size": "bundlesize",
     "test": "jest --passWithNoTests",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
@@ -93,14 +102,15 @@
     "react-dom": "^18.2.0",
     "vite-plugin-svgr": "^2.2.2"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "maxSize": "650 kB"
+      "import": "{ createComponent }",
+      "limit": "70 kB"
     },
     {
       "path": "./dist/style.min.css",
-      "maxSize": "205 kB"
+      "limit": "5 kB"
     }
   ],
   "publishConfig": {

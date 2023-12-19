@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 
-export type Indexes = [number, number, number, number];
+export type Indexes = [number?, number?, number?, number?];
 
 export type PanelIndexes = {
   center: Indexes;

@@ -1,15 +1,34 @@
+<<<<<<< HEAD
 import type { Group } from '@antv/g';
 import { findIndex, isNil } from 'lodash';
 import type { FrozenCellIndex } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
+=======
+import type { IGroup, SimpleBBox } from '@antv/g-canvas';
+import { findIndex, isEmpty, isNil } from 'lodash';
+
+import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
+import { FrozenCellType } from '../common/constant/frozen';
+>>>>>>> origin/master
 import type {
   CustomHeaderFields,
   Pagination,
+<<<<<<< HEAD
   S2TableSheetFrozenOptions,
+=======
+  S2Options,
+  S2PivotSheetOptions,
+  S2TableSheetOptions,
+>>>>>>> origin/master
   ScrollSpeedRatio,
+  SpreadSheetFacetCfg,
 } from '../common/interface';
+<<<<<<< HEAD
 import type { SimpleBBox } from '../engine';
+=======
+import type { Fields } from '../common/interface';
+>>>>>>> origin/master
 import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
@@ -472,4 +491,56 @@ export const getLeftLeafNode = (node: Node): Node => {
   }
 
   return firstNode.isLeaf ? firstNode : getLeftLeafNode(firstNode);
+};
+/**
+ * fields 的 rows、columns、values、customTreeItems 值都为空时，返回 true
+ * @param {Fields} fields
+ * @return {boolean}
+ */
+export const areAllFieldsEmpty = (fields: Fields) => {
+  return (
+    isEmpty(fields.rows) &&
+    isEmpty(fields.columns) &&
+    isEmpty(fields.values) &&
+    isEmpty(fields.customTreeItems)
+  );
+};
+
+/**
+ * get frozen options pivot-sheet (business limit)
+ * @param options
+ * @returns
+ */
+export const getFrozenRowCfgPivot = (
+  options: Pick<
+    S2Options,
+    'frozenFirstRow' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
+  >,
+  rowNodes: Node[],
+): S2TableSheetOptions & {
+  frozenRowHeight: number;
+  enableFrozenFirstRow: boolean;
+} => {
+  const { pagination, frozenFirstRow, hierarchyType, showSeriesNumber } =
+    options;
+  const enablePagination = pagination && pagination.pageSize;
+  let enableFrozenFirstRow = false;
+  const headNode = rowNodes?.[0];
+  if (!enablePagination && frozenFirstRow) {
+    // first node no children: entire row
+    enableFrozenFirstRow = headNode?.children?.length === 0;
+    const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';
+    if (treeMode && !enableFrozenFirstRow) {
+      enableFrozenFirstRow = !showSeriesNumber;
+    }
+  }
+  const effectiveFrozenFirstRow = enableFrozenFirstRow && !!headNode;
+  return {
+    frozenRowCount: effectiveFrozenFirstRow ? 1 : 0,
+    frozenColCount: 0,
+    frozenTrailingColCount: 0,
+    frozenTrailingRowCount: 0,
+    enableFrozenFirstRow,
+    frozenRowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
+  };
 };

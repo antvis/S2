@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
-import type { Meta, S2DataConfig } from '../common/interface';
 import { i18n } from '../common/i18n';
+import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   transformDimensionsValues,

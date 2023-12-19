@@ -22,6 +22,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
+      if (!this.spreadsheet.interaction.getBrushSelection().data) {
+        return;
+      }
+
       super.mouseDown(event);
       this.resetScrollDelta();
     });
@@ -99,13 +103,14 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     return metas;
   };
 
-  // 最终刷选的cell
+  // 最终刷选的 cell
   protected updateSelectedCells() {
     const brushRange = this.getBrushRange();
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
+      // TODO: 怕上层有直接消费 stateName, 暂时保留, 2.0 版本改成 InteractionStateName.BRUSH_SELECTED
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: afterSelectDataCells,
     });

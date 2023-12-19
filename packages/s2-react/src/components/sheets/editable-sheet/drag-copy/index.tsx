@@ -1,15 +1,31 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataCell, S2Event, S2_PREFIX_CLS, GEvent } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
+=======
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { ScrollOffset } from '@antv/s2';
+import { DataCell, S2Event, S2_PREFIX_CLS } from '@antv/s2';
+import { isEqual, pick } from 'lodash';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { useS2Event } from '../../../../hooks';
+import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
+>>>>>>> origin/master
 import { DragCopyMask } from './drag-copy-mask';
+import './drag-copy-point.less';
 
 import './drag-copy-point.less';
 
+<<<<<<< HEAD
 export function DragCopyPoint() {
   const spreadsheet = useSpreadSheetInstance();
+=======
+export const DragCopyPoint = memo((props: DragCopyProps) => {
+  const spreadsheet = useSpreadSheetRef();
+>>>>>>> origin/master
 
   const [scroll, setScroll] = useState<
     ScrollOffset & { width?: number; overflow?: boolean }
@@ -69,12 +85,19 @@ export function DragCopyPoint() {
     }
   };
 
+<<<<<<< HEAD
   const fixPosition = (event: GEvent) => {
     const eventCell = spreadsheet.getCell<DataCell>(event.target);
     const isEventCellSelected = spreadsheet.interaction.isSelectedCell(
       eventCell!,
     );
 
+=======
+  const fixPosition = (event: CanvasEvent) => {
+    const eventCell = event.target.cfg.parent;
+    const isEventCellSelected =
+      spreadsheet.interaction.isSelectedCell(eventCell);
+>>>>>>> origin/master
     // 如果点击单元格时，单元格取消选中，隐藏拖拽点
     if (isEventCellSelected) {
       setCell(eventCell!);
@@ -155,4 +178,4 @@ export function DragCopyPoint() {
       <DragCopyMask onCopyFinished={batchSelected} />
     </div>
   );
-}
+});
