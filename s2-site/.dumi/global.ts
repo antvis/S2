@@ -26,7 +26,6 @@ if (window) {
   // 码云和老网站统一跳转 antgroup 新域名
   const hosts = ['s2.antv.vision', 'antv-s2.gitee.io'];
   if (hosts.includes(location.host)) {
-    console.log(require('../package.json').homepage);
     (window as any).location.href = location.href.replace(
       location.origin,
       require('../package.json').homepage || 'https://s2.antv.antgroup.com',

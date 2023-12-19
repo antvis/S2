@@ -21,7 +21,7 @@ export default defineConfig({
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light', // 白色 底部主题
-    siteUrl: 'https://s2.antv.antgroup.com', // 官网地址
+    siteUrl: 'https://antv.antgroup.com', // 官网地址
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
