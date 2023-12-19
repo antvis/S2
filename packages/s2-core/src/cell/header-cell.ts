@@ -74,6 +74,14 @@ export abstract class HeaderCell<
     return this.headerConfig || ({} as T);
   }
 
+  public isShallowRender() {
+    return this.headerConfig.shallowRender!;
+  }
+
+  protected shouldInit() {
+    return super.shouldInit() && !this.isShallowRender();
+  }
+
   protected handleRestOptions(...[headerConfig]: [T]) {
     this.headerConfig = { ...headerConfig };
 

@@ -61,6 +61,7 @@ import {
   TableSheetFrozenOptions,
   defaultOptions,
   pivotSheetDataCfg,
+  pivotSheetMultiLineTextDataCfg,
   s2ConditionsOptions,
   s2Options,
   sliderOptions,
@@ -376,7 +377,7 @@ function MainLayout() {
                 children: (
                   <>
                     <Collapse
-                      defaultActiveKey={['filter']}
+                      defaultActiveKey={['filter', 'resize']}
                       items={[
                         {
                           key: 'filter',
@@ -1326,6 +1327,13 @@ function MainLayout() {
                               options={mergedOptions}
                               setOptions={setOptions}
                               setThemeCfg={setThemeCfg}
+                              onMaxLinesChange={(maxLines) => {
+                                setDataCfg(
+                                  maxLines > 1
+                                    ? pivotSheetMultiLineTextDataCfg
+                                    : pivotSheetDataCfg,
+                                );
+                              }}
                             />
                           ),
                         },

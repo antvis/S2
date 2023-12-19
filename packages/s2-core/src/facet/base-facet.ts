@@ -324,13 +324,15 @@ export abstract class BaseFacet {
 
     const { padding } = cell.getStyle().cell;
 
-    cell.drawTextShape({
-      shallowRender: true,
-    });
+    cell.drawTextShape();
+
+    const { parsedStyle } = cell.getTextShape();
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    return textHeight >= defaultHeight ? adaptiveHeight : defaultHeight;
+    return parsedStyle?.maxLines! > 1 && textHeight >= defaultHeight
+      ? adaptiveHeight
+      : defaultHeight;
   }
 
   /**

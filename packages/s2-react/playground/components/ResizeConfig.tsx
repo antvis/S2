@@ -35,7 +35,9 @@ export const ResizeConfig: React.FC<{
   setOptions: (
     cb: (prev: SheetComponentOptions) => SheetComponentOptions,
   ) => void;
-}> = ({ options, setThemeCfg, setOptions }) => {
+  onMaxLinesChange?: (maxLines: number) => void;
+}> = (props) => {
+  const { options, setThemeCfg, setOptions } = props;
   const [showResizeArea, setShowResizeArea] = React.useState(false);
 
   const onShowResizeAreaChange = (enable: boolean) => {
@@ -110,10 +112,11 @@ export const ResizeConfig: React.FC<{
       colCell: cellTheme,
       rowCell: cellTheme,
       cornerCell: cellTheme,
-      dataCell: cellTheme,
     };
 
     setThemeCfg((prev) => customMerge(prev, { theme }));
+
+    props.onMaxLinesChange?.(maxLines);
   };
 
   const resizeConfig = options.interaction?.resize as ResizeInteractionOptions;

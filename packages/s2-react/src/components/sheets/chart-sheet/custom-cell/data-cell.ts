@@ -1,11 +1,11 @@
-import { DataCell, type RenderTextShapeOptions } from '@antv/s2';
+import { DataCell } from '@antv/s2';
 
 export class ChartSheetDataCell extends DataCell {
-  public drawTextShape(options?: RenderTextShapeOptions) {
+  public drawTextShape() {
     if (this.isMultiData()) {
       return null;
     }
 
-    super.drawTextShape(options);
+    super.drawTextShape();
   }
 }

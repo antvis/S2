@@ -11,7 +11,6 @@ import {
   CellBorderPosition,
   CellClipBox,
   type AreaRange,
-  type RenderTextShapeOptions,
   type ViewMeta,
 } from '../common/interface';
 import { CustomRect } from '../engine';
@@ -201,9 +200,9 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return (!isLeaf && level === 0) || isTotals;
   }
 
-  public drawTextShape(options?: RenderTextShapeOptions) {
-    super.drawTextShape(options);
-    if (!options?.shallowRender) {
+  public drawTextShape() {
+    super.drawTextShape();
+    if (!this.isShallowRender()) {
       this.drawLinkField(this.meta);
     }
   }

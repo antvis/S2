@@ -253,7 +253,7 @@ export class PivotFacet extends BaseFacet {
         leafNodes.push(parentNode);
 
         const firstVisibleChildNode = parentNode.children?.find(
-          (childNode) => !childNode.hiddenChildNodeInfo,
+          (childNode) => childNode.width,
         );
         // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
         const parentNodeX = firstVisibleChildNode?.x ?? 0;
@@ -384,7 +384,9 @@ export class PivotFacet extends BaseFacet {
   }
 
   private getRowNodeHeight(rowNode: Node): number {
-    const rowCell = new RowCell(rowNode, this.spreadsheet, {});
+    const rowCell = new RowCell(rowNode, this.spreadsheet, {
+      shallowRender: true,
+    });
     const defaultHeight = this.getRowCellHeight(rowNode);
 
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);
@@ -395,7 +397,10 @@ export class PivotFacet extends BaseFacet {
       return 0;
     }
 
-    const colCell = new ColCell(colNode, this.spreadsheet, {});
+    const colCell = new ColCell(colNode, this.spreadsheet, {
+      shallowRender: true,
+    });
+
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     return this.getCellAdaptiveHeight(colCell, defaultHeight);

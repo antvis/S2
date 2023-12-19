@@ -52,7 +52,7 @@ export const customTreeFields: S2DataConfig['fields'] = {
     },
     {
       field: 'measure-e',
-      title: '指标E',
+      title: '自定义节点A',
       description: '指标E描述',
       children: [
         {

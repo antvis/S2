@@ -31,6 +31,7 @@ export interface BaseHeaderConfig {
   spreadsheet: SpreadSheet;
   // leaf node sort params
   sortParam?: SortParam;
+  shallowRender?: boolean;
 }
 
 export interface ColHeaderConfig extends BaseHeaderConfig {

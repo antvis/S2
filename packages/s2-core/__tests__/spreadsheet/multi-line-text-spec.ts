@@ -6,6 +6,7 @@ import {
   PivotSheetMultiLineTextDataCfg,
   TableSheetMultiLineTextDataCfg,
 } from '../data/data-multi-line-text';
+import SimpleDataCfg from '../data/simple-data.json';
 
 describe('SpreadSheet Multi Line Text Tests', () => {
   let s2: SpreadSheet;
@@ -114,7 +115,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should default render one line text', () => {
@@ -300,6 +301,24 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       expectHierarchyHeight(90, 60, 30);
     });
+
+    test('should not adaptive adjust cell height if hidden col cell', async () => {
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: 0,
+          },
+        },
+      });
+
+      updateTheme(1);
+      await s2.render(false);
+
+      getCells().forEach((cells) => {
+        expect(mapCells(cells)).toMatchSnapshot();
+      });
+      expectHierarchyHeight(0, 0, 0);
+    });
   });
 
   describe('TableSheet', () => {
@@ -395,5 +414,17 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       expectHierarchyHeight(70, 0, 70, 1);
     });
+
+    test.skip.each([1, 2, 3, 4, 5])(
+      'should always render default cell height when set %s line, but actual text not wrap',
+      async (maxLines) => {
+        updateTheme(maxLines);
+
+        s2.setDataCfg(SimpleDataCfg);
+        await s2.render();
+
+        expectHierarchyHeight(30, 0, 30, 1);
+      },
+    );
   });
 });
