@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options } from '@antv/s2';
 
 // 可借助 tinygradient 完成功能更全面的颜色过渡
 function getGradient(rate, startColor, endColor) {
@@ -24,20 +24,20 @@ fetch(
   .then((dataCfg) => {
     const container = document.getElementById('container');
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
-        hoverHighlight: false,
+        hoverHighlight: true,
       },
       conditions: {
         interval: [
           {
             field: 'number',
-            mapping(fieldValue) {
+            mapping(value, record) {
               const maxValue = 7789;
               const minValue = 352;
-              const rage = (fieldValue - minValue) / (maxValue - minValue);
+              const rage = (value - minValue) / (maxValue - minValue);
 
               const color = getGradient(rage, '#95F0FF', '#3A9DBF');
               return {
@@ -50,6 +50,7 @@ fetch(
         ],
       },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();

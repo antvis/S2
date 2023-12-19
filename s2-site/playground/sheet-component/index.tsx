@@ -7,7 +7,6 @@ import {
   generatePalette,
 } from '@antv/s2';
 import type { SheetType, Adaptive } from '@antv/s2-shared';
-import '@antv/s2-react/dist/style.min.css';
 import { concat, isEmpty, merge } from 'lodash';
 import { sheetDataCfg, subTotalsDimensions } from './config';
 import './index.less';

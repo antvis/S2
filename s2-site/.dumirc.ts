@@ -21,7 +21,7 @@ export default defineConfig({
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light', // 白色 底部主题
-    siteUrl: 'https://antv.antgroup.com', // 官网地址
+    siteUrl: 'https://s2.antv.antgroup.com', // 官网地址
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
@@ -31,7 +31,7 @@ export default defineConfig({
     showWxQrcode: true, // 是否显示头部菜单的微信公众号
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
-    themeSwitcher: 'g2',
+    es5: false, // 案例代码是否编译到 es5`
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
@@ -251,8 +251,6 @@ export default defineConfig({
       },
     ],
     playground: {
-      playgroundDidMount: 'console.log("playgroundDidMount");',
-      playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
       devDependencies: {
         typescript: 'latest',
       },
@@ -260,13 +258,13 @@ export default defineConfig({
         <html>
           <head>
             <meta charset="UTF-8">
-            <title>{{title}}</title>
+            <title>{{ title }}</title>
           </head>
           <body>
             <div id="container" />
-            <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+            <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.11.1/dist/data-set.min.js"></script>
             <script>
-        {{code}}
+              {{ code }}
             </script>
           </body>
         </html>`,
@@ -435,10 +433,15 @@ export default defineConfig({
       },
     ],
   },
+  mfsu: false,
   alias: {
     '@': __dirname,
   },
   styles: ['/site.css'],
   links: [],
   scripts: [],
+  monorepoRedirect: {
+    peerDeps: true,
+    srcDir: ['src', 'esm', 'lib'],
+  },
 });

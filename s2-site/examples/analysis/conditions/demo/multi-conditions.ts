@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options } from '@antv/s2';
 
 // 可借助 tinygradient 完成功能更全面的颜色过渡
 function getGradient(rate, startColor, endColor) {
@@ -25,7 +25,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = dataCfg;
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
@@ -35,7 +35,7 @@ fetch(
         text: [
           {
             field: 'number',
-            mapping() {
+            mapping(value, record) {
               return {
                 fill: '#142C61',
               };
@@ -46,7 +46,7 @@ fetch(
           {
             field: 'number',
             position: 'right',
-            mapping() {
+            mapping(value, record) {
               return {
                 icon: 'Trend',
                 fill: '#142C61',
@@ -57,7 +57,7 @@ fetch(
         background: [
           {
             field: 'number',
-            mapping() {
+            mapping(value, record) {
               return {
                 fill: '#E0E9FD',
               };
@@ -67,12 +67,12 @@ fetch(
         interval: [
           {
             field: 'number',
-            mapping(fieldValue) {
+            mapping(value, record) {
               const maxValue = 7789;
               const minValue = 0;
-              const rage = (fieldValue - minValue) / (maxValue - minValue);
-
+              const rage = (value - minValue) / (maxValue - minValue);
               const color = getGradient(rage, '#5083F5', '#F7B46F');
+
               return {
                 fill: `l(0) 0:#5083F5 1:${color}`,
                 isCompare: true,
@@ -83,6 +83,7 @@ fetch(
         ],
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
     s2.setThemeCfg({ name: 'colorful' });
     s2.render();
