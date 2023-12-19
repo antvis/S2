@@ -28,7 +28,7 @@ if (window) {
   if (hosts.includes(location.host)) {
     (window as any).location.href = location.href.replace(
       location.origin,
-      require('../package.json').homepage || 'https://s2.antv.antgroup.com',
+      'https://s2.antv.antgroup.com',
     );
   }
 
