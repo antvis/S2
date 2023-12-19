@@ -1,11 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-<<<<<<< HEAD
   "version": "2.0.0-next.10",
-=======
-  "version": "1.54.0",
->>>>>>> origin/master
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -54,12 +50,7 @@
     "build:size-limit-json": "yarn build:size-limit --json",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
-<<<<<<< HEAD
-    "bundle:size": "bundlesize",
     "watch": "rimraf esm && pnpm build:esm -w",
-=======
-    "watch": "rimraf esm && yarn build:esm -w",
->>>>>>> origin/master
     "test:live": "node ./scripts/test-live.mjs",
     "sync-event": "node ./scripts/sync-event.mjs",
     "test": "jest --passWithNoTests",
@@ -98,12 +89,8 @@
   "size-limit": [
     {
       "path": "./dist/index.min.js",
-<<<<<<< HEAD
-      "maxSize": "300 kB"
-=======
       "import": "{ createComponent }",
       "limit": "200 kB"
->>>>>>> origin/master
     },
     {
       "path": "./dist/style.min.css",

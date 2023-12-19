@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
+import { renderLine } from '..';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -12,19 +12,11 @@ import {
   KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-=======
-import type { IElement, IGroup } from '@antv/g-canvas';
-import { get, isBoolean, isNumber, last, maxBy, set, values } from 'lodash';
-import { TableDataCell } from '../cell';
-import {
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
->>>>>>> origin/master
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
-  SERIES_NUMBER_FIELD,
-  SPLIT_LINE_WIDTH,
+  SERIES_NUMBER_FIELD
 } from '../common/constant';
 import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
@@ -32,15 +24,10 @@ import type {
   FilterParam,
   LayoutResult,
   ResizeInteractionOptions,
-<<<<<<< HEAD
   S2CellType,
-  SortParams,
-=======
-  SpreadSheetFacetCfg,
->>>>>>> origin/master
-  TableSortParam,
+  SortParams, TableSortParam,
   ViewMeta,
-  ViewMetaData,
+  ViewMetaData
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SimpleBBox } from '../engine';
@@ -50,16 +37,14 @@ import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-<<<<<<< HEAD
 import {
   getColsForGrid,
   getFrozenRowsForGrid,
-  getRowsForGrid,
+  getRowsForGrid
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
-=======
->>>>>>> origin/master
 import { getValidFrozenOptions } from '../utils/layout/frozen';
+import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { Frame, type SeriesNumberHeader } from './header';
 import type { ColHeader } from './header/col';
@@ -70,20 +55,10 @@ import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
-<<<<<<< HEAD
   calculateInViewIndexes,
-  getFrozenDataCellType,
-  getFrozenLeafNodesCount,
-  isFrozenTrailingRow,
-  splitInViewIndexesWithFrozen,
-  translateGroup,
-=======
-  isFrozenTrailingRow,
-  getFrozenLeafNodesCount,
-  isTopLevelNode,
->>>>>>> origin/master
+  getFrozenDataCellType, getFrozenLeafNodesCount, isFrozenTrailingRow, splitInViewIndexesWithFrozen,
+  translateGroup
 } from './utils';
-import { FrozenFacet } from './frozen-facet';
 
 <<<<<<< HEAD
 export class TableFacet extends BaseFacet {

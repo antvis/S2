@@ -3,11 +3,8 @@
  */
 import { Group, type ImageStyleProps } from '@antv/g';
 import { omit, clone } from 'lodash';
-<<<<<<< HEAD
 import { CustomImage } from '../../engine';
-=======
 import { DebuggerUtil, type S2CellType } from '..';
->>>>>>> origin/master
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';

@@ -70,21 +70,14 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
-<<<<<<< HEAD:packages/s2-react/src/components/sheets/strategy-sheet/custom-tooltip/data-cell-tooltip.tsx
             {(derivedValues as SimpleData[]).map((derivedValue, i) => {
-              const isNormal = isNil(derivedValue) || derivedValue === '';
-              const isUp = isUpDataValue(derivedValue as string);
-              const isDown = !isNormal && !isUp;
-=======
-            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
               const isUnchanged = isUnchangedValue(
                 derivedValue,
-                value as SimpleDataItem,
+                value,
               );
               const isUp =
                 !isUnchanged && isUpDataValue(derivedValue as string);
               const isDown = !isUnchanged && !isUp;
->>>>>>> origin/master:packages/s2-react/src/components/sheets/strategy-sheet/custom-tooltip/custom-data-tooltip.tsx
               const originalDerivedValue = derivedOriginalValues[
                 i
               ] as SimpleData;

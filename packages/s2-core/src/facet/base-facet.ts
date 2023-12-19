@@ -1,16 +1,13 @@
-<<<<<<< HEAD
 import {
   FederatedWheelEvent,
   Group,
   Rect,
   type FederatedPointerEvent as GraphEvent,
 } from '@antv/g';
-=======
 import type { Event as GraphEvent } from '@antv/g-base';
 import type { IElement, IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { Wheel, type GestureEvent } from '@antv/g-gesture';
->>>>>>> origin/master
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -54,12 +51,9 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-<<<<<<< HEAD
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-=======
   OriginEventType,
->>>>>>> origin/master
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
@@ -94,11 +88,7 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
-<<<<<<< HEAD
-import { isMobile } from '../utils/is-mobile';
-=======
 import { isMobile, isWindows } from '../utils/is-mobile';
->>>>>>> origin/master
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -189,15 +179,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-<<<<<<< HEAD
   public abstract getViewCellHeights(): ViewCellHeights;
-=======
-  public abstract getContentHeight(): number;
-
-  public abstract getViewCellHeights(
-    layoutResult: LayoutResult,
-  ): ViewCellHeights;
->>>>>>> origin/master
 
   public abstract getCellMeta(
     rowIndex: number,
@@ -497,15 +479,12 @@ export abstract class BaseFacet {
     };
   }
 
-<<<<<<< HEAD
   public getContentHeight(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
     return rowsHierarchy.height + colsHierarchy.height;
   }
 
-=======
->>>>>>> origin/master
   public updateScrollOffset(offsetConfig: OffsetConfig) {
     if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
       if (offsetConfig.rowHeaderOffsetX?.animate) {
@@ -1283,13 +1262,12 @@ export abstract class BaseFacet {
     });
   };
 
-<<<<<<< HEAD
-=======
   protected panelScrollGroupClip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-    this.spreadsheet.panelScrollGroup?.setClip({
-      type: 'rect',
-      attrs: {
+    
+
+    this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
+      style: {
         x: isFrozenRowHeader ? scrollX : 0,
         y: scrollY,
         width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
@@ -1302,7 +1280,6 @@ export abstract class BaseFacet {
     this.panelScrollGroupClip(scrollX, scrollY);
   }
 
->>>>>>> origin/master
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
    * according to new scroll offset
@@ -1497,22 +1474,6 @@ export abstract class BaseFacet {
     this.foregroundGroup.appendChild(this.centerFrame);
   }
 
-<<<<<<< HEAD
-  protected getRowHeader(): RowHeader | null {
-    if (!this.rowHeader) {
-      const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
-      const seriesNumberWidth = this.getSeriesNumberWidth();
-
-      return new RowHeader({
-        width: this.cornerBBox.width,
-        height,
-        viewportWidth,
-        viewportHeight,
-        position: { x: seriesNumberWidth, y },
-        nodes: this.layoutResult.rowNodes,
-        spreadsheet: this.spreadsheet,
-      });
-=======
   protected getRowHeaderCfg(): RowHeaderConfig {
     const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
     const seriesNumberWidth = this.getSeriesNumberWidth();
@@ -1523,8 +1484,8 @@ export abstract class BaseFacet {
       viewportHeight,
       position: { x: 0, y },
       data: this.layoutResult.rowNodes,
-      hierarchyType: this.cfg.hierarchyType,
-      linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
+      hierarchyType: this.spreadsheet.options?.hierarchyType,
+      linkFields: this.spreadsheet.options?.interaction?.linkFields ?? [],
       seriesNumberWidth,
       spreadsheet: this.spreadsheet,
     };
@@ -1533,7 +1494,6 @@ export abstract class BaseFacet {
   protected getRowHeader(): RowHeader {
     if (!this.rowHeader) {
       return new RowHeader(this.getRowHeaderCfg());
->>>>>>> origin/master
     }
 
     return this.rowHeader;
@@ -1572,7 +1532,6 @@ export abstract class BaseFacet {
     );
   }
 
-<<<<<<< HEAD
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return (
       this.seriesNumberHeader ||
@@ -1584,16 +1543,6 @@ export abstract class BaseFacet {
         rowsHierarchy: this.layoutResult.rowsHierarchy,
       })
     );
-=======
-  protected getSeriesNumberHeader(): SeriesNumberHeader {
-    return SeriesNumberHeader.getSeriesNumberHeader({
-      viewportBBox: this.panelBBox,
-      seriesNumberWidth: this.getSeriesNumberWidth(),
-      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
-      spreadsheet: this.spreadsheet,
-      cornerWidth: this.cornerBBox.width,
-    });
->>>>>>> origin/master
   }
 
   protected getCenterFrame(): Frame {
@@ -1675,12 +1624,7 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-<<<<<<< HEAD
-    const { interaction } = this.spreadsheet;
-
-=======
     const { interaction, container } = this.spreadsheet;
->>>>>>> origin/master
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
       interaction.removeIntercepts([InterceptType.HOVER]);

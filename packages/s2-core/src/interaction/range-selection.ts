@@ -1,17 +1,12 @@
-<<<<<<< HEAD
-import type { FederatedPointerEvent as Event } from '@antv/g';
-import { inRange, isNil, range } from 'lodash';
-=======
 import type { Event } from '@antv/g-canvas';
 import { inRange, isEmpty, isNil, range } from 'lodash';
->>>>>>> origin/master
 import { DataCell } from '../cell';
 import {
   CellType,
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
-  S2Event,
+  S2Event
 } from '../common/constant';
 import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';

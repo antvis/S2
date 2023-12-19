@@ -206,11 +206,14 @@ export const getBorderPositionAndStyle = (
         lineWidth: horizontalBorderWidth,
         stroke: horizontalBorderColor,
         strokeOpacity: horizontalBorderColorOpacity,
+        lineDash: borderDash,
       }
     : {
         lineWidth: verticalBorderWidth,
         stroke: verticalBorderColor,
         strokeOpacity: verticalBorderColorOpacity,
+      lineDash: borderDash,
+
       };
 
   let x1 = 0;
@@ -236,15 +239,6 @@ export const getBorderPositionAndStyle = (
     y2 = yPosition;
     x1 = x;
     x2 = x + width;
-<<<<<<< HEAD
-=======
-    borderStyle = {
-      lineWidth: horizontalBorderWidth,
-      stroke: horizontalBorderColor,
-      strokeOpacity: horizontalBorderColorOpacity,
-      lineDash: borderDash,
-    };
->>>>>>> origin/master
   }
 
   // vertical
@@ -264,15 +258,6 @@ export const getBorderPositionAndStyle = (
     x2 = xPosition;
     y1 = y;
     y2 = y + height;
-<<<<<<< HEAD
-=======
-    borderStyle = {
-      lineWidth: verticalBorderWidth,
-      stroke: verticalBorderColor,
-      strokeOpacity: verticalBorderColorOpacity,
-      lineDash: borderDash,
-    };
->>>>>>> origin/master
   }
 
   return {

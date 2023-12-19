@@ -1,32 +1,17 @@
-<<<<<<< HEAD
 import { clone, isString, last } from 'lodash';
 import { DataCell } from '../cell';
 import { EXTRA_FIELD, S2Event } from '../common/constant';
-=======
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last } from 'lodash';
-import { BaseCell, DataCell, SeriesNumberCell } from '../cell';
-import {
-  EXTRA_FIELD,
-  InterceptType,
-  KEY_GROUP_PANEL_FROZEN_ROW,
-  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-  S2Event,
-  getTooltipOperatorSortMenus,
-} from '../common/constant';
->>>>>>> origin/master
 import type {
   RowCellCollapsedParams,
   RowCellStyle,
   SortMethod,
   SortParam,
-  ViewMeta,
+  ViewMeta
 } from '../common/interface';
 import { BaseDataSet, PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
-import { FrozenGroup } from '../group/frozen-group';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
@@ -52,8 +37,6 @@ export class PivotSheet extends SpreadSheet {
     return false;
   }
 
-<<<<<<< HEAD
-=======
   public getContentHeight() {
     return this.facet.getContentHeight();
   }
@@ -61,7 +44,6 @@ export class PivotSheet extends SpreadSheet {
   /**
    * Check if is pivot mode
    */
->>>>>>> origin/master
   public isPivotMode(): boolean {
     return true;
   }
@@ -199,48 +181,4 @@ export class PivotSheet extends SpreadSheet {
     });
     this.render();
   }
-<<<<<<< HEAD
-=======
-
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
-    event.stopPropagation();
-    this.interaction.addIntercepts([InterceptType.HOVER]);
-
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
-
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const sortMethod = key as unknown as SortMethod;
-        this.groupSortByMethod(sortMethod, meta);
-        this.emit(S2Event.RANGE_SORTED, event);
-      },
-      menus: getTooltipOperatorSortMenus(),
-      defaultSelectedKeys,
-    };
-
-    this.showTooltipWithInfo(event, [], {
-      operator,
-      onlyMenu: true,
-      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-      forceRender: true,
-    });
-  }
-
-  protected initPanelGroupChildren(): void {
-    super.initPanelGroupChildren();
-    const commonParams = {
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-      s2: this,
-    };
-    this.frozenRowGroup = new FrozenGroup({
-      KEY_GROUP_PANEL_FROZEN_ROW,
-      ...commonParams,
-    });
-    this.panelGroup.add(this.frozenRowGroup);
-  }
-
-  protected isCellType(cell?: CanvasEvent['target']): boolean {
-    return cell instanceof BaseCell && !(cell instanceof SeriesNumberCell);
-  }
->>>>>>> origin/master
 }

@@ -106,15 +106,10 @@ export class ColCellBrushSelection extends BaseBrushSelection {
 
     interaction.changeState({
       cells: map(this.brushRangeCells, getCellMeta),
-<<<<<<< HEAD
-      stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
         root.updateCells(facet.getColCells());
       },
-=======
       stateName: InteractionStateName.BRUSH_SELECTED,
-      onUpdateCells: this.onUpdateCells,
->>>>>>> origin/master
     });
 
     this.spreadsheet.emit(

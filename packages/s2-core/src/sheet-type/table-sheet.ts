@@ -84,20 +84,6 @@ export class TableSheet extends SpreadSheet {
 
       return new TableDataCell(facet, this);
     };
-<<<<<<< HEAD
-=======
-
-    return {
-      ...this.options,
-      ...fields,
-      ...style,
-      meta,
-      spreadsheet: this,
-      dataSet: this.dataSet,
-      dataCell: dataCell ?? defaultCell,
-    };
-  }
->>>>>>> origin/master
 
     this.setOptions({
       dataCell: this.options.dataCell ?? defaultCell,

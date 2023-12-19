@@ -1,37 +1,17 @@
-<<<<<<< HEAD
 import type { Group } from '@antv/g';
-import { findIndex, isNil } from 'lodash';
+import type { SimpleBBox } from '@antv/g-canvas';
+import { findIndex, isEmpty, isNil } from 'lodash';
 import type { FrozenCellIndex } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
-=======
-import type { IGroup, SimpleBBox } from '@antv/g-canvas';
-import { findIndex, isEmpty, isNil } from 'lodash';
-
-import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
-import { FrozenCellType } from '../common/constant/frozen';
->>>>>>> origin/master
 import type {
-  CustomHeaderFields,
-  Pagination,
-<<<<<<< HEAD
-  S2TableSheetFrozenOptions,
-=======
-  S2Options,
-  S2PivotSheetOptions,
-  S2TableSheetOptions,
->>>>>>> origin/master
+  CustomHeaderFields, Fields, Pagination, S2Options, S2TableSheetFrozenOptions, S2TableSheetOptions,
   ScrollSpeedRatio,
-  SpreadSheetFacetCfg,
 } from '../common/interface';
-<<<<<<< HEAD
-import type { SimpleBBox } from '../engine';
-=======
-import type { Fields } from '../common/interface';
->>>>>>> origin/master
 import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
+
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) =>
   frozenCount > 0 && colIndex < frozenCount;
@@ -512,10 +492,9 @@ export const areAllFieldsEmpty = (fields: Fields) => {
  * @returns
  */
 export const getFrozenRowCfgPivot = (
-  options: Pick<
+  options: 
     S2Options,
-    'frozenFirstRow' | 'pagination' | 'hierarchyType' | 'showSeriesNumber'
-  >,
+
   rowNodes: Node[],
 ): S2TableSheetOptions & {
   frozenRowHeight: number;

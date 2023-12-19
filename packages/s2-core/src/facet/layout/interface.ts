@@ -1,4 +1,4 @@
-import type { CustomHeaderField, CustomTreeNode } from '../../common/interface';
+import type { CustomHeaderField, CustomTreeNode, S2Options, SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotMeta } from '../../data-set/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
@@ -39,20 +39,8 @@ export interface TotalParams {
   spreadsheet: SpreadSheet;
 }
 
-<<<<<<< HEAD
-export interface HeaderNodesParams {
-  spreadsheet: SpreadSheet;
-  currentField: string;
-  fields: string[];
-  fieldValues: FieldValue[];
-  addTotalMeasureInTotal: boolean;
-  addMeasureInTotalQuery: boolean;
-  hierarchy: Hierarchy;
-  parentNode: Node;
-=======
 export interface HeaderNodesParams extends GridHeaderParams {
   fieldValues: FieldValue[];
->>>>>>> origin/master
   level: number;
   query: Record<string, any>;
 }
@@ -108,7 +96,7 @@ export interface CustomTreeHeaderParams {
 }
 
 export interface WhetherLeafParams {
-  facetCfg: SpreadSheetFacetCfg;
+  spreadsheet: SpreadSheet;
   fields: string[];
   level: number;
 }

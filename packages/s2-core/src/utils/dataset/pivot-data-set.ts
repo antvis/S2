@@ -1,73 +1,23 @@
-import { forEach, has, intersection, last, set, find, get } from 'lodash';
-import type { CellData } from '../../data-set/cell-data';
+import { find, flatMap, forEach, get, indexOf, intersection, isArray, isEmpty, isNull, last, set, sortBy } from 'lodash';
 import {
-<<<<<<< HEAD
-  EXTRA_FIELD,
-  NODE_ID_SEPARATOR,
-  ROOT_NODE_ID,
-  TOTAL_VALUE,
-  MULTI_VALUE,
-} from '../../common/constant';
-import type { BaseFields, RawData } from '../../common/interface';
-=======
-  find,
-  flatMap,
-  forEach,
-  get,
-  indexOf,
-  intersection,
-  isArray,
-  isEmpty,
-  isNull,
-  last,
-  set,
-  sortBy,
-} from 'lodash';
-import type { PickEssential } from '../../common/interface/utils';
-import {
-  EMPTY_EXTRA_FIELD_PLACEHOLDER,
-  EXTRA_FIELD,
-  ID_SEPARATOR,
-  MULTI_VALUE,
-  QueryDataType,
-  ROOT_ID,
-  TOTAL_VALUE,
+  EMPTY_EXTRA_FIELD_PLACEHOLDER, EXTRA_FIELD, ID_SEPARATOR, MULTI_VALUE, NODE_ID_SEPARATOR, QueryDataType, ROOT_NODE_ID,
+  TOTAL_VALUE
 } from '../../common/constant';
 import type { Meta } from '../../common/interface/basic';
->>>>>>> origin/master
+import type { PickEssential } from '../../common/interface/utils';
+import type { CellData } from '../../data-set/cell-data';
 import type {
   DataPath,
   DataPathParams,
-<<<<<<< HEAD
-=======
   DataType,
   FlattingIndexesData,
->>>>>>> origin/master
   PivotMeta,
   PivotMetaValue,
   SortedDimensionValues,
-  TotalStatus,
+  TotalStatus
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 
-<<<<<<< HEAD
-export function filterExtraDimension(dimensions: string[] = []) {
-  return dimensions.filter((d) => d !== EXTRA_FIELD);
-}
-
-export function transformDimensionsValues(
-  record: RawData,
-  dimensions: string[],
-  placeholder: string = TOTAL_VALUE,
-): string[] {
-  return filterExtraDimension(dimensions).map((dimension) =>
-    !has(record, dimension) ? placeholder : String(record[dimension]),
-  );
-}
-
-export function shouldQueryMultiData(pathValue: string | number) {
-  return pathValue === MULTI_VALUE;
-=======
 export function isMultiValue(pathValue: string | number) {
   return pathValue === MULTI_VALUE;
 }
@@ -144,7 +94,6 @@ export function transformDimensionsValuesWithExtraFields(
     result.push(transform(record, dimensions));
   }
   return result;
->>>>>>> origin/master
 }
 
 /**
@@ -156,14 +105,8 @@ export function transformDimensionsValuesWithExtraFields(
  */
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
-<<<<<<< HEAD
-    const splitArr = item?.split(NODE_ID_SEPARATOR);
-
-    return splitArr?.[splitArr?.length! - 1] || item;
-=======
     const splitArr = item?.split(ID_SEPARATOR);
     return splitArr[splitArr?.length - 1] ?? item;
->>>>>>> origin/master
   });
 }
 
@@ -231,89 +174,25 @@ export function getDataPathPrefix(rowFields: string[], colFields: string[]) {
  */
 export function getDataPath(params: DataPathParams): DataPath {
   const {
-    rows,
-    columns,
     values,
     rowDimensionValues,
     colDimensionValues,
-<<<<<<< HEAD
-    shouldCreateOrUpdate,
-    onCreate,
-=======
     isFirstCreate,
     onFirstCreate,
     rowFields,
     colFields,
->>>>>>> origin/master
     rowPivotMeta,
     colPivotMeta,
     prefix = '',
   } = params;
 
-<<<<<<< HEAD
-  // TODO: extract as a layout hook
-  const appendValues = () => {
-    const map = new Map();
-
-    values?.forEach((v, idx) => {
-      map.set(v, {
-        level: idx,
-        children: new Map(),
-      });
-    });
-
-    return map;
-  };
-
-  /*
-   * 根据行、列维度值生成对应的 path路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
-   * 如果是汇总格子: path = [0,0,0,0] path中会存在 0的值（这里在indexesData里面会映射）
-   * 如果是明细格子: path = [1,1,1] 数字均不为0
-   */
-=======
   // 根据行、列维度值生成对应的 path 路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
   // 如果是汇总格子: path = [0, 0, 0, 0] path 中会存在 0 的值
   // 如果是明细格子: path = [1, 1, 1] 数字均不为 0
->>>>>>> origin/master
   const getPath = (
     dimensions: string[],
     dimensionValues: string[],
     pivotMeta: PivotMeta,
-<<<<<<< HEAD
-  ): DataPath => {
-    let currentMeta = pivotMeta;
-    const path: DataPath = [];
-
-    for (let i = 0; i < dimensionValues.length; i++) {
-      const value = dimensionValues[i];
-      const isTotal = value === TOTAL_VALUE;
-
-      if (shouldCreateOrUpdate && !currentMeta.has(value)) {
-        currentMeta.set(value, {
-          level: isTotal ? 0 : currentMeta.size + 1,
-          childField: dimensions?.[i + 1],
-          children:
-            dimensions?.[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
-        });
-        onCreate?.({
-          dimension: dimensions?.[i],
-          dimensionPath: dimensionValues.slice(0, i + 1),
-        });
-      }
-
-      const meta = currentMeta.get(value);
-
-      // 只出现在 getCellMultiData 中， 使用特殊的 value 指明当前复合选择
-      if (value === MULTI_VALUE) {
-        path.push(value);
-      } else {
-        path.push(meta?.level!);
-      }
-
-      if (meta) {
-        if (shouldCreateOrUpdate && meta.childField !== dimensions?.[i + 1]) {
-          meta.childField = dimensions?.[i + 1];
-=======
     careRepeated: boolean,
   ): number[] => {
     let currentMeta = pivotMeta;
@@ -361,7 +240,6 @@ export function getDataPath(params: DataPathParams): DataPath {
           // mark the child field
           // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
           meta.childField = childDimension;
->>>>>>> origin/master
         }
 
         currentMeta = meta?.children;
@@ -371,18 +249,8 @@ export function getDataPath(params: DataPathParams): DataPath {
     return path;
   };
 
-<<<<<<< HEAD
-  const rowPath = getPath(rows as string[], rowDimensionValues, rowPivotMeta!);
-  const colPath = getPath(
-    columns as string[],
-    colDimensionValues,
-    colPivotMeta!,
-  );
-  const result = rowPath.concat(...colPath);
-=======
   const rowPath = getPath(rowFields, rowDimensionValues, rowPivotMeta, false);
   const colPath = getPath(colFields, colDimensionValues, colPivotMeta, true);
->>>>>>> origin/master
 
   return [prefix, ...rowPath, ...colPath];
 }
@@ -399,18 +267,6 @@ interface Param {
   getExistValuesByDataItem?: (data: DataType, values: string[]) => string[];
 }
 
-<<<<<<< HEAD
-interface Param extends BaseFields {
-  originData: RawData[];
-  indexesData: RawData[][] | RawData[];
-  sortedDimensionValues: SortedDimensionValues;
-  rowPivotMeta?: PivotMeta;
-  colPivotMeta?: PivotMeta;
-}
-
-/**
- * 转换原始数据为多维数组数据
-=======
 export interface TransformResult {
   paths: (string | number)[];
   indexesData: Record<string, DataType[][] | DataType[]>;
@@ -421,21 +277,15 @@ export interface TransformResult {
 
 /**
  * 转换原始数据为二维数组数据
->>>>>>> origin/master
  */
 export function transformIndexesData(params: Param): TransformResult {
   const {
     rows,
     columns,
     values,
-<<<<<<< HEAD
-    originData = [],
-    indexesData = [],
-=======
     valueInCols,
     data = [],
     indexesData = {},
->>>>>>> origin/master
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
@@ -452,69 +302,16 @@ export function transformIndexesData(params: Param): TransformResult {
   /**
    * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
    */
-<<<<<<< HEAD
-  const onFirstCreate = ({
-    dimension,
-    dimensionPath,
-  }: {
-    // 维度 id，如 city
-    dimension: string;
-    // 维度数组 ['四川省', '成都市']
-    dimensionPath: string[];
-  }) => {
-    if (repeatedDimensionSet.has(dimension)) {
-      /*
-       * 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
-       * 所有重复字段的维度值无需再加入到 sortedDimensionValues
-       */
-=======
   const onFirstCreate = ({ dimension, dimensionPath, careRepeated = true }) => {
     if (careRepeated && repeatedDimensionSet.has(dimension)) {
       // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
       // 所有重复字段的维度值无需再加入到 sortedDimensionValues
->>>>>>> origin/master
       return;
     }
 
     (
       sortedDimensionValues[dimension] ||
       (sortedDimensionValues[dimension] = [])
-<<<<<<< HEAD
-    ).push(
-      // 拼接维度路径 [1, undefined] => ['1', 'undefined'] => '1[&]undefined
-      dimensionPath.map((it) => `${it}`).join(NODE_ID_SEPARATOR),
-    );
-  };
-
-  originData.forEach((data) => {
-    // 空数据没有意义，直接跳过
-    if (!data) {
-      return;
-    }
-
-    const rowDimensionValues = transformDimensionsValues(
-      data,
-      rows as string[],
-    );
-    const colDimensionValues = transformDimensionsValues(
-      data,
-      columns as string[],
-    );
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      shouldCreateOrUpdate: true,
-      onCreate: onFirstCreate,
-      rows,
-      columns,
-      values,
-    });
-
-    paths.push(path);
-    set(indexesData, path, data);
-=======
     ).push(dimensionPath);
   };
 
@@ -558,7 +355,6 @@ export function transformIndexesData(params: Param): TransformResult {
         set(indexesData, path, item);
       }
     }
->>>>>>> origin/master
   });
 
   return {

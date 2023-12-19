@@ -1,29 +1,17 @@
-<<<<<<< HEAD
-import { every, flatMap, get, has, isArray, keys } from 'lodash';
+import { every, flatMap, flattenDeep, get, has, isArray, keys } from 'lodash';
+import { TOTAL_VALUE } from '../common/constant/basic';
 import {
   DataSelectType,
-  DEFAULT_TOTAL_SELECTIONS,
+  DEFAULT_TOTAL_SELECTIONS
 } from '../common/constant/total';
-import { TOTAL_VALUE } from '../common/constant/basic';
 import type {
-  RawData,
+  CalcTotals, CustomHeaderFields, FlattingIndexesData, RawData,
   Totals,
-  TotalsStatus,
-  FlattingIndexesData,
-  CustomHeaderFields,
-  CalcTotals,
+  TotalsStatus
 } from '../common/interface';
 import type { TotalSelectionsOfMultiData } from '../data-set/interface';
-import { customMerge } from './merge';
 import { filterExtraDimension } from './dataset/pivot-data-set';
-=======
-import { isArray, flattenDeep } from 'lodash';
-import {
-  EMPTY_EXTRA_FIELD_PLACEHOLDER,
-  TOTAL_VALUE,
-} from '../common/constant/field';
-import type { Totals, TotalsStatus } from '../common/interface';
->>>>>>> origin/master
+import { customMerge } from './merge';
 
 export const getListBySorted = (
   list: string[],

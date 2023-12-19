@@ -20,14 +20,9 @@ export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-<<<<<<< HEAD
   const colNodes = spreadsheet.facet.getInitColLeafNodes();
 
   return compact(
-=======
-  const columnNodes = spreadsheet.getInitColumnLeafNodes();
-  return compact<Node>(
->>>>>>> origin/master
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
 
@@ -54,11 +49,7 @@ export const getHiddenColumnDisplaySiblingNode = (
     };
   }
 
-<<<<<<< HEAD
   const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
-=======
-  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
->>>>>>> origin/master
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
@@ -244,7 +235,6 @@ export const isLastColumnAfterHidden = (
   spreadsheet: SpreadSheet,
   columnField: string,
 ) => {
-<<<<<<< HEAD
   const columnNodes = spreadsheet.facet.getColNodes();
   const initColLeafNodes = spreadsheet.facet.getInitColLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
@@ -252,15 +242,6 @@ export const isLastColumnAfterHidden = (
   return (
     get(last(columnNodes), fieldKey) === columnField &&
     get(last(initColLeafNodes), fieldKey) !== columnField
-=======
-  const columnLeafNodes = spreadsheet.getColumnLeafNodes();
-  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
-  const fieldKey = getHiddenColumnFieldKey(columnField);
-
-  return (
-    get(last(columnLeafNodes), fieldKey) === columnField &&
-    get(last(initColumnLeafNodes), fieldKey) !== columnField
->>>>>>> origin/master
   );
 };
 

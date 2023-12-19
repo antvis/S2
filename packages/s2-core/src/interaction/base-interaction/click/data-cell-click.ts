@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-=======
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach } from 'lodash';
->>>>>>> origin/master
 import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
@@ -28,25 +25,14 @@ import { BaseEvent, type BaseEventImplement } from '../../base-event';
 import { updateAllColHeaderCellState } from '../../../utils/interaction';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
-  private clickTimer: number;
 
-  private clickCount = 0;
 
   public bindEvents() {
     this.bindDataCellClick();
   }
 
-  private countClick() {
-    window.clearTimeout(this.clickTimer);
-    this.clickTimer = window.setTimeout(() => {
-      this.clickCount = 0;
-    }, 200);
-    this.clickCount++;
-  }
-
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
-      this.countClick();
 
       event.stopPropagation();
 
@@ -74,16 +60,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
 
       if (interaction.isSelectedCell(cell)) {
-<<<<<<< HEAD
-        /**
-         * 双击时不触发选择态 reset
-         * g5.0 mouseup 底层监听的是 pointerup，detail 为 0，需自行判断是否双击
-         */
-        if (this.clickCount <= 1) {
-=======
         // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail 属性来判断是否是双击，双击时不触发选择态 reset
         if ((event.originalEvent as UIEvent)?.detail === 1) {
->>>>>>> origin/master
           interaction.reset();
 
           // https://github.com/antvis/S2/issues/2447

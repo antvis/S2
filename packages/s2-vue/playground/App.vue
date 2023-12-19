@@ -544,28 +544,8 @@ const partDrillDown: PartDrillDown = {
         meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
-<<<<<<< HEAD
-      const rowData = (
-        dataSet.getCellMultiData({
-          query: meta?.query!,
-          drillDownFields: [preDrillDownfield],
-        }) as Data[]
-      ).filter(
-        (item) =>
-          item!['sub_type'] && item!['type'] && item![preDrillDownfield],
-      );
-
-      console.log(rowData);
-      const drillDownData: RawData[] = [];
-
-      forEach(rowData, (data: any) => {
-        const { number: num, sub_type: subType, type } = data;
-        const number0 = random(50, !!num);
-        const number1 = (num as number) - number0;
-        const dataItem0: RawData = {
-=======
       const rowDatas = dataSet
-        .getMultiData(meta.query)
+        .getCellMultiData({query:meta.query})
         .filter((item) => item.sub_type && item.type);
       console.log(rowDatas);
       const drillDownData: DataType[] = [];
@@ -574,7 +554,6 @@ const partDrillDown: PartDrillDown = {
         const number0 = random(50, number);
         const number1 = number - number0;
         const dataItem0 = {
->>>>>>> origin/master
           ...meta.query,
           number: number0,
           sub_type: subType,

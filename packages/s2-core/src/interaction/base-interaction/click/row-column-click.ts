@@ -1,38 +1,31 @@
-<<<<<<< HEAD
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import { difference } from 'lodash';
-=======
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference, findLast } from 'lodash';
->>>>>>> origin/master
 import {
-  CellType,
-  InterceptType,
-  S2Event,
-  getTooltipOperatorHiddenColumnsMenu,
+  CellType, getTooltipOperatorHiddenColumnsMenu, InterceptType,
+  S2Event
 } from '../../../common/constant';
 import type {
   TooltipBaseOperatorMenuItem,
   TooltipOperation,
-  TooltipOperatorOptions,
+  TooltipOperatorOptions
 } from '../../../common/interface';
 import type { Node } from '../../../facet/layout/node';
 import {
   BaseEvent,
-  type BaseEventImplement,
+  type BaseEventImplement
 } from '../../../interaction/base-event';
 import {
   hideColumnsByThunkGroup,
-  isEqualDisplaySiblingNodeId,
+  isEqualDisplaySiblingNodeId
 } from '../../../utils/hide-columns';
 import {
   isMouseEventWithMeta,
-  isMultiSelectionKey,
+  isMultiSelectionKey
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
-  mergeCellInfo,
+  mergeCellInfo
 } from '../../../utils/tooltip';
 import type { ViewMeta } from './../../../common/interface/basic';
 

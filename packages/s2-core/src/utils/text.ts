@@ -50,8 +50,11 @@ export const getDisplayText = (
 ) => {
   const empty = placeholder ?? EMPTY_PLACEHOLDER;
 
-  // [null, undefined, ''] will return empty
-  return isNil(text) || text === '' ? empty : `${text}`;
+
+  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
+  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  return isEmptyText ? emptyPlaceholder : `${text}`;
 };
 
 /**
@@ -177,16 +180,7 @@ export const getEllipsisText = ({
   priorityParam?: string[];
   placeholder?: string;
 }) => {
-<<<<<<< HEAD
   let font: TextTheme = {} as TextTheme;
-=======
-  let font = {};
-  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
-  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
-  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
-  const finalText = isEmptyText ? emptyPlaceholder : `${text}`;
-
->>>>>>> origin/master
   let priority = priorityParam;
 
   const finalText = getDisplayText(text, placeholder);
@@ -347,13 +341,9 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-<<<<<<< HEAD
   const cellStyle: InternalFullyCellTheme = cell.getStyle(
     isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
   );
-=======
-  const cellStyle = cell.getStyle(cell.cellType || CellTypes.DATA_CELL);
->>>>>>> origin/master
 
   let textStyle: TextTheme | undefined;
 

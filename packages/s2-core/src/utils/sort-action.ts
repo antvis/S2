@@ -1,6 +1,5 @@
 import {
-  compact,
-  endsWith,
+  compact, endsWith,
   flatMap,
   includes,
   indexOf,
@@ -11,59 +10,31 @@ import {
   sortBy,
   split,
   toUpper,
-  uniq,
+  uniq
 } from 'lodash';
 import {
   EXTRA_FIELD,
-<<<<<<< HEAD
-  NODE_ID_SEPARATOR,
-  TOTAL_VALUE,
+  NODE_ID_SEPARATOR, QueryDataType,
+  TOTAL_VALUE
 } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
 import type { CellData } from '../data-set/cell-data';
-import type { SortActionParams } from '../data-set/interface';
-=======
-  ID_SEPARATOR,
-  ORIGIN_FIELD,
-  QueryDataType,
-  TOTAL_VALUE,
-} from '../common/constant';
-import type { Fields, SortMethod, SortParam } from '../common/interface';
-import type { PivotDataSet } from '../data-set';
 import type {
-  DataType,
   PivotMeta,
-  PivotMetaValue,
-  SortActionParams,
-  SortPivotMetaParams,
+  PivotMetaValue, SortActionParams, SortPivotMetaParams
 } from '../data-set/interface';
-import { getListBySorted, sortByItems } from '../utils/data-set-operate';
-import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
->>>>>>> origin/master
 import { getLeafColumnsWithKey } from '../facet/utils';
-import {
-  getListBySorted,
-  isTotalData,
-  sortByItems,
-} from '../utils/data-set-operate';
-import {
-  filterExtraDimension,
-  getDimensionsWithParentPath,
-} from '../utils/dataset/pivot-data-set';
+import { getListBySorted, sortByItems } from '../utils/data-set-operate';
+import { filterExtraDimension, getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 import { canConvertToNumber } from './number-calculate';
 
 export const isAscSort = (sortMethod: SortMethod) =>
   toUpper(sortMethod) === 'ASC';
 
-<<<<<<< HEAD
 export const isDescSort = (sortMethod: SortMethod) =>
   toUpper(sortMethod) === 'DESC';
-=======
-export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
-const couldConvertToNumber = (a?: string | number) => !isNaN(Number(a));
->>>>>>> origin/master
 
 /**
  * 执行排序
@@ -78,7 +49,6 @@ export const sortAction = (
 ) => {
   const sort = isAscSort(sortMethod!) ? 1 : -1;
   const specialValues = ['-', undefined];
-<<<<<<< HEAD
 
   return list?.sort((pre, next) => {
     let a = pre as string | number;
@@ -89,24 +59,6 @@ export const sortAction = (
       b = (next as CellData).getValueByField(key) as string | number;
       if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
-=======
-  return list?.sort(
-    (pre: string | number | DataType, next: string | number | DataType) => {
-      let a = pre as string | number;
-      let b = next as string | number;
-      if (key) {
-        a = pre[key] as string | number;
-        b = next[key] as string | number;
-        if (couldConvertToNumber(a) && couldConvertToNumber(b)) {
-          return (Number(a) - Number(b)) * sort;
-        }
-        if (a && specialValues?.includes(a?.toString())) {
-          return -sort;
-        }
-        if (Number(a) && specialValues?.includes(b?.toString())) {
-          return sort;
-        }
->>>>>>> origin/master
       }
 
       if (a && specialValues?.includes(a?.toString())) {
@@ -327,41 +279,26 @@ export const getSortByMeasureValues = (
   params: SortActionParams,
 ): CellData[] => {
   const { dataSet, sortParam, originValues } = params;
-<<<<<<< HEAD
   const { fields } = dataSet!;
   const { sortByMeasure, query, sortFieldId } = sortParam!;
-  // 按 query 查出所有数据
-  const dataList = dataSet!.getCellMultiData({ query: query! });
-  const columns = getLeafColumnsWithKey(fields.columns);
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    const dataList = dataSet.getCellMultiData( {
+      query,
+      queryType: QueryDataType.DetailOnly,
+    });
+    return dataList;
+  }
+
+  
 
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
-  if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = concat(fields.rows, columns) as string[];
 
-    return dataList.filter(
-      (dataItem) =>
-        /*
-         * 过滤出包含所有行列维度的数据
-         * 若缺失任意 field，则是汇总数据，需要过滤掉
-         */
-        !isTotalData(rowColFields, dataItem.getOrigin()),
-    );
-=======
-  const { fields } = dataSet;
-  const { sortByMeasure, query, sortFieldId } = sortParam;
-
-  if (sortByMeasure !== TOTAL_VALUE) {
-    const dataList = dataSet.getMultiData(query, {
-      queryType: QueryDataType.DetailOnly,
-    });
-    return dataList;
->>>>>>> origin/master
-  }
-
-  const dataList = dataSet.getMultiData(query, {
+  const dataList = dataSet.getCellMultiData( {
+    query,
     queryType: QueryDataType.All,
   });
 
@@ -391,12 +328,8 @@ export const getSortByMeasureValues = (
   );
 
   const totalDataList = dataList.filter((dataItem) => {
-<<<<<<< HEAD
     const dataItemKeys = new Set(keys(dataItem.getOrigin()));
 
-=======
-    const dataItemKeys = new Set(Object.keys(dataItem[ORIGIN_FIELD]));
->>>>>>> origin/master
     if (!dataItemKeys.has(sortFieldId)) {
       /*
        * 若排序数据中都不含被排序字段，则过滤

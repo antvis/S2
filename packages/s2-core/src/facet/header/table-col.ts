@@ -60,11 +60,10 @@ export class TableColHeader extends ColHeader {
     } = headerConfig.spreadsheet.options.frozen!;
 
     if (frozenColCount) {
-<<<<<<< HEAD
       this.frozenColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN,
-          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+          style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
         }),
       );
     }
@@ -73,22 +72,9 @@ export class TableColHeader extends ColHeader {
       this.frozenTrailingColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN_TRAILING,
-          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+          style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
         }),
       );
-=======
-      this.frozenColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN,
-        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-      });
-    }
-
-    if (frozenTrailingColCount) {
-      this.frozenTrailingColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-      });
->>>>>>> origin/master
     }
   }
 

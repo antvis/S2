@@ -39,20 +39,11 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   private getRowData = (cellData: Node): RawData => {
     const leafNode = cellData.getHeadLeafChild();
 
-<<<<<<< HEAD
     const data = this.spreadsheet.dataSet.getCellMultiData({
-      query: leafNode?.query!,
-      totals: {
-        row: {
-          totalDimensions: true,
-        },
-      },
+      query: leafNode?.query!
     })[0];
 
     const originalData = getFieldValueOfViewMetaData(data) as RawData;
-=======
-    const data = this.spreadsheet.dataSet.getMultiData(leafNode?.query)[0];
->>>>>>> origin/master
 
     return {
       ...originalData,

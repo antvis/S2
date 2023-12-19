@@ -32,22 +32,19 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
-    const { facet } = this.spreadsheet;
+    const { facet ,interaction} = this.spreadsheet;
 
-<<<<<<< HEAD
     updateAllColHeaderCellState(
       colId,
       facet.getColCells(),
       InteractionStateName.HOVER,
     );
-=======
     const { rowHeader, colHeader } = interaction.getHoverHighlight();
->>>>>>> origin/master
 
     if (colHeader) {
       updateAllColHeaderCellState(
         colId,
-        interaction.getAllColHeaderCells(),
+        facet.getColCells(),
         InteractionStateName.HOVER,
       );
     }
@@ -98,13 +95,10 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         onlyShowCellText,
       };
-<<<<<<< HEAD
 
       if (interactionOptions?.hoverHighlight) {
-=======
       const { rowHeader, colHeader } = interaction.getHoverHighlight();
       if (rowHeader || colHeader) {
->>>>>>> origin/master
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
@@ -160,16 +154,10 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.showEllipsisTooltip(event, cell);
   }
 
-<<<<<<< HEAD
   private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType | null) {
     if (!cell || !cell.isTextOverflowing()) {
       this.spreadsheet.hideTooltip();
 
-=======
-  private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType) {
-    if (!cell || !cell.isTextOverflowing()) {
-      this.spreadsheet.hideTooltip();
->>>>>>> origin/master
       return;
     }
 
@@ -177,13 +165,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     const options: TooltipOptions = {
       isTotals: meta.isTotals,
       hideSummary: true,
-<<<<<<< HEAD
       onlyShowCellText: true,
-      enableFormat: this.spreadsheet.isPivotMode(),
-=======
-      showSingleTips,
       enableFormat: true,
->>>>>>> origin/master
     };
     const data = this.getCellData(meta, options.onlyShowCellText);
 
@@ -241,17 +224,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-<<<<<<< HEAD
-      this.showEllipsisTooltip(event, cell);
 
       if (interactionOptions?.hoverHighlight) {
-=======
       const { rowHeader, colHeader } = interaction.getHoverHighlight();
       if (rowHeader || colHeader) {
->>>>>>> origin/master
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
+    }
 
       if (interactionOptions?.hoverFocus) {
         this.changeStateToHoverFocus(cell, event, meta);
@@ -273,13 +253,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public bindCornerCellHover() {
     this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
-<<<<<<< HEAD
-      const cell = this.spreadsheet.getCell(event.target);
-
-      this.showEllipsisTooltip(event, cell);
-=======
       this.handleHeaderHover(event);
->>>>>>> origin/master
     });
   }
 }

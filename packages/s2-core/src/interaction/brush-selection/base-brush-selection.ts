@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import {
-  type FederatedPointerEvent as CanvasEvent,
-  type DisplayObject,
-  type PointLike,
-  Rect,
+  Rect, type DisplayObject, type FederatedPointerEvent as CanvasEvent, type PointLike
 } from '@antv/g';
-=======
-import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
->>>>>>> origin/master
+import type { Point } from '@antv/g-canvas';
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
@@ -15,22 +9,20 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  ScrollDirection,
+  ScrollDirection
 } from '../../common/constant';
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
-  ScrollDirectionRowIndexDiff,
+  ScrollDirectionRowIndexDiff
 } from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   OffsetConfig,
-  OnUpdateCells,
-  Point,
-  S2CellType,
-  ViewMeta,
+  OnUpdateCells, S2CellType,
+  ViewMeta
 } from '../../common/interface';
 import type { BBox } from '../../engine/interface';
 import type { TableFacet } from '../../facet';
@@ -39,13 +31,13 @@ import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
-  isFrozenTrailingRow,
+  isFrozenTrailingRow
 } from '../../facet/utils';
 import { getCellsTooltipData } from '../../utils';
 import {
   getCellMeta,
   getScrollOffsetForCol,
-  getScrollOffsetForRow,
+  getScrollOffsetForRow
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';

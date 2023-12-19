@@ -1,14 +1,5 @@
-<<<<<<< HEAD
 import { includes } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
-=======
-import { isBoolean } from 'lodash';
-import {
-  EMPTY_FIELD_VALUE,
-  EXTRA_FIELD,
-  SERIES_NUMBER_FIELD,
-} from '../../common/constant';
->>>>>>> origin/master
+import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
 import type { HeaderNodesParams } from '../../facet/layout/interface';
@@ -17,11 +8,7 @@ import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
-<<<<<<< HEAD
-=======
-import type { Columns } from '../../common';
 import { whetherLeafByLevel } from './whether-leaf-by-level';
->>>>>>> origin/master
 
 // eslint-disable-next-line max-lines-per-function
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
@@ -37,11 +24,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
     spreadsheet,
   } = params;
-<<<<<<< HEAD
   const { colCell } = spreadsheet.options.style!;
-=======
-  const { spreadsheet, collapsedCols } = facetCfg;
->>>>>>> origin/master
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -61,18 +44,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isSubTotals = totalClass.isSubTotals;
       isTotalRoot = totalClass.isTotalRoot;
       value = i18n((fieldValue as TotalClass).label);
-<<<<<<< HEAD
-      if (addMeasureInTotalQuery) {
-        // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
-        nodeQuery = {
-          ...query,
-          [EXTRA_FIELD]: spreadsheet?.dataSet?.fields?.values?.[0],
-        };
-        isLeaf = true;
-=======
       if (isTotalRoot) {
         nodeQuery = query;
->>>>>>> origin/master
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
         nodeQuery = { ...query, [currentField]: value };
@@ -81,7 +54,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
         nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values[0];
       }
-      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
+      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
@@ -89,7 +62,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       adjustedField = EXTRA_FIELD;
       isGrandTotals = parentNode.isGrandTotals;
       isSubTotals = parentNode.isSubTotals;
-      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
+      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;
       adjustedField = fields[index];
@@ -98,22 +71,17 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
-<<<<<<< HEAD
-      nodeQuery = { ...query, [currentField]: value };
+      // 子维度的维值为空时, 使用父级节点的 query, 避免查询不到数据
+      nodeQuery =
+        value === EMPTY_FIELD_VALUE
+          ? { ...query }
+          : { ...query, [currentField]: value };
       const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
       const isHideValue =
         colCell?.hideValue && isValueInCols && includes(fields, EXTRA_FIELD);
       const extraSize = isHideValue ? 2 : 1;
 
       isLeaf = level === fields.length - extraSize;
-=======
-      // 子维度的维值为空时, 使用父级节点的 query, 避免查询不到数据
-      nodeQuery =
-        value === EMPTY_FIELD_VALUE
-          ? { ...query }
-          : { ...query, [currentField]: value };
-      isLeaf = whetherLeafByLevel({ facetCfg, level, fields });
->>>>>>> origin/master
     }
 
     const nodeId = generateId(parentNode.id, value);

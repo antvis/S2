@@ -387,15 +387,7 @@ export const StrategyOptions: SheetComponentOptions = {
   width: 800,
   height: 800,
   cornerText: '指标',
-<<<<<<< HEAD
   placeholder: (v) => (v?.['fieldValue'] ? '-' : ''),
-=======
-  // frozenFirstRow: true,
-  placeholder: (v) => {
-    const placeholder = v?.fieldValue ? '-' : '';
-    return placeholder;
-  },
->>>>>>> origin/master
   interaction: {
     selectedCellsSpotlight: true,
     resize: {

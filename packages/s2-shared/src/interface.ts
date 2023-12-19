@@ -1,56 +1,30 @@
 import type {
-<<<<<<< HEAD
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
   ColCell,
   CornerCell,
-  DataCell,
-=======
-  CellMeta,
-  CellScrollPosition,
-  CollapsedRowsType,
-  Data,
-  DataCell,
-  DataType,
->>>>>>> origin/master
-  GEvent,
+  DataCell, GEvent,
   HeaderActionIcon,
   HiddenColumnsInfo,
   LayoutResult,
-<<<<<<< HEAD
   MergedCell,
   Node,
   Pagination,
   RawData,
   ResizeInfo,
   ResizeParams,
-  RowCellCollapsedParams,
-=======
-  Node,
-  Pagination,
-  ResizeInfo,
-  ResizeParams,
->>>>>>> origin/master
-  S2CellType,
+  RowCellCollapsedParams, S2CellType,
   S2DataConfig,
   S2MountContainer,
   S2Options,
   S2RenderOptions,
-<<<<<<< HEAD
   SeriesNumberCell,
-=======
->>>>>>> origin/master
   SortParams,
   SpreadSheet,
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
-  TooltipOperatorOptions,
-<<<<<<< HEAD
-  ViewMetaData,
-=======
-  ViewMeta,
->>>>>>> origin/master
+  TooltipOperatorOptions, ViewMeta, ViewMetaData
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -73,14 +47,12 @@ export type SheetType =
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
-<<<<<<< HEAD
 export type LayoutPaginationParams = {
   pageSize: number;
   pageCount: number;
   total: number;
   current: number;
 };
-=======
 type _ShowPagination =
   | boolean
   | {
@@ -96,7 +68,6 @@ type ShowPagination<OverrideShowPagination, Options> =
       ? boolean | Pick<Options['pagination'], 'onShowSizeChange' | 'onChange'>
       : _ShowPagination
     : _ShowPagination;
->>>>>>> origin/master
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
@@ -159,13 +130,9 @@ export interface BaseSheetComponentProps<
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
-<<<<<<< HEAD
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
   onDataCellRender?: (cell: DataCell) => void;
-=======
-  onDataCellSelectMove?: (metas: CellMeta[]) => void;
   onDataCellEditEnd?: (meta: ViewMeta) => void;
->>>>>>> origin/master
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

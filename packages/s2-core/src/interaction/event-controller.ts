@@ -2,10 +2,9 @@ import {
   Canvas,
   DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
-  type Group,
+  type Group
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
-import { CustomImage } from '../engine';
 import { GuiIcon } from '../common';
 import {
   CellType,
@@ -14,18 +13,15 @@ import {
   InterceptType,
   OriginEventType,
   S2Event,
-  SHAPE_STYLE_MAP,
+  SHAPE_STYLE_MAP
 } from '../common/constant';
 import type { EmitterType, ResizeInfo } from '../common/interface';
+import { CustomImage } from '../engine';
 import type { SpreadSheet } from '../sheet-type';
-<<<<<<< HEAD
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
 import { getAppendInfo } from '../utils/interaction/common';
 import { isMobile } from '../utils/is-mobile';
-=======
-import { getSelectedData, keyEqualTo } from '../utils/export/copy';
->>>>>>> origin/master
 import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
@@ -181,17 +177,12 @@ export class EventController {
       return;
     }
 
-<<<<<<< HEAD
-    this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
-    interaction?.reset();
-=======
     interaction.reset();
     this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
     this.spreadsheet.emit(
       S2Event.GLOBAL_SELECTED,
       interaction.getActiveCells(),
     );
->>>>>>> origin/master
   }
 
   private isMouseEvent(event: Event): event is MouseEvent {
@@ -216,11 +207,8 @@ export class EventController {
        */
       const { width, height } = this.getContainerRect();
 
-<<<<<<< HEAD
       const { target: eventTarget, clientX, clientY } = event;
 
-=======
->>>>>>> origin/master
       return (
         (eventTarget === canvas ||
           eventTarget instanceof DisplayObject ||
@@ -236,14 +224,6 @@ export class EventController {
   }
 
   private getContainerRect() {
-<<<<<<< HEAD
-    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
-    const { width, height } = this.spreadsheet.options;
-
-    return {
-      width: Math.min(width!, maxX),
-      height: Math.min(height!, maxY),
-=======
     const { facet, options } = this.spreadsheet;
     const scrollBar = facet.hRowScrollBar || facet.hScrollBar;
     const { maxX, maxY } = facet?.panelBBox || {};
@@ -258,7 +238,6 @@ export class EventController {
     return {
       width: Math.min(width, maxX),
       height: Math.min(height, maxY + trackHeight),
->>>>>>> origin/master
     };
   }
 
@@ -339,13 +318,8 @@ export class EventController {
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
 
-<<<<<<< HEAD
       // 仅捕获在 Canvas 之外触发的事件 https://github.com/antvis/S2/issues/1592
       const resizeMouseMoveCapture = (pointerEvent: PointerEvent) => {
-=======
-      // 仅捕获在 canvas 之外触发的事件 https://github.com/antvis/S2/issues/1592
-      const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
->>>>>>> origin/master
         if (!this.spreadsheet.getCanvasElement()) {
           return false;
         }

@@ -1,41 +1,22 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
-import { Input } from 'antd';
-import { merge, pick } from 'lodash';
-import React, {
-  memo,
-<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
-  useRef,
-  useState,
-=======
-  useCallback,
->>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
-import { Input } from 'antd';
 import {
-  S2Event,
-  S2_PREFIX_CLS,
-  SpreadSheet,
-  GEvent,
-  type DataItem,
-  type S2CellType,
+  BaseCell, GEvent, S2Event, S2_PREFIX_CLS, SpreadSheet, type DataItem,
+  type S2CellType, type ViewMeta
 } from '@antv/s2';
-import { isNil, pick } from 'lodash';
-import { useS2Event } from '../../../../../hooks';
+import { Input } from 'antd';
+import { isNil, merge, pick } from 'lodash';
+import React, {
+  memo, useCallback,
+  useEffect,
+  useMemo, useRef,
+  useState
+} from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
-=======
-import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
->>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
+import { useS2Event } from '../../../../../hooks';
 import {
   invokeComponent,
-  type InvokeComponentProps,
+  type InvokeComponentProps
 } from '../../../../../utils/invokeComponent';
+import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import './index.less';
 
 export interface CustomProps {
@@ -60,14 +41,8 @@ function EditCellComponent(
   props: InvokeComponentProps<{ cell: S2CellType } & onChangeProps>,
 ) {
   const { params, resolver } = props;
-<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
   const s2 = useSpreadSheetInstance();
-  const { cell, onChange, CustomComponent } = params;
-=======
-  const spreadsheet = useSpreadSheetRef();
-  const { event, onChange, onDataCellEditEnd, CustomComponent } = params;
-  const cell: BaseCell<ViewMeta> = event.target.cfg.parent;
->>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx
+  const { cell, onChange, onDataCellEditEnd, CustomComponent } = params;
 
   const { left, top, width, height } = useMemo(() => {
     const rect = s2?.getCanvasElement().getBoundingClientRect();
@@ -214,7 +189,6 @@ function EditCellComponent(
   );
 }
 
-<<<<<<< HEAD:packages/s2-react/src/components/sheets/editable-sheet/custom-cell/edit-cell/index.tsx
 export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
   const spreadsheet = useSpreadSheetInstance();
 
@@ -237,27 +211,3 @@ export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
 
   return null;
 });
-=======
-const EditCell = memo(
-  ({ onChange, onDataCellEditEnd, CustomComponent }: onChangeProps) => {
-    const spreadsheet = useSpreadSheetRef();
-
-    const cb = useCallback(
-      (e: CanvasEvent) => {
-        invokeComponent(
-          EditCellComponent,
-          { event: e, onChange, onDataCellEditEnd, CustomComponent },
-          spreadsheet,
-        );
-      },
-      [spreadsheet],
-    );
-
-    useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
-
-    return null;
-  },
-);
-
-export { EditCell };
->>>>>>> origin/master:packages/s2-react/src/components/sheets/editable-sheet/edit-cell/index.tsx

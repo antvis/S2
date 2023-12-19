@@ -1,26 +1,22 @@
 import { isNil, last, map } from 'lodash';
-<<<<<<< HEAD
 import { RowCell } from '../../cell';
-
-=======
-import { BaseRowCell, RowCell } from '../../cell';
->>>>>>> origin/master
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
-  ScrollDirection,
+  ScrollDirection
 } from '../../common/constant/interaction';
 import type {
   BrushRange,
   OnUpdateCells,
   Point,
-  ViewMeta,
+  ViewMeta
 } from '../../common/interface';
+import type { BBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
-import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
+
 
 export class RowCellBrushSelection extends BaseBrushSelection {
   public displayedCells: RowCell[] = [];

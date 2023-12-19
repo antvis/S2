@@ -55,7 +55,6 @@ export class GridGroup extends Group {
     const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
 
     this.gridInfo.cols.forEach((x) => {
-<<<<<<< HEAD
       renderLine(this.gridGroup, {
         x1: x - halfVerticalBorderWidthBorderWidth,
         x2: x - halfVerticalBorderWidthBorderWidth,
@@ -66,31 +65,12 @@ export class GridGroup extends Group {
         lineWidth: verticalBorderWidth,
         lineCap: SQUARE_LINE_CAP,
       });
-=======
-      renderLine(
-        this.gridGroup as Group,
-        {
-          x1: x,
-          x2: x,
-          y1: Math.ceil(bbox.minY + halfVerticalBorderWidthBorderWidth),
-          y2: Math.floor(bbox.maxY - halfVerticalBorderWidthBorderWidth),
-        },
-        {
-          stroke: style.verticalBorderColor,
-          strokeOpacity: style.verticalBorderColorOpacity,
-          lineWidth: verticalBorderWidth,
-          lineCap: SQUARE_LINE_CAP,
-          lineDash: style.borderDash,
-        },
-      );
->>>>>>> origin/master
     });
 
     const horizontalBorderWidth = style?.horizontalBorderWidth;
     const halfHorizontalBorderWidth = horizontalBorderWidth! / 2;
 
     this.gridInfo.rows.forEach((y) => {
-<<<<<<< HEAD
       renderLine(this.gridGroup, {
         x1: halfHorizontalBorderWidth,
         x2: Math.floor(bbox.width - halfHorizontalBorderWidth),
@@ -101,24 +81,6 @@ export class GridGroup extends Group {
         lineWidth: horizontalBorderWidth,
         lineCap: SQUARE_LINE_CAP,
       });
-=======
-      renderLine(
-        this.gridGroup as Group,
-        {
-          x1: Math.ceil(bbox.minX + halfHorizontalBorderWidth),
-          x2: Math.floor(bbox.maxX - halfHorizontalBorderWidth),
-          y1: y,
-          y2: y,
-        },
-        {
-          stroke: style.horizontalBorderColor,
-          strokeOpacity: style.horizontalBorderColorOpacity,
-          lineWidth: horizontalBorderWidth,
-          lineCap: SQUARE_LINE_CAP,
-          lineDash: style.borderDash,
-        },
-      );
->>>>>>> origin/master
     });
 
     this.gridGroup.toFront();

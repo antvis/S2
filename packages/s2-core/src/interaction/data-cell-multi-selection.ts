@@ -11,10 +11,7 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
-<<<<<<< HEAD
-=======
   isMouseEventWithMeta,
->>>>>>> origin/master
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { afterSelectDataCells } from '../utils/interaction/select-event';
@@ -99,14 +96,10 @@ export class DataCellMultiSelection
         if (isEmpty(selectedCells)) {
           interaction.clearState();
           this.spreadsheet.hideTooltip();
-<<<<<<< HEAD
-
-=======
           this.spreadsheet.emit(
             S2Event.GLOBAL_SELECTED,
             interaction.getActiveCells(),
           );
->>>>>>> origin/master
           return;
         }
 

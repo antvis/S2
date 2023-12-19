@@ -76,7 +76,6 @@ import {
 } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-<<<<<<< HEAD
 import { getTheme } from '../theme';
 
 /**
@@ -85,8 +84,6 @@ import { getTheme } from '../theme';
  * 而是要用 circle.style.r = 20;
  */
 runtime.enableCSSParsing = false;
-=======
->>>>>>> origin/master
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -390,13 +387,10 @@ export abstract class SpreadSheet extends EE {
       this.options = customMerge(this.options, options);
     }
 
-<<<<<<< HEAD
-=======
     if (reset || options.tooltip?.renderTooltip) {
       this.initTooltip();
     }
 
->>>>>>> origin/master
     this.registerIcons();
   }
 
@@ -590,19 +584,11 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
-<<<<<<< HEAD
-  // 获取当前 cell 实例
-=======
-  public getTooltipDataItemMappingCallback() {
-    return this.options?.mappingDisplayDataItem;
-  }
-
   protected isCellType(cell?: CanvasEvent['target']) {
     return cell instanceof BaseCell;
   }
 
-  // 获取当前cell实例
->>>>>>> origin/master
+  // 获取当前 cell 实例
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,
   ): T | null {
@@ -610,13 +596,8 @@ export abstract class SpreadSheet extends EE {
 
     // 一直索引到 g 顶层的 canvas 来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
-<<<<<<< HEAD
-      if (parent instanceof BaseCell) {
-        // 在单元格中，返回 true
-=======
       if (this.isCellType(parent)) {
         // 在单元格中，返回true
->>>>>>> origin/master
         return parent as T;
       }
 
@@ -659,14 +640,6 @@ export abstract class SpreadSheet extends EE {
       subTotalsGroupDimensions: [],
       ...totalConfig,
       showSubTotals,
-<<<<<<< HEAD
-      showGrandTotals: totalConfig.showGrandTotals,
-      reverseGrandTotalsLayout: totalConfig.reverseGrandTotalsLayout,
-      reverseSubTotalsLayout: totalConfig.reverseSubTotalsLayout,
-      grandTotalsLabel: totalConfig.grandTotalsLabel || i18n('总计'),
-      subTotalsLabel: totalConfig.subTotalsLabel || i18n('小计'),
-=======
->>>>>>> origin/master
     };
   }
 

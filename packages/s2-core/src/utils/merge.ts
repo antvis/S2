@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-import { isArray, isEmpty, mergeWith, uniq, isEqual, isString } from 'lodash';
+import { isArray, isEmpty, isEqual, isString, mergeWith, uniq } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import { DEFAULT_OPTIONS } from '../common/constant/options';
 import type {
-  S2DataConfig,
-  S2Options,
-  Fields,
-  CustomHeaderFields,
+  CustomHeaderFields, Fields, S2DataConfig,
+  S2Options
 } from '../common/interface';
-=======
-import { isArray, isEmpty, isEqual, mergeWith, uniq } from 'lodash';
-import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
-import { DEFAULT_OPTIONS } from '../common/constant/options';
-import type { Fields, S2DataConfig, S2Options } from '../common/interface';
->>>>>>> origin/master
 
 export const customMerge = <T = unknown>(...objects: unknown[]): T => {
   const customize = (origin: unknown, updated: unknown) => {
