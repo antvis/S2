@@ -10,7 +10,7 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
-import type { InteractionCellHighlight } from '@/common/interface';
+import type { InteractionCellSelectedHighlightOptions } from '@/common/interface';
 import { CustomRect } from '@/engine';
 import type { GEvent } from '@/index';
 import type { SpreadSheet } from '@/sheet-type';
@@ -221,8 +221,8 @@ describe('Interaction Data Cell Click Tests', () => {
       },
     ];
 
-    s2.getColumnNodes = jest.fn(() => columnNode) as any;
-    s2.getRowNodes = jest.fn(() => []);
+    s2.facet.getColNodes = jest.fn(() => columnNode) as any;
+    s2.facet.getRowNodes = jest.fn(() => []);
 
     const firstDataCellInfo = createMockCellInfo(
       `${headerCellId0}[&]first-data-cell`,
@@ -235,18 +235,13 @@ describe('Interaction Data Cell Click Tests', () => {
         selectedCellHighlight: {
           colHeader: true,
           rowHeader: true,
-        } as InteractionCellHighlight,
+        } as InteractionCellSelectedHighlightOptions,
       },
     });
 
-    const mockHeaderCellInfo = createMockCellInfo(headerCellId0, {
-      colIndex: columnNode[0].belongsCell.getMeta().colIndex,
-      rowIndex: columnNode[0].belongsCell.getMeta().rowIndex,
-    });
-
     s2.interaction.updateCells = jest.fn();
-    s2.interaction.getAllColHeaderCells = jest.fn();
-    s2.interaction.getAllRowHeaderCells = jest.fn();
+    s2.facet.getColCells = jest.fn();
+    s2.facet.getRowCells = jest.fn();
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
@@ -258,7 +253,7 @@ describe('Interaction Data Cell Click Tests', () => {
       onUpdateCells: expect.any(Function),
     });
     expect(s2.interaction.updateCells).toHaveBeenCalled();
-    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
-    expect(s2.interaction.getAllRowHeaderCells).toHaveBeenCalled();
+    expect(s2.facet.getColCells).toHaveBeenCalled();
+    expect(s2.facet.getRowCells).toHaveBeenCalled();
   });
 });

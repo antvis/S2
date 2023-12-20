@@ -1,12 +1,11 @@
 import { set } from 'lodash';
-import {
-  customFlattenDeep,
-  getListBySorted,
-  getAggregationAndCalcFuncByQuery,
-  flattenIndexesData,
-} from '@/utils/data-set-operate';
-import { Aggregation, type FlattingIndexesData } from '@/common/interface';
 import { DataSelectType } from '@/common/constant/total';
+import { Aggregation, type FlattingIndexesData } from '@/common/interface';
+import {
+  flattenIndexesData,
+  getAggregationAndCalcFuncByQuery,
+  getListBySorted,
+} from '@/utils/data-set-operate';
 
 describe('Data Set Operate Test', () => {
   const data: FlattingIndexesData = [];

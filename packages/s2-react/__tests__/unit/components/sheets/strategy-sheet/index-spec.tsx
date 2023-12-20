@@ -1,34 +1,30 @@
 /* eslint-disable max-classes-per-file */
 import {
   CellType,
-  CellTypes,
-  copyData,
   CornerNodeType,
-  customMerge,
-  EXTRA_FIELD,
-  getCellMeta,
   InteractionStateName,
-  type S2DataConfig,
-  type GEvent,
   RowCell,
   SpreadSheet,
-  CellBorderPosition,
+  customMerge,
+  getCellMeta,
+  type GEvent,
+  type S2DataConfig,
 } from '@antv/s2';
-import React from 'react';
-import { get } from 'lodash';
 import { waitFor } from '@testing-library/react';
-import { getContainer, renderComponent } from '../../../../util/helpers';
+import { get } from 'lodash';
+import React from 'react';
 import {
   StrategyOptions,
   StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
+import { getContainer, renderComponent } from '../../../../util/helpers';
+import { strategyCopy } from '@/components/export/strategy-copy';
 import {
   SheetComponent,
   StrategySheetColCell,
   StrategySheetDataCell,
   type SheetComponentOptions,
 } from '@/components';
-import { strategyCopy } from '@/components/export/strategy-copy';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -142,19 +138,19 @@ describe('<StrategySheet/> Tests', () => {
       tooltip: {
         enable: true,
         rowCell: {
-          content: () => <div>{CellTypes.ROW_CELL}</div>,
+          content: () => <div>{CellType.ROW_CELL}</div>,
         },
         dataCell: {
-          content: () => <div>{CellTypes.DATA_CELL}</div>,
+          content: () => <div>{CellType.DATA_CELL}</div>,
         },
       },
     });
 
-    jest.spyOn(s2, 'getCellType').mockReturnValueOnce(CellTypes.COL_CELL);
+    jest.spyOn(s2, 'getCellType').mockReturnValueOnce(CellType.COL_CELL);
 
     s2.showTooltipWithInfo({} as GEvent, []);
 
-    [CellTypes.ROW_CELL, CellTypes.DATA_CELL].forEach((content) => {
+    [CellType.ROW_CELL, CellType.DATA_CELL].forEach((content) => {
       expect(s2.tooltip.container!.innerText).not.toEqual(content);
     });
   });
