@@ -1,17 +1,10 @@
 /**
  * table mode data-set test.
  */
-<<<<<<< HEAD
-import { orderBy, uniq } from 'lodash';
+import { first, last, orderBy, uniq } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
 import type { S2DataConfig, SortParam } from '@/common/interface';
-import { TableSheet } from '@/sheet-type';
-=======
-import { first, last, orderBy, uniq } from 'lodash';
-import { assembleDataCfg } from '../../util';
-import type { S2DataConfig } from '@/common/interface';
->>>>>>> origin/master
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableSheet } from '@/sheet-type';
 
@@ -33,7 +26,6 @@ describe('Table Mode Dataset Test', () => {
   };
 
   beforeEach(() => {
-<<<<<<< HEAD
     MockTableSheet.mockClear();
     const s2 = new MockTableSheet();
 
@@ -41,9 +33,6 @@ describe('Table Mode Dataset Test', () => {
       frozen: {},
     };
     dataSet = new TableDataSet(s2);
-=======
-    dataSet = new TableDataSet(new MockTableSheet());
->>>>>>> origin/master
 
     dataSet.setDataCfg(dataCfg);
   });
