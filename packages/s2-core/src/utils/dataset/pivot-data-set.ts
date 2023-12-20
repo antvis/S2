@@ -1,4 +1,5 @@
 import {
+  compact,
   find,
   flatMap,
   forEach,
@@ -582,14 +583,14 @@ export function flattenIndexesData(
     return [];
   }
   if (!isArray(data)) {
-    return [data];
+    return compact([data]);
   }
   return flatMap(data, (dimensionData) => {
     if (!isArray(dimensionData)) {
-      return [dimensionData];
+      return compact([dimensionData]);
     }
     // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
     const startIdx = queryType === QueryDataType.DetailOnly ? 1 : 0;
-    return dimensionData.slice(startIdx).filter(Boolean);
+    return compact(dimensionData.slice(startIdx));
   });
 }
