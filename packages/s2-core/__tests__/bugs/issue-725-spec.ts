@@ -3,20 +3,16 @@
  * https://github.com/antvis/S2/issues/725
  * Wrong multi measure render
  * Wrong group sort
- *
  */
 
 import * as mockDataConfig from 'tests/data/data-issue-725.json';
 import { assembleDataCfg } from '../util';
 import type { S2DataConfig } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set';
-<<<<<<< HEAD
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
-=======
->>>>>>> origin/master
+import { PivotSheet } from '@/sheet-type';
 
 jest.mock('@/sheet-type');
+
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 let dataSet: PivotDataSet;
 
@@ -35,10 +31,7 @@ describe('Group Sort When Have Same Child Measure', () => {
   beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });

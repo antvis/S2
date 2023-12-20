@@ -275,7 +275,7 @@ export const createFederatedMouseEvent = (
 };
 
 export const createTableSheet = (
-  s2Options: S2Options,
+  s2Options: S2Options | null,
   { useSimpleData } = { useSimpleData: true },
 ) =>
   new TableSheet(

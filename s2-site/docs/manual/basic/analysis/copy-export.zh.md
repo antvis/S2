@@ -39,15 +39,9 @@ const s2Options = {
     copyWithHeader: true,
     // 圈选复制前，需要开启圈选功能
     brushSelection: {
-<<<<<<< HEAD
-      dataCell: true, // 默认开启
-      rowCell: true,
-      colCell: true,
-=======
-      data: true, // 圈选数值单元格 （默认开启）
-      row: true,  // 圈选行头单元格
-      col: true,  // 圈选列头单元格
->>>>>>> origin/master
+      dataCell: true, // 圈选数值单元格 （默认开启）
+      rowCell: true,  // 圈选行头单元格
+      colCell: true,  // 圈选列头单元格
     }
   }
 };

@@ -58,7 +58,6 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
           rowCell: true,
         },
       },
-<<<<<<< HEAD
       style: {
         colCell: {
           height: 30,
@@ -75,22 +74,6 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     s2.interaction = mockRootInteraction;
     await s2.render();
     brushSelectionInstance = new RowCellBrushSelection(s2);
-=======
-    );
-    mockSpreadSheetInstance.container.getShape = jest.fn();
-    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
-    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;
-    mockRootInteraction.getAllRowHeaderCells = () => allRowHeaderCells;
-    mockSpreadSheetInstance.interaction = mockRootInteraction;
-    mockRootInteraction.getBrushSelection = () => ({
-      data: true,
-      row: true,
-      col: true,
-    });
-    mockSpreadSheetInstance.render();
-    brushSelectionInstance = new RowBrushSelection(mockSpreadSheetInstance);
->>>>>>> origin/master
 
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;

@@ -4,16 +4,12 @@
  * https://github.com/antvis/S2/issues/1781
  */
 
-<<<<<<< HEAD
+import * as mockDataConfig from '../data/simple-table-data.json';
 import {
   createFederatedMouseEvent,
   getContainer,
   sleep,
 } from '../util/helpers';
-=======
-import { getContainer, sleep } from '../util/helpers';
->>>>>>> origin/master
-import * as mockDataConfig from '../data/simple-table-data.json';
 import {
   OriginEventType,
   S2Event,
@@ -42,7 +38,6 @@ const s2Options: S2Options = {
 };
 
 describe('Hover Focus Tests', () => {
-<<<<<<< HEAD
   test(`should focus on province cell but don't focus on city cell when hover on province cell`, async () => {
     const s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
 
@@ -51,10 +46,10 @@ describe('Hover Focus Tests', () => {
     await sleep(3000);
 
     // 浙江省份信息
-    const provinceCell = s2.facet.panelScrollGroup.getChildByIndex(7);
+    const provinceCell = s2.facet.panelScrollGroup.children[7];
 
     // 义乌城市信息
-    const cityCell = s2.facet.panelScrollGroup.getChildByIndex(10);
+    const cityCell = s2.facet.panelScrollGroup.children[10];
 
     const event = createFederatedMouseEvent(s2, OriginEventType.POINTER_MOVE);
 
@@ -69,37 +64,10 @@ describe('Hover Focus Tests', () => {
         .get('interactiveBorderShape')
         ?.attr('visibility'),
     ).toEqual('visible');
+
     expect(
       // @ts-ignore
       cityCell.stateShapes.get('interactiveBorderShape')?.attr('visibility'),
     ).toEqual('hidden');
-=======
-  const s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
-
-  s2.render();
-
-  test(`should focus on province cell but don't focus on city cell when hover on province cell`, async () => {
-    await sleep(3000);
-
-    // 浙江省份信息
-    const provinceCell = s2.panelScrollGroup.getChildByIndex(7);
-
-    // 义乌城市信息
-    const cityCell = s2.panelScrollGroup.getChildByIndex(10);
-
-    const event = new MouseEvent(OriginEventType.MOUSE_MOVE);
-
-    // @ts-ignore
-    s2.emit(S2Event.DATA_CELL_HOVER, { ...event, target: provinceCell });
-
-    expect(
-      // @ts-ignore
-      provinceCell.stateShapes.get('interactiveBorderShape')?.cfg.visible,
-    ).toBeTrue();
-    expect(
-      // @ts-ignore
-      cityCell.stateShapes.get('interactiveBorderShape')?.cfg.visible,
-    ).toBeFalse();
->>>>>>> origin/master
   });
 });

@@ -1,21 +1,17 @@
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+import { Button } from 'antd';
+import insertCss from 'insert-css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-=======
-import { Button } from 'antd';
-import { SheetComponent } from '@antv/s2-react';
->>>>>>> origin/master
-import insertCss from 'insert-css';
-import '@antv/s2-react/dist/style.min.css';
 
 const CustomTooltip = <div className="tooltip-custom-component">content</div>;
 
-const RowTooltip = ({ title }) => (
+const RowCellTooltip = ({ title }) => (
   <div className="tooltip-custom-component">{title}</div>
 );
 
-const ColTooltip = () => {
+const ColCellTooltip = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -39,39 +35,23 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-<<<<<<< HEAD
-    const CustomTooltip = (
-      <div className="tooltip-custom-component">content</div>
-    );
-    const RowCellTooltip = (
-      <div className="tooltip-custom-component">rowCellTooltip</div>
-    );
-
     const s2Options: SheetComponentOptions = {
-=======
-    const s2Options = {
->>>>>>> origin/master
       width: 600,
       height: 480,
       tooltip: {
         content: CustomTooltip,
-<<<<<<< HEAD
         rowCell: {
-          content: RowCellTooltip,
-=======
-        row: {
           content: (cell, defaultTooltipShowOptions) => {
             console.log('当前单元格：', cell);
             console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions);
 
             const meta = cell.getMeta();
 
-            return <RowTooltip title={meta.label} />;
+            return <RowCellTooltip title={meta.label} />;
           },
         },
-        col: {
-          content: <ColTooltip />,
->>>>>>> origin/master
+        colCell: {
+          content: <ColCellTooltip />,
         },
       },
     };

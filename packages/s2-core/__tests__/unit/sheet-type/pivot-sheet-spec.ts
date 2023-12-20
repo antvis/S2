@@ -67,12 +67,9 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-<<<<<<< HEAD
-  beforeAll(async () => {
-=======
-  beforeEach(() => {
->>>>>>> origin/master
+  beforeEach(async () => {
     setLang('zh_CN');
+
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     await s2.render();
@@ -482,11 +479,8 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.showSeriesNumber).toBeTruthy();
   });
 
-<<<<<<< HEAD
-  test('should render sheet', async () => {
-=======
   test('should init new tooltip', () => {
-    const tooltipDestorySpy = jest
+    const tooltipDestroySpy = jest
       .spyOn(s2.tooltip, 'destroy')
       .mockImplementationOnce(() => {});
 
@@ -498,7 +492,7 @@ describe('PivotSheet Tests', () => {
       },
     });
 
-    expect(tooltipDestorySpy).toHaveBeenCalled();
+    expect(tooltipDestroySpy).toHaveBeenCalled();
     expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
   });
 
@@ -510,30 +504,29 @@ describe('PivotSheet Tests', () => {
     });
 
     expect(s2.interaction.getBrushSelection()).toStrictEqual({
-      data: true,
-      row: true,
-      col: true,
+      dataCell: true,
+      rowCell: true,
+      colCell: true,
     });
 
     s2.setOptions({
       interaction: {
         brushSelection: {
-          data: true,
-          row: false,
-          col: false,
+          dataCell: true,
+          rowCell: false,
+          colCell: false,
         },
       },
     });
 
     expect(s2.interaction.getBrushSelection()).toStrictEqual({
-      data: true,
-      row: false,
-      col: false,
+      dataCell: true,
+      rowCell: false,
+      colCell: false,
     });
   });
 
   test('should render sheet', () => {
->>>>>>> origin/master
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
       .mockImplementation(() => {});
@@ -665,16 +658,10 @@ describe('PivotSheet Tests', () => {
     expect(s2.facet.foregroundGroup.children).toHaveLength(9);
 
     // panel scroll group
-<<<<<<< HEAD
-    expect(s2.facet.panelGroup.children).toHaveLength(1);
+    expect(s2.facet.panelGroup.children).toHaveLength(2);
     expect(
       s2.facet.panelGroup.getElementsByName(KEY_GROUP_PANEL_SCROLL),
     ).toHaveLength(1);
-=======
-    // contain panelScrollGroup and frozenRowGroup
-    expect(s2.panelGroup.getChildren()).toHaveLength(2);
-    expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
->>>>>>> origin/master
   });
 
   test.each([
@@ -803,9 +790,6 @@ describe('PivotSheet Tests', () => {
     renderSpy.mockRestore();
   });
 
-<<<<<<< HEAD
-  test('should get extra field text', async () => {
-=======
   test(`shouldn't rerender without drill down data`, () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
 
@@ -820,8 +804,7 @@ describe('PivotSheet Tests', () => {
     expect(renderSpy).toHaveBeenCalledTimes(0);
   });
 
-  test('should get extra field text', () => {
->>>>>>> origin/master
+  test('should get extra field text', async () => {
     const pivotSheet = new PivotSheet(
       container,
       customMerge(originalDataCfg, {
@@ -1145,6 +1128,7 @@ describe('PivotSheet Tests', () => {
     const tooltipShowSpy = jest
       .spyOn(s2.tooltip, 'show')
       .mockImplementationOnce(() => {});
+
     tooltipShowSpy.mockRestore();
     s2.showTooltip({
       position: {

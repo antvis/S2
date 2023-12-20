@@ -1,8 +1,8 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { getAdjustPosition } from '../utils/text-absorption';
 import { getFrozenRowCfgPivot } from '../facet/utils';
-import { BaseRowCell } from './base-row-cell';
 import type { RowHeaderConfig } from '../facet/header';
+import { BaseRowCell } from './base-row-cell';
 
 /**
  * Adapting the frozen first row for cells pivot table
@@ -29,12 +29,14 @@ export class RowCell extends BaseRowCell {
   ): number {
     const correctY = textArea.y - this.getFrozenFirstRowHeight();
     let adjustTextAreaHeight = textArea.height;
+
     if (
       !this.spreadsheet.facet.vScrollBar &&
       correctY + textArea.height > scrollY + viewportHeight
     ) {
       adjustTextAreaHeight = scrollY + viewportHeight - correctY;
     }
+
     return adjustTextAreaHeight;
   }
 
@@ -47,6 +49,7 @@ export class RowCell extends BaseRowCell {
   }): number {
     const { scrollY, viewportHeight } = this.headerConfig;
     const { fontSize } = this.getTextStyle();
+
     return getAdjustPosition(
       textArea.y,
       adjustTextAreaHeight,
@@ -69,12 +72,14 @@ export class RowCell extends BaseRowCell {
       // frozen row cell
       return 0;
     }
+
     const { spreadsheet } = this.headerConfig;
     const { facet } = spreadsheet;
     const { frozenRowHeight } = getFrozenRowCfgPivot(
       spreadsheet.options,
       facet?.layoutResult?.rowNodes,
     );
+
     return frozenRowHeight;
   }
 }

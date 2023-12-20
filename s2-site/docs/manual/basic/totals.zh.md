@@ -94,7 +94,6 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 
 object **必选**,_default：null_ 功能描述： 小计总计算配置
 
-<<<<<<< HEAD
 | 参数                | 说明                     | 类型         | 默认值 | 必选 |
 | ------------------- | ------------------------ | ------------ | ------ | ---- |
 | showGrandTotals     | 是否显示总计             | `boolean`    | false  | ✓    |
@@ -106,21 +105,6 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | subLabel            | 小计别名                 | `string`     |        |      |
 | calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
-=======
-| 参数                                     | 说明                                                 | 类型           | 默认值                | 必选 |
-|----------------------------------------|----------------------------------------------------|--------------|--------------------| ---- |
-| showGrandTotals                        | 是否显示总计                                             | `boolean`    | false              | ✓    |
-| showSubTotals                          | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示。 | `boolean     | { always: boolean }` | false  | ✓    |
-| subTotalsDimensions                    | 小计的汇总维度                                            | `string[]`   | []                 | ✓    |
-| reverseLayout                          | 总计布局位置，默认下或右                                       | `boolean`    | false              | ✓    |
-| reverseSubLayout                       | 小计布局位置，默认下或右                                       | `boolean`    | false              | ✓    |
-| label                                  | 总计别名                                               | `string`     |                    |      |
-| subLabel                               | 小计别名                                               | `string`     |                    |      |
-| calcTotals                             | 计算总计                                               | `CalcTotals` |                    |      |
-| calcSubTotals                          | 计算小计                                               | `CalcTotals` |                    |      |
-| totalsGroupDimensions                  | 总计的分组维度                                            |`string[]`    |                    |      |
-| subTotalsGroupDimensions               | 小计的分组维度                                            |  `string[]`            |                    |      |
->>>>>>> origin/master
 
 ```ts
 const s2Options = {
@@ -203,30 +187,6 @@ const s2DataConfig = {
 }
 ```
 
-<<<<<<< HEAD
-=======
-##### 方式二：传入 totalData
-
-```ts
-const s2DataConfig = {
-  data: [
-    {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
-    },
-  ],
-  totalData: [
-    // 总计/总计
-    {
-      price: '15.5',
-    },
-  ]
-}
-```
-
->>>>>>> origin/master
 #### 2. 计算出数据
 
 可以给 `totals` 下的 `row` 、 `col` 分别配置属性 `calcGrandTotals` 、 `calcSubTotals` 来实现计算汇总数据
@@ -235,7 +195,6 @@ const s2DataConfig = {
 
 通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）和 `AVG` （算术平均）。 [查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#calculate)
 
-<<<<<<< HEAD
 ```ts
 const s2Options = {
   totals: {
@@ -268,15 +227,11 @@ const s2Options = {
   },
 };
 ```
-=======
-<Playground path='analysis/totals/demo/calculate.ts' rid='pivot-total-group' height='400'></playground>
->>>>>>> origin/master
 
 <br/>
 
 ##### 2.2. 配置自定义方法
 
-<<<<<<< HEAD
 ```ts
 const s2Options = {
   totals: {
@@ -309,13 +264,6 @@ const s2Options = {
   },
 };
 ```
-=======
-通过配置 `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number` 来实现。[查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#custom)
-
-<Playground path='analysis/totals/demo/custom.ts' rid='pivot-total-group' height='400'></playground>
-
-<br/>
->>>>>>> origin/master
 
 ### 优先级
 

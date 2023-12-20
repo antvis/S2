@@ -1,27 +1,21 @@
 /**
  * table mode pivot test.
  */
-<<<<<<< HEAD
 import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
-=======
-import { Canvas } from '@antv/g-canvas';
-import { get, merge } from 'lodash';
->>>>>>> origin/master
+import { get } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
 import { ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-<<<<<<< HEAD
-=======
-import { DataCell, DEFAULT_STYLE, type Fields, Node } from '@/index';
->>>>>>> origin/master
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
-  customMerge,
+  DataCell,
   Node,
+  customMerge,
+  type Fields,
   type HiddenColumnsInfo,
   type S2DataConfig,
   type S2Options,
@@ -67,27 +61,18 @@ jest.mock('@/sheet-type', () => {
           getHiddenColumnsInfo: jest.fn(),
           getColNodeHeight: jest.fn(),
         },
+        dataSet: {
+          isEmpty: jest.fn(),
+        },
         isHierarchyTreeType: jest.fn(),
-<<<<<<< HEAD
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
-=======
-        facet: {
-          getFreezeCornerDiffWidth: jest.fn(),
-          layoutResult: {
-            rowLeafNodes: [],
-          },
-          getHiddenColumnsInfo: jest.fn(),
-        },
-        getCanvasElement: () => container.get('el'),
->>>>>>> origin/master
         hideTooltip: jest.fn(),
         interaction: {
           clearHoverTimer: jest.fn(),
           getState: jest.fn(),
           getCells: jest.fn(() => []),
         },
-<<<<<<< HEAD
         enableFrozenHeaders() {
           return false;
         },
@@ -99,11 +84,6 @@ jest.mock('@/sheet-type', () => {
         isCustomColumnFields: jest.fn(),
         measureTextWidthRoughly: jest.fn(),
         measureTextWidth: jest.fn(),
-=======
-        dataSet: {
-          isEmpty: jest.fn(),
-        },
->>>>>>> origin/master
       };
     }),
   };
@@ -119,15 +99,10 @@ jest.mock('@/data-set/table-data-set', () => {
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
         getDisplayDataSet: jest.fn(() => data),
-<<<<<<< HEAD
-        getFieldFormatter: jest.fn(),
-        getCellData: () => 1,
-=======
         getCellData: () => 1,
         getFieldMeta: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         isEmpty: jest.fn(),
->>>>>>> origin/master
       };
     }),
   };
@@ -216,6 +191,7 @@ describe('Table Mode Facet Test', () => {
       on: jest.fn(),
     });
     const mockDataSet = new MockTableDataSet(spreadsheet);
+
     spreadsheet.dataSet = mockDataSet;
 
     const newFacet: TableFacet = new TableFacet({

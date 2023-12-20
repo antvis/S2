@@ -15,7 +15,6 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-<<<<<<< HEAD
         enable: true,
         rowCell: {
           enable: false,
@@ -23,26 +22,11 @@ fetch(
       },
     };
 
-    const CustomTooltip = () => <div>demo</div>;
-
-    const onColCellClick = (cellInfo: TargetCellInfo) => {
-      if (!cellInfo?.viewMeta) {
-        return;
-      }
-      const { spreadsheet, id } = cellInfo.viewMeta;
-      if (id === 'root[&]家具') {
-        const position = {
-          x: cellInfo.event.clientX,
-          y: cellInfo.event.clientY,
-=======
-        showTooltip: true,
-      },
-    };
-
     const onColCellClick = ({ viewMeta, event }) => {
       if (!viewMeta) {
         return;
       }
+
       const { spreadsheet, id } = viewMeta;
 
       // 点击列头的 [家具] 试试
@@ -50,7 +34,6 @@ fetch(
         const position = {
           x: event.clientX,
           y: event.clientY,
->>>>>>> origin/master
         };
 
         // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions

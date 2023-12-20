@@ -76,17 +76,6 @@ import React from "react";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
-<<<<<<< HEAD
-ReactDOM.render(
-  <SheetComponent
-    sheetType="strategy"
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
-
-=======
 const App = () => {
   return (
     <SheetComponent
@@ -96,7 +85,6 @@ const App = () => {
     />
   )
 }
->>>>>>> origin/master
 ```
 
 <Playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>

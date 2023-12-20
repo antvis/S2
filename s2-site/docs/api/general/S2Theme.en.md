@@ -123,7 +123,6 @@ Function description: scroll bar style
 
 Function description: Split line style
 
-<<<<<<< HEAD
 | parameter                    | illustrate                                                                                        | type                                 | Defaults                                                 | required |
 | ---------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------- | -------- |
 | horizontalBorderColor        | Horizontal divider color                                                                          | `string`                             | -                                                        |          |
@@ -135,20 +134,6 @@ Function description: Split line style
 | showShadow                   | Whether to display the outer shadow of the dividing line (in the case of frozen rows and columns) | `boolean`                            | `true`                                                   |          |
 | shadowWidth                  | shadow width                                                                                      | `number`                             | 10                                                       |          |
 | shadowColors                 | `left` : change the left color linearly<br>`right` : change the color of the right side linearly  | `{left: string,`<br>`right: string}` | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` |          |
-=======
-| parameter                    | illustrate                                                                                        | type                              | Defaults                                              | required |
-| :--------------------------- | :------------------------------------------------------------------------------------------------ | :-------------------------------- | :---------------------------------------------------- | :------: |
-| horizontalBorderColor        | Horizontal divider color                                                                          | `string`                          | -                                                     |          |
-| horizontalBorderColorOpacity | Horizontal divider color transparency                                                             | `number`                          | 0.2                                                   |          |
-| horizontalBorderWidth        | Horizontal split line width                                                                       | `number`                          | 2                                                     |          |
-| verticalBorderColor          | vertical line color                                                                               | `string`                          | -                                                     |          |
-| verticalBorderColorOpacity   | Vertical split line color transparency                                                            | `number`                          | 0.25                                                  |          |
-| verticalBorderWidth          | Vertical dividing line width                                                                      | `number`                          | 2                                                     |          |
-| showShadow                   | Whether to display the outer shadow of the dividing line (in the case of frozen rows and columns) | `boolean`                         | `true`                                                |          |
-| shadowWidth                  | shadow width                                                                                      | `number`                          | 10                                                    |          |
-| shadowColors                 | `left` : change the left color linearly `right` : change the color of the right side linearly     | `{left: string,` `right: string}` | `{left: 'rgba(0,0,0,0.1)',` `right: 'rgba(0,0,0,0)'}` |          |
-| borderDash                 | Split line dash | `number[]` | `[]` |      |
->>>>>>> origin/master
 
 #### TextTheme
 
@@ -173,7 +158,6 @@ Function Description: Text Theme
 
 Function description: Cell general theme
 
-<<<<<<< HEAD
 | parameter                    | illustrate                                | type                                            | Defaults | required |
 | ---------------------------- | ----------------------------------------- | ----------------------------------------------- | -------- | -------- |
 | crossBackgroundColor         | Cardinal row cell background color        | `string`                                        | -        |          |
@@ -187,24 +171,6 @@ Function description: Cell general theme
 | verticalBorderWidth          | cell vertical border width                | `number`                                        | -        |          |
 | padding                      | cell padding                              | [Padding](#margin--padding)                     | -        |          |
 | interactionState             | cell interaction state                    | [InteractionStateTheme](#interactionstatetheme) | -        |          |
-=======
-| parameter                    | illustrate                                                              | type                                            | Defaults | required |
-| :--------------------------- | :---------------------------------------------------------------------- | :---------------------------------------------- | :------- | :------: |
-| crossBackgroundColor         | Cardinal row cell background color                                      | `string`                                        | -        |          |
-| backgroundColor              | cell background color                                                   | `string`                                        | -        |          |
-| backgroundColorOpacity       | Cell background color transparency                                      | `number`                                        | 1        |          |
-| horizontalBorderColor        | Cell horizontal border color                                            | `string`                                        | -        |          |
-| horizontalBorderColorOpacity | Cell horizontal border color transparency                               | `number`                                        | 1        |          |
-| horizontalBorderWidth        | Cell horizontal border width                                            | `number`                                        | -        |          |
-| verticalBorderColor          | Cell vertical border color                                              | `string`                                        | -        |          |
-| verticalBorderColorOpacity   | Cell vertical border color transparency                                 | `number`                                        | 1        |          |
-| verticalBorderWidth          | cell vertical border width                                              | `number`                                        | -        |          |
-| padding                      | cell padding                                                            | [Padding](#margin--padding)                     | -        |          |
-| interactionState             | cell interaction state                                                  | [InteractionStateTheme](#interactionstatetheme) | -        |          |
-| miniBarChartHeight           | In-Cell Conditional Formatting - Sparkline Bar Height                   | `number`                                        | 12       |          |
-| miniBarChartFillColor        | In-cell conditional formatting - default fill color for mini bar charts | `string`                                        | -        |          |
-| borderDash        | cell border dash | `number[]`                                        | `[]`      |      |
->>>>>>> origin/master
 
 #### IconTheme
 

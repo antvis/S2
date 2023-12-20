@@ -92,37 +92,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   beforeEach(async () => {
     MockRootInteraction.mockClear();
 
-<<<<<<< HEAD
     const mockColLeafNodes = Array.from(new Array(10)).map((_, idx) => {
-=======
-    mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
-      null,
-      null,
-    );
-    mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.foregroundGroup = new Group('');
-    mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
-    mockRootInteraction.getPanelGroupAllDataCells = () =>
-      panelGroupAllDataCells;
-    mockRootInteraction.getSelectedCellHighlight = () => ({
-      rowHeader: false,
-      colHeader: false,
-      currentRow: false,
-      currentCol: false,
-    });
-    mockSpreadSheetInstance.interaction = mockRootInteraction;
-    mockRootInteraction.getBrushSelection = () => ({
-      data: true,
-      row: true,
-      col: true,
-    });
-    mockSpreadSheetInstance.render();
-    mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
-      new Array(10),
-    ).map((_, idx) => {
->>>>>>> origin/master
       return {
         colIndex: idx,
         id: idx,

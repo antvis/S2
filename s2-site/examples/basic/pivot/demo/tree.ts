@@ -7,15 +7,7 @@ fetch(
   .then((dataCfg) => {
     const container = document.getElementById('container');
 
-<<<<<<< HEAD
     const s2Options: S2Options = {
-      width: 600,
-      height: 480,
-      hierarchyType: 'tree',
-    };
-
-=======
-    const s2Options = {
       width: 600,
       height: 480,
       hierarchyType: 'tree',
@@ -33,7 +25,6 @@ fetch(
       // frozenRowHeader: true
     };
 
->>>>>>> origin/master
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();

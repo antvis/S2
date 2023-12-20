@@ -3,13 +3,6 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
-<<<<<<< HEAD
-import type { GEvent } from '@/index';
-=======
-import type { Event as GEvent } from '@antv/g-canvas';
-import type { InteractionCellHighlight, S2Options } from '@/common/interface';
->>>>>>> origin/master
-import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
   InteractionName,
@@ -17,7 +10,10 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
+import type { InteractionCellHighlight } from '@/common/interface';
 import { CustomRect } from '@/engine';
+import type { GEvent } from '@/index';
+import type { SpreadSheet } from '@/sheet-type';
 
 jest.mock('@/interaction/event-controller');
 
@@ -100,6 +96,7 @@ describe('Interaction Data Cell Click Tests', () => {
       .mockImplementationOnce(() => true);
 
     const selected = jest.fn();
+
     s2.on(S2Event.GLOBAL_SELECTED, selected);
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
@@ -197,8 +194,6 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(s2.interaction.isHoverFocusState()).toBeFalsy();
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
   });
-<<<<<<< HEAD
-=======
 
   test('should highlight the column header cell and row header cell when data cell clicked', () => {
     const headerCellId0 = 'header-0';
@@ -225,12 +220,14 @@ describe('Interaction Data Cell Click Tests', () => {
         id: headerCellId1,
       },
     ];
+
     s2.getColumnNodes = jest.fn(() => columnNode) as any;
     s2.getRowNodes = jest.fn(() => []);
 
     const firstDataCellInfo = createMockCellInfo(
       `${headerCellId0}[&]first-data-cell`,
     );
+
     s2.getCell = () => firstDataCellInfo.mockCell as any;
 
     s2.setOptions({
@@ -264,5 +261,4 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
     expect(s2.interaction.getAllRowHeaderCells).toHaveBeenCalled();
   });
->>>>>>> origin/master
 });

@@ -1,13 +1,15 @@
 import type { Canvas } from '@antv/g';
-import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { get } from 'lodash';
+import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
   CellType,
+  ColCellBrushSelection,
   CornerCellClick,
   DataCell,
+  DataCellBrushSelection,
   DataCellClick,
   DataCellMultiSelection,
   GuiIcon,
@@ -17,23 +19,15 @@ import {
   InterceptType,
   MergedCell,
   MergedCellClick,
+  Node,
   RangeSelection,
+  RowCellBrushSelection,
   RowColumnClick,
   RowColumnResize,
   RowTextClick,
-  type S2Options,
   SelectedCellMove,
   SpreadSheet,
-  Node,
-  DataCellBrushSelection,
-<<<<<<< HEAD
-  ColCellBrushSelection,
-  RowCellBrushSelection,
-=======
-  ColBrushSelection,
-  RowBrushSelection,
-  S2Event,
->>>>>>> origin/master
+  type S2Options,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';

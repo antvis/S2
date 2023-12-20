@@ -1,3 +1,4 @@
+import type { PointLike } from '@antv/g';
 import type { SimpleBBox } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get, merge } from 'lodash';
@@ -8,18 +9,19 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellClipBox, type AreaRange, type ViewMeta } from '../common/interface';
+import {
+  CellClipBox,
+  type AreaRange,
+  type ViewMeta,
+} from '../common/interface';
 import { CustomRect } from '../engine';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getHorizontalTextIconPosition,
-  getVerticalIconPosition
+  getVerticalIconPosition,
 } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
-import {
-  renderCircle,
-  renderTreeIcon
-} from '../utils/g-renders';
+import { renderCircle, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
   getOrCreateResizeAreaGroupById,
@@ -96,7 +98,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
       return;
     }
 
-    return (this.meta.parent?.belongsCell as RowCell).getTreeIcon()?.getCfg()
+    return (this.meta.parent?.belongsCell as RowCell).getTreeIcon()?.getCfg();
   }
 
   private onTreeIconClick() {
@@ -129,14 +131,14 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     this.emitCollapseEvent();
   }
 
-   private emitCollapseEvent() {
+  private emitCollapseEvent() {
     this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, {
       isCollapsed: !this.meta.isCollapsed,
       node: this.meta,
     });
   }
 
-   protected drawTreeIcon() {
+  protected drawTreeIcon() {
     if (!this.showTreeIcon()) {
       return;
     }
@@ -176,6 +178,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
 
   protected drawTreeLeafNodeAlignDot() {
     const parentTreeIconCfg = this.getParentTreeIconCfg();
+
     if (!parentTreeIconCfg) {
       return;
     }
@@ -185,20 +188,24 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     const textY = this.getTextPosition().y;
 
     const { fill, fontSize } = this.getTextStyle();
-    const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    const r = size / 5;
 
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      cx: x + size / 2, // 和收起展开 icon 保持居中对齐
+      // 和收起展开 icon 保持居中对齐
+      cx: x + size / 2,
       cy: textY + (fontSize! - r) / 2,
       r,
       fill,
-      fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
+      // 暂时先写死，后面看是否有这个点点的定制需求
+      fillOpacity: 0.3,
     });
   }
 
   protected isBolderText() {
     // 非叶子节点、小计总计，均为粗体
     const { isLeaf, isTotals, level } = this.meta;
+
     return (!isLeaf && level === 0) || isTotals;
   }
 
@@ -209,6 +216,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
 
   protected getResizeClipAreaBBox(): SimpleBBox {
     const { width, viewportHeight } = this.headerConfig;
+
     return {
       x: 0,
       y: 0,
@@ -305,15 +313,18 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     if (!this.spreadsheet.isHierarchyTreeType()) {
       return 0;
     }
+
     const { icon, cell } = this.getStyle();
     const iconWidth = icon.size + icon.margin.right;
 
     let parent = this.meta.parent;
     let sum = 0;
+
     while (parent) {
       if (parent.height !== 0) {
         sum += iconWidth;
       }
+
       parent = parent.parent;
     }
     if (this.showTreeLeafNodeAlignDot()) {
@@ -331,6 +342,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
       (this.isTreeLevel() && this.showTreeLeafNodeAlignDot())
         ? size + margin.right
         : 0;
+
     return contentIndent + treeIconWidth;
   }
 
@@ -348,7 +360,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     return width - this.getTextIndent() - this.getActionAndConditionIconWidth();
   }
 
- protected getTextArea(): SimpleBBox {
+  protected getTextArea(): SimpleBBox {
     const content = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textIndent = this.getTextIndent();
 
@@ -365,12 +377,14 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     viewportHeight: number,
   ): number {
     let adjustTextAreaHeight = textArea.height;
+
     if (
       !this.spreadsheet.facet.vScrollBar &&
       textArea.y + textArea.height > scrollY + viewportHeight
     ) {
       adjustTextAreaHeight = scrollY + viewportHeight - textArea.y;
     }
+
     return adjustTextAreaHeight;
   }
 
@@ -383,6 +397,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
   }): number {
     const { scrollY, viewportHeight } = this.headerConfig;
     const { fontSize } = this.getTextStyle();
+
     return getAdjustPosition(
       textArea.y,
       adjustTextAreaHeight,
@@ -392,7 +407,7 @@ export class BaseRowCell extends HeaderCell<RowHeaderConfig> {
     );
   }
 
-protected getTextPosition(): PointLike {
+  protected getTextPosition(): PointLike {
     const { scrollY, viewportHeight } = this.getHeaderConfig();
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();

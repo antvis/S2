@@ -1,5 +1,6 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import { PivotSheet } from '../../src';
 import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
@@ -10,12 +11,8 @@ const s2Options: S2Options = {
 
 describe('SpreadSheet Tree Mode Tests', () => {
   let container: HTMLElement;
-<<<<<<< HEAD
 
-  beforeAll(() => {
-=======
   beforeEach(() => {
->>>>>>> origin/master
     container = getContainer();
   });
 
@@ -27,16 +24,11 @@ describe('SpreadSheet Tree Mode Tests', () => {
     test('should re-calc row header width', async () => {
       const s2 = createPivotSheet(s2Options);
 
-<<<<<<< HEAD
       await s2.render();
 
       const rowsHierarchyWidth = s2.facet.getLayoutResult().rowsHierarchy.width;
 
-      expect(Math.round(rowsHierarchyWidth)).toEqual(120);
-=======
-      const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;
       expect(Math.round(rowsHierarchyWidth)).toEqual(124);
->>>>>>> origin/master
 
       // 行头维度均更改为较长的 name
       const newDataCfg: S2DataConfig = {
@@ -82,16 +74,18 @@ describe('SpreadSheet Tree Mode Tests', () => {
         ...s2Options,
         headerActionIcons: [
           {
-            iconNames: ['SortDownSelected'],
+            icons: ['SortDownSelected'],
             belongsCell: 'cornerCell',
           },
         ],
       };
       const s2 = new PivotSheet(container, newDataCfg, newS2Options);
+
       s2.render();
 
       // 检查文本是否只有一行
       const textLen = s2.facet.cornerHeader.cfg.children[0].textShapes.length;
+
       expect(textLen).toEqual(1);
     });
   });

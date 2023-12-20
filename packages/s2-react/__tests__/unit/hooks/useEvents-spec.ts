@@ -3,11 +3,7 @@ import {
   PivotSheet,
   S2Event,
   SpreadSheet,
-<<<<<<< HEAD
-  GEvent,
   type S2DataConfig,
-=======
->>>>>>> origin/master
   type S2Options,
 } from '@antv/s2';
 import { act, renderHook } from '@testing-library/react-hooks';

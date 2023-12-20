@@ -7,7 +7,7 @@ import type {
   MergedCell,
   RowCell,
   TableCornerCell,
-  TableSeriesNumberCell
+  TableSeriesNumberCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { SeriesNumberCell } from '../../cell/series-number-cell';
@@ -256,6 +256,11 @@ export interface InteractionOptions {
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
    */
   overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
+
+  /**
+   * 表格滚动后是否触发 hover
+   */
+  hoverAfterScroll?: boolean;
 
   /**
    * 自定义交互

@@ -1,13 +1,10 @@
 import { assembleDataCfg } from 'tests/util';
-<<<<<<< HEAD
 import type { RawData } from '../../../src/common';
 import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
-=======
 import {
   getExistValues,
   transformIndexesData,
 } from '@/utils/dataset/pivot-data-set';
->>>>>>> origin/master
 
 /**
  * 获取 Mock 数据

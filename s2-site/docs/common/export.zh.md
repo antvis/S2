@@ -44,7 +44,7 @@ const data = copyData(spreadsheet, '\t', false)
 | spreadsheet | s2 实例                                 | [SpreadSheet](/docs/api/basic-class/spreadsheet)                               |               | ✓    |
 | split       | 分隔符                                   | `string`                                                                       |               | ✓    |
 | formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 | <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code> | `false`       |      |
-| customTransformer  | 导出时支持自定义(transformer)数据导出格式化方法        | <code> (transformer: Transformer) => Partial<Transformer> </code>              | `transformer` |      |
+| customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法        | <code> (transformer: Transformer) => Partial<Transformer> </code>              | `transformer` |      |
 | isAsyncExport  | 是否异步导出        | boolean                                                                        | false         |      |
 
 ### copyToClipboard
@@ -61,7 +61,6 @@ const data = copyData(spreadsheet, '\t', false)
 | data     | 数据源 | `string` |        | ✓    |
 | filename | 文件名称 | `string` |        | ✓    |
 
-<<<<<<< HEAD
 ### Transformer
 
 ```ts
@@ -73,27 +72,5 @@ export interface Transformer {
 
 | 参数 | 说明     | 类型                       | 默认值 | 必选 |
 | --- | --- |--------------------------|-----| --- |
-| type | 复制内容的MIMEType | `CopyMIMEType`           |     | ✓    |
+| type | 复制内容的 MIMEType | `CopyMIMEType`           |     | ✓    |
 | transformer | 处理函数 | `MatrixHTMLTransformer | MatrixPlainTransformer`   |      |   ✓   |
-=======
-### registerTransformer
-
-```ts
-enum CopyMIMEType {
-  PLAIN = 'text/plain',
-  HTML = 'text/html',
-}
-
-type MatrixTransformer = (data: string[][]) => CopyableItem;
-
-type CopyableItem = {
-  type: CopyMIMEType;
-  content: string;
-};
-```
-
-| 参数 | 说明     | 类型     | 默认值 | 必选 |
-| --- | --- | ------- | ----- | --- |
-| type | 复制内容的 MIMEType | `CopyMIMEType` |        | ✓    |
-| transformer | 处理函数 | `MatrixTransformer` |      |   ✓   |
->>>>>>> origin/master

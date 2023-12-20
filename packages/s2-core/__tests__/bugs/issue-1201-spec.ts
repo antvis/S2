@@ -4,15 +4,12 @@
  * https://github.com/antvis/S2/issues/1201
  * fillOpacity
  */
-<<<<<<< HEAD
-=======
-import type { Group, IGroup } from '@antv/g-canvas';
->>>>>>> origin/master
-import { getContainer } from '../util/helpers';
+import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-292.json';
+import { getContainer } from '../util/helpers';
 import { PivotSheet } from '@/sheet-type';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
 };
@@ -50,13 +47,9 @@ describe('background color opacity test', () => {
     expect(cornerCell.backgroundShape.attr('fillOpacity')).toEqual(0.1);
 
     // row cell
-<<<<<<< HEAD
-    const rowCell = s2.facet.rowHeader!.children[0];
+    const rowHeaderScrollGroup = s2.facet.rowHeader?.children[0];
+    const rowCell = rowHeaderScrollGroup?.children?.[0];
 
-=======
-    const rowHeaderScrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
-    const rowCell = rowHeaderScrollGroup.getFirst();
->>>>>>> origin/master
     // @ts-ignore
     expect(rowCell.backgroundShape.attr('fillOpacity')).toEqual(0.2);
 

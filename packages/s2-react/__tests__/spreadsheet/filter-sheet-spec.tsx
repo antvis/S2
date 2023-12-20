@@ -1,63 +1,20 @@
 /* eslint-disable no-console */
-import {
-<<<<<<< HEAD
-  DeviceType,
-  S2Event,
-  SpreadSheet,
-  TableSheet,
-  type S2DataConfig,
-  type S2MountContainer,
-=======
-  S2Event,
-  SpreadSheet,
-  type S2DataConfig,
->>>>>>> origin/master
-  type S2Options,
-} from '@antv/s2';
+import { DeviceType, S2Event, SpreadSheet, type S2DataConfig } from '@antv/s2';
 import { Button, Space } from 'antd';
 import React from 'react';
-<<<<<<< HEAD
-import { act } from 'react-dom/test-utils';
-import { getMockData, renderComponent, sleep } from '../util/helpers';
 import {
-  SheetComponent,
-  type SheetComponentOptions,
-  type SheetComponentsProps,
-} from '@/components';
+  getContainer,
+  getMockData,
+  renderComponent,
+  sleep,
+} from '../util/helpers';
+import { SheetComponent, type SheetComponentOptions } from '@/components';
 
-=======
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData, sleep } from '../util/helpers';
-import { SheetComponent } from '@/components';
-
-import 'antd/dist/antd.min.css';
-
->>>>>>> origin/master
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let s2: SpreadSheet;
 
-<<<<<<< HEAD
-const onMounted =
-  (ref: React.MutableRefObject<SpreadSheet | undefined>) =>
-  (
-    dom: S2MountContainer,
-    dataCfg: S2DataConfig,
-    options: SheetComponentsProps['options'],
-  ) => {
-    const s2 = new TableSheet(dom, dataCfg, options as S2Options);
-
-    ref.current = s2;
-    spreadSheet = s2;
-
-    return s2;
-  };
-
-const columns = [
-=======
 const columns: string[] = [
->>>>>>> origin/master
   'order_id',
   'order_date',
   'ship_date',
@@ -77,7 +34,7 @@ const columns: string[] = [
   'profit',
 ];
 
-const meta = [
+const meta: S2DataConfig['meta'] = [
   {
     field: 'count',
     name: '销售个数',
@@ -111,7 +68,6 @@ function MainLayout() {
         height: 32,
       },
     },
-<<<<<<< HEAD
     frozen: {
       rowCount: 2,
       colCount: 1,
@@ -121,14 +77,6 @@ function MainLayout() {
     tooltip: {
       enable: true,
       operation: {},
-=======
-    frozenRowCount: 2,
-    frozenColCount: 1,
-    frozenTrailingColCount: 1,
-    frozenTrailingRowCount: 1,
-    tooltip: {
-      showTooltip: true,
->>>>>>> origin/master
     },
   };
 
@@ -171,20 +119,6 @@ function MainLayout() {
 }
 
 describe('table sheet filter spec', () => {
-<<<<<<< HEAD
-  renderComponent(<MainLayout />);
-
-  test('filter customer_type values', async () => {
-    spreadSheet.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'customer_type',
-      filteredValues: ['消费者'],
-    });
-
-    await sleep(50);
-
-    expect(spreadSheet.facet.getCellRange()).toStrictEqual({
-      end: 467,
-=======
   let container: HTMLDivElement;
   const filterKey = 'customer_type';
   const filteredValue = '消费者';
@@ -192,9 +126,7 @@ describe('table sheet filter spec', () => {
   beforeEach(() => {
     container = getContainer();
 
-    act(() => {
-      ReactDOM.render(<MainLayout />, container);
-    });
+    renderComponent(<MainLayout />);
   });
 
   afterEach(() => {
@@ -211,29 +143,22 @@ describe('table sheet filter spec', () => {
 
     expect(s2.facet.getCellRange()).toStrictEqual({
       end: 465,
->>>>>>> origin/master
       start: 0,
     });
     expect(s2.dataSet.getDisplayDataSet()).toHaveLength(466);
     expect(
       s2.dataSet
         .getDisplayDataSet()
-        .some((item) => item.customer_type === filteredValue),
+        .some((item) => item['customer_type'] === filteredValue),
     ).toBeFalsy();
   });
 
   test('reset filter params on customer_type', async () => {
-<<<<<<< HEAD
-    spreadSheet.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'customer_type',
-      filteredValues: ['消费者'],
-=======
     await sleep(1000);
 
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey,
       filteredValues: [filteredValue],
->>>>>>> origin/master
     });
 
     s2.emit(S2Event.RANGE_FILTER, {
@@ -241,13 +166,7 @@ describe('table sheet filter spec', () => {
       filteredValues: [],
     });
 
-<<<<<<< HEAD
-    await sleep(50);
-
-    expect(spreadSheet.facet.getCellRange()).toStrictEqual({
-=======
     expect(s2.facet.getCellRange()).toStrictEqual({
->>>>>>> origin/master
       end: 999,
       start: 0,
     });
@@ -255,23 +174,19 @@ describe('table sheet filter spec', () => {
   });
 
   test('filtered event fired with new data', async () => {
-<<<<<<< HEAD
     let dataLength = 0;
 
-    spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
-      dataLength = data.length;
-=======
     await sleep(1000);
 
     s2.on(S2Event.RANGE_FILTERED, (data) => {
+      dataLength = data.length;
       expect(data.length).toStrictEqual(466);
       expect(s2.dataSet.getDisplayDataSet()).toHaveLength(466);
       expect(
         s2.dataSet
           .getDisplayDataSet()
-          .some((item) => item.customer_type === filteredValue),
+          .some((item) => item['customer_type'] === filteredValue),
       ).toBeFalsy();
->>>>>>> origin/master
     });
 
     s2.emit(S2Event.RANGE_FILTER, {
@@ -285,22 +200,12 @@ describe('table sheet filter spec', () => {
   });
 
   test('falsy/nullish data should not be filtered with irrelevant filter params', async () => {
-<<<<<<< HEAD
     let dataLength = 0;
 
-    spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
-      dataLength = data.length;
-    });
-
-    act(() => {
-      spreadSheet.emit(S2Event.RANGE_FILTER, {
-        filterKey: 'express_type',
-        filteredValues: ['消费者'],
-      });
-=======
     await sleep(1000);
 
     s2.on(S2Event.RANGE_FILTERED, (data) => {
+      dataLength = data.length;
       expect(data.length).toStrictEqual(1000);
       expect(s2.dataSet.getDisplayDataSet()).toHaveLength(1000);
     });
@@ -308,7 +213,6 @@ describe('table sheet filter spec', () => {
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey: 'express_type',
       filteredValues: ['消费者'],
->>>>>>> origin/master
     });
 
     await sleep(50);

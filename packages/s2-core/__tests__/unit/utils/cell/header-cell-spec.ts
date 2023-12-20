@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import type { Node } from '@antv/s2';
 import { CellType, type HeaderActionIcon } from '@/common';
-=======
-import type { Node } from '../../../../src';
-import { CellTypes, type HeaderActionIcon } from '@/common';
->>>>>>> origin/master
 import { getActionIconConfig } from '@/utils/cell/header-cell';
 
 describe('Header Cell Utils Tests', () => {

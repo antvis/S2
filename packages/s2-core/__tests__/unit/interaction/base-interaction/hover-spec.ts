@@ -32,11 +32,7 @@ describe('Interaction Hover Tests', () => {
   const mockTooltipParams = [
     [{ value: undefined, valueField: undefined }],
     {
-<<<<<<< HEAD
-=======
       enableFormat: true,
-      enterable: true,
->>>>>>> origin/master
       hideSummary: true,
       isTotals: undefined,
       onlyShowCellText: true,
@@ -59,7 +55,6 @@ describe('Interaction Hover Tests', () => {
       isTextOverflowing: jest.fn(() => true),
       getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
-      isTextOverflowing: () => true,
       cellType: 'dataCell',
     }) as any;
 
@@ -118,8 +113,8 @@ describe('Interaction Hover Tests', () => {
   });
 
   test('should trigger data cell hover depend on separate config', async () => {
-    s2.interaction.getAllColHeaderCells = jest.fn();
-    s2.interaction.getAllRowHeaderCells = jest.fn();
+    s2.facet.getColCells = jest.fn();
+    s2.facet.getRowCells = jest.fn();
 
     s2.setOptions({
       interaction: {
@@ -143,8 +138,8 @@ describe('Interaction Hover Tests', () => {
       stateName: InteractionStateName.HOVER_FOCUS,
     });
 
-    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
-    expect(s2.interaction.getAllRowHeaderCells).not.toHaveBeenCalled();
+    expect(s2.facet.getColCells).toHaveBeenCalled();
+    expect(s2.facet.getRowCells).not.toHaveBeenCalled();
   });
 
   test('should not trigger data cell hover when hover cell not change', () => {

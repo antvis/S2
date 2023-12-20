@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -381,9 +382,6 @@ describe('Scroll Tests', () => {
     },
   );
 
-<<<<<<< HEAD
-  test('should not trigger scroll event on passive renders', async () => {
-=======
   // https://github.com/antvis/S2/issues/2222
   test.each([
     {
@@ -440,8 +438,7 @@ describe('Scroll Tests', () => {
     },
   );
 
-  test('should not trigger scroll event on passive renders', () => {
->>>>>>> origin/master
+  test('should not trigger scroll event on passive renders', async () => {
     const sheet = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
     });
@@ -743,15 +740,6 @@ describe('Scroll Tests', () => {
       });
 
       canvas.dispatchEvent(wheelEvent);
-<<<<<<< HEAD
-
-      await sleep(1000);
-
-      expect(onScroll).toHaveBeenCalled();
-    });
-
-    it('should not change init body overscrollBehavior style when render and destroyed', async () => {
-=======
       await sleep(200);
       expect(onScroll).toHaveBeenCalled();
     });
@@ -780,8 +768,7 @@ describe('Scroll Tests', () => {
       expect(onScroll).not.toHaveBeenCalled();
     });
 
-    it('should not change init body overscrollBehavior style when render and destroyed', () => {
->>>>>>> origin/master
+    it('should not change init body overscrollBehavior style when render and destroyed', async () => {
       document.body.style.overscrollBehavior = 'none';
 
       const sheet = new PivotSheet(getContainer(), mockDataConfig, {
@@ -869,10 +856,10 @@ describe('Scroll Tests', () => {
   test('should not throw infinite error if spreadsheet is unmounted during scrolling', async () => {
     s2.setOptions({
       style: {
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
-        cellCfg: {
+        dataCell: {
           width: 30,
         },
       },
@@ -902,7 +889,7 @@ describe('Scroll Tests', () => {
 
     await sleep(500);
 
-    expect(errorSpy).toBeCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
   });
 
   // https://github.com/antvis/S2/issues/2376
@@ -915,8 +902,8 @@ describe('Scroll Tests', () => {
 
       const reset = jest.fn();
 
-      const scrollbar = s2.facet[scrollbarName] as ScrollBar;
-      const colCell = s2.getColumnLeafNodes()[0].belongsCell;
+      const scrollbar = get(s2.facet, scrollbarName) as ScrollBar;
+      const colCell = s2.facet.getColLeafNodes()[0].belongsCell!;
 
       s2.on(S2Event.GLOBAL_RESET, reset);
       s2.interaction.selectHeaderCell({
@@ -933,7 +920,7 @@ describe('Scroll Tests', () => {
         new MouseEvent('click', {
           clientX: x + scrollbar.position.x,
           // 在滚动条内点击
-          clientY: y + scrollbar.position.y + scrollbar.theme.size - 2,
+          clientY: y + scrollbar.position.y + scrollbar!.theme!.size! - 2,
         } as MouseEventInit),
       );
 

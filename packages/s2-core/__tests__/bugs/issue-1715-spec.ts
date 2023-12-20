@@ -4,6 +4,7 @@
  * https://github.com/antvis/S2/issues/1715
  * https://github.com/antvis/S2/issues/2049
  */
+
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/mock-dataset.json';
 import type { S2DataConfig, S2Options, SpreadSheet } from '../../src';
@@ -79,21 +80,12 @@ describe('Multi Values GrandTotal Height Test', () => {
     });
     await s2.render(true);
 
-<<<<<<< HEAD
     const grandTotalsNode = s2.facet
       .getColNodes()
-      .find((node) => node.isGrandTotals)!;
-
-    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(60);
-    expect(grandTotalsNode.height).toEqual(30);
-=======
-    const grandTotalsNode = s2
-      .getColumnNodes()
       .find((node) => node.isGrandTotals && node.isTotalRoot);
 
     // 有多个 Value 时不允许隐藏度量列
-    expect(s2.facet.layoutResult.colsHierarchy.height).toBe(90);
-    expect(grandTotalsNode.height).toEqual(60);
->>>>>>> origin/master
+    expect(s2.facet.getLayoutResult().colsHierarchy.height).toBe(90);
+    expect(grandTotalsNode!.height).toEqual(60);
   });
 });

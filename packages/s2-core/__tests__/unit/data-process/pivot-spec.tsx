@@ -6,10 +6,7 @@ import { flattenDeep, get, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
-<<<<<<< HEAD
 import type { ViewMeta } from '../../../src/common';
-=======
->>>>>>> origin/master
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';

@@ -45,12 +45,8 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标按下 | `S2Event.COL_CELL_MOUSE_DOWN`   | 列头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
-<<<<<<< HEAD
 | 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） |
 | 单元格渲染                 | `S2Event.COL_CELL_RENDER`       | 列头单元格布局渲染完成事件                  |
-=======
-| 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 |
->>>>>>> origin/master
 
 ### 数值单元格 (DataCell)
 
@@ -64,11 +60,8 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
-<<<<<<< HEAD
-| 单元格渲染                 | `S2Event.DATA_CELL_RENDER`       | 数值单元格布局渲染完成事件                  |
-=======
 | 键盘方向键移动           | `S2Event.DATA_CELL_SELECT_MOVE`  | 数值单元格键盘方向键移动                          |
->>>>>>> origin/master
+| 单元格渲染                 | `S2Event.DATA_CELL_RENDER`       | 数值单元格布局渲染完成事件                  |
 
 ### 角头单元格 (CornerCell)
 

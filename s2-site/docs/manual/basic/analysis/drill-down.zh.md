@@ -47,11 +47,7 @@ const PartDrillDown = {
     new Promise((resolve) => {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
-<<<<<<< HEAD
       const rowData = dataSet.getCellMultiData({ query: meta.query });
-=======
-      const rowDatas = dataSet.getMultiData(meta.query);
->>>>>>> origin/master
       const drillDownData = [];
 
       rowData.forEach((data) => {

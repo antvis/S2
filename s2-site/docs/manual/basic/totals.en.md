@@ -66,7 +66,6 @@ object is **required** , *default: null* Function description: subtotal total co
 
 object is **required** , *default: null* Function description: Subtotal calculation configuration
 
-<<<<<<< HEAD
 | parameter           | illustrate                                                                                                                                                                                 | type         | Defaults              | required |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | --------------------- | -------- |
 | showGrandTotals     | Whether to display the total                                                                                                                                                               | `boolean`    | false                 | ✓        |
@@ -78,23 +77,6 @@ object is **required** , *default: null* Function description: Subtotal calculat
 | subLabel            | subtotal alias                                                                                                                                                                             | `string`     |                       |          |
 | calcGrandTotals          | calculate the total                                                                                                                                                                        | `CalcTotals` |                       |          |
 | calcSubTotals       | calculate subtotal                                                                                                                                                                         | `CalcTotals` |                       |          |
-=======
-| parameter                                                                            | illustrate                                                                                            | type         | Defaults | required |     |
-|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|--------------|----------|----------|-----|
-| showGrandTotals                                                                      | Whether to display the total                                                                          | `boolean`    | false    | ✓        |     |
-| showSubTotals                                                                        | Whether to display subtotals. When configured as an object, always controls whether to always display |              |          |          |     |
-| subtotals when there are less than 2 subdimensions, and does not display by default. | `boolean \| { always: boolean }`                                                                      |              |          |          |     |
-| false                                                                                | ✓                                                                                                     |              |          |          |     |
-| subTotalsDimensions                                                                  | Summary Dimensions for Subtotals                                                                      | `string[]`   | []       | ✓        |     |
-| reverseLayout                                                                        | total layout position, default bottom or right                                                        | `boolean`    | false    | ✓        |     |
-| reverseSubLayout                                                                     | Subtotal layout position, default bottom or right                                                     | `boolean`    | false    | ✓        |     |
-| label                                                                                | total alias                                                                                           | `string`     |          |          |     |
-| subLabel                                                                             | subtotal alias                                                                                        | `string`     |          |          |     |
-| calcTotals                                                                           | calculate the total                                                                                   | `CalcTotals` |          |          |     |
-| calcSubTotals                                                                        | calculate subtotal                                                                                    | `CalcTotals` |          |          |     |
-| totalsGroupDimensions                  | grouping dimension of the total                                                                       |`string[]`    |                    |      |
-| subTotalsGroupDimensions               | grouping dimension of the subtotal                                                                    |  `string[]`            |                    |      |
->>>>>>> origin/master
 
 ```ts
 const s2Options = {
@@ -102,17 +84,9 @@ const s2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-<<<<<<< HEAD
       reverseGrandTotalsLayout: true,
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-=======
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: [ 'province' ],
-      totalsGroupDimensions: ['city'],
-      subTotalsGroupDimensions: ['type', 'sub_type'],
->>>>>>> origin/master
     },
     col: {
       showGrandTotals: true,

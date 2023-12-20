@@ -23,11 +23,7 @@ describe('TableSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-<<<<<<< HEAD
-  beforeAll(async () => {
-=======
-  beforeEach(() => {
->>>>>>> origin/master
+  beforeEach(async () => {
     container = getContainer();
     s2 = new TableSheet(container, dataCfg, s2Options);
     await s2.render();
@@ -244,7 +240,6 @@ describe('TableSheet Tests', () => {
     expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 
-<<<<<<< HEAD
   test('should render custom table facet', async () => {
     const mockRender = jest.fn();
 
@@ -266,9 +261,9 @@ describe('TableSheet Tests', () => {
 
     expect(sheet.facet).toBeInstanceOf(TableFacet);
     expect(mockRender).toHaveBeenCalledTimes(1);
-=======
+  });
+
   test('should get content height', () => {
     expect(s2.getContentHeight()).toEqual(120);
->>>>>>> origin/master
   });
 });

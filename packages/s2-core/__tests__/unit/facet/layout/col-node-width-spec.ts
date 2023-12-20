@@ -51,15 +51,9 @@ describe('Col width Test', () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
-<<<<<<< HEAD
       await s2.render();
 
-      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(339);
-=======
-      s2.render();
-      const { colLeafNodes } = s2.facet.layoutResult;
-      expect(Math.round(colLeafNodes[0].width)).toBe(338);
->>>>>>> origin/master
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(338);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode when enable series number', async () => {
@@ -67,15 +61,9 @@ describe('Col width Test', () => {
         hierarchyType: 'tree',
         showSeriesNumber: true,
       });
-<<<<<<< HEAD
       await s2.render();
 
-      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(299);
-=======
-      s2.render();
-      const { colLeafNodes } = s2.facet.layoutResult;
-      expect(Math.round(colLeafNodes[0].width)).toBe(298);
->>>>>>> origin/master
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(298);
     });
 
     test('get correct width in layoutWidthType compact mode', async () => {

@@ -1,9 +1,6 @@
 import { set } from 'lodash';
 import {
-<<<<<<< HEAD
-=======
   customFlattenDeep,
->>>>>>> origin/master
   getListBySorted,
   getAggregationAndCalcFuncByQuery,
   flattenIndexesData,
@@ -33,7 +30,6 @@ describe('Data Set Operate Test', () => {
     test('flatten out all data with all select type', () => {
       expect(flattenIndexesData(data, DataSelectType.All)).toBeArrayOfSize(6);
     });
-<<<<<<< HEAD
 
     test('flatten out total data with total only type', () => {
       expect(
@@ -46,8 +42,6 @@ describe('Data Set Operate Test', () => {
         flattenIndexesData(data, DataSelectType.DetailOnly),
       ).toBeArrayOfSize(4);
     });
-=======
->>>>>>> origin/master
   });
 
   describe('Dataset Operate Test GetListBySorted', () => {

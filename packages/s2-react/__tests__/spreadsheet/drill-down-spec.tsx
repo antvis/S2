@@ -34,11 +34,7 @@ const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
 
 const findDrillDownIcon = (instance: SpreadSheet) => {
   const rowHeaderActionIcons = get(
-<<<<<<< HEAD
-    (instance.facet.rowHeader?.children as RowCell[]).find(
-=======
-    (instance.facet.rowHeader.getChildren()[0].getChildren() as RowCell[]).find(
->>>>>>> origin/master
+    (instance.facet.rowHeader?.children[0].children as RowCell[]).find(
       (item) => item.getActualText() === '杭州',
     ),
     'actionIcons',

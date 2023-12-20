@@ -1,17 +1,11 @@
 import { difference, pick } from 'lodash';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
-<<<<<<< HEAD
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { waitForRender } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import { customColGridSimpleFields } from '../data/custom-grid-simple-fields';
 import { customColMultipleColumns } from '../data/custom-table-col-fields';
-=======
-import { createPivotSheet, getContainer } from 'tests/util/helpers';
-import { difference, get, pick } from 'lodash';
-import type { Node } from '@/facet/layout/node';
->>>>>>> origin/master
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { HiddenColumnsInfo, S2Options } from '@/common';
 
@@ -425,37 +419,38 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsInfo).toBeTruthy();
       expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
+
     // https://github.com/antvis/S2/issues/2355
-    test('should render correctly x and width after hide columns when there is only one value for the higher-level dimension.', () => {
+    test('should render correctly x and width after hide columns when there is only one value for the higher-level dimension.', async () => {
       const nodeId = 'root[&]笔[&]义乌[&]price';
 
       pivotSheet.setOptions({
         style: {
-          colCfg: {
+          colCell: {
             width: 100,
           },
         },
       });
       const data = pivotSheet.dataCfg.data.map((i) => ({ ...i, cost: 0 }));
+
       pivotSheet.setDataCfg({
         data,
         fields: {
           values: ['cost', 'price'],
         },
       });
-      pivotSheet.render();
+      await pivotSheet.render();
 
-      pivotSheet.interaction.hideColumns([nodeId]);
-      const rootNode = pivotSheet
-        .getColumnNodes()
-        .find((node) => node.id === 'root[&]笔');
+      await pivotSheet.interaction.hideColumns([nodeId]);
 
-      expect(rootNode.width).toEqual(300);
-      expect(rootNode.x).toEqual(0);
+      const rootNode = pivotSheet.facet.getColNodeById('root[&]笔');
+
+      expect(rootNode!.width).toEqual(300);
+      expect(rootNode!.x).toEqual(0);
     });
 
     // https://github.com/antvis/S2/issues/2194
-    test('should render correctly when always hidden last column', () => {
+    test('should render correctly when always hidden last column', async () => {
       const sheet = createPivotSheet(
         {
           interaction: {
@@ -464,7 +459,8 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
         { useSimpleData: false },
       );
-      sheet.render();
+
+      await sheet.render();
 
       // 模拟一列一列的手动隐藏最后一列
       [
@@ -475,10 +471,10 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         sheet.interaction.hideColumns([field]);
       });
 
-      expect(sheet.getColumnLeafNodes()).toHaveLength(1);
-      expect(sheet.getColumnLeafNodes()[0].id).toEqual(
-        'root[&]家具[&]桌子[&]number',
-      );
+      const leafNodes = sheet.facet.getColLeafNodes();
+
+      expect(leafNodes).toHaveLength(1);
+      expect(leafNodes[0].id).toEqual('root[&]家具[&]桌子[&]number');
     });
 
     test('should hide columns for multiple columns', async () => {
@@ -656,11 +652,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       });
 
       // https://github.com/antvis/S2/issues/1721
-<<<<<<< HEAD
-      test('should hide grand totals node1', async () => {
-=======
-      test('should hide grand totals node', () => {
->>>>>>> origin/master
+      test('should hide grand totals node', async () => {
         const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({
@@ -672,6 +664,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
             valueInCols: true,
           },
         });
+
         await sheet.render();
         await waitForRender(sheet, async () => {
           await sheet.interaction.hideColumns([nodeId]);
@@ -683,21 +676,21 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         expect(leafNodes).toHaveLength(5);
       });
 
-      test.each(['grid', 'tree'])(
+      test.each(['grid', 'tree'] as S2Options['hierarchyType'][])(
         'hiding the column totals should not hide the row totals for %s mode',
-        (hierarchyType: 'grid' | 'tree') => {
+        async (hierarchyType) => {
           sheet.setOptions({ hierarchyType });
-          sheet.render();
+          await sheet.render();
+
           const nodeId = 'root[&]总计';
-          const preRowNodes = sheet.facet.layoutResult.rowNodes;
-          const preColumnNodes = sheet.facet.layoutResult.colNodes;
+          const preRowNodes = sheet.facet.getRowNodes();
+          const preColumnNodes = sheet.facet.getColNodes();
+
           sheet.interaction.hideColumns([nodeId]);
 
-          expect(sheet.facet.layoutResult.rowNodes[0].id).toBe(nodeId);
-          expect(sheet.facet.layoutResult.rowNodes.length).toBe(
-            preRowNodes.length,
-          );
-          expect(sheet.facet.layoutResult.colNodes.length).toBe(
+          expect(sheet.facet.getRowNodes()[0].id).toBe(nodeId);
+          expect(sheet.facet.getRowNodes().length).toBe(preRowNodes.length);
+          expect(sheet.facet.getColNodes().length).toBe(
             preColumnNodes.length - 1,
           );
         },

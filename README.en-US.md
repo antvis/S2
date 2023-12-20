@@ -68,15 +68,9 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-<<<<<<< HEAD
-$ npm install @antv/s2
-# yarn add @antv/s2
-# pnpm install @antv/s2
-=======
 $ npm install @antv/s2 --save
 # yarn add @antv/s2 --save
 # pnpm install @antv/s2 --save
->>>>>>> origin/master
 ```
 
 ## 🔨 Getting Started

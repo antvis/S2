@@ -1,6 +1,6 @@
+import type { IElement } from '@antv/g-lite';
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-import type { Group } from '@antv/g-canvas';
 import type { RowCell } from '../../../src/cell';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
@@ -35,17 +35,11 @@ describe('Row Cell Tests', () => {
         });
         await s2.render();
 
-<<<<<<< HEAD
-        const provinceCell = s2.facet.rowHeader!.children[0] as RowCell;
+        const provinceCell = s2.facet.rowHeader!
+          .children[0] as unknown as IElement[] as unknown as RowCell;
         const { left: minX, right: maxX } = provinceCell
           .getLinkFieldShape()
           .getBBox();
-=======
-        const provinceCell = (
-          s2.facet.rowHeader.getChildByIndex(0) as Group
-        ).getChildByIndex(0) as RowCell;
-        const { minX, maxX } = (provinceCell as any).linkFieldShape.getBBox();
->>>>>>> origin/master
 
         // 宽度相当
         const linkLength = maxX - minX;
@@ -77,20 +71,12 @@ describe('Row Cell Tests', () => {
         ],
       },
     });
-<<<<<<< HEAD
 
     test('should draw right condition text shape', async () => {
       await s2.render();
       const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
 
       expect(rowCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
-=======
-    test('should draw right condition text shape', () => {
-      s2.render();
-      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
-      const rowCell = scrollGroup.getChildByIndex(1);
-      expect(get(rowCell, 'textShape.attrs.fill')).toEqual('#5083F5');
->>>>>>> origin/master
     });
 
     test('should draw right condition icon shape', async () => {
@@ -109,15 +95,9 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-<<<<<<< HEAD
       await s2.render();
       const rowCell = s2.facet.rowHeader!.children[1];
 
-=======
-      s2.render();
-      const scrollRowGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
-      const rowCell = scrollRowGroup.getChildByIndex(1);
->>>>>>> origin/master
       expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -137,7 +117,6 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-<<<<<<< HEAD
       await s2.render();
       const rowCell = s2.facet.rowHeader!.children[0];
 
@@ -171,12 +150,6 @@ describe('Row Cell Tests', () => {
       expect(fill).toEqual('red');
       expect(fontSize).toEqual(20);
       expect(fontWeight).toEqual(800);
-=======
-      s2.render();
-      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
-      const rowCell = scrollGroup.getChildByIndex(0);
-      expect(get(rowCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
->>>>>>> origin/master
     });
   });
 
@@ -191,6 +164,7 @@ describe('Row Cell Tests', () => {
       crossBackgroundColor: crossColor,
       backgroundColor: defaultColor,
     };
+
     s2.setTheme({
       rowCell: {
         cell: cellColorConfig,
@@ -200,11 +174,13 @@ describe('Row Cell Tests', () => {
       },
     });
     s2.render();
+
     test('should draw right condition background shape', () => {
-      const scrollGroup = s2.facet.rowHeader.getChildByIndex(0) as Group;
-      const rowCell0 = scrollGroup.getChildByIndex(0);
-      const rowCell1 = scrollGroup.getChildByIndex(1);
-      const rowCell2 = scrollGroup.getChildByIndex(2);
+      const scrollGroup = s2.facet.rowHeader?.children[0]!;
+      const rowCell0 = scrollGroup.children[0];
+      const rowCell1 = scrollGroup.children[0];
+      const rowCell2 = scrollGroup.children[0];
+
       expect(get(rowCell0, 'actualText')).toEqual('浙江');
       expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
       expect(get(rowCell1, 'actualText')).toEqual('义乌');

@@ -1,6 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-<<<<<<< HEAD
 exports[`SpreadSheet Theme Tests Theme Default Value Tests should get colorful theme 1`] = `
 Object {
   "background": Object {
@@ -1132,9 +1131,6 @@ Object {
 `;
 
 exports[`SpreadSheet Theme Tests Theme Default Value Tests should get default theme 1`] = `
-=======
-exports[`SpreadSheet Theme Tests Theme Default Value Tests should get pivot sheet default theme 1`] = `
->>>>>>> origin/master
 Object {
   "background": Object {
     "color": "#FFFFFF",
@@ -1659,13 +1655,9 @@ Object {
       "maxLines": 1,
       "opacity": 1,
       "textAlign": "center",
-<<<<<<< HEAD
       "textBaseline": "middle",
       "textOverflow": "ellipsis",
       "wordWrap": true,
-=======
-      "textBaseline": "top",
->>>>>>> origin/master
     },
     "text": Object {
       "fill": "#000000",

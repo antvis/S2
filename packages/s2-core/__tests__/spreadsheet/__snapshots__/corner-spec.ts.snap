@@ -10,12 +10,8 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -45,12 +41,8 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -86,7 +78,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -116,12 +108,8 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -151,12 +139,9 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -191,12 +176,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city/数值",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -214,11 +196,8 @@ Array [
     "seriesNumberWidth": 0,
     "spreadsheet": Anything,
     "value": "province/city/数值",
-<<<<<<< HEAD
     "width": 145,
-=======
     "width": 151,
->>>>>>> origin/master
     "x": 0,
     "y": 0,
   },
@@ -236,7 +215,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -266,12 +245,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city/数值",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -289,11 +265,8 @@ Array [
     "seriesNumberWidth": 80,
     "spreadsheet": Anything,
     "value": "province/city/数值",
-<<<<<<< HEAD
     "width": 145,
-=======
     "width": 151,
->>>>>>> origin/master
     "x": 80,
     "y": 0,
   },
@@ -310,12 +283,9 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -345,12 +315,9 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -386,7 +353,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -416,12 +383,9 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -451,12 +415,9 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -491,12 +452,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -514,11 +472,8 @@ Array [
     "seriesNumberWidth": 0,
     "spreadsheet": Anything,
     "value": "province/city",
-<<<<<<< HEAD
     "width": 120,
-=======
     "width": 123,
->>>>>>> origin/master
     "x": 0,
     "y": 0,
   },
@@ -536,7 +491,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -566,12 +521,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -589,11 +541,8 @@ Array [
     "seriesNumberWidth": 80,
     "spreadsheet": Anything,
     "value": "province/city",
-<<<<<<< HEAD
     "width": 120,
-=======
     "width": 123,
->>>>>>> origin/master
     "x": 80,
     "y": 0,
   },
@@ -610,12 +559,9 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -645,12 +591,9 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -686,7 +629,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -716,12 +659,9 @@ Array [
     "extra": undefined,
     "field": "province",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -751,12 +691,9 @@ Array [
     "extra": undefined,
     "field": "city",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -791,12 +728,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -814,11 +748,8 @@ Array [
     "seriesNumberWidth": 0,
     "spreadsheet": Anything,
     "value": "province/city",
-<<<<<<< HEAD
     "width": 120,
-=======
     "width": 123,
->>>>>>> origin/master
     "x": 0,
     "y": 0,
   },
@@ -836,7 +767,7 @@ Array [
     "field": "",
     "height": 30,
     "hierarchy": undefined,
-    "id": "",
+
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -866,12 +797,9 @@ Array [
     "extra": undefined,
     "field": "",
     "height": 30,
-<<<<<<< HEAD
     "hierarchy": undefined,
-    "id": "",
-=======
+
     "id": "province/city",
->>>>>>> origin/master
     "inCollapseNode": undefined,
     "isCollapsed": undefined,
     "isGrandTotals": undefined,
@@ -889,11 +817,8 @@ Array [
     "seriesNumberWidth": 80,
     "spreadsheet": Anything,
     "value": "province/city",
-<<<<<<< HEAD
     "width": 120,
-=======
     "width": 123,
->>>>>>> origin/master
     "x": 80,
     "y": 0,
   },

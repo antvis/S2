@@ -256,7 +256,8 @@ s2.setTheme({
 
 请查看 [编辑模式示例](/examples/case/data-preview#excel) 和 [编辑表示例](https://s2.antv.antgroup.com/examples/react-component/sheet/#editable)
 
-<<<<<<< HEAD
+目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
+
 ### 如何注册 `AntV/G` 渲染引擎的插件？
 
 了解 `AntV/G` [插件系统](https://g.antv.antgroup.com/plugins/intro).
@@ -275,11 +276,6 @@ const s2Options = {
   },
 }
 ```
-
-### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
-=======
-目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
->>>>>>> origin/master
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 

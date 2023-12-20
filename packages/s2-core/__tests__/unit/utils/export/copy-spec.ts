@@ -1,23 +1,13 @@
-<<<<<<< HEAD
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
-=======
-import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
-import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
-import { map } from 'lodash';
-import type { S2DataConfig } from '../../../../src/common';
-import { TableSheet, PivotSheet } from '@/sheet-type';
->>>>>>> origin/master
 import {
+  TOTALS_OPTIONS,
   assembleDataCfg,
   assembleOptions,
-  TOTALS_OPTIONS,
   waitForRender,
 } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import type { Meta, S2DataConfig } from '@/common/interface';
-import { Aggregation } from '@/common/interface';
+import type { S2DataConfig } from '../../../../src/common';
 import { TableDataCell, TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
@@ -25,6 +15,8 @@ import {
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
+import type { Meta } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import { getSelectedData } from '@/utils/export/copy';
 import { CopyMIMEType } from '@/utils/export/interface';
@@ -212,14 +204,9 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-<<<<<<< HEAD
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toBe('浙江省_formatted');
-=======
-    const data = getSelectedData(ss);
     expect(data).toBe('浙江省_formatted\t绍兴市\t家具\t桌子\t2367');
->>>>>>> origin/master
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -268,14 +255,14 @@ describe('List Table Core Data Process', () => {
     const dataContent = getCopyPlainContent(s2);
 
     expect(dataContent).toMatchInlineSnapshot(`
-      "浙江省	
-      	
-      	
-      	
-      	
-      	
-      	
-      	
+      "浙江省
+
+
+
+
+
+
+
       	宁波市"
     `);
   });
@@ -303,14 +290,9 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-<<<<<<< HEAD
     const data = getCopyPlainContent(s2);
 
     expect(data).toMatchInlineSnapshot(`"1	四川省	乐山市	家具	桌子	2330"`);
-=======
-    const data = getSelectedData(s2);
-    expect(data).toBe('四川省\t乐山市\t家具\t桌子\t2330');
->>>>>>> origin/master
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -341,14 +323,9 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-<<<<<<< HEAD
     const data = getCopyPlainContent(s2);
 
     expect(data).toBe('1	浙江省	宁波市	家具	沙发	7234');
-=======
-    const data = getSelectedData(s2);
-    expect(data).toBe('浙江省\t宁波市\t家具\t沙发\t7234');
->>>>>>> origin/master
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
@@ -450,7 +427,7 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "1	浙江省	杭州市	家具	### 问题摘要 
+      "1	浙江省	杭州市	家具	### 问题摘要
       - **会话地址**：	7789"
     `);
     expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
@@ -1467,13 +1444,8 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
 
-<<<<<<< HEAD
   beforeEach(async () => {
     await s2.render();
-=======
-  beforeEach(() => {
-    s2.render();
->>>>>>> origin/master
   });
 
   test('should copy all row data in grid mode', () => {
@@ -1549,10 +1521,6 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-<<<<<<< HEAD
-  test('should copy selection row data in grid mode', async () => {
-    const sheet = new PivotSheet(
-=======
   test('should copy all col data in grid mode for custom field meta', () => {
     s2.setDataCfg({
       meta: [
@@ -1583,8 +1551,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   });
 
   test('should copy selection row data in grid mode', () => {
-    const ss = new PivotSheet(
->>>>>>> origin/master
+    const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
         meta: [],
@@ -1643,11 +1610,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-<<<<<<< HEAD
   test('should copy selection col data in grid mode', async () => {
-=======
-  test('should copy selection col data in grid mode', () => {
->>>>>>> origin/master
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -1660,24 +1623,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
       options,
     );
-<<<<<<< HEAD
 
     await sheet.render();
 
     const cells = sheet.facet.getColCells().filter((c) => {
-=======
-    sheet.render();
-
-    const cells = sheet.interaction.getAllColHeaderCells().filter((c) => {
->>>>>>> origin/master
       const meta = c.getMeta();
 
       return (meta.level === 3 || meta.level === 4) && meta.x < 480;
     });
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
     sheet.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1686,28 +1640,17 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-<<<<<<< HEAD
     expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-=======
-    expect(getSelectedData(sheet)).toMatchInlineSnapshot(`
->>>>>>> origin/master
       "桌子	沙发	笔	纸张	桌子
       number	number	number	number	number"
     `);
 
-<<<<<<< HEAD
     const cells2 = sheet.facet.getColCells().filter((c) => {
-=======
-    const cells2 = sheet.interaction.getAllColHeaderCells().filter((c) => {
->>>>>>> origin/master
       const meta = c.getMeta();
 
       return (meta.level === 0 || meta.level === 1) && meta.x < 480;
     });
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
     sheet.interaction.changeState({
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1715,11 +1658,8 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         root.updateCells(sheet.facet.getColCells());
       },
     });
-<<<<<<< HEAD
+
     expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-=======
-    expect(getSelectedData(sheet)).toMatchInlineSnapshot(`
->>>>>>> origin/master
       "浙江省	浙江省
       杭州市	绍兴市"
     `);
