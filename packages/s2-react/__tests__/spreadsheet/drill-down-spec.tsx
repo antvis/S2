@@ -33,16 +33,13 @@ const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
 };
 
 const findDrillDownIcon = (instance: SpreadSheet) => {
-  const rowHeaderActionIcons = get(
-    (instance.facet.rowHeader?.children[0].children as RowCell[]).find(
-      (item) => item.getActualText() === '杭州',
-    ),
-    'actionIcons',
-    [],
-  );
+  const rowHeaderActionIcons = instance.facet
+    ?.getRowCells()
+    ?.find((cell) => cell.getActualText() === '杭州')
+    ?.getActionIcons();
 
-  return rowHeaderActionIcons.find(
-    (icon: GuiIcon) => get(icon, 'cfg.name') === 'DrillDownIcon',
+  return rowHeaderActionIcons?.find(
+    (icon) => icon.attr('name') === 'DrillDownIcon',
   );
 };
 

@@ -28,11 +28,11 @@ const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 const findDataCell = (
   s2: SpreadSheet,
   valueField: 'price' | 'cost' | 'number',
-) =>
-  s2.facet.panelGroup.children[0].find<DataCell>(
-    (item) =>
-      item instanceof DataCell && item.getMeta().valueField === valueField,
-  );
+) => {
+  return s2.facet
+    .getDataCells()
+    .find((item) => item.getMeta().valueField === valueField);
+};
 
 describe('Data Cell Tests', () => {
   const meta = {
@@ -75,14 +75,13 @@ describe('Data Cell Tests', () => {
             },
           },
         });
+
         await s2.render();
 
-        const panelBBoxInstance = s2.facet.panelGroup.children[0];
-        const dataCell = panelBBoxInstance.children.find(
-          (item) => item instanceof DataCell,
-        ) as DataCell;
-        const { left: minX, right: maxX } =
-          dataCell['linkFieldShape'].getBBox();
+        const dataCell = s2.facet.getDataCells()[0];
+        const { left: minX, right: maxX } = dataCell
+          .getLinkFieldShape()
+          .getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;

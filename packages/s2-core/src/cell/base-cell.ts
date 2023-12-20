@@ -26,7 +26,7 @@ import {
   InteractionStateName,
   REVERSE_FONT_COLOR,
   SHAPE_ATTRS_MAP,
-  SHAPE_STYLE_MAP
+  SHAPE_STYLE_MAP,
 } from '../common/constant';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import {
@@ -306,6 +306,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.linkFieldShape;
   }
 
+  public getBackgroundShape() {
+    return this.backgroundShape;
+  }
+
+  public getStateShapes() {
+    return this.stateShapes;
+  }
+
   protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea') as ResizeArea;
   }
@@ -367,12 +375,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       renderRect(this, {
         ...this.getBBoxByType(CellClipBox.PADDING_BOX),
         visibility: 'hidden',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
       }),
     );
   }
 
-    /**
+  /**
    * 交互使用的背景色
    */
   protected drawInteractiveBgShape() {
@@ -381,7 +389,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       renderRect(this, {
         ...this.getBBoxByType(),
         visibility: 'hidden',
-      pointerEvents: 'none'
+        pointerEvents: 'none',
       }),
     );
   }
@@ -396,7 +404,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       fillOpacity: backgroundColorOpacity,
     });
   }
-
 
   public renderTextShape(
     style: TextStyleProps,

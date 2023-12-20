@@ -18,21 +18,21 @@ const s2Options: S2Options = {
       showSubTotals: {
         always: false,
       },
-      reverseLayout: false,
-      reverseSubLayout: false,
+      reverseGrandTotalsLayout: false,
+      reverseSubTotalsLayout: false,
       subTotalsDimensions: ['first', 'second'],
     },
     col: {
       showGrandTotals: false,
       showSubTotals: false,
-      reverseLayout: false,
-      reverseSubLayout: false,
+      reverseGrandTotalsLayout: false,
+      reverseSubTotalsLayout: false,
       subTotalsDimensions: [],
     },
   },
   style: {
     layoutWidthType: 'adaptive',
-    cellCfg: {
+    dataCell: {
       height: 30,
     },
   },
@@ -191,12 +191,13 @@ describe('Miss Dimension Values Tests', () => {
   });
 
   test('should get correctly empty dimension values', () => {
-    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
+    const emptyDimensionValueNode = s2.facet.getRowNodes()[0].children[0];
+
     expect(emptyDimensionValueNode.value).toEqual(EMPTY_FIELD_VALUE);
     expect(emptyDimensionValueNode.id).toEqual(
       `root[&]总计[&]${EMPTY_FIELD_VALUE}`,
     );
-    expect(emptyDimensionValueNode.belongsCell.getActualText()).toEqual('-');
+    expect(emptyDimensionValueNode.belongsCell!.getActualText()).toEqual('-');
   });
 
   test('should get correctly empty dimension values and use custom placeholder text', () => {
@@ -207,36 +208,40 @@ describe('Miss Dimension Values Tests', () => {
     });
     s2.render(false);
 
-    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
-    expect(emptyDimensionValueNode.belongsCell.getActualText()).toEqual(
+    const emptyDimensionValueNode = s2.facet.getRowNodes()[0].children[0];
+
+    expect(emptyDimensionValueNode.belongsCell!.getActualText()).toEqual(
       placeholder,
     );
   });
 
   test('should generate correct query for empty node', () => {
-    const emptyDimensionValueNode1 = s2.facet.layoutResult.rowNodes[0];
+    const emptyDimensionValueNode1 = s2.facet.getRowNodes()[0];
+
     expect(emptyDimensionValueNode1.query).toEqual({
       first: '总计',
     });
 
-    const emptyDimensionValueNode2 = s2.facet.layoutResult.rowNodes[1];
+    const emptyDimensionValueNode2 = s2.facet.getRowNodes()[1];
+
     expect(emptyDimensionValueNode2.query).toEqual({
       first: '总计',
     });
   });
 
   test('should get correctly dimension data and ignore empty dimension value', () => {
-    const emptyDimensionValueNode = s2.getRowNodes()[0].children[0];
+    const emptyDimensionValueNode = s2.facet.getRowNodes()[0].children[0];
 
-    const data = s2.dataSet.getMultiData(emptyDimensionValueNode.query);
+    const data = s2.dataSet.getCellMultiData({
+      query: emptyDimensionValueNode.query!,
+    });
     const dimensionValues = s2.dataSet.getDimensionValues(
       emptyDimensionValueNode.field,
     );
-    const emptyDimensionDataCell =
-      s2.interaction.getPanelGroupAllDataCells()[0];
+    const emptyDimensionDataCell = s2.facet.getDataCells()[0];
 
     expect(emptyDimensionValueNode.query).toEqual(
-      emptyDimensionValueNode.parent.query,
+      emptyDimensionValueNode.parent!.query,
     );
     expect(emptyDimensionDataCell.getMeta().fieldValue).toEqual(1732771);
     expect(data[0][ORIGIN_FIELD]).toMatchInlineSnapshot(`

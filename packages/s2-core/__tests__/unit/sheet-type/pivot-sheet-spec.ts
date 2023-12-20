@@ -816,11 +816,9 @@ describe('PivotSheet Tests', () => {
     );
 
     await pivotSheet.render();
-    const extraField = last(
-      pivotSheet.facet.cornerHeader.children,
-    ) as CornerCell;
+    const extraField = last(pivotSheet.facet.getCornerCells());
 
-    expect(get(extraField, 'actualText')).toEqual('数值');
+    expect(extraField?.getActualText()).toEqual('数值');
   });
 
   // https://github.com/antvis/S2/issues/1212
@@ -842,11 +840,9 @@ describe('PivotSheet Tests', () => {
 
     await pivotSheet.render();
 
-    const extraField = last(
-      pivotSheet.facet.cornerHeader.children,
-    ) as CornerCell;
+    const extraField = last(pivotSheet.facet.getCornerCells());
 
-    expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
+    expect(extraField?.getActualText()).toEqual(cornerExtraFieldText);
   });
 
   describe('Tree Collapse Tests', () => {

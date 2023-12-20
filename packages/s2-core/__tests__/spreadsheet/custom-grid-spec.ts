@@ -186,9 +186,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (
-        s2.facet.cornerHeader.children as HeaderCell[]
-      ).map((cell: HeaderCell) => {
+      const cornerCellLabels = s2.facet.getCornerCells().map((cell) => {
         const value = cell.getActualText();
         const meta = cell.getMeta();
 
@@ -363,9 +361,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = (
-        s2.facet.cornerHeader.children as HeaderCell[]
-      ).map((cell: HeaderCell) => {
+      const cornerCellLabels = s2.facet.getColCells().map((cell) => {
         const value = cell.getActualText();
         const meta = cell.getMeta();
 

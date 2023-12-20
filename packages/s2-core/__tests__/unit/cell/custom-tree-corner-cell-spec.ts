@@ -44,21 +44,19 @@ describe('test for corner text', () => {
   });
 
   test('get correct default corner text when the corner label is empty', () => {
-    const cornerCells = mockSheet.facet.cornerHeader.children;
+    const cornerCells = mockSheet.facet.getCornerCells();
 
-    expect(get(cornerCells[0], 'actualText')).toEqual('自定义节点A/指标E/数值');
-    expect(get(cornerCells[1], 'actualText')).toEqual('type');
+    expect(cornerCells[0].getActualText()).toEqual('自定义节点A/指标E/数值');
+    expect(cornerCells[1].getActualText()).toEqual('type');
   });
 
   test('get correct default corner text when set the cornerText.', async () => {
     mockSheet.setOptions({ ...options, cornerText: 'test' });
     await mockSheet.render();
 
-    const cornerCells = mockSheet.facet.cornerHeader.children.filter(
-      (v) => v instanceof CornerCell,
-    );
+    const cornerCells = mockSheet.facet.getCornerCells();
 
-    expect(get(cornerCells[0], 'actualText')).toEqual('test');
-    expect(get(cornerCells[1], 'actualText')).toEqual('type');
+    expect(cornerCells[0].getActualText()).toEqual('test');
+    expect(cornerCells[1].getActualText()).toEqual('type');
   });
 });

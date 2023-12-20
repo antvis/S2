@@ -49,7 +49,7 @@ const dataCfg: S2DataConfig = {
     {
       field: 'price',
       name: '价格',
-      formatter: (v) => `price:${v}`,
+      formatter: (v) => `price: ${v}`,
     },
   ],
 };
@@ -74,21 +74,21 @@ describe('Link Field Tests', () => {
 
   test('province row cell should use link field style', () => {
     // 浙江省对应 cell
-    const province = s2.facet.rowHeader?.children[0].children[0];
+    const province = s2.facet
+      .getRowCells()
+      .find((cell) => cell.getMeta().value === '浙江');
 
-    // @ts-ignore
-    expect(province.textShape.attr('fill')).toEqual('red');
-    // @ts-ignore
-    expect(province.linkFieldShape).toBeDefined();
+    expect(province?.getTextShape().attr('fill')).toEqual('red');
+    expect(province?.getLinkFieldShape()).toBeDefined();
   });
 
   test('city row cell should not use link field style', () => {
     // 义乌对应 cell
-    const city = s2.facet.rowHeader?.children[0].children[1];
+    const city = s2.facet
+      .getRowCells()
+      .find((cell) => cell.getMeta().value === '义乌');
 
-    // @ts-ignore
-    expect(city.textShape.attr('fill')).not.toEqual('red');
-    // @ts-ignore
-    expect(city.linkFieldShape).not.toBeDefined();
+    expect(city?.getTextShape().attr('fill')).not.toEqual('red');
+    expect(city?.getLinkFieldShape()).not.toBeDefined();
   });
 });

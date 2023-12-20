@@ -1,9 +1,6 @@
-import type { IElement } from '@antv/g-lite';
-import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-import type { RowCell } from '../../../src/cell';
-import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
+import type { SpreadSheet } from '@/sheet-type';
 
 describe('Row Cell Tests', () => {
   describe('Link Shape Tests', () => {
@@ -35,8 +32,7 @@ describe('Row Cell Tests', () => {
         });
         await s2.render();
 
-        const provinceCell = s2.facet.rowHeader!
-          .children[0] as unknown as IElement[] as unknown as RowCell;
+        const provinceCell = s2.facet.getRowCells()[0];
         const { left: minX, right: maxX } = provinceCell
           .getLinkFieldShape()
           .getBBox();
@@ -74,7 +70,7 @@ describe('Row Cell Tests', () => {
 
     test('should draw right condition text shape', async () => {
       await s2.render();
-      const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
+      const rowCell = s2.facet.getRowCells()[1];
 
       expect(rowCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
@@ -95,11 +91,12 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-      await s2.render();
-      const rowCell = s2.facet.rowHeader!.children[1];
 
-      expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
-      expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
+      await s2.render();
+      const rowCell = s2.facet.getRowCells()[1];
+
+      expect(rowCell.getConditionIconShape().attr('name')).toEqual('CellUp');
+      expect(rowCell.getConditionIconShape().attr('fill')).toEqual('red');
     });
 
     test('should draw right condition background shape', async () => {
@@ -117,10 +114,11 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
-      await s2.render();
-      const rowCell = s2.facet.rowHeader!.children[0];
 
-      expect(get(rowCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+      await s2.render();
+      const rowCell = s2.facet.getRowCells()[0];
+
+      expect(rowCell.getBackgroundShape().parsedStyle.fill).toBeColor(
         '#F7B46F',
       );
     });
@@ -142,9 +140,10 @@ describe('Row Cell Tests', () => {
           ],
         },
       });
+
       await s2.render();
 
-      const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
+      const rowCell = s2.facet.getRowCells()[1];
       const { fill, fontSize, fontWeight } = rowCell.getTextShape().attributes;
 
       expect(fill).toEqual('red');
@@ -158,6 +157,7 @@ describe('Row Cell Tests', () => {
       width: 800,
       height: 600,
     });
+
     const crossColor = '#FFFFFF';
     const defaultColor = '#F5F8FF';
     const cellColorConfig = {
@@ -173,20 +173,28 @@ describe('Row Cell Tests', () => {
         cell: cellColorConfig,
       },
     });
-    s2.render();
 
-    test('should draw right condition background shape', () => {
-      const scrollGroup = s2.facet.rowHeader?.children[0]!;
-      const rowCell0 = scrollGroup.children[0];
-      const rowCell1 = scrollGroup.children[0];
-      const rowCell2 = scrollGroup.children[0];
+    test('should draw right condition background shape', async () => {
+      await s2.render();
 
-      expect(get(rowCell0, 'actualText')).toEqual('浙江');
-      expect(get(rowCell0, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
-      expect(get(rowCell1, 'actualText')).toEqual('义乌');
-      expect(get(rowCell1, 'backgroundShape.attrs.fill')).toEqual(crossColor);
-      expect(get(rowCell2, 'actualText')).toEqual('杭州');
-      expect(get(rowCell2, 'backgroundShape.attrs.fill')).toEqual(defaultColor);
+      const rowCell0 = s2.facet.getRowCells()[0];
+      const rowCell1 = s2.facet.getRowCells()[1];
+      const rowCell2 = s2.facet.getRowCells()[2];
+
+      expect(rowCell0.getActualText()).toEqual('浙江');
+      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
+        defaultColor,
+      );
+
+      expect(rowCell1.getActualText()).toEqual('义乌');
+      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
+        crossColor,
+      );
+
+      expect(rowCell2.getActualText()).toEqual('杭州');
+      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
+        defaultColor,
+      );
     });
   });
 });

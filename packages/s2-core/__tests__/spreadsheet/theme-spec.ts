@@ -225,8 +225,7 @@ describe('SpreadSheet Theme Tests', () => {
         s2.setThemeCfg(getRowCellThemeCfg(align));
         await s2.render();
 
-        const group = s2.facet.rowHeader!.children[0] as unknown as IElement[];
-        const rowCell = group[0] as RowCell;
+        const rowCell = s2.facet.getRowCells()[0];
 
         const rowCellWidth = rowCell.getMeta().width;
         const actionIcon = rowCell.getActionIcons()[0];
@@ -470,9 +469,6 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Series Cell Tests', () => {
-    const getTextShape = (group: Group) =>
-      group.children.find((child) => child instanceof Text) as Text;
-
     test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
       'should render %s text align for column nodes',
       async (textBaseline) => {
@@ -495,20 +491,19 @@ describe('SpreadSheet Theme Tests', () => {
 
         await s2.render();
 
-        const rowCell = (
-          s2.facet.rowHeader!.children[0] as unknown as IElement[]
-        )[0] as RowCell; // 浙江省
-        const textOfRowCell = getTextShape(rowCell);
+        // 浙江省
+        const rowCell = s2.facet.getRowCells()[0];
+        const rowCellTextShape = rowCell.getTextShape();
 
-        const seriesCell = (
-          s2.facet.seriesNumberHeader!.children[0] as unknown as IElement[]
-        )[0] as SeriesNumberCell; // 序号1
+        // 序号1
+        const seriesCell = s2.facet.getSeriesNumberCells()[0];
+        const seriesCellTextShape = seriesCell.getTextShape();
 
-        const textOfSeriesCell = getTextShape(seriesCell);
-
-        expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfSeriesCell?.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
+        expect(rowCellTextShape?.attr('textBaseline')).toEqual(textBaseline);
+        expect(seriesCellTextShape?.attr('textBaseline')).toEqual(textBaseline);
+        expect(rowCellTextShape.attr('y')).toEqual(
+          seriesCellTextShape.attr('y'),
+        );
       },
     );
   });

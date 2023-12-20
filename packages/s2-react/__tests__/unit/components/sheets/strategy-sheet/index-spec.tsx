@@ -11,7 +11,6 @@ import {
   type S2DataConfig,
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import { get } from 'lodash';
 import React from 'react';
 import {
   StrategyOptions,
@@ -237,11 +236,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     await waitFor(() => {
-      const textList = s2.facet.cornerHeader.children.map((element) =>
-        get(element, 'actualText'),
-      );
+      const cornerTextList = s2.facet
+        .getCornerCells()
+        .map((cell) => cell.getActualText());
 
-      expect(textList).toEqual(['自定义节点A/指标E/指标', '日期']);
+      expect(cornerTextList).toEqual(['自定义节点A/指标E/指标', '日期']);
     });
   });
 
@@ -264,11 +263,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     await waitFor(() => {
-      const textList = s2.facet.cornerHeader.children.map((element) =>
-        get(element, 'actualText'),
-      );
+      const cornerTextList = s2.facet
+        .getCornerCells()
+        .map((cell) => cell.getActualText());
 
-      expect(textList).toEqual(['测试', '日期']);
+      expect(cornerTextList).toEqual(['测试', '日期']);
     });
   });
 

@@ -69,7 +69,8 @@ describe('SpreadSheet Tree Mode Tests', () => {
           },
         ],
       };
-      // 添加icon
+
+      // 添加 icon
       const newS2Options: S2Options = {
         ...s2Options,
         headerActionIcons: [
@@ -84,9 +85,10 @@ describe('SpreadSheet Tree Mode Tests', () => {
       s2.render();
 
       // 检查文本是否只有一行
-      const textLen = s2.facet.cornerHeader.cfg.children[0].textShapes.length;
+      const cornerCell = s2.facet.getCornerCells()[0];
 
-      expect(textLen).toEqual(1);
+      expect(cornerCell.getTextShapes()).toHaveLength(1);
+      expect(cornerCell.isMultiLineText()).toBeFalsy();
     });
   });
 });

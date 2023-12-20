@@ -41,22 +41,18 @@ describe('background color opacity test', () => {
     await s2.render();
 
     // corner cell
-    const cornerCell = s2.facet.cornerHeader.children[0];
+    const cornerCell = s2.facet.getCornerCells()[0];
 
-    // @ts-ignore
-    expect(cornerCell.backgroundShape.attr('fillOpacity')).toEqual(0.1);
+    expect(cornerCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.1);
 
     // row cell
-    const rowHeaderScrollGroup = s2.facet.rowHeader?.children[0];
-    const rowCell = rowHeaderScrollGroup?.children?.[0];
+    const rowCell = s2.facet.getRowCells()[0];
 
-    // @ts-ignore
-    expect(rowCell.backgroundShape.attr('fillOpacity')).toEqual(0.2);
+    expect(rowCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.2);
 
     // col cell
-    const colCell = s2.facet.columnHeader.children[0].children[0];
+    const colCell = s2.facet.getColCells()[0];
 
-    // @ts-ignore
-    expect(colCell.backgroundShape.attr('fillOpacity')).toEqual(0.3);
+    expect(colCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.3);
   });
 });
