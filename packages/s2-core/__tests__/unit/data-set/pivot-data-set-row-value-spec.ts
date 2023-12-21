@@ -219,6 +219,14 @@ describe('Pivot Mode Test When Value In Row', () => {
       ).toHaveLength(32);
     });
 
+    test(`getMultiData will return empty array when query can't be found`, () => {
+      const specialQuery = {
+        province: '浙江省123',
+        type: '家具',
+      };
+      expect(dataSet.getMultiData(specialQuery)).toHaveLength(0);
+    });
+
     test('getDimensionValues function', () => {
       // without query
       expect(dataSet.getDimensionValues('province')).toEqual([
