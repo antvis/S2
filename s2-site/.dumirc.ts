@@ -31,7 +31,7 @@ export default defineConfig({
     showWxQrcode: true, // 是否显示头部菜单的微信公众号
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
-    es5: false, // 案例代码是否编译到 es5`
+    es5: false, // 案例代码是否编译到 es5
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
@@ -262,7 +262,7 @@ export default defineConfig({
           </head>
           <body>
             <div id="container" />
-            <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.11.1/dist/data-set.min.js"></script>
+            <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
             <script>
               {{ code }}
             </script>
