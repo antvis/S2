@@ -1,4 +1,5 @@
 import {
+  compact,
   each,
   every,
   filter,
@@ -567,11 +568,15 @@ export class PivotDataSet extends BaseDataSet {
             if (isMultiValue(current)) {
               result = flattenIndexesData(result, queryType);
             } else {
-              result = map(result, (item) => item[current]).filter(Boolean);
+              result = compact(
+                map(result, (item) => {
+                  return item?.[current];
+                }),
+              );
             }
           } else if (isMultiValue(current)) {
             hadMultiField = true;
-            result = [result];
+            result = compact([result]);
             i--;
           } else {
             result = result?.[current];

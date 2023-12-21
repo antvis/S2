@@ -1,5 +1,5 @@
 import type { QueryDataType } from '../common/constant/query';
-import type { Data, SortParam } from '../common/interface';
+import type { SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
 
@@ -11,6 +11,8 @@ export type Query = Record<string, any>;
 export type PivotMetaValue = {
   // 当前维度结合父级维度生成的完整 id 信息
   id: string;
+  // 当前维度结合父级维度生成的完整 dimensions 信息，主要是预防 field 数据本身出现 [&] 导致维度信息识别不正确
+  dimensions: string[];
   // 当前维度
   value: string;
   level: number;
