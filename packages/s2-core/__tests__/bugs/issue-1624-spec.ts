@@ -4,9 +4,9 @@
  * https://github.com/antvis/S2/issues/1624
  */
 
-import { getContainer, sleep } from '../util/helpers';
 import * as mockDataConfig from '../data/simple-data.json';
-import { S2Event, type S2Options, DataCell } from '@/index';
+import { getContainer, sleep } from '../util/helpers';
+import { S2Event, type S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
@@ -18,6 +18,7 @@ const s2Options: S2Options = {
 describe('Data Cell Border Tests', () => {
   const borderWidth = 4;
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.setTheme({
     dataCell: {
       cell: {
@@ -26,10 +27,11 @@ describe('Data Cell Border Tests', () => {
       },
     },
   });
-  s2.render();
 
   test('should draw correct data cell border when hover focus', async () => {
-    const dataCell = s2.panelScrollGroup.getChildren()[0] as DataCell;
+    await s2.render();
+
+    const dataCell = s2.facet.getDataCells()[0];
 
     s2.emit(S2Event.DATA_CELL_HOVER, {
       target: dataCell,
@@ -37,7 +39,7 @@ describe('Data Cell Border Tests', () => {
 
     await sleep(40);
 
-    const meta = dataCell.getCellArea();
+    const meta = dataCell.getBBoxByType();
     // @ts-ignore
     const borderBbox = dataCell.stateShapes
       .get('interactiveBorderShape')

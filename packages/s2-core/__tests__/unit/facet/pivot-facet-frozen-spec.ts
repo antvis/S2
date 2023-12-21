@@ -15,11 +15,13 @@ import type { FrozenFacet } from '@/facet/frozen-facet';
 import { getFrozenRowCfgPivot } from '@/facet/utils';
 
 const defaultS2Options: S2Options = {
-  frozenFirstRow: true,
+  frozen: {
+    firstRow: true,
+  },
   totals: {
     row: {
       showGrandTotals: true,
-      reverseLayout: true,
+      reverseGrandTotalsLayout: true,
     },
   },
 };
@@ -52,7 +54,7 @@ describe('test getFrozenRowCfgPivot', () => {
   });
 
   test.each(['grid', 'tree'])(
-    'test getFrozenRowCfgPivot %s mode',
+    'getFrozenRowCfgPivot %s mode',
     (hierarchyType: 'grid' | 'tree') => {
       s2.setOptions({
         hierarchyType,
@@ -295,6 +297,7 @@ describe('test cell XYIndexes frozen first row', () => {
 
   test('should get correct indexes with row height gt canvas height', () => {
     const originHeight = s2.facet.panelBBox.viewportHeight;
+
     s2.facet.panelBBox.viewportHeight = 10;
     expect(s2.facet.calculateXYIndexes(0, 0)).toMatchInlineSnapshot(`
       Object {
@@ -350,56 +353,51 @@ describe('test frozen group', () => {
     s2.destroy();
   });
 
-  test.each(['grid', 'tree'])(
-    'row header group',
-    (hierarchyType: 'grid' | 'tree') => {
-      s2.setOptions({ hierarchyType });
-      s2.render();
-      // row header
-      const rowHeader = s2.facet.rowHeader;
-      const scrollHeaderGroup = rowHeader.getChildren()[0];
-      expect(rowHeader.getChildren()).toHaveLength(2);
-      expect(scrollHeaderGroup.cfg.name).toBe(KEY_GROUP_ROW_SCROLL);
-      expect(rowHeader.getChildren()[1].cfg.name).toBe(
-        KEY_GROUP_ROW_HEADER_FROZEN,
-      );
-      const frozenRowGroupChildren = (
-        rowHeader.getChildren()[1] as IGroup
-      ).getChildren();
-      const scrollRowHeaderGroupChildren = (
-        scrollHeaderGroup as IGroup
-      ).getChildren();
-      expect(frozenRowGroupChildren).toHaveLength(1);
-      expect(frozenRowGroupChildren[0] instanceof RowCell).toBeTruthy();
-      expect(get(frozenRowGroupChildren[0], 'meta.value')).toBe('总计');
-      expect(scrollRowHeaderGroupChildren).toHaveLength(10);
-      expect(scrollRowHeaderGroupChildren[0] instanceof RowCell).toBeTruthy();
-      expect(get(scrollRowHeaderGroupChildren[0], 'meta.value')).toBe('浙江省');
+  test.each(['grid', 'tree'])('row header group', async (hierarchyType) => {
+    s2.setOptions({ hierarchyType });
+    await s2.render();
 
-      // serial number header
-      const rowIndexHeader = s2.facet.rowIndexHeader;
-      expect(rowIndexHeader.getChildren()).toHaveLength(2);
-      expect(rowIndexHeader.getChildren()[0].cfg.name).toBe(
-        KEY_GROUP_ROW_SCROLL,
-      );
-      expect(rowIndexHeader.getChildren()[1].cfg.name).toBe(
-        KEY_GROUP_ROW_HEADER_FROZEN,
-      );
-      const frozenSeriesRowGroupChildren = (
-        rowIndexHeader.getChildren()[1] as IGroup
-      ).getChildren();
-      const scrollSeriesRowScrollGroupChildren = (
-        rowIndexHeader.getChildren()[0] as IGroup
-      ).getChildren();
-      expect(frozenSeriesRowGroupChildren).toHaveLength(1);
-      expect(frozenSeriesRowGroupChildren[0] instanceof SeriesNumberCell).toBe(
-        true,
-      );
-      expect(get(frozenSeriesRowGroupChildren[0], 'meta.value')).toBe('1');
-      expect(scrollSeriesRowScrollGroupChildren).toHaveLength(2);
-      expect(get(scrollSeriesRowScrollGroupChildren[0], 'meta.value')).toBe(
-        '2',
-      );
-    },
-  );
+    // row header
+    const rowHeader = s2.facet.rowHeader;
+    const scrollHeaderGroup = rowHeader?.children[0];
+
+    expect(rowHeader?.children).toHaveLength(2);
+    expect(scrollHeaderGroup?.attributes('name')).toBe(KEY_GROUP_ROW_SCROLL);
+    expect(rowHeader?.children[1].attributes('name')).toBe(
+      KEY_GROUP_ROW_HEADER_FROZEN,
+    );
+    const frozenRowCells = s2.facet.getRowCells();
+    const frozenRowCell = frozenRowCells[0];
+    const scrollRowHeaderGroupChildren = scrollHeaderGroup?.children || [];
+
+    expect(frozenRowCells).toHaveLength(1);
+    expect(frozenRowCell instanceof RowCell).toBeTruthy();
+    expect(frozenRowCell.getMeta().value).toBe('总计');
+    expect(scrollRowHeaderGroupChildren).toHaveLength(10);
+    expect(scrollRowHeaderGroupChildren[0] instanceof RowCell).toBeTruthy();
+    expect(get(scrollRowHeaderGroupChildren[0], 'meta.value')).toBe('浙江省');
+
+    // serial number header
+    const rowIndexHeader = s2.facet.rowIndexHeader;
+
+    expect(rowIndexHeader.getChildren()).toHaveLength(2);
+    expect(rowIndexHeader.getChildren()[0].cfg.name).toBe(KEY_GROUP_ROW_SCROLL);
+    expect(rowIndexHeader.getChildren()[1].cfg.name).toBe(
+      KEY_GROUP_ROW_HEADER_FROZEN,
+    );
+    const frozenSeriesRowGroupChildren = (
+      rowIndexHeader.getChildren()[1] as IGroup
+    ).getChildren();
+    const scrollSeriesRowScrollGroupChildren = (
+      rowIndexHeader.getChildren()[0] as IGroup
+    ).getChildren();
+
+    expect(frozenSeriesRowGroupChildren).toHaveLength(1);
+    expect(frozenSeriesRowGroupChildren[0] instanceof SeriesNumberCell).toBe(
+      true,
+    );
+    expect(get(frozenSeriesRowGroupChildren[0], 'meta.value')).toBe('1');
+    expect(scrollSeriesRowScrollGroupChildren).toHaveLength(2);
+    expect(get(scrollSeriesRowScrollGroupChildren[0], 'meta.value')).toBe('2');
+  });
 });

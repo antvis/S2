@@ -258,9 +258,10 @@ export interface S2PivotSheetFrozenOptions {
    */
   rowHeader?: boolean | number;
 
-  // pivot sheet type: frozen head row, default false
-  // TODO: 2.0 版本统一在 frozen: { ... } 命名空间下
-  frozenFirstRow?: boolean;
+  /**
+   * 是否冻结首行 (适用于总计置于顶部, 树状模式等场景)
+   */
+  firstRow?: boolean;
 }
 
 export interface S2TableSheetFrozenOptions {

@@ -27,11 +27,9 @@ const s2Options: S2Options = {
 describe('SpreadSheet Custom Tree Tests', () => {
   let s2: SpreadSheet;
 
-  const getCornerCellLabels = () =>
-    (s2.facet as any)
-      .getCornerHeader()
-      .getChildren()
-      .map((cell: HeaderCell) => cell.getActualText());
+  const getCornerCellLabels = () => {
+    return s2.facet.getCornerCells().map((cell) => cell.getActualText());
+  };
 
   const mapRowNodes = (spreadsheet: SpreadSheet) =>
     spreadsheet.facet.getRowLeafNodes().map((node) => {
@@ -202,10 +200,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
     await s2.render();
 
-    const cornerCellLabels = (s2.facet as any)
-      .getCornerHeader()
-      .getChildren()
-      .map((cell: HeaderCell) => cell.getActualText());
+    const cornerCellLabels = getCornerCellLabels();
 
     expect(cornerCellLabels).toEqual(['测试', '类型']);
   });

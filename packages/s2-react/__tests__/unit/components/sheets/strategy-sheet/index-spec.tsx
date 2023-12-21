@@ -209,12 +209,12 @@ describe('<StrategySheet/> Tests', () => {
     const cornerNode = s2.facet
       .getCornerNodes()
       .find((node) => node.cornerType === CornerNodeType.Row);
-    const textList = s2.facet.cornerHeader
-      .getChildren()
-      .map((element) => (element as any).actualText);
+
+    const textList = s2.facet
+      .getCornerCells()
+      .map((cell) => cell.getActualText());
 
     expect(textList).toEqual([cornerExtraFieldText, '日期']);
-
     expect(cornerNode!.value).toEqual(cornerExtraFieldText);
   });
 

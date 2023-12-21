@@ -9,8 +9,10 @@ import { SeriesNumberHeader } from '@/facet/header/series-number';
 const s2 = createPivotSheet(
   {
     ...DEFAULT_OPTIONS,
-    frozenFirstRow: true,
-    totals: { row: { showGrandTotals: true, reverseLayout: true } },
+    frozen: {
+      firstRow: true,
+    },
+    totals: { row: { showGrandTotals: true, reverseGrandTotalsLayout: true } },
     showSeriesNumber: true,
   },
   { useSimpleData: false },
@@ -19,9 +21,10 @@ const s2 = createPivotSheet(
 describe('Frozen Row Header Test', () => {
   test.each(['grid', 'tree'])(
     'frozen row header group api',
-    (hierarchyType: 'grid' | 'tree') => {
+    async (hierarchyType: 'grid' | 'tree') => {
       s2.setOptions({ hierarchyType });
-      s2.render();
+      await s2.render();
+
       const rowHeader: PivotRowHeader = s2.facet.rowHeader as PivotRowHeader;
 
       expect(rowHeader instanceof PivotRowHeader).toBeTrue();
@@ -53,9 +56,11 @@ describe('Frozen Series Number Test', () => {
       s2.render();
       const rowIndexHeader: SeriesNumberHeader = s2.facet
         .rowIndexHeader as SeriesNumberHeader;
+
       expect(rowIndexHeader instanceof SeriesNumberHeader).toBe(true);
 
       const seriesNumberCell = rowIndexHeader.frozenHeadGroup.getChildren();
+
       expect(seriesNumberCell).toHaveLength(1);
 
       expect(
