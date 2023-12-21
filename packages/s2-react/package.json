@@ -4,6 +4,7 @@
   "version": "1.46.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
+  "jsdelivr": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "description": "use S2 with react",
@@ -16,7 +17,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/antvis/S2.git"
+    "url": "https://github.com/antvis/S2.git",
+    "directory": "packages/s2-react"
   },
   "bugs": {
     "url": "https://github.com/antvis/S2/issues"

@@ -5,10 +5,10 @@ order: 4
 
 S2 自带字段标记特性。用户可以根据业务语义设置不同的渲染逻辑，实现重点数据的标记和分析。字段标记类型包括：
 
-* 文本 (text) 字段标记 （所有单元格类型）
-* 背景 (background) 字段标记 （所有单元格类型）
-* 柱状图 (interval) 字段标记 （仅支持数据单元格）
-* 图标 (icon) 字段标记 （目前支持透视表数据单元格、行头和列头单元格）
+* `文本` (text) 字段标记 （所有单元格类型）
+* `背景` (background) 字段标记 （所有单元格类型）
+* `柱状图` (interval) 字段标记 （仅支持数据单元格）
+* `图标` (icon) 字段标记 （目前支持透视表数据单元格、行头和列头单元格）
 
 下图直观展示了四种字段标记的形态：
 
@@ -19,7 +19,6 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 `S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/docs/api/general/S2Options#conditions) 属性。
 
 ```ts
-// 构建 options
 const s2Options = {
   width: 600,
   height: 600,
@@ -36,11 +35,14 @@ const s2Options = {
         },
       },
     ],
+    background: [],
+    interval: [],
+    icon: []
   },
 };
 ```
 
-<Playground path='analysis/conditions/demo/text.ts' rid='container' height='300'></playground>
+<Playground path='analysis/conditions/demo/text.ts' rid='text' height='300'></playground>
 
 ## 配置解释
 
@@ -65,20 +67,20 @@ const s2Options = {
   style="width: 100%; outline: none; border-collapse: collapse;"
 >
   <tbody>
-  <tr style="height: 33px;" >
+    <tr style="height: 33px;" >
       <td style="text-align: center;width:74px;">
-      透视表
+        透视表
       </td>
       <td>
-          <Playground path="analysis/conditions/demo/text.ts" rid='pivot' height='300'></playground>
+        <Playground path="analysis/conditions/demo/text.ts" rid='pivot' height='300'></playground>
       </td>
     </tr>
     <tr>
       <td style="text-align: center;width:74px;">
         明细表
       </td>
-        <td >
-          <Playground path="analysis/conditions/demo/table-text.ts" rid='table' height='300'></playground>
+      <td >
+        <Playground path="analysis/conditions/demo/table-text.ts" rid='table' height='300'></playground>
       </td>
     </tr>
   </tbody>
@@ -102,7 +104,7 @@ const s2Options = {
 | maxValue  | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值                                                                           | `number`  | -      |      |
 | fieldValue | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图的长度                                                                           | `number`  | -      |      |
 
-> 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
+> 如果 `mapping` 函数返回值为空，则表明不渲染该单元格的字段标记
 
 <embed src="@/docs/common/icon.zh.md"></embed>​
 
@@ -116,7 +118,7 @@ const s2Options = {
 
 `price` 字段的图标位于文本右侧，`cost` 字段的图标位于文本左侧：
 
-<Playground path="analysis/conditions/demo/icon.ts" rid='icon' height="200"></playground>
+<Playground path="analysis/conditions/demo/icon.ts" rid='condition-icon' height="200"></playground>
 
 ### 自定义柱状图范围
 
@@ -125,13 +127,13 @@ const s2Options = {
 
 `price` 字段使用自定义模式，`cost` 字段使用默认模式：
 
-<Playground path="analysis/conditions/demo/interval.ts" rid='interval'></playground>
+<Playground path="analysis/conditions/demo/interval.ts" rid='condition-interval'></playground>
 
 ### 双向柱状图
 
 当柱状图的区间有正负之分时，并搭配 `mapping` 函数返回值的 `fill` 属性，即可绘制出带有不同颜色的正负双向柱状图：
 
-<Playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
+<Playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='condition-bidirectional'></playground>
 
 ​📊 查看更多 [字段标记示例](/examples/analysis/conditions#bidirectional-interval)。
 
@@ -140,7 +142,7 @@ const s2Options = {
 `S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86) 等。
 
 `price` 字段使用渐变色：
-<Playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
+<Playground path="analysis/conditions/demo/gradient-interval.ts" rid='condition-gradient-interval'></playground>
 
 ​📊 查看更多 [字段标记示例](/examples/analysis/conditions#gradient-interval)。
 
@@ -150,6 +152,6 @@ const s2Options = {
 当标记背景颜色较暗时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
 优先级： `background condition` 的 `intelligentReverseTextColor` < `text condition` 的 `fill`
 
-<Playground path="analysis/conditions/demo/intelligent-background.ts" rid='intelligentReverseTextColor'></playground>
+<Playground path="analysis/conditions/demo/intelligent-background.ts" rid='condition-intelligent-background'></playground>
 
 ​📊 查看更多 [字段标记示例](/examples/analysis/conditions#intelligent-background)。

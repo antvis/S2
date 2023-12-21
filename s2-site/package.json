@@ -13,10 +13,10 @@
   "homepage": "https://s2.antv.antgroup.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/antvis/s2"
+    "url": "https://github.com/antvis/S2.git"
   },
   "bugs": {
-    "url": "https://github.com/antvis/s2/issues"
+    "url": "https://github.com/antvis/S2/issues"
   },
   "scripts": {
     "start": "yarn develop",
@@ -29,13 +29,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
-    "@antv/dumi-theme-antv": "^0.4.3",
+    "@antv/dumi-theme-antv": "^0.4.5",
     "@antv/g-canvas": "^0.5.12",
-    "@antv/s2": "^1.52.0",
-    "@antv/s2-react": "^1.44.2",
-    "antd": "^4.24.14",
+    "@antv/s2": "^1.54.1",
+    "@antv/s2-react": "^1.46.0",
+    "antd": "^4.24.15",
     "copy-to-clipboard": "^3.3.3",
-    "dumi": "^2.2.14",
+    "dumi": "^2.2.16",
     "gh-pages": "^3.1.0",
     "lodash": "^4.17.21",
     "react-color": "^2.19.3"
