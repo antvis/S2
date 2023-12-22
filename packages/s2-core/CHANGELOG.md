@@ -1,3 +1,12 @@
+# [@antv/s2-v1.54.2](https://github.com/antvis/S2/compare/@antv/s2-v1.54.1...@antv/s2-v1.54.2) (2023-12-22)
+
+
+### Bug Fixes
+
+* 修复维度字段中包含 [&] 分隔符导致的获取数据不正确的问题 ([#2488](https://github.com/antvis/S2/issues/2488)) ([831aae1](https://github.com/antvis/S2/commit/831aae138704c4b22c09f9164489aa5de8920e73))
+* 修复行头字段为空字符串时, getDimensionValues 获取数据错误的问题 ([#2482](https://github.com/antvis/S2/issues/2482)) ([495d963](https://github.com/antvis/S2/commit/495d9634d35506ba72e6e567adc0b7c1435ec8fd))
+* 处理 getMultiData 在找不到数据时的报错信息 ([#2485](https://github.com/antvis/S2/issues/2485)) ([918e52e](https://github.com/antvis/S2/commit/918e52e9f77062ba72d6ea2622280cf256c5cc1d))
+
 # [@antv/s2-v1.54.1](https://github.com/antvis/S2/compare/@antv/s2-v1.54.0...@antv/s2-v1.54.1) (2023-12-18)
 
 
