@@ -1,6 +1,16 @@
 {
   "name": "@antv/s2",
   "private": true,
+  "license": "MIT",
+  "homepage": "https://s2.antv.antgroup.com",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
   "workspaces": [
     "packages/*"
   ],
@@ -179,6 +189,5 @@
     "vite": "^2.9.5",
     "vite-plugin-imp": "^2.1.8",
     "vue-jest": "^5.0.0-alpha.10"
-  },
-  "license": "MIT"
+  }
 }

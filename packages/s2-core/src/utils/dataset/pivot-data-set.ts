@@ -1,4 +1,5 @@
 import {
+  compact,
   find,
   flatMap,
   forEach,
@@ -213,11 +214,10 @@ export function getDataPath(params: DataPathParams) {
       const value = dimensionValues[i];
 
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
-        const id = dimensionValues
+        const currentDimensions = dimensionValues
           .slice(0, i + 1)
-          .map((it) => String(it))
-          .join(ID_SEPARATOR);
-
+          .map((it) => String(it));
+        const id = currentDimensions.join(ID_SEPARATOR);
         const isTotal = value === TOTAL_VALUE;
 
         let level;
@@ -231,6 +231,7 @@ export function getDataPath(params: DataPathParams) {
 
         currentMeta.set(value, {
           id,
+          dimensions: currentDimensions,
           value,
           level,
           children: new Map(),
@@ -535,7 +536,7 @@ export function flattenDimensionValues(params: {
     sortedDimensionValues,
   });
 
-  return metaValues.map((v) => v.id.split(ID_SEPARATOR));
+  return metaValues.map((v) => v.dimensions);
 }
 
 export function getFlattenDimensionValues(
@@ -582,14 +583,14 @@ export function flattenIndexesData(
     return [];
   }
   if (!isArray(data)) {
-    return [data];
+    return compact([data]);
   }
   return flatMap(data, (dimensionData) => {
     if (!isArray(dimensionData)) {
-      return [dimensionData];
+      return compact([dimensionData]);
     }
     // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
     const startIdx = queryType === QueryDataType.DetailOnly ? 1 : 0;
-    return dimensionData.slice(startIdx).filter(Boolean);
+    return compact(dimensionData.slice(startIdx));
   });
 }

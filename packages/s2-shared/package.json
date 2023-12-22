@@ -6,6 +6,16 @@
   "types": "temp/index.d.ts",
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
+  "homepage": "https://s2.antv.antgroup.com",
+  "author": "https://github.com/orgs/antvis/people",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git",
+    "directory": "packages/s2-shared"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
   "scripts": {
     "build": "run-s clean build:dts",
     "clean": "rimraf temp",

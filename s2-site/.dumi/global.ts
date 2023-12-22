@@ -20,6 +20,31 @@ if (window) {
   (
     window as any
   ).inputNumberCss = require('antd/es/input-number/style/index.css');
-  (window as any).s2Css = require('@antv/s2/dist/style.min.css');
-  (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
+  // (window as any).s2Css = require('@antv/s2/dist/style.min.css');
+  // (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
+
+  // 码云和老网站统一跳转 antgroup 新域名
+  const hosts = ['s2.antv.vision', 'antv-s2.gitee.io'];
+  if (hosts.includes(location.host)) {
+    (window as any).location.href = location.href.replace(
+      location.origin,
+      'https://s2.antv.antgroup.com',
+    );
+  }
+
+  // 能获取到 version 说明没有走 dumi 的代理, 运行的 node_modules 的包
+  console.table([
+    {
+      package: '@antv/s2',
+      version: (window as any).s2?.version || 'development',
+    },
+    {
+      package: '@antv/s2-react',
+      version: (window as any).s2React?.version || 'development',
+    },
+    {
+      package: '@antv/s2-vue',
+      version: (window as any).s2Vue?.version || 'development',
+    },
+  ]);
 }

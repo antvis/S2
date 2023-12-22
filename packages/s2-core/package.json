@@ -4,6 +4,7 @@
   "version": "1.54.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
+  "jsdelivr": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "src": "src/index.ts",
@@ -17,7 +18,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/antvis/S2.git"
+    "url": "https://github.com/antvis/S2.git",
+    "directory": "packages/s2-core"
   },
   "bugs": {
     "url": "https://github.com/antvis/S2/issues"

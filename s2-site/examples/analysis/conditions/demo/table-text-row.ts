@@ -44,24 +44,33 @@ fetch(
       conditions: {
         text: [
           {
-            field: 'price',
+            // 使用正则, 匹配所有数据
+            field: /.*/,
             mapping(value, record) {
-              return {
-                fill: '#30BF78',
-              };
-            },
-          },
-          {
-            field: new RegExp('co*'),
-            mapping(value, record) {
-              return {
-                fill: '#F4664A',
-              };
+              console.log(value, record);
+
+              // 如果价格低于 10, 整行标记
+              if (record.price < 10) {
+                return {
+                  fill: '#30BF78',
+                };
+              }
+
+              // 如果价格高于 20, 整行标记
+              if (record.price > 20) {
+                return {
+                  fill: '#FF4D4F',
+                };
+              }
+
+              return '#000';
             },
           },
         ],
       },
     };
+
+    // 透视表同理, 请举一反三
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();
