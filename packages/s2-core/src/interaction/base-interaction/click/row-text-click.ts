@@ -1,7 +1,7 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { InterceptType, S2Event } from '../../../common/constant';
 import type { RawData } from '../../../common/interface';
-import { getFieldValueOfViewMetaData } from '../../../data-set/cell-data';
+import { CellData } from '../../../data-set/cell-data';
 import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 import type { Data } from '../../../common/interface';
@@ -40,10 +40,10 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
     const leafNode = cellData.getHeadLeafChild();
 
     const data = this.spreadsheet.dataSet.getCellMultiData({
-      query: leafNode?.query!
+      query: leafNode?.query!,
     })[0];
 
-    const originalData = getFieldValueOfViewMetaData(data) as RawData;
+    const originalData = CellData.getFieldValue(data) as RawData;
 
     return {
       ...originalData,

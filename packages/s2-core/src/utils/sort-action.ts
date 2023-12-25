@@ -1,5 +1,6 @@
 import {
-  compact, endsWith,
+  compact,
+  endsWith,
   flatMap,
   includes,
   indexOf,
@@ -10,23 +11,30 @@ import {
   sortBy,
   split,
   toUpper,
-  uniq
+  uniq,
 } from 'lodash';
 import {
   EXTRA_FIELD,
-  NODE_ID_SEPARATOR, QueryDataType,
-  TOTAL_VALUE
+  NODE_ID_SEPARATOR,
+  ORIGIN_FIELD,
+  QueryDataType,
+  TOTAL_VALUE,
 } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
 import type { CellData } from '../data-set/cell-data';
 import type {
   PivotMeta,
-  PivotMetaValue, SortActionParams, SortPivotMetaParams
+  PivotMetaValue,
+  SortActionParams,
+  SortPivotMetaParams,
 } from '../data-set/interface';
 import { getLeafColumnsWithKey } from '../facet/utils';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
-import { filterExtraDimension, getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
+import {
+  filterExtraDimension,
+  getDimensionsWithParentPath,
+} from '../utils/dataset/pivot-data-set';
 import { canConvertToNumber } from './number-calculate';
 
 export const isAscSort = (sortMethod: SortMethod) =>
@@ -34,7 +42,6 @@ export const isAscSort = (sortMethod: SortMethod) =>
 
 export const isDescSort = (sortMethod: SortMethod) =>
   toUpper(sortMethod) === 'DESC';
-
 
 /**
  * 执行排序
@@ -283,21 +290,20 @@ export const getSortByMeasureValues = (
   const { sortByMeasure, query, sortFieldId } = sortParam!;
 
   if (sortByMeasure !== TOTAL_VALUE) {
-    const dataList = dataSet.getCellMultiData( {
+    const dataList = dataSet!.getCellMultiData({
       query,
       queryType: QueryDataType.DetailOnly,
     });
+
     return dataList;
   }
-
-  
 
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
 
-  const dataList = dataSet.getCellMultiData( {
+  const dataList = dataSet!.getCellMultiData({
     query,
     queryType: QueryDataType.All,
   });
@@ -314,11 +320,11 @@ export const getSortByMeasureValues = (
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
   const sortFields = filterExtraDimension(
-    (isSortFieldInRow ? fields.rows : fields.columns) as string[],
+    (isSortFieldInRow ? fields.rows : columns) as string[],
   );
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraDimension(
-    (isSortFieldInRow ? fields.columns : fields.rows) as string[],
+    (isSortFieldInRow ? columns : fields.rows) as string[],
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
@@ -328,7 +334,7 @@ export const getSortByMeasureValues = (
   );
 
   const totalDataList = dataList.filter((dataItem) => {
-    const dataItemKeys = new Set(keys(dataItem.getOrigin()));
+    const dataItemKeys = new Set(keys(dataItem[ORIGIN_FIELD]));
 
     if (!dataItemKeys.has(sortFieldId)) {
       /*
@@ -447,5 +453,6 @@ export const getSortedPivotMeta = (params: SortPivotMetaParams) => {
       break;
     }
   }
+
   return rootContainer.children;
 };

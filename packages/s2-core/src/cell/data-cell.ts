@@ -37,7 +37,7 @@ import {
   type IconCondition,
   type InteractionStateTheme,
 } from '../common/interface';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { CellData } from '../data-set/cell-data';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -320,7 +320,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     const { row = {} } = this.spreadsheet.options.totals ?? {};
-    const node = this.spreadsheet.facet.getRowLeafNodeByIndex(rowIndex)
+    const node = this.spreadsheet.facet.getRowLeafNodeByIndex(rowIndex);
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
 
     /**
@@ -405,7 +405,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const backgroundColorByCross = this.getCrossBackgroundColor(
       this.meta.rowIndex,
     );
-    let backgroundColor = backgroundColorByCross.backgroundColor;
+    const backgroundColor = backgroundColorByCross.backgroundColor;
     const backgroundColorOpacity =
       backgroundColorByCross.backgroundColorOpacity;
 
@@ -423,29 +423,27 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-   protected drawInteractiveBorderShape() {
+  protected drawInteractiveBorderShape() {
     this.stateShapes.set(
       'interactiveBorderShape',
       renderRect(this, {
         ...this.getBBoxByType(CellClipBox.PADDING_BOX),
         visibility: 'hidden',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
       }),
     );
   }
 
-
- protected drawInteractiveBgShape() {
+  protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
       renderRect(this, {
         ...this.getBBoxByType(),
         visibility: 'hidden',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
       }),
     );
- }
-
+  }
 
   // dataCell 根据 state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
@@ -509,7 +507,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.spreadsheet.dataSet.getCellData({
           query: { rowIndex: this.meta.rowIndex },
         })
-      : getFieldValueOfViewMetaData(this.meta.data);
+      : CellData.getFieldValue(this.meta.data);
 
     return condition?.mapping(value, rowDataInfo as RawData, this);
   }

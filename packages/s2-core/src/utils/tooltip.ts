@@ -24,27 +24,28 @@ import {
   mapKeys,
   noop,
   pick,
-  sumBy
+  sumBy,
 } from 'lodash';
 import {
   CellType,
   EXTRA_FIELD,
   PRECISION,
-  VALUE_FIELD
+  VALUE_FIELD,
 } from '../common/constant';
 import {
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
-  TOOLTIP_POSITION_OFFSET
+  TOOLTIP_POSITION_OFFSET,
 } from '../common/constant/tooltip';
 import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
-  Data, Tooltip,
+  Data,
+  Tooltip,
   TooltipDetailListItem,
   TooltipSummaryOptionsValue,
   ViewMeta,
-  ViewMetaData
+  ViewMetaData,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -59,9 +60,9 @@ import type {
   TooltipOperatorOptions,
   TooltipOptions,
   TooltipPosition,
-  TooltipSummaryOptions
+  TooltipSummaryOptions,
 } from '../common/interface/tooltip';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { CellData } from '../data-set/cell-data';
 import type { Node as S2Node } from '../facet/layout/node';
 import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
@@ -211,7 +212,7 @@ export const getListItem = (
   const formatter = getFieldFormatter(spreadsheet, field);
 
   // 非数值类型的 data 不展示 (趋势分析表/迷你图/G2 图表)，上层通过自定义 tooltip 的方式去自行定制
-  const dataValue = getFieldValueOfViewMetaData(data, field);
+  const dataValue = CellData.getFieldValue(data, field);
   const displayDataValue = isObject(dataValue) ? null : dataValue;
 
   const value = formatter(
@@ -233,7 +234,7 @@ export const getFieldList = (
   const currentFields = filter(
     concat([], fields),
     (field) =>
-      field !== EXTRA_FIELD && getFieldValueOfViewMetaData(activeData, field),
+      field !== EXTRA_FIELD && CellData.getFieldValue(activeData, field),
   );
 
   return map(currentFields, (field: string) =>
@@ -491,7 +492,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     const meta = targetCell.getMeta();
     // 如果是列头, 获取当前列所有数据, 其他则获取当前整行 (1条数据)
     const selectedCellsData = meta?.field
-      ? spreadsheet.dataSet.getCellMultiData({query:{ field: meta.field }})
+      ? spreadsheet.dataSet.getCellMultiData({ query: { field: meta.field } })
       : [spreadsheet.dataSet.getRowData(meta as ViewMeta)];
 
     return [{ selectedData: selectedCellsData, name: '', value: '' }];
@@ -580,8 +581,8 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   } else if (options.onlyShowCellText) {
     // 行列头hover & 明细表所有hover
 
-    const value = getFieldValueOfViewMetaData(firstCellInfo, 'value') as string;
-    const valueField = getFieldValueOfViewMetaData(
+    const value = CellData.getFieldValue(firstCellInfo, 'value') as string;
+    const valueField = CellData.getFieldValue(
       firstCellInfo,
       'valueField',
     ) as string;

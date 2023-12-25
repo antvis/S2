@@ -7,9 +7,11 @@ import { TableDataSet } from './table-data-set';
 export { CellData } from './cell-data';
 
 export {
-  BaseDataSet, CustomGridPivotDataSet, CustomTreePivotDataSet, PivotDataSet,
-  TableDataSet
+  BaseDataSet,
+  CustomGridPivotDataSet,
+  CustomTreePivotDataSet,
+  PivotDataSet,
+  TableDataSet,
 };
 
 export * from './interface';
-

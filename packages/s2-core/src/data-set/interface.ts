@@ -1,29 +1,16 @@
 import type { QueryDataType } from '../common';
-import type { SortParam } from '../common/interface';
+import type { RawData, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { CellData } from './cell-data';
 import type { PivotDataSet } from './pivot-data-set';
 
 export type Query = Record<string, any>;
 
-export type TotalSelection = {
-  grandTotalOnly?: boolean;
-  subTotalOnly?: boolean;
-  totalDimensions?: boolean | string[];
-};
-
-export type TotalSelectionsOfMultiData = {
-  row?: TotalSelection;
-  column?: TotalSelection;
-};
-
-// TODO add object data value
-export type DataType = Record<string, any>;
-
-
 export type PivotMetaValue = {
   // 当前维度结合父级维度生成的完整 id 信息
   id: string;
+  // 当前维度结合父级维度生成的完整 dimensions 信息，主要是预防 field 数据本身出现 [&] 导致维度信息识别不正确
+  dimensions: string[];
   // 当前维度
   value: string;
   level: number;
@@ -35,23 +22,33 @@ export type PivotMeta = Map<string, PivotMetaValue>;
 
 export type SortedDimensionValues = Record<string, string[]>;
 
+export interface OnFirstCreateParams {
+  careRepeated?: boolean;
+  // 维度 id，如 city
+  dimension: string;
+  // 完整维度信息：'四川省[&]成都市'
+  dimensionPath: string;
+}
+
+export type DataPath = (number | string | undefined)[];
+
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
-  shouldCreateOrUpdate?: boolean;
+  rowPivotMeta: PivotMeta;
+  colPivotMeta: PivotMeta;
+  rowFields: string[];
+  colFields: string[];
+  // first create data path
+  isFirstCreate?: boolean;
   // callback when pivot map create node
-  onCreate?: (params: {
-    // 维度 id，如 city
-    dimension: string;
-    // 完整维度信息：'四川省[&]成都市'
-    dimensionPath: string;
-  }) => void;
+  onFirstCreate?: (params: OnFirstCreateParams) => void;
   prefix?: string;
 };
 
-export interface CellDataParams {
+export interface GetCellDataParams {
   // search query
-  query: Query;
+  query?: Query;
   isTotals?: boolean;
 
   /**
@@ -87,22 +84,15 @@ export interface GetCellMultiDataParams {
   /**
    * 查询条件
    */
-  query: Query;
-
-  /**
-   * 汇总
-   */
-  totals?: TotalSelectionsOfMultiData;
-
-  /**
-   * 下钻
-   */
-  drillDownFields?: string[];
-
+  query?: Query;
   /**
    * 查询类型
    */
   queryType?: QueryDataType;
+  /**
+   * 下钻
+   */
+  drillDownFields?: string[];
 }
 
 export interface SortActionParams {
@@ -121,9 +111,4 @@ export interface SortPivotMetaParams {
   sortFieldId: string;
 }
 
-export interface MultiDataParams {
-  drillDownFields?: string[];
-  queryType?: QueryDataType;
-}
-
-export type FlattingIndexesData = DataType[][] | DataType[] | DataType;
+export type FlattingIndexesData = RawData[][] | RawData[] | RawData;

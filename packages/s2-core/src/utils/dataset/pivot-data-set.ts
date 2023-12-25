@@ -1,7 +1,26 @@
-import { find, flatMap, forEach, get, indexOf, intersection, isArray, isEmpty, isNull, last, set, sortBy } from 'lodash';
 import {
-  EMPTY_EXTRA_FIELD_PLACEHOLDER, EXTRA_FIELD, ID_SEPARATOR, MULTI_VALUE, NODE_ID_SEPARATOR, QueryDataType, ROOT_NODE_ID,
-  TOTAL_VALUE
+  compact,
+  find,
+  flatMap,
+  forEach,
+  get,
+  indexOf,
+  intersection,
+  isArray,
+  isEmpty,
+  isNull,
+  last,
+  set,
+  sortBy,
+} from 'lodash';
+import {
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  EXTRA_FIELD,
+  MULTI_VALUE,
+  NODE_ID_SEPARATOR,
+  QueryDataType,
+  ROOT_NODE_ID,
+  TOTAL_VALUE,
 } from '../../common/constant';
 import type { Meta } from '../../common/interface/basic';
 import type { PickEssential } from '../../common/interface/utils';
@@ -9,16 +28,21 @@ import type { CellData } from '../../data-set/cell-data';
 import type {
   DataPath,
   DataPathParams,
-  DataType,
   FlattingIndexesData,
+  OnFirstCreateParams,
   PivotMeta,
   PivotMetaValue,
   SortedDimensionValues,
-  TotalStatus
+  TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
+import type { RawData } from '@/common';
 
-export function isMultiValue(pathValue: string | number) {
+export function filterExtraDimension(dimensions: string[] = []) {
+  return dimensions.filter((d) => d !== EXTRA_FIELD);
+}
+
+export function isMultiValue(pathValue: string | number | undefined) {
   return pathValue === MULTI_VALUE;
 }
 
@@ -39,23 +63,26 @@ export function isMultiValue(pathValue: string | number) {
  */
 
 export function transformDimensionsValues(
-  record: DataType = {},
+  record: RawData = {},
   dimensions: string[] = [],
   placeholder = TOTAL_VALUE,
 ): string[] {
   return dimensions.reduce((res: string[], dimension: string) => {
     const value = record[dimension];
+
     if (!(dimension in record)) {
       res.push(placeholder);
     } else {
       res.push(String(value));
     }
+
     return res;
   }, []);
 }
 
-export function getExistValues(data: DataType, values: string[]) {
+export function getExistValues(data: RawData, values: string[]) {
   const result = values.filter((v) => v in data);
+
   if (isEmpty(result)) {
     result.push(EMPTY_EXTRA_FIELD_PLACEHOLDER);
   }
@@ -64,15 +91,16 @@ export function getExistValues(data: DataType, values: string[]) {
 }
 
 export function transformDimensionsValuesWithExtraFields(
-  record: DataType = {},
+  record: RawData = {},
   dimensions: string[] = [],
-  values?: string[],
+  values: string[] | null,
 ) {
   const result = [];
 
-  function transform(data: DataType, fields: string[], valueField?: string) {
+  function transform(data: RawData, fields: string[], valueField?: string) {
     return fields.reduce((res: string[], dimension: string) => {
       const value = data[dimension];
+
       if (!(dimension in data)) {
         if (dimension === EXTRA_FIELD && valueField) {
           res.push(valueField);
@@ -82,6 +110,7 @@ export function transformDimensionsValuesWithExtraFields(
       } else {
         res.push(String(value));
       }
+
       return res;
     }, []);
   }
@@ -93,21 +122,8 @@ export function transformDimensionsValuesWithExtraFields(
   } else {
     result.push(transform(record, dimensions));
   }
-  return result;
-}
 
-/**
- * Get dimensions without path pre
- * dimensions: ['辽宁省[&]芜湖市[&]家具[&]椅子']
- * return ['椅子']
- *
- * @param dimensions
- */
-export function getDimensionsWithoutPathPre(dimensions: string[]) {
-  return dimensions.map((item) => {
-    const splitArr = item?.split(ID_SEPARATOR);
-    return splitArr[splitArr?.length - 1] ?? item;
-  });
+  return result;
 }
 
 /**
@@ -150,7 +166,7 @@ export function getDataPathPrefix(rowFields: string[], colFields: string[]) {
   return rowFields
     .concat(colFields)
     .filter((i) => i !== EXTRA_FIELD)
-    .join(ID_SEPARATOR);
+    .join(NODE_ID_SEPARATOR);
 }
 
 /**
@@ -174,7 +190,6 @@ export function getDataPathPrefix(rowFields: string[], colFields: string[]) {
  */
 export function getDataPath(params: DataPathParams): DataPath {
   const {
-    values,
     rowDimensionValues,
     colDimensionValues,
     isFirstCreate,
@@ -194,21 +209,23 @@ export function getDataPath(params: DataPathParams): DataPath {
     dimensionValues: string[],
     pivotMeta: PivotMeta,
     careRepeated: boolean,
-  ): number[] => {
+  ) => {
     let currentMeta = pivotMeta;
-    const path = [];
+    const path: DataPath = [];
+
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
 
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
-        const id = dimensionValues
+        const currentDimensions = dimensionValues
           .slice(0, i + 1)
-          .map((it) => String(it))
-          .join(ID_SEPARATOR);
+          .map((it) => String(it));
+        const id = currentDimensions.join(NODE_ID_SEPARATOR);
 
         const isTotal = value === TOTAL_VALUE;
 
         let level;
+
         if (isTotal) {
           level = 0;
         } else if (currentMeta.has(TOTAL_VALUE)) {
@@ -219,6 +236,7 @@ export function getDataPath(params: DataPathParams): DataPath {
 
         currentMeta.set(value, {
           id,
+          dimensions: currentDimensions,
           value,
           level,
           children: new Map(),
@@ -236,6 +254,7 @@ export function getDataPath(params: DataPathParams): DataPath {
 
       if (meta) {
         const childDimension = dimensions?.[i + 1];
+
         if (isFirstCreate && meta.childField !== childDimension) {
           // mark the child field
           // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
@@ -259,17 +278,17 @@ interface Param {
   columns: string[];
   values: string[];
   valueInCols: boolean;
-  data: DataType[];
-  indexesData: Record<string, DataType[][] | DataType[]>;
+  data: RawData[];
+  indexesData: Record<string, RawData[][] | RawData[]>;
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
-  getExistValuesByDataItem?: (data: DataType, values: string[]) => string[];
+  getExistValuesByDataItem?: (data: RawData, values: string[]) => string[];
 }
 
 export interface TransformResult {
-  paths: (string | number)[];
-  indexesData: Record<string, DataType[][] | DataType[]>;
+  paths: DataPath[];
+  indexesData: Record<string, RawData[][] | RawData[]>;
   rowPivotMeta: PivotMeta;
   colPivotMeta: PivotMeta;
   sortedDimensionValues: SortedDimensionValues;
@@ -302,7 +321,11 @@ export function transformIndexesData(params: Param): TransformResult {
   /**
    * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
    */
-  const onFirstCreate = ({ dimension, dimensionPath, careRepeated = true }) => {
+  const onFirstCreate = ({
+    dimension,
+    dimensionPath,
+    careRepeated = true,
+  }: OnFirstCreateParams) => {
     if (careRepeated && repeatedDimensionSet.has(dimension)) {
       // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
       // 所有重复字段的维度值无需再加入到 sortedDimensionValues
@@ -317,7 +340,7 @@ export function transformIndexesData(params: Param): TransformResult {
 
   const prefix = getDataPathPrefix(rows, columns as string[]);
 
-  data.forEach((item: DataType) => {
+  data.forEach((item: RawData) => {
     // 空数据没有意义，直接跳过
     if (!item || isEmpty(item)) {
       return;
@@ -343,16 +366,17 @@ export function transformIndexesData(params: Param): TransformResult {
         const path = getDataPath({
           rowDimensionValues,
           colDimensionValues,
-          rowPivotMeta,
-          colPivotMeta,
+          rowPivotMeta: rowPivotMeta!,
+          colPivotMeta: colPivotMeta!,
           rowFields: rows,
           colFields: columns,
           isFirstCreate: true,
           onFirstCreate,
           prefix,
         });
+
         paths.push(path);
-        set(indexesData, path, item);
+        set(indexesData, path as (string|number)[], item);
       }
     }
   });
@@ -360,8 +384,8 @@ export function transformIndexesData(params: Param): TransformResult {
   return {
     paths,
     indexesData,
-    rowPivotMeta,
-    colPivotMeta,
+    rowPivotMeta: rowPivotMeta!,
+    colPivotMeta: colPivotMeta!,
     sortedDimensionValues,
   };
 }
@@ -418,10 +442,10 @@ export function generateExtraFieldMeta(
 
 export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
   return {
-    isRowTotal: row.isGrandTotals,
-    isRowSubTotal: row.isSubTotals,
-    isColTotal: col.isGrandTotals,
-    isColSubTotal: col.isSubTotals,
+    isRowTotal: row.isGrandTotals!,
+    isRowSubTotal: row.isSubTotals!,
+    isColTotal: col.isGrandTotals!,
+    isColSubTotal: col.isSubTotals!,
   };
 }
 
@@ -437,14 +461,17 @@ export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
  */
 export function existDimensionTotalGroup(path: string[]) {
   let multiIdx = null;
+
   for (let i = 0; i < path.length; i++) {
     const element = path[i];
+
     if (isMultiValue(element)) {
       multiIdx = i;
     } else if (!isNull(multiIdx) && multiIdx < i) {
       return true;
     }
   }
+
   return false;
 }
 
@@ -473,30 +500,35 @@ export function getSatisfiedPivotMetaValues(params: {
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
       const values = [...metaValue.children.values()];
+
       return values.filter(
         (v) =>
           v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
           (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
       );
     });
+
     if (list.length > 1) {
       // 从不同父维度中获取的子维度需要再排一次，比如province => city 按照字母倒序，那么在获取了所有 province 的 city 后需要再排一次
       const sortedDimensionValue = sortedDimensionValues[field] ?? [];
+
       return sortBy(allValues, (item) =>
         indexOf(sortedDimensionValue, item.id),
       );
     }
+
     return allValues;
   }
 
   for (let i = 0; i <= fieldIdx; i++) {
     const dimensionValue = dimensionValues[i];
     const field = fields[i];
+
     if (isMultiValue(dimensionValue)) {
       metaValueList = flattenMetaValue(metaValueList, field);
     } else {
       metaValueList = metaValueList
-        .map((v) => v.children.get(dimensionValue))
+        .map((v) => v.children.get(dimensionValue)!)
         .filter(Boolean);
     }
   }
@@ -518,6 +550,7 @@ export function flattenDimensionValues(params: {
     sortedDimensionValues,
     queryType = QueryDataType.All,
   } = params;
+
   if (!existDimensionTotalGroup(dimensionValues)) {
     return [dimensionValues];
   }
@@ -531,7 +564,7 @@ export function flattenDimensionValues(params: {
     sortedDimensionValues,
   });
 
-  return metaValues.map((v) => v.id.split(ID_SEPARATOR));
+  return metaValues.map((v) => v.dimensions);
 }
 
 export function getFlattenDimensionValues(
@@ -564,6 +597,7 @@ export function getFlattenDimensionValues(
     sortedDimensionValues,
     queryType,
   });
+
   return {
     rowQueries,
     colQueries,
@@ -577,15 +611,19 @@ export function flattenIndexesData(
   if (!data) {
     return [];
   }
+
   if (!isArray(data)) {
-    return [data];
+    return compact([data]);
   }
-  return flatMap(data, (dimensionData) => {
+
+  return flatMap(data, (dimensionData: RawData[]) => {
     if (!isArray(dimensionData)) {
-      return [dimensionData];
+      return compact([dimensionData]) as RawData[];
     }
+
     // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
     const startIdx = queryType === QueryDataType.DetailOnly ? 1 : 0;
-    return dimensionData.slice(startIdx).filter(Boolean);
-  });
+
+    return compact(dimensionData.slice(startIdx));
+  }) as unknown as FlattingIndexesData;
 }

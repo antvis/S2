@@ -1,10 +1,14 @@
 import { each, filter, hasIn, isFunction, isObject, orderBy } from 'lodash';
-import { isAscSort, isDescSort } from '..';
 import type { CellMeta } from '../common';
-import type { Data, RawData, S2DataConfig } from '../common/interface';
-import type { RowData } from '../common/interface/basic';
+import type {
+  Data,
+  RawData,
+  S2DataConfig,
+  SimpleData,
+} from '../common/interface';
+import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
-import type { DataType, GetCellMultiDataParams } from './interface';
+import type { GetCellMultiDataParams } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -21,8 +25,8 @@ export class TableDataSet extends BaseDataSet {
    * 返回顶部冻结行
    * @returns
    */
-  protected getStartFrozenRows(displayData: DataType[]): DataType[] {
-     const { rowCount } = this.spreadsheet.options.frozen!;
+  protected getStartFrozenRows(displayData: RawData[]): RawData[] {
+    const { rowCount } = this.spreadsheet.options.frozen!;
 
     if (!rowCount) {
       return [];
@@ -35,7 +39,7 @@ export class TableDataSet extends BaseDataSet {
    * 返回底部冻结行
    * @returns
    */
-  protected getEndFrozenRows(displayData: DataType[]): DataType[] {
+  protected getEndFrozenRows(displayData: RawData[]): RawData[] {
     const { trailingRowCount } = this.spreadsheet.options.frozen!;
 
     // 没有冻结行时返回空数组
@@ -43,11 +47,10 @@ export class TableDataSet extends BaseDataSet {
       return [];
     }
 
-
     return displayData.slice(-trailingRowCount);
   }
 
-  protected getDisplayData(displayData: DataType[]): DataType[] {
+  protected getDisplayData(displayData: RawData[]): RawData[] {
     const startFrozenRows = this.getStartFrozenRows(displayData);
     const endFrozenRows = this.getEndFrozenRows(displayData);
 
@@ -62,13 +65,14 @@ export class TableDataSet extends BaseDataSet {
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
       const filteredValuesSet = new Set(filteredValues);
-      const defaultFilterFunc = (row: DataType) =>
+      const defaultFilterFunc = (row: RawData) =>
         !filteredValuesSet.has(row[filterKey]);
 
       const filteredData = filter(this.displayData, (row) => {
         if (customFilter) {
           return customFilter(row) && defaultFilterFunc(row);
         }
+
         return defaultFilterFunc(row);
       });
 
@@ -153,23 +157,25 @@ export class TableDataSet extends BaseDataSet {
     return [];
   }
 
-  public getCellData({ query }: GetCellMultiDataParams): Data {
+  public getCellData({
+    query,
+  }: GetCellMultiDataParams): Data | SimpleData | undefined {
     if (this.displayData.length === 0 && query['rowIndex'] === 0) {
-      return;
+      return undefined;
     }
 
     const rowData = this.displayData[query['rowIndex']];
 
     if (!hasIn(query, 'field') || !isObject(rowData)) {
-      return rowData;
+      return rowData as Data;
     }
 
-    return rowData[query.field];
+    return rowData[query['field']] as SimpleData;
   }
 
-  public getCellMultiData({query}: GetCellMultiDataParams): DataType[] {
+  public getCellMultiData({ query }: GetCellMultiDataParams): Data[] {
     if (!query) {
-      return this.displayData;
+      return this.displayData as Data[];
     }
 
     const rowData = this.displayData[query['rowIndex']]
@@ -177,17 +183,17 @@ export class TableDataSet extends BaseDataSet {
       : this.displayData;
 
     if (!hasIn(query, 'field')) {
-      return rowData;
+      return rowData as Data[];
     }
 
-    return rowData.map((item) => item[query.field]);
+    return rowData.map((item) => item[query['field']]) as Data[];
   }
 
-  public getRowData(cell: CellMeta): RowData {
+  public getRowData(cell: CellMeta) {
     return this.getCellData({
       query: {
         rowIndex: cell.rowIndex,
       },
-    });
+    }) as Data;
   }
 }

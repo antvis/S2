@@ -11,10 +11,8 @@ import {
   memoize,
   min,
 } from 'lodash';
-import type { CellMeta, CustomHeaderField, RowData } from '../common';
+import type { CellMeta, CustomHeaderField, ViewMeta } from '../common';
 import { CellType } from '../common';
-import type { Indexes } from '../utils/indexes';
-import type { CellMeta, Data, RowData, ViewMeta } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -23,8 +21,8 @@ import type {
   RawData,
   S2CellType,
   S2DataConfig,
+  SimpleData,
   SortParams,
-  ViewMeta,
   ViewMetaData,
 } from '../common/interface';
 import type { ValueRange } from '../common/interface/condition';
@@ -35,9 +33,9 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
+import type { Indexes } from '../utils/indexes';
 import type { GetCellDataParams, Query } from './interface';
 import type { GetCellMultiDataParams } from './index';
-import type { CellDataParams, DataType, MultiDataParams, Query } from './index';
 
 export abstract class BaseDataSet {
   /**
@@ -220,10 +218,7 @@ export abstract class BaseDataSet {
   /**
    * 添加 (角头/数值虚拟字段) 格式化信息
    */
-  public getFieldMetaWithExtraField(
-    meta: Meta[] = [],
-    defaultExtraFieldText: string,
-  ): Meta[] {
+  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string): Meta[] {
     const newMeta: Meta[] = [
       ...meta,
       generateExtraFieldMeta(
@@ -308,7 +303,7 @@ export abstract class BaseDataSet {
    */
   public abstract getCellData(
     params: GetCellDataParams,
-  ): ViewMetaData | undefined;
+  ): ViewMetaData | SimpleData | undefined;
 
   /**
    * 获取批量的单元格数据
@@ -330,5 +325,7 @@ export abstract class BaseDataSet {
   /**
    * 查询当前整行数据
    */
-  public abstract getRowData(cellMeta: CellMeta | ViewMeta | Node): RowData;
+  public abstract getRowData(
+    cellMeta: CellMeta | ViewMeta | Node,
+  ): ViewMetaData[] | ViewMetaData;
 }

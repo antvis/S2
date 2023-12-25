@@ -1,9 +1,10 @@
-import { get } from 'lodash';
+import { get, type PropertyPath } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
 import { i18n } from '../common/i18n';
 import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
+  getDataPathPrefix,
   transformDimensionsValues,
 } from '../utils/dataset/pivot-data-set';
 import { CellData } from './cell-data';
@@ -27,12 +28,15 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
+      rowFields: rows as string[],
+      colFields: columns as string[],
+      prefix: getDataPathPrefix(rows as string[], columns as string[]),
     });
 
-    const rawData = get(this.indexesData, path);
+    const rawData = get(this.indexesData, path as PropertyPath);
 
     if (rawData) {
-      return new CellData(rawData, query[EXTRA_FIELD]);
+      return CellData.getCellData(rawData, query[EXTRA_FIELD]);
     }
   }
 
@@ -45,10 +49,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
      */
 
     const updatedDataCfg = super.processDataCfg(dataCfg);
-    const newMeta: Meta[] = this.getFieldMetaWithExtraField(
-      dataCfg.meta,
-      i18n('指标'),
-    );
+    const newMeta: Meta[] = this.processMeta(dataCfg.meta, i18n('指标'));
 
     return {
       ...updatedDataCfg,

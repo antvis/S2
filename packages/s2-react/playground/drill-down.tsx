@@ -1,4 +1,4 @@
-import type { PivotDataSet, RawData } from '@antv/s2';
+import { ORIGIN_FIELD, type PivotDataSet, type RawData } from '@antv/s2';
 import type { PartDrillDownInfo } from '@antv/s2-shared';
 import { forEach, random } from 'lodash';
 import React from 'react';
@@ -47,7 +47,7 @@ export const partDrillDown: PartDrillDown = {
       const drillDownData: RawData[] = [];
 
       forEach(rowData, (data) => {
-        const { number, sub_type: subType, type } = data.getOrigin();
+        const { number, sub_type: subType, type } = data[ORIGIN_FIELD];
         const number0 = random(50, number as number);
         const number1 = (number as number) - number0;
         const dataItem0: RawData = {

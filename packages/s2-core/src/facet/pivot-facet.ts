@@ -1,6 +1,6 @@
+import type { Group } from '@antv/g-canvas';
 import {
   filter,
-  find,
   forEach,
   get,
   isArray,
@@ -14,57 +14,42 @@ import {
   merge,
   reduce,
   size,
-  sumBy,
+  sumBy
 } from 'lodash';
-import { ColCell, RowCell, SeriesNumberCell } from '../cell';
-import type { Group } from '@antv/g-canvas';
+import { renderLine } from '..';
+import { ColCell, RowCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FrozenGroup,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
+  ORIGIN_FIELD,
   type IconTheme,
   type MultiData,
   type ViewMeta,
-  FrozenGroup,
-  KEY_GROUP_FROZEN_SPLIT_LINE,
-  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  ORIGIN_FIELD,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, SimpleData } from '../common/interface';
+import type { LayoutResult, S2TableSheetOptions, SimpleData, SplitLine } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
-import type { SpreadSheet } from '../sheet-type';
 import { safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
-import {
-  getIndexRangeWithOffsets,
-  getSubTotalNodeWidthOrHeightByLevel,
-} from '../utils/facet';
-import { getCellWidth } from '../utils/text';
-import { BaseFacet } from './base-facet';
-import { Frame } from './header';
-import type {
-  LayoutResult,
-  S2TableSheetOptions,
-  SplitLine,
-  ViewMeta,
-} from '../common/interface';
-import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
-import { getActionIconConfig } from '../utils/cell/header-cell';
-import { getIndexRangeWithOffsets } from '../utils/facet';
-import { getCellWidth, safeJsonParse } from '../utils/text';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
+import {
+  getIndexRangeWithOffsets
+} from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
-import { renderLine } from '..';
+import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
+import { Frame, PivotRowHeader, RowHeader } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import { getFrozenRowCfgPivot } from './utils';
-import { PivotRowHeader, RowHeader } from './header';
 
 export class PivotFacet extends FrozenFacet {
   protected updateFrozenGroupGrid(): void {
@@ -869,7 +854,7 @@ export class PivotFacet extends FrozenFacet {
         totalStatus: getHeaderTotalStatus(rowNode, col),
       });
 
-      const cellDataKeys = keys(cellData?.getOrigin());
+      const cellDataKeys = keys(cellData?.[ORIGIN_FIELD]);
 
       for (let j = 0; j < cellDataKeys.length; j++) {
         const dataValue: MultiData = get(cellData, cellDataKeys[j]);
