@@ -1,6 +1,5 @@
 import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
-import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -51,11 +50,6 @@ fetch(
       },
       transformCanvasConfig(renderer) {
         renderer.registerPlugin(new PluginRoughCanvasRenderer());
-        renderer.registerPlugin(
-          new PluginA11y({
-            enableExtractingText: true,
-          }),
-        );
 
         console.log(
           '当前已注册插件:',

@@ -410,4 +410,4 @@ function App() {
 
 [查看示例](/examples/custom/custom-cell#custom-g2-chart)
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*y9mfQqk9XwYAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="800"/>
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="800"/>

@@ -67,3 +67,13 @@ s2.setTheme({
 ## 效果
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="预览"/>
+
+## 获取单元格文本状态
+
+如果想获取一些特定状态，如 `文本最大宽度`, `文本是否换行`, `文本是否溢出`, 可以在拿到 [单元格信息后](/manual/advanced/get-cell-data) 后，调用单元格基类的方法，具体请 [查看 API](/api/basic-class/base-cell)。
+
+```ts
+cell.getActualText()
+cell.getOriginalText()
+cell.isTextOverflowing()
+```
