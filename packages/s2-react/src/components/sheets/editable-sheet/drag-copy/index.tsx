@@ -1,18 +1,14 @@
 import type { ScrollOffset } from '@antv/s2';
 import { DataCell, GEvent, S2Event, S2_PREFIX_CLS } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
-import { default as React, default as React, memo, useCallback, useEffect, useState } from 'react';
-import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
+import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
 import './drag-copy-point.less';
 
-
 export function DragCopyPoint() {
   const spreadsheet = useSpreadSheetInstance();
-export const DragCopyPoint = memo((props: DragCopyProps) => {
-  const spreadsheet = useSpreadSheetRef();
 
   const [scroll, setScroll] = useState<
     ScrollOffset & { width?: number; overflow?: boolean }
@@ -158,4 +154,4 @@ export const DragCopyPoint = memo((props: DragCopyProps) => {
       <DragCopyMask onCopyFinished={batchSelected} />
     </div>
   );
-});
+}

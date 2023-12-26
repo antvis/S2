@@ -1,5 +1,5 @@
 import { Frame } from '../header/frame';
-import { BaseBBox } from './baseBBox';
+import { BaseBBox } from './base-bbox';
 
 export class PanelBBox extends BaseBBox {
   calculateBBox() {

@@ -6,7 +6,7 @@ import type {
   RowCellStyle,
   SortMethod,
   SortParam,
-  ViewMeta
+  ViewMeta,
 } from '../common/interface';
 import { BaseDataSet, PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
@@ -73,6 +73,7 @@ export class PivotSheet extends SpreadSheet {
   public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
       const cleaned = this.dataSet.clearDrillDownData(rowNodeId);
+
       if (cleaned && !preventRender) {
         // 重置当前交互
         this.interaction.reset();

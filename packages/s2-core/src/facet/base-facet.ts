@@ -4,10 +4,6 @@ import {
   Rect,
   type FederatedPointerEvent as GraphEvent,
 } from '@antv/g';
-import type { Event as GraphEvent } from '@antv/g-base';
-import type { IElement, IGroup } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
-import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -51,9 +47,9 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  OriginEventType,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-  OriginEventType,
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
@@ -89,8 +85,8 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile, isWindows } from '../utils/is-mobile';
-import { CornerBBox } from './bbox/cornerBBox';
-import { PanelBBox } from './bbox/panelBBox';
+import { CornerBBox } from './bbox/corner-bbox';
+import { PanelBBox } from './bbox/panel-bbox';
 import {
   ColHeader,
   CornerHeader,
@@ -110,7 +106,6 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import type { BaseHeader, BaseHeaderConfig } from './header/base';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -149,7 +144,7 @@ export abstract class BaseFacet {
    * 当前布局节点信息
    * @description 内部消费, 外部调用请使用 facet.getLayoutResult()
    */
-  private layoutResult: LayoutResult;
+  protected layoutResult: LayoutResult;
 
   public viewCellWidths: number[];
 
@@ -1180,8 +1175,10 @@ export abstract class BaseFacet {
     if (event?.cancelable) {
       event?.preventDefault?.();
     }
+
     // 移动端的 prevent 存在于 originalEvent上
     const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
+
     if (mobileEvent?.cancelable) {
       mobileEvent?.preventDefault?.();
     }
@@ -1264,9 +1261,8 @@ export abstract class BaseFacet {
 
   protected panelScrollGroupClip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-    
 
-    this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
+    this.panelScrollGroup.style.clipPath = new Rect({
       style: {
         x: isFrozenRowHeader ? scrollX : 0,
         y: scrollY,
@@ -1477,21 +1473,19 @@ export abstract class BaseFacet {
   protected getRowHeaderCfg(): RowHeaderConfig {
     const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
     const seriesNumberWidth = this.getSeriesNumberWidth();
+
     return {
       width: this.cornerBBox.width,
       height,
       viewportWidth,
       viewportHeight,
-      position: { x: 0, y },
-      data: this.layoutResult.rowNodes,
-      hierarchyType: this.spreadsheet.options?.hierarchyType,
-      linkFields: this.spreadsheet.options?.interaction?.linkFields ?? [],
-      seriesNumberWidth,
+      position: { x: seriesNumberWidth, y },
+      nodes: this.layoutResult.rowNodes,
       spreadsheet: this.spreadsheet,
     };
   }
 
-  protected getRowHeader(): RowHeader {
+  protected getRowHeader(): RowHeader | null {
     if (!this.rowHeader) {
       return new RowHeader(this.getRowHeaderCfg());
     }
@@ -1573,8 +1567,12 @@ export abstract class BaseFacet {
 
   protected getGridInfo = () => {
     const [colMin, colMax, rowMin, rowMax] = this.preCellIndexes!.center;
-    const cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
-    const rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+    const cols = getColsForGrid(
+      colMin!,
+      colMax!,
+      this.layoutResult.colLeafNodes,
+    );
+    const rows = getRowsForGrid(rowMin!, rowMax!, this.viewCellHeights);
 
     return {
       cols,
@@ -1612,6 +1610,8 @@ export abstract class BaseFacet {
     this.realDataCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
+
+    // this.clip(scrollX, scrollY);
     if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });
     }
@@ -1625,6 +1625,7 @@ export abstract class BaseFacet {
 
   protected onAfterScroll = debounce(() => {
     const { interaction, container } = this.spreadsheet;
+
     // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
       interaction.removeIntercepts([InterceptType.HOVER]);
@@ -1633,9 +1634,11 @@ export abstract class BaseFacet {
         // https://github.com/antvis/S2/issues/2222
         const canvasMousemoveEvent =
           interaction.eventController.canvasMousemoveEvent;
+
         if (canvasMousemoveEvent) {
           const { x, y } = canvasMousemoveEvent;
           const shape = container.getShape(x, y);
+
           if (shape) {
             container.emit(OriginEventType.MOUSE_MOVE, {
               ...canvasMousemoveEvent,
@@ -1673,8 +1676,9 @@ export abstract class BaseFacet {
       return;
     }
 
-    return hiddenColumnsDetail.find((detail) =>
-      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
+    return hiddenColumnsDetail.find(
+      (detail) =>
+        detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 
@@ -1796,6 +1800,10 @@ export abstract class BaseFacet {
     }
 
     return colNodes.filter((node) => node.level === level);
+  }
+
+  public getTopLevelColNodes() {
+    return this.getColNodes(0);
   }
 
   /**

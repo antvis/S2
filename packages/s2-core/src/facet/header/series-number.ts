@@ -2,7 +2,7 @@ import { Rect } from '@antv/g';
 import { each } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
-import type { PanelBBox } from '../bbox/panelBBox';
+import type { PanelBBox } from '../bbox/panel-bbox';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
@@ -10,7 +10,6 @@ import { S2Event } from '../../common';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
-import { BaseFrozenRowHeader } from './base-frozen-row';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   constructor(config: BaseHeaderConfig) {
@@ -28,7 +27,6 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     );
   }
 
-export class SeriesNumberHeader extends BaseFrozenRowHeader {
   /**
    * Get seriesNumber header by config
    */
@@ -63,10 +61,6 @@ export class SeriesNumberHeader extends BaseFrozenRowHeader {
         spreadsheet,
       ),
       spreadsheet,
-      // There are no other lines before the serial number row
-      seriesNumberWidth: 0,
-      hierarchyType: spreadsheet.options.hierarchyType,
-      linkFields: [],
     });
   }
 

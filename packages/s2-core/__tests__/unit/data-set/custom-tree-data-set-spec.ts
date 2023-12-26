@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { customTreeNodes } from 'tests/data/custom-tree-nodes';
 import { CustomTreeData } from 'tests/data/data-custom-tree';
 import type { S2DataConfig } from '@/common/interface';
-import { EXTRA_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, ORIGIN_FIELD } from '@/common/constant';
 import { PivotSheet } from '@/sheet-type';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 
@@ -50,12 +50,8 @@ describe('Custom Tree Dataset Test', () => {
 
     test('should get empty row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
-<<<<<<< HEAD
 
-      expect([...rowPivotMeta.keys()]).toEqual([]);
-=======
       expect([...rowPivotMeta.keys()]).toEqual(values);
->>>>>>> origin/master
     });
 
     test('should get correct col pivot meta', () => {
@@ -63,13 +59,8 @@ describe('Custom Tree Dataset Test', () => {
 
       expect([...colPivotMeta.keys()]).toEqual(['家具']);
 
-<<<<<<< HEAD
       expect(colPivotMeta.get('家具')!.level).toEqual(1);
       expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
-=======
-      expect(colPivotMeta.get('家具').level).toEqual(1);
-      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
->>>>>>> origin/master
         '桌子',
         '椅子',
       ]);
@@ -78,12 +69,8 @@ describe('Custom Tree Dataset Test', () => {
     test('should get correct indexesData', () => {
       const prefix = 'type[&]sub_type';
       const indexesData = dataSet.indexesData;
-<<<<<<< HEAD
 
-      expect(get(indexesData, '1.1')).toEqual({
-=======
       expect(get(indexesData, [prefix, 1, 1, 1])).toEqual({
->>>>>>> origin/master
         type: '家具',
         sub_type: '桌子',
         'measure-a': 1,
@@ -93,11 +80,7 @@ describe('Custom Tree Dataset Test', () => {
         'measure-e': 5,
         'measure-f': 6,
       });
-<<<<<<< HEAD
-      expect(get(indexesData, '1.2')).toEqual({
-=======
       expect(get(indexesData, [prefix, 1, 1, 2])).toEqual({
->>>>>>> origin/master
         type: '家具',
         sub_type: '椅子',
         'measure-a': 11,
@@ -113,27 +96,23 @@ describe('Custom Tree Dataset Test', () => {
   describe('test for query data', () => {
     test('getCellData function', () => {
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              type: '家具',
-              sub_type: '桌子',
-              [EXTRA_FIELD]: 'measure-a',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'measure-a',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['measure-a', 1]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              type: '家具',
-              sub_type: '椅子',
-              [EXTRA_FIELD]: 'measure-e',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            type: '家具',
+            sub_type: '椅子',
+            [EXTRA_FIELD]: 'measure-e',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['measure-e', 55]]);
     });
   });

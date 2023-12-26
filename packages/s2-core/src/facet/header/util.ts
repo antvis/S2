@@ -26,7 +26,6 @@ export const getSeriesNumberNodes = (
   const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
   const rootNodes = rowsHierarchy.getNodes(0);
 
-
   return rootNodes.map((node: Node, idx: number) => {
     const sNode = new Node({
       id: '',
@@ -43,6 +42,7 @@ export const getSeriesNumberNodes = (
       : node.height;
     sNode.isLeaf = true;
     sNode.spreadsheet = spreadsheet;
+
     return sNode;
   });
 };

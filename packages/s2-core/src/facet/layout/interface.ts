@@ -1,4 +1,4 @@
-import type { CustomHeaderField, CustomTreeNode, S2Options, SpreadSheetFacetCfg } from '../../common/interface';
+import type { CustomHeaderField, CustomTreeNode } from '../../common/interface';
 import type { PivotMeta } from '../../data-set/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';

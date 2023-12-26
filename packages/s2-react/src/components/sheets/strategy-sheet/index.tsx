@@ -1,8 +1,7 @@
-import {
-  type ViewMeta
-} from '@antv/s2';
+import { type ViewMeta } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
+import { customMerge, Node, SpreadSheet, type ColHeaderConfig } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 import { StrategySheetColCell, StrategySheetDataCell } from './custom-cell';
@@ -10,16 +9,8 @@ import { StrategySheetDataSet } from './custom-data-set';
 import {
   StrategySheetColCellTooltip,
   StrategySheetDataCellTooltip,
-  StrategySheetRowCellTooltip
+  StrategySheetRowCellTooltip,
 } from './custom-tooltip';
-import {
-  customMerge,
-  Node,
-  SpreadSheet,
-  type ColHeaderConfig,
-  import, type
-} from { S2CellType, S2DataConfig };
-from '@antv/s2';
 
 /**
  * 趋势分析表特性：

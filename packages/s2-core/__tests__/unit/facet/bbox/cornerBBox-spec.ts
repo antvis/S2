@@ -1,5 +1,5 @@
 import type { BaseFacet } from '@/facet/base-facet';
-import { CornerBBox } from '@/facet/bbox/cornerBBox';
+import { CornerBBox } from '@/facet/bbox/corner-bbox';
 
 describe('cornerBBox test', () => {
   let mockFacet: BaseFacet;

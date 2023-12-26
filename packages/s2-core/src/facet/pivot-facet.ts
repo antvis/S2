@@ -1,6 +1,6 @@
-import type { Group } from '@antv/g-canvas';
 import {
   filter,
+  find,
   forEach,
   get,
   isArray,
@@ -14,37 +14,37 @@ import {
   merge,
   reduce,
   size,
-  sumBy
+  sumBy,
 } from 'lodash';
-import { renderLine } from '..';
-import { ColCell, RowCell } from '../cell';
+import { Group, Rect, type LineStyleProps } from '@antv/g';
+import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroup,
+  FrozenGroupType,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
-  ORIGIN_FIELD,
   type IconTheme,
   type MultiData,
   type ViewMeta,
+  SPLIT_LINE_WIDTH,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, S2TableSheetOptions, SimpleData, SplitLine } from '../common/interface';
+import type { LayoutResult, SimpleData } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
-import { safeJsonParse } from '../utils';
+import { renderLine, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
-import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import {
-  getIndexRangeWithOffsets
+  getIndexRangeWithOffsets,
+  getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
-import { Frame, PivotRowHeader, RowHeader } from './header';
+import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
@@ -52,116 +52,8 @@ import { Node } from './layout/node';
 import { getFrozenRowCfgPivot } from './utils';
 
 export class PivotFacet extends FrozenFacet {
-  protected updateFrozenGroupGrid(): void {
-    [FrozenGroup.FROZEN_ROW].forEach((key) => {
-      if (!this.frozenGroupInfo[key].range) {
-        return;
-      }
-      let cols = [];
-      let rows = [];
-      if (key.toLowerCase().includes('row')) {
-        const [rowMin, rowMax] = this.frozenGroupInfo[key].range;
-        cols = this.gridInfo.cols;
-        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
-      }
-      this.spreadsheet[`${key}Group`].updateGrid(
-        {
-          cols,
-          rows,
-        },
-        `${key}Group`,
-      );
-    });
-  }
-
-  protected getBizRevisedFrozenOptions(): S2TableSheetOptions {
-    return getFrozenRowCfgPivot(this.spreadsheet.options, this.layoutResult.rowNodes);
-  }
-
-  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
-    // remove previous splitline group
-    this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
-    if (this.enableFrozenFirstRow()) {
-      // 在分页条件下需要额外处理 Y 轴滚动值
-      const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
-      const splitLineGroup = this.foregroundGroup.addGroup({
-        id: KEY_GROUP_FROZEN_SPLIT_LINE,
-        zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-      });
-      const style: SplitLine = this.spreadsheet.theme.splitLine;
-      const horizontalBorderStyle = {
-        lineWidth: style?.horizontalBorderWidth,
-        stroke: style?.horizontalBorderColor,
-        opacity: style?.horizontalBorderColorOpacity,
-      };
-      const { height: cornerHeight } = this.cornerBBox;
-
-      const cellRange = this.getCellRange();
-      const y =
-        cornerHeight +
-        this.getTotalHeightForRange(cellRange.start, cellRange.start);
-      const width =
-        this.panelBBox.viewportWidth +
-        this.layoutResult.rowsHierarchy.width +
-        this.getSeriesNumberWidth();
-      renderLine(
-        splitLineGroup as Group,
-        {
-          x1: 0,
-          x2: width,
-          y1: y,
-          y2: y,
-        },
-        {
-          ...horizontalBorderStyle,
-        },
-      );
-
-      if (style.showShadow && relativeScrollY > 0) {
-        splitLineGroup.addShape('rect', {
-          attrs: {
-            x: 0,
-            y,
-            width,
-            height: style.shadowWidth,
-            fill: this.getShadowFill(90),
-          },
-        });
-      }
-    }
-  };
-
-  protected clip(scrollX: number, scrollY: number): void {
-    const { isFrozenRowHeader, frozenRowGroup } = this.spreadsheet;
-    if (!isFrozenRowHeader.call(this.spreadsheet)) {
-      // adapt: close the entire frozen header.
-      // 1. panelScrollGroup clip (default)
-      // 2. frozenRowGroup clip
-      this.panelScrollGroupClip(scrollX, scrollY);
-      if (this.enableFrozenFirstRow()) {
-        const paginationScrollY = this.getPaginationScrollY();
-        frozenRowGroup.setClip({
-          type: 'rect',
-          attrs: {
-            x: 0,
-            y: paginationScrollY,
-            width: this.panelBBox.width + scrollX,
-            height: frozenRowGroup.getBBox().height,
-          },
-        });
-      }
-      return;
-    }
-    super.clip(scrollX, scrollY);
-  }
-
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell!.cell;
-  }
-
-  public getContentHeight(): number {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-    return rowsHierarchy.height + colsHierarchy.height;
   }
 
   protected doLayout(): LayoutResult {
@@ -236,13 +128,10 @@ export class PivotFacet extends FrozenFacet {
         }
       : {};
     const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
-    const totalStatus = getHeaderTotalStatus(row, col);
-
     const data = dataSet.getCellData({
       query: dataQuery,
       rowNode: row,
       isTotals,
-      totalStatus
     });
 
     const valueField = dataQuery[EXTRA_FIELD]!;
@@ -355,13 +244,13 @@ export class PivotFacet extends FrozenFacet {
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent: Node = null;
-    let i = 0;
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
-    while (i < leafNodes.length) {
-      const node = leafNodes[i++];
-      const parentNode = node.parent;
+    while (leafNodes.length) {
+      const node = leafNodes.shift();
+      const parentNode = node?.parent;
+
       if (prevColParent !== parentNode && parentNode) {
         leafNodes.push(parentNode);
 
@@ -410,7 +299,6 @@ export class PivotFacet extends FrozenFacet {
         cell: colCellStyle,
         icon: colIconStyle,
       } = this.spreadsheet.theme.colCell!;
-      const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
       // leaf node rough width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
@@ -424,10 +312,7 @@ export class PivotFacet extends FrozenFacet {
         colIconStyle!,
       );
       const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(
-          leafNodeLabel,
-          colCellTextStyle,
-        ) + iconWidth;
+        this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
 
       // 采样 50 个 label，逐个计算找出最长的 label
       let maxDataLabel = '';
@@ -447,7 +332,6 @@ export class PivotFacet extends FrozenFacet {
               col.isTotalMeasure ||
               rowNode.isTotals ||
               rowNode.isTotalMeasure,
-            totalStatus: getHeaderTotalStatus(rowNode, col),
           });
 
           if (cellData) {
@@ -458,10 +342,8 @@ export class PivotFacet extends FrozenFacet {
                 cellData[EXTRA_FIELD],
               )?.(valueData) ?? valueData;
             const cellLabel = `${formattedValue}`;
-            const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
-              cellLabel,
-              dataCellTextStyle,
-            );
+            const cellLabelWidth =
+              this.spreadsheet.measureTextWidthRoughly(cellLabel);
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
@@ -471,6 +353,7 @@ export class PivotFacet extends FrozenFacet {
         }
       }
 
+      // compare result
       const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
@@ -479,20 +362,10 @@ export class PivotFacet extends FrozenFacet {
         'Max Label In Col:',
         col.field,
         maxLabel,
-        maxDataLabelWidth,
       );
 
-      // 取列头/数值字体最大的文本宽度 https://github.com/antvis/S2/issues/2385
-      const maxTextWidth = this.spreadsheet.measureTextWidth(maxLabel, {
-        ...colCellTextStyle,
-        fontSize: Math.max(
-          dataCellTextStyle.fontSize,
-          colCellTextStyle.fontSize,
-        ),
-      });
-
       return (
-        maxTextWidth+
+        this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
         colCellStyle!.padding!.left! +
         colCellStyle!.padding!.right! +
         colCellStyle!.verticalBorderWidth! * 2 +
@@ -660,16 +533,8 @@ export class PivotFacet extends FrozenFacet {
       });
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(this.spreadsheet.options.totals?.row)) {
-        this.adjustTotalNodesCoordinate({
-          hierarchy: rowsHierarchy,
-          isRowHeader: true,
-          isSubTotal: false,
-        });
-        this.adjustTotalNodesCoordinate({
-          hierarchy: rowsHierarchy,
-          isRowHeader: true,
-          isSubTotal: true,
-        });
+        this.adjustGrandTotalNodesCoordinate(rowsHierarchy, true);
+        this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
       }
     }
   }
@@ -679,87 +544,134 @@ export class PivotFacet extends FrozenFacet {
    * @param rowLeafNodes
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
+    // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent = null;
-    let i = 0;
     const leafNodes = rowLeafNodes.slice(0);
-    while (i < leafNodes.length) {
-      const node = leafNodes[i++];
-      const parent = node.parent;
+
+    while (leafNodes.length) {
+      const node = leafNodes.shift();
+      const parent = node?.parent;
+
       if (prevRowParent !== parent && parent) {
         leafNodes.push(parent);
         // parent's y = first child's y
         parent.y = parent.children[0].y;
         // parent's height = all children's height
-        parent.height = parent.children.reduce(
-          (sum, current) => sum + current.height,
-          0,
-        );
+        parent.height = parent.children
+          .map((value) => value.height)
+          .reduce((sum, current) => sum + current, 0);
         prevRowParent = parent;
       }
     }
   }
 
-  // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private getMultipleMap(
+  /**
+   * @description adjust the coordinate of total nodes and their children
+   * @param hierarchy Hierarchy
+   * @param isRowHeader boolean
+   */
+  private adjustGrandTotalNodesCoordinate(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
-    isSubTotal?: boolean,
   ) {
+    const moreThanOneValue = this.spreadsheet.dataSet.moreThanOneValue();
     const { maxLevel } = hierarchy;
-    const {
-      options: { totals },
-      dataSet,
-    } = this.spreadsheet;
-    const moreThanOneValue = dataSet.moreThanOneValue();
-    const { rows, columns } = dataSet.fields;
-    const fields = isRowHeader ? rows : columns;
-    const totalConfig = isRowHeader ? totals.row : totals.col;
-    const dimensionGroup = isSubTotal
-      ? totalConfig.subTotalsGroupDimensions || []
-      : totalConfig.totalsGroupDimensions || [];
-    const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
-    for (let level = maxLevel; level > 0; level--) {
-      const currentField = fields[level] as string;
-      // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
-      const existValueField = currentField === EXTRA_FIELD && moreThanOneValue;
-      if (!(dimensionGroup.includes(currentField) || existValueField)) {
-        multipleMap[level - 1] += multipleMap[level];
-        multipleMap[level] = 0;
-      }
+    const grandTotalNode = find(
+      hierarchy.getNodes(0),
+      (node: Node) => node.isGrandTotals,
+    );
+
+    if (!(grandTotalNode instanceof Node)) {
+      return;
     }
-    return multipleMap;
+
+    const grandTotalChildren = grandTotalNode.children;
+
+    // 总计节点层级 (有且有两级)
+    if (isRowHeader) {
+      // 填充行总单元格宽度
+      grandTotalNode.width = hierarchy.width;
+      // 调整其叶子节点位置和宽度
+      forEach(grandTotalChildren, (node: Node) => {
+        const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
+
+        node.x = maxLevelNode.x;
+        node.width = maxLevelNode.width;
+      });
+    } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
+      /*
+       * 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
+       * 填充列总计单元格高度
+       */
+      const grandTotalChildrenHeight = grandTotalChildren?.[0]?.height ?? 0;
+
+      grandTotalNode.height = hierarchy.height - grandTotalChildrenHeight;
+      // 调整其叶子节点位置, 以非小计行为准
+      const positionY =
+        find(hierarchy.getNodes(maxLevel), (node: Node) => !node.isTotalMeasure)
+          ?.y || 0;
+
+      forEach(grandTotalChildren, (node: Node) => {
+        node.y = positionY;
+      });
+    }
   }
 
-  // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private adjustTotalNodesCoordinate(params: {
-    hierarchy: Hierarchy;
-    isRowHeader?: boolean;
-    isSubTotal?: boolean;
-  }) {
-    const { hierarchy, isRowHeader, isSubTotal } = params;
-    const multipleMap = this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
-    const totalNodes = filter(hierarchy.getNodes(), (node: Node) =>
-      isSubTotal ? node.isSubTotals : node.isGrandTotals,
-    );
-    const key = isRowHeader ? 'width' : 'height';
-    forEach(totalNodes, (node: Node) => {
-      let multiple = multipleMap[node.level];
-      // 小计根节点若为 0，则改为最近上级倍数 - level 差
-      if (!multiple && isSubTotal) {
-        let lowerLevelIndex = 1;
-        while (multiple < 1) {
-          multiple =
-            multipleMap[node.level - lowerLevelIndex] - lowerLevelIndex;
-          lowerLevelIndex++;
-        }
+  /**
+   * @description adust the coordinate of subTotal nodes when there is just one value
+   * @param hierarchy Hierarchy
+   * @param isRowHeader boolean
+   */
+  private adjustSubTotalNodesCoordinate(
+    hierarchy: Hierarchy,
+    isRowHeader?: boolean,
+  ) {
+    const subTotalNodes = hierarchy
+      .getNodes()
+      .filter((node) => node.isSubTotals);
+
+    if (isEmpty(subTotalNodes)) {
+      return;
+    }
+
+    const { maxLevel } = hierarchy;
+
+    forEach(subTotalNodes, (subTotalNode: Node) => {
+      const subTotalChildNode = subTotalNode.children;
+
+      if (isRowHeader) {
+        // 填充行总单元格宽度
+        subTotalNode.width = getSubTotalNodeWidthOrHeightByLevel(
+          hierarchy.sampleNodesForAllLevels,
+          subTotalNode.level,
+          'width',
+        );
+
+        // 调整其叶子节点位置
+        forEach(subTotalChildNode, (node: Node) => {
+          node.x = hierarchy.getNodes(maxLevel)[0].x;
+        });
+      } else {
+        // 填充列总单元格高度
+        const totalHeight = getSubTotalNodeWidthOrHeightByLevel(
+          hierarchy.sampleNodesForAllLevels,
+          subTotalNode.level,
+          'height',
+        );
+        const subTotalNodeChildrenHeight = subTotalChildNode?.[0]?.height ?? 0;
+
+        subTotalNode.height = totalHeight - subTotalNodeChildrenHeight;
+        // 调整其叶子节点位置, 以非小计行为准
+        const positionY =
+          find(
+            hierarchy.getNodes(maxLevel),
+            (node: Node) => !node.isTotalMeasure,
+          )?.y || 0;
+
+        forEach(subTotalChildNode, (node: Node) => {
+          node.y = positionY;
+        });
       }
-      let res = 0;
-      for (let i = 0; i < multiple; i++) {
-        res += hierarchy.sampleNodesForAllLevels.find(
-          (sampleNode) => sampleNode.level === node.level + i,
-        )[key];
-      }
-      node[key] = res;
     });
   }
 
@@ -851,10 +763,9 @@ export class PivotFacet extends FrozenFacet {
           col.isTotalMeasure ||
           rowNode.isTotals ||
           rowNode.isTotalMeasure,
-        totalStatus: getHeaderTotalStatus(rowNode, col),
       });
 
-      const cellDataKeys = keys(cellData?.[ORIGIN_FIELD]);
+      const cellDataKeys = keys(cellData);
 
       for (let j = 0; j < cellDataKeys.length; j++) {
         const dataValue: MultiData = get(cellData, cellDataKeys[j]);
@@ -922,12 +833,10 @@ export class PivotFacet extends FrozenFacet {
       .join('/');
 
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
-      this.spreadsheet.theme.cornerCell;
-    // 初始化角头时，保证其在树形模式下不换行
-    // 给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
-    // 额外增加 1，当内容和容器宽度恰好相等时会出现换行
+      this.spreadsheet.theme.cornerCell!;
+
+    // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
     const maxLabelWidth =
-      1 +
       this.spreadsheet.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
       cornerIconStyle!.size! * 2 +
       cornerIconStyle!.margin!.left! +
@@ -1034,21 +943,108 @@ export class PivotFacet extends FrozenFacet {
     };
   }
 
-  protected getRowHeader(): RowHeader {
-    if (!this.rowHeader) {
-      const { viewportHeight, ...otherProps } = this.getRowHeaderCfg();
-      const { frozenRowHeight } = getFrozenRowCfgPivot(
-        this.spreadsheet.options,
-        this.getRowNodes(),
+  /**
+   * 获取序号单元格
+   * @description 对于透视表, 序号属于 RowCell
+   */
+  public getSeriesNumberCells(): SeriesNumberCell[] {
+    return filter(
+      this.getSeriesNumberHeader()?.children,
+      (element: SeriesNumberCell) => element instanceof SeriesNumberCell,
+    ) as unknown[] as SeriesNumberCell[];
+  }
+
+  protected updateFrozenGroupGrid(): void {
+    [FrozenGroupType.FROZEN_ROW].forEach((key) => {
+      if (!this.frozenGroupInfo[key].range) {
+        return;
+      }
+
+      let cols: number[] = [];
+      let rows: number[] = [];
+
+      if (key.toLowerCase().includes('row')) {
+        const [rowMin, rowMax] = this.frozenGroupInfo[key].range || [];
+
+        cols = this.gridInfo.cols;
+        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+      }
+
+      this[`${key}Group`].updateGrid(
+        {
+          cols,
+          rows,
+        },
+        `${key}Group`,
       );
-      return new PivotRowHeader({
-        ...otherProps,
-        viewportHeight: viewportHeight - frozenRowHeight,
-      });
-    }
+    });
+  }
+
+  protected getFrozenOptions() {
+    return getFrozenRowCfgPivot(
+      this.spreadsheet.options,
+      this.layoutResult.rowNodes,
+    );
   }
 
   public enableFrozenFirstRow(): boolean {
-    return !!this.getBizRevisedFrozenOptions().frozenRowCount;
+    return !!this.getFrozenOptions().frozenRowCount;
   }
+
+  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
+    this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
+    if (this.enableFrozenFirstRow()) {
+      // 在分页条件下需要额外处理 Y 轴滚动值
+      const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
+      const splitLineGroup = this.foregroundGroup.appendChild(
+        new Group({
+          id: KEY_GROUP_FROZEN_SPLIT_LINE,
+          style: {
+            zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+          },
+        }),
+      );
+
+      const { splitLine } = this.spreadsheet.theme;
+
+      const horizontalBorderStyle: Partial<LineStyleProps> = {
+        lineWidth: SPLIT_LINE_WIDTH,
+        stroke: splitLine?.horizontalBorderColor,
+        opacity: splitLine?.horizontalBorderColorOpacity,
+      };
+
+      const { height: cornerHeight } = this.cornerBBox;
+
+      const cellRange = this.getCellRange();
+      const y =
+        cornerHeight +
+        this.getTotalHeightForRange(cellRange.start, cellRange.start);
+      const width =
+        this.panelBBox.viewportWidth +
+        this.layoutResult.rowsHierarchy.width +
+        this.getSeriesNumberWidth();
+
+      renderLine(splitLineGroup, {
+        ...horizontalBorderStyle,
+        x1: 0,
+        x2: width,
+        y1: y,
+        y2: y,
+      });
+
+      if (splitLine!.showShadow && relativeScrollY > 0) {
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x: 0,
+              y,
+              width,
+              height: splitLine?.shadowWidth!,
+              fill: this.getShadowFill(0),
+            },
+          }),
+        );
+      }
+    }
+  };
 }

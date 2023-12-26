@@ -1,6 +1,6 @@
 import type { S2Options, ThemeCfg } from '@/common';
 import type { BaseFacet } from '@/facet/base-facet';
-import { PanelBBox } from '@/facet/bbox/panelBBox';
+import { PanelBBox } from '@/facet/bbox/panel-bbox';
 
 describe('PanelBBox Tests', () => {
   const layoutResult = {

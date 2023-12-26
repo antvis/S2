@@ -1,6 +1,6 @@
 import { clamp, isBoolean } from 'lodash';
 import { DEFAULT_CORNER_MAX_WIDTH_RATIO } from '../../common/constant';
-import { BaseBBox } from './baseBBox';
+import { BaseBBox } from './base-bbox';
 
 export class CornerBBox extends BaseBBox {
   calculateBBox() {

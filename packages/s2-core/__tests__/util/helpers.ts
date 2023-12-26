@@ -21,7 +21,7 @@ import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
 import type { BaseFacet } from '@/facet';
-import type { PanelBBox } from '@/facet/bbox/panelBBox';
+import type { PanelBBox } from '@/facet/bbox/panel-bbox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';

@@ -32,7 +32,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
-    const { facet ,interaction} = this.spreadsheet;
+    const { facet, interaction } = this.spreadsheet;
 
     updateAllColHeaderCellState(
       colId,
@@ -97,10 +97,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       };
 
       if (interactionOptions?.hoverHighlight) {
-      const { rowHeader, colHeader } = interaction.getHoverHighlight();
-      if (rowHeader || colHeader) {
-        // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
+        const { rowHeader, colHeader } = interaction.getHoverHighlight();
+
+        if (rowHeader || colHeader) {
+          // highlight all the row and column cells which the cell belongs to
+          this.updateRowColCells(meta);
+        }
       }
 
       const data = this.getCellData(meta, onlyShowCellText);
@@ -224,14 +226,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-
       if (interactionOptions?.hoverHighlight) {
-      const { rowHeader, colHeader } = interaction.getHoverHighlight();
-      if (rowHeader || colHeader) {
-        // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
+        const { rowHeader, colHeader } = interaction.getHoverHighlight();
+
+        if (rowHeader || colHeader) {
+          // highlight all the row and column cells which the cell belongs to
+          this.updateRowColCells(meta);
+        }
       }
-    }
 
       if (interactionOptions?.hoverFocus) {
         this.changeStateToHoverFocus(cell, event, meta);

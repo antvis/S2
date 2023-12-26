@@ -627,3 +627,19 @@ export function flattenIndexesData(
     return compact(dimensionData.slice(startIdx));
   }) as unknown as FlattingIndexesData;
 }
+
+
+/**
+ * Get dimensions without path pre
+ * dimensions: ['辽宁省[&]芜湖市[&]家具[&]椅子']
+ * return ['椅子']
+ *
+ * @param dimensions
+ */
+export function getDimensionsWithoutPathPre(dimensions: string[]) {
+  return dimensions.map((item) => {
+    const splitArr = item?.split(NODE_ID_SEPARATOR);
+
+    return splitArr[splitArr?.length - 1] ?? item;
+  });
+}
