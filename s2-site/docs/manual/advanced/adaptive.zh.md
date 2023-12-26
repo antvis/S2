@@ -12,7 +12,8 @@ const s2Options = {
 }
 ```
 
-需要注意的是，表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
+:::warning{title="注意"}
+表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `<canvas/>` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
 
 ```ts
 const s2Options = {
@@ -21,11 +22,13 @@ const s2Options = {
 }
 ```
 
+:::
+
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/WmM9%24SLfu/2396a53f-8946-497a-9e68-fd89f01077ff.png)
 
 ### 窗口自适应
 
-如果想让表格撑满整个父容器，可以监听 窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高：
+如果想让表格撑满整个父容器，可以监听窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高：
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -33,15 +36,19 @@ import { debounce } from 'lodash'
 
 const s2 = new PivotSheet(...)
 
-const debounceRender = debounce((width, height) => {
+const debounceRender = debounce(async (width, height) => {
   s2.changeSheetSize(width, height)
-  s2.render(false) // 不重新加载数据
+  await s2.render(false) // 不重新加载数据
 }, 200)
 
-new ResizeObserver(([entry] = []) => {
-    const [size] = entry.borderBoxSize || [];
-    debounceRender(size.inlineSize, size.blockSize)
-}).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
+const resizeObserver = new ResizeObserver(([entry] = []) => {
+  const [size] = entry.borderBoxSize || [];
+  debounceRender(size.inlineSize, size.blockSize)
+})
+
+// 通过监听 document.body 来实现监听窗口大小变化
+resizeObserver.observe(document.body);
+
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
@@ -60,9 +67,9 @@ const s2 = new PivotSheet(...)
 
 const parent = /* 你的容器节点 */
 
-const debounceRender = debounce((width, height) => {
+const debounceRender = debounce(async (width, height) => {
   s2.changeSheetSize(width, height)
-  s2.render(false) // 不重新加载数据
+  await s2.render(false) // 不重新加载数据
 }, 200)
 
 const resizeObserver = new ResizeObserver(([entry] = []) => {

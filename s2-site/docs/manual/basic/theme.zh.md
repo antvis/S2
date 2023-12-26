@@ -46,7 +46,7 @@ s2.setTheme({
     color: '#353c59',
   },
 });
-s2.render(false);
+await s2.render(false);
 ```
 
 ## 自定义主题
@@ -55,7 +55,7 @@ s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法�
 
 - 通过 ThemeCfg.name 使用预置主题
 - 通过 ThemeCfg.palette 自定义色板生成主题
-- 通过 ThemeCfg.theme 自定义 schema 生成主题（可与上两个属性同时使用，即覆盖由它们生成的主题）
+- 通过 ThemeCfg.theme (`s2.setTheme(...)`) 自定义 schema 生成主题（可与上两个属性同时使用，即覆盖由它们生成的主题）
 
 ### 选择预置主题
 
@@ -66,7 +66,7 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // name 可为 default, colorful, gray
 s2.setThemeCfg({ name: 'colorful' });
-s2.render(false);
+await s2.render(false);
 ```
 
 S2 内置 3 套主题效果：
@@ -121,9 +121,9 @@ const customTheme = {
   },
 };
 
-// s2.setThemeCfg({ theme: customTheme })
+// 等价与：s2.setThemeCfg({ theme: customTheme })
 s2.setTheme(customTheme)
-s2.render(false);
+await s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
@@ -209,8 +209,9 @@ const s2Palette = {
     green: '#29A294',
   },
 };
+
 s2.setThemeCfg({ palette: s2Palette });
-s2.render(false);
+await s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
@@ -236,7 +237,7 @@ const newPalette = generatePalette({ ...palette, brandColor: themeColor });
 s2.setThemeCfg({
   palette: newPalette,
 });
-s2.render(false);
+await s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>

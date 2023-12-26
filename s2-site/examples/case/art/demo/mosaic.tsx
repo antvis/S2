@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { ThemeCfg } from '@antv/s2';
 
 // more Info https://observablehq.com/@pearmini/mosaic-antv-s2
 
@@ -42,7 +43,7 @@ fetch(
       },
     };
 
-    const customTheme = {
+    const customTheme: ThemeCfg['theme'] = {
       rowCell: {
         cell: {
           backgroundColor: dataCfg.data[0].color,

@@ -1,5 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import { PivotSheet, DataCell, ColCell } from '@antv/s2';
+import {
+  PivotSheet,
+  DataCell,
+  ColCell,
+  S2Options,
+  S2DataConfig,
+} from '@antv/s2';
 
 /**
  * 自定义 DataCell，给特定单元格设置背景色, 文字大小, 颜色
@@ -106,9 +112,9 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -117,7 +123,8 @@ fetch(
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       dataCell: (viewMeta) => {
@@ -128,8 +135,8 @@ fetch(
         return new CustomColCell(node, spreadsheet, headerConfig);
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    // 使用
-    s2.render();
+    await s2.render();
   });

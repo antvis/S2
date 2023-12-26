@@ -25,7 +25,7 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
@@ -53,5 +53,5 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

@@ -1,4 +1,4 @@
-import { PivotSheet, MergedCell } from '@antv/s2';
+import { PivotSheet, MergedCell, S2Options, S2DataConfig } from '@antv/s2';
 
 /**
  * 自定义 MergedCell，改变背景色
@@ -16,9 +16,9 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -27,7 +27,8 @@ fetch(
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
@@ -35,7 +36,8 @@ fetch(
       },
       mergedCellsInfo: [
         [
-          { colIndex: 1, rowIndex: 1, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
+          // 此单元格的 meta 信息将作为合并单元的 meta 信息
+          { colIndex: 1, rowIndex: 1, showText: true },
           { colIndex: 1, rowIndex: 2 },
           { colIndex: 2, rowIndex: 1 },
           { colIndex: 2, rowIndex: 2 },
@@ -44,8 +46,8 @@ fetch(
       mergedCell: (spreadsheet, cells, meta) =>
         new CustomMergedCell(spreadsheet, cells, meta),
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    // 使用
-    s2.render();
+    await s2.render();
   });

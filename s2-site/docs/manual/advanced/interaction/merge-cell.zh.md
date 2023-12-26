@@ -335,7 +335,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
   });
 });
 
-s2.render();
+await s2.render();
 ```
 
 ## demo 演示

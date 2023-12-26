@@ -70,7 +70,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   location.href = `https://path/to/${key}=${value}}`;
 });
 
-s2.render();
+await s2.render();
 ```
 
 <Playground path='interaction/advanced/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
@@ -105,7 +105,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   location.href = `https://path/to/${key}=${value}}`;
 });
 
-s2.render();
+await s2.render();
 ```
 
 <Playground path='interaction/advanced/demo/table-link-jump.ts' rid='container2' height='400'></playground>

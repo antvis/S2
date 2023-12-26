@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Select, InputNumber, Space } from 'antd';
-import {
-  every,
-  filter, isNil,
-  last,
-  map,
-  omit,
-} from 'lodash';
-import { SheetComponent } from '@antv/s2-react';
+import { every, filter, isNil, last, map, omit } from 'lodash';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCss from 'insert-css';
+import { S2DataConfig, SortParams } from '@antv/s2';
 
 const ID_SEPARATOR = '[&]';
 const defaultHouseInfo = {
@@ -25,7 +20,8 @@ const defaultHouseInfo = {
   ],
   area: [92, 111, 114, 119, 120, 123, 125, 135, 138],
 };
-const s2Options = {
+
+const s2Options: SheetComponentOptions = {
   width: 700,
   height: 580,
   pagination: {
@@ -44,6 +40,7 @@ const s2Options = {
               fill: '#b8e1ff',
             };
           }
+
           return {
             fill: '#fff',
           };
@@ -52,7 +49,8 @@ const s2Options = {
     ],
   },
 };
-const defaultSortParams = [
+
+const defaultSortParams: S2DataConfig['sortParams'] = [
   {
     sortFieldId: 'name',
     sortMethod: 'ASC',
@@ -64,16 +62,18 @@ const defaultSortParams = [
   {
     sortFieldId: 'level',
     sortFunc: (params) => {
-      const { data } = params;
+      const { data = [] } = params;
+
       return data.sort((a, b) => {
         const aNum = last(a.split(ID_SEPARATOR));
         const bNum = last(b.split(ID_SEPARATOR));
+
         return aNum - bNum;
       });
     },
   },
 ];
-const dataConfig = {
+const dataConfig: S2DataConfig = {
   data: [],
   describe: '如何使用 S2 买房',
   fields: {
@@ -146,7 +146,7 @@ const SelectItem = (props) => {
       onChange={(value) => {
         onChange({
           key: dataName,
-          value: value,
+          value,
         });
       }}
     >
@@ -166,6 +166,7 @@ const RangeSelect = (props) => {
   const [info, setInfo] = useState({ min, max });
   const handleChange = (value, key) => {
     const tempInfo = Object.assign({}, info);
+
     tempInfo[key] = value;
     setInfo(tempInfo);
 
@@ -201,11 +202,13 @@ const SelectList = (props) => {
 
   const onChange = ({ key, value }) => {
     let tempHouseInfo = Object.assign({}, filterInfo);
+
     if (isNil(value)) {
       tempHouseInfo = omit(tempHouseInfo, key);
     } else {
       tempHouseInfo[key] = value;
     }
+
     setFilterInfo(tempHouseInfo);
     filterData(tempHouseInfo);
   };
@@ -237,16 +240,20 @@ const Sheet = ({ data }) => {
         if (key === 'area') {
           return value[0] <= item.area && value[1] >= item.area;
         }
+
         if (key === 'level') {
           return value[0] <= item.level && value[1] >= item.level;
         }
-        if(key === 'nearStreet') {
-          console.log(item.nearStreet, 'item.nearStreet',  value, 'value');
+
+        if (key === 'nearStreet') {
+          console.log(item.nearStreet, 'item.nearStreet', value, 'value');
           console.log(item.nearStreet === value, 'item.nearStreet === value');
         }
+
         return item[key] === value;
       });
     });
+
     setDataSource(result);
   };
 

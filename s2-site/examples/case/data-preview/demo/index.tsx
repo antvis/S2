@@ -9,8 +9,9 @@ import {
   S2Event,
   InteractionStateName,
   CellType,
+  S2DataConfig,
 } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import {
   Input,
   Divider,
@@ -25,7 +26,6 @@ import {
 } from 'antd';
 import { get, uniq } from 'lodash';
 import '@antv/s2-react/dist/style.min.css';
-import 'antd/es/checkbox/style/index.css';
 
 const { Search } = Input;
 
@@ -245,7 +245,7 @@ const App = ({ data }) => {
   const [interactedCol, setInteractedCol] = useState('');
   const modalCallbackRef = useRef((e) => {});
 
-  const [options, setOptions] = useState({
+  const options: SheetComponentOptions = {
     width: 600,
     height: 400,
     showSeriesNumber: true,
@@ -286,8 +286,9 @@ const App = ({ data }) => {
       },
     },
     showDefaultHeaderActionIcon: false,
-  });
-  const [dataCfg, setDataCfg] = useState({
+  };
+
+  const [dataCfg, setDataCfg] = useState<S2DataConfig>({
     fields: {
       columns,
     },

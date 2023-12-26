@@ -56,7 +56,7 @@ const data = [
   },
 ];
 
-function render() {
+async function render() {
   const container = document.getElementById('container');
 
   const s2DataConfig: S2DataConfig = {
@@ -88,7 +88,7 @@ function render() {
       // 自定义格式化数值
       // {
       //   field: 'measure-1',
-      //   formatter: (value) => `指标: ${value}`,
+      //   formatter: (value, record, meta) => `指标: ${value}`,
       // },
     ],
   };
@@ -101,7 +101,7 @@ function render() {
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-  s2.render();
+  await s2.render();
 }
 
 render();

@@ -1,10 +1,10 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -31,7 +31,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       // 配置小计总计显示
@@ -64,7 +64,8 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

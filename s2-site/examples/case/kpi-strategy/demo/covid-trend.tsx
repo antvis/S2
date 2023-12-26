@@ -35,6 +35,7 @@ fetch(
                   fill: '#000',
                 };
               }
+
               return {
                 fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
               };
@@ -51,6 +52,7 @@ fetch(
               if (colIndex === 0 || isNilValue) {
                 return null;
               }
+
               return isUpDataValue(value)
                 ? {
                     // icon 用于指定图标条件格式所使用的 icon 类型

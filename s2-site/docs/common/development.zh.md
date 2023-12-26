@@ -1,6 +1,8 @@
-跃跃欲试想贡献？[查看贡献指南](https://s2.antv.antgroup.com/manual/contribution)
+:::info{title="跃跃欲试想贡献?"}
 
-> S2 使用 pnpm 作为包管理器
+[查看贡献指南](/manual/contribution)
+
+:::
 
 ```bash
 git clone git@github.com:antvis/S2.git

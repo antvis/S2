@@ -1,7 +1,7 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options, SpreadSheet, SpreadSheet } from '@antv/s2';
 import insertCss from 'insert-css';
 
-function createRadioGroup(s2) {
+function createRadioGroup(s2: SpreadSheet) {
   [
     ['rowCellVertical', '行头热区'],
     ['cornerCellHorizontal', '角头热区'],
@@ -15,9 +15,10 @@ function createRadioGroup(s2) {
     radio.value = value;
     radio.checked = true;
 
-    radio.addEventListener('click', (e) => {
+    radio.addEventListener('click', async (e) => {
       const value = e.target.value;
       const updated = !s2.options.interaction.resize[value];
+
       radio.checked = updated;
 
       s2.setOptions({
@@ -27,15 +28,17 @@ function createRadioGroup(s2) {
           },
         },
       });
-      s2.render(false);
+
+      await s2.render(false);
     });
 
     const label = document.createElement('label');
+
     label.innerText = text;
     label.htmlFor = 'name';
 
-    document.querySelector('#container > canvas').before(radio);
-    document.querySelector('#container > canvas').before(label);
+    document.querySelector('#container > canvas')?.before(radio);
+    document.querySelector('#container > canvas')?.before(label);
   });
 }
 
@@ -43,10 +46,10 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
@@ -61,9 +64,9 @@ fetch(
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render().then(() => {
-      createRadioGroup(s2);
-    });
+    await s2.render();
+
+    createRadioGroup(s2);
   });
 
 insertCss(`

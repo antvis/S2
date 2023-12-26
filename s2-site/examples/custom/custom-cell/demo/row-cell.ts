@@ -1,4 +1,4 @@
-import { PivotSheet, RowCell } from '@antv/s2';
+import { PivotSheet, RowCell, S2DataConfig, S2Options } from '@antv/s2';
 
 /**
  * 自定义 RowCell，给行头添加背景图
@@ -20,9 +20,9 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -31,15 +31,16 @@ fetch(
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       rowCell: (node, s2, headConfig) => {
         return new CustomRowCell(node, s2, headConfig);
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    // 使用
-    s2.render();
+    await s2.render();
   });

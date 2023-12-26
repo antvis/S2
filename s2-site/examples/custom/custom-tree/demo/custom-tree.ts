@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/af54ea12-01d7-4696-a51c-c4d5e4ede28e.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
@@ -32,5 +32,5 @@ fetch(
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

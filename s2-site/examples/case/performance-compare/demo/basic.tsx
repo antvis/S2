@@ -1,8 +1,9 @@
+import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+import { compact } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { compact } from 'lodash';
-import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -19,19 +20,21 @@ const colors = [
 function getRange(data) {
   const values = data.map((d) => d.value);
   const compactValue = compact(values);
+
   return {
     min: Math.min(...compactValue),
     max: Math.max(...compactValue),
   };
 }
 
-function getIndex(fieldValue, rawData) {
+function getIndex(fieldValue: number, rawData: S2DataConfig['data']) {
   const { min, max } = getRange(rawData);
   const step = Math.floor((max - min) / (colors.length - 1));
+
   return Math.floor((fieldValue - min) / step);
 }
 
-function getDataConfig(rawData) {
+function getDataConfig(rawData: S2DataConfig['data']): S2DataConfig {
   return {
     fields: {
       rows: ['size', 'name'],
@@ -60,7 +63,7 @@ function getDataConfig(rawData) {
   };
 }
 
-function getOptions(rawData) {
+function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   return {
     width: 600,
     height: 200,
@@ -74,6 +77,7 @@ function getOptions(rawData) {
           field: 'value',
           mapping(fieldValue) {
             const index = getIndex(fieldValue, rawData);
+
             return {
               fill: fieldValue ? colors[index] : disableColor,
             };

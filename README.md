@@ -11,35 +11,44 @@
     <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="version">
+    <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/next.svg" alt="version">
+    <img  src="https://img.shields.io/npm/v/@antv/s2/next.svg?logo=npm" alt="next version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
   <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="Coverage"/>
+    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="test coverage"/>
   </a>
   <a href="https://github.com/antvis/S2/releases" target="_blank">
-    <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"/>
+    <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release date"/>
   </a>
 </p>
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
-    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues helper"/>
   </a>
   <a href="https://github.com/antvis/S2/blob/master/LICENSE" target="_blank" target="_blank">
-    <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
+    <img src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="License: MIT@AntV" />
   </a>
+  <a href="https://github.com/antvis/S2/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/antvis/S2" alt="contributors"/>
+  <a/>
+  <a href="https://github.com/antvis/S2/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed">
+    <img src="https://img.shields.io/github/issues-closed/antvis/S2" alt="issues closed"/>
+  <a/>
+  <a href="https://github.com/antvis/S2/pulls">
+    <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg" alt="pr welcome"/>
+  <a/>
 </p>
 
 </div>
@@ -175,13 +184,11 @@ s2.render();
 | [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) |  ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
 | [@antv/s2-vue](https://github.com/antvis/S2/tree/master/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)  |  ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
-## 👤 作者
+## 🙋‍♂️ 问题反馈
 
-[**@AntV**](https://github.com/orgs/antvis/people)
+有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose), 在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
 
-## 🤝 参与贡献
-
-> S2 使用 pnpm 作为包管理器
+## ⌨️ 本地开发
 
 ```bash
 git clone git@github.com:antvis/S2.git
@@ -213,24 +220,31 @@ pnpm lint
 pnpm site:start
 ```
 
-## 👁️ 洞察
+## 🤝 参与贡献
+
+请查看 [贡献指南](https://s2.antv.antgroup.com/manual/contribution)
+
+## 👁️ 项目洞察
 
 ![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
 
 ## 📧 联系我们
 
+群聊仅供交流，不提供任何答疑，有任何问题请 [提交 Issue](https://github.com/antvis/S2/issues/new/choose).
+
 <p>
   <a>
     <img width="300" height="auto" alt="DingTalk" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2VvTSZmI4vYAAAAAAAAAAAAADmJ7AQ/original">
   </a>
-  <a>
-    <img width="300" height="auto" alt="qq" src="https://gw.alipayobjects.com/zos/antfincdn/v4TlwgORE/qq_qr_code.JPG">
-  </a>
 </p>
 
-## 👬 Contributors
+## 👬 贡献者们
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
+
+## 👤 作者
+
+[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 📄 License
 

@@ -1,8 +1,9 @@
+import { isUpDataValue } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+import insertCss from 'insert-css';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
-import { isUpDataValue } from '@antv/s2';
-import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -12,7 +13,7 @@ fetch(
     const GridSheet = () => {
       const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = useState('');
-      const s2Options = {
+      const s2Options: SheetComponentOptions = {
         width: 800,
         height: 600,
         tooltip: {
@@ -42,8 +43,9 @@ fetch(
                   };
                 }
 
+                // 同环比红张绿跌
                 return {
-                  fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
+                  fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
                 };
               },
             },
@@ -145,7 +147,7 @@ fetch(
           header={{
             title: '人群网络分析',
             advancedSortCfg: { open: true },
-            extra: [<Breadcrumb />],
+            extra: <Breadcrumb />,
           }}
           onDataCellMouseUp={onDataCellMouseUp}
         />

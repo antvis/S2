@@ -92,7 +92,8 @@ import { PivotSheet } from "@antv/s2";
 
 const container = document.getElementById('container');
 const s2 = new PivotSheet(container, dataCfg, options);
-s2.render();
+
+await s2.render();
 ```
 
 ​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。

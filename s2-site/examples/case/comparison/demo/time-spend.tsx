@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { DataCell, Frame, S2Theme } from '@antv/s2';
+import { DataCell, Frame, S2Theme, ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 const paletteLegendMap = [
@@ -171,7 +171,7 @@ class CustomFrame extends Frame {
 fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
   .then((res) => res.json())
   .then((s2DataConfig) => {
-    const s2Palette = {
+    const s2Palette: ThemeCfg['palette'] = {
       basicColors: [
         '#FFFFFF',
         '#020138',
@@ -195,7 +195,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         green: '#29A294',
       },
     };
-    const s2Theme: S2Theme = {
+
+    const s2Theme: ThemeCfg['theme'] = {
       colCell: {
         bolderText: {
           fontSize: 12,
@@ -267,6 +268,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         },
       },
     };
+
     const PaletteLegend = () => (
       <div className="palette">
         {paletteLegendMap.map((value, key) => (

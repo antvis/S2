@@ -119,6 +119,8 @@ object **必选**,_default：null_
 
 ### MiniChartData
 
+[了解更多](/manual/advanced/custom/custom-chart#1-%E7%BB%98%E5%88%B6-mini-%E5%9B%BE%E8%A1%A8)
+
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 
 ### MultiData

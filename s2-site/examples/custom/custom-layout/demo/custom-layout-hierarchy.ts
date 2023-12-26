@@ -1,12 +1,18 @@
-import { PivotSheet, Node, generateId } from '@antv/s2';
+import {
+  PivotSheet,
+  Node,
+  generateId,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -47,13 +53,14 @@ fetch(
       ],
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       layoutHierarchy: (s2, node) => {
         // layoutHierarchy 用于手动控制行列结构的增加、删除的特殊场景。
         // 以 「宁波市」为例，删除其节点，增加宁波A和宁波B节点。
         const { field, value } = node;
+
         if (field === 'city' && value === '宁波市') {
           const preValue = '宁波A';
           const nextValue = '宁波B';
@@ -65,14 +72,14 @@ fetch(
             ...node,
             id: preUniqueId,
             value: preValue,
-            query: { ...parentNode.query, [node.field]: preValue },
+            query: { ...parentNode?.query, [node.field]: preValue },
           });
 
           const nextNode = new Node({
             ...node,
             id: nextUniqueId,
             value: nextValue,
-            query: { ...parentNode.query, [node.field]: nextValue },
+            query: { ...parentNode?.query, [node.field]: nextValue },
           });
 
           return {
@@ -81,10 +88,12 @@ fetch(
             delete: true,
           };
         }
+
         return null;
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

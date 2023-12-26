@@ -51,7 +51,7 @@ const s2Options = {
 ```ts
 const scale = 0.8
 s2.changeSheetSize(width * scale, height * scale)
-s2.render(false)
+await s2.render(false)
 ```
 
 可参考 issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) （感谢 [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44))
@@ -66,35 +66,35 @@ const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg,
 
 ```ts
 pivotSheet.setOptions({ ... })
-pivotSheet.render(false) // 重新渲染，不更新数据
+await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
 重置 options: [可选项](/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
-pivotSheet.render(false) // 重新渲染，不更新数据
+await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
 更新 dataCfg: [可选项](/docs/api/general/S2DataConfig)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
-pivotSheet.render(true) // 重新渲染，且更新数据
+await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
 重置 dataCfg: [可选项](/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
-pivotSheet.render(true) // 重新渲染，且更新数据
+await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
 更新 theme: [可选项](/docs/api/general/S2Theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
-pivotSheet.render(false)  // 重新渲染，不更新数据
+await pivotSheet.render(false)  // 重新渲染，不更新数据
 ```
 
 ### 图表渲染不出来，怎么回事？
@@ -124,7 +124,7 @@ const pivotSheet = new PivotSheet('#container > div[title="xx"]', dataCfg, optio
 
 ```ts
 s2.changeSheetSize(200, 200)
-s2.render(false)
+await s2.render(false)
 ```
 
 ### 表格可以根据外部容器的宽高自动撑满吗？

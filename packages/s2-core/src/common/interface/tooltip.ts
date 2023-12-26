@@ -26,7 +26,11 @@ export interface TooltipOperatorMenuItem<Icon, Text> {
   /** 点击回调 */
   onClick?: TooltipOperatorClickHandler;
   /** 是否显示 */
-  visible?: boolean | ((cell: S2CellType) => boolean);
+  visible?:
+    | boolean
+    | null
+    | undefined
+    | ((cell: S2CellType) => boolean | null | undefined);
   /** 子菜单 */
   children?: TooltipOperatorMenuItem<Icon, Text>[];
 }

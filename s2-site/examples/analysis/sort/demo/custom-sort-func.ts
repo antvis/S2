@@ -1,10 +1,10 @@
-import { PivotSheet, EXTRA_FIELD } from '@antv/s2';
+import { PivotSheet, EXTRA_FIELD, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -39,6 +39,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
           sortFieldId: 'province',
           sortFunc: (params) => {
             const { data } = params;
+
             return data?.sort((a, b) => a?.localeCompare(b));
           },
         },
@@ -48,8 +49,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
           sortByMeasure: 'price',
           // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
           // 如下方限定 params.data 为 type=纸张, 数值=price 的数据
-          sortFunc: function (params) {
+          sortFunc(params) {
             const { data, sortByMeasure, sortFieldId } = params || {};
+
             return data
               ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
               ?.map((item) => item[sortFieldId]);
@@ -59,11 +61,12 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       ],
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

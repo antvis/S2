@@ -3,7 +3,7 @@ import { PivotSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
@@ -31,13 +31,14 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       width: 600,
       height: 480,
       style: {
-        colCfg: {
+        colCell: {
           // 当只有行头和数值时, 隐藏数值, 可以让表格只显示行头
-          hideMeasureColumn: true,
+          hideValue: true,
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

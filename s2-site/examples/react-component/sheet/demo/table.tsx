@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2DataConfi } from '@antv/s2';
 
-fetch(
-  'https://assets.antv.antgroup.com/s2/basic-table-mode.json',
-)
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },

@@ -75,6 +75,7 @@ const getFormatter =
   (value) => {
     const prefix = enablePrefix && value > 0 ? '+' : '';
     const suffix = value !== 0 ? '%' : '';
+
     return `${prefix}${value}${suffix}`;
   };
 
@@ -90,6 +91,7 @@ class CustomColCell extends ColCell {
 
   renderGroupSeparator() {
     const { label, isLeaf } = this.meta;
+
     // 只需要为 A B 群组绘制标识
     if (!isLeaf || label === 'people-group-delta') {
       return;
@@ -97,6 +99,7 @@ class CustomColCell extends ColCell {
 
     const fill = GROUP_COLOR[label];
     const { x, y, height } = this.textShape.getBBox();
+
     this.addShape('rect', {
       attrs: {
         x: x - GROUP_SEPARATOR_WIDTH * 1.5,
@@ -195,6 +198,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
             field: 'people-group-delta',
             mapping(value) {
               const { color } = getTargetColor(value);
+
               return {
                 fill: color,
               };
@@ -206,6 +210,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
             field: 'people-group-delta',
             mapping(value) {
               const { background } = getTargetColor(value);
+
               return {
                 fill: background,
               };

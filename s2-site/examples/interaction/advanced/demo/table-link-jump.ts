@@ -1,10 +1,10 @@
-import { S2Event, TableSheet } from '@antv/s2';
+import { S2DataConfig, S2DataConfig, S2Event, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['type', 'province', 'city', 'price', 'cost'],
       },
@@ -43,17 +43,18 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-      console.log(data);
+    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (jumpData) => {
+      console.log('jumpData:', jumpData);
 
-      const { field, record } = data;
-      const value = record[field];
+      const { field, record } = jumpData;
+      const value = record?.[field];
       const a = document.createElement('a');
+
       a.target = '_blank';
       a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${field}=${value}`;
       a.click();
       a.remove();
     });
 
-    s2.render();
+    await s2.render();
   });

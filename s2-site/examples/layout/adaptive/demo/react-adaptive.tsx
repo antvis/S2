@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { concat, debounce, forEach, map } from 'lodash';
 
 fetch(
@@ -8,18 +8,21 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
-
     ReactDOM.render(
-      <SheetComponent dataCfg={dataCfg} options={s2Options} adaptive={{
+      <SheetComponent
+        dataCfg={dataCfg}
+        options={s2Options}
+        adaptive={{
           width: true,
           height: false,
-          getContainer: () => document.getElementById('container')
-      }} />,
+          getContainer: () => document.getElementById('container'),
+        }}
+      />,
       document.getElementById('container'),
     );
   });

@@ -40,9 +40,11 @@ export const CustomSheet: React.FC<Props> = (props) => {
     const tableFields = {
       columns: concat([], rows || [], columns || [], values || []),
     };
+
     if (sheetType === 'pivot') {
       return { ...sheetDataCfg, fields: pivotFields };
     }
+
     return { ...sheetDataCfg, fields: tableFields };
   };
 
@@ -57,9 +59,11 @@ export const CustomSheet: React.FC<Props> = (props) => {
     const tableFields = {
       columns: concat([], rows || [], columns || [], values || []),
     };
+
     if (sheetType === 'pivot') {
       return { ...importData, fields: pivotFields };
     }
+
     return { ...importData, fields: tableFields };
   };
 
@@ -67,11 +71,13 @@ export const CustomSheet: React.FC<Props> = (props) => {
     if (!sheetConfig?.sheetType) {
       return;
     }
+
     setSheetType(sheetConfig?.sheetType);
   }, [sheetConfig?.sheetType]);
 
   useEffect(() => {
     const dataCfg = getExampleDataCfg();
+
     setDataCfg(dataCfg);
   }, [sheetConfig?.rows, sheetConfig?.columns, sheetConfig?.values]);
 
@@ -82,9 +88,11 @@ export const CustomSheet: React.FC<Props> = (props) => {
       isEmpty(sheetConfig?.importData)
     ) {
       const dataCfg = getExampleDataCfg();
+
       setDataCfg(dataCfg);
     } else if (!isEmpty(sheetConfig?.importData)) {
       const dataCfg = getImportDataCfg();
+
       setDataCfg(dataCfg);
     }
   }, [
@@ -135,6 +143,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
         },
       },
     });
+
     setOptions({ ...mergedOptions });
   }, [
     sheetConfig?.hierarchyType,
@@ -151,6 +160,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const { theme } = sheetConfig;
+
     setThemeCfg({ name: theme });
   }, [sheetConfig?.theme]);
 
@@ -158,17 +168,20 @@ export const CustomSheet: React.FC<Props> = (props) => {
     if (!sheetConfig?.themeColor) {
       return;
     }
+
     const { theme, themeColor } = sheetConfig;
     const palette = getPalette(theme || 'default');
     const newPalette = generatePalette({
       ...palette,
       brandColor: themeColor?.hex || '#E0E9FD',
     });
+
     setThemeCfg({ name: theme, palette: newPalette });
   }, [sheetConfig?.themeColor]);
 
   useEffect(() => {
     const { adaptive } = sheetConfig;
+
     if (adaptive) {
       setAdaptive({
         width: true,
@@ -186,11 +199,13 @@ export const CustomSheet: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const { showPagination } = sheetConfig;
+
     setShowPagination(showPagination);
   }, [sheetConfig?.showPagination]);
 
   useEffect(() => {
     const { showSeriesNumber, showPagination } = sheetConfig;
+
     setOptions({
       showSeriesNumber,
       pagination: showPagination && {

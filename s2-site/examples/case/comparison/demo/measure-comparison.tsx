@@ -8,14 +8,17 @@ import {
   Frame,
   ID_SEPARATOR,
   measureTextWidth,
+  S2DataConfig,
 } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 const UP_COLOR = '#F46649';
 const DOWN_COLOR = '#2AA491';
-const TAG_HEIGHT = 20; // 指标高度
-const TAG_WIDTH = 80; // 指标宽度
+// 指标高度
+const TAG_HEIGHT = 20;
+// 指标宽度
+const TAG_WIDTH = 80;
 
 class CustomColCell extends ColCell {
   lineConfig = {};
@@ -183,8 +186,9 @@ class CustomDataCell extends DataCell {
 
   // 自定义icon显示
   getIconStyle() {
-    const tagName = Object.keys(this.customConditions).find((item) =>
-      this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
+    const tagName = Object.keys(this.customConditions).find(
+      (item) =>
+        this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
     );
 
     if (tagName) {
@@ -199,8 +203,9 @@ class CustomDataCell extends DataCell {
 
   drawTextShape() {
     const { fieldValue } = this.meta;
-    const tagName = Object.keys(this.textConfig).find((item) =>
-      this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
+    const tagName = Object.keys(this.textConfig).find(
+      (item) =>
+        this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
     );
 
     if (!tagName) {
@@ -438,7 +443,7 @@ class CustomCornelCell extends CornerCell {
 fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
   .then((res) => res.json())
   .then((data) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['type'],
         columns: ['tag'],
@@ -468,6 +473,7 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       ],
       data,
     };
+
     const getIcon = (fieldValue) => {
       return parseFloat(fieldValue) > 0
         ? 'CellUp'
@@ -475,6 +481,7 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
         ? 'CellDown'
         : '';
     };
+
     const conditionsIcon = [
       {
         field: 'price',
@@ -512,18 +519,21 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
             : textStyle?.fill,
       };
     };
+
     // 列分组竖线样式配置
     const lineConfigStyle = {
       stroke: '#3471F9',
       lineWidth: 1,
       opacity: 0.5,
     };
+
     // 列分组配置
     const lineConfig = {
       price: 1,
       pv: 1,
     };
-    const s2Options = {
+
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       showDefaultHeaderActionIcon: false,

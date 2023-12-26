@@ -1,11 +1,12 @@
-import { TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, SpreadSheet, TableSheet } from '@antv/s2';
 
 import insertCss from 'insert-css';
 
 const defaultScrollSpeedRatio = 1;
 
-function createSlider(s2) {
+function createSlider(s2: SpreadSheet) {
   const slider = document.createElement('input');
+
   slider.type = 'range';
   slider.max = '5';
   slider.min = '0';
@@ -14,7 +15,8 @@ function createSlider(s2) {
   slider.title = `当前滚动速率: ${defaultScrollSpeedRatio}`;
 
   slider.addEventListener('input', (e) => {
-    const ratio = e.target.value;
+    const ratio = e.target?.value || 1;
+
     console.log('ratio: ', ratio);
 
     s2.setOptions({
@@ -27,15 +29,15 @@ function createSlider(s2) {
     slider.title = `当前滚动速率: ${ratio}`;
   });
 
-  document.querySelector('#container > canvas').before(slider);
+  document.querySelector('#container > canvas')?.before(slider);
 }
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },
@@ -64,7 +66,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 300,
       interaction: {
@@ -77,9 +79,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render().then(() => {
-      createSlider(s2);
-    });
+    await s2.render();
+
+    createSlider(s2);
   });
 
 insertCss(`

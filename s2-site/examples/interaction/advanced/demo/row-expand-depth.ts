@@ -13,9 +13,10 @@ function createRadioGroup(s2: SpreadSheet) {
     radio.value = value;
     radio.checked = value === 0;
 
-    radio.addEventListener('click', (e) => {
+    radio.addEventListener('click', async (e) => {
       const value = e.target.value;
       const updated = !s2.options.interaction.resize[value];
+
       radio.checked = updated;
 
       s2.setOptions({
@@ -25,15 +26,17 @@ function createRadioGroup(s2: SpreadSheet) {
           },
         },
       });
-      s2.render(false);
+
+      await s2.render(false);
     });
 
     const label = document.createElement('label');
+
     label.innerText = text;
     label.htmlFor = 'name';
 
-    document.querySelector('#container > canvas').before(radio);
-    document.querySelector('#container > canvas').before(label);
+    document.querySelector('#container > canvas')?.before(radio);
+    document.querySelector('#container > canvas')?.before(label);
   });
 }
 
@@ -41,7 +44,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/e254339f-46df-4be0-81b0-a3b1e26b39ff.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     const s2Options: S2Options = {
@@ -50,14 +53,15 @@ fetch(
       hierarchyType: 'tree',
       style: {
         rowCell: {
-          expandDepth: 0, // 展开一级维度的子节点
+          // 展开一级维度的子节点
+          expandDepth: 0,
         },
       },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render().then(() => {
-      createRadioGroup(s2);
-    });
+    await s2.render();
+
+    createRadioGroup(s2);
   });

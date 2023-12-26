@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { debounce, isObjectLike } from 'lodash';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
-import { getPalette } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { S2DataConfig, getPalette } from '@antv/s2';
 import { SketchPicker } from 'react-color';
 import { Row, Space, Input, Button, message, Popover, Table } from 'antd';
 import copy from 'copy-to-clipboard';
@@ -11,7 +11,7 @@ import 'antd/es/table/style/index.css';
 import 'antd/es/space/style/index.css';
 import '@antv/s2-react/dist/style.min.css';
 
-const s2Options = {
+const s2Options: SheetComponentOptions = {
   width: 500,
   height: 300,
   conditions: {
@@ -62,7 +62,7 @@ const savePalette = debounce((palette) => {
 }, 1000);
 
 function useDataCfg() {
-  const [dataCfg, setDataCfg] = useState(null);
+  const [dataCfg, setDataCfg] = useState<S2DataConfig>(null);
 
   useEffect(() => {
     fetch(

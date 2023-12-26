@@ -19,7 +19,7 @@ fetch(
         // brushSelection: false,
       },
       style: {
-        cellCfg: {
+        dataCell: {
           height: 100,
         },
       },
@@ -27,11 +27,12 @@ fetch(
         enable: true,
       },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
       console.log('dataCelBrushSelection', cells);
     });
 
-    s2.render();
+    await s2.render();
   });

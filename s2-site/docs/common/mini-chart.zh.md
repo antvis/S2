@@ -5,7 +5,7 @@ order: 6
 
 #### renderMiniChart
 
-在单元格内绘制 mini 图（支持 折线图、子弹图、柱状图）. [查看示例](/examples/react-component/sheet/#strategy-mini-chart)
+在单元格内绘制 `mini` 图（支持 折线图、子弹图、柱状图）. [查看示例](/zh/examples/custom/custom-cell/#mini-chart)
 
 ```ts
  renderMiniChart = (cell: S2CellType, data?: BaseChartData | BulletValue) => void;
@@ -13,7 +13,7 @@ order: 6
 
 #### BaseChartData
 
-折线图、柱状图数据配置项，数据格式参考 `g2`
+折线图、柱状图数据配置项，数据格式参考 [`G2`](https://g2.antv.antgroup.com/manual/core/api)
 
 | 参数 | 说明 | 类型 | 必选  | 默认值 |
 | --- | ---- | --- | ---- | ------ |

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { Node, S2DataConfig, TooltipOptions } from '@antv/s2';
 
 const SortMethodType = {
   asc: 'asc',
@@ -10,22 +11,23 @@ const SortMethodType = {
 };
 
 const MENUS = [
-  { key: SortMethodType.none, text: '不排序' },
-  { key: SortMethodType.asc, text: '升序', icon: 'GroupAsc' },
-  { key: SortMethodType.desc, text: '降序', icon: 'GroupDesc' },
-  { key: SortMethodType.custom, text: '自定义排序', icon: 'Trend' },
+  { key: SortMethodType.none, label: '不排序' },
+  { key: SortMethodType.asc, label: '升序', icon: 'GroupAsc' },
+  { key: SortMethodType.desc, label: '降序', icon: 'GroupDesc' },
+  { key: SortMethodType.custom, label: '自定义排序', icon: 'Trend' },
 ];
-const s2DataConfig = {
+
+const s2DataConfig: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
     values: ['number'],
   },
   meta: undefined,
-  data: undefined,
+  data: [],
 };
 
-const s2Options = {
+const s2Options: SheetComponentOptions = {
   width: 600,
   height: 480,
   // 关闭默认icon
@@ -70,7 +72,7 @@ const App = () => {
   const [sortParams, setSortParams] = useState([]);
 
   // 设置自定义 `icon` 的展示条件
-  const headerActionIcons = [
+  const headerActionIcons: SheetComponentOptions['headerActionIcons'] = [
     {
       // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
       icons: ['customKingIcon'],
@@ -80,7 +82,7 @@ const App = () => {
       // icon 点击之后的执行函数
       onClick: (props) => {
         const { meta, event } = props;
-        const operator = {
+        const operator: TooltipOptions['operator'] = {
           menu: {
             onClick: ({ key }) => {
               handleSortCallback(meta, key);
@@ -101,7 +103,7 @@ const App = () => {
   ];
 
   // 执行自定义排序回调
-  const handleSortCallback = (meta, key) => {
+  const handleSortCallback = (meta: Node, key: string) => {
     if (key === SortMethodType.custom) {
       const sortParams = [
         { sortFieldId: 'type', sortBy: ['办公用品', '家具'] },
@@ -124,5 +126,4 @@ const App = () => {
   );
 };
 
-// 使用
 ReactDOM.render(<App />, document.getElementById('container'));

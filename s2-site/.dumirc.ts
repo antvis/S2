@@ -1,4 +1,5 @@
 import { defineConfig } from 'dumi';
+// import { version } from '@antv/s2';
 import { repository } from './package.json';
 
 export default defineConfig({
@@ -31,6 +32,12 @@ export default defineConfig({
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
+    versions: {
+      // 历史版本以及切换下拉菜单
+      // [version || '2.x']: 'https://s2.antv.antgroup.com',
+      '2.x': 'https://s2.antv.antgroup.com',
+      '1.x': 'https://s2-v1.antv.vision',
+    },
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,

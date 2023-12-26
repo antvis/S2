@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  Switcher,
+} from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -9,7 +13,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
@@ -44,9 +48,11 @@ fetch(
           result.push(item);
         } else {
           const parent = result[result.length - 1];
+
           parent.children = parent.children ? parent.children : [];
           parent.children.push(item);
         }
+
         return result;
       }, []);
 

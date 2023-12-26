@@ -2,7 +2,7 @@ import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
 
     const s2DataConfig: S2DataConfig = {
@@ -35,14 +35,18 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       height: 480,
       showSeriesNumber: true,
       frozen: {
-        rowCount: 1, // 行头冻结数量
-        colCount: 1, // 列头冻结数量
-        trailingRowCount: 1, // 列尾冻结数量
-        trailingColCount: 1, // 列尾冻结数量
+        // 行头冻结数量
+        rowCount: 1,
+        // 列头冻结数量
+        colCount: 1,
+        // 列尾冻结数量
+        trailingRowCount: 1,
+        // 列尾冻结数量
+        trailingColCount: 1,
       },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

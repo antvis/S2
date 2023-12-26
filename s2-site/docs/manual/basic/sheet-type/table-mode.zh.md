@@ -94,7 +94,8 @@ import { TableSheet } from "@antv/s2";
 
 const container = document.getElementById('container');
 const s2 = new TableSheet(container, dataCfg, options);
-s2.render();
+
+await s2.render();
 ```
 
 ## 特性

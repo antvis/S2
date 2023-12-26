@@ -12,11 +12,12 @@ order: 5
 ```ts
 <script src="./dist/index.min.js"></script>
 <script>
-   async function run() { 
+   async function bootstrap() {
       const s2 = new S2.PivotSheet(container, s2DataConfig, s2Options);
       await s2.render();
    }
-   run();
+
+   bootstrap();
 </script>
 ```
 

@@ -26,12 +26,15 @@ fetch(
       if (!cellInfo?.viewMeta) {
         return;
       }
+
       const { spreadsheet, id } = cellInfo.viewMeta;
+
       if (id === 'root[&]家具') {
         const position = {
           x: cellInfo.event.clientX,
           y: cellInfo.event.clientY,
         };
+
         spreadsheet.tooltip.show({
           position,
           content: <CustomTooltip />,

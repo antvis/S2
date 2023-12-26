@@ -120,24 +120,28 @@ const s2DataConfig: S2DataConfig = {
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+async function bootstrap() {
+  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-// 监听数值单元格渲染完成后, 使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
-s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
-  // 普通数值单元格正常展示
-  if (!cell.isChartData()) {
-    return;
-  }
+  // 监听数值单元格渲染完成后, 使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
+  s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
+    // 普通数值单元格正常展示
+    if (!cell.isChartData()) {
+      return;
+    }
 
-  // 获取 G2 渲染到 S2 单元格内所需配置
-  const chartOptions = cell.getRenderChartOptions();
+    // 获取 G2 渲染到 S2 单元格内所需配置
+    const chartOptions = cell.getRenderChartOptions();
 
-  renderToMountedElement(chartOptions, {
-    // 指定渲染容器为当前单元格
-    group: cell,
-    // 根据渲染的图表, 自行选择 G2 library: https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-    library: stdlib(),
+    renderToMountedElement(chartOptions, {
+      // 指定渲染容器为当前单元格
+      group: cell,
+      // 根据渲染的图表, 自行选择 G2 library: https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
+      library: stdlib(),
+    });
   });
-});
 
-s2.render();
+  await s2.render();
+}
+
+bootstrap();

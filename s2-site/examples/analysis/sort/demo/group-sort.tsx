@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2DataConfig } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/21ffc284-50a2-4a30-8bb0-b2f9ac4a8fbc.json',
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -38,7 +39,7 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      showDefaultHeaderActionIcon: true, // 默认打开
+      showDefaultHeaderActionIcon: true,
     };
 
     ReactDOM.render(

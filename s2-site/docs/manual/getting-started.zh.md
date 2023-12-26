@@ -171,7 +171,7 @@ const s2Options = {
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-async function run() {
+async function bootstrap() {
   const container = document.getElementById('container');
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -179,7 +179,7 @@ async function run() {
   await s2.render(); // 返回 Promise
 }
 
-run();
+bootstrap();
 ```
 
 #### 4. 结果

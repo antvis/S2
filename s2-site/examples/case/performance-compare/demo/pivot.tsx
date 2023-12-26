@@ -1,12 +1,15 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2DataConfig } from '@antv/s2';
 
 const s2Options = {
   width: 600,
   height: 480,
 };
 
-export function generateRawData(row, col) {
-  const res = [];
+export function generateRawData(
+  row: Record<string, number>,
+  col: Record<string, number>,
+) {
+  const res: Record<string, any>[] = [];
   const rowKeys = Object.keys(row);
   const colKeys = Object.keys(col);
 
@@ -29,7 +32,7 @@ export function generateRawData(row, col) {
   return res;
 }
 
-const s2DataConfig = {
+const s2DataConfig: S2DataConfig = {
   fields: {
     rows: ['type', 'subType'],
     columns: ['province', 'city'],
@@ -40,8 +43,13 @@ const s2DataConfig = {
     { type: 10, sub_type: 100 },
   ),
 };
-const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+async function bootstrap() {
+  const container = document.getElementById('container');
 
-s2.render();
+  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+  await s2.render();
+}
+
+bootstrap();

@@ -16,8 +16,7 @@ import { BaseEvent } from '@antv/s2';
 
 // 继承 BaseEvent, 可以拿到 this.spreadsheet
 class HiddenInteraction extends BaseEvent {
-  bindEvents() {
-  }
+  bindEvents() { }
 }
 ```
 
@@ -54,15 +53,16 @@ const s2Options = {
     customInteractions: [
       {
         // 交互的唯一标识，需要保证和已有交互不冲突
-        key: 'MyInteraction',
-        interaction: MyInteraction,
+        key: 'HiddenInteraction',
+        interaction: HiddenInteraction,
       },
     ],
   }
 };
+
 const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+await s2.render();
 ```
 
 ## 3. 多个自定义交互
@@ -87,8 +87,8 @@ const s2Options = {
   interaction: {
     customInteractions: [
       {
-        key: 'MyInteraction',
-        interaction: MyInteraction,
+        key: 'HiddenInteraction',
+        interaction: HiddenInteraction,
       },
       {
         key: 'ContextMenuInteraction',
@@ -100,7 +100,7 @@ const s2Options = {
 
 const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+await s2.render();
 ```
 
 <Playground path='interaction/advanced/demo/double-click-hide-columns.ts' rid='container' height='400'></playground>

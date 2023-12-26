@@ -1,17 +1,52 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
+    const s2DataConfig = {
+      ...dataCfg,
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'sub_type',
+          name: '子类别',
+        },
+        {
+          field: 'number',
+          name: '数量',
+          // 自定义格式化
+          // formatter: (value, record, meta) => {
+          //   return `${value / 100} %`;
+          // },
+        },
+      ],
+    };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
+      interaction: {
+        enableCopy: true,
+        copyWithFormat: true,
+        copyWithHeader: true,
+      },
     };
-    const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+    await s2.render();
   });

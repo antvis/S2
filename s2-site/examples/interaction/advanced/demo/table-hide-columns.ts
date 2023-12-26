@@ -1,10 +1,16 @@
-import { TableSheet, S2Event } from '@antv/s2';
+import {
+  TableSheet,
+  S2Event,
+  S2DataConfig,
+  S2Options,
+  S2Options,
+} from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['type', 'province', 'city', 'price', 'cost'],
       },
@@ -33,7 +39,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
@@ -48,6 +54,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         },
       },
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
@@ -60,5 +67,5 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       },
     );
 
-    s2.render();
+    await s2.render();
   });

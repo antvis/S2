@@ -1,13 +1,16 @@
-import { TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 600,
   height: 480,
   showSeriesNumber: true,
 };
 
-export function generateRawData(row, col) {
-  const res = [];
+export function generateRawData(
+  row: Record<string, number>,
+  col: Record<string, number>,
+) {
+  const res: Record<string, any>[] = [];
 
   const rowKeys = Object.keys(row);
   const colKeys = Object.keys(col);
@@ -31,7 +34,7 @@ export function generateRawData(row, col) {
   return res;
 }
 
-const s2DataConfig = {
+const s2DataConfig: S2DataConfig = {
   fields: {
     columns: ['province', 'city', 'type', 'subType', 'number'],
   },
@@ -41,8 +44,12 @@ const s2DataConfig = {
   ),
 };
 
-const container = document.getElementById('container');
+async function bootstrap() {
+  const container = document.getElementById('container');
 
-const s2 = new TableSheet(container, s2DataConfig, s2Options);
+  const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+  await s2.render();
+}
+
+bootstrap();

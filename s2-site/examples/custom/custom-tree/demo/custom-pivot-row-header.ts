@@ -74,13 +74,13 @@ function createCheckbox(s2: SpreadSheet) {
   text.className = 'hierarchy-type';
   text.innerHTML = '树状模式';
 
-  checkbox.addEventListener('change', () => {
+  checkbox.addEventListener('change', async () => {
     const hierarchyType = checkbox.checked ? 'tree' : 'grid';
 
     s2.setOptions({
       hierarchyType,
     });
-    s2.render(false);
+    await s2.render(false);
   });
 
   canvas?.before(checkbox);
@@ -113,7 +113,7 @@ async function render() {
       // 自定义格式化数值
       // {
       //   field: 'measure-1',
-      //   formatter: (value) => `指标: ${value}`,
+      //   formatter: (value, record, meta) => `指标: ${value}`,
       // },
     ],
   };

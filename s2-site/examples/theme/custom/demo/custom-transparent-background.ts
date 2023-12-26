@@ -1,12 +1,12 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/4eff53f3-f952-4b77-8862-4b6ecbd31667.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -37,7 +37,7 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
     };
@@ -51,7 +51,7 @@ fetch(
     };
 
     // https://s2.antv.antgroup.com/zh/docs/api/general/S2Theme#s2theme
-    const s2Theme = {
+    const s2Theme: S2Theme = {
       background: {
         opacity: 0,
       },
@@ -64,5 +64,6 @@ fetch(
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.setTheme(s2Theme);
-    s2.render();
+
+    await s2.render();
   });

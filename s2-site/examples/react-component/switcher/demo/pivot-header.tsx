@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -9,7 +9,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };

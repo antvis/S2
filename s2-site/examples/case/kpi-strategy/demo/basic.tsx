@@ -36,12 +36,15 @@ const PADDING = 10;
 
 function getStatusColorByProgress(realProgress, expectedProgress) {
   const leftWorker = expectedProgress - realProgress;
+
   if (leftWorker <= 0.1) {
     return STATUS_COLOR.healthy;
   }
+
   if (leftWorker > 0.1 && leftWorker <= 0.3) {
     return STATUS_COLOR.late;
   }
+
   return STATUS_COLOR.danger;
 }
 
@@ -59,10 +62,13 @@ class KpiStrategyDataCell extends DataCell {
   // 如果是进度, 格式化为百分比 (只做 demo 示例, 请根据实际情况使用)
   getFormattedFieldValue() {
     const { data } = this.meta;
+
     if (!data || !data.isProgress) {
       return super.getFormattedFieldValue();
     }
+
     const formattedValue = `${data.value * 100} %`;
+
     return { formattedValue, value: data.value };
   }
 
@@ -70,9 +76,11 @@ class KpiStrategyDataCell extends DataCell {
   renderDeriveValue() {
     // 通过 this.meta 拿到当前单元格的有效信息
     const { x, width, data } = this.meta;
+
     if (!data || data.isExtra) {
       return;
     }
+
     const value = data?.compare ?? '';
     const isDown = value.startsWith('-');
     const color = isDown ? DERIVE_COLOR.down : DERIVE_COLOR.up;
@@ -105,9 +113,11 @@ class KpiStrategyDataCell extends DataCell {
 
   renderProgressBar() {
     const { x, y, width, height, data } = this.meta;
+
     if (!data || !data.isProgress) {
       return;
     }
+
     const currentProgress = data.value;
     const expectedProgress = data.expectedValue;
 
@@ -244,7 +254,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
         options={s2Options}
         sheetType="pivot"
         themeCfg={{
-          theme: merge({}, theme),
+          theme,
         }}
       />,
       document.getElementById('container'),
