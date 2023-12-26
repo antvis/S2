@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import {
   SheetComponent,
   SheetComponentOptions,
@@ -79,7 +79,9 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(
+      <SwitcherDemo />,
+    );
   });
 
 insertCss(`

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { SheetComponent } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import 'antd/es/cascader/style/index.css';
@@ -54,7 +54,7 @@ fetch(
     };
 
     const AdvancedSortDemo = () => {
-      const [dataCfg, setDataCfg] = useState(s2DataConfig);
+      const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
       const [sortParams, setSortParams] = React.useState(defaultSortParams);
 
       return (
@@ -79,7 +79,9 @@ fetch(
       );
     };
 
-    ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(
+      <AdvancedSortDemo />,
+    );
   });
 
 insertCss(`

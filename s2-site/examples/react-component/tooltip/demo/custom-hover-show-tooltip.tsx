@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -54,7 +54,7 @@ fetch(
       });
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
@@ -64,6 +64,5 @@ fetch(
         onRowCellHover={onRowCellHover}
         onDataCellHover={onDataCellHover}
       />,
-      document.getElementById('container'),
     );
   });

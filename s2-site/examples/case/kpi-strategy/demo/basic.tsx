@@ -1,9 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { merge } from 'lodash';
 import { DataCell, measureTextWidth, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 // 进度条
 const PROGRESS_BAR = {
@@ -248,7 +247,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -257,6 +256,5 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
           theme,
         }}
       />,
-      document.getElementById('container'),
     );
   });

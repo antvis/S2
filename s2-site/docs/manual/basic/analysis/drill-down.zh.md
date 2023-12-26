@@ -86,26 +86,26 @@ const PartDrillDown = {
 
 </details>
 
-```jsx
+```tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 
 const s2Options = {
   hierarchyType: 'tree', // 树形结构
 };
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-    partDrillDown={PartDrillDown}
-  />,
-  document.getElementById('container'),
-);
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+      partDrillDown={PartDrillDown}
+    />
+  )
+}
 ```
 
-<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-down/demo/for-pivot.tsx' rid='container'></playground>
 
 ## 使用场景
 

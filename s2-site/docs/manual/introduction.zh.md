@@ -230,6 +230,10 @@ bootstrap();
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
+### 🖥️ 浏览器兼容性
+
+<embed src="@/docs/common/env.zh.md"></embed>
+
 ## 🙋‍♂️ 问题反馈
 
 有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose), 在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)

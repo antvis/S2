@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import ReactDOM from 'react-dom/client';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -9,12 +9,12 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
-    ReactDOM.render(
+    const App = () => (
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}
@@ -75,9 +75,10 @@ fetch(
             instance.tooltip.show(customOptions);
           };
         }}
-      />,
-      document.getElementById('container'),
+      />
     );
+
+    ReactDOM.createRoot(document.getElementById('container')).render(<App />);
   });
 
 insertCss(`

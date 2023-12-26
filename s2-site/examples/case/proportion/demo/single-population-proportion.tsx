@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import insertCss from 'insert-css';
+import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { S2DataConfig, S2Options } from '@antv/s2';
+import insertCss from 'insert-css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 const PALETTE_COLORS = [
   {
@@ -155,7 +155,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <div className="root">
         <SheetComponent
           dataCfg={s2DataConfig}
@@ -168,7 +168,6 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
           }}
         />
       </div>,
-      document.getElementById('container'),
     );
   });
 

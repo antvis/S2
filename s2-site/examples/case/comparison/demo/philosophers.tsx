@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { max, min, replace } from 'lodash';
 import insertCss from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -195,7 +195,7 @@ fetch(
       });
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -206,7 +206,6 @@ fetch(
         }}
         onDataCellMouseUp={onDataCellMouseUp}
       />,
-      document.getElementById('container'),
     );
   });
 

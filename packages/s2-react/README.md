@@ -118,19 +118,19 @@ const s2Options = {
 <div id="container"></div>
 ```
 
-```ts
+```tsx
+import React from 'React'
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 ### 4. 结果

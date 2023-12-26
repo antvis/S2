@@ -4,8 +4,8 @@ import '@antv/s2-react/dist/style.min.css';
 import { Button } from 'antd';
 import insertCss from 'insert-css';
 import { orderBy } from 'lodash';
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -51,7 +51,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     };
 
     const App = () => {
-      const [dataCfg, setDataCfg] = useState(s2DataConfig);
+      const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(s2DataConfig);
 
       return (
         <>
@@ -131,7 +131,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       );
     };
 
-    ReactDOM.render(<App />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(<App />);
   });
 
 // 我们用 insert-css 演示引入自定义样式

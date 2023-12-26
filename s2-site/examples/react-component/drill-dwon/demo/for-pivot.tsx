@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import {
   SheetComponent,
   SheetComponentOptions,
@@ -41,7 +41,6 @@ fetch(
           },
         ],
       },
-
       fetchData: (meta, drillFields) =>
         new Promise((resolve) => {
           const dataSet = meta.spreadsheet.dataSet;
@@ -82,13 +81,12 @@ fetch(
         }),
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
         partDrillDown={PartDrillDown}
         adaptive={false}
       />,
-      document.getElementById('container'),
     );
   });

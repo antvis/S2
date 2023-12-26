@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import {
   SheetComponent,
   SheetComponentOptions,
   Switcher,
 } from '@antv/s2-react';
-import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
+import insertCss from 'insert-css';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/0c913e28-7806-41b2-a046-df3c1586712c.json',
@@ -110,7 +110,9 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(
+      <SwitcherDemo />,
+    );
   });
 
 insertCss(`

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React, { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import insertCss from 'insert-css';
 import {
   TableColCell,
@@ -694,7 +694,9 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    ReactDOM.render(<App data={res} />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(
+      <App data={res} />,
+    );
   });
 
 insertCss(`

@@ -11,15 +11,7 @@ order: 8
 
 ### 浏览器兼容性
 
-如果出现兼容性问题请结合 `babel` 和 `@babel/polyfill` 使用，更多问题欢迎进群交流
-
-> 由于条件限制，版本下限仅供参考，并不意味着不能支持更低版本，该测试在 CDN 模式下测试完成，[在线 Demo](https://lxfu1.github.io/browser-compatibility-of-antv/?tab=s2)
-
-|             | Chrome | Edge  | Firefox |  IE   | Opera | Safari |  UC   | 360 极速浏览器 | 360 安全浏览器 |
-| ----------- | :----: | :---: | :-----: | :---: | :---: | :----: | :---: | :------------: | :------------: |
-| **AntV S2** |   40   |  12   |   85    |   9   |  40   |   14   |  6.2  |       12       |      7.3       |
-
-`@antv/s2-react` 和 `@antv/s2-vue` 见官方 [React JavaScript 环境要求](https://zh-hans.reactjs.org/docs/javascript-environment-requirements.html) 和 [Vite 浏览器兼容性](https://cn.vitejs.dev/guide/build.html#browser-compatibility)
+<embed src="@/docs/common/env.zh.md"></embed>
 
 ### 浏览器引入
 
@@ -27,10 +19,17 @@ order: 8
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
-原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 不再维护，推荐访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
+原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 和 旧版官网 [https://s2.antv.vision](https://s2.antv.vision) 不再维护，请访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
 
-[旧版官网](https://s2.antv.vision/)
-[新版官网](https://s2.antv.antgroup.com/)
+- [旧版官网](https://s2.antv.vision/)
+- [新版官网](https://s2.antv.antgroup.com/)
+
+### 目前官网是 2.x 版本，在哪里查看 1.x 版本的文档？
+
+官网右上角可以切换文档版本：
+
+- [2.x 官网](https://s2.antv.antgroup.com/)
+- [1.x 官网](https://s2-v1.antv.antgroup.com/)
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
@@ -189,16 +188,6 @@ const s2Options = {
 ```
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
-
-目前，S2 由三个包构成
-
-- `@antv/s2`: 基于 `canvas` 和 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 开发，提供基本的表格展示/交互等能力
-- `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
-- `@antv/s2-vue`: 基于 `Vue3` 和 `@antv/s2` 封装，提供配套的分析组件
-
-也就是说 `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等框架中使用。
-
-以下是版本概览：
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 

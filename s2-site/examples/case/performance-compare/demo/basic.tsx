@@ -3,7 +3,7 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { compact } from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -91,7 +91,7 @@ function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
 fetch('https://assets.antv.antgroup.com/s2/compare.json')
   .then((res) => res.json())
   .then((data) => {
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <div>
         <h3>1000 数据规模表格渲染时间对比</h3>
         <SheetComponent
@@ -112,6 +112,5 @@ fetch('https://assets.antv.antgroup.com/s2/compare.json')
           sheetType="pivot"
         />
       </div>,
-      document.getElementById('container'),
     );
   });

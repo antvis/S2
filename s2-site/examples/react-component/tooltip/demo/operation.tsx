@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { CellType } from '@antv/s2';
@@ -23,7 +23,7 @@ fetch(
             items: [
               {
                 key: 'trend',
-                text: '趋势',
+                label: '趋势',
                 icon: 'Trend',
                 // 数值单元格展示
                 visible: (cell) => cell.cellType === CellType.DATA_CELL,
@@ -37,13 +37,12 @@ fetch(
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
         options={s2Options}
       />,
-      document.getElementById('container'),
     );
   });

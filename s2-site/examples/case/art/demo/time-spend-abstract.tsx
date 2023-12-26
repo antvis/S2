@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import insertCss from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { DataCell, ThemeCfg } from '@antv/s2';
@@ -180,7 +180,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -190,7 +190,6 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
           themeCfg={{ theme: s2Theme }}
         />
       </div>,
-      document.getElementById('container'),
     );
   });
 

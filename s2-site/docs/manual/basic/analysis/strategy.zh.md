@@ -71,21 +71,20 @@ const s2Options = {
 
 </details>
 
-```ts
+```tsx
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
-ReactDOM.render(
-  <SheetComponent
-    sheetType="strategy"
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      sheetType="strategy"
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 <Playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>

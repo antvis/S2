@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { Select, InputNumber, Space } from 'antd';
-import { every, filter, isNil, last, map, omit } from 'lodash';
+import { S2DataConfig, NODE_ID_SEPARATOR } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { InputNumber, Select, Space } from 'antd';
 import insertCss from 'insert-css';
-import { S2DataConfig, SortParams } from '@antv/s2';
+import { every, filter, isNil, last, map, omit } from 'lodash';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
 
-const ID_SEPARATOR = '[&]';
 const defaultHouseInfo = {
   name: ['15#', '16#', '21#', '22#'],
   unit: ['1单元', '2单元'],
@@ -65,8 +64,8 @@ const defaultSortParams: S2DataConfig['sortParams'] = [
       const { data = [] } = params;
 
       return data.sort((a, b) => {
-        const aNum = last(a.split(ID_SEPARATOR));
-        const bNum = last(b.split(ID_SEPARATOR));
+        const aNum = last(a.split(NODE_ID_SEPARATOR));
+        const bNum = last(b.split(NODE_ID_SEPARATOR));
 
         return aNum - bNum;
       });
@@ -275,9 +274,8 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <Sheet data={data} />,
-      document.getElementById('container'),
     );
   });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import insertCss from 'insert-css';
 import { ColCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -236,7 +236,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -247,7 +247,6 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
           extra: <PaletteLegend />,
         }}
       />,
-      document.getElementById('container'),
     );
   });
 

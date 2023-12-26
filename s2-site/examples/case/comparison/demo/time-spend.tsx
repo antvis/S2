@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import insertCss from 'insert-css';
+import { DataCell, Frame, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { DataCell, Frame, S2Theme, ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
+import insertCss from 'insert-css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 const paletteLegendMap = [
   {
@@ -283,7 +283,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -293,7 +293,6 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
           themeCfg={{ theme: s2Theme, palette: s2Palette }}
         />
       </div>,
-      document.getElementById('container'),
     );
   });
 

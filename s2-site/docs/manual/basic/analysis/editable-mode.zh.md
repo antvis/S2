@@ -19,7 +19,6 @@ order: 3
 
 ```typescript
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -158,14 +157,15 @@ const s2Options = {
 };
 
 // 4, 渲染
-ReactDOM.render(
-  <SheetComponent
-    sheetType="editable" // 此处指定sheetType为editable
-    dataCfg={s2DataCfg}
-    options={s2Options}
-  />,
-  document.getElementById('container')
-);
+const App = () => {
+  return (
+    <SheetComponent
+      sheetType="editable"
+      dataCfg={s2DataCfg}
+      options={s2Options}
+    />,
+  )
+}
 ```
 
 ## 特性

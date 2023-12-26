@@ -1,21 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { BaseTooltip } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  TooltipOperatorMenuOptions,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCss from 'insert-css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 const MyCustomTooltipContent = () => (
   <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>
 );
 
-class CustomTooltip extends BaseTooltip {
+class CustomTooltip extends BaseTooltip<
+  React.ReactNode,
+  TooltipOperatorMenuOptions
+> {
   constructor(spreadsheet) {
     super(spreadsheet);
   }
 
+  root: ReactDOM.Root;
+
   renderContent() {
-    ReactDOM.render(<MyCustomTooltipContent />, this.container);
+    this.root ??= ReactDOM.createRoot(this.container!);
+    this.root.render(<MyCustomTooltipContent />);
   }
 
   show(options) {
@@ -26,10 +36,15 @@ class CustomTooltip extends BaseTooltip {
   destroy() {
     console.log('tooltip destroy');
 
+    this.unmount();
     super.destroy();
-    if (this.container) {
-      ReactDOM.unmountComponentAtNode(this.container);
-    }
+  }
+
+  unmount() {
+    // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
+    Promise.resolve().then(() => {
+      this.root?.unmount();
+    });
   }
 }
 
@@ -47,14 +62,13 @@ fetch(
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
         options={s2Options}
       />,
-      document.getElementById('container'),
     );
   });
 

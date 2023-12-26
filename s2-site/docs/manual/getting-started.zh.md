@@ -4,35 +4,35 @@ order: 1
 ---
 ## 📦 安装
 
-### npm | yarn 安装
+### 使用 npm 或 yarn 或 pnpm 安装
 
 ```bash
 # npm
-$ npm install @antv/s2
+$ npm install @antv/s2 --save
 
 # yarn
-$ yarn add @antv/s2
+$ yarn add @antv/s2 --save
+
+# pnpm
+$ pnpm install @antv/s2 --save
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ yarn add @antv/s2 @antv/s2-react
+$ pnpm install @antv/s2 @antv/s2-react --save
 
 # Vue3
-$ yarn add @antv/s2 @antv/s2-vue
+$ pnpm install @antv/s2 @antv/s2-vue --save
+
 ```
 
 ### 浏览器引入（不推荐）
 
 <embed src="@/docs/common/browser.zh.md"></embed>
 
-如需兼容 `IE`，需要自行引入 `polyfill` 兼容。
-
 ## 🔨 使用
-
-创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
@@ -192,29 +192,26 @@ bootstrap();
 
 #### 表格组件使用
 
-```ts
+```tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 #### 注意事项
 
 `React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
 
-```ts
+```bash
 yarn add antd @ant-design/icons
 ```
 
@@ -224,19 +221,16 @@ yarn add antd @ant-design/icons
 
 ```ts
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { MobileSheet } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <MobileSheet
-    dataCfg={s2DataConfig}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <MobileSheet
+      dataCfg={s2DataConfig}
+    />
+  )
+}
 ```
 
 #### 注意事项

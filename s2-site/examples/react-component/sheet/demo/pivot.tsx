@@ -1,10 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {
-  SheetComponent,
-  SheetComponentOptions,
-  SheetComponentOptions,
-} from '@antv/s2-react';
+import ReactDOM from 'react-dom/client';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -17,8 +13,7 @@ fetch(
       height: 480,
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent dataCfg={dataCfg} options={s2Options} />,
-      document.getElementById('container'),
     );
   });

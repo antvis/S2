@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { isNil } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -20,6 +20,7 @@ fetch(
           height: 60,
         },
         colCell: {
+          // TODO:
           widthByFieldValue: { 近14日趋势图: 300 },
         },
       },
@@ -69,12 +70,11 @@ fetch(
       },
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataCfg}
         options={s2Options}
         sheetType="strategy"
       />,
-      document.getElementById('container'),
     );
   });

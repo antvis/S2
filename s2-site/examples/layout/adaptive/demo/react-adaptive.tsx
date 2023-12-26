@@ -1,7 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { concat, debounce, forEach, map } from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -13,7 +12,7 @@ fetch(
       height: 480,
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}
@@ -23,6 +22,5 @@ fetch(
           getContainer: () => document.getElementById('container'),
         }}
       />,
-      document.getElementById('container'),
     );
   });

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import insertCss from 'insert-css';
 import { Button } from 'antd';
 import {
@@ -66,7 +66,9 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SheetHeader />, document.getElementById('container'));
+    ReactDOM.createRoot(document.getElementById('container')).render(
+      <SheetHeader />,
+    );
   });
 
 insertCss(`

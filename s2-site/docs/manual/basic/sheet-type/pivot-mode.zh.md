@@ -16,9 +16,8 @@ order: 1
 
 ### React 组件方式
 
-```typescript
+```tsx
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
@@ -71,14 +70,14 @@ const s2Options = {
 };
 
 // 4. 渲染
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container')
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 ​📊 查看 [React 版本透视表示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
@@ -90,10 +89,14 @@ ReactDOM.render(
 ```ts
 import { PivotSheet } from "@antv/s2";
 
-const container = document.getElementById('container');
-const s2 = new PivotSheet(container, dataCfg, options);
+async function bootstrap() {
+  const container = document.getElementById('container');
+  const s2 = new PivotSheet(container, dataCfg, options);
 
-await s2.render();
+  await s2.render();
+}
+
+bootstrap()
 ```
 
 ​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。

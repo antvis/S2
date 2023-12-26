@@ -15,21 +15,18 @@ order: 10
 
 ## 移动端表格
 
-```ts
+```tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { MobileSheet } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <MobileSheet
-    dataCfg={s2DataConfig}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <MobileSheet
+      dataCfg={s2DataConfig}
+    />
+  )
+}
 ```
 
 | PC                                                                                                                                                    | Mobile                                                       |

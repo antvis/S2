@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import ReactDOM from 'react-dom/client';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
 
@@ -36,19 +36,18 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       showDefaultHeaderActionIcon: true,
     };
 
-    ReactDOM.render(
+    ReactDOM.createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
         dataCfg={s2DataConfig}
         options={s2Options}
       />,
-      document.getElementById('container'),
     );
   });

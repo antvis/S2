@@ -19,9 +19,8 @@ order: 2
 
 ### React 组件方式
 
-```typescript
+```tsx
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -75,14 +74,15 @@ const s2Options = {
 };
 
 // 4, 渲染
-ReactDOM.render(
-  <SheetComponent
-    sheetType="table"
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container')
-);
+const App = () => {
+  return (
+    <SheetComponent
+      sheetType="table"
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 ### TableSheet 类方式
