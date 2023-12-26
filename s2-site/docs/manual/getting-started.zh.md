@@ -14,17 +14,17 @@ $ npm install @antv/s2 --save
 $ yarn add @antv/s2 --save
 
 # pnpm
-$ pnpm install @antv/s2 --save
+$ pnpm add @antv/s2 --save
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ pnpm install @antv/s2 @antv/s2-react --save
+$ pnpm add @antv/s2 @antv/s2-react --save
 
 # Vue3
-$ pnpm install @antv/s2 @antv/s2-vue --save
+$ pnpm add @antv/s2 @antv/s2-vue --save
 
 ```
 

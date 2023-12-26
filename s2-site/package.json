@@ -40,7 +40,9 @@
     "dumi": "^2.2.16",
     "gh-pages": "^6.1.1",
     "lodash": "^4.17.21",
-    "react-color": "^2.19.3"
+    "react-color": "^2.19.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",

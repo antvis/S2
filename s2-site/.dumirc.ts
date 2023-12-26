@@ -36,7 +36,7 @@ export default defineConfig({
       // 历史版本以及切换下拉菜单
       // [version || '2.x']: 'https://s2.antv.antgroup.com',
       '2.x': 'https://s2.antv.antgroup.com',
-      '1.x': 'https://s2-v1.antv.vision',
+      '1.x': 'https://s2-v1.antv.antgroup.com',
     },
     docsearchOptions: {
       // 头部搜索框配置
@@ -433,10 +433,16 @@ export default defineConfig({
       },
     ],
   },
+  mfsu: false,
   alias: {
     '@': __dirname,
   },
   styles: ['/site.css'],
   links: [],
   scripts: [],
+  // TODO: S2用的 antd@5.x @antv/dumi-theme-antv 是 4.x, 导致本地跑不起来
+  // monorepoRedirect: {
+  //   peerDeps: true,
+  //   srcDir: ['src', 'esm', 'lib'],
+  // },
 });

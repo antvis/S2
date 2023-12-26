@@ -215,7 +215,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 实际渲染的文本宽度, 如果是多行文本, 取每一行文本高度的总和)
+   * 实际渲染的文本宽度, 如果是多行文本, 取每一行文本高度的总和
    * @alias getMultiLineActualTextHeight
    */
   public getActualTextHeight(): number {
@@ -265,6 +265,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getTextLineBoundingRects().length > 1;
   }
 
+  /**
+   * 获取单元格空值占位符
+   */
   public getEmptyPlaceholder() {
     const {
       options: { placeholder },
@@ -280,6 +283,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.textShape?.getLineBoundingRects() || [];
   }
 
+  /**
+   * 获取单元格展示的数值
+   */
   public getFieldValue() {
     return this.getFormattedFieldValue().formattedValue;
   }

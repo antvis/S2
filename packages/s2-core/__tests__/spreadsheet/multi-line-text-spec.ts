@@ -115,7 +115,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      // s2.destroy();
+      s2.destroy();
     });
 
     test('should default render one line text', () => {

@@ -71,7 +71,7 @@ redirect_from:
 ## 📦 安装
 
 ```bash
-pnpm install @antv/s2 --save
+pnpm add @antv/s2 --save
 # npm install @antv/s2 --save
 # yarn add @antv/s2 --save
 ```
