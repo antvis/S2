@@ -22,7 +22,7 @@ const s2Options = {
       expandDepth: 0,
       // 折叠所有
       collapseAll: true
-    },
+    }
   },
 }
 ```
@@ -31,7 +31,7 @@ const s2Options = {
 
 ## 折叠指定节点
 
-配置 `collapseFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&] 浙江省` 和 `city`
+配置 `collapseFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&]浙江省` 和 `city`
 
 ```ts
 const s2Options = {
@@ -45,13 +45,15 @@ const s2Options = {
 
 ### 根据节点对应维值 id
 
-指定 `id` 可以折叠指定节点，如配置为 `root[&] 浙江省`, 那么 `浙江省` 下所有节点都会被折叠
+指定 `id` 可以折叠指定节点，如配置为 `root[&]浙江省`, 那么 `浙江省` 下所有节点都会被折叠
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { 'root[&] 浙江省': true },
+      collapseFields: { 
+        'root[& 浙江省': true
+      },
     },
   },
 }
@@ -73,10 +75,14 @@ const s2DataConfig = {
     rows: ['province', 'city']
   }
 }
+
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { province: false, city: true }
+      collapseFields: { 
+        province: false,
+        city: true
+      }
     },
   },
 }

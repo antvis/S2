@@ -11,9 +11,7 @@ order: 10
 
 得益于 `AntV/G` 5.0 渲染引擎的升级，`S2 2.0` 现在只需要简单的配置即可支持多行文本的渲染，支持自动换行。
 
-TODO: DEMO
-
-<Playground path="basic/pivot/demo/grid.ts" rid='multi-line-text' height="200"></playground>
+<Playground path="layout/custom/demo/multi-line-text.ts" rid='multi-line-text' height="200"></playground>
 
 ## 使用
 
@@ -21,7 +19,7 @@ S2 内部适配了 `AntV/G 5.0` 的 [多行布局能力](https://g.antv.antgroup
 
 :::info{title="提示"}
 
-具体参数请跳转 `G` [官网查看](https://g.antv.antgroup.com/api/basic/text#%E5%A4%9A%E8%A1%8C%E5%B8%83%E5%B1%80).
+具体参数请跳转 `AntV/G` [官网查看](https://g.antv.antgroup.com/api/basic/text#%E5%A4%9A%E8%A1%8C%E5%B8%83%E5%B1%80).
 
 - `maxLines`: 最大行数，文本超出后将被截断。
 - `wordWrap`: 是否开启自动折行，默认值为 false,
@@ -34,11 +32,18 @@ S2 内部适配了 `AntV/G 5.0` 的 [多行布局能力](https://g.antv.antgroup
 
 在 S2 中，通过 [配置主题](/manual/basic/theme) 即可实现多行文本，当文本自动换行后，如小于单元格高度，则会自动调整。
 
+:::warning{title="注意"}
+数值单元格 (dataCell) 不建议换行，容易产生歧义。
+:::
+
 ```ts
 const cellTheme = {
   text: {
+    // 最大行数，文本超出后将被截断
     maxLines: 2,
+    // 文本是否换行
     wordWrap: true,
+    // 可选项见：https://g.antv.antgroup.com/api/basic/text#textoverflow
     textOverflow: 'ellipsis',
   },
   bolderText: {
@@ -54,7 +59,11 @@ s2.setTheme({
   colCell: cellTheme,
   cornerCell: cellTheme,
   rowCell: cellTheme,
-  dataCell: cellTheme,
+  // dataCell: cellTheme,
 });
 
 ```
+
+## 效果
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="预览"/>

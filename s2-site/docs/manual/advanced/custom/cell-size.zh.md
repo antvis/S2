@@ -30,7 +30,11 @@ const s2Options = {
 
 ## 调整数值单元格宽高
 
-> 优先级小于 `rowCell.height` 和 `colCell.width`
+:::warning{title="注意"}
+
+优先级小于 `rowCell.height` 和 `colCell.width`
+
+:::
 
 ```ts
 const s2Options = {
@@ -39,7 +43,7 @@ const s2Options = {
       width: 100,
       height: 90
     },
-  },
+  }
 }
 ```
 
@@ -89,7 +93,7 @@ const s2Options = {
 
 如果想给特定某一行/列设置不同的宽高，可以通过 `rowCell` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&] 浙江省 [&] 杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 <br/>
@@ -102,8 +106,8 @@ const s2Options = {
         city: 100
       },
       heightByField: {
-        'root[&] 浙江省 [&] 杭州市': 60,
-        'root[&] 浙江省 [&] 宁波市': 100,
+        'root[&]浙江省[&]杭州市': 60,
+        'root[&]浙江省[&]宁波市': 100,
       },
     },
   },
@@ -193,7 +197,7 @@ const s2Options = {
 
 如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&] 家具 [&] 沙发 [&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&]家具[&]沙发[&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 ```ts
@@ -205,7 +209,7 @@ const s2Options = {
        widthByField: {
         // 默认 [数值挂列头], EXTRA_FIELD 为内部虚拟数值列
         [EXTRA_FIELD]: 60,
-        'root[&] 家具 [&] 沙发 [&]number': 120,
+        'root[&]家具[&]沙发[&]number': 120,
       },
       heightByField: {
         [EXTRA_FIELD]: 80,

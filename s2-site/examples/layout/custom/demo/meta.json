@@ -67,6 +67,14 @@
         "en": "Only Show Row Header"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pezZTI9lp50AAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "multi-line-text.ts",
+      "title": {
+        "zh": "多行文本 / 文本自动换行",
+        "en": "Multi Line Text"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }
