@@ -498,4 +498,13 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
+
+  /**
+   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
+   * @param viewport
+   * @returns viewport
+   */
+  protected handleViewport(viewport: AreaRange): AreaRange {
+    return viewport;
+  }
 }

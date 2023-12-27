@@ -17,7 +17,7 @@ export const addTotals = (params: TotalParams) => {
     if (totalsConfig?.showGrandTotals) {
       action = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
       totalValue = new TotalClass({
-        label: totalsConfig.grandTotalsLabel,
+        label: totalsConfig.grandTotalsLabel!,
         isSubTotals: false,
         isGrandTotals: true,
         isTotalRoot: true,
@@ -36,7 +36,7 @@ export const addTotals = (params: TotalParams) => {
   ) {
     action = totalsConfig.reverseSubTotalsLayout ? 'unshift' : 'push';
     totalValue = new TotalClass({
-      label: totalsConfig.subTotalsLabel,
+      label: totalsConfig.subTotalsLabel!,
       isSubTotals: true,
       isGrandTotals: false,
       isTotalRoot: true,

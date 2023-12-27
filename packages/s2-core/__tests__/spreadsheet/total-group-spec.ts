@@ -61,7 +61,7 @@ describe('Total Group Dimension Test', () => {
         ...s2Options.totals,
         row: {
           ...s2Options.totals.row,
-          totalsGroupDimensions: ['city'],
+          grandTotalsGroupDimensions: ['city'],
         },
       },
     };
@@ -127,7 +127,7 @@ describe('Total Group Dimension Test', () => {
         row: {
           ...s2Options.totals.row,
           // 总计分组下，city 城市维度会出现分组
-          totalsGroupDimensions: ['city'],
+          grandTotalsGroupDimensions: ['city'],
           subTotalsGroupDimensions: ['type'],
         },
       },
@@ -174,7 +174,7 @@ describe('Total Group Dimension Test', () => {
         ...s2Options.totals,
         col: {
           ...s2Options.totals.col,
-          totalsGroupDimensions: ['type'],
+          grandTotalsGroupDimensions: ['type'],
         },
       },
     };
@@ -216,7 +216,7 @@ describe('Total Group Dimension Test', () => {
         ...s2Options.totals,
         col: {
           ...s2Options.totals.col,
-          totalsGroupDimensions: ['sub_type'],
+          grandTotalsGroupDimensions: ['sub_type'],
         },
       },
     };
@@ -272,7 +272,7 @@ describe('Total Group Dimension Test', () => {
         ...s2Options.totals,
         col: {
           ...s2Options.totals.col,
-          totalsGroupDimensions: [],
+          grandTotalsGroupDimensions: [],
           subTotalsDimensions: ['city'],
           subTotalsGroupDimensions: ['sub_type'],
         },

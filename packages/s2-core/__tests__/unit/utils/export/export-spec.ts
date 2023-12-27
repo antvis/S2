@@ -255,7 +255,7 @@ describe('PivotSheet Export Test', () => {
             subTotalsDimensions: ['province'],
           },
           col: {
-            totalsGroupDimensions: ['city', 'type'],
+            grandTotalsGroupDimensions: ['city', 'type'],
             subTotalsGroupDimensions: ['sub_type'],
             showGrandTotals: true,
             showSubTotals: true,
@@ -291,7 +291,7 @@ describe('PivotSheet Export Test', () => {
             subTotalsDimensions: ['province'],
           },
           col: {
-            totalsGroupDimensions: ['city', 'sub_type', 'province'],
+            grandTotalsGroupDimensions: ['city', 'sub_type', 'province'],
             subTotalsGroupDimensions: ['sub_type'],
             showGrandTotals: true,
             showSubTotals: true,

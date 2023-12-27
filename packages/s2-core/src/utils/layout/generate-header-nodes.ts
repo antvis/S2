@@ -50,18 +50,20 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         // root[&]四川[&]总计 => {province: '四川'}
         nodeQuery = { ...query, [currentField]: value };
       }
+
       if (addMeasureInTotalQuery) {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
-        nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values[0];
+        nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values![0];
       }
+
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
       nodeQuery = { ...query, [EXTRA_FIELD]: value };
       adjustedField = EXTRA_FIELD;
-      isGrandTotals = parentNode.isGrandTotals;
-      isSubTotals = parentNode.isSubTotals;
+      isGrandTotals = parentNode.isGrandTotals!;
+      isSubTotals = parentNode.isSubTotals!;
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;

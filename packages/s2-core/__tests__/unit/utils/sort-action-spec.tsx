@@ -790,7 +790,7 @@ describe('total group dimension sort test', () => {
     const currentOptions = {
       totals: {
         col: {
-          totalsGroupDimensions: ['city'],
+          grandTotalsGroupDimensions: ['city'],
           showGrandTotals: true,
         },
       },

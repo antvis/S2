@@ -8,7 +8,6 @@ import { TableColCell } from './table-col-cell';
 import { TableCornerCell } from './table-corner-cell';
 import { TableDataCell } from './table-data-cell';
 import { TableSeriesNumberCell } from './table-series-number-cell';
-import { BaseRowCell } from './base-row-cell';
 import { RowCell } from './row-cell';
 import { SeriesNumberCell } from './series-number-cell';
 
@@ -17,9 +16,7 @@ export {
   TableColCell,
   TableSeriesNumberCell,
   TableDataCell,
-
   RowCell,
-  BaseRowCell,
   ColCell,
   DataCell,
   MergedCell,

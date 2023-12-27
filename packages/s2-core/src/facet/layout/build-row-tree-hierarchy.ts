@@ -1,9 +1,5 @@
 import { isNumber } from 'lodash';
 import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
-import type { PivotDataSet } from '../../data-set';
-import type { SpreadSheet } from '../../sheet-type';
-import { filterTotal, getListBySorted } from '../../utils/data-set-operate';
-import { i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
 import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
@@ -28,12 +24,15 @@ const addTotals = (
     const func = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
 
     fieldValues[func](
-      new TotalClass(totalsConfig.grandTotalsLabel!, false, true),
+      new TotalClass({
+        label: totalsConfig.grandTotalsLabel!,
+        isGrandTotals: true,
+        isSubTotals: false,
+        isTotalRoot: false,
+      }),
     );
   }
 };
-
-const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
 
 /**
  * Only row header has tree hierarchy, in this scene:
@@ -44,9 +43,8 @@ const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { spreadsheet, parentNode, currentField, level, hierarchy, pivotMeta } =
     params;
-  
   const { query, id: parentId } = parentNode;
-  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
+  const isDrillDownItem = spreadsheet.dataCfg?.fields?.rows?.length! <= level;
 
   const dimValues = filterOutDetail(Array.from(pivotMeta.keys()));
 
@@ -95,6 +93,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     const nodeId = generateId(parentId, value);
 
+    const { collapseFields, collapseAll, expandDepth } =
+      spreadsheet.options.style?.rowCell!;
     /*
      * 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
      * 优先从读取 collapseFields 中的特定 node 的值

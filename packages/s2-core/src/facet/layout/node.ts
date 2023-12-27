@@ -131,6 +131,8 @@ export class Node {
 
   public isSubTotals?: boolean;
 
+  public isTotalRoot?: boolean;
+
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
 
   public extra?: {

@@ -22,7 +22,8 @@ export class TotalClass {
   public isTotalRoot: boolean;
 
   public constructor(params: TotalClassConfig) {
-    const { label, isSubTotals, isGrandTotals, isTotalRoot } = params;
+    const { label, isSubTotals, isGrandTotals, isTotalRoot = false } = params;
+
     this.label = label;
     this.isSubTotals = isSubTotals;
     this.isGrandTotals = isGrandTotals;

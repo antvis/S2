@@ -180,6 +180,15 @@ export interface Total {
   subTotalsDimensions?: string[];
 
   /**
+   * 总计分组
+   */
+  grandTotalsGroupDimensions?: string[];
+  /**
+   * 小计分组
+   */
+  subTotalsGroupDimensions?: string[];
+
+  /**
    * 总计布局位置，默认是下或右
    */
   reverseGrandTotalsLayout?: boolean;

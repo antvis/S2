@@ -573,11 +573,13 @@ function MainLayout() {
                                     checkedChildren="冻结首行开"
                                     unCheckedChildren="冻结首行关"
                                     defaultChecked={
-                                      mergedOptions.frozenFirstRow
+                                      mergedOptions.frozen?.firstRow
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
-                                        frozenFirstRow: checked,
+                                        frozen: {
+                                          firstRow: checked,
+                                        },
                                       });
                                     }}
                                     disabled={
@@ -586,7 +588,7 @@ function MainLayout() {
                                         (!mergedOptions?.totals?.row
                                           ?.showGrandTotals ||
                                           !mergedOptions?.totals?.row
-                                            ?.reverseLayout))
+                                            ?.reverseGrandTotalsLayout))
                                     }
                                   />
                                 </Tooltip>

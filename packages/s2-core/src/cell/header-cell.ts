@@ -138,9 +138,8 @@ export abstract class HeaderCell<
     );
   }
 
-
   protected getFormattedFieldValue(): FormatResult {
-    const { label, isTotalRoot, isGrandTotals, value } = this.meta;
+    const { isTotalRoot, isGrandTotals, value } = this.meta;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
@@ -153,6 +152,7 @@ export abstract class HeaderCell<
      * 自定义树模式下，没有总计小计概念，isTotals 均为 false, 所以不受影响
      */
     let shouldFormat = true;
+
     if (this.spreadsheet.isTableMode()) {
       shouldFormat = false;
     } else if (this.spreadsheet.isHierarchyTreeType()) {
@@ -163,8 +163,8 @@ export abstract class HeaderCell<
 
     const formattedValue =
       shouldFormat && formatter
-        ? formatter(label, undefined, this.meta)
-        : label;
+        ? formatter(value, undefined, this.meta)
+        : value;
 
     return {
       formattedValue,
@@ -412,7 +412,6 @@ export abstract class HeaderCell<
     );
   }
 
-
   public toggleActionIcon(id: string) {
     if (this.getMeta().id === id) {
       const visibleActionIcons: GuiIcon[] = [];
@@ -492,6 +491,7 @@ export abstract class HeaderCell<
   public getTreeIcon() {
     return this.treeIcon;
   }
+
   public getActionIcons() {
     return this.actionIcons || [];
   }

@@ -1,22 +1,28 @@
 import {
-  BaseCell, GEvent, S2Event, S2_PREFIX_CLS, SpreadSheet, type DataItem,
-  type S2CellType, type ViewMeta
+  GEvent,
+  S2Event,
+  S2_PREFIX_CLS,
+  SpreadSheet,
+  type DataItem,
+  type S2CellType,
+  type ViewMeta,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, merge, pick } from 'lodash';
 import React, {
-  memo, useCallback,
+  memo,
+  useCallback,
   useEffect,
-  useMemo, useRef,
-  useState
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
 import { useS2Event } from '../../../../../hooks';
 import {
   invokeComponent,
-  type InvokeComponentProps
+  type InvokeComponentProps,
 } from '../../../../../utils/invokeComponent';
-import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import './index.less';
 
 export interface CustomProps {

@@ -60,7 +60,7 @@ export interface TreeHeaderParams {
   spreadsheet: SpreadSheet;
   parentNode: Node;
   hierarchy: Hierarchy;
-  currentField: string | undefined;
+  currentField: string;
   level: number;
   pivotMeta: PivotMeta;
 }

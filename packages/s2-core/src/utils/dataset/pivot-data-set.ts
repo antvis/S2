@@ -376,7 +376,7 @@ export function transformIndexesData(params: Param): TransformResult {
         });
 
         paths.push(path);
-        set(indexesData, path as (string|number)[], item);
+        set(indexesData, path as (string | number)[], item);
       }
     }
   });
@@ -627,7 +627,6 @@ export function flattenIndexesData(
     return compact(dimensionData.slice(startIdx));
   }) as unknown as FlattingIndexesData;
 }
-
 
 /**
  * Get dimensions without path pre

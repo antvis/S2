@@ -5,13 +5,17 @@ import type { FrozenCellIndex } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
-  CustomHeaderFields, Fields, Pagination, S2Options, S2TableSheetFrozenOptions, S2TableSheetOptions,
+  CustomHeaderFields,
+  Fields,
+  Pagination,
+  S2Options,
+  S2TableSheetFrozenOptions,
+  S2TableSheetOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
-
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) =>
   frozenCount > 0 && colIndex < frozenCount;
@@ -492,28 +496,30 @@ export const areAllFieldsEmpty = (fields: Fields) => {
  * @returns
  */
 export const getFrozenRowCfgPivot = (
-  options: 
-    S2Options,
-
+  options: S2Options,
   rowNodes: Node[],
 ): S2TableSheetOptions & {
   frozenRowHeight: number;
   enableFrozenFirstRow: boolean;
 } => {
-  const { pagination, frozenFirstRow, hierarchyType, showSeriesNumber } =
-    options;
+  const { pagination, frozen, hierarchyType, showSeriesNumber } = options;
+
   const enablePagination = pagination && pagination.pageSize;
   let enableFrozenFirstRow = false;
   const headNode = rowNodes?.[0];
-  if (!enablePagination && frozenFirstRow) {
+
+  if (!enablePagination && frozen?.firstRow) {
     // first node no children: entire row
     enableFrozenFirstRow = headNode?.children?.length === 0;
-    const treeMode = hierarchyType === 'tree' || hierarchyType === 'customTree';
+    const treeMode = hierarchyType === 'tree';
+
     if (treeMode && !enableFrozenFirstRow) {
       enableFrozenFirstRow = !showSeriesNumber;
     }
   }
+
   const effectiveFrozenFirstRow = enableFrozenFirstRow && !!headNode;
+
   return {
     frozenRowCount: effectiveFrozenFirstRow ? 1 : 0,
     frozenColCount: 0,

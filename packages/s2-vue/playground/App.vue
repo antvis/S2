@@ -540,8 +540,6 @@ const partDrillDown: PartDrillDown = {
   fetchData: (meta, drillFields) =>
     new Promise<PartDrillDownInfo>((resolve) => {
       // 弹窗 -> 选择 -> 请求数据
-      const preDrillDownfield =
-        meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowDatas = dataSet

@@ -8,30 +8,30 @@ export const s2Options: S2Options = {
     row: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      calcTotals: {
+      calcGrandTotals: {
         aggregation: Aggregation.SUM,
       },
       calcSubTotals: {
         aggregation: Aggregation.SUM,
       },
-      totalsGroupDimensions: ['type'],
+      grandTotalsGroupDimensions: ['type'],
       subTotalsGroupDimensions: ['type'],
     },
     col: {
       showGrandTotals: true,
       showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      calcTotals: {
+      reverseGrandTotalsLayout: true,
+      reverseSubTotalsLayout: true,
+      calcGrandTotals: {
         aggregation: Aggregation.SUM,
       },
       calcSubTotals: {
         aggregation: Aggregation.SUM,
       },
-      totalsGroupDimensions: ['sub_type'],
+      grandTotalsGroupDimensions: ['sub_type'],
     },
   },
 };

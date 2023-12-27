@@ -634,9 +634,9 @@ export abstract class SpreadSheet extends EE {
         : false;
 
     return {
-      label: i18n('总计'),
-      subLabel: i18n('小计'),
-      totalsGroupDimensions: [],
+      grandTotalsLabel: i18n('总计'),
+      subTotalsLabel: i18n('小计'),
+      grandTotalsGroupDimensions: [],
       subTotalsGroupDimensions: [],
       ...totalConfig,
       showSubTotals,

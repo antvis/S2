@@ -246,7 +246,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: isTable ? 'middle' : 'top',
+        textBaseline: 'middle',
         textAlign: 'center',
         ...getHeaderCellTextOverflow(),
         // 序号不换行

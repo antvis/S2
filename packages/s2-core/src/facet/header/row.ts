@@ -27,10 +27,15 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     );
   }
 
-    // row'cell only show when visible
+  // row'cell only show when visible
   protected rowCellInRect(item: Node): boolean {
-    const { width, viewportHeight, seriesNumberWidth, scrollY = 0, scrollX = 0 } =
-      this.getHeaderConfig();
+    const {
+      width,
+      viewportHeight,
+      seriesNumberWidth,
+      scrollY = 0,
+      scrollX = 0,
+    } = this.getHeaderConfig();
 
     return (
       viewportHeight + scrollY > item.y && // bottom
