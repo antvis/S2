@@ -9,7 +9,7 @@ import {
 
 /**
  * 自定义 DataCell，给特定单元格设置背景色, 文字大小, 颜色
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
   getBackgroundColor() {
@@ -69,7 +69,7 @@ class CustomDataCell extends DataCell {
 
 /**
  * 自定义 ColCell, 给特定单元格设置文字大小, 颜色
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts
  */
 class CustomColCell extends ColCell {
   getTextStyle() {

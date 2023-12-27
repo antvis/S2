@@ -2,7 +2,7 @@ import { PivotSheet, MergedCell, S2Options, S2DataConfig } from '@antv/s2';
 
 /**
  * 自定义 MergedCell，改变背景色
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/merged-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/merged-cell.ts
  */
 class CustomMergedCell extends MergedCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法

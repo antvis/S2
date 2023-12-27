@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 /**
  * 自定义整个角头, 添加文字和背景色
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/header/corner.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/header/corner.ts
  */
 class CustomCornerHeader extends Group {
   node;

@@ -5,15 +5,20 @@ order: 6
 
 ## 简介
 
-S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2theme)
+S2 中内置了 **4** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2theme)
+
+- [默认](/examples/theme/default/#default)
+- [多彩蓝](/examples/theme/default/#colorful)
+- [简约灰](/examples/theme/default/#gray)
+- [暗黑](/examples/theme/default/#dark)
 
 ### 色彩
 
-在 S2 的色彩使用中，我们会首先选定一个主题色，并使用主题色生成一套 `标准色板`：
+在 S2 的色彩使用中，我们会首先选定一个**主题色**，并使用主题色生成一套 `标准色板`：
 
-- 标准色板共 11 个色彩位，主题色位于索引 6 上
-- 使用主题色加不同程度的 `白` 生成 5 个较淡的颜色，置于索引 0~5 上
-- 使用主题色加不同程度的 `黑` 生成 5 个较深的颜色，置于索引 6~11 上
+- 标准色板共 `11` 个色彩位，主题色位于索引 `6` 上
+- 使用主题色加不同程度的 `白` 生成 `5` 个**较淡的颜色**，置于索引 `0~5` 上
+- 使用主题色加不同程度的 `黑` 生成 `5` 个**较深的颜色**，置于索引 `6~11` 上
 
 以下是使用 **#0A78F4**、**#FF5500** 不同主题色，生成标准色板的例子：
 
@@ -34,28 +39,38 @@ S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主�
 
 主题 schema 的定义为 [S2Theme](/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细、文字大小、文字对齐方式等。整个 schema 中，所有的颜色会从 [Palette](/docs/api/general/S2Theme#palette) 中取用：
 
-- basicColors：基础颜色，如角/列/行头背景，字体/icon 颜色
-- semanticColors：语义颜色，如红色、绿色指代的色值
-- others：补充颜色，一些固定特殊色，如搜索结果
+- `basicColors`：基础颜色，如角/列/行头背景，字体/icon 颜色。
+- `semanticColors`：语义颜色，如红色、绿色、黄色指代的色值。
+- `others`：补充颜色，一些固定特殊色，如搜索结果。
 
 ```ts
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
+s2.setThemeCfg({
+  theme: {
+    background: {
+      color: '#353c59',
+    }
+  }
+});
+
+//  等价于
 s2.setTheme({
   background: {
     color: '#353c59',
   },
 });
+
 await s2.render(false);
 ```
 
 ## 自定义主题
 
-s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/docs/api/general/S2Theme#themecfg) 的参数，你可以：
+s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/api/general/S2Theme) 的参数，你可以：
 
-- 通过 ThemeCfg.name 使用预置主题
-- 通过 ThemeCfg.palette 自定义色板生成主题
-- 通过 ThemeCfg.theme (`s2.setTheme(...)`) 自定义 schema 生成主题（可与上两个属性同时使用，即覆盖由它们生成的主题）
+- 通过 [ThemeCfg.name](/api/general/s2-theme) 使用预置主题
+- 通过 [ThemeCfg.palette](/api/general/s2-theme#palette) 自定义色板生成主题
+- 通过 [ThemeCfg.theme](/api/general/s2-theme#s2theme) 自定义 schema 生成主题（可与上两个属性同时使用，即覆盖由它们生成的主题）
 
 ### 选择预置主题
 
@@ -64,12 +79,12 @@ s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法�
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-// name 可为 default, colorful, gray
+// name 可为 default, colorful, gray, dark
 s2.setThemeCfg({ name: 'colorful' });
 await s2.render(false);
 ```
 
-S2 内置 3 套主题效果：
+S2 内置 `4` 套主题效果：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -79,26 +94,34 @@ S2 内置 3 套主题效果：
   <tbody>
     <tr>
       <td style="text-align: center;">
-      默认
+        默认 (default)
       </td>
       <td>
-        <img height="300" alt="default" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png">
+        <img height="300" alt="default" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png" />
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
-      多彩蓝
+        多彩蓝 (colorful)
       </td>
       <td>
-        <img height="300" alt="colorful" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/rgLkfo4MrT/95b7fbc3-8c6e-442c-9c4b-8bf8b3c3da1d.png">
+        <img height="300" alt="colorful" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/rgLkfo4MrT/95b7fbc3-8c6e-442c-9c4b-8bf8b3c3da1d.png" />
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
-      简约灰
+        简约灰 (gray)
       </td>
       <td>
-        <img height="300" alt="gray" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/4rwGg8Rp3N/cf08d7dd-ab96-446e-ba8d-146de8cb6a64.png">
+        <img height="300" alt="gray" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/4rwGg8Rp3N/cf08d7dd-ab96-446e-ba8d-146de8cb6a64.png" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        暗黑 (dark)
+      </td>
+      <td>
+        <img height="300" alt="dark" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*eRu9R7b1pGwAAAAAAAAAAAAADmJ7AQ/original" />
       </td>
     </tr>
   </tbody>
@@ -110,7 +133,7 @@ S2 内置 3 套主题效果：
 
 如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 schema 配置](/docs/api/general/S2Theme#s2theme)：
+此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 Schema 配置](/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -128,9 +151,27 @@ await s2.render(false);
 
 <Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
 
+<br/>
+
+#### 自定义单元格文本换行和省略
+
+[查看详情](/layout/custom/#multi-line-text) 和 [完整 API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    text: {
+      wordWrap: true,
+      maxLines: 2,
+      textOverflow: 'ellipsis',
+    },
+  },
+});
+```
+
 #### 自定义单元格对齐方式
 
-[查看详情](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) 和 [完整 API](/api/general/s2theme#s2theme)
+[查看详情](/manual/advanced/custom/cell-align) 和 [完整 API](/api/general/s2theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -179,7 +220,7 @@ s2.setTheme({
 
 #### 自选色板颜色
 
-你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
+你可以参考 [内置色板](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
 
 另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
 
@@ -215,6 +256,8 @@ await s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
+
+<br/>
 
 #### 按主题色自动生成
 

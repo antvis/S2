@@ -4,23 +4,25 @@ order: 9
 ---
 
 :::warning{title='提示'}
-阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot) 等章节
+阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot) 等章节。
 :::
 
 在实际的业务场景中，我们往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
 
-- 点击某一个行头/列头单元格，获取**当前行/列**所有数据
-- 监听鼠标 `click` `hover` 事件 获取当前对应单元格数据
-- 点击数据单元格，获取当前单元格数据，或者整行数据
-- 自定义 `tooltip` 内容，需要根据当前单元格信息来渲染不同的操作项，或者显示不同的提示信息
+- 点击某一个行头/列头单元格，获取**当前行/列**所有数据。
+- 监听鼠标 `click` `hover` 事件 获取当前对应单元格数据。
+- 点击数据单元格，获取当前单元格数据，或者整行数据。
+- 自定义 `tooltip` 内容，需要根据当前单元格信息来渲染不同的操作项，或者显示不同的提示信息。
 
 `S2` 的表格使用 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组**数据结构**，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/docs/api/basic-class/base-cell)
 
-`S2` 提供了一系列获取数据的 [API](/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景
+`S2` 提供了一系列获取数据的 [API](/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景：
 
-### 获取指定区域单元格
+### 获取指定区域单元格节点
 
-在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前可视范围内所有 [单元格](/docs/api/basic-class/node)。[查看更多](/docs/api/basic-class/base-facet)
+在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前所有（**含不在可视范围的**）[单元格节点](/docs/api/basic-class/node)。
+
+一个节点 (Node) 对应一个 单元格 (Cell), 当节点在可视范围内时，会被实例化为单元格 (Cell), 可通过 `node.belongsCell` 获取
 
 ```ts
 await s2.render()
@@ -29,33 +31,114 @@ await s2.render()
 console.log(s2.facet.getLayoutResult())
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview"/>
+或者
 
+```ts
+import { S2Event } from '@antv/s2'
+
+s2.on(S2Event.LAYOUT_AFTER_RENDER, () => {
+  console.log(s2.facet.getLayoutResult())
+})
+```
+
+<!-- <img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview"/> -->
+
+:::info{title="可以获取到如下信息"}
+
+- `cornerNodes` 角头节点
+- `seriesNumberNodes` 序号列节点
 - `colLeafNodes` 列头叶子节点
 - `colNodes` 列头节点
 - `colsHierarchy` 列头层级信息
 - `rowLeafNodes` 行头叶子节点
 - `rowNodes` 行头节点
 - `rowsHierarchy` 行头层级信息
-- `getCellMeta` [根据行列索引获取指定单元格信息](#根据行列索引获取数值单元格信息)
 
-<br/>
+:::
 
-#### 获取数值单元格
+[查看更多](/docs/api/basic-class/base-facet)
 
-对于数值单元格 (dataCell)，由于虚拟滚动的特性，需要动态获取，更多请查看 [interaction API](/docs/api/basic-class/interaction)
+:::warning{title="注意"}
+由于虚拟滚动的特性，获取到为不含可视区域外的单元格。
+:::
+
+### 获取行头单元格
+
+```ts
+s2.facet.getRowCells()
+s2.facet.getRowLeafCells()
+```
+
+### 获取列头单元格
+
+```ts
+s2.facet.getColCells()
+s2.facet.getColLeafCells()
+```
+
+### 获取角头单元格
+
+```ts
+s2.facet.getCornerCells()
+```
+
+### 获取合并单元格
+
+```ts
+s2.facet.getMergedCells()
+```
+
+### 获取序号单元格
+
+```ts
+s2.facet.getSeriesNumberCells()
+```
+
+### 获取数值单元格
+
+更多请查看 [interaction API](/docs/api/basic-class/interaction)
 
 ```ts
 // 当前可视范围内的数值单元格
 s2.facet.getDataCells()
 // 当前可视范围内未选中的数值单元格
-s2.interaction.getPanelGroupAllUnSelectedDataCells()
+s2.interaction.getUnSelectedDataCells()
 ```
 
-#### 获取角头单元格
+### 获取表头单元格 （序号，角头，行头，列头）
 
 ```ts
-s2.facet.cornerHeader.getNodes()
+s2.getHeaderCells()
+```
+
+### 获取所有单元格
+
+```ts
+s2.facet.getCells()
+```
+
+### 根据单元格 field 获取指定单元格
+
+```ts
+s2.facet.getCellsByField(field)
+```
+
+### 根据单元格 id 获取指定单元格
+
+```ts
+s2.facet.getCellById(id)
+```
+
+### 根据 Event 获取对应单元格
+
+```ts
+s2.getCell(event.target)
+```
+
+### 根据单元格获取元信息
+
+```ts
+cell.getMeta()
 ```
 
 ### 监听点击事件获取对应单元格
@@ -196,9 +279,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
 
 const data = s2.dataSet.getCellMultiData({
   query: {

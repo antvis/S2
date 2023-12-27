@@ -2,7 +2,7 @@ import { PivotSheet, ColCell, S2Options, S2DataConfig } from '@antv/s2';
 
 /**
  * 自定义 ColCell，给列头添加背景图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts
  */
 class CustomColCell extends ColCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法

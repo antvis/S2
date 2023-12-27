@@ -8,7 +8,7 @@ import {
 
 /**
  * 自定义 SeriesNumberCell，改变背景色
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/series-number-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/series-number-cell.ts
  */
 class CustomSeriesCell extends SeriesNumberCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法

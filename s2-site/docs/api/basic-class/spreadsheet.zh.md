@@ -3,7 +3,7 @@ title: SpreadSheet
 order: 1
 ---
 
-功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
+功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts)
 
 ```ts
 const s2 = new PivotSheet()
@@ -23,7 +23,7 @@ s2.isPivotMode()
 | tooltip | tooltip                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
 | container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
-| hdAdapter | 高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
+| hdAdapter | 高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |
 | emit | 事件发布                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), ...args: any[]) => void |    |
 | getDataSet | 获取数据集                                                                                                                  | (options: [S2Options](/docs/api/general/S2Options)) => [BaseDataSet](/docs/api/basic-class/base-data-set) |    |

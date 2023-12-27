@@ -3,7 +3,9 @@ title: 表格自适应
 order: 9
 ---
 
-表格默认根据配置的 `width` 和 `height` 渲染：
+<Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
+
+S2 默认根据配置的 `width` 和 `height` 进行渲染：
 
 ```ts
 const s2Options = {
@@ -13,7 +15,7 @@ const s2Options = {
 ```
 
 :::warning{title="注意"}
-表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `<canvas/>` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
+表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `<canvas/>` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是**不生效的**：
 
 ```ts
 const s2Options = {
@@ -28,7 +30,9 @@ const s2Options = {
 
 ### 窗口自适应
 
-如果想让表格撑满整个父容器，可以监听窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高：
+如果想让表格撑满整个父容器，可以监听窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高
+
+<Playground path="layout/adaptive/demo/window-adaptation.ts" rid='window-adaptation' height='300'></playground>
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -57,7 +61,9 @@ resizeObserver.observe(document.body);
 
 ### 容器自适应
 
-如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小：
+如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
+
+<Playground path="layout/adaptive/demo/container-adaptation.ts" rid='container-adaptation' height='300'></playground>
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -91,10 +97,11 @@ resizeObserver.observe(parent);
 
 如果是使用 `@antv/s2-react` 的方式，可以配置 `adaptive` 参数开启自适应。
 
+<Playground path="layout/adaptive/demo/react-adaptive.ts" rid='react-adaptive' height='300'></playground>
+
 #### Adaptive 参数类型
 
 ```ts
-// `adaptive` 的类型 `Adaptive`
 type Adaptive =
   | boolean
   | {

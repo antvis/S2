@@ -9,7 +9,7 @@ order: 10
 
 S2 基于 [`AntV/G`](https://g.antv.antgroup.com/) 渲染引擎绘制，因此可以共享其丰富的插件生态。
 
-<Playground path="/custom/custom-plugins/demo/a11y.ts" rid='a11y' height='300'></playground>
+<Playground path="custom/custom-plugins/demo/a11y.ts" rid='a11y' height='300'></playground>
 
 ## 插件系统介绍
 

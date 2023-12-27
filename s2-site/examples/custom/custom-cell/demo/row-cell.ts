@@ -2,7 +2,7 @@ import { PivotSheet, RowCell, S2DataConfig, S2Options } from '@antv/s2';
 
 /**
  * 自定义 RowCell，给行头添加背景图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomRowCell extends RowCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法

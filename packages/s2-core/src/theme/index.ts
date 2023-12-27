@@ -361,7 +361,6 @@ export const getTheme = (
         textAlign: 'right',
         textBaseline: 'middle',
         ...getHeaderCellTextOverflow(),
-        // maxLines: 1,
       },
       bolderText: {
         fontFamily: FONT_FAMILY,

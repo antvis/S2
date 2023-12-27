@@ -96,7 +96,7 @@ const renderByZoomScale = debounce((e) => {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Q1782WWQ3/Kapture%2525202021-10-19%252520at%25252014.36.05.gif)
 
-[完整代码](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts)
+[完整代码](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts)
 
 ## 自定义设备像素比
 

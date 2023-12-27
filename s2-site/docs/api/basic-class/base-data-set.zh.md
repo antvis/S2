@@ -3,7 +3,7 @@ title: BaseDataSet
 order: 5
 ---
 
-功能描述：表格数据集。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/data-set/pivot-data-set.ts)
+功能描述：表格数据集。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/data-set/pivot-data-set.ts)
 
 ```ts
 s2.dataSet.getFieldName('type')

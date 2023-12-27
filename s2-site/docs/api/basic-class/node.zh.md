@@ -3,7 +3,7 @@ title: Node
 order: 5
 ---
 
-功能描述：布局节点。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/layout/node.ts)
+功能描述：布局节点。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/layout/node.ts)
 
 ```ts
 node.isTotals // false
