@@ -1,32 +1,31 @@
 ---
-title: 复制和导出
+title: Export
 order: 11
 ---
 
-## 简介
+## Introduction
 
-复制与导出的内容都可以直接放入 Excel 中进行展示，S2 已经完成了格式上的兼容。
+The copied and exported content can be directly displayed in Excel, and S2 has completed the format compatibility.
 
-### 复制
+### copy
 
-此功能可快速将表格内容复制到剪切板
-`@antv/s2` 核心层提供了基础的复制功能，可配置 `enableCopy` 开启
+This function can quickly copy the content of the table to the clipboard `@antv/s2` core layer provides a basic copy function, which can be enabled by configuring `enableCopy`
 
-#### 全量复制
+#### full copy
 
-S2 的导出组件，分别提供了原始数据的复制和格式化后数据的复制。
+The export component of S2 provides copying of original data and copying of formatted data respectively.
 
-- 原始数据全量复制
+* Full copy of original data
 
 <img alt="originFullCopy" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*pfSsTrvuJ0UAAAAAAAAAAAAAARQnAQ" width="600">
 
-- 格式化数据全量复制
+* Full copy of formatted data
 
 <img alt="formatFullCopy" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*mLSdTrAWZrwAAAAAAAAAAAAAARQnAQ" width="600">
 
-#### 局部复制
+#### local copy
 
-使用快捷键 `Command/Ctrl + C` 即可复制选中区域（局部复制）
+Use the shortcut key `command/ctrl + c` to copy the selected area (partial copy)
 
 ```ts
 const s2Options = {
@@ -43,24 +42,23 @@ const s2Options = {
 };
 ```
 
-- 复制到 Excel
+* copy to excel
 
 <img alt="excelCopy" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*LzTYTpFosccAAAAAAAAAAAAAARQnAQ" width="600">
 
-- 复制带 HTML 格式
+* Copy with HTML format
 
 <img alt="HTMLCopy" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DuHCSbpv_XkAAAAAAAAAAAAAARQnAQ" width="600">
 
-- 复制行头内容
+* Copy header content
 
 <img alt="CopyCol" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_NukQpysLC8AAAAAAAAAAAAAARQnAQ" width="600">
 
-- 复制列头内容
+* Copy column header content
 
 <img alt="CopyRow" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ncuAQaL4AvAAAAAAAAAAAAAAARQnAQ" width="600">
 
-- 带表头复制
-**copyWithHeader**: 复制数据是否带表头信息，默认为 `false`
+* CopyWithHeader **copyWithHeader** : whether to copy data with header information, the default is `false`
 
 ```ts
 const s2Options = {
@@ -73,11 +71,11 @@ const s2Options = {
 
 <img alt="copyWithHeader" src="https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png" width="600">
 
-### 导出
+### export
 
-`@antv/s2-react` 组件层提供了导出功能
+`@antv/s2-react` component layer provides export function
 
-```tsx
+```ts
 import { SheetComponent } from '@antv/s2-react'
 
 <SheetComponent
@@ -91,11 +89,8 @@ import { SheetComponent } from '@antv/s2-react'
 />
 ```
 
-点击复制或下载按钮，导出全量数据（全量复制）
+Click the copy or download button to export the full amount of data (full amount copy)
 
-<video width="600" controls>
-  <source src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/file/A*EZfPRJqzl4cAAAAAAAAAAAAAARQnAQ" type="video/mp4">
-  Your browser does not support HTML video.
-</video>
+<video width="600" controls><source src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/file/A*EZfPRJqzl4cAAAAAAAAAAAAAARQnAQ" type="video/mp4">Your browser does not support HTML video.</video>
 
-<embed src="@/docs/common/export.zh.md"></embed>
+<embed src="@/docs/common/copy-export.en.md"></embed>

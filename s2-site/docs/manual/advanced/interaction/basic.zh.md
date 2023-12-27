@@ -423,6 +423,10 @@ const s2Options = {
 
 查看 [详情](/docs/manual/advanced/interaction/scroll)
 
+### 复制
+
+查看 [详情](/docs/manual/advanced/interaction/copy)
+
 ### 重置交互
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pTs1QZPz4/Kapture%2525202022-04-19%252520at%25252019.24.56.gif" alt="preview" width="600" />

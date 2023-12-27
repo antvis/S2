@@ -3,7 +3,9 @@ title: 维度下钻
 order: 13
 ---
 
-S2 提供的「维度下钻」的能力，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰。
+<Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
+
+S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` 基于 `@antv/s2-core` 封装了 `维度下钻` 的组件，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/J7bnG8lcf/xiazuan.gif" height="400" alt="preview" />
 
@@ -11,12 +13,12 @@ S2 提供的「维度下钻」的能力，可以为你挖掘不同维度下更�
 
 ### 基本概念
 
-- 主要适用于存在分层关系的数据源， 对于某一个数据信息，向下钻取不同层级的数据表现。🌰 列如：查看不同区域的销售数据，您查看华中区销售额时，可以下钻查看湖北省的销售额。
+- 主要适用于存在分层关系的数据源，对于某一个数据信息，向下钻取不同层级的数据表现。🌰 例如：查看不同区域的销售数据，您查看华中区销售额时，可以下钻查看湖北省的销售额。
 - 下钻是由汇总数据深入到细节，层层深入以便更详细的查看数据的方式，让数据更加清晰明了，帮助充分挖掘数据背后的价值。
 
 ### 功能描述
 
-配置维度下钻，当前仅支持透视模式的树形结构下，行头维度下钻
+配置维度下钻，当前仅支持透视模式的树形结构下，行头维度下钻。
 
 ### 拓展
 
@@ -41,7 +43,6 @@ const PartDrillDown = {
       },
     ],
   },
-
   // 点击下钻后的回调
   fetchData: (meta, drillFields) =>
     new Promise((resolve) => {
@@ -105,12 +106,29 @@ const App = () => {
 }
 ```
 
-<Playground path='react-component/drill-down/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='for-pivot'></playground>
+
+### 单独使用下钻面板
+
+```tsx
+import { DrillDown } from '@antv/s2-react';
+
+<DrillDown
+  disabledFields={disabledFields}
+  clearButtonText={clearButtonText}
+  dataSet={dataSet}
+/>
+```
+
+<Playground path='react-component/drill-dwon/demo/basic-panel.tsx' rid='basic-panel'></playground>
 
 ## 使用场景
 
-🌰 案例：
+:::info{title="🌰 案例"}
+
 **洞察数据异常**：当销售负责人发现华中地区销售异常，远低于其他地区时。他通过下钻省份，查看华中地区所有省份的销售额。当发现湖北省销售异常时，由可以通过省份下钻到城市🏙，发现城市 B 销售额异常。通过下钻，我们快速的挖掘到了销售额异常的根源。
+
+:::
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/43CZawVX7/xiazuan-chengshi.gif" height="400" alt="preview" />
 

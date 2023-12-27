@@ -172,13 +172,14 @@ const s2DataConfig = {
 import { DataCell, drawObjectText } from '@antv/s2';
 
 class CustomDataCell extends DataCell {
-  // 当数值为对象时，完全接管绘制，使用内置的 `drawObjectText` 根据不同的数据结构 （见下方） 绘制不同的图形
   drawTextShape() {
+    // 当数值为对象时，完全接管绘制，使用内置的 `drawObjectText` 根据不同的数据结构 （见下方） 绘制不同的图形
     if (this.isMultiData()) {
       drawObjectText(this);
       return;
     }
 
+    // 如果是普通文本，则走默认的文本绘制逻辑
     super.drawTextShape();
   }
 }
@@ -202,7 +203,7 @@ S2 内置了一些基于 [`AntV/G`](https://g.antv.antgroup.com/) 简单的图�
 - `bar`: 柱状图
 - `bullet`: 子弹图
 
-```ts
+```json
 {
   number: {
     values: {
@@ -215,7 +216,7 @@ S2 内置了一些基于 [`AntV/G`](https://g.antv.antgroup.com/) 简单的图�
 
 - `多列文本`
 
-```ts
+```json
 {
   number: {
   values: [

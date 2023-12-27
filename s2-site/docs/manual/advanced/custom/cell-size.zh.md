@@ -53,7 +53,9 @@ const s2Options = {
 
 ## 调整行头单元格宽高
 
+:::warning{title="注意"}
 行头单元格高度调整**作用于叶子节点** （非叶子节点的高度是所有子节点高度度总和）, 且高度始终和 **数值单元格** 高度一致。
+:::
 
 ```ts
 const s2Options = {
@@ -85,16 +87,16 @@ const s2Options = {
 }
 ```
 
-<br/>
-
 <img src="https://gw.alipayobjects.com/zos/antfincdn/YKhvdW8Xs/eb290abb-7cf0-44a2-bb79-66334d1f5438.png" alt="preview" width="600"/>
 
-<br/>
+:::info{title="提示"}
 
 如果想给特定某一行/列设置不同的宽高，可以通过 `rowCell` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
 
 - **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
+
+:::
 
 <br/>
 
@@ -114,13 +116,13 @@ const s2Options = {
 }
 ```
 
-<br/>
-
 <img src="https://gw.alipayobjects.com/zos/antfincdn/oaGLPvya5/bf8b9dfe-1873-4567-9c4b-400632cebbe3.png" alt="preview" width="600"/>
 
-<br/>
+:::info{title="提示"}
 
-明细表有一点特殊，由于只有列头，如果想给特定行设置不同的高度，则可以根据行序号调整
+明细表有一点特殊，由于只有列头，如果想给**特定行**设置不同的高度，则可以根据行序号调整
+
+:::
 
 ```ts
 const s2Options = {
@@ -157,7 +159,9 @@ const s2Options = {
 
 ## 调整列头单元格宽高
 
+:::warning{title="注意"}
 列头单元格宽度调整**作用于叶子节点** （非叶子节点的宽度是所有子节点宽度总和）, 且**宽度**始终和 **数值单元格** 宽度一致
+:::
 
 ```ts
 const s2Options = {
@@ -195,10 +199,14 @@ const s2Options = {
 }
 ```
 
+:::info{title="提示"}
+
 如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
 - **fieldId** （例：`root[&]家具[&]沙发[&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
+
+:::
 
 ```ts
 import { EXTRA_FIELD } from '@antv/s2'
@@ -219,11 +227,7 @@ const s2Options = {
 }
 ```
 
-<br/>
-
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*lcRNQpDF2eMAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
-
-<br/>
 
 ## 隐藏列头
 
@@ -238,8 +242,6 @@ const s2Options = {
   },
 }
 ```
-
-<br/>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/VKHZ7SqIL/7371cfc3-b8e9-4f0b-a9c5-a9689aa0053a.png" alt="preview" width="600"/>
 

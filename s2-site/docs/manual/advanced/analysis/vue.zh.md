@@ -3,6 +3,8 @@ title: Vue 3.0 组件
 order: 13
 ---
 
+<Badge type="success">@antv/s2-vue</Badge>
+
 ## 基础表组件
 
 ### 透视表

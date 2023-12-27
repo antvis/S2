@@ -31,19 +31,23 @@ order: 1
 
 ## dataCell
 
-改变数据单元格的默认实现，需要继承自 [dataCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#data-cell)
+改变数据单元格的默认实现，需要继承自 [dataCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#data-cell)
 
 ## rowCell
 
-改变行头单元格的默认实现，需要继承自 [rowCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#row-cell)
+改变行头单元格的默认实现，需要继承自 [rowCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#row-cell)
 
 ## colCell
 
-改变列头单元格的默认实现，需要继承自 [colCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#col-cell)
+改变列头单元格的默认实现，需要继承自 [colCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#col-cell)
 
 ## cornerCell
 
-改变角头单元格的默认实现，需要继承自 [cornerCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#corner-cell)
+改变角头单元格的默认实现，需要继承自 [cornerCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#corner-cell)
+
+## seriesNumberCell
+
+改变序号单元格的默认实现，需要继承自 [seriesNumberCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/series-number-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#series-number-cell)
 
 ## cornerHeader
 

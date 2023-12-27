@@ -100,7 +100,7 @@ const renderByZoomScale = debounce((e) => {
 
 ## 自定义设备像素比
 
-表格默认使用设备当前像素比渲染，也就是 `window.devicePixelRatio`, 如果你觉得初始渲染就很模糊，可以手动指定表格按照 2 倍设备像素比来渲染
+表格默认使用设备当前像素比渲染，也就是 `window.devicePixelRatio`, 如果你觉得初始渲染就很模糊，可以手动指定表格按照 2 倍设备像素比来渲染，通过 `transformCanvasConfig` 透传给底层的 [G 绘制引擎](/manual/advanced/g-plugins)
 
 ```ts
 const s2Options = {

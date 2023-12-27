@@ -3,7 +3,7 @@ title: 滚动
 order: 6
 ---
 
-#### 虚拟滚动
+## 虚拟滚动
 
 S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域内的单元格，默认开启。[查看更多](https://www.yuque.com/antv/vo4vyz/srtq5q#mI1n7)
 
@@ -11,7 +11,7 @@ S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域�
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/3l%26fv9SHB/Kapture%2525202022-06-06%252520at%25252010.55.24.gif" alt="preview" width="600" />
 
-#### 自定义滚动速度
+## 自定义滚动速度
 
 可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看具体例子](/examples/interaction/advanced#scroll-speed-ratio)
 
@@ -26,11 +26,11 @@ const s2Options = {
 };
 ```
 
-#### 鼠标滚轮水平滚动
+## 鼠标滚轮水平滚动
 
 滑动滚轮垂直滚动，如果同时按住 `Shift` 即可水平滚动
 
-#### 修改滚动至边界行为
+## 修改滚动至边界行为
 
 对于自身和父容器都存在滚动条时，浏览器默认的滚动行为是：非边界不触发父容器滚动，到达边界后，触发父容器滚动，同时还可以配置 [overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) 改变默认行为。
 
@@ -40,7 +40,7 @@ S2 是虚拟滚动，但是也**模拟**了浏览器的滚动行为，可配置 
 const s2Options = {
   interaction: {
     overscrollBehavior: 'auto' // 'auto' | 'none' | 'contain';
-    overscrollBehavior: null  // 设为 null 则不做任何处理
+    // overscrollBehavior: null  // 设为 null 则不做任何处理
   },
 };
 ```
@@ -65,7 +65,7 @@ const s2Options = {
 
 <br/>
 
-#### 监听滚动事件
+## 监听滚动事件
 
 对于 `透视表`, 可滚动的区域分别是 `行头单元格` 和 `数值单元格`, 对于 `明细表`, 可滚动的区域只有 `数值单元格`, 可分别监听，也可以统一监听
 
@@ -92,9 +92,15 @@ s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
 })
 ```
 
-#### 手动触发表格滚动
+## 获取滚动状态
+
+查看相关 [API](/api/basic-class/base-facet)
+
+## 手动触发表格滚动
 
 参考以下例子：
 
 - [滚动至指定单元格](/examples/interaction/advanced/#scroll-to-cell)
 - [循环滚动](/examples/interaction/advanced#scroll-loop)
+
+<Playground path='interaction/advanced/demo/scroll-to-cell.ts' rid='scroll-to-cell' height='400'></playground>
