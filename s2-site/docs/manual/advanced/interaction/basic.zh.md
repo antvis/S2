@@ -423,7 +423,7 @@ const s2Options = {
 
 查看 [详情](/docs/manual/advanced/interaction/scroll)
 
-### 复制
+### 复制与导出
 
 查看 [详情](/docs/manual/advanced/interaction/copy)
 

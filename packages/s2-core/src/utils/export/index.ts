@@ -102,6 +102,7 @@ export const download = (str: string, fileName: string) => {
 };
 
 /**
+ * @deprecated // TODO: 移除
  * Copy data
  * @param sheetInstance
  * @param split
@@ -110,7 +111,6 @@ export const download = (str: string, fileName: string) => {
  * @param isAsyncExport 是否异步导出
  * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
  */
-// TODO: 改名
 export const copyData = (params: CopyAllDataParams) => {
   const result = processAllSelected(params);
 
@@ -126,3 +126,4 @@ export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
 export type { CopyableList, FormatOptions };
 export { assembleMatrix, getMaxRowLen, getNodeFormatData };
 export { getHeaderList };
+export { CopyMIMEType };

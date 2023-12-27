@@ -3,15 +3,25 @@ title: 复制与导出
 order: 8
 ---
 
+<Playground path="interaction/basic/demo/copy-export.ts" height="500" rid='copy-export'></playground>
+
 ## 复制
 
 ### 1. 全量复制
 
 ```ts | pure
-import { copyData, copyToClipboard } from '@antv/s2'
+import { asyncGetAllPlainData, copyToClipboard } from '@antv/s2'
 
 // 拿到复制数据
-const data = copyData(spreadsheet, '\t', false)
+const data = await asyncGetAllPlainData({
+  sheetInstance: s2,
+  split: '\t',
+  formatOptions: false,
+  // formatOptions: {
+  //   isFormatHeader: false,
+  //   isFormatData: true
+  // },
+});
 
 // 同步复制：copyToClipboard(data, false)
 copyToClipboard(data)
@@ -115,10 +125,18 @@ const s2Options = {
 默认只提供 `csv` 纯文本格式的导出，如果想导出 `xlsx`, 保留单元格样式，可以结合 [exceljs](https://github.com/exceljs/exceljs), [sheetjs]( https://github.com/SheetJS/sheetjs) 等工具自行处理。
 
 ```ts | pure
-import { copyData, download } from '@antv/s2'
+import { asyncGetAllPlainData, download } from '@antv/s2'
 
 // 拿到复制数据
-const data = copyData(spreadsheet, '\t', false)
+const data = await asyncGetAllPlainData({
+  sheetInstance: s2,
+  split: '\t',
+  formatOptions: false,
+  // formatOptions: {
+  //   isFormatHeader: false,
+  //   isFormatData: true
+  // },
+});
 
 // 导出数据 (csv)
 download(data, 'filename')
@@ -151,30 +169,38 @@ copyToClipboard(data)
 #### 3. 自定义导出类型
 
 ```ts | pure
-import { copyData, registerTransformer, CopyMIMEType } from '@antv/s2'
-
-// 自定义导出类型
-registerTransformer(CopyMIMEType.HTML, (matrix) => {
-  return `<td></td>`
-})
+import { asyncGetAllPlainData, CopyMIMEType } from '@antv/s2'
 
 // 复制到 word、语雀等场景会成为一个空表格
-const data = copyData(spreadsheet, '\t', false)
+const data = await asyncGetAllPlainData({
+  sheetInstance: s2,
+  split: '\t',
+  formatOptions: false,
+  // 自定义导出类型
+  customTransformer: () => {
+    return {
+      [CopyMIMEType.HTML]: () => {
+        return {
+          type: CopyMIMEType.HTML,
+          content: `<td></td>`
+        };
+      },
+    };
+  },
+});
 ```
 
 #### API
 
-##### copyData
+##### asyncGetAllPlainData
 
-> @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
-
-| 参数          | 说明                                    | 类型                                                                             | 默认值           | 必选 |
-| ------------|---------------------------------------|--------------------------------------------------------------------------------|---------------| --- |
-| spreadsheet | s2 实例                                 | [SpreadSheet](/docs/api/basic-class/spreadsheet)                               |               | ✓    |
-| split       | 分隔符                                   | `string`                                                                       |               | ✓    |
-| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 | <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code> | `false`       |      |
-| customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法        | (transformer: `Transformer`) => `Partial<Transformer>`               | `transformer` |      |
-| isAsyncExport  | 是否异步导出        | boolean                                                                        | false         |      |
+| 参数          | 说明      | 类型              | 默认值           | 必选 |
+| ------------|-----------------|---------------|---------------| --- |
+| sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
+| split       | 分隔符           | `string`       |     | ✓    |
+| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 | `boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean }`| `false`  |      |
+| customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => `Partial<Transformer>`      | `transformer` |      |
+| isAsyncExport  | 是否异步导出        | boolean      | false         |      |
 
 ##### copyToClipboard
 
@@ -202,7 +228,24 @@ enum CopyMIMEType {
 ##### Transformer
 
 ```ts | pure
-export interface Transformer {
+type CopyablePlain = {
+  type: CopyMIMEType.PLAIN;
+  content: string;
+};
+
+type CopyableHTML = {
+  type: CopyMIMEType.HTML;
+  content: string;
+};
+
+type MatrixPlainTransformer = (
+  data: DataItem[][],
+  separator?: string,
+) => CopyablePlain;
+
+type MatrixHTMLTransformer = (data: DataItem[][]) => CopyableHTML;
+
+interface Transformer {
   [CopyMIMEType.PLAIN]: MatrixPlainTransformer;
   [CopyMIMEType.HTML]: MatrixHTMLTransformer;
 }
@@ -210,5 +253,5 @@ export interface Transformer {
 
 | 参数 | 说明     | 类型                       | 默认值 | 必选 |
 | --- | --- |--------------------------|-----| --- |
-| type | 复制内容的 MIMEType | `CopyMIMEType`           |     | ✓    |
+| type | 复制内容的 MIMEType | [CopyMIMEType](#copymimetype)           |     | ✓    |
 | transformer | 处理函数 | `MatrixHTMLTransformer \| MatrixPlainTransformer`   |      |   ✓   |
