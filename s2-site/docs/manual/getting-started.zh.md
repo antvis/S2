@@ -7,14 +7,14 @@ order: 1
 ### 使用 npm 或 yarn 或 pnpm 安装
 
 ```bash
+# pnpm
+$ pnpm add @antv/s2 --save
+
 # npm
 $ npm install @antv/s2 --save
 
 # yarn
 $ yarn add @antv/s2 --save
-
-# pnpm
-$ pnpm add @antv/s2 --save
 ```
 
 ### 使用 React 或 Vue3 版本
@@ -290,7 +290,7 @@ createApp(App).mount('#app');
 
 `Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
 
-```ts
+```bash
 yarn add ant-design-vue
 ```
 
