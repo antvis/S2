@@ -3,7 +3,7 @@ title: 导出
 order: 5
 ---
 
-## React 导出组件
+## React 导出组件 <Badge>@antv/s2-react</Badge>
 
 ```tsx
 <SheetComponent

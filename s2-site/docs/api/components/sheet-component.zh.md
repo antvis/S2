@@ -3,11 +3,11 @@ title: 表组件
 order: 0
 ---
 
-# React 表组件
+## React 表组件 <Badge>@antv/s2-react</Badge>
 
 基于 `@antv/s2` 封装的 `React` 版开箱即用的组件 `<SheetComponent />`
 
-## SpreadsheetProps
+### SpreadsheetProps
 
 功能描述： React SheetComponent 组件的 props 参数
 
@@ -99,12 +99,16 @@ order: 0
 | onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 | onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 
-## SheetComponentOptions
+### SheetComponentOptions
 
-React 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同
+:::warning{title="注意"}
 
-- tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素
-- 分页配置从 S2 的分页配置 变为了 `antd` 的分页配置，即支持对 `antd` 分页组件 的 api 透传
+`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同
+
+- tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素。
+- 分页配置从 S2 的分页配置 **变为了 `antd` 的分页配置**，即支持对 `antd` 分页组件 的 api 透传。
+
+:::
 
 ```ts
 import type { Pagination, S2Options } from '@antv/s2';
@@ -118,11 +122,11 @@ type SheetComponentOptions = S2Options<
 
 <br/>
 
-# Vue 表组件
+## Vue 表组件 <Badge type="success">@antv/s2-vue</Badge>
 
 基于 `@antv/s2` 层封装的 `Vue 3.0` 版开箱即用的组件 `<SheetComponent />`
 
-## props
+### props
 
 功能描述： Vue SheetComponent 组件的 props，如 `<SheetComponent :sheetType="pivot" />`
 
@@ -136,7 +140,7 @@ type SheetComponentOptions = S2Options<
 | themeCfg | 自定义表格主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 
-## events
+### events
 
 功能描述： Vue SheetComponent 组件的 events，`<SheetComponent @rowCellClick="handleRowCellClick" />`
 
@@ -219,11 +223,15 @@ type SheetComponentOptions = S2Options<
 | colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: ColCell[]) => void; |  |  |
 | rowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
 
-## SheetComponentOptions
+### SheetComponentOptions
 
-Vue 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有一点不同
+:::warning{title="注意"}
 
-- 分页配置从 S2 的分页配置 变为了 `antd-vue` 的分页配置，即支持对 `antd-vue` 分页组件 的 api 透传
+`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有一点不同
+
+- 分页配置从 S2 的分页配置 **变为了 `antd-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
+
+:::
 
 ```ts
 import type { Pagination, S2Options } from '@antv/s2';
@@ -235,9 +243,9 @@ type SheetComponentOptions = S2Options<
 >;
 ```
 
-# 公共对象
+## 公共对象
 
-## TargetCellInfo
+### TargetCellInfo
 
 功能描述：交互回调函数的返回信息。
 
@@ -249,7 +257,7 @@ type SheetComponentOptions = S2Options<
 
 <embed src="@/docs/common/sort-param.zh.md"></embed>
 
-## CellScrollPosition
+### CellScrollPosition
 
 功能描述：单元格滚动的位置信息。
 
@@ -258,16 +266,16 @@ type SheetComponentOptions = S2Options<
 | scrollX     | 水平方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
 | scrollY     | 垂直方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
 
-## HiddenColumnsInfo
+### HiddenColumnsInfo
 
-功能描述： 开启 [隐藏列头](/docs/manual/advanced/interaction/hide-columns) 后，隐藏列头的节点信息
+功能描述：开启 [隐藏列头](/docs/manual/advanced/interaction/hide-columns) 后，隐藏列头的节点信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | hideColumnNodes | 当前隐藏的节点信息 | [Node](/docs/api/basic-class/node)[] |  |  |
 | displaySiblingNode | 展示的相邻节点信息 | { prev:[Node](/docs/api/basic-class/node);next: [Node](/docs/api/basic-class/node) } |  |  |
 
-## ResizeParams
+### ResizeParams
 
 功能描述：表格 resize（单元格行高列宽拖动变化）和单元格样式信息
 
@@ -276,7 +284,7 @@ type SheetComponentOptions = S2Options<
 | info | resize 配置信息 | [ResizeInfo](#resizeinfo) |  |  |
 | style | options 中样式相关配置 | [style](/docs/api/general/S2Options#style) |  |  |
 
-## ResizeInfo
+### ResizeInfo
 
 功能描述：表格 resize（ 单元格行高列宽拖动变化）配置信息
 

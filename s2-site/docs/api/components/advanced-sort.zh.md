@@ -3,7 +3,7 @@ title: 高级排序
 order: 4
 ---
 
-## React 高级排序组件
+## React 高级排序组件 <Badge>@antv/s2-react</Badge>
 
 ### AdvancedSortProps
 
@@ -71,7 +71,3 @@ order: 4
 | sortMethod | 排序方式（升/降序） | `ASC` \| `DESC` \| `asc` \| `desc` |  |  |
 | sortBy | 自定义排序列表 | `string[]` |  |  |
 | sortByMeasure | 类 | `string` |  |  |
-
-## Vue 高级排序组件
-
-开发中，敬请期待
