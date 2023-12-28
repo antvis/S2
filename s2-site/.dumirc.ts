@@ -13,12 +13,12 @@ export default defineConfig({
   ], // 网站 favicon
   metas: [
     // 自定义 meta 标签
-    { name: 'keywords', content: 'S2' },
-    { name: 'description', content: '多维交叉分析表格' },
+    { name: 'keywords', content: 'S2 2.0' },
+    { name: 'description', content: '多维交叉分析表格 2.0, S2 Next' },
   ],
   themeConfig: {
     title: 'S2',
-    description: '多维交叉分析表格',
+    description: '多维交叉分析表格 2.0',
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
     siteUrl: 'https://antv.antgroup.com', // 官网地址
@@ -278,14 +278,14 @@ export default defineConfig({
         </html>`,
     },
     announcement: {
-      zh: '',
-      en: '',
+      zh: '🎉 S2 2.0 版本开始内测啦! 查看 [升级指南](https://s2.antv.antgroup.com/manual/migration-v2)',
+      en: '🎉 S2 Next version 2.0 is in beta! see [Upgrade Guide](https://s2.antv.antgroup.com/manual/migration-v2)',
     },
     /** 首页技术栈介绍 */
     detail: {
       title: {
-        zh: 'S2 多维交叉分析表格',
-        en: 'S2 Multi Cross Analysis Table',
+        zh: 'S2 多维交叉分析表格 2.0',
+        en: 'S2 Multi Cross Analysis Table 2.0',
       },
       description: {
         zh: 'S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。',
@@ -296,11 +296,17 @@ export default defineConfig({
       buttons: [
         {
           text: {
+            zh: '升级指南',
+            en: 'Migration v2',
+          },
+          link: `/manual/migration-v2`,
+        },
+        {
+          text: {
             zh: '图表示例',
             en: 'Examples',
           },
           link: `/examples`,
-          type: 'primary',
         },
         {
           text: {
@@ -308,6 +314,7 @@ export default defineConfig({
             en: 'Getting Started',
           },
           link: `/manual/getting-started`,
+          type: 'primary',
         },
       ],
     },

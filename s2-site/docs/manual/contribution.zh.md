@@ -5,13 +5,13 @@ order: 7
 
 如果你恰好看到了这篇文章，你一定是希望对这个项目贡献自己的一份力量。
 
-## 欢迎任何形式的贡献
+## 🫡 欢迎任何形式的贡献
 
 "我代码水平不行", "会不会受到鄙视？", "会不会不太好？", 放心，不存在的！
 
 我们欢迎任何形式的贡献，不管是一个**错别字的修改**，还是**一次友好的建议**，不管是通过提交 [Issue](https://github.com/antvis/S2/issues/new/choose), 还是一个帅气 [pull request](https://github.com/antvis/S2/pulls), 亦或是一次钉钉群的讨论，参与 [discussions](https://github.com/antvis/S2/discussions) 的讨论，期待在 [贡献者列表](https://github.com/antvis/S2/graphs/contributors) 里看见你的头像。
 
-## 分支管理
+## ✍️ 分支管理
 
 目前我们主要基于 `master` 和 `next` 分支开发，有任何修改，请基于 `master` 或 `next` 拉一个分支，然后通过 `PR` 的形式提交，我们集成了钉钉机器人，会第一次时间 `review` 你的 `PR`, 给与反馈。
 
@@ -20,7 +20,7 @@ order: 7
 - `alpha`: `1.x-alpha.x` 版本
 - `beta`: `1.x-beta.x` 版本
 
-## 提交 Bug 反馈
+## 🐛 提交 Bug 反馈
 
 很抱歉又写了一些 bug, 但求友好的提交一个有意义的 bug 反馈，谁也不希望反馈的 bug 是这样：
 
@@ -28,7 +28,7 @@ order: 7
 
 没有版本信息，没有复现步骤，没有问题描述，没有代码片段，开局一句话，内容全靠猜。
 
-首先选择 [Bug report]
+首先选择 [Bug report](https://github.com/antvis/S2/issues/new?assignees=&labels=&projects=&template=bug-report.md&title=%F0%9F%90%9B)
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/oAnzfiVl2/9d83b3e8-b05c-4475-b736-92c45448546a.png)
 
@@ -37,7 +37,7 @@ order: 7
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/05O3p5nE5/d0d4b120-e5aa-4b51-918b-8a573f8fb794.png)
 
-## Pull Request
+## 🙋‍♂️ Pull Request
 
 > 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考）
 
@@ -63,7 +63,7 @@ npm i -g pnpm
 推荐本地运行 `pnpm react:playground` 来调试 `@antv/s2` 和 `@antv/s2-react`
 :::
 
-<embed src="@/docs/common/development.zh.md"></embed>
+<embed src="@/docs/common/development.zh.md#L4-L100"></embed>
 
 ## 📦 版本
 

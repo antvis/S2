@@ -165,11 +165,15 @@ const s2Options = {
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-const container = document.getElementById('container');
+async function bootstrap() {
+  const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+  await s2.render();
+}
+
+bootstrap()
 ```
 
 ### 4. 结果

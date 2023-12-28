@@ -1,6 +1,8 @@
 ---
-title: 单元格内绘制图表
-order: 8
+title: 单元格内绘制图表 <Badge>info</Badge>
+order: 11
+features:
+  - emoji: x
 ---
 
 如果纯文本的表格不够直观，S2 支持 [自定义单元格](/examples#custom-custom-cell)，也内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart)
