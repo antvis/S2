@@ -30,18 +30,13 @@ s2.interaction.reset()
 | isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后）       | `() => void` |
 | isSelectedCell | 是否是选中的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
 | isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
-| getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子      | `() => Partial<ViewMeta>[]` |
+| getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | `() => Partial<ViewMeta>[]` |
 | getActiveCells | 获取当前在可视区域的单元格实例                                  | `() => S2CellType[]` |
 | clearStyleIndependent | 清除单元格样式                                          | `() => void` |
-| getPanelGroupAllUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
-| getPanelGroupAllDataCells | 获取可视区域内的所有数值单元格                                  | `() => DataCell[]` |
-| getAllRowHeaderCells | 获取行头单元格                                          | `() => RowCell[]` |
-| getAllColHeaderCells | 获取列头单元格                                          | `() => ColCell[]` |
-| getRowColActiveCells | 获取行头和列头激活的单元格                                    | `() => RowCell[] \| ColCell[]` |
+| getUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格                                       | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
-| getCellChildrenNodes | 获取当前单元格的所有子节点                                    | (cell: [S2CellType](#s2celltype)) => [Node]((/docs/api/basic-class/node))[] |
 | hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格                                            | (cellsInfo?: [MergedCellInfo](#mergedcellinfo)[], hideData?: boolean) => void |
 | unmergeCells | 取消合并单元格                                          | `(removedCells: MergedCell[]) => void` |
@@ -102,6 +97,7 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | CornerCell
   | RowCell
   | MergedCell
+  | SeriesNumberCell
   | BaseCell<T>;
 ```
 

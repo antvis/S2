@@ -51,7 +51,7 @@ order: 1
 
 ## cornerHeader
 
-改变角头的默认实现，需要继承自 [Group](https://g.antv.vision/zh/docs/api/group)，覆盖某些方法，比如渲染内容更换等。[例子](/examples/custom/custom-cell#corner-cell)
+改变角头的默认实现，需要继承自 [Group](https://g.antv.antgroup.com/docs/api/group)，覆盖某些方法，比如渲染内容更换等。[例子](/examples/custom/custom-cell#corner-cell)
 
 ## frame
 

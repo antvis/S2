@@ -76,6 +76,7 @@ export enum CellType {
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
   MERGED_CELL = 'mergedCell',
+  SERIES_NUMBER_CELL = 'seriesNumberCell',
 }
 ```
 
@@ -91,5 +92,6 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | CornerCell
   | RowCell
   | MergedCell
+  | SeriesNumberCell
   | BaseCell<T>;
 ```

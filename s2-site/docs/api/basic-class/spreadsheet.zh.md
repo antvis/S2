@@ -21,7 +21,7 @@ s2.isPivotMode()
 | dataSet | 表格数据集 （字段，数据，排序）                                                                                                       | [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
 | facet | 当前可视渲染区域                                                                                                               | [BaseFacet](/docs/api/basic-class/base-facet) |    |
 | tooltip | tooltip                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
-| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |    |
+| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/docs/api/canvas) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
 | hdAdapter | 高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |
@@ -50,10 +50,6 @@ s2.isPivotMode()
 | getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
-| getRowNodes | 获取行头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
-| getRowLeafNodes | 获取行头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
-| facet.getColNodes | 获取列头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
-| facet.getColLeafNodes | 获取列头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | updateScrollOffset | 更新滚动偏移                                                                                                                 | (config: [OffsetConfig](#offsetconfig)) => void |    |
 | getCell | 根据 event.target 获取当前 单元格                                                                                               | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype) |    |
 | getCellType | 根据 event.target 获取当前 单元格类型                                                                                             | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellType](/docs/api/basic-class/base-cell#celltypes) |    |
@@ -111,7 +107,7 @@ export enum CellType {
 
 ### BBox
 
-功能描述：盒模型
+功能描述：盒模型。[详情](/docs/api/basic-class/base-bbox)
 
 ```ts
 type BBox = {
