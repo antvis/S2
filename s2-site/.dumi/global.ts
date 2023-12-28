@@ -18,8 +18,8 @@ if (window) {
   (window as any).s2 = require('@antv/s2');
   (window as any).s2React = require('@antv/s2-react');
 
-  // (window as any).s2Css = require('@antv/s2/dist/style.min.css');
-  // (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
+  (window as any).s2Css = require('@antv/s2/dist/style.min.css');
+  (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
 
   // 码云和老网站统一跳转 antgroup 新域名
   const hosts = ['s2.antv.vision', 'antv-s2.gitee.io'];

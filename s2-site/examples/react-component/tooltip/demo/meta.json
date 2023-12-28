@@ -29,7 +29,15 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/le1o4zCn9/d5fd21d4-95bb-448e-9c10-92a1dd4495ae.png"
     },
     {
-      "filename": "custom-content.tsx",
+      "filename": "custom-content-base.ts",
+      "title": {
+        "zh": "自定义 Tooltip 内容 (@antv/s2)",
+        "en": "Custom Tooltip Content (@antv/s2)"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/j1fkyyIDdh/939fb3ed-b1c7-48a4-a329-bd1d64ddcb9c.png"
+    },
+    {
+      "filename": "custom-content-react.tsx",
       "title": {
         "zh": "自定义 Tooltip 内容",
         "en": "Custom Tooltip Content"

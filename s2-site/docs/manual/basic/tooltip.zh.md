@@ -11,17 +11,19 @@ order: 7
 
 ## 注意事项
 
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**
+:::warning
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**.
 
 `React` 版本 和 `Vue3` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
 
-查看 `React`
-版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+:::
+
+查看 `React` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
 
-- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便
-- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
-- 别忘了引入样式
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便。
+- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节。
+- 别忘了引入样式。
 
 ```ts
 import "@antv/s2/dist/style.min.css";
@@ -29,7 +31,7 @@ import "@antv/s2/dist/style.min.css";
 
 ## 使用
 
-在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
+在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格。
 
 ```ts
 const s2Options = {
@@ -37,7 +39,7 @@ const s2Options = {
 };
 ```
 
-还可以对不同类型的单元格单独配置：
+**还可以对不同类型的单元格单独配置**：
 
 - `cornerCell`: 角头单元格
 - `rowCell`: 行头单元格
@@ -57,7 +59,7 @@ const s2Options = {
 
 ### 显示配置项
 
-通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`
+通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`.
 
 ```ts
 const s2Options = {
@@ -111,6 +113,10 @@ const s2Options = {
 
 #### 自定义 Tooltip 内容
 
+##### 在基础类中使用 <Badge>@antv/s2</Badge>
+
+<Playground path='react-component/tooltip/demo/custom-content-base.ts' rid='custom-content-base' height='300'></playground>
+
 对于 `@antv/s2` 类的使用方式：tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
 
 ```ts
@@ -120,18 +126,32 @@ content.innerHTML = '我是自定义内容'
 const s2Options = {
   tooltip: {
     content,
-    // content: '我是字符串'
+    // content: '<div>我是字符串</div>'
   },
 };
 ```
 
+```ts
+const s2Options = {
+  tooltip: {
+    content: `
+      <div>我是自定义内容</div>
+    `,
+  },
+};
+```
+
+##### 在 React 中使用 <Badge>@antv/s2-react</Badge>
+
 对于 `@antv/s2-react` 组件的使用方式：tooltip 内容 可以是任意的 `jsx` 元素
 
-```ts
+<Playground path='react-component/tooltip/demo/custom-content-react.tsx' rid='react-custom-content' height='300'></playground>
+
+```tsx
 const content = (
   <div>
-    <span>我是自定义内容 < /span>
-  < /div>
+    <span>我是自定义内容 </span>
+  </div>
 )
 
 const s2Options = {
@@ -141,21 +161,17 @@ const s2Options = {
 };
 ```
 
-同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
+同时 `content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
-const TooltipContent = (props) => <div>
-...
-</div>
+const TooltipContent = (props) => <div>...</div>
 
 const s2Options = {
   tooltip: {
     content: (cell, defaultTooltipShowOptions) => {
       console.log('当前单元格：', cell)
       console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
-      return <TooltipContent cell = { cell }
-      detail = { detail }
-      />
+      return <TooltipContent cell={ cell } detail={ detail } />
     },
   },
 };
@@ -215,18 +231,16 @@ const s2Options = {
 通过表格实例 可以手动显示 `tooltip`
 
 ```ts
-const TooltipContent = (
-  <div>content < /div>
+const TooltipContent = () => (
+  <div>content</div>
 );
 
 s2.showTooltip({
-  content: TooltipContent
+  content: <TooltipContent />
 })
 
-// 或者 s2.tooltip.show({ content: TooltipContent })
+// 或者 s2.tooltip.show({ content: <TooltipContent/> })
 ```
-
-<Playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
 
 ##### 3. 内容显示优先级
 
@@ -510,16 +524,9 @@ const onRowCellHover = ({ event, viewMeta }) => {
 // TooltipContent.vue
 
 <template>
-  <div>我是自定义
-Tooltip
-内容 < /div>
-< p > 当前值：{
-  {
-    meta?.label ?? meta?.fieldValue
-  }
-}
-</p>
-< /template>
+  <div>我是自定义 tooltip 内容</div>
+  <p>当前值：{{ meta?.label ?? meta?.fieldValue}} </p>
+</template>
 
 < script
 lang = "ts"
