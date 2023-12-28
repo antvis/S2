@@ -102,7 +102,7 @@ export default defineConfig({
       {
         slug: 'api/components',
         title: {
-          zh: '组件',
+          zh: '分析组件',
           en: 'Components',
         },
         order: 2,
