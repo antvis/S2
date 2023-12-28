@@ -4,6 +4,7 @@ import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
 import { renderLine } from '../utils/g-renders';
+import { floor } from '../utils/math';
 
 export class GridGroup extends Group {
   protected s2: SpreadSheet;
@@ -59,7 +60,7 @@ export class GridGroup extends Group {
         x1: x - halfVerticalBorderWidthBorderWidth,
         x2: x - halfVerticalBorderWidthBorderWidth,
         y1: halfVerticalBorderWidthBorderWidth,
-        y2: Math.floor(bbox.height - halfVerticalBorderWidthBorderWidth),
+        y2: floor(bbox.height - halfVerticalBorderWidthBorderWidth),
         stroke: style!.verticalBorderColor,
         strokeOpacity: style!.verticalBorderColorOpacity,
         lineWidth: verticalBorderWidth,
@@ -73,7 +74,7 @@ export class GridGroup extends Group {
     this.gridInfo.rows.forEach((y) => {
       renderLine(this.gridGroup, {
         x1: halfHorizontalBorderWidth,
-        x2: Math.floor(bbox.width - halfHorizontalBorderWidth),
+        x2: floor(bbox.width - halfHorizontalBorderWidth),
         y1: y - halfHorizontalBorderWidth,
         y2: y - halfHorizontalBorderWidth,
         stroke: style!.horizontalBorderColor,

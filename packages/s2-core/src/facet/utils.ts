@@ -1,5 +1,4 @@
 import type { Group } from '@antv/g';
-import type { SimpleBBox } from '@antv/g-canvas';
 import { findIndex, isEmpty, isNil } from 'lodash';
 import type { FrozenCellIndex } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
@@ -9,11 +8,12 @@ import type {
   Fields,
   Pagination,
   S2Options,
+  S2PivotSheetFrozenOptions,
   S2TableSheetFrozenOptions,
-  S2TableSheetOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
+import type { SimpleBBox } from '../engine';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
 
@@ -275,54 +275,50 @@ export const splitInViewIndexesWithFrozen = (
   },
 ) => {
   const {
-    colCount: frozenColCount = 0,
-    rowCount: frozenRowCount = 0,
-    trailingColCount: frozenTrailingColCount = 0,
-    trailingRowCount: frozenTrailingRowCount = 0,
+    colCount = 0,
+    rowCount = 0,
+    trailingColCount = 0,
+    trailingRowCount = 0,
   } = frozenOptions;
 
   const centerIndexes: Indexes = [...indexes];
 
   // Cut off frozen cells from centerIndexes
-  if (isFrozenCol(centerIndexes[0], frozenColCount)) {
-    centerIndexes[0] = frozenColCount;
+  if (isFrozenCol(centerIndexes[0], colCount)) {
+    centerIndexes[0] = colCount;
   }
 
-  if (
-    isFrozenTrailingCol(centerIndexes[1], frozenTrailingColCount, colLength)
-  ) {
-    centerIndexes[1] = colLength - frozenTrailingColCount - 1;
+  if (isFrozenTrailingCol(centerIndexes[1], trailingColCount, colLength)) {
+    centerIndexes[1] = colLength - trailingColCount - 1;
   }
 
-  if (isFrozenRow(centerIndexes[2], cellRange.start, frozenRowCount)) {
-    centerIndexes[2] = cellRange.start + frozenRowCount;
+  if (isFrozenRow(centerIndexes[2], cellRange.start, rowCount)) {
+    centerIndexes[2] = cellRange.start + rowCount;
   }
 
-  if (
-    isFrozenTrailingRow(centerIndexes[3], cellRange.end, frozenTrailingRowCount)
-  ) {
-    centerIndexes[3] = cellRange.end - frozenTrailingRowCount;
+  if (isFrozenTrailingRow(centerIndexes[3], cellRange.end, trailingRowCount)) {
+    centerIndexes[3] = cellRange.end - trailingRowCount;
   }
 
   // Calculate indexes for four frozen groups
   const frozenRowIndexes: Indexes = [...centerIndexes];
 
   frozenRowIndexes[2] = cellRange.start;
-  frozenRowIndexes[3] = cellRange.start + frozenRowCount - 1;
+  frozenRowIndexes[3] = cellRange.start + rowCount - 1;
 
   const frozenColIndexes: Indexes = [...centerIndexes];
 
   frozenColIndexes[0] = 0;
-  frozenColIndexes[1] = frozenColCount - 1;
+  frozenColIndexes[1] = colCount - 1;
 
   const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
 
-  frozenTrailingRowIndexes[2] = cellRange.end + 1 - frozenTrailingRowCount;
+  frozenTrailingRowIndexes[2] = cellRange.end + 1 - trailingRowCount;
   frozenTrailingRowIndexes[3] = cellRange.end;
 
   const frozenTrailingColIndexes: Indexes = [...centerIndexes];
 
-  frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
+  frozenTrailingColIndexes[0] = colLength - trailingColCount;
   frozenTrailingColIndexes[1] = colLength - 1;
 
   return {
@@ -358,17 +354,15 @@ export const getCellRange = (
 /**
  * 给定一个一层的 node 数组以及左右固定列的数量，计算出实际固定列（叶子节点）的数量
  * @param nodes
- * @param frozenColCount
- * @param frozenTrailingColCount
+ * @param colCount
+ * @param trailingColCount
  * @returns {colCount, trailingColCount}
  */
 export const getFrozenLeafNodesCount = (
   nodes: Node[],
-  frozenColCount: number,
-  frozenTrailingColCount: number,
+  colCount: number,
+  trailingColCount: number,
 ): { colCount: number; trailingColCount: number } => {
-  let colCount = frozenColCount;
-  let trailingColCount = frozenTrailingColCount;
   const getLeafNodesCount = (node: Node) => {
     if (node.isLeaf) {
       return 1;
@@ -385,17 +379,17 @@ export const getFrozenLeafNodesCount = (
     return 0;
   };
 
-  if (frozenColCount) {
-    colCount = nodes.slice(0, frozenColCount).reduce((count, node) => {
+  if (colCount) {
+    colCount = nodes.slice(0, colCount).reduce((count, node) => {
       count += getLeafNodesCount(node);
 
       return count;
     }, 0);
   }
 
-  if (frozenTrailingColCount) {
+  if (trailingColCount) {
     trailingColCount = nodes
-      .slice(nodes.length - frozenTrailingColCount)
+      .slice(nodes.length - trailingColCount)
       .reduce((count, node) => {
         count += getLeafNodesCount(node);
 
@@ -477,16 +471,13 @@ export const getLeftLeafNode = (node: Node): Node => {
   return firstNode.isLeaf ? firstNode : getLeftLeafNode(firstNode);
 };
 /**
- * fields 的 rows、columns、values、customTreeItems 值都为空时，返回 true
+ * fields 的 rows、columns、values 值都为空时，返回 true
  * @param {Fields} fields
  * @return {boolean}
  */
 export const areAllFieldsEmpty = (fields: Fields) => {
   return (
-    isEmpty(fields.rows) &&
-    isEmpty(fields.columns) &&
-    isEmpty(fields.values) &&
-    isEmpty(fields.customTreeItems)
+    isEmpty(fields.rows) && isEmpty(fields.columns) && isEmpty(fields.values)
   );
 };
 
@@ -498,34 +489,34 @@ export const areAllFieldsEmpty = (fields: Fields) => {
 export const getFrozenRowCfgPivot = (
   options: S2Options,
   rowNodes: Node[],
-): S2TableSheetOptions & {
-  frozenRowHeight: number;
-  enableFrozenFirstRow: boolean;
-} => {
+): S2PivotSheetFrozenOptions &
+  S2TableSheetFrozenOptions & {
+    rowHeight: number;
+  } => {
   const { pagination, frozen, hierarchyType, showSeriesNumber } = options;
 
   const enablePagination = pagination && pagination.pageSize;
-  let enableFrozenFirstRow = false;
+  let firstRow = false;
   const headNode = rowNodes?.[0];
 
   if (!enablePagination && frozen?.firstRow) {
     // first node no children: entire row
-    enableFrozenFirstRow = headNode?.children?.length === 0;
+    firstRow = headNode?.children?.length === 0;
     const treeMode = hierarchyType === 'tree';
 
-    if (treeMode && !enableFrozenFirstRow) {
-      enableFrozenFirstRow = !showSeriesNumber;
+    if (treeMode && !firstRow) {
+      firstRow = !showSeriesNumber;
     }
   }
 
-  const effectiveFrozenFirstRow = enableFrozenFirstRow && !!headNode;
+  const effectiveFrozenFirstRow = firstRow && !!headNode;
 
   return {
-    frozenRowCount: effectiveFrozenFirstRow ? 1 : 0,
-    frozenColCount: 0,
-    frozenTrailingColCount: 0,
-    frozenTrailingRowCount: 0,
-    enableFrozenFirstRow,
-    frozenRowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
+    rowCount: effectiveFrozenFirstRow ? 1 : 0,
+    colCount: 0,
+    trailingColCount: 0,
+    trailingRowCount: 0,
+    firstRow,
+    rowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
   };
 };

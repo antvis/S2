@@ -78,12 +78,9 @@ export class TableColCell extends ColCell {
       this.spreadsheet.options.frozen!,
     );
     const resizeClipAreaBBox: SimpleBBox = {
-      x: frozenWidth.frozenColWidth,
+      x: frozenWidth.colWidth,
       y: 0,
-      width:
-        headerWidth -
-        frozenWidth.frozenColWidth -
-        frozenWidth.frozenTrailingColWidth,
+      width: headerWidth - frozenWidth.colWidth - frozenWidth.trailingColWidth,
       height: headerHeight,
     };
 

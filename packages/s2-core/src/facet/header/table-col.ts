@@ -30,7 +30,6 @@ export class TableColHeader extends ColHeader {
 
   constructor(config: ColHeaderConfig) {
     super(config);
-
     this.initFrozenColGroups();
   }
 
@@ -78,24 +77,8 @@ export class TableColHeader extends ColHeader {
     }
   }
 
-  protected isFrozenCell(meta: Node) {
-    const { spreadsheet } = this.getHeaderConfig();
-    const {
-      colCount: frozenColCount = 0,
-      trailingColCount: frozenTrailingColCount = 0,
-    } = spreadsheet.options.frozen!;
-    const { colIndex } = meta;
-    const colLeafNodes = spreadsheet.facet.getColLeafNodes();
-
-    return (
-      isFrozenCol(colIndex, frozenColCount) ||
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
-    );
-  }
-
   public clear() {
     super.clear();
-
     this.frozenTrailingColGroup?.removeChildren();
     this.frozenColGroup?.removeChildren();
 
@@ -116,37 +99,23 @@ export class TableColHeader extends ColHeader {
     const leftLeafNode = getLeftLeafNode(node);
     const topLevelNodes = spreadsheet.facet.getColNodes(0);
 
-    const {
-      colCount: frozenColCount,
-      trailingColCount: frozenTrailingColCount,
-    } = getFrozenLeafNodesCount(topLevelNodes, colCount, trailingColCount);
-
     return {
-      leftLeafNodeColIndex: leftLeafNode.colIndex,
-      frozenColCount,
-      frozenTrailingColCount,
       colLength: topLevelNodes.length,
+      leftLeafNodeColIndex: leftLeafNode.colIndex,
+      ...getFrozenLeafNodesCount(topLevelNodes, colCount, trailingColCount),
     };
   }
 
   protected getCellGroup(node: Node): Group {
-    const {
-      leftLeafNodeColIndex,
-      frozenColCount,
-      frozenTrailingColCount,
-      colLength,
-    } = this.getColFrozenOptionsByNode(node);
+    const { colLength, leftLeafNodeColIndex, colCount, trailingColCount } =
+      this.getColFrozenOptionsByNode(node);
 
-    if (isFrozenCol(leftLeafNodeColIndex, frozenColCount)) {
+    if (isFrozenCol(leftLeafNodeColIndex, colCount)) {
       return this.frozenColGroup;
     }
 
     if (
-      isFrozenTrailingCol(
-        leftLeafNodeColIndex,
-        frozenTrailingColCount,
-        colLength,
-      )
+      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
     ) {
       return this.frozenTrailingColGroup;
     }
@@ -155,20 +124,12 @@ export class TableColHeader extends ColHeader {
   }
 
   protected isColCellInRect(node: Node): boolean {
-    const {
-      leftLeafNodeColIndex,
-      frozenColCount,
-      frozenTrailingColCount,
-      colLength,
-    } = this.getColFrozenOptionsByNode(node);
+    const { leftLeafNodeColIndex, colLength, colCount, trailingColCount } =
+      this.getColFrozenOptionsByNode(node);
 
     if (
-      isFrozenCol(leftLeafNodeColIndex, frozenColCount) ||
-      isFrozenTrailingCol(
-        leftLeafNodeColIndex,
-        frozenTrailingColCount,
-        colLength,
-      )
+      isFrozenCol(leftLeafNodeColIndex, colCount) ||
+      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
     ) {
       return true;
     }
@@ -179,14 +140,14 @@ export class TableColHeader extends ColHeader {
   public getScrollGroupClipBBox = (): RectStyleProps => {
     const { width, height, spreadsheet } = this.getHeaderConfig();
     const topLevelNodes = spreadsheet.facet.getColNodes(0);
-    const { frozenColWidth, frozenTrailingColWidth } = getFrozenColWidth(
+    const { colWidth, trailingColWidth } = getFrozenColWidth(
       topLevelNodes,
       spreadsheet.options.frozen!,
     );
-    const scrollGroupWidth = width - frozenColWidth - frozenTrailingColWidth;
+    const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {
-      x: frozenColWidth,
+      x: colWidth,
       y: 0,
       width: scrollGroupWidth,
       height,

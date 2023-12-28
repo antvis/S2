@@ -85,6 +85,7 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile, isWindows } from '../utils/is-mobile';
+import { floor } from '../utils/math';
 import { CornerBBox } from './bbox/corner-bbox';
 import { PanelBBox } from './bbox/panel-bbox';
 import {
@@ -101,7 +102,6 @@ import { Node } from './layout/node';
 import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import {
   areAllFieldsEmpty,
-  calculateInViewIndexes,
   getCellRange,
   optimizeScrollXY,
   translateGroup,
@@ -174,7 +174,16 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
+  protected abstract clip(scrollX: number, scrollY: number): void;
+
+  public abstract calculateXYIndexes(
+    scrollX: number,
+    scrollY: number,
+  ): PanelIndexes;
+
   public abstract getViewCellHeights(): ViewCellHeights;
+
+  public abstract addDataCell(cell: DataCell): void;
 
   public abstract getCellMeta(
     rowIndex: number,
@@ -215,7 +224,6 @@ export abstract class BaseFacet {
   protected initGroups() {
     const container = this.spreadsheet.container;
 
-    // the main three layer groups
     this.backgroundGroup = container.appendChild(
       new Group({
         name: KEY_GROUP_BACK_GROUND,
@@ -224,6 +232,7 @@ export abstract class BaseFacet {
     );
 
     this.initPanelGroups();
+
     this.foregroundGroup = container.appendChild(
       new Group({
         name: KEY_GROUP_FORE_GROUND,
@@ -359,6 +368,7 @@ export abstract class BaseFacet {
     colsHierarchy.sampleNodesForAllLevels = compact(
       sampleMaxHeightNodesForAllLevels,
     );
+
     colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
       levelSampleNode.height = this.getColNodeHeight(
         levelSampleNode,
@@ -536,7 +546,7 @@ export abstract class BaseFacet {
       const offset = get(scrollOffset, key);
 
       if (!isUndefined(offset)) {
-        this.spreadsheet.store.set(key, Math.floor(offset));
+        this.spreadsheet.store.set(key, floor(offset));
       }
     });
   };
@@ -574,7 +584,7 @@ export abstract class BaseFacet {
       const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
       const total = this.viewCellHeights.getTotalLength();
 
-      const pageCount = Math.floor((total - 1) / pageSize) + 1;
+      const pageCount = floor((total - 1) / pageSize) + 1;
 
       this.spreadsheet.emit(S2Event.LAYOUT_PAGINATION, {
         pageSize,
@@ -609,35 +619,6 @@ export abstract class BaseFacet {
     this.viewCellWidths = widths;
     this.viewCellHeights = this.getViewCellHeights();
   };
-
-  /**
-   * The purpose of this rewrite is to take into account that when rowHeader supports scrollbars
-   *the panel viewable area must vary with the horizontal distance of the scroll
-   * @param scrollX
-   * @param scrollY
-   * @public
-   */
-  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
-
-    const indexes = calculateInViewIndexes({
-      scrollX,
-      scrollY,
-      widths: this.viewCellWidths,
-      heights: this.viewCellHeights,
-      viewport: {
-        width,
-        height,
-        x: 0,
-        y: 0,
-      },
-      rowRemainWidth: this.getRealScrollX(this.cornerBBox.width),
-    });
-
-    return {
-      center: indexes,
-    };
-  }
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
     this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
@@ -843,7 +824,7 @@ export abstract class BaseFacet {
         ScrollType.ScrollChange,
         ({ offset }: ScrollChangeParams) => {
           const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-          const rowHeaderScrollX = Math.floor(newOffset);
+          const rowHeaderScrollX = floor(newOffset);
 
           this.setScrollOffset({ rowHeaderScrollX });
 
@@ -885,7 +866,7 @@ export abstract class BaseFacet {
     clamp(offset, 0, maxOffset);
 
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
-    if (Math.floor(width) < Math.floor(realWidth)) {
+    if (floor(width) < floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
       const { maxY } = this.getScrollbarPosition();
       const isScrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
@@ -1259,23 +1240,6 @@ export abstract class BaseFacet {
     });
   };
 
-  protected panelScrollGroupClip(scrollX: number, scrollY: number) {
-    const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-
-    this.panelScrollGroup.style.clipPath = new Rect({
-      style: {
-        x: isFrozenRowHeader ? scrollX : 0,
-        y: scrollY,
-        width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
-        height: this.panelBBox.height,
-      },
-    });
-  }
-
-  protected clip(scrollX: number, scrollY: number) {
-    this.panelScrollGroupClip(scrollX, scrollY);
-  }
-
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
    * according to new scroll offset
@@ -1315,15 +1279,6 @@ export abstract class BaseFacet {
     this.centerFrame?.onBorderScroll(this.getRealScrollX(scrollX));
     this.columnHeader?.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
-
-  addDataCell = (cell: DataCell) => {
-    this.panelScrollGroup?.appendChild(cell);
-
-    setTimeout(() => {
-      this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
-      this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
-    }, 100);
-  };
 
   realDataCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
@@ -1611,7 +1566,8 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
 
-    // this.clip(scrollX, scrollY);
+    this.clip(scrollX, scrollY);
+
     if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });
     }
@@ -1676,9 +1632,8 @@ export abstract class BaseFacet {
       return;
     }
 
-    return hiddenColumnsDetail.find(
-      (detail) =>
-        detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
+    return hiddenColumnsDetail.find((detail) =>
+      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

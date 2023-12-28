@@ -43,6 +43,7 @@ import {
 } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
 import { getCellWidth } from '../utils/text';
+import { floor } from '../utils/math';
 import { FrozenFacet } from './frozen-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -729,7 +730,7 @@ export class PivotFacet extends FrozenFacet {
 
     return Math.max(
       getCellWidth(dataCell!, this.getColLabelLength(col, rowLeafNodes)),
-      Math.floor((availableWidth - rowHeaderWidth) / colSize),
+      floor((availableWidth - rowHeaderWidth) / colSize),
     );
   }
 
@@ -800,15 +801,12 @@ export class PivotFacet extends FrozenFacet {
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
 
     if (!rowHeaderWidth) {
-      return Math.max(
-        getCellWidth(dataCell!),
-        Math.floor(availableWidth / colSize),
-      );
+      return Math.max(getCellWidth(dataCell!), floor(availableWidth / colSize));
     }
 
     return Math.max(
       getCellWidth(dataCell!),
-      Math.floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
+      floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
     );
   }
 
@@ -988,14 +986,14 @@ export class PivotFacet extends FrozenFacet {
   }
 
   public enableFrozenFirstRow(): boolean {
-    return !!this.getFrozenOptions().frozenRowCount;
+    return !!this.getFrozenOptions().rowCount;
   }
 
   protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
     this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
     if (this.enableFrozenFirstRow()) {
       // 在分页条件下需要额外处理 Y 轴滚动值
-      const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
+      const relativeScrollY = floor(scrollY - this.getPaginationScrollY());
       const splitLineGroup = this.foregroundGroup.appendChild(
         new Group({
           id: KEY_GROUP_FROZEN_SPLIT_LINE,

@@ -1,4 +1,5 @@
 import { debounce, isBoolean } from 'lodash';
+import { floor } from '@antv/s2';
 import { RESIZE_RENDER_DELAY } from '../constant/resize';
 import type { Adaptive, ResizeEffectParams } from '../interface';
 
@@ -47,11 +48,11 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
       container;
 
     const width = adaptiveWidth
-      ? Math.floor(containerWidth ?? s2.options.width)
+      ? floor(containerWidth ?? s2.options.width)
       : s2.options.width;
     // 去除 header 和 page 后才是 sheet 真正的高度
     const height = adaptiveHeight
-      ? Math.floor(containerHeight ?? s2.options.height)
+      ? floor(containerHeight ?? s2.options.height)
       : s2.options.height;
 
     if (!adaptiveWidth && !adaptiveHeight) {

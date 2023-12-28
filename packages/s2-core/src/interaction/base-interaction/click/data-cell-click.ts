@@ -25,15 +25,12 @@ import { BaseEvent, type BaseEventImplement } from '../../base-event';
 import { updateAllColHeaderCellState } from '../../../utils/interaction';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
-
-
   public bindEvents() {
     this.bindDataCellClick();
   }
 
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
-
       event.stopPropagation();
 
       const { interaction } = this.spreadsheet;
@@ -85,6 +82,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       // 点击单元格，高亮对应的行头、列头
       const { rowId, colId, spreadsheet } = meta;
       const { colHeader, rowHeader } = interaction.getSelectedCellHighlight();
+
       if (colHeader) {
         updateAllColHeaderCellState(
           colId,
@@ -92,12 +90,14 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
           InteractionStateName.SELECTED,
         );
       }
+
       if (rowHeader) {
         if (rowId) {
           const allRowHeaderCells = getRowCellForSelectedCell(
             meta,
             spreadsheet,
           );
+
           forEach(allRowHeaderCells, (rowCell) => {
             rowCell.updateByState(InteractionStateName.SELECTED);
           });

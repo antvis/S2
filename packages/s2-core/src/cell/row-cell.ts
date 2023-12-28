@@ -362,7 +362,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const { cell, icon: iconStyle } = this.getStyle();
 
     const viewport: AreaRange = {
-      start: scrollY!,
+      start: this.getMeta().isFrozen ? 0 : scrollY!,
       size: viewportHeight,
     };
 

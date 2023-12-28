@@ -43,8 +43,8 @@ export const getFrozenColWidth = (
   options: S2TableSheetFrozenOptions,
 ) => {
   const result = {
-    frozenColWidth: 0,
-    frozenTrailingColWidth: 0,
+    colWidth: 0,
+    trailingColWidth: 0,
   };
 
   if (!options.colCount && !options.trailingColCount) {
@@ -57,12 +57,11 @@ export const getFrozenColWidth = (
   } = getValidFrozenOptions(options, colLeafNodes.length);
 
   for (let i = 0; i < frozenColCount; i++) {
-    result.frozenColWidth += colLeafNodes[i].width;
+    result.colWidth += colLeafNodes[i].width;
   }
 
   for (let i = 0; i < frozenTrailingColCount; i++) {
-    result.frozenTrailingColWidth +=
-      colLeafNodes[colLeafNodes.length - 1 - i].width;
+    result.trailingColWidth += colLeafNodes[colLeafNodes.length - 1 - i].width;
   }
 
   return result;

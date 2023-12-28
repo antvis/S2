@@ -24,19 +24,20 @@ import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
+import { floor } from '../utils/math';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
-import { Frame } from './header';
+import { ColHeader, Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
+import { TableColHeader } from './header/table-col';
 
 export class TableFacet extends FrozenFacet {
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
-
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
@@ -123,27 +124,15 @@ export class TableFacet extends FrozenFacet {
     return this.spreadsheet.theme.dataCell?.cell;
   }
 
-  override clearAllGroup() {
-    super.clearAllGroup();
-    this.frozenRowGroup.removeChildren();
-    this.frozenColGroup.removeChildren();
-    this.frozenTrailingRowGroup.removeChildren();
-    this.frozenTrailingColGroup.removeChildren();
-    this.frozenTopGroup.removeChildren();
-    this.frozenBottomGroup.removeChildren();
-  }
-
   public destroy(): void {
     super.destroy();
-    const s2 = this.spreadsheet;
-
-    s2.off(S2Event.RANGE_SORT, this.onSortHandler);
-    s2.off(S2Event.RANGE_FILTER, this.onFilterHandler);
+    this.spreadsheet.off(S2Event.RANGE_SORT, this.onSortHandler);
+    this.spreadsheet.off(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
   protected calculateCornerBBox() {
     const { colsHierarchy } = this.getLayoutResult();
-    const height = Math.floor(colsHierarchy.height);
+    const height = floor(colsHierarchy.height);
 
     this.cornerBBox = new CornerBBox(this);
 
@@ -252,10 +241,10 @@ export class TableFacet extends FrozenFacet {
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
 
-      // TODO: 向下取整, 导致单元格未撑满 canvas, 在冻结情况下会有问题, 代冻结重构后解决
+      // TODO: 向下取整, 导致单元格未撑满 canvas, 在冻结情况下会有问题, 待冻结重构后解决
       return Math.max(
         dataCell?.width!,
-        Math.floor(canvasW / Math.max(1, colHeaderColSize)),
+        floor(canvasW / Math.max(1, colHeaderColSize)),
       );
     }
 
@@ -310,19 +299,18 @@ export class TableFacet extends FrozenFacet {
     }
 
     const topLevelNodes = colsHierarchy.getNodes(0);
-    const { trailingColCount: frozenTrailingColCount = 0 } =
-      getValidFrozenOptions(
-        this.spreadsheet.options.frozen!,
-        topLevelNodes.length,
-      );
+    const { trailingColCount = 0 } = getValidFrozenOptions(
+      this.spreadsheet.options.frozen!,
+      topLevelNodes.length,
+    );
 
     preLeafNode = Node.blankNode();
 
     const { width } = this.getCanvasSize();
 
-    if (frozenTrailingColCount > 0) {
+    if (trailingColCount > 0) {
       const { trailingColCount: realFrozenTrailingColCount } =
-        getFrozenLeafNodesCount(topLevelNodes, 0, frozenTrailingColCount);
+        getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
       const leafNodes = allNodes.filter((node) => node.isLeaf);
 
       for (let i = 1; i <= realFrozenTrailingColCount; i++) {
@@ -493,12 +481,12 @@ export class TableFacet extends FrozenFacet {
           );
         }
 
-        const yMin = Math.floor(minHeight / defaultCellHeight);
+        const yMin = floor(minHeight / defaultCellHeight, 0);
         // 防止数组index溢出导致报错
         const yMax =
           maxHeight % defaultCellHeight === 0
             ? maxHeight / defaultCellHeight - 1
-            : Math.floor(maxHeight / defaultCellHeight);
+            : floor(maxHeight / defaultCellHeight, 0);
 
         return {
           start: Math.max(0, yMin),
@@ -546,6 +534,26 @@ export class TableFacet extends FrozenFacet {
 
   protected getRowHeader() {
     return null;
+  }
+
+  protected getColHeader(): ColHeader {
+    if (!this.columnHeader) {
+      const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
+
+      return new TableColHeader({
+        width,
+        height: this.cornerBBox.height,
+        viewportWidth,
+        viewportHeight,
+        cornerWidth: this.cornerBBox.width,
+        position: { x, y: 0 },
+        nodes: this.getColNodes(),
+        sortParam: this.spreadsheet.store.get('sortParam'),
+        spreadsheet: this.spreadsheet,
+      });
+    }
+
+    return this.columnHeader;
   }
 
   protected getSeriesNumberHeader() {

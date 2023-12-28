@@ -1,4 +1,4 @@
-import { Group, Rect, type DisplayObject } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
@@ -17,11 +17,8 @@ import type { ColHeaderConfig } from './interface';
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected scrollGroup: Group;
 
-  protected background: DisplayObject;
-
   constructor(config: ColHeaderConfig) {
     super(config);
-
     this.initScrollGroup();
   }
 
@@ -58,13 +55,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { height, spreadsheet } = this.getHeaderConfig();
+    const { height, width, spreadsheet, position } = this.getHeaderConfig();
+    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: 0,
-        y: 0,
-        width: spreadsheet.options.width!,
+        x: isFrozenRowHeader ? position.x : 0,
+        y: isFrozenRowHeader ? position.y : 0,
+        width: isFrozenRowHeader ? width : position.x + width,
         height,
       },
     });
@@ -72,7 +70,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   public clear() {
     this.scrollGroup?.removeChildren();
-    this.background?.remove();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -103,9 +100,10 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       if (this.isColCellInRect(node)) {
         const cell = this.getCellInstance(node);
 
-        node.belongsCell = cell;
-
         const group = this.getCellGroup(node);
+
+        node.belongsCell = cell;
+        node.isFrozen = group !== this.scrollGroup;
 
         group?.appendChild(cell);
         spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);

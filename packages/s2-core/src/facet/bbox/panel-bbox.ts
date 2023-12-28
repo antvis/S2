@@ -1,3 +1,4 @@
+import { floor } from '../../utils/math';
 import { Frame } from '../header/frame';
 import { BaseBBox } from './base-bbox';
 
@@ -8,8 +9,8 @@ export class PanelBBox extends BaseBBox {
 
     const { cornerBBox } = this.facet;
     const cornerPosition = {
-      x: Math.floor(cornerBBox.maxX),
-      y: Math.floor(cornerBBox.maxY),
+      x: floor(cornerBBox.maxX),
+      y: floor(cornerBBox.maxY),
     };
 
     // splitLine 也应该占位，panelBBox = canvasBBox - cornerBBox - splitLineBBox
@@ -30,10 +31,10 @@ export class PanelBBox extends BaseBBox {
     this.width = panelWidth;
     this.height = panelHeight;
     this.viewportHeight = Math.abs(
-      Math.floor(Math.min(panelHeight, this.originalHeight)),
+      floor(Math.min(panelHeight, this.originalHeight)),
     );
     this.viewportWidth = Math.abs(
-      Math.floor(Math.min(panelWidth, this.originalWidth)),
+      floor(Math.min(panelWidth, this.originalWidth)),
     );
     this.maxX = this.x + this.viewportWidth;
     this.maxY = this.y + this.viewportHeight;

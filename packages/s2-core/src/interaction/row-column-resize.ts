@@ -1,26 +1,35 @@
-import { FederatedPointerEvent, Group, Path, type DisplayObject, type PathStyleProps } from '@antv/g';
+import {
+  FederatedPointerEvent,
+  Group,
+  Path,
+  type DisplayObject,
+  type PathStyleProps,
+} from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
   ResizeInteractionOptions,
   ResizeParams,
-  RowCellStyle
+  RowCellStyle,
 } from '../common';
 import {
   InterceptType,
   ResizeAreaEffect,
   ResizeDirectionType,
-  ResizeType, RESIZE_END_GUIDE_LINE_ID,
+  ResizeType,
+  RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
-  RESIZE_START_GUIDE_LINE_ID, S2Event
+  RESIZE_START_GUIDE_LINE_ID,
+  S2Event,
 } from '../common/constant';
 import type {
   ResizeDetail,
   ResizeGuideLinePath,
   ResizeGuideLinePosition,
   ResizeInfo,
-  ResizePosition
+  ResizePosition,
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -122,7 +131,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private updateResizeGuideLinePosition(
-    event:FederatedPointerEvent,
+    event: FederatedPointerEvent,
     resizeInfo: ResizeInfo,
   ) {
     const resizeShapes = this.getResizeShapes();
@@ -157,6 +166,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       ]);
       this.resizeStartPosition.offsetX = event.offsetX;
       this.resizeStartPosition.clientX = event.clientX;
+
       return;
     }
 
@@ -188,10 +198,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeTarget(shape);
       this.showResizeGroup();
-      this.updateResizeGuideLinePosition(
-        event,
-        resizeInfo,
-      );
+      this.updateResizeGuideLinePosition(event, resizeInfo);
     });
   }
 
@@ -567,14 +574,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     );
 
     const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = Math.floor(
+    const resizedWidth = floor(
       end.x -
         start.x +
         (defaultResizeInfo.type === ResizeDirectionType.Horizontal
           ? defaultResizeInfo.size
           : 0),
     );
-    const resizedHeight = Math.floor(
+    const resizedHeight = floor(
       end.y -
         start.y +
         (defaultResizeInfo.type === ResizeDirectionType.Vertical

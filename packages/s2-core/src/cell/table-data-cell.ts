@@ -32,7 +32,7 @@ export class TableDataCell extends DataCell {
 
   protected shouldDrawResizeArea() {
     // 每一行直绘制一条贯穿式 resize 热区
-    const id = String(this.meta.rowIndex);
+    const id = `${this.meta.rowIndex}`;
 
     const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,

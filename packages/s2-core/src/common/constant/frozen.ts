@@ -25,7 +25,6 @@ export const FrozenCellGroupMap = {
   [FrozenCellType.BOTTOM]: 'frozenBottomGroup',
 };
 
-
 export interface FrozenCellIndex {
   x: number;
   y: number;

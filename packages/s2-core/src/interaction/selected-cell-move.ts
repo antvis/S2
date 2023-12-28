@@ -6,6 +6,7 @@ import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
@@ -265,22 +266,22 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
     const splitLineStyle = get(spreadsheet, 'theme.splitLine');
     const frozenColWidth = frozenColGroup
-      ? Math.floor(
+      ? floor(
           frozenColGroup.getBBox().width -
             splitLineStyle.verticalBorderWidth / 2,
         )
       : 0;
     const frozenTrailingColWidth = frozenTrailingColGroup
-      ? Math.floor(frozenTrailingColGroup.getBBox().width)
+      ? floor(frozenTrailingColGroup.getBBox().width)
       : 0;
     const frozenRowHeight = frozenRowGroup
-      ? Math.floor(
+      ? floor(
           frozenRowGroup.getBBox().height -
             splitLineStyle.horizontalBorderWidth / 2,
         )
       : 0;
     const frozenTrailingRowHeight = frozenTrailingRowGroup
-      ? Math.floor(frozenTrailingRowGroup.getBBox().height)
+      ? floor(frozenTrailingRowGroup.getBBox().height)
       : 0;
 
     const indexes = calculateInViewIndexes({
