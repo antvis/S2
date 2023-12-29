@@ -204,14 +204,17 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    const indexes = calculateInViewIndexes({
-      scrollX,
-      scrollY,
-      widths: this.viewCellWidths,
-      heights: this.viewCellHeights,
-      viewport: finalViewport,
-      rowRemainWidth: this.getRealScrollX(this.cornerBBox.width),
-    });
+    const indexes =
+      this.spreadsheet.isTableMode() && this.spreadsheet.dataSet?.isEmpty?.()
+        ? this.spreadsheet.dataSet.getEmptyViewIndexes()
+        : calculateInViewIndexes({
+            scrollX,
+            scrollY,
+            widths: this.viewCellWidths,
+            heights: this.viewCellHeights,
+            viewport: finalViewport,
+            rowRemainWidth: this.getRealScrollX(this.cornerBBox.width),
+          });
 
     this.panelScrollGroupIndexes = indexes;
 

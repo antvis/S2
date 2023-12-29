@@ -241,7 +241,7 @@ export abstract class BaseDataSet {
 
   // https://github.com/antvis/S2/issues/2255
   public getEmptyViewIndexes(): Indexes {
-    return [];
+    return [] as unknown as Indexes;
   }
 
   public getValueRangeByField(field: string): ValueRange {

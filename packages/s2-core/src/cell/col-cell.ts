@@ -99,11 +99,41 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return false;
   }
 
-  protected getTextPosition(): PointLike {
-    const { isLeaf } = this.meta;
+  /**
+   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
+   * @param viewport
+   * @returns viewport
+   */
+  protected handleViewport(): AreaRange {
+    /**
+     *  p(x, y)
+     *  +----------------------+            x
+     *  |                    +--------------->
+     *  | viewport           | |ColCell  |
+     *  |                    |-|---------+
+     *  +--------------------|-+
+     *                       |
+     *                     y |
+     *                       v
+     *
+     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
+     *
+     */
     const { width, cornerWidth = 0, scrollX = 0 } = this.getHeaderConfig();
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
+
+    const viewport: AreaRange = {
+      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
+      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
+    };
+
+    return viewport;
+  }
+
+  protected getTextPosition(): PointLike {
+    const { isLeaf } = this.meta;
+
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle()!;
@@ -137,26 +167,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       return { x: textX, y: textY };
     }
 
-    /**
-     *  p(x, y)
-     *  +----------------------+            x
-     *  |                    +--------------->
-     *  | viewport           | |ColCell  |
-     *  |                    |-|---------+
-     *  +--------------------|-+
-     *                       |
-     *                     y |
-     *                       v
-     *
-     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
-     *
-     */
-    const viewport: AreaRange = {
-      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
-      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
-    };
-
-    this.handleViewport(viewport);
+    const viewport = this.handleViewport();
 
     const { cell, icon } = this.getStyle()!;
     const { textAlign, textBaseline } = this.getTextStyle();
@@ -497,14 +508,5 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     );
 
     return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
-  }
-
-  /**
-   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
-   * @param viewport
-   * @returns viewport
-   */
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    return viewport;
   }
 }

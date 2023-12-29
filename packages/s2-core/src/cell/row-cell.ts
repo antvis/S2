@@ -2,6 +2,7 @@ import type { PointLike } from '@antv/g';
 import { find, get } from 'lodash';
 import {
   CellType,
+  FrozenGroupType,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -26,6 +27,7 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import type { SimpleBBox } from './../engine/interface';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
@@ -355,16 +357,26 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
   }
 
+  protected handleViewport() {
+    const { scrollY, viewportHeight, spreadsheet } = this.getHeaderConfig();
+
+    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+
+    const viewport: AreaRange = {
+      start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
+      size: viewportHeight - frozenRowGroupHeight,
+    };
+
+    return viewport;
+  }
+
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.getHeaderConfig();
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
 
-    const viewport: AreaRange = {
-      start: this.getMeta().isFrozen ? 0 : scrollY!,
-      size: viewportHeight,
-    };
+    const viewport = this.handleViewport();
 
     const { textStart } = adjustTextIconPositionWhileScrolling(
       viewport,

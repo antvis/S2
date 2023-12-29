@@ -139,16 +139,20 @@ export class TableColCell extends ColCell {
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor } = this.getStyle()!.cell!;
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getStyle()!.cell! || {};
 
     this.backgroundShape = renderRect(this, {
       ...this.getBBoxByType(),
       fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    if (this.isFrozenCell()) {
+  protected handleViewport(): AreaRange {
+    const viewport = super.handleViewport();
+
+    if (this.getMeta().isFrozen) {
       viewport.start = 0;
     }
 
