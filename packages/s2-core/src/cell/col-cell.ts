@@ -451,6 +451,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
 
   protected addExpandColumnIcons() {
     const isLastColumn = this.isLastColumn();
+
     this.addExpandColumnIcon(isLastColumn);
 
     // 如果当前节点的兄弟节点 (前/后) 都被隐藏了, 隐藏后当前节点变为最后一个节点, 需要渲染两个展开按钮, 一个展开[前], 一个展开[后]

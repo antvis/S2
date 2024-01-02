@@ -2,13 +2,13 @@ import { Group, Rect, type RectStyleProps } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FrozenGroupType,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
-import { getFrozenColWidth } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import {
   getFrozenLeafNodesCount,
@@ -17,6 +17,7 @@ import {
   isFrozenTrailingCol,
   translateGroupX,
 } from '../utils';
+import type { FrozenFacet } from '../frozen-facet';
 import { ColHeader } from './col';
 import type { ColHeaderConfig } from './interface';
 
@@ -139,11 +140,10 @@ export class TableColHeader extends ColHeader {
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
     const { width, height, spreadsheet } = this.getHeaderConfig();
-    const topLevelNodes = spreadsheet.facet.getColNodes(0);
-    const { colWidth, trailingColWidth } = getFrozenColWidth(
-      topLevelNodes,
-      spreadsheet.options.frozen!,
-    );
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
+    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const trailingColWidth =
+      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
     const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {
