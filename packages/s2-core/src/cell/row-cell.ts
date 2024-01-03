@@ -234,6 +234,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
+      spreadsheet,
     } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -243,25 +244,31 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       height: resizeStyle.size!,
     };
 
+    const isFrozen = this.headerConfig.isFrozen;
+
+    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
-      y: 0,
+      y: frozenRowGroupHeight,
       width: headerWidth,
       height: headerHeight,
     };
 
     if (
-      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
-        scrollX,
-        scrollY,
-      }) ||
+      (!isFrozen &&
+        !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+          scrollX,
+          scrollY,
+        })) ||
       !position
     ) {
       return;
     }
 
     const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y - scrollY;
+    const offsetY = position.y + y - (isFrozen ? 0 : scrollY);
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - position.x - (x - scrollX)
@@ -364,7 +371,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
 
     const viewport: AreaRange = {
-      start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
+      start: this.headerConfig.isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
       size: viewportHeight - frozenRowGroupHeight,
     };
 

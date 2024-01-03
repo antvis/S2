@@ -123,8 +123,6 @@ export class Node {
 
   public belongsCell?: S2CellType | null | undefined;
 
-  public isFrozen?: boolean;
-
   public inCollapseNode?: boolean;
 
   public cornerType?: CornerNodeType;

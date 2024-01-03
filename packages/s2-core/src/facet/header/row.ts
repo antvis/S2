@@ -14,6 +14,7 @@ import {
 import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
+import { customMerge } from '../../utils';
 
 /**
  * Row Header for SpreadSheet
@@ -44,14 +45,21 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     );
   }
 
-  protected getCellInstance(node: Node): RowCell {
+  protected getCellInstance(
+    node: Node,
+    otherOptions?: Partial<RowHeaderConfig>,
+  ): RowCell {
     const headerConfig = this.getHeaderConfig();
+    const finalConfig: RowHeaderConfig = otherOptions
+      ? customMerge(headerConfig, otherOptions)
+      : headerConfig;
+
     const { spreadsheet } = headerConfig;
     const { rowCell } = spreadsheet.options;
 
     return (
-      rowCell?.(node, spreadsheet, headerConfig) ||
-      new RowCell(node, spreadsheet, headerConfig)
+      rowCell?.(node, spreadsheet, finalConfig) ||
+      new RowCell(node, spreadsheet, finalConfig)
     );
   }
 
@@ -106,12 +114,12 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     // row'cell only show when visible
     each(nodes, (node) => {
       if (this.isRowCellInRect(node) && node.height !== 0) {
-        const cell = this.getCellInstance(node);
-
         const group = this.getCellGroup(node);
+        const cell = this.getCellInstance(node, {
+          isFrozen: group !== this.scrollGroup,
+        });
 
         node.belongsCell = cell;
-        node.isFrozen = group !== this.scrollGroup;
 
         group.appendChild(cell);
         spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);

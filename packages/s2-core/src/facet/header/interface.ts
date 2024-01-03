@@ -32,6 +32,7 @@ export interface BaseHeaderConfig {
   // leaf node sort params
   sortParam?: SortParam;
   shallowRender?: boolean;
+  isFrozen?: boolean;
 }
 
 export interface ColHeaderConfig extends BaseHeaderConfig {

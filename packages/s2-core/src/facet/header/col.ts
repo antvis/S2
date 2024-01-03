@@ -10,6 +10,7 @@ import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
+import { customMerge } from '../../utils';
 
 /**
  * Column Header for SpreadSheet
@@ -22,13 +23,21 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.initScrollGroup();
   }
 
-  protected getCellInstance(node: Node) {
+  protected getCellInstance(
+    node: Node,
+    otherOptions?: Partial<ColHeaderConfig>,
+  ) {
+    const headerConfig = this.getHeaderConfig();
+    const finalConfig: ColHeaderConfig = otherOptions
+      ? customMerge(headerConfig, otherOptions)
+      : headerConfig;
+
     const { spreadsheet } = this.getHeaderConfig();
     const { colCell } = spreadsheet.options;
 
     return (
-      colCell?.(node, spreadsheet, this.headerConfig) ||
-      new ColCell(node, spreadsheet, this.headerConfig)
+      colCell?.(node, spreadsheet, finalConfig) ||
+      new ColCell(node, spreadsheet, finalConfig)
     );
   }
 
@@ -98,12 +107,12 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
-        const cell = this.getCellInstance(node);
-
         const group = this.getCellGroup(node);
+        const cell = this.getCellInstance(node, {
+          isFrozen: group !== this.scrollGroup,
+        });
 
         node.belongsCell = cell;
-        node.isFrozen = group !== this.scrollGroup;
 
         group?.appendChild(cell);
         spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);
