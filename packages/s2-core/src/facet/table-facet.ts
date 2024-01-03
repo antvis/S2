@@ -306,7 +306,9 @@ export class TableFacet extends FrozenFacet {
 
     preLeafNode = Node.blankNode();
 
-    const { width } = this.getCanvasSize();
+    const width =
+      this.getCanvasSize().width -
+      Frame.getVerticalBorderWidth(this.spreadsheet);
 
     if (trailingColCount > 0) {
       const { trailingColCount: realFrozenTrailingColCount } =

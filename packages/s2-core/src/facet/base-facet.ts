@@ -1276,8 +1276,12 @@ export abstract class BaseFacet {
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
     );
-    this.centerFrame?.onBorderScroll(this.getRealScrollX(scrollX));
+    this.centerFrame?.onBorderScroll(this.getCenterFrameScrollX(scrollX));
     this.columnHeader?.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
+  }
+
+  protected getCenterFrameScrollX(scrollX: number) {
+    return this.getRealScrollX(scrollX);
   }
 
   realDataCellRender = (scrollX: number, scrollY: number) => {

@@ -12,9 +12,9 @@ import {
   S2Event,
 } from '../../common';
 import type { FrozenFacet } from '../frozen-facet';
+import { customMerge } from '../../utils';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
-import { customMerge } from '../../utils';
 
 /**
  * Row Header for SpreadSheet

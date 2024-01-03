@@ -448,7 +448,7 @@ export abstract class FrozenFacet extends BaseFacet {
         ...verticalBorderStyle,
         x1: x + panelBBoxStartX,
         x2: x + panelBBoxStartX,
-        y1: panelBBoxStartY,
+        y1: 0,
         y2: panelBBoxStartY + height,
       });
 
@@ -457,7 +457,7 @@ export abstract class FrozenFacet extends BaseFacet {
           new Rect({
             style: {
               x: x + panelBBoxStartX,
-              y: panelBBoxStartY,
+              y: 0,
               width: splitLine?.shadowWidth!,
               height,
               fill: this.getShadowFill(0),
@@ -506,9 +506,9 @@ export abstract class FrozenFacet extends BaseFacet {
 
       renderLine(splitLineGroup, {
         ...verticalBorderStyle,
-        x1: x,
-        x2: x,
-        y1: panelBBoxStartY,
+        x1: x + panelBBoxStartX,
+        x2: x + panelBBoxStartX,
+        y1: 0,
         y2: panelBBoxStartY + height,
       });
 
@@ -516,8 +516,8 @@ export abstract class FrozenFacet extends BaseFacet {
         splitLineGroup.appendChild(
           new Rect({
             style: {
-              x: x - splitLine.shadowWidth!,
-              y: panelBBoxStartY,
+              x: x + panelBBoxStartX - splitLine.shadowWidth!,
+              y: 0,
               width: splitLine.shadowWidth!,
               height,
               fill: this.getShadowFill(180),
@@ -569,6 +569,14 @@ export abstract class FrozenFacet extends BaseFacet {
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
+  }
+
+  protected override getCenterFrameScrollX(scrollX: number): number {
+    if (this.getFrozenOptions().colCount! > 0) {
+      return 0;
+    }
+
+    return super.getCenterFrameScrollX(scrollX);
   }
 
   protected renderFrozenPanelCornerGroup = () => {

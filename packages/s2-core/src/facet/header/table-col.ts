@@ -139,7 +139,7 @@ export class TableColHeader extends ColHeader {
   }
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
-    const { width, height, spreadsheet } = this.getHeaderConfig();
+    const { width, height, spreadsheet, position } = this.getHeaderConfig();
     const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
     const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
     const trailingColWidth =
@@ -147,8 +147,8 @@ export class TableColHeader extends ColHeader {
     const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {
-      x: colWidth,
-      y: 0,
+      x: position.x + colWidth,
+      y: position.y,
       width: scrollGroupWidth,
       height,
     };

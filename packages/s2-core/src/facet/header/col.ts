@@ -8,9 +8,9 @@ import {
 } from '../../common/constant';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
+import { customMerge } from '../../utils';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
-import { customMerge } from '../../utils';
 
 /**
  * Column Header for SpreadSheet
