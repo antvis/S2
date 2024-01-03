@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import insertCss from 'insert-css';
+import { createRoot } from 'react-dom';
+import insertCSS from 'insert-css';
 import { Button } from 'antd';
 import {
   SheetComponent,
@@ -66,12 +66,10 @@ fetch(
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
-      <SheetHeader />,
-    );
+    createRoot(document.getElementById('container')).render(<SheetHeader />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-header {
     margin:0px !important;
   }

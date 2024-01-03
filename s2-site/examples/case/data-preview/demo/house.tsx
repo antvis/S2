@@ -1,10 +1,10 @@
 import { S2DataConfig, NODE_ID_SEPARATOR } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { InputNumber, Select, Space } from 'antd';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import { every, filter, isNil, last, map, omit } from 'lodash';
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 const defaultHouseInfo = {
   name: ['15#', '16#', '21#', '22#'],
@@ -274,7 +274,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <Sheet data={data} />,
     );
   });
@@ -282,7 +282,7 @@ fetch(
 // We use 'insert-css' to insert custom styles
 // It is recommended to add the style to your own style sheet files
 // If you want to copy the code directly, please remember to install the npm package 'insert-css
-insertCss(`
+insertCSS(`
   .select-item {
       margin: 5px 16px 0 0;
   }

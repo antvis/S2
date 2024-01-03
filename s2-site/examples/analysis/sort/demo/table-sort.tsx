@@ -2,10 +2,10 @@ import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { Button } from 'antd';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import { orderBy } from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -131,13 +131,13 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(<App />);
+    createRoot(document.getElementById('container')).render(<App />);
   });
 
 // 我们用 insert-css 演示引入自定义样式
 // 推荐将样式添加到自己的样式文件中
 // 若拷贝官方代码，别忘了 npm install insert-css
-insertCss(`
+insertCSS(`
   .ant-btn {
     margin-right: 10px;
     margin-bottom: 10px;

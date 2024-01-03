@@ -1,6 +1,6 @@
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -12,7 +12,7 @@ fetch(
       height: 480,
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}

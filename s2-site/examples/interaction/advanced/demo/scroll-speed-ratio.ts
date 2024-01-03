@@ -1,6 +1,6 @@
 import { S2DataConfig, S2Options, SpreadSheet, TableSheet } from '@antv/s2';
 
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 
 const defaultScrollSpeedRatio = 1;
 
@@ -84,7 +84,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
     createSlider(s2);
   });
 
-insertCss(`
+insertCSS(`
   input[type='range'] {
     display: block;
     width: 300px;

@@ -1,8 +1,8 @@
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/6eede6eb-8021-4da8-bb12-67891a5705b7.json',
@@ -34,12 +34,10 @@ fetch(
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
-      <SwitcherDemo />,
-    );
+    createRoot(document.getElementById('container')).render(<SwitcherDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-switcher-item.checkable-item {
     align-items: center;
   }

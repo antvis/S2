@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import insertCss from 'insert-css';
+import { createRoot } from 'react-dom';
+import insertCSS from 'insert-css';
 import { ColCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
@@ -236,7 +236,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       },
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -250,7 +250,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
     );
   });
 
-insertCss(`
+insertCSS(`
 
   .ant-page-header {
     margin: 0 !important;

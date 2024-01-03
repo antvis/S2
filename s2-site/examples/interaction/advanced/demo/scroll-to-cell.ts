@@ -1,5 +1,5 @@
 import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 
 function addScrollRowHeaderButton(s2: SpreadSheet) {
   const btn = document.createElement('button');
@@ -91,7 +91,7 @@ fetch(
     addScrollRowHeaderButton(s2);
   });
 
-insertCss(`
+insertCSS(`
   #container > canvas {
     margin-top: 10px;
   }

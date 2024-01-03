@@ -5,9 +5,9 @@ import {
   TooltipOperatorMenuOptions,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 const MyCustomTooltipContent = () => (
   <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>
@@ -24,7 +24,7 @@ class CustomTooltip extends BaseTooltip<
   root: ReactDOM.Root;
 
   renderContent() {
-    this.root ??= ReactDOM.createRoot(this.container!);
+    this.root ??= createRoot(this.container!);
     this.root.render(<MyCustomTooltipContent />);
   }
 
@@ -62,7 +62,7 @@ fetch(
       },
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
@@ -72,7 +72,7 @@ fetch(
     );
   });
 
-insertCss(`
+insertCSS(`
   .tooltip-custom-component {
     padding: 12px;
     height: 50px;

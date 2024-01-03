@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import React, { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom/client';
-import insertCss from 'insert-css';
+import { createRoot } from 'react-dom';
+import insertCSS from 'insert-css';
 import {
   TableColCell,
   GuiIcon,
@@ -694,12 +694,10 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    ReactDOM.createRoot(document.getElementById('container')).render(
-      <App data={res} />,
-    );
+    createRoot(document.getElementById('container')).render(<App data={res} />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-data-preview-demo-modal .filter-item{
     margin-top: 20px;
   }

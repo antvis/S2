@@ -13,7 +13,9 @@ fetch(
       height: 480,
       tooltip: {
         enable: true,
+        // 1. 支持字符串
         content: '我是自定义内容',
+        // 2. 支持回调的方式
         rowCell: {
           content: (cell, showOptions) => {
             console.log(cell, showOptions);
@@ -29,6 +31,7 @@ fetch(
             `;
           },
         },
+        // 3. 支持 innerHTML 的方式, 请注意 XSS !
         colCell: {
           content: `
             <div>
@@ -37,6 +40,7 @@ fetch(
             </div>
           `,
         },
+        // 4. 支持 DOM 的方式
         dataCell: {
           content() {
             const div = document.createElement('div');

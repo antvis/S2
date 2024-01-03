@@ -2,9 +2,9 @@
 import { DataCell, Frame, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 const paletteLegendMap = [
   {
@@ -283,7 +283,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -296,7 +296,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
     );
   });
 
-insertCss(`
+insertCSS(`
   .sheet-wrapper {
     background: #010138;
     padding: 16px;

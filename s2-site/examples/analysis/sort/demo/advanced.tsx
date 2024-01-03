@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import 'antd/es/cascader/style/index.css';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -79,12 +79,12 @@ fetch(
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <AdvancedSortDemo />,
     );
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-advanced-sort-btn.ant-btn svg path {
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }

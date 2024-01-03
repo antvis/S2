@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -27,7 +27,7 @@ fetch(
       },
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
@@ -37,7 +37,7 @@ fetch(
     );
   });
 
-insertCss(`
+insertCSS(`
   .tooltip-custom-component {
     padding: 12px;
     height: 50px;

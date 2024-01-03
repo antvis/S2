@@ -138,6 +138,10 @@ await s2.render(false)
 
 请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
+### 如果在 `@antv/s2` 中使用 tooltip ?
+
+请查看 [Tooltip 文档](/docs/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#custom-content-base)
+
 ### 如何在 Vue 中自定义 Tooltip?
 
 可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/docs/manual/basic/tooltip/#在-vue3-中自定义)

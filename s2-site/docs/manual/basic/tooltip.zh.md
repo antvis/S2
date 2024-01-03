@@ -117,7 +117,11 @@ const s2Options = {
 
 <Playground path='react-component/tooltip/demo/custom-content-base.ts' rid='custom-content-base' height='300'></playground>
 
-对于 `@antv/s2` 类的使用方式：tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
+对于 `@antv/s2` 类的使用方式：`tooltip` 内容可以是任意 `dom` 节点或者 `字符串 (innerHTML)`.
+
+:::warning
+请注意 XSS 过滤！
+:::
 
 ```ts
 const content = document.createElement('div')
@@ -135,7 +139,10 @@ const s2Options = {
 const s2Options = {
   tooltip: {
     content: `
-      <div>我是自定义内容</div>
+      <div>
+        <div>我是自定义内容</div>
+        <p>我也是是自定义内容</p>
+      </div>
     `,
   },
 };
@@ -150,7 +157,7 @@ const s2Options = {
 ```tsx
 const content = (
   <div>
-    <span>我是自定义内容 </span>
+    <span>我是自定义内容</span>
   </div>
 )
 

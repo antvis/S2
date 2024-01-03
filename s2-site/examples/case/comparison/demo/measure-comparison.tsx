@@ -1,23 +1,28 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 import {
   ColCell,
   DataCell,
   CornerCell,
   Frame,
-  ID_SEPARATOR,
+  NODE_ID_SEPARATOR,
+  ROOT_NODE_ID,
   S2DataConfig,
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
+// 上涨颜色
 const UP_COLOR = '#F46649';
+// 下降颜色
 const DOWN_COLOR = '#2AA491';
-// 指标高度
-const TAG_HEIGHT = 20;
 // 指标宽度
 const TAG_WIDTH = 80;
+// 指标高度
+const TAG_HEIGHT = 20;
+
+const isRoot = (id) => id === ROOT_NODE_ID;
 
 class CustomColCell extends ColCell {
   lineConfig = {};
@@ -54,7 +59,7 @@ class CustomColCell extends ColCell {
   drawBackgroundShape() {
     const { parent } = this.meta;
 
-    if (parent?.id === 'root' && this.lineConfigStyle.stroke) {
+    if (isRoot(parent?.id) && this.lineConfigStyle.stroke) {
       this.backgroundShape = this.addShape('rect', {
         attrs: {
           ...this.getCellArea(),
@@ -70,7 +75,7 @@ class CustomColCell extends ColCell {
   drawInteractiveBgShape() {
     const { parent } = this.meta;
 
-    if (parent?.id === 'root') {
+    if (isRoot(parent?.id)) {
       return;
     }
 
@@ -81,7 +86,7 @@ class CustomColCell extends ColCell {
   drawTextShape() {
     const { value, parent } = this.meta;
 
-    if (parent?.id === 'root') {
+    if (isRoot(parent?.id)) {
       const position = this.getTextPosition();
       const textStyle = this.getTextStyle();
 
@@ -110,7 +115,7 @@ class CustomColCell extends ColCell {
       verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
-    if (parent?.id === 'root') {
+    if (isRoot(parent?.id)) {
       this.addShape('line', {
         attrs: {
           x1: x,
@@ -136,7 +141,7 @@ class CustomColCell extends ColCell {
       });
     }
 
-    if (parent?.parent?.id === 'root') {
+    if (isRoot(parent?.parent?.id)) {
       if (this.lineConfig[value]) {
         indexCache[colIndex + 1] = 1;
         this.spreadsheet?.store?.set('indexCache', indexCache);
@@ -187,7 +192,9 @@ class CustomDataCell extends DataCell {
   getIconStyle() {
     const tagName = Object.keys(this.customConditions).find(
       (item) =>
-        this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
+        this.meta.colId?.includes(
+          `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
+        ),
     );
 
     if (tagName) {
@@ -204,7 +211,9 @@ class CustomDataCell extends DataCell {
     const { fieldValue } = this.meta;
     const tagName = Object.keys(this.textConfig).find(
       (item) =>
-        this.meta.colId?.includes(`root${ID_SEPARATOR}${item}${ID_SEPARATOR}`),
+        this.meta.colId?.includes(
+          `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
+        ),
     );
 
     if (!tagName) {
@@ -584,7 +593,7 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       },
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}

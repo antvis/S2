@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 import { max, min, replace } from 'lodash';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
@@ -195,7 +195,7 @@ fetch(
       });
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -209,7 +209,7 @@ fetch(
     );
   });
 
-insertCss(`
+insertCSS(`
   .ant-page-header-compact {
     width: 100% ;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 import {
   SheetComponent,
   SheetComponentOptions,
@@ -81,7 +81,7 @@ fetch(
         }),
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}

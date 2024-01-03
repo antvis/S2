@@ -4,9 +4,9 @@ import {
   Switcher,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/0c913e28-7806-41b2-a046-df3c1586712c.json',
@@ -110,12 +110,10 @@ fetch(
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
-      <SwitcherDemo />,
-    );
+    createRoot(document.getElementById('container')).render(<SwitcherDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-switcher-item.checkable-item {
     align-items: center;
   }

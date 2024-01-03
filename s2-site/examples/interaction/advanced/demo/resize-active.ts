@@ -1,5 +1,5 @@
 import { PivotSheet, S2Options, SpreadSheet, SpreadSheet } from '@antv/s2';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 
 function createRadioGroup(s2: SpreadSheet) {
   [
@@ -69,7 +69,7 @@ fetch(
     createRadioGroup(s2);
   });
 
-insertCss(`
+insertCSS(`
   input[type='radio'] {
     margin-bottom: 20px;
     margin-right: 4px;

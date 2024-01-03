@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import insertCss from 'insert-css';
+import { createRoot } from 'react-dom';
+import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { Image as GImage } from '@antv/g';
 import { DataCell, ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -41,7 +42,10 @@ const paletteLegendMap = [
   },
 ];
 
-// 自定义单元格
+/**
+ * 自定义 DataCell, 给单元格添加图表
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
+ */
 class CustomDataCell extends DataCell {
   drawTextShape() {
     const { fieldValue } = this.meta;
@@ -54,8 +58,8 @@ class CustomDataCell extends DataCell {
     const { x, y, width, height } = this.meta;
 
     img.onload = () => {
-      this.textShape = this.addShape('image', {
-        attrs: {
+      this.textShape = new GImage({
+        style: {
           x: x + (width - img?.width) / 2,
           y: y + (height - img?.height) / 2,
           width: img?.width ?? width,
@@ -180,7 +184,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -193,7 +197,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
     );
   });
 
-insertCss(`
+insertCSS(`
   .sheet-wrapper {
     background: #010138;
     padding: 16px;

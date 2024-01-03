@@ -1,5 +1,5 @@
 import { PivotSheet, S2DataConfig, S2Event, S2Options } from '@antv/s2';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -74,7 +74,7 @@ fetch(
     await s2.render();
   });
 
-insertCss(`
+insertCSS(`
   .merge-cells-button {
     border: 1px solid transparent;
     box-shadow: 0 2px #00000004;

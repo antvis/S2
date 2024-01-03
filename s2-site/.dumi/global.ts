@@ -1,7 +1,8 @@
 if (window) {
   (window as any).react = require('react');
-  (window as any).reactDOM = require('react-dom');
-  // (window as any).reactDOMClient = require('react-dom/client');
+  // 如果写成 reactDOM 会导致在 playground 运行时找不到,
+  (window as any).reactDom = require('react-dom');
+  (window as any).reactDomClient = require('react-dom/client');
   (window as any).lodash = require('lodash');
   (window as any).reactColor = require('react-color');
   (window as any).copyToClipboard = require('copy-to-clipboard');
@@ -18,8 +19,11 @@ if (window) {
   (window as any).s2 = require('@antv/s2');
   (window as any).s2React = require('@antv/s2-react');
 
-  (window as any).s2Css = require('@antv/s2/dist/style.min.css');
-  (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
+  // 本地 link 时不需要引入样式
+  if (process.env.NODE_ENV === 'production') {
+    (window as any).s2CSS = require('@antv/s2/dist/style.min.css');
+    (window as any).s2ReactCSS = require('@antv/s2-react/dist/style.min.css');
+  }
 
   // 码云和老网站统一跳转 antgroup 新域名
   const hosts = ['s2.antv.vision', 'antv-s2.gitee.io'];
@@ -50,7 +54,7 @@ if (window) {
     },
     {
       package: 'react-dom',
-      version: (window as any).reactDOM?.version || 'development',
+      version: (window as any).reactDom?.version || 'development',
     },
     {
       package: 'antd',

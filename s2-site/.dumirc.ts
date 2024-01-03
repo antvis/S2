@@ -31,7 +31,7 @@ export default defineConfig({
     showWxQrcode: true, // 是否显示头部菜单的微信公众号
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
-    themeSwitcher: 'g2',
+    es5: false,
     versions: {
       // 历史版本以及切换下拉菜单
       // [version || '2.x']: 'https://s2.antv.antgroup.com',
@@ -45,13 +45,13 @@ export default defineConfig({
       indexName: 's2-antv-antgroup',
       appId: 'LWCKDMVZ87',
     },
-    internalSite: {
-      url: 'https://s2.antv.antgroup.com',
-      name: {
-        zh: '国内镜像',
-        en: 'China Mirror',
-      },
-    },
+    // internalSite: {
+    //   url: 'https://s2.antv.antgroup.com',
+    //   name: {
+    //     zh: '国内镜像',
+    //     en: 'China Mirror',
+    //   },
+    // },
     navs: [
       {
         slug: 'docs/manual',
@@ -79,6 +79,20 @@ export default defineConfig({
         title: {
           zh: '在线体验',
           en: 'Playground',
+        },
+      },
+      {
+        slug: 'manual/faq',
+        title: {
+          zh: '常见问题',
+          en: 'FAQ',
+        },
+      },
+      {
+        slug: 'https://github.com/antvis/S2/releases',
+        title: {
+          zh: '更新日志',
+          en: 'ChangeLog',
         },
       },
     ],
@@ -257,8 +271,7 @@ export default defineConfig({
       },
     ],
     playground: {
-      playgroundDidMount: 'console.log("playgroundDidMount");',
-      playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
+      extraLib: '',
       devDependencies: {
         typescript: 'latest',
       },
@@ -301,13 +314,14 @@ export default defineConfig({
           },
           link: `/manual/migration-v2`,
         },
-        {
-          text: {
-            zh: '图表示例',
-            en: 'Examples',
-          },
-          link: `/examples`,
-        },
+        // 右上角有图表示例的入口, 2.0 过渡期间透出 [升级指南]
+        // {
+        //   text: {
+        //     zh: '图表示例',
+        //     en: 'Examples',
+        //   },
+        //   link: `/examples`,
+        // },
         {
           text: {
             zh: '开始使用',
@@ -322,27 +336,27 @@ export default defineConfig({
     news: [
       {
         type: {
-          zh: '论坛',
-          en: 'Forum',
+          zh: 'S2 2.0',
+          en: 'S2 2.0',
         },
         title: {
-          zh: 'AntV 芒种日 图新物：GraphInsight 发布',
-          en: 'AntV New Product Launch: GraphInsight',
+          zh: 'S2 2.0 版本开始内测啦! 欢迎尝鲜使用.',
+          en: 'S2 2.0 is in beta! Welcome to use.',
         },
-        date: '2022.06.06',
-        link: 'https://github.com/antvis/GraphInsight',
+        date: '2023.12.06',
+        link: 'https://github.com/antvis/S2/issues/2454',
       },
       {
         type: {
-          zh: '论坛',
-          en: 'Forum',
+          zh: '初心 · 出新 AntV 2023 年度发布',
+          en: 'AntV 2023',
         },
         title: {
-          zh: 'SEE Conf 2022 支付宝体验科技大会',
-          en: 'Alipay Experience Technology Conference',
+          zh: 'S2 2.0 表格看数新纪元',
+          en: 'S2 2.0 Next Version',
         },
-        date: '2022.01.08',
-        link: 'https://seeconf.antfin.com/',
+        date: '2023.11.22',
+        link: 'https://www.yuque.com/antv/blog/1122_7_s2',
       },
     ],
     /** 首页特性介绍 */

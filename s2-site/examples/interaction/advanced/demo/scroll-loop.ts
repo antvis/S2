@@ -1,5 +1,5 @@
 import { PivotSheet, S2Event, S2Options } from '@antv/s2';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 
 // 每次滚动的距离
 const STEP = 50;
@@ -95,7 +95,7 @@ fetch(
     addScrollButton(s2);
   });
 
-insertCss(`
+insertCSS(`
   #container > canvas {
     margin-top: 10px;
   }

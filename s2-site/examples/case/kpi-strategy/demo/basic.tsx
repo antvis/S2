@@ -2,7 +2,7 @@ import { DataCell, measureTextWidth, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom';
 
 // 进度条
 const PROGRESS_BAR = {
@@ -247,7 +247,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       },
     };
 
-    ReactDOM.createRoot(document.getElementById('container')).render(
+    createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
