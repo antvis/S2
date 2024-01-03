@@ -1,6 +1,7 @@
 import { Frame } from '../facet/header/frame';
 import { DataCell } from '../cell/data-cell';
 import {
+  FrozenGroupType,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
@@ -13,8 +14,10 @@ import {
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { CustomRect } from '../engine';
+import { CustomRect, type SimpleBBox } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import { BaseCell } from './base-cell';
 
 export class TableDataCell extends DataCell {
@@ -53,7 +56,7 @@ export class TableDataCell extends DataCell {
       return;
     }
 
-    const { y, height } = this.getBBoxByType();
+    const { x, y, width, height } = this.getBBoxByType();
     const { rowIndex } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const {
@@ -89,11 +92,41 @@ export class TableDataCell extends DataCell {
     const { height: headerHeight, viewportWidth: headerWidth } =
       this.spreadsheet.facet.columnHeader.getHeaderConfig();
 
-    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
 
     let offsetY =
       y + headerHeight + Frame.getHorizontalBorderWidth(this.spreadsheet);
+
+    const frozenGroupInfo = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo;
+    const rowHeight = frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+    const rowTrailingHeight =
+      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].height;
+
+    const resizeAreaBBox: SimpleBBox = {
+      x: 0,
+      y: y + height - resizeStyle.size!,
+      width: headerWidth,
+      height: resizeStyle.size!,
+    };
+    const resizeClipAreaBBox: SimpleBBox = {
+      x: 0,
+      y: rowHeight,
+      width: headerWidth,
+      height:
+        this.spreadsheet.facet.panelBBox.height - rowHeight - rowTrailingHeight,
+    };
+
+    if (
+      !isFrozen &&
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX: 0,
+        scrollY,
+      })
+    ) {
+      return;
+    }
 
     if (!isFrozen) {
       offsetY -= scrollY + paginationSy;

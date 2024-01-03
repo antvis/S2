@@ -257,12 +257,11 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
 
     if (
-      (!isFrozen &&
-        !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
-          scrollX,
-          scrollY,
-        })) ||
-      !position
+      !isFrozen &&
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
     ) {
       return;
     }
