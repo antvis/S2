@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import insertCSS from 'insert-css';
 import { Button } from 'antd';
 import {
@@ -66,7 +65,9 @@ fetch(
       );
     };
 
-    createRoot(document.getElementById('container')).render(<SheetHeader />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SheetHeader />);
   });
 
 insertCSS(`

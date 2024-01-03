@@ -1,7 +1,6 @@
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/b942d973-7364-4fad-a10a-369426a61376.json',
@@ -42,11 +41,13 @@ fetch(
       },
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        dataCfg={dataCfg}
-        options={s2Options}
-        sheetType="strategy"
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={dataCfg}
+          options={s2Options}
+          sheetType="strategy"
+        />,
+      );
   });

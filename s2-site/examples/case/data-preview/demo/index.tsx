@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import React, { useState, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom';
+
 import insertCSS from 'insert-css';
+import { Polygon } from '@antv/g';
 import {
   TableColCell,
   GuiIcon,
@@ -28,6 +29,23 @@ import { get, uniq } from 'lodash';
 import '@antv/s2-react/dist/style.min.css';
 
 const { Search } = Input;
+
+const initColumns = ['province', 'city', 'type', 'price'];
+
+const iconMap = {
+  none: 'Filter',
+  asc: 'SortUp',
+  desc: 'SortDown',
+};
+
+const filterIcon =
+  '<svg t="1633848048963" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85936" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M0 0h1024L724.676923 488.369231V1024l-425.353846-141.784615v-393.846154L0 0z m196.923077 102.4l204.8 354.461538v362.338462l228.430769 63.015385V456.861538l212.676923-354.461538H196.923077z" opacity=".4" p-id="85937"></path></svg>';
+
+const sortUp =
+  '<svg t="1634734477742" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2208" width="200" height="200"><path d="M569.508769 653.352619l151.594419 0 0 108.819221-151.594419 0L569.508769 653.352619zM569.508769 65.693452l385.479045 0 0 108.828814L569.508569 174.522266 569.508769 65.693452 569.508769 65.693452zM569.508769 261.583239l307.513506 0 0 108.819021L569.508769 370.402259 569.508769 261.583239 569.508769 261.583239zM569.508769 457.463032l229.552363 0 0 108.821019-229.552363 0C569.508769 566.284051 569.508769 457.463032 569.508769 457.463032zM569.508769 849.232612l73.62868 0 0 108.826815-73.62868 0L569.508769 849.232612zM354.693414 427.846912l0 530.212516L203.94622 958.059428 203.94622 427.846912 62.754748 427.846912 279.308125 65.187795 495.87849 427.846912 354.693414 427.846912z" p-id="2209"></path></svg>';
+
+const sortDown =
+  '<svg t="1634734501800" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2875" width="200" height="200"><path d="M279.15323 958.059228l217.110799-363.160177-141.539436 0L354.724593 63.957829l-151.123938 0 0 530.943021L62.057421 594.900849 279.15323 958.059228 279.15323 958.059228zM570.078783 64.464885l386.443791 0 0 108.976114L570.078583 173.440999 570.078783 64.464885 570.078783 64.464885zM570.078783 369.594007 878.364965 369.594007l0-108.974515L570.078783 260.619492 570.078783 369.594007zM570.078783 565.747016l230.128573 0 0-108.976114L570.078783 456.770901 570.078783 565.747016 570.078783 565.747016zM570.078783 761.904621l151.972163 0L722.050945 652.930305l-151.972163 0L570.078783 761.904621zM570.078783 958.059228l73.813355 0 0-108.974315-73.813355 0L570.078783 958.059228z" p-id="2876"></path></svg>';
 
 const ShowList = ({ columns, setColumns, allChecked }) => {
   return (
@@ -76,23 +94,25 @@ class CustomCornerCell extends TableCornerCell {
   }
 
   drawTextShape() {
-    const { x, y, width: cellWidth, height: cellHeight, key } = this.meta;
+    const { x, y, width: cellWidth, height: cellHeight } = this.meta;
     const padding = 4;
 
-    this.textShape = this.addShape('polygon', {
-      zIndex: 4,
-      attrs: {
-        fill: 'rgba(0,0,0,0.1)',
-        points: [
-          [x + cellWidth - padding + 2, y + padding],
-          [x + cellWidth - padding + 2, y + cellHeight - padding],
-          [
-            x + cellWidth - padding - cellHeight + padding * 2,
-            y + cellHeight - padding,
+    this.appendChild(
+      new Polygon({
+        zIndex: 4,
+        style: {
+          fill: 'rgba(0,0,0,0.1)',
+          points: [
+            [x + cellWidth - padding + 2, y + padding],
+            [x + cellWidth - padding + 2, y + cellHeight - padding],
+            [
+              x + cellWidth - padding - cellHeight + padding * 2,
+              y + cellHeight - padding,
+            ],
           ],
-        ],
-      },
-    });
+        },
+      }),
+    );
   }
 }
 
@@ -128,10 +148,10 @@ class CustomTableColCell extends TableColCell {
       this.meta.value,
       this.spreadsheet.dataCfg.sortParams,
     );
+
     /**
      * 有值说明有加filter
      */
-
     const isFiltered = !!getCurrentFilterParams(
       this.meta.value,
       this.spreadsheet.dataCfg.filterParams,
@@ -147,28 +167,16 @@ class CustomTableColCell extends TableColCell {
       fill: isFiltered ? '#873bf4' : 'rgb(67, 72, 91)',
     });
 
-    this.add(icon);
+    this.appendChild(icon);
+    // this.add(icon);
 
-    icon.on('click', () => {
+    icon.addEventListener('click', () => {
       this.onIconClick?.({
         meta: this.meta,
       });
     });
   }
 }
-
-const iconMap = {
-  none: 'Filter',
-  asc: 'SortUp',
-  desc: 'SortDown',
-};
-
-export const filterIcon =
-  '<svg t="1633848048963" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85936" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M0 0h1024L724.676923 488.369231V1024l-425.353846-141.784615v-393.846154L0 0z m196.923077 102.4l204.8 354.461538v362.338462l228.430769 63.015385V456.861538l212.676923-354.461538H196.923077z" opacity=".4" p-id="85937"></path></svg>';
-export const sortUp =
-  '<svg t="1634734477742" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2208" width="200" height="200"><path d="M569.508769 653.352619l151.594419 0 0 108.819221-151.594419 0L569.508769 653.352619zM569.508769 65.693452l385.479045 0 0 108.828814L569.508569 174.522266 569.508769 65.693452 569.508769 65.693452zM569.508769 261.583239l307.513506 0 0 108.819021L569.508769 370.402259 569.508769 261.583239 569.508769 261.583239zM569.508769 457.463032l229.552363 0 0 108.821019-229.552363 0C569.508769 566.284051 569.508769 457.463032 569.508769 457.463032zM569.508769 849.232612l73.62868 0 0 108.826815-73.62868 0L569.508769 849.232612zM354.693414 427.846912l0 530.212516L203.94622 958.059428 203.94622 427.846912 62.754748 427.846912 279.308125 65.187795 495.87849 427.846912 354.693414 427.846912z" p-id="2209"></path></svg>';
-export const sortDown =
-  '<svg t="1634734501800" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2875" width="200" height="200"><path d="M279.15323 958.059228l217.110799-363.160177-141.539436 0L354.724593 63.957829l-151.123938 0 0 530.943021L62.057421 594.900849 279.15323 958.059228 279.15323 958.059228zM570.078783 64.464885l386.443791 0 0 108.976114L570.078583 173.440999 570.078783 64.464885 570.078783 64.464885zM570.078783 369.594007 878.364965 369.594007l0-108.974515L570.078783 260.619492 570.078783 369.594007zM570.078783 565.747016l230.128573 0 0-108.976114L570.078783 456.770901 570.078783 565.747016 570.078783 565.747016zM570.078783 761.904621l151.972163 0L722.050945 652.930305l-151.972163 0L570.078783 761.904621zM570.078783 958.059228l73.813355 0 0-108.974315-73.813355 0L570.078783 958.059228z" p-id="2876"></path></svg>';
 
 const getSearchResult = (searchKey, data, columns) => {
   if (!searchKey) {
@@ -192,8 +200,6 @@ const getSearchResult = (searchKey, data, columns) => {
 
   return results;
 };
-
-const initColumns = ['province', 'city', 'type', 'price'];
 
 const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
   const { rowCount: frozenRowCount } = options.frozen;
@@ -235,15 +241,20 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
 };
 
 const App = ({ data }) => {
+  const s2Ref = useRef(null);
+  const [columns, setColumns] = React.useState(initColumns);
+  const [searchKey, setSearchKey] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [colModalVisible, setColModalVisible] = useState(false);
+  const [searchResultActiveIndex, setSearchResultActiveIndex] = useState(-1);
+  const [form] = Form.useForm();
+  const [interactedCol, setInteractedCol] = useState('');
+  const modalCallbackRef = useRef((e) => {});
+
   const onIconClick = ({ meta }) => {
     setInteractedCol(meta.value);
     setColModalVisible(!colModalVisible);
   };
-  const s2Ref = useRef(null);
-  const [columns, setColumns] = React.useState(initColumns);
-
-  const [interactedCol, setInteractedCol] = useState('');
-  const modalCallbackRef = useRef((e) => {});
 
   const options: SheetComponentOptions = {
     width: 600,
@@ -302,14 +313,9 @@ const App = ({ data }) => {
       ...cfg,
       fields: { columns },
     }));
-    s2Ref.current.render(true);
-  }, [columns.length]);
 
-  const [searchKey, setSearchKey] = useState('');
-  const [searchResult, setSearchResult] = useState([]);
-  const [colModalVisible, setColModalVisible] = useState(false);
-  const [searchResultActiveIndex, setSearchResultActiveIndex] = useState(-1);
-  const [form] = Form.useForm();
+    s2Ref.current?.render();
+  }, [columns.length]);
 
   const allChecked = columns.length === initColumns.length;
 
@@ -323,6 +329,10 @@ const App = ({ data }) => {
 
     setSearchResultActiveIndex(nextIndex);
     const current = results[nextIndex];
+
+    if (!current) {
+      return;
+    }
 
     scrollToCell(
       current.row,
@@ -343,6 +353,10 @@ const App = ({ data }) => {
 
     setSearchResultActiveIndex(nextIndex);
     const current = results[nextIndex];
+
+    if (!current) {
+      return;
+    }
 
     scrollToCell(
       current.row,
@@ -400,7 +414,7 @@ const App = ({ data }) => {
               icon={<antdIcons.ArrowLeftOutlined />}
               onClick={() => {
                 if (searchResult.length > 0) {
-                  focusPrev(searchResult, searchResultActiveIndex);
+                  focusPrev(searchResult);
                 }
               }}
             />
@@ -423,9 +437,9 @@ const App = ({ data }) => {
         dataCfg={dataCfg}
         options={options}
         sheetType="table"
-        onColCellClick={(e) => {
+        onColCellClick={({ event, viewMeta }) => {
           // 最左侧列的格子点击后全选
-          if (e.viewMeta.colIndex === 0) {
+          if (viewMeta?.colIndex === 0) {
             s2Ref.current?.interaction.selectAll();
           }
         }}
@@ -437,6 +451,8 @@ const App = ({ data }) => {
         title="列设置"
         open={colModalVisible}
         className="antv-s2-data-preview-demo-modal"
+        okText="确定"
+        cancelText="取消"
         onCancel={() => {
           setColModalVisible(false);
           form.resetFields();
@@ -456,7 +472,7 @@ const App = ({ data }) => {
   );
 };
 
-const convertToObject = (values) => {
+function convertToObject(values) {
   const initData = {};
 
   values.forEach((val) => {
@@ -464,16 +480,9 @@ const convertToObject = (values) => {
   });
 
   return initData;
-};
+}
 
-/**
- * 返回当前sortMethod  默认为NONE
- * @param fieldName
- * @param sortParams
- * @returns
- */
-
-export const getCurrentSortMethod = (fieldName, sortParams) => {
+function getCurrentSortMethod(fieldName, sortParams) {
   return (
     get(
       (sortParams || []).filter((param) => param.sortFieldId === fieldName),
@@ -481,15 +490,9 @@ export const getCurrentSortMethod = (fieldName, sortParams) => {
       'NONE',
     ) || 'NONE'
   );
-};
+}
 
-/**
- *
- * @param fieldName
- * @param filterParams
- * @returns
- */
-export const getCurrentFilterParams = (fieldName, filterParams) => {
+function getCurrentFilterParams(fieldName, filterParams) {
   const filtered = get(
     (filterParams || []).filter((param) => param.filterKey === fieldName),
     '[0].filteredValues',
@@ -497,9 +500,9 @@ export const getCurrentFilterParams = (fieldName, filterParams) => {
   );
 
   return filtered;
-};
+}
 
-const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
+function SortPopover({ fieldName, spreadsheet, modalCallbackRef }) {
   const fieldData = React.useMemo(
     () =>
       uniq(
@@ -510,17 +513,17 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
   );
 
   const { sortParams, filterParams } = spreadsheet.dataCfg;
-  const [sort, setsort] = React.useState(
+  const [sort, setSort] = React.useState(
     getCurrentSortMethod(fieldName, sortParams),
   );
-  const [filtered, setfiltered] = React.useState(
+  const [filtered, setFiltered] = React.useState(
     convertToObject(getCurrentFilterParams(fieldName, filterParams)),
   );
-  const [changed, setchanged] = React.useState({
+  const [changed, setChanged] = React.useState({
     sort: false,
     filter: false,
   });
-  const [searchKeyword, setsearchKeyword] = React.useState('');
+  const [searchKeyword, setSearchKeyword] = React.useState('');
 
   const searchedFieldData = React.useMemo(
     () =>
@@ -540,8 +543,8 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 
   const onKeywordChange = (keyword) => {
     // 关键词变化时将不在关键词内的值过滤
-    setsearchKeyword(keyword);
-    setchanged((old) => ({ ...old, filter: true }));
+    setSearchKeyword(keyword);
+    setChanged((old) => ({ ...old, filter: true }));
     const newFilter = {};
 
     fieldData
@@ -564,7 +567,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
       .forEach((data) => {
         newFilter[data] = true;
       });
-    setfiltered(newFilter);
+    setFiltered(newFilter);
   };
 
   modalCallbackRef.current = () => {
@@ -591,7 +594,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
       });
     }
 
-    setchanged({ filter: false, sort: false });
+    setChanged({ filter: false, sort: false });
   };
 
   return (
@@ -603,8 +606,8 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
       <Form.Item label="数据排序: " className="sort-item">
         <Radio.Group
           onChange={(e) => {
-            setsort(e.target.value);
-            setchanged((val) => ({ ...val, sort: true }));
+            setSort(e.target.value);
+            setChanged((val) => ({ ...val, sort: true }));
           }}
           value={sort}
         >
@@ -612,7 +615,6 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
           <Radio value={'ASC'}>升序</Radio>
           <Radio value={'DESC'}>降序</Radio>
         </Radio.Group>
-        ,
       </Form.Item>
       <Form.Item label="数值筛选: " className="filter-item">
         <div>
@@ -637,10 +639,10 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                   target: { checked },
                 } = e;
 
-                setchanged((val) => ({ ...val, filter: true }));
+                setChanged((val) => ({ ...val, filter: true }));
 
                 if (checked) {
-                  setfiltered((old) => {
+                  setFiltered((old) => {
                     const newValue = {};
 
                     searchedFieldData.forEach((fieldValue) => {
@@ -651,7 +653,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                   });
                 } else {
                   // 将全部过滤
-                  setfiltered((old) => {
+                  setFiltered((old) => {
                     const newValue = {};
 
                     searchedFieldData.forEach((fieldValue) => {
@@ -663,7 +665,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                 }
               }}
             >
-              {'全选'}
+              全选
             </Checkbox>
 
             {searchedFieldData.map((item, i) => {
@@ -673,8 +675,8 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                   className="check-item"
                   checked={!filtered[item]}
                   onChange={(e) => {
-                    setchanged((old) => ({ ...old, filter: true }));
-                    setfiltered((old) => ({
+                    setChanged((old) => ({ ...old, filter: true }));
+                    setFiltered((old) => ({
                       ...old,
                       [item]: !e.target.checked,
                     }));
@@ -689,26 +691,36 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
       </Form.Item>
     </Form>
   );
-};
+}
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    createRoot(document.getElementById('container')).render(<App data={res} />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App data={res} />);
   });
 
 insertCSS(`
-  .antv-s2-data-preview-demo-modal .filter-item{
+  .antv-s2-data-preview-demo-modal .filter-item {
     margin-top: 20px;
   }
-  .antv-s2-data-preview-demo-modal .check-item-list{
+
+  .antv-s2-data-preview-demo-modal .check-item-list {
     display: flex;
     flex-direction: column;
   }
+
   .ant-checkbox-wrapper.check-item {
     margin-left: 0;
   }
-  .antv-s2-data-preview-demo-modal .search-box{
+
+  .ant-checkbox-wrapper .ant-modal-close-x {
+    width: auto;
+    height: auto;
+  }
+
+  .antv-s2-data-preview-demo-modal .search-box {
     margin-bottom: 5px
   }
 `);

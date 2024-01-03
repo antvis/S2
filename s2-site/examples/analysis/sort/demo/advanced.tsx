@@ -1,8 +1,7 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import insertCSS from 'insert-css';
-import 'antd/es/cascader/style/index.css';
+
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -79,9 +78,9 @@ fetch(
       );
     };
 
-    createRoot(document.getElementById('container')).render(
-      <AdvancedSortDemo />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<AdvancedSortDemo />);
   });
 
 insertCSS(`

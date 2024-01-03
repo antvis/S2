@@ -1,4 +1,5 @@
 import { PivotSheet, ColCell, S2Options, S2DataConfig } from '@antv/s2';
+import { Image as GImage } from '@antv/g';
 
 /**
  * 自定义 ColCell，给列头添加背景图
@@ -7,12 +8,21 @@ import { PivotSheet, ColCell, S2Options, S2DataConfig } from '@antv/s2';
 class CustomColCell extends ColCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
   drawBackgroundShape() {
-    this.backgroundShape = this.addShape('image', {
-      attrs: {
-        ...this.getBBoxByType(),
-        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
-      },
-    });
+    const img = new Image();
+
+    img.src =
+      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+
+    img.onload = () => {
+      this.backgroundShape = this.appendChild(
+        new GImage({
+          style: {
+            ...this.getBBoxByType(),
+            img,
+          },
+        }),
+      );
+    };
   }
 }
 

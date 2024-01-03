@@ -1,8 +1,9 @@
-import { DataCell, measureTextWidth, S2DataConfig, S2Theme } from '@antv/s2';
+import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import React from 'react';
-import { createRoot } from 'react-dom';
+
+import { Line, Rect } from '@antv/g';
+import '@antv/s2-react/dist/style.min.css';
 
 // 进度条
 const PROGRESS_BAR = {
@@ -60,7 +61,7 @@ class KpiStrategyDataCell extends DataCell {
 
   // 如果是进度, 格式化为百分比 (只做 demo 示例, 请根据实际情况使用)
   getFormattedFieldValue() {
-    const { data } = this.meta;
+    const data = this.meta.data?.getOrigin();
 
     if (!data || !data.isProgress) {
       return super.getFormattedFieldValue();
@@ -74,7 +75,8 @@ class KpiStrategyDataCell extends DataCell {
   // 绘制衍生指标
   renderDeriveValue() {
     // 通过 this.meta 拿到当前单元格的有效信息
-    const { x, width, data } = this.meta;
+    const { x, width } = this.meta;
+    const data = this.meta.data?.getOrigin();
 
     if (!data || data.isExtra) {
       return;
@@ -90,35 +92,37 @@ class KpiStrategyDataCell extends DataCell {
       fontSize: 12,
     };
     // 获取当前文本坐标
-    const { maxY } = this.textShape.getBBox();
+    const { bottom } = this.textShape.getBBox();
     // 获取当前文本宽度
-    const textWidth = measureTextWidth(text, textStyle);
+    const textWidth = this.spreadsheet.measureTextWidth(text, textStyle);
     // 衍生指标靠右显示
     const textX = x + width - textWidth - PADDING;
     // 衍生指标和数值对齐显示
-    const textY = maxY;
+    const textY = bottom;
 
-    this.addShape('text', {
-      attrs: {
+    this.renderTextShape(
+      {
+        ...textStyle,
         x: textX,
         y: textY,
         text,
-        ...textStyle,
       },
-    });
+      { shallowRender: true },
+    );
   }
 
   // 绘制子弹进度条
 
   renderProgressBar() {
     const { x, y, width, height, data } = this.meta;
+    const originData = data?.getOrigin();
 
-    if (!data || !data.isProgress) {
+    if (!data || !originData || !originData.isProgress) {
       return;
     }
 
-    const currentProgress = data.value;
-    const expectedProgress = data.expectedValue;
+    const currentProgress = originData.value;
+    const expectedProgress = originData.expectedValue;
 
     const currentProgressWidth = Math.min(
       PROGRESS_BAR.width * currentProgress,
@@ -126,45 +130,53 @@ class KpiStrategyDataCell extends DataCell {
     );
 
     // 总进度条
-    this.addShape('rect', {
-      attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.height) / 2,
-        width: PROGRESS_BAR.width,
-        height: PROGRESS_BAR.height,
-        fill: CONTAINER_COLOR,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x: x + width - PROGRESS_BAR.width - PADDING,
+          y: y + (height - PROGRESS_BAR.height) / 2,
+          width: PROGRESS_BAR.width,
+          height: PROGRESS_BAR.height,
+          fill: CONTAINER_COLOR,
+        },
+      }),
+    );
+
     // 当前进度条
-    this.addShape('rect', {
-      attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.innerHeight) / 2,
-        width: currentProgressWidth,
-        height: PROGRESS_BAR.innerHeight,
-        fill: getStatusColorByProgress(currentProgress, expectedProgress),
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x: x + width - PROGRESS_BAR.width - PADDING,
+          y: y + (height - PROGRESS_BAR.innerHeight) / 2,
+          width: currentProgressWidth,
+          height: PROGRESS_BAR.innerHeight,
+          fill: getStatusColorByProgress(currentProgress, expectedProgress),
+        },
+      }),
+    );
+
     // 期望线
-    this.addShape('line', {
-      attrs: {
-        x1:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y1: y + (height - EXPECTED_LINE.height) / 2,
-        x2:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y2: y + (height - EXPECTED_LINE.height) / 2 + EXPECTED_LINE.height,
-        stroke: EXPECTED_LINE.color,
-        lineWidth: EXPECTED_LINE.width,
-        opacity: 0.25,
-      },
-    });
+    this.appendChild(
+      new Line({
+        style: {
+          x1:
+            x +
+            width -
+            PROGRESS_BAR.width +
+            PROGRESS_BAR.width * expectedProgress,
+          y1: y + (height - EXPECTED_LINE.height) / 2,
+          x2:
+            x +
+            width -
+            PROGRESS_BAR.width +
+            PROGRESS_BAR.width * expectedProgress,
+          y2: y + (height - EXPECTED_LINE.height) / 2 + EXPECTED_LINE.height,
+          stroke: EXPECTED_LINE.color,
+          lineWidth: EXPECTED_LINE.width,
+          opacity: 0.25,
+        },
+      }),
+    );
   }
 }
 
@@ -247,7 +259,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       },
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}

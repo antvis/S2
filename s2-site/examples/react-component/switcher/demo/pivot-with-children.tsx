@@ -6,8 +6,6 @@ import {
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React, { useState } from 'react';
-import { createRoot } from 'react-dom';
-
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/0c913e28-7806-41b2-a046-df3c1586712c.json',
 )
@@ -110,7 +108,9 @@ fetch(
       );
     };
 
-    createRoot(document.getElementById('container')).render(<SwitcherDemo />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SwitcherDemo />);
   });
 
 insertCSS(`

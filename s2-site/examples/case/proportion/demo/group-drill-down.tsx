@@ -3,7 +3,6 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React, { useState } from 'react';
-import { createRoot } from 'react-dom';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -154,7 +153,9 @@ fetch(
       );
     };
 
-    createRoot(document.getElementById('container')).render(<GridSheet />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<GridSheet />);
   });
 
 insertCSS(`

@@ -4,7 +4,6 @@ import { InputNumber, Select, Space } from 'antd';
 import insertCSS from 'insert-css';
 import { every, filter, isNil, last, map, omit } from 'lodash';
 import React, { useState } from 'react';
-import { createRoot } from 'react-dom';
 
 const defaultHouseInfo = {
   name: ['15#', '16#', '21#', '22#'],
@@ -274,9 +273,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    createRoot(document.getElementById('container')).render(
-      <Sheet data={data} />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<Sheet data={data} />);
   });
 
 // We use 'insert-css' to insert custom styles

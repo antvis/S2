@@ -7,8 +7,6 @@ import {
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React from 'react';
-import { createRoot } from 'react-dom';
-
 const MyCustomTooltipContent = () => (
   <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>
 );
@@ -24,7 +22,7 @@ class CustomTooltip extends BaseTooltip<
   root: ReactDOM.Root;
 
   renderContent() {
-    this.root ??= createRoot(this.container!);
+    this.root ??= reactDOMClient.createRoot(this.container!);
     this.root.render(<MyCustomTooltipContent />);
   }
 
@@ -62,14 +60,16 @@ fetch(
       },
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+        />,
+      );
   });
 
 insertCSS(`

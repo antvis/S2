@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { debounce, isObjectLike } from 'lodash';
-import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { S2DataConfig, getPalette } from '@antv/s2';
 import { SketchPicker } from 'react-color';
@@ -227,4 +226,4 @@ function App() {
   );
 }
 
-createRoot(document.getElementById('container')).render(<App />);
+reactDOMClient.createRoot(document.getElementById('container')).render(<App />);

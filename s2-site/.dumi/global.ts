@@ -2,7 +2,7 @@ if (window) {
   (window as any).react = require('react');
   // 如果写成 reactDOM 会导致在 playground 运行时找不到,
   (window as any).reactDom = require('react-dom');
-  (window as any).reactDomClient = require('react-dom/client');
+  (window as any).reactDOMClient = require('react-dom/client');
   (window as any).lodash = require('lodash');
   (window as any).reactColor = require('react-color');
   (window as any).copyToClipboard = require('copy-to-clipboard');
@@ -11,6 +11,7 @@ if (window) {
   (window as any).antdIcons = require('@ant-design/icons');
 
   (window as any).gCanvas = require('@antv/g-canvas');
+  (window as any).g = require('@antv/g');
   (window as any).gPluginA11y = require('@antv/g-plugin-a11y');
   (
     window as any

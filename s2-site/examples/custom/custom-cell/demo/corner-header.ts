@@ -1,6 +1,6 @@
 import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
-import { Group } from '@antv/g-canvas';
 import { get } from 'lodash';
+import { Image as GImage, Group, Text } from '@antv/g';
 
 /**
  * 自定义整个角头, 添加文字和背景色
@@ -21,36 +21,46 @@ class CustomCornerHeader extends Group {
 
   initCornerHeader() {
     this.initBg();
-    this.initText();
   }
 
   initBg() {
-    this.backgroundShape = this.addShape('image', {
-      attrs: {
-        x: 0,
-        y: 0,
-        width: get(this.node, 'headerConfig.width'),
-        height: get(this.node, 'headerConfig.height'),
-        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
-      },
-    });
-    this.node.add(this.backgroundShape);
+    const img = new Image();
+
+    img.src =
+      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+
+    img.onload = () => {
+      this.backgroundShape = this.node.appendChild(
+        new GImage({
+          style: {
+            x: 0,
+            y: 0,
+            width: get(this.node, 'headerConfig.width'),
+            height: get(this.node, 'headerConfig.height'),
+            img,
+          },
+        }),
+      );
+
+      this.initText();
+    };
   }
 
   initText() {
-    this.textShape = this.addShape('text', {
-      zIndex: 100,
-      attrs: {
-        x: 50,
-        y: 70,
-        text: 'corner in S2',
-        fontFamily: 'PingFang SC',
-        fontSize: 20,
-        fill: 'black',
-        stroke: 'black',
-      },
-    });
-    this.node.add(this.textShape);
+    this.textShape = this.node.appendChild(
+      new Text({
+        zIndex: 100,
+        style: {
+          x: 50,
+          y: 60,
+          text: 'corner in S2',
+          fontFamily: 'PingFang SC',
+          fontSize: 20,
+          fill: 'black',
+          stroke: 'black',
+        },
+      }),
+    );
   }
 }
 

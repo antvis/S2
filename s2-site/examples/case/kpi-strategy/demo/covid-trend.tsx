@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
+
 import { isNil } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -15,13 +15,15 @@ fetch(
       width: 1200,
       height: 600,
       placeholder: '',
+      hierarchyType: 'tree',
       style: {
-        dataCell: {
+        rowCell: {
           height: 60,
         },
         colCell: {
-          // TODO:
-          widthByFieldValue: { 近14日趋势图: 300 },
+          width: (node) => {
+            return node?.value === '近14日趋势图' ? 300 : null;
+          },
         },
       },
       conditions: {
@@ -70,9 +72,15 @@ fetch(
       },
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
-        dataCfg={s2DataCfg}
+        dataCfg={{
+          ...s2DataCfg,
+          fields: {
+            ...s2DataCfg.fields,
+            rows: s2DataCfg.fields.customTreeItems,
+          },
+        }}
         options={s2Options}
         sheetType="strategy"
       />,

@@ -13,10 +13,10 @@
   "homepage": "https://s2.antv.antgroup.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/antvis/s2"
+    "url": "https://github.com/antvis/S2"
   },
   "bugs": {
-    "url": "https://github.com/antvis/s2/issues"
+    "url": "https://github.com/antvis/S2/issues"
   },
   "scripts": {
     "start": "dumi dev",
@@ -29,19 +29,20 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@antv/dumi-theme-antv": "^0.4.5",
+    "@antv/g": "^5.18.23",
     "@antv/g-canvas": "^1.11.25",
     "@antv/g-plugin-a11y": "^0.6.20",
     "@antv/g-plugin-rough-canvas-renderer": "^1.9.25",
     "@antv/g2": "^5.1.13",
     "@antv/s2": "next",
     "@antv/s2-react": "next",
-    "antd": "^5.12.5",
+    "antd": "^5.12.7",
     "copy-to-clipboard": "^3.3.3",
     "dumi": "^2.2.16",
     "gh-pages": "^6.1.1",
     "lodash": "^4.17.21",
-    "react-color": "^2.19.3",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

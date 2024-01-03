@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
@@ -45,7 +44,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data: res,
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}

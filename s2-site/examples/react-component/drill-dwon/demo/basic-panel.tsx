@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { DrillDown } from '@antv/s2-react';
 
 const disabledFields = ['name'];
@@ -28,10 +27,12 @@ const dataSet = [
   },
 ];
 
-createRoot(document.getElementById('container')).render(
-  <DrillDown
-    disabledFields={disabledFields}
-    clearButtonText={clearButtonText}
-    dataSet={dataSet}
-  />,
-);
+reactDOMClient
+  .createRoot(document.getElementById('container'))
+  .render(
+    <DrillDown
+      disabledFields={disabledFields}
+      clearButtonText={clearButtonText}
+      dataSet={dataSet}
+    />,
+  );

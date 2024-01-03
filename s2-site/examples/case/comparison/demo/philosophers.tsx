@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
+
 import { max, min, replace } from 'lodash';
 import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -195,7 +195,7 @@ fetch(
       });
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}

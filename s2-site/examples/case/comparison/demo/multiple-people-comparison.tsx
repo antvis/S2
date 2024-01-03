@@ -1,5 +1,6 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
+import { Line, Rect } from '@antv/g';
+
 import insertCSS from 'insert-css';
 import { ColCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
@@ -90,25 +91,27 @@ class CustomColCell extends ColCell {
   }
 
   renderGroupSeparator() {
-    const { label, isLeaf } = this.meta;
+    const { value, isLeaf } = this.meta;
 
     // 只需要为 A B 群组绘制标识
-    if (!isLeaf || label === 'people-group-delta') {
+    if (!isLeaf || value === 'people-group-delta') {
       return;
     }
 
-    const fill = GROUP_COLOR[label];
+    const fill = GROUP_COLOR[value] || '#000';
     const { x, y, height } = this.textShape.getBBox();
 
-    this.addShape('rect', {
-      attrs: {
-        x: x - GROUP_SEPARATOR_WIDTH * 1.5,
-        y,
-        height,
-        width: GROUP_SEPARATOR_WIDTH,
-        fill,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x: x - GROUP_SEPARATOR_WIDTH * 1.5,
+          y,
+          height,
+          width: GROUP_SEPARATOR_WIDTH,
+          fill,
+        },
+      }),
+    );
   }
 }
 
@@ -236,7 +239,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       },
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
@@ -251,7 +254,6 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
   });
 
 insertCSS(`
-
   .ant-page-header {
     margin: 0 !important;
     padding: 0 !important;

@@ -1,4 +1,5 @@
 import { PivotSheet, DataCell, S2DataConfig, S2Options } from '@antv/s2';
+import { Image as GImage } from '@antv/g';
 
 /**
  * 自定义 DataCell，给数值单元格添加背景图
@@ -7,12 +8,21 @@ import { PivotSheet, DataCell, S2DataConfig, S2Options } from '@antv/s2';
 class CustomDataCell extends DataCell {
   // 重写绘制背景方法, 添加一个背景图片
   drawBackgroundShape() {
-    this.backgroundShape = this.addShape('image', {
-      attrs: {
-        ...this.getBBoxByType(),
-        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
-      },
-    });
+    const img = new Image();
+
+    img.src =
+      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+
+    img.onload = () => {
+      this.backgroundShape = this.appendChild(
+        new GImage({
+          style: {
+            ...this.getBBoxByType(),
+            img,
+          },
+        }),
+      );
+    };
   }
 }
 

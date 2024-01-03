@@ -3,7 +3,6 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
 const PALETTE_COLORS = [
   {
@@ -155,7 +154,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       },
     };
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div className="root">
         <SheetComponent
           dataCfg={s2DataConfig}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -13,7 +12,7 @@ fetch(
       height: 480,
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent dataCfg={dataCfg} options={s2Options} />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SheetComponent dataCfg={dataCfg} options={s2Options} />);
   });

@@ -1,6 +1,7 @@
 import type {
   DisplayObject,
   Line,
+  Image,
   PointLike,
   Polygon,
   Rect,
@@ -90,7 +91,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected theme: InternalFullyTheme;
 
   // background control shape
-  protected backgroundShape: Rect | Polygon;
+  protected backgroundShape: Rect | Polygon | Image;
 
   // text control shape
   protected textShape: CustomText;

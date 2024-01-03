@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
+
 import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Image as GImage } from '@antv/g';
@@ -58,15 +58,17 @@ class CustomDataCell extends DataCell {
     const { x, y, width, height } = this.meta;
 
     img.onload = () => {
-      this.textShape = new GImage({
-        style: {
-          x: x + (width - img?.width) / 2,
-          y: y + (height - img?.height) / 2,
-          width: img?.width ?? width,
-          height: img?.height ?? height,
-          img: url,
-        },
-      });
+      this.textShape = this.appendChild(
+        new GImage({
+          style: {
+            x: x + (width - img?.width) / 2,
+            y: y + (height - img?.height) / 2,
+            width: img?.width ?? width,
+            height: img?.height ?? height,
+            img: url,
+          },
+        }),
+      );
     };
   }
 }
@@ -184,7 +186,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent

@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { Switcher } from '@antv/s2-react';
 
 const switcherFields = {
@@ -20,6 +19,6 @@ const onSubmit = (result) => {
   console.log('result:', result);
 };
 
-createRoot(document.getElementById('container')).render(
-  <Switcher {...switcherFields} onSubmit={onSubmit} />,
-);
+reactDOMClient
+  .createRoot(document.getElementById('container'))
+  .render(<Switcher {...switcherFields} onSubmit={onSubmit} />);

@@ -1,9 +1,7 @@
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
-import 'antd/es/checkbox/style/index.css';
 import React, { useRef, useState } from 'react';
-import { createRoot } from 'react-dom';
+import '@antv/s2-react/dist/style.min.css';
 
 // 初始化配置
 const s2Options: SheetComponentOptions = {
@@ -42,5 +40,7 @@ const App = ({ data }) => {
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    createRoot(document.getElementById('container')).render(<App data={res} />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App data={res} />);
   });

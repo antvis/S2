@@ -2,7 +2,6 @@ import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
 // 临时处理老数据格式
 function process(children) {
@@ -80,11 +79,13 @@ fetch(
       },
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        sheetType="strategy"
-        dataCfg={s2DataConfig}
-        options={s2Options}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="strategy"
+          dataCfg={s2DataConfig}
+          options={s2Options}
+        />,
+      );
   });

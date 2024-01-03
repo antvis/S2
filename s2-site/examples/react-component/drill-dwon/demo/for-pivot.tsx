@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import {
   SheetComponent,
   SheetComponentOptions,
@@ -81,12 +80,14 @@ fetch(
         }),
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        partDrillDown={PartDrillDown}
-        adaptive={false}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2Options}
+          partDrillDown={PartDrillDown}
+          adaptive={false}
+        />,
+      );
   });

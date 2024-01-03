@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -19,12 +18,14 @@ fetch(
       },
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+        />,
+      );
   });

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { createRoot } from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Node, S2DataConfig, TooltipOptions } from '@antv/s2';
 
@@ -126,4 +125,4 @@ const App = () => {
   );
 };
 
-createRoot(document.getElementById('container')).render(<App />);
+reactDOMClient.createRoot(document.getElementById('container')).render(<App />);

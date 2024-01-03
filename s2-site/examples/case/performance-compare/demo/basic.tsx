@@ -3,7 +3,6 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { compact } from 'lodash';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -91,7 +90,7 @@ function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
 fetch('https://assets.antv.antgroup.com/s2/compare.json')
   .then((res) => res.json())
   .then((data) => {
-    createRoot(document.getElementById('container')).render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div>
         <h3>1000 数据规模表格渲染时间对比</h3>
         <SheetComponent

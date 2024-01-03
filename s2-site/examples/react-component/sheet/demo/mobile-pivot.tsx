@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom';
+
 import { MobileSheet } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -8,7 +8,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    createRoot(document.getElementById('container')).render(
-      <MobileSheet dataCfg={dataCfg} />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<MobileSheet dataCfg={dataCfg} />);
   });

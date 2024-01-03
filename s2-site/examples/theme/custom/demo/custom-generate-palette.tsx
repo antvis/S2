@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { createRoot } from 'react-dom';
 import { getPalette, generatePalette, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { ChromePicker } from 'react-color';
@@ -74,5 +73,7 @@ fetch(
       );
     }
 
-    createRoot(document.getElementById('container')).render(<App />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });

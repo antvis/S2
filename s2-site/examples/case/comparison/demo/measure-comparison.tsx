@@ -1,10 +1,9 @@
 /* eslint-disable max-classes-per-file */
-import React from 'react';
-import { createRoot } from 'react-dom';
+import { Line, Rect } from '@antv/g';
 import {
   ColCell,
-  DataCell,
   CornerCell,
+  DataCell,
   Frame,
   NODE_ID_SEPARATOR,
   ROOT_NODE_ID,
@@ -12,13 +11,14 @@ import {
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import React from 'react';
 
 // 上涨颜色
 const UP_COLOR = '#F46649';
 // 下降颜色
 const DOWN_COLOR = '#2AA491';
 // 指标宽度
-const TAG_WIDTH = 80;
+const TAG_WIDTH = 100;
 // 指标高度
 const TAG_HEIGHT = 20;
 
@@ -40,7 +40,7 @@ class CustomColCell extends ColCell {
     this.lineConfigStyle = lineConfigStyle || {};
   }
 
-  getCellArea() {
+  getBBoxByType() {
     const { x, y, height, width, parent } = this.meta;
 
     if (parent?.id === 'root') {
@@ -60,12 +60,14 @@ class CustomColCell extends ColCell {
     const { parent } = this.meta;
 
     if (isRoot(parent?.id) && this.lineConfigStyle.stroke) {
-      this.backgroundShape = this.addShape('rect', {
-        attrs: {
-          ...this.getCellArea(),
-          fill: this.lineConfigStyle.stroke,
-        },
-      });
+      this.backgroundShape = this.appendChild(
+        new Rect({
+          style: {
+            ...this.getBBoxByType(),
+            fill: this.lineConfigStyle.stroke,
+          },
+        }),
+      );
     } else {
       super.drawBackgroundShape();
     }
@@ -90,15 +92,14 @@ class CustomColCell extends ColCell {
       const position = this.getTextPosition();
       const textStyle = this.getTextStyle();
 
-      this.textShape = this.addShape('text', {
-        attrs: {
-          x: position.x,
-          y: position.y,
-          text: value,
-          fill: this.lineConfigStyle.stroke ? '#FFF' : textStyle.fill,
-          textAlign: 'center',
-          textBaseline: 'middle',
-        },
+      this.renderTextShape({
+        x: position.x,
+        y: position.y,
+        text: value,
+        fill: this.lineConfigStyle.stroke ? '#FFF' : textStyle.fill,
+        textAlign: 'center',
+        textBaseline: 'middle',
+        fontSize: 12,
       });
     } else {
       super.drawTextShape();
@@ -116,29 +117,33 @@ class CustomColCell extends ColCell {
     } = this.getStyle().cell;
 
     if (isRoot(parent?.id)) {
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y + height - TAG_HEIGHT,
-          x2: x,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y + height - TAG_HEIGHT,
+            x2: x,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+          },
+        }),
+      );
       groupCache[children?.[0]?.value] = 1;
       this?.spreadsheet?.store?.set('groupCache', groupCache);
     } else if (groupCache[value]) {
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y,
-          x2: x,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y,
+            x2: x,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+          },
+        }),
+      );
     }
 
     if (isRoot(parent?.parent?.id)) {
@@ -148,17 +153,21 @@ class CustomColCell extends ColCell {
       }
 
       if (indexCache[colIndex]) {
-        this.addShape('line', {
-          attrs: {
-            x1: x,
-            y1: y,
-            x2: x,
-            y2: y + height,
-            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-            opacity: this.lineConfigStyle.opacity || verticalBorderColorOpacity,
-          },
-        });
+        this.appendChild(
+          new Line({
+            style: {
+              x1: x,
+              y1: y,
+              x2: x,
+              y2: y + height,
+              stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+              lineWidth:
+                this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+              opacity:
+                this.lineConfigStyle.opacity || verticalBorderColorOpacity,
+            },
+          }),
+        );
       }
     }
   }
@@ -251,30 +260,34 @@ class CustomDataCell extends DataCell {
     } = this.getStyle().cell;
 
     if (colIndex % valueLength === 0) {
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y,
-          x2: x,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y,
+            x2: x,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+          },
+        }),
+      );
     }
 
     if (indexCache[colIndex]) {
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y,
-          x2: x,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-          opacity: this.lineConfigStyle.opacity || verticalBorderColorOpacity,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y,
+            x2: x,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+            opacity: this.lineConfigStyle.opacity || verticalBorderColorOpacity,
+          },
+        }),
+      );
     }
 
     if (currentConfig) {
@@ -295,17 +308,19 @@ class CustomDataCell extends DataCell {
     } = this.getStyle().cell;
 
     if (currentConfig) {
-      this.addShape('line', {
-        attrs: {
-          x1: x + width,
-          y1: y,
-          x2: x + width,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-          opacity: this.lineConfigStyle.opacity || verticalBorderColorOpacity,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x + width,
+            y1: y,
+            x2: x + width,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+            opacity: this.lineConfigStyle.opacity || verticalBorderColorOpacity,
+          },
+        }),
+      );
     }
 
     const tagLength = [...(spreadsheet.dataSet.colPivotMeta || [])].length;
@@ -314,16 +329,18 @@ class CustomDataCell extends DataCell {
       colIndex + 1 !== tagLength * valueLength; // 除了表格最后一列,每个 tag 最后一个子列加 right line
 
     if (shouldAddRightLine) {
-      this.addShape('line', {
-        attrs: {
-          x1: x + width,
-          y1: y,
-          x2: x + width,
-          y2: y + height,
-          stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
-          lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x + width,
+            y1: y,
+            x2: x + width,
+            y2: y + height,
+            stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
+            lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
+          },
+        }),
+      );
     }
   }
 }
@@ -337,8 +354,8 @@ class CustomFrame extends Frame {
 
   addCornerRightBorder() {
     const {
-      width,
-      height,
+      cornerWidth,
+      cornerHeight,
       viewportHeight,
       position,
       spreadsheet,
@@ -349,52 +366,55 @@ class CustomFrame extends Frame {
       verticalBorderWidth,
       verticalBorderColorOpacity,
     } = spreadsheet.theme?.splitLine || {};
-    const x = position.x + width;
+    const x = position.x + cornerWidth;
     const y1 = position.y;
-    const y2 = position.y + height + viewportHeight;
+    const y2 = position.y + cornerHeight + viewportHeight;
     const { scrollX } = spreadsheet.facet.getScrollOffset();
 
     if (scrollX > 0) {
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y1 + cornerHeight / 2 - TAG_HEIGHT,
+            x2: x,
+            y2,
+            stroke: verticalBorderColor,
+            lineWidth: verticalBorderWidth,
+            opacity: verticalBorderColorOpacity,
+          },
+        }),
+      );
       // 滚动时使用默认的颜色
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y1 + height / 2 - TAG_HEIGHT,
-          x2: x,
-          y2,
-          stroke: verticalBorderColor,
-          lineWidth: verticalBorderWidth,
-          opacity: verticalBorderColorOpacity,
-        },
-      });
     } else {
-      this.addShape('line', {
-        attrs: {
-          x1: x,
-          y1: y1 + height / 2 - TAG_HEIGHT,
-          x2: x,
-          y2,
-          stroke: lineConfigStyle?.stroke || verticalBorderColor,
-          lineWidth: lineConfigStyle?.lineWidth || verticalBorderWidth,
-        },
-      });
+      this.appendChild(
+        new Line({
+          style: {
+            x1: x,
+            y1: y1 + cornerHeight / 2 - TAG_HEIGHT,
+            x2: x,
+            y2,
+            stroke: lineConfigStyle?.stroke || verticalBorderColor,
+            lineWidth: lineConfigStyle?.lineWidth || verticalBorderWidth,
+          },
+        }),
+      );
     }
   }
 
   addSplitLineRightShadow() {
     const {
-      width,
-      height,
+      cornerWidth,
+      cornerHeight,
       viewportHeight,
       position,
-      isPivotMode,
       spreadsheet,
       showViewPortRightShadow,
     } = this.cfg;
 
     const { scrollX } = spreadsheet.facet.getScrollOffset();
 
-    if (!isPivotMode || scrollX === 0) {
+    if (!spreadsheet.isPivotMode() || scrollX === 0) {
       return;
     }
 
@@ -407,18 +427,20 @@ class CustomFrame extends Frame {
       showViewPortRightShadow &&
       spreadsheet.isFrozenRowHeader()
     ) {
-      const x = position.x + width;
+      const x = position.x + cornerWidth;
       const y = position.y;
 
-      this.addShape('rect', {
-        attrs: {
-          x,
-          y: y + height / 2,
-          width: shadowWidth,
-          height: viewportHeight + height - height / 2,
-          fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
-        },
-      });
+      this.appendChild(
+        new Rect({
+          style: {
+            x,
+            y: y + cornerHeight / 2,
+            width: shadowWidth,
+            height: viewportHeight + cornerHeight - cornerHeight / 2,
+            fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
+          },
+        }),
+      );
     }
   }
 }
@@ -434,18 +456,19 @@ class CustomCornelCell extends CornerCell {
 
   drawBackgroundShape() {
     const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
-    const attrs = {
-      ...this.getCellArea(),
-      fill: this.meta.cornerType === 'col' ? '#FFF' : backgroundColor,
-      opacity: backgroundColorOpacity,
-    };
 
-    this.backgroundShape = this.addShape('rect', {
-      attrs,
-    });
+    this.backgroundShape = this.appendChild(
+      new Rect({
+        style: {
+          ...this.getBBoxByType(),
+          fill: this.meta.cornerType === 'col' ? '#FFF' : backgroundColor,
+          opacity: backgroundColorOpacity,
+        },
+      }),
+    );
   }
 
-  drawBorderShape() {}
+  drawBorders() {}
 }
 
 fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
@@ -548,6 +571,9 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       tooltip: {
         enable: false,
       },
+      frozen: {
+        rowHeader: false,
+      },
       colCell: (node, spreadsheet, ...restOptions) => {
         return new CustomColCell(
           node,
@@ -593,11 +619,13 @@ fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
       },
     };
 
-    createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        sheetType="pivot"
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2Options}
+          sheetType="pivot"
+        />,
+      );
   });

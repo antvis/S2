@@ -5,7 +5,6 @@ import { Button } from 'antd';
 import insertCSS from 'insert-css';
 import { orderBy } from 'lodash';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -131,7 +130,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       );
     };
 
-    createRoot(document.getElementById('container')).render(<App />);
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });
 
 // 我们用 insert-css 演示引入自定义样式
