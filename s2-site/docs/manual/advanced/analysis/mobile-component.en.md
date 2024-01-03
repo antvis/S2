@@ -1,6 +1,7 @@
 ---
 title: Mobile Component
 order: 10
+tag: New
 ---
 
 In order to meet the usage scenarios of the mobile terminal, the analysis component in `s2-react` has been adapted for mobile. Help users view data more conveniently and efficiently on the mobile terminal.

@@ -1,6 +1,7 @@
 ---
 title: Hierarchy
 order: 8
+tag: New
 ---
 
 功能描述：节点层级结构。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/layout/hierarchy.ts)

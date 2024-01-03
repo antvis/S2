@@ -1,6 +1,7 @@
 ---
 title: BaseCell
 order: 4
+tag: Updated
 ---
 
 Function description: cell base class. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/base-cell.ts)

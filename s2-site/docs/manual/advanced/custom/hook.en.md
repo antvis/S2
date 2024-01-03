@@ -1,6 +1,7 @@
 ---
 title: Customize Hook
 order: 1
+tag: Updated
 ---
 
 Custom `Hook` allows developers to rewrite all elements of the table, and you can customize certain elements according to product needs, such as corner headers, column headers, row headers, cells, row header order, cell position, etc. If necessary, you can completely rewrite a pivot table that belongs to you!

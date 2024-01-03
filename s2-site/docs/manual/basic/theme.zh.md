@@ -1,6 +1,7 @@
 ---
 title: 主题配置
 order: 6
+tag: Updated
 ---
 
 ## 简介

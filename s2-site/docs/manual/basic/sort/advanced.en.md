@@ -1,6 +1,7 @@
 ---
 title: Advanced Sort
 order: 1
+tag: Updated
 ---
 
 The `React` version provides an advanced sorting component, optionally available. [view example](/examples/analysis/sort#advanced)

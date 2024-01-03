@@ -1,6 +1,7 @@
 ---
 title: 数据格式化
 order: 9
+tag: New
 ---
 
 `s2DataConfig` 支持配置 `meta` 对数据进行格式化

@@ -1,6 +1,7 @@
 ---
 title: BaseCell
 order: 4
+tag: Updated
 ---
 
 功能描述：单元格基类。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/base-cell.ts)

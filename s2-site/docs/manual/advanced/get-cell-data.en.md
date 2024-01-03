@@ -1,6 +1,7 @@
 ---
 title: Get Cell Data
 order: 9
+tag: Updated
 ---
 
 > **Before reading this chapter, please make sure you have read the basic tutorial, data flow processing, layout and other chapters**

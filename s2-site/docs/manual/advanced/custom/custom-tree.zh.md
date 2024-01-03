@@ -1,6 +1,7 @@
 ---
 title: 自定义目录树
 order: 2
+tag: New
 ---
 
 `S2` 默认提供 [平铺模式 (grid)](/examples/basic/pivot#grid) 和 [树状模式 (tree)](/examples/basic/pivot#tree) 两种行头布局方式

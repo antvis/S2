@@ -1,6 +1,7 @@
 ---
 title: 注册 AntV/G 插件
 order: 10
+tag: New
 ---
 
 :::warning{title='提示'}

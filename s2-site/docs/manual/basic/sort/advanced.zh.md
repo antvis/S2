@@ -1,6 +1,7 @@
 ---
 title: 高级排序
 order: 1
+tag: Updated
 ---
 
 `React` 版本提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)

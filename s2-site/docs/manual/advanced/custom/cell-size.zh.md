@@ -1,6 +1,7 @@
 ---
 title: 自定义单元格宽高
 order: 5
+tag: Updated
 ---
 
 S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等宽`, `列等宽` 和 `行列紧凑布局` 三种布局 ([查看例子](/examples/layout/basic/#compact))

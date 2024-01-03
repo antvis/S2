@@ -291,8 +291,18 @@ export default defineConfig({
         </html>`,
     },
     announcement: {
-      zh: '🎉 S2 2.0 版本开始内测啦! 查看 [升级指南](https://s2.antv.antgroup.com/manual/migration-v2)',
-      en: '🎉 S2 Next version 2.0 is in beta! see [Upgrade Guide](https://s2.antv.antgroup.com/manual/migration-v2)',
+      // icon: 'https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg',
+      title: {
+        zh: '🎉 S2 2.0 版本开始内测啦!',
+        en: '🎉 S2 Next version 2.0 is in beta!',
+      },
+      link: {
+        text: {
+          zh: '查看升级指南',
+          en: 'Upgrade Guide',
+        },
+        url: 'https://s2.antv.antgroup.com/manual/migration-v2',
+      },
     },
     /** 首页技术栈介绍 */
     detail: {
@@ -305,11 +315,15 @@ export default defineConfig({
         en: 'S2 is a table solution in the field of multidimensional cross analysis. It is data-driven view, provides the underlying core library, basic component library and business scenario library, and has the ability of free expansion, allowing developers to use it out of the box and freely play based on their own scenarios.',
       },
       image:
-        'https://gw.alipayobjects.com/zos/bmw-prod/1aa91199-b986-4553-a425-6baa18c3a9bd.svg',
+        'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
+      imageStyle: {
+        marginLeft: '70px',
+        marginTop: '90px',
+      },
       buttons: [
         {
           text: {
-            zh: '升级指南',
+            zh: '2.0 升级指南',
             en: 'Migration v2',
           },
           link: `/manual/migration-v2`,

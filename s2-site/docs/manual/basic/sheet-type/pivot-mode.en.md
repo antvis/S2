@@ -1,6 +1,7 @@
 ---
 title: Pivot Mode
 order: 1
+tag: Updated
 ---
 
 ## Introduction

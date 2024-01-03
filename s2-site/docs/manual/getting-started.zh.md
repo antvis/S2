@@ -1,30 +1,32 @@
 ---
 title: 快速上手
 order: 1
+tag: Updated
 ---
+
 ## 📦 安装
 
 ### 使用 npm 或 yarn 或 pnpm 安装
 
 ```bash
 # pnpm
-$ pnpm add @antv/s2 --save
+$ pnpm add @antv/s2@next --save
 
 # npm
-$ npm install @antv/s2 --save
+$ npm install @antv/s2@next --save
 
 # yarn
-$ yarn add @antv/s2 --save
+$ yarn add @antv/s2@next --save
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ pnpm add @antv/s2 @antv/s2-react --save
+$ pnpm add @antv/s2@next @antv/s2-react@next --save
 
 # Vue3
-$ pnpm add @antv/s2 @antv/s2-vue --save
+$ pnpm add @antv/s2@next @antv/s2-vue@next --save
 
 ```
 

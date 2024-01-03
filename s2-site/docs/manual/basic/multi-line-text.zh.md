@@ -1,6 +1,7 @@
 ---
 title: 多行文本
 order: 10
+tag: New
 ---
 
 :::warning{title="注意"}

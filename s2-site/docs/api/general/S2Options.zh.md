@@ -1,6 +1,7 @@
 ---
 title: S2Options
 order: 1
+tag: Updated
 ---
 
 表格参数配置

@@ -1,6 +1,7 @@
 ---
 title: 移动端表格组件
 order: 10
+tag: New
 ---
 
 <Badge>@antv/s2-react</Badge>

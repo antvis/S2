@@ -1,6 +1,7 @@
 ---
 title: BaseBBox
 order: 9
+tag: New
 ---
 
 功能描述：盒模型。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/bbox/baseBBox.ts)

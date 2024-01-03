@@ -1,6 +1,7 @@
 ---
 title: 导出
 order: 11
+tag: Updated
 ---
 
 <Badge>@antv/s2</Badge> <Badge>@antv/s2-react</Badge>

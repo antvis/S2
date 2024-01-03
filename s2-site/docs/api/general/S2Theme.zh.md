@@ -1,6 +1,7 @@
 ---
 title: S2Theme
 order: 2
+tag: Updated
 ---
 
 主题配置
