@@ -1038,7 +1038,7 @@ export class PivotFacet extends FrozenFacet {
               y,
               width,
               height: splitLine?.shadowWidth!,
-              fill: this.getShadowFill(0),
+              fill: this.getShadowFill(90),
             },
           }),
         );

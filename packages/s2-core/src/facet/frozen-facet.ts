@@ -442,7 +442,9 @@ export abstract class FrozenFacet extends BaseFacet {
         return prev;
       }, 0);
 
-      const height = frozenTrailingRowCount > 0 ? panelHeight : viewportHeight;
+      const height =
+        (frozenTrailingRowCount > 0 ? panelHeight : viewportHeight) +
+        panelBBoxStartY;
 
       renderLine(splitLineGroup, {
         ...verticalBorderStyle,
@@ -502,7 +504,9 @@ export abstract class FrozenFacet extends BaseFacet {
     if (frozenTrailingColCount > 0) {
       const { x } =
         topLevelColNodes[topLevelColNodes.length - frozenTrailingColCount];
-      const height = frozenTrailingRowCount ? panelHeight : viewportHeight;
+      const height =
+        (frozenTrailingRowCount ? panelHeight : viewportHeight) +
+        panelBBoxStartY;
 
       renderLine(splitLineGroup, {
         ...verticalBorderStyle,
@@ -710,14 +714,11 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].height;
 
     const panelScrollGroupClipX =
-      (isFrozenRowHeader ? this.panelBBox.x : 0) + frozenColGroupWidth;
+      (isFrozenRowHeader || spreadsheet.isTableMode() ? this.panelBBox.x : 0) +
+      frozenColGroupWidth;
     const panelScrollGroupClipY = this.panelBBox.y + frozenRowGroupHeight;
     const panelScrollGroupClipWidth =
-      (isFrozenRowHeader
-        ? this.panelBBox.width
-        : this.panelBBox.x + this.panelBBox.width) -
-      frozenColGroupWidth -
-      frozenTrailingColWidth;
+      this.panelBBox.width - frozenColGroupWidth - frozenTrailingColWidth;
     const panelScrollGroupClipHeight =
       this.panelBBox.height - frozenRowGroupHeight - frozenTrailingRowHeight;
 
