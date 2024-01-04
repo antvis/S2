@@ -56,7 +56,7 @@ export class TableDataCell extends DataCell {
       return;
     }
 
-    const { x, y, width, height } = this.getBBoxByType();
+    const { y, height } = this.getBBoxByType();
     const { rowIndex } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const {
@@ -92,7 +92,7 @@ export class TableDataCell extends DataCell {
     const { height: headerHeight, viewportWidth: headerWidth } =
       this.spreadsheet.facet.columnHeader.getHeaderConfig();
 
-    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
 
     let offsetY =

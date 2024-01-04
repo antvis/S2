@@ -60,8 +60,6 @@ export enum MiniChartTypes {
   Bullet = 'bullet',
 }
 
-// 线条 linecap 样式
-export const SQUARE_LINE_CAP = 'square';
 
 export const getDefaultSeriesNumberText = (defaultText?: string) =>
   defaultText ?? i18n('序号');
