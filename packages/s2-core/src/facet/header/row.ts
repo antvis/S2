@@ -138,7 +138,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const { width, height, position, spreadsheet } = this.getHeaderConfig();
+    const { width, viewportHeight, position, spreadsheet } =
+      this.getHeaderConfig();
 
     const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
       .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
@@ -148,7 +149,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         x: position.x,
         y: position.y + frozenRowGroupHeight,
         width,
-        height,
+        height: viewportHeight,
       },
     });
 
