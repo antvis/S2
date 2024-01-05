@@ -281,7 +281,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
           style: {
             ...attrs.style,
             x: 0,
-            y: y + height - resizeStyle.size! / 2,
+            y: y + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },
@@ -380,7 +380,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
         {
           style: {
             ...attrs.style,
-            x: offsetX + width - resizeStyle.size! / 2,
+            x: offsetX + width - resizeStyle.size!,
             y: offsetY,
             height,
           },

@@ -290,7 +290,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
           style: {
             ...attrs.style,
             x: offsetX,
-            y: offsetY + height - resizeStyle.size! / 2,
+            y: offsetY + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },

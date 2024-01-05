@@ -227,7 +227,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
         {
           style: {
             ...attrs.style,
-            x: offsetX + width - resizeStyle.size! / 2,
+            x: offsetX + width - resizeStyle.size!,
             y: offsetY,
             height: this.isLastRowCornerCell() ? headerHeight : height,
           },
