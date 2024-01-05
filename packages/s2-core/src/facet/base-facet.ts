@@ -1556,12 +1556,7 @@ export abstract class BaseFacet {
       scrollY: originalScrollY,
       rowHeaderScrollX,
     } = this.getScrollOffset();
-    const defaultScrollY = originalScrollY + this.getPaginationScrollY();
-    const scrollY = getAdjustedScrollOffset(
-      defaultScrollY,
-      this.viewCellHeights.getTotalHeight(),
-      this.panelBBox.viewportHeight,
-    );
+    const scrollY = originalScrollY + this.getPaginationScrollY();
 
     this.spreadsheet.hideTooltip();
     this.spreadsheet.interaction.clearHoverTimer();

@@ -47,18 +47,22 @@ export abstract class FrozenFacet extends BaseFacet {
   public frozenGroupInfo = {
     [FrozenGroupType.FROZEN_COL]: {
       width: 0,
-      range: [] as number[],
-    },
-    [FrozenGroupType.FROZEN_ROW]: {
-      height: 0,
-      range: [] as number[],
-    },
-    [FrozenGroupType.FROZEN_TRAILING_ROW]: {
-      height: 0,
+      x: 0,
       range: [] as number[],
     },
     [FrozenGroupType.FROZEN_TRAILING_COL]: {
       width: 0,
+      x: 0,
+      range: [] as number[],
+    },
+    [FrozenGroupType.FROZEN_ROW]: {
+      height: 0,
+      y: 0,
+      range: [] as number[],
+    },
+    [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+      height: 0,
+      y: 0,
       range: [] as number[],
     },
   } satisfies Record<
@@ -66,6 +70,8 @@ export abstract class FrozenFacet extends BaseFacet {
     {
       width?: number;
       height?: number;
+      x?: number;
+      y?: number;
       range: number[];
     }
   >;
@@ -129,6 +135,7 @@ export abstract class FrozenFacet extends BaseFacet {
     if (colCount > 0) {
       frozenCol.width =
         topLevelColNodes[colCount - 1].x + topLevelColNodes[colCount - 1].width;
+      frozenCol.x = 0;
       frozenCol.range = [0, colCount - 1];
     }
 
@@ -136,6 +143,7 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenRow.height =
         viewCellHeights.getCellOffsetY(cellRange.start + rowCount) -
         viewCellHeights.getCellOffsetY(cellRange.start);
+      frozenRow.y = 0;
       frozenRow.range = [cellRange.start, cellRange.start + rowCount - 1];
     }
 
@@ -144,6 +152,7 @@ export abstract class FrozenFacet extends BaseFacet {
         topLevelColNodes[topLevelColNodes.length - 1].x -
         topLevelColNodes[topLevelColNodes.length - trailingColCount].x +
         topLevelColNodes[topLevelColNodes.length - 1].width;
+      frozenTrailingCol.x = this.panelBBox.width - frozenTrailingCol.width;
       frozenTrailingCol.range = [
         topLevelColNodes.length - trailingColCount,
         topLevelColNodes.length - 1,
@@ -154,6 +163,7 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenTrailingRow.height =
         viewCellHeights.getCellOffsetY(cellRange.end + 1) -
         viewCellHeights.getCellOffsetY(cellRange.end + 1 - trailingRowCount);
+      frozenTrailingRow.y = this.panelBBox.height - frozenTrailingRow.height;
       frozenTrailingRow.range = [
         cellRange.end - trailingRowCount + 1,
         cellRange.end,
@@ -161,10 +171,7 @@ export abstract class FrozenFacet extends BaseFacet {
     }
   }
 
-  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const colLength = this.getColLeafNodes().length;
-    const cellRange = this.getCellRange();
-
+  protected getFinalViewport() {
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const {
@@ -203,6 +210,22 @@ export abstract class FrozenFacet extends BaseFacet {
         finalViewport.y += frozenRow.height!;
       }
     }
+
+    return finalViewport;
+  }
+
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const colLength = this.getColLeafNodes().length;
+    const cellRange = this.getCellRange();
+
+    const {
+      colCount = 0,
+      rowCount = 0,
+      trailingColCount = 0,
+      trailingRowCount = 0,
+    } = this.getFrozenOptions();
+
+    const finalViewport: SimpleBBox = this.getFinalViewport();
 
     const indexes =
       this.spreadsheet.isTableMode() && this.spreadsheet.dataSet?.isEmpty?.()
@@ -307,12 +330,13 @@ export abstract class FrozenFacet extends BaseFacet {
         rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
 
         if (key === FrozenGroupType.FROZEN_TRAILING_ROW) {
-          const { top } = this.frozenTrailingRowGroup.getBBox();
+          const top =
+            this.frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].y;
 
           rows = getFrozenRowsForGrid(
             rowMin,
             rowMax,
-            Math.ceil(top),
+            top,
             this.viewCellHeights,
           );
         }
@@ -451,7 +475,7 @@ export abstract class FrozenFacet extends BaseFacet {
         x1: x + panelBBoxStartX,
         x2: x + panelBBoxStartX,
         y1: 0,
-        y2: panelBBoxStartY + height,
+        y2: height,
       });
 
       if (splitLine?.showShadow && scrollX > 0) {
@@ -513,7 +537,7 @@ export abstract class FrozenFacet extends BaseFacet {
         x1: x + panelBBoxStartX,
         x2: x + panelBBoxStartX,
         y1: 0,
-        y2: panelBBoxStartY + height,
+        y2: height,
       });
 
       if (splitLine?.showShadow && floor(scrollX) < floor(maxScrollX)) {
@@ -567,7 +591,7 @@ export abstract class FrozenFacet extends BaseFacet {
   protected init(): void {
     super.init();
     this.initRowOffsets();
-  }
+      }
 
   public render(): void {
     this.calculateFrozenGroupInfo();

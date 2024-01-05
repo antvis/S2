@@ -1011,16 +1011,14 @@ export class PivotFacet extends FrozenFacet {
         opacity: splitLine?.horizontalBorderColorOpacity,
       };
 
-      const { height: cornerHeight } = this.cornerBBox;
-
       const cellRange = this.getCellRange();
       const y =
-        cornerHeight +
+        this.panelBBox.y +
         this.getTotalHeightForRange(cellRange.start, cellRange.start);
       const width =
-        this.panelBBox.viewportWidth +
-        this.layoutResult.rowsHierarchy.width +
-        this.getSeriesNumberWidth();
+        this.cornerBBox.width +
+        Frame.getVerticalBorderWidth(this.spreadsheet) +
+        this.panelBBox.viewportWidth;
 
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,

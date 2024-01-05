@@ -180,19 +180,18 @@ export class TableFacet extends FrozenFacet {
     const { showSeriesNumber } = this.spreadsheet.options;
     const cellHeight = this.getCellHeightByRowIndex(rowIndex);
     const cellRange = this.getCellRange();
-    const { trailingRowCount: frozenTrailingRowCount = 0 } =
-      getValidFrozenOptions(
-        this.spreadsheet.options.frozen!,
-        colLeafNodes.length,
-        cellRange.end - cellRange.start + 1,
-      );
+    const { trailingRowCount = 0 } = getValidFrozenOptions(
+      this.spreadsheet.options.frozen!,
+      colLeafNodes.length,
+      cellRange.end - cellRange.start + 1,
+    );
 
     let data;
 
     const x = colNode.x;
     let y = this.viewCellHeights.getCellOffsetY(rowIndex);
 
-    if (isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)) {
+    if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
       y =
         this.panelBBox.height -
         this.getTotalHeightForRange(rowIndex, cellRange.end);
@@ -463,13 +462,7 @@ export class TableFacet extends FrozenFacet {
           return this.rowOffsets[offset];
         }
 
-        let totalOffset = 0;
-
-        for (let index = 0; index < offset; index++) {
-          totalOffset += defaultCellHeight;
-        }
-
-        return totalOffset;
+        return offset * defaultCellHeight;
       },
 
       getTotalLength: () => this.spreadsheet.dataSet.getDisplayDataSet().length,

@@ -1,4 +1,5 @@
 import { Group } from '@antv/g';
+import { last } from 'lodash';
 import { KEY_GROUP_GRID_GROUP } from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
@@ -26,7 +27,8 @@ export class GridGroup extends Group {
   };
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
-    const bbox = this.getBBox();
+    const width = last(gridInfo.cols) ?? 0;
+    const height = last(gridInfo.rows) ?? 0;
     const { theme } = this.s2;
 
     const style = theme.dataCell!.cell;
@@ -44,7 +46,6 @@ export class GridGroup extends Group {
     const verticalBorderWidth = style?.verticalBorderWidth;
 
     this.gridInfo = gridInfo;
-
     const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
 
     this.gridInfo.cols.forEach((x) => {
@@ -52,7 +53,7 @@ export class GridGroup extends Group {
         x1: x - halfVerticalBorderWidthBorderWidth,
         x2: x - halfVerticalBorderWidthBorderWidth,
         y1: 0,
-        y2: bbox.height,
+        y2: height,
         stroke: style!.verticalBorderColor,
         strokeOpacity: style!.verticalBorderColorOpacity,
         lineWidth: verticalBorderWidth,
@@ -65,7 +66,7 @@ export class GridGroup extends Group {
     this.gridInfo.rows.forEach((y) => {
       renderLine(this.gridGroup, {
         x1: 0,
-        x2: bbox.width,
+        x2: width,
         y1: y - halfHorizontalBorderWidth,
         y2: y - halfHorizontalBorderWidth,
         stroke: style!.horizontalBorderColor,
