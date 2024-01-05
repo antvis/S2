@@ -8,7 +8,6 @@ import {
 } from '../../common/constant';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { customMerge } from '../../utils';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
 
@@ -23,21 +22,15 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.initScrollGroup();
   }
 
-  protected getCellInstance(
-    node: Node,
-    otherOptions?: Partial<ColHeaderConfig>,
-  ) {
+  protected getCellInstance(node: Node) {
     const headerConfig = this.getHeaderConfig();
-    const finalConfig: ColHeaderConfig = otherOptions
-      ? customMerge(headerConfig, otherOptions)
-      : headerConfig;
 
     const { spreadsheet } = this.getHeaderConfig();
     const { colCell } = spreadsheet.options;
 
     return (
-      colCell?.(node, spreadsheet, finalConfig) ||
-      new ColCell(node, spreadsheet, finalConfig)
+      colCell?.(node, spreadsheet, headerConfig) ||
+      new ColCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -108,9 +101,10 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
         const group = this.getCellGroup(node);
-        const cell = this.getCellInstance(node, {
-          isFrozen: group !== this.scrollGroup,
-        });
+
+        node.isFrozen = group !== this.scrollGroup;
+
+        const cell = this.getCellInstance(node);
 
         node.belongsCell = cell;
 

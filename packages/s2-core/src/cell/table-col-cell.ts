@@ -41,7 +41,7 @@ export class TableColCell extends ColCell {
   }
 
   protected shouldAddVerticalResizeArea() {
-    if (this.headerConfig.isFrozen) {
+    if (this.getMeta().isFrozen) {
       return true;
     }
 
@@ -84,7 +84,7 @@ export class TableColCell extends ColCell {
     const { x, y } = this.meta;
     const { scrollX = 0, position } = this.getHeaderConfig();
 
-    if (this.headerConfig.isFrozen) {
+    if (this.getMeta().isFrozen) {
       return {
         x: position?.x + x,
         y: position?.y + y,
@@ -98,7 +98,7 @@ export class TableColCell extends ColCell {
   }
 
   protected getColResizeArea() {
-    if (!this.headerConfig.isFrozen) {
+    if (!this.getMeta().isFrozen) {
       return super.getColResizeArea();
     }
 
@@ -140,7 +140,7 @@ export class TableColCell extends ColCell {
   protected handleViewport(): AreaRange {
     const viewport = super.handleViewport();
 
-    if (this.headerConfig.isFrozen) {
+    if (this.getMeta().isFrozen) {
       viewport.start = 0;
     }
 

@@ -135,6 +135,8 @@ export class Node {
 
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
 
+  public isFrozen?: boolean;
+
   public extra?: {
     description?: string;
     isCustomNode?: boolean;

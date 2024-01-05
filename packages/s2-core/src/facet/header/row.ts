@@ -12,7 +12,6 @@ import {
   S2Event,
 } from '../../common';
 import type { FrozenFacet } from '../frozen-facet';
-import { customMerge } from '../../utils';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
 
@@ -45,21 +44,15 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     );
   }
 
-  protected getCellInstance(
-    node: Node,
-    otherOptions?: Partial<RowHeaderConfig>,
-  ): RowCell {
+  protected getCellInstance(node: Node): RowCell {
     const headerConfig = this.getHeaderConfig();
-    const finalConfig: RowHeaderConfig = otherOptions
-      ? customMerge(headerConfig, otherOptions)
-      : headerConfig;
 
     const { spreadsheet } = headerConfig;
     const { rowCell } = spreadsheet.options;
 
     return (
-      rowCell?.(node, spreadsheet, finalConfig) ||
-      new RowCell(node, spreadsheet, finalConfig)
+      rowCell?.(node, spreadsheet, headerConfig) ||
+      new RowCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -115,9 +108,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     each(nodes, (node) => {
       if (this.isRowCellInRect(node) && node.height !== 0) {
         const group = this.getCellGroup(node);
-        const cell = this.getCellInstance(node, {
-          isFrozen: group !== this.scrollGroup,
-        });
+
+        node.isFrozen = group !== this.scrollGroup;
+
+        const cell = this.getCellInstance(node);
 
         node.belongsCell = cell;
 
