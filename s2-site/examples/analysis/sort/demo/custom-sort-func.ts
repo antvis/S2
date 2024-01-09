@@ -35,12 +35,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
       sortParams: [
         {
-          // sortFieldId 为维度值时，params.data 为维度值列表
+          // sortFieldId 为维度值时，params.data 为维度值列表，即 浙江、吉林
           sortFieldId: 'province',
           sortFunc: (params) => {
-            const { data } = params;
-
-            return data?.sort((a, b) => a?.localeCompare(b));
+            return params.data.sort((a, b) => a.localeCompare(b));
           },
         },
         {
@@ -48,15 +46,16 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
           sortFieldId: 'city',
           sortByMeasure: 'price',
           // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
-          // 如下方限定 params.data 为 type=纸张, 数值=price 的数据
+          // 如此 params.data 被限定为了 type=纸张, 数值=price 的数据
+          query: { type: '纸张', [EXTRA_FIELD]: 'price' },
           sortFunc(params) {
-            const { data, sortByMeasure, sortFieldId } = params || {};
+            const { data, sortByMeasure, sortFieldId } = params;
 
             return data
-              ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
-              ?.map((item) => item[sortFieldId]);
+              .map((item) => item.raw)
+              .sort((a, b) => b[sortByMeasure] - a[sortByMeasure]) // price 倒序
+              .map((item) => item[sortFieldId]);
           },
-          query: { type: '纸张', [EXTRA_FIELD]: 'price' },
         },
       ],
     };
