@@ -1,12 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import { noop } from 'lodash';
 import { PivotSheet } from '@/sheet-type';
-import {
-  S2Event,
-  type S2DataConfig,
-  type S2Options,
-  type S2DataConfig,
-} from '@/common';
+import { S2Event, type S2DataConfig, type S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,
@@ -121,7 +116,7 @@ describe('Row Text Link Tests', () => {
     } as any);
 
     expect(linkFieldJump).toHaveBeenLastCalledWith({
-      key: 'city',
+      field: 'city',
       cellData: rowNode,
       record: {
         province: '浙江',
@@ -129,8 +124,6 @@ describe('Row Text Link Tests', () => {
         type: '笔',
         price: 1,
         cost: 2,
-        $$extra$$: 'price',
-        $$value$$: 1,
         rowIndex: 1,
       },
     });

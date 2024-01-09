@@ -423,28 +423,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-  protected drawInteractiveBorderShape() {
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(this, {
-        ...this.getBBoxByType(CellClipBox.PADDING_BOX),
-        visibility: 'hidden',
-        pointerEvents: 'none',
-      }),
-    );
-  }
-
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(this, {
-        ...this.getBBoxByType(),
-        visibility: 'hidden',
-        pointerEvents: 'none',
-      }),
-    );
-  }
-
   // dataCell 根据 state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;

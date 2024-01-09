@@ -220,7 +220,9 @@ export class PivotFacet extends FrozenFacet {
       const colNodeHeight = this.getColNodeHeight(currentNode, colsHierarchy);
 
       currentNode.height =
-        currentNode.isGrandTotals && currentNode.isLeaf
+        currentNode.isGrandTotals &&
+        !currentNode.isTotalMeasure &&
+        currentNode.isLeaf
           ? colsHierarchy.height
           : colNodeHeight;
 
@@ -241,7 +243,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   /**
-   * Auto Auto Auto column no-leaf node's width and x coordinate
+   * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {

@@ -2,7 +2,7 @@ import {
   Canvas,
   DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
-  type Group
+  type Group,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
@@ -13,7 +13,7 @@ import {
   InterceptType,
   OriginEventType,
   S2Event,
-  SHAPE_STYLE_MAP
+  SHAPE_STYLE_MAP,
 } from '../common/constant';
 import type { EmitterType, ResizeInfo } from '../common/interface';
 import { CustomImage } from '../engine';

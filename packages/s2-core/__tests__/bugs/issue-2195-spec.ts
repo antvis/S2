@@ -44,9 +44,8 @@ const modifiedMockDataConfig = {
 const s2Options: S2Options = {
   width: 400,
   height: 400,
-  frozenRowHeader: false,
   style: {
-    rowCfg: {
+    rowCell: {
       widthByField: {
         province: 300,
         '[city]': 123,
@@ -56,12 +55,18 @@ const s2Options: S2Options = {
 };
 
 describe('Field surrounded by square brackets Tests', () => {
-  const s2 = new PivotSheet(getContainer(), modifiedMockDataConfig, s2Options);
-  s2.render();
+  test('should render correctly when use field  surrounded by square brackets', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      modifiedMockDataConfig,
+      s2Options,
+    );
 
-  test('should render correctly when use field  surrounded by square brackets', () => {
-    s2.facet.layoutResult.rowNodes
-      .filter((node) => node.field === '[city]')
+    await s2.render();
+
+    s2.facet
+      .getLayoutResult()
+      .rowNodes.filter((node) => node.field === '[city]')
       .forEach((node) => {
         expect(node.width).toEqual(123);
       });
