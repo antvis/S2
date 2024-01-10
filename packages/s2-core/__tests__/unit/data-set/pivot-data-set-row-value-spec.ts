@@ -127,6 +127,7 @@ describe('Pivot Mode Test When Value In Row', () => {
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
+        EXTRA_FIELD,
         'type',
         'sub_type',
       ]);
@@ -150,8 +151,8 @@ describe('Pivot Mode Test When Value In Row', () => {
             sub_type: '桌子',
             [EXTRA_FIELD]: 'number',
           },
-        }),
-      ).toContainEntries([[VALUE_FIELD, 7789]]);
+        })?.[VALUE_FIELD],
+      ).toEqual(7789);
 
       expect(
         dataSet.getCellData({
@@ -162,8 +163,8 @@ describe('Pivot Mode Test When Value In Row', () => {
             sub_type: '纸张',
             [EXTRA_FIELD]: 'number',
           },
-        }),
-      ).toContainEntries([[VALUE_FIELD, 352]]);
+        })?.[VALUE_FIELD],
+      ).toEqual(352);
     });
 
     test('getMultiData function', () => {
@@ -177,8 +178,8 @@ describe('Pivot Mode Test When Value In Row', () => {
 
       expect(dataSet.getCellMultiData({ query: specialQuery })).toHaveLength(1);
       expect(
-        dataSet.getCellMultiData({ query: specialQuery })[0],
-      ).toContainEntries([[VALUE_FIELD, 7789]]);
+        dataSet.getCellMultiData({ query: specialQuery })[0]?.[VALUE_FIELD],
+      ).toEqual(7789);
 
       expect(
         dataSet.getCellMultiData({

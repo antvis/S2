@@ -138,6 +138,7 @@ describe('Pivot Dataset Test', () => {
         'city',
         'type',
         'sub_type',
+        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['province']),

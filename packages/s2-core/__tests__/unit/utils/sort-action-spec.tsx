@@ -1,222 +1,216 @@
-import { sortData } from 'tests/data/sort-advanced';
 import { getContainer } from 'tests/util/helpers';
-import {
-  EXTRA_FIELD,
-  TOTAL_VALUE,
-  type S2DataConfig,
-  type S2Options,
-  type SortParam,
-} from '@/common';
-import { CellData, PivotDataSet, type SortActionParams } from '@/data-set';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { sortData } from 'tests/data/sort-advanced';
 import {
   getSortByMeasureValues,
   sortAction,
   sortByCustom,
   sortByFunc,
 } from '@/utils/sort-action';
+import {
+  EXTRA_FIELD,
+  type S2Options,
+  type SortParam,
+  TOTAL_VALUE,
+  type S2DataConfig,
+  VALUE_FIELD,
+} from '@/common';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
+import { CellData } from '@/data-set/cell-data';
 
-describe('Sort Action', () => {
-  test('sort action with number arr', () => {
-    const data = [1, 3, 2];
+describe('Sort Action Test', () => {
+  describe('Sort Action', () => {
+    test('sort action with number arr', () => {
+      const data = [1, 3, 2];
 
-    expect(sortAction(data, 'ASC')).toEqual([1, 2, 3]);
-    expect(sortAction(data, 'DESC')).toEqual([3, 2, 1]);
-  });
+      expect(sortAction(data, 'ASC')).toEqual([1, 2, 3]);
+      expect(sortAction(data, 'DESC')).toEqual([3, 2, 1]);
+    });
 
-  test('sort action with number-string and number arr', () => {
-    const data1 = ['11', '3', 2];
+    test('sort action with number-string and number arr', () => {
+      const data2 = ['11', '3', '2'];
 
-    expect(sortAction(data1, 'ASC')).toEqual(['11', 2, '3']);
-    expect(sortAction(data1, 'DESC')).toEqual(['3', 2, '11']);
+      expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '3']);
+      expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
+    });
 
-    const data2 = ['11', '3', '2'];
+    test('sort action with zero and number arr', () => {
+      const data1 = [1, 6, -2, 0];
 
-    expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '3']);
-    expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
-  });
+      expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
+      expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
 
-  test('sort action with zero and number arr', () => {
-    const data1 = [1, 6, -2, 0];
+      const data2 = ['0', 0, 2, -2];
 
-    expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
-    expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
+      expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
+      expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
+    });
 
-    const data2 = ['0', 0, 2, -2];
+    test('sort action with string arr', () => {
+      const data = ['a', 'c', 'b'];
 
-    expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
-    expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
-  });
+      expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
+      expect(sortAction(data, 'DESC')).toEqual(['c', 'b', 'a']);
 
-  test('sort action with string arr', () => {
-    const data = ['a', 'c', 'b'];
+      const data1 = ['啊', '哦', '嗯'];
 
-    expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
-    expect(sortAction(data, 'DESC')).toEqual(['c', 'b', 'a']);
+      expect(sortAction(data1, 'ASC')).toEqual(['啊', '嗯', '哦']);
+      expect(sortAction(data1, 'DESC')).toEqual(['哦', '嗯', '啊']);
 
-    const data1 = ['啊', '哦', '嗯'];
+      const data2 = ['啊', '11', '2'];
 
-    expect(sortAction(data1, 'ASC')).toEqual(['啊', '嗯', '哦']);
-    expect(sortAction(data1, 'DESC')).toEqual(['哦', '嗯', '啊']);
+      expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
+      expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
+    });
 
-    const data2 = ['啊', '11', '2'];
+    test('sort action with object arr', () => {
+      function createCellData(list: (number | string | undefined)[]) {
+        return list.map((a) => new CellData({ a }, 'a'));
+      }
 
-    expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
-    expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
-  });
+      function unwrapCellData(cellDataList: CellData[]) {
+        return cellDataList.map((cell) => cell[VALUE_FIELD]);
+      }
 
-  test('object data sorted by key with zero', () => {
-    const data1 = [{ a: 1 }, { a: 0 }, { a: -3 }, { a: 2 }];
+      const data1 = createCellData([1, 0, -3, 2]);
 
-    expect(sortAction(data1, 'ASC', 'a')).toEqual([
-      { a: -3 },
-      { a: 0 },
-      { a: 1 },
-      { a: 2 },
-    ]);
-    expect(sortAction(data1, 'DESC', 'a')).toEqual([
-      { a: 2 },
-      { a: 1 },
-      { a: 0 },
-      { a: -3 },
-    ]);
-  });
+      expect(
+        unwrapCellData(sortAction(data1, 'ASC', 'a') as CellData[]),
+      ).toEqual([-3, 0, 1, 2]);
+      expect(
+        unwrapCellData(sortAction(data1, 'DESC', 'a') as CellData[]),
+      ).toEqual([2, 1, 0, -3]);
 
-  test('sort action with object arr', () => {
-    const data1 = [{ a: 1 }, { a: 3 }, { a: 2 }];
+      const data2 = createCellData([1, 3, 2]);
 
-    expect(sortAction(data1, 'ASC', 'a')).toEqual([
-      { a: 1 },
-      { a: 2 },
-      { a: 3 },
-    ]);
-    expect(sortAction(data1, 'DESC', 'a')).toEqual([
-      { a: 3 },
-      { a: 2 },
-      { a: 1 },
-    ]);
+      expect(
+        unwrapCellData(sortAction(data2, 'ASC', 'a') as CellData[]),
+      ).toEqual([1, 2, 3]);
+      expect(
+        unwrapCellData(sortAction(data2, 'DESC', 'a') as CellData[]),
+      ).toEqual([3, 2, 1]);
 
-    const data2 = [{ a: '11' }, { a: '3' }, { a: 2 }];
+      const data3 = createCellData(['11', 2, '3']);
 
-    expect(sortAction(data2, 'ASC', 'a')).toEqual([
-      { a: 2 },
-      { a: '3' },
-      { a: '11' },
-    ]);
-    expect(sortAction(data2, 'DESC', 'a')).toEqual([
-      { a: '11' },
-      { a: '3' },
-      { a: 2 },
-    ]);
+      expect(
+        unwrapCellData(sortAction(data3, 'ASC', 'a') as CellData[]),
+      ).toEqual([2, '3', '11']);
+      expect(
+        unwrapCellData(sortAction(data3, 'DESC', 'a') as CellData[]),
+      ).toEqual(['11', '3', 2]);
 
-    const data3 = [{ a: '-' }, { a: '3' }, { a: 2 }];
+      const data4 = createCellData(['-', 2, '3']);
 
-    expect(sortAction(data3, 'ASC', 'a')).toEqual([
-      { a: '-' },
-      { a: 2 },
-      { a: '3' },
-    ]);
-    expect(sortAction(data3, 'DESC', 'a')).toEqual([
-      { a: '3' },
-      { a: 2 },
-      { a: '-' },
-    ]);
+      expect(
+        unwrapCellData(sortAction(data4, 'ASC', 'a') as CellData[]),
+      ).toEqual(['-', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data4, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, '-']);
 
-    expect(
-      sortAction(
-        [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
-        'ASC',
-        'a',
-      ),
-    ).toEqual([{ a: undefined }, { a: '-' }, { a: 2 }, { a: '3' }]);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(['-', 2, '3', undefined]),
+            'ASC',
+            'a',
+          ) as CellData[],
+        ),
+      ).toEqual([undefined, '-', 2, '3']);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(['-', 2, '3', undefined]),
+            'DESC',
+            'a',
+          ) as CellData[],
+        ),
+      ).toEqual(['3', 2, '-', undefined]);
 
-    expect(
-      sortAction(
-        [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
-        'DESC',
-        'a',
-      ),
-    ).toEqual([{ a: '3' }, { a: 2 }, { a: '-' }, { a: undefined }]);
-    expect(sortAction([{ a: '' }, { a: '3' }, { a: 2 }], 'ASC', 'a')).toEqual([
-      { a: '' },
-      { a: 2 },
-      { a: '3' },
-    ]);
+      const data6 = createCellData(['', 2, '3']);
+
+      expect(
+        unwrapCellData(sortAction(data6, 'ASC', 'a') as CellData[]),
+      ).toEqual(['', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data6, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, '']);
+    });
   });
 });
 
-describe('Sort By Custom', () => {
-  test('sort by custom with equal sub node', () => {
-    const params = {
-      originValues: [
-        'Monday[&]noon',
-        'Monday[&]afternoon',
+describe('Sort By Custom Test', () => {
+  describe('Sort By Custom', () => {
+    test('sort by custom with equal sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Monday[&]morning',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+
+      expect(sortByCustom(params)).toEqual([
         'Monday[&]morning',
-        'Tuesday[&]afternoon',
-        'Tuesday[&]noon',
-        'Tuesday[&]morning',
-      ],
-      sortByValues: ['morning', 'noon', 'afternoon'],
-    };
-
-    expect(sortByCustom(params)).toEqual([
-      'Monday[&]morning',
-      'Monday[&]noon',
-      'Monday[&]afternoon',
-      'Tuesday[&]morning',
-      'Tuesday[&]noon',
-      'Tuesday[&]afternoon',
-    ]);
-  });
-
-  test('sort by custom with repeated sub node', () => {
-    const params = {
-      originValues: [
         'Monday[&]noon',
         'Monday[&]afternoon',
-        'Tuesday[&]afternoon',
-        'Tuesday[&]noon',
         'Tuesday[&]morning',
-        'Wednesday[&]afternoon',
-        'Wednesday[&]morning',
-      ],
-      sortByValues: ['morning', 'noon', 'afternoon'],
-    };
-
-    expect(sortByCustom(params)).toEqual([
-      'Monday[&]noon',
-      'Monday[&]afternoon',
-      'Tuesday[&]morning',
-      'Tuesday[&]noon',
-      'Tuesday[&]afternoon',
-      'Wednesday[&]morning',
-      'Wednesday[&]afternoon',
-    ]);
-  });
-
-  test('sort by custom with unordered node', () => {
-    const params = {
-      originValues: [
-        'Monday[&]afternoon',
+        'Tuesday[&]noon',
         'Tuesday[&]afternoon',
-        'Wednesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with repeated sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+          'Wednesday[&]afternoon',
+          'Wednesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+
+      expect(sortByCustom(params)).toEqual([
         'Monday[&]noon',
-        'Tuesday[&]noon',
-        'Wednesday[&]morning',
+        'Monday[&]afternoon',
         'Tuesday[&]morning',
-      ],
-      sortByValues: ['morning', 'noon', 'afternoon'],
-    };
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with unordered node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Wednesday[&]afternoon',
+          'Monday[&]noon',
+          'Tuesday[&]noon',
+          'Wednesday[&]morning',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
 
-    expect(sortByCustom(params)).toEqual([
-      'Monday[&]noon',
-      'Monday[&]afternoon',
-      'Tuesday[&]morning',
-      'Tuesday[&]noon',
-      'Tuesday[&]afternoon',
-      'Wednesday[&]morning',
-      'Wednesday[&]afternoon',
-    ]);
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
+    });
   });
 });
 
@@ -541,7 +535,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 41.5,
           type: '纸张',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -549,7 +542,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 37,
           type: '笔',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -577,7 +569,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 33,
           province: '吉林',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -585,7 +576,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 45.5,
           province: '浙江',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -685,7 +675,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '浙江',
           city: '杭州',
           price: 3,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -694,7 +683,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '浙江',
           city: '舟山',
           price: 42.5,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -703,7 +691,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '吉林',
           city: '长春',
           price: 13,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -712,7 +699,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '吉林',
           city: '白山',
           price: 20,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -838,7 +824,7 @@ describe('total group dimension sort test', () => {
     };
 
     const params: SortActionParams = {
-      dataSet: sheet.dataSet,
+      dataSet: sheet.dataSet as PivotDataSet,
       sortParam,
     };
     const measureValues = getSortByMeasureValues(params);

@@ -230,25 +230,25 @@ describe('Pivot Table Core Data Process', () => {
     test('should calc correct row & cell width', () => {
       const { rowLeafNodes, colLeafNodes } = s2.facet.getLayoutResult();
 
-      expect(rowLeafNodes[0].width).toEqual(99);
-      expect(colLeafNodes[0].width).toEqual(100);
+      expect(rowLeafNodes[0].width).toEqual(99.66);
+      expect(colLeafNodes[0].width).toEqual(99.67);
     });
     test('should calc correct row node size and coordinate', () => {
       const { dataCell } = s2.options.style!;
       const { rowsHierarchy, rowLeafNodes } = s2.facet.getLayoutResult();
 
       // all sample width.
-      expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(99);
-      expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(99);
+      expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(99.66);
+      expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(99.66);
       // all width
       expect(uniq(rowsHierarchy.getNodes().map((node) => node.width))).toEqual([
-        99,
+        99.66,
       ]);
       // leaf node
       rowLeafNodes.forEach((node, index) => {
         expect(node.height).toEqual(dataCell?.height!);
         expect(node.y).toEqual(node.height * index);
-        expect(node.x).toEqual(99);
+        expect(node.x).toEqual(99.66);
       });
       // level = 0
       const provinceNodes = rowsHierarchy.getNodes(0);
@@ -286,7 +286,7 @@ describe('Pivot Table Core Data Process', () => {
       colLeafNodes.forEach((node, index) => {
         const width = Math.floor(node.width);
 
-        expect(width).toEqual(100);
+        expect(width).toEqual(99);
         expect(node.x).toEqual(node.width * index);
         expect(node.y).toEqual(node.level * (colCell!.height as number));
       });

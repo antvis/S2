@@ -138,6 +138,7 @@ describe('Pivot Dataset Total Test', () => {
         'city',
         'type',
         'sub_type',
+        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['province']),
@@ -498,8 +499,8 @@ describe('Pivot Dataset Total Test', () => {
             },
             isTotals: true,
             totalStatus,
-          }),
-        ).toContainEntries([[VALUE_FIELD, 18375]]);
+          })?.[VALUE_FIELD],
+        ).toEqual(18375);
 
         expect(
           dataSet.getCellData({
@@ -509,8 +510,8 @@ describe('Pivot Dataset Total Test', () => {
             },
             totalStatus,
             isTotals: true,
-          }),
-        ).toContainEntries([[VALUE_FIELD, 43098]]);
+          })?.[VALUE_FIELD],
+        ).toEqual(43098);
 
         expect(
           dataSet.getCellData({
@@ -520,8 +521,8 @@ describe('Pivot Dataset Total Test', () => {
             },
             totalStatus,
             isTotals: true,
-          }),
-        ).toContainEntries([[VALUE_FIELD, 26193]]);
+          })?.[VALUE_FIELD],
+        ).toEqual(26193);
 
         expect(
           dataSet.getCellData({
@@ -532,8 +533,8 @@ describe('Pivot Dataset Total Test', () => {
             },
             isTotals: true,
             totalStatus,
-          }),
-        ).toContainEntries([[VALUE_FIELD, 32418]]);
+          })?.[VALUE_FIELD],
+        ).toEqual(32418);
       });
 
       test('should get correct total cell data when totals calculated by calcFunc', () => {

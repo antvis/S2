@@ -1,7 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { Text, type Group, type IElement } from '@antv/g';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
-import type { RowCell, SeriesNumberCell } from '@/cell';
 import {
   CellType,
   EXTRA_COLUMN_FIELD,
