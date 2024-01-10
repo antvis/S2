@@ -19,6 +19,7 @@ import {
   uniq,
   unset,
   type PropertyPath,
+  omit,
 } from 'lodash';
 import {
   QueryDataType,
@@ -40,7 +41,6 @@ import type {
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
   RawData,
-  RowData,
   S2DataConfig,
   ViewMeta,
 } from '../common/interface';
@@ -412,7 +412,7 @@ export class PivotDataSet extends BaseDataSet {
       }
 
       return CellData.getCellData(
-        { ...query, [query[EXTRA_FIELD]]: totalValue },
+        { ...omit(query, [EXTRA_FIELD]), [query[EXTRA_FIELD]]: totalValue },
         query[EXTRA_FIELD],
       );
     }

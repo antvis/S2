@@ -374,6 +374,19 @@ export abstract class BaseFacet {
         levelSampleNode,
         colsHierarchy,
       );
+      if (levelSampleNode.level === 0) {
+        levelSampleNode.y = 0;
+      } else {
+        const preLevelSample = colsHierarchy.sampleNodesForAllLevels[
+          levelSampleNode.level - 1
+        ] ?? {
+          y: 0,
+          height: 0,
+        };
+
+        levelSampleNode.y = preLevelSample.y + preLevelSample.height;
+      }
+
       colsHierarchy.height += levelSampleNode.height;
     });
   }

@@ -237,9 +237,91 @@ export class PivotFacet extends FrozenFacet {
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
 
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
-      this.adjustGrandTotalNodesCoordinate(colsHierarchy);
-      this.adjustSubTotalNodesCoordinate(colsHierarchy);
+      this.adjustTotalNodesCoordinate({
+        hierarchy: colsHierarchy,
+        isRowHeader: false,
+        isSubTotal: true,
+      });
+      this.adjustTotalNodesCoordinate({
+        hierarchy: colsHierarchy,
+        isRowHeader: false,
+        isSubTotal: false,
+      });
     }
+  }
+
+  // please read README-adjustTotalNodesCoordinate.md to understand this function
+  private getMultipleMap(
+    hierarchy: Hierarchy,
+    isRowHeader?: boolean,
+    isSubTotal?: boolean,
+  ) {
+    const { maxLevel } = hierarchy;
+    const dataSet = this.spreadsheet.dataSet;
+    const { totals } = this.spreadsheet.options;
+    const moreThanOneValue = dataSet.moreThanOneValue();
+    const { rows, columns } = dataSet.fields;
+    const fields = isRowHeader ? rows : columns;
+    const totalConfig = isRowHeader ? totals!.row : totals!.col;
+    const dimensionGroup = isSubTotal
+      ? totalConfig?.subTotalsGroupDimensions || []
+      : totalConfig?.grandTotalsGroupDimensions || [];
+    const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
+
+    for (let level = maxLevel; level > 0; level--) {
+      const currentField = fields![level] as string;
+      // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
+      const existValueField = currentField === EXTRA_FIELD && moreThanOneValue;
+
+      if (!(dimensionGroup.includes(currentField) || existValueField)) {
+        multipleMap[level - 1] += multipleMap[level];
+        multipleMap[level] = 0;
+      }
+    }
+
+    return multipleMap;
+  }
+
+  // please read README-adjustTotalNodesCoordinate.md to understand this function
+  private adjustTotalNodesCoordinate(params: {
+    hierarchy: Hierarchy;
+    isRowHeader?: boolean;
+    isSubTotal?: boolean;
+  }) {
+    const { hierarchy, isRowHeader, isSubTotal } = params;
+    const multipleMap = this.getMultipleMap(hierarchy, isRowHeader, isSubTotal);
+    const totalNodes = filter(hierarchy.getNodes(), (node: Node) =>
+      isSubTotal ? node.isSubTotals : node.isGrandTotals,
+    ) as Node[];
+    const key = isRowHeader ? 'width' : 'height';
+
+    forEach(totalNodes, (node: Node) => {
+      let multiple = multipleMap[node.level];
+
+      // 小计根节点若为 0，则改为最近上级倍数 - level 差
+      if (!multiple && isSubTotal) {
+        let lowerLevelIndex = 1;
+
+        while (multiple < 1) {
+          multiple =
+            multipleMap[node.level - lowerLevelIndex] - lowerLevelIndex;
+          lowerLevelIndex++;
+        }
+      }
+
+      let res = 0;
+
+      for (let i = 0; i < multiple; i++) {
+        res += get(
+          hierarchy.sampleNodesForAllLevels?.find(
+            (sampleNode) => sampleNode.level === node.level + i,
+          ),
+          [key],
+          0,
+        );
+      }
+      node[key] = res;
+    });
   }
 
   /**
@@ -248,10 +330,12 @@ export class PivotFacet extends FrozenFacet {
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node | null = null;
+    let i = 0;
+
     const leafNodes = colLeafNodes.slice(0);
 
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parentNode = node?.parent;
 
       if (prevColParent !== parentNode && parentNode) {
@@ -536,8 +620,16 @@ export class PivotFacet extends FrozenFacet {
       });
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(this.spreadsheet.options.totals?.row)) {
-        this.adjustGrandTotalNodesCoordinate(rowsHierarchy, true);
-        this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
+        this.adjustTotalNodesCoordinate({
+          hierarchy: rowsHierarchy,
+          isRowHeader: true,
+          isSubTotal: false,
+        });
+        this.adjustTotalNodesCoordinate({
+          hierarchy: rowsHierarchy,
+          isRowHeader: true,
+          isSubTotal: true,
+        });
       }
     }
   }
@@ -549,10 +641,11 @@ export class PivotFacet extends FrozenFacet {
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
     // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent = null;
+    let i = 0;
     const leafNodes = rowLeafNodes.slice(0);
 
-    while (leafNodes.length) {
-      const node = leafNodes.shift();
+    while (i < leafNodes.length) {
+      const node = leafNodes[i++];
       const parent = node?.parent;
 
       if (prevRowParent !== parent && parent) {
@@ -565,58 +658,6 @@ export class PivotFacet extends FrozenFacet {
           .reduce((sum, current) => sum + current, 0);
         prevRowParent = parent;
       }
-    }
-  }
-
-  /**
-   * @description adjust the coordinate of total nodes and their children
-   * @param hierarchy Hierarchy
-   * @param isRowHeader boolean
-   */
-  private adjustGrandTotalNodesCoordinate(
-    hierarchy: Hierarchy,
-    isRowHeader?: boolean,
-  ) {
-    const moreThanOneValue = this.spreadsheet.dataSet.moreThanOneValue();
-    const { maxLevel } = hierarchy;
-    const grandTotalNode = find(
-      hierarchy.getNodes(0),
-      (node: Node) => node.isGrandTotals,
-    );
-
-    if (!(grandTotalNode instanceof Node)) {
-      return;
-    }
-
-    const grandTotalChildren = grandTotalNode.children;
-
-    // 总计节点层级 (有且有两级)
-    if (isRowHeader) {
-      // 填充行总单元格宽度
-      grandTotalNode.width = hierarchy.width;
-      // 调整其叶子节点位置和宽度
-      forEach(grandTotalChildren, (node: Node) => {
-        const maxLevelNode = hierarchy.getNodes(maxLevel)[0];
-
-        node.x = maxLevelNode.x;
-        node.width = maxLevelNode.width;
-      });
-    } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
-      /*
-       * 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
-       * 填充列总计单元格高度
-       */
-      const grandTotalChildrenHeight = grandTotalChildren?.[0]?.height ?? 0;
-
-      grandTotalNode.height = hierarchy.height - grandTotalChildrenHeight;
-      // 调整其叶子节点位置, 以非小计行为准
-      const positionY =
-        find(hierarchy.getNodes(maxLevel), (node: Node) => !node.isTotalMeasure)
-          ?.y || 0;
-
-      forEach(grandTotalChildren, (node: Node) => {
-        node.y = positionY;
-      });
     }
   }
 
