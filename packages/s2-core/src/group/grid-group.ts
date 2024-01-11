@@ -1,6 +1,9 @@
 import { Group } from '@antv/g';
 import { last } from 'lodash';
-import { KEY_GROUP_GRID_GROUP } from '../common/constant';
+import {
+  KEY_GROUP_GRID_GROUP,
+  PANEL_GRID_GROUP_Z_INDEX,
+} from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
@@ -27,21 +30,24 @@ export class GridGroup extends Group {
   };
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
+    if (!this.gridGroup || !this.getElementById(id)) {
+      this.gridGroup = this.appendChild(
+        new Group({
+          id,
+          style: {
+            zIndex: PANEL_GRID_GROUP_Z_INDEX,
+          },
+        }),
+      );
+    } else {
+      this.gridGroup.removeChildren();
+    }
+
     const width = last(gridInfo.cols) ?? 0;
     const height = last(gridInfo.rows) ?? 0;
     const { theme } = this.s2;
 
     const style = theme.dataCell!.cell;
-
-    if (!this.gridGroup || !this.getElementById(id)) {
-      this.gridGroup = this.appendChild(
-        new Group({
-          id,
-        }),
-      );
-    }
-
-    this.gridGroup.removeChildren();
 
     const verticalBorderWidth = style?.verticalBorderWidth;
 
@@ -74,7 +80,5 @@ export class GridGroup extends Group {
         lineWidth: horizontalBorderWidth,
       });
     });
-
-    this.gridGroup.toFront();
   };
 }

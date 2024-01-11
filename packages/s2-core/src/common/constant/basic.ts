@@ -1,9 +1,10 @@
 import { i18n } from '../i18n';
 
+// 约定这个 z-index 为 0 的 container 作为基准
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
 // foregroundGroup 上的 children 层叠顺序
-export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
+export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_SCROLL_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_FROZEN_Z_INDEX = 4;
 export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;
@@ -12,7 +13,9 @@ export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 // panelGroup 上的 children 层叠顺序
 export const PANEL_GROUP_GROUP_CONTAINER_Z_INDEX = 1;
 export const PANEL_GROUP_SCROLL_GROUP_Z_INDEX = 1;
-export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 2;
+export const PANEL_GRID_GROUP_Z_INDEX = 2;
+export const PANEL_MERGE_GROUP_Z_INDEX = 3;
+export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 4;
 
 // group's key
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
@@ -59,7 +62,6 @@ export enum MiniChartTypes {
   Bar = 'bar',
   Bullet = 'bullet',
 }
-
 
 export const getDefaultSeriesNumberText = (defaultText?: string) =>
   defaultText ?? i18n('序号');

@@ -4,7 +4,10 @@ import type { GridGroupConstructorParameters } from '../common/interface/group';
 import { updateMergedCells } from '../utils/interaction/merge-cell';
 import { S2Event } from '../common';
 import type { MergedCell } from './../cell/merged-cell';
-import { KEY_GROUP_MERGED_CELLS } from './../common/constant/basic';
+import {
+  KEY_GROUP_MERGED_CELLS,
+  PANEL_MERGE_GROUP_Z_INDEX,
+} from './../common/constant/basic';
 import { GridGroup } from './grid-group';
 
 export class PanelScrollGroup extends GridGroup {
@@ -27,6 +30,9 @@ export class PanelScrollGroup extends GridGroup {
     this.mergedCellsGroup = this.appendChild(
       new Group({
         id: KEY_GROUP_MERGED_CELLS,
+        style: {
+          zIndex: PANEL_MERGE_GROUP_Z_INDEX,
+        },
       }),
     );
   }
@@ -34,7 +40,6 @@ export class PanelScrollGroup extends GridGroup {
   updateMergedCells() {
     this.initMergedCellsGroup();
     updateMergedCells(this.s2, this.mergedCellsGroup);
-    this.mergedCellsGroup.toFront();
   }
 
   addMergeCell(mergedCell: MergedCell) {
