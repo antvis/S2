@@ -31,8 +31,8 @@ describe('TableSheet Tests', () => {
   });
 
   afterEach(() => {
-    container?.remove();
-    s2?.destroy();
+    // container?.remove();
+    // s2?.destroy();
   });
 
   describe('TableSheet Sort Tests', () => {

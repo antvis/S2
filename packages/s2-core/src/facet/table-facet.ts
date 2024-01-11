@@ -250,6 +250,13 @@ export class TableFacet extends FrozenFacet {
     return dataCell?.width ?? 0;
   }
 
+  public getContentHeight(): number {
+    const { getTotalHeight } = this.getViewCellHeights();
+    const { colsHierarchy } = this.layoutResult;
+
+    return getTotalHeight() + colsHierarchy.height;
+  }
+
   protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
     const colCell = new TableColCell(colNode, this.spreadsheet, {
       shallowRender: true,
