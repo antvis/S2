@@ -125,12 +125,11 @@ describe('Interaction Event Controller Tests', () => {
       renderer: new Renderer() as unknown as CanvasConfig['renderer'],
     });
     spreadsheet.facet = {
+      ...spreadsheet.facet,
       panelBBox: {
         maxX: s2Options.width,
         maxY: s2Options.height,
       } as BBox,
-      getDataCells: jest.fn(),
-      getCells: jest.fn(),
     } as unknown as BaseFacet;
     spreadsheet.interaction = new RootInteraction(
       spreadsheet as unknown as SpreadSheet,
@@ -549,6 +548,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should reset if current mouse inside the canvas container, but outside the panel facet', () => {
     spreadsheet.facet = {
+      ...spreadsheet.facet,
       panelBBox: {
         maxX: 100,
         maxY: 100,
@@ -581,6 +581,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should reset if press ecs', () => {
     spreadsheet.facet = {
+      ...spreadsheet.facet,
       panelBBox: {
         maxX: 100,
         maxY: 100,
@@ -672,6 +673,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should disable reset if autoResetSheetStyle set to false', () => {
     spreadsheet.facet = {
+      ...spreadsheet.facet,
       panelBBox: {
         maxX: 100,
         maxY: 100,

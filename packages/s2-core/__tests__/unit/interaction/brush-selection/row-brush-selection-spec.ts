@@ -68,11 +68,19 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       },
     });
 
+    await s2.render();
+
     s2.showTooltipWithInfo = jest.fn();
     s2.getCell = jest.fn(() => startBrushRowCell) as any;
     mockRootInteraction = new MockRootInteraction(s2);
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     brushSelectionInstance = new RowCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =
@@ -253,22 +261,19 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
   test('should not emit brush secletion event', () => {
     mockRootInteraction.getBrushSelection = () => ({
-      data: true,
-      row: false,
-      col: true,
+      dataCell: true,
+      rowCell: false,
+      colCell: true,
     });
 
     const brushSelectionFn = jest.fn();
 
-    mockSpreadSheetInstance.on(
-      S2Event.ROW_CELL_BRUSH_SELECTION,
-      brushSelectionFn,
-    );
+    s2.on(S2Event.ROW_CELL_BRUSH_SELECTION, brushSelectionFn);
 
     // ================== mouse down ==================
     emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 90 });
 
-    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
+    s2.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
     emitEvent(S2Event.GLOBAL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
 

@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { Canvas, CanvasEvent } from '@antv/g';
-import { cloneDeep, get, last } from 'lodash';
+import { cloneDeep, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
@@ -33,7 +33,6 @@ import {
   type S2Options,
   type TooltipShowOptions,
 } from '@/common';
-import type { CornerCell } from '@/cell/corner-cell';
 
 jest.mock('@/utils/hide-columns');
 
@@ -488,7 +487,7 @@ describe('PivotSheet Tests', () => {
 
     s2.setOptions({
       tooltip: {
-        renderTooltip: (spreadsheet) => new CustomTooltip(spreadsheet),
+        render: (spreadsheet) => new CustomTooltip(spreadsheet),
       },
     });
 
@@ -526,7 +525,7 @@ describe('PivotSheet Tests', () => {
     });
   });
 
-  test('should render sheet', () => {
+  test('should render sheet', async () => {
     const facetRenderSpy = jest
       .spyOn(s2, 'buildFacet' as any)
       .mockImplementation(() => {});
@@ -791,7 +790,9 @@ describe('PivotSheet Tests', () => {
   });
 
   test(`shouldn't rerender without drill down data`, () => {
-    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest
+      .spyOn(s2, 'render')
+      .mockImplementationOnce(() => Promise.resolve());
 
     const clearDrillDownDataSpy = jest
       .spyOn(s2.dataSet, 'clearDrillDownData' as any)

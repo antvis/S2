@@ -68,11 +68,19 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
         },
       },
     });
+    await s2.render();
+
     s2.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushColCell) as any;
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     brushSelectionInstance = new ColCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =

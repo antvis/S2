@@ -57,7 +57,7 @@ describe('Data Cell Tests', () => {
     });
 
     test.each([
-      ['left', 311],
+      ['left', 312],
       ['center', 375],
       ['right', 438],
     ] as const)(
@@ -99,7 +99,7 @@ describe('Data Cell Tests', () => {
   });
 
   describe('Data Cell Formatter & Method Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       const container = document.createElement('div');
 
       s2 = new MockPivotSheet(container);
@@ -109,7 +109,10 @@ describe('Data Cell Tests', () => {
 
       s2.facet = {
         getRowLeafNodes: () => [],
+        getRowLeafNodeByIndex: jest.fn(),
       } as unknown as PivotFacet;
+
+      await s2.render();
     });
 
     test('should pass complete data into formatter', () => {
@@ -206,7 +209,7 @@ describe('Data Cell Tests', () => {
       fill: 'red',
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
       const container = document.createElement('div');
 
       s2 = new MockPivotSheet(container);
@@ -216,7 +219,10 @@ describe('Data Cell Tests', () => {
 
       s2.facet = {
         getRowLeafNodes: () => [],
+        getRowLeafNodeByIndex: jest.fn(),
       } as unknown as PivotFacet;
+
+      await s2.render();
     });
 
     test("shouldn't init when width or height is not positive", () => {

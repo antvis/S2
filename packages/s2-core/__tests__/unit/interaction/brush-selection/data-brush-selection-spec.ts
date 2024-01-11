@@ -115,6 +115,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       null as unknown as S2DataConfig,
       null as unknown as S2Options,
     );
+    await s2.render();
+
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushDataCell) as any;
     s2.showTooltipWithInfo = jest.fn();
@@ -126,8 +128,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         currentCol: false,
       };
     };
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     s2.facet.getDataCells = () => panelGroupAllDataCells;
     s2.facet.getLayoutResult = () =>
       ({

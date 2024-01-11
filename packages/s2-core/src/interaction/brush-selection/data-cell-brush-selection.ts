@@ -22,7 +22,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
-      if (!this.spreadsheet.interaction.getBrushSelection().data) {
+      if (!this.spreadsheet.interaction.getBrushSelection().dataCell) {
         return;
       }
 

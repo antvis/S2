@@ -123,11 +123,6 @@ export interface S2BasicOptions<
    */
   placeholder?: ((meta: Record<string, any>) => string) | string;
 
-  // /**
-  //  * 自定义 DPR, 默认 "window.devicePixelRatio"
-  //  */
-  // devicePixelRatio?: number;
-
   /**
    * 设备类型: pc / mobile
    */
@@ -286,11 +281,13 @@ export interface S2TableSheetFrozenOptions {
   trailingColCount?: number;
 }
 
+export type HierarchyType = 'grid' | 'tree';
+
 export interface S2PivotSheetOptions {
   /**
    * 行头布局类型, grid: 平铺网格 | tree: 树状结构
    */
-  hierarchyType?: 'grid' | 'tree';
+  hierarchyType?: HierarchyType;
 
   /**
    * 小计/总计配置

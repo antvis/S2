@@ -5,7 +5,6 @@ import {
   createTableSheet,
   getContainer,
 } from 'tests/util/helpers';
-
 import { omit } from 'lodash';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { CellData } from '@/data-set/cell-data';
@@ -889,8 +888,8 @@ describe('Tooltip Utils Tests', () => {
       });
 
       test('should get correctly summaries of selected col cell', () => {
-        const typeColCell = s2.getColumnLeafNodes()[1].belongsCell;
-        const subTypeColCell = s2.getColumnLeafNodes()[2].belongsCell;
+        const typeColCell = s2.facet.getColLeafNodes()[1].belongsCell!;
+        const subTypeColCell = s2.facet.getColLeafNodes()[2].belongsCell!;
 
         expect(getMockTooltipData(typeColCell)).toMatchInlineSnapshot(`
           Object {
@@ -899,7 +898,7 @@ describe('Tooltip Utils Tests', () => {
             "headInfo": null,
             "infos": undefined,
             "interpretation": undefined,
-            "name": undefined,
+            "name": null,
             "summaries": Array [
               Object {
                 "name": "",
@@ -950,7 +949,7 @@ describe('Tooltip Utils Tests', () => {
             "headInfo": null,
             "infos": undefined,
             "interpretation": undefined,
-            "name": undefined,
+            "name": null,
             "summaries": Array [
               Object {
                 "name": "",
@@ -997,7 +996,7 @@ describe('Tooltip Utils Tests', () => {
       });
 
       test('should get correctly summaries of selected series number cell', () => {
-        const seriesCell = s2.interaction.getPanelGroupAllDataCells()[0];
+        const seriesCell = s2.facet.getDataCells()[0];
 
         expect(getMockTooltipData(seriesCell)).toMatchInlineSnapshot(`
           Object {
@@ -1006,7 +1005,7 @@ describe('Tooltip Utils Tests', () => {
             "headInfo": null,
             "infos": undefined,
             "interpretation": undefined,
-            "name": undefined,
+            "name": null,
             "summaries": Array [
               Object {
                 "name": "",

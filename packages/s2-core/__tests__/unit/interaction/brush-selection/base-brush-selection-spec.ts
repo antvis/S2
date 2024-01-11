@@ -61,6 +61,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     await s2.render();
 
     mockRootInteraction = new MockRootInteraction(s2);
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.getCell = jest.fn(() => startBrushDataCell) as any;
     s2.facet.foregroundGroup = new Group();
     s2.showTooltipWithInfo = jest.fn();

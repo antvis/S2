@@ -1,14 +1,14 @@
 /**
  * pivot mode pivot test.
  */
-import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
 import { type PivotSheet, RowCell, SeriesNumberCell } from '../../../src';
 import {
-  FrozenGroup,
+  FrozenGroupType,
   KEY_GROUP_ROW_HEADER_FROZEN,
   KEY_GROUP_ROW_SCROLL,
+  type HierarchyType,
   type S2Options,
 } from '@/common';
 import type { FrozenFacet } from '@/facet/frozen-facet';
@@ -27,20 +27,22 @@ const defaultS2Options: S2Options = {
 };
 
 const enableFrozenFistRowOption = {
-  frozenRowCount: 1,
-  frozenColCount: 0,
-  frozenTrailingColCount: 0,
-  frozenTrailingRowCount: 0,
-  enableFrozenFirstRow: true,
-  frozenRowHeight: 30,
+  rowCount: 1,
+  colCount: 0,
+  trailingColCount: 0,
+  trailingRowCount: 0,
+  firstRow: true,
+  rowHeight: 30,
 };
 
 const disableFrozenFistRowOption = {
   ...enableFrozenFistRowOption,
-  frozenRowCount: 0,
-  enableFrozenFirstRow: false,
-  frozenRowHeight: 0,
+  rowCount: 0,
+  firstRow: false,
+  rowHeight: 0,
 };
+
+const hierarchyTypes: HierarchyType[] = ['grid', 'tree'];
 
 let s2: PivotSheet;
 
@@ -53,23 +55,23 @@ describe('test getFrozenRowCfgPivot', () => {
     s2.destroy();
   });
 
-  test.each(['grid', 'tree'])(
+  test.each(hierarchyTypes)(
     'getFrozenRowCfgPivot %s mode',
-    (hierarchyType: 'grid' | 'tree') => {
+    async (hierarchyType) => {
       s2.setOptions({
         hierarchyType,
       });
-      s2.render();
+      await s2.render();
 
       expect(
-        getFrozenRowCfgPivot(s2.options, s2.facet.layoutResult.rowNodes),
+        getFrozenRowCfgPivot(s2.options, s2.facet.getRowNodes()),
       ).toStrictEqual(enableFrozenFistRowOption);
 
       s2.setOptions({ pagination: { pageSize: 5, current: 1 } });
-      s2.render();
+      await s2.render();
 
       expect(
-        getFrozenRowCfgPivot(s2.options, s2.facet.layoutResult.rowNodes),
+        getFrozenRowCfgPivot(s2.options, s2.facet.getRowNodes()),
       ).toStrictEqual(disableFrozenFistRowOption);
     },
   );
@@ -94,35 +96,39 @@ describe('test getFrozenRowCfgPivot in tree', () => {
     s2.destroy();
   });
 
-  test('showSeriesNumber no totals', () => {
+  test('showSeriesNumber no totals', async () => {
     s2.setOptions({
       showSeriesNumber: true,
-      totals: { row: { showGrandTotals: false } },
+      totals: {
+        row: {
+          showGrandTotals: false,
+        },
+      },
     });
-    s2.render();
+    await s2.render();
 
     expect(
-      getFrozenRowCfgPivot(s2.options, s2.facet.layoutResult.rowNodes),
+      getFrozenRowCfgPivot(s2.options, s2.facet.getRowNodes()),
     ).toStrictEqual(disableFrozenFistRowOption);
   });
 
-  test('showSeriesNumber has totals', () => {
+  test('showSeriesNumber has totals', async () => {
     s2.setOptions({
       showSeriesNumber: true,
       ...defaultS2Options,
     });
-    s2.render();
+    await s2.render();
 
     expect(
-      getFrozenRowCfgPivot(s2.options, s2.facet.layoutResult.rowNodes),
+      getFrozenRowCfgPivot(s2.options, s2.facet.getRowNodes()),
     ).toStrictEqual(enableFrozenFistRowOption);
   });
 });
 
 describe('test cell XYIndexes frozen first row', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet(defaultS2Options, { useSimpleData: false });
-    s2.render();
+    await s2.render();
   });
 
   afterEach(() => {
@@ -131,25 +137,25 @@ describe('test cell XYIndexes frozen first row', () => {
 
   test('should get correct frozenGroupInfo', () => {
     expect((s2.facet as FrozenFacet).frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         width: 0,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         height: 30,
         range: [0, 0],
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         width: 0,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 0,
       },
     });
   });
 
-  test('should get correct xy indexes with frozen in grid', () => {
+  test('should get correct xy indexes with frozen in grid', async () => {
     s2.setOptions({ hierarchyType: 'grid' });
-    s2.render(false);
+    await s2.render(false);
 
     expect(s2.facet.calculateXYIndexes(0, 0)).toMatchInlineSnapshot(`
       Object {
@@ -353,7 +359,7 @@ describe('test frozen group', () => {
     s2.destroy();
   });
 
-  test.each(['grid', 'tree'])('row header group', async (hierarchyType) => {
+  test.each(hierarchyTypes)('row header group', async (hierarchyType) => {
     s2.setOptions({ hierarchyType });
     await s2.render();
 
@@ -385,12 +391,12 @@ describe('test frozen group', () => {
     expect(rowIndexHeader.getChildren()[1].cfg.name).toBe(
       KEY_GROUP_ROW_HEADER_FROZEN,
     );
-    const frozenSeriesRowGroupChildren = (
-      rowIndexHeader.getChildren()[1] as IGroup
-    ).getChildren();
-    const scrollSeriesRowScrollGroupChildren = (
-      rowIndexHeader.getChildren()[0] as IGroup
-    ).getChildren();
+    const frozenSeriesRowGroupChildren = rowIndexHeader
+      .getChildren()[1]
+      .getChildren();
+    const scrollSeriesRowScrollGroupChildren = rowIndexHeader
+      .getChildren()[0]
+      .getChildren();
 
     expect(frozenSeriesRowGroupChildren).toHaveLength(1);
     expect(frozenSeriesRowGroupChildren[0] instanceof SeriesNumberCell).toBe(

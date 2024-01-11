@@ -51,7 +51,7 @@ import {
 import { groupIconsByPosition } from '../utils/cell/header-cell';
 import { getIconPosition } from '../utils/condition/condition';
 import { drawInterval } from '../utils/g-mini-charts';
-import { renderRect, updateShapeAttr } from '../utils/g-renders';
+import { updateShapeAttr } from '../utils/g-renders';
 import type { RawData } from './../common/interface/s2DataConfig';
 
 /**
@@ -320,7 +320,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     const { row = {} } = this.spreadsheet.options.totals ?? {};
-    const node = this.spreadsheet.facet.getRowLeafNodeByIndex(rowIndex);
+    const node = this.spreadsheet.facet?.getRowLeafNodeByIndex(rowIndex);
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
 
     /**
