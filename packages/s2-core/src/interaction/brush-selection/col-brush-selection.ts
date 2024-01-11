@@ -26,7 +26,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.COL_CELL_MOUSE_DOWN, (event) => {
-      if (!this.spreadsheet.interaction.getBrushSelection().col) {
+      if (!this.spreadsheet.interaction.getBrushSelection().colCell) {
         return;
       }
 

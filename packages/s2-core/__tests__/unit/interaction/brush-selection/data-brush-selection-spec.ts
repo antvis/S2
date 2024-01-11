@@ -462,15 +462,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
         width: 100,
+        x: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
         width: 100,
+        x: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_ROW]: {
         height: 0,
+        y: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 0,
+        y: 0,
+        range: [],
       },
     };
 
@@ -488,16 +496,24 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
+        x: 0,
         width: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
+        x: 0,
         width: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_ROW]: {
+        y: 0,
+        range: [],
         height: 100,
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 100,
+        y: 0,
+        range: [],
       },
     };
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
@@ -519,15 +535,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (s2.facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
+        width: 0,
+        x: 0,
         range: [0, 1],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
+        width: 0,
+        x: 0,
         range: [8, 9],
       },
       [FrozenGroupType.FROZEN_ROW]: {
+        y: 0,
+        height: 0,
         range: [0, 1],
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+        y: 0,
+        height: 0,
         range: [8, 9],
       },
     };
@@ -544,17 +568,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
   test('should not emit brush secletion event', () => {
     mockRootInteraction.getBrushSelection = () => ({
-      data: false,
-      row: true,
-      col: true,
+      dataCell: false,
+      rowCell: true,
+      colCell: true,
     });
 
     const brushSelectionFn = jest.fn();
 
-    mockSpreadSheetInstance.on(
-      S2Event.DATA_CELL_BRUSH_SELECTION,
-      brushSelectionFn,
-    );
+    s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, brushSelectionFn);
 
     // ================== mouse down ==================
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });

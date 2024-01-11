@@ -206,17 +206,14 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
   test('should not emit brush secletion event', () => {
     mockRootInteraction.getBrushSelection = () => ({
-      data: true,
-      row: true,
-      col: false,
+      dataCell: true,
+      rowCell: true,
+      colCell: false,
     });
 
     const brushSelectionFn = jest.fn();
 
-    mockSpreadSheetInstance.on(
-      S2Event.COL_CELL_BRUSH_SELECTION,
-      brushSelectionFn,
-    );
+    s2.on(S2Event.COL_CELL_BRUSH_SELECTION, brushSelectionFn);
 
     // ================== mouse down ==================
     emitEvent(S2Event.COL_CELL_MOUSE_DOWN, { x: 200, y: 0 });

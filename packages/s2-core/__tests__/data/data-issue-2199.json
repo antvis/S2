@@ -2,50 +2,29 @@
   "fields": {
     "columns": [
       {
-        "key": "area",
-        "children": ["province", "city"]
+        "field": "area",
+        "title": "位置",
+        "children": [
+          { "field": "province", "title": "省份" },
+          { "field": "city", "title": "城市" }
+        ]
       },
-      "type",
       {
-        "key": "money",
+        "field": "type",
+        "title": "商品类别"
+      },
+      {
+        "field": "money",
+        "title": "金额",
         "children": [
           {
-            "key": "price"
+            "field": "price",
+            "title": "价格"
           }
         ]
       }
     ]
   },
-  "meta": [
-    {
-      "field": "province",
-      "name": "省份"
-    },
-    {
-      "field": "city",
-      "name": "城市"
-    },
-    {
-      "field": "type",
-      "name": "商品类别"
-    },
-    {
-      "field": "price",
-      "name": "价格"
-    },
-    {
-      "field": "cost",
-      "name": "成本"
-    },
-    {
-      "field": "area",
-      "name": "位置"
-    },
-    {
-      "field": "money",
-      "name": "金额"
-    }
-  ],
   "data": [
     {
       "province": "浙江",

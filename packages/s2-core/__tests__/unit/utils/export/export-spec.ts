@@ -1,10 +1,10 @@
+import { asyncGetAllPlainData } from '../../../../src/utils';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { copyData } from '@/utils';
 
 describe('TableSheet Export Test', () => {
-  it('should export correct data with series number', () => {
+  it('should export correct data with series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -23,12 +23,18 @@ describe('TableSheet Export Test', () => {
         showSeriesNumber: true,
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t', {
-      isFormatHeader: true,
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: {
+        isFormatHeader: true,
+      },
     });
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
+
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 6列数据 包括序列号
@@ -44,7 +50,7 @@ describe('TableSheet Export Test', () => {
       'number',
     ]);
   });
-  it('should export correct data with no series number', () => {
+  it('should export correct data with no series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -57,10 +63,15 @@ describe('TableSheet Export Test', () => {
         showSeriesNumber: false,
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
+
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 5列数据 包括序列号
@@ -78,7 +89,7 @@ describe('TableSheet Export Test', () => {
 });
 
 describe('PivotSheet Export Test', () => {
-  it('should export correct data in grid mode', () => {
+  it('should export correct data in grid mode', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -90,9 +101,14 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({ hierarchyType: 'grid' }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(14);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[1].split('\t')[1]).toEqual('"city"');
@@ -101,7 +117,7 @@ describe('PivotSheet Export Test', () => {
       expect(e.split('\t')).toHaveLength(34);
     });
   });
-  it('should export correct data in tree mode', () => {
+  it('should export correct data in tree mode', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -115,9 +131,14 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'tree',
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(16);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[1].split('\t')[1]).toEqual('"city"');
@@ -128,19 +149,25 @@ describe('PivotSheet Export Test', () => {
 
   // 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
   // https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
-  it('should export correct data in tree mode and hierarchyCollapse is true', () => {
+  it('should export correct data in tree mode and row collapseAll is true', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
       assembleOptions({
         hierarchyType: 'tree',
         style: {
-          hierarchyCollapse: true,
+          rowCell: {
+            collapseAll: true,
+          },
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(5);
@@ -154,19 +181,25 @@ describe('PivotSheet Export Test', () => {
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
-  it('should export correct data in tree mode and hierarchyCollapse is false', () => {
+  it('should export correct data in tree mode and hierarchyCollapse is false', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
       assembleOptions({
         hierarchyType: 'tree',
         style: {
-          hierarchyCollapse: false,
+          rowCell: {
+            collapseAll: false,
+          },
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(13);
@@ -180,7 +213,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[2].split('\t')[2]).toEqual('"数量"');
   });
 
-  it('should export correct data in grid mode with valueInCols is false', () => {
+  it('should export correct data in grid mode with valueInCols is false', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -194,16 +227,21 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'grid',
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(13);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(35);
     });
   });
 
-  it('should export correct data in grid mode with totals in col', () => {
+  it('should export correct data in grid mode with totals in col', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -228,16 +266,21 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(17);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(53);
     });
   });
 
-  it('should export correct data in grid mode with grouped totals in col', () => {
+  it('should export correct data in grid mode with grouped totals in col', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -264,16 +307,21 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(17);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(60);
     });
   });
 
-  it('should export correct data in grid mode with grouped totals in row', () => {
+  it('should export correct data in grid mode with grouped totals in row', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -300,15 +348,20 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(63);
     });
   });
-  it('should export correct data in grid mode with totals in row', () => {
+  it('should export correct data in grid mode with totals in row', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -333,16 +386,21 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
-    s2.render();
-    const data = copyData(s2, '\t');
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(54);
     });
   });
 
-  it('should export correct data when isFormat: {isFormatHeader: true}', () => {
+  it('should export correct data when isFormat: {isFormatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -369,9 +427,17 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({}),
     );
-    s2.render();
-    const data = copyData(s2, '\t', { isFormatHeader: true });
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: {
+        isFormatHeader: true,
+      },
+    });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(7);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');

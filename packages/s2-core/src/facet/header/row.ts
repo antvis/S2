@@ -44,7 +44,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     );
   }
 
-  protected getCellInstance(node: Node): RowCell {
+  public getCellInstance(node: Node): RowCell {
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;

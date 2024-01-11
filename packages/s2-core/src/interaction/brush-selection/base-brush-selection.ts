@@ -1,7 +1,9 @@
 import {
-  Rect, type DisplayObject, type FederatedPointerEvent as CanvasEvent, type PointLike
+  Rect,
+  type DisplayObject,
+  type FederatedPointerEvent as CanvasEvent,
+  type PointLike,
 } from '@antv/g';
-import type { Point } from '@antv/g-canvas';
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
@@ -9,20 +11,21 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  ScrollDirection
+  ScrollDirection,
 } from '../../common/constant';
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
-  ScrollDirectionRowIndexDiff
+  ScrollDirectionRowIndexDiff,
 } from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   OffsetConfig,
-  OnUpdateCells, S2CellType,
-  ViewMeta
+  OnUpdateCells,
+  S2CellType,
+  ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine/interface';
 import type { TableFacet } from '../../facet';
@@ -31,13 +34,13 @@ import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
-  isFrozenTrailingRow
+  isFrozenTrailingRow,
 } from '../../facet/utils';
 import { getCellsTooltipData } from '../../utils';
 import {
   getCellMeta,
   getScrollOffsetForCol,
-  getScrollOffsetForRow
+  getScrollOffsetForRow,
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';
@@ -107,7 +110,7 @@ export class BaseBrushSelection
   }
 
   // 默认是 Data cell 的绘制区
-  protected isPointInCanvas(point: Point): boolean {
+  protected isPointInCanvas(point: PointLike): boolean {
     const { height, width } = this.spreadsheet.facet.getCanvasSize();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
@@ -140,7 +143,10 @@ export class BaseBrushSelection
     this.mouseMoveDistanceFromCanvas = Math.abs(deltaVal);
   };
 
-  public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
+  public formatBrushPointForScroll = (
+    delta: PointLike,
+    isRowHeader = false,
+  ) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
     const { minX, maxX } = isRowHeader ? facet.cornerBBox : facet.panelBBox;
@@ -761,7 +767,7 @@ export class BaseBrushSelection
     }
   };
 
-  public autoBrushScroll(point: Point, isRowHeader = false) {
+  public autoBrushScroll(point: PointLike, isRowHeader = false) {
     this.clearAutoScroll();
 
     if (!this.isPointInCanvas(point)) {
@@ -809,7 +815,7 @@ export class BaseBrushSelection
 
   protected updateSelectedCells() {}
 
-  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     return {
       x: brushRange.start.x,
       y: brushRange.start.y,

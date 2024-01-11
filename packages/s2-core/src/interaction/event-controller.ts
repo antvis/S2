@@ -148,7 +148,7 @@ export class EventController {
       return;
     }
 
-    /*
+    /**
      * 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
      * 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
      */
@@ -227,7 +227,7 @@ export class EventController {
     const { facet, options } = this.spreadsheet;
     const scrollBar = facet.hRowScrollBar || facet.hScrollBar;
     const { maxX, maxY } = facet?.panelBBox || {};
-    const { width, height } = options;
+    const { width = 0, height = 0 } = options;
 
     /**
      * https://github.com/antvis/S2/issues/2376

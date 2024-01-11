@@ -1,6 +1,5 @@
 import type {
   BaseCell,
-  BaseRowCell,
   ColCell,
   CornerCell,
   DataCell,
@@ -33,7 +32,6 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | CornerCell
   | RowCell
   | SeriesNumberCell
-  | BaseRowCell
   | MergedCell
   | TableCornerCell
   | TableSeriesNumberCell
@@ -138,7 +136,7 @@ export interface HoverFocusOptions {
   duration?: number;
 }
 
-export interface BrushSelection {
+export interface BrushSelectionOptions {
   dataCell?: boolean;
   rowCell?: boolean;
   colCell?: boolean;
@@ -165,7 +163,7 @@ export interface InteractionOptions {
   /**
    * 十字器高亮效果
    */
-  hoverHighlight?: boolean;
+  hoverHighlight?: InteractionCellHighlightOptions | boolean;
 
   /**
    * 悬停聚焦, 800ms 后会显示其对应 tooltip, 可以自定义 duration
@@ -217,7 +215,7 @@ export interface InteractionOptions {
   /**
    * 刷选
    */
-  brushSelection?: BrushSelection | boolean;
+  brushSelection?: BrushSelectionOptions | boolean;
 
   /**
    * 多选 Command/Ctrl + click
@@ -248,7 +246,7 @@ export interface InteractionOptions {
   /**
    * 选中单元格高亮联动 (高亮所对应行头/列头, 高亮当前行/当前列)
    */
-  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightOptions;
+  selectedCellHighlight?: boolean | InteractionCellHighlightOptions;
 
   /**
    * 滚动到边界的行为
@@ -269,7 +267,7 @@ export interface InteractionOptions {
   customInteractions?: CustomInteraction[];
 }
 
-export interface InteractionCellSelectedHighlightOptions {
+export interface InteractionCellHighlightOptions {
   /** 高亮行头 */
   rowHeader?: boolean;
   /** 高亮列头 */

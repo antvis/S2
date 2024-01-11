@@ -4,19 +4,18 @@ import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
-  ScrollDirection
+  ScrollDirection,
 } from '../../common/constant/interaction';
 import type {
   BrushRange,
   OnUpdateCells,
   Point,
-  ViewMeta
+  ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
-
 
 export class RowCellBrushSelection extends BaseBrushSelection {
   public displayedCells: RowCell[] = [];
@@ -25,7 +24,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
-      if (!this.spreadsheet.interaction.getBrushSelection().row) {
+      if (!this.spreadsheet.interaction.getBrushSelection().rowCell) {
         return;
       }
 
@@ -129,16 +128,15 @@ export class RowCellBrushSelection extends BaseBrushSelection {
     return this.spreadsheet.facet.getRowNodes().filter(this.isInBrushRange);
   };
 
-  private getScrollBrushRangeCells(nodes: Node[]) {
+  private getScrollBrushRangeCells(nodes: Node[]): RowCell[] {
     return nodes.map((node) => {
-      const visibleCell = this.getVisibleBrushRangeCells(node.id);
+      const visibleCell = this.getVisibleBrushRangeCells(node.id) as RowCell;
 
       if (visibleCell) {
         return visibleCell;
       }
 
-      // TODO: 先暂时不考虑自定义单元格的情况, next 分支把这些单元格 (包括自定义单元格) 都放在了 s2.options.rowCell 里
-      return this.spreadsheet.facet.rowHeader.createCellInstance(node);
+      return this.spreadsheet.facet.rowHeader!.getCellInstance(node);
     });
   }
 

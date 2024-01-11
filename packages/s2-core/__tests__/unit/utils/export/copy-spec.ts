@@ -56,6 +56,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     await s2.render();
   });
 
@@ -1474,19 +1475,20 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   test('should copy all original row data in grid mode if contains text ellipses', () => {
     s2.setOptions({
       style: {
-        rowCfg: {
+        rowCell: {
           // 展示省略号
           width: 10,
         },
       },
     });
-    const cells = s2.interaction.getAllRowHeaderCells();
+
+    const cells = s2.facet.getRowCells();
 
     s2.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
+        root.updateCells(s2.facet.getRowCells());
       },
     });
 
@@ -1512,8 +1514,8 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         root.updateCells(cells);
       },
     });
-    // 列头高度
 
+    // 列头高度
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "家具	家具	办公用品	办公用品
       桌子	沙发	笔	纸张
@@ -1521,7 +1523,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy all col data in grid mode for custom field meta', () => {
+  test('should copy all col data in grid mode for custom field meta', async () => {
     s2.setDataCfg({
       meta: [
         {
@@ -1531,15 +1533,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       ],
     });
 
-    s2.render();
+    await s2.render();
 
-    const cells = s2.interaction.getAllColHeaderCells();
+    const cells = s2.facet.getColCells();
 
     s2.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
-        root.updateCells(root.getAllColHeaderCells());
+        root.updateCells(cells);
       },
     });
 
@@ -1550,7 +1552,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
-  test('should copy selection row data in grid mode', () => {
+  test('should copy selection row data in grid mode', async () => {
     const sheet = new PivotSheet(
       getContainer(),
       assembleDataCfg({

@@ -24,7 +24,7 @@ const s2Options: S2Options = {
 };
 
 describe('Table Sheet Custom Multiple Values Tests', () => {
-  test('should use current cell text theme', () => {
+  test('should use current cell text theme', async () => {
     const s2 = createTableSheet(s2Options);
 
     s2.setTheme({
@@ -47,21 +47,17 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
         },
       },
     });
-    s2.render();
+    await s2.render();
 
     const mapTheme = (cell: S2CellType) => {
       return cell
         .getTextShapes()
-        .map((shape) => pick(shape.attr(), ['fill', 'fontSize']));
+        .map((shape) => pick(shape.parsedStyle, ['fill', 'fontSize']));
     };
 
-    const colCellTexts = s2
-      .getColumnNodes()
-      .map((node) => mapTheme(node.belongsCell));
+    const colCellTexts = s2.facet.getColCells().map(mapTheme);
 
-    const dataCellTexts = s2.interaction
-      .getPanelGroupAllDataCells()
-      .map(mapTheme);
+    const dataCellTexts = s2.facet.getDataCells().map(mapTheme);
 
     expect(colCellTexts).toMatchInlineSnapshot(`
       Array [

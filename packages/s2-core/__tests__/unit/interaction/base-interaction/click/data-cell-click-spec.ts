@@ -10,7 +10,7 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
-import type { InteractionCellSelectedHighlightOptions } from '@/common/interface';
+import type { InteractionCellHighlightOptions } from '@/common/interface';
 import { CustomRect } from '@/engine';
 import type { GEvent } from '@/index';
 import type { SpreadSheet } from '@/sheet-type';
@@ -198,7 +198,7 @@ describe('Interaction Data Cell Click Tests', () => {
   test('should highlight the column header cell and row header cell when data cell clicked', () => {
     const headerCellId0 = 'header-0';
     const headerCellId1 = 'header-1';
-    const columnNode: Array<Partial<Node>> = [
+    const columnNode: Node[] = [
       {
         belongsCell: {
           getMeta: () => ({
@@ -208,7 +208,7 @@ describe('Interaction Data Cell Click Tests', () => {
           }),
         } as any,
         id: headerCellId0,
-      },
+      } as unknown as Node,
       {
         belongsCell: {
           getMeta: () => ({
@@ -218,7 +218,7 @@ describe('Interaction Data Cell Click Tests', () => {
           }),
         } as any,
         id: headerCellId1,
-      },
+      } as unknown as Node,
     ];
 
     s2.facet.getColNodes = jest.fn(() => columnNode) as any;
@@ -235,7 +235,7 @@ describe('Interaction Data Cell Click Tests', () => {
         selectedCellHighlight: {
           colHeader: true,
           rowHeader: true,
-        } as InteractionCellSelectedHighlightOptions,
+        } as InteractionCellHighlightOptions,
       },
     });
 

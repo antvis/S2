@@ -1,5 +1,4 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
 import {
@@ -33,7 +32,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
 
-      const { interaction } = this.spreadsheet;
+      const { interaction, facet } = this.spreadsheet;
 
       interaction.clearHoverTimer();
 
@@ -86,7 +85,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       if (colHeader) {
         updateAllColHeaderCellState(
           colId,
-          interaction.getAllColHeaderCells(),
+          facet.getColCells(),
           InteractionStateName.SELECTED,
         );
       }

@@ -5,7 +5,7 @@ import { SheetComponent } from '@antv/s2-react';
 import { Tag } from 'antd';
 import {
   BaseEvent,
-  CellTypes,
+  CellType,
   getTheme,
   InterceptType,
   S2Event,
@@ -64,10 +64,11 @@ class CustomInteraction extends BaseEvent {
 
   count = 0;
 
-  changeCell(cellType: CellTypes) {
+  changeCell(cellType: CellType) {
     this.count++;
 
     const defaultTheme = getTheme(null)?.[cellType];
+
     this.spreadsheet.setTheme({
       [cellType]: defaultTheme,
     });
@@ -128,10 +129,10 @@ class CustomInteraction extends BaseEvent {
   }
 
   addCornerCellInteraction() {
-    const countMap: Record<number, CellTypes> = {
-      0: CellTypes.ROW_CELL,
-      1: CellTypes.COL_CELL,
-      2: CellTypes.DATA_CELL,
+    const countMap: Record<number, CellType> = {
+      0: CellType.ROW_CELL,
+      1: CellType.COL_CELL,
+      2: CellType.DATA_CELL,
     };
 
     this.spreadsheet.on(S2Event.CORNER_CELL_MOUSE_DOWN, () => {
@@ -157,6 +158,7 @@ class CustomInteraction extends BaseEvent {
       const { colIndex, rowIndex } = cells[0];
 
       const isLastCell = colIndex === 3 && rowIndex === 7;
+
       if (isLastCell) {
         this.changeCell(CellTypes.DATA_CELL);
       }
@@ -166,6 +168,7 @@ class CustomInteraction extends BaseEvent {
   addColCellInteraction() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, ({ info }) => {
       const rules = [6, 66, 666];
+
       if (rules.includes(info.resizedWidth)) {
         this.changeCell(CellTypes.COL_CELL);
       }
@@ -174,6 +177,7 @@ class CustomInteraction extends BaseEvent {
     this.spreadsheet.on(S2Event.COL_CELL_BRUSH_SELECTION, (colCells) => {
       const isAllSelected =
         colCells.length === this.spreadsheet.getColumnNodes().length;
+
       if (isAllSelected) {
         this.changeCell(CellTypes.COL_CELL);
       }
@@ -184,10 +188,12 @@ class CustomInteraction extends BaseEvent {
     this.spreadsheet.on(S2Event.GLOBAL_SELECTED, (cells) => {
       const selectedOddRowCells = cells.filter((cell) => {
         const meta = cell.getMeta();
+
         return cell.cellType === CellTypes.ROW_CELL && meta.rowIndex % 2 !== 0;
       });
 
       const isAllOddRowCellsSelected = selectedOddRowCells.length === 4;
+
       if (isAllOddRowCellsSelected) {
         this.changeCell(CellTypes.ROW_CELL);
       }

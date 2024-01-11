@@ -12,21 +12,30 @@ const s2Options: S2Options = {
   width: 300,
   height: 480,
   showSeriesNumber: true,
-  frozenColCount: 1,
+  frozen: {
+    colCount: 1,
+  },
 };
 
 describe('ColCell Text Center Tests', () => {
-  test('should draw text centered in cell', () => {
+  test('should draw text centered in cell', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
-    s2.render();
 
-    s2.facet.updateScrollOffset({ offsetX: { value: 500, animate: false } });
+    await s2.render();
 
-    const node = s2.getColumnNodes(0).slice(-1)?.[0];
+    s2.facet.updateScrollOffset({
+      offsetX: {
+        value: 500,
+        animate: false,
+      },
+    });
+
+    const node = s2.facet.getColNodes(0).slice(-1)?.[0];
     const cell = node?.belongsCell;
     const { width: nodeWidth, x: nodeX } = node;
-    const { width: textWidth, x: textXActual } = cell.getContentArea();
+    const { width: textWidth, x: textXActual } = cell!.getBBoxByType();
     const textXCalc = nodeX + (nodeWidth - textWidth) / 2;
+
     expect(textXCalc).toBeCloseTo(textXActual);
   });
 });

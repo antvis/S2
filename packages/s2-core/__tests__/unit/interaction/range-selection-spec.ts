@@ -85,6 +85,7 @@ describe('Interaction Range Selection Tests', () => {
 
   test('should remove hover intercepts when col cell unselected', () => {
     const mockCell00 = createMockCellInfo('3-3', { rowIndex: 3, colIndex: 3 });
+
     s2.getCell = () => mockCell00.mockCell as any;
 
     s2.interaction.addIntercepts([InterceptType.HOVER]);

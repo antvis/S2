@@ -1605,7 +1605,7 @@ export abstract class BaseFacet {
 
         if (canvasMousemoveEvent) {
           const { x, y } = canvasMousemoveEvent;
-          const shape = container.getShape(x, y);
+          const shape = container.document.elementFromPointSync(x, y);
 
           if (shape) {
             container.emit(OriginEventType.MOUSE_MOVE, {
@@ -1644,8 +1644,9 @@ export abstract class BaseFacet {
       return;
     }
 
-    return hiddenColumnsDetail.find((detail) =>
-      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
+    return hiddenColumnsDetail.find(
+      (detail) =>
+        detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

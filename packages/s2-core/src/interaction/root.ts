@@ -2,22 +2,23 @@ import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import type { MergedCell } from '../cell';
 import {
   CellType,
+  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
-  INTERACTION_STATE_INFO_KEY,
   InterceptType,
-  S2Event
+  S2Event,
 } from '../common/constant';
 import type {
-  BrushSelection,
+  BrushSelectionOptions,
   BrushSelectionInfo,
   CellMeta,
   CustomInteraction,
-  InteractionCellHighlight, InteractionCellSelectedHighlightOptions, InteractionStateInfo,
+  InteractionCellHighlightOptions,
+  InteractionStateInfo,
   Intercept,
   MergedCellInfo,
   S2CellType,
-  SelectHeaderCellInfo
+  SelectHeaderCellInfo,
 } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
@@ -31,7 +32,7 @@ import {
   DataCellClick,
   MergedCellClick,
   RowColumnClick,
-  RowTextClick
+  RowTextClick,
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
@@ -327,7 +328,7 @@ export class RootInteraction {
   }
 
   private getBrushSelectionInfo(
-    brushSelection?: boolean | BrushSelection,
+    brushSelection?: boolean | BrushSelectionOptions,
   ): BrushSelectionInfo {
     if (isBoolean(brushSelection)) {
       return {
@@ -544,7 +545,7 @@ export class RootInteraction {
     return this.hoverTimer;
   }
 
-  public getSelectedCellHighlight(): InteractionCellSelectedHighlightOptions {
+  public getSelectedCellHighlight(): InteractionCellHighlightOptions {
     const { selectedCellHighlight } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(selectedCellHighlight)) {
@@ -561,7 +562,7 @@ export class RootInteraction {
       colHeader = false,
       currentRow = false,
       currentCol = false,
-    } = (selectedCellHighlight as unknown as InteractionCellSelectedHighlightOptions) ??
+    } = (selectedCellHighlight as unknown as InteractionCellHighlightOptions) ??
     {};
 
     return {
@@ -573,11 +574,11 @@ export class RootInteraction {
   }
 
   public getHoverAfterScroll(): boolean {
-    return this.spreadsheet.options.interaction.hoverAfterScroll;
+    return this.spreadsheet.options.interaction!.hoverAfterScroll!;
   }
 
-  public getHoverHighlight(): InteractionCellHighlight {
-    const { hoverHighlight } = this.spreadsheet.options.interaction;
+  public getHoverHighlight(): InteractionCellHighlightOptions {
+    const { hoverHighlight } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(hoverHighlight)) {
       return {
@@ -593,7 +594,7 @@ export class RootInteraction {
       colHeader = false,
       currentRow = false,
       currentCol = false,
-    } = hoverHighlight ?? {};
+    } = hoverHighlight ?? ({} as InteractionCellHighlightOptions);
 
     return {
       rowHeader,
@@ -603,23 +604,27 @@ export class RootInteraction {
     };
   }
 
-  public getBrushSelection(): BrushSelection {
-    const { brushSelection } = this.spreadsheet.options.interaction;
+  public getBrushSelection(): BrushSelectionOptions {
+    const { brushSelection } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(brushSelection)) {
       return {
-        data: brushSelection,
-        row: brushSelection,
-        col: brushSelection,
+        dataCell: brushSelection,
+        rowCell: brushSelection,
+        colCell: brushSelection,
       };
     }
 
-    const { data = false, row = false, col = false } = brushSelection ?? {};
+    const {
+      dataCell = false,
+      rowCell = false,
+      colCell = false,
+    } = brushSelection ?? ({} as BrushSelectionOptions);
 
     return {
-      data,
-      row,
-      col,
+      dataCell,
+      rowCell,
+      colCell,
     };
   }
 }

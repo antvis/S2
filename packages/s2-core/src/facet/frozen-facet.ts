@@ -1,5 +1,6 @@
-import { Rect, type LineStyleProps, Group } from '@antv/g';
+import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { keys, last } from 'lodash';
+import type { DataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FrozenCellGroupMap,
@@ -15,7 +16,7 @@ import {
   S2Event,
   SPLIT_LINE_WIDTH,
 } from '../common/constant';
-import type { S2CellType, ViewMeta } from '../common/interface';
+import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import { getValidFrozenOptions, renderLine } from '../utils';
 import {
@@ -24,10 +25,10 @@ import {
   getRowsForGrid,
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
-import type { SimpleBBox } from '../engine';
 import { floor } from '../utils/math';
 import { BaseFacet } from './base-facet';
 import { Frame } from './header/frame';
+import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
   calculateInViewIndexes,
@@ -36,7 +37,6 @@ import {
   splitInViewIndexesWithFrozen,
   translateGroup,
 } from './utils';
-import { Node } from './layout/node';
 
 /**
  * Defines the row freeze  abstract standard interface
@@ -257,7 +257,7 @@ export abstract class FrozenFacet extends BaseFacet {
     );
   }
 
-  addDataCell = (cell: S2CellType<ViewMeta>) => {
+  addDataCell = (cell: DataCell) => {
     const {
       rowCount = 0,
       colCount = 0,
@@ -591,7 +591,7 @@ export abstract class FrozenFacet extends BaseFacet {
   protected init(): void {
     super.init();
     this.initRowOffsets();
-      }
+  }
 
   public render(): void {
     this.calculateFrozenGroupInfo();

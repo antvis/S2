@@ -2,13 +2,12 @@
  * @description spec for issue #2340
  * https://github.com/antvis/S2/issues/2340
  */
-import { map } from 'lodash';
 import {
-  CellTypes,
+  CellType,
   InteractionStateName,
   getCellMeta,
+  type S2CellType,
   type S2Options,
-  HeaderCell,
 } from '../../src';
 import { createPivotSheet, sleep } from '../util/helpers';
 
@@ -16,7 +15,7 @@ const s2Options: S2Options = {
   width: 800,
   height: 600,
   style: {
-    cellCfg: {
+    dataCell: {
       width: 200,
       height: 200,
     },
@@ -24,32 +23,35 @@ const s2Options: S2Options = {
 };
 
 describe('Header Brush Selection Tests', () => {
-  test.each([CellTypes.COL_CELL, CellTypes.ROW_CELL])(
+  test.each([CellType.COL_CELL, CellType.ROW_CELL])(
     'should not trigger data cell selected when header selected and scroll out of viewport',
     async (cellType) => {
       const s2 = createPivotSheet(s2Options, { useSimpleData: false });
-      s2.render();
 
-      const isRow = cellType === CellTypes.ROW_CELL;
+      await s2.render();
+
+      const isRow = cellType === CellType.ROW_CELL;
       const targetCells = isRow
-        ? s2.interaction.getAllRowHeaderCells()
-        : s2.interaction.getAllColHeaderCells();
+        ? s2.facet.getRowCells()
+        : s2.facet.getColCells();
 
       const cells = [
-        (targetCells as HeaderCell[]).find((cell) => {
+        targetCells.find((cell) => {
           const meta = cell.getMeta();
+
           return meta.isLeaf;
         }),
-      ];
+      ] as S2CellType[];
 
       s2.interaction.changeState({
-        cells: map(cells, getCellMeta),
+        cells: cells.map(getCellMeta),
         stateName: InteractionStateName.BRUSH_SELECTED,
       });
 
       await sleep(500);
 
       const offsetKey = isRow ? 'offsetY' : 'offsetX';
+
       // 将圈选的单元格滑出可视范围
       s2.facet.updateScrollOffset({
         [offsetKey]: { value: 300 },
@@ -70,7 +72,7 @@ describe('Header Brush Selection Tests', () => {
       // 交互过的不应该有 dataCell (未触发过列头多选)
       s2.interaction.getInteractedCells().forEach((cell) => {
         expect(cell.cellType).toEqual(
-          isRow ? CellTypes.ROW_CELL : CellTypes.COL_CELL,
+          isRow ? CellType.ROW_CELL : CellType.COL_CELL,
         );
       });
     },
