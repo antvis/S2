@@ -4,6 +4,7 @@ import {
   filter,
   find,
   forEach,
+  includes,
   isEmpty,
   isEqual,
   map,
@@ -12,12 +13,12 @@ import { MergedCell } from '../../cell/merged-cell';
 import { CellType } from '../../common/constant';
 import type {
   MergedCellInfo,
-  S2CellType,
   TempMergedCell,
   ViewMeta,
   MergedCellCallback,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
+import type { DataCell } from '../../cell';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
@@ -86,7 +87,7 @@ export const getNextEdge = (
  * return all the points of the polygon
  * @param cells the collection of information of cells which needed be merged
  */
-export const getPolygonPoints = (cells: S2CellType[]) => {
+export const getPolygonPoints = (cells: DataCell[]) => {
   let allEdges: [number, number][][] = [];
 
   cells.forEach((cell) => {
@@ -111,6 +112,53 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   return allPoints;
 };
 
+export const getRightAndBottomCells = (cells: DataCell[]) => {
+  const right: DataCell[] = [];
+  const bottom: DataCell[] = [];
+  const bottomRightCornerCell: DataCell[] = [];
+
+  cells.forEach((cell) => {
+    const [row, col] = cell.position;
+
+    if (
+      !find(
+        cells,
+        (temp) => temp.position[0] === row + 1 && temp.position[1] === col,
+      )
+    ) {
+      bottom.push(cell);
+    }
+
+    if (
+      !find(
+        cells,
+        (temp) => temp.position[1] === col + 1 && temp.position[0] === row,
+      )
+    ) {
+      right.push(cell);
+    }
+  });
+
+  // 在绘制了 right border 后，如果它上面的 cell 也是 merge cell 中的，且无需绘制 right 时，需要单独为其位置 bottomRight corner 的 border，反正连线会断
+  right.forEach((cell) => {
+    const [row, col] = cell.position;
+    const top = find(
+      cells,
+      (temp) => temp.position[0] === row - 1 && temp.position[1] === col,
+    );
+
+    if (top && !includes(right, top)) {
+      bottomRightCornerCell.push(top);
+    }
+  });
+
+  return {
+    bottom,
+    right,
+    bottomRightCornerCell,
+  };
+};
+
 /**
  * get cells on the outside of visible area through mergeCellInfo
  * @param invisibleCellInfo
@@ -120,7 +168,7 @@ export const getInvisibleInfo = (
   invisibleCellInfo: MergedCellInfo[],
   sheet: SpreadSheet,
 ) => {
-  const cells: S2CellType[] = [];
+  const cells: DataCell[] = [];
   let viewMeta: ViewMeta | undefined;
 
   forEach(invisibleCellInfo, (cellInfo) => {
@@ -148,14 +196,14 @@ export const getInvisibleInfo = (
  */
 export const getVisibleInfo = (
   cellsInfos: MergedCellInfo[],
-  allVisibleCells: S2CellType[],
+  allVisibleCells: DataCell[],
 ) => {
-  const cells: S2CellType[] = [];
+  const cells: DataCell[] = [];
   const invisibleCellInfo: MergedCellInfo[] = [];
   let cellsMeta: ViewMeta | Node | undefined;
 
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
-    const findCell = find(allVisibleCells, (cell: S2CellType) => {
+    const findCell = find(allVisibleCells, (cell: DataCell) => {
       const meta = cell?.getMeta?.();
 
       if (
@@ -164,7 +212,7 @@ export const getVisibleInfo = (
       ) {
         return cell;
       }
-    }) as S2CellType;
+    }) as DataCell;
 
     if (findCell) {
       cells.push(findCell);
@@ -186,7 +234,7 @@ export const getVisibleInfo = (
  * @param sheet
  */
 export const getTempMergedCell = (
-  allVisibleCells: S2CellType[],
+  allVisibleCells: DataCell[],
   sheet?: SpreadSheet,
   cellsInfos: MergedCellInfo[] = [],
 ): TempMergedCell => {
@@ -195,7 +243,7 @@ export const getTempMergedCell = (
     allVisibleCells,
   );
   let viewMeta: ViewMeta | Node | undefined = cellsMeta;
-  let mergedAllCells: S2CellType[] = cells;
+  let mergedAllCells: DataCell[] = cells;
   // some cells are invisible and some cells are visible
   const isPartiallyVisible =
     invisibleCellInfo?.length > 0 &&
@@ -247,21 +295,21 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
 
 /**
  * 创建 merged cell 实例
- * @param spreasheet 表格实例
+ * @param spreadsheet 表格实例
  * @param cells 待合并的单元格
  * @param meta 元信息
  * @returns
  */
 export const getMergedCellInstance: MergedCellCallback = (
-  spreasheet,
+  spreadsheet,
   cells,
   meta,
 ) => {
-  if (spreasheet.options.mergedCell) {
-    return spreasheet.options.mergedCell(spreasheet, cells, meta);
+  if (spreadsheet.options.mergedCell) {
+    return spreadsheet.options.mergedCell(spreadsheet, cells, meta);
   }
 
-  return new MergedCell(spreasheet, cells, meta);
+  return new MergedCell(spreadsheet, cells, meta);
 };
 
 /**
@@ -315,7 +363,7 @@ export const removeUnmergedCellsInfo = (
   removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
 ): MergedCellInfo[][] => {
-  const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
+  const removeCellInfo = map(removeMergedCell.cells, (cell: DataCell) => {
     return {
       colIndex: cell.getMeta().colIndex,
       rowIndex: cell.getMeta().rowIndex,

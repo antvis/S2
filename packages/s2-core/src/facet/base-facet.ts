@@ -1316,6 +1316,7 @@ export abstract class BaseFacet {
         if (viewMeta) {
           const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
 
+          cell.position = [j, i];
           // mark cell for removing
           cell.name = `${i}-${j}`;
           this.addDataCell(cell);

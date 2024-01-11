@@ -212,8 +212,7 @@ export const getBorderPositionAndStyle = (
         lineWidth: verticalBorderWidth,
         stroke: verticalBorderColor,
         strokeOpacity: verticalBorderColorOpacity,
-      lineDash: borderDash,
-
+        lineDash: borderDash,
       };
 
   let x1 = 0;

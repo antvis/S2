@@ -67,6 +67,12 @@ import type { RawData } from './../common/interface/s2DataConfig';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
+  /**
+   * 用于 merge cell 中用于绘制 border 的位置信息
+   * @see packages/s2-core/src/facet/base-facet.ts L1319
+   */
+  position: [rowIndex: number, colIndex: number];
+
   // condition icon 坐标
   iconPosition: PointLike;
 
