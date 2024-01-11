@@ -662,64 +662,6 @@ export class PivotFacet extends FrozenFacet {
   }
 
   /**
-   * @description adust the coordinate of subTotal nodes when there is just one value
-   * @param hierarchy Hierarchy
-   * @param isRowHeader boolean
-   */
-  private adjustSubTotalNodesCoordinate(
-    hierarchy: Hierarchy,
-    isRowHeader?: boolean,
-  ) {
-    const subTotalNodes = hierarchy
-      .getNodes()
-      .filter((node) => node.isSubTotals);
-
-    if (isEmpty(subTotalNodes)) {
-      return;
-    }
-
-    const { maxLevel } = hierarchy;
-
-    forEach(subTotalNodes, (subTotalNode: Node) => {
-      const subTotalChildNode = subTotalNode.children;
-
-      if (isRowHeader) {
-        // 填充行总单元格宽度
-        subTotalNode.width = getSubTotalNodeWidthOrHeightByLevel(
-          hierarchy.sampleNodesForAllLevels,
-          subTotalNode.level,
-          'width',
-        );
-
-        // 调整其叶子节点位置
-        forEach(subTotalChildNode, (node: Node) => {
-          node.x = hierarchy.getNodes(maxLevel)[0].x;
-        });
-      } else {
-        // 填充列总单元格高度
-        const totalHeight = getSubTotalNodeWidthOrHeightByLevel(
-          hierarchy.sampleNodesForAllLevels,
-          subTotalNode.level,
-          'height',
-        );
-        const subTotalNodeChildrenHeight = subTotalChildNode?.[0]?.height ?? 0;
-
-        subTotalNode.height = totalHeight - subTotalNodeChildrenHeight;
-        // 调整其叶子节点位置, 以非小计行为准
-        const positionY =
-          find(
-            hierarchy.getNodes(maxLevel),
-            (node: Node) => !node.isTotalMeasure,
-          )?.y || 0;
-
-        forEach(subTotalChildNode, (node: Node) => {
-          node.y = positionY;
-        });
-      }
-    });
-  }
-
-  /**
    * 计算 grid 模式下 node 宽度
    * @param node
    * @returns
