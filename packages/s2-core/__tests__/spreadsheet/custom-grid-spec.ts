@@ -3,7 +3,6 @@ import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
 import { pick } from 'lodash';
 import { waitForRender } from 'tests/util';
-import type { HeaderCell } from '../../src/cell/header-cell';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
 import {
@@ -361,7 +360,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     );
 
     test('should render custom format corner text', () => {
-      const cornerCellLabels = s2.facet.getColCells().map((cell) => {
+      const cornerCellLabels = s2.facet.getCornerCells().map((cell) => {
         const value = cell.getActualText();
         const meta = cell.getMeta();
 

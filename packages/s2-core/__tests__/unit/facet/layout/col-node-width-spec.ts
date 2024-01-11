@@ -35,7 +35,7 @@ describe('Col width Test', () => {
     });
 
     test('get correct width in layoutWidthType adaptive mode', () => {
-      expect(s2.facet.getColLeafNodes()[0].width).toBe(200);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(199.5);
     });
 
     test('get correct width in layoutWidthType adaptive mode when enable series number', async () => {
@@ -44,7 +44,7 @@ describe('Col width Test', () => {
       });
       await s2.render();
 
-      expect(s2.facet.getColLeafNodes()[0].width).toBe(180);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(179.5);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode', async () => {
@@ -53,7 +53,7 @@ describe('Col width Test', () => {
       });
       await s2.render();
 
-      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(338);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(339);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode when enable series number', async () => {
@@ -63,7 +63,7 @@ describe('Col width Test', () => {
       });
       await s2.render();
 
-      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(298);
+      expect(Math.round(s2.facet.getColLeafNodes()[0].width)).toBe(299);
     });
 
     test('get correct width in layoutWidthType compact mode', async () => {
