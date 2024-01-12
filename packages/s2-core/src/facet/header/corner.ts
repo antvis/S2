@@ -150,7 +150,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (spreadsheet.isHierarchyTreeType()) {
       const cornerText = this.getTreeCornerText(options);
       const cornerNode: Node = new Node({
-        id: '',
+        id: cornerText,
         field: '',
         value: cornerText,
       });
@@ -178,7 +178,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
         const value = spreadsheet.dataSet.getFieldName(field);
         const cornerNode: Node = new Node({
-          id: '',
+          id: field,
           field,
           value,
         });
@@ -206,7 +206,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const value = spreadsheet.dataSet.getFieldName(field);
 
         const cNode = new Node({
-          id: '',
+          id: field,
           field,
           value,
         });

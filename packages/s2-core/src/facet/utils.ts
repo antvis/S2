@@ -493,20 +493,22 @@ export const getFrozenRowCfgPivot = (
   S2TableSheetFrozenOptions & {
     rowHeight: number;
   } => {
+  /**
+   * series number cell 可以自定义布局，和 row cell 不一定是 1 对 1 的关系
+   * showSeriesNumber 暂时禁用 首行冻结
+   * */
   const { pagination, frozen, hierarchyType, showSeriesNumber } = options;
 
   const enablePagination = pagination && pagination.pageSize;
   let firstRow = false;
   const headNode = rowNodes?.[0];
 
-  if (!enablePagination && frozen?.firstRow) {
-    // first node no children: entire row
-    firstRow = headNode?.children?.length === 0;
+  if (!enablePagination && !showSeriesNumber && frozen?.firstRow) {
     const treeMode = hierarchyType === 'tree';
 
-    if (treeMode && !firstRow) {
-      firstRow = !showSeriesNumber;
-    }
+    // tree mode
+    // first node no children: entire row
+    firstRow = treeMode || headNode?.children?.length === 0;
   }
 
   const effectiveFrozenFirstRow = firstRow && !!headNode;
