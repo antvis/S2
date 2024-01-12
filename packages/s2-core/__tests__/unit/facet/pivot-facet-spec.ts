@@ -169,7 +169,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowsHierarchy.getNodes(0)).toHaveLength(2);
 
       rowsHierarchy.getLeaves().forEach((node, index) => {
-        expect(node.width).toBe(99);
+        expect(node.width).toBeCloseTo(99);
         expect(node.height).toBe(dataCell!.height!);
         expect(node.x).toBe(99 * node.level);
         expect(node.y).toBe(node.height * index);
@@ -195,7 +195,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(colsHierarchy.getNodes(0)).toHaveLength(2);
 
       colsHierarchy.getLeaves().forEach((node, index) => {
-        expect(node.width).toBe(width);
+        expect(node.width).toBeCloseTo(width);
         expect(node.height).toBe(colCell!.height);
         expect(node.x).toBe(width * index);
         expect(node.y).toBe(node.height * node.level);

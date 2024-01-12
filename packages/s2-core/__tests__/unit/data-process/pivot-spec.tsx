@@ -58,41 +58,50 @@ describe('Pivot Table Core Data Process', () => {
         data.length,
       );
 
+      // 左上角
       expect(get(indexesData, [prefix, 1, 1, 1, 1, 1])).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
-      }); // 左上角
+      });
+
+      // 右上角
       expect(get(indexesData, [prefix, 1, 1, 2, 2, 1])).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '办公用品',
         sub_type: '纸张',
         number: 1343,
-      }); // 右上角
+      });
+
+      // 左下角
       expect(get(indexesData, [prefix, 2, 4, 1, 1, 1])).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '家具',
         sub_type: '桌子',
         number: 2330,
-      }); // 左下角
+      });
+
+      // 右下角
       expect(get(indexesData, [prefix, 2, 4, 2, 2, 1])).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '办公用品',
         sub_type: '纸张',
         number: 352,
-      }); // 右下角
+      });
+
+      // 中间
       expect(get(indexesData, [prefix, 1, 4, 2, 1, 1])).toEqual({
         province: '浙江省',
         city: '舟山市',
         type: '办公用品',
         sub_type: '笔',
         number: 1432,
-      }); // 中间
+      });
     });
   });
 
@@ -142,6 +151,7 @@ describe('Pivot Table Core Data Process', () => {
         '南充市',
         '乐山市',
       ]);
+
       // 父子关系正确
       const leavesNodes = rowsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
@@ -168,26 +178,26 @@ describe('Pivot Table Core Data Process', () => {
 
       // 节点正确
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
-      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]number
+      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]数量
       // 叶子节点正确
       expect(colsHierarchy.getLeaves().map((node) => node.value)).toEqual([
-        'number',
-        'number',
-        'number',
-        'number',
+        '数量',
+        '数量',
+        '数量',
+        '数量',
       ]);
       // 层级正确
       expect(colsHierarchy.getNodes().map((node) => node.value)).toEqual([
         '家具',
         '桌子',
-        'number',
+        '数量',
         '沙发',
-        'number',
+        '数量',
         '办公用品',
         '笔',
-        'number',
+        '数量',
         '纸张',
-        'number',
+        '数量',
       ]);
       expect(colsHierarchy.getNodes(0).map((node) => node.value)).toEqual([
         '家具',
@@ -200,16 +210,17 @@ describe('Pivot Table Core Data Process', () => {
         '纸张',
       ]);
       expect(colsHierarchy.getNodes(2).map((node) => node.value)).toEqual([
-        'number',
-        'number',
-        'number',
-        'number',
+        '数量',
+        '数量',
+        '数量',
+        '数量',
       ]);
+
       // 父子关系正确
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
 
-      expect(firstLeafNode.value).toEqual('number');
+      expect(firstLeafNode.value).toEqual('数量');
       expect(firstLeafNode.parent!.value).toEqual('桌子');
       expect(firstLeafNode.parent!.parent?.value).toEqual('家具');
       expect(
@@ -217,7 +228,7 @@ describe('Pivot Table Core Data Process', () => {
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
 
-      expect(lastLeafNode.value).toEqual('number');
+      expect(lastLeafNode.value).toEqual('数量');
       expect(lastLeafNode.parent!.value).toEqual('纸张');
       expect(lastLeafNode.parent!.parent?.value).toEqual('办公用品');
       expect(
