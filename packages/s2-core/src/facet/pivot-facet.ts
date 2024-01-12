@@ -1,6 +1,5 @@
 import {
   filter,
-  find,
   forEach,
   get,
   isArray,
@@ -37,10 +36,7 @@ import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { renderLine, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
-import {
-  getIndexRangeWithOffsets,
-  getSubTotalNodeWidthOrHeightByLevel,
-} from '../utils/facet';
+import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
 import { getCellWidth } from '../utils/text';
 import { floor } from '../utils/math';

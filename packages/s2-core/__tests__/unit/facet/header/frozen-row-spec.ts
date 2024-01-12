@@ -1,10 +1,9 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
-import { RowCell } from '@/cell/RowCell';
-import { DEFAULT_OPTIONS } from '@/common';
-import { SeriesNumberCell } from '@/cell';
-import { PivotRowHeader } from '@/facet/header';
-import { SeriesNumberHeader } from '@/facet/header/series-number';
+import type { HierarchyType, RowHeader } from '../../../../src';
+import type { FrozenFacet } from '../../../../src/facet/frozen-facet';
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common';
+import { RowCell } from '@/cell';
 
 const s2 = createPivotSheet(
   {
@@ -13,26 +12,26 @@ const s2 = createPivotSheet(
       firstRow: true,
     },
     totals: { row: { showGrandTotals: true, reverseGrandTotalsLayout: true } },
-    showSeriesNumber: true,
+    showSeriesNumber: false,
   },
   { useSimpleData: false },
 );
 
-describe('Frozen Row Header Test', () => {
-  test.each(['grid', 'tree'])(
+describe('Pivot Frozen Row Header Test', () => {
+  test.each(['grid', 'tree'] as HierarchyType[])(
     'frozen row header group api',
-    async (hierarchyType: 'grid' | 'tree') => {
+    async (hierarchyType) => {
       s2.setOptions({ hierarchyType });
       await s2.render();
 
-      const rowHeader: PivotRowHeader = s2.facet.rowHeader as PivotRowHeader;
+      const rowHeader = s2.facet.rowHeader as RowHeader;
 
-      expect(rowHeader instanceof PivotRowHeader).toBeTrue();
-      expect(rowHeader.frozenHeadGroup).toBeTruthy();
+      expect(rowHeader).toBeTruthy();
+      expect(rowHeader.frozenRowGroup).toBeTruthy();
       expect(rowHeader.scrollGroup).toBeTruthy();
 
-      expect(rowHeader.frozenHeadGroup.getChildren()).toHaveLength(1);
-      const frozenRowCell = rowHeader.frozenHeadGroup.getChildren()[0];
+      expect(rowHeader.frozenRowGroup.children).toHaveLength(1);
+      const frozenRowCell = rowHeader.frozenRowGroup.children[0];
 
       expect(frozenRowCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
@@ -43,33 +42,10 @@ describe('Frozen Row Header Test', () => {
       expect(scrollCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
-      expect(rowHeader.getFrozenFirstRowHeight()).toBe(30);
-    },
-  );
-});
-
-describe('Frozen Series Number Test', () => {
-  test.each(['grid', 'tree'])(
-    'series number test',
-    (hierarchyType: 'grid' | 'tree') => {
-      s2.setOptions({ hierarchyType });
-      s2.render();
-      const rowIndexHeader: SeriesNumberHeader = s2.facet
-        .rowIndexHeader as SeriesNumberHeader;
-
-      expect(rowIndexHeader instanceof SeriesNumberHeader).toBe(true);
-
-      const seriesNumberCell = rowIndexHeader.frozenHeadGroup.getChildren();
-
-      expect(seriesNumberCell).toHaveLength(1);
-
       expect(
-        rowIndexHeader.scrollGroup.getChildren()[0] instanceof SeriesNumberCell,
-      ).toBe(true);
-
-      expect(seriesNumberCell[0] instanceof SeriesNumberCell).toBe(true);
-
-      expect(get(seriesNumberCell[0], 'meta.height')).toBe(30);
+        (s2.facet as FrozenFacet).frozenGroupInfo[FrozenGroupType.FROZEN_ROW]
+          .height,
+      ).toBe(30);
     },
   );
 });

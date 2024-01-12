@@ -568,7 +568,7 @@ function MainLayout() {
                                   }}
                                   disabled={sheetType === 'table'}
                                 />
-                                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式">
+                                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式（关闭序号）">
                                   <Switch
                                     checkedChildren="冻结首行开"
                                     unCheckedChildren="冻结首行关"
