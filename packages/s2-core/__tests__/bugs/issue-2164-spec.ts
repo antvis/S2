@@ -32,7 +32,8 @@ describe('Grand Total Row Node Tests', () => {
         ...mockDataConfig,
         fields: {
           ...mockDataConfig.fields,
-          valueInCols: false, // 指标放行头
+          // 指标放行头
+          valueInCols: false,
         },
       },
       s2Options,

@@ -17,18 +17,18 @@ const s2Options: S2Options = {
 
 describe('Data Cell Border Tests', () => {
   const borderWidth = 4;
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-
-  s2.setTheme({
-    dataCell: {
-      cell: {
-        verticalBorderWidth: borderWidth,
-        horizontalBorderWidth: borderWidth,
-      },
-    },
-  });
 
   test('should draw correct data cell border when hover focus', async () => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
+    s2.setTheme({
+      dataCell: {
+        cell: {
+          verticalBorderWidth: borderWidth,
+          horizontalBorderWidth: borderWidth,
+        },
+      },
+    });
     await s2.render();
 
     const dataCell = s2.facet.getDataCells()[0];
@@ -40,12 +40,12 @@ describe('Data Cell Border Tests', () => {
     await sleep(40);
 
     const meta = dataCell.getBBoxByType();
-    // @ts-ignore
-    const borderBbox = dataCell.stateShapes
-      .get('interactiveBorderShape')
+    const borderBBox = dataCell
+      .getStateShapes()
+      .get('interactiveBorderShape')!
       .getBBox();
 
-    expect(meta.width).toBeGreaterThanOrEqual(borderBbox.width + borderWidth);
-    expect(meta.height).toBeGreaterThanOrEqual(borderBbox.height + borderWidth);
+    expect(meta.width).toBeGreaterThanOrEqual(borderBBox.width + borderWidth);
+    expect(meta.height).toBeGreaterThanOrEqual(borderBBox.height + borderWidth);
   });
 });

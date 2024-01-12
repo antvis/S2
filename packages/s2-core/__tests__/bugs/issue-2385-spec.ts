@@ -2,16 +2,16 @@
  * @description spec for issue #2385
  * https://github.com/antvis/S2/issues/2385
  */
-import { createPivotSheet, getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-2385.json';
 import type { S2Options } from '../../src';
+import * as mockDataConfig from '../data/data-issue-2385.json';
+import { getContainer } from '../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 800,
   height: 600,
   style: {
-    cellCfg: {
+    dataCell: {
       width: 200,
     },
     layoutWidthType: 'compact',
@@ -19,8 +19,9 @@ const s2Options: S2Options = {
 };
 
 describe('Compare Layout Tests', () => {
-  test('should get max col width for pivot sheet', () => {
+  test('should get max col width for pivot sheet', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
     s2.setTheme({
       dataCell: {
         text: {
@@ -28,15 +29,17 @@ describe('Compare Layout Tests', () => {
         },
       },
     });
-    s2.render();
+    await s2.render();
 
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
+    const colLeafNodes = s2.facet.getColLeafNodes();
+
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(179);
     expect(Math.floor(colLeafNodes[1].width)).toEqual(98);
   });
 
-  test('should get max col width for table sheet', () => {
+  test('should get max col width for table sheet', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
+
     s2.setDataCfg({
       fields: {
         columns: ['price'],
@@ -49,9 +52,11 @@ describe('Compare Layout Tests', () => {
         },
       },
     });
-    s2.render();
 
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
+    await s2.render();
+
+    const colLeafNodes = s2.facet.getColLeafNodes();
+
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(165);
   });
 });

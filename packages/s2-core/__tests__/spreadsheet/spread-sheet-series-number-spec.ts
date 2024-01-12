@@ -1,8 +1,6 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '@/sheet-type';
-import type { S2Options } from '@/common';
-import type { SeriesNumberCell } from '@/cell';
+import { type S2Options, PivotSheet } from '../../src';
 
 const s2Options: S2Options = {
   width: 400,
@@ -26,7 +24,6 @@ describe('SpreadSheet Series Number Tests', () => {
     const seriesNumberCell = s2.facet.getSeriesNumberCells();
 
     expect(seriesNumberCell).toHaveLength(1);
-
     expect(seriesNumberCell[0].getMeta().height).toEqual(60);
   });
 
@@ -41,7 +38,6 @@ describe('SpreadSheet Series Number Tests', () => {
     const seriesNumberCell = s2.facet.getSeriesNumberCells();
 
     expect(seriesNumberCell).toHaveLength(1);
-
     expect(seriesNumberCell[0].getMeta().height).toEqual(90);
   });
 });

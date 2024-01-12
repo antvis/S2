@@ -18,22 +18,20 @@ describe('background color opacity test', () => {
   test('should set background color opacity correctly', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-    s2.setThemeCfg({
-      theme: {
-        cornerCell: {
-          cell: {
-            backgroundColorOpacity: 0.1,
-          },
+    s2.setTheme({
+      cornerCell: {
+        cell: {
+          backgroundColorOpacity: 0.1,
         },
-        rowCell: {
-          cell: {
-            backgroundColorOpacity: 0.2,
-          },
+      },
+      rowCell: {
+        cell: {
+          backgroundColorOpacity: 0.2,
         },
-        colCell: {
-          cell: {
-            backgroundColorOpacity: 0.3,
-          },
+      },
+      colCell: {
+        cell: {
+          backgroundColorOpacity: 0.3,
         },
       },
     });
@@ -43,19 +41,16 @@ describe('background color opacity test', () => {
     // corner cell
     const cornerCell = s2.facet.getCornerCells()[0];
 
-    // @ts-ignore
-    expect(cornerCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.1);
+    expect(cornerCell.getBackgroundShape().style.fillOpacity).toEqual(0.1);
 
     // row cell
     const rowCell = s2.facet.getRowCells()[0];
 
-    // @ts-ignore
-    expect(rowCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.2);
+    expect(rowCell.getBackgroundShape().style.fillOpacity).toEqual(0.2);
 
     // col cell
     const colCell = s2.facet.getColCells()[0];
 
-    // @ts-ignore
-    expect(colCell.getBackgroundShape().attr('fillOpacity')).toEqual(0.3);
+    expect(colCell.getBackgroundShape().style.fillOpacity).toEqual(0.3);
   });
 });

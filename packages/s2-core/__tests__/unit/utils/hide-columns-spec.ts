@@ -56,6 +56,10 @@ describe('Hide Columns Tests', () => {
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
       reset: jest.fn(),
+      isSelectedState: jest.fn(),
+      intercepts: new Set(),
+      getActiveCells: jest.fn(() => []),
+      clearHoverTimer: jest.fn(),
     } as unknown as RootInteraction;
     mockSpreadSheetInstance.isTableMode = () => true;
     mockSpreadSheetInstance.isPivotMode = () => false;

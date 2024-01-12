@@ -1,13 +1,13 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import type { Group } from '@antv/g';
-import { PivotSheet } from '@/sheet-type';
 import {
-  KEY_GROUP_COL_RESIZE_AREA,
-  KEY_GROUP_CORNER_RESIZE_AREA,
-  KEY_GROUP_ROW_RESIZE_AREA,
   type S2Options,
-} from '@/common';
+  PivotSheet,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_GROUP_COL_RESIZE_AREA,
+} from '../../src';
 
 async function renderSheet(options: S2Options) {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, {

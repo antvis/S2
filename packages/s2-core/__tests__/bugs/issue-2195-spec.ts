@@ -6,10 +6,10 @@
  */
 
 import { getContainer } from '../util/helpers';
-import type { S2Options } from '@/index';
+import type { S2DataConfig, S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
 
-const modifiedMockDataConfig = {
+const modifiedMockDataConfig: S2DataConfig = {
   fields: {
     rows: ['province', '[city]'],
     columns: ['type'],

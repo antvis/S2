@@ -54,7 +54,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/2389
-    test('the corner should only have one line with action icon', () => {
+    test('the corner should only have one line with action icon', async () => {
       // 行头维度更改为较长的 name
       const newDataCfg: S2DataConfig = {
         ...mockDataConfig,
@@ -82,7 +82,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
       };
       const s2 = new PivotSheet(container, newDataCfg, newS2Options);
 
-      s2.render();
+      await s2.render();
 
       // 检查文本是否只有一行
       const cornerCell = s2.facet.getCornerCells()[0];

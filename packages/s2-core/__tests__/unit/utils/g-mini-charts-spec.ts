@@ -3,7 +3,7 @@ import { getContainer } from 'tests/util/helpers';
 import { forEach, map } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import type { RangeColors } from '../../../src/common/interface/theme';
-import { PivotSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { CellType, MiniChartTypes, type S2CellType } from '@/common';
 import {
   getBulletRangeColor,
@@ -312,6 +312,7 @@ describe('MiniCharts Utils Tests', () => {
 });
 
 describe('drawInterval Test', () => {
+  let s2: SpreadSheet;
   const dataCfg = assembleDataCfg({
     meta: [],
     fields: {
@@ -324,6 +325,7 @@ describe('drawInterval Test', () => {
 
   const horizontalBorderWidth =
     getTheme({})?.dataCell?.cell?.horizontalBorderWidth ?? 1;
+
   const options = assembleOptions({
     style: {
       dataCell: {
@@ -334,9 +336,8 @@ describe('drawInterval Test', () => {
     conditions: {},
   });
 
-  const s2 = new PivotSheet(getContainer(), dataCfg, options);
-
   beforeEach(async () => {
+    s2 = new PivotSheet(getContainer(), dataCfg, options);
     await s2.render();
   });
 
