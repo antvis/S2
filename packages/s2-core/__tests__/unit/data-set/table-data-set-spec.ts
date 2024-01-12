@@ -153,14 +153,15 @@ describe('Table Mode Dataset Test', () => {
     });
 
     test('#getMultiData by empty query', () => {
-      expect(dataSet.getMultiData(null)).toMatchSnapshot();
-      expect(dataSet.getMultiData(null)).toEqual(dataSet.getMultiData({}));
+      expect(dataSet.getCellMultiData({})).toMatchSnapshot();
     });
 
     test('#getMultiData by rowIndex query', () => {
       expect(
-        dataSet.getMultiData({
-          rowIndex: 0,
+        dataSet.getCellMultiData({
+          query: {
+            rowIndex: 0,
+          },
         }),
       ).toMatchInlineSnapshot(`
         Array [
@@ -175,51 +176,65 @@ describe('Table Mode Dataset Test', () => {
       `);
 
       expect(
-        dataSet.getMultiData({
-          rowIndex: -1,
+        dataSet.getCellMultiData({
+          query: {
+            rowIndex: -1,
+          },
         }),
       ).toMatchSnapshot();
     });
 
     test('#getMultiData by field query', () => {
       expect(
-        dataSet.getMultiData({
-          field: 'city',
+        dataSet.getCellMultiData({
+          query: {
+            field: 'city',
+          },
         }),
       ).toMatchSnapshot();
 
       expect(
-        dataSet.getMultiData({
-          field: 'number',
+        dataSet.getCellMultiData({
+          query: {
+            field: 'number',
+          },
         }),
       ).toMatchSnapshot();
 
       expect(
-        dataSet.getMultiData({
-          field: 'sub_type',
+        dataSet.getCellMultiData({
+          query: {
+            field: 'sub_type',
+          },
         }),
       ).toMatchSnapshot();
     });
 
     test('#getMultiData by field and rowIndex query', () => {
       expect(
-        dataSet.getMultiData({
-          field: 'city',
-          rowIndex: 0,
+        dataSet.getCellMultiData({
+          query: {
+            field: 'city',
+            rowIndex: 0,
+          },
         }),
       ).toEqual(['杭州市']);
 
       expect(
-        dataSet.getMultiData({
-          field: 'number',
-          rowIndex: 2,
+        dataSet.getCellMultiData({
+          query: {
+            field: 'number',
+            rowIndex: 2,
+          },
         }),
       ).toEqual([3877]);
 
       expect(
-        dataSet.getMultiData({
-          field: 'sub_type',
-          rowIndex: 3,
+        dataSet.getCellMultiData({
+          query: {
+            field: 'sub_type',
+            rowIndex: 3,
+          },
         }),
       ).toEqual(['桌子']);
     });
