@@ -742,7 +742,10 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenColGroupWidth;
     const panelScrollGroupClipY = this.panelBBox.y + frozenRowGroupHeight;
     const panelScrollGroupClipWidth =
-      this.panelBBox.width - frozenColGroupWidth - frozenTrailingColWidth;
+      this.panelBBox.width -
+      frozenColGroupWidth -
+      frozenTrailingColWidth +
+      (isFrozenRowHeader ? 0 : this.panelBBox.x);
     const panelScrollGroupClipHeight =
       this.panelBBox.height - frozenRowGroupHeight - frozenTrailingRowHeight;
 
