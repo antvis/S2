@@ -426,17 +426,7 @@ describe('PivotSheet Export Test', () => {
       split: NewTab,
     });
 
-    expect(data).toMatchInlineSnapshot(`
-      "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
-      	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
-      type	sub_type	number	number	number	number	number	number	number	number
-      家具
-      家具	桌子		2367	3877	4342	1723	1822	1943	2330
-      家具	沙发		632	7234	834	2451	2244	2333	2445
-      办公用品
-      办公用品	笔
-      办公用品	纸张		1354	1523	1634	4004	3077	3551	352"
-    `);
+    expect(data).toMatchSnapshot();
   });
 
   it('should export correct data when series number', async () => {
@@ -468,6 +458,46 @@ describe('PivotSheet Export Test', () => {
       "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
       	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
       type	sub_type	number	number	number	number	number	number	number	number
+      家具	桌子	7789	2367	3877	4342	1723	1822	1943	2330
+      家具	沙发	5343	632	7234	834	2451	2244	2333	2445
+      办公用品	笔	945	1304	1145	1432	2335	245	2457	2458
+      办公用品	纸张	1343	1354	1523	1634	4004	3077	3551	352"
+    `);
+
+    const rows = data.split(NewLine);
+
+    expect(rows[0].split(NewTab)[1]).toEqual('province');
+    expect(rows[1].split(NewTab)[1]).toEqual('city');
+  });
+
+  it('should export correct data with formatter', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'number', name: '数值' }],
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        interaction: { enableCopy: true, copyWithHeader: true },
+      }),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: NewTab,
+    });
+
+    expect(data).toMatchInlineSnapshot(`
+      "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
+      	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
+      type	sub_type	数值	数值	数值	数值	数值	数值	数值	数值
       家具	桌子	7789	2367	3877	4342	1723	1822	1943	2330
       家具	沙发	5343	632	7234	834	2451	2244	2333	2445
       办公用品	笔	945	1304	1145	1432	2335	245	2457	2458

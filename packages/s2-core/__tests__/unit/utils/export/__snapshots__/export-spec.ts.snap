@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PivotSheet Export Test should export correct $$extra$$ field name 1`] = `
+Array [
+  "type",
+  "sub_type",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值
+",
+]
+`;
+
 exports[`TableSheet Export Test should export correct data with no series number 1`] = `
 Array [
   "province	city	type	sub_type	number
@@ -160,6 +176,17 @@ Array [
 ]
 `;
 
+exports[`TableSheet Export Test should export correct data with no series number 2`] = `
+Array [
+  "province",
+  "city",
+  "type",
+  "sub_type",
+  "number
+",
+]
+`;
+
 exports[`TableSheet Export Test should export correct data with series number 1`] = `
 Array [
   "序号	province	city	产品类型	sub_type	number
@@ -317,5 +344,17 @@ Array [
   "76	四川省				35770
 ",
   "77					78868",
+]
+`;
+
+exports[`TableSheet Export Test should export correct data with series number 2`] = `
+Array [
+  "序号",
+  "province",
+  "city",
+  "产品类型",
+  "sub_type",
+  "number
+",
 ]
 `;

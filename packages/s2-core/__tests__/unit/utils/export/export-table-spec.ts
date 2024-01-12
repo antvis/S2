@@ -155,6 +155,7 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	沙发	5343"
     `);
   });
+
   it('should support custom export matrix transformer', async () => {
     const s2 = new TableSheet(
       getContainer(),

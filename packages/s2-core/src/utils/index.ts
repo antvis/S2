@@ -5,7 +5,7 @@ export * from './layout';
 export * from './text';
 export * from './color';
 export * from './theme';
-export * from './export/index';
+export * from './export/utils';
 export * from './export/copy';
 export * from './interaction';
 export * from './g-renders';

@@ -387,7 +387,7 @@ export abstract class SpreadSheet extends EE {
       this.options = customMerge(this.options, options);
     }
 
-    if (reset || options.tooltip?.renderTooltip) {
+    if (reset || options.tooltip?.render) {
       this.initTooltip();
     }
 
@@ -584,7 +584,7 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
-  protected isCellType(cell?: CanvasEvent['target']) {
+  protected isCellType(cell?: CellEventTarget) {
     return cell instanceof BaseCell;
   }
 

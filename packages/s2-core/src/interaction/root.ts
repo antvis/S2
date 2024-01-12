@@ -187,7 +187,7 @@ export class RootInteraction {
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
-    const allCells = this.spreadsheet.facet.getCells();
+    const allCells = this.spreadsheet.facet?.getCells();
 
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     return map(ids, (id) =>

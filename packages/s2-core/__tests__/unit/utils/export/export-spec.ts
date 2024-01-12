@@ -44,14 +44,7 @@ describe('TableSheet Export Test', () => {
       expect(row.split('\t')).toHaveLength(6);
     });
 
-    expect(headers).toEqual([
-      '序号',
-      'province',
-      'city',
-      '产品类型',
-      'sub_type',
-      'number',
-    ]);
+    expect(headers).toMatchSnapshot();
   });
 
   it('should export correct data with no series number', async () => {
@@ -83,7 +76,7 @@ describe('TableSheet Export Test', () => {
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(5);
     });
-    expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
+    expect(headers).toMatchSnapshot();
   });
 });
 
@@ -109,13 +102,14 @@ describe('PivotSheet Export Test', () => {
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(14);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[0].split('\t')[1]).toEqual('province');
+    expect(rows[1].split('\t')[1]).toEqual('city');
 
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(34);
     });
   });
+
   it('should export correct data in tree mode', async () => {
     const s2 = new PivotSheet(
       getContainer(),
@@ -139,8 +133,9 @@ describe('PivotSheet Export Test', () => {
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(16);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[0].split('\t')[1]).toEqual('province');
+    expect(rows[1].split('\t')[1]).toEqual('city');
+
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(34);
     });
@@ -171,12 +166,12 @@ describe('PivotSheet Export Test', () => {
 
     expect(rows).toHaveLength(5);
     expect(rows[0].split('\t').length).toEqual(5);
-    expect(rows[0].split('\t')[0]).toEqual('"类别"');
-    expect(rows[0].split('\t')[1]).toEqual('"家具"');
-    expect(rows[1].split('\t')[0]).toEqual('"子类别"');
-    expect(rows[1].split('\t')[1]).toEqual('"桌子"');
-    expect(rows[2].split('\t')[0]).toEqual('"省份"');
-    expect(rows[2].split('\t')[1]).toEqual('"数量"');
+    expect(rows[0].split('\t')[0]).toEqual('类别');
+    expect(rows[0].split('\t')[1]).toEqual('家具');
+    expect(rows[1].split('\t')[0]).toEqual('子类别');
+    expect(rows[1].split('\t')[1]).toEqual('桌子');
+    expect(rows[2].split('\t')[0]).toEqual('省份');
+    expect(rows[2].split('\t')[1]).toEqual('数量');
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
@@ -203,13 +198,13 @@ describe('PivotSheet Export Test', () => {
 
     expect(rows).toHaveLength(13);
     expect(rows[0].split('\t').length).toEqual(6);
-    expect(rows[0].split('\t')[1]).toEqual('"类别"');
-    expect(rows[0].split('\t')[2]).toEqual('"家具"');
-    expect(rows[1].split('\t')[1]).toEqual('"子类别"');
-    expect(rows[1].split('\t')[2]).toEqual('"桌子"');
-    expect(rows[2].split('\t')[0]).toEqual('"省份"');
-    expect(rows[2].split('\t')[1]).toEqual('"城市"');
-    expect(rows[2].split('\t')[2]).toEqual('"数量"');
+    expect(rows[0].split('\t')[1]).toEqual('类别');
+    expect(rows[0].split('\t')[2]).toEqual('家具');
+    expect(rows[1].split('\t')[1]).toEqual('子类别');
+    expect(rows[1].split('\t')[2]).toEqual('桌子');
+    expect(rows[2].split('\t')[0]).toEqual('省份');
+    expect(rows[2].split('\t')[1]).toEqual('城市');
+    expect(rows[2].split('\t')[2]).toEqual('数量');
   });
 
   it('should export correct data in grid mode with valueInCols is false', async () => {
@@ -438,9 +433,41 @@ describe('PivotSheet Export Test', () => {
     const rows = data.split('\n');
 
     expect(rows).toHaveLength(7);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
-    expect(rows[3].split('\t')[0]).toEqual('"家具-type"');
+    expect(rows[0].split('\t')[1]).toEqual('province');
+    expect(rows[0].split('\t')[2]).toEqual('浙江省-province');
+    expect(rows[1].split('\t')[1]).toEqual('city');
+    expect(rows[3].split('\t')[0]).toEqual('家具-type');
+  });
+
+  it('should export correct $$extra$$ field name', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            name: '数值',
+          },
+        ],
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({}),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: false,
+    });
+    const rows = data.split('\n');
+    const headers = rows[2].split('\t');
+
+    expect(headers).toMatchSnapshot();
   });
 });

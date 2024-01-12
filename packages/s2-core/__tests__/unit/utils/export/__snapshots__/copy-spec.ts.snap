@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Table Core Data Process should copy correct data when selected diagonal cells 1`] = `
+"浙江省	
+	
+	
+	
+	
+	
+	
+	
+	宁波市"
+`;
+
+exports[`List Table Core Data Process should copy row data when select data row cell 1`] = `
+"1	浙江省	杭州市	家具	### 问题摘要 
+- **会话地址**：	7789"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all col data in grid mode for custom field meta 1`] = `
+Array [
+  Object {
+    "content": "家具	家具	办公用品	办公用品
+桌子	沙发	笔	纸张
+数量	数量	数量	数量",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all original row data in grid mode if contains text ellipses 1`] = `
+Array [
+  Object {
+    "content": "浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>浙江省</td><td>杭州市</td></tr><tr><td>浙江省</td><td>绍兴市</td></tr><tr><td>浙江省</td><td>宁波市</td></tr><tr><td>浙江省</td><td>舟山市</td></tr><tr><td>四川省</td><td>成都市</td></tr><tr><td>四川省</td><td>绵阳市</td></tr><tr><td>四川省</td><td>南充市</td></tr><tr><td>四川省</td><td>乐山市</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mode with formatter 1`] = `
+"浙江省	杭州市	数值
+浙江省	绍兴市	数值
+浙江省	宁波市	数值
+浙江省	舟山市	数值
+四川省	成都市	数值
+四川省	绵阳市	数值
+四川省	南充市	数值
+四川省	乐山市	数值"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy col total data in grid mode 1`] = `
+Array [
+  Object {
+    "content": "家具	家具	家具	办公用品	办公用品
+桌子	沙发	小计	笔	纸张
+number	number	小计	number	number",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>小计</td><td>number</td><td>number</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
+exports[`Tree Table Core Data Process should copy normal data with header for custom field formatter if enable copyWithFormat 1`] = `
+Array [
+  Object {
+    "content": "		家具	家具	家具	办公用品	办公用品
+		桌子	沙发	小计	笔	纸张
+		数量	数量		数量	数量
+浙江省		18375-@	14043-@	32418-@	4826-@	5854-@
+浙江省	杭州市	7789-@	5343-@	13132-@	945-@	1343-@
+浙江省	绍兴市	2367-@	632-@	2999-@	1304-@	1354-@
+浙江省	宁波市	3877-@	7234-@	11111-@	1145-@	1523-@
+浙江省	舟山市	4342-@	834-@	5176-@	1432-@	1634-@
+四川省		7818-@	9473-@	17291-@	7495-@	10984-@
+四川省	成都市	1723-@	2451-@	4174-@	2335-@	4004-@
+四川省	绵阳市	1822-@	2244-@	4066-@	245-@	3077-@
+四川省	南充市	1943-@	2333-@	4276-@	2457-@	3551-@
+四川省	乐山市	2330-@	2445-@	4775-@	2458-@	352-@
+总计		26193-@	23516-@	49709-@	12321-@	16838-@",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td></td><td></td><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td></td><td></td><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td></td><td></td><td>数量</td><td>数量</td><td></td><td>数量</td><td>数量</td></tr><tr><td>浙江省</td><td></td><td>18375-@</td><td>14043-@</td><td>32418-@</td><td>4826-@</td><td>5854-@</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789-@</td><td>5343-@</td><td>13132-@</td><td>945-@</td><td>1343-@</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>2367-@</td><td>632-@</td><td>2999-@</td><td>1304-@</td><td>1354-@</td></tr><tr><td>浙江省</td><td>宁波市</td><td>3877-@</td><td>7234-@</td><td>11111-@</td><td>1145-@</td><td>1523-@</td></tr><tr><td>浙江省</td><td>舟山市</td><td>4342-@</td><td>834-@</td><td>5176-@</td><td>1432-@</td><td>1634-@</td></tr><tr><td>四川省</td><td></td><td>7818-@</td><td>9473-@</td><td>17291-@</td><td>7495-@</td><td>10984-@</td></tr><tr><td>四川省</td><td>成都市</td><td>1723-@</td><td>2451-@</td><td>4174-@</td><td>2335-@</td><td>4004-@</td></tr><tr><td>四川省</td><td>绵阳市</td><td>1822-@</td><td>2244-@</td><td>4066-@</td><td>245-@</td><td>3077-@</td></tr><tr><td>四川省</td><td>南充市</td><td>1943-@</td><td>2333-@</td><td>4276-@</td><td>2457-@</td><td>3551-@</td></tr><tr><td>四川省</td><td>乐山市</td><td>2330-@</td><td>2445-@</td><td>4775-@</td><td>2458-@</td><td>352-@</td></tr><tr><td>总计</td><td></td><td>26193-@</td><td>23516-@</td><td>49709-@</td><td>12321-@</td><td>16838-@</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
+exports[`Tree Table Core Data Process should copy normal data with header for custom field name 1`] = `
+Array [
+  Object {
+    "content": "		家具	家具	家具	办公用品	办公用品
+		桌子	沙发	小计	笔	纸张
+		数量	数量		数量	数量
+浙江省		18375	14043	32418	4826	5854
+浙江省	杭州市	7789	5343	13132	945	1343
+浙江省	绍兴市	2367	632	2999	1304	1354
+浙江省	宁波市	3877	7234	11111	1145	1523
+浙江省	舟山市	4342	834	5176	1432	1634
+四川省		7818	9473	17291	7495	10984
+四川省	成都市	1723	2451	4174	2335	4004
+四川省	绵阳市	1822	2244	4066	245	3077
+四川省	南充市	1943	2333	4276	2457	3551
+四川省	乐山市	2330	2445	4775	2458	352
+总计		26193	23516	49709	12321	16838",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td></td><td></td><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td></td><td></td><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td></td><td></td><td>数量</td><td>数量</td><td></td><td>数量</td><td>数量</td></tr><tr><td>浙江省</td><td></td><td>18375</td><td>14043</td><td>32418</td><td>4826</td><td>5854</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789</td><td>5343</td><td>13132</td><td>945</td><td>1343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>2367</td><td>632</td><td>2999</td><td>1304</td><td>1354</td></tr><tr><td>浙江省</td><td>宁波市</td><td>3877</td><td>7234</td><td>11111</td><td>1145</td><td>1523</td></tr><tr><td>浙江省</td><td>舟山市</td><td>4342</td><td>834</td><td>5176</td><td>1432</td><td>1634</td></tr><tr><td>四川省</td><td></td><td>7818</td><td>9473</td><td>17291</td><td>7495</td><td>10984</td></tr><tr><td>四川省</td><td>成都市</td><td>1723</td><td>2451</td><td>4174</td><td>2335</td><td>4004</td></tr><tr><td>四川省</td><td>绵阳市</td><td>1822</td><td>2244</td><td>4066</td><td>245</td><td>3077</td></tr><tr><td>四川省</td><td>南充市</td><td>1943</td><td>2333</td><td>4276</td><td>2457</td><td>3551</td></tr><tr><td>四川省</td><td>乐山市</td><td>2330</td><td>2445</td><td>4775</td><td>2458</td><td>352</td></tr><tr><td>总计</td><td></td><td>26193</td><td>23516</td><td>49709</td><td>12321</td><td>16838</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;

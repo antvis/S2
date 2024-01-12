@@ -10,8 +10,8 @@ import {
  * Row and column header node id generator.
  */
 
-export const generateId = (...ids: string[]): string =>
-  ids
+export const generateId = (...ids: string[]): string => {
+  return ids
     .map((value) => {
       if (isUndefined(value)) {
         return UNDEFINED_SYMBOL_ID;
@@ -24,9 +24,10 @@ export const generateId = (...ids: string[]): string =>
       return String(value);
     })
     .join(NODE_ID_SEPARATOR);
+};
 
-export const resolveId = (id = '') =>
-  id
+export const resolveId = (id = '') => {
+  return id
     .split(NODE_ID_SEPARATOR)
     .reduce<(string | null | undefined)[]>((result, current) => {
       if (current === ROOT_NODE_ID) {
@@ -43,3 +44,4 @@ export const resolveId = (id = '') =>
 
       return result;
     }, []);
+};
