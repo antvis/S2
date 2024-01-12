@@ -2,7 +2,6 @@ import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type { CornerCell, MergedCell, SeriesNumberCell } from '../../cell';
 import type { ColCell } from '../../cell/col-cell';
 import type { DataCell } from '../../cell/data-cell';
-import type { RowCell } from '../../cell/row-cell';
 import type { S2Event } from '../../common/constant';
 import type {
   CellMeta,
@@ -21,6 +20,7 @@ import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { CopyableList } from '../../utils/export/interface';
 import type { ResizeInfo } from './resize';
+import type { RowCell } from '@/cell/RowCell';
 
 type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;

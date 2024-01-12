@@ -13,8 +13,8 @@ describe('Row Cell Tests', () => {
 
     test.each([
       ['left', 21],
-      ['center', 75],
-      ['right', 129],
+      ['center', 75.25],
+      ['right', 129.5],
     ] as [TextAlign, number][])(
       'should align link shape with text by %o',
       async (textAlign, textCenterX) => {
@@ -72,7 +72,7 @@ describe('Row Cell Tests', () => {
       await s2.render();
       const rowCell = s2.facet.getRowCells()[1];
 
-      expect(rowCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
+      expect(rowCell.getTextShape().style.fill).toEqual('#5083F5');
     });
 
     test('should draw right condition icon shape', async () => {
@@ -118,9 +118,7 @@ describe('Row Cell Tests', () => {
       await s2.render();
       const rowCell = s2.facet.getRowCells()[0];
 
-      expect(rowCell.getBackgroundShape().parsedStyle.fill).toBeColor(
-        '#F7B46F',
-      );
+      expect(rowCell.getBackgroundShape().style.fill).toEqual('#F7B46F');
     });
 
     test('should render text by text theme', async () => {
@@ -182,19 +180,13 @@ describe('Row Cell Tests', () => {
       const rowCell2 = s2.facet.getRowCells()[2];
 
       expect(rowCell0.getActualText()).toEqual('浙江');
-      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
-        defaultColor,
-      );
+      expect(rowCell0.getBackgroundShape().style.fill).toEqual(defaultColor);
 
       expect(rowCell1.getActualText()).toEqual('义乌');
-      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
-        crossColor,
-      );
+      expect(rowCell0.getBackgroundShape().style.fill).toEqual(crossColor);
 
       expect(rowCell2.getActualText()).toEqual('杭州');
-      expect(rowCell0.getBackgroundShape().parsedStyle.fill).toEqual(
-        defaultColor,
-      );
+      expect(rowCell0.getBackgroundShape().style.fill).toEqual(defaultColor);
     });
   });
 });

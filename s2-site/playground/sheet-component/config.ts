@@ -5,17 +5,17 @@ import {
   meta,
   fields,
   rowSubTotalsDimensions,
-  colSubTotalsDimensions
+  colSubTotalsDimensions,
 } from '../dataset/mock-dataset.json';
 
 export const sheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
-  fields
+  fields,
 };
 
 export const subTotalsDimensions = {
   rowSubTotalsDimensions,
-  colSubTotalsDimensions
-}
+  colSubTotalsDimensions,
+};

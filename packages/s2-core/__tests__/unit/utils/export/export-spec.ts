@@ -12,7 +12,7 @@ describe('TableSheet Export Test', () => {
           {
             field: 'type',
             name: '产品类型',
-            formatter: (type) => `${type}产品`,
+            formatter: (type) => (type ? `${type}产品` : ''),
           },
         ],
         fields: {
@@ -32,16 +32,19 @@ describe('TableSheet Export Test', () => {
         isFormatHeader: true,
       },
     });
+
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
 
-    // 33行数据 包括一行列头
-    expect(rows).toHaveLength(33);
+    expect(rows).toHaveLength(78);
+    expect(rows).toMatchSnapshot();
+
     // 6列数据 包括序列号
-    rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(6);
+    rows.forEach((row) => {
+      expect(row.split('\t')).toHaveLength(6);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
+
+    expect(headers).toEqual([
       '序号',
       'province',
       'city',
@@ -50,6 +53,7 @@ describe('TableSheet Export Test', () => {
       'number',
     ]);
   });
+
   it('should export correct data with no series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -72,19 +76,14 @@ describe('TableSheet Export Test', () => {
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
 
-    // 33行数据 包括一行列头
-    expect(rows).toHaveLength(33);
-    // 5列数据 包括序列号
+    expect(rows).toHaveLength(78);
+    expect(rows).toMatchSnapshot();
+
+    // 5列数据 不包括序列号
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(5);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
-      'province',
-      'city',
-      'type',
-      'sub_type',
-      'number',
-    ]);
+    expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
   });
 });
 

@@ -327,6 +327,7 @@ export const s2Options: SheetComponentOptions = {
   interaction: {
     enableCopy: true,
     copyWithFormat: true,
+    copyWithHeader: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {

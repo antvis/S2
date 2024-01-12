@@ -1,6 +1,6 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
-import { RowCell } from '../../../../src/cell/row-cell';
+import { RowCell } from '@/cell/RowCell';
 import { DEFAULT_OPTIONS } from '@/common';
 import { SeriesNumberCell } from '@/cell';
 import { PivotRowHeader } from '@/facet/header';

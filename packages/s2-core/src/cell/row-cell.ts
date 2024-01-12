@@ -1,5 +1,5 @@
 import type { PointLike } from '@antv/g';
-import { find, get } from 'lodash';
+import { find, get, merge } from 'lodash';
 import {
   CellType,
   FrozenGroupType,
@@ -64,6 +64,16 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     this.update();
+  }
+
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getCrossBackgroundColor(this.meta.rowIndex);
+
+    return merge(
+      { backgroundColor, backgroundColorOpacity },
+      this.getBackgroundConditionFill(),
+    );
   }
 
   protected showTreeIcon() {
