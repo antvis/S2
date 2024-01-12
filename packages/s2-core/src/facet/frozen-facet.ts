@@ -738,8 +738,7 @@ export abstract class FrozenFacet extends BaseFacet {
       frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].height;
 
     const panelScrollGroupClipX =
-      (isFrozenRowHeader || spreadsheet.isTableMode() ? this.panelBBox.x : 0) +
-      frozenColGroupWidth;
+      (isFrozenRowHeader ? this.panelBBox.x : 0) + frozenColGroupWidth;
     const panelScrollGroupClipY = this.panelBBox.y + frozenRowGroupHeight;
     const panelScrollGroupClipWidth =
       this.panelBBox.width -
