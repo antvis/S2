@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table Sheet Custom Multiple Values Tests should use current cell text theme 1`] = `
+Array [
+  Array [
+    Object {
+      "fill": "#000000",
+      "fontSize": 12,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "red",
+      "fontSize": 20,
+    },
+    Object {
+      "fill": "red",
+      "fontSize": 20,
+    },
+    Object {
+      "fill": "red",
+      "fontSize": 20,
+    },
+  ],
+]
+`;
+
+exports[`Table Sheet Custom Multiple Values Tests should use current cell text theme 2`] = `
+Array [
+  Array [
+    Object {
+      "fill": "#000000",
+      "fontSize": 12,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "#000000",
+      "fontSize": 12,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "#000000",
+      "fontSize": 12,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "green",
+      "fontSize": 30,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "green",
+      "fontSize": 30,
+    },
+  ],
+  Array [
+    Object {
+      "fill": "green",
+      "fontSize": 30,
+    },
+  ],
+]
+`;

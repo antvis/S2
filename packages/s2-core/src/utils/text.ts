@@ -339,9 +339,8 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle: InternalFullyCellTheme = cell.getStyle(
-    isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
-  );
+
+  const cellStyle = cell.getStyle(cell.cellType || CellType.DATA_CELL);
 
   let textStyle: TextTheme | undefined;
 
