@@ -48,12 +48,10 @@ export const getDisplayText = (
   text: string | number | null | undefined,
   placeholder?: string,
 ) => {
-  const empty = placeholder ?? EMPTY_PLACEHOLDER;
-
-
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
   const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+
   return isEmptyText ? emptyPlaceholder : `${text}`;
 };
 
@@ -341,9 +339,8 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle: InternalFullyCellTheme = cell.getStyle(
-    isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
-  );
+
+  const cellStyle = cell.getStyle(cell.cellType || CellType.DATA_CELL);
 
   let textStyle: TextTheme | undefined;
 

@@ -52,85 +52,15 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
     const mapTheme = (cell: S2CellType) => {
       return cell
         .getTextShapes()
-        .map((shape) => pick(shape.parsedStyle, ['fill', 'fontSize']));
+        .map((shape) => pick(shape.attributes, ['fill', 'fontSize']));
     };
 
     const colCellTexts = s2.facet.getColCells().map(mapTheme);
 
     const dataCellTexts = s2.facet.getDataCells().map(mapTheme);
 
-    expect(colCellTexts).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-          Object {
-            "fill": "red",
-            "fontSize": 20,
-          },
-        ],
-      ]
-    `);
+    expect(colCellTexts).toMatchSnapshot();
 
-    expect(dataCellTexts).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
-            "fill": "#000000",
-            "fontSize": 12,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "#000000",
-            "fontSize": 12,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "#000000",
-            "fontSize": 12,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "green",
-            "fontSize": 30,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "green",
-            "fontSize": 30,
-          },
-        ],
-        Array [
-          Object {
-            "fill": "green",
-            "fontSize": 30,
-          },
-        ],
-      ]
-    `);
+    expect(dataCellTexts).toMatchSnapshot();
   });
 });
