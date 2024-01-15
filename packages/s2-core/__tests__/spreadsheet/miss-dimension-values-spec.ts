@@ -185,9 +185,9 @@ const testDataCfg: S2DataConfig = {
 describe('Miss Dimension Values Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), testDataCfg, s2Options);
-    s2.render();
+    await s2.render();
   });
 
   test('should get correctly empty dimension values', () => {
@@ -200,13 +200,14 @@ describe('Miss Dimension Values Tests', () => {
     expect(emptyDimensionValueNode.belongsCell!.getActualText()).toEqual('-');
   });
 
-  test('should get correctly empty dimension values and use custom placeholder text', () => {
+  test('should get correctly empty dimension values and use custom placeholder text', async () => {
     const placeholder = '*';
 
     s2.setOptions({
       placeholder,
     });
-    s2.render(false);
+
+    await s2.render(false);
 
     const emptyDimensionValueNode = s2.facet.getRowNodes()[0].children[0];
 

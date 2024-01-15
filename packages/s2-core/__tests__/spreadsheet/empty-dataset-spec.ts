@@ -47,7 +47,6 @@ describe('Empty Dataset Structure Tests', () => {
     const s2 = new PivotSheet(container, s2DataCfg, s2Options);
 
     await s2.render();
-
     // @ts-ignore
     expect(s2.facet.panelScrollGroupIndexes).toEqual([0, 1, 0, 0]);
   });
@@ -64,7 +63,6 @@ describe('Empty Dataset Structure Tests', () => {
     const s2 = new TableSheet(container, s2DataCfg, s2Options);
 
     await s2.render();
-
     // @ts-ignore
     expect(s2.facet.panelScrollGroupIndexes).toEqual([]);
   });
