@@ -1,10 +1,10 @@
 ---
 title: 高级排序
-order: 1
+order: 2
 tag: Updated
 ---
 
-`React` 版本提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)
+`@antv/s2-react` 提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)
 
 > 注意：内部不维护状态
 
@@ -16,6 +16,7 @@ tag: Updated
 import React, { useState } from 'react';
 import { SortParams } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
+
 import '@antv/s2-react/dist/style.min.css';
 
 const AdvancedSortDemo = () => {
@@ -63,8 +64,8 @@ advancedSortCfg: {
   open: true,
   onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
     console.log(ruleValues, sortParams)
-  },
-},
+  }
+}
 
 ```
 
@@ -110,7 +111,7 @@ advancedSortCfg: {
 | 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
 | ------- | ------------------------------------------ | --- | ----- | --------- |
 | label    | `string`                                    |      | ✓      | 规则名称   |
-| value    | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | ✓    |        | 规则值     |
+| value    | `'sortMethod' \| 'sortBy' \| 'sortByMeasure'` | ✓    |        | 规则值     |
 | children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />

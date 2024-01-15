@@ -1,12 +1,12 @@
 ---
 title: 组内排序
-order: 2
+order: 1
 tag: Updated
 ---
 
 ## 简介
 
-根据 `数值升/降序` 对 `行头/列头` 进行排序。[查看更多排序示例](https://s2.antv.antgroup.com/examples#category-sort)
+`@antv/s2-react` 提供了默认的组内排序功能，主要根据数值对 `行头/列头` 进行排序，[查看更多排序示例](https://s2.antv.antgroup.com/examples#category-sort)
 
 `组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`省份` 的排序方式不会更改，只会更改每个 `省份` 内部 `城市` 的顺序。
 

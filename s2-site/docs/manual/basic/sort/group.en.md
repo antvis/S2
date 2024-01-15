@@ -1,6 +1,6 @@
 ---
 title: Group Sort
-order: 2
+order: 1
 tag: Updated
 ---
 
