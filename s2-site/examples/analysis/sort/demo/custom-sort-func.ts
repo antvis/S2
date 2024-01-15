@@ -35,7 +35,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
       sortParams: [
         {
-          // sortFieldId 为维度值时，params.data 为维度值列表，即 浙江、吉林
+          // sortFieldId 为维度值时，params.data 为维度值列表，即 [浙江、吉林]
           sortFieldId: 'province',
           sortFunc: (params) => {
             return params.data.sort((a, b) => a.localeCompare(b));
@@ -52,7 +52,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
             const { data, sortByMeasure, sortFieldId } = params;
 
             return data
-              .map((item) => item.raw)
+              .map((item) => item.raw) // 此时 data 为 CellData 对象，需要取出原始数据对象
               .sort((a, b) => b[sortByMeasure] - a[sortByMeasure]) // price 倒序
               .map((item) => item[sortFieldId]);
           },

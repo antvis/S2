@@ -34,8 +34,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       ],
       data,
       sortParams: [
+        // 拼音首字母倒序：浙江-z、吉林-j
         { sortFieldId: 'province', sortMethod: 'DESC' },
+        // 拼音首字母正序：杭州-h、舟山-z；白山-b、长春-c
         { sortFieldId: 'city', sortMethod: 'ASC' },
+        // 拼音首字母倒序：纸张-z、笔-b
         { sortFieldId: 'type', sortMethod: 'DESC' },
       ],
     };
