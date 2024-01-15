@@ -159,6 +159,7 @@ export const hideColumns = async (
     hiddenColumnFields,
   ).every((node, i, nodes) => {
     const nextNode = nodes[i + 1];
+
     return !nextNode || Math.abs(node.colIndex - nextNode.colIndex) === 1;
   });
 
