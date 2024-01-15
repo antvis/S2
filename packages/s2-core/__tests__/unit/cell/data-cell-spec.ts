@@ -110,6 +110,7 @@ describe('Data Cell Tests', () => {
       s2.facet = {
         getRowLeafNodes: () => [],
         getRowLeafNodeByIndex: jest.fn(),
+        getCells: () => [],
       } as unknown as PivotFacet;
 
       await s2.render();
@@ -220,6 +221,7 @@ describe('Data Cell Tests', () => {
       s2.facet = {
         getRowLeafNodes: () => [],
         getRowLeafNodeByIndex: jest.fn(),
+        getCells: () => [],
       } as unknown as PivotFacet;
 
       await s2.render();
@@ -553,7 +555,7 @@ describe('Data Cell Tests', () => {
                 );
 
                 expect(value).toEqual(resultData?.['cost']);
-                expect(value).toEqual(dataInfo[VALUE_FIELD]);
+                expect(value).toEqual(dataInfo['cost']);
 
                 return {
                   fill: '#fffae6',
