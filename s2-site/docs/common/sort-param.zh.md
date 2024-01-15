@@ -1,9 +1,9 @@
 ---
-title: SortParam
+title: SortParams
 order: 7
 ---
 
-### SortParam
+### SortParams
 
 功能描述：排序配置
 

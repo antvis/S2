@@ -301,7 +301,7 @@ export default defineConfig({
           zh: '查看升级指南',
           en: 'Upgrade Guide',
         },
-        url: 'https://s2.antv.antgroup.com/manual/migration-v2',
+        url: '/manual/migration-v2',
       },
     },
     /** 首页技术栈介绍 */
