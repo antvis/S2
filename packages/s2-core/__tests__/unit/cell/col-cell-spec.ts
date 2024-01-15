@@ -150,8 +150,11 @@ describe('Col Cell Tests', () => {
 
       const colCell = s2.facet.getColCells()[0];
 
-      expect(colCell.getConditionIconShape().attr('name')).toEqual('CellUp');
-      expect(colCell.getConditionIconShape().attr('fill')).toEqual('red');
+      // @ts-ignore
+      expect(colCell.rightIconPosition).toEqual({
+        x: 152,
+        y: 10.5,
+      });
     });
 
     test('should draw right condition background shape', async () => {

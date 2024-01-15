@@ -147,6 +147,7 @@ export class GuiIcon extends Group {
           // G 底层 refreshElements 默认是个数组, 销毁时获取不到, 没有兜底 https://github.com/antvis/S2/issues/2435
           if (this.destroyed || (canvas && !canvas.get('refreshElements'))) {
             DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
+
             return;
           }
 
@@ -158,8 +159,10 @@ export class GuiIcon extends Group {
           if (event instanceof TypeError) {
             // eslint-disable-next-line no-console
             console.warn(`GuiIcon ${name} destroyed:`, event);
+
             return;
           }
+
           // eslint-disable-next-line no-console
           console.error(`GuiIcon ${name} load failed:`, event);
         });

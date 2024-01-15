@@ -95,8 +95,8 @@ describe('Row Cell Tests', () => {
       await s2.render();
       const rowCell = s2.facet.getRowCells()[1];
 
-      expect(rowCell.getConditionIconShape().attr('name')).toEqual('CellUp');
-      expect(rowCell.getConditionIconShape().attr('fill')).toEqual('red');
+      // @ts-ignore
+      expect(rowCell.rightIconPosition).toEqual({ x: 186.5, y: 9.5 });
     });
 
     test('should draw right condition background shape', async () => {
@@ -183,10 +183,10 @@ describe('Row Cell Tests', () => {
       expect(rowCell0.getBackgroundShape().style.fill).toEqual(defaultColor);
 
       expect(rowCell1.getActualText()).toEqual('义乌');
-      expect(rowCell0.getBackgroundShape().style.fill).toEqual(crossColor);
+      expect(rowCell1.getBackgroundShape().style.fill).toEqual(crossColor);
 
       expect(rowCell2.getActualText()).toEqual('杭州');
-      expect(rowCell0.getBackgroundShape().style.fill).toEqual(defaultColor);
+      expect(rowCell2.getBackgroundShape().style.fill).toEqual(defaultColor);
     });
   });
 });

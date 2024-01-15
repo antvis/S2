@@ -7,7 +7,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import type { FormatResult, TextTheme } from '../common/interface';
+import type { FormatResult } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import { CustomRect } from '../engine';
@@ -15,6 +15,7 @@ import type { CornerHeaderConfig } from '../facet/header/interface';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
+  getVerticalTextPosition,
 } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderTreeIcon } from '../utils/g-renders';
@@ -50,53 +51,6 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     this.drawBorders();
     this.drawResizeArea();
     this.update();
-  }
-
-  public drawTextShape() {
-    const { x, y, height, width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-    const textStyle = this.getTextStyle();
-    const cornerText = this.getFieldValue();
-    const maxWidth = this.getMaxTextWidth();
-
-    const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
-      bbox: {
-        x: x + this.getTreeIconWidth(),
-        y,
-        width: width - this.getTreeIconWidth(),
-        height,
-      },
-      textAlign: textStyle.textAlign!,
-      textWidth: this.getActualTextWidth(),
-      groupedIcons: this.groupedIcons,
-      iconStyle: this.getIconStyle()!,
-    });
-
-    const textY = y + height / 2;
-
-    this.renderTextShape({
-      ...textStyle,
-      x: textX,
-      y: textY,
-      text: cornerText,
-      wordWrapWidth: maxWidth,
-    });
-
-    const { size = 0 } = this.getStyle()!.icon!;
-    const iconY = getVerticalIconPosition(
-      size,
-      y + height / 2,
-      size,
-      textStyle.textBaseline!,
-    );
-
-    this.leftIconPosition = {
-      x: leftIconX,
-      y: iconY,
-    };
-    this.rightIconPosition = {
-      x: rightIconX,
-      y: iconY,
-    };
   }
 
   /**
@@ -248,20 +202,6 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     return this.showTreeIcon() ? size! + margin!.right! : 0;
   }
 
-  protected getTextStyle(): TextTheme {
-    const { text, bolderText } = this.getStyle()!;
-    const cornerTextStyle = this.isBolderText() ? text : bolderText;
-
-    const textStyle =
-      this.getContainConditionMappingResultTextStyle(cornerTextStyle);
-
-    return {
-      ...textStyle,
-      // 角头因为要折行，所以在都是按照 middle 来计算，这里写死，不然用户配置了 baseline，会导致计算错误
-      textBaseline: 'middle',
-    };
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
@@ -271,9 +211,46 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   }
 
   protected getTextPosition(): PointLike {
+    const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const { x, y, height, width } = contentBox;
+
+    const textStyle = this.getTextStyle();
+
+    const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
+      bbox: {
+        x: x + this.getTreeIconWidth(),
+        y,
+        width: width - this.getTreeIconWidth(),
+        height,
+      },
+      textAlign: textStyle.textAlign!,
+      textWidth: this.getActualTextWidth(),
+      groupedIcons: this.groupedIcons,
+      iconStyle: this.getIconStyle()!,
+    });
+
+    const textY = getVerticalTextPosition(contentBox, textStyle.textBaseline!);
+
+    const { size = 0 } = this.getStyle()!.icon!;
+    const iconY = getVerticalIconPosition(
+      size,
+      textY,
+      textStyle.fontSize!,
+      textStyle.textBaseline!,
+    );
+
+    this.leftIconPosition = {
+      x: leftIconX,
+      y: iconY,
+    };
+    this.rightIconPosition = {
+      x: rightIconX,
+      y: iconY,
+    };
+
     return {
-      x: 0,
-      y: 0,
+      x: textX,
+      y: textY,
     };
   }
 
