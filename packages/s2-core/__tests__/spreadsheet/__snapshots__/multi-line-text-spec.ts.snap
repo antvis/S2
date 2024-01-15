@@ -2428,12 +2428,12 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": "城我是省略号",
+    "actualText": "城市城@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 73,
+    "actualTextWidth": 72,
     "height": 30,
     "multiLineActualTexts": Array [
-      "城我是省略号",
+      "城市城@@@",
     ],
     "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
     "width": 96,
