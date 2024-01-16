@@ -167,8 +167,9 @@ export interface CellTheme {
 
   /** 交互态 */
   interactionState?: InteractionState;
+
   /** 单元格边线虚线 */
-  borderDash?: number[];
+  borderDash?: LineStyleProps['lineDash'];
 }
 
 export interface IconTheme {
@@ -271,7 +272,7 @@ export interface SplitLine {
     right: string;
   };
   /** 分割线虚线 */
-  borderDash?: number[];
+  borderDash?: LineStyleProps['lineDash'];
 }
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /** 粗体文本样式 */

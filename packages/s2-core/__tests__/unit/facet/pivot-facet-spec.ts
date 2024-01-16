@@ -6,6 +6,7 @@ import { Renderer } from '@antv/g-canvas';
 import { find, size } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { FrozenGroupType } from '../../../src';
+import { createFakeSpreadSheet } from '../../util/helpers';
 import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
 import {
@@ -17,13 +18,7 @@ import type { ViewMeta } from '@/common/interface/basic';
 import { Store } from '@/common/store';
 import type { CellData } from '@/data-set/cell-data';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
-import {
-  ColHeader,
-  CornerHeader,
-  Frame,
-  PivotRowHeader,
-  RowHeader,
-} from '@/facet/header';
+import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import { Node } from '@/facet/layout/node';
 import { PivotFacet } from '@/facet/pivot-facet';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
@@ -80,6 +75,7 @@ jest.mock('@/sheet-type', () => {
           layoutResult: {
             rowLeafNodes: [],
           },
+          getLayoutResult: () => ({ rowLeafNodes: [], colLeafNodes: [] }),
           getRowLeafNodes: () => [],
           getRowNodes: () => [],
           getColNodes: () => [],
@@ -92,6 +88,7 @@ jest.mock('@/sheet-type', () => {
             [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
             [FrozenGroupType.FROZEN_TRAILING_COL]: {},
           },
+          cornerBBox: {},
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -152,11 +149,14 @@ describe('Pivot Mode Facet Test', () => {
   s2.options = assembleOptions({
     dataCell: (viewMeta) => new DataCell(viewMeta, s2),
   });
+  const facet = new PivotFacet(s2);
 
-  const facet: PivotFacet = new PivotFacet(s2);
-
-  beforeAll(async () => {
+  beforeEach(async () => {
     await s2.container.ready;
+  });
+
+  afterEach(() => {
+    facet.destroy();
   });
 
   describe('should get correct hierarchy', () => {
@@ -241,22 +241,18 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct result when tree mode', () => {
-    s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
-    s2.options = assembleOptions({
-      hierarchyType: 'tree',
-    });
-    // 小于 DEFAULT_TREE_ROW_WIDTH
-    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30);
-
-    s2.dataSet = new MockPivotDataSet(s2);
-    const treeFacet = new PivotFacet(s2);
-    const { rowsHierarchy } = treeFacet.getLayoutResult();
-
-    afterEach(() => {
-      spy.mockRestore();
-    });
-
     test('row hierarchy when tree mode', () => {
+      s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
+      s2.options = assembleOptions({
+        hierarchyType: 'tree',
+      });
+      // 小于 DEFAULT_TREE_ROW_WIDTH
+      const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30);
+
+      s2.dataSet = new MockPivotDataSet(s2);
+      const treeFacet = new PivotFacet(s2);
+      const { rowsHierarchy } = treeFacet.getLayoutResult();
+
       const { dataCell, rowCell } = s2.options.style!;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
@@ -270,6 +266,8 @@ describe('Pivot Mode Facet Test', () => {
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);
       });
+
+      spy.mockRestore();
     });
   });
 
@@ -278,25 +276,23 @@ describe('Pivot Mode Facet Test', () => {
       facet.render();
     });
 
-    afterAll(() => {
+    afterEach(() => {
       facet.destroy();
     });
 
     test('get header after render', () => {
       const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
 
-      expect(
-        rowHeader instanceof PivotRowHeader || rowHeader instanceof RowHeader,
-      ).toBeTrue();
+      expect(rowHeader).toBeInstanceOf(RowHeader);
       expect(rowHeader!.children[0].children).toHaveLength(10);
       expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
 
-      expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.children.length).toBe(3);
+      expect(cornerHeader).toBeInstanceOf(CornerHeader);
+      expect(cornerHeader.children).toHaveLength(2);
       expect(cornerHeader.parsedStyle.visibility).not.toEqual('hidden');
 
-      expect(columnHeader instanceof ColHeader).toBeTrue();
-      expect(centerFrame instanceof Frame).toBeTrue();
+      expect(columnHeader).toBeInstanceOf(ColHeader);
+      expect(centerFrame).toBeInstanceOf(Frame);
     });
 
     test('get background after render', () => {
@@ -311,24 +307,13 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct result when enable series number', () => {
-    const mockDataSet = new MockPivotDataSet(s2);
-
-    s2.options = assembleOptions({
-      showSeriesNumber: true,
-      dataCell: (fct) => new DataCell(fct, s2),
-    });
-    s2.dataSet = mockDataSet;
-    const seriesNumberFacet = new PivotFacet(s2);
-
-    beforeEach(() => {
-      seriesNumberFacet.render();
-    });
-
-    afterEach(() => {
-      seriesNumberFacet.destroy();
-    });
-
     test('render correct corner header', () => {
+      const s2 = createFakeSpreadSheet();
+
+      s2.dataSet = new MockPivotDataSet(s2);
+      const seriesNumberFacet = new PivotFacet(s2);
+
+      seriesNumberFacet.render();
       const { cornerHeader } = seriesNumberFacet;
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();

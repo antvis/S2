@@ -13,6 +13,8 @@ import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
 import { getTheme, type BaseDataSet, type Node } from '../../src';
+
+import { assembleOptions, assembleDataCfg } from '.';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type {
@@ -24,7 +26,7 @@ import type {
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
-import { DEFAULT_OPTIONS } from '@/common/constant';
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
 import type { BaseFacet } from '@/facet';
 import type { PanelBBox } from '@/facet/bbox/panel-bbox';
 
@@ -71,20 +73,12 @@ export const createFakeSpreadSheet = () => {
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
 
-  s2.options = {
+  s2.options = assembleOptions({
     ...DEFAULT_OPTIONS,
     hdAdapter: false,
-  };
-  s2.dataCfg = {
-    meta: [],
-    data: [],
-    fields: {
-      rows: [],
-      columns: [],
-      values: [],
-    },
-    sortParams: [],
-  };
+  });
+
+  s2.dataCfg = assembleDataCfg({ sortParams: [] });
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width!,
     height: DEFAULT_OPTIONS.height!,
@@ -135,6 +129,15 @@ export const createFakeSpreadSheet = () => {
     getHeaderCells: () => [],
     getHiddenColumnsInfo: jest.fn(),
     getCellAdaptiveHeight: jest.fn(),
+    getRowLeafNodeByIndex: jest.fn(),
+    getColLeafNodeByIndex: jest.fn(),
+    frozenGroupInfo: {
+      [FrozenGroupType.FROZEN_ROW]: {},
+      [FrozenGroupType.FROZEN_COL]: {},
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {},
+    },
+    cornerBBox: {},
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -170,6 +173,8 @@ export const createFakeSpreadSheet = () => {
   s2.getTotalsConfig = jest.fn();
   s2.getLayoutWidthType = jest.fn();
   s2.enableFrozenHeaders = jest.fn();
+  s2.measureTextWidth = jest.fn();
+  s2.isFrozenRowHeader = jest.fn();
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,

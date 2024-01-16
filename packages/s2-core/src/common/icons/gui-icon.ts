@@ -2,9 +2,9 @@
  * @description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
 import { Group, type ImageStyleProps } from '@antv/g';
-import { omit, clone } from 'lodash';
+import { clone, omit } from 'lodash';
 import { CustomImage } from '../../engine';
-import { DebuggerUtil, type S2CellType } from '..';
+import { DebuggerUtil } from '../debug';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
@@ -141,11 +141,7 @@ export class GuiIcon extends Group {
       this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
           // 异步加载完成后，当前 Cell 可能已经销毁了
-          const canvas = (this.getParent() as S2CellType)?.getMeta?.()
-            .spreadsheet?.container;
-
-          // G 底层 refreshElements 默认是个数组, 销毁时获取不到, 没有兜底 https://github.com/antvis/S2/issues/2435
-          if (this.destroyed || (canvas && !canvas.get('refreshElements'))) {
+          if (this.destroyed) {
             DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
 
             return;
