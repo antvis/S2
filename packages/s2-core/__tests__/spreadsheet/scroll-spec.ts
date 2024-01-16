@@ -13,6 +13,7 @@ import type {
 import {
   InteractionStateName,
   InterceptType,
+  LayoutWidthType,
   OriginEventType,
   S2Event,
   ScrollbarPositionType,
@@ -460,7 +461,7 @@ describe('Scroll Tests', () => {
         scrollbarPosition: ScrollbarPositionType.CONTENT,
       },
       style: {
-        layoutWidthType: 'compact',
+        layoutWidthType: LayoutWidthType.Compact,
       },
     });
     s2.changeSheetSize(100, 1000); // 横向滚动条
@@ -550,7 +551,7 @@ describe('Scroll Tests', () => {
         rowHeader: true,
       },
       style: {
-        layoutWidthType: 'compact',
+        layoutWidthType: LayoutWidthType.Compact,
         rowCell: {
           width: 200,
         },
@@ -703,7 +704,7 @@ describe('Scroll Tests', () => {
           rowHeader: true,
         },
         style: {
-          layoutWidthType: 'compact',
+          layoutWidthType: LayoutWidthType.Compact,
           rowCell: {
             width: 200,
           },

@@ -1,5 +1,5 @@
 import type { Node } from '../../facet/layout/node';
-import type { LayoutWidthType } from './basic';
+import type { LayoutWidthType } from '../constant';
 
 export type CellCustomSize =
   | null

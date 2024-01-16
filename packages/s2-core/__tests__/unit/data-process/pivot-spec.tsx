@@ -7,6 +7,7 @@ import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
 import type { ViewMeta } from '../../../src/common';
+import type { CellData } from '../../../src';
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -329,7 +330,8 @@ describe('Pivot Table Core Data Process', () => {
   describe('4、Calculate data cell info', () => {
     test('should get correct data value', () => {
       const { getCellMeta } = s2.facet;
-      const getData = (meta: ViewMeta | null) => meta?.data?.[VALUE_FIELD];
+      const getData = (meta: ViewMeta | null) =>
+        (meta?.data as CellData)?.[VALUE_FIELD];
 
       // 左上角
       expect(getData(getCellMeta(0, 0))).toBe(7789);

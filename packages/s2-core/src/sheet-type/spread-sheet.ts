@@ -23,6 +23,7 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
+  LayoutWidthType,
   S2Event,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
@@ -38,7 +39,6 @@ import type {
   Fields,
   InteractionOptions,
   InternalFullyTheme,
-  LayoutWidthType,
   OffsetConfig,
   Pagination,
   S2CellType,

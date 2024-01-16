@@ -489,11 +489,13 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const isTableMode = spreadsheet.isTableMode();
 
   if (isTableMode && options?.onlyShowCellText) {
-    const meta = targetCell.getMeta();
+    const meta = targetCell?.getMeta();
     // 如果是列头, 获取当前列所有数据, 其他则获取当前整行 (1条数据)
-    const selectedCellsData = meta?.field
-      ? spreadsheet.dataSet.getCellMultiData({ query: { field: meta.field } })
-      : [spreadsheet.dataSet.getRowData(meta as ViewMeta)];
+    const selectedCellsData = (
+      meta?.field
+        ? spreadsheet.dataSet.getCellMultiData({ query: { field: meta.field } })
+        : [spreadsheet.dataSet.getRowData(meta as ViewMeta)]
+    ) as ViewMetaData[];
 
     return [{ selectedData: selectedCellsData, name: '', value: '' }];
   }

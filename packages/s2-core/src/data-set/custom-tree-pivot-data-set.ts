@@ -13,7 +13,7 @@ import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: GetCellMultiDataParams) {
-    const { query } = params;
+    const { query = {} } = params || {};
     const { columns, rows } = this.fields;
     const rowDimensionValues = transformDimensionsValues(
       query,

@@ -132,5 +132,3 @@ export interface S2DataConfig {
   filterParams?: FilterParam[];
   [key: string]: unknown;
 }
-
-export type FlattingIndexesData = RawData[][] | RawData[] | RawData;

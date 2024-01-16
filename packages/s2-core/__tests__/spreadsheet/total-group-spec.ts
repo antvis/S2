@@ -1,6 +1,8 @@
 import { getContainer } from 'tests/util/helpers';
 import { map } from 'lodash';
 import { s2Options, dataCfg } from '../data/total-group-data';
+import { CellData } from '../../src';
+import type { PivotFacet } from '../../src/facet';
 import { PivotSheet } from '@/sheet-type';
 import { type S2Options, ORIGIN_FIELD } from '@/common';
 
@@ -21,7 +23,7 @@ describe('Total Group Dimension Test', () => {
     s2 = new PivotSheet(container, dataCfg, s2Options as S2Options);
     await s2.render();
 
-    const facet = s2.facet;
+    const facet = s2.facet as PivotFacet;
     const { rowLeafNodes } = facet.getLayoutResult();
 
     expect(map(rowLeafNodes, 'id')).toMatchInlineSnapshot(`
@@ -43,11 +45,11 @@ describe('Total Group Dimension Test', () => {
       ]
     `);
 
-    expect(facet.getCellMeta(0, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '家具',
       price: 2000,
     });
-    expect(facet.getCellMeta(1, 1)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(1, 1)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '办公用品',
       cost: 1900,
     });
@@ -92,22 +94,22 @@ describe('Total Group Dimension Test', () => {
       ]
     `);
 
-    expect(facet.getCellMeta(0, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '杭州市',
       price: 300,
     });
 
-    expect(facet.getCellMeta(1, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(1, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '舟山市',
       price: 800,
     });
 
-    expect(facet.getCellMeta(2, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(2, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '成都市',
       price: 1200,
     });
 
-    expect(facet.getCellMeta(3, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(3, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '绵阳市',
       price: 1600,
     });
@@ -146,13 +148,13 @@ describe('Total Group Dimension Test', () => {
     expect(rowLeafNodes[4].id).toEqual('root[&]浙江省[&]小计[&]家具');
     expect(rowLeafNodes[5].id).toEqual('root[&]浙江省[&]小计[&]办公用品');
 
-    expect(facet.getCellMeta(4, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(4, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       province: '浙江省',
       price: 600,
       type: '家具',
     });
 
-    expect(facet.getCellMeta(5, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(5, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       province: '浙江省',
       type: '办公用品',
       price: 500,
@@ -184,15 +186,14 @@ describe('Total Group Dimension Test', () => {
     s2 = new PivotSheet(container, newDataCfg, newS2Options as S2Options);
     await s2.render();
 
-    window.s2 = s2;
     const facet = s2.facet;
 
-    expect(facet.getCellMeta(0, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '家具',
       price: 2000,
     });
 
-    expect(facet.getCellMeta(0, 2)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 2)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '办公用品',
       price: 1900,
     });
@@ -225,22 +226,22 @@ describe('Total Group Dimension Test', () => {
 
     const facet = s2.facet;
 
-    expect(facet.getCellMeta(0, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       sub_type: '桌子',
       price: 1000,
     });
 
-    expect(facet.getCellMeta(0, 2)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 2)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       sub_type: '沙发',
       price: 1000,
     });
 
-    expect(facet.getCellMeta(0, 4)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 4)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       sub_type: '笔',
       price: 1000,
     });
 
-    expect(facet.getCellMeta(0, 6)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 6)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       sub_type: '纸张',
       price: 900,
     });
@@ -275,19 +276,19 @@ describe('Total Group Dimension Test', () => {
 
     const facet = s2.facet;
 
-    expect(facet.getCellMeta(0, 2)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 2)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '杭州市',
       sub_type: '桌子',
       price: 100,
     });
 
-    expect(facet.getCellMeta(0, 4)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 4)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '杭州市',
       sub_type: '沙发',
       price: 100,
     });
 
-    expect(facet.getCellMeta(0, 6)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 6)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       city: '杭州市',
       sub_type: '笔',
       price: 100,
@@ -316,13 +317,13 @@ describe('Total Group Dimension Test', () => {
 
     const facet = s2.facet;
 
-    expect(facet.getCellMeta(0, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(0, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '家具',
       price: 6666,
       cost: 6666,
     });
 
-    expect(facet.getCellMeta(1, 0)!.data[ORIGIN_FIELD]).toEqual({
+    expect((facet.getCellMeta(1, 0)!.data as CellData)[ORIGIN_FIELD]).toEqual({
       type: '办公用品',
       price: 9999,
       cost: 9999,

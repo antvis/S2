@@ -2,7 +2,7 @@
  * @description spec for issue #2385
  * https://github.com/antvis/S2/issues/2385
  */
-import type { S2Options } from '../../src';
+import { LayoutWidthType, type S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2385.json';
 import { getContainer } from '../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -14,7 +14,7 @@ const s2Options: S2Options = {
     dataCell: {
       width: 200,
     },
-    layoutWidthType: 'compact',
+    layoutWidthType: LayoutWidthType.Compact,
   },
 };
 

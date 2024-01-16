@@ -52,24 +52,23 @@ describe('header cell formatter test', () => {
     test('should not format pivot col and row total cell', () => {
       const colNode = new Node({
         id: `root[&]总计`,
-        key: '',
+        field: '',
         value: '总计',
         parent: root,
-        label: '总计',
         isTotalRoot: true,
       });
       const rowNode = new Node({
         id: `root[&]杭州[&]小计`,
-        key: '',
+        field: '',
         value: '小计',
         parent: root,
-        label: '小计',
         isTotalRoot: true,
       });
 
       const formatter: Formatter = (value) => {
         return `${value}1`;
       };
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       const colCell = new ColCell(colNode, s2);
@@ -82,10 +81,9 @@ describe('header cell formatter test', () => {
     test('should not format pivot row grand total cell in tree mode', () => {
       const rowGrandTotalNode = new Node({
         id: `root[&]总计`,
-        key: '',
+        field: '',
         value: '总计',
         parent: root,
-        label: '总计',
         isTotals: true,
         isGrandTotals: true,
         isTotalRoot: true,
@@ -93,10 +91,9 @@ describe('header cell formatter test', () => {
 
       const rowSubTotalNode = new Node({
         id: `root[&]杭州`,
-        key: '',
+        field: '',
         value: '杭州',
         parent: root,
-        label: '杭州',
         isTotals: true,
         isSubTotals: true,
         isGrandTotals: false,
@@ -105,6 +102,7 @@ describe('header cell formatter test', () => {
       const formatter: Formatter = (value) => {
         return `${value}1`;
       };
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       jest.spyOn(s2, 'isHierarchyTreeType').mockReturnValue(true);
 

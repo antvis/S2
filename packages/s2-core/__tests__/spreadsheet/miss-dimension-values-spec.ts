@@ -1,6 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import {
   EMPTY_FIELD_VALUE,
+  LayoutWidthType,
   ORIGIN_FIELD,
   type S2DataConfig,
   type S2Options,
@@ -31,7 +32,7 @@ const s2Options: S2Options = {
     },
   },
   style: {
-    layoutWidthType: 'adaptive',
+    layoutWidthType: LayoutWidthType.Adaptive,
     dataCell: {
       height: 30,
     },

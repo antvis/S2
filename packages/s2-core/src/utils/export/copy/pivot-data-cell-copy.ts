@@ -23,6 +23,7 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
+import type { CellData } from '../../../data-set';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 import { BaseDataCellCopy } from './base-data-cell-copy';
 import {
@@ -231,7 +232,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       dataSet,
     );
 
-    const fieldValue = cellData?.[VALUE_FIELD];
+    const fieldValue = (cellData as CellData)?.[VALUE_FIELD];
     const isChartData = isPlainObject(
       (fieldValue as MultiData<MiniChartData>)?.values,
     );
