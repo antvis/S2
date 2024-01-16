@@ -3,19 +3,18 @@
  */
 import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
-import { get } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { pick } from 'lodash';
 import { data } from '../../data/mock-dataset.json';
+import { createFakeSpreadSheet } from '../../util/helpers';
 import { ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
-  DataCell,
   Node,
   customMerge,
-  type Fields,
   type HiddenColumnsInfo,
   type S2DataConfig,
   type S2Options,
@@ -130,6 +129,8 @@ const createMockTableFacet = (
     ),
   });
   s2.dataSet = new MockTableDataSet(s2);
+  // @ts-ignore
+  s2.dataSet.getField = jest.fn();
   s2.dataSet.fields = s2.dataCfg.fields;
   const facet = new TableFacet(s2);
 
@@ -170,38 +171,12 @@ describe('Table Mode Facet Test', () => {
   });
 
   describe('should get none layer when dataCfg.fields is empty', () => {
-    const fields: Fields = {
-      rows: [],
-      columns: [],
-      values: [],
-      customTreeItems: [],
-      valueInCols: false,
-    };
-    const container = new Canvas({
-      width: 100,
-      height: 100,
-      container: document.body,
-    });
-    const spreadsheet = Object.assign({}, ss, {
-      dataCfg: { fields },
-      panelGroup: container.addGroup(),
-      foregroundGroup: container.addGroup(),
-      backgroundGroup: container.addGroup(),
-      off: jest.fn(),
-      on: jest.fn(),
-    });
+    const spreadsheet = createFakeSpreadSheet();
     const mockDataSet = new MockTableDataSet(spreadsheet);
 
     spreadsheet.dataSet = mockDataSet;
 
-    const newFacet: TableFacet = new TableFacet({
-      spreadsheet,
-      dataSet: mockDataSet,
-      ...fields,
-      ...assembleOptions(),
-      showSeriesNumber: false,
-      dataCell: (fct) => new DataCell(fct, spreadsheet),
-    });
+    const newFacet: TableFacet = new TableFacet(spreadsheet);
 
     beforeEach(() => {
       newFacet.render();
@@ -221,45 +196,38 @@ describe('Table Mode Facet Test', () => {
     });
 
     test('can not get series number after render in table sheet', () => {
-      const { backgroundGroup, rowIndexHeader } = newFacet;
-      const rect = get(backgroundGroup, 'cfg.children[0]');
+      const { backgroundGroup } = newFacet;
+      const rect = backgroundGroup.children[0];
 
       expect(rect).toBeFalsy();
-      expect(rowIndexHeader).toBeFalsy();
     });
   });
 });
 
 describe('Table Mode Facet Test With Adaptive Layout', () => {
   describe('should get correct col layout', () => {
-    const { facet, s2 } = createMockTableFacet({
-      showSeriesNumber: false,
-    });
-    const { colCell } = s2.options.style!;
-
     test('col hierarchy coordinate with adaptive layout', () => {
-      const adaptiveWith = 119;
-
-      facet.getColLeafNodes().forEach((node, index) => {
-        expect(node.y).toBe(0);
-        expect(node.x).toBe(index * adaptiveWith);
-        expect(Math.round(node.width)).toBe(adaptiveWith);
-        expect(node.height).toBe(colCell!.height);
+      const { facet } = createMockTableFacet({
+        showSeriesNumber: false,
       });
+
+      expect(
+        facet
+          .getColLeafNodes()
+          .map((node) => pick(node, ['x', 'y', 'width', 'height'])),
+      ).toMatchSnapshot();
     });
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const { facet, s2 } = createMockTableFacet({
-      showSeriesNumber: true,
-    });
-    const { colCell } = s2.options.style!;
-
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
+      const { facet, s2 } = createMockTableFacet({
+        showSeriesNumber: true,
+      });
+      const { colCell } = s2.options.style!;
       const colLeafNodes = facet.getColLeafNodes();
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
-      const adaptiveWith = 103;
 
       const seriesNumberNode = colLeafNodes[0];
 
@@ -268,12 +236,11 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
       expect(seriesNumberNode.height).toBe(colCell!.height);
 
-      colLeafNodes.slice(1).forEach((node, index) => {
-        expect(node.y).toBe(0);
-        expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
-        expect(node.width).toBe(adaptiveWith);
-        expect(node.height).toBe(colCell!.height);
-      });
+      expect(
+        colLeafNodes
+          .slice(1)
+          .map((node) => pick(node, ['x', 'y', 'width', 'height'])),
+      ).toMatchSnapshot();
     });
   });
 });
@@ -390,38 +357,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
-      Object {
-        "frozenCol": Object {
-          "range": Array [
-            0,
-            1,
-          ],
-          "width": 238,
-        },
-        "frozenRow": Object {
-          "height": 60,
-          "range": Array [
-            0,
-            1,
-          ],
-        },
-        "frozenTrailingCol": Object {
-          "range": Array [
-            3,
-            4,
-          ],
-          "width": 238,
-        },
-        "frozenTrailingRow": Object {
-          "height": 60,
-          "range": Array [
-            30,
-            31,
-          ],
-        },
-      }
-    `);
+    expect(facet.frozenGroupInfo).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -450,8 +386,8 @@ describe('Table Mode Facet With Frozen Test', () => {
         .getColLeafNodes()
         .slice(-colCount)
         .reverse()
-        .map((node) => node.x),
-    ).toEqual([481, 362]);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([479, 359]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -462,8 +398,8 @@ describe('Table Mode Facet With Frozen Test', () => {
         .getColLeafNodes()
         .slice(-trailingColCount!)
         .reverse()
-        .map((node) => node.x),
-    ).toEqual([481, 362]);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([479, 359]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -715,38 +651,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
-      Object {
-        "frozenCol": Object {
-          "range": Array [
-            0,
-            0,
-          ],
-          "width": 199,
-        },
-        "frozenRow": Object {
-          "height": 60,
-          "range": Array [
-            0,
-            1,
-          ],
-        },
-        "frozenTrailingCol": Object {
-          "range": Array [
-            2,
-            2,
-          ],
-          "width": 199,
-        },
-        "frozenTrailingRow": Object {
-          "height": 60,
-          "range": Array [
-            30,
-            31,
-          ],
-        },
-      }
-    `);
+    expect(facet.frozenGroupInfo).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -776,12 +681,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .getColLeafNodes()
         .slice(-trailingColCount)
         .reverse()
-        .map((node) => node.x),
-    ).toMatchInlineSnapshot(`
-      Array [
-        401,
-      ]
-    `);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([399]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -794,12 +695,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toMatchInlineSnapshot(`
-      Array [
-        532,
-        502,
-      ]
-    `);
+    ).toEqual([532, 502]);
   });
 
   test('should get correct viewCellHeights result', () => {

@@ -12,10 +12,15 @@ import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import type { BaseDataSet, Node } from '../../src';
+import { getTheme, type BaseDataSet, type Node } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
+import type {
+  InternalFullyTheme,
+  S2CellType,
+  S2Options,
+  ViewMeta,
+} from '@/common/interface';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
@@ -91,6 +96,7 @@ export const createFakeSpreadSheet = () => {
     getCellMultiData() {
       return [];
     },
+    getField: jest.fn(),
   } as unknown as any;
   s2.facet = {
     panelBBox: {
@@ -127,6 +133,8 @@ export const createFakeSpreadSheet = () => {
     getColLeafNodes: () => [],
     getInitColLeafNodes: () => [],
     getHeaderCells: () => [],
+    getHiddenColumnsInfo: jest.fn(),
+    getCellAdaptiveHeight: jest.fn(),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -155,6 +163,17 @@ export const createFakeSpreadSheet = () => {
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
+  s2.isValueInCols = jest.fn();
+  s2.isCustomHeaderFields = jest.fn();
+  s2.isCustomColumnFields = jest.fn();
+  s2.isCustomRowFields = jest.fn();
+  s2.getTotalsConfig = jest.fn();
+  s2.getLayoutWidthType = jest.fn();
+  s2.enableFrozenHeaders = jest.fn();
+  s2.theme = getTheme({
+    name: 'default',
+    spreadsheet: s2,
+  }) as InternalFullyTheme;
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 

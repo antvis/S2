@@ -6,6 +6,7 @@ import type {
   IconPosition,
   RawData,
   ResizeInfo,
+  SimpleData,
 } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type { Query } from '../../data-set';
@@ -427,7 +428,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: ViewMetaData;
+  data: ViewMetaData | SimpleData | undefined;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)

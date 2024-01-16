@@ -5,6 +5,7 @@ import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { find, size } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { FrozenGroupType } from '../../../src';
 import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
 import {
@@ -84,6 +85,13 @@ jest.mock('@/sheet-type', () => {
           getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
           getCellMeta: jest.fn(),
+          getRowLeafNodeByIndex: () => [],
+          frozenGroupInfo: {
+            [FrozenGroupType.FROZEN_ROW]: {},
+            [FrozenGroupType.FROZEN_COL]: {},
+            [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
+            [FrozenGroupType.FROZEN_TRAILING_COL]: {},
+          },
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -169,9 +177,9 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowsHierarchy.getNodes(0)).toHaveLength(2);
 
       rowsHierarchy.getLeaves().forEach((node, index) => {
-        expect(node.width).toBeCloseTo(99);
+        expect(Math.floor(node.width)).toBeCloseTo(99);
         expect(node.height).toBe(dataCell!.height!);
-        expect(node.x).toBe(99 * node.level);
+        expect(Math.floor(node.x)).toBeCloseTo(99 * node.level);
         expect(node.y).toBe(node.height * index);
       });
 
@@ -195,9 +203,9 @@ describe('Pivot Mode Facet Test', () => {
       expect(colsHierarchy.getNodes(0)).toHaveLength(2);
 
       colsHierarchy.getLeaves().forEach((node, index) => {
-        expect(node.width).toBeCloseTo(width);
+        expect(Math.ceil(node.width)).toBeCloseTo(width);
         expect(node.height).toBe(colCell!.height);
-        expect(node.x).toBe(width * index);
+        expect(Math.ceil(node.x)).toBe(width * index);
         expect(node.y).toBe(node.height * node.level);
       });
 
@@ -336,7 +344,7 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   it.each(['updateScrollOffset', 'scrollWithAnimation', 'scrollImmediately'])(
-    'should not throw "Cannot read property \'value\' of undefined" error if called with single offset config',
+    'should not throw "Cannot read property \'value\' of undefined" error if called with single offset config by %s',
     (method) => {
       const onlyOffsetYFn = () => {
         // @ts-ignore

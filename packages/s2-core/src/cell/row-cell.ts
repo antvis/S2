@@ -257,7 +257,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const isFrozen = this.getMeta().isFrozen;
 
     const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW]?.height;
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
