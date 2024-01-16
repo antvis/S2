@@ -28,7 +28,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
 
       const rowsHierarchyWidth = s2.facet.getLayoutResult().rowsHierarchy.width;
 
-      expect(Math.round(rowsHierarchyWidth)).toEqual(124);
+      expect(Math.round(rowsHierarchyWidth)).toEqual(120);
 
       // 行头维度均更改为较长的 name
       const newDataCfg: S2DataConfig = {

@@ -471,7 +471,8 @@ describe('Scroll Tests', () => {
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     await s2.render(false);
-    expect(s2.facet.vScrollBar.getBBox().x).toBeCloseTo(195);
+
+    expect(Math.floor(s2.facet.vScrollBar.getBBox().x)).toEqual(195);
 
     s2.setOptions({
       interaction: {

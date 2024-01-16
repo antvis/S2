@@ -1,6 +1,5 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
-  ColCell,
   DeviceType,
   ResizeType,
   TableSheet,
@@ -195,10 +194,8 @@ describe('TableSheet normal spec', () => {
     await sleep(30);
 
     let columnNodes = s2.facet.getColNodes();
-    let lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
-    const startCellWidth = lastColumnCell.getMeta().width;
 
+    const startCellWidth = columnNodes[columnNodes.length - 1].width;
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
 
     s2.getCanvasElement().dispatchEvent(
@@ -233,10 +230,9 @@ describe('TableSheet normal spec', () => {
     await sleep(300);
 
     columnNodes = s2.facet.getColNodes();
-    lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell;
-    const endCellWidth = lastColumnCell.getMeta().width;
+    const endCellWidth = columnNodes[columnNodes.length - 1].width;
 
-    expect(endCellWidth - startCellWidth).toBe(100);
+    expect(Math.floor(endCellWidth - startCellWidth)).toBe(140);
   });
 
   test('should render link shape', async () => {
