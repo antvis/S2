@@ -6,13 +6,14 @@
  */
 import * as mockDataConfig from 'tests/data/data-issue-565.json';
 import { getContainer } from 'tests/util/helpers';
+import type { S2Options } from '../../src';
 import { PivotSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
-  hierarchyType: 'tree' as const,
+  hierarchyType: 'tree',
 };
 
 describe('Export data in pivot tree mode', () => {

@@ -328,6 +328,7 @@ export const s2Options: SheetComponentOptions = {
     enableCopy: true,
     copyWithFormat: true,
     copyWithHeader: true,
+    hoverAfterScroll: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
@@ -336,7 +337,7 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.CURRENT,
+      rowResizeType: ResizeType.ALL,
       colResizeType: ResizeType.CURRENT,
     },
   },

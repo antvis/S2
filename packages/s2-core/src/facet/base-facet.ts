@@ -1609,7 +1609,7 @@ export abstract class BaseFacet {
           const shape = container.document.elementFromPointSync(x, y);
 
           if (shape) {
-            container.emit(OriginEventType.MOUSE_MOVE, {
+            container.emit(OriginEventType.POINTER_MOVE, {
               ...canvasMousemoveEvent,
               shape,
               target: shape,

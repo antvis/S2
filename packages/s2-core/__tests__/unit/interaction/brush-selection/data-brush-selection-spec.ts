@@ -574,7 +574,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateXIndex(7)).toBe(7);
   });
 
-  test('should not emit brush secletion event', () => {
+  test('should not emit brush selection event', () => {
     mockRootInteraction.getBrushSelection = () => ({
       dataCell: false,
       rowCell: true,

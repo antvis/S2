@@ -190,6 +190,36 @@ export class EventController {
     return hasIn(event, 'clientX') && hasIn(event, 'clientY');
   }
 
+  public isMatchElement(event: MouseEvent) {
+    const canvas = this.spreadsheet.getCanvasElement();
+    const { target } = event;
+
+    return (
+      target === canvas ||
+      target instanceof DisplayObject ||
+      target instanceof Canvas
+    );
+  }
+
+  public isMatchPoint(event: MouseEvent) {
+    /**
+     * 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
+     * 比如实际 400 * 300 => hd (800 * 600)
+     * 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
+     */
+    const canvas = this.spreadsheet.getCanvasElement();
+    const { width, height } = this.getContainerRect();
+    const { x, y } = canvas.getBoundingClientRect() || {};
+    const { clientX, clientY } = event;
+
+    return (
+      clientX <= x + width &&
+      clientX >= x &&
+      clientY <= y + height &&
+      clientY >= y
+    );
+  }
+
   private isMouseOnTheCanvasContainer(event: Event) {
     if (this.isMouseEvent(event)) {
       const canvas = this.spreadsheet.getCanvasElement();
@@ -198,26 +228,7 @@ export class EventController {
         return false;
       }
 
-      const { x, y } = canvas.getBoundingClientRect() || {};
-
-      /*
-       * 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
-       * 比如实际 400 * 300 => hd (800 * 600)
-       * 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
-       */
-      const { width, height } = this.getContainerRect();
-
-      const { target: eventTarget, clientX, clientY } = event;
-
-      return (
-        (eventTarget === canvas ||
-          eventTarget instanceof DisplayObject ||
-          eventTarget instanceof Canvas) &&
-        clientX <= x + width &&
-        clientX >= x &&
-        clientY <= y + height &&
-        clientY >= y
-      );
+      return this.isMatchElement(event) && this.isMatchPoint(event);
     }
 
     return false;

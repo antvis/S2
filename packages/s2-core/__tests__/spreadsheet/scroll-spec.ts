@@ -412,7 +412,7 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minY = -9999;
 
       const bbox = s2.getCanvasElement().getBoundingClientRect();
-      const mousemoveEvent = new MouseEvent('mousemove', {
+      const mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
         clientX: bbox.left + 100,
         clientY: bbox.top + 100,
       });
@@ -432,7 +432,7 @@ describe('Scroll Tests', () => {
       await sleep(1000);
 
       expect(s2.container.emit).toHaveBeenCalledWith(
-        OriginEventType.MOUSE_MOVE,
+        OriginEventType.POINTER_MOVE,
         expect.any(Object),
       );
     },
@@ -513,11 +513,11 @@ describe('Scroll Tests', () => {
 
       const scrollBar = s2.facet[name];
 
-      const positon = scrollBar['getCoordinatesWithBBoxExtraPadding']();
+      const position = scrollBar['getCoordinatesWithBBoxExtraPadding']();
 
       expect(
         Math.round(scrollBar.thumbShape.getBBox()[key] as number),
-      ).toStrictEqual(Math.round(positon.end - positon.start));
+      ).toStrictEqual(Math.round(position.end - position.start));
     },
   );
 
@@ -866,7 +866,7 @@ describe('Scroll Tests', () => {
       },
     });
 
-    s2.render(false);
+    await s2.render(false);
 
     const errorSpy = jest
       .spyOn(console, 'error')
@@ -890,21 +890,21 @@ describe('Scroll Tests', () => {
 
     await sleep(500);
 
-    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledTimes(0);
   });
 
   // https://github.com/antvis/S2/issues/2376
   test.each(['hScrollBar', 'hRowScrollBar'])(
     'should not reset interaction state after %s scrollbar thumb or track clicked',
     (scrollbarName) => {
-      const containsMock = jest
-        .spyOn(HTMLElement.prototype, 'contains')
-        .mockImplementation(() => true);
+      jest
+        .spyOn(s2.interaction.eventController, 'isMatchElement')
+        .mockImplementationOnce(() => true);
 
       const reset = jest.fn();
 
       const scrollbar = get(s2.facet, scrollbarName) as ScrollBar;
-      const colCell = s2.facet.getColLeafNodes()[0].belongsCell!;
+      const colCell = s2.facet.getColLeafCells()[0]!;
 
       s2.on(S2Event.GLOBAL_RESET, reset);
       s2.interaction.selectHeaderCell({
@@ -936,8 +936,6 @@ describe('Scroll Tests', () => {
 
       expect(s2.interaction.isSelectedState()).toBeTruthy();
       expect(reset).not.toHaveBeenCalled();
-
-      containsMock.mockReset();
     },
   );
 });

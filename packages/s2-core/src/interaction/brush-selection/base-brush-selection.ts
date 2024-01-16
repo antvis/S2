@@ -207,7 +207,7 @@ export class BaseBrushSelection
     let min = 0;
     const frozenRowRange = frozenInfo?.frozenRow?.range;
 
-    if (frozenRowRange) {
+    if (frozenRowRange?.[1]) {
       min = frozenRowRange[1] + 1;
     }
 
@@ -218,7 +218,7 @@ export class BaseBrushSelection
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
 
-    if (frozenTrailingRowRange) {
+    if (frozenTrailingRowRange?.[0]) {
       max = frozenTrailingRowRange[0] - 1;
     }
 
@@ -236,7 +236,7 @@ export class BaseBrushSelection
     let min = 0;
     const frozenColRange = frozenInfo?.frozenCol?.range;
 
-    if (frozenColRange) {
+    if (frozenColRange?.[1]) {
       min = frozenColRange[1] + 1;
     }
 
@@ -247,7 +247,7 @@ export class BaseBrushSelection
     let max = facet.getColLeafNodes().length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
 
-    if (frozenTrailingColRange) {
+    if (frozenTrailingColRange?.[0]) {
       max = frozenTrailingColRange[0] - 1;
     }
 
