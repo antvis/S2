@@ -10,6 +10,7 @@ import type {
   TooltipData,
   TooltipOperatorOptions,
   ViewMeta,
+  ViewMetaData,
 } from '../../../common/interface';
 import {
   getCellMeta,
@@ -128,7 +129,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     const onlyShowCellText = this.spreadsheet.isTableMode();
     const cellData = onlyShowCellText
       ? ({
-          ...currentCellMeta,
+          ...(currentCellMeta as ViewMetaData),
           value: value || fieldValue,
           valueField: field || valueField,
         } as TooltipData)

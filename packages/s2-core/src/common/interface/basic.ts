@@ -28,7 +28,7 @@ export type { GetCellMeta, LayoutResult } from './facet';
  */
 export type Formatter = (
   v: unknown,
-  data?: ViewMetaData | ViewMetaData[],
+  data?: SimpleData | ViewMetaData | ViewMetaData[],
   meta?: Node | ViewMeta,
 ) => string;
 
@@ -68,14 +68,6 @@ export enum CellClipBox {
   PADDING_BOX = 'paddingBox',
   CONTENT_BOX = 'contentBox',
 }
-
-/**
- * 布局类型：
- * adaptive: 行列等宽，均分整个 canvas 画布宽度
- * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
- * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
- */
-export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
   /**
@@ -390,7 +382,7 @@ export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
 
 export type MergedCellCallback = (
   spreadsheet: SpreadSheet,
-  cells: S2CellType[],
+  cells: DataCell[],
   meta?: ViewMeta,
 ) => MergedCell;
 
@@ -409,7 +401,7 @@ export interface MergedCellInfo {
 }
 
 export type TempMergedCell = {
-  cells: S2CellType[];
+  cells: DataCell[];
   viewMeta: ViewMeta;
 };
 

@@ -10,6 +10,12 @@ import { EMPTY_PLACEHOLDER } from './basic';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
 
+/**
+ * 布局类型：
+ * adaptive: 行列等宽，均分整个 canvas 画布宽度
+ * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
+ * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
+ */
 export enum LayoutWidthType {
   Adaptive = 'adaptive',
   ColAdaptive = 'colAdaptive',

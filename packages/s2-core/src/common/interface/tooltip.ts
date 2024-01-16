@@ -1,10 +1,10 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type * as CSS from 'csstype';
-import type { Data, Point, S2CellType } from '../../common/interface';
+import type { Point, S2CellType, ViewMetaData } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseTooltip } from '../../ui/tooltip';
 
-export type TooltipDataItem = Data;
+export type TooltipDataItem = ViewMetaData;
 
 export interface TooltipOperatorMenuInfo {
   key: string;

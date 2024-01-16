@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash';
-import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
+import { i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
 import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';

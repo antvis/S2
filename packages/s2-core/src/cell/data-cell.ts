@@ -28,6 +28,7 @@ import type {
   MultiData,
   TextTheme,
   ViewMeta,
+  ViewMetaData,
   ViewMetaIndexType,
 } from '../common/interface';
 import {
@@ -491,7 +492,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.spreadsheet.dataSet.getCellData({
           query: { rowIndex: this.meta.rowIndex },
         })
-      : CellData.getFieldValue(this.meta.data);
+      : CellData.getFieldValue(this.meta.data as ViewMetaData);
 
     return condition?.mapping(value, rowDataInfo as RawData, this);
   }

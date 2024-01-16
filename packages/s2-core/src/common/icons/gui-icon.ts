@@ -145,7 +145,10 @@ export class GuiIcon extends Group {
             .spreadsheet?.container;
 
           // G 底层 refreshElements 默认是个数组, 销毁时获取不到, 没有兜底 https://github.com/antvis/S2/issues/2435
-          if (this.destroyed || (canvas && !canvas.get('refreshElements'))) {
+          if (
+            this.destroyed ||
+            (canvas && !(canvas as any).get('refreshElements'))
+          ) {
             DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
 
             return;

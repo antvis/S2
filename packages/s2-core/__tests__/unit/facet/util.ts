@@ -19,7 +19,6 @@ export function getMockPivotMeta() {
     rows: fields.rows as string[],
     columns: fields.columns as string[],
     values: fields.values as string[],
-    originData: data,
     data,
     indexesData: rawIndexesData,
     sortedDimensionValues,

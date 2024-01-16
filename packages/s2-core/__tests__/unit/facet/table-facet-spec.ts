@@ -7,7 +7,7 @@ import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { pick } from 'lodash';
 import { data } from '../../data/mock-dataset.json';
 import { createFakeSpreadSheet } from '../../util/helpers';
-import { ROOT_NODE_ID } from '@/common/constant';
+import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
@@ -272,7 +272,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       },
       undefined,
       (spreadsheet) => {
-        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.getLayoutWidthType = () => LayoutWidthType.Compact;
         spreadsheet.measureTextWidth =
           mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
         spreadsheet.measureTextWidthRoughly = mockMeasureFunc;
@@ -319,7 +319,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       },
       undefined,
       (spreadsheet) => {
-        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.getLayoutWidthType = () => LayoutWidthType.Compact;
         spreadsheet.measureTextWidth =
           mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
         spreadsheet.measureTextWidthRoughly = mockMeasureFunc;

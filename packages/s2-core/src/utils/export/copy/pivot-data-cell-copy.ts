@@ -33,6 +33,7 @@ import {
   getNodeFormatData,
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
+import type { CellData } from '../../../data-set';
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];
@@ -231,7 +232,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       dataSet,
     );
 
-    const fieldValue = cellData?.[VALUE_FIELD];
+    const fieldValue = (cellData as CellData)?.[VALUE_FIELD];
     const isChartData = isPlainObject(
       (fieldValue as MultiData<MiniChartData>)?.values,
     );

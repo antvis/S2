@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { get, merge } from 'lodash';
+import { merge } from 'lodash';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { DataCell } from '@/cell';
 import type { RawData, S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet } from '@/sheet-type';

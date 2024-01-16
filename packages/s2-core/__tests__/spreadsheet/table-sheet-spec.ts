@@ -6,6 +6,7 @@ import {
   type RawData,
   type S2DataConfig,
   type S2Options,
+  LayoutWidthType,
 } from '@/index';
 
 const data = getMockData(
@@ -73,7 +74,7 @@ const options: S2Options = {
   showSeriesNumber: true,
   placeholder: '',
   style: {
-    layoutWidthType: 'compact',
+    layoutWidthType: LayoutWidthType.Compact,
     dataCell: {
       height: 32,
     },

@@ -1,5 +1,5 @@
 import { getContainer } from 'tests/util/helpers';
-import type { S2DataConfig, S2Options } from '@/common';
+import { LayoutWidthType, type S2DataConfig, type S2Options } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
@@ -8,8 +8,8 @@ const s2Options: S2Options = {
   height: 400,
   hierarchyType: 'grid',
   style: {
-    layoutWidthType: 'adaptive',
-    cellCfg: {
+    layoutWidthType: LayoutWidthType.Adaptive,
+    dataCell: {
       height: 30,
     },
   },
@@ -80,11 +80,13 @@ describe('Empty String Values Tests', () => {
 
   test('should get correctly first dimension values', () => {
     const values = s2.dataSet.getDimensionValues('first');
+
     expect(values).toEqual(['', 'null', '非空维度']);
   });
 
   test('should get correctly second dimension values', () => {
     const values = s2.dataSet.getDimensionValues('second');
+
     expect(values).toEqual([
       '维值1',
       '维值2',
@@ -97,6 +99,7 @@ describe('Empty String Values Tests', () => {
 
   test('should get correctly second dimension values by specific query', () => {
     let values = s2.dataSet.getDimensionValues('second', { first: '' });
+
     expect(values).toEqual(['维值1', '维值2']);
 
     values = s2.dataSet.getDimensionValues('second', { first: 'null' });
@@ -107,7 +110,8 @@ describe('Empty String Values Tests', () => {
   });
 
   test('should get correctly layout result', () => {
-    const nodes = s2.facet.layoutResult.rowLeafNodes;
+    const nodes = s2.facet.getLayoutResult().rowLeafNodes;
+
     expect(nodes.map((node) => node.id)).toEqual([
       'root[&][&]维值1',
       'root[&][&]维值2',

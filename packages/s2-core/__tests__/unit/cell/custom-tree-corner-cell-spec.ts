@@ -4,10 +4,9 @@
 import { customTreeNodes } from 'tests/data/custom-tree-nodes';
 import { CustomTreeData } from 'tests/data/data-custom-tree';
 import { getContainer } from 'tests/util/helpers';
-import { get } from 'lodash';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CornerCell, type S2Options } from '@/index';
+import { type S2Options } from '@/index';
 
 describe('test for corner text', () => {
   const values: string[] = [

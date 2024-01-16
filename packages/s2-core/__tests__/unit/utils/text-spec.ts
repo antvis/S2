@@ -305,8 +305,8 @@ describe('isZeroOrEmptyValue', () => {
   test('should return true for non-numeric values', () => {
     expect(isZeroOrEmptyValue('abc')).toBe(true);
     expect(isZeroOrEmptyValue('')).toBe(true);
-    expect(isZeroOrEmptyValue(null)).toBe(true);
-    expect(isZeroOrEmptyValue(undefined)).toBe(true);
+    expect(isZeroOrEmptyValue(null as any)).toBe(true);
+    expect(isZeroOrEmptyValue(undefined as any)).toBe(true);
   });
 });
 
@@ -318,8 +318,8 @@ describe('isUnchangedValue', () => {
 
   test('should return true for empty values', () => {
     expect(isUnchangedValue('', 'abc')).toBeTruthy();
-    expect(isUnchangedValue(null, 123)).toBeTruthy();
-    expect(isUnchangedValue(undefined, 123)).toBeTruthy();
+    expect(isUnchangedValue(null as any, 123)).toBeTruthy();
+    expect(isUnchangedValue(undefined as any, 123)).toBeTruthy();
   });
 
   test('should return true for unchanged values', () => {

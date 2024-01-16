@@ -1,7 +1,7 @@
 import { set } from 'lodash';
 import { flattenIndexesData } from '../../../src/utils/dataset/pivot-data-set';
-import { QueryDataType } from '../../../src';
-import { Aggregation, type FlattingIndexesData } from '@/common/interface';
+import { QueryDataType, type FlattingIndexesData } from '../../../src';
+import { Aggregation } from '@/common/interface';
 import {
   getAggregationAndCalcFuncByQuery,
   getListBySorted,

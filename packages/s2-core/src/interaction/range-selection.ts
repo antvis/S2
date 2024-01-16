@@ -6,7 +6,7 @@ import {
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
-  S2Event
+  S2Event,
 } from '../common/constant';
 import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';
@@ -196,6 +196,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         if (isEmpty(interaction.getCells())) {
           interaction.removeIntercepts([InterceptType.HOVER]);
         }
+
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
 
