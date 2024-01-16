@@ -140,7 +140,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: position.x,
+        x: spreadsheet.facet.cornerBBox.x,
         y: position.y + frozenRowGroupHeight,
         width,
         height: viewportHeight,
@@ -149,7 +149,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     this.frozenRowGroup.style.clipPath = new Rect({
       style: {
-        x: position.x,
+        x: spreadsheet.facet.cornerBBox.x,
         y: position.y,
         width,
         height: frozenRowGroupHeight,
