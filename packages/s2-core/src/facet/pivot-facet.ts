@@ -1,3 +1,4 @@
+import { Group, Rect, type LineStyleProps } from '@antv/g';
 import {
   filter,
   forEach,
@@ -15,7 +16,6 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
@@ -23,12 +23,12 @@ import {
   FrozenGroupType,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
+  SPLIT_LINE_WIDTH,
   type IconTheme,
   type MultiData,
   type ViewMeta,
-  SPLIT_LINE_WIDTH,
 } from '../common';
-import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
+import { EXTRA_FIELD, LayoutWidthType, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, SimpleData } from '../common/interface';
@@ -38,8 +38,8 @@ import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
-import { getCellWidth } from '../utils/text';
 import { floor } from '../utils/math';
+import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -354,14 +354,14 @@ export class PivotFacet extends FrozenFacet {
   }
 
   private calculateColLeafNodesWidth(
-    col: Node,
+    colNode: Node,
     colLeafNodes: Node[],
     rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ): number {
     const { colCell } = this.spreadsheet.options.style!;
 
-    const cellDraggedWidth = this.getColCellDraggedWidth(col);
+    const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
     // 1. 拖拽后的宽度优先级最高
     if (isNumber(cellDraggedWidth)) {
@@ -369,91 +369,15 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomSize(col, colCell?.width!);
+    const cellCustomWidth = this.getCellCustomSize(colNode, colCell?.width!);
 
     if (isNumber(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
     // 3. 紧凑布局
-    if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
-      const {
-        bolderText: colCellTextStyle,
-        cell: colCellStyle,
-        icon: colIconStyle,
-      } = this.spreadsheet.theme.colCell!;
-
-      // leaf node rough width
-      const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
-        col.field,
-      );
-      const leafNodeLabel = cellFormatter?.(col.value) ?? col.value;
-      const iconWidth = this.getExpectedCellIconWidth(
-        CellType.COL_CELL,
-        this.spreadsheet.isValueInCols() &&
-          this.spreadsheet.options.showDefaultHeaderActionIcon!,
-        colIconStyle!,
-      );
-      const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
-
-      // 采样 50 个 label，逐个计算找出最长的 label
-      let maxDataLabel = '';
-      let maxDataLabelWidth = 0;
-
-      for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
-        const rowNode = rowLeafNodes[index];
-
-        if (rowNode) {
-          const cellData = (
-            this.spreadsheet.dataSet as PivotDataSet
-          ).getCellData({
-            query: { ...col.query, ...rowNode.query },
-            rowNode,
-            isTotals:
-              col.isTotals ||
-              col.isTotalMeasure ||
-              rowNode.isTotals ||
-              rowNode.isTotalMeasure,
-          });
-
-          if (cellData) {
-            // 总小计格子不一定有数据
-            const valueData = cellData?.[VALUE_FIELD];
-            const formattedValue =
-              this.spreadsheet.dataSet.getFieldFormatter(
-                cellData[EXTRA_FIELD],
-              )?.(valueData) ?? valueData;
-            const cellLabel = `${formattedValue}`;
-            const cellLabelWidth =
-              this.spreadsheet.measureTextWidthRoughly(cellLabel);
-
-            if (cellLabelWidth > maxDataLabelWidth) {
-              maxDataLabel = cellLabel;
-              maxDataLabelWidth = cellLabelWidth;
-            }
-          }
-        }
-      }
-
-      // compare result
-      const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
-      const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
-      const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
-
-      DebuggerUtil.getInstance().logger(
-        'Max Label In Col:',
-        col.field,
-        maxLabel,
-      );
-
-      return (
-        this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
-        colCellStyle!.padding!.left! +
-        colCellStyle!.padding!.right! +
-        colCellStyle!.verticalBorderWidth! * 2 +
-        appendedWidth
-      );
+    if (this.spreadsheet.getLayoutWidthType() === LayoutWidthType.Compact) {
+      return this.getCompactGridColNodeWidth(colNode, rowLeafNodes);
     }
 
     /**
@@ -461,7 +385,7 @@ export class PivotFacet extends FrozenFacet {
      * 4.1 树状自定义
      */
     if (this.spreadsheet.isHierarchyTreeType()) {
-      return this.getAdaptTreeColWidth(col, colLeafNodes, rowLeafNodes);
+      return this.getAdaptTreeColWidth(colNode, colLeafNodes, rowLeafNodes);
     }
 
     // 4.2 网格自定义
@@ -677,9 +601,9 @@ export class PivotFacet extends FrozenFacet {
       return cellCustomWidth;
     }
 
-    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Adaptive) {
+    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Adaptive) {
       // compact or colAdaptive
-      return this.getCompactGridRowWidth(node);
+      return this.getCompactGridRowNodeWidth(node);
     }
 
     // adaptive
@@ -838,7 +762,7 @@ export class PivotFacet extends FrozenFacet {
    * @param node 目标节点
    * @returns 宽度
    */
-  private getCompactGridRowWidth(node: Node): number {
+  private getCompactGridRowNodeWidth(node: Node): number {
     const {
       bolderText: rowTextStyle,
       icon: rowIconStyle,
@@ -895,6 +819,94 @@ export class PivotFacet extends FrozenFacet {
     );
 
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
+  }
+
+  private getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
+    const {
+      bolderText: colCellTextStyle,
+      cell: colCellStyle,
+      icon: colIconStyle,
+    } = this.spreadsheet.theme.colCell!;
+    const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
+
+    // leaf node rough width
+    const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
+      colNode.field,
+    );
+    const leafNodeLabel = cellFormatter?.(colNode.value) ?? colNode.value;
+    const iconWidth = this.getExpectedCellIconWidth(
+      CellType.COL_CELL,
+      this.spreadsheet.isValueInCols() &&
+        this.spreadsheet.options.showDefaultHeaderActionIcon!,
+      colIconStyle!,
+    );
+    const leafNodeRoughWidth =
+      this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+
+    // 采样 50 个 label，逐个计算找出最长的 label
+    let maxDataLabel = '';
+    let maxDataLabelWidth = 0;
+
+    for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
+      const rowNode = rowLeafNodes[index];
+
+      if (rowNode) {
+        const cellData = (this.spreadsheet.dataSet as PivotDataSet).getCellData(
+          {
+            query: { ...colNode.query, ...rowNode.query },
+            rowNode,
+            isTotals:
+              colNode.isTotals ||
+              colNode.isTotalMeasure ||
+              rowNode.isTotals ||
+              rowNode.isTotalMeasure,
+          },
+        );
+
+        if (cellData) {
+          // 总小计格子不一定有数据
+          const valueData = cellData?.[VALUE_FIELD];
+          const formattedValue =
+            this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
+              valueData,
+            ) ?? valueData;
+          const cellLabel = `${formattedValue}`;
+          const cellLabelWidth =
+            this.spreadsheet.measureTextWidthRoughly(cellLabel);
+
+          if (cellLabelWidth > maxDataLabelWidth) {
+            maxDataLabel = cellLabel;
+            maxDataLabelWidth = cellLabelWidth;
+          }
+        }
+      }
+    }
+
+    // compare result
+    const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
+    const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
+    const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
+
+    DebuggerUtil.getInstance().logger(
+      'Max Label In Col:',
+      colNode.field,
+      maxLabel,
+      maxDataLabelWidth,
+    );
+
+    // 取列头/数值字体最大的文本宽度 https://github.com/antvis/S2/issues/2385
+    const maxTextWidth = this.spreadsheet.measureTextWidth(maxLabel, {
+      ...colCellTextStyle,
+      fontSize: Math.max(dataCellTextStyle.fontSize, colCellTextStyle.fontSize),
+    });
+
+    return (
+      maxTextWidth +
+      colCellStyle!.padding!.left! +
+      colCellStyle!.padding!.right! +
+      colCellStyle!.verticalBorderWidth! * 2 +
+      appendedWidth
+    );
   }
 
   public getViewCellHeights() {

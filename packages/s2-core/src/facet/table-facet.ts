@@ -4,7 +4,7 @@ import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  LayoutWidthTypes,
+  LayoutWidthType,
   S2Event,
   SERIES_NUMBER_FIELD,
 } from '../common/constant';
@@ -232,7 +232,7 @@ export class TableFacet extends FrozenFacet {
     const { dataCell } = this.spreadsheet.options.style!;
     const { showSeriesNumber } = this.spreadsheet.options;
 
-    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
+    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
       const canvasW =
@@ -391,7 +391,7 @@ export class TableFacet extends FrozenFacet {
 
     let colWidth: number;
 
-    if (layoutWidthType === LayoutWidthTypes.Compact) {
+    if (layoutWidthType === LayoutWidthType.Compact) {
       const datas = dataSet.getDisplayDataSet();
       const formatter = dataSet.getFieldFormatter(colNode.field);
 

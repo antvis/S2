@@ -1,5 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
+import {
+  FONT_FAMILY,
+  INTERVAL_BAR_HEIGHT,
+  LayoutWidthType,
+} from '../common/constant';
 import type {
   DefaultCellTheme,
   S2Theme,
@@ -24,20 +28,27 @@ export const getTheme = (
   } = themeCfg?.palette || getPalette(themeCfg?.name);
 
   const isTable = themeCfg?.spreadsheet?.isTableMode();
+  const isCompactMode =
+    themeCfg?.spreadsheet?.getLayoutWidthType() === LayoutWidthType.Compact;
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
 
-  const getHeaderCellTextOverflow = (): TextTheme => ({
-    wordWrap: true,
-    maxLines: 1,
-    textOverflow: 'ellipsis',
-  });
+  const getHeaderCellTextOverflow = (): TextTheme => {
+    return {
+      wordWrap: true,
+      maxLines: 1,
+      textOverflow: 'ellipsis',
+    };
+  };
 
-  const getDataCellTextOverflow = (): TextTheme => ({
-    wordWrap: true,
-    // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
-    maxLines: 1,
-    textOverflow: 'ellipsis',
-  });
+  const getDataCellTextOverflow = (): TextTheme => {
+    return {
+      // 紧凑模式下文本内容自适应, 不显示省略号
+      wordWrap: !isCompactMode,
+      // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
+      maxLines: 1,
+      textOverflow: isCompactMode ? '' : 'ellipsis',
+    };
+  };
 
   const getDataCell = (): DefaultCellTheme => ({
     bolderText: {

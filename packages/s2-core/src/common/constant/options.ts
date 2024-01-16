@@ -10,7 +10,7 @@ import { EMPTY_PLACEHOLDER } from './basic';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
 
-export enum LayoutWidthTypes {
+export enum LayoutWidthType {
   Adaptive = 'adaptive',
   ColAdaptive = 'colAdaptive',
   Compact = 'compact',
@@ -21,7 +21,7 @@ export const SPLIT_LINE_WIDTH = 1;
 export const DEFAULT_TREE_ROW_CELL_WIDTH = 120;
 
 export const DEFAULT_STYLE: S2Style = {
-  layoutWidthType: LayoutWidthTypes.Adaptive,
+  layoutWidthType: LayoutWidthType.Adaptive,
   rowCell: {
     showTreeLeafNodeAlignDot: false,
     widthByField: null,
@@ -112,7 +112,7 @@ export const DEFAULT_MOBILE_OPTIONS: S2Options = {
   width: mobileWidth - 40,
   height: 380,
   style: {
-    layoutWidthType: LayoutWidthTypes.ColAdaptive,
+    layoutWidthType: LayoutWidthType.ColAdaptive,
   },
   interaction: {
     hoverHighlight: false,

@@ -33,8 +33,8 @@ describe('Compare Layout Tests', () => {
 
     const colLeafNodes = s2.facet.getColLeafNodes();
 
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(179);
-    expect(Math.floor(colLeafNodes[1].width)).toEqual(98);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(189);
+    expect(Math.floor(colLeafNodes[1].width)).toEqual(90);
   });
 
   test('should get max col width for table sheet', async () => {
@@ -57,6 +57,6 @@ describe('Compare Layout Tests', () => {
 
     const colLeafNodes = s2.facet.getColLeafNodes();
 
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(165);
+    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(182);
   });
 });
