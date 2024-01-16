@@ -198,7 +198,7 @@ export const getTheme = (
   return {
     // ------------- Headers -------------------
     cornerCell: {
-      bolderText: {
+      text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: boldTextDefaultFontWeight,
@@ -208,7 +208,7 @@ export const getTheme = (
         textBaseline: 'middle',
         ...getHeaderCellTextOverflow(),
       },
-      text: {
+      bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: boldTextDefaultFontWeight,
