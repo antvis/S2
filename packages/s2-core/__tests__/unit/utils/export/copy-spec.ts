@@ -18,7 +18,7 @@ import type { Meta } from '@/common/interface';
 import { Aggregation } from '@/common/interface';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { getSelectedData } from '@/utils/export/copy';
-import { CopyMIMEType } from '@/utils/export/interface';
+import { CopyMIMEType } from '@/common/interface/export';
 import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
 

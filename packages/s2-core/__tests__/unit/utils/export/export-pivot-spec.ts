@@ -3,7 +3,7 @@ import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { CopyMIMEType } from '@/utils/export/interface';
+import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
   let pivotSheet: PivotSheet;

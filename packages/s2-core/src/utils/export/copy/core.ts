@@ -14,7 +14,7 @@ import {
   type CopyableList,
   type CopyAllDataParams,
   CopyMIMEType,
-} from '../interface';
+} from '../../../common/interface/export';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processSelectedAllPivot,

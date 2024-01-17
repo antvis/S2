@@ -120,14 +120,15 @@ function EditCellComponent(
     s2.dataSet.originData[rowIndex][valueField] = inputVal;
     s2.render(true);
 
-    onDataCellEditEnd?.(
-      merge(cell.getMeta(), {
-        fieldValue: inputVal,
-        data: {
-          [valueField]: inputVal,
-        },
-      }),
-    );
+    const meta = merge(cell.getMeta(), {
+      fieldValue: inputVal,
+      valueField,
+      data: {
+        [valueField]: inputVal,
+      },
+    }) as ViewMeta;
+
+    onDataCellEditEnd?.(meta);
 
     if (onChange) {
       onChange(s2.dataSet.originData);

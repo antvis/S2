@@ -87,7 +87,7 @@ order: 0
 | onLayoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | onKeyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | onKeyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
-| onCopied | 复制事件 | (copyData: string) => void |  |  |
+| onCopied | 复制事件 | (data: CopyableList) => void |  |  |
 | onActionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | onActionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -207,7 +207,7 @@ type SheetComponentOptions = S2Options<
 | layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | keyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | keyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
-| copied | 复制事件 | (copyData: string) => void |  |  |
+| copied | 复制事件 | (data: CopyableList) => void |  |  |
 | actionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | actionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
 | contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

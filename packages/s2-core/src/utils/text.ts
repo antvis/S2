@@ -270,7 +270,7 @@ export const getEllipsisText = ({
  * Two cases needed to be considered since  the derived value could be number or string.
  * @param value
  */
-export const isUpDataValue = (value: number | string): boolean => {
+export const isUpDataValue = (value: SimpleData): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
@@ -283,7 +283,7 @@ export const isUpDataValue = (value: number | string): boolean => {
  * example: "0.00%" => true
  * @param value
  */
-export const isZeroOrEmptyValue = (value: number | string): boolean => {
+export const isZeroOrEmptyValue = (value: SimpleData): boolean => {
   return (
     isNil(value) ||
     value === '' ||
@@ -298,8 +298,8 @@ export const isZeroOrEmptyValue = (value: number | string): boolean => {
  * @param compareValue
  */
 export const isUnchangedValue = (
-  value: number | string,
-  compareValue: number | string,
+  value: SimpleData,
+  compareValue: SimpleData,
 ): boolean => {
   return isZeroOrEmptyValue(value) || value === compareValue;
 };

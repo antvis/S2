@@ -1,4 +1,4 @@
-import { customMerge, GuiIcon, Node, RowCell, SpreadSheet } from '@antv/s2';
+import { customMerge, Node, SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import { get, noop } from 'lodash';
 import React from 'react';

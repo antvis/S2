@@ -15,7 +15,7 @@ import type {
   CopyableList,
   MeasureQuery,
   SheetCopyConstructorParams,
-} from '../interface';
+} from '../../../common/interface/export';
 import {
   convertString,
   getColNodeFieldFromNode,

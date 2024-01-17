@@ -2,8 +2,10 @@ import type {
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
   ColCell,
+  CopyableList,
   CornerCell,
-  DataCell, GEvent,
+  DataCell,
+  GEvent,
   HeaderActionIcon,
   HiddenColumnsInfo,
   LayoutResult,
@@ -13,7 +15,8 @@ import type {
   RawData,
   ResizeInfo,
   ResizeParams,
-  RowCellCollapsedParams, S2CellType,
+  RowCellCollapsedParams,
+  S2CellType,
   S2DataConfig,
   S2MountContainer,
   S2Options,
@@ -24,7 +27,9 @@ import type {
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
-  TooltipOperatorOptions, ViewMeta, ViewMetaData
+  TooltipOperatorOptions,
+  ViewMeta,
+  ViewMetaData,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -65,7 +70,7 @@ type ShowPagination<OverrideShowPagination, Options> =
     ? Options extends {
         pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
       }
-      ? boolean | Pick<Options['pagination'], 'onShowSizeChange' | 'onChange'>
+      ? boolean | Options['pagination']
       : _ShowPagination
     : _ShowPagination;
 
@@ -201,7 +206,7 @@ export interface BaseSheetComponentProps<
   // ============== Global ====================
   onKeyBoardDown?: (event: KeyboardEvent) => void;
   onKeyBoardUp?: (event: KeyboardEvent) => void;
-  onCopied?: (copyData: string) => void;
+  onCopied?: (data: CopyableList) => void;
   onActionIconHover?: (event: GEvent) => void;
   onActionIconHoverOff?: (event: GEvent) => void;
   onActionIconClick?: (event: GEvent) => void;

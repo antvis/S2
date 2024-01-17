@@ -1,5 +1,6 @@
 import { isUpDataValue, SpreadSheet } from '@antv/s2';
 import React from 'react';
+import { LayoutWidthType } from '@antv/s2';
 import {
   SheetComponent,
   type SheetComponentOptions,
@@ -15,7 +16,7 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
     selectedCellsSpotlight: true,
   },
   style: {
-    layoutWidthType: 'colAdaptive',
+    layoutWidthType: LayoutWidthType.ColAdaptive,
     rowCell: {
       width: 80,
       height: 100,

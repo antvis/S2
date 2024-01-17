@@ -73,10 +73,9 @@ export const StrategySheetDataCellTooltip: React.FC<CustomTooltipProps> = ({
             {(derivedValues as SimpleData[]).map((derivedValue, i) => {
               const isUnchanged = isUnchangedValue(
                 derivedValue,
-                value,
+                value as SimpleData,
               );
-              const isUp =
-                !isUnchanged && isUpDataValue(derivedValue as string);
+              const isUp = !isUnchanged && isUpDataValue(derivedValue);
               const isDown = !isUnchanged && !isUp;
               const originalDerivedValue = derivedOriginalValues[
                 i

@@ -1,11 +1,11 @@
 import { concat, get } from 'lodash';
-import { processAllSelected, processAllSelectedAsync } from './copy/core';
 import {
   CopyMIMEType,
   type CopyAllDataParams,
   type Copyable,
   type CopyableItem,
-} from './interface';
+} from '../../common/interface/export';
+import { processAllSelected, processAllSelectedAsync } from './copy/core';
 
 /**
  * 同步复制
@@ -116,16 +116,12 @@ export const download = (dataString: string, fileName: string) => {
 };
 
 /**
- * Copy data
- * @param sheetInstance
- * @param split
- * @param formatOptions 是否格式化数据
- * @param customTransformer
- * @param isAsyncExport 是否异步导出
+ * 同步获取文本数据
+ * @param params CopyAllDataParams
  * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
  */
-// TODO: 改名
-export const copyData = (params: CopyAllDataParams) => {
+
+export const getAllPlainData = (params: CopyAllDataParams) => {
   const result = processAllSelected(params);
 
   return result[0].content;

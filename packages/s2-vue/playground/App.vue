@@ -1,12 +1,6 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import {
-  CellType,
-  type Data,
-  type RawData,
-  type S2DataConfig,
-  type S2Options,
-} from '@antv/s2';
+import { CellType, type S2DataConfig, type S2Options } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
@@ -543,10 +537,12 @@ const partDrillDown: PartDrillDown = {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowDatas = dataSet
-        .getCellMultiData({query:meta.query})
+        .getCellMultiData({ query: meta.query })
         .filter((item) => item.sub_type && item.type);
+
       console.log(rowDatas);
       const drillDownData: DataType[] = [];
+
       forEach(rowDatas, (data: DataType) => {
         const { number, sub_type: subType, type } = data;
         const number0 = random(50, number);

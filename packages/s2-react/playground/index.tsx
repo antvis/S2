@@ -12,7 +12,7 @@ import {
   getPalette,
   type CustomHeaderFields,
   type HeaderActionIconProps,
-  type InteractionCellSelectedHighlightOptions,
+  type InteractionCellHighlightOptions,
   type InteractionOptions,
   type S2DataConfig,
   type TargetCellInfo,
@@ -443,7 +443,9 @@ function MainLayout() {
                                 <Tooltip title="布局类型">
                                   <Radio.Group
                                     onChange={onLayoutWidthTypeChange}
-                                    defaultValue={options.style.layoutWidthType}
+                                    defaultValue={
+                                      options?.style?.layoutWidthType
+                                    }
                                   >
                                     <Radio.Button value="adaptive">
                                       行列等宽
@@ -1233,8 +1235,7 @@ function MainLayout() {
                                   onChange={(type) => {
                                     let selectedCellHighlight:
                                       | boolean
-                                      | InteractionCellSelectedHighlightOptions =
-                                      false;
+                                      | InteractionCellHighlightOptions = false;
                                     const oldIdx = type.findIndex(
                                       (typeItem: any) => isBoolean(typeItem),
                                     );
@@ -1283,9 +1284,9 @@ function MainLayout() {
                                 <Switch
                                   checkedChildren="hover十字器开"
                                   unCheckedChildren="hover十字器关"
-                                  checked={
-                                    mergedOptions?.interaction?.hoverHighlight
-                                  }
+                                  checked={Boolean(
+                                    mergedOptions?.interaction?.hoverHighlight,
+                                  )}
                                   onChange={(checked) => {
                                     updateOptions({
                                       interaction: {

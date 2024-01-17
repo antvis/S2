@@ -15,13 +15,13 @@ import type { Node } from '../../facet/layout/node';
 import type { RootInteraction } from '../../interaction';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { Transformer } from '../../utils/export/interface';
 import type {
   CellType,
   InteractionStateName,
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
+import type { Transformer } from './export';
 import type { ViewMeta } from './basic';
 import type { ResizeInteractionOptions } from './resize';
 

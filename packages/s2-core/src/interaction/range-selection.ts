@@ -1,5 +1,5 @@
-import type { Event } from '@antv/g-canvas';
 import { inRange, isEmpty, isNil, range } from 'lodash';
+import type { FederatedPointerEvent } from '@antv/g';
 import { DataCell } from '../cell';
 import {
   CellType,
@@ -62,18 +62,18 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindColCellClick() {
     if (this.spreadsheet.isTableMode()) {
       // series-number click
-      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event) => {
         this.handleColClick(event);
       });
     }
 
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event) => {
       this.handleColClick(event);
     });
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event) => {
       event.stopPropagation();
       const cell = this.spreadsheet.getCell(event.target) as DataCell;
       const meta = cell.getMeta();
@@ -133,7 +133,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private handleColClick = (event: Event) => {
+  private handleColClick = (event: FederatedPointerEvent) => {
     event.stopPropagation();
     const { interaction, facet } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);

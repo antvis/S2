@@ -1,4 +1,4 @@
-import type { SheetCopyConstructorParams } from '../interface';
+import type { SheetCopyConstructorParams } from '../../../common/interface/export';
 import { getSelectedData } from './core';
 import { PivotDataCellCopy } from './pivot-data-cell-copy';
 

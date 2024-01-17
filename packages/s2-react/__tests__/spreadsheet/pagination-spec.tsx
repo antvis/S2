@@ -1,6 +1,11 @@
-import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
+import {
+  SpreadSheet,
+  setLang,
+  type LangType,
+  type Pagination,
+  type S2DataConfig,
+} from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import 'antd/dist/antd.min.css';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { pivotSheetDataCfg } from '../../playground/config';
@@ -49,7 +54,7 @@ describe('Pagination Tests', () => {
       unmount = renderComponent(
         <SheetComponent
           options={s2Options}
-          dataCfg={mockDataConfig as any}
+          dataCfg={mockDataConfig as S2DataConfig}
           showPagination
           onMounted={(instance) => {
             spreadsheet = instance;
@@ -83,7 +88,7 @@ describe('Pagination Tests', () => {
             showQuickJumper: true,
           } as Pagination,
         }}
-        dataCfg={mockDataConfig as any}
+        dataCfg={mockDataConfig as S2DataConfig}
         showPagination
         onMounted={(instance) => {
           spreadsheet = instance;
@@ -114,7 +119,7 @@ describe('Pagination Tests', () => {
           },
           height: 400,
         }}
-        dataCfg={pivotSheetDataCfg as any}
+        dataCfg={pivotSheetDataCfg}
         onMounted={(instance) => {
           s2 = instance;
         }}
@@ -123,10 +128,9 @@ describe('Pagination Tests', () => {
     );
 
     await waitFor(() => {
-      expect(
-        s2.foregroundGroup.cfg.children[0].headerConfig.data[0].belongsCell
-          .textShapes[0].attrs.y,
-      ).toBe(9);
+      const rowCell = s2.facet.getRowCells()[0];
+
+      expect(rowCell.getTextShape().parsedStyle.y).toBe(15);
     });
   });
 });

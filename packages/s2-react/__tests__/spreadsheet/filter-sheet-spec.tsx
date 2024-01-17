@@ -80,7 +80,7 @@ function MainLayout() {
     },
   };
 
-  const s2Ref = React.useRef<SpreadSheet | undefined>(undefined);
+  const s2Ref = React.useRef<SpreadSheet | null>(null);
 
   return (
     <Space direction="vertical">

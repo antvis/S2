@@ -4,18 +4,21 @@ import {
   CellType,
   InteractionKeyboardKey,
   InteractionStateName,
-  S2Event
+  S2Event,
 } from '../../common/constant';
 import type {
   CellMeta,
   OnUpdateCells,
   S2CellType,
-  ViewMeta
+  ViewMeta,
 } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { getDataCellId } from '../cell/data-cell';
-import { getActiveHoverRowColCells, updateAllColHeaderCellState } from './hover-event';
+import {
+  getActiveHoverRowColCells,
+  updateAllColHeaderCellState,
+} from './hover-event';
 
 type HeaderGetter = {
   getter: typeof getRowHeaderByCellId;

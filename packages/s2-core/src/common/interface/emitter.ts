@@ -23,7 +23,7 @@ import type {
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
-import type { CopyableList } from '../../utils/export/interface';
+import type { CopyableList } from './export';
 import type { ResizeInfo } from './resize';
 
 type CanvasEventHandler = (event: CanvasEvent) => void;

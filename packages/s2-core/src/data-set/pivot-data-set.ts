@@ -436,7 +436,8 @@ export class PivotDataSet extends BaseDataSet {
 
     // 如果是下钻结点，行维度在 originRows 中并不存在
     if (rowNode && isDrillDown) {
-      rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
+      rows =
+        Node.getFieldPath(rowNode, isDrillDown) ?? (originRows as string[]);
     }
 
     const rowDimensionValues = transformDimensionsValues(query, rows);

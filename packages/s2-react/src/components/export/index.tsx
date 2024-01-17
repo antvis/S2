@@ -6,7 +6,7 @@ import {
   asyncGetAllPlainData,
   copyToClipboard,
   download,
-  copyData as getSheetData,
+  getAllPlainData,
   i18n,
 } from '@antv/s2';
 import { Dropdown, message, type DropDownProps, Button } from 'antd';
@@ -64,7 +64,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
           split: NewTab,
           formatOptions: isFormat,
         })
-      : getSheetData({
+      : getAllPlainData({
           sheetInstance: sheet,
           split: NewTab,
           formatOptions: isFormat,
@@ -82,9 +82,9 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   };
 
   const downloadData = async (isFormat: boolean) => {
-    const data = await getSheetData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: sheet,
-      split: ',',
+      split: NewTab,
       formatOptions: isFormat,
     });
 

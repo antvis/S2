@@ -100,6 +100,7 @@ export class DataCellMultiSelection
             S2Event.GLOBAL_SELECTED,
             interaction.getActiveCells(),
           );
+
           return;
         }
 

@@ -5,7 +5,7 @@ import { getContainer } from '../../../util/helpers';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
 import { NewTab, NewLine } from '@/common';
-import { CopyMIMEType } from '@/utils/export/interface';
+import { CopyMIMEType } from '@/common/interface/export';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', async () => {

@@ -83,7 +83,7 @@ describe('StrategySheet Tooltip Tests', () => {
     });
 
     const { container } = render(
-      <StrategySheetRowTooltip
+      <StrategySheetRowCellTooltip
         cell={mockDescCellInfo.mockCell}
         label="test row label"
       />,

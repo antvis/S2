@@ -4,9 +4,9 @@ import type {
   CopyablePlain,
   CopyAndExportUnifyConfig,
   SheetCopyConstructorParams,
-} from '../interface';
+} from '../../../common/interface/export';
 import { type DataItem, NewTab } from '../../../common';
-import { CopyMIMEType } from '../interface';
+import { CopyMIMEType } from '../../../common/interface/export';
 import { unifyConfig } from './common';
 
 // BaseDataCellCopy class
