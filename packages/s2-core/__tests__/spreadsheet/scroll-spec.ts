@@ -898,9 +898,9 @@ describe('Scroll Tests', () => {
   test.each(['hScrollBar', 'hRowScrollBar'])(
     'should not reset interaction state after %s scrollbar thumb or track clicked',
     (scrollbarName) => {
-      jest
+      const isMatchElementSpy = jest
         .spyOn(s2.interaction.eventController, 'isMatchElement')
-        .mockImplementationOnce(() => true);
+        .mockImplementation(() => true);
 
       const reset = jest.fn();
 
@@ -937,6 +937,8 @@ describe('Scroll Tests', () => {
 
       expect(s2.interaction.isSelectedState()).toBeTruthy();
       expect(reset).not.toHaveBeenCalled();
+
+      isMatchElementSpy.mockClear();
     },
   );
 });

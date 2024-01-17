@@ -567,9 +567,8 @@ export class TableFacet extends FrozenFacet {
    * @description 明细表序号单元格是基于 DataCell 实现
    */
   public getSeriesNumberCells(): TableSeriesNumberCell[] {
-    // @ts-ignore
-    return this.getDataCells().filter(
-      (cell) => cell instanceof TableSeriesNumberCell,
-    );
+    return this.getDataCells().filter((cell) => {
+      return cell.getMeta().valueField === SERIES_NUMBER_FIELD;
+    }) as TableSeriesNumberCell[];
   }
 }

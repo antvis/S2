@@ -171,7 +171,15 @@ describe('Table Mode Facet Test', () => {
   });
 
   describe('should get none layer when dataCfg.fields is empty', () => {
-    const spreadsheet = createFakeSpreadSheet();
+    const spreadsheet = createFakeSpreadSheet({
+      s2DataConfig: {
+        fields: {
+          rows: [],
+          columns: [],
+          values: [],
+        },
+      },
+    });
     const mockDataSet = new MockTableDataSet(spreadsheet);
 
     spreadsheet.dataSet = mockDataSet;

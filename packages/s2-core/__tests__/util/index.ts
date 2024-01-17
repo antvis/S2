@@ -1,12 +1,11 @@
-import { data, totalData, meta } from 'tests/data/mock-dataset.json';
+import { data, meta, totalData } from 'tests/data/mock-dataset.json';
 import {
+  DEFAULT_DATA_CONFIG,
   DEFAULT_OPTIONS,
+  S2Event,
+  SpreadSheet,
   type S2DataConfig,
   type S2Options,
-  DEFAULT_DATA_CONFIG,
-  SpreadSheet,
-  S2Event,
-  DataCell,
 } from '@/index';
 import { customMerge } from '@/utils';
 
@@ -15,7 +14,6 @@ export const assembleOptions = (...options: Partial<S2Options>[]) => {
     debug: false,
     width: 600,
     height: 600,
-    dataCell: (viewMeta) => new DataCell(viewMeta, viewMeta.spreadsheet),
   };
 
   return customMerge<S2Options>(DEFAULT_OPTIONS, s2Options, ...options);

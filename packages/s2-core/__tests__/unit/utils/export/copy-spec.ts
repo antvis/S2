@@ -11,7 +11,6 @@ import type { S2DataConfig } from '../../../../src/common';
 import { TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
-  CellType,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
@@ -54,6 +53,11 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         showSeriesNumber: true,
+        interaction: {
+          selectedCellHighlight: {
+            currentRow: true,
+          },
+        },
       }),
     );
 
@@ -76,7 +80,7 @@ describe('List Table Core Data Process', () => {
   it('should copy normal data', () => {
     const cell = s2.facet
       .getDataCells()
-      .find((cell) => !(cell instanceof TableSeriesNumberCell))!;
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -96,9 +100,7 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy row data', () => {
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[3];
+    const cell = s2.facet.getSeriesNumberCells()[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -116,6 +118,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
     expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
     expect(getCopyPlainContent(s2).split(NewLine)[2]).toMatchInlineSnapshot(
       `"2	浙江省	绍兴市	家具	桌子	2367"`,
@@ -133,7 +136,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.facet
       .getDataCells()
-      .find((cell) => !(cell instanceof TableSeriesNumberCell))!;
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -164,7 +167,7 @@ describe('List Table Core Data Process', () => {
     await sheet.render();
     const cell = s2.facet
       .getDataCells()
-      .filter((cell) => !(cell instanceof TableSeriesNumberCell))[0];
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -268,9 +271,7 @@ describe('List Table Core Data Process', () => {
       });
     });
 
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[3];
+    const cell = s2.facet.getSeriesNumberCells()[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -303,9 +304,7 @@ describe('List Table Core Data Process', () => {
       ]);
     });
 
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[1];
+    const cell = s2.facet.getSeriesNumberCells()[1];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -322,7 +321,7 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toEqual(33);
   });
 
-  it('should copy correct data with \n data', async () => {
+  it('should copy correct data with "\n" data', async () => {
     const newLineText = `1
     2`;
     const sheet = new TableSheet(
@@ -347,12 +346,8 @@ describe('List Table Core Data Process', () => {
     await sheet.render();
 
     const cell = sheet.facet
-      .getCells()
-      .filter(
-        (cell) =>
-          cell.cellType === CellType.DATA_CELL &&
-          !(cell instanceof TableSeriesNumberCell),
-      )[20];
+      .getDataCells()
+      .filter((cell) => !(cell instanceof TableSeriesNumberCell))[20];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -400,6 +395,7 @@ describe('List Table Core Data Process', () => {
 
   it('should copy row data when select data row cell', async () => {
     s2.setOptions({
+      showSeriesNumber: false,
       interaction: {
         selectedCellHighlight: {
           currentRow: true,
@@ -416,12 +412,13 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchSnapshot();
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
+    expect(getCopyPlainContent(s2)).toEqual('浙江省');
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(1);
   });
 
   it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
+      showSeriesNumber: false,
       interaction: {
         customTransformer: () => {
           return {

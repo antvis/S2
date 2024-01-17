@@ -7,19 +7,22 @@ import {
   FederatedMouseEvent,
   FederatedPointerEvent,
   type CanvasConfig,
+  Group,
 } from '@antv/g';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import { getTheme, type BaseDataSet, type Node } from '../../src';
+import { getTheme, type BaseDataSet, type Node, Hierarchy } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type {
   InternalFullyTheme,
+  LayoutResult,
   S2CellType,
+  S2DataConfig,
   S2Options,
   ViewMeta,
 } from '@/common/interface';
@@ -60,7 +63,11 @@ export const sleep = async (timeout = 0) => {
   });
 };
 
-export const createFakeSpreadSheet = () => {
+export const createFakeSpreadSheet = (config?: {
+  s2Options?: Partial<S2Options>;
+  s2DataConfig?: Partial<S2DataConfig>;
+}) => {
+  const { s2Options = {}, s2DataConfig = {} } = config || {};
   const container = getContainer();
 
   class FakeSpreadSheet extends EE {
@@ -73,12 +80,15 @@ export const createFakeSpreadSheet = () => {
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
 
-  s2.options = assembleOptions({
-    ...DEFAULT_OPTIONS,
-    hdAdapter: false,
-  });
+  s2.options = assembleOptions(
+    {
+      ...DEFAULT_OPTIONS,
+      hdAdapter: false,
+    },
+    s2Options,
+  );
 
-  s2.dataCfg = assembleDataCfg({ sortParams: [] });
+  s2.dataCfg = assembleDataCfg({ sortParams: [] }, s2DataConfig);
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width!,
     height: DEFAULT_OPTIONS.height!,
@@ -92,28 +102,26 @@ export const createFakeSpreadSheet = () => {
     },
     getField: jest.fn(),
   } as unknown as any;
+
+  const layoutResult: LayoutResult = {
+    rowLeafNodes: [],
+    colLeafNodes: [],
+    rowNodes: [],
+    colNodes: [],
+    colsHierarchy: new Hierarchy(),
+    rowsHierarchy: new Hierarchy(),
+  };
+
   s2.facet = {
     panelBBox: {
       maxX: s2.options.width,
       maxY: s2.options.height,
     } as PanelBBox,
-    panelGroup: {
-      getChildren() {
-        return [];
-      },
-    },
-    foregroundGroup: {
-      getChildren() {
-        return [];
-      },
-    },
-    layoutResult: {
-      getCellMeta: jest.fn(),
-      rowLeafNodes: [],
-      colLeafNodes: [],
-      rowNodes: [],
-      colNodes: [],
-    },
+    panelGroup: s2.container.appendChild(new Group()),
+    foregroundGroup: s2.container.appendChild(new Group()),
+    backgroundGroup: s2.container.appendChild(new Group()),
+    layoutResult,
+    getLayoutResult: () => layoutResult,
     getCellMeta: jest.fn(),
     getCellById: jest.fn(),
     getCellChildrenNodes: () => [],

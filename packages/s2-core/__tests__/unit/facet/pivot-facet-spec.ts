@@ -54,7 +54,9 @@ jest.mock('@/sheet-type', () => {
 
       return {
         dataCfg: assembleDataCfg(),
-        options: assembleOptions(),
+        options: assembleOptions({
+          dataCell: (viewMeta) => new DataCell(viewMeta, viewMeta.spreadsheet),
+        }),
         container,
         theme: getTheme({}),
         store: new Store(),
