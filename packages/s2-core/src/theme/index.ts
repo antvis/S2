@@ -214,7 +214,7 @@ export const getTheme = (
         fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: isTable ? 'center' : 'right',
         textBaseline: 'middle',
         ...getHeaderCellTextOverflow(),
       },
