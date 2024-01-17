@@ -2952,7 +2952,7 @@ Object {
       "fontWeight": 700,
       "maxLines": 1,
       "opacity": 1,
-      "textAlign": "right",
+      "textAlign": "center",
       "textBaseline": "middle",
       "textOverflow": "ellipsis",
       "wordWrap": true,
