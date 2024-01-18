@@ -5,7 +5,6 @@ import {
   get,
   isArray,
   isEmpty,
-  isNil,
   isNumber,
   keys,
   last,
@@ -726,7 +725,7 @@ export class PivotFacet extends FrozenFacet {
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
     const customRowWidth = this.getCellCustomSize(null, rowCell?.width!);
 
-    if (!isNil(customRowWidth)) {
+    if (isNumber(customRowWidth)) {
       return customRowWidth;
     }
 
