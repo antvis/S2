@@ -2,6 +2,8 @@
 import { DeviceType, S2Event, SpreadSheet, type S2DataConfig } from '@antv/s2';
 import { Button, Space } from 'antd';
 import React from 'react';
+import { waitFor } from '@testing-library/react';
+import type { Root } from 'react-dom/client';
 import {
   getContainer,
   getMockData,
@@ -120,67 +122,33 @@ function MainLayout() {
 
 describe('table sheet filter spec', () => {
   let container: HTMLDivElement;
+  let unmount: Root['unmount'];
+
   const filterKey = 'customer_type';
   const filteredValue = '消费者';
 
   beforeEach(() => {
     container = getContainer();
 
-    renderComponent(<MainLayout />);
+    unmount = renderComponent(<MainLayout />);
   });
 
   afterEach(() => {
     container?.remove();
+    unmount?.();
   });
 
   test('filter customer_type values', async () => {
-    await sleep(1000);
+    await waitFor(() => {
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey,
+        filteredValues: [filteredValue],
+      });
 
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey,
-      filteredValues: [filteredValue],
-    });
-
-    expect(s2.facet.getCellRange()).toStrictEqual({
-      end: 465,
-      start: 0,
-    });
-    expect(s2.dataSet.getDisplayDataSet()).toHaveLength(466);
-    expect(
-      s2.dataSet
-        .getDisplayDataSet()
-        .some((item) => item['customer_type'] === filteredValue),
-    ).toBeFalsy();
-  });
-
-  test('reset filter params on customer_type', async () => {
-    await sleep(1000);
-
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey,
-      filteredValues: [filteredValue],
-    });
-
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey,
-      filteredValues: [],
-    });
-
-    expect(s2.facet.getCellRange()).toStrictEqual({
-      end: 999,
-      start: 0,
-    });
-    expect(s2.dataSet.getDisplayDataSet()).toHaveLength(1000);
-  });
-
-  test('filtered event fired with new data', async () => {
-    let dataLength = 0;
-
-    await sleep(1000);
-
-    s2.on(S2Event.RANGE_FILTERED, (data) => {
-      dataLength = data.length;
-      expect(data.length).toStrictEqual(466);
+      expect(s2.facet.getCellRange()).toStrictEqual({
+        end: 465,
+        start: 0,
+      });
       expect(s2.dataSet.getDisplayDataSet()).toHaveLength(466);
       expect(
         s2.dataSet
@@ -188,35 +156,72 @@ describe('table sheet filter spec', () => {
           .some((item) => item['customer_type'] === filteredValue),
       ).toBeFalsy();
     });
+  });
 
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey,
-      filteredValues: [filteredValue],
+  test('reset filter params on customer_type', async () => {
+    await waitFor(() => {
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey,
+        filteredValues: [filteredValue],
+      });
+
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey,
+        filteredValues: [],
+      });
+
+      expect(s2.facet.getCellRange()).toStrictEqual({
+        end: 999,
+        start: 0,
+      });
+      expect(s2.dataSet.getDisplayDataSet()).toHaveLength(1000);
     });
+  });
 
-    await sleep(50);
+  test('filtered event fired with new data', async () => {
+    await waitFor(async () => {
+      let dataLength = 0;
 
-    expect(dataLength).toStrictEqual(468);
+      s2.on(S2Event.RANGE_FILTERED, (data) => {
+        dataLength = data.length;
+        expect(data.length).toStrictEqual(466);
+        expect(s2.dataSet.getDisplayDataSet()).toHaveLength(466);
+        expect(
+          s2.dataSet
+            .getDisplayDataSet()
+            .some((item) => item['customer_type'] === filteredValue),
+        ).toBeFalsy();
+      });
+
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey,
+        filteredValues: [filteredValue],
+      });
+
+      await sleep(50);
+
+      expect(dataLength).toStrictEqual(466);
+    });
   });
 
   test('falsy/nullish data should not be filtered with irrelevant filter params', async () => {
-    let dataLength = 0;
+    await waitFor(async () => {
+      let dataLength = 0;
 
-    await sleep(1000);
+      s2.on(S2Event.RANGE_FILTERED, (data) => {
+        dataLength = data.length;
+        expect(data.length).toStrictEqual(1000);
+        expect(s2.dataSet.getDisplayDataSet()).toHaveLength(1000);
+      });
 
-    s2.on(S2Event.RANGE_FILTERED, (data) => {
-      dataLength = data.length;
-      expect(data.length).toStrictEqual(1000);
-      expect(s2.dataSet.getDisplayDataSet()).toHaveLength(1000);
+      s2.emit(S2Event.RANGE_FILTER, {
+        filterKey: 'express_type',
+        filteredValues: ['消费者'],
+      });
+
+      await sleep(200);
+
+      expect(dataLength).toStrictEqual(1000);
     });
-
-    s2.emit(S2Event.RANGE_FILTER, {
-      filterKey: 'express_type',
-      filteredValues: ['消费者'],
-    });
-
-    await sleep(50);
-
-    expect(dataLength).toStrictEqual(468);
   });
 });

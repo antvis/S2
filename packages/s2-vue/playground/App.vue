@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import { CellType, type S2DataConfig, type S2Options } from '@antv/s2';
+import { CellType, RawData, type S2DataConfig, type S2Options } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
@@ -536,17 +536,17 @@ const partDrillDown: PartDrillDown = {
       // 弹窗 -> 选择 -> 请求数据
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
-      const rowDatas = dataSet
-        .getCellMultiData({ query: meta.query })
-        .filter((item) => item.sub_type && item.type);
+      const rowData = dataSet
+        .getCellMultiData({ query: meta.query! })
+        .filter((item) => item?.['sub_type'] && item?.['type']) as RawData[];
 
-      console.log(rowDatas);
-      const drillDownData: DataType[] = [];
+      console.log(rowData);
+      const drillDownData: RawData[] = [];
 
-      forEach(rowDatas, (data: DataType) => {
+      forEach(rowData, (data) => {
         const { number, sub_type: subType, type } = data;
-        const number0 = random(50, number);
-        const number1 = number - number0;
+        const number0 = random(50, number as number);
+        const number1 = Number(number!) - number0;
         const dataItem0 = {
           ...meta.query,
           number: number0,

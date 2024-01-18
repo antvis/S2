@@ -189,15 +189,16 @@ describe('<StrategySheet/> Tests', () => {
     });
   });
 
-  test('should get custom corner extra field text', () => {
+  test('should get custom corner extra field text', async () => {
     const cornerExtraFieldText = '自定义';
-    const s2DataCfg = {
+    const s2DataCfg: Partial<S2DataConfig> = {
       fields: {
         ...StrategySheetDataConfig.fields,
         valueInCols: false,
       },
     };
-    const s2Options = {
+
+    const s2Options: SheetComponentOptions = {
       cornerExtraFieldText,
     };
 
@@ -206,16 +207,17 @@ describe('<StrategySheet/> Tests', () => {
       ...s2DataCfg,
     });
 
-    const cornerNode = s2.facet
-      .getCornerNodes()
-      .find((node) => node.cornerType === CornerNodeType.Row);
+    await waitFor(() => {
+      const cornerNode = s2.facet
+        .getCornerNodes()
+        .find((node) => node.cornerType === CornerNodeType.Row);
 
-    const textList = s2.facet
-      .getCornerCells()
-      .map((cell) => cell.getActualText());
+      const textList = s2.facet.getCornerNodes().map((node) => node.value);
+      const cornerText = `自定义节点A/指标E/${cornerExtraFieldText}`;
 
-    expect(textList).toEqual([cornerExtraFieldText, '日期']);
-    expect(cornerNode!.value).toEqual(cornerExtraFieldText);
+      expect(textList).toEqual([cornerText, '日期']);
+      expect(cornerNode!.value).toEqual(cornerText);
+    });
   });
 
   test('should format corner date field', async () => {
@@ -240,7 +242,7 @@ describe('<StrategySheet/> Tests', () => {
         .getCornerCells()
         .map((cell) => cell.getActualText());
 
-      expect(cornerTextList).toEqual(['自定义节点A/指标E/指标', '日期']);
+      expect(cornerTextList).toEqual(['自定义节点A/指标E/数值', '日期']);
     });
   });
 
@@ -313,6 +315,30 @@ describe('<StrategySheet/> Tests', () => {
         expect(result).toMatchSnapshot();
         expect(corner1).toEqual(['', '', '日期']);
         expect(corner2).toEqual(['', '', '指标']);
+      });
+    });
+
+    test('should export correct data for default corner text', async () => {
+      await waitFor(() => {
+        s2.setOptions({
+          cornerText: undefined,
+        });
+
+        const result = strategyCopy(s2, '\t', true);
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data for custom corner text', async () => {
+      await waitFor(() => {
+        s2.setOptions({
+          cornerText: '自定义',
+        });
+
+        const result = strategyCopy(s2, '\t', true);
+
+        expect(result).toMatchSnapshot();
       });
     });
 

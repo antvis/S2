@@ -32,15 +32,13 @@ const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
     }),
 };
 
-const findDrillDownIcon = (instance: SpreadSheet) => {
-  const rowHeaderActionIcons = instance.facet
+const findDrillDownIcon = (s2: SpreadSheet) => {
+  const rowHeaderActionIcons = s2.facet
     ?.getRowCells()
     ?.find((cell) => cell.getActualText() === '杭州')
     ?.getActionIcons();
 
-  return rowHeaderActionIcons?.find(
-    (icon) => icon.attr('name') === 'DrillDownIcon',
-  );
+  return rowHeaderActionIcons?.find((icon) => icon.name === 'DrillDownIcon');
 };
 
 describe('Spread Sheet Drill Down Tests', () => {
