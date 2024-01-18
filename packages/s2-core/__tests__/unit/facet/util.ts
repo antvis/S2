@@ -1,6 +1,8 @@
 import { assembleDataCfg } from 'tests/util';
-import type { RawData } from '../../../src/common';
-import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
+import {
+  getExistValues,
+  transformIndexesData,
+} from '@/utils/dataset/pivot-data-set';
 
 /**
  * 获取 Mock 数据
@@ -9,17 +11,20 @@ export function getMockPivotMeta() {
   const sortedDimensionValues = {};
   const rawRowPivotMeta = new Map();
   const rawColPivotMeta = new Map();
-  const rawIndexesData: RawData[][] | RawData[] = [];
+
   const { fields, data } = assembleDataCfg();
+  const rawIndexesData = {};
 
   return transformIndexesData({
-    rows: fields.rows,
-    columns: fields.columns,
-    values: fields.values,
-    originData: data,
+    rows: fields.rows as string[],
+    columns: fields.columns as string[],
+    values: fields.values as string[],
+    data,
     indexesData: rawIndexesData,
     sortedDimensionValues,
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,
+    valueInCols: true,
+    getExistValuesByDataItem: getExistValues,
   });
 }

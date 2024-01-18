@@ -106,7 +106,7 @@ const s2DataConfig = {
 ```ts
 const s2Options = {
   width: 600,
-  height: 480,
+  height: 480
 }
 ```
 
@@ -118,18 +118,17 @@ const s2Options = {
 <div id="container"></div>
 ```
 
-```ts
+```tsx
+import ReactDOM from 'react-dom'
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-
-const container = document.getElementById('container');
 
 ReactDOM.render(
   <SheetComponent
     dataCfg={s2DataConfig}
     options={s2Options}
   />,
-  document.getElementById('container'),
+  document.getElementById('container')
 );
 ```
 

@@ -196,9 +196,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
 
 const data = s2.dataSet.getCellMultiData({
   query: {
@@ -208,17 +208,15 @@ const data = s2.dataSet.getCellMultiData({
 })
 
 /**
-  [
-    {
-      "number": 1634,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "办公用品",
-      "sub_type": "纸张",
-      "$$extra$$": "number",
-      "$$value$$": 1634
-    }
-  ]
+  {
+    "number": 1634,
+    "province": "浙江省",
+    "city": "舟山市",
+    "type": "办公用品",
+    "sub_type": "纸张",
+    "$$extra$$": "number",
+    "$$value$$": 1634
+  }
 */
 ```
 

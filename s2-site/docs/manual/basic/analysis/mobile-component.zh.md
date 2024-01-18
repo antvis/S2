@@ -44,7 +44,7 @@ export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
   width: mobileWidth - 40,
   height: 380,
   style: {
-    layoutWidthType: LayoutWidthTypes.ColAdaptive,
+    layoutWidthType: LayoutWidthType.ColAdaptive,
   },
   interaction: {
     hoverHighlight: false,

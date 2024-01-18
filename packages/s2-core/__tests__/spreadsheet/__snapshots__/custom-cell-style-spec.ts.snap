@@ -45,17 +45,17 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 300,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]price",
-    "width": 150,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]cost",
-    "width": 150,
+    "width": 149.5,
   },
 ]
 `;
@@ -65,17 +65,17 @@ Array [
   Object {
     "height": 60,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 149.5,
   },
 ]
 `;
@@ -140,7 +140,7 @@ Array [
   Object {
     "height": 66,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 33,
@@ -160,17 +160,17 @@ Array [
   Object {
     "height": 330,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 300,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 149.5,
   },
 ]
 `;
@@ -180,17 +180,17 @@ Array [
   Object {
     "height": 60,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 149.5,
   },
 ]
 `;
@@ -200,17 +200,17 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]笔",
-    "width": 300,
+    "width": 299,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]price",
-    "width": 150,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]笔[&]cost",
-    "width": 150,
+    "width": 149.5,
   },
 ]
 `;
@@ -220,22 +220,22 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-    "width": 150,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
-    "width": 150,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
-    "width": 150,
+    "width": 149.5,
   },
   Object {
     "height": 30,
     "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
-    "width": 150,
+    "width": 149.5,
   },
 ]
 `;
@@ -247,12 +247,12 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
 ]
 `;
@@ -262,132 +262,132 @@ Array [
   Object {
     "height": 30,
     "id": "0-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "1-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "2-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "3-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "4-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "5-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "6-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "7-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "8-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "9-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "10-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "11-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "12-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "0-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "1-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "2-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "3-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "4-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "5-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "6-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "7-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "8-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "9-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "10-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "11-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "12-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
 ]
 `;
@@ -427,7 +427,7 @@ Array [
   Object {
     "height": 60,
     "id": "root[&]类型",
-    "width": 119,
+    "width": 119.8,
   },
   Object {
     "height": 30,
@@ -482,72 +482,72 @@ Array [
   Object {
     "height": 60,
     "id": "0-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "1-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "2-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "3-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "4-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "5-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "6-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "0-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "1-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "2-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "3-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "4-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "5-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 60,
     "id": "6-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
 ]
 `;
@@ -557,102 +557,102 @@ Array [
   Object {
     "height": 40,
     "id": "0-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "1-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 100,
     "id": "2-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "3-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "4-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "5-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "6-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "7-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "8-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "9-root[&]类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 40,
     "id": "0-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "1-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 100,
     "id": "2-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "3-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "4-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "5-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "6-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "7-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "8-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
   Object {
     "height": 30,
     "id": "9-root[&]子类别",
-    "width": 299,
+    "width": 299.5,
   },
 ]
 `;

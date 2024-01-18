@@ -11,6 +11,7 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
+  isMouseEventWithMeta,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { afterSelectDataCells } from '../utils/interaction/select-event';
@@ -26,6 +27,7 @@ export class DataCellMultiSelection
     this.bindKeyboardDown();
     this.bindDataCellClick();
     this.bindKeyboardUp();
+    this.bindMouseMove();
   }
 
   public reset() {
@@ -48,6 +50,15 @@ export class DataCellMultiSelection
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
+        this.reset();
+      }
+    });
+  }
+
+  private bindMouseMove() {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
+      // 当快捷键被系统拦截后，按需补充调用一次 reset
+      if (this.isMultiSelection && !isMouseEventWithMeta(event)) {
         this.reset();
       }
     });
@@ -85,6 +96,10 @@ export class DataCellMultiSelection
         if (isEmpty(selectedCells)) {
           interaction.clearState();
           this.spreadsheet.hideTooltip();
+          this.spreadsheet.emit(
+            S2Event.GLOBAL_SELECTED,
+            interaction.getActiveCells(),
+          );
 
           return;
         }

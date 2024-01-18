@@ -1,12 +1,7 @@
-import {
-  customMerge,
-  Node,
-  SpreadSheet,
-  type ColHeaderConfig,
-  type ViewMeta,
-} from '@antv/s2';
+import { type ViewMeta } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
+import { customMerge, Node, SpreadSheet, type ColHeaderConfig } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 import { StrategySheetColCell, StrategySheetDataCell } from './custom-cell';

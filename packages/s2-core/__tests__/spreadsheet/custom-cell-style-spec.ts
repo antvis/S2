@@ -4,12 +4,13 @@ import {
   getContainer,
 } from 'tests/util/helpers';
 import * as dataConfig from 'tests/data/mock-dataset.json';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
 import { customColSimpleColumns } from '../data/custom-table-col-fields';
 import { EXTRA_FIELD, type S2DataConfig } from '@/common';
 import type { ViewMeta } from '@/common/interface/basic';
 import type { Node } from '@/facet/layout/node';
 import type { S2Options } from '@/common/interface';
-import { TableSheet, type SpreadSheet } from '@/sheet-type';
+import { TableSheet, type SpreadSheet, PivotSheet } from '@/sheet-type';
 
 describe('SpreadSheet Custom Cell Style Tests', () => {
   let s2: SpreadSheet;
@@ -37,7 +38,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should render default cell style', () => {
@@ -386,17 +387,27 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       });
 
       test('should get custom col cell style if measure column hidden', async () => {
-        const sheet = createPivotSheet({
-          ...s2Options,
-          style: {
-            colCell: {
-              hideValue: true,
-              widthByField: {
-                'root[&]笔': 100,
+        const sheet = new PivotSheet(
+          getContainer(),
+          {
+            ...simpleDataConfig,
+            fields: {
+              ...simpleDataConfig.fields,
+              values: ['price'],
+            },
+          },
+          {
+            ...s2Options,
+            style: {
+              colCell: {
+                hideValue: true,
+                widthByField: {
+                  'root[&]笔': 100,
+                },
               },
             },
           },
-        });
+        );
 
         await sheet.render();
 

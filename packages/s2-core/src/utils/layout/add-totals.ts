@@ -16,7 +16,12 @@ export const addTotals = (params: TotalParams) => {
     // check to see if grand total is added
     if (totalsConfig?.showGrandTotals) {
       action = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
-      totalValue = new TotalClass(totalsConfig.grandTotalsLabel!, false, true);
+      totalValue = new TotalClass({
+        label: totalsConfig.grandTotalsLabel!,
+        isSubTotals: false,
+        isGrandTotals: true,
+        isTotalRoot: true,
+      });
     }
   } else if (
     /**
@@ -30,7 +35,12 @@ export const addTotals = (params: TotalParams) => {
     currentField !== EXTRA_FIELD
   ) {
     action = totalsConfig.reverseSubTotalsLayout ? 'unshift' : 'push';
-    totalValue = new TotalClass(totalsConfig.subTotalsLabel!, true);
+    totalValue = new TotalClass({
+      label: totalsConfig.subTotalsLabel!,
+      isSubTotals: true,
+      isGrandTotals: false,
+      isTotalRoot: true,
+    });
   }
 
   if (action) {

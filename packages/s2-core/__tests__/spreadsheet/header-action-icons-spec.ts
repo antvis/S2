@@ -183,21 +183,21 @@ describe('HeaderActionIcons Tests', () => {
         ],
         Array [
           Object {
-            "x": 158,
+            "x": 158.5,
             "y": 9.5,
           },
           Object {
-            "x": 200,
+            "x": 200.5,
             "y": 9.5,
           },
         ],
         Array [
           Object {
-            "x": 158,
+            "x": 158.5,
             "y": 39.5,
           },
           Object {
-            "x": 200,
+            "x": 200.5,
             "y": 39.5,
           },
         ],
@@ -281,13 +281,13 @@ describe('HeaderActionIcons Tests', () => {
         },
         Object {
           "cfg": Object {
-            "x": 186,
+            "x": 186.5,
             "y": 9.5,
           },
         },
         Object {
           "cfg": Object {
-            "x": 186,
+            "x": 186.5,
             "y": 39.5,
           },
         },

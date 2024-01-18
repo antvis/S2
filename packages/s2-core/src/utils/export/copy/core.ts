@@ -7,14 +7,14 @@ import {
   type S2CellType,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
-import { copyToClipboard } from '../index';
+import { copyToClipboard } from '../utils';
 import type { ColCell, RowCell } from '../../../cell';
 import { getSelectedCols, getSelectedRows } from '../method';
 import {
   type CopyableList,
   type CopyAllDataParams,
   CopyMIMEType,
-} from '../interface';
+} from '../../../common/interface/export';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processSelectedAllPivot,
@@ -42,9 +42,8 @@ export const getHeaderNodeFromMeta = (
 /**
  * 返回选中数据单元格生成的二维数组（ CellMeta[][]）
  * @param { CellMeta[] } cells
- * @return { CellMeta[][] }
  */
-const getSelectedCellsMeta = (cells: CellMeta[]) => {
+const getSelectedCellsMeta = (cells: CellMeta[]): CellMeta[][] => {
   if (!cells?.length) {
     return [];
   }

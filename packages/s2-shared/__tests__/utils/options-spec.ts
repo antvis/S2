@@ -1,7 +1,7 @@
 import {
   DEFAULT_MOBILE_OPTIONS,
   DeviceType,
-  LayoutWidthTypes,
+  LayoutWidthType,
   type S2Options,
 } from '@antv/s2';
 import { pick } from 'lodash';
@@ -166,9 +166,7 @@ describe('Options Tests', () => {
         "rangeSelection": false,
       }
     `);
-    expect(options.style?.layoutWidthType).toEqual(
-      LayoutWidthTypes.ColAdaptive,
-    );
+    expect(options.style?.layoutWidthType).toEqual(LayoutWidthType.ColAdaptive);
     expect(firstLevelOptions).toEqual({
       height: 380,
       device: DeviceType.MOBILE,

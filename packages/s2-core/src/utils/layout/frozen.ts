@@ -1,5 +1,4 @@
 import type { S2TableSheetFrozenOptions } from '../../common/interface';
-import type { Node } from '../../facet/layout/node';
 
 export const getValidFrozenOptions = (
   defaultFrozenOptions: S2TableSheetFrozenOptions,
@@ -36,34 +35,4 @@ export const getValidFrozenOptions = (
   }
 
   return frozenOptions;
-};
-
-export const getFrozenColWidth = (
-  colLeafNodes: Node[],
-  options: S2TableSheetFrozenOptions,
-) => {
-  const result = {
-    frozenColWidth: 0,
-    frozenTrailingColWidth: 0,
-  };
-
-  if (!options.colCount && !options.trailingColCount) {
-    return result;
-  }
-
-  const {
-    colCount: frozenColCount = 0,
-    trailingColCount: frozenTrailingColCount = 0,
-  } = getValidFrozenOptions(options, colLeafNodes.length);
-
-  for (let i = 0; i < frozenColCount; i++) {
-    result.frozenColWidth += colLeafNodes[i].width;
-  }
-
-  for (let i = 0; i < frozenTrailingColCount; i++) {
-    result.frozenTrailingColWidth +=
-      colLeafNodes[colLeafNodes.length - 1 - i].width;
-  }
-
-  return result;
 };

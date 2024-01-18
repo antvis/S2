@@ -4,7 +4,7 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
 
-fetch('https://assets.antv.antgroup.com/s2/basic.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const dataCfg: S2DataConfig = {

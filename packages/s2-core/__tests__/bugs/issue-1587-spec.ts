@@ -11,9 +11,8 @@ import { PivotSheet } from '@/sheet-type';
 const s2Options: S2Options = {
   width: 800,
   height: 600,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   pagination: {
+    current: 1,
     pageSize: 2,
   },
 };

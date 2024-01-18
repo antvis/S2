@@ -1,6 +1,7 @@
 import { clamp, isBoolean } from 'lodash';
 import { DEFAULT_CORNER_MAX_WIDTH_RATIO } from '../../common/constant';
-import { BaseBBox } from './baseBBox';
+import { floor } from '../../utils/math';
+import { BaseBBox } from './base-bbox';
 
 export class CornerBBox extends BaseBBox {
   calculateBBox() {
@@ -26,7 +27,7 @@ export class CornerBBox extends BaseBBox {
       return colCell?.height;
     }
 
-    return Math.floor(colsHierarchy.height);
+    return floor(colsHierarchy.height);
   }
 
   private getCornerBBoxHeight() {
@@ -38,7 +39,7 @@ export class CornerBBox extends BaseBBox {
   private getCornerBBoxWidth() {
     const { rowsHierarchy } = this.layoutResult;
 
-    this.originalWidth = Math.floor(
+    this.originalWidth = floor(
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
     );
 
@@ -87,6 +88,6 @@ export class CornerBBox extends BaseBBox {
       clippedWidth = maxCornerBBoxWidth;
     }
 
-    return Math.floor(clippedWidth);
+    return floor(clippedWidth);
   }
 }

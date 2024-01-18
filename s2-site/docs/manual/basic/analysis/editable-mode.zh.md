@@ -3,21 +3,25 @@ title: 编辑表
 order: 3
 ---
 
-## 明细表简介
+## 简介
 
-编辑表是 `S2` 明细表的衍生形态之一。在提供完整的明细表的分析功能之外，还支持对数据的修改操作。
+编辑表是 `S2` 明细表的衍生形态之一，基于 `React` 版本的明细表封装，在提供完整的明细表的分析功能之外，还支持对数据的修改操作。
 
 <img alt="editable-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600">
 
 ## 使用
 
+:::warning{title="注意"}
+编辑表的原理本质上是在 `Canvas` 表格上增加一个 `div` 蒙层，来实现对数据的编辑，如果想在 `@antv/s2` 和 `@antv/s2-vue` 中使用，请自行参考 [React 版本的实现](https://github.com/antvis/S2/blob/b81b7957b9e8b8e1fbac9ebc6cacdf45a14e5412/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L7) 进行封装。
+:::
+
+<Playground path='react-component/sheet/demo/editable' rid='container'></playground>
+
 ```html
 <div id="container"></div>
 ```
 
-### React 组件方式
-
-```typescript
+```tsx
 import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
@@ -160,17 +164,19 @@ const s2Options = {
 // 4, 渲染
 ReactDOM.render(
   <SheetComponent
-    sheetType="editable" // 此处指定sheetType为editable
+    sheetType="editable" // 此处指定 sheetType 为 editable
     dataCfg={s2DataCfg}
     options={s2Options}
+    onDataCellEditEnd={(meta) => {
+      console.log('onDataCellEditEnd', meta);
+    }}
   />,
   document.getElementById('container')
 );
 ```
 
-## 特性
+## 效果
 
-效果如图：
+[查看示例](/examples/react-component/sheet#editable)
+
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
-
-[playground 地址](/examples/react-component/sheet#editable)

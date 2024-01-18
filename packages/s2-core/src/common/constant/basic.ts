@@ -1,33 +1,21 @@
 import { i18n } from '../i18n';
 
-export const VALUE_FIELD = '$$value$$';
-export const EXTRA_FIELD = '$$extra$$';
-export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
-
-export const SERIES_NUMBER_FIELD = '$$series_number$$';
-
-export const TOTAL_VALUE = '$$total$$';
-export const MULTI_VALUE = '$$multi$$';
-
-export const NULL_SYMBOL_ID = '$$null$$';
-export const UNDEFINED_SYMBOL_ID = '$$undefined$$';
-
+// 约定这个 z-index 为 0 的 container 作为基准
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
-/*
- * foregroundGroup 上的 children 层叠顺序
- * 约定这个 z-index 为 0 的 container 作为基准
- */
+// foregroundGroup 上的 children 层叠顺序
 export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3;
-export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
-export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
+export const FRONT_GROUND_GROUP_SCROLL_Z_INDEX = 3;
+export const FRONT_GROUND_GROUP_FROZEN_Z_INDEX = 4;
 export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;
 export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 
 // panelGroup 上的 children 层叠顺序
 export const PANEL_GROUP_GROUP_CONTAINER_Z_INDEX = 1;
 export const PANEL_GROUP_SCROLL_GROUP_Z_INDEX = 1;
-export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 2;
+export const PANEL_GRID_GROUP_Z_INDEX = 2;
+export const PANEL_MERGE_GROUP_Z_INDEX = 3;
+export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 4;
 
 // group's key
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
@@ -52,6 +40,8 @@ export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
+export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
+export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
 
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 
@@ -72,9 +62,6 @@ export enum MiniChartTypes {
   Bar = 'bar',
   Bullet = 'bullet',
 }
-
-// 线条 linecap 样式
-export const SQUARE_LINE_CAP = 'square';
 
 export const getDefaultSeriesNumberText = (defaultText?: string) =>
   defaultText ?? i18n('序号');

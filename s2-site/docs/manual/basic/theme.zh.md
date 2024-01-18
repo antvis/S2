@@ -106,7 +106,7 @@ S2 内置 3 套主题效果：
 
 ​📊 查看更多 [主题示例](/examples/theme/default#default)。
 
-### 自定义 schema
+### 自定义 Schema
 
 如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
@@ -127,6 +127,8 @@ s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
+
+<br/>
 
 #### 自定义单元格对齐方式
 
@@ -172,6 +174,14 @@ s2.setTheme({
   },
 });
 ```
+
+#### 自定义交互样式
+
+[查看文档](/manual/advanced/interaction/basic#%E8%B0%83%E6%95%B4%E4%BA%A4%E4%BA%92%E4%B8%BB%E9%A2%98) [查看示例](/zh/examples/interaction/basic#state-theme)
+
+<Playground path='interaction/basic/demo/state-theme.ts' rid='state-theme' height='300'></playground>
+
+<br/>
 
 ### 自定义色板
 

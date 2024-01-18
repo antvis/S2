@@ -12,7 +12,7 @@ import {
   type MatrixPlainTransformer,
   type MatrixHTMLTransformer,
   CopyMIMEType,
-} from '../interface';
+} from '../../../common/interface/export';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain

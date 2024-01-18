@@ -1,7 +1,14 @@
-import { SpreadSheet, setLang, type LangType, type Pagination } from '@antv/s2';
+import {
+  SpreadSheet,
+  setLang,
+  type LangType,
+  type Pagination,
+  type S2DataConfig,
+} from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';
+import { pivotSheetDataCfg } from '../../playground/config';
 import { SheetComponent, type SheetComponentsProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
 import { renderComponent } from '../util/helpers';
@@ -15,6 +22,8 @@ const s2Options: SheetComponentsProps['options'] = {
   },
   hierarchyType: 'grid',
 };
+
+let s2: SpreadSheet;
 
 describe('Pagination Tests', () => {
   let unmount: Root['unmount'];
@@ -45,7 +54,7 @@ describe('Pagination Tests', () => {
       unmount = renderComponent(
         <SheetComponent
           options={s2Options}
-          dataCfg={mockDataConfig as any}
+          dataCfg={mockDataConfig as S2DataConfig}
           showPagination
           onMounted={(instance) => {
             spreadsheet = instance;
@@ -79,7 +88,7 @@ describe('Pagination Tests', () => {
             showQuickJumper: true,
           } as Pagination,
         }}
-        dataCfg={mockDataConfig as any}
+        dataCfg={mockDataConfig as S2DataConfig}
         showPagination
         onMounted={(instance) => {
           spreadsheet = instance;
@@ -95,6 +104,33 @@ describe('Pagination Tests', () => {
       expect(
         document.querySelector('.ant-pagination-options-size-changer'),
       ).toBeFalsy();
+    });
+  });
+
+  test('should row header cell render text position based on the actual cell height when pagination is show', async () => {
+    renderComponent(
+      <SheetComponent
+        options={{
+          ...s2Options,
+          pagination: {
+            ...s2Options.pagination,
+            current: 1,
+            pageSize: 1,
+          },
+          height: 400,
+        }}
+        dataCfg={pivotSheetDataCfg}
+        onMounted={(instance) => {
+          s2 = instance;
+        }}
+        showPagination
+      />,
+    );
+
+    await waitFor(() => {
+      const rowCell = s2.facet.getRowCells()[0];
+
+      expect(rowCell.getTextShape().parsedStyle.y).toBe(15);
     });
   });
 });

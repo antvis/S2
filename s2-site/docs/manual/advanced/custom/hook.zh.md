@@ -31,23 +31,23 @@ order: 1
 
 ## dataCell
 
-改变数据单元格的默认实现，需要继承自 [dataCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#data-cell)
+修改数据单元格的默认实现，需要继承自 [DataCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts) （明细表对应 [TableDataCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-data-cell.ts))，复写某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#data-cell)
 
 ## rowCell
 
-改变行头单元格的默认实现，需要继承自 [rowCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#row-cell)
+修改行头单元格的默认实现，需要继承自 [RowCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts)，复写某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#row-cell)
 
 ## colCell
 
-改变列头单元格的默认实现，需要继承自 [colCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#col-cell)
+修改列头单元格的默认实现，需要继承自 [ColCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts)（明细表对应 [TableColCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-col-cell.ts))，复写某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#col-cell)
 
 ## cornerCell
 
-改变角头单元格的默认实现，需要继承自 [cornerCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts)，覆盖某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#corner-cell)
+修改角头单元格的默认实现，需要继承自 [TableCornerCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts)（明细表对应 [TableCornerCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-corner-cell.ts))，复写某些方法，比如字体样式、背景样式等。[例子](/examples/custom/custom-cell#corner-cell)
 
 ## cornerHeader
 
-改变角头的默认实现，需要继承自 [Group](https://g.antv.vision/zh/docs/api/group)，覆盖某些方法，比如渲染内容更换等。[例子](/examples/custom/custom-cell#corner-cell)
+修改角头的默认实现，需要继承自 [Group](https://g.antv.vision/zh/docs/api/group)，复写某些方法，比如渲染内容更换等。[例子](/examples/custom/custom-cell#corner-header)
 
 ## frame
 

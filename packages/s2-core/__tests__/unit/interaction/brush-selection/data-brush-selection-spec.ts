@@ -115,6 +115,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       null as unknown as S2DataConfig,
       null as unknown as S2Options,
     );
+    await s2.render();
+
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushDataCell) as any;
     s2.showTooltipWithInfo = jest.fn();
@@ -126,8 +128,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         currentCol: false,
       };
     };
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     s2.facet.getDataCells = () => panelGroupAllDataCells;
     s2.facet.getLayoutResult = () =>
       ({
@@ -462,15 +470,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
         width: 100,
+        x: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
         width: 100,
+        x: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_ROW]: {
         height: 0,
+        y: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 0,
+        y: 0,
+        range: [],
       },
     };
 
@@ -488,16 +504,24 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
+        x: 0,
         width: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
+        x: 0,
         width: 0,
+        range: [],
       },
       [FrozenGroupType.FROZEN_ROW]: {
+        y: 0,
+        range: [],
         height: 100,
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 100,
+        y: 0,
+        range: [],
       },
     };
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
@@ -519,15 +543,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     (s2.facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
+        width: 0,
+        x: 0,
         range: [0, 1],
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
+        width: 0,
+        x: 0,
         range: [8, 9],
       },
       [FrozenGroupType.FROZEN_ROW]: {
+        y: 0,
+        height: 0,
         range: [0, 1],
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+        y: 0,
+        height: 0,
         range: [8, 9],
       },
     };
@@ -540,5 +572,31 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateXIndex(2)).toBe(2);
     expect(validateXIndex(8)).toBe(null);
     expect(validateXIndex(7)).toBe(7);
+  });
+
+  test('should not emit brush selection event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      dataCell: false,
+      rowCell: true,
+      colCell: true,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, brushSelectionFn);
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
+
+    // ================== mouse move ==================
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 100,
+      clientY: 200,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

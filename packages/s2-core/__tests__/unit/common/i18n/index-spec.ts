@@ -19,7 +19,7 @@ describe('I18n Test', () => {
     setLang('en_US');
     expect(i18n('小计')).toEqual('Total');
     expect(i18n('总计')).toEqual('Total');
-    expect(i18n('总和')).toEqual('SUM');
+    expect(i18n('总和')).toEqual('(SUM)');
     expect(i18n('项')).toEqual('items');
     expect(i18n('已选择')).toEqual('selected');
     expect(i18n('序号')).toEqual('Index');
@@ -27,13 +27,14 @@ describe('I18n Test', () => {
     expect(i18n('数值')).toEqual('Measure');
     expect(i18n('共计')).toEqual('Total');
     expect(i18n('条')).toEqual('');
+    expect(i18n('，')).toEqual(', ');
   });
 
   test('should show Chinese text when set lang to zh', () => {
     setLang('zh_CN');
     expect(i18n('小计')).toEqual('小计');
     expect(i18n('总计')).toEqual('总计');
-    expect(i18n('总和')).toEqual('总和');
+    expect(i18n('总和')).toEqual('（总和）');
     expect(i18n('项')).toEqual('项');
     expect(i18n('已选择')).toEqual('已选择');
     expect(i18n('序号')).toEqual('序号');
@@ -41,5 +42,6 @@ describe('I18n Test', () => {
     expect(i18n('数值')).toEqual('数值');
     expect(i18n('共计')).toEqual('共计');
     expect(i18n('条')).toEqual('条');
+    expect(i18n('，')).toEqual('，');
   });
 });

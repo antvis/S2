@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { get, set } from 'lodash';
+import { set } from 'lodash';
 import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
 import type { ColHeaderConfig } from '../../../src/facet/header';
 import { getContainer } from './../../util/helpers';
-import type { Node } from '@/facet/layout/node';
-import { PivotDataSet } from '@/data-set';
-import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import { EXTRA_FIELD, type Formatter, type TextAlign } from '@/common';
 import { ColCell } from '@/cell';
+import { EXTRA_FIELD, type Formatter, type TextAlign } from '@/common';
+import { PivotDataSet } from '@/data-set';
+import type { Node } from '@/facet/layout/node';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -101,9 +101,7 @@ describe('Col Cell Tests', () => {
 
       const colCell = new ColCell(node, s2, headerConfig);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(colCell.textShape.attr('text')).toEqual('test');
+      expect(colCell.getTextShape().attr('text')).toEqual('test');
     });
   });
 
@@ -125,7 +123,7 @@ describe('Col Cell Tests', () => {
 
     test('should draw right condition text shape', async () => {
       await s2.render();
-      const colCell = s2.facet.columnHeader.children[0].children[1] as ColCell;
+      const colCell = s2.facet.getColCells()[1];
 
       expect(colCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
@@ -150,10 +148,13 @@ describe('Col Cell Tests', () => {
       });
       await s2.render();
 
-      const colCell = s2.facet.columnHeader.children[0].children[0];
+      const colCell = s2.facet.getColCells()[0];
 
-      expect(get(colCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
-      expect(get(colCell, 'conditionIconShape.cfg.fill')).toEqual('red');
+      // @ts-ignore
+      expect(colCell.rightIconPosition).toEqual({
+        x: 152,
+        y: 10.5,
+      });
     });
 
     test('should draw right condition background shape', async () => {
@@ -171,10 +172,11 @@ describe('Col Cell Tests', () => {
           ],
         },
       });
-      await s2.render();
-      const colCell = s2.facet.columnHeader.children[0].children[1];
 
-      expect(get(colCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+      await s2.render();
+      const colCell = s2.facet.getColCells()[1];
+
+      expect(colCell.getBackgroundShape().parsedStyle.fill).toBeColor(
         '#F7B46F',
       );
     });
@@ -198,7 +200,7 @@ describe('Col Cell Tests', () => {
       });
       await s2.render();
 
-      const colCell = s2.facet.columnHeader.children[0].children[0] as ColCell;
+      const colCell = s2.facet.getColCells()[0];
       const { fill, fontSize, fontWeight } = colCell.getTextShape().attributes;
 
       expect(fill).toEqual('red');

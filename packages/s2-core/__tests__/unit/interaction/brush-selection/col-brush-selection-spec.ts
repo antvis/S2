@@ -68,11 +68,19 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
         },
       },
     });
+    await s2.render();
+
     s2.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(s2);
     s2.getCell = jest.fn(() => startBrushColCell) as any;
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     brushSelectionInstance = new ColCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =
@@ -202,5 +210,31 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     // emit event
     expect(selectedFn).toHaveBeenCalledTimes(1);
     expect(brushSelectionFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      dataCell: true,
+      rowCell: true,
+      colCell: false,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    s2.on(S2Event.COL_CELL_BRUSH_SELECTION, brushSelectionFn);
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, { x: 200, y: 0 });
+
+    // ================== mouse move ==================
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
+      clientX: 600,
+      clientY: 90,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

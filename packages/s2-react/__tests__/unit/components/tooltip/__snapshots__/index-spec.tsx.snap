@@ -28,7 +28,7 @@ exports[`Tooltip Common Components Tests render TooltipHead 1`] = `
   <div
     class="antv-s2-tooltip-head-info-list"
   >
-    一二线城市，有信用卡 / 学生 / 20岁以下
+    一二线城市，有信用卡/学生/20岁以下
   </div>
 </DocumentFragment>
 `;
@@ -54,7 +54,7 @@ exports[`Tooltip Common Components Tests render TooltipSummary 1`] = `
       <span
         class="antv-s2-tooltip-summary-key"
       >
-        A人群 （总和)
+        A人群（总和）
       </span>
       <span
         class="antv-s2-tooltip-summary-val antv-s2-tooltip-bold"
@@ -68,7 +68,7 @@ exports[`Tooltip Common Components Tests render TooltipSummary 1`] = `
       <span
         class="antv-s2-tooltip-summary-key"
       >
-        B人群 （总和)
+        B人群（总和）
       </span>
       <span
         class="antv-s2-tooltip-summary-val antv-s2-tooltip-bold"
@@ -82,7 +82,7 @@ exports[`Tooltip Common Components Tests render TooltipSummary 1`] = `
       <span
         class="antv-s2-tooltip-summary-key"
       >
-        差值 （总和)
+        差值（总和）
       </span>
       <span
         class="antv-s2-tooltip-summary-val antv-s2-tooltip-bold"

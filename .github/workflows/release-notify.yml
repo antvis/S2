@@ -18,8 +18,8 @@ jobs:
             ${{ secrets.DING_TALK_ACCESS_TOKEN }}
             ${{ secrets.DING_TALK_GROUP_TOKEN }}
             ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
-          notify_title: '🎉 S2 新版本发布啦 🎉'
-          notify_body: '## { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> 看看有哪些更新吧 <hr />'
+          notify_title: '🎉 AntV/S2 新版本发布啦 🎉'
+          notify_body: '## { title } <hr /> ![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original) <hr /> 看看有哪些更新吧 <hr />'
           notify_footer: '> 前往 [**AntV/S2 Releases**](https://github.com/antvis/S2/releases/latest) 查看完整更新日志.'
           at_all: false
           enable_prerelease: false

@@ -1,36 +1,38 @@
-import { data, totalData, meta } from 'tests/data/mock-dataset.json';
+import { data, meta, totalData } from 'tests/data/mock-dataset.json';
 import {
+  DEFAULT_DATA_CONFIG,
   DEFAULT_OPTIONS,
+  S2Event,
+  SpreadSheet,
   type S2DataConfig,
   type S2Options,
-  DEFAULT_DATA_CONFIG,
-  SpreadSheet,
-  S2Event,
 } from '@/index';
 import { customMerge } from '@/utils';
 
-export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  customMerge<S2Options>(
-    DEFAULT_OPTIONS,
-    { debug: false, width: 600, height: 600 },
-    ...options,
-  );
+export const assembleOptions = (...options: Partial<S2Options>[]) => {
+  const s2Options: S2Options = {
+    debug: false,
+    width: 600,
+    height: 600,
+  };
 
-export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  customMerge<S2DataConfig>(
-    DEFAULT_DATA_CONFIG,
-    {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type', 'sub_type'],
-        values: ['number'],
-        valueInCols: true,
-      },
-      meta,
-      data: data.concat(totalData as any),
+  return customMerge<S2Options>(DEFAULT_OPTIONS, s2Options, ...options);
+};
+
+export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) => {
+  const s2DataCfg: S2DataConfig = {
+    fields: {
+      rows: ['province', 'city'],
+      columns: ['type', 'sub_type'],
+      values: ['number'],
+      valueInCols: true,
     },
-    ...dataCfg,
-  );
+    meta,
+    data: data.concat(totalData as any),
+  };
+
+  return customMerge<S2DataConfig>(DEFAULT_DATA_CONFIG, s2DataCfg, ...dataCfg);
+};
 
 export const TOTALS_OPTIONS: S2Options['totals'] = {
   row: {

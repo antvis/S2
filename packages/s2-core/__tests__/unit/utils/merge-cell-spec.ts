@@ -20,12 +20,11 @@ import {
 import type { RootInteraction } from '@/interaction/root';
 import type {
   MergedCellInfo,
-  S2CellType,
   TempMergedCell,
   ViewMeta,
 } from '@/common/interface';
 import type { BaseFacet } from '@/facet';
-import type { MergedCell } from '@/cell';
+import type { DataCell, MergedCell } from '@/cell';
 
 jest.mock('@/sheet-type');
 
@@ -35,7 +34,7 @@ describe('Merge Cells Test', () => {
   let mockOneCellEdges: [number, number][][] = [];
   let mockTwoCellEdges: [number, number][][] = [];
   let mockMergeCellInfo: MergedCellInfo[] = [];
-  let mockAllVisibleCells: S2CellType[] = [];
+  let mockAllVisibleCells: DataCell[] = [];
 
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
@@ -112,7 +111,7 @@ describe('Merge Cells Test', () => {
     mockAllVisibleCells = [
       { getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[2]) },
       { getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[3]) },
-    ] as unknown as S2CellType[];
+    ] as unknown as DataCell[];
   });
 
   test('should get none active cells info', () => {
@@ -204,7 +203,7 @@ describe('Merge Cells Test', () => {
       },
     ];
 
-    expect(getPolygonPoints(mockCells as unknown as S2CellType[])).toEqual(
+    expect(getPolygonPoints(mockCells as unknown as DataCell[])).toEqual(
       mockResult,
     );
   });

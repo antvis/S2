@@ -26,7 +26,6 @@ describe('Corner Cell Tests', () => {
     });
 
     const drawTextShapeSpy = jest
-      // @ts-ignore
       .spyOn(cornerCell, 'drawTextShape')
       .mockImplementationOnce(() => true);
 

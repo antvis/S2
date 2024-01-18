@@ -1,11 +1,13 @@
+const path = require('path');
+
 module.exports = {
+  extends: 'semantic-release-monorepo',
   branches: [
     'latest',
     { name: 'beta', channel: 'beta', prerelease: true },
     { name: 'alpha', channel: 'alpha', prerelease: true },
     { name: 'next', channel: 'next', prerelease: true },
   ],
-  extends: 'semantic-release-monorepo',
   plugins: [
     [
       '@semantic-release/commit-analyzer',
@@ -26,11 +28,19 @@ module.exports = {
     '@semantic-release/npm',
     [
       '@semantic-release/git',
-      {
+    {
         message: 'chore(release): 🤖 ${nextRelease.gitTag} [skip ci]',
-      },
+    },
     ],
     '@semantic-release/github',
+    [
+      '@semantic-release/exec',
+      {
+        prepareCmd:
+          `node ${path.resolve(__dirname, './scripts/add-version.js')} ` +
+          '${nextRelease.gitTag}',
+      },
+    ],
   ],
   preset: 'angular',
 };

@@ -35,17 +35,17 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
             Object {
@@ -107,17 +107,17 @@ describe('Facet Layout API Tests', () => {
             },
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
             Object {
@@ -164,17 +164,17 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
             Object {
@@ -226,17 +226,17 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
             Object {
@@ -314,7 +314,7 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
             Object {
@@ -353,17 +353,17 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
           ]
@@ -385,17 +385,17 @@ describe('Facet Layout API Tests', () => {
             },
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
           ]
@@ -407,17 +407,17 @@ describe('Facet Layout API Tests', () => {
           Array [
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
           ]
@@ -439,17 +439,17 @@ describe('Facet Layout API Tests', () => {
             },
             Object {
               "field": "province",
-              "id": "",
+              "id": "province",
               "value": "province",
             },
             Object {
               "field": "city",
-              "id": "",
+              "id": "city",
               "value": "city",
             },
             Object {
               "field": "type",
-              "id": "",
+              "id": "type",
               "value": "type",
             },
           ]

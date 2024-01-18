@@ -79,7 +79,7 @@ export interface StoreKey {
   /**
    * 原始数据配置
    */
-  originalDataCfg: S2DataConfig;
+  originalDataCfg: Partial<S2DataConfig>;
 
   /**
    * 可视区域包裹盒模型

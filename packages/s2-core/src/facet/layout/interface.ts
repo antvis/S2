@@ -39,15 +39,8 @@ export interface TotalParams {
   spreadsheet: SpreadSheet;
 }
 
-export interface HeaderNodesParams {
-  spreadsheet: SpreadSheet;
-  currentField: string;
-  fields: string[];
+export interface HeaderNodesParams extends GridHeaderParams {
   fieldValues: FieldValue[];
-  addTotalMeasureInTotal: boolean;
-  addMeasureInTotalQuery: boolean;
-  hierarchy: Hierarchy;
-  parentNode: Node;
   level: number;
   query: Record<string, any>;
 }
@@ -67,7 +60,7 @@ export interface TreeHeaderParams {
   spreadsheet: SpreadSheet;
   parentNode: Node;
   hierarchy: Hierarchy;
-  currentField: string | undefined;
+  currentField: string;
   level: number;
   pivotMeta: PivotMeta;
 }
@@ -100,4 +93,10 @@ export interface CustomTreeHeaderParams {
   level: number;
   hierarchy: Hierarchy;
   tree: CustomTreeNode[];
+}
+
+export interface WhetherLeafParams {
+  spreadsheet: SpreadSheet;
+  fields: string[];
+  level: number;
 }

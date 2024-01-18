@@ -49,6 +49,7 @@ describe('PivotSheet Corner Tests', () => {
         fields: {
           ...simpleDataConfig.fields,
           columns: [],
+          values: ['price'],
         },
       });
       s2.setOptions({
@@ -96,6 +97,15 @@ describe('PivotSheet Corner Tests', () => {
           },
         },
       });
+
+      s2.setDataCfg({
+        ...simpleDataConfig,
+        fields: {
+          ...simpleDataConfig.fields,
+          values: ['price'],
+        },
+      });
+
       await s2.render();
 
       const cornerNodes = s2.facet.getCornerNodes();
@@ -315,11 +325,9 @@ describe('PivotSheet Corner Tests', () => {
 
     expect(cornerNode.value).toEqual(cornerText);
 
-    const cell = s2.facet.cornerHeader.children[0];
+    const cornerCell = s2.facet.getCornerCells()[0];
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(cell.actualText).toEqual(cornerText);
+    expect(cornerCell.getActualText()).toEqual(cornerText);
   });
 
   test('should get custom corner extra text when hierarchy type is tree', async () => {
@@ -343,10 +351,8 @@ describe('PivotSheet Corner Tests', () => {
 
     expect(cornerNode.value).toEqual(cornerExtraFieldText);
 
-    const cell = s2.facet.cornerHeader.children[2];
+    const cornerCell = s2.facet.getCornerCells()[2];
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(cell.actualText).toEqual(cornerExtraFieldText);
+    expect(cornerCell.getActualText()).toEqual(cornerExtraFieldText);
   });
 });

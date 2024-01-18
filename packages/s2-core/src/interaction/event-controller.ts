@@ -5,7 +5,6 @@ import {
   type Group,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
-import { CustomImage } from '../engine';
 import { GuiIcon } from '../common';
 import {
   CellType,
@@ -17,6 +16,7 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant';
 import type { EmitterType, ResizeInfo } from '../common/interface';
+import { CustomImage } from '../engine';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
@@ -54,6 +54,8 @@ export class EventController {
   public domEventListeners: EventListener[] = [];
 
   public isCanvasEffect = false;
+
+  public canvasMousemoveEvent: CanvasEvent;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -146,7 +148,7 @@ export class EventController {
       return;
     }
 
-    /*
+    /**
      * 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
      * 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
      */
@@ -175,13 +177,47 @@ export class EventController {
       return;
     }
 
+    interaction.reset();
     this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
-    interaction?.reset();
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      interaction.getActiveCells(),
+    );
   }
 
   private isMouseEvent(event: Event): event is MouseEvent {
     // 通过 MouseEvent 特有属性判断，避免 instanceof 失效的问题
     return hasIn(event, 'clientX') && hasIn(event, 'clientY');
+  }
+
+  public isMatchElement(event: MouseEvent) {
+    const canvas = this.spreadsheet.getCanvasElement();
+    const { target } = event;
+
+    return (
+      target === canvas ||
+      target instanceof DisplayObject ||
+      target instanceof Canvas
+    );
+  }
+
+  public isMatchPoint(event: MouseEvent) {
+    /**
+     * 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
+     * 比如实际 400 * 300 => hd (800 * 600)
+     * 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
+     */
+    const canvas = this.spreadsheet.getCanvasElement();
+    const { width, height } = this.getContainerRect();
+    const { x, y } = canvas.getBoundingClientRect() || {};
+    const { clientX, clientY } = event;
+
+    return (
+      clientX <= x + width &&
+      clientX >= x &&
+      clientY <= y + height &&
+      clientY >= y
+    );
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -192,38 +228,27 @@ export class EventController {
         return false;
       }
 
-      const { x, y } = canvas.getBoundingClientRect() || {};
-
-      /*
-       * 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
-       * 比如实际 400 * 300 => hd (800 * 600)
-       * 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
-       */
-      const { width, height } = this.getContainerRect();
-
-      const { target: eventTarget, clientX, clientY } = event;
-
-      return (
-        (eventTarget === canvas ||
-          eventTarget instanceof DisplayObject ||
-          eventTarget instanceof Canvas) &&
-        clientX <= x + width &&
-        clientX >= x &&
-        clientY <= y + height &&
-        clientY >= y
-      );
+      return this.isMatchElement(event) && this.isMatchPoint(event);
     }
 
     return false;
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
-    const { width, height } = this.spreadsheet.options;
+    const { facet, options } = this.spreadsheet;
+    const scrollBar = facet?.hRowScrollBar || facet?.hScrollBar;
+    const { maxX, maxY } = facet?.panelBBox || {};
+    const { width = 0, height = 0 } = options;
+
+    /**
+     * https://github.com/antvis/S2/issues/2376
+     * 横向的滚动条在表格外 (Canvas 内), 点击滚动条(含滑道区域) 不应该重置交互
+     */
+    const trackHeight = scrollBar?.theme?.size || 0;
 
     return {
-      width: Math.min(width!, maxX),
-      height: Math.min(height!, maxY),
+      width: Math.min(width, maxX),
+      height: Math.min(height, maxY + trackHeight),
     };
   }
 
@@ -357,6 +382,8 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
+    this.canvasMousemoveEvent = event;
+
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(

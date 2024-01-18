@@ -10,7 +10,8 @@ export const TooltipDescription: React.FC<TooltipDescriptionProps> = React.memo(
     <>
       {description && (
         <div className={`${TOOLTIP_PREFIX_CLS}-description`}>
-          {i18n('说明')}：{description}
+          {i18n('说明')}
+          {description}
         </div>
       )}
     </>

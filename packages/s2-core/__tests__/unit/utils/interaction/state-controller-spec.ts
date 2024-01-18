@@ -1,10 +1,10 @@
-import { getCellMeta } from '@/utils/interaction/select-event';
-import type { RowCell } from '@/cell/row-cell';
+import type { RowCell } from '../../../../src/cell';
 import { CellType, InteractionStateName } from '@/common/constant/interaction';
 import type { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';
 import { RootInteraction } from '@/interaction/root';
 import { SpreadSheet } from '@/sheet-type';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 
 jest.mock('@/sheet-type');

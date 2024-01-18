@@ -32,15 +32,24 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
-    const { facet } = this.spreadsheet;
+    const { facet, interaction } = this.spreadsheet;
 
     updateAllColHeaderCellState(
       colId,
       facet.getColCells(),
       InteractionStateName.HOVER,
     );
+    const { rowHeader, colHeader } = interaction.getHoverHighlight();
 
-    if (rowId) {
+    if (colHeader) {
+      updateAllColHeaderCellState(
+        colId,
+        facet.getColCells(),
+        InteractionStateName.HOVER,
+      );
+    }
+
+    if (rowHeader && rowId) {
       // update rowHeader cells
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
@@ -88,8 +97,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       };
 
       if (interactionOptions?.hoverHighlight) {
-        // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
+        const { rowHeader, colHeader } = interaction.getHoverHighlight();
+
+        if (rowHeader || colHeader) {
+          // highlight all the row and column cells which the cell belongs to
+          this.updateRowColCells(meta);
+        }
       }
 
       const data = this.getCellData(meta, onlyShowCellText);
@@ -155,7 +168,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       isTotals: meta.isTotals,
       hideSummary: true,
       onlyShowCellText: true,
-      enableFormat: this.spreadsheet.isPivotMode(),
+      enableFormat: true,
     };
     const data = this.getCellData(meta, options.onlyShowCellText);
 
@@ -213,11 +226,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-      this.showEllipsisTooltip(event, cell);
-
       if (interactionOptions?.hoverHighlight) {
-        // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
+        const { rowHeader, colHeader } = interaction.getHoverHighlight();
+
+        if (rowHeader || colHeader) {
+          // highlight all the row and column cells which the cell belongs to
+          this.updateRowColCells(meta);
+        }
       }
 
       if (interactionOptions?.hoverFocus) {
@@ -240,9 +255,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public bindCornerCellHover() {
     this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target);
-
-      this.showEllipsisTooltip(event, cell);
+      this.handleHeaderHover(event);
     });
   }
 }

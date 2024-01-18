@@ -1,13 +1,14 @@
 import {
   compact,
-  concat,
   endsWith,
+  flatMap,
   includes,
   indexOf,
   isEmpty,
   isNil,
   keys,
   map,
+  sortBy,
   split,
   toUpper,
   uniq,
@@ -15,18 +16,21 @@ import {
 import {
   EXTRA_FIELD,
   NODE_ID_SEPARATOR,
+  ORIGIN_FIELD,
+  QueryDataType,
   TOTAL_VALUE,
 } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
 import type { CellData } from '../data-set/cell-data';
-import type { SortActionParams } from '../data-set/interface';
+import type {
+  PivotMeta,
+  PivotMetaValue,
+  SortActionParams,
+  SortPivotMetaParams,
+} from '../data-set/interface';
 import { getLeafColumnsWithKey } from '../facet/utils';
-import {
-  getListBySorted,
-  isTotalData,
-  sortByItems,
-} from '../utils/data-set-operate';
+import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import {
   filterExtraDimension,
   getDimensionsWithParentPath,
@@ -284,26 +288,28 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet!;
   const { sortByMeasure, query, sortFieldId } = sortParam!;
-  // 按 query 查出所有数据
-  const dataList = dataSet!.getCellMultiData({ query: query! });
-  const columns = getLeafColumnsWithKey(fields.columns);
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    const dataList = dataSet!.getCellMultiData({
+      query,
+      queryType: QueryDataType.DetailOnly,
+    });
+
+    return dataList;
+  }
 
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
-  if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = concat(fields.rows, columns) as string[];
 
-    return dataList.filter(
-      (dataItem) =>
-        /*
-         * 过滤出包含所有行列维度的数据
-         * 若缺失任意 field，则是汇总数据，需要过滤掉
-         */
-        !isTotalData(rowColFields, dataItem.getOrigin()),
-    );
-  }
+  const dataList = dataSet!.getCellMultiData({
+    query,
+    queryType: QueryDataType.All,
+  });
+
+  // 按 query 查出所有数据
+  const columns = getLeafColumnsWithKey(fields.columns);
 
   /**
    * 按汇总值进行排序
@@ -314,11 +320,11 @@ export const getSortByMeasureValues = (
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
   const sortFields = filterExtraDimension(
-    (isSortFieldInRow ? fields.rows : fields.columns) as string[],
+    (isSortFieldInRow ? fields.rows : columns) as string[],
   );
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraDimension(
-    (isSortFieldInRow ? fields.columns : fields.rows) as string[],
+    (isSortFieldInRow ? columns : fields.rows) as string[],
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
@@ -328,7 +334,7 @@ export const getSortByMeasureValues = (
   );
 
   const totalDataList = dataList.filter((dataItem) => {
-    const dataItemKeys = new Set(keys(dataItem.getOrigin()));
+    const dataItemKeys = new Set(keys(dataItem[ORIGIN_FIELD]));
 
     if (!dataItemKeys.has(sortFieldId)) {
       /*
@@ -417,4 +423,36 @@ export const getSortTypeIcon = (
   if (isSortCell) {
     return 'SortDown';
   }
+};
+
+/**
+ * 对 pivot meta 中的内容进行排序，返回新的 sorted pivot meta
+ */
+export const getSortedPivotMeta = (params: SortPivotMetaParams) => {
+  const { pivotMeta, dimensions, sortedDimensionValues, sortFieldId } = params;
+  const rootContainer = {
+    children: pivotMeta,
+  } as PivotMetaValue;
+  let metaValueList = [rootContainer];
+
+  for (const dimension of dimensions) {
+    if (dimension !== sortFieldId) {
+      metaValueList = flatMap(metaValueList, (metaValue) => {
+        return [...metaValue.children.values()];
+      });
+    } else {
+      metaValueList.forEach((metaValue) => {
+        const values = [...metaValue.children.values()];
+
+        const entities = sortBy(values, (value) => {
+          return indexOf(sortedDimensionValues, value.id);
+        }).map((value) => [value.value, value] as [string, PivotMetaValue]);
+
+        metaValue.children = new Map(entities) as PivotMeta;
+      });
+      break;
+    }
+  }
+
+  return rootContainer.children;
 };

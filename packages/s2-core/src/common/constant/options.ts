@@ -10,7 +10,13 @@ import { EMPTY_PLACEHOLDER } from './basic';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
 
-export enum LayoutWidthTypes {
+/**
+ * 布局类型：
+ * adaptive: 行列等宽，均分整个 canvas 画布宽度
+ * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
+ * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
+ */
+export enum LayoutWidthType {
   Adaptive = 'adaptive',
   ColAdaptive = 'colAdaptive',
   Compact = 'compact',
@@ -21,7 +27,7 @@ export const SPLIT_LINE_WIDTH = 1;
 export const DEFAULT_TREE_ROW_CELL_WIDTH = 120;
 
 export const DEFAULT_STYLE: S2Style = {
-  layoutWidthType: LayoutWidthTypes.Adaptive,
+  layoutWidthType: LayoutWidthType.Adaptive,
   rowCell: {
     showTreeLeafNodeAlignDot: false,
     widthByField: null,
@@ -112,7 +118,7 @@ export const DEFAULT_MOBILE_OPTIONS: S2Options = {
   width: mobileWidth - 40,
   height: 380,
   style: {
-    layoutWidthType: LayoutWidthTypes.ColAdaptive,
+    layoutWidthType: LayoutWidthType.ColAdaptive,
   },
   interaction: {
     hoverHighlight: false,

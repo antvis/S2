@@ -40,6 +40,8 @@ export const getSeriesNumberNodes = (
     sNode.height = isHierarchyTreeType
       ? node.getTotalHeightForTreeHierarchy()
       : node.height;
+    sNode.isLeaf = true;
+    sNode.spreadsheet = spreadsheet;
 
     return sNode;
   });

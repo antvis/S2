@@ -15,6 +15,7 @@ import type { ColCell } from '../cell';
 import {
   CellType,
   ELLIPSIS_SYMBOL,
+  EMPTY_FIELD_VALUE,
   EMPTY_PLACEHOLDER,
 } from '../common/constant';
 import {
@@ -47,10 +48,11 @@ export const getDisplayText = (
   text: string | number | null | undefined,
   placeholder?: string,
 ) => {
-  const empty = placeholder ?? EMPTY_PLACEHOLDER;
+  const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
+  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
 
-  // [null, undefined, ''] will return empty
-  return isNil(text) || text === '' ? empty : `${text}`;
+  return isEmptyText ? emptyPlaceholder : `${text}`;
 };
 
 /**
@@ -268,12 +270,38 @@ export const getEllipsisText = ({
  * Two cases needed to be considered since  the derived value could be number or string.
  * @param value
  */
-export const isUpDataValue = (value: number | string): boolean => {
+export const isUpDataValue = (value: SimpleData): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
 
   return !!value && !trim(value).startsWith('-');
+};
+
+/**
+ * Determines whether the data is actually equal to 0 or empty or nil
+ * example: "0.00%" => true
+ * @param value
+ */
+export const isZeroOrEmptyValue = (value: SimpleData): boolean => {
+  return (
+    isNil(value) ||
+    value === '' ||
+    Number(String(value).replace(/[^0-9.]+/g, '')) === 0
+  );
+};
+
+/**
+ * Determines whether the data is actually equal to 0 or empty or nil or equals to compareValue
+ * example: "0.00%" => true
+ * @param value
+ * @param compareValue
+ */
+export const isUnchangedValue = (
+  value: SimpleData,
+  compareValue: SimpleData,
+): boolean => {
+  return isZeroOrEmptyValue(value) || value === compareValue;
 };
 
 /**
@@ -311,9 +339,8 @@ const calX = (
 const getDrawStyle = (cell: S2CellType) => {
   const { isTotals } = cell.getMeta();
   const isMeasureField = (cell as ColCell).isMeasureField?.();
-  const cellStyle: InternalFullyCellTheme = cell.getStyle(
-    isMeasureField ? CellType.COL_CELL : CellType.DATA_CELL,
-  );
+
+  const cellStyle = cell.getStyle(cell.cellType || CellType.DATA_CELL);
 
   let textStyle: TextTheme | undefined;
 

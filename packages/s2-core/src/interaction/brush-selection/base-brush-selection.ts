@@ -1,8 +1,8 @@
 import {
-  type FederatedPointerEvent as CanvasEvent,
-  type DisplayObject,
-  type PointLike,
   Rect,
+  type DisplayObject,
+  type FederatedPointerEvent as CanvasEvent,
+  type PointLike,
 } from '@antv/g';
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
@@ -24,7 +24,6 @@ import type {
   BrushRange,
   OffsetConfig,
   OnUpdateCells,
-  Point,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
@@ -111,7 +110,7 @@ export class BaseBrushSelection
   }
 
   // 默认是 Data cell 的绘制区
-  protected isPointInCanvas(point: Point): boolean {
+  protected isPointInCanvas(point: PointLike): boolean {
     const { height, width } = this.spreadsheet.facet.getCanvasSize();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
@@ -144,7 +143,10 @@ export class BaseBrushSelection
     this.mouseMoveDistanceFromCanvas = Math.abs(deltaVal);
   };
 
-  public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
+  public formatBrushPointForScroll = (
+    delta: PointLike,
+    isRowHeader = false,
+  ) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
     const { minX, maxX } = isRowHeader ? facet.cornerBBox : facet.panelBBox;
@@ -205,7 +207,7 @@ export class BaseBrushSelection
     let min = 0;
     const frozenRowRange = frozenInfo?.frozenRow?.range;
 
-    if (frozenRowRange) {
+    if (frozenRowRange?.[1]) {
       min = frozenRowRange[1] + 1;
     }
 
@@ -216,7 +218,7 @@ export class BaseBrushSelection
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
 
-    if (frozenTrailingRowRange) {
+    if (frozenTrailingRowRange?.[0]) {
       max = frozenTrailingRowRange[0] - 1;
     }
 
@@ -234,7 +236,7 @@ export class BaseBrushSelection
     let min = 0;
     const frozenColRange = frozenInfo?.frozenCol?.range;
 
-    if (frozenColRange) {
+    if (frozenColRange?.[1]) {
       min = frozenColRange[1] + 1;
     }
 
@@ -245,7 +247,7 @@ export class BaseBrushSelection
     let max = facet.getColLeafNodes().length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
 
-    if (frozenTrailingColRange) {
+    if (frozenTrailingColRange?.[0]) {
       max = frozenTrailingColRange[0] - 1;
     }
 
@@ -765,7 +767,7 @@ export class BaseBrushSelection
     }
   };
 
-  public autoBrushScroll(point: Point, isRowHeader = false) {
+  public autoBrushScroll(point: PointLike, isRowHeader = false) {
     this.clearAutoScroll();
 
     if (!this.isPointInCanvas(point)) {
@@ -813,7 +815,7 @@ export class BaseBrushSelection
 
   protected updateSelectedCells() {}
 
-  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     return {
       x: brushRange.start.x,
       y: brushRange.start.y,

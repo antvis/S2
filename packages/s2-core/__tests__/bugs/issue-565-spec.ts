@@ -6,13 +6,14 @@
  */
 import * as mockDataConfig from 'tests/data/data-issue-565.json';
 import { getContainer } from 'tests/util/helpers';
+import type { S2Options } from '../../src';
 import { PivotSheet } from '@/sheet-type';
-import { copyData } from '@/utils';
+import { asyncGetAllPlainData } from '@/utils';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
-  hierarchyType: 'tree' as const,
+  hierarchyType: 'tree',
 };
 
 describe('Export data in pivot tree mode', () => {
@@ -20,7 +21,8 @@ describe('Export data in pivot tree mode', () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
     await s2.render();
-    const data = copyData({
+
+    const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: '\t',
     });
@@ -32,16 +34,6 @@ describe('Export data in pivot tree mode', () => {
     expect(rows[1].split('\t')[0]).toEqual('');
     expect(rows[7].split('\t')[0]).toEqual('row0');
     expect(rows[8].split('\t')[0]).toEqual('row0');
-    expect(data).toMatchInlineSnapshot(`
-      "		col0	col0-0	col0-0
-      		col1	col1-0	col1-1
-      		col2	col2-0	col2-0
-      row0	row1	row2	number	number
-      row0				
-      row0	row1-0			
-      row0	row1-0	row2-0	3	
-      row0	row1-1			
-      row0	row1-1	row2-0	2	4"
-    `);
+    expect(data).toMatchSnapshot();
   });
 });

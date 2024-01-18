@@ -16,8 +16,19 @@ jobs:
     defaults:
       run:
         working-directory: s2-site
+
+    strategy:
+      matrix:
+        node-version: [18]
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
       - name: Git bootstrap
         run: |
@@ -56,7 +67,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "📢 开始自动部署旧版官网(https://s2.antv.vision) 📢 ",
+                "title": "📢 开始自动部署旧版官网 (https://s2.antv.vision) 📢 ",
                 "text": "🔗 请点击链接查看详情",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"
@@ -68,7 +79,7 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-          
+
       # 安装官网依赖
       - name: Install Dependencies
         run: yarn

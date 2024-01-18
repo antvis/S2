@@ -1,21 +1,18 @@
 # [@antv/s2-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.9...@antv/s2-v2.0.0-next.10) (2023-12-12)
 
-
 ### Features
 
 * 支持在单元格内渲染 G2 图表 ([#2437](https://github.com/antvis/S2/issues/2437)) ([497f941](https://github.com/antvis/S2/commit/497f9414b89fce01b60db9b6c2eb4292ffe69c1d))
 
 # [@antv/s2-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.8...@antv/s2-v2.0.0-next.9) (2023-11-22)
 
-
 ### Features
 
 * headerActionIcons 支持细粒度配置 & 修复异步渲染导致无法获取实例的问题 ([#2301](https://github.com/antvis/S2/issues/2301)) ([b2d6f1f](https://github.com/antvis/S2/commit/b2d6f1fb04d3fa73129669fc7d2dec84943252db))
 * **layout:** 单元格支持渲染多行文本 ([#2383](https://github.com/antvis/S2/issues/2383)) ([e3b919a](https://github.com/antvis/S2/commit/e3b919a4f37d600a0f516944edf4eed8b2c0174d))
 * 支持 antd v5 ([#2413](https://github.com/antvis/S2/issues/2413)) ([299c7bf](https://github.com/antvis/S2/commit/299c7bfe2e86838153273c92dd6d2b72917cfdea))
-* 支持 React 18 (兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
+* 支持 React 18 （兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
 * 支持自定义 G 5.0 插件和配置 ([#2423](https://github.com/antvis/S2/issues/2423)) ([cc6c47f](https://github.com/antvis/S2/commit/cc6c47fd0927125bbc378fe6914becfcbe1b0acd))
-
 
 ### BREAKING CHANGES
 
@@ -75,13 +72,13 @@
 ### Features
 
 * 使用 requestIdleCallback 处理数据大量导出的情况 ([#2272](https://github.com/antvis/S2/issues/2272)) ([42a5551](https://github.com/antvis/S2/commit/42a55516dd369d9ab5579b52fbc9900b0ad81858))
-* 同步复制支持自定义transformer  ([#2201](https://github.com/antvis/S2/issues/2201)) ([9003767](https://github.com/antvis/S2/commit/9003767d584248b9d122f299326fd14753961883))
+* 同步复制支持自定义 transformer  ([#2201](https://github.com/antvis/S2/issues/2201)) ([9003767](https://github.com/antvis/S2/commit/9003767d584248b9d122f299326fd14753961883))
 * 增加暗黑主题 ([#2130](https://github.com/antvis/S2/issues/2130)) ([51dbdcf](https://github.com/antvis/S2/commit/51dbdcf564b387a3fd1809a71016f3a91eebde38))
 * 完善复制和导出在格式化后，总计、小计对应数值没有格式化的问题 ([#2237](https://github.com/antvis/S2/issues/2237)) ([abc0dbb](https://github.com/antvis/S2/commit/abc0dbb1544d9a4ef133e6a2c7d2d09ac8f35b48))
 * 文本和图标的条件格式支持主题配置 ([#2267](https://github.com/antvis/S2/issues/2267)) ([c332c68](https://github.com/antvis/S2/commit/c332c687dfb7be1d07b79b44934f78c1947cc466))
 * 条件格式 mapping 增加第三个参数获取单元格实例 ([#2242](https://github.com/antvis/S2/issues/2242)) ([aae427d](https://github.com/antvis/S2/commit/aae427dfe6a87cae577ce2449fd6058d358971f9))
 * 行列头兼容 condition icon 和 action icons ([#2161](https://github.com/antvis/S2/issues/2161)) ([1df4286](https://github.com/antvis/S2/commit/1df42860f6a12d3cb182ba7633c4984a04e62890))
-* 适配g5.0异步渲染 ([#2251](https://github.com/antvis/S2/issues/2251)) ([069d03d](https://github.com/antvis/S2/commit/069d03d299429c2ffab3e20d56ecd6bb30119ffd))
+* 适配 g5.0 异步渲染 ([#2251](https://github.com/antvis/S2/issues/2251)) ([069d03d](https://github.com/antvis/S2/commit/069d03d299429c2ffab3e20d56ecd6bb30119ffd))
 
 # [@antv/s2-v2.0.0-next.7](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.6...@antv/s2-v2.0.0-next.7) (2023-04-28)
 
@@ -95,25 +92,25 @@
 * **tooltip:** 修复特定配置下点击 tooltip 内容后 tooltip 关闭 close [#2170](https://github.com/antvis/S2/issues/2170) ([#2172](https://github.com/antvis/S2/issues/2172)) ([6219e57](https://github.com/antvis/S2/commit/6219e579364cfb7ac3a8b3db4ae01c5672d7f2d4))
 * 修复 cornerText 配置对树状模式的适配 ([#2167](https://github.com/antvis/S2/issues/2167)) ([e9efcea](https://github.com/antvis/S2/commit/e9efcea944f5d0793d4a1250362e6b6f6b492c52))
 * 修复总计小计 linkField 样式问题 ([#2169](https://github.com/antvis/S2/issues/2169)) ([4450278](https://github.com/antvis/S2/commit/4450278d82888c117e5bd9d31874b88ecdb33d99))
-* 修改DataCell类 drawLinkFieldShape 方法名为 drawLinkFieldShapeOwn ([d5e14b2](https://github.com/antvis/S2/commit/d5e14b25abba5bfaf74dddb17d9f5b44c74bc29b))
+* 修改 DataCell 类 drawLinkFieldShape 方法名为 drawLinkFieldShapeOwn ([d5e14b2](https://github.com/antvis/S2/commit/d5e14b25abba5bfaf74dddb17d9f5b44c74bc29b))
 * 多指标行头总计节点宽度计算错误 ([#2165](https://github.com/antvis/S2/issues/2165)) ([08ef330](https://github.com/antvis/S2/commit/08ef330a02a1fbf11f49090f4fd7f5d2b0cc1093))
-* 微应用环境识别mouseEvent失效 ([bddbe34](https://github.com/antvis/S2/commit/bddbe34104355ac0087bc9f72377889a8f444d7a)), closes [#2162](https://github.com/antvis/S2/issues/2162)
+* 微应用环境识别 mouseEvent 失效 ([bddbe34](https://github.com/antvis/S2/commit/bddbe34104355ac0087bc9f72377889a8f444d7a)), closes [#2162](https://github.com/antvis/S2/issues/2162)
 * 统一风格、删除冗余代码 ([7b4ef0e](https://github.com/antvis/S2/commit/7b4ef0edf72e059b427c54e6ea881c4c8e347aed))
 * 行头过宽且不冻结时滚动条渲染错误 ([#2173](https://github.com/antvis/S2/issues/2173)) ([ab79ea0](https://github.com/antvis/S2/commit/ab79ea0664046bc6479a717d7b3b0ee7efe05b31))
-* 避免s2实例被污染 ([8c44a85](https://github.com/antvis/S2/commit/8c44a85a678eadaab3fb2a66b5b02a123f74c9bb))
+* 避免 s2 实例被污染 ([8c44a85](https://github.com/antvis/S2/commit/8c44a85a678eadaab3fb2a66b5b02a123f74c9bb))
 
 ### Features
 
-* icon支持更新name与fill ([#2138](https://github.com/antvis/S2/issues/2138)) ([d000aea](https://github.com/antvis/S2/commit/d000aeac332676cfa15d9986ec7f4be948c565d0))
+* icon 支持更新 name 与 fill ([#2138](https://github.com/antvis/S2/issues/2138)) ([d000aea](https://github.com/antvis/S2/commit/d000aeac332676cfa15d9986ec7f4be948c565d0))
 * **interaction:** 点击角头后支持选中所对应那一列的行头 close [#2073](https://github.com/antvis/S2/issues/2073) ([#2081](https://github.com/antvis/S2/issues/2081)) ([ad2b5d8](https://github.com/antvis/S2/commit/ad2b5d87edf4c529d7c9a5e1348e893e14547ef3))
 * **interaction:** 行头支持滚动刷选 ([#2087](https://github.com/antvis/S2/issues/2087)) ([65c3f3b](https://github.com/antvis/S2/commit/65c3f3b6a37709c0fa684b0f5717d3b349251e48))
-* 修改文档、添加用例演示、修改方法名drawLinkFieldShapLogic -> drawLinkField ([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
+* 修改文档、添加用例演示、修改方法名 drawLinkFieldShapLogic -> drawLinkField ([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
 * 在 shape 中添加文本的原始值 ([#2109](https://github.com/antvis/S2/issues/2109)) ([4d81e72](https://github.com/antvis/S2/commit/4d81e72440d797fd7a06179794c342f009fc39c3))
-* 增加dataCell 下划线测试用例及demo ([a5efe17](https://github.com/antvis/S2/commit/a5efe17bda06cc8eba633cbea9c56ceb8b8c703e))
-* 增加自定义merged-cell ([534cc15](https://github.com/antvis/S2/commit/534cc15da9f766f95be3c622e65e45d8796ff020))
-* 复制支持自定义transformer ([#2090](https://github.com/antvis/S2/issues/2090)) ([250eecd](https://github.com/antvis/S2/commit/250eecd32ed4f48b95ed7c4e480fa3c75d4bb5d7))
+* 增加 dataCell 下划线测试用例及 demo ([a5efe17](https://github.com/antvis/S2/commit/a5efe17bda06cc8eba633cbea9c56ceb8b8c703e))
+* 增加自定义 merged-cell ([534cc15](https://github.com/antvis/S2/commit/534cc15da9f766f95be3c622e65e45d8796ff020))
+* 复制支持自定义 transformer ([#2090](https://github.com/antvis/S2/issues/2090)) ([250eecd](https://github.com/antvis/S2/commit/250eecd32ed4f48b95ed7c4e480fa3c75d4bb5d7))
 * 提取跳转链接下划线 公共逻辑 到 BaseCell 类 ([34dbbb3](https://github.com/antvis/S2/commit/34dbbb3bdf028cb96508dcead724d9ac9bcc1ab9))
-* 数据单元格DataCell类中增加链接跳转渲染 ([bb5a964](https://github.com/antvis/S2/commit/bb5a964787a80843515b4d552adb3fdb59393e3d))
+* 数据单元格 DataCell 类中增加链接跳转渲染 ([bb5a964](https://github.com/antvis/S2/commit/bb5a964787a80843515b4d552adb3fdb59393e3d))
 
 # [@antv/s2-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.5...@antv/s2-v2.0.0-next.6) (2023-04-23)
 
@@ -300,7 +297,6 @@
 
 ### Bug Fixes
 
-* 下钻后 meta.childField 不正确 ([#1788](https://github.com/antvis/S2/issues/1788)) ([1c61dd4](https://github.com/antvis/S2/commit/1c61dd4081c9d3fed6f276b0546865914040b07a))
 * 重构绘制盒模型，修复边框偏移问题 ([#1854](https://github.com/antvis/S2/issues/1854)) ([f7e0858](https://github.com/antvis/S2/commit/f7e0858a937ea557532a7fff948e9af3b6a1fdff))
 
 # [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
@@ -315,11 +311,11 @@
 
 # [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
 
-### Features
+=======
 
-* 明细表支持多级表头 ([#1921](https://github.com/antvis/S2/issues/1921)) ([47cdbdc](https://github.com/antvis/S2/commit/47cdbdccafbd7f19a05550a483a42aac11a93778)), closes [#1687](https://github.com/antvis/S2/issues/1687) [#1801](https://github.com/antvis/S2/issues/1801)
+# [@antv/s2-v1.35.1](https://github.com/antvis/S2/compare/@antv/s2-v1.35.0...@antv/s2-v1.35.1) (2022-11-28)
 
-# [@antv/s2-v1.34.1](https://github.com/antvis/S2/compare/@antv/s2-v1.34.0...@antv/s2-v1.34.1) (2022-11-18)
+### Bug Fixes
 
 ### Bug Fixes
 
@@ -487,11 +483,6 @@
 * 复制支持 html 格式 ([#1647](https://github.com/antvis/S2/issues/1647)) ([3ea6349](https://github.com/antvis/S2/commit/3ea634970a162d869cf12dad7aa754bebafd30f3))
 * 支持 resize 最右侧 column ([#1611](https://github.com/antvis/S2/issues/1611)) ([f63bfa2](https://github.com/antvis/S2/commit/f63bfa2a0e95c8c42c064d0e2e56ce9550ac50c6))
 
-# [@antv/s2-v1.24.0](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0) (2022-07-22)
-
-### Bug Fixes
-
-* **layout:** 修复 Firefox 浏览器部分 icon 渲染失败 close [#1571](https://github.com/antvis/S2/issues/1571) ([#1599](https://github.com/antvis/S2/issues/1599)) ([6b76c4e](https://github.com/antvis/S2/commit/6b76c4e2c80b88eeb63d7adfc6b48da7d0b3ea4c))
 * **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
 * **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
 * **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))

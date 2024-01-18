@@ -2,7 +2,7 @@ import * as mockDataConfig from 'tests/data/simple-data.json';
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common';
+import { LayoutWidthType, type S2DataConfig, type S2Options } from '@/common';
 
 const s2options: S2Options = {
   width: 800,
@@ -35,7 +35,7 @@ describe('Col width Test', () => {
     });
 
     test('get correct width in layoutWidthType adaptive mode', () => {
-      expect(s2.facet.getColLeafNodes()[0].width).toBe(200);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(199.5);
     });
 
     test('get correct width in layoutWidthType adaptive mode when enable series number', async () => {
@@ -44,7 +44,7 @@ describe('Col width Test', () => {
       });
       await s2.render();
 
-      expect(s2.facet.getColLeafNodes()[0].width).toBe(180);
+      expect(s2.facet.getColLeafNodes()[0].width).toBe(179.5);
     });
 
     test('get correct width in layoutWidthType adaptive tree mode', async () => {
@@ -69,7 +69,7 @@ describe('Col width Test', () => {
     test('get correct width in layoutWidthType compact mode', async () => {
       s2.setOptions({
         style: {
-          layoutWidthType: 'compact',
+          layoutWidthType: LayoutWidthType.Compact,
         },
       });
       await s2.render();
@@ -92,7 +92,7 @@ describe('Col width Test', () => {
       });
       s2.setOptions({
         style: {
-          layoutWidthType: 'compact',
+          layoutWidthType: LayoutWidthType.Compact,
         },
       });
       await s2.render();
@@ -126,7 +126,7 @@ describe('Col width Test', () => {
     test('get correct width in layoutWidthType compact mode', async () => {
       s2.setOptions({
         style: {
-          layoutWidthType: 'compact',
+          layoutWidthType: LayoutWidthType.Compact,
         },
       });
       await s2.render();

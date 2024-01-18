@@ -68,9 +68,9 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-$ npm install @antv/s2
-# yarn add @antv/s2
-# pnpm install @antv/s2
+$ npm install @antv/s2 --save
+# yarn add @antv/s2 --save
+# pnpm install @antv/s2 --save
 ```
 
 ## 🔨 Getting Started
@@ -228,9 +228,6 @@ pnpm site:start
 <p>
   <a>
     <img width="300" height="auto" alt="S2" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2VvTSZmI4vYAAAAAAAAAAAAADmJ7AQ/original">
-  </a>
-  <a>
-    <img width="300" height="auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/v4TlwgORE/qq_qr_code.JPG">
   </a>
 </p>
 

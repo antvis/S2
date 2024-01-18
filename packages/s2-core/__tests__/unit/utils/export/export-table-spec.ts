@@ -3,9 +3,9 @@ import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { TableSheet } from '@/sheet-type';
-import { asyncGetAllPlainData, copyData } from '@/utils';
+import { asyncGetAllPlainData } from '@/utils';
 import { NewTab, NewLine } from '@/common';
-import { CopyMIMEType } from '@/utils/export/interface';
+import { CopyMIMEType } from '@/common/interface/export';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', async () => {
@@ -61,7 +61,7 @@ describe('TableSheet Export Test', () => {
       ]);
     }
 
-    const data = copyData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
       formatOptions: {
@@ -99,7 +99,7 @@ describe('TableSheet Export Test', () => {
     );
 
     await s2.render();
-    const data = copyData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
     });
@@ -140,7 +140,7 @@ describe('TableSheet Export Test', () => {
     );
 
     await s2.render();
-    const data = copyData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
       formatOptions: true,
@@ -155,6 +155,7 @@ describe('TableSheet Export Test', () => {
       浙江省-province	家具-type	沙发	5343"
     `);
   });
+
   it('should support custom export matrix transformer', async () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -170,7 +171,7 @@ describe('TableSheet Export Test', () => {
     );
 
     await s2.render();
-    const data = copyData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
       formatOptions: true,
@@ -200,7 +201,7 @@ describe('TableSheet Export Test', () => {
     );
 
     await tableSheet.render();
-    const data = copyData({
+    const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
       split: ',',
     });

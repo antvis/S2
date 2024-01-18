@@ -23,6 +23,7 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
+  LayoutWidthType,
   S2Event,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
@@ -38,7 +39,6 @@ import type {
   Fields,
   InteractionOptions,
   InternalFullyTheme,
-  LayoutWidthType,
   OffsetConfig,
   Pagination,
   S2CellType,
@@ -249,10 +249,12 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initInteraction() {
+    this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
 
   private initTooltip() {
+    this.tooltip?.destroy?.();
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
@@ -357,9 +359,14 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
-   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
+   * @param reset 是否使用传入的 dataCfg 重置已保存的 dataCfg
+   *
+   * @example setDataCfg(dataCfg, true) 直接使用传入的 DataCfg，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
+  public setDataCfg<T extends boolean = false>(
+    dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
+    reset?: T,
+  ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
       this.dataCfg = getSafetyDataConfig(dataCfg);
@@ -373,10 +380,15 @@ export abstract class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
+
     if (reset) {
       this.options = getSafetyOptions(options);
     } else {
       this.options = customMerge(this.options, options);
+    }
+
+    if (reset || options.tooltip?.render) {
+      this.initTooltip();
     }
 
     this.registerIcons();
@@ -572,6 +584,10 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
+  protected isCellType(cell?: CellEventTarget) {
+    return cell instanceof BaseCell;
+  }
+
   // 获取当前 cell 实例
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,
@@ -580,8 +596,8 @@ export abstract class SpreadSheet extends EE {
 
     // 一直索引到 g 顶层的 canvas 来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
-      if (parent instanceof BaseCell) {
-        // 在单元格中，返回 true
+      if (this.isCellType(parent)) {
+        // 在单元格中，返回true
         return parent as T;
       }
 
@@ -618,12 +634,12 @@ export abstract class SpreadSheet extends EE {
         : false;
 
     return {
+      grandTotalsLabel: i18n('总计'),
+      subTotalsLabel: i18n('小计'),
+      grandTotalsGroupDimensions: [],
+      subTotalsGroupDimensions: [],
+      ...totalConfig,
       showSubTotals,
-      showGrandTotals: totalConfig.showGrandTotals,
-      reverseGrandTotalsLayout: totalConfig.reverseGrandTotalsLayout,
-      reverseSubTotalsLayout: totalConfig.reverseSubTotalsLayout,
-      grandTotalsLabel: totalConfig.grandTotalsLabel || i18n('总计'),
-      subTotalsLabel: totalConfig.subTotalsLabel || i18n('小计'),
     };
   }
 

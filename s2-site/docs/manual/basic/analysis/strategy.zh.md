@@ -28,7 +28,7 @@ order: 9
 <details>
 <summary>查看详情</summary>
 
-```js
+```ts
 const s2Options = {
   width: 600,
   height: 480,
@@ -71,21 +71,20 @@ const s2Options = {
 
 </details>
 
-```ts
+```tsx
 import React from "react";
-import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
-ReactDOM.render(
-  <SheetComponent
-    sheetType="strategy"
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataCfg}
+      options={s2Options}
+      sheetType="strategy"
+    />
+  )
+}
 ```
 
 <Playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>
@@ -238,7 +237,13 @@ const s2Options = {
 
 <Playground path='react-component/sheet/demo/strategy-mini-chart.tsx' rid='container2'></playground>
 
-配置如下：
+### 在普通透视表中使用
+
+如果不依赖 `React`, 想在 `@antv/s2` 普通的透视表中使用 mini 图，可以参考这个 [示例](/zh/examples/custom/custom-cell/#mini-chart)
+
+<Playground path='custom/custom-cell/demo/mini-chart.ts' rid='container3'></playground>
+
+### API
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 

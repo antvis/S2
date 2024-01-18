@@ -1,5 +1,4 @@
-import { includes } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
+import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
 import type { HeaderNodesParams } from '../../facet/layout/interface';
@@ -8,6 +7,7 @@ import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
+import { whetherLeafByLevel } from './whether-leaf-by-level';
 
 // eslint-disable-next-line max-lines-per-function
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
@@ -23,16 +23,16 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
     spreadsheet,
   } = params;
-  const { colCell } = spreadsheet.options.style!;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
     let value: string;
-    let nodeQuery;
+    let nodeQuery: Record<string, unknown>;
     let isLeaf = false;
     let isGrandTotals = false;
     let isSubTotals = false;
+    let isTotalRoot = false;
     let adjustedField = currentField;
 
     if (isTotals) {
@@ -40,27 +40,29 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
 
       isGrandTotals = totalClass.isGrandTotals;
       isSubTotals = totalClass.isSubTotals;
+      isTotalRoot = totalClass.isTotalRoot;
       value = i18n((fieldValue as TotalClass).label);
-      if (addMeasureInTotalQuery) {
-        // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
-        nodeQuery = {
-          ...query,
-          [EXTRA_FIELD]: spreadsheet?.dataSet?.fields?.values?.[0],
-        };
-        isLeaf = true;
+      if (isTotalRoot) {
+        nodeQuery = query;
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
-        nodeQuery = query;
-        if (!addTotalMeasureInTotal) {
-          isLeaf = true;
-        }
+        nodeQuery = { ...query, [currentField]: value };
       }
+
+      if (addMeasureInTotalQuery) {
+        // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
+        nodeQuery[EXTRA_FIELD] = spreadsheet?.dataSet?.fields.values![0];
+      }
+
+      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
       nodeQuery = { ...query, [EXTRA_FIELD]: value };
       adjustedField = EXTRA_FIELD;
-      isLeaf = true;
+      isGrandTotals = parentNode.isGrandTotals!;
+      isSubTotals = parentNode.isSubTotals!;
+      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;
       adjustedField = fields[index];
@@ -69,16 +71,18 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
-      nodeQuery = { ...query, [currentField]: value };
-      const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
-      const isHideValue =
-        colCell?.hideValue && isValueInCols && includes(fields, EXTRA_FIELD);
-      const extraSize = isHideValue ? 2 : 1;
+      // 子维度的维值为空时, 使用父级节点的 query, 避免查询不到数据
+      nodeQuery =
+        value === EMPTY_FIELD_VALUE
+          ? { ...query }
+          : { ...query, [currentField]: value };
 
-      isLeaf = level === fields.length - extraSize;
+      isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     }
 
-    const nodeId = generateId(parentNode.id, value);
+    // 优先找序列字段对应的格式化名称, 找不到则是普通维值
+    const formattedValue = spreadsheet.dataSet.getFieldName(value) || value;
+    const nodeId = generateId(parentNode.id, formattedValue);
 
     if (!nodeId) {
       return;
@@ -89,15 +93,16 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: nodeId,
-      value,
+      value: formattedValue,
       level,
       field: adjustedField,
       parent: parentNode,
-      isTotals,
+      isTotals: isTotals || isTotalMeasure,
       isGrandTotals,
       isSubTotals,
       isTotalMeasure,
       isCollapsed,
+      isTotalRoot,
       hierarchy,
       query: nodeQuery,
       spreadsheet,
@@ -115,6 +120,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     const hiddenColumnsInfo = spreadsheet?.facet?.getHiddenColumnsInfo(node);
 
     if (hiddenColumnsInfo && parentNode) {
+      // hiddenChildNodeInfo 属性在 S2 中没有用到，但是没删怕外部有使用，已标记为废弃
       parentNode.hiddenChildNodeInfo = hiddenColumnsInfo;
     }
 

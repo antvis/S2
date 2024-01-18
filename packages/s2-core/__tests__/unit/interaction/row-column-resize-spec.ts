@@ -226,6 +226,8 @@ describe('Interaction Row Column Resize Tests', () => {
       {
         offsetX: 10,
         offsetY: 20,
+        clientX: 10,
+        clientY: 20,
       },
       resizeInfo,
     );
@@ -233,6 +235,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(s2.store.get('resized')).toBeFalsy();
     expect(rowColumnResizeInstance.resizeStartPosition).toStrictEqual({
       offsetX: 10,
+      clientX: 10,
     });
     expect(getStartGuideLine().attr('path')).toStrictEqual([
       ['M', 3.5, 2],
@@ -356,12 +359,15 @@ describe('Interaction Row Column Resize Tests', () => {
       {
         offsetX: 10,
         offsetY: 20,
+        clientX: 10,
+        clientY: 20,
       },
       resizeInfo,
     );
 
     expect(rowColumnResizeInstance.resizeStartPosition).toStrictEqual({
       offsetY: 20,
+      clientY: 20,
     });
     expect(getStartGuideLine().attr('path')).toStrictEqual([
       ['M', 2, 3.5],
@@ -750,6 +756,8 @@ describe('Interaction Row Column Resize Tests', () => {
       {
         offsetX: 10,
         offsetY: 20,
+        clientX: 10,
+        clientY: 20,
       },
       resizeInfo,
     );
@@ -759,6 +767,8 @@ describe('Interaction Row Column Resize Tests', () => {
       {
         offsetX: 20,
         offsetY: 20,
+        clientX: 20,
+        clientY: 20,
       },
       resizeInfo,
     );

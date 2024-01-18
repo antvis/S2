@@ -37,6 +37,13 @@ export class PivotSheet extends SpreadSheet {
     return false;
   }
 
+  public getContentHeight() {
+    return this.facet.getContentHeight();
+  }
+
+  /**
+   * Check if is pivot mode
+   */
   public isPivotMode(): boolean {
     return true;
   }
@@ -65,8 +72,9 @@ export class PivotSheet extends SpreadSheet {
 
   public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
-      this.dataSet.clearDrillDownData(rowNodeId);
-      if (!preventRender) {
+      const cleaned = this.dataSet.clearDrillDownData(rowNodeId);
+
+      if (cleaned && !preventRender) {
         // 重置当前交互
         this.interaction.reset();
         this.render(false);

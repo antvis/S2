@@ -183,4 +183,5 @@ export const sortData = {
       price: '3',
     },
   ],
+  totalData: [],
 };

@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pivot Dataset Total Test test for total with dimension group get correct MultiData when query need to be processed 1`] = `
+Array [
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "杭州市",
+      "number": 7789,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "绍兴市",
+      "number": 2367,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "宁波市",
+      "number": 3877,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "舟山市",
+      "number": 4342,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+]
+`;
+
+exports[`Pivot Dataset Total Test test for total with dimension group get correct MultiData when query need to be processed 2`] = `Array []`;
+
+exports[`Pivot Dataset Total Test test for total with dimension group get correct MultiData when query need to be processed 3`] = `
+Array [
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "杭州市",
+      "number": 7789,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "绍兴市",
+      "number": 2367,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "宁波市",
+      "number": 3877,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "舟山市",
+      "number": 4342,
+      "province": "浙江省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "成都市",
+      "number": 1723,
+      "province": "四川省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "绵阳市",
+      "number": 1822,
+      "province": "四川省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "南充市",
+      "number": 1943,
+      "province": "四川省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+  CellData {
+    "extraField": "number",
+    "raw": Object {
+      "city": "乐山市",
+      "number": 2330,
+      "province": "四川省",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+  },
+]
+`;

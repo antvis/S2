@@ -28,6 +28,7 @@ import type {
   MultiData,
   TextTheme,
   ViewMeta,
+  ViewMetaData,
   ViewMetaIndexType,
 } from '../common/interface';
 import {
@@ -37,7 +38,7 @@ import {
   type IconCondition,
   type InteractionStateTheme,
 } from '../common/interface';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { CellData } from '../data-set/cell-data';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
@@ -67,6 +68,12 @@ import type { RawData } from './../common/interface/s2DataConfig';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
+  /**
+   * 用于 merge cell 中用于绘制 border 的位置信息
+   * @see packages/s2-core/src/facet/base-facet.ts L1319
+   */
+  position: [rowIndex: number, colIndex: number];
+
   // condition icon 坐标
   iconPosition: PointLike;
 
@@ -180,15 +187,18 @@ export class DataCell extends BaseCell<ViewMeta> {
       return;
     }
 
-    if (this.spreadsheet.options.interaction?.hoverHighlight) {
+    const { currentRow, currentCol } =
+      this.spreadsheet.interaction.getHoverHighlight();
+
+    if (currentRow || currentCol) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
 
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.colIndex ||
-        currentRowIndex === currentHoverCell?.rowIndex
+        (currentCol && currentColIndex === currentHoverCell?.colIndex) ||
+        (currentRow && currentRowIndex === currentHoverCell?.rowIndex)
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -259,11 +269,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.generateIconConfig();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
+
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
     }
-
-    this.drawInteractiveBorderShape();
 
     if (!this.shouldHideRowSubtotalData()) {
       this.drawTextShape();
@@ -271,6 +280,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     this.drawBorders();
+    this.drawInteractiveBorderShape();
     this.update();
   }
 
@@ -308,17 +318,24 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected shouldHideRowSubtotalData() {
+    const { rowId, rowIndex } = this.meta;
+    // 如果该格子是被下钻的格子，下钻格子本身来说是明细格子，因为下钻变成了小计格子，是应该展示的
+    const drillDownIdPathMap = this.spreadsheet.store.get('drillDownIdPathMap');
+
+    if (drillDownIdPathMap?.has(rowId!)) {
+      return false;
+    }
+
     const { row = {} } = this.spreadsheet.options.totals ?? {};
-    const { rowIndex } = this.meta;
-    const node = this.spreadsheet.facet.getRowLeafNodes()[rowIndex];
+    const node = this.spreadsheet.facet?.getRowLeafNodeByIndex(rowIndex);
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
 
-    /*
+    /**
      * 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
-     * 不过能否查到实际的数据，都不应该展示
+     * 不管能否查到实际的数据，都不应该展示
      */
     return (
-      this.spreadsheet.options.hierarchyType === 'tree' &&
+      this.spreadsheet.isHierarchyTreeType() &&
       !row.showSubTotals &&
       isRowSubTotal
     );
@@ -329,7 +346,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       return {
         value: null,
 
-        /*
+        /**
          * 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
          * 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
          */
@@ -392,18 +409,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const cellStyle = this.getStyle()?.cell;
-    const { crossBackgroundColor, backgroundColorOpacity } = cellStyle!;
-
-    let backgroundColor = cellStyle!.backgroundColor;
-
-    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
-      /*
-       * 隔行颜色的配置
-       * 偶数行展示灰色背景，因为index是从0开始的
-       */
-      backgroundColor = crossBackgroundColor;
-    }
+    const backgroundColorByCross = this.getCrossBackgroundColor(
+      this.meta.rowIndex,
+    );
+    const backgroundColor = backgroundColorByCross.backgroundColor;
+    const backgroundColorOpacity =
+      backgroundColorByCross.backgroundColorOpacity;
 
     if (this.shouldHideRowSubtotalData()) {
       return {
@@ -419,7 +430,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
-  // dataCell根据state 改变当前样式，
+  // dataCell 根据 state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
@@ -481,7 +492,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.spreadsheet.dataSet.getCellData({
           query: { rowIndex: this.meta.rowIndex },
         })
-      : getFieldValueOfViewMetaData(this.meta.data);
+      : CellData.getFieldValue(this.meta.data as ViewMetaData);
 
     return condition?.mapping(value, rowDataInfo as RawData, this);
   }

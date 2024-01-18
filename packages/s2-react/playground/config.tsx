@@ -7,6 +7,8 @@ import {
   type CustomTreeNode,
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
+  customMerge,
+  type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -73,6 +75,39 @@ export const pivotSheetDataCfg: S2DataConfig = {
 };
 
 export const pivotSheetMultiLineTextDataCfg = PivotSheetMultiLineTextDataCfg;
+
+export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
+  pivotSheetDataCfg,
+  {
+    data: [
+      ...pivotSheetDataCfg.data,
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '笔',
+        price: '11111111',
+      },
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '纸张',
+        price: '2',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '笔',
+        price: '2',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '纸张',
+        price: '133.333',
+      },
+    ],
+  },
+);
 
 export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   text: [
@@ -292,6 +327,8 @@ export const s2Options: SheetComponentOptions = {
   interaction: {
     enableCopy: true,
     copyWithFormat: true,
+    copyWithHeader: true,
+    hoverAfterScroll: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
@@ -300,7 +337,7 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.CURRENT,
+      rowResizeType: ResizeType.ALL,
       colResizeType: ResizeType.CURRENT,
     },
   },
@@ -344,6 +381,11 @@ export const sliderOptions: SliderSingleProps = {
     2: '2',
     10: '10',
   },
+};
+
+export const s2ThemeConfig: ThemeCfg = {
+  name: 'default',
+  theme: {},
 };
 
 export const defaultOptions =

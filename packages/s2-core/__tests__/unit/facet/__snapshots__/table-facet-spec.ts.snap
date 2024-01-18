@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table Mode Facet Test With Adaptive Layout should get correct col layout col hierarchy coordinate with adaptive layout 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "width": 119.8,
+    "x": 0,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 119.8,
+    "x": 119.8,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 119.8,
+    "x": 239.6,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 119.8,
+    "x": 359.4,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 119.8,
+    "x": 479.2,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Table Mode Facet Test With Adaptive Layout should get correct col layout with seriesNumber col hierarchy coordinate with adaptive layout with seriesNumber 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "width": 103.8,
+    "x": 80,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 103.8,
+    "x": 183.8,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 103.8,
+    "x": 287.6,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 103.8,
+    "x": 391.40000000000003,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 103.8,
+    "x": 495.20000000000005,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Table Mode Facet With Column Grouping Frozen Test should get correct frozenInfo 1`] = `
+Object {
+  "frozenCol": Object {
+    "range": Array [
+      0,
+      0,
+    ],
+    "width": 199.66,
+    "x": 0,
+  },
+  "frozenRow": Object {
+    "height": 60,
+    "range": Array [
+      0,
+      1,
+    ],
+    "y": 0,
+  },
+  "frozenTrailingCol": Object {
+    "range": Array [
+      2,
+      2,
+    ],
+    "width": 199.66,
+    "x": 399.34000000000003,
+  },
+  "frozenTrailingRow": Object {
+    "height": 60,
+    "range": Array [
+      30,
+      31,
+    ],
+    "y": 502,
+  },
+}
+`;
+
+exports[`Table Mode Facet With Frozen Test should get correct frozenInfo 1`] = `
+Object {
+  "frozenCol": Object {
+    "range": Array [
+      0,
+      1,
+    ],
+    "width": 239.6,
+    "x": 0,
+  },
+  "frozenRow": Object {
+    "height": 60,
+    "range": Array [
+      0,
+      1,
+    ],
+    "y": 0,
+  },
+  "frozenTrailingCol": Object {
+    "range": Array [
+      3,
+      4,
+    ],
+    "width": 239.60000000000002,
+    "x": 359.4,
+  },
+  "frozenTrailingRow": Object {
+    "height": 60,
+    "range": Array [
+      30,
+      31,
+    ],
+    "y": 502,
+  },
+}
+`;

@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
+/**
+ * 该示例为 React 版本的趋势分析表
+ * 如何在普通图表中使用, 请查看: https://s2.antv.antgroup.com/zh/examples/custom/custom-cell#mini-chart
+ */
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/b942d973-7364-4fad-a10a-369426a61376.json',
 )

@@ -1,18 +1,15 @@
 # [@antv/s2-vue-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.8...@antv/s2-vue-v2.0.0-next.9) (2023-12-12)
 
-
 ### Features
 
 * 支持在单元格内渲染 G2 图表 ([#2437](https://github.com/antvis/S2/issues/2437)) ([497f941](https://github.com/antvis/S2/commit/497f9414b89fce01b60db9b6c2eb4292ffe69c1d))
 
 # [@antv/s2-vue-v2.0.0-next.8](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.7...@antv/s2-vue-v2.0.0-next.8) (2023-11-22)
 
-
 ### Features
 
 * 支持 antd v5 ([#2413](https://github.com/antvis/S2/issues/2413)) ([299c7bf](https://github.com/antvis/S2/commit/299c7bfe2e86838153273c92dd6d2b72917cfdea))
-* 支持 React 18 (兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
-
+* 支持 React 18 （兼容 React 16/17) ([#2373](https://github.com/antvis/S2/issues/2373)) ([25ce9b0](https://github.com/antvis/S2/commit/25ce9b0ccc3e609d8add09b3209f6f981dc1dc4e))
 
 ### BREAKING CHANGES
 
@@ -59,10 +56,9 @@
 
 # [@antv/s2-vue-v2.0.0-next.6](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.5...@antv/s2-vue-v2.0.0-next.6) (2023-04-23)
 
-
 ### Bug Fixes
 
-*  修复 vue playground 启动失败 ([#2104](https://github.com/antvis/S2/issues/2104)) ([a62974d](https://github.com/antvis/S2/commit/a62974d88e1e3f6d3dcc16daf936a95236e9d6d3))
+* 修复 vue playground 启动失败 ([#2104](https://github.com/antvis/S2/issues/2104)) ([a62974d](https://github.com/antvis/S2/commit/a62974d88e1e3f6d3dcc16daf936a95236e9d6d3))
 
 # [@antv/s2-vue-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.4...@antv/s2-vue-v2.0.0-next.5) (2023-02-22)
 

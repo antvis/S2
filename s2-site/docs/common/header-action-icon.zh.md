@@ -23,9 +23,9 @@
 
 | 参数 | 功能描述 | 类型 | 默认值 | 必选 |
 | --- | --- | --- | --- | --- |
-| iconName | 当前点击的 icon 名称 | string |  | ✓ |
-| meta |当前 cell 的 meta 信息| Node | | ✓ |
-| event |当前点击事件信息| Event |false| ✓ |
+| iconName | 当前 icon 名称 | string |  | ✓ |
+| meta |当前 cell 的 meta 信息| [Node](/api/basic-class/node) | | ✓ |
+| event |当前点击事件信息| Event | false | ✓ |
 
 ## CustomSVGIcon
 

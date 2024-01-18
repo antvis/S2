@@ -4,7 +4,7 @@
 import { get, keys } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
-import { EXTRA_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -95,23 +95,24 @@ describe('Pivot Mode Test When Value In Row', () => {
     });
 
     test('should get correct indexesData', () => {
+      const prefix = 'province[&]city[&]type[&]sub_type';
       const indexesData = dataSet.indexesData;
 
-      expect(get(indexesData, '1.1.1.1')).toEqual({
+      expect(get(indexesData, [prefix, 1, 1, 1, 1, 1])).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
       });
-      expect(get(indexesData, '1.2.2.1')).toEqual({
+      expect(get(indexesData, [prefix, 1, 2, 1, 1, 2])).toEqual({
         province: '浙江省',
         city: '绍兴市',
-        type: '办公用品',
-        sub_type: '笔',
-        number: 1304,
+        type: '家具',
+        sub_type: '沙发',
+        number: 632,
       });
-      expect(get(indexesData, '2.1.1.2')).toEqual({
+      expect(get(indexesData, [prefix, 2, 1, 1, 1, 2])).toEqual({
         province: '四川省',
         city: '成都市',
         type: '家具',
@@ -126,6 +127,7 @@ describe('Pivot Mode Test When Value In Row', () => {
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
+        EXTRA_FIELD,
         'type',
         'sub_type',
       ]);
@@ -133,8 +135,98 @@ describe('Pivot Mode Test When Value In Row', () => {
         getDimensionsWithoutPathPre(sortedDimensionValues['province']),
       ).toEqual(['浙江省', '四川省']);
       expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues['city']),
-      ).toEqual([
+        getDimensionsWithoutPathPre(sortedDimensionValues['sub_type']),
+      ).toEqual(['桌子', '沙发', '笔', '纸张']);
+    });
+  });
+
+  describe('test for query data', () => {
+    test('getCellData function', () => {
+      expect(
+        dataSet.getCellData({
+          query: {
+            province: '浙江省',
+            city: '杭州市',
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[VALUE_FIELD],
+      ).toEqual(7789);
+
+      expect(
+        dataSet.getCellData({
+          query: {
+            province: '四川省',
+            city: '乐山市',
+            type: '办公用品',
+            sub_type: '纸张',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[VALUE_FIELD],
+      ).toEqual(352);
+    });
+
+    test('getMultiData function', () => {
+      const specialQuery = {
+        province: '浙江省',
+        city: '杭州市',
+        type: '家具',
+        sub_type: '桌子',
+        [EXTRA_FIELD]: 'number',
+      };
+
+      expect(dataSet.getCellMultiData({ query: specialQuery })).toHaveLength(1);
+      expect(
+        dataSet.getCellMultiData({ query: specialQuery })[0]?.[VALUE_FIELD],
+      ).toEqual(7789);
+
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            province: '浙江省',
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
+        }),
+      ).toHaveLength(4);
+
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
+        }),
+      ).toHaveLength(8);
+
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            type: '家具',
+            [EXTRA_FIELD]: 'number',
+          },
+        }),
+      ).toHaveLength(16);
+
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            [EXTRA_FIELD]: 'number',
+          },
+        }),
+      ).toHaveLength(32);
+    });
+
+    test('getDimensionValues function', () => {
+      // without query
+      expect(dataSet.getDimensionValues('province')).toEqual([
+        '浙江省',
+        '四川省',
+      ]);
+      expect(dataSet.getDimensionValues('city')).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -144,6 +236,19 @@ describe('Pivot Mode Test When Value In Row', () => {
         '南充市',
         '乐山市',
       ]);
+      expect(dataSet.getDimensionValues('type')).toEqual(['家具', '办公用品']);
+      expect(dataSet.getDimensionValues('sub_type')).toEqual([
+        '桌子',
+        '沙发',
+        '笔',
+        '纸张',
+      ]);
+
+      expect(dataSet.getDimensionValues('empty')).toEqual([]);
+
+      const sortedDimensionValues = dataSet.sortedDimensionValues;
+
+      // with query
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['type']),
       ).toEqual(['家具', '办公用品']);

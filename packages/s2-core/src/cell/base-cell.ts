@@ -156,6 +156,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     condition: Condition,
   ): ConditionMappingResult | undefined | null;
 
+  protected abstract getBackgroundColor(): {
+    backgroundColor: string | undefined;
+    backgroundColorOpacity: number | undefined;
+    intelligentReverseTextColor: boolean;
+  };
+
   public constructor(
     meta: T,
     spreadsheet: SpreadSheet,
@@ -300,6 +306,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.linkFieldShape;
   }
 
+  public getBackgroundShape() {
+    return this.backgroundShape;
+  }
+
+  public getStateShapes() {
+    return this.stateShapes;
+  }
+
   protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea') as ResizeArea;
   }
@@ -353,7 +367,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 绘制hover悬停，刷选的外框
+   * 绘制 hover 悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
     this.stateShapes.set(
@@ -361,25 +375,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       renderRect(this, {
         ...this.getBBoxByType(CellClipBox.PADDING_BOX),
         visibility: 'hidden',
+        pointerEvents: 'none',
       }),
     );
-  }
-
-  protected abstract getBackgroundColor(): {
-    backgroundColor: string | undefined;
-    backgroundColorOpacity: number | undefined;
-    intelligentReverseTextColor: boolean;
-  };
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } =
-      this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getBBoxByType(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    });
   }
 
   /**
@@ -391,8 +389,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       renderRect(this, {
         ...this.getBBoxByType(),
         visibility: 'hidden',
+        pointerEvents: 'none',
       }),
     );
+  }
+
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getBBoxByType(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    });
   }
 
   public renderTextShape(
@@ -749,5 +759,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
 
     return getIconTotalWidth(this.groupedIcons[position], iconStyle);
+  }
+
+  protected getCrossBackgroundColor(rowIndex: number) {
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
+
+    if (crossBackgroundColor && rowIndex % 2 === 0) {
+      // 隔行颜色的配置
+      // 偶数行展示灰色背景，因为index是从0开始的
+      return { backgroundColorOpacity, backgroundColor: crossBackgroundColor };
+    }
+
+    return {
+      backgroundColorOpacity,
+      backgroundColor: this.getStyle().cell.backgroundColor,
+    };
   }
 }

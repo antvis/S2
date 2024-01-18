@@ -1,4 +1,4 @@
-import type { PivotDataSet, RawData } from '@antv/s2';
+import { ORIGIN_FIELD, type PivotDataSet, type RawData } from '@antv/s2';
 import type { PartDrillDownInfo } from '@antv/s2-shared';
 import { forEach, random } from 'lodash';
 import React from 'react';
@@ -29,15 +29,12 @@ export const partDrillDown: PartDrillDown = {
   fetchData: (meta, drillFields) =>
     new Promise<PartDrillDownInfo>((resolve) => {
       // 弹窗 -> 选择 -> 请求数据
-      const preDrillDownfield =
-        meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet as PivotDataSet;
       const field = drillFields[0];
 
       const rowData = dataSet
         .getCellMultiData({
           query: meta.query!,
-          drillDownFields: [preDrillDownfield],
         })
         .filter(
           (item) =>
@@ -47,7 +44,7 @@ export const partDrillDown: PartDrillDown = {
       const drillDownData: RawData[] = [];
 
       forEach(rowData, (data) => {
-        const { number, sub_type: subType, type } = data.getOrigin();
+        const { number, sub_type: subType, type } = data[ORIGIN_FIELD];
         const number0 = random(50, number as number);
         const number1 = (number as number) - number0;
         const dataItem0: RawData = {

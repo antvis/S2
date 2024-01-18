@@ -1,6 +1,6 @@
 import { PivotSheet } from '@antv/s2';
 
-fetch('https://assets.antv.antgroup.com/s2/basic.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');

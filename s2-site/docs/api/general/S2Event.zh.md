@@ -60,6 +60,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
+| 键盘方向键移动           | `S2Event.DATA_CELL_SELECT_MOVE`  | 数值单元格键盘方向键移动                          |
 | 单元格渲染                 | `S2Event.DATA_CELL_RENDER`       | 数值单元格布局渲染完成事件                  |
 
 ### 角头单元格 (CornerCell)
