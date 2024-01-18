@@ -723,10 +723,10 @@ export class PivotFacet extends FrozenFacet {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    const customRowWidth = this.getCellCustomSize(null, rowCell?.width!);
+    const customRowCellWidth = this.getCellCustomSize(null, rowCell?.width!);
 
-    if (isNumber(customRowWidth)) {
-      return customRowWidth;
+    if (isNumber(customRowCellWidth)) {
+      return customRowCellWidth;
     }
 
     // 2. 然后是计算 (+ icon province/city/level)
@@ -737,16 +737,25 @@ export class PivotFacet extends FrozenFacet {
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell!;
 
-    // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
+    /**
+     * 初始化角头时，保证其在树形模式下不换行, 给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
+     * 额外增加 1，当内容和容器宽度恰好相等时会出现换行
+     */
     const maxLabelWidth =
       this.spreadsheet.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
-      cornerIconStyle!.size! * 2 +
-      cornerIconStyle!.margin!.left! +
-      cornerIconStyle!.margin!.right! +
-      this.rowCellTheme?.padding?.left! +
-      this.rowCellTheme?.padding?.right!;
+      cornerIconStyle.size * 2 +
+      cornerIconStyle.margin?.left +
+      cornerIconStyle.margin?.right +
+      this.rowCellTheme.padding?.left +
+      this.rowCellTheme.padding?.right +
+      1;
 
-    return Math.max(DEFAULT_TREE_ROW_CELL_WIDTH, maxLabelWidth);
+    const width = Math.max(
+      customRowCellWidth ?? DEFAULT_TREE_ROW_CELL_WIDTH,
+      maxLabelWidth,
+    );
+
+    return Number.isNaN(width) ? DEFAULT_TREE_ROW_CELL_WIDTH : width;
   }
 
   /**
