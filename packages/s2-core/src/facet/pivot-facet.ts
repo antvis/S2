@@ -854,13 +854,13 @@ export class PivotFacet extends FrozenFacet {
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
     // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCfg.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
     const currentTreeRowsWidth = treeRowsWidth ?? rowCfg?.treeRowsWidth;
-    if (currentTreeRowsWidth) {
+    if (isNumber(currentTreeRowsWidth)) {
       return currentTreeRowsWidth;
     }
 
     // 2. 其次是自定义
     const customRowWidth = this.getCellCustomWidth(null, rowCfg?.width);
-    if (customRowWidth) {
+    if (isNumber(customRowWidth)) {
       return customRowWidth;
     }
 
@@ -868,6 +868,7 @@ export class PivotFacet extends FrozenFacet {
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
+
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell;
     // 初始化角头时，保证其在树形模式下不换行
@@ -882,10 +883,12 @@ export class PivotFacet extends FrozenFacet {
       this.rowCellTheme.padding?.left +
       this.rowCellTheme.padding?.right;
 
-    return Math.max(
+    const width = Math.max(
       currentTreeRowsWidth ?? DEFAULT_TREE_ROW_WIDTH,
       maxLabelWidth,
     );
+
+    return Number.isNaN(width) ? DEFAULT_TREE_ROW_WIDTH : width;
   }
 
   /**

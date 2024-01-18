@@ -186,4 +186,34 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.findById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
     expect(group.findById(KEY_GROUP_CORNER_RESIZE_AREA)).toBeNull();
   });
+
+  test('should render correctly layout when tree row width is invalid number', () => {
+    const s2 = renderSheet(null);
+
+    s2.setOptions({
+      hierarchyType: 'tree',
+      style: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        treeRowsWidth: '#',
+        rowCfg: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          treeRowsWidth: '@',
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const nodes = s2.getRowNodes().map((node) => {
+      return {
+        id: node.id,
+        width: node.width,
+        height: node.height,
+      };
+    });
+
+    expect(nodes).toMatchSnapshot();
+  });
 });
