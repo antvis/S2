@@ -131,7 +131,7 @@ export abstract class BaseFacet {
   public abstract getContentHeight(): number;
 
   public abstract getViewCellHeights(
-    layoutResult: LayoutResult,
+    layoutResult?: LayoutResult,
   ): ViewCellHeights;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;

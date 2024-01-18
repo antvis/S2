@@ -487,15 +487,31 @@ export class TableFacet extends FrozenFacet {
     return colWidth;
   }
 
-  public getCellHeight(index: number) {
-    if (this.rowOffsets) {
-      const heightByField = get(
-        this.spreadsheet,
-        'options.style.rowCfg.heightByField',
-        {},
-      );
+  private initRowOffsets() {
+    const { dataSet } = this.cfg;
+    const { heightByField = {} } = this.spreadsheet.options.style?.rowCfg || {};
 
-      const customHeight = heightByField?.[String(index)];
+    if (Object.keys(heightByField).length) {
+      const data = dataSet.getDisplayDataSet();
+      this.rowOffsets = [0];
+      let lastOffset = 0;
+
+      data.forEach((_, idx) => {
+        const currentHeight =
+          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
+        const currentOffset = lastOffset + currentHeight;
+        this.rowOffsets.push(currentOffset);
+        lastOffset = currentOffset;
+      });
+    }
+  }
+
+  public getCellHeight(rowIndex: number) {
+    if (this.rowOffsets) {
+      const { heightByField = {} } =
+        this.spreadsheet.options.style?.rowCfg || {};
+      const customHeight = heightByField?.[String(rowIndex)];
+
       if (isNumber(customHeight)) {
         return customHeight;
       }
@@ -611,7 +627,9 @@ export class TableFacet extends FrozenFacet {
   };
 
   public init() {
+    this.initRowOffsets();
     super.init();
+
     const { width, height } = this.panelBBox;
     this.spreadsheet.panelGroup.setClip({
       type: 'rect',
