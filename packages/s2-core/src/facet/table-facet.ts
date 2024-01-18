@@ -1,5 +1,5 @@
 import { Group } from '@antv/g';
-import { isBoolean, isNumber, last, maxBy, set } from 'lodash';
+import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
@@ -40,6 +40,31 @@ export class TableFacet extends FrozenFacet {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+  }
+
+  public init() {
+    this.initRowOffsets();
+    super.init();
+  }
+
+  protected initRowOffsets() {
+    const heightByField =
+      this.spreadsheet.options.style?.rowCell?.heightByField;
+
+    if (keys(heightByField!).length) {
+      const data = this.spreadsheet.dataSet.getDisplayDataSet();
+
+      this.rowOffsets = [0];
+      let lastOffset = 0;
+
+      data.forEach((_, rowIndex) => {
+        const currentHeight = this.getCellHeightByRowIndex(rowIndex);
+        const currentOffset = lastOffset + currentHeight;
+
+        this.rowOffsets.push(currentOffset);
+        lastOffset = currentOffset;
+      });
+    }
   }
 
   private onSortHandler = (sortParams: SortParams) => {
@@ -392,12 +417,12 @@ export class TableFacet extends FrozenFacet {
     let colWidth: number;
 
     if (layoutWidthType === LayoutWidthType.Compact) {
-      const datas = dataSet.getDisplayDataSet();
+      const data = dataSet.getDisplayDataSet();
       const formatter = dataSet.getFieldFormatter(colNode.field);
 
       // 采样前50，找出表身最长的数据
       const maxLabel = maxBy(
-        datas
+        data
           ?.slice(0, 50)
           .map(
             (data) =>

@@ -1,5 +1,5 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
-import { keys, last } from 'lodash';
+import { last } from 'lodash';
 import type { DataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
@@ -590,7 +590,6 @@ export abstract class FrozenFacet extends BaseFacet {
 
   protected init(): void {
     super.init();
-    this.initRowOffsets();
   }
 
   public render(): void {
@@ -664,26 +663,6 @@ export abstract class FrozenFacet extends BaseFacet {
       trailingColCount,
     };
   };
-
-  protected initRowOffsets() {
-    const heightByField =
-      this.spreadsheet.options.style?.rowCell?.heightByField;
-
-    if (keys(heightByField!).length) {
-      const data = this.spreadsheet.dataSet.getDisplayDataSet();
-
-      this.rowOffsets = [0];
-      let lastOffset = 0;
-
-      data.forEach((_, rowIndex) => {
-        const currentHeight = this.getCellHeightByRowIndex(rowIndex);
-        const currentOffset = lastOffset + currentHeight;
-
-        this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
-      });
-    }
-  }
 
   public getCellHeightByRowIndex(rowIndex: number) {
     if (this.rowOffsets) {
