@@ -29,10 +29,10 @@ const s2Options: S2Options = {
 describe('Table Sheet Row Offsets Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = new TableSheet(getContainer(), s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });
 
   test('should get correctly row offset data', () => {
