@@ -1,29 +1,29 @@
 /* eslint-disable max-classes-per-file */
 import {
   CellType,
+  CornerNodeType,
+  InteractionStateName,
+  RowCell,
+  SpreadSheet,
   customMerge,
   getCellMeta,
-  InteractionStateName,
-  SpreadSheet,
-  type S2DataConfig,
   type GEvent,
-  RowCell,
+  type S2DataConfig,
 } from '@antv/s2';
-import React from 'react';
-import { get } from 'lodash';
 import { waitFor } from '@testing-library/react';
-import { getContainer, renderComponent } from '../../../../util/helpers';
+import React from 'react';
 import {
-  StrategySheetDataConfig,
   StrategyOptions,
+  StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
+import { getContainer, renderComponent } from '../../../../util/helpers';
+import { strategyCopy } from '@/components/export/strategy-copy';
 import {
   SheetComponent,
   StrategySheetColCell,
   StrategySheetDataCell,
   type SheetComponentOptions,
 } from '@/components';
-import { strategyCopy } from '@/components/export/strategy-copy';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -132,6 +132,28 @@ describe('<StrategySheet/> Tests', () => {
     },
   );
 
+  test('should get current cell custom tooltip content', () => {
+    renderStrategySheet({
+      tooltip: {
+        enable: true,
+        rowCell: {
+          content: () => <div>{CellType.ROW_CELL}</div>,
+        },
+        dataCell: {
+          content: () => <div>{CellType.DATA_CELL}</div>,
+        },
+      },
+    });
+
+    jest.spyOn(s2, 'getCellType').mockReturnValueOnce(CellType.COL_CELL);
+
+    s2.showTooltipWithInfo({} as GEvent, []);
+
+    [CellType.ROW_CELL, CellType.DATA_CELL].forEach((content) => {
+      expect(s2.tooltip.container!.innerText).not.toEqual(content);
+    });
+  });
+
   test('should render correctly KPI bullet column measure text', async () => {
     renderStrategySheet(
       {
@@ -167,6 +189,37 @@ describe('<StrategySheet/> Tests', () => {
     });
   });
 
+  test('should get custom corner extra field text', async () => {
+    const cornerExtraFieldText = '自定义';
+    const s2DataCfg: Partial<S2DataConfig> = {
+      fields: {
+        ...StrategySheetDataConfig.fields,
+        valueInCols: false,
+      },
+    };
+
+    const s2Options: SheetComponentOptions = {
+      cornerExtraFieldText,
+    };
+
+    renderStrategySheet(s2Options, {
+      ...StrategySheetDataConfig,
+      ...s2DataCfg,
+    });
+
+    await waitFor(() => {
+      const cornerNode = s2.facet
+        .getCornerNodes()
+        .find((node) => node.cornerType === CornerNodeType.Row);
+
+      const textList = s2.facet.getCornerNodes().map((node) => node.value);
+      const cornerText = `自定义节点A/指标E/${cornerExtraFieldText}`;
+
+      expect(textList).toEqual([cornerText, '日期']);
+      expect(cornerNode!.value).toEqual(cornerText);
+    });
+  });
+
   test('should format corner date field', async () => {
     renderStrategySheet(
       {
@@ -185,11 +238,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     await waitFor(() => {
-      const textList = s2.facet.cornerHeader.children.map((element) =>
-        get(element, 'actualText'),
-      );
+      const cornerTextList = s2.facet
+        .getCornerCells()
+        .map((cell) => cell.getActualText());
 
-      expect(textList).toEqual(['自定义节点A/指标E/指标', '日期']);
+      expect(cornerTextList).toEqual(['自定义节点A/指标E/数值', '日期']);
     });
   });
 
@@ -212,11 +265,11 @@ describe('<StrategySheet/> Tests', () => {
     );
 
     await waitFor(() => {
-      const textList = s2.facet.cornerHeader.children.map((element) =>
-        get(element, 'actualText'),
-      );
+      const cornerTextList = s2.facet
+        .getCornerCells()
+        .map((cell) => cell.getActualText());
 
-      expect(textList).toEqual(['测试', '日期']);
+      expect(cornerTextList).toEqual(['测试', '日期']);
     });
   });
 
@@ -262,6 +315,30 @@ describe('<StrategySheet/> Tests', () => {
         expect(result).toMatchSnapshot();
         expect(corner1).toEqual(['', '', '日期']);
         expect(corner2).toEqual(['', '', '指标']);
+      });
+    });
+
+    test('should export correct data for default corner text', async () => {
+      await waitFor(() => {
+        s2.setOptions({
+          cornerText: undefined,
+        });
+
+        const result = strategyCopy(s2, '\t', true);
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data for custom corner text', async () => {
+      await waitFor(() => {
+        s2.setOptions({
+          cornerText: '自定义',
+        });
+
+        const result = strategyCopy(s2, '\t', true);
+
+        expect(result).toMatchSnapshot();
       });
     });
 

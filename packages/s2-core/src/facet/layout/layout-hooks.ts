@@ -36,7 +36,13 @@ export const layoutHierarchy = (
   const hiddenColumnNode =
     spreadsheet?.facet?.getHiddenColumnsInfo(currentNode);
 
-  if (hiddenColumnNode) {
+  if (
+    hiddenColumnNode &&
+    // fix: Only hiding the column headers is supported to prevent the row subtotals from being hidden when the IDs of the row totals and column totals are the same.
+    spreadsheet?.dataSet?.fields?.columns?.find(
+      (field) => field === currentNode?.field,
+    )
+  ) {
     return false;
   }
 

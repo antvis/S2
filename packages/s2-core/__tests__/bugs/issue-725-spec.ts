@@ -3,15 +3,13 @@
  * https://github.com/antvis/S2/issues/725
  * Wrong multi measure render
  * Wrong group sort
- *
  */
 
 import * as mockDataConfig from 'tests/data/data-issue-725.json';
 import { assembleDataCfg } from '../util';
 import type { S2DataConfig } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set';
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
+import { PivotSheet } from '@/sheet-type';
 
 jest.mock('@/sheet-type');
 
@@ -39,18 +37,17 @@ describe('Group Sort When Have Same Child Measure', () => {
   });
 
   test('should get correct group sort', () => {
-    expect(
-      getDimensionsWithoutPathPre(dataSet.getDimensionValues('type')),
-    ).toEqual(['办公用品', '家具产品', '家具产品', '办公用品']);
-    expect(
-      getDimensionsWithoutPathPre(
-        dataSet.getDimensionValues('type', { city: '白山' }),
-      ),
-    ).toEqual(['办公用品', '家具产品']);
-    expect(
-      getDimensionsWithoutPathPre(
-        dataSet.getDimensionValues('type', { city: '抚顺' }),
-      ),
-    ).toEqual(['家具产品', '办公用品']);
+    expect(dataSet.getDimensionValues('type')).toEqual([
+      '办公用品',
+      '家具产品',
+    ]);
+    expect(dataSet.getDimensionValues('type', { city: '白山' })).toEqual([
+      '办公用品',
+      '家具产品',
+    ]);
+    expect(dataSet.getDimensionValues('type', { city: '抚顺' })).toEqual([
+      '家具产品',
+      '办公用品',
+    ]);
   });
 });

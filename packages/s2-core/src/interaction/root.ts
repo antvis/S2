@@ -2,23 +2,23 @@ import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import type { MergedCell } from '../cell';
 import {
   CellType,
+  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
-  INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
 } from '../common/constant';
 import type {
-  BrushSelection,
+  BrushSelectionOptions,
   BrushSelectionInfo,
   CellMeta,
   CustomInteraction,
+  InteractionCellHighlightOptions,
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
-  InteractionCellSelectedHighlightOptions,
 } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
@@ -36,14 +36,14 @@ import {
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
-import { EventController } from './event-controller';
-import { RangeSelection } from './range-selection';
-import { SelectedCellMove } from './selected-cell-move';
-import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { ColCellBrushSelection } from './brush-selection/col-brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
 import { RowCellBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
 import { RowColumnResize } from './row-column-resize';
+import { SelectedCellMove } from './selected-cell-move';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -146,7 +146,10 @@ export class RootInteraction {
   }
 
   public isSelectedState() {
-    return this.isStateOf(InteractionStateName.SELECTED);
+    return (
+      this.isStateOf(InteractionStateName.SELECTED) ||
+      this.isStateOf(InteractionStateName.BRUSH_SELECTED)
+    );
   }
 
   public isAllSelectedState() {
@@ -184,7 +187,7 @@ export class RootInteraction {
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
-    const allCells = this.spreadsheet.facet.getCells();
+    const allCells = this.spreadsheet.facet?.getCells();
 
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     return map(ids, (id) =>
@@ -325,7 +328,7 @@ export class RootInteraction {
   }
 
   private getBrushSelectionInfo(
-    brushSelection?: boolean | BrushSelection,
+    brushSelection?: boolean | BrushSelectionOptions,
   ): BrushSelectionInfo {
     if (isBoolean(brushSelection)) {
       return {
@@ -542,7 +545,7 @@ export class RootInteraction {
     return this.hoverTimer;
   }
 
-  public getSelectedCellHighlight(): InteractionCellSelectedHighlightOptions {
+  public getSelectedCellHighlight(): InteractionCellHighlightOptions {
     const { selectedCellHighlight } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(selectedCellHighlight)) {
@@ -559,7 +562,7 @@ export class RootInteraction {
       colHeader = false,
       currentRow = false,
       currentCol = false,
-    } = (selectedCellHighlight as unknown as InteractionCellSelectedHighlightOptions) ??
+    } = (selectedCellHighlight as unknown as InteractionCellHighlightOptions) ??
     {};
 
     return {
@@ -567,6 +570,61 @@ export class RootInteraction {
       colHeader,
       currentRow,
       currentCol,
+    };
+  }
+
+  public getHoverAfterScroll(): boolean {
+    return this.spreadsheet.options.interaction!.hoverAfterScroll!;
+  }
+
+  public getHoverHighlight(): InteractionCellHighlightOptions {
+    const { hoverHighlight } = this.spreadsheet.options.interaction!;
+
+    if (isBoolean(hoverHighlight)) {
+      return {
+        rowHeader: hoverHighlight,
+        colHeader: hoverHighlight,
+        currentRow: hoverHighlight,
+        currentCol: hoverHighlight,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = hoverHighlight ?? ({} as InteractionCellHighlightOptions);
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
+  }
+
+  public getBrushSelection(): BrushSelectionOptions {
+    const { brushSelection } = this.spreadsheet.options.interaction!;
+
+    if (isBoolean(brushSelection)) {
+      return {
+        dataCell: brushSelection,
+        rowCell: brushSelection,
+        colCell: brushSelection,
+      };
+    }
+
+    const {
+      dataCell = false,
+      rowCell = false,
+      colCell = false,
+    } = brushSelection ?? ({} as BrushSelectionOptions);
+
+    return {
+      dataCell,
+      rowCell,
+      colCell,
     };
   }
 }

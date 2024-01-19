@@ -1,6 +1,6 @@
 import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
-fetch('https://assets.antv.antgroup.com/s2/basic.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then(async (data) => {
     // 详情请查看: https://s2.antv.antgroup.com/zh/docs/manual/advanced/custom/cell-size

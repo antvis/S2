@@ -14,7 +14,7 @@ import {
   type S2DataConfig,
   VALUE_FIELD,
 } from '@/common';
-import { PivotSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { PivotDataSet, type SortActionParams } from '@/data-set';
 import { CellData } from '@/data-set/cell-data';
 
@@ -509,6 +509,10 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     sheet.dataSet = dataSet;
   });
 
+  afterEach(() => {
+    sheet.destroy();
+  });
+
   test('should sort by col total', () => {
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {
@@ -531,7 +535,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 41.5,
           type: '纸张',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -539,7 +542,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 37,
           type: '笔',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -567,7 +569,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 33,
           province: '吉林',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -575,7 +576,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         {
           price: 45.5,
           province: '浙江',
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -675,7 +675,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '浙江',
           city: '杭州',
           price: 3,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -684,7 +683,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '浙江',
           city: '舟山',
           price: 42.5,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -693,7 +691,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '吉林',
           city: '长春',
           price: 13,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -702,7 +699,6 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
           province: '吉林',
           city: '白山',
           price: 20,
-          [EXTRA_FIELD]: 'price',
         },
         'price',
       ),
@@ -770,5 +766,69 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
         'price',
       ),
     ]);
+  });
+});
+
+describe('total group dimension sort test', () => {
+  let sheet: SpreadSheet;
+
+  beforeEach(() => {
+    const currentOptions = {
+      totals: {
+        col: {
+          grandTotalsGroupDimensions: ['city'],
+          showGrandTotals: true,
+        },
+      },
+    } as S2Options;
+
+    const dataConfig = {
+      ...sortData,
+      data: [
+        ...sortData.data,
+        {
+          city: '杭州',
+          type: '纸张',
+          price: '999',
+        },
+        {
+          city: '杭州',
+          type: '笔',
+          price: '666',
+        },
+      ],
+      fields: {
+        rows: ['type'],
+        columns: ['province', 'city'],
+        values: ['price'],
+      },
+    };
+
+    sheet = new PivotSheet(getContainer(), dataConfig, currentOptions);
+    sheet.render();
+  });
+
+  afterEach(() => {
+    sheet.destroy();
+  });
+  test('should sort by col total with group', () => {
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: {
+        [EXTRA_FIELD]: 'price',
+        city: '杭州',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet: sheet.dataSet as PivotDataSet,
+      sortParam,
+    };
+    const measureValues = getSortByMeasureValues(params);
+
+    expect(measureValues).toMatchSnapshot();
   });
 });

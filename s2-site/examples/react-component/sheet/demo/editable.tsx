@@ -50,6 +50,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       },
     };
 
+    const onDataCellEditEnd = (meta) => {
+      console.log('onDataCellEditEnd', meta);
+    };
+
     reactDOMClient
       .createRoot(document.getElementById('container'))
       .render(
@@ -57,6 +61,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           dataCfg={s2DataConfig}
           options={s2Options}
           sheetType="editable"
+          onDataCellEditEnd={onDataCellEditEnd}
         />,
       );
   });

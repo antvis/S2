@@ -6,6 +6,7 @@ import type {
   IconPosition,
   RawData,
   ResizeInfo,
+  SimpleData,
 } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type { Query } from '../../data-set';
@@ -27,7 +28,7 @@ export type { GetCellMeta, LayoutResult } from './facet';
  */
 export type Formatter = (
   v: unknown,
-  data?: ViewMetaData | ViewMetaData[],
+  data?: SimpleData | ViewMetaData | ViewMetaData[],
   meta?: Node | ViewMeta,
 ) => string;
 
@@ -67,14 +68,6 @@ export enum CellClipBox {
   PADDING_BOX = 'paddingBox',
   CONTENT_BOX = 'contentBox',
 }
-
-/**
- * 布局类型：
- * adaptive: 行列等宽，均分整个 canvas 画布宽度
- * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
- * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
- */
-export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
   /**
@@ -180,6 +173,15 @@ export interface Total {
   subTotalsDimensions?: string[];
 
   /**
+   * 总计分组
+   */
+  grandTotalsGroupDimensions?: string[];
+  /**
+   * 小计分组
+   */
+  subTotalsGroupDimensions?: string[];
+
+  /**
    * 总计布局位置，默认是下或右
    */
   reverseGrandTotalsLayout?: boolean;
@@ -221,7 +223,7 @@ export interface Sort {
   sortByMeasure?: string;
 
   /** 筛选条件，缩小排序范围 */
-  query?: Record<string, any>;
+  query?: Query;
 
   /** 组内排序用来显示icon */
   type?: string;
@@ -380,7 +382,7 @@ export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
 
 export type MergedCellCallback = (
   spreadsheet: SpreadSheet,
-  cells: S2CellType[],
+  cells: DataCell[],
   meta?: ViewMeta,
 ) => MergedCell;
 
@@ -399,7 +401,7 @@ export interface MergedCellInfo {
 }
 
 export type TempMergedCell = {
-  cells: S2CellType[];
+  cells: DataCell[];
   viewMeta: ViewMeta;
 };
 
@@ -418,7 +420,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: ViewMetaData;
+  data: ViewMetaData | SimpleData | undefined;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)

@@ -12,7 +12,7 @@ import {
   getPalette,
   type CustomHeaderFields,
   type HeaderActionIconProps,
-  type InteractionCellSelectedHighlightOptions,
+  type InteractionCellHighlightOptions,
   type InteractionOptions,
   type S2DataConfig,
   type TargetCellInfo,
@@ -48,22 +48,25 @@ import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { ConfigProvider } from '../src/components/config-provider';
+import { ChartSheet } from './components/ChartSheet';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { LinkGroup } from './components/LinkGroup';
 import { MobileSheetComponent } from './components/Mobile';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
-import { LinkGroup } from './components/LinkGroup';
 import {
   TableSheetFrozenOptions,
   defaultOptions,
   pivotSheetDataCfg,
+  pivotSheetDataCfgForCompactMode,
   pivotSheetMultiLineTextDataCfg,
   s2ConditionsOptions,
   s2Options,
+  s2ThemeConfig,
   sliderOptions,
   tableSheetDataCfg,
   tableSheetMultipleColumns,
@@ -71,11 +74,17 @@ import {
 } from './config';
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
-import { onSheetMounted } from './utils';
-import { ChartSheet } from './components/ChartSheet';
 import './index.less';
 
 type TableSheetColumnType = 'single' | 'multiple';
+
+const onSheetMounted = (s2: SpreadSheet) => {
+  console.log('onSheetMounted: ', s2);
+  // @ts-ignore
+  window.s2 = s2;
+  // @ts-ignore
+  window.g_instances = [s2.container];
+};
 
 const CustomTooltip = () => (
   <div>
@@ -99,9 +108,7 @@ function MainLayout() {
   );
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'default',
-  });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>(s2ThemeConfig);
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
@@ -269,10 +276,30 @@ function MainLayout() {
     clearInterval(scrollTimer.current!);
   });
 
+  useUpdateEffect(() => {
+    switch (options!.style!.layoutWidthType) {
+      case 'compact':
+        updateOptions({
+          style: {
+            dataCell: {
+              width: 200,
+            },
+          },
+        });
+        setDataCfg(pivotSheetDataCfgForCompactMode);
+        break;
+
+      default:
+        updateOptions({
+          style: DEFAULT_STYLE,
+        });
+        setDataCfg(pivotSheetDataCfg);
+    }
+  }, [options.style!.layoutWidthType]);
+
   //  ================== Config ========================
 
   const mergedOptions: SheetComponentOptions = customMerge(
-    {},
     {
       pagination: showPagination && {
         pageSize: 10,
@@ -416,7 +443,9 @@ function MainLayout() {
                                 <Tooltip title="布局类型">
                                   <Radio.Group
                                     onChange={onLayoutWidthTypeChange}
-                                    defaultValue="adaptive"
+                                    defaultValue={
+                                      options?.style?.layoutWidthType
+                                    }
                                   >
                                     <Radio.Button value="adaptive">
                                       行列等宽
@@ -541,6 +570,30 @@ function MainLayout() {
                                   }}
                                   disabled={sheetType === 'table'}
                                 />
+                                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式（关闭序号）">
+                                  <Switch
+                                    checkedChildren="冻结首行开"
+                                    unCheckedChildren="冻结首行关"
+                                    defaultChecked={
+                                      mergedOptions.frozen?.firstRow
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        frozen: {
+                                          firstRow: checked,
+                                        },
+                                      });
+                                    }}
+                                    disabled={
+                                      sheetType === 'table' ||
+                                      (mergedOptions.hierarchyType === 'grid' &&
+                                        (!mergedOptions?.totals?.row
+                                          ?.showGrandTotals ||
+                                          !mergedOptions?.totals?.row
+                                            ?.reverseGrandTotalsLayout))
+                                    }
+                                  />
+                                </Tooltip>
                                 <Tooltip title="透视表有效">
                                   <Switch
                                     checkedChildren="冻结行头开"
@@ -1182,8 +1235,7 @@ function MainLayout() {
                                   onChange={(type) => {
                                     let selectedCellHighlight:
                                       | boolean
-                                      | InteractionCellSelectedHighlightOptions =
-                                      false;
+                                      | InteractionCellHighlightOptions = false;
                                     const oldIdx = type.findIndex(
                                       (typeItem: any) => isBoolean(typeItem),
                                     );
@@ -1232,9 +1284,9 @@ function MainLayout() {
                                 <Switch
                                   checkedChildren="hover十字器开"
                                   unCheckedChildren="hover十字器关"
-                                  checked={
-                                    mergedOptions?.interaction?.hoverHighlight
-                                  }
+                                  checked={Boolean(
+                                    mergedOptions?.interaction?.hoverHighlight,
+                                  )}
                                   onChange={(checked) => {
                                     updateOptions({
                                       interaction: {
@@ -1463,7 +1515,11 @@ function MainLayout() {
               {
                 key: 'editable',
                 label: '编辑表',
-                children: <EditableSheet />,
+                children: (
+                  <EditableSheet
+                    onDataCellEditEnd={logHandler('onDataCellEditEnd')}
+                  />
+                ),
               },
               {
                 key: 'mobile',

@@ -2,6 +2,7 @@ import type {
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
   ColCell,
+  CopyableList,
   CornerCell,
   DataCell,
   GEvent,
@@ -27,6 +28,7 @@ import type {
   ThemeCfg,
   TooltipContentType,
   TooltipOperatorOptions,
+  ViewMeta,
   ViewMetaData,
 } from '@antv/s2';
 
@@ -56,11 +58,27 @@ export type LayoutPaginationParams = {
   total: number;
   current: number;
 };
+type _ShowPagination =
+  | boolean
+  | {
+      onShowSizeChange?: (pageSize: number) => void;
+      onChange?: (current: number) => void;
+    };
+
+type ShowPagination<OverrideShowPagination, Options> =
+  OverrideShowPagination extends true
+    ? Options extends {
+        pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
+      }
+      ? boolean | Options['pagination']
+      : _ShowPagination
+    : _ShowPagination;
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
+  OverrideShowPagination = false,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
@@ -73,12 +91,7 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
-  showPagination?:
-    | boolean
-    | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
-      };
+  showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
   header?: Header;
   /** 底表 render callback */
@@ -124,6 +137,7 @@ export interface BaseSheetComponentProps<
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
   onDataCellRender?: (cell: DataCell) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -192,7 +206,7 @@ export interface BaseSheetComponentProps<
   // ============== Global ====================
   onKeyBoardDown?: (event: KeyboardEvent) => void;
   onKeyBoardUp?: (event: KeyboardEvent) => void;
-  onCopied?: (copyData: string) => void;
+  onCopied?: (data: CopyableList) => void;
   onActionIconHover?: (event: GEvent) => void;
   onActionIconHoverOff?: (event: GEvent) => void;
   onActionIconClick?: (event: GEvent) => void;

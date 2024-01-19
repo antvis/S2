@@ -292,17 +292,15 @@ const data = s2.dataSet.getCellMultiData({
 })
 
 /**
-  [
-    {
-      "number": 1634,
-      "province": "浙江省",
-      "city": "舟山市",
-      "type": "办公用品",
-      "sub_type": "纸张",
-      "$$extra$$": "number",
-      "$$value$$": 1634
-    }
-  ]
+  {
+    "number": 1634,
+    "province": "浙江省",
+    "city": "舟山市",
+    "type": "办公用品",
+    "sub_type": "纸张",
+    "$$extra$$": "number",
+    "$$value$$": 1634
+  }
 */
 ```
 

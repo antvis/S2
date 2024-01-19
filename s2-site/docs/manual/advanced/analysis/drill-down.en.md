@@ -29,7 +29,7 @@ const&#x26;nbsp;sex&#x26;nbsp;=&#x26;nbsp;[&#x26;nbsp;'男',&#x26;nbsp;'女'&#x2
 
 const&#x26;nbsp;PartDrillDown&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;drillConfig:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;dataSet:&#x26;nbsp;[&#x26;nbsp;//&#x26;nbsp;下钻数据源配置
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;dataSet:&#x26;nbsp;[&#x26;nbsp;//&#x26;nbsp; 下钻数据源配置
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;name:&#x26;nbsp;'客户性别',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;value:&#x26;nbsp;'sex',
@@ -38,7 +38,7 @@ const&#x26;nbsp;PartDrillDown&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;],
 &#x26;nbsp;&#x26;nbsp;},
 
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp;点击下钻后的回调
+&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 点击下钻后的回调
 &#x26;nbsp;&#x26;nbsp;fetchData:&#x26;nbsp;(meta,&#x26;nbsp;drillFields)&#x26;nbsp;=>
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;new&#x26;nbsp;Promise((resolve)&#x26;nbsp;=>&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;const&#x26;nbsp;dataSet&#x26;nbsp;=&#x26;nbsp;meta.spreadsheet.dataSet;
@@ -71,8 +71,8 @@ const&#x26;nbsp;PartDrillDown&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;});
 
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;resolve({
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;drillField:&#x26;nbsp;field,&#x26;nbsp;//&#x26;nbsp;下钻维度&#x26;nbsp;value&#x26;nbsp;值
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;drillData:&#x26;nbsp;drillDownData,&#x26;nbsp;//&#x26;nbsp;下钻数据
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;drillField:&#x26;nbsp;field,&#x26;nbsp;//&#x26;nbsp; 下钻维度&#x26;nbsp;value&#x26;nbsp; 值
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;drillData:&#x26;nbsp;drillDownData,&#x26;nbsp;//&#x26;nbsp; 下钻数据
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;});
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;}),
 };

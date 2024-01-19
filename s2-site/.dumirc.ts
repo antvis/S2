@@ -7,7 +7,7 @@ export default defineConfig({
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
   ],
-  title: 'S2', // 网站header标题
+  title: 'S2', // 网站 header 标题
   favicons: [
     'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
   ], // 网站 favicon
@@ -21,6 +21,7 @@ export default defineConfig({
     description: '多维交叉分析表格 2.0',
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
+    footerTheme: 'light', // 白色 底部主题
     siteUrl: 'https://antv.antgroup.com', // 官网地址
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
@@ -306,6 +307,10 @@ export default defineConfig({
     },
     /** 首页技术栈介绍 */
     detail: {
+      engine: {
+        zh: 'S2',
+        en: 'S2',
+      },
       title: {
         zh: 'S2 多维交叉分析表格 2.0',
         en: 'S2 Multi Cross Analysis Table 2.0',

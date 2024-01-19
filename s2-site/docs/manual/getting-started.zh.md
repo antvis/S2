@@ -10,23 +10,23 @@ tag: Updated
 
 ```bash
 # pnpm
-$ pnpm add @antv/s2@next --save
+$ pnpm add @antv/s2@next
 
 # npm
 $ npm install @antv/s2@next --save
 
 # yarn
-$ yarn add @antv/s2@next --save
+$ yarn add @antv/s2@next
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ pnpm add @antv/s2@next @antv/s2-react@next --save
+$ pnpm add @antv/s2@next @antv/s2-react@next antd @ant-design/icons
 
 # Vue3
-$ pnpm add @antv/s2@next @antv/s2-vue@next --save
+$ pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
 
 ```
 
@@ -35,6 +35,10 @@ $ pnpm add @antv/s2@next @antv/s2-vue@next --save
 <embed src="@/docs/common/browser.zh.md"></embed>
 
 ## 🔨 使用
+
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
+
+### 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
@@ -190,7 +194,8 @@ bootstrap();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](examples/gallery#category-表格组件)
+, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -209,9 +214,8 @@ const App = () => {
 }
 ```
 
-#### 注意事项
-
-`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
+:::warning{title='注意事项'}
+`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
 yarn add antd @ant-design/icons
@@ -288,19 +292,25 @@ createApp(App).mount('#app');
 
 ```
 
-#### 注意事项
+:::warning{title='注意事项'}
 
-`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue@3.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
-yarn add ant-design-vue
+yarn add ant-design-vue@3.x
 ```
+
+:::
 
 ```ts
 import "@antv/s2-vue/dist/style.min.css";
 ```
 
 ​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
+
+## TypeScript
+
+`S2` 使用 `TypeScript` 开发，提供完整的类型定义文件，配合 `VS Code` 等编辑器可以获得良好的类型提示。
 
 ## ⌨️ 本地开发
 

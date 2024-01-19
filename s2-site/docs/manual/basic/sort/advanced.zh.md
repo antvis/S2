@@ -13,14 +13,14 @@ tag: Updated
 使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { SortParams } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
 
 import '@antv/s2-react/dist/style.min.css';
 
-const AdvancedSortDemo = () => {
-  const [dataCfg, setDataCfg] = useState(s2DataConfig);
+export const AdvancedSortDemo = () => {
+  const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
 
   return (
     <SheetComponent
@@ -47,25 +47,33 @@ const AdvancedSortDemo = () => {
 
 ### 显示
 
-```ts
-advancedSortCfg: {
-  open: true,
-}
+```tsx
+<SheetComponent
+  header={{
+    advancedSortCfg: {
+      open: true,
+    },
+  }}
+/>
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
 
 ### 提交
 
 通过 `onSortConfirm` 函数透出所选规则数据 `ruleValues` 和处理成表可直接用的数据 `sortParams`
 
-```ts
-advancedSortCfg: {
-  open: true,
-  onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
-    console.log(ruleValues, sortParams)
-  }
-}
+```tsx
+<SheetComponent
+  header={{
+    advancedSortCfg: {
+      open: true,
+      onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
+        console.log(ruleValues, sortParams)
+      }
+    },
+  }}
+/>
 
 ```
 
@@ -78,7 +86,7 @@ advancedSortCfg: {
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | className    | class 类名称    | `string`            | -      |      |
-| icon    | 排序按钮图标    | `React.ReactNode`          | -      |      |
+| icon    | 排序按钮图标    | `ReactNode`          | -      |      |
 | text    | 排序按钮名称    | `ReactNode`             | -      |      |
 | ruleText    | 规则描述    | `string`            | -      |      |
 
@@ -96,17 +104,17 @@ advancedSortCfg: {
 | name  | 维度名称 | `string`   | -      | ✓   |
 | list  | 维度列表 | `string[]` | -      | ✓   |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 `list` 用于手动排序
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rPkKQJo8ln4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rPkKQJo8ln4AAAAAAAAAAAAAARQnAQ" width= "600" alt="row" />
 
 #### 规则列表
 
 支持自定义规则配置列表，不配置默认为：`首字母、手动排序、其他字段`
 
->注意：如果这里自定义，则需在 onSortConfirm 中通过 ruleValues 自定义 sortParams
+> 注意：如果这里自定义，则需在 onSortConfirm 中通过 ruleValues 自定义 sortParams
 
 | 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
 | ------- | ------------------------------------------ | --- | ----- | --------- |
@@ -114,8 +122,8 @@ advancedSortCfg: {
 | value    | `'sortMethod' \| 'sortBy' \| 'sortByMeasure'` | ✓    |        | 规则值     |
 | children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 #### 打开排序弹窗
 
-可通过 `onSortOpen: () => void` 回调来支持自定义打开排序弹窗，一般用于提前获取弹框数据
+可通过 `onSortOpen: () => void` 回调来支持自定义打开排序弹窗，一般用于提前获取弹框数据。

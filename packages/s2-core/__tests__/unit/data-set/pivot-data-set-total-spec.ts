@@ -2,19 +2,25 @@
  * pivot mode base data-set test.
  */
 import { get, keys } from 'lodash';
-import * as multiDataCfg from 'tests/data/simple-data.json';
 import * as mockData from 'tests/data/mock-dataset.json';
-import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
+import * as multiDataCfg from 'tests/data/simple-data.json';
 import type { Query } from '../../../src/data-set/interface';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
+import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 import {
-  type S2DataConfig,
+  EXTRA_FIELD,
+  ORIGIN_FIELD,
+  QueryDataType,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+} from '@/common/constant';
+import {
   Aggregation,
   type CalcTotals,
+  type S2DataConfig,
 } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
+import { PivotSheet } from '@/sheet-type';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
 jest.mock('@/sheet-type');
@@ -78,6 +84,12 @@ describe('Pivot Dataset Total Test', () => {
         TOTAL_VALUE,
       ]);
 
+      expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
+        '桌子',
+        '沙发',
+        TOTAL_VALUE,
+      ]);
+
       expect([...colPivotMeta.get('办公用品')!.children.keys()]).toEqual([
         '笔',
         '纸张',
@@ -88,24 +100,32 @@ describe('Pivot Dataset Total Test', () => {
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
 
-      expect(get(indexesData, '1.1.0.0')).toEqual({
+      expect(
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 0, 0, 1]),
+      ).toEqual({
         province: '浙江省',
         city: '杭州市',
         number: 15420,
       });
 
-      expect(get(indexesData, '1.1.2.0')).toEqual({
+      expect(
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 1, 1, 2, 0, 1]),
+      ).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '办公用品',
         number: 2288,
       });
-      expect(get(indexesData, '2.0.2.0')).toEqual({
+      expect(
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 2, 0, 2, 0, 1]),
+      ).toEqual({
         province: '四川省',
         type: '办公用品',
         number: 18479,
       });
-      expect(get(indexesData, '0.0.0.0')).toEqual({
+      expect(
+        get(indexesData, ['province[&]city[&]type[&]sub_type', 0, 0, 0, 0, 1]),
+      ).toEqual({
         number: 78868,
       });
     });
@@ -118,10 +138,12 @@ describe('Pivot Dataset Total Test', () => {
         'city',
         'type',
         'sub_type',
+        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['province']),
       ).toEqual(['浙江省', '四川省', TOTAL_VALUE]);
+
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['city']),
       ).toEqual([
@@ -141,6 +163,9 @@ describe('Pivot Dataset Total Test', () => {
         getDimensionsWithoutPathPre(sortedDimensionValues['type']),
       ).toEqual(['家具', '办公用品', TOTAL_VALUE]);
       expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues['type']),
+      ).toEqual(['家具', '办公用品', TOTAL_VALUE]);
+      expect(
         getDimensionsWithoutPathPre(sortedDimensionValues['sub_type']),
       ).toEqual([
         '桌子',
@@ -151,80 +176,79 @@ describe('Pivot Dataset Total Test', () => {
         TOTAL_VALUE,
         TOTAL_VALUE,
       ]);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
+      ).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+      ]);
     });
   });
 
   describe('test for query data', () => {
     test('getCellData function', () => {
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              province: '浙江省',
-              type: '家具',
-              sub_type: '桌子',
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            province: '浙江省',
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 18375]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              type: '家具',
-              sub_type: '桌子',
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            type: '家具',
+            sub_type: '桌子',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 26193]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              province: '浙江省',
-              city: '杭州市',
-              type: '家具',
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            province: '浙江省',
+            city: '杭州市',
+            type: '家具',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 13132]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              province: '浙江省',
-              city: '杭州市',
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            province: '浙江省',
+            city: '杭州市',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 15420]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              type: '家具',
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            type: '家具',
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 49709]]);
 
       expect(
-        dataSet
-          .getCellData({
-            query: {
-              [EXTRA_FIELD]: 'number',
-            },
-          })!
-          .getOrigin(),
+        dataSet.getCellData({
+          query: {
+            [EXTRA_FIELD]: 'number',
+          },
+        })?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 78868]]);
     });
 
@@ -268,80 +292,68 @@ describe('Pivot Dataset Total Test', () => {
       });
       test('should get correct total cell data when calculated by aggregation', () => {
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                type: '家具',
-                sub_type: '桌子',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 18375]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                type: '家具',
-                sub_type: '桌子',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 26193]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                city: '杭州市',
-                type: '家具',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 13132]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                city: '杭州市',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 15420]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                type: '家具',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 49709]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 78868]]);
       });
 
@@ -389,28 +401,24 @@ describe('Pivot Dataset Total Test', () => {
         });
         test('should get correct total cell data when calculated by aggregation and multi values', () => {
           expect(
-            dataSet
-              .getCellData({
-                query: {
-                  province: '浙江',
-                  type: '笔',
-                  [EXTRA_FIELD]: 'price',
-                },
-                isTotals: true,
-              })!
-              .getOrigin(),
+            dataSet.getCellData({
+              query: {
+                province: '浙江',
+                type: '笔',
+                [EXTRA_FIELD]: 'price',
+              },
+              isTotals: true,
+            })?.[ORIGIN_FIELD],
           ).toContainEntries([['price', 2]]);
           expect(
-            dataSet
-              .getCellData({
-                query: {
-                  province: '浙江',
-                  type: '笔',
-                  [EXTRA_FIELD]: 'cost',
-                },
-                isTotals: true,
-              })!
-              .getOrigin(),
+            dataSet.getCellData({
+              query: {
+                province: '浙江',
+                type: '笔',
+                [EXTRA_FIELD]: 'cost',
+              },
+              isTotals: true,
+            })?.[ORIGIN_FIELD],
           ).toContainEntries([['cost', 4]]);
         });
       });
@@ -473,82 +481,126 @@ describe('Pivot Dataset Total Test', () => {
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);
       });
+
+      test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
+        const totalStatus = {
+          isRowTotal: true,
+          isColTotal: true,
+          isRowSubTotal: true,
+          isColSubTotal: true,
+        };
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+            totalStatus,
+          })?.[VALUE_FIELD],
+        ).toEqual(18375);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              [EXTRA_FIELD]: 'number',
+            },
+            totalStatus,
+            isTotals: true,
+          })?.[VALUE_FIELD],
+        ).toEqual(43098);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            totalStatus,
+            isTotals: true,
+          })?.[VALUE_FIELD],
+        ).toEqual(26193);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+            totalStatus,
+          })?.[VALUE_FIELD],
+        ).toEqual(32418);
+      });
+
       test('should get correct total cell data when totals calculated by calcFunc', () => {
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                type: '家具',
-                sub_type: '桌子',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 18375]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                type: '家具',
-                sub_type: '桌子',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 52386]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                city: '杭州市',
-                type: '家具',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 26264]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                province: '浙江省',
-                city: '杭州市',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 15420]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                type: '家具',
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 99418]]);
 
         expect(
-          dataSet
-            .getCellData({
-              query: {
-                [EXTRA_FIELD]: 'number',
-              },
-              isTotals: true,
-            })!
-            .getOrigin(),
+          dataSet.getCellData({
+            query: {
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 78868]]);
       });
     });
@@ -564,7 +616,7 @@ describe('Pivot Dataset Total Test', () => {
 
       expect(dataSet.getCellMultiData({ query: specialQuery })).toHaveLength(1);
       expect(
-        dataSet.getCellMultiData({ query: specialQuery })[0].getOrigin(),
+        dataSet.getCellMultiData({ query: specialQuery })[0]?.[ORIGIN_FIELD],
       ).toContainEntries([['number', 7789]]);
       expect(
         dataSet.getCellMultiData({
@@ -719,6 +771,55 @@ describe('Pivot Dataset Total Test', () => {
       expect(isRowSubTotal4).toBeTrue();
       expect(isColTotal4).toBeFalse();
       expect(isColSubTotal4).toBeTrue();
+    });
+  });
+
+  describe('test for total with dimension group', () => {
+    beforeEach(() => {
+      MockPivotSheet.mockClear();
+      const mockSheet = new MockPivotSheet();
+
+      mockSheet.store = new Store();
+      mockSheet.isValueInCols = () => true;
+      dataSet = new PivotDataSet(mockSheet);
+
+      dataCfg = assembleDataCfg({
+        meta: [],
+        fields: {
+          rows: ['province', 'city', 'type', 'sub_type'],
+          columns: [],
+        },
+      });
+      dataSet.setDataCfg(dataCfg);
+    });
+
+    test('get correct MultiData when query need to be processed', () => {
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            province: '浙江省',
+            sub_type: '桌子',
+          },
+          queryType: QueryDataType.DetailOnly,
+        }),
+      ).toMatchSnapshot();
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            province: '浙江省',
+            sub_type: '杭州市',
+          },
+          queryType: QueryDataType.DetailOnly,
+        }),
+      ).toMatchSnapshot();
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            sub_type: '桌子',
+          },
+          queryType: QueryDataType.DetailOnly,
+        }),
+      ).toMatchSnapshot();
     });
   });
 });

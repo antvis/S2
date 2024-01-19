@@ -1,11 +1,11 @@
 import { set } from 'lodash';
+import { flattenIndexesData } from '../../../src/utils/dataset/pivot-data-set';
+import { QueryDataType, type FlattingIndexesData } from '../../../src';
+import { Aggregation } from '@/common/interface';
 import {
-  getListBySorted,
   getAggregationAndCalcFuncByQuery,
-  flattenIndexesData,
+  getListBySorted,
 } from '@/utils/data-set-operate';
-import { Aggregation, type FlattingIndexesData } from '@/common/interface';
-import { DataSelectType } from '@/common/constant/total';
 
 describe('Data Set Operate Test', () => {
   const data: FlattingIndexesData = [];
@@ -27,18 +27,12 @@ describe('Data Set Operate Test', () => {
     });
 
     test('flatten out all data with all select type', () => {
-      expect(flattenIndexesData(data, DataSelectType.All)).toBeArrayOfSize(6);
-    });
-
-    test('flatten out total data with total only type', () => {
-      expect(
-        flattenIndexesData(data, DataSelectType.TotalOnly),
-      ).toBeArrayOfSize(2);
+      expect(flattenIndexesData(data, QueryDataType.All)).toBeArrayOfSize(6);
     });
 
     test('flatten out detail data with detail only type', () => {
       expect(
-        flattenIndexesData(data, DataSelectType.DetailOnly),
+        flattenIndexesData(data, QueryDataType.DetailOnly),
       ).toBeArrayOfSize(4);
     });
   });

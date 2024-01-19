@@ -20,6 +20,25 @@ type DimensionProps = SwitcherField &
     crossRows?: boolean;
   };
 
+/**
+ * 解决 react 18 with strict mode 下的拖动报错问题
+ * https://github.com/atlassian/react-beautiful-dnd/issues/2399#issuecomment-1175638194
+ */
+const useAfterAnimationFrame = () => {
+  const [enabled, setEnabled] = React.useState(false);
+
+  React.useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+
+  return enabled;
+};
+
 export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
   const {
     fieldType,
@@ -36,6 +55,12 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
   } = props;
 
   const [expandChildren, setExpandChildren] = React.useState(true);
+
+  const enabled = useAfterAnimationFrame();
+
+  if (!enabled) {
+    return null;
+  }
 
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);

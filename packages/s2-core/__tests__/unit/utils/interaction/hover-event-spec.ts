@@ -27,7 +27,7 @@ jest.mock('@/cell', () => {
 });
 
 describe('Hover Event Utils Tests', () => {
-  describe('getActiveHoverRowColCells test', () => {
+  describe('#getActiveHoverRowColCells', () => {
     test('should return correct result for getActiveHoverRowColCells', () => {
       const cells = [
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
@@ -45,7 +45,7 @@ describe('Hover Event Utils Tests', () => {
     });
   });
 
-  describe('updateAllColHeaderCellState test', () => {
+  describe('#updateAllColHeaderCellState', () => {
     test('should return correct result for updateAllColHeaderCellState', () => {
       const cells = [
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),

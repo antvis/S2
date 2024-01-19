@@ -106,7 +106,7 @@ const s2DataConfig = {
 ```ts
 const s2Options = {
   width: 600,
-  height: 480,
+  height: 480
 }
 ```
 

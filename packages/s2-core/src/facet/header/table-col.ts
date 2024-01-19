@@ -1,14 +1,14 @@
 import { Group, Rect, type RectStyleProps } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FrozenGroupType,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
-import { getFrozenColWidth } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import {
   getFrozenLeafNodesCount,
@@ -17,6 +17,7 @@ import {
   isFrozenTrailingCol,
   translateGroupX,
 } from '../utils';
+import type { FrozenFacet } from '../frozen-facet';
 import { ColHeader } from './col';
 import type { ColHeaderConfig } from './interface';
 
@@ -30,7 +31,6 @@ export class TableColHeader extends ColHeader {
 
   constructor(config: ColHeaderConfig) {
     super(config);
-
     this.initFrozenColGroups();
   }
 
@@ -63,7 +63,7 @@ export class TableColHeader extends ColHeader {
       this.frozenColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN,
-          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+          style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
         }),
       );
     }
@@ -72,30 +72,14 @@ export class TableColHeader extends ColHeader {
       this.frozenTrailingColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN_TRAILING,
-          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+          style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
         }),
       );
     }
   }
 
-  protected isFrozenCell(meta: Node) {
-    const { spreadsheet } = this.getHeaderConfig();
-    const {
-      colCount: frozenColCount = 0,
-      trailingColCount: frozenTrailingColCount = 0,
-    } = spreadsheet.options.frozen!;
-    const { colIndex } = meta;
-    const colLeafNodes = spreadsheet.facet.getColLeafNodes();
-
-    return (
-      isFrozenCol(colIndex, frozenColCount) ||
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
-    );
-  }
-
   public clear() {
     super.clear();
-
     this.frozenTrailingColGroup?.removeChildren();
     this.frozenColGroup?.removeChildren();
 
@@ -116,37 +100,23 @@ export class TableColHeader extends ColHeader {
     const leftLeafNode = getLeftLeafNode(node);
     const topLevelNodes = spreadsheet.facet.getColNodes(0);
 
-    const {
-      colCount: frozenColCount,
-      trailingColCount: frozenTrailingColCount,
-    } = getFrozenLeafNodesCount(topLevelNodes, colCount, trailingColCount);
-
     return {
-      leftLeafNodeColIndex: leftLeafNode.colIndex,
-      frozenColCount,
-      frozenTrailingColCount,
       colLength: topLevelNodes.length,
+      leftLeafNodeColIndex: leftLeafNode.colIndex,
+      ...getFrozenLeafNodesCount(topLevelNodes, colCount, trailingColCount),
     };
   }
 
   protected getCellGroup(node: Node): Group {
-    const {
-      leftLeafNodeColIndex,
-      frozenColCount,
-      frozenTrailingColCount,
-      colLength,
-    } = this.getColFrozenOptionsByNode(node);
+    const { colLength, leftLeafNodeColIndex, colCount, trailingColCount } =
+      this.getColFrozenOptionsByNode(node);
 
-    if (isFrozenCol(leftLeafNodeColIndex, frozenColCount)) {
+    if (isFrozenCol(leftLeafNodeColIndex, colCount)) {
       return this.frozenColGroup;
     }
 
     if (
-      isFrozenTrailingCol(
-        leftLeafNodeColIndex,
-        frozenTrailingColCount,
-        colLength,
-      )
+      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
     ) {
       return this.frozenTrailingColGroup;
     }
@@ -155,20 +125,12 @@ export class TableColHeader extends ColHeader {
   }
 
   protected isColCellInRect(node: Node): boolean {
-    const {
-      leftLeafNodeColIndex,
-      frozenColCount,
-      frozenTrailingColCount,
-      colLength,
-    } = this.getColFrozenOptionsByNode(node);
+    const { leftLeafNodeColIndex, colLength, colCount, trailingColCount } =
+      this.getColFrozenOptionsByNode(node);
 
     if (
-      isFrozenCol(leftLeafNodeColIndex, frozenColCount) ||
-      isFrozenTrailingCol(
-        leftLeafNodeColIndex,
-        frozenTrailingColCount,
-        colLength,
-      )
+      isFrozenCol(leftLeafNodeColIndex, colCount) ||
+      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
     ) {
       return true;
     }
@@ -177,17 +139,16 @@ export class TableColHeader extends ColHeader {
   }
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
-    const { width, height, spreadsheet } = this.getHeaderConfig();
-    const topLevelNodes = spreadsheet.facet.getColNodes(0);
-    const { frozenColWidth, frozenTrailingColWidth } = getFrozenColWidth(
-      topLevelNodes,
-      spreadsheet.options.frozen!,
-    );
-    const scrollGroupWidth = width - frozenColWidth - frozenTrailingColWidth;
+    const { width, height, spreadsheet, position } = this.getHeaderConfig();
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
+    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const trailingColWidth =
+      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+    const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {
-      x: frozenColWidth,
-      y: 0,
+      x: position.x + colWidth,
+      y: position.y,
       width: scrollGroupWidth,
       height,
     };

@@ -1,8 +1,4 @@
-import type {
-  EXTRA_FIELD,
-  MiniChartTypes,
-  VALUE_FIELD,
-} from '../constant/basic';
+import type { EXTRA_FIELD, MiniChartTypes, VALUE_FIELD } from '../constant';
 import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {
@@ -88,7 +84,7 @@ export type ExtraData = {
   [VALUE_FIELD]: string | DataItem;
 };
 
-export type Data = (RawData & ExtraData) | undefined | null;
+export type Data = RawData & ExtraData;
 
 export interface CustomTreeNode {
   /**
@@ -136,5 +132,3 @@ export interface S2DataConfig {
   filterParams?: FilterParam[];
   [key: string]: unknown;
 }
-
-export type FlattingIndexesData = RawData[][] | RawData[] | RawData;

@@ -1,6 +1,7 @@
 import { find } from 'lodash';
 import { ColCell } from '../cell/col-cell';
 import {
+  FrozenGroupType,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
@@ -8,15 +9,14 @@ import type { FormatResult } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import type { SimpleBBox } from '../engine';
 import type { BaseHeaderConfig } from '../facet/header';
-import { getNodeRoot, isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { getFrozenColWidth } from '../utils/layout/frozen';
 import { getSortTypeIcon } from '../utils/sort-action';
+import type { FrozenFacet } from '../facet/frozen-facet';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
@@ -33,18 +33,6 @@ export class TableColCell extends ColCell {
     };
   }
 
-  protected isFrozenCell() {
-    const { colCount = 0, trailingColCount = 0 } =
-      this.spreadsheet.options.frozen!;
-    const colNodes = this.spreadsheet.facet?.getColNodes(0);
-    const { colIndex } = getNodeRoot(this.meta);
-
-    return (
-      isFrozenCol(colIndex, colCount) ||
-      isFrozenTrailingCol(colIndex, trailingColCount, colNodes?.length)
-    );
-  }
-
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
@@ -53,7 +41,7 @@ export class TableColCell extends ColCell {
   }
 
   protected shouldAddVerticalResizeArea() {
-    if (this.isFrozenCell()) {
+    if (this.getMeta().isFrozen) {
       return true;
     }
 
@@ -62,6 +50,7 @@ export class TableColCell extends ColCell {
       scrollY,
       width: headerWidth,
       height: headerHeight,
+      spreadsheet,
     } = this.getHeaderConfig();
     const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
@@ -73,17 +62,15 @@ export class TableColCell extends ColCell {
       height,
     };
 
-    const frozenWidth = getFrozenColWidth(
-      this.spreadsheet.facet.getColLeafNodes(),
-      this.spreadsheet.options.frozen!,
-    );
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
+    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const trailingColWidth =
+      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+
     const resizeClipAreaBBox: SimpleBBox = {
-      x: frozenWidth.frozenColWidth,
+      x: colWidth,
       y: 0,
-      width:
-        headerWidth -
-        frozenWidth.frozenColWidth -
-        frozenWidth.frozenTrailingColWidth,
+      width: headerWidth - colWidth - trailingColWidth,
       height: headerHeight,
     };
 
@@ -97,7 +84,7 @@ export class TableColCell extends ColCell {
     const { x, y } = this.meta;
     const { scrollX = 0, position } = this.getHeaderConfig();
 
-    if (this.isFrozenCell()) {
+    if (this.getMeta().isFrozen) {
       return {
         x: position?.x + x,
         y: position?.y + y,
@@ -111,9 +98,7 @@ export class TableColCell extends ColCell {
   }
 
   protected getColResizeArea() {
-    const isFrozenCell = this.isFrozenCell();
-
-    if (!isFrozenCell) {
+    if (!this.getMeta().isFrozen) {
       return super.getColResizeArea();
     }
 
@@ -142,16 +127,20 @@ export class TableColCell extends ColCell {
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor } = this.getStyle()!.cell!;
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getStyle()!.cell! || {};
 
     this.backgroundShape = renderRect(this, {
       ...this.getBBoxByType(),
       fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    if (this.isFrozenCell()) {
+  protected handleViewport(): AreaRange {
+    const viewport = super.handleViewport();
+
+    if (this.getMeta().isFrozen) {
       viewport.start = 0;
     }
 

@@ -1,3 +1,4 @@
+export * from './field';
 export * from './events';
 export * from './basic';
 export * from './classnames';
@@ -12,3 +13,4 @@ export * from './resize';
 export * from './copy';
 export * from './pagination';
 export * from './node';
+export * from './query';

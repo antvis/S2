@@ -1,20 +1,19 @@
-import { last } from 'lodash';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
-  ColCell,
   DeviceType,
   ResizeType,
   TableSheet,
   type RawData,
   type S2DataConfig,
   type S2Options,
+  LayoutWidthType,
 } from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
 ) as RawData[];
 
-const columns = [
+const columns: string[] = [
   'order_id',
   'order_date',
   'ship_date',
@@ -75,7 +74,7 @@ const options: S2Options = {
   showSeriesNumber: true,
   placeholder: '',
   style: {
-    layoutWidthType: 'compact',
+    layoutWidthType: LayoutWidthType.Compact,
     dataCell: {
       height: 32,
     },
@@ -193,12 +192,11 @@ describe('TableSheet normal spec', () => {
 
     await s2.render();
 
-    const getLastColCell = () =>
-      last(s2.facet.getColNodes())!.belongsCell as ColCell;
-    const preColWidth = getLastColCell().getMeta().width;
-
     await sleep(30);
 
+    let columnNodes = s2.facet.getColNodes();
+
+    const startCellWidth = columnNodes[columnNodes.length - 1].width;
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
 
     s2.getCanvasElement().dispatchEvent(
@@ -232,9 +230,10 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300);
 
-    const currentColWidth = getLastColCell().getMeta().width;
+    columnNodes = s2.facet.getColNodes();
+    const endCellWidth = columnNodes[columnNodes.length - 1].width;
 
-    expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
+    expect(Math.floor(endCellWidth - startCellWidth)).toBe(140);
   });
 
   test('should render link shape', async () => {

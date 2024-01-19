@@ -99,11 +99,41 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return false;
   }
 
-  protected getTextPosition(): PointLike {
-    const { isLeaf } = this.meta;
+  /**
+   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
+   * @param viewport
+   * @returns viewport
+   */
+  protected handleViewport(): AreaRange {
+    /**
+     *  p(x, y)
+     *  +----------------------+            x
+     *  |                    +--------------->
+     *  | viewport           | |ColCell  |
+     *  |                    |-|---------+
+     *  +--------------------|-+
+     *                       |
+     *                     y |
+     *                       v
+     *
+     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
+     *
+     */
     const { width, cornerWidth = 0, scrollX = 0 } = this.getHeaderConfig();
 
     const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
+
+    const viewport: AreaRange = {
+      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
+      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
+    };
+
+    return viewport;
+  }
+
+  protected getTextPosition(): PointLike {
+    const { isLeaf } = this.meta;
+
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle()!;
@@ -137,26 +167,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       return { x: textX, y: textY };
     }
 
-    /**
-     *  p(x, y)
-     *  +----------------------+            x
-     *  |                    +--------------->
-     *  | viewport           | |ColCell  |
-     *  |                    |-|---------+
-     *  +--------------------|-+
-     *                       |
-     *                     y |
-     *                       v
-     *
-     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
-     *
-     */
-    const viewport: AreaRange = {
-      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
-      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
-    };
-
-    this.handleViewport(viewport);
+    const viewport = this.handleViewport();
 
     const { cell, icon } = this.getStyle()!;
     const { textAlign, textBaseline } = this.getTextStyle();
@@ -270,7 +281,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
           style: {
             ...attrs.style,
             x: 0,
-            y: y + height - resizeStyle.size! / 2,
+            y: y + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },
@@ -369,7 +380,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
         {
           style: {
             ...attrs.style,
-            x: offsetX + width - resizeStyle.size! / 2,
+            x: offsetX + width - resizeStyle.size!,
             y: offsetY,
             height,
           },
@@ -435,11 +446,22 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     this.addExpandColumnSplitLine();
-    this.addExpandColumnIcon();
+    this.addExpandColumnIcons();
   }
 
-  protected addExpandColumnIcon() {
-    const iconConfig = this.getExpandColumnIconConfig();
+  protected addExpandColumnIcons() {
+    const isLastColumn = this.isLastColumn();
+
+    this.addExpandColumnIcon(isLastColumn);
+
+    // 如果当前节点的兄弟节点 (前/后) 都被隐藏了, 隐藏后当前节点变为最后一个节点, 需要渲染两个展开按钮, 一个展开[前], 一个展开[后]
+    if (this.isAllDisplaySiblingNodeHidden() && isLastColumn) {
+      this.addExpandColumnIcon(false);
+    }
+  }
+
+  private addExpandColumnIcon(isLastColumn: boolean) {
+    const iconConfig = this.getExpandColumnIconConfig(isLastColumn);
     const icon = renderIcon(this, {
       ...iconConfig,
       name: 'ExpandColIcon',
@@ -452,12 +474,12 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  protected getExpandColumnIconConfig() {
+  protected getExpandColumnIconConfig(isLastColumn: boolean) {
     const { size = 0 } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getBBoxByType();
 
     const baseIconX = x - size;
-    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconX = isLastColumn ? baseIconX + width : baseIconX;
     const iconY = y + height / 2 - size / 2;
 
     return {
@@ -472,12 +494,20 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 
-  /**
-   * 计算文本位置时候需要，留给后代根据情况（固定列）覆盖
-   * @param viewport
-   * @returns viewport
-   */
-  protected handleViewport(viewport: AreaRange): AreaRange {
-    return viewport;
+  protected isAllDisplaySiblingNodeHidden() {
+    const { id } = this.meta;
+    const lastHiddenColumnDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    const isPrevSiblingNodeHidden = lastHiddenColumnDetail.find(
+      ({ displaySiblingNode }) => displaySiblingNode?.next?.id === id,
+    );
+    const isNextSiblingNodeHidden = lastHiddenColumnDetail.find(
+      ({ displaySiblingNode }) => displaySiblingNode?.prev?.id === id,
+    );
+
+    return isNextSiblingNodeHidden && isPrevSiblingNodeHidden;
   }
 }

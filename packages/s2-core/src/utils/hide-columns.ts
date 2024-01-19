@@ -154,9 +154,18 @@ export const hideColumns = async (
     ...lastHiddenColumnFields,
   ]);
 
+  const isAllNearToHiddenColumnNodes = getHiddenColumnNodes(
+    spreadsheet,
+    hiddenColumnFields,
+  ).every((node, i, nodes) => {
+    const nextNode = nodes[i + 1];
+
+    return !nextNode || Math.abs(node.colIndex - nextNode.colIndex) === 1;
+  });
+
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
-    selectedColumnFields,
+    isAllNearToHiddenColumnNodes ? hiddenColumnFields : selectedColumnFields,
   );
 
   const currentHiddenColumnsInfo: HiddenColumnsInfo = {

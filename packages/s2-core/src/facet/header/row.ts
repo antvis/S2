@@ -1,9 +1,17 @@
-import { Rect } from '@antv/g';
-import { each, isEmpty } from 'lodash';
+import { Group, Rect } from '@antv/g';
+import { each } from 'lodash';
 import { RowCell } from '../../cell';
 import type { Node } from '../layout/node';
-import { translateGroup } from '../utils';
-import { S2Event } from '../../common';
+import { getFrozenRowCfgPivot, translateGroup } from '../utils';
+import {
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  FrozenGroupType,
+  KEY_GROUP_ROW_HEADER_FROZEN,
+  KEY_GROUP_ROW_SCROLL,
+  S2Event,
+} from '../../common';
+import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
 
@@ -11,12 +19,34 @@ import type { RowHeaderConfig } from './interface';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
+  public scrollGroup: Group;
+
+  public frozenRowGroup: Group;
+
   constructor(config: RowHeaderConfig) {
     super(config);
+    this.initGroups();
   }
 
-  protected getCellInstance(node: Node): RowCell {
+  private initGroups() {
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_SCROLL,
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
+      }),
+    );
+
+    this.frozenRowGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_HEADER_FROZEN,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
+  }
+
+  public getCellInstance(node: Node): RowCell {
     const headerConfig = this.getHeaderConfig();
+
     const { spreadsheet } = headerConfig;
     const { rowCell } = spreadsheet.options;
 
@@ -26,53 +56,68 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     );
   }
 
-  protected layout() {
+  // row'cell only show when visible
+  protected isRowCellInRect(node: Node): boolean {
     const {
-      nodes,
-      spreadsheet,
       width,
       viewportHeight,
+      position,
       scrollY = 0,
       scrollX = 0,
-      position,
     } = this.getHeaderConfig();
 
-    const rowCell = spreadsheet?.options?.rowCell;
+    if (this.isFrozenRow(node)) {
+      return true;
+    }
+
+    return (
+      // bottom
+      viewportHeight + scrollY > node.y &&
+      // top
+      scrollY < node.y + node.height &&
+      // left
+      width - position.x + scrollX > node.x &&
+      // right
+      scrollX - position.x < node.x + node.width
+    );
+  }
+
+  public isFrozenRow(node: Node): boolean {
+    const { spreadsheet } = this.headerConfig;
+    const { facet } = spreadsheet;
+    const { rowCount = 0 } = getFrozenRowCfgPivot(
+      spreadsheet.options,
+      facet.getRowNodes(),
+    );
+
+    return rowCount > 0 && node.rowIndex >= 0 && node.rowIndex < rowCount;
+  }
+
+  protected getCellGroup(item: Node): Group {
+    if (this.isFrozenRow(item)) {
+      return this.frozenRowGroup;
+    }
+
+    return this.scrollGroup;
+  }
+
+  protected layout() {
+    const { nodes, spreadsheet } = this.getHeaderConfig();
+
     // row'cell only show when visible
-    const rowCellInRect = (node: Node): boolean => {
-      return (
-        // bottom
-        viewportHeight + scrollY > node.y &&
-        // top
-        scrollY < node.y + node.height &&
-        // left
-        width - position.x + scrollX > node.x &&
-        // right
-        scrollX - position.x < node.x + node.width
-      );
-    };
-
     each(nodes, (node) => {
-      if (rowCellInRect(node) && node.height !== 0) {
-        let cell: RowCell | null = null;
+      if (this.isRowCellInRect(node) && node.height !== 0) {
+        const group = this.getCellGroup(node);
 
-        // 首先由外部控制UI展示
-        if (rowCell) {
-          cell = rowCell(node, spreadsheet, this.headerConfig);
-        }
+        node.isFrozen = group !== this.scrollGroup;
 
-        // 如果外部没处理，就用默认的
-        if (isEmpty(cell) && spreadsheet.isPivotMode()) {
-          cell = new RowCell(node, spreadsheet, this.headerConfig);
-        }
+        const cell = this.getCellInstance(node);
 
         node.belongsCell = cell;
 
-        if (cell) {
-          this.appendChild(cell);
-          spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);
-          spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
-        }
+        group.appendChild(cell);
+        spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);
+        spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
       }
     });
   }
@@ -80,20 +125,40 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   protected offset() {
     const { scrollX = 0, scrollY = 0, position } = this.getHeaderConfig();
 
-    // 向右多移动的 seriesNumberWidth 是序号的宽度
-    translateGroup(this, position.x - scrollX, position.y - scrollY);
+    const translateX = position.x - scrollX;
+
+    translateGroup(this.scrollGroup, translateX, position.y - scrollY);
+    translateGroup(this.frozenRowGroup, translateX, position.y);
   }
 
   protected clip(): void {
-    const { width, height, viewportHeight } = this.getHeaderConfig();
+    const { width, viewportHeight, position, spreadsheet } =
+      this.getHeaderConfig();
 
-    this.style.clipPath = new Rect({
+    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+
+    this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: 0,
-        y: 0,
+        x: spreadsheet.facet.cornerBBox.x,
+        y: position.y + frozenRowGroupHeight,
         width,
-        height: height + viewportHeight,
+        height: viewportHeight,
       },
     });
+
+    this.frozenRowGroup.style.clipPath = new Rect({
+      style: {
+        x: spreadsheet.facet.cornerBBox.x,
+        y: position.y,
+        width,
+        height: frozenRowGroupHeight,
+      },
+    });
+  }
+
+  public clear() {
+    this.scrollGroup?.removeChildren();
+    this.frozenRowGroup?.removeChildren();
   }
 }

@@ -5,6 +5,7 @@ export enum CopyType {
 }
 
 export const NewLine = '\r\n';
+
 export const NewTab = '\t';
 
 // 每次异步渲染数据的阈值

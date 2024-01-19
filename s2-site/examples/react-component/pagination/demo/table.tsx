@@ -50,11 +50,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         options={s2Options}
         sheetType="table"
         showPagination={{
-          onChange: (current) => {
-            console.log(current);
+          onChange: (current, pageSize) => {
+            console.log(current, pageSize);
           },
-          onShowSizeChange: (pageSize) => {
-            console.log(pageSize);
+          onShowSizeChange: (current, pageSize) => {
+            console.log(current, pageSize);
           },
         }}
       />,

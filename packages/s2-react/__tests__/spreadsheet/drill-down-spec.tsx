@@ -1,4 +1,4 @@
-import { customMerge, GuiIcon, Node, RowCell, SpreadSheet } from '@antv/s2';
+import { customMerge, Node, SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import { get, noop } from 'lodash';
 import React from 'react';
@@ -32,18 +32,13 @@ const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
     }),
 };
 
-const findDrillDownIcon = (instance: SpreadSheet) => {
-  const rowHeaderActionIcons = get(
-    (instance.facet.rowHeader?.children as RowCell[]).find(
-      (item) => item.getActualText() === '杭州',
-    ),
-    'actionIcons',
-    [],
-  );
+const findDrillDownIcon = (s2: SpreadSheet) => {
+  const rowHeaderActionIcons = s2.facet
+    ?.getRowCells()
+    ?.find((cell) => cell.getActualText() === '杭州')
+    ?.getActionIcons();
 
-  return rowHeaderActionIcons.find(
-    (icon: GuiIcon) => get(icon, 'cfg.name') === 'DrillDownIcon',
-  );
+  return rowHeaderActionIcons?.find((icon) => icon.name === 'DrillDownIcon');
 };
 
 describe('Spread Sheet Drill Down Tests', () => {

@@ -1,15 +1,15 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import type { Group } from '@antv/g';
-import { PivotSheet } from '@/sheet-type';
 import {
-  KEY_GROUP_COL_RESIZE_AREA,
-  KEY_GROUP_CORNER_RESIZE_AREA,
-  KEY_GROUP_ROW_RESIZE_AREA,
   type S2Options,
-} from '@/common';
+  PivotSheet,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_GROUP_COL_RESIZE_AREA,
+} from '../../src';
 
-async function renderSheet(options: S2Options) {
+async function renderSheet(options?: S2Options) {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, {
     height: 150,
     ...options,
@@ -22,6 +22,7 @@ async function renderSheet(options: S2Options) {
       },
     },
   });
+
   await s2.render();
 
   return s2;
@@ -190,5 +191,32 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(colResizeGroups).toHaveLength(1);
     expect(group.getElementById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
     expect(group.getElementById(KEY_GROUP_CORNER_RESIZE_AREA)).toBeNull();
+  });
+
+  test('should render correctly layout when tree row width is invalid number', async () => {
+    const s2 = await renderSheet();
+
+    s2.setOptions({
+      hierarchyType: 'tree',
+      style: {
+        rowCell: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          width: '@',
+        },
+      },
+    });
+
+    await s2.render(false);
+
+    const nodes = s2.facet.getRowNodes().map((node) => {
+      return {
+        id: node.id,
+        width: node.width,
+        height: node.height,
+      };
+    });
+
+    expect(nodes).toMatchSnapshot();
   });
 });

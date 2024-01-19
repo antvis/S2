@@ -1,24 +1,24 @@
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import {
+  TOTALS_OPTIONS,
   assembleDataCfg,
   assembleOptions,
-  TOTALS_OPTIONS,
   waitForRender,
 } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import type { Meta, S2DataConfig } from '@/common/interface';
-import { Aggregation } from '@/common/interface';
-import { TableDataCell, TableSeriesNumberCell } from '@/cell';
+import type { S2DataConfig } from '../../../../src/common';
+import { TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
-  CellType,
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import { PivotSheet, TableSheet } from '@/sheet-type';
+import type { Meta } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { getSelectedData } from '@/utils/export/copy';
-import { CopyMIMEType } from '@/utils/export/interface';
+import { CopyMIMEType } from '@/common/interface/export';
 import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
 
@@ -32,7 +32,7 @@ const testData = originalData.map((item, i) => {
   return { ...item };
 });
 
-const getCopyPlainContent = (sheet: TableSheet | PivotSheet): string => {
+const getCopyPlainContent = (sheet: SpreadSheet): string => {
   const data = getSelectedData(sheet);
 
   return data[0].content;
@@ -53,8 +53,14 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         showSeriesNumber: true,
+        interaction: {
+          selectedCellHighlight: {
+            currentRow: true,
+          },
+        },
       }),
     );
+
     await s2.render();
   });
 
@@ -74,7 +80,7 @@ describe('List Table Core Data Process', () => {
   it('should copy normal data', () => {
     const cell = s2.facet
       .getDataCells()
-      .find((cell) => !(cell instanceof TableSeriesNumberCell))!;
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -94,14 +100,13 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy row data', () => {
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[3];
+    const cell = s2.facet.getSeriesNumberCells()[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
+
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
       `"1	浙江省	舟山市	家具	桌子	4342"`,
     );
@@ -113,6 +118,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
     expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
     expect(getCopyPlainContent(s2).split(NewLine)[2]).toMatchInlineSnapshot(
       `"2	浙江省	绍兴市	家具	桌子	2367"`,
@@ -130,12 +136,13 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.facet
       .getDataCells()
-      .find((cell) => !(cell instanceof TableSeriesNumberCell))!;
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
+
     expect(getCopyPlainContent(s2)).toEqual('province\r\n浙江省');
   });
 
@@ -159,53 +166,46 @@ describe('List Table Core Data Process', () => {
 
     await sheet.render();
     const cell = s2.facet
-      .getCells()
-      .filter(
-        (cell) =>
-          cell.cellType === CellType.DATA_CELL &&
-          !(cell instanceof TableSeriesNumberCell),
-      )[0];
+      .getDataCells()
+      .find((cell) => cell.getMeta().valueField === 'province')!;
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
+
     expect(getCopyPlainContent(sheet)).toEqual('浙江省元');
   });
 
   // https://github.com/antvis/S2/issues/1770
   it('should copy format data with row header selected', async () => {
-    const sheet = new TableSheet(
-      getContainer(),
-      assembleDataCfg({
-        meta: [{ field: 'province', formatter: (v) => `${v}_formatted` }],
-        fields: {
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
-        },
-      }),
-      assembleOptions({
-        interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
-        },
-        showSeriesNumber: false,
-      }),
-    );
+    s2.setDataCfg({
+      meta: [{ field: 'province', formatter: (v) => `${v}_formatted` }],
+      fields: {
+        columns: ['province', 'city', 'type', 'sub_type', 'number'],
+      },
+    });
 
-    await sheet.render();
+    s2.setOptions({
+      interaction: {
+        enableCopy: true,
+        copyWithFormat: true,
+      },
+      showSeriesNumber: false,
+    });
 
-    const cell = sheet.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableDataCell)[0];
+    await s2.render();
 
-    sheet.interaction.changeState({
-      cells: [getCellMeta(cell)],
+    const dataCell = s2.facet.getDataCells()[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(dataCell)],
       stateName: InteractionStateName.SELECTED,
     });
 
-    const data = getCopyPlainContent(sheet);
+    const data = getCopyPlainContent(s2);
 
-    expect(data).toBe('浙江省_formatted');
+    expect(data).toEqual('浙江省_formatted');
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -231,7 +231,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = sheet.facet.getColCells()[1];
 
-    await sheet.interaction.changeState({
+    sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
@@ -253,17 +253,7 @@ describe('List Table Core Data Process', () => {
 
     const dataContent = getCopyPlainContent(s2);
 
-    expect(dataContent).toMatchInlineSnapshot(`
-      "浙江省	
-      	
-      	
-      	
-      	
-      	
-      	
-      	
-      	宁波市"
-    `);
+    expect(dataContent).toMatchSnapshot();
   });
 
   it('should copy correct data with data filtered', async () => {
@@ -281,9 +271,7 @@ describe('List Table Core Data Process', () => {
       });
     });
 
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[3];
+    const cell = s2.facet.getSeriesNumberCells()[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -296,7 +284,9 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+
     expect(getCopyPlainContent(s2).split('\n').length).toEqual(16);
+
     // clear filter condition
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey: 'province',
@@ -314,9 +304,7 @@ describe('List Table Core Data Process', () => {
       ]);
     });
 
-    const cell = s2.facet
-      .getCells()
-      .filter((cell) => cell instanceof TableSeriesNumberCell)[1];
+    const cell = s2.facet.getSeriesNumberCells()[1];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -325,13 +313,15 @@ describe('List Table Core Data Process', () => {
     const data = getCopyPlainContent(s2);
 
     expect(data).toBe('1	浙江省	宁波市	家具	沙发	7234');
+
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+
     expect(getCopyPlainContent(s2).split('\n').length).toEqual(33);
   });
 
-  it('should copy correct data with \n data', async () => {
+  it('should copy correct data with "\n" data', async () => {
     const newLineText = `1
     2`;
     const sheet = new TableSheet(
@@ -356,12 +346,8 @@ describe('List Table Core Data Process', () => {
     await sheet.render();
 
     const cell = sheet.facet
-      .getCells()
-      .filter(
-        (cell) =>
-          cell.cellType === CellType.DATA_CELL &&
-          !(cell instanceof TableSeriesNumberCell),
-      )[20];
+      .getDataCells()
+      .filter((cell) => !(cell instanceof TableSeriesNumberCell))[20];
 
     sheet.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -409,6 +395,7 @@ describe('List Table Core Data Process', () => {
 
   it('should copy row data when select data row cell', async () => {
     s2.setOptions({
+      showSeriesNumber: false,
       interaction: {
         selectedCellHighlight: {
           currentRow: true,
@@ -425,15 +412,13 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "1	浙江省	杭州市	家具	### 问题摘要 
-      - **会话地址**：	7789"
-    `);
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
+    expect(getCopyPlainContent(s2)).toEqual('浙江省');
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(1);
   });
 
   it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
+      showSeriesNumber: false,
       interaction: {
         customTransformer: () => {
           return {
@@ -1348,9 +1333,55 @@ describe('Tree Table Core Data Process', () => {
       总计		26193	23516	49709	12321	16838"
     `);
   });
+
+  it('should copy normal data with header for custom field name', async () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: true,
+      },
+    });
+    s2.setDataCfg({
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+        },
+      ],
+    });
+    await s2.render();
+
+    setSelectedVisibleCell();
+
+    expect(getSelectedData(s2)).toMatchSnapshot();
+  });
+
+  it('should copy normal data with header for custom field formatter if enable copyWithFormat', async () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: true,
+        copyWithFormat: true,
+      },
+    });
+    s2.setDataCfg({
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+          formatter: (value) => `${value}-@`,
+        },
+      ],
+    });
+    await s2.render();
+
+    setSelectedVisibleCell();
+
+    expect(getSelectedData(s2)).toMatchSnapshot();
+  });
 });
 
 describe('Pivot Table getBrushHeaderCopyable', () => {
+  let s2: SpreadSheet;
+
   const dataCfg = assembleDataCfg({
     meta: [],
     fields: {
@@ -1359,6 +1390,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       values: ['number'],
     },
   });
+
   const options = assembleOptions({
     hierarchyType: 'grid',
     interaction: {
@@ -1367,9 +1399,8 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     },
   });
 
-  const s2 = new PivotSheet(getContainer(), dataCfg, options);
-
   beforeEach(async () => {
+    s2 = new PivotSheet(getContainer(), dataCfg, options);
     await s2.render();
   });
 
@@ -1396,6 +1427,56 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     `);
   });
 
+  test('should copy all row data in grid mode with formatter', async () => {
+    s2.setDataCfg({
+      fields: {
+        valueInCols: false,
+      },
+      meta: [
+        {
+          field: 'number',
+          name: '数值',
+        },
+      ],
+    });
+    await s2.render();
+
+    const cells = s2.facet.getRowCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(cells);
+      },
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  test('should copy all original row data in grid mode if contains text ellipses', () => {
+    s2.setOptions({
+      style: {
+        rowCell: {
+          // 展示省略号
+          width: 10,
+        },
+      },
+    });
+
+    const cells = s2.facet.getRowCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(s2.facet.getRowCells());
+      },
+    });
+
+    expect(getSelectedData(s2)).toMatchSnapshot();
+  });
+
   test('should copy all col data in grid mode', () => {
     const cells = s2.facet.getColCells();
 
@@ -1406,13 +1487,66 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         root.updateCells(cells);
       },
     });
-    // 列头高度
 
+    // 列头高度
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "家具	家具	办公用品	办公用品
       桌子	沙发	笔	纸张
       number	number	number	number"
     `);
+  });
+
+  test('should copy all col data in grid mode with formatter', async () => {
+    s2.setDataCfg({
+      meta: [
+        {
+          field: 'number',
+          name: '数值',
+        },
+      ],
+    });
+    await s2.render();
+
+    const cells = s2.facet.getColCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(cells);
+      },
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
+      "家具	家具	办公用品	办公用品
+      桌子	沙发	笔	纸张
+      数值	数值	数值	数值"
+    `);
+  });
+
+  test('should copy all col data in grid mode for custom field meta', async () => {
+    s2.setDataCfg({
+      meta: [
+        {
+          field: 'number',
+          name: '数量',
+        },
+      ],
+    });
+
+    await s2.render();
+
+    const cells = s2.facet.getColCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(cells);
+      },
+    });
+
+    expect(getSelectedData(s2)).toMatchSnapshot();
   });
 
   test('should copy selection row data in grid mode', async () => {
@@ -1523,6 +1657,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         root.updateCells(sheet.facet.getColCells());
       },
     });
+
     expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
       "浙江省	浙江省
       杭州市	绍兴市"
@@ -1598,14 +1733,6 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const copyableList = getSelectedData(sheet);
 
-    expect(copyableList[0].content).toMatchInlineSnapshot(`
-      "家具	家具	家具	办公用品	办公用品
-      桌子	沙发	小计	笔	纸张
-      number	number	小计	number	number"
-    `);
-
-    expect(copyableList[1].content).toMatchInlineSnapshot(
-      `"<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>小计</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>小计</td><td>number</td><td>number</td></tr></tbody></table>"`,
-    );
+    expect(copyableList).toMatchSnapshot();
   });
 });

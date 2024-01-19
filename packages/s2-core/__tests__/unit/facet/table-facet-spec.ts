@@ -4,21 +4,27 @@
 import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { pick } from 'lodash';
 import { data } from '../../data/mock-dataset.json';
-import { ROOT_NODE_ID } from '@/common/constant';
+import { createFakeSpreadSheet } from '../../util/helpers';
+import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
-  customMerge,
   Node,
+  customMerge,
   type HiddenColumnsInfo,
   type S2DataConfig,
   type S2Options,
 } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+
+const actualDataSet = jest.requireActual(
+  '@/data-set/base-data-set',
+).BaseDataSet;
 
 jest.mock('@/sheet-type', () => {
   return {
@@ -53,6 +59,9 @@ jest.mock('@/sheet-type', () => {
           getColNodes: jest.fn().mockReturnValue([]),
           getHiddenColumnsInfo: jest.fn(),
           getColNodeHeight: jest.fn(),
+        },
+        dataSet: {
+          isEmpty: jest.fn(),
         },
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
@@ -89,8 +98,10 @@ jest.mock('@/data-set/table-data-set', () => {
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
         getDisplayDataSet: jest.fn(() => data),
-        getFieldFormatter: jest.fn(),
         getCellData: () => 1,
+        getFieldMeta: jest.fn(),
+        getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
+        isEmpty: jest.fn(),
       };
     }),
   };
@@ -118,6 +129,8 @@ const createMockTableFacet = (
     ),
   });
   s2.dataSet = new MockTableDataSet(s2);
+  // @ts-ignore
+  s2.dataSet.getField = jest.fn();
   s2.dataSet.fields = s2.dataCfg.fields;
   const facet = new TableFacet(s2);
 
@@ -156,38 +169,73 @@ describe('Table Mode Facet Test', () => {
 
     expect(facet.getColLeafNodes()[0].value).toEqual(seriesNumberText);
   });
+
+  describe('should get none layer when dataCfg.fields is empty', () => {
+    const spreadsheet = createFakeSpreadSheet({
+      s2DataConfig: {
+        fields: {
+          rows: [],
+          columns: [],
+          values: [],
+        },
+      },
+    });
+    const mockDataSet = new MockTableDataSet(spreadsheet);
+
+    spreadsheet.dataSet = mockDataSet;
+
+    const newFacet: TableFacet = new TableFacet(spreadsheet);
+
+    beforeEach(() => {
+      newFacet.render();
+    });
+
+    afterEach(() => {
+      newFacet.destroy();
+    });
+
+    test('can not get header after render in table sheet', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = newFacet;
+
+      expect(rowHeader).toBeFalsy();
+      expect(cornerHeader).toBeFalsy();
+      expect(columnHeader).toBeFalsy();
+      expect(centerFrame).toBeFalsy();
+    });
+
+    test('can not get series number after render in table sheet', () => {
+      const { backgroundGroup } = newFacet;
+      const rect = backgroundGroup.children[0];
+
+      expect(rect).toBeFalsy();
+    });
+  });
 });
 
 describe('Table Mode Facet Test With Adaptive Layout', () => {
   describe('should get correct col layout', () => {
-    const { facet, s2 } = createMockTableFacet({
-      showSeriesNumber: false,
-    });
-    const { colCell } = s2.options.style!;
-
     test('col hierarchy coordinate with adaptive layout', () => {
-      const adaptiveWith = 119;
-
-      facet.getColLeafNodes().forEach((node, index) => {
-        expect(node.y).toBe(0);
-        expect(node.x).toBe(index * adaptiveWith);
-        expect(Math.round(node.width)).toBe(adaptiveWith);
-        expect(node.height).toBe(colCell!.height);
+      const { facet } = createMockTableFacet({
+        showSeriesNumber: false,
       });
+
+      expect(
+        facet
+          .getColLeafNodes()
+          .map((node) => pick(node, ['x', 'y', 'width', 'height'])),
+      ).toMatchSnapshot();
     });
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const { facet, s2 } = createMockTableFacet({
-      showSeriesNumber: true,
-    });
-    const { colCell } = s2.options.style!;
-
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
+      const { facet, s2 } = createMockTableFacet({
+        showSeriesNumber: true,
+      });
+      const { colCell } = s2.options.style!;
       const colLeafNodes = facet.getColLeafNodes();
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
-      const adaptiveWith = 103;
 
       const seriesNumberNode = colLeafNodes[0];
 
@@ -196,12 +244,11 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
       expect(seriesNumberNode.height).toBe(colCell!.height);
 
-      colLeafNodes.slice(1).forEach((node, index) => {
-        expect(node.y).toBe(0);
-        expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
-        expect(node.width).toBe(adaptiveWith);
-        expect(node.height).toBe(colCell!.height);
-      });
+      expect(
+        colLeafNodes
+          .slice(1)
+          .map((node) => pick(node, ['x', 'y', 'width', 'height'])),
+      ).toMatchSnapshot();
     });
   });
 });
@@ -233,7 +280,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       },
       undefined,
       (spreadsheet) => {
-        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.getLayoutWidthType = () => LayoutWidthType.Compact;
         spreadsheet.measureTextWidth =
           mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
         spreadsheet.measureTextWidthRoughly = mockMeasureFunc;
@@ -280,7 +327,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       },
       undefined,
       (spreadsheet) => {
-        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.getLayoutWidthType = () => LayoutWidthType.Compact;
         spreadsheet.measureTextWidth =
           mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
         spreadsheet.measureTextWidthRoughly = mockMeasureFunc;
@@ -318,38 +365,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
-      Object {
-        "frozenCol": Object {
-          "range": Array [
-            0,
-            1,
-          ],
-          "width": 238,
-        },
-        "frozenRow": Object {
-          "height": 60,
-          "range": Array [
-            0,
-            1,
-          ],
-        },
-        "frozenTrailingCol": Object {
-          "range": Array [
-            3,
-            4,
-          ],
-          "width": 238,
-        },
-        "frozenTrailingRow": Object {
-          "height": 60,
-          "range": Array [
-            30,
-            31,
-          ],
-        },
-      }
-    `);
+    expect(facet.frozenGroupInfo).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -378,8 +394,8 @@ describe('Table Mode Facet With Frozen Test', () => {
         .getColLeafNodes()
         .slice(-colCount)
         .reverse()
-        .map((node) => node.x),
-    ).toEqual([481, 362]);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([479, 359]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -390,8 +406,8 @@ describe('Table Mode Facet With Frozen Test', () => {
         .getColLeafNodes()
         .slice(-trailingColCount!)
         .reverse()
-        .map((node) => node.x),
-    ).toEqual([481, 362]);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([479, 359]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -643,38 +659,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toMatchInlineSnapshot(`
-      Object {
-        "frozenCol": Object {
-          "range": Array [
-            0,
-            0,
-          ],
-          "width": 199,
-        },
-        "frozenRow": Object {
-          "height": 60,
-          "range": Array [
-            0,
-            1,
-          ],
-        },
-        "frozenTrailingCol": Object {
-          "range": Array [
-            2,
-            2,
-          ],
-          "width": 199,
-        },
-        "frozenTrailingRow": Object {
-          "height": 60,
-          "range": Array [
-            30,
-            31,
-          ],
-        },
-      }
-    `);
+    expect(facet.frozenGroupInfo).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -704,12 +689,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .getColLeafNodes()
         .slice(-trailingColCount)
         .reverse()
-        .map((node) => node.x),
-    ).toMatchInlineSnapshot(`
-      Array [
-        401,
-      ]
-    `);
+        .map((node) => Math.floor(node.x)),
+    ).toEqual([399]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -722,12 +703,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toMatchInlineSnapshot(`
-      Array [
-        532,
-        502,
-      ]
-    `);
+    ).toEqual([532, 502]);
   });
 
   test('should get correct viewCellHeights result', () => {

@@ -5,10 +5,12 @@ import {
   ColCell,
   S2Options,
   S2DataConfig,
+  CornerCell,
+  RowCell,
 } from '@antv/s2';
 
 /**
- * 自定义 DataCell，给特定单元格设置背景色, 文字大小, 颜色
+ * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
@@ -68,15 +70,15 @@ class CustomDataCell extends DataCell {
 }
 
 /**
- * 自定义 ColCell, 给特定单元格设置文字大小, 颜色
- * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts
+ * 自定义 ColCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
  */
 class CustomColCell extends ColCell {
   getTextStyle() {
     const defaultTextStyle = super.getTextStyle();
 
     // 指定列
-    if (this.meta.rowIndex % 2 === 0) {
+    if (this.meta.colIndex % 2 === 0) {
       return {
         ...defaultTextStyle,
         fontSize: 16,
@@ -108,6 +110,81 @@ class CustomColCell extends ColCell {
   }
 }
 
+/**
+ * 自定义 CornerCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
+ */
+class CustomCornerCell extends CornerCell {
+  getBackgroundColor() {
+    // 特定数据
+    if (this.meta.field === 'province') {
+      return {
+        backgroundColor: 'red',
+        backgroundColorOpacity: 0.2,
+      };
+    }
+
+    return super.getBackgroundColor();
+  }
+
+  getTextStyle() {
+    const defaultTextStyle = super.getTextStyle();
+
+    if (this.meta.field === 'type') {
+      return {
+        ...defaultTextStyle,
+        fill: '#06a',
+        fontSize: 20,
+        fontWeight: 200,
+      };
+    }
+
+    return super.getTextStyle();
+  }
+}
+
+/**
+ * 自定义 RowCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ */
+class CustomRowCell extends RowCell {
+  getBackgroundColor() {
+    // 特定数据
+    if (this.meta.field === 'province') {
+      return {
+        backgroundColor: 'red',
+        backgroundColorOpacity: 0.2,
+      };
+    }
+
+    return super.getBackgroundColor();
+  }
+
+  getTextStyle() {
+    const defaultTextStyle = super.getTextStyle();
+
+    if (this.meta.field === 'type') {
+      return {
+        ...defaultTextStyle,
+        fill: '#06a',
+        fontSize: 20,
+        fontWeight: 200,
+      };
+    }
+
+    if (this.meta.rowIndex >= 1) {
+      return {
+        ...defaultTextStyle,
+        fill: '#dcdcdc',
+        fontSize: 20,
+        fontWeight: 700,
+      };
+    }
+
+    return super.getTextStyle();
+  }
+}
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
@@ -127,12 +204,17 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      cornerCell: (node, spreadsheet, headerConfig) => {
+        return new CustomCornerCell(node, spreadsheet, headerConfig);
       },
-      // rowCell 同理, 请参考示例
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
+      },
+      rowCell: (node, spreadsheet, headerConfig) => {
+        return new CustomRowCell(node, spreadsheet, headerConfig);
+      },
+      dataCell: (viewMeta) => {
+        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
 

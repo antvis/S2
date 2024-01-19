@@ -44,6 +44,8 @@ fetch(
         copyWithFormat: true,
         copyWithHeader: true,
       },
+      // 冻结行头
+      // frozenRowHeader: true
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);

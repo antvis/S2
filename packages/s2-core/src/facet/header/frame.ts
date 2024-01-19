@@ -3,6 +3,7 @@ import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 import type { SpreadSheet } from '../../sheet-type/spread-sheet';
+import { floor } from '../../utils/math';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;
@@ -72,8 +73,7 @@ export class Frame extends Group {
   public onChangeShadowVisibility(scrollX: number, maxScrollX: number) {
     this.cfg.showViewportLeftShadow = scrollX > 0;
     // baseFacet#renderHScrollBar render condition
-    this.cfg.showViewportRightShadow =
-      Math.floor(scrollX) < Math.floor(maxScrollX);
+    this.cfg.showViewportRightShadow = floor(scrollX) < floor(maxScrollX);
 
     this.render();
   }

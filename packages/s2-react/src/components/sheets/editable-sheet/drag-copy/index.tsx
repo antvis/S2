@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { DataCell, S2Event, S2_PREFIX_CLS, GEvent } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
+import { DataCell, GEvent, S2Event, S2_PREFIX_CLS } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
-
 import './drag-copy-point.less';
 
 export function DragCopyPoint() {

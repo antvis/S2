@@ -1,6 +1,6 @@
-import { copyToClipboard } from '@/utils/export';
+import { copyToClipboard } from '@/utils/export/utils';
 
-describe('Copy Tests', () => {
+describe('Export & Copy Utils Tests', () => {
   test('should async copy text to clipboard', async () => {
     const text = '222';
 

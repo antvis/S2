@@ -1,5 +1,5 @@
-import type { FederatedPointerEvent as Event } from '@antv/g';
-import { inRange, isNil, range } from 'lodash';
+import { inRange, isEmpty, isNil, range } from 'lodash';
+import type { FederatedPointerEvent } from '@antv/g';
 import { DataCell } from '../cell';
 import {
   CellType,
@@ -22,6 +22,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     this.bindDataCellClick();
     this.bindColCellClick();
     this.bindKeyboardUp();
+    this.bindMouseMove();
   }
 
   public reset() {
@@ -49,21 +50,30 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
+  private bindMouseMove() {
+    // 当快捷键被系统拦截后，按需补充调用一次 reset
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
+      if (this.isRangeSelection && !event.shiftKey) {
+        this.reset();
+      }
+    });
+  }
+
   private bindColCellClick() {
     if (this.spreadsheet.isTableMode()) {
       // series-number click
-      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event) => {
         this.handleColClick(event);
       });
     }
 
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event) => {
       this.handleColClick(event);
     });
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event) => {
       event.stopPropagation();
       const cell = this.spreadsheet.getCell(event.target) as DataCell;
       const meta = cell.getMeta();
@@ -123,7 +133,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private handleColClick = (event: Event) => {
+  private handleColClick = (event: FederatedPointerEvent) => {
     event.stopPropagation();
     const { interaction, facet } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
@@ -183,6 +193,10 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           stateName: InteractionStateName.SELECTED,
         });
       } else {
+        if (isEmpty(interaction.getCells())) {
+          interaction.removeIntercepts([InterceptType.HOVER]);
+        }
+
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
 

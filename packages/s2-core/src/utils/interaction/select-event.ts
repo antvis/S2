@@ -30,6 +30,10 @@ export const isMultiSelectionKey = (e: KeyboardEvent) =>
     e.key as InteractionKeyboardKey,
   );
 
+export const isMouseEventWithMeta = (e: MouseEvent) => {
+  return e.ctrlKey || e.metaKey;
+};
+
 export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
   const { id, colIndex, rowIndex, rowQuery } = meta || {};

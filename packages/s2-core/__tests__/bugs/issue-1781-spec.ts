@@ -4,12 +4,13 @@
  * https://github.com/antvis/S2/issues/1781
  */
 
+import type { FederatedPointerEvent } from '@antv/g';
+import * as mockDataConfig from '../data/simple-table-data.json';
 import {
   createFederatedMouseEvent,
   getContainer,
   sleep,
 } from '../util/helpers';
-import * as mockDataConfig from '../data/simple-table-data.json';
 import {
   OriginEventType,
   S2Event,
@@ -46,27 +47,29 @@ describe('Hover Focus Tests', () => {
     await sleep(3000);
 
     // 浙江省份信息
-    const provinceCell = s2.facet.panelScrollGroup.getChildByIndex(7);
+    const provinceCell = s2.facet.getDataCells()[7];
 
     // 义乌城市信息
-    const cityCell = s2.facet.panelScrollGroup.getChildByIndex(10);
+    const cityCell = s2.facet.getDataCells()[10];
 
     const event = createFederatedMouseEvent(s2, OriginEventType.POINTER_MOVE);
 
     event.target = provinceCell;
 
-    // @ts-ignore
-    s2.emit(S2Event.DATA_CELL_HOVER, event);
+    s2.emit(S2Event.DATA_CELL_HOVER, event as FederatedPointerEvent);
 
     expect(
-      // @ts-ignore
-      provinceCell.stateShapes
+      provinceCell
+        .getStateShapes()
         .get('interactiveBorderShape')
         ?.attr('visibility'),
     ).toEqual('visible');
+
     expect(
-      // @ts-ignore
-      cityCell.stateShapes.get('interactiveBorderShape')?.attr('visibility'),
+      cityCell
+        .getStateShapes()
+        .get('interactiveBorderShape')
+        ?.attr('visibility'),
     ).toEqual('hidden');
   });
 });

@@ -1,7 +1,7 @@
 import { PivotSheet, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/4eff53f3-f952-4b77-8862-4b6ecbd31667.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
 )
   .then((res) => res.json())
   .then(async (data) => {

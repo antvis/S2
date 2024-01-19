@@ -1,8 +1,8 @@
-import { Group, Rect, type DisplayObject } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
-  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
   S2Event,
 } from '../../common/constant';
@@ -17,21 +17,20 @@ import type { ColHeaderConfig } from './interface';
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected scrollGroup: Group;
 
-  protected background: DisplayObject;
-
   constructor(config: ColHeaderConfig) {
     super(config);
-
     this.initScrollGroup();
   }
 
   protected getCellInstance(node: Node) {
+    const headerConfig = this.getHeaderConfig();
+
     const { spreadsheet } = this.getHeaderConfig();
     const { colCell } = spreadsheet.options;
 
     return (
-      colCell?.(node, spreadsheet, this.headerConfig) ||
-      new ColCell(node, spreadsheet, this.headerConfig)
+      colCell?.(node, spreadsheet, headerConfig) ||
+      new ColCell(node, spreadsheet, headerConfig)
     );
   }
 
@@ -39,7 +38,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.scrollGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_COL_SCROLL,
-        style: { zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX },
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
       }),
     );
   }
@@ -58,13 +57,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { height, spreadsheet } = this.getHeaderConfig();
+    const { height, width, spreadsheet, position } = this.getHeaderConfig();
+    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: 0,
-        y: 0,
-        width: spreadsheet.options.width!,
+        x: isFrozenRowHeader ? position.x : 0,
+        y: isFrozenRowHeader ? position.y : 0,
+        width: isFrozenRowHeader ? width : position.x + width,
         height,
       },
     });
@@ -72,7 +72,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   public clear() {
     this.scrollGroup?.removeChildren();
-    this.background?.remove();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -101,11 +100,13 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
+        const group = this.getCellGroup(node);
+
+        node.isFrozen = group !== this.scrollGroup;
+
         const cell = this.getCellInstance(node);
 
         node.belongsCell = cell;
-
-        const group = this.getCellGroup(node);
 
         group?.appendChild(cell);
         spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);

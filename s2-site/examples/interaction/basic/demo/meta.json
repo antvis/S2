@@ -63,10 +63,18 @@
     {
       "filename": "frozen.ts",
       "title": {
-        "zh": "行列冻结",
-        "en": "Freeze Rows And Cols"
+        "zh": "明细表 - 行列冻结",
+        "en": "TableSheet - Frozen Rows And Cols"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif"
+    },
+    {
+      "filename": "frozen-row-header.ts",
+      "title": {
+        "zh": "透视表 - 行头冻结",
+        "en": "PivotSheet - Frozen Row Header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "auto-reset-sheet-style.ts",
@@ -83,6 +91,22 @@
         "en": "Copy and export"
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*LzTYTpFosccAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "hover-after-scroll.ts",
+      "title": {
+        "zh": "滚动后自动触发悬停状态",
+        "en": "Trigger hover after scroll"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
+    },
+    {
+      "filename": "state-theme.ts",
+      "title": {
+        "zh": "交互主题配置",
+        "en": "Interaction state theme"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

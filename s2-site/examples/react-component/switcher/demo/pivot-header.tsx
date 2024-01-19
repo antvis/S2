@@ -3,7 +3,7 @@ import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React from 'react';
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/6eede6eb-8021-4da8-bb12-67891a5705b7.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
 )
   .then((res) => res.json())
   .then((data) => {

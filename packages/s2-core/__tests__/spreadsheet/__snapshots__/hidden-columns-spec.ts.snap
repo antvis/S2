@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Hidden Columns Tests PivotSheet Multiple Values Tests should render correct row corner after hide measure node 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "width": 119.6,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "width": 119.6,
+    "x": 119.6,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "width": 239.2,
+    "x": 0,
+    "y": 0,
+  },
+  Object {
+    "height": 30,
+    "width": 239.2,
+    "x": 0,
+    "y": 30,
+  },
+]
+`;

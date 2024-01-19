@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Resize Active Tests should render correctly layout when tree row width is invalid number 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]浙江",
+    "width": 120,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 120,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 120,
+  },
+]
+`;

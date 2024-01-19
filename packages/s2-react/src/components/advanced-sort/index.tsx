@@ -5,6 +5,7 @@ import {
   type SortParam,
   SpreadSheet,
   TOTAL_VALUE,
+  EXTRA_FIELD,
 } from '@antv/s2';
 import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
 import cx from 'classnames';
@@ -124,10 +125,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     );
   };
 
-  const handleCustomSort = (
-    dimension: Dimension,
-    splitOrders: string[] = [],
-  ) => {
+  const handleCustomSort = (dimension: Dimension, splitOrders?: string[]) => {
     handleCustom();
     setCurrentDimension(dimension);
     if (splitOrders) {
@@ -194,7 +192,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
 
         current.sortMethod = sortMethod;
         current.query = {
-          $$extra$$: rule[1],
+          [EXTRA_FIELD]: rule[1],
         };
       } else if (rule[0] === 'sortBy') {
         current.sortBy = currentSortBy;
@@ -328,7 +326,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           } = item || {};
 
           return (
-            <Form.Item name={field} key={field}>
+            <Form.Item key={field}>
               <Form.Item name={[field, 'name']} initialValue={name} noStyle>
                 <Select
                   className={`${ADVANCED_SORT_PRE_CLS}-select`}

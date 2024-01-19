@@ -29,6 +29,7 @@ export interface BaseNodeConfig {
   isSubTotals?: boolean;
   isCollapsed?: boolean | null;
   isGrandTotals?: boolean;
+  isTotalRoot?: boolean;
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
@@ -130,7 +131,11 @@ export class Node {
 
   public isSubTotals?: boolean;
 
+  public isTotalRoot?: boolean;
+
   public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
+
+  public isFrozen?: boolean;
 
   public extra?: {
     description?: string;
@@ -152,6 +157,7 @@ export class Node {
       isGrandTotals,
       isSubTotals,
       isCollapsed,
+      isTotalRoot,
       hierarchy,
       isPivotMode,
       seriesNumberWidth,
@@ -183,6 +189,7 @@ export class Node {
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
     this.belongsCell = belongsCell;
+    this.isTotalRoot = isTotalRoot;
     this.extra = extra;
   }
 

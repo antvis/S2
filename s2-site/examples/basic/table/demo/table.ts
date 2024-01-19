@@ -37,6 +37,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       width: 600,
       height: 480,
       showSeriesNumber: true,
+      // seriesNumberText: '自定义序号标题',
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);

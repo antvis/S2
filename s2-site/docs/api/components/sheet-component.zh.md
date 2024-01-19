@@ -19,7 +19,7 @@ order: 0
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
-| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
+| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (current:number, pageSize: number) => void,<br>onChange?: (current:number, pageSize: number) => void <br>} | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
@@ -49,6 +49,7 @@ order: 0
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
+| onDataCellEditEnd | 数值单元格编辑完成（暂只支持编辑表） | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -86,7 +87,7 @@ order: 0
 | onLayoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | onKeyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | onKeyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
-| onCopied | 复制事件 | (copyData: string) => void |  |  |
+| onCopied | 复制事件 | (data: CopyableList) => void |  |  |
 | onActionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | onActionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -96,7 +97,7 @@ order: 0
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
+| onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 | onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 
 ### SheetComponentOptions
@@ -210,7 +211,7 @@ type SheetComponentOptions = S2Options<
 | layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | keyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | keyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
-| copied | 复制事件 | (copyData: string) => void |  |  |
+| copied | 复制事件 | (data: CopyableList) => void |  |  |
 | actionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | actionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
 | contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -220,7 +221,7 @@ type SheetComponentOptions = S2Options<
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: ColCell[]) => void; |  |  |
+| colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: ColCell[]) => void; |  |  |
 | rowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
 
 ### SheetComponentOptions

@@ -1,8 +1,7 @@
 import { isNumber } from 'lodash';
-import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
-import type { PivotDataSet } from '../../data-set';
+import { i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
-import { filterTotal, getListBySorted } from '../../utils/data-set-operate';
+import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
 import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
@@ -25,12 +24,15 @@ const addTotals = (
     const func = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
 
     fieldValues[func](
-      new TotalClass(totalsConfig.grandTotalsLabel!, false, true),
+      new TotalClass({
+        label: totalsConfig.grandTotalsLabel!,
+        isGrandTotals: true,
+        isSubTotals: false,
+        isTotalRoot: false,
+      }),
     );
   }
 };
-
-const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
 
 /**
  * Only row header has tree hierarchy, in this scene:
@@ -39,40 +41,12 @@ const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
-  const {
-    parentNode,
-    currentField = '',
-    level,
-    hierarchy,
-    pivotMeta,
-    spreadsheet,
-  } = params;
-  const { collapseFields, collapseAll, expandDepth } =
-    spreadsheet.options.style?.rowCell!;
+  const { spreadsheet, parentNode, currentField, level, hierarchy, pivotMeta } =
+    params;
   const { query, id: parentId } = parentNode;
-  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
-  const sortedDimensionValues =
-    (spreadsheet.dataSet as PivotDataSet)?.sortedDimensionValues?.[
-      currentField
-    ] || [];
+  const isDrillDownItem = spreadsheet.dataCfg?.fields?.rows?.length! <= level;
 
-  const unsortedDimValues = filterTotal(Array.from(pivotMeta.keys()));
-  const dimValues = getListBySorted(
-    unsortedDimValues,
-    sortedDimensionValues,
-    (dimVal) => {
-      /*
-       * 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
-       * unsortedDimValues：['成都', '绵阳']
-       * sortedDimensionValues: ['四川[&]成都']
-       */
-      if (ROOT_NODE_ID === parentId) {
-        return dimVal;
-      }
-
-      return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
-    },
-  );
+  const dimValues = filterOutDetail(Array.from(pivotMeta.keys()));
 
   let fieldValues: FieldValue[] = layoutArrange(
     spreadsheet,
@@ -119,6 +93,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     const nodeId = generateId(parentId, value);
 
+    const { collapseFields, collapseAll, expandDepth } =
+      spreadsheet.options.style?.rowCell!;
     /*
      * 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
      * 优先从读取 collapseFields 中的特定 node 的值

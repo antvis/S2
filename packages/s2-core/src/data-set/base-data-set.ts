@@ -3,6 +3,7 @@ import {
   find,
   get,
   identity,
+  isEmpty,
   isNil,
   isString,
   map,
@@ -10,7 +11,7 @@ import {
   memoize,
   min,
 } from 'lodash';
-import type { CellMeta, CustomHeaderField, RowData } from '../common';
+import type { CellMeta, CustomHeaderField, ViewMeta } from '../common';
 import { CellType } from '../common';
 import type {
   Fields,
@@ -20,8 +21,8 @@ import type {
   RawData,
   S2CellType,
   S2DataConfig,
+  SimpleData,
   SortParams,
-  ViewMeta,
   ViewMetaData,
 } from '../common/interface';
 import type { ValueRange } from '../common/interface/condition';
@@ -32,6 +33,7 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
+import type { Indexes } from '../utils/indexes';
 import type { GetCellDataParams, Query } from './interface';
 import type { GetCellMultiDataParams } from './index';
 
@@ -52,9 +54,9 @@ export abstract class BaseDataSet {
   public originData: RawData[];
 
   /**
-   * 二维索引数据
+   * 索引数据
    */
-  public indexesData: RawData[][] | RawData[];
+  public indexesData: Record<string, RawData[][] | RawData[]>;
 
   /**
    * 高级排序, 组内排序
@@ -69,8 +71,11 @@ export abstract class BaseDataSet {
   /**
    * 表格实例
    */
-  protected spreadsheet: SpreadSheet;
+  public spreadsheet: SpreadSheet;
 
+  /**
+   * 展示数据
+   */
   protected displayData: RawData[];
 
   public constructor(spreadsheet: SpreadSheet) {
@@ -207,16 +212,13 @@ export abstract class BaseDataSet {
     this.sortParams = sortParams;
     this.filterParams = filterParams;
     this.displayData = this.originData;
-    this.indexesData = [];
+    this.indexesData = {};
   }
 
   /**
    * 添加 (角头/数值虚拟字段) 格式化信息
    */
-  public getFieldMetaWithExtraField(
-    meta: Meta[] = [],
-    defaultExtraFieldText: string,
-  ): Meta[] {
+  public processMeta(meta: Meta[] = [], defaultExtraFieldText: string): Meta[] {
     const newMeta: Meta[] = [
       ...meta,
       generateExtraFieldMeta(
@@ -231,6 +233,15 @@ export abstract class BaseDataSet {
 
   public getDisplayDataSet() {
     return this.displayData;
+  }
+
+  public isEmpty() {
+    return isEmpty(this.getDisplayDataSet());
+  }
+
+  // https://github.com/antvis/S2/issues/2255
+  public getEmptyViewIndexes(): Indexes {
+    return [] as unknown as Indexes;
   }
 
   public getValueRangeByField(field: string): ValueRange {
@@ -292,11 +303,13 @@ export abstract class BaseDataSet {
    */
   public abstract getCellData(
     params: GetCellDataParams,
-  ): ViewMetaData | undefined;
+  ): ViewMetaData | SimpleData | undefined;
 
   /**
    * 获取批量的单元格数据
    * 如果 query 为空, 则返回全量数据
+   * @description 默认获取符合 query 的所有数据，包括小计总计等汇总数据；
+   * 如果只希望获取明细数据，请使用 { queryType: QueryDataType.DetailOnly }
    */
   public abstract getCellMultiData(
     params: GetCellMultiDataParams,
@@ -310,8 +323,9 @@ export abstract class BaseDataSet {
   }
 
   /**
-   * get a row cells data including cell
-   * @param cellMeta
+   * 查询当前整行数据
    */
-  public abstract getRowData(cellMeta: CellMeta): RowData;
+  public abstract getRowData(
+    cellMeta: CellMeta | ViewMeta | Node,
+  ): ViewMetaData[] | ViewMetaData;
 }

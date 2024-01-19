@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { get, merge } from 'lodash';
+import { merge } from 'lodash';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { DataCell } from '@/cell';
 import type { RawData, S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet } from '@/sheet-type';
@@ -147,30 +146,22 @@ describe('Spreadsheet Totals Tests', () => {
     });
     await spreadsheet.render();
 
-    const grandTotal = spreadsheet.facet.panelScrollGroup.children.find(
-      (child) =>
-        child instanceof DataCell && get(child, 'meta.rowId') === 'root[&]总计',
-    ) as DataCell;
+    const grandTotal = spreadsheet.facet
+      .getDataCells()
+      .find((cell) => cell.getMeta().rowId === 'root[&]总计')!;
 
-    // @ts-ignore
-    expect(grandTotal.textShape.attr('text')).toEqual('26193');
+    expect(grandTotal.getTextShape().attr('text')).toEqual('26193');
 
-    const rowSubtotal1 = spreadsheet.facet.panelScrollGroup.children.find(
-      (child) =>
-        child instanceof DataCell &&
-        get(child, 'meta.rowId') === 'root[&]浙江省',
-    ) as DataCell;
+    const rowSubtotal1 = spreadsheet.facet
+      .getDataCells()
+      .find((cell) => cell.getMeta().rowId === 'root[&]浙江省')!;
 
-    // @ts-ignore
-    expect(rowSubtotal1.textShape).toBeUndefined();
+    expect(rowSubtotal1.getTextShape()).toBeUndefined();
 
-    const rowSubtotal2 = spreadsheet.facet.panelScrollGroup.children.find(
-      (child) =>
-        child instanceof DataCell &&
-        get(child, 'meta.rowId') === 'root[&]浙江省',
-    ) as DataCell;
+    const rowSubtotal2 = spreadsheet.facet
+      .getDataCells()
+      .find((cell) => cell.getMeta().rowId === 'root[&]四川省')!;
 
-    // @ts-ignore
-    expect(rowSubtotal2.textShape).toBeUndefined();
+    expect(rowSubtotal2.getTextShape()).toBeUndefined();
   });
 });

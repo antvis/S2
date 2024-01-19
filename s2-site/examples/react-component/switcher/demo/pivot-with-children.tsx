@@ -7,7 +7,7 @@ import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React, { useState } from 'react';
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/0c913e28-7806-41b2-a046-df3c1586712c.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/pivot-switcher-with-chidlren.json',
 )
   .then((res) => res.json())
   .then((data) => {

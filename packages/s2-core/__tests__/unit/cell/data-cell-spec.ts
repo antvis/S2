@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Rect } from '@antv/g';
-import { find, get } from 'lodash';
+import { find, get, keys } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { DataCell } from '@/cell';
 import type { TextAlign } from '@/common';
@@ -13,11 +13,11 @@ import {
   type S2CellType,
   type ViewMeta,
 } from '@/common';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '@/common/constant/condition';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -28,11 +28,11 @@ const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 const findDataCell = (
   s2: SpreadSheet,
   valueField: 'price' | 'cost' | 'number',
-) =>
-  s2.facet.panelGroup.children[0].find<DataCell>(
-    (item) =>
-      item instanceof DataCell && item.getMeta().valueField === valueField,
-  );
+) => {
+  return s2.facet
+    .getDataCells()
+    .find((item) => item.getMeta().valueField === valueField);
+};
 
 describe('Data Cell Tests', () => {
   const meta = {
@@ -57,7 +57,7 @@ describe('Data Cell Tests', () => {
     });
 
     test.each([
-      ['left', 311],
+      ['left', 312],
       ['center', 375],
       ['right', 438],
     ] as const)(
@@ -75,14 +75,13 @@ describe('Data Cell Tests', () => {
             },
           },
         });
+
         await s2.render();
 
-        const panelBBoxInstance = s2.facet.panelGroup.children[0];
-        const dataCell = panelBBoxInstance.children.find(
-          (item) => item instanceof DataCell,
-        ) as DataCell;
-        const { left: minX, right: maxX } =
-          dataCell['linkFieldShape'].getBBox();
+        const dataCell = s2.facet.getDataCells()[0];
+        const { left: minX, right: maxX } = dataCell
+          .getLinkFieldShape()
+          .getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;
@@ -100,7 +99,7 @@ describe('Data Cell Tests', () => {
   });
 
   describe('Data Cell Formatter & Method Tests', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       const container = document.createElement('div');
 
       s2 = new MockPivotSheet(container);
@@ -110,7 +109,11 @@ describe('Data Cell Tests', () => {
 
       s2.facet = {
         getRowLeafNodes: () => [],
+        getRowLeafNodeByIndex: jest.fn(),
+        getCells: () => [],
       } as unknown as PivotFacet;
+
+      await s2.render();
     });
 
     test('should pass complete data into formatter', () => {
@@ -207,7 +210,7 @@ describe('Data Cell Tests', () => {
       fill: 'red',
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
       const container = document.createElement('div');
 
       s2 = new MockPivotSheet(container);
@@ -217,7 +220,11 @@ describe('Data Cell Tests', () => {
 
       s2.facet = {
         getRowLeafNodes: () => [],
+        getRowLeafNodeByIndex: jest.fn(),
+        getCells: () => [],
       } as unknown as PivotFacet;
+
+      await s2.render();
     });
 
     test("shouldn't init when width or height is not positive", () => {
@@ -543,11 +550,12 @@ describe('Data Cell Tests', () => {
               field: 'cost',
               mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
-                const resultData = find(originData, dataInfo);
+                const resultData = find(originData, (item) =>
+                  keys(item).every((key) => item[key] === dataInfo[key]),
+                );
 
-                expect(resultData).toEqual(dataInfo);
-                // @ts-ignore
-                expect(value).toEqual(resultData.cost);
+                expect(value).toEqual(resultData?.['cost']);
+                expect(value).toEqual(dataInfo['cost']);
 
                 return {
                   fill: '#fffae6',

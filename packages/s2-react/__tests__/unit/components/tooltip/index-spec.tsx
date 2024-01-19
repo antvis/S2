@@ -5,6 +5,8 @@ import {
   getTooltipOperatorSortMenus,
   type S2CellType,
   type TooltipOperatorMenuItem,
+  type TooltipDetailListItem,
+  type TooltipSummaryOptions,
 } from '@antv/s2';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
@@ -158,7 +160,7 @@ describe('Tooltip Common Components Tests', () => {
   });
 
   test('render TooltipDetail', () => {
-    const list = [
+    const list: TooltipDetailListItem[] = [
       {
         name: '20岁以下',
         value: '20.5%',
@@ -173,8 +175,11 @@ describe('Tooltip Common Components Tests', () => {
   });
 
   test('render TooltipHead', () => {
-    const cols = [{ name: '所在城市', value: '一二线城市' }];
-    const rows = [
+    const cols: TooltipDetailListItem[] = [
+      { name: '所在城市', value: '一二线城市' },
+    ];
+
+    const rows: TooltipDetailListItem[] = [
       { name: '类别', value: '有信用卡' },
       { name: '职业', value: '学生' },
       { name: '年龄分布', value: '20岁以下' },
@@ -185,11 +190,11 @@ describe('Tooltip Common Components Tests', () => {
     );
 
     expect(asFragment()).toMatchSnapshot();
-    expect(getByText('一二线城市，有信用卡 / 学生 / 20岁以下')).toBeTruthy();
+    expect(getByText('一二线城市，有信用卡/学生/20岁以下')).toBeTruthy();
   });
 
   test('render TooltipSummary', () => {
-    const summaries = [
+    const summaries: TooltipSummaryOptions[] = [
       { name: 'A人群', selectedData: Array(30), value: '495.48 %' },
       { name: 'B人群', selectedData: Array(30), value: '494.52%' },
       { name: '差值', selectedData: Array(30), value: '+381%' },

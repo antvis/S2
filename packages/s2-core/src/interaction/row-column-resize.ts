@@ -1,4 +1,10 @@
-import { Group, type DisplayObject, type PathStyleProps, Path } from '@antv/g';
+import {
+  FederatedPointerEvent,
+  Group,
+  Path,
+  type DisplayObject,
+  type PathStyleProps,
+} from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
   ResizeInteractionOptions,
@@ -23,6 +29,7 @@ import type {
   ResizePosition,
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -124,10 +131,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private updateResizeGuideLinePosition(
-    offset: {
-      x: number;
-      y: number;
-    },
+    event: FederatedPointerEvent,
     resizeInfo: ResizeInfo,
   ) {
     const resizeShapes = this.getResizeShapes();
@@ -160,7 +164,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         ['M', offsetX + width - halfSize, offsetY],
         ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
-      this.resizeStartPosition.offsetX = offset.x;
+      this.resizeStartPosition.offsetX = event.offsetX;
+      this.resizeStartPosition.clientX = event.clientX;
 
       return;
     }
@@ -173,7 +178,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       ['M', offsetX, offsetY + height - halfSize],
       ['L', guideLineMaxWidth, offsetY + height - halfSize],
     ]);
-    this.resizeStartPosition.offsetY = offset.y;
+    this.resizeStartPosition.offsetY = event.offsetY;
+    this.resizeStartPosition.clientY = event.clientY;
   }
 
   private bindMouseDown() {
@@ -192,13 +198,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeTarget(shape);
       this.showResizeGroup();
-      this.updateResizeGuideLinePosition(
-        {
-          x: event.offsetX,
-          y: event.offsetY,
-        },
-        resizeInfo,
-      );
+      this.updateResizeGuideLinePosition(event, resizeInfo);
     });
   }
 
@@ -574,14 +574,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     );
 
     const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = Math.floor(
+    const resizedWidth = floor(
       end.x -
         start.x +
         (defaultResizeInfo.type === ResizeDirectionType.Horizontal
           ? defaultResizeInfo.size
           : 0),
     );
-    const resizedHeight = Math.floor(
+    const resizedHeight = floor(
       end.y -
         start.y +
         (defaultResizeInfo.type === ResizeDirectionType.Vertical

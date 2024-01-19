@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { CellData } from '../data-set/cell-data';
 import { Aggregation, type ViewMetaData } from '../common/interface';
 
 export const isNotNumber = (value: unknown) => {
@@ -38,9 +38,7 @@ const processFieldValues = (
   }
 
   return data.reduce<Array<Decimal>>((resultArr, item) => {
-    const fieldValue = getFieldValueOfViewMetaData(item, field) as
-      | string
-      | number;
+    const fieldValue = CellData.getFieldValue(item, field) as string | number;
 
     const notNumber = isNotNumber(fieldValue);
 

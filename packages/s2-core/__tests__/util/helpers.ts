@@ -7,21 +7,31 @@ import {
   FederatedMouseEvent,
   FederatedPointerEvent,
   type CanvasConfig,
+  Group,
 } from '@antv/g';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import type { BaseDataSet, Node } from '../../src';
+import { getTheme, type BaseDataSet, type Node, Hierarchy } from '../../src';
+
+import { assembleOptions, assembleDataCfg } from '.';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
+import type {
+  InternalFullyTheme,
+  LayoutResult,
+  S2CellType,
+  S2DataConfig,
+  S2Options,
+  ViewMeta,
+} from '@/common/interface';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
-import { DEFAULT_OPTIONS } from '@/common/constant';
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
 import type { BaseFacet } from '@/facet';
-import type { PanelBBox } from '@/facet/bbox/panelBBox';
+import type { PanelBBox } from '@/facet/bbox/panel-bbox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -53,7 +63,11 @@ export const sleep = async (timeout = 0) => {
   });
 };
 
-export const createFakeSpreadSheet = () => {
+export const createFakeSpreadSheet = (config?: {
+  s2Options?: Partial<S2Options>;
+  s2DataConfig?: Partial<S2DataConfig>;
+}) => {
+  const { s2Options = {}, s2DataConfig = {} } = config || {};
   const container = getContainer();
 
   class FakeSpreadSheet extends EE {
@@ -66,20 +80,15 @@ export const createFakeSpreadSheet = () => {
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
 
-  s2.options = {
-    ...DEFAULT_OPTIONS,
-    hdAdapter: false,
-  };
-  s2.dataCfg = {
-    meta: [],
-    data: [],
-    fields: {
-      rows: [],
-      columns: [],
-      values: [],
+  s2.options = assembleOptions(
+    {
+      ...DEFAULT_OPTIONS,
+      hdAdapter: false,
     },
-    sortParams: [],
-  };
+    s2Options,
+  );
+
+  s2.dataCfg = assembleDataCfg({ sortParams: [] }, s2DataConfig);
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width!,
     height: DEFAULT_OPTIONS.height!,
@@ -91,41 +100,52 @@ export const createFakeSpreadSheet = () => {
     getCellMultiData() {
       return [];
     },
+    getField: jest.fn(),
   } as unknown as any;
+
+  const layoutResult: LayoutResult = {
+    rowLeafNodes: [],
+    colLeafNodes: [],
+    rowNodes: [],
+    colNodes: [],
+    colsHierarchy: new Hierarchy(),
+    rowsHierarchy: new Hierarchy(),
+  };
+
   s2.facet = {
     panelBBox: {
       maxX: s2.options.width,
       maxY: s2.options.height,
     } as PanelBBox,
-    panelGroup: {
-      getChildren() {
-        return [];
-      },
-    },
-    foregroundGroup: {
-      getChildren() {
-        return [];
-      },
-    },
-    layoutResult: {
-      getCellMeta: jest.fn(),
-      rowLeafNodes: [],
-      colLeafNodes: [],
-      rowNodes: [],
-      colNodes: [],
-    },
+    panelGroup: s2.container.appendChild(new Group()),
+    foregroundGroup: s2.container.appendChild(new Group()),
+    backgroundGroup: s2.container.appendChild(new Group()),
+    layoutResult,
+    getLayoutResult: () => layoutResult,
     getCellMeta: jest.fn(),
     getCellById: jest.fn(),
-    getCellChildrenNodes: jest.fn(),
-    getCells: jest.fn(),
-    getColCells: jest.fn(),
-    getRowCells: jest.fn(),
-    getDataCells: jest.fn(),
-    getRowNodes: jest.fn(),
-    getRowLeafNodes: jest.fn(),
-    getColNodes: jest.fn(),
-    getColLeafNodes: jest.fn(),
-    getInitColLeafNodes: jest.fn(),
+    getCellChildrenNodes: () => [],
+    getCells: () => [],
+    getColCells: () => [],
+    getRowCells: () => [],
+    getDataCells: () => [],
+    getRowNodes: () => [],
+    getRowLeafNodes: () => [],
+    getColNodes: () => [],
+    getColLeafNodes: () => [],
+    getInitColLeafNodes: () => [],
+    getHeaderCells: () => [],
+    getHiddenColumnsInfo: jest.fn(),
+    getCellAdaptiveHeight: jest.fn(),
+    getRowLeafNodeByIndex: jest.fn(),
+    getColLeafNodeByIndex: jest.fn(),
+    frozenGroupInfo: {
+      [FrozenGroupType.FROZEN_ROW]: {},
+      [FrozenGroupType.FROZEN_COL]: {},
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {},
+    },
+    cornerBBox: {},
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -148,11 +168,25 @@ export const createFakeSpreadSheet = () => {
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
   s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
+  s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
+  s2.isValueInCols = jest.fn();
+  s2.isCustomHeaderFields = jest.fn();
+  s2.isCustomColumnFields = jest.fn();
+  s2.isCustomRowFields = jest.fn();
+  s2.getTotalsConfig = jest.fn();
+  s2.getLayoutWidthType = jest.fn();
+  s2.enableFrozenHeaders = jest.fn();
+  s2.measureTextWidth = jest.fn();
+  s2.isFrozenRowHeader = jest.fn();
+  s2.theme = getTheme({
+    name: 'default',
+    spreadsheet: s2,
+  }) as InternalFullyTheme;
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 
@@ -275,7 +309,7 @@ export const createFederatedMouseEvent = (
 };
 
 export const createTableSheet = (
-  s2Options: S2Options,
+  s2Options: S2Options | null,
   { useSimpleData } = { useSimpleData: true },
 ) =>
   new TableSheet(

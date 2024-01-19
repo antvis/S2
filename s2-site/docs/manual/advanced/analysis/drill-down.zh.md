@@ -90,6 +90,7 @@ const PartDrillDown = {
 ```tsx
 import React from 'react';
 import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const s2Options = {
   hierarchyType: 'tree', // 树形结构
@@ -106,7 +107,7 @@ const App = () => {
 }
 ```
 
-<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='for-pivot'></playground>
+<Playground path='react-component/drill-down/demo/for-pivot.tsx' rid='for-pivot'></playground>
 
 ### 单独使用下钻面板
 
@@ -120,7 +121,7 @@ import { DrillDown } from '@antv/s2-react';
 />
 ```
 
-<Playground path='react-component/drill-dwon/demo/basic-panel.tsx' rid='basic-panel'></playground>
+<Playground path='react-component/drill-down/demo/basic-panel.tsx' rid='basic-panel'></playground>
 
 ## 使用场景
 

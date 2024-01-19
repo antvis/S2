@@ -6,14 +6,14 @@
 
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/simple-data.json';
-import type { S2Options } from '@/index';
+import { LayoutWidthType, type S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 400,
   height: 400,
   style: {
-    layoutWidthType: 'compact',
+    layoutWidthType: LayoutWidthType.Compact,
   },
   totals: {
     row: {
@@ -32,7 +32,8 @@ describe('Grand Total Row Node Tests', () => {
         ...mockDataConfig,
         fields: {
           ...mockDataConfig.fields,
-          valueInCols: false, // 指标放行头
+          // 指标放行头
+          valueInCols: false,
         },
       },
       s2Options,

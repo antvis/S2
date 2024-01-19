@@ -32,7 +32,7 @@ order: 9
 <details>
 <summary>查看详情</summary>
 
-```js
+```ts
 const s2Options = {
   width: 600,
   height: 480,
@@ -256,6 +256,12 @@ const s2Options = {
 <Playground path='react-component/sheet/demo/strategy-mini-chart.tsx' rid='strategy-mini-chart'></playground>
 
 如果想要更换 mini 图样式配置，可以参考 [主题配置]('/api/general/s2theme#minicharttheme')
+
+### 在普通透视表中使用
+
+如果不依赖 `React`, 想在 `@antv/s2` 普通的透视表中使用 mini 图，可以参考这个 [示例](/zh/examples/custom/custom-cell/#mini-chart)
+
+<Playground path='custom/custom-cell/demo/mini-chart.ts' rid='mini-chart'></playground>
 
 ### API
 

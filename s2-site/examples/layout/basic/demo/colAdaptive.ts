@@ -11,6 +11,7 @@ fetch(
       width: 600,
       height: 480,
       style: {
+        // 了解更多: https://s2.antv.antgroup.com/api/general/s2-options#style
         layoutWidthType: 'colAdaptive',
       },
     };

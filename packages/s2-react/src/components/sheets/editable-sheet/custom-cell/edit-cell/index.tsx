@@ -1,23 +1,24 @@
-import React, {
-  memo,
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react';
-import { Input } from 'antd';
 import {
+  GEvent,
   S2Event,
   S2_PREFIX_CLS,
   SpreadSheet,
-  GEvent,
   type DataItem,
   type S2CellType,
+  type ViewMeta,
 } from '@antv/s2';
-import { isNil, pick } from 'lodash';
-import { useS2Event } from '../../../../../hooks';
+import { Input } from 'antd';
+import { isNil, merge, pick } from 'lodash';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
+import { useS2Event } from '../../../../../hooks';
 import {
   invokeComponent,
   type InvokeComponentProps,
@@ -35,6 +36,7 @@ export interface CustomProps {
 
 type onChangeProps = {
   onChange?: (val: any[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -46,7 +48,7 @@ function EditCellComponent(
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
-  const { cell, onChange, CustomComponent } = params;
+  const { cell, onChange, onDataCellEditEnd, CustomComponent } = params;
 
   const { left, top, width, height } = useMemo(() => {
     const rect = s2?.getCanvasElement().getBoundingClientRect();
@@ -117,6 +119,16 @@ function EditCellComponent(
 
     s2.dataSet.originData[rowIndex][valueField] = inputVal;
     s2.render(true);
+
+    const meta = merge(cell.getMeta(), {
+      fieldValue: inputVal,
+      valueField,
+      data: {
+        [valueField]: inputVal,
+      },
+    }) as ViewMeta;
+
+    onDataCellEditEnd?.(meta);
 
     if (onChange) {
       onChange(s2.dataSet.originData);

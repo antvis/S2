@@ -1,7 +1,8 @@
 import type { PointLike } from '@antv/g';
-import { find, get } from 'lodash';
+import { find, get, merge } from 'lodash';
 import {
   CellType,
+  FrozenGroupType,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -26,6 +27,7 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import type { SimpleBBox } from './../engine/interface';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
@@ -62,6 +64,16 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     this.update();
+  }
+
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getCrossBackgroundColor(this.meta.rowIndex);
+
+    return merge(
+      { backgroundColor, backgroundColorOpacity },
+      this.getBackgroundConditionFill(),
+    );
   }
 
   protected showTreeIcon() {
@@ -232,6 +244,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
+      spreadsheet,
     } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -241,25 +254,30 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       height: resizeStyle.size!,
     };
 
+    const isFrozen = this.getMeta().isFrozen;
+
+    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW]?.height;
+
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
-      y: 0,
+      y: frozenRowGroupHeight,
       width: headerWidth,
       height: headerHeight,
     };
 
     if (
+      !isFrozen &&
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,
         scrollY,
-      }) ||
-      !position
+      })
     ) {
       return;
     }
 
     const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y - scrollY;
+    const offsetY = position.y + y - (isFrozen ? 0 : scrollY);
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - position.x - (x - scrollX)
@@ -282,7 +300,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
           style: {
             ...attrs.style,
             x: offsetX,
-            y: offsetY + height - resizeStyle.size! / 2,
+            y: offsetY + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },
@@ -355,16 +373,26 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     };
   }
 
+  protected handleViewport() {
+    const { scrollY, viewportHeight, spreadsheet } = this.getHeaderConfig();
+
+    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+
+    const viewport: AreaRange = {
+      start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
+      size: viewportHeight - frozenRowGroupHeight,
+    };
+
+    return viewport;
+  }
+
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.getHeaderConfig();
     const textArea = this.getTextArea();
     const textStyle = this.getTextStyle();
     const { cell, icon: iconStyle } = this.getStyle();
 
-    const viewport: AreaRange = {
-      start: scrollY!,
-      size: viewportHeight,
-    };
+    const viewport = this.handleViewport();
 
     const { textStart } = adjustTextIconPositionWhileScrolling(
       viewport,

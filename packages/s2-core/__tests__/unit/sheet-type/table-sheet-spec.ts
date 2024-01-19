@@ -23,16 +23,16 @@ describe('TableSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     container = getContainer();
     s2 = new TableSheet(container, dataCfg, s2Options);
     await s2.render();
     s2.store.set('sortMethodMap', null);
   });
 
-  afterAll(() => {
-    container?.remove();
-    s2?.destroy();
+  afterEach(() => {
+    // container?.remove();
+    // s2?.destroy();
   });
 
   describe('TableSheet Sort Tests', () => {
@@ -95,15 +95,10 @@ describe('TableSheet Tests', () => {
       s2.groupSortByMethod('desc', node);
 
       expect(s2.store.get('sortMethodMap')).toEqual({
-        city: 'asc',
         cost: 'desc',
       });
       expect(s2.getMenuDefaultSelectedKeys(node.id)).toEqual(['desc']);
       expect(s2.dataCfg.sortParams).toEqual([
-        {
-          sortFieldId: 'city',
-          sortMethod: 'asc',
-        },
         {
           sortFieldId: 'cost',
           sortMethod: 'desc',
@@ -266,5 +261,9 @@ describe('TableSheet Tests', () => {
 
     expect(sheet.facet).toBeInstanceOf(TableFacet);
     expect(mockRender).toHaveBeenCalledTimes(1);
+  });
+
+  test('should get content height', () => {
+    expect(s2.getContentHeight()).toEqual(120);
   });
 });

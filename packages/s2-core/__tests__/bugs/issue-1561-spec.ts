@@ -23,22 +23,23 @@ describe('Grid Border Tests', () => {
 
     const panelScrollGroup = s2.facet.panelGroup.children[0];
     const gridGroup = (panelScrollGroup as any).gridGroup as Group;
-    const originalLeftBorderBbox = (gridGroup.children[0] as Group).getBBox();
+    const originalLeftBorderBBox = (gridGroup.children[0] as Group).getBBox();
 
     s2.facet.updateScrollOffset({ offsetX: { value: 100, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 200, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 300, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 0, animate: false } });
-    const newLeftBorderBbox = (gridGroup.children[0] as Group).getBBox();
+
+    const newLeftBorderBBbox = (gridGroup.children[0] as Group).getBBox();
 
     const widthRatio =
-      newLeftBorderBbox.right -
-      newLeftBorderBbox.left -
-      (originalLeftBorderBbox.right - originalLeftBorderBbox.left);
+      newLeftBorderBBbox.right -
+      newLeftBorderBBbox.left -
+      (originalLeftBorderBBox.right - originalLeftBorderBBox.left);
     const heightRatio =
-      newLeftBorderBbox.bottom -
-      newLeftBorderBbox.top -
-      (originalLeftBorderBbox.bottom - originalLeftBorderBbox.top);
+      newLeftBorderBBbox.bottom -
+      newLeftBorderBBbox.top -
+      (originalLeftBorderBBox.bottom - originalLeftBorderBBox.top);
 
     // g绘制时，会将坐标1变成0.5，来达到真正绘制1px的效果，因此宽高不一定完全相同，会有1px的差值
     expect(widthRatio).toBeLessThanOrEqual(1);

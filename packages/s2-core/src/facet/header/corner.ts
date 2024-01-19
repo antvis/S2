@@ -3,8 +3,8 @@ import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
-import type { CornerBBox } from '../bbox/cornerBBox';
-import type { PanelBBox } from '../bbox/panelBBox';
+import type { CornerBBox } from '../bbox/corner-bbox';
+import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { S2Event } from '../../common';
@@ -150,7 +150,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (spreadsheet.isHierarchyTreeType()) {
       const cornerText = this.getTreeCornerText(options);
       const cornerNode: Node = new Node({
-        id: '',
+        id: cornerText,
         field: '',
         value: cornerText,
       });
@@ -178,7 +178,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
         const value = spreadsheet.dataSet.getFieldName(field);
         const cornerNode: Node = new Node({
-          id: '',
+          id: field,
           field,
           value,
         });
@@ -206,7 +206,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const value = spreadsheet.dataSet.getFieldName(field);
 
         const cNode = new Node({
-          id: '',
+          id: field,
           field,
           value,
         });

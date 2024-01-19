@@ -12,7 +12,7 @@ import type {
   CopyableList,
   CopyAllDataParams,
   SheetCopyConstructorParams,
-} from '../interface';
+} from '../../../common/interface/export';
 import {
   convertString,
   getColNodeFieldFromNode,

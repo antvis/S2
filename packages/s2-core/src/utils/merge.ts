@@ -1,11 +1,11 @@
-import { isArray, isEmpty, mergeWith, uniq, isEqual, isString } from 'lodash';
+import { isArray, isEmpty, isEqual, isString, mergeWith, uniq } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import { DEFAULT_OPTIONS } from '../common/constant/options';
 import type {
+  CustomHeaderFields,
+  Fields,
   S2DataConfig,
   S2Options,
-  Fields,
-  CustomHeaderFields,
 } from '../common/interface';
 
 export const customMerge = <T = unknown>(...objects: unknown[]): T => {

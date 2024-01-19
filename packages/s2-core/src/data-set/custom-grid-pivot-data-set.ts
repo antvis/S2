@@ -8,7 +8,7 @@ export class CustomGridPivotDataSet extends CustomTreePivotDataSet {
     const rows = valueInCols
       ? [EXTRA_FIELD]
       : [...(dataCfg.fields.rows || []), EXTRA_FIELD];
-    const meta = this.getFieldMetaWithExtraField(dataCfg.meta!, i18n('数值'));
+    const meta = this.processMeta(dataCfg.meta!, i18n('数值'));
 
     return {
       ...dataCfg,

@@ -1,10 +1,3 @@
-import type { SimpleBBox } from '../../engine';
-import type {
-  InteractionStateName,
-  CellType,
-  InterceptType,
-  ScrollbarPositionType,
-} from '../constant';
 import type {
   BaseCell,
   ColCell,
@@ -16,14 +9,21 @@ import type {
   TableSeriesNumberCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
+import type { SeriesNumberCell } from '../../cell/series-number-cell';
+import type { SimpleBBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
+import type { RootInteraction } from '../../interaction';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { RootInteraction } from '../../interaction';
-import type { SeriesNumberCell } from '../../cell/series-number-cell';
-import type { Transformer } from '../../utils/export/interface';
-import type { ResizeInteractionOptions } from './resize';
+import type {
+  CellType,
+  InteractionStateName,
+  InterceptType,
+  ScrollbarPositionType,
+} from '../constant';
+import type { Transformer } from './export';
 import type { ViewMeta } from './basic';
+import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -136,7 +136,7 @@ export interface HoverFocusOptions {
   duration?: number;
 }
 
-export interface BrushSelection {
+export interface BrushSelectionOptions {
   dataCell?: boolean;
   rowCell?: boolean;
   colCell?: boolean;
@@ -163,7 +163,7 @@ export interface InteractionOptions {
   /**
    * 十字器高亮效果
    */
-  hoverHighlight?: boolean;
+  hoverHighlight?: InteractionCellHighlightOptions | boolean;
 
   /**
    * 悬停聚焦, 800ms 后会显示其对应 tooltip, 可以自定义 duration
@@ -215,7 +215,7 @@ export interface InteractionOptions {
   /**
    * 刷选
    */
-  brushSelection?: BrushSelection | boolean;
+  brushSelection?: BrushSelectionOptions | boolean;
 
   /**
    * 多选 Command/Ctrl + click
@@ -246,7 +246,7 @@ export interface InteractionOptions {
   /**
    * 选中单元格高亮联动 (高亮所对应行头/列头, 高亮当前行/当前列)
    */
-  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightOptions;
+  selectedCellHighlight?: boolean | InteractionCellHighlightOptions;
 
   /**
    * 滚动到边界的行为
@@ -256,13 +256,18 @@ export interface InteractionOptions {
   overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
 
   /**
+   * 表格滚动后是否触发 hover
+   */
+  hoverAfterScroll?: boolean;
+
+  /**
    * 自定义交互
    * @see https://s2.antv.antgroup.com/manual/advanced/interaction/custom
    */
   customInteractions?: CustomInteraction[];
 }
 
-export interface InteractionCellSelectedHighlightOptions {
+export interface InteractionCellHighlightOptions {
   /** 高亮行头 */
   rowHeader?: boolean;
   /** 高亮列头 */

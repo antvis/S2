@@ -1,9 +1,10 @@
 /**
- * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
+ * @description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
 import { Group, type ImageStyleProps } from '@antv/g';
-import { omit, clone } from 'lodash';
+import { clone, omit } from 'lodash';
 import { CustomImage } from '../../engine';
+import { DebuggerUtil } from '../debug';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
@@ -139,17 +140,27 @@ export class GuiIcon extends Group {
     } else {
       this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
-          // 加载完成后，当前 Cell 可能已经销毁了
+          // 异步加载完成后，当前 Cell 可能已经销毁了
           if (this.destroyed) {
+            DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
+
             return;
           }
 
           image.attr('img', value);
           this.appendChild(image);
         })
-        .catch((event: Event) => {
+        .catch((event: string | Event) => {
+          // 如果是 TypeError, 则是 G 底层渲染有问题, 其他场景才报加载异常的错误
+          if (event instanceof TypeError) {
+            // eslint-disable-next-line no-console
+            console.warn(`GuiIcon ${name} destroyed:`, event);
+
+            return;
+          }
+
           // eslint-disable-next-line no-console
-          console.error(`GuiIcon ${name} load failed`, event);
+          console.error(`GuiIcon ${name} load failed:`, event);
         });
     }
   }

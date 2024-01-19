@@ -68,11 +68,19 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       },
     });
 
+    await s2.render();
+
     s2.showTooltipWithInfo = jest.fn();
     s2.getCell = jest.fn(() => startBrushRowCell) as any;
     mockRootInteraction = new MockRootInteraction(s2);
+    mockRootInteraction.getBrushSelection = () => {
+      return {
+        dataCell: true,
+        rowCell: true,
+        colCell: true,
+      };
+    };
     s2.interaction = mockRootInteraction;
-    await s2.render();
     brushSelectionInstance = new RowCellBrushSelection(s2);
 
     brushSelectionInstance.brushSelectionStage =
@@ -249,5 +257,29 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
     // get brush range selected cells
     expect(brushSelectionInstance.brushRangeCells.length).toEqual(8);
+  });
+
+  test('should not emit brush secletion event', () => {
+    mockRootInteraction.getBrushSelection = () => ({
+      dataCell: true,
+      rowCell: false,
+      colCell: true,
+    });
+
+    const brushSelectionFn = jest.fn();
+
+    s2.on(S2Event.ROW_CELL_BRUSH_SELECTION, brushSelectionFn);
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 90 });
+
+    s2.getCell = jest.fn(() => endBrushRowCell) as any;
+    // ================== mouse move ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // emit event
+    expect(brushSelectionFn).toHaveBeenCalledTimes(0);
   });
 });

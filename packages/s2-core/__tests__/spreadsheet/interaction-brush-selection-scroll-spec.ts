@@ -15,6 +15,7 @@ import {
   TableSheet,
   SpreadSheet,
   type S2CellType,
+  LayoutWidthType,
 } from '@/index';
 
 const data = getMockData(
@@ -55,7 +56,7 @@ const options: S2Options = {
   showSeriesNumber: true,
   placeholder: '',
   style: {
-    layoutWidthType: 'compact',
+    layoutWidthType: LayoutWidthType.Compact,
     dataCell: {
       height: 32,
     },
