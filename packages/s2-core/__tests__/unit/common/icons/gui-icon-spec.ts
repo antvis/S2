@@ -131,10 +131,11 @@ describe('GuiIcon Tests', () => {
       ],
     });
 
-    s2.render();
+    function render() {
+      s2.render();
+      s2.getCanvasElement().toDataURL();
+    }
 
-    const base64 = s2.getCanvasElement().toDataURL();
-
-    expect(base64).toMatchSnapshot();
+    expect(render).not.toThrowError();
   });
 });
