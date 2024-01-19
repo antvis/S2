@@ -13,14 +13,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/v3rnigo9e%24/6862c027-eb75-49e4-88e4-40b9855202a1.png"
     },
     {
-      "filename": "series-number-cell.ts",
-      "title": {
-        "zh": "自定义序号单元格",
-        "en": "custom series number cell"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*-IXnSaGqY1EAAAAAAAAAAAAADmJ7AQ/original"
-    },
-    {
       "filename": "row-cell.ts",
       "title": {
         "zh": "自定义行头单元格",
@@ -51,6 +43,15 @@
         "en": "custom corner header"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/KH6us7hvnV/a0860c18-3d00-48f9-8483-1b29de6cb149.png"
+    },
+    {
+      "filename": "series-number-cell.ts",
+      "title": {
+        "zh": "自定义序号单元格",
+        "en": "custom series number cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*-IXnSaGqY1EAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "totals-cell.ts",
@@ -90,7 +91,8 @@
         "zh": "自定义 mini 图",
         "en": "custom mini chart"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*apnIT4KXP3YAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "data-cell-placeholder.ts",
@@ -98,7 +100,8 @@
         "zh": "自定义空数据单元格占位符",
         "en": "custom cell placeholder"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B-VMT7kCWL0AAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B-VMT7kCWL0AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

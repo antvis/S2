@@ -52,7 +52,7 @@ export interface S2BasicOptions<
   height?: number;
 
   /**
-   * 开启调试模式
+   * 开启调试模式 (打印额外信息)
    */
   debug?: boolean;
 
@@ -121,7 +121,11 @@ export interface S2BasicOptions<
   /**
    * 空值单元格占位符
    */
-  placeholder?: ((meta: Record<string, any>) => string) | string;
+  placeholder?:
+    | ((meta: Record<string, any>) => string | undefined | null)
+    | string
+    | undefined
+    | null;
 
   /**
    * 设备类型: pc / mobile

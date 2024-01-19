@@ -22,6 +22,8 @@ class CustomColCell extends ColCell {
           },
         }),
       );
+
+      this.drawTextShape();
     };
   }
 }

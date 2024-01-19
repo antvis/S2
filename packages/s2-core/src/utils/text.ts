@@ -46,7 +46,7 @@ import { renderMiniChart } from './g-mini-charts';
 
 export const getDisplayText = (
   text: string | number | null | undefined,
-  placeholder?: string,
+  placeholder?: string | undefined | null,
 ) => {
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"

@@ -1,6 +1,18 @@
+import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import React from 'react';
+
+// 临时处理老数据格式
+function process(children) {
+  return children.map((item) => {
+    return {
+      ...item,
+      field: item.key,
+      children: process(item.children),
+    };
+  });
+}
 
 /**
  * 该示例为 React 版本的趋势分析表
@@ -12,6 +24,14 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
+    const s2DataConfig: S2DataConfig = {
+      ...dataCfg,
+      fields: {
+        ...dataCfg.fields,
+        rows: process(dataCfg.fields.customTreeItems),
+      },
+    };
+
     const s2Options: SheetComponentOptions = {
       width: 1000,
       height: 480,
@@ -50,7 +70,7 @@ fetch(
       .createRoot(document.getElementById('container'))
       .render(
         <SheetComponent
-          dataCfg={dataCfg}
+          dataCfg={s2DataConfig}
           options={s2Options}
           sheetType="strategy"
         />,

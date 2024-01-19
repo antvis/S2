@@ -121,7 +121,7 @@ const s2Options = {
 
 :::info{title="提示"}
 
-明细表有一点特殊，由于只有列头，如果想给**特定行**设置不同的高度，则可以根据行序号调整
+明细表有一点特殊，由于只有列头，如果想给**特定行**设置不同的高度，则可以根据行序号调整 (从 `0` 开始)
 
 :::
 
@@ -131,8 +131,8 @@ const s2Options = {
     rowCell: {
       // 给第一行和第三行设置不同的高度
       heightByField: {
-        '1': 130,
-        '3': 60,
+        '0': 130,
+        '2': 60,
       },
     },
   },
@@ -204,8 +204,8 @@ const s2Options = {
 
 如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&]家具[&]沙发[&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
-- **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
+- **fieldId** (例：`root[&]家具[&]沙发[&]number`): 行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **field** (例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 :::
 

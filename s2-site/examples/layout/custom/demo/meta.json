@@ -34,7 +34,8 @@
         "zh": "自定义树状结构行头宽度",
         "en": "Custom Tree Row Width"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/y%26PAejhkm/e9b18b27-a6c9-4c05-b75c-83b25030d0c6.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/y%26PAejhkm/e9b18b27-a6c9-4c05-b75c-83b25030d0c6.png",
+      "new": true
     },
     {
       "filename": "custom-tree-collapse-nodes.ts",
@@ -42,7 +43,8 @@
         "zh": "自定义树状结构折叠/展开节点",
         "en": "Custom Tree Collapse Nodes"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*C36jTrhZBAsAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*C36jTrhZBAsAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "hide-columns.ts",
@@ -74,7 +76,8 @@
         "zh": "多行文本 / 文本自动换行",
         "en": "Multi Line Text"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

@@ -8,7 +8,7 @@ class CustomMergedCell extends MergedCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
   drawBackgroundShape() {
     super.drawBackgroundShape();
-    this.backgroundShape.attr('fill', 'red');
+    this.backgroundShape.style.fill = 'red';
   }
 }
 

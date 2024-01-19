@@ -22,6 +22,8 @@ class CustomDataCell extends DataCell {
           },
         }),
       );
+
+      this.drawTextShape();
     };
   }
 }

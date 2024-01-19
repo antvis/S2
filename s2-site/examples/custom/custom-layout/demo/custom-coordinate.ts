@@ -41,10 +41,10 @@ fetch(
       width: 600,
       height: 480,
       layoutCoordinate: (spreadsheet, rowNode, colNode) => {
-        // layoutCoordinate 用于改变行列叶子结点的尺寸（长、宽）和坐标（x、y）
+        // layoutCoordinate 用于特定场景改变行列叶子节点的尺寸（长、宽）和坐标（x、y）
+        // 如果只希望改变宽高, 请查看 "自定义单元格宽高" 章节 https://s2.antv.antgroup.com/manual/advanced/custom/cell-size
         // 改变「宁波市」节点高度
-        console.log(rowNode);
-        console.log(colNode);
+        console.log(rowNode, colNode);
         if (rowNode?.value === '宁波市') {
           rowNode.height = 100;
         }

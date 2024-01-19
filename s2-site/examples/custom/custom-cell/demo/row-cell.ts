@@ -22,6 +22,8 @@ class CustomRowCell extends RowCell {
           },
         }),
       );
+
+      this.drawTextShape();
     };
   }
 }

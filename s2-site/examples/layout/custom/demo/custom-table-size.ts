@@ -49,6 +49,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         // 明细表每一行根据行序号单独设置
         rowCell: {
           heightByField: {
+            '0': 40,
             '1': 130,
             '3': 60,
             '10': 80,

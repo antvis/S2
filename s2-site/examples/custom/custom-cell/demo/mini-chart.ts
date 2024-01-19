@@ -1,4 +1,11 @@
-import { PivotSheet, DataCell, drawObjectText } from '@antv/s2';
+/* eslint-disable max-lines-per-function */
+import {
+  PivotSheet,
+  DataCell,
+  drawObjectText,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 import { isArray, isObject } from 'lodash';
 
 /**
@@ -12,6 +19,7 @@ class CustomDataCell extends DataCell {
 
     if (isObject(fieldValue) || isArray(fieldValue)) {
       drawObjectText(this);
+
       return;
     }
 
@@ -25,7 +33,7 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container')!;
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -142,11 +150,11 @@ fetch(
       ],
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 1000,
       height: 680,
       style: {
-        cellCfg: {
+        dataCell: {
           height: 40,
         },
       },
@@ -156,11 +164,13 @@ fetch(
             field: 'number',
             mapping: (value, cellInfo) => {
               const { meta, colIndex } = cellInfo || {};
+
               if (colIndex === 0 || !value || !meta?.fieldValue) {
                 return {
                   fill: '#000',
                 };
               }
+
               return {
                 fill: value > 0 ? '#FF4D4F' : '#29A294',
               };
@@ -172,6 +182,7 @@ fetch(
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();

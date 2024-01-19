@@ -133,6 +133,7 @@ fetch(
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();

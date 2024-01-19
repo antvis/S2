@@ -21,6 +21,8 @@ class CustomCornerCell extends CornerCell {
           },
         }),
       );
+
+      this.drawTextShape();
     };
   }
 }

@@ -9,7 +9,7 @@ tag: New
 ## 官网地址变化
 
 :::warning{title="注意"}
-原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请使用最新的文档，已确保您看到的不是过时的文档。
+原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请使用最新的文档，确保您看到的不是过时的文档。
 :::
 
 - 原 `v1` 官网迁移至 <https://s2-v1.antv.antgroup.com>.
@@ -28,7 +28,7 @@ tag: New
 - `@antv/s2@next` 对应 `2.x` 版本
 - `@antv/s2@latest` 对应 `1.x` 版本
 
-在 `@antv/s2@next` 版本稳定后，`latest` 将默认指向 `2.x` 版本。
+在 `@antv/s2@next` 版本稳定后，**`latest` 将默认指向 `2.x` 版本**。
 
 :::
 

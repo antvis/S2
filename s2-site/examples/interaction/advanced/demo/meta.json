@@ -114,7 +114,8 @@
         "zh": "透视表 - 平铺模式冻结首行",
         "en": "pivot mode freezes head rows"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ge0_S5iMB-wAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ge0_S5iMB-wAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "frozen-pivot-tree.ts",
@@ -122,7 +123,8 @@
         "zh": "透视表 - 树状模式冻结首行",
         "en": "tree mode freezes head rows"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ncdCT7NB2I0AAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ncdCT7NB2I0AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }
