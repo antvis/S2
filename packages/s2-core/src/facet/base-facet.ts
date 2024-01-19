@@ -1,5 +1,4 @@
-import type { Event as GraphEvent } from '@antv/g-base';
-import type { IElement, IGroup } from '@antv/g-canvas';
+import type { IElement, IGroup, Event as GraphEvent } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
