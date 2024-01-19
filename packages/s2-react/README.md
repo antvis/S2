@@ -2,20 +2,20 @@
 
 <div align="center">
 
-数据驱动的多维分析表格 (React 版本）。
+数据驱动的多维分析表格 ( React 版本 )
 
 <p>
  <a href="https://www.npmjs.com/package/@antv/s2-react" title="npm">
-    <img src="https://img.shields.io/npm/dm/@antv/s2-react.svg" alt="npm"/>
+    <img src="https://img.shields.io/npm/dm/@antv/s2-react.svg" alt="npm" />
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/latest.svg" alt="latest version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/latest.svg?logo=npm" alt="latest version" />
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/next.svg" alt="next version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/next.svg?logo=npm" alt="next version" />
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
-    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
+    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status" />
   </a>
 </p>
 
@@ -24,9 +24,9 @@
 ## 📦 安装
 
 ```bash
-$ npm install @antv/s2-react
+$ pnpm add @antv/s2-react
+# npm install @antv/s2-react --save
 # yarn add @antv/s2-react
-# pnpm add @antv/s2-react
 ```
 
 ## 🔨 使用
@@ -93,6 +93,28 @@ const s2DataConfig = {
       price: '1',
     },
   ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
+  ]
 };
 ```
 
@@ -115,7 +137,7 @@ const s2Options = {
 ### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```tsx
@@ -135,4 +157,4 @@ const App = () => {
 
 ### 4. 结果
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
+![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pfF8QqZuj9EAAAAAAAAAAAAADmJ7AQ/original)

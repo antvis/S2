@@ -187,6 +187,28 @@ const s2DataConfig = {
       type: "纸张",
       cost: "1",
     }
+  ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
   ]
 };
 ```
@@ -224,7 +246,7 @@ bootstrap();
 
 ### 4. 结果
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="1000" alt="preview" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aTPcT4aKOq4AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 ## 📦 版本
 

@@ -313,7 +313,7 @@ const s2DataConfig = {
 :::warning{title="该功能依赖 G2 的 `5.x` 版本，请确保使用了正确的版本 "}
 
 ```bash
-yarn add @antv/g2 --save
+pnpm add @antv/g2
 ```
 
 使用 `G2` 提供的 `renderToMountedElement` 方法

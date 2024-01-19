@@ -73,9 +73,9 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 ## 📦 安装
 
 ```bash
-$ npm install @antv/s2 --save
-# yarn add @antv/s2 --save
-# pnpm add @antv/s2 --save
+$ pnpm add @antv/s2
+# yarn add @antv/s2
+# npm install @antv/s2 --save
 ```
 
 ## 🔨 使用
@@ -142,6 +142,28 @@ const s2DataConfig = {
       price: '1',
     },
   ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
+  ]
 };
 ```
 
@@ -159,17 +181,21 @@ const s2Options = {
 ### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-const container = document.getElementById('container');
+async function bootstrap() {
+  const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+  await s2.render();
+}
+
+bootstrap()
 ```
 
 ### 4. 结果

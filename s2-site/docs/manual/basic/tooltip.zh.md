@@ -593,7 +593,7 @@ class CustomTooltip extends BaseTooltip {
 }
 ```
 
-##### `defineCustomElement` 自定义内容的方式 （不推荐）
+##### `defineCustomElement` 自定义内容的方式 <Badge type="error">不推荐</Badge>
 
 > 注意，customElements 不能重复注册，否则浏览器会报错
 

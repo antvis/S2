@@ -30,7 +30,7 @@ $ pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
 
 ```
 
-### 浏览器引入（不推荐）
+### 浏览器引入 <Badge type="error">不推荐</Badge>
 
 <embed src="@/docs/common/browser.zh.md"></embed>
 
@@ -169,7 +169,7 @@ const s2Options = {
 #### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
@@ -216,7 +216,7 @@ const App = () => {
 `React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
-yarn add antd @ant-design/icons
+pnpm add antd @ant-design/icons
 ```
 
 :::
@@ -297,7 +297,7 @@ createApp(App).mount('#app');
 `Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue@3.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
-yarn add ant-design-vue@3.x
+pnpm add ant-design-vue@3.x
 ```
 
 :::

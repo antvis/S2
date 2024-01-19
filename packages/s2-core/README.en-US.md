@@ -77,9 +77,9 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-$ npm install @antv/s2
+$ pnpm add @antv/s2
 # yarn add @antv/s2
-# pnpm add @antv/s2
+# npm install @antv/s2 --save
 ```
 
 ## 🔨 Getting Started
@@ -146,6 +146,28 @@ const s2DataConfig = {
       price: '1',
     },
   ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
+  ]
 };
 ```
 
@@ -163,17 +185,21 @@ const s2Options = {
 ### 3. Component Rendering
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-const container = document.getElementById('container');
+async function bootstrap() {
+  const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataCfg, s2Options)
+  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.render()
+  await s2.render();
+}
+
+bootstrap()
 ```
 
 ### 4. Preview

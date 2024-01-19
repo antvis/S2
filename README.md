@@ -142,6 +142,28 @@ const s2DataConfig = {
       price: '1',
     },
   ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
+  ]
 };
 ```
 
@@ -159,7 +181,7 @@ const s2Options = {
 ### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
@@ -178,7 +200,7 @@ bootstrap()
 
 ### 4. 结果
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
+![result](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aTPcT4aKOq4AAAAAAAAAAAAADmJ7AQ/original)
 
 ### 📦 版本
 
