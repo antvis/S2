@@ -36,8 +36,6 @@ $ pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
 
 ## 🔨 使用
 
-创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
-
 ### 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
@@ -220,6 +218,8 @@ const App = () => {
 ```bash
 yarn add antd @ant-design/icons
 ```
+
+:::
 
 ​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 

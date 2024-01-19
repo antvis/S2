@@ -1,5 +1,5 @@
 ---
-title: 自定义行列头
+title: 自定义行列头分组
 order: 2
 tag: New
 ---
@@ -81,7 +81,7 @@ const data = [
 
 :::
 
-<Playground path='custom/custom-tree/demo/custom-pivot-row-header.ts' rid='container' height='400'></playground>
+<Playground path='layout/custom-header-group/demo/custom-pivot-row-header.ts' rid='custom-pivot-row-header' height='400'></playground>
 
 ```ts
 const s2DataConfig = {
@@ -103,7 +103,7 @@ const s2Options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png" width="1000" alt="preview"/>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png" width="1000" alt="preview" />
 
 #### 树状模式
 
@@ -113,7 +113,7 @@ const s2Options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/iJft9ExZs/da1f768c-7689-44df-be54-708442a74d76.png" width="1000" alt="preview"/>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/iJft9ExZs/da1f768c-7689-44df-be54-708442a74d76.png" width="1000" alt="preview" />
 
 ### 1.2 自定义列头
 
@@ -124,7 +124,7 @@ const s2Options = {
 
 :::
 
-<Playground path='custom/custom-tree/demo/custom-pivot-col-header.ts' rid='container-2' height='400'></playground>
+<Playground path='layout/custom-header-group/demo/custom-pivot-col-header.ts' rid='custom-pivot-col-header' height='400'></playground>
 
 ```ts
 const s2DataConfig = {
@@ -229,11 +229,11 @@ const s2DataConfig = {
 
 :::
 
-<Playground path='custom/custom-tree/demo/custom-table-col-header.ts' rid='container-3' height='400'></playground>
+<Playground path='layout/custom-header-group/demo/custom-table-col-header.ts' rid='custom-table-col-header' height='400'></playground>
 
 ## 3. 行列头文本格式化
 
-自定义节点默认使用 `当前节点展示名`, 即 `CustomTreeNode.title`, 也可以使用通用的 [Meta](/api/general/s-2-data-config#meta) 来进行格式化
+自定义节点默认使用 `当前节点展示名`, 即 `CustomTreeNode.title`, 也可以使用通用的 [Meta](/api/general/s-2-data-config#meta) 来进行格式化，[查看更多](/manual/basic/formatter)
 
 ```ts
 const s2DataConfig: S2DataConfig = {
@@ -252,4 +252,4 @@ const s2DataConfig: S2DataConfig = {
 
 ## 4. 更多应用
 
-基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](zh/docs/manual/basic/analysis/strategy/).
+基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](/docs/manual/basic/analysis/strategy/).

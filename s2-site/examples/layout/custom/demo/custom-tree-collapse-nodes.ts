@@ -13,16 +13,16 @@ fetch(
       hierarchyType: 'tree',
       style: {
         rowCell: {
-          // 方式1: 折叠浙江省下面所有的城市 (根据节点 id)
+          // 方式 1: 折叠浙江省下面所有的城市 (根据节点 id)
           collapseFields: { 'root[&]浙江省': true },
 
-          // 方式2: 折叠所有城市 (根据维度, 即 (S2DataConfig.fields.rows 配置的维度))
+          // 方式 2: 折叠所有城市 (根据维度, 即 (S2DataConfig.fields.rows 配置的维度))
           // collapseFields: { city: true },
 
-          // 方式3: 配置展开层级 (优先级小于 collapseFields, 当 collapseFields 未配置, 或为 null 时有效)
+          // 方式 3: 配置展开层级 (优先级小于 collapseFields, 当 collapseFields 未配置, 或为 null 时有效)
           // expandDepth: 0,
 
-          // 方式4: 折叠所有 (优先级小于 collapseFields, expandDepth,  当 collapseFields 和 expandDepth 未配置, 或为 null 时有效)
+          // 方式 4: 折叠所有 (优先级小于 collapseFields, expandDepth,  当 collapseFields 和 expandDepth 未配置, 或为 null 时有效)
           // collapseAll: true,
         },
       },

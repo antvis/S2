@@ -1,0 +1,44 @@
+{
+  "title": {
+    "zh": "表格自适应",
+    "en": "Table Adaptive"
+  },
+  "demos": [
+    {
+      "filename": "table-frozen.ts",
+      "title": {
+        "zh": "明细表 - 行列冻结",
+        "en": "TableSheet - Frozen Rows And Cols"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif",
+      "new": true
+    },
+    {
+      "filename": "pivot-frozen-row-header.ts",
+      "title": {
+        "zh": "透视表 - 行头冻结",
+        "en": "PivotSheet - Frozen Row Header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "frozen-pivot-grid.ts",
+      "title": {
+        "zh": "透视表 - 平铺模式冻结首行",
+        "en": "pivot mode freezes head rows"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ge0_S5iMB-wAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "frozen-pivot-tree.ts",
+      "title": {
+        "zh": "透视表 - 树状模式冻结首行",
+        "en": "tree mode freezes head rows"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ncdCT7NB2I0AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    }
+  ]
+}

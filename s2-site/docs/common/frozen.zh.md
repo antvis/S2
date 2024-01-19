@@ -9,7 +9,7 @@ order: 1
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | -- | --- | --  | -- | --- |
-| rowHeader | `boolean`\|`number` |  |   `true` | 冻结行头<br/>当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头。<br/>当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0。<br/> （透视表有效） |
+| rowHeader | `boolean \| number` |  |   `true` | 冻结行头<br/>当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头。<br/>当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0。<br/> （透视表有效） |
 | rowCount | `number` |  |  `0`  | 冻结行的数量，从顶部开始计数 （明细表有效） |
 | colCount | `number` |  |  `0`  | 冻结列的数量，从左侧开始计数 （明细表有效） |
 | trailingRowCount | `number` |    | `0` | 冻结行数量，从底部开始计数 （明细表有效） |

@@ -12,6 +12,12 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'tree',
+      frozen: {
+        // 默认冻结行头, 行头和数值区域都会展示滚动条
+        // rowHeader: false,
+        // 冻结行头时, 行头宽度占表格的 1/2, 支持动态调整 (0 - 1)
+        // rowHeader: 0.2,
+      },
       style: {
         rowCell: {
           width: 200,

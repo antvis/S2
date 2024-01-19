@@ -3,11 +3,12 @@ title: 透视表
 order: 1
 tag: Updated
 ---
+
 ## 简介
 
 透视表也叫做交叉表或多维表，显示多变量之间相互关系的一种表格，可以帮助用户发现它们之间的相互作用，帮助业务进行交叉探索分析，是目前商业 BI 分析领域中使用频率最高的图表之一。
 
-<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*swH5TodvsMwAAAAAAAAAAAAAARQnAQ" width="600">
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/zos/antfincdn/a6zSe1gvvy/f97ed6ec-0a5d-49b7-8492-754611d0aea6.png" width="600" />
 
 ## 使用
 
@@ -15,14 +16,10 @@ tag: Updated
 <div id="container" />
 ```
 
-### React 组件方式
+```ts
+import { PivotSheet } from "@antv/s2";
 
-```tsx
-import React from "react";
-import { SheetComponent } from "@antv/s2-react";
-import '@antv/s2-react/dist/style.min.css';
-
-// 1. 准备数据
+// 准备数据
 const data = [
   {
     province: "浙江",
@@ -54,7 +51,7 @@ const data = [
   },
 ];
 
-// 2. 配置数据
+// 配置数据
 const s2DataConfig = {
   fields: {
     rows: ["province", "city"],
@@ -64,32 +61,13 @@ const s2DataConfig = {
   data,
 };
 
-// 3. 添加配置
+// 添加配置
 const s2Options = {
   width: 600,
   height: 600,
 };
 
-// 4. 渲染
-const App = () => {
-  return (
-    <SheetComponent
-      dataCfg={s2DataConfig}
-      options={s2Options}
-    />
-  )
-}
-```
-
-​📊 查看 [React 版本透视表示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
-
-### PivotSheet 类方式
-
-如果不打算依赖 `React`，可以在上面第三步之后直接调用：
-
-```ts
-import { PivotSheet } from "@antv/s2";
-
+// 渲染
 async function bootstrap() {
   const container = document.getElementById('container');
   const s2 = new PivotSheet(container, dataCfg, options);
@@ -98,9 +76,79 @@ async function bootstrap() {
 }
 
 bootstrap()
+
 ```
 
-​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。
+<Playground path='/basic/pivot/demo/grid.ts' rid='pivot-grid' height='300'></playground>
+
+​[查看示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。
+
+## 在 React 中使用
+
+### 使用 `@antv/s2`
+
+```tsx
+import React from "react";
+import { PivotSheet } from '@antv/s2';
+
+const s2Options = {
+  width: 400,
+  height: 200,
+};
+
+const App = () => {
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const shouldInit = React.useRef(true);
+  const isDevMode = React.useMemo(() => {
+    try {
+      return process.env['NODE_ENV'] !== 'production';
+    } catch {
+      return false;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    // 兼容 React 18 StrictMode 开发环境下渲染两次
+    if (isDevMode && !shouldInit.current) {
+      return;
+    }
+
+    const s2 = new PivotSheet(container, dataCfg, s2Options);
+    shouldInit.current = false;
+
+    return () => {
+      s2?.destroy?.();
+    };
+  }, []);
+
+  return <div id="container" ref={containerRef} />
+}
+```
+
+### 使用 `@antv/s2-react` <Badge type="success">推荐</Badge>
+
+```tsx
+import React from "react";
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
+const s2Options = {
+  width: 400,
+  height: 200,
+};
+
+const App = () => {
+  return (
+    <SheetComponent
+      sheetType="pivot"
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
+```
+
+​[查看示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
 
 ## 特性
 
@@ -116,17 +164,29 @@ bootstrap()
 
 当行头固定时，行头会有一个独立的可滚动区域，如果关闭冻结行头，则滚动区域为整个表格。
 
-<Playground path='interaction/basic/demo/frozen-row-header.ts' rid='frozen-row-header' height='300'></playground>
+<Playground path='layout/frozen/demo/pivot-frozen-row-header.ts' rid='pivot-frozen-row-header' height='300'></playground>
 
 <br/>
 
 ```ts
 const s2Options = {
-  frozenRowHeader: false, // 默认开启
+  frozen: {
+    rowHeader: false, // 默认开启
+  }
 }
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview">
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
+
+默认最大冻结宽度为表格区域的 `1/2`, 支持自定义：
+
+```ts
+const s2Options = {
+  frozen: {
+    rowHeader: 0.2, // 默认 0.5 （可选范围 0 - 1)
+  }
+}
+```
 
 ### 冻结首行 <Badge type="success">@antv/s2@^1.53.0 新增</Badge>
 
@@ -137,7 +197,7 @@ const s2Options = {
 - 首行不存在子节点（适用于总计置于顶部，只有单个维值，树状模式等场景）。
 - 分页场景暂不支持。
 
-`s2Options` 中配置 `frozenFirstRow` 开启首行冻结能力
+`s2Options` 中配置 `frozen.firstRow` 开启首行冻结能力
 
 :::
 
@@ -145,8 +205,10 @@ const s2Options = {
 
 ```ts
 const s2Options = {
-  frozenFirstRow: true,
   hierarchyType: 'grid',
+  frozen: {
+    firstRow: true,
+  },
   // 需要开启行总计 & 总计行置于顶部
   totals: {
     row: {
@@ -157,7 +219,7 @@ const s2Options = {
 }
 ```
 
-<Playground path='interaction/advanced/demo/frozen-pivot-grid.ts' rid='container-grid' height='300'></playground>
+<Playground path='layout/frozen/demo/frozen-pivot-grid.ts' rid='container-grid' height='300'></playground>
 
 <br/>
 
@@ -165,11 +227,13 @@ const s2Options = {
 
 ```ts
 const s2Options = {
-  frozenFirstRow: true,
   hierarchyType: 'tree',
+  frozen: {
+    firstRow: true,
+  },
 }
 ```
 
-<Playground path='interaction/advanced/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
+<Playground path='layout/frozen/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
 
 <br/>

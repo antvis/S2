@@ -61,22 +61,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif"
     },
     {
-      "filename": "frozen.ts",
-      "title": {
-        "zh": "明细表 - 行列冻结",
-        "en": "TableSheet - Frozen Rows And Cols"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif"
-    },
-    {
-      "filename": "frozen-row-header.ts",
-      "title": {
-        "zh": "透视表 - 行头冻结",
-        "en": "PivotSheet - Frozen Row Header"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original"
-    },
-    {
       "filename": "auto-reset-sheet-style.ts",
       "title": {
         "zh": "自动交互状态重置",

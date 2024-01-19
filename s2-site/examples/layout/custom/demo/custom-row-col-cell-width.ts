@@ -17,20 +17,20 @@ fetch(
           // 固定配置: 行头单元格 100px
           // width: 100,
           // 动态配置: 叶子节点 300px, 非叶子节点 200px
-          width: (row) => {
-            console.log('row: ', row);
+          width: (node) => {
+            console.log('rowNode: ', node);
 
-            return row.isLeaf ? 300 : 200;
+            return node?.isLeaf ? 300 : 200;
           },
         },
         colCell: {
           // 固定配置: 每列 100px
           // width: 100,
           // 动态配置: 偶数列 100px, 奇数列 200px
-          width: (col) => {
-            console.log('col: ', col);
+          width: (node) => {
+            console.log('colNode: ', node);
 
-            return col.colIndex % 2 === 0 ? 100 : 200;
+            return node?.colIndex % 2 === 0 ? 100 : 200;
           },
         },
         dataCell: {
