@@ -152,6 +152,17 @@ const App = () => {
 
 ## 特性
 
+### 序号
+
+在 `s2Options` 中传入 `showSeriesNumber` 即可展示内置的序号，可以自定义序号列标题。[查看示例](/examples/basic/pivot#grid)
+
+```ts
+const s2Options = {
+  showSeriesNumber: true,
+  seriesNumberText: '自定义序号标题' // 默认 "序号"
+}
+```
+
 ### 展示形态
 
 默认支持 [平铺模式](/zh/examples/basic/pivot/#grid) 和 [树状模式](/zh/examples/basic/pivot/#tree) 两种展示形态。

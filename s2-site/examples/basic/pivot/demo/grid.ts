@@ -39,11 +39,16 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
+      hierarchyType: 'grid',
       interaction: {
         enableCopy: true,
         copyWithFormat: true,
         copyWithHeader: true,
       },
+      // 显示序号
+      // showSeriesNumber: true,
+      // 自定义序号列文本, 默认 "序号"
+      // seriesNumberText: '自定义序号标题',
       frozen: {
         // 默认冻结行头, 行头和数值区域都会展示滚动条
         // rowHeader: false,

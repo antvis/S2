@@ -27,6 +27,7 @@ const s2Options = {
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
 | frozen | [Frozen](#frozen) |  |    | 行列头冻结配置 |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
+| seriesNumberText | `string` |  |  `序号` | 自定义序号列标题 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
