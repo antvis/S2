@@ -6,7 +6,6 @@ exports[`Pagination Tests should receive antd <Pagination/> component extra prop
 >
   <ul
     class="ant-pagination"
-    unselectable="unselectable"
   >
     <li
       aria-disabled="false"
@@ -126,8 +125,7 @@ exports[`Pagination Tests should render locale text for { locale: 'en_US', page:
   class="antv-s2-pagination"
 >
   <ul
-    class="ant-pagination mini"
-    unselectable="unselectable"
+    class="ant-pagination ant-pagination-mini"
   >
     <li
       aria-disabled="true"
@@ -299,8 +297,7 @@ exports[`Pagination Tests should render locale text for { locale: 'zh_CN', page:
   class="antv-s2-pagination"
 >
   <ul
-    class="ant-pagination mini"
-    unselectable="unselectable"
+    class="ant-pagination ant-pagination-mini"
   >
     <li
       aria-disabled="true"
