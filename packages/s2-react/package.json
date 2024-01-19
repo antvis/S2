@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@antv/g-canvas": "^0.5.12",
     "@antv/s2": "workspace:*",
     "@antv/s2-shared": "workspace:*",
     "@testing-library/react": "^12.1.4",

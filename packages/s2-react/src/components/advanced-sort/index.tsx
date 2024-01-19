@@ -362,6 +362,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                   onClick={() => {
                     deleteRule(item);
                   }}
+                  rev
                 />
               </Form.Item>
             );
