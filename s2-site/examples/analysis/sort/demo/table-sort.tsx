@@ -110,7 +110,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
                     sortFieldId: 'price',
                     sortMethod: 'DESC',
                     query: {
-                      city: '浙江',
+                      province: '浙江',
                     },
                   },
                 ],
