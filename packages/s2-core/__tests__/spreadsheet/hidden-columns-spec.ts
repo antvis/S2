@@ -154,7 +154,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/2495
-    test('should overwrite latest hidden columns detail', () => {
+    test('should reset latest hidden columns detail when hiddenColumnFields changed', () => {
       const hiddenColumns = ['province', 'city'];
       const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
         ...s2Options,
