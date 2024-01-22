@@ -68,6 +68,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@antv/g-base": "^0.5.15",
     "@antv/s2": "workspace:*",
     "@antv/s2-shared": "workspace:*",
     "@testing-library/vue": "^6.6.1",

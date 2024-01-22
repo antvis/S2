@@ -389,6 +389,9 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
     devDependencies:
+      '@antv/g-base':
+        specifier: ^0.5.15
+        version: 0.5.15
       '@antv/s2':
         specifier: workspace:*
         version: link:../s2-core

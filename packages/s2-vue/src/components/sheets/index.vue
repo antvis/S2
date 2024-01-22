@@ -6,6 +6,11 @@ import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import PivotSheet from './pivot-sheet.vue';
 import TableSheet from './table-sheet.vue';
 
+/**
+ * 解决 TS2742 indirect type reference bug: https://github.com/quadristan/ts-indirect-type-reference-bug
+ */
+import type {} from '@antv/g-base';
+
 export default defineComponent({
   name: 'Sheet',
   props: [] as unknown as BaseSheetInitProps,
