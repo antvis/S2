@@ -657,7 +657,7 @@ describe('PivotSheet Tests', () => {
   test('should clear init column nodes', () => {
     s2.store.set('initColumnLeafNodes', [null, null]);
 
-    s2.clearColumnLeafNodes();
+    s2.clearInitColumnLeafNodes();
 
     expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
   });
