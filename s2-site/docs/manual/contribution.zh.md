@@ -47,7 +47,7 @@ order: 7
 
 ## 开发流程
 
-我们使用 `pnpm@v7` 作为包管理
+我们使用 `pnpm@v8` 作为包管理
 
 ```bash
 npm i -g pnpm
