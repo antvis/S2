@@ -152,6 +152,58 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(costDetail.hideColumnNodes).toHaveLength(1);
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
+
+    // https://github.com/antvis/S2/issues/2495
+    test('should reset latest hidden columns detail when hiddenColumnFields changed', () => {
+      const hiddenColumns = ['province', 'city'];
+      const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+      sheet.render();
+
+      sheet.setOptions({
+        interaction: {
+          hiddenColumnFields: ['city'],
+        },
+      });
+
+      sheet.render(false);
+
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+      const [cityDetail] = hiddenColumnsDetail;
+
+      expect(sheet.options.interaction.hiddenColumnFields).toEqual(['city']);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(cityDetail.hideColumnNodes).toHaveLength(1);
+      expect(cityDetail.hideColumnNodes[0].field).toEqual('city');
+    });
+
+    test('should clear hidden columns detail if hiddenColumnFields is empty', () => {
+      const hiddenColumns = ['province', 'city'];
+      const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+      sheet.render();
+
+      sheet.setOptions({
+        interaction: {
+          hiddenColumnFields: [],
+        },
+      });
+
+      sheet.render(false);
+
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+
+      expect(sheet.options.interaction.hiddenColumnFields).toBeEmpty();
+      expect(hiddenColumnsDetail).toBeEmpty();
+    });
   });
 
   describe('PivotSheet', () => {

@@ -39,7 +39,7 @@ export const useSheetUpdate = (
         prevDataCfg?.fields?.columns?.length !==
         dataCfg?.fields?.columns?.length
       ) {
-        s2Ref.value?.clearColumnLeafNodes();
+        s2Ref.value?.clearInitColumnLeafNodes();
       }
       updateFlag.rerender = true;
       updateFlag.reloadData = true;
