@@ -2,10 +2,10 @@ import type { S2Options, SpreadSheet } from '@antv/s2';
 import { reactive, watch, type ShallowRef, isProxy } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
-/*
- * props会将所有属性用shallowReactive包裹起来：
- * 1. 如果是对dataCfg或者options直接替换， 那么只需要简单的通过 ()=>props.dataCfg 这种getter就能监听到
- * 2. 如果 dataCfg任然是 reactive 数据，那么就存在直接修改了其中某一个属性的情况，这个时候就需要对所有的属性遍历来关联watch属性
+/**
+ * props 会将所有属性用 shallowReactive 包裹起来：
+ * 1. 如果是对 dataCfg 或者 options 直接替换， 那么只需要简单的通过 ()=> props.dataCfg 这种 getter 就能监听到
+ * 2. 如果 dataCfg 任然是 reactive 数据，那么就存在直接修改了其中某一个属性的情况，这个时候就需要对所有的属性遍历来关联 watch 属性
  * ? 如果数量特别多时，遍历可能存在性能问题，先暂时观察一下
  */
 export const useSheetUpdate = (

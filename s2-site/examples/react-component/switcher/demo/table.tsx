@@ -23,11 +23,11 @@ fetch(
       columns: {
         selectable: true,
         items: [
-          { id: 'province' },
-          { id: 'city' },
-          { id: 'type' },
-          { id: 'sub_type' },
-          { id: 'number' },
+          { id: 'province', displayName: '省份 (province)' },
+          { id: 'city', displayName: '城市 (city)' },
+          { id: 'type', displayName: '类别 (type)' },
+          { id: 'sub_type', displayName: '子类别 (sub_type)' },
+          { id: 'number', displayName: '数量 (number)' },
         ],
       },
     };
