@@ -18,7 +18,7 @@ jobs:
         working-directory: s2-site
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [20]
 
     steps:
       - uses: actions/checkout@v4
