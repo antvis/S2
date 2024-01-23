@@ -93,8 +93,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
-            unselectable="unselectable"
+            class="ant-pagination ant-pagination-mini"
           >
             <li
               aria-disabled="true"
@@ -355,8 +354,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
-            unselectable="unselectable"
+            class="ant-pagination ant-pagination-mini"
           >
             <li
               aria-disabled="true"
@@ -607,8 +605,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
-            unselectable="unselectable"
+            class="ant-pagination ant-pagination-mini"
           >
             <li
               aria-disabled="true"
@@ -859,8 +856,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
-            unselectable="unselectable"
+            class="ant-pagination ant-pagination-mini"
           >
             <li
               aria-disabled="true"
@@ -1111,8 +1107,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
-            unselectable="unselectable"
+            class="ant-pagination ant-pagination-mini"
           >
             <li
               aria-disabled="true"

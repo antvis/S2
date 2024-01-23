@@ -28,7 +28,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,
@@ -98,7 +98,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,
@@ -168,7 +168,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,
@@ -238,7 +238,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,
@@ -308,7 +308,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,
@@ -378,7 +378,7 @@ GuiIcon {
     "zIndex": 0,
   },
   "destroyed": false,
-  "iconImageShape": ImageShape1 {
+  "iconImageShape": ImageShape {
     "_events": Object {},
     "attrs": Object {
       "animable": true,

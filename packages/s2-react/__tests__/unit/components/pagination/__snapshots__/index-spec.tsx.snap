@@ -6,8 +6,7 @@ exports[`Pagination Component Tests should render component 1`] = `
     class="antv-s2-pagination"
   >
     <ul
-      class="ant-pagination mini"
-      unselectable="unselectable"
+      class="ant-pagination ant-pagination-mini"
     >
       <li
         aria-disabled="true"

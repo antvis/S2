@@ -1,0 +1,3 @@
+packages:
+  - 'packages/*'
+  - 's2-site'

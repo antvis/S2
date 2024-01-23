@@ -78,7 +78,7 @@ describe('Data Cell Tests', () => {
         // 宽度相当
         const linkLength = maxX - minX;
         expect(
-          Math.abs(linkLength - get(dataCell, 'actualTextWidth')),
+          Math.abs(linkLength - get(dataCell, 'actualTextWidth', 0)),
         ).toBeLessThanOrEqual(2);
 
         // link shape 的中点坐标与 text 中点对齐
@@ -114,7 +114,7 @@ describe('Data Cell Tests', () => {
     });
 
     test('should return correct formatted value', () => {
-      const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
+      const formatter: Formatter = (_, data) => `${get(data, 'value', 0) * 10}`;
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       const dataCell = new DataCell(meta, s2);
 

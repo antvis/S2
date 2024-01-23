@@ -154,7 +154,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
           <footer className={getSwitcherClassName(CLASS_NAME_PREFIX, 'footer')}>
             <Button
               type={'text'}
-              icon={<ReloadOutlined />}
+              icon={<ReloadOutlined rev />}
               className={getSwitcherClassName(
                 CLASS_NAME_PREFIX,
                 'footer',

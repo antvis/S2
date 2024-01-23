@@ -8,33 +8,34 @@
 - [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)
 - [《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545)
 
+> S2 使用 pnpm 作为包管理器
+
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
 # 安装依赖
-yarn # 或者 yarn bootstrap
-
-# 调试 s2-core
-yarn core:start
-
-# 调试 s2-react
-yarn react:playground
-
-# 调试 s2-vue
-yarn vue:playground
-
-# 单元测试
-yarn test
+pnpm install # 或者 pnpm bootstrap
 
 # 打包
-yarn build
+pnpm build
+
+# 调试 s2-core
+pnpm core:start
+
+# 调试 s2-react
+pnpm react:playground
+
+# 调试 s2-vue
+pnpm vue:playground
+
+# 单元测试
+pnpm test
 
 # 代码风格和类型检测
-yarn lint
+pnpm lint
 
 # 本地启动官网
-yarn site:bootstrap
-yarn site:start
+pnpm site:start
 ```

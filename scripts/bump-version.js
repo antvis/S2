@@ -3,8 +3,10 @@ const { getCurrentBranch } = require('./util');
 
 const branch = getCurrentBranch();
 
-if (branch !== 'latest') {
-  console.log('❌ 只允许在 latest 分支执行该命令');
+const branchList = ['latest', 'alpha', 'beta', 'next'];
+
+if (!branchList.includes(branch)) {
+  console.log('❌ 只允许在发布分支执行该命令');
   process.exit(1);
 }
 

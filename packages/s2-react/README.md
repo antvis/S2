@@ -26,6 +26,7 @@
 ```bash
 $ npm install @antv/s2-react
 # yarn add @antv/s2-react
+# pnpm add @antv/s2-react
 ```
 
 ## 🔨 使用
