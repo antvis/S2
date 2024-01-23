@@ -49,8 +49,8 @@ s2.isPivotMode()
 | hideTooltip | 隐藏 tooltip                                                                                                             | `() => void` |    |
 | destroyTooltip | 销毁 tooltip                                                                                                             | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
-| setDataCfg | 更新数据配置                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
-| setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
+| setDataCfg | 更新数据配置                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2@^1.34.0`版本使用  |
+| setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2@^1.34.0`版本使用 |
 | render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |    |
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名）                                                                                            | (themeCfg: [ThemeCfg](/docs/api/general/S2Theme/#themecfg)) => void |    |
@@ -69,7 +69,8 @@ s2.isPivotMode()
 | getTotalsConfig | 获取总计小计配置                                                                                                               | (dimension: string) => [Total](/docs/api/general/S2Options#totals) |    |
 | getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前）                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素                                                                                            | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |    |
-| clearColumnLeafNodes | 清空存储在 store 中的初始叶子节点                                                                                                   | () => void |    |
+| clearColumnLeafNodes | 清空存储在 store 中的初始叶子节点 （已废弃，请使用 `clearInitColumnLeafNodes` )                                                                                                   | () => void |    |
+| clearInitColumnLeafNodes | 清空存储在 store 中的初始叶子节点                                                                                                   | () => void |  `@antv/s2@^1.54.3`  |
 | updateSortMethodMap | 更新存储在 store 中的节点排序方式 map, replace 为是否覆盖上一次的值                                                                           | (nodeId: string, sortMethod: string, replace?: boolean) => void |    |
 | getMenuDefaultSelectedKeys | 获取 tooltip 中选中的菜单项 key 值 | `(nodeId: string) => string[]` |    |
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |

@@ -1,7 +1,7 @@
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
-import { identity } from 'lodash';
+import { identity, isEmpty } from 'lodash';
 import React from 'react';
 import type {
   SheetComponentOptions,
@@ -94,7 +94,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
         prevDataCfg?.fields?.columns?.length !==
         dataCfg?.fields?.columns?.length
       ) {
-        s2Ref.current?.clearColumnLeafNodes();
+        s2Ref.current?.clearInitColumnLeafNodes();
       }
 
       reloadData = true;

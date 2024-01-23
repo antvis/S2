@@ -394,7 +394,18 @@ export abstract class SpreadSheet extends EE {
       this.initTooltip();
     }
 
+    this.resetHiddenColumnsDetailInfoIfNeeded();
     this.registerIcons();
+  }
+
+  /**
+   * 配置都是 merge 操作, 但是隐藏列配置比较特殊, 变更时, 应该是全量覆盖, 而不应该是合并
+   * https://github.com/antvis/S2/issues/2495
+   */
+  private resetHiddenColumnsDetailInfoIfNeeded() {
+    if (!isEmpty(this.options.interaction?.hiddenColumnFields)) {
+      this.store.set('hiddenColumnsDetail', []);
+    }
   }
 
   public render(reloadData = true, options: S2RenderOptions = {}) {
@@ -689,7 +700,14 @@ export abstract class SpreadSheet extends EE {
     return this.store.get('initColumnLeafNodes', []);
   }
 
+  /**
+   * @deprecated 已废弃, 请使用 clearInitColumnLeafNodes
+   */
   public clearColumnLeafNodes() {
+    this.clearInitColumnLeafNodes();
+  }
+
+  public clearInitColumnLeafNodes() {
     this.store.set('initColumnLeafNodes', undefined);
   }
 
