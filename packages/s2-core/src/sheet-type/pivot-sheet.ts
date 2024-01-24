@@ -83,11 +83,9 @@ export class PivotSheet extends SpreadSheet {
   }
 
   protected buildFacet() {
-    const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
+    const defaultCell = (viewMeta: ViewMeta) => new DataCell(viewMeta, this);
 
-    this.setOptions({
-      dataCell: this.options.dataCell ?? defaultCell,
-    });
+    this.options.dataCell ??= defaultCell;
     this.facet?.destroy();
     this.facet = this.options.facet?.(this) ?? new PivotFacet(this);
     this.facet.render();

@@ -77,17 +77,15 @@ export class TableSheet extends SpreadSheet {
   protected bindEvents() {}
 
   protected buildFacet() {
-    const defaultCell = (facet: ViewMeta) => {
-      if (this.options.showSeriesNumber && facet.colIndex === 0) {
-        return new TableSeriesNumberCell(facet, this);
+    const defaultCell = (viewMeta: ViewMeta) => {
+      if (this.options.showSeriesNumber && viewMeta.colIndex === 0) {
+        return new TableSeriesNumberCell(viewMeta, this);
       }
 
-      return new TableDataCell(facet, this);
+      return new TableDataCell(viewMeta, this);
     };
 
-    this.setOptions({
-      dataCell: this.options.dataCell ?? defaultCell,
-    });
+    this.options.dataCell ??= defaultCell;
     this.facet?.destroy();
     this.facet = this.options.facet?.(this) ?? new TableFacet(this);
     this.facet.render();

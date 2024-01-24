@@ -181,6 +181,10 @@ export abstract class BaseFacet {
     scrollY: number,
   ): PanelIndexes;
 
+  public abstract getViewCellHeights(
+    layoutResult?: LayoutResult,
+  ): ViewCellHeights;
+
   public abstract getViewCellHeights(): ViewCellHeights;
 
   public abstract addDataCell(cell: DataCell): void;

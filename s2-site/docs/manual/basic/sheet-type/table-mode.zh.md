@@ -155,7 +155,7 @@ const App = () => {
 ```ts
 const s2Options = {
   showSeriesNumber: true,
-  seriesNumberText: '自定义序号标题' // 默认 "序号"
+  seriesNumberText: '序号',
 }
 ```
 

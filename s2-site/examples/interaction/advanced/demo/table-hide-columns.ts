@@ -1,10 +1,43 @@
+/* eslint-disable no-console */
 import {
   TableSheet,
   S2Event,
+  S2Options,
   S2DataConfig,
-  S2Options,
-  S2Options,
+  SpreadSheet,
+  S2CellType,
+  TooltipShowOptions,
 } from '@antv/s2';
+
+function hideSelectedColumns(s2: SpreadSheet) {
+  // 兼容多选
+  const selectedColumnNodes = s2.interaction
+    .getActiveCells()
+    .map((cell) => cell.getMeta());
+
+  const selectedColumnFields = selectedColumnNodes.map((node) => node.field);
+
+  s2.interaction.hideColumns(selectedColumnFields, true);
+}
+
+function getTooltipContent(cell: S2CellType, options: TooltipShowOptions) {
+  const { spreadsheet, isLeaf } = cell.getMeta();
+
+  if (!isLeaf || !spreadsheet.options.tooltip?.operation?.hiddenColumns) {
+    return null;
+  }
+
+  const button = document.createElement('button');
+
+  button.type = 'button';
+  button.innerHTML = '隐藏';
+  button.className = 'ant-btn';
+  button.addEventListener('click', () => {
+    hideSelectedColumns(spreadsheet);
+  });
+
+  return button;
+}
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -52,6 +85,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           // 开启手动隐藏
           hiddenColumns: true,
         },
+        content: getTooltipContent,
       },
     };
 
@@ -60,6 +94,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
       console.log('列头展开', cell);
     });
+
     s2.on(
       S2Event.COL_CELL_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {

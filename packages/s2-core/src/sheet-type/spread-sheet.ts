@@ -391,7 +391,14 @@ export abstract class SpreadSheet extends EE {
       this.initTooltip();
     }
 
+    this.resetHiddenColumnsDetailInfoIfNeeded();
     this.registerIcons();
+  }
+
+  private resetHiddenColumnsDetailInfoIfNeeded() {
+    if (!isEmpty(this.options.interaction?.hiddenColumnFields)) {
+      this.store.set('hiddenColumnsDetail', []);
+    }
   }
 
   private async doRender(reloadData = true, options: S2RenderOptions = {}) {

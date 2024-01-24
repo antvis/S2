@@ -7,11 +7,14 @@ const switcherFields = {
     allowEmpty: false,
   },
   columns: {
-    items: [{ id: 'type' }],
+    items: [{ id: 'type', displayName: '类型 (type)' }],
   },
   values: {
     selectable: true,
-    items: [{ id: 'price' }, { id: 'cost' }],
+    items: [
+      { id: 'price', checked: true },
+      { id: 'cost', checked: false },
+    ],
   },
 };
 

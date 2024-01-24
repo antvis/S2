@@ -1,6 +1,6 @@
 import { Group } from '@antv/g';
 import { registerIcon } from '../../../../src/common/icons';
-import { sleep } from '../../../util/helpers';
+import { sleep, createPivotSheet } from '../../../util/helpers';
 import { CustomImage } from '@/engine/CustomImage';
 import { GuiIcon } from '@/common/icons/gui-icon';
 import { ArrowDown } from '@/common/icons/svg/svgs';
@@ -101,5 +101,43 @@ describe('GuiIcon Tests', () => {
     expect(oldVal).toBeDefined();
     icon.setImageAttrs({ fill: 'red' });
     expect(spy).toHaveBeenCalled();
+  });
+
+  // https://github.com/antvis/S2/issues/2513
+  test('should support cross origin for online url', () => {
+    const s2 = createPivotSheet({
+      width: 200,
+      height: 200,
+      customSVGIcons: [
+        {
+          name: 'Filter',
+          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+        },
+      ],
+      headerActionIcons: [
+        {
+          icons: ['Filter'],
+          belongsCell: 'colCell',
+          defaultHide: false,
+        },
+        {
+          icons: ['Filter'],
+          belongsCell: 'rowCell',
+          defaultHide: false,
+        },
+        {
+          icons: ['Filter'],
+          belongsCell: 'cornerCell',
+          defaultHide: false,
+        },
+      ],
+    });
+
+    async function render() {
+      await s2.render();
+      s2.getCanvasElement().toDataURL();
+    }
+
+    expect(render).not.toThrow();
   });
 });

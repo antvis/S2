@@ -75,6 +75,8 @@ export class GuiIcon extends Group {
          * 或者 online 链接
          */
         img.src = svg;
+        // https://github.com/antvis/S2/issues/2513
+        img.crossOrigin = 'anonymous';
       } else {
         // 传入 svg 字符串（支持颜色fill）
         if (fill) {

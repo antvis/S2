@@ -31,7 +31,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     afterEach(() => {
-      tableSheet.destroy();
+      // tableSheet.destroy();
     });
 
     test('should get init column node', () => {
@@ -205,6 +205,60 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(detail.displaySiblingNode.next?.field).toEqual('city');
       expect(detail.hideColumnNodes).toHaveLength(1);
     });
+
+    // https://github.com/antvis/S2/issues/2495
+    test('should reset latest hidden columns detail when hiddenColumnFields changed', async () => {
+      const hiddenColumns = ['province', 'city'];
+      const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+
+      await sheet.render();
+
+      sheet.setOptions({
+        interaction: {
+          hiddenColumnFields: ['city'],
+        },
+      });
+
+      await sheet.render(false);
+
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+      const [cityDetail] = hiddenColumnsDetail;
+
+      expect(sheet.options.interaction!.hiddenColumnFields).toEqual(['city']);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(cityDetail.hideColumnNodes).toHaveLength(1);
+      expect(cityDetail.hideColumnNodes[0].field).toEqual('city');
+    });
+
+    test('should clear hidden columns detail if hiddenColumnFields is empty', async () => {
+      const hiddenColumns = ['province', 'city'];
+      const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+
+      await sheet.render();
+
+      sheet.setOptions({
+        interaction: {
+          hiddenColumnFields: [],
+        },
+      });
+
+      await sheet.render(false);
+
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+
+      expect(sheet.options.interaction!.hiddenColumnFields).toBeEmpty();
+      expect(hiddenColumnsDetail).toBeEmpty();
+    });
   });
 
   describe('PivotSheet', () => {
@@ -229,7 +283,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     afterEach(() => {
-      // pivotSheet.destroy();
+      pivotSheet.destroy();
     });
 
     test('should get init column node', () => {
