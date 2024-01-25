@@ -1,4 +1,4 @@
-import { S2DataConfig, S2Options, S2Options, TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/986d48ce-cfdf-475d-980c-553762770928.json',

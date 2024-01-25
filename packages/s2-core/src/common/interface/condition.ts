@@ -32,7 +32,7 @@ export type IntervalConditionMappingResult = {
    * @description custom the interval condition's width
    * @version 1.38.0
    */
-  fieldValue?: number;
+  fieldValue?: number | string;
 } & ValueRange;
 
 export type ConditionMappingResult<T = unknown> = T | undefined | null;
