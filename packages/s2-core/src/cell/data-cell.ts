@@ -472,7 +472,9 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  public findFieldCondition(conditions: Condition[]): Condition | undefined {
+  public findFieldCondition<Con extends Condition>(
+    conditions: Con[] = [],
+  ): Con | undefined {
     return findLast(conditions, (item) =>
       item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
@@ -484,9 +486,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  public mappingValue(
-    condition: Condition,
-  ): ConditionMappingResult | undefined | null {
+
+  public mappingValue<Result>(
+    condition: Condition<Result>,
+  ): ConditionMappingResult<Result> {
     const value = this.meta.fieldValue as unknown as number;
     const rowDataInfo = this.spreadsheet.isTableMode()
       ? this.spreadsheet.dataSet.getCellData({
@@ -494,7 +497,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         })
       : CellData.getFieldValue(this.meta.data as ViewMetaData);
 
-    return condition?.mapping(value, rowDataInfo as RawData, this);
+    return condition.mapping(value, rowDataInfo as RawData, this);
   }
 
   public updateByState(stateName: InteractionStateName) {

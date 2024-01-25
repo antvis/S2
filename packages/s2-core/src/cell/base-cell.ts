@@ -149,13 +149,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getIconPosition(): PointLike;
 
-  protected abstract findFieldCondition(
-    conditions: Condition[] | undefined,
-  ): Condition | undefined;
+  protected abstract findFieldCondition<Con extends Condition>(
+    conditions?: Con[],
+  ): Con | undefined;
 
-  protected abstract mappingValue(
-    condition: Condition,
-  ): ConditionMappingResult | undefined | null;
+  protected abstract mappingValue<Result>(
+    condition: Condition<Result>,
+  ): ConditionMappingResult<Result>;
 
   protected abstract getBackgroundColor(): {
     backgroundColor: string | undefined;

@@ -615,8 +615,8 @@ export const drawObjectText = (
             x: iconX,
             y: iconY,
             name: attrs.icon!,
-            width: attrs.size ?? iconStyle?.size,
-            height: attrs.size ?? iconStyle?.size,
+            width: iconStyle?.size,
+            height: iconStyle?.size,
             fill: attrs.fill,
           });
 

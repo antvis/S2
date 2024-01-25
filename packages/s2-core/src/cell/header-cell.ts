@@ -474,13 +474,17 @@ export abstract class HeaderCell<
     return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
   }
 
-  public mappingValue(condition: Condition): ConditionMappingResult {
+  mappingValue<Result>(
+    condition: Condition<Result>,
+  ): ConditionMappingResult<Result> {
     const value = this.getMeta().value;
 
-    return condition?.mapping(value, this.meta, this)!;
+    return condition.mapping(value, this.meta, this);
   }
 
-  public findFieldCondition(conditions: Condition[]): Condition | undefined {
+  public findFieldCondition<Con extends Condition>(
+    conditions: Con[] = [],
+  ): Con | undefined {
     return findLast(conditions, (item) =>
       item.field instanceof RegExp
         ? item.field.test(this.meta.field)
