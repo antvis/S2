@@ -24,7 +24,7 @@ fetch(
                 isCompare: true,
                 maxValue: 8000,
                 minValue: 300,
-                fieldValue: value > 7900 ? 10 : value,
+                fieldValue: Number(value) > 7900 ? 10 : value,
               };
             },
           },

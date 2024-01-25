@@ -1,11 +1,5 @@
 import type { PointLike } from '@antv/g';
-import type {
-  TextTheme,
-  FormatResult,
-  Condition,
-  ConditionMappingResult,
-  AreaRange,
-} from '../common/interface';
+import type { TextTheme, FormatResult, AreaRange } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellType } from '../common/constant/interaction';
 import type { Node } from '../facet/layout/node';
@@ -114,11 +108,11 @@ export class SeriesNumberCell extends BaseCell<Node> {
     return { x: textX, y: textStart };
   }
 
-  protected findFieldCondition(): Condition | undefined {
+  protected findFieldCondition() {
     return undefined;
   }
 
-  protected mappingValue(): ConditionMappingResult | undefined {
+  protected mappingValue() {
     return undefined;
   }
 

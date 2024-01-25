@@ -192,7 +192,6 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
         return {
           icon: 'CellUp',
           fill: '#054',
-          size: 26,
         };
       },
     },
@@ -204,7 +203,6 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
           return {
             icon: 'CellUp',
             fill: '#FF4D4F',
-            size: 16,
           };
         }
       },
@@ -216,7 +214,6 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
         return {
           icon: 'CellUp',
           fill: '#FF4D4F',
-          size: 16,
         };
       },
     },
@@ -226,7 +223,6 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
         return {
           icon: 'CellUp',
           fill: '#FF4D4F',
-          size: 16,
         };
       },
     },
