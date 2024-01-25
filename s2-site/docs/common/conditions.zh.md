@@ -5,9 +5,7 @@ order: 2
 
 ## Conditions
 
-类型：`object`，**必选**，默认值：`{}`
-
-<description>功能描述： 配置字段标记。分为文本 (text)，背景 (background)，柱状图 (interval)，图标 (icon)。</description>
+功能描述： 配置字段标记。分为文本 (text)，背景 (background)，柱状图 (interval)，图标 (icon)。
 
 | 参数       | 说明 | 类型            | 默认值 | 必选  |
 | ---------- | ---------- | ---------------  | ------ | ---- |
@@ -18,9 +16,7 @@ order: 2
 
 ### Condition
 
-类型：`object`，**必选**
-
-<description>功能描述： 配置条件格式。包括文本 (text)，背景 (background)，柱状图 (interval)。</description>
+功能描述： 配置条件格式。包括文本 (text)，背景 (background)，柱状图 (interval)。
 
 | 参数      | 说明                                | 类型         | 默认值      | 必选  |
 |---------|-----------------------------------|------------|----------|-----|
@@ -28,6 +24,8 @@ order: 2
 | mapping | 作用映射函数​                           | `function` |          | ✓   |
 
 #### MappingFunction
+
+功能描述：字段标记处理函数。查看 [文档](/manual/basic/conditions) 和 [示例](/examples/analysis/conditions/#interval)
 
 ```ts
 type MappingFunction = (
@@ -90,9 +88,7 @@ const options = {
 
 ### IconCondition
 
-类型：`object`，**必选**，默认值：`null`
-
-<description>功能描述： 配置图标 (icon) 条件格式。</description>
+功能描述： 配置图标 (icon) 条件格式。查看 [文档](/manual/basic/conditions) 和 [示例](/examples/analysis/conditions/#icon)
 
 | 参数     | 说明 | 类型     | 默认值  | 必选    |
 | -------- | ------------ | -------- | ------- | ----  |

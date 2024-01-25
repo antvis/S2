@@ -1,12 +1,18 @@
-import { PivotSheet, EXTRA_FIELD, QueryDataType } from '@antv/s2';
+import {
+  PivotSheet,
+  EXTRA_FIELD,
+  QueryDataType,
+  S2Options,
+  S2DataConfig,
+} from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/4347c2dd-6554-451b-9d44-15b04e5de657.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -33,15 +39,12 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
-      selectedCellsSpotlight: true,
-      hoverHighlight: true,
-      tooltip: {
-        showTooltip: true,
-      },
       interaction: {
+        selectedCellsSpotlight: true,
+        hoverHighlight: true,
         enableCopy: true,
       },
       // 配置小计总计显示
@@ -49,45 +52,43 @@ fetch(
         row: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
         },
         col: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-    s2.render();
+
+    await s2.render();
 
     // 获取所有浙江下的数据
-    const all = s2.dataSet.getMultiData(
-      {
+    const allData = s2.dataSet.getCellMultiData({
+      query: {
         province: '浙江',
         [EXTRA_FIELD]: 'price',
       },
-      {
-        queryType: QueryDataType.All,
-      },
-    );
+      queryType: QueryDataType.All,
+    });
 
-    console.log('所有数据', all);
+    console.log('所有数据', allData);
 
     // 获取所有浙江下的明细数据
-    const detail = s2.dataSet.getMultiData(
-      {
+    const detailData = s2.dataSet.getCellMultiData({
+      query: {
         province: '浙江',
         [EXTRA_FIELD]: 'price',
       },
-      {
-        queryType: QueryDataType.DetailOnly,
-      },
-    );
+      queryType: QueryDataType.DetailOnly,
+    });
 
-    console.log('所有明细数据', detail);
+    console.log('所有明细数据', detailData);
   });

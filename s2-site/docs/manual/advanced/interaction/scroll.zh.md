@@ -13,7 +13,7 @@ S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域�
 
 ## 自定义滚动速度
 
-可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看具体例子](/examples/interaction/advanced#scroll-speed-ratio)
+可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看示例](/examples/interaction/advanced#scroll-speed-ratio)
 
 ```ts
 const s2Options = {
@@ -34,7 +34,7 @@ const s2Options = {
 
 对于自身和父容器都存在滚动条时，浏览器默认的滚动行为是：非边界不触发父容器滚动，到达边界后，触发父容器滚动，同时还可以配置 [overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) 改变默认行为。
 
-S2 是虚拟滚动，但是也**模拟**了浏览器的滚动行为，可配置 `overscrollBehavior` 控制非边界滚动行为。[查看例子](/examples/interaction/advanced#overscroll-behavior)
+S2 是虚拟滚动，但是也**模拟**了浏览器的滚动行为，可配置 `overscrollBehavior` 控制非边界滚动行为。[查看示例](/examples/interaction/advanced#overscroll-behavior)
 
 ```ts
 const s2Options = {
@@ -98,7 +98,7 @@ s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
 
 ## 手动触发表格滚动
 
-参考以下例子：
+参考以下示例：
 
 - [滚动至指定单元格](/examples/interaction/advanced/#scroll-to-cell)
 - [循环滚动](/examples/interaction/advanced#scroll-loop)

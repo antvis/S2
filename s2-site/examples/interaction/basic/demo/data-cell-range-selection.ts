@@ -17,9 +17,6 @@ fetch(
         // 区间多选 (按住 Shift), 默认开启
         rangeSelection: true,
       },
-      tooltip: {
-        enable: true,
-      },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);

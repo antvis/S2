@@ -332,7 +332,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600" />
 
-同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/docs/manual/advanced/interaction/hide-columns/) 或 [具体例子](/examples/interaction/advanced#pivot-hide-columns)
+同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/docs/manual/advanced/interaction/hide-columns/) 或 [示例](/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
 const s2DataConfig = {
@@ -361,7 +361,7 @@ const s2Options = {
 
 S2 默认提供 `列等宽布局` `行列等宽布局`和 `紧凑布局` 三种布局方式 ([预览](/examples/layout/basic#compact)), 也可以拖拽行/列头进行动态调整
 
-可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 `resize` 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/examples/interaction/advanced#resize-active)
+可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 `resize` 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看示例](/examples/interaction/advanced#resize-active)
 
 ```ts
 const s2Options = {
@@ -383,7 +383,7 @@ const s2Options = {
 // };
 ```
 
-还可以配置 `resize.visible` 和 `resize.disable` 两个属性，分别用于控制 `resize` 热区的显示和自定义拖拽校验逻辑。[查看具体例子](/examples/interaction/advanced#resize-disable)
+还可以配置 `resize.visible` 和 `resize.disable` 两个属性，分别用于控制 `resize` 热区的显示和自定义拖拽校验逻辑。[查看示例](/examples/interaction/advanced#resize-disable)
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600" />
 
@@ -418,13 +418,13 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600" />
 
-查看 [详情](/docs/manual/advanced/interaction/merge-cell) 或 [具体例子](/examples/interaction/advanced#merge-cell)
+查看 [详情](/docs/manual/advanced/interaction/merge-cell) 或 [示例](/examples/interaction/advanced#merge-cell)
 
 ### 链接跳转
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600" />
 
-查看 [详情](/docs/manual/advanced/interaction/link-jump) 或 [具体例子](/examples/interaction/advanced#pivot-link-jump)
+查看 [详情](/docs/manual/advanced/interaction/link-jump) 或 [示例](/examples/interaction/advanced#pivot-link-jump)
 
 ### 滚动
 
@@ -452,7 +452,7 @@ s2.on(S2Event.GLOBAL_RESET, () => {
 })
 ```
 
-可配置 `autoResetSheetStyle` 关闭重置交互。[查看具体例子](/examples/interaction/advanced#auto-reset-sheet-style)
+可配置 `autoResetSheetStyle` 关闭重置交互。[查看示例](/examples/interaction/advanced#auto-reset-sheet-style)
 
 ```ts
 const s2Options = {

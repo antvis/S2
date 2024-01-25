@@ -1,5 +1,9 @@
 import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
+// TODO: 目前没有导出 PivotFacet
+// class CustomFacet extends PivotFacet {}
+class CustomFacet {}
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
@@ -11,6 +15,7 @@ fetch(
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
         values: ['number'],
+        valueInCols: true,
       },
       data: res.data,
       meta: [
@@ -40,15 +45,7 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      layoutCoordinate: (spreadsheet, rowNode, colNode) => {
-        // layoutCoordinate 用于特定场景改变行列叶子节点的尺寸（长、宽）和坐标（x、y）
-        // 如果只希望改变宽高, 请查看 "自定义单元格宽高" 章节 https://s2.antv.antgroup.com/manual/advanced/custom/cell-size
-        // 改变「宁波市」节点高度
-        console.log(rowNode, colNode);
-        if (rowNode?.value === '宁波市') {
-          rowNode.height = 100;
-        }
-      },
+      // facet: (spreadsheet) => new CustomFacet(spreadsheet),
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);

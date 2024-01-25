@@ -2,7 +2,7 @@
 import { TableColCell, TableDataCell, TableSheet } from '@antv/s2';
 
 /**
- * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
+ * 自定义 TableDataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
  * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends TableDataCell {

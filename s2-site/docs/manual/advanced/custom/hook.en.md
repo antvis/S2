@@ -14,9 +14,9 @@ The order of rows and columns can be set manually, which is suitable for local a
 
 It is used to change the size (length, width) and coordinates (x, y) of row and column leaf nodes, such as changing row height and column width, etc. [example](/examples/custom/custom-layout#custom-coordinate) .
 
-## layoutDataPosition
+## layoutCellMeta
 
-Dynamically change the positioning of data and revise the value of some grids. [example](/examples/custom/custom-layout#custom-data-position) .
+Dynamically change the positioning of data and revise the value of some grids. [example](/examples/custom/custom-layout#custom-layout-cell-meta) .
 
 ## layout Hierarchy
 

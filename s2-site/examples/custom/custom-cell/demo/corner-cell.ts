@@ -4,6 +4,7 @@ import { Image as GImage } from '@antv/g';
 /**
  * 自定义 CornerCell，给角头添加背景图
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts
+ * 明细表需要继承 TableCornerCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
   drawBackgroundShape() {

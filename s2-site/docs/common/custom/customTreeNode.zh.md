@@ -5,7 +5,7 @@ order: 8
 
 #### CustomTreeNode
 
-功能描述：自定义树状结构的配置。查看 [详细说明](/zh/docs/manual/advanced/custom/custom-tree) 或 [例子](/zh/examples/custom/custom-tree#custom-tree)
+功能描述：自定义树状结构的配置，适用于透视表和明细表的自定义行列头。查看 [文档](/zh/docs/manual/advanced/custom/custom-tree) 和 [示例](/zh/examples/custom/custom-tree#custom-tree)
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |

@@ -114,11 +114,12 @@ export class EventController {
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
-  private isGuiIconShape = (target: CanvasEvent['target']) =>
-    target instanceof CustomImage && target.imgType === GuiIcon.type;
+  private isGuiIconShape = (target: CanvasEvent['target']) => {
+    return target instanceof CustomImage && target.imgType === GuiIcon.type;
+  };
 
+  // Windows and Mac OS
   private onKeyboardCopy(event: KeyboardEvent) {
-    // windows and macos copy
     if (
       this.isCanvasEffect &&
       this.spreadsheet.options.interaction?.enableCopy &&

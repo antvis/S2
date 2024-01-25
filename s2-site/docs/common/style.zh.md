@@ -5,18 +5,18 @@ order: 3
 
 ## Style
 
-object **必选**,_default：null_ 功能描述：样式设置
+ 功能描述：样式设置。查看 [文档](/manual/advanced/custom/cell-size) 和 [示例](/examples/layout/custom/#custom-pivot-size)
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | ---  | --- | --- |
-| layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 `Canvas` 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
+| layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br/> `adaptive` : 行列等宽，均分整个 `Canvas` 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度 <br/> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
 | dataCell | [DataCell](#dataCell) |  |  | 数值单元格配置 |
 | colCell | [ColCell](#colCell) |  |  |   列头单元格配置 |
 | rowCell | [RowCell](#rowCell) |  |  |   行头单元格配置 |
 
 ### DataCell
 
-object **必选**,_default：null_ 功能描述：数值单元格配置
+功能描述：数值单元格配置
 
 | 参数    | 说明 | 类型   | 默认值 | 必选  |
 | ------- | ------------ | ------ | ------ | ---- |
@@ -26,7 +26,7 @@ object **必选**,_default：null_ 功能描述：数值单元格配置
 
 ### ColCell
 
-object **必选**,_default：null_ 功能描述： 列头单元格配置
+功能描述：列头单元格配置
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
@@ -38,7 +38,7 @@ object **必选**,_default：null_ 功能描述： 列头单元格配置
 
 ### RowCell
 
-object **必选**,_default：null_ 功能描述： 行头单元格配置
+功能描述：行头单元格配置
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |

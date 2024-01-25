@@ -1,7 +1,7 @@
 /**
  * @description spec for issue #446
  * https://github.com/antvis/S2/issues/446
- * copyData error in table mode
+ * #asyncGetAllPlainData error in table mode
  *
  */
 import { getContainer } from '../util/helpers';

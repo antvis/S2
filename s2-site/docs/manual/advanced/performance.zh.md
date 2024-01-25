@@ -99,7 +99,7 @@ const rowsMeta: PivotMeta = {
 
 通过这样的数据结构，我们就实现了表格行列树结构的前端表达。「形」有了后，我们就需要「魂」，也就是数据。
 
-在 `S2` 中，我们需要将用户传入一维数据`data`通过内部的数据训练转为多维数组`indexesData`。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `lodash.set` 实现），举个例子：
+在 `S2` 中，我们需要将用户传入一维数据`data`通过内部的数据训练转为多维数组`indexesData`。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `lodash.set` 实现），举个示例：
 
 ![path](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*GyJCTq-gw-sAAAAAAAAAAAAAARQnAQ)
 

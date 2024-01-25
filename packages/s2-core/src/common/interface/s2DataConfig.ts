@@ -1,11 +1,11 @@
-import type { EXTRA_FIELD, MiniChartTypes, VALUE_FIELD } from '../constant';
+import type { EXTRA_FIELD, MiniChartType, VALUE_FIELD } from '../constant';
 import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {
   /**
    * 类型
    */
-  type: MiniChartTypes;
+  type: MiniChartType;
 
   /**
    * 数据
@@ -28,7 +28,7 @@ export interface BulletValue {
   /**
    * 类型
    */
-  type: MiniChartTypes.Bullet;
+  type: MiniChartType.Bullet;
 
   /**
    * 当前值

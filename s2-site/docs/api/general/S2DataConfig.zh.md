@@ -30,7 +30,7 @@ const s2DataConfig = {
 
 ### RawData
 
-[SimpleData](#simpledata) | [MiniChartData](#minichartdata) | [MultiData](#multidata) **required**, _default：null_
+[SimpleData](#simpledata) | [MiniChartData](#minichartdata) | [MultiData](#multidata)
 
 功能描述：表格数据源
 
@@ -70,7 +70,7 @@ const data = [
 
 #### MultiData
 
-功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/zh/examples/react-component/sheet#strategy)
+功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/examples/react-component/sheet#strategy)
 
 | 配置项名称       | 说明                                       | 类型                          | 默认值 | 必选 |
 | :--------------- | :----------------------------------------- | :---------------------------- | :----- | :--- |
@@ -92,23 +92,19 @@ const data = [
 
 ### Fields
 
-object **必选**,_default：null_
-
-功能描述： 配置表格的维度域，即对应行列维度
+功能描述： 配置表格的维度域，即对应行列维度。
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------------- | ----------------- | --------- | ----- | --- |
-| rows             | 行维度 （可自定义行头，[查看例子](#TODO)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
-| columns          | 列维度 （可自定义列头，[查看例子](#TODO)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
+| rows             | 行维度 （可自定义行头，[查看示例](/examples/layout/custom-header-group/#custom-pivot-row-header)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
+| columns          | 列维度 （可自定义列头，[查看示例](/examples/layout/custom-header-group/#custom-pivot-col-header)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
 | values           | 指标维度                                  | `string[]`                                        | `[]`   |      |
 | valueInCols      | 指标维度是否在列头                        | `boolean`                                         |
 | customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始） [查看示例](/examples/custom/custom-layout/#custom-value-order) | `number`  | - |      |
 
 ### Meta
 
-功能描述：字段元数据，可配置字段别名和数值格式化。
-
-功能描述： 字段元数据，可配置字段别名和数值格式化。
+功能描述：字段元数据，可配置字段别名和数值格式化。[查看示例](/examples/basic/pivot/#grid)
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --| --------| --- | ----- | --- |
@@ -119,15 +115,11 @@ object **必选**,_default：null_
 
 ### MiniChartData
 
-[了解更多](/manual/advanced/custom/custom-chart#1-%E7%BB%98%E5%88%B6-mini-%E5%9B%BE%E8%A1%A8)
-
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 
 ### MultiData
 
-object **必选**,_default：null_
-
-功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/zh/examples/react-component/sheet#strategy)
+功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/examples/react-component/sheet#strategy)
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------------- | ----------------- | --------- | ----- | --- |
@@ -139,16 +131,3 @@ object **必选**,_default：null_
 <embed src="@/docs/common/sort-param.zh.md"></embed>
 
 <embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
-
-### Columns
-
-`Array<ColumnNode | string>`
-
-列配置数组，在明细表模式下支持使用 [ColumnNode](#columnnode) 结构来描述列分组关系
-
-### ColumnNode
-
-| 属性名称 | 说明     | 类型   | 默认值 | 必选 |
-| ------- | ---------| -------| ------|------|
-| key | 列字段 id 或分组 id   | string |       | ✓ |
-| children | 分组下面的子级  | `Array<ColumnNode \| string>` |       |  |

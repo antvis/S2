@@ -18,9 +18,6 @@ fetch(
         // 多选 (按住 Ctrl/Command), 默认开启
         multiSelection: true,
       },
-      tooltip: {
-        enable: true,
-      },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 

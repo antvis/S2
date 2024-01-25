@@ -5,7 +5,7 @@ order: 4
 
 ## Tooltip
 
-object **可选**,_default：null_ 功能描述： tooltip 配置
+功能描述：tooltip 配置。查看 [文档](/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#basic)
 
 | 参数               | 说明   | 类型      | 默认值 | 必选 |
 | ------------------ | ----------- | ----------- | ------ | --- |
@@ -25,7 +25,7 @@ object **可选**,_default：null_ 功能描述： tooltip 配置
 
 ### BaseTooltipConfig
 
-object **可选**,_default：null_ 功能描述： tooltip 基础通用配置
+功能描述：tooltip 基础通用配置
 
 | 参数             | 说明                    | 类型                                  | 默认值 | 必选 |
 | ---------------- | ----------------------- | ------------------------------------- | ------ | --- |
@@ -35,7 +35,7 @@ object **可选**,_default：null_ 功能描述： tooltip 基础通用配置
 
 ### TooltipPositionInfo
 
-object **可选**,_default：null_ 功能描述： tooltip 坐标信息
+功能描述：tooltip 坐标信息。查看 [文档](/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#basic).
 
 | 参数             | 说明                    | 类型                                  | 默认值 | 必选 |
 | ---------------- | ----------------------- | ------------------------------------- | ------ | --- |
@@ -44,7 +44,7 @@ object **可选**,_default：null_ 功能描述： tooltip 坐标信息
 
 ### TooltipOperation
 
-object **可选**,_default：null_ 功能描述： tooltip 操作配置项
+功能描述：tooltip 操作配置项。查看 [文档](/manual/basic/tooltip#%E6%93%8D%E4%BD%9C%E9%85%8D%E7%BD%AE%E9%A1%B9) 和 [示例](/examples/react-component/tooltip/#custom-operation).
 
 | 参数          | 说明                          | 类型      | 默认值  | 必选 |
 | ------------- | ----------------------------- | --------- | ------- | --- |

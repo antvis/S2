@@ -20,7 +20,7 @@ fetch(
         onMounted={(instance) => {
           instance.showTooltip = (tooltipOptions) => {
             const { position, data = {}, options } = tooltipOptions;
-            const name = `${data.name} - 测试`; // 只有单元格中文案被省略才显示
+            const name = `${data.name} - 测试`;
             const infos = '按住 Shift 多选或框选，查看多个数据点';
             const tips = '说明：这是个说明';
             const customSummaries = (data.summaries || []).map((item) => {
@@ -53,6 +53,7 @@ fetch(
                 ],
               },
             };
+
             const customOptions = {
               ...tooltipOptions,
               position: { x: position.x + 1, y: position.y + 1 },

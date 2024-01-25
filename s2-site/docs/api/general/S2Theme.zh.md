@@ -26,9 +26,7 @@ s2.setTheme({
 
 ## ThemeCfg
 
-<description> **optional** _object_ </description>
-
-功能描述： 表主题配置项
+功能描述：表格主题配置项。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/default/#colorful)
 
 | 参数    | 参数        | 类型                              | 默认值    | 必选 |
 | ------- | ----------- | --------------------------------- | --------- | ---- |
@@ -38,23 +36,19 @@ s2.setTheme({
 
 ### Palette
 
-<description> **optional** _object_ </description>
-
-功能描述： 表主题色板
+功能描述：表主题色板。查看 [文档](/manual/basic/theme) 和 [示例](/examples/theme/custom/#custom-palette)
 
 | 参数                | 参数                                                | 类型                                                             | 默认值 | 必选 |
 | ------------------- | --------------------------------------------------- | ---------------------------------------------------------------- | ------ | ---- |
 | brandColor          | 色板主题色                                          | `string`                                                         | -      | ✓    |
 | basicColors         | 基础颜色                                            | `string[]`                                                       | -      | ✓    |
-| basicColorRelations | basicColors 与标准色板数组下标的对应关系            | `Array<{ basicColorIndex: number; standardColorIndex: number;}>` | -      | ✓    |
+| basicColorRelations | basicColors 与标准色板数组下标的对应关系            | `Array<{ basicColorIndex: number; standardColorIndex: number}>` | -      | ✓    |
 | semanticColors      | 用于表示实际业务语义的颜色。例如内置颜色 “红跌绿涨” | `[key: string]`                                                  | -      | ✓    |
 | others              | 用于表示实际业务语义的颜色。例如内置颜色 “红跌绿涨” | `[key: string]`                                                  | -      |      |
 
 ### S2Theme
 
-<description> **optional** _object_ </description>
-
-功能描述： 表主题 `Schema`
+功能描述：表格主题 `Schema`. 查看 [文档](/manual/basic/theme#%E4%B8%BB%E9%A2%98-schema) 和 [示例](/examples/theme/custom/#custom-palette)
 
 | 参数              | 参数                                   | 类型                                            | 默认值 | 必选 |
 | ----------------- | -------------------------------------- | ----------------------------------------------- | ------ | ---- |
@@ -71,9 +65,7 @@ s2.setTheme({
 
 #### DefaultCellTheme
 
-<description> **optional** _object_ </description>
-
-功能描述： 默认单元格主题
+功能描述：默认单元格主题。查看 [文档](/manual/basic/theme#%E4%B8%BB%E9%A2%98-schema) 和 [示例](/examples/theme/custom/#custom-palette)
 
 | 参数              | 说明           | 类型                              | 默认值 | 必选 |
 | ----------------- | -------------- | --------------------------------- | ------ | ---- |
@@ -88,9 +80,7 @@ s2.setTheme({
 
 #### ResizeArea
 
-<description> **optional** _object_ </description>
-
-功能描述： 列宽行高拖拽热区样式
+功能描述：列宽行高拖拽热区样式。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%89%B2%E6%9D%BF) 和 [示例](/examples/interaction/basic/#state-theme)
 
 | 参数              | 说明                                                                                                         | 类型                                  | 默认值   | 必选 |
 | ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------- | -------- | ---- |
@@ -105,9 +95,7 @@ s2.setTheme({
 
 #### ScrollBarTheme
 
-<description> **optional** _object_ </description>
-
-功能描述： 滚动条样式
+功能描述：滚动条样式。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89-schema) 和 [示例](/examples/theme/custom#custom-scrollbar)
 
 | 参数            | 说明                       | 类型                          | 默认值               | 必选 |
 | --------------- | -------------------------- | ----------------------------- | -------------------- | ---- |
@@ -122,9 +110,7 @@ s2.setTheme({
 
 #### SplitLine
 
-<description> **optional** _object_ </description>
-
-功能描述： 分割线样式
+功能描述：分割线样式
 
 | 参数                         | 说明                                                      | 类型                                   | 默认值                                                   | 必选 |
 | ---------------------------- | --------------------------------------------------------- | -------------------------------------- | -------------------------------------------------------- | ---- |
@@ -141,9 +127,7 @@ s2.setTheme({
 
 #### TextTheme
 
-<description> **optional** _object_ </description>
-
-功能描述： 文本主题
+功能描述：文本主题
 
 | 参数         | 说明                                                                           | 类型                          | 默认值                                                                                            | 必选 |
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
@@ -163,9 +147,7 @@ s2.setTheme({
 
 #### CellTheme
 
-<description> **optional** _object_ </description>
-
-功能描述： 单元格通用主题
+功能描述：单元格通用主题
 
 | 参数                         | 说明                                    | 类型                                            | 默认值 | 必选 |
 | ---------------------------- | --------------------------------------- | ----------------------------------------------- | ------ | ---- |
@@ -180,12 +162,10 @@ s2.setTheme({
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
 | interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
-| interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/zh/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
+| interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | borderDash        | 单元格边线虚线 | `number \| string \| (string \| number)[]`                                        | `[]`      |      |
 
 #### IconTheme
-
-<description> **optional** _object_ </description>
 
 功能描述：icon 通用主题
 
@@ -197,7 +177,7 @@ s2.setTheme({
 
 #### InteractionStateName
 
-> 示例
+功能描述：交互通用主题。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%89%B2%E6%9D%BF) 和 [示例](/examples/interaction/basic/#state-theme)
 
 ```ts
 s2.setTheme({
@@ -223,33 +203,9 @@ s2.setTheme({
 | highlight       | 高亮 | [InteractionStateTheme](#interactionstatetheme) |        |      |
 | prepareSelect           | 预选中 | [InteractionStateTheme](#interactionstatetheme) |        |      |
 
-#### InteractionStateTheme
-
-<description> **optional** _object_ </description>
-
-功能描述：交互通用主题
-
-```ts
-type InteractionState = {
-  [K in InteractionStateName]?: InteractionStateTheme;
-};
-```
-
-| 参数              | 说明       | 类型     | 默认值 | 必选 |
-| ----------------- | ---------- | -------- | ------ | ---- |
-| backgroundColor   | 背景填充色 | `string` |        |      |
-| backgroundOpacity | 背景透明度 | `number` |        |      |
-| borderColor       | 边线填充色 | `string` |        |      |
-| borderWidth       | 边线宽度   | `number` |        |      |
-| borderOpacity     | 边线透明度 | `number` |        |      |
-| textOpacity       | 文本透明度 | `number` |        |      |
-| opacity           | 整体透明度 | `number` |        |      |
-
 #### Margin ｜ Padding
 
-<description> **optional** _object_ </description>
-
-功能描述：icon 外边距，单元格内边距
+功能描述：icon 外边距，单元格内边距。
 
 | 参数   | 说明 | 类型     | 默认值 | 必选 |
 | ------ | ---- | -------- | ------ | ---- |
@@ -260,9 +216,7 @@ type InteractionState = {
 
 #### Background
 
-<description> **optional** _object_ </description>
-
-功能描述：背景配置
+功能描述：背景配置。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89-schema) 和 [示例](/examples/theme/custom/#custom-schema)
 
 | 参数    | 说明   | 类型     | 默认值 | 必选 |
 | ------- | ------ | -------- | ------ | ---- |
@@ -271,7 +225,7 @@ type InteractionState = {
 
 #### MiniChartTheme
 
-功能描述：迷你图配置
+功能描述：迷你图配置。查看 [文档](/manual/advanced/chart-in-cell) 和 [示例](examples/custom/custom-cell/#mini-chart)
 
 | 参数     | 说明           | 类型                            | 默认值 | 必选 |
 | -------- | -------------- | ------------------------------- | ------ | ---- |
@@ -280,7 +234,7 @@ type InteractionState = {
 | bullet   | 颜色           | [BulletTheme](#bullettheme)     |        |      |
 | interval | 透明度         | [IntervalTheme](#intervaltheme) |        |      |
 
-#### LineTheme
+##### LineTheme
 
 功能描述：mini 折线图样式配置
 
@@ -289,7 +243,7 @@ type InteractionState = {
 | point    | 折线图的点配置 | `{size: number; fill?: number; opacity?: number}` |        |      |
 | linkLine | 折线图的线配置 | `{size: number; fill: number; opacity: number}`   |        |      |
 
-#### BarTheme
+##### BarTheme
 
 功能描述：mini 柱状图样式配置
 
@@ -299,7 +253,7 @@ type InteractionState = {
 | fill            | 颜色填充             | `string` |        |      |
 | opacity         | 透明度               | `number` |        |      |
 
-#### BulletTheme
+##### BulletTheme
 
 功能描述：mini 子弹图样式配置
 
@@ -308,9 +262,9 @@ type InteractionState = {
 | progressBar        | 进度条样式     | [ProgressBar](#progressbar)               |        |      |
 | comparativeMeasure | 测量标记线     | [ComparativeMeasure](#comparativemeasure) |        |      |
 | rangeColors        | 子弹图状态颜色 | [RangeColors](#rangecolors)               |        |      |
-| backgroundColor    | 子弹图背景颜色 | string                                    |        |      |
+| backgroundColor    | 子弹图背景颜色 | `string`                                    |        |      |
 
-#### ProgressBar
+##### ProgressBar
 
 功能描述：mini 子弹图进度条样式配置
 
@@ -320,7 +274,7 @@ type InteractionState = {
 | height | 高度     | `number`|        |      |
 | innerHeight        | 内高度 | `number`  |        |      |
 
-#### ComparativeMeasure
+##### ComparativeMeasure
 
 功能描述：mini 子弹图测量标记线样式配置
 
@@ -331,7 +285,7 @@ type InteractionState = {
 | fill            | 颜色填充             | `string` |        |      |
 | opacity         | 透明度               | `number` |        |      |
 
-#### RangeColors
+##### RangeColors
 
 功能描述：mini 子弹图状态颜色样式配置
 
@@ -341,7 +295,7 @@ type InteractionState = {
 | satisfactory | 良好     | `string`|        |      |
 | bad            | 不符合预期             | `string` |        |      |
 
-#### IntervalTheme
+##### IntervalTheme
 
 功能描述：mini 条形图样式（条件格式）
 

@@ -13,20 +13,21 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/iw1AQBleoJ/634d1162-b4a4-472c-9bf5-76eca25c6b50.png"
     },
     {
-      "filename": "custom-coordinate.ts",
+      "filename": "custom-layout-coordinate.ts",
       "title": {
         "zh": "自定义行列坐标",
-        "en": "Custom Coordinate"
+        "en": "Custom Layout Coordinate"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/VGuJd4OP2J/a21c6e22-05c0-4da1-860d-75be53afc43b.png"
     },
     {
-      "filename": "custom-data-position.ts",
+      "filename": "custom-layout-cell-meta.ts",
       "title": {
-        "zh": "自定义数据位置",
-        "en": "Custom Layout Data Position"
+        "zh": "自定义单元格元数据",
+        "en": "Custom Layout Cell Meta"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/SeGpS6Mf3p/c8b32cff-49bd-49f0-a2e8-03c5a769fa4c.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/SeGpS6Mf3p/c8b32cff-49bd-49f0-a2e8-03c5a769fa4c.png",
+      "new": true
     },
     {
       "filename": "custom-layout-hierarchy.ts",
@@ -43,6 +44,15 @@
         "en": "Custom Value Order"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Ofk_QYa4eE0AAAAAAAAAAAAADmJ7AQ/fmt.avif"
+    },
+    {
+      "filename": "custom-facet.ts",
+      "title": {
+        "zh": "自定义分面",
+        "en": "Custom Facet"
+      },
+      "screenshot": "",
+      "new": true
     }
   ]
 }

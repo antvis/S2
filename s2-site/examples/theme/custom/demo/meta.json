@@ -43,6 +43,15 @@
         "en": "Transparent background"
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4adQSLv95OkAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "custom-scrollbar.ts",
+      "title": {
+        "zh": "自定义滚动条",
+        "en": "Scrollbar theme"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NlFrSJNmH0AAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

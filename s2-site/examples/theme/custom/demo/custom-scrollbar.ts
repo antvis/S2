@@ -38,38 +38,38 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-    };
-
-    const s2Palette: ThemeCfg['palette'] = {
-      basicColors: [
-        '#FFFFFF',
-        '#F8F5FE',
-        '#EDE1FD',
-        '#873BF4',
-        '#7232CF',
-        '#7232CF',
-        '#7232CF',
-        '#AB76F7',
-        '#FFFFFF',
-        '#DDC7FC',
-        '#9858F5',
-        '#B98EF8',
-        '#873BF4',
-        '#282B33',
-        '#121826',
-      ],
-
-      // ---------- semantic colors ----------
-      semanticColors: {
-        red: '#FF4D4F',
-        green: '#29A294',
+      style: {
+        rowCell: {
+          width: 200,
+        },
+        dataCell: {
+          width: 100,
+          height: 200,
+        },
       },
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.setThemeCfg({
-      palette: s2Palette,
+    s2.setTheme({
+      scrollBar: {
+        /** 滚动条轨道颜色 */
+        trackColor: 'rgba(0,0,0,.1)',
+        /** 滚动条 hover 态颜色 */
+        thumbHoverColor: 'rgba(0,0,0,.4)',
+        /** 滚动条颜色 */
+        thumbColor: 'rgba(0,0,0,.1)',
+        /** 滚动条水平最小尺寸 */
+        thumbHorizontalMinSize: 10,
+        /** 滚动条垂直最小尺寸 */
+        thumbVerticalMinSize: 10,
+        /** 滚动条尺寸 */
+        size: 10,
+        /** 滚动条 hover 态尺寸 */
+        hoverSize: 14,
+        /** 指定如何绘制每一条线段末端，可选: 'butt' | 'round' | 'square'; */
+        lineCap: 'butt',
+      },
     });
 
     await s2.render();

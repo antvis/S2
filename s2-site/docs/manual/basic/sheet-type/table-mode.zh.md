@@ -180,6 +180,8 @@ const s2Options = {
 }
 ```
 
-### 效果
-
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+### 列头自定义分组
+
+列头结构默认根据传入的维值进行分组，同时支持自定义分组，可实现多级列头。[了解更多](/manual/advanced/custom/custom-header)

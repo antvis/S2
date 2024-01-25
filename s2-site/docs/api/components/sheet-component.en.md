@@ -86,7 +86,7 @@ Function description: The props parameter of the React SheetComponent component
 | onLayoutResizeMouseMove | mouse move event of resize hotspot | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; | | |
 | onKeyBoardDown | keyboard down event | (event: KeyboardEvent) => void | | |
 | onKeyBoardUp | keyboard release event | (event: KeyboardEvent) => void | | |
-| onCopied | copy event | (copyData: string) => void | | |
+| onCopied | copy event | (data: string) => void | | |
 | onActionIconHover | Line header operation icon hover event | (event: CanvasEvent) => void | | |
 | onActionIconClick | Action icon click event | (event: CanvasEvent) => void | | |
 | onContextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -199,7 +199,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | onLayoutResizeMouseMove | mouse move event of resize hotspot | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; | | |
 | onKeyBoardDown | keyboard down event | (event: KeyboardEvent) => void | | |
 | onKeyBoardUp | keyboard release event | (event: KeyboardEvent) => void | | |
-| onCopied | copy event | (copyData: string) => void | | |
+| onCopied | copy event | (data: string) => void | | |
 | onActionIconHover | Line header operation icon hover event | (event: CanvasEvent) => void | | |
 | onActionIconClick | Action icon click event | (event: CanvasEvent) => void | | |
 | onContextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -319,7 +319,7 @@ Function description: events of Vue SheetComponent, `<SheetComponent @rowCellCli
 | layoutResizeMouseMove | mouse move event in resize hotspot | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; | | |
 | keyBoardDown | keyboard down event | (event: KeyboardEvent) => void | | |
 | keyBoardUp | keyboard release event | (event: KeyboardEvent) => void | | |
-| copied | copy event | (copyData: string) => void | | |
+| copied | copy event | (data: string) => void | | |
 | actionIconHover | Hover event of the line header operation icon | (event: CanvasEvent) => void | | |
 | actionIconClick | action icon click event | (event: CanvasEvent) => void | | |
 | contextMenu | Right cell click event | (data: [TargetCellInfo](#targetcellinfo)) => void | | |

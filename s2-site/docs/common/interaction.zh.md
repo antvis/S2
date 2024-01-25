@@ -5,6 +5,8 @@ order: 5
 
 ## Interaction
 
+功能描述：交互配置。查看 [文档](/manual/advanced/interaction/basic) 和 [示例](/examples/interaction/basic/#hover)
+
 | 参数    | 说明                                                                                                                                                                  | 类型                                                                                                        | 默认值   |        必选        |
 | -------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------| -------- | ---------------- |
 | linkFields  | 标记字段为链接样式，用于外链跳转                                                                                                                                                    | `string[]` \| (meta: [Node](/docs/api/basic-class/node) \| ViewMeta) => boolean                           |    |    |
@@ -30,7 +32,7 @@ order: 5
 
 ### CustomInteraction
 
-功能描述：自定义交互，继承 baseEvent:  [具体例子](/docs/manual/advanced/interaction/custom)
+功能描述：自定义交互，继承 BaseEvent:  [查看示例](/docs/manual/advanced/interaction/custom)
 
 | 参数        | 说明           | 类型                                              | 默认值 | 必选  |
 | ----------- | -------------- | ------------------------------------------------- | ------ | --- |
@@ -38,6 +40,8 @@ order: 5
 | interaction |                | [InteractionConstructor](/docs/api/basic-class/interaction#interactionconstructor) |        |   ✓   |
 
 ### ScrollSpeedRatio
+
+功能描述：滚动速率配置。[查看示例](/examples/interaction/advanced/#scroll-speed-ratio)
 
 ```js
 interface ScrollSpeedRatio {
@@ -48,6 +52,8 @@ interface ScrollSpeedRatio {
 
 ### ResizeInteractionOptions
 
+功能描述：宽高调整配置。[查看示例](/examples/interaction/advanced/#resize-active)
+
 | 参数                 | 说明     | 类型    | 默认值 | 必选  |
 | -------------------- | ------- | ----------------- | ------ | --- |
 | rowCellVertical      | 是否开启行头垂直方向 resize 热区                                                   | `boolean`         | true   |       |
@@ -55,13 +61,15 @@ interface ScrollSpeedRatio {
 | colCellHorizontal    | 是否开启列头水平方向 resize 热区                                                   | `boolean`         | true   |       |
 | colCellVertical      | 是否开启列头垂直方向 resize 热区 （列头隐藏时该配置无效）                                                   | `boolean`         | true   |       |
 | rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效 | `all`\| `current` | `all`  |       |
-| disable        | 用于控制行高 resize 是否生效 查看例子 | (resizeInfo: [S2CellType](/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
+| disable        | 用于控制行高 resize 是否生效。[查看示例](/examples/interaction/advanced/#resize-disable) | (resizeInfo: [S2CellType](/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
 | visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/docs/api/basic-class/base-cell)) => boolean |   |       |
 
 ### brushSelection
+
+功能描述：单元格刷选配置。[查看示例](/examples/interaction/basic/#brush-selection)
 
 | 参数              | 说明                  | 类型              | 默认值   | 必选  |
 | ----------------- | --------------------- | ----------------- | ------- | --- |
 | dataCell            | 是否允许数值单元格刷选         | `boolean`         | true  |       |
 | rowCell             | 是否允许行头单元格刷选（仅支持透视表） | `boolean`         | false |       |
-| colCell             | 是否允许列头单元格刷选（仅支持透视表） | `boolean`         | false |       |
+| colCell             | 是否允许列头单元格刷选 | `boolean`         | false |       |

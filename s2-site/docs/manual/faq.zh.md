@@ -327,9 +327,9 @@ const s2Options = {
 - [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)
 - [《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545)
 
-✅  一个很好的例子：[#852](https://github.com/antvis/S2/issues/852)
+✅  一个很好的示例：[#852](https://github.com/antvis/S2/issues/852)
 
-❌  一个不好的例子：[#1057](https://github.com/antvis/S2/issues/1057)
+❌  一个不好的示例：[#1057](https://github.com/antvis/S2/issues/1057)
 
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 

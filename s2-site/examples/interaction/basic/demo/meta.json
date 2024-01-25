@@ -92,6 +92,15 @@
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original",
       "new": true
+    },
+    {
+      "filename": "event.ts",
+      "title": {
+        "zh": "交互事件监听",
+        "en": "Interaction Event Listener"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

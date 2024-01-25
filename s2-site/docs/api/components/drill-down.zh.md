@@ -77,8 +77,6 @@ const s2Options = {
 
 ##### PartDrillDownInfo
 
-类型：`object`，**必选**，默认值：`{}`
-
 <description>功能描述：下钻数据请求参数配置</description>
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
@@ -87,8 +85,6 @@ const s2Options = {
 | drillField | 下钻维度 value 值 | `string` | ✓ |  |
 
 #### DrillDownProps
-
-类型：`object`，**必选**，默认值：`{}`
 
 <description>功能描述：下钻菜单组件配置项</description>
 
@@ -106,8 +102,6 @@ const s2Options = {
 | drillFields | 允许下钻的维度      | `string[]` |  |  | 仅 `React` 组件支持此属性  |
 
 ##### DataSet
-
-类型：`object`，**必选**，默认值：`{}`
 
 <description>功能描述：下钻数据源配置</description>
 

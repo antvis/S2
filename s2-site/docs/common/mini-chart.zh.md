@@ -3,17 +3,11 @@ title: mini 图
 order: 6
 ---
 
-#### renderMiniChart
-
-在单元格内绘制 `mini` 图（支持 折线图、子弹图、柱状图）. [查看示例](/zh/examples/custom/custom-cell/#mini-chart)
-
-```ts
- renderMiniChart = (cell: S2CellType, data?: BaseChartData | BulletValue) => void;
-```
+功能描述：在单元格内绘制 `mini` 图（支持 折线图、子弹图、柱状图）. 查看 [文档](/manual/advanced/custom/custom-chart#1-%E7%BB%98%E5%88%B6-mini-%E5%9B%BE%E8%A1%A8) 和 [示例](/zh/examples/custom/custom-cell/#mini-chart)
 
 #### BaseChartData
 
-折线图、柱状图数据配置项，数据格式参考 [`G2`](https://g2.antv.antgroup.com/manual/core/api)
+功能描述：内置折线图、柱状图数据配置项，数据格式参考 [`G2`](https://g2.antv.antgroup.com/manual/core/api)
 
 | 参数 | 说明 | 类型 | 必选  | 默认值 |
 | --- | ---- | --- | ---- | ------ |
@@ -24,7 +18,7 @@ order: 6
 
 #### BulletValue
 
-子弹图数据配置项
+功能描述：内置子弹图数据配置项
 
 | 参数 | 说明 | 类型 | 必选  | 默认值 |
 | --- | ---- | --- | ---- | ------ |

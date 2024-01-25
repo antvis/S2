@@ -3,7 +3,7 @@ title: 浏览器引入
 order: 5
 ---
 
-查看例子：
+查看示例：
 
 [![Edit @antv/s2 import in browser](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-import-in-browser-z6uspx?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
 

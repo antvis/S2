@@ -7,7 +7,7 @@ order: 8
 
 Functions such as copying and exporting of the component layer are encapsulated based on a series of tools and methods exposed by the core layer `@antv/s2` , which can be self-encapsulated based on tools and methods according to actual business
 
-```tsx
+```tsx | pure
 import { copyData, copyToClipboard, download } from '@antv/s2'
 
 // 拿到复制数据

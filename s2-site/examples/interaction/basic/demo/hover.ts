@@ -21,9 +21,6 @@ fetch(
         //   currentCol = true, // 高亮悬停格子所在列
         // },
       },
-      tooltip: {
-        enable: true,
-      },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);

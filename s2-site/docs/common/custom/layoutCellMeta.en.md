@@ -1,12 +1,12 @@
 ---
-title: layout data position
+title: Custom Cell Meta
 order: 3
 ---
 
-## LayoutDataPosition
+## LayoutCellMeta
 
 ```js
-LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
+LayoutCellMeta = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
 ```
 
 Function description: custom data

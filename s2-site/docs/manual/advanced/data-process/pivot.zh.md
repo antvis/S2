@@ -87,7 +87,7 @@ lodash.set(indexesData, dataPath, currentData);
 ```ts
 {
  "province[&]city[&]type[&]sub_type": [
-  null, 
+  null,
   [
    null,
    [
@@ -157,7 +157,7 @@ lodash.set(indexesData, dataPath, currentData);
 
 ### 获取单个数据
 
-当渲染透视表数据单元格时，需要获取对应的展示内容（数据）。举个例子，需要右下角单元格数据时，代码如下：
+当渲染透视表数据单元格时，需要获取对应的展示内容（数据）。举个示例，需要右下角单元格数据时，代码如下：
 
 ```ts
 const data = getCellData({

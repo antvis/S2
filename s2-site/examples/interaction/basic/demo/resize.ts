@@ -14,9 +14,6 @@ fetch(
         hoverHighlight: true,
         selectedCellsSpotlight: true,
       },
-      tooltip: {
-        enable: true,
-      },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);

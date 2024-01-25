@@ -199,7 +199,7 @@ const s2Options = {
 }
 ```
 
-### 冻结首行 <Badge type="success">@antv/s2@^1.53.0 新增</Badge>
+### 冻结首行
 
 :::info{title="注意"}
 
@@ -248,3 +248,7 @@ const s2Options = {
 <Playground path='layout/frozen/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
 
 <br/>
+
+### 行列头自定义分组
+
+行列头结构默认根据传入的维值进行分组，同时支持自定义分组。[了解更多](/manual/advanced/custom/custom-header)

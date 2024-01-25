@@ -4,6 +4,7 @@ import { Image as GImage } from '@antv/g';
 /**
  * 自定义 DataCell，给数值单元格添加背景图
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
+ * 明细表需要继承 TableDataCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends DataCell {
   // 重写绘制背景方法, 添加一个背景图片

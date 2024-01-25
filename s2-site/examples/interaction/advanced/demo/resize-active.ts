@@ -1,4 +1,4 @@
-import { PivotSheet, S2Options, SpreadSheet, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
 import insertCSS from 'insert-css';
 
 function createRadioGroup(s2: SpreadSheet) {
@@ -17,7 +17,7 @@ function createRadioGroup(s2: SpreadSheet) {
 
     radio.addEventListener('click', async (e) => {
       const value = e.target.value;
-      const updated = !s2.options.interaction.resize[value];
+      const updated = !s2.options.interaction?.resize?.[value];
 
       radio.checked = updated;
 

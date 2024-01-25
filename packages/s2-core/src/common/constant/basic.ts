@@ -57,7 +57,7 @@ export const DEFAULT_CORNER_MAX_WIDTH_RATIO = 0.5;
 export const LAYOUT_SAMPLE_COUNT = 50;
 
 /** mini 图类型 */
-export enum MiniChartTypes {
+export enum MiniChartType {
   Line = 'line',
   Bar = 'bar',
   Bullet = 'bullet',

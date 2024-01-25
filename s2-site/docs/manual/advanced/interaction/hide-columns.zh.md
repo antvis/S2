@@ -91,7 +91,7 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/1VeZokRvz/a1933e73-f3ed-4289-beb1-8a06fa3292b6.png)
 
-`hiddenColumnFields` 支持自动分组，举个例子，比如隐藏的是 `province`, `type`, `price`
+`hiddenColumnFields` 支持自动分组，举个示例，比如隐藏的是 `province`, `type`, `price`
 
 ```ts
 const s2Options = {

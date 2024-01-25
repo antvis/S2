@@ -186,6 +186,7 @@ export interface S2BasicOptions<
 
   /**
    * 自定义合并单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-merged-cell
    */
   mergedCell?: MergedCellCallback;
 
@@ -215,30 +216,33 @@ export interface S2BasicOptions<
   layoutArrange?: LayoutArrange;
 
   /**
-   * 自定义单元格对应节点坐标/宽高
+   * 自定义单元格节点坐标
    * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-coordinate
    */
   layoutCoordinate?: LayoutCoordinate;
 
   /**
    * 自定义单元格对应元数据
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-layout/#custom-data-position
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-data-position
    */
   layoutCellMeta?: LayoutCellMeta;
 
   /**
    * 自定义序号节点
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#series-number-cell
    */
   layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
 
   /** *********** 数据集 **************** */
   /**
-   * 自定义数据集
+   * 自定义数据集 TODO:
+   * @see https://s2.antv.antgroup.com/
    */
   dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 
   /**
    * 自定义分面
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
 }

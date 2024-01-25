@@ -488,7 +488,7 @@ const s2Options = {
 
 比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/docs/manual/advanced/interaction/custom),
 监听行头单元格的 [交互事件](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
-. [例子](/examples/interaction/custom#row-col-hover-tooltip)
+. [示例](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
 import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
@@ -521,7 +521,7 @@ const s2Options = {
 ```
 
 如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/docs/api/components/sheet-component)
-来进行自定义。[例子](/examples/react-component/tooltip#custom-hover-show-tooltip)
+来进行自定义。[示例](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;

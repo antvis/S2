@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     // 支持滚动圈选, 试试圈选时鼠标向下
@@ -22,9 +22,6 @@ fetch(
         dataCell: {
           height: 100,
         },
-      },
-      tooltip: {
-        enable: true,
       },
     };
 
