@@ -29,11 +29,11 @@ const s2Options = {
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | seriesNumberText | `string` |  |  `序号` | 自定义行头序号列标题 |
 | showDefaultHeaderActionIcon |`boolean` |  | `true` | 是否展示默认行列头操作图标 |
-| headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
-| customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
+| headerActionIcons | [HeaderActionIcon](#headeractionicon)[] |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
+| customSVGIcons | [CustomSVGIcon](#customsvgicon)[] |  |   `false` | 自定义 svg 图标 |
 | style | [Style](#style) |  |    | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter) |
-| mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
+| mergedCellsInfo | [MergedCellInfo](#mergedcellinfo)[][] |    |  | 合并单元格信息 |
 | placeholder |  `string \| (meta: Record<string, any>) => string` |    |  | 自定义单元格占位符 |
 | cornerText | string |    |  | 自定义角头文本 （仅在树状模式有效） |
 | cornerExtraFieldText | string |    | `数值` | 自定义角头虚拟数值字段文本（"数值挂行头"时有效） |

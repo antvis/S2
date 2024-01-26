@@ -1,24 +1,22 @@
 ---
 title: 自定义单元格对齐方式
 order: 4
+tag: Updated
+
 ---
 
 > **在阅读本节内容前，请确保你已经阅读 [主题配置](/docs/manual/basic/theme) 文档**
 
-为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性
+为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性。因此，S2 在行头、列头对齐方式所对应的的范围是当前格子的可视区域，而角头，数据单元格所对应的范围是当前格子的实际尺寸区域。
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/avyf3tcnW/2022-02-23%25252016.38.05.gif)
 
-因此，S2 对单元格的对齐方式有一定限制。下面分别介绍每个类型单元格可以自定义的对齐行为。
-
 ## 角头对齐方式
 
-* 行头单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 列头单元格（蓝色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 行头单元格（红色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 列头单元格（蓝色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/6wPCHImDZ/b36ca38e-aa8e-4ef6-a903-b9d605204de0.png)
-
-角头的 `textBaseline` 被内部规定为 `middle`，因此只能自定义 `textAlign`，下面是三种对齐方式的展示形态：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -30,11 +28,13 @@ order: 4
       <td style="text-align: center;">
         <pre class="language-js">
 cornerCell: {
-  text: {
-    textAlign: 'left',
-  },
   bolderText: {
     textAlign: 'left',
+    textBaseline: 'middle',
+  },
+  text: {
+    textAlign: 'left',
+    textBaseline: 'middle',
   }
 }
         </pre>
@@ -47,11 +47,13 @@ cornerCell: {
       <td style="text-align: center;">
          <pre class="language-js">
 cornerCell: {
-  text: {
-    textAlign: 'center',
-  },
   bolderText: {
     textAlign: 'center',
+    textBaseline: 'middle',
+  },
+  text: {
+    textAlign: 'center',
+    textBaseline: 'middle',
   }
 }
         </pre>
@@ -64,11 +66,13 @@ cornerCell: {
       <td style="text-align: center;">
                <pre class="language-js">
 cornerCell: {
-  text: {
-    textAlign: 'right',
-  },
   bolderText: {
     textAlign: 'right',
+    textBaseline: 'middle',
+  },
+  text: {
+    textAlign: 'right',
+    textBaseline: 'middle',
   }
 }
         </pre>
@@ -80,15 +84,16 @@ cornerCell: {
   </tbody>
 </table>
 
+> `textBaseline` 也有三种模式：`top`，`middle`，`bottom`。效果不再赘述。
+
 ## 行头对齐方式
 
 * 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
 * 叶子节点单元格（蓝色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 序号单元格可单独控制，默认和行头对齐，对齐方式受 [seriesText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 序号单元格（黄色部分）可单独控制，默认和行头对齐，对齐方式受 [seriesText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 数值单元格（当数值置于行头时）可单独控制，默认和行头对齐，对齐方式受 [measureText](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
-![img](https://gw.alipayobjects.com/zos/antfincdn/GPEd6w4pj/f2bb3ba9-e4a4-4304-a7b6-a1b9e59e768a.png)
-
-由于滑动居中的特性，行头的 `textBaseline` 被内部规定为 `top`，因此只能自定义 `textAlign`，下面是三种对齐方式的展示形态：
+![img](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*JgZxT7sNnTgAAAAAAAAAAAAADmJ7AQ/original)
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -100,10 +105,10 @@ cornerCell: {
       <td style="text-align: center;">
         <pre class="language-js">
 rowCell: {
-  text: {
+  bolderText: {
     textAlign: 'left',
   },
-  bolderText: {
+  text: {
     textAlign: 'left',
   }
 }
@@ -117,10 +122,10 @@ rowCell: {
       <td style="text-align: center;">
          <pre class="language-js">
 rowCell: {
-  text: {
+  bolderText: {
     textAlign: 'center',
   },
-  bolderText: {
+  text: {
     textAlign: 'center',
   }
 }
@@ -134,10 +139,10 @@ rowCell: {
       <td style="text-align: center;">
                <pre class="language-js">
 rowCell: {
-  text: {
+  bolderText: {
     textAlign: 'right',
   },
-  bolderText: {
+  text: {
     textAlign: 'right',
   }
 }
@@ -152,14 +157,14 @@ rowCell: {
 
 ## 列头对齐方式
 
-为保证滑动下最大可见的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `middle`，`textAlign` 不受限制可按需要自定义。
+* 其他非叶子维度单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
+* 数值单元格（蓝色部分，当数值置于列头时）对齐方式受 [measureText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 叶子维度单元格（黄色部分，当数值置于行头时，或者在列头但隐藏数值列时的最后一个维度）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
-* 指标单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 其他维度单元格（蓝色部分）对齐方式受 [measureText](/docs/api/general/S2Theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
+> 列头的滚动对齐只针对于非叶子维度节点，叶子维度节点对齐对应的范围是当前格子的实际尺寸区域。
 
-<image alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400" />
-
-列头单元格的三种对齐方式效果如下：
+<image alt="col cell align desc" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HRU7R4m6SMQAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<image alt="col cell align desc" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*FX28Q524QD0AAAAAAAAAAAAADmJ7AQ/original" width="658" />
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -171,44 +176,44 @@ rowCell: {
       <td style="text-align: center;">
         <pre class="language-js">
 colCell: {
-  measureText: {
+  bolderText: {
     textAlign: 'left',
   },
-  bolderText: {
+  measureText: {
     textAlign: 'left',
   }
 }
         </pre>
       </td>
       <td>
-        <img height="180" alt="left" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nioLivnuF/CleanShot%2525202022-03-03%252520at%25252017.53.49.gif">
+        <img height="180" alt="left" style="max-height: unset; clip-path: inset(5px 0px 0px 0px);" src="https://gw.alipayobjects.com/zos/antfincdn/nioLivnuF/CleanShot%2525202022-03-03%252520at%25252017.53.49.gif">
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
          <pre class="language-js">
 colCell: {
+  bolderText: {
+    textAlign: 'center',
+  },
   measureText: {
     textAlign: 'center',
   },
-  bolderText: {
-    textAlign: 'center',
-  }
 }
         </pre>
       </td>
       <td>
-        <img height="180" alt="center" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/kn9Y4FGAb/CleanShot%2525202022-03-03%252520at%25252018.00.06.gif">
+        <img height="180" alt="center" style="max-height: unset; clip-path: inset(5px 0px 0px 0px);" src="https://gw.alipayobjects.com/zos/antfincdn/kn9Y4FGAb/CleanShot%2525202022-03-03%252520at%25252018.00.06.gif">
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
                <pre class="language-js">
 colCell: {
-  measureText: {
+  bolderText: {
     textAlign: 'right',
   },
-  bolderText: {
+  measureText: {
     textAlign: 'right',
   }
 }
@@ -228,8 +233,6 @@ colCell: {
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/WHa%26eKOrP/00951ab0-b25c-4512-a056-541efff7c9dc.png)
 
-数据单元格 `textBaseline` 和 `textAlign` 均无限制，皆可自定义：
-
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
     <col width="20%"/>
@@ -240,11 +243,11 @@ colCell: {
       <td style="text-align: center;">
         <pre class="language-js">
 dataCell: {
-  text: {
+  bolderText: {
     textAlign: 'left',
     textBaseline: 'top',
   },
-  bolderText: {
+  text: {
     textAlign: 'left',
     textBaseline: 'top',
   }
@@ -252,18 +255,18 @@ dataCell: {
         </pre>
       </td>
       <td>
-        <img height="240" alt="left" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/LREbNS351/3059e6bd-6602-4fa2-8213-47c7dfd65f3b.png">
+        <img height="400" alt="left" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*3RxdRKAAGQQAAAAAAAAAAAAADmJ7AQ/original">
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
          <pre class="language-js">
 dataCell: {
-  text: {
+  bolderText: {
     textAlign: 'center',
     textBaseline: 'middle',
   },
-  bolderText: {
+  text: {
     textAlign: 'center',
     textBaseline: 'middle',
   }
@@ -271,18 +274,18 @@ dataCell: {
         </pre>
       </td>
       <td>
-        <img height="240" alt="center" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/svHPloVIR/5680cdfa-cf9e-4d22-b934-80e8591ed249.png">
+        <img height="400" alt="center" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HLyyQLnW39YAAAAAAAAAAAAADmJ7AQ/original">
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
                <pre class="language-js">
 dataCell: {
-  text: {
+   bolderText: {
     textAlign: 'right',
     textBaseline: 'bottom',
   },
-  bolderText: {
+  text: {
     textAlign: 'right',
     textBaseline: 'bottom',
   }
@@ -290,7 +293,7 @@ dataCell: {
         </pre>
       </td>
       <td>
-        <img height="240" alt="right" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/5XhiGZc%26%24/b1053aa7-b9ff-4688-b8de-d33f62d26c5a.png">
+        <img height="400" alt="right" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*DnuzQ41eFXYAAAAAAAAAAAAADmJ7AQ/original">
       </td>
     </tr>
   </tbody>

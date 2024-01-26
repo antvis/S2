@@ -79,7 +79,7 @@ const options = {
 
 | 参数     | 说明                  | 类型            | 默认值  | 必选 |
 | -------- | --------------------- | --------------- | ------- | ---- |
-| position | icon 相较于文字的位置 | `left \| right` | `right` |      |
+| position | icon 相较于文字的位置 | `left` \| `right` | `right` |      |
 
 **icon condition 用法示例：**
 
