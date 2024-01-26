@@ -20,7 +20,7 @@ if (window) {
   (window as any).s2 = require('@antv/s2');
   (window as any).s2React = require('@antv/s2-react');
 
-  // 本地 link 时不需要引入样式
+  // 本地通过 monorepoRedirect link 时不需要引入样式, 发布时引入, 避免样式丢失
   if (process.env.NODE_ENV === 'production') {
     (window as any).s2CSS = require('@antv/s2/dist/style.min.css');
     (window as any).s2ReactCSS = require('@antv/s2-react/dist/style.min.css');

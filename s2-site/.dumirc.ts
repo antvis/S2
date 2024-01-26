@@ -286,16 +286,16 @@ export default defineConfig({
             <div id="container" />
             <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
             <script>
-        {{code}}
+              {{code}}
             </script>
           </body>
         </html>`,
     },
     announcement: {
-      // icon: 'https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg',
+      // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
       title: {
-        zh: '🎉 S2 2.0 版本开始内测啦!',
-        en: '🎉 S2 Next version 2.0 is in beta!',
+        zh: '🎉 S2 2.0 版本开始内测啦! 文档焕新计划, 原 1.x 官网已迁移至 https://s2-v1.antv.antgroup.com',
+        en: '🎉 S2 Next version 2.0 is in beta! see 1.x docs: https://s2-v1.antv.antgroup.com',
       },
       link: {
         text: {

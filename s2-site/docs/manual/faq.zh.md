@@ -132,7 +132,7 @@ await s2.render(false)
 
 ### 如何获取单元格数据？
 
-请查看 [这篇文章](/docs/manual/advanced/get-cell-data)
+请查看 [这篇文章](/docs/manual/advanced/get-cell-data) 和 [示例](/examples/analysis/get-data/#get-cell-data)
 
 ### 为什么 Tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 

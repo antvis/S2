@@ -107,6 +107,15 @@
         "en": "Reaching the boundary of a scrolling area"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
+    },
+    {
+      "filename": "intercepts.ts",
+      "title": {
+        "zh": "屏蔽交互事件",
+        "en": "Interaction Intercepts"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif",
+      "new": true
     }
   ]
 }

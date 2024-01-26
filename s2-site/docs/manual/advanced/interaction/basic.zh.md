@@ -1,6 +1,7 @@
 ---
 title: 基础交互
 order: 0
+tag: Updated
 ---
 
 ## 交互种类
@@ -468,13 +469,29 @@ const s2Options = {
 
 可以通过 [主题配置](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename) 对应的 [交互主题](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename), 调整选中/悬停/圈选等交互主题。
 
+## 交互拦截
+
+可以通过自定义屏蔽交互事件，如不响应表格的 hover, click 事件等。[查看示例](/examples/interaction/advanced#intercepts)
+
+```ts
+import { InterceptType } from '@antv/s2'
+
+// 添加拦截
+s2.interaction.addIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
+
+// 移除拦截
+s2.interaction.removeIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
+```
+
 ## 调用 API
 
-`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction)
+`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction) 和 [示例](/examples/analysis/get-data/#get-cell-data)
 
 ```ts
 const s2 = new PivotSheet()
 s2.interaction.selectAll()
 ```
+
+## 扩展阅读
 
 对背后的交互实现原理感兴趣？欢迎阅读文章 [《你不知道的 Canvas 表格交互》](https://www.yuque.com/antv/vo4vyz/bvzbaz)

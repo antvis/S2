@@ -19,6 +19,8 @@ tag: Updated
 
 `S2` 提供了一系列获取数据的 [API](/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景：
 
+<Playground path="analysis/get-data/demo/get-cell-data.ts" rid='get-cell-data' height='300'></playground>
+
 ### 获取指定区域单元格节点
 
 在渲染完成后，访问 `s2.facet.getLayoutResult()` 获取到当前所有（**含不在可视范围的**）[单元格节点](/docs/api/basic-class/node)。
@@ -176,15 +178,23 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 也可以调用 [交互方法](/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95), 手动的获取
 
 ```ts
-s2.interaction.getAllCells() // 获取行/列/数值区域所有单元格
-s2.interaction.getCells() // 获取所有激活的单元格 （包含不在可视范围内的）
-s2.interaction.getActiveCells() // 获取所有激活的单元格 （不含不在可视范围内的）
-s2.interaction.isSelectedState() // 是否是选中状态
+// 获取所有激活的单元格 （包含不在可视范围内的）
+s2.interaction.getCells();
+// 获取所有激活的单元格 （不含不在可视范围内的）
+s2.interaction.getActiveCells();
+// 是否是选中状态
+s2.interaction.isSelectedState();
+// 获取当前交互状态
+s2.interaction.getCurrentStateName();
+// 获取当前发生过交互的单元格
+s2.interaction.getInteractedCells();
+// 获取未选中的单元格
+s2.interaction.getUnSelectedDataCells();
 ```
 
 ### 获取单个单元格数据
 
-[查看示例](/examples/analysis/get-data/#get-cell-data)
+[查看示例](/examples/analysis/get-data/#get-single-cell-data)
 
 ```ts | pure
 import { EXTRA_FIELD } from '@antv/s2'
@@ -212,7 +222,7 @@ s2.dataSet.getCellData({
 
 ### 获取多个单元格数据
 
-[查看示例](/examples/analysis/get-data/#get-multi-data)
+[查看示例](/examples/analysis/get-data/#get-multi-cell-data)
 
 ```ts | pure
 import { EXTRA_FIELD, QueryDataType } from '@antv/s2'
@@ -330,13 +340,13 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 如图，比如我们想获取舟山市下的办公用品纸张的数量
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/jHILwaZ50/d9af2488-add9-46ec-b0da-81fc4da2b7a1.png" width="600" alt="preview"/>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/jHILwaZ50/d9af2488-add9-46ec-b0da-81fc4da2b7a1.png" width="600" alt="preview" />
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.facet.getRowCellNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
+const rowCellNode = s2.facet.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.facet.getColCellNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
+const colCellNode = s2.facet.getColNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]数量')
 
 const data = s2.dataSet.getCellMultiData({
   query: {
@@ -344,6 +354,12 @@ const data = s2.dataSet.getCellMultiData({
     ...colCellNode.query
   }
 })
+
+// 或者
+const cellMeta = s2.facet.getCellMeta(
+  rowCellNode?.rowIndex,
+  colCellNode?.colIndex,
+);
 
 /**
   {
