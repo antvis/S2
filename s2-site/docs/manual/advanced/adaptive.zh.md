@@ -3,7 +3,7 @@ title: 表格自适应
 order: 9
 ---
 
-<Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
+<Badge>@antv/s2</Badge> <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
 S2 默认根据配置的 `width` 和 `height` 进行渲染：
 

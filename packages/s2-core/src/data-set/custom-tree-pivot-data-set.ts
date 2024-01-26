@@ -8,11 +8,11 @@ import {
   transformDimensionsValues,
 } from '../utils/dataset/pivot-data-set';
 import { CellData } from './cell-data';
-import type { GetCellMultiDataParams } from './interface';
+import type { GetCellDataParams } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  getCellData(params: GetCellMultiDataParams) {
+  getCellData(params: GetCellDataParams) {
     const { query = {} } = params || {};
     const { columns, rows } = this.fields;
     const rowDimensionValues = transformDimensionsValues(

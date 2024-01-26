@@ -182,6 +182,60 @@ s2.interaction.getActiveCells() // 获取所有激活的单元格 （不含不�
 s2.interaction.isSelectedState() // 是否是选中状态
 ```
 
+### 获取单个单元格数据
+
+[查看示例](/examples/analysis/get-data/#get-cell-data)
+
+```ts | pure
+import { EXTRA_FIELD } from '@antv/s2'
+
+// 获取明细单元格
+s2.dataSet.getCellData({
+  query: {
+    province: '浙江',
+    city: '杭州',
+    type: '笔',
+    [EXTRA_FIELD]: 'price',
+  },
+});
+
+// 获取小计数据
+s2.dataSet.getCellData({
+  query: {
+    province: '浙江',
+    type: '笔',
+    [EXTRA_FIELD]: 'price',
+  },
+  isTotals: true,
+});
+```
+
+### 获取多个单元格数据
+
+[查看示例](/examples/analysis/get-data/#get-multi-data)
+
+```ts | pure
+import { EXTRA_FIELD, QueryDataType } from '@antv/s2'
+
+// 获取所有浙江下的数据
+s2.dataSet.getCellMultiData({
+  query: {
+    province: '浙江',
+    [EXTRA_FIELD]: 'price',
+  },
+  queryType: QueryDataType.All,
+});
+
+// 获取所有浙江下的明细数据
+s2.dataSet.getCellMultiData({
+  query: {
+    province: '浙江',
+    [EXTRA_FIELD]: 'price',
+  },
+  queryType: QueryDataType.DetailOnly,
+});
+```
+
 ### 获取行/列数据
 
 表格初始化时，会将用户声明的数据配置 (s2DataConfig) 转换成内部所需要的数据集 (dataSet), 具体请查看 [数据流处理](/docs/manual/advanced/data-process/pivot)

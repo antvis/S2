@@ -15,12 +15,8 @@ import { isArray, isObject } from 'lodash';
 class CustomDataCell extends DataCell {
   // 当数值为对象时，完全接管绘制, 使用内置的 `drawObjectText` 根据不同的数据结构 (见下方) 绘制不同的图形
   drawTextShape() {
-    const { fieldValue } = this.getMeta();
-
-    if (isObject(fieldValue) || isArray(fieldValue)) {
-      drawObjectText(this);
-
-      return;
+    if (this.isMultiData()) {
+      return drawObjectText(this);
     }
 
     super.drawTextShape();

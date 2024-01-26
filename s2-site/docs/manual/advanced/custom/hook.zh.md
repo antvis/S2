@@ -76,7 +76,7 @@ S2 默认提供丰富的功能配置，除此之外，也提供丰富的 [`自�
 
 ## dataset
 
-自定义数据集，比如数据的展示方式，取数逻辑等。[查看示例](#TODO)
+自定义数据集，比如数据的展示方式，取数逻辑等。[查看示例](/examples/custom/custom-dataset/#custom-strategy-sheet-dataset)
 
 ## style
 

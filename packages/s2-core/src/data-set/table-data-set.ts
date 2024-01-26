@@ -8,7 +8,7 @@ import type {
 } from '../common/interface';
 import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
-import type { GetCellMultiDataParams } from './interface';
+import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -157,7 +157,7 @@ export class TableDataSet extends BaseDataSet {
     return [];
   }
 
-  public getCellData({ query = {} }: GetCellMultiDataParams = {}):
+  public getCellData({ query = {} }: GetCellDataParams = {}):
     | Data
     | SimpleData
     | undefined {
