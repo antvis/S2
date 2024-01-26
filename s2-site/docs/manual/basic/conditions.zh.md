@@ -126,6 +126,8 @@ export type ConditionMapping<T = unknown> = (
 
 <Playground path="analysis/conditions/demo/icon-with-action.ts" rid='icon-with-action' height="200"></playground>
 
+> 自定义 Icon 详情，可查看 [自定义 Icon](/docs/manual/advanced/custom/custom-icon) 章节
+
 ### 自定义柱状图范围
 
 通过显示指定 `interval` 字段标记中的 `mapping` 函数返回值  `isCompare` 属性值为 `true`，并指定 `maxValue` 和 `minValue` 的值，可以自定义柱状图的区间范围。
