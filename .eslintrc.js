@@ -29,7 +29,7 @@ module.exports = {
       version: 26,
     },
     react: {
-      version: 'detect',
+      version: '17',
     },
   },
   rules: {

@@ -23,9 +23,13 @@ jobs:
       with:
         python-version: '3.10'
 
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
     - uses: preactjs/compressed-size-action@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/**/dist/**/*.{js,css}"
         build-script: "build:umd"
-        # clean-script: "clean:lock-file"
+        clean-script: "clean"

@@ -58,9 +58,8 @@ describe('Col Cell Tests', () => {
 
         const colCell = new ColCell(node, s2, { ...headerConfig });
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
-
-        const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
-        expect(getTextPosition()).toEqual({
+        // @ts-ignore
+        expect(colCell.getTextPosition()).toEqual({
           x: textX,
           y: 15,
         });
@@ -99,8 +98,8 @@ describe('Col Cell Tests', () => {
         const colCell = new ColCell(node, s2, { ...headerConfig });
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
-        const getIconPosition = get(colCell, 'getIconPosition').bind(colCell);
-        expect(getIconPosition()).toEqual({
+        // @ts-ignore
+        expect(colCell.getIconPosition()).toEqual({
           x: iconX,
           y: 10,
         });

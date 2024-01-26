@@ -57,6 +57,8 @@ export class GuiIcon extends Group {
       // 3、线上支持的图片地址
       if (svg.includes(SVG_CONTENT_TYPE) || this.isOnlineLink(svg)) {
         img.src = svg;
+        // https://github.com/antvis/S2/issues/2513
+        img.crossOrigin = 'anonymous';
       } else {
         // 传入 svg 字符串（支持颜色fill）
         if (fill) {

@@ -1,5 +1,4 @@
-import type { Event as GraphEvent } from '@antv/g-base';
-import type { IElement, IGroup } from '@antv/g-canvas';
+import type { IElement, IGroup, Event as GraphEvent } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -131,7 +130,7 @@ export abstract class BaseFacet {
   public abstract getContentHeight(): number;
 
   public abstract getViewCellHeights(
-    layoutResult: LayoutResult,
+    layoutResult?: LayoutResult,
   ): ViewCellHeights;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;

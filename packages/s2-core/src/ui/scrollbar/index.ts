@@ -317,7 +317,7 @@ export class ScrollBar extends Group {
 
       this.isMobile = isMobile;
 
-      const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+      const event = (this.isMobile ? get(e, 'touches.0', e) : e) as MouseEvent;
       const { clientX, clientY } = event;
 
       // 将开始的点记录下来

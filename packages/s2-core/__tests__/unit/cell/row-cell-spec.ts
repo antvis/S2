@@ -43,7 +43,7 @@ describe('Row Cell Tests', () => {
         // 宽度相当
         const linkLength = maxX - minX;
         expect(
-          Math.abs(linkLength - get(provinceCell, 'actualTextWidth')),
+          Math.abs(linkLength - get(provinceCell, 'actualTextWidth', 0)),
         ).toBeLessThanOrEqual(2);
 
         // link shape 的中点坐标与 text 中点对齐

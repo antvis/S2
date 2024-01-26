@@ -41,9 +41,8 @@ describe('test for corner text', () => {
   mockSheet.render();
 
   test('get correct default corner text when the corner label is empty.', () => {
-    const cornerCells = get(
-      mockSheet,
-      'facet.cornerBBox.facet.cornerHeader.cfg.children',
+    const cornerCells = (
+      get(mockSheet, 'facet.cornerBBox.facet.cornerHeader.cfg.children') as any
     ).filter((v) => v instanceof CornerCell);
     expect(cornerCells[0].actualText).toEqual('指标');
     expect(cornerCells[1].actualText).toEqual('type');
@@ -52,9 +51,8 @@ describe('test for corner text', () => {
   test('get correct default corner text when set the cornerText.', () => {
     mockSheet.setOptions({ ...options, cornerText: 'test' });
     mockSheet.render();
-    const cornerCells = get(
-      mockSheet,
-      'facet.cornerBBox.facet.cornerHeader.cfg.children',
+    const cornerCells = (
+      get(mockSheet, 'facet.cornerBBox.facet.cornerHeader.cfg.children') as any
     ).filter((v) => v instanceof CornerCell);
     expect(cornerCells[0].actualText).toEqual('test');
     expect(cornerCells[1].actualText).toEqual('type');

@@ -177,7 +177,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     }
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
-    const { top, left } = get(event, 'target.style', {});
+    const { top, left } = get(event, 'target.style', {} as any);
     const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
     const targetCell = allCelles.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),

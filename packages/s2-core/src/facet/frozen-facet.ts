@@ -634,9 +634,8 @@ export abstract class FrozenFacet extends BaseFacet {
     });
   }
 
-  protected init(): void {
+  protected init() {
     super.init();
-    this.initRowOffsets();
   }
 
   public render(): void {
@@ -688,27 +687,6 @@ export abstract class FrozenFacet extends BaseFacet {
     }
     return { colCount, trailingColCount };
   };
-
-  private initRowOffsets() {
-    const { dataSet } = this.cfg;
-    const heightByField = get(
-      this.spreadsheet,
-      'options.style.rowCfg.heightByField',
-      {},
-    );
-    if (Object.keys(heightByField).length) {
-      const data = dataSet.getDisplayDataSet();
-      this.rowOffsets = [0];
-      let lastOffset = 0;
-      data.forEach((_, idx) => {
-        const currentHeight =
-          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
-        const currentOffset = lastOffset + currentHeight;
-        this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
-      });
-    }
-  }
 
   public getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) {
