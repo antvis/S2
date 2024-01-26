@@ -1,3 +1,13 @@
+# [@antv/s2-v1.54.3](https://github.com/antvis/S2/compare/@antv/s2-v1.54.2...@antv/s2-v1.54.3) (2024-01-26)
+
+
+### Bug Fixes
+
+* **interaction:** 修复隐藏列头配置更新时未覆盖上一次的配置 close [#2495](https://github.com/antvis/S2/issues/2495) ([#2527](https://github.com/antvis/S2/issues/2527)) ([d68adcc](https://github.com/antvis/S2/commit/d68adcc7219d43da3f336c0cac5f538e7d83de01))
+* **table-sheet:** 修复明细表配置自定义行高后展示异常 close [#2501](https://github.com/antvis/S2/issues/2501) ([#2521](https://github.com/antvis/S2/issues/2521)) ([c772c2a](https://github.com/antvis/S2/commit/c772c2a48e5e805f6def128d8c7ba07258246a29))
+* 增加树状模式自定义宽度的容错 ([#2519](https://github.com/antvis/S2/issues/2519)) ([a28322a](https://github.com/antvis/S2/commit/a28322a8f4ae56f3fedd186663d4194b9d36d342))
+* 自定义 icon 支持跨域 close [#2513](https://github.com/antvis/S2/issues/2513) ([#2524](https://github.com/antvis/S2/issues/2524)) ([d0e512c](https://github.com/antvis/S2/commit/d0e512cc4810879bee36b5329ac83aded6e6bb78))
+
 # [@antv/s2-v1.54.2](https://github.com/antvis/S2/compare/@antv/s2-v1.54.1...@antv/s2-v1.54.2) (2023-12-22)
 
 
