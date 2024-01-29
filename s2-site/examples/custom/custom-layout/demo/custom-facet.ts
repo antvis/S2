@@ -1,8 +1,66 @@
-import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
+import {
+  Hierarchy,
+  LayoutResult,
+  Node,
+  PivotSheet,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 
 // TODO: 目前没有导出 PivotFacet
-// class CustomFacet extends PivotFacet {}
-class CustomFacet {}
+/**
+ * 自定义 Facet, 修改单元格布局逻辑和宽高坐标
+ * 查看更多 https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/pivot-facet.ts
+ */
+// class CustomFacet extends PivotFacet {
+//   // 自定义行头节点高度
+//   getRowNodeHeight(rowNode: Node) {
+//     const defaultHeight = super.getRowNodeHeight(rowNode);
+
+//     return 200;
+//   }
+
+//   // 自定义列头节点高度
+//   getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+//     const defaultHeight = super.getRowNodeHeight(colNode, colsHierarchy);
+
+//     return 100;
+//   }
+
+//   // 自定义行头节点坐标
+//   calculateRowNodesCoordinate(layoutResult: LayoutResult) {
+//     super.calculateRowNodesCoordinate(layoutResult);
+//     // 你的自定义逻辑...
+//   }
+
+//   // 自定义列头节点坐标
+//   calculateColNodesCoordinate(layoutResult: LayoutResult) {
+//     super.calculateRowNodesCoordinate(layoutResult);
+//     // 你的自定义逻辑...
+//   }
+
+//   // 自定义内容区域高度
+//   getContentHeight() {
+//     const defaultHeight = super.getContentHeight();
+
+//     // 你的自定义逻辑...
+//     return defaultHeight;
+//   }
+
+//   // 自定义单元格元数据
+//   getCellMeta(rowIndex: number, colIndex: number) {
+//     const cellMeta = super.getCellMeta(rowIndex, colIndex);
+
+//     // 你的自定义逻辑...
+//     return cellMeta;
+//   }
+
+//   // 自定义渲染逻辑
+//   render() {
+//     super.render();
+//     // 你的自定义逻辑...
+//   }
+// }
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',

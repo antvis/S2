@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Custom Dataset Tests should render custom data set 1`] = `
+Array [
+  Object {
+    "id": "province",
+    "value": "test",
+  },
+  Object {
+    "id": "city",
+    "value": "test",
+  },
+  Object {
+    "id": "type",
+    "value": "test",
+  },
+  Object {
+    "id": "root[&]test",
+    "value": "test",
+  },
+  Object {
+    "id": "root[&]test[&]test",
+    "value": "test",
+  },
+  Object {
+    "id": "root[&]test",
+    "value": "test",
+  },
+  Object {
+    "id": "root[&]test[&]test",
+    "value": "test",
+  },
+  Object {
+    "id": "root[&]test[&]test",
+    "value": "test",
+  },
+]
+`;

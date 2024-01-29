@@ -1899,6 +1899,7 @@ export abstract class BaseFacet {
 
   /**
    * 获取行头叶子节点节点 (含非可视区域)
+   * @example 获取全部: facet.getRowLeafNodes()
    */
   public getRowLeafNodes(): Node[] {
     return this.layoutResult.rowLeafNodes || [];

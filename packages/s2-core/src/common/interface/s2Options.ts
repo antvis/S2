@@ -120,6 +120,7 @@ export interface S2BasicOptions<
 
   /**
    * 空值单元格占位符
+   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
    */
   placeholder?:
     | ((meta: Record<string, any>) => string | undefined | null)
@@ -136,6 +137,7 @@ export interface S2BasicOptions<
    * 自定义 AntV/G 渲染引擎配置参数 & 插件注册
    * @see https://g.antv.antgroup.com/plugins/intro
    * @see https://g.antv.antgroup.com/api/canvas/options
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-plugins/#a11y
    * @example
     import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
@@ -211,19 +213,19 @@ export interface S2BasicOptions<
 
   /**
    * 自定义节点排列顺序 (树状模式有效)
-   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-arrange
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-layout-arrange
    */
   layoutArrange?: LayoutArrange;
 
   /**
    * 自定义单元格节点坐标
-   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-coordinate
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-coordinate
    */
   layoutCoordinate?: LayoutCoordinate;
 
   /**
    * 自定义单元格对应元数据
-   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-data-position
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-layout-cell-meta
    */
   layoutCellMeta?: LayoutCellMeta;
 
@@ -235,8 +237,8 @@ export interface S2BasicOptions<
 
   /** *********** 数据集 **************** */
   /**
-   * 自定义数据集 TODO:
-   * @see https://s2.antv.antgroup.com/
+   * 自定义数据集
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-dataset/#custom-strategy-sheet-dataset
    */
   dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 
