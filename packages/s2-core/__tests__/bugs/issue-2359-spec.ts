@@ -5,12 +5,12 @@
  */
 import { pick } from 'lodash';
 import { createTableSheet } from 'tests/util/helpers';
-import { TableColCell, drawObjectText } from '../../src';
+import { TableColCell, drawCustomContent } from '../../src';
 import type { S2CellType, S2Options } from '@/common/interface';
 
 class TestColCell extends TableColCell {
   drawTextShape() {
-    drawObjectText(this, {
+    drawCustomContent(this, {
       values: [['A', 'B', 'C']],
     });
   }

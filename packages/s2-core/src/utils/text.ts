@@ -453,7 +453,7 @@ export const getContentAreaForMultiData = (
  * @useCondition 是否使用条件格式
  */
 // eslint-disable-next-line max-lines-per-function
-export const drawObjectText = (
+export const drawCustomContent = (
   cell: S2CellType,
   multiData?: MultiData,
   useCondition = true,

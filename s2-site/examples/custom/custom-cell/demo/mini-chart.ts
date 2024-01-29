@@ -2,21 +2,21 @@
 import {
   PivotSheet,
   DataCell,
-  drawObjectText,
+  drawCustomContent,
   S2DataConfig,
   S2Options,
 } from '@antv/s2';
 import { isArray, isObject } from 'lodash';
 
 /**
- * 自定义 DataCell，使用 drawObjectText 绘制简易的 mini 图
+ * 自定义 DataCell，使用 drawCustomContent 绘制简易的 mini 图
  * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
-  // 当数值为对象时，完全接管绘制, 使用内置的 `drawObjectText` 根据不同的数据结构 (见下方) 绘制不同的图形
+  // 当数值为对象时，完全接管绘制, 使用内置的 `drawCustomContent` 根据不同的数据结构 (见下方) 绘制不同的图形
   drawTextShape() {
     if (this.isMultiData()) {
-      return drawObjectText(this);
+      return drawCustomContent(this);
     }
 
     super.drawTextShape();

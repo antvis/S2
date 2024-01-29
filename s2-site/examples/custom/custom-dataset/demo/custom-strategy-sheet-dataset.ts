@@ -13,7 +13,7 @@ import {
   RawData,
   S2DataConfig,
   S2Options,
-  drawObjectText,
+  drawCustomContent,
   i18n,
 } from '@antv/s2';
 import { isEmpty, isObject, keys, size } from 'lodash';
@@ -72,7 +72,7 @@ class CustomDataSet extends CustomTreePivotDataSet {
 class CustomDataCell extends DataCell {
   drawTextShape() {
     if (this.isMultiData()) {
-      return drawObjectText(this);
+      return drawCustomContent(this);
     }
 
     super.drawTextShape();

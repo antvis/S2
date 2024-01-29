@@ -167,16 +167,16 @@ const s2DataConfig = {
 
 #### 1.2 自定义单元格
 
-自定义 `DataCell`, 然后使用 `drawObjectText` 接管绘制逻辑
+自定义 `DataCell`, 然后使用 `drawCustomContent` 接管绘制逻辑
 
 ```ts
-import { DataCell, drawObjectText } from '@antv/s2';
+import { DataCell, drawCustomContent } from '@antv/s2';
 
 class CustomDataCell extends DataCell {
   drawTextShape() {
-    // 当数值为对象时，完全接管绘制，使用内置的 `drawObjectText` 根据不同的数据结构 （见下方） 绘制不同的图形
+    // 当数值为对象时，完全接管绘制，使用内置的 `drawCustomContent` 根据不同的数据结构 （见下方） 绘制不同的图形
     if (this.isMultiData()) {
-      drawObjectText(this);
+      drawCustomContent(this);
       return;
     }
 
