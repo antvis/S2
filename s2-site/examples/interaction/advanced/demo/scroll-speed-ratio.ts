@@ -120,7 +120,7 @@ insertCSS(`
   input[type='range']::before {
     content: attr(title);
     position: absolute;
-    left: 15px;
-    top: 12px;
+    left: 0;
+    top: -10px;
   }
 `);

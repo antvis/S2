@@ -165,6 +165,8 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#data-cell-click-selection)
+
 ### 行列联动高亮
 
 在鼠标悬停时，高亮当前单元格和对应的行列头单元格，形成一个"十字高亮"的效果，更直观的查看数据，默认开启，可配置 `hoverHighlight` 关闭：
@@ -186,11 +188,13 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#hover)
+
 ### 单选后行列头高亮
 
 在鼠标选中单元格或刷选选中单元格时，高亮当前单元格对应的行列头单元格，利于快速定位单元格所在行列。默认关闭，可配置 `selectedCellHighlight` 开启：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PEYmR6HdlMEAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
 ```ts
 // selectedCellHighlight 的类型为  boolean | { rowHeader: boolean, colHeader: boolean, rowCells: boolean, colCells: boolean }
@@ -207,12 +211,14 @@ const s2Options = {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      currentRow: false,  // 选中单元格时，高亮当前行
-      currentCol: false,  // 选中单元格时，高亮当前列
+      currentRow: true,  // 选中单元格时，高亮当前行
+      currentCol: true,  // 选中单元格时，高亮当前列
     },
   },
 };
 ```
+
+[查看示例](/examples/interaction/basic/#selected-cell-highlight)
 
 ### 悬停聚焦
 
@@ -252,6 +258,8 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#brush-selection)
+
 #### 行头单元格圈选
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/1M9vUtedn/hangtoushuaxuan.gif" alt="preview" width="600" />
@@ -265,6 +273,8 @@ const s2Options = {
   }
 };
 ```
+
+[查看示例](/examples/interaction/basic/#brush-header)
 
 #### 列头单元格圈选
 
@@ -280,17 +290,19 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#brush-header)
+
 #### 滚动圈选
 
 ##### 数值滚动圈选
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pmskQL_WvMIAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
-##### 行头滚动圈选 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
+##### 行头滚动圈选
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*r8fFQ6ySwScAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
-### 角头选中 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
+### 角头选中
 
 单击行头所对应的角头，可以快捷选中当前列
 
@@ -315,11 +327,13 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#header-cell-click-selection)
+
 ### 移动高亮单元格
 
 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格，默认开启，可配置 `selectedCellMove` 关闭：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aj4OTJZG2VsAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 ```ts
 const s2Options = {
@@ -328,6 +342,8 @@ const s2Options = {
   }
 };
 ```
+
+[查看示例](/examples/interaction/basic/#selected-cell-move)
 
 ### 隐藏列头
 
@@ -355,6 +371,8 @@ const s2Options = {
   }
 };
 ```
+
+[查看示例](/examples/interaction/advanced/#pivot-hide-columns)
 
 ### 行列宽高调整
 
@@ -415,25 +433,27 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#resize)
+
 ### 合并单元格
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600" />
 
-查看 [详情](/docs/manual/advanced/interaction/merge-cell) 或 [示例](/examples/interaction/advanced#merge-cell)
+查看 [文档](/docs/manual/advanced/interaction/merge-cell) 和 [示例](/examples/interaction/advanced#merge-cell)
 
 ### 链接跳转
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600" />
 
-查看 [详情](/docs/manual/advanced/interaction/link-jump) 或 [示例](/examples/interaction/advanced#pivot-link-jump)
+查看 [文档](/docs/manual/advanced/interaction/link-jump) 和 [示例](/examples/interaction/advanced#pivot-link-jump)
 
 ### 滚动
 
-查看 [详情](/docs/manual/advanced/interaction/scroll)
+查看 [文档](/docs/manual/advanced/interaction/scroll)
 
 ### 复制与导出
 
-查看 [详情](/docs/manual/advanced/interaction/copy)
+查看 [文档](/docs/manual/advanced/interaction/copy)
 
 ### 重置交互
 
@@ -463,15 +483,19 @@ const s2Options = {
 };
 ```
 
+[查看示例](/examples/interaction/basic/#auto-reset-sheet-style)
+
 ## 调整交互主题
 
 <Playground path='interaction/basic/demo/state-theme.ts' rid='container' height='300'></playground>
 
 可以通过 [主题配置](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename) 对应的 [交互主题](https://s2.antv.antgroup.com/api/general/s2-theme#interactionstatename), 调整选中/悬停/圈选等交互主题。
 
+[查看示例](/examples/interaction/basic/#state-theme)
+
 ## 交互拦截
 
-可以通过自定义屏蔽交互事件，如不响应表格的 hover, click 事件等。[查看示例](/examples/interaction/advanced#intercepts)
+可以通过自定义屏蔽交互事件，如不响应表格的 hover, click 事件等。
 
 ```ts
 import { InterceptType } from '@antv/s2'
@@ -483,6 +507,8 @@ s2.interaction.addIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
 s2.interaction.removeIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
 ```
 
+[查看示例](/examples/interaction/advanced#intercepts)
+
 ## 调用 API
 
 `S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction) 和 [示例](/examples/analysis/get-data/#get-cell-data)
@@ -491,6 +517,8 @@ s2.interaction.removeIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
 const s2 = new PivotSheet()
 s2.interaction.selectAll()
 ```
+
+[查看示例](/examples/interaction/basic/#event)
 
 ## 扩展阅读
 

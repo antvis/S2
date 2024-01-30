@@ -77,6 +77,24 @@
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
     },
     {
+      "filename": "selected-cell-highlight.ts",
+      "title": {
+        "zh": "选中单元格联动高亮",
+        "en": "Selected cell highlight"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PEYmR6HdlMEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "selected-cell-move.ts",
+      "title": {
+        "zh": "键盘方向键移动选中单元格",
+        "en": "Selected cell move"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aj4OTJZG2VsAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
       "filename": "copy-export.ts",
       "title": {
         "zh": "复制与导出",
@@ -97,7 +115,7 @@
     {
       "filename": "event.ts",
       "title": {
-        "zh": "交互事件监听",
+        "zh": "交互事件监听和 API",
         "en": "Interaction Event Listener"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/a6zSe1gvvy/f97ed6ec-0a5d-49b7-8492-754611d0aea6.png",
