@@ -1,9 +1,9 @@
 import type { PointLike } from '@antv/g';
-import type { TextTheme, FormatResult, AreaRange } from '../common/interface';
-import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellType } from '../common/constant/interaction';
-import type { Node } from '../facet/layout/node';
+import type { AreaRange, FormatResult } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import type { BaseHeaderConfig } from '../facet/header/interface';
+import type { Node } from '../facet/layout/node';
 import { getHorizontalTextIconPosition } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
@@ -49,8 +49,16 @@ export class SeriesNumberCell extends BaseCell<Node> {
     /** 序号单元格暂时没有交互的联动 */
   }
 
-  protected getTextStyle(): TextTheme {
-    return this.getStyle()?.seriesText!;
+  protected getTextStyle() {
+    const textOverflowStyle = this.getCellTextWordWrapStyle(
+      CellType.SERIES_NUMBER_CELL,
+    );
+    const style = this.getStyle()?.seriesText!;
+
+    return {
+      ...textOverflowStyle,
+      ...style,
+    };
   }
 
   protected getFormattedFieldValue(): FormatResult {

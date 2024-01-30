@@ -1,5 +1,5 @@
 ---
-title: S2 2.0 升级指南
+title: S2 2.0 Migration
 order: 9
 tag: New
 ---

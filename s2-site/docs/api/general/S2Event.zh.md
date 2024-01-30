@@ -87,13 +87,13 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 | 名称     | 事件名                             | 描述               |
 | ------- | --------------------------------- | ----------------- |
-| 点击     | `S2Event.CORNER_CELL_CLICK`        | 合并单元格点击     |
-| 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 合并单元格双击     |
-| 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 合并单元格右键     |
-| 悬停     | `S2Event.CORNER_CELL_HOVER`        | 合并单元格悬停     |
-| 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 合并单元格鼠标按下 |
-| 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 合并单元格鼠标移动 |
-| 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 合并单元格鼠标松开 |
+| 点击     | `S2Event.MERGED_CELLS_CLICK`        | 合并单元格点击     |
+| 双击     | `S2Event.MERGED_CELLS_DOUBLE_CLICK` | 合并单元格双击     |
+| 右键     | `S2Event.MERGED_CELLS_CONTEXT_MENU` | 合并单元格右键     |
+| 悬停     | `S2Event.MERGED_CELLS_HOVER`        | 合并单元格悬停     |
+| 鼠标按下 | `S2Event.MERGED_CELLS_MOUSE_DOWN`   | 合并单元格鼠标按下 |
+| 鼠标移动 | `S2Event.MERGED_CELLS_MOUSE_MOVE`   | 合并单元格鼠标移动 |
+| 鼠标松开 | `S2Event.MERGED_CELLS_MOUSE_UP`     | 合并单元格鼠标松开 |
 | 单元格渲染                 | `S2Event.MERGED_CELLS_RENDER`       | 合并单元格布局渲染完成事件                  |
 
 ### 序号单元格 (SeriesNumberCell)

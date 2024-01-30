@@ -117,10 +117,7 @@ export interface TextTheme
       | 'fontWeight'
       | 'fill'
       | 'opacity'
-      | 'wordWrap'
-      | 'maxLines'
       | 'lineHeight'
-      | 'textOverflow'
       | 'fontStyle'
       | 'fontVariant'
     > {

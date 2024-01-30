@@ -147,14 +147,6 @@ export default defineConfig({
         order: 4,
       },
       {
-        slug: 'manual/advanced/data-process',
-        title: {
-          zh: '数据流处理',
-          en: 'Data Process',
-        },
-        order: 2,
-      },
-      {
         slug: 'manual/advanced/layout',
         title: {
           zh: '布局',
@@ -193,6 +185,22 @@ export default defineConfig({
           en: 'Sort',
         },
         order: 6,
+      },
+      {
+        slug: 'manual/extended-reading',
+        title: {
+          zh: '扩展阅读',
+          en: 'extended-reading',
+        },
+        order: 6,
+      },
+      {
+        slug: 'manual/extended-reading/data-process',
+        title: {
+          zh: '数据流处理',
+          en: 'Data Process',
+        },
+        order: 1,
       },
     ],
     tutorials: [

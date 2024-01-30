@@ -47,6 +47,7 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
         },
       },
     });
+
     await s2.render();
 
     const mapTheme = (cell: S2CellType) => {
@@ -56,11 +57,9 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
     };
 
     const colCellTexts = s2.facet.getColCells().map(mapTheme);
-
     const dataCellTexts = s2.facet.getDataCells().map(mapTheme);
 
     expect(colCellTexts).toMatchSnapshot();
-
     expect(dataCellTexts).toMatchSnapshot();
   });
 });

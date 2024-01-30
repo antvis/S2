@@ -39,7 +39,7 @@ copyToClipboard(data)
 
 #### 1.2 格式化数据全量复制
 
-如果配置了 `S2DataConfig.meta` 对数据有 [格式化处理](/manual/basic/formatter), 可以开启 `copyWithFormat`, 这样复制时会拿到格式化之后的数据。
+如果配置了 [`S2DataConfig.meta`](http://localhost:8000/api/general/s2-data-config#meta) 对数据有 [格式化处理](/manual/basic/formatter), 那么可以开启 `copyWithFormat`, 这样复制时会拿到格式化之后的数据。
 
 ```ts
 const s2Options = {
@@ -56,7 +56,7 @@ const s2Options = {
 
 ### 2. 局部复制
 
-S2 默认提供复制的能力，开启后，使用快捷键 `Command/Ctrl + C` 即可复制选中区域（局部复制）.
+S2 默认提供局部复制的能力，开启后，使用快捷键 `Command/Ctrl + C` 即可复制选中区域，支持 `单选/多选/刷选/区间多选`.
 
 ```ts
 const s2Options = {

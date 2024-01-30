@@ -17,10 +17,11 @@ cell.getActualText()
 | getIconStyle | 获取单元格图标样式 | () => [IconTheme](/docs/api/general/S2Theme#icontheme) |
 | getStyle | 获取单元格样式 | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
 | getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [TextAndIconPosition](#textandiconposition) |
-| cellType | 单元格类型 | [CellType](#celltypes) |
+| cellType | 单元格类型 | [CellType](#celltype) |
 | initCell | 初始化单元格 | `() => void` |
 | update | 更新单元格 | `() => void` |
 | getTextStyle | 获取文本样式 | `() => void` |
+| getCellTextWordWrapStyle | 获取文本换行配置 | `() => { wordWrap: boolean, maxLines: number, textOverflow: string \| boolean }` |
 | getFormattedFieldValue | 获取格式化后的字段值 | `() => { formattedValue: string, value: string }` |
 | getMaxTextWidth | 获取文本最大宽度 | `() => number` |
 | getTextPosition | 获取文本坐标 | [Point](#point) |

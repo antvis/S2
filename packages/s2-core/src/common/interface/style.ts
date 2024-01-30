@@ -1,3 +1,4 @@
+import type { TextStyleProps } from '@antv/g';
 import type { Node } from '../../facet/layout/node';
 import type { LayoutWidthType } from '../constant';
 
@@ -37,7 +38,10 @@ export interface BaseCellStyle {
   heightByField?: Record<string, number> | null;
 }
 
-export interface DataCellStyle {
+export interface CellTextWordWrapStyle
+  extends Pick<TextStyleProps, 'wordWrap' | 'maxLines' | 'textOverflow'> {}
+
+export interface DataCellStyle extends CellTextWordWrapStyle {
   /**
    * 宽度
    */
@@ -55,11 +59,13 @@ export interface DataCellStyle {
      * 原始值字段
      */
     originalValueField?: string;
+
     /**
      * 每一列数值占单元格宽度百分比
      * @example [0.1, 0.3, 0.6]
      */
     widthPercent?: number[];
+
     /**
      * 是否显示原始值 (tooltip 中显示)
      */
@@ -67,7 +73,7 @@ export interface DataCellStyle {
   };
 }
 
-export interface RowCellStyle extends BaseCellStyle {
+export interface RowCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
   /**
    * 是否展示树状分层下的层级占位点
    */
@@ -92,12 +98,18 @@ export interface RowCellStyle extends BaseCellStyle {
   expandDepth?: number | null;
 }
 
-export interface ColCellStyle extends BaseCellStyle {
+export interface ColCellStyle extends BaseCellStyle, CellTextWordWrapStyle {
   /**
    * 数值挂列头时, 是否隐藏数值 (即 s2DataConfig.fields.values 只有一个数值时生效)
    */
   hideValue?: boolean;
 }
+
+export interface CornerCellStyle extends CellTextWordWrapStyle {}
+
+export interface SeriesNumberCellStyle extends CellTextWordWrapStyle {}
+
+export interface MergedCellStyle extends CellTextWordWrapStyle {}
 
 export interface S2Style {
   /**
@@ -119,4 +131,19 @@ export interface S2Style {
    * 行头单元格配置
    */
   rowCell?: RowCellStyle | null;
+
+  /**
+   * 角头单元格配置
+   */
+  cornerCell?: CornerCellStyle | null;
+
+  /**
+   * 合并单元格配置
+   */
+  mergedCell?: MergedCellStyle | null;
+
+  /**
+   * 序号单元格配置
+   */
+  seriesNumberCell?: SeriesNumberCellStyle | null;
 }

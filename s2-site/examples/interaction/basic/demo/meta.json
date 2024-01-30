@@ -69,20 +69,21 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lb0%26u6LtAu/reset.gif"
     },
     {
-      "filename": "copy-export.ts",
-      "title": {
-        "zh": "复制与导出",
-        "en": "Copy and export"
-      },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*LzTYTpFosccAAAAAAAAAAAAAARQnAQ"
-    },
-    {
       "filename": "hover-after-scroll.ts",
       "title": {
         "zh": "滚动后自动触发悬停状态",
         "en": "Trigger hover after scroll"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
+    },
+    {
+      "filename": "copy-export.ts",
+      "title": {
+        "zh": "复制与导出",
+        "en": "Copy and export"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*LzTYTpFosccAAAAAAAAAAAAAARQnAQ",
+      "new": true
     },
     {
       "filename": "state-theme.ts",
@@ -99,7 +100,7 @@
         "zh": "交互事件监听",
         "en": "Interaction Event Listener"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original",
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/a6zSe1gvvy/f97ed6ec-0a5d-49b7-8492-754611d0aea6.png",
       "new": true
     }
   ]

@@ -31,8 +31,8 @@ S2 中内置了 **4** 套开箱即用的主题配置，也提供了强大的主�
 
 色板的定义为 [Palette](/docs/api/general/S2Theme#palette)，当生成主题 schema 时会从中取用颜色，而它的颜色则来自于标准色板中，Palette 的关键属性有：
 
-- basicColors：基础颜色，共 15 个色彩位，本质上确定了表格的配色方案，生成主题 schema 时会从 basicColors 固定索引上取色，如行头背景颜色固定会取 `basicColors[1]` 的颜色
-- basicColorRelations：basicColors 与标准色板的对应关系，如内置的 colorful 主题中，行头背景色 `basicColors[1]` 是取用标准色板中的索引 0 的颜色
+- `basicColors`：基础颜色，共 15 个色彩位，本质上确定了表格的配色方案，生成主题 schema 时会从 basicColors 固定索引上取色，如行头背景颜色固定会取 `basicColors[1]` 的颜色
+- `basicColorRelations`：basicColors 与标准色板的对应关系，如内置的 colorful 主题中，行头背景色 `basicColors[1]` 是取用标准色板中的索引 0 的颜色
 
 由此 S2 保证了，所有绘制时使用的颜色均来自于主题色或主题色的派生颜色。这样使表格界面颜色统一，也便于用户根据自己需要的主题色，生成个性化主题。
 
@@ -145,30 +145,13 @@ const customTheme = {
   },
 };
 
-// 等价与：s2.setThemeCfg({ theme: customTheme })
-s2.setTheme(customTheme)
+s2.setTheme(customTheme) // 等价与：s2.setThemeCfg({ theme: customTheme })
 await s2.render(false);
 ```
 
 <Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
 
 <br/>
-
-#### 自定义单元格文本换行和省略
-
-[查看详情](/layout/custom/#multi-line-text) 和 [完整 API](/api/general/s2theme#s2theme)
-
-```ts
-s2.setTheme({
-  rowCell: {
-    text: {
-      wordWrap: true,
-      maxLines: 2,
-      textOverflow: 'ellipsis',
-    },
-  },
-});
-```
 
 #### 自定义单元格对齐方式
 

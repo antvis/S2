@@ -1,15 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import {
-  FONT_FAMILY,
-  INTERVAL_BAR_HEIGHT,
-  LayoutWidthType,
-} from '../common/constant';
-import type {
-  DefaultCellTheme,
-  S2Theme,
-  TextTheme,
-  ThemeCfg,
-} from '../common/interface';
+import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
+import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -28,27 +19,7 @@ export const getTheme = (
   } = themeCfg?.palette || getPalette(themeCfg?.name);
 
   const isTable = themeCfg?.spreadsheet?.isTableMode();
-  const isCompactMode =
-    themeCfg?.spreadsheet?.getLayoutWidthType() === LayoutWidthType.Compact;
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
-
-  const getHeaderCellTextOverflow = (): TextTheme => {
-    return {
-      wordWrap: true,
-      maxLines: 1,
-      textOverflow: 'ellipsis',
-    };
-  };
-
-  const getDataCellTextOverflow = (): TextTheme => {
-    return {
-      // 紧凑模式下文本内容自适应, 不显示省略号
-      wordWrap: !isCompactMode,
-      // 数值单元格不建议文字换行, 通常是展示数值, 会有歧义 (明细表除外, 自行覆盖主题配置)
-      maxLines: 1,
-      textOverflow: isCompactMode ? '' : 'ellipsis',
-    };
-  };
 
   const getDataCell = (): DefaultCellTheme => ({
     bolderText: {
@@ -60,7 +31,6 @@ export const getTheme = (
       textAlign: 'right',
       textBaseline: 'middle',
       linkTextFill: basicColors[6],
-      ...getDataCellTextOverflow(),
     },
     text: {
       fontFamily: FONT_FAMILY,
@@ -71,7 +41,6 @@ export const getTheme = (
       textAlign: 'right',
       textBaseline: 'middle',
       linkTextFill: basicColors[6],
-      ...getDataCellTextOverflow(),
     },
     cell: {
       // ----------- background color -----------
@@ -206,7 +175,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -216,7 +184,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'right',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------
@@ -259,9 +226,6 @@ export const getTheme = (
         opacity: 1,
         textBaseline: 'middle',
         textAlign: 'center',
-        ...getHeaderCellTextOverflow(),
-        // 序号不换行
-        maxLines: 1,
       },
       measureText: {
         fontFamily: FONT_FAMILY,
@@ -272,7 +236,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -283,7 +246,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -295,7 +257,6 @@ export const getTheme = (
         textBaseline: 'middle',
         // default align center for row cell in table mode
         textAlign: isTable ? 'center' : 'left',
-        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------
@@ -375,7 +336,6 @@ export const getTheme = (
         // 默认列头的数值字段和 dataCell 数值对齐
         textAlign: 'right',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -385,7 +345,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -395,7 +354,6 @@ export const getTheme = (
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
-        ...getHeaderCellTextOverflow(),
       },
       cell: {
         // ----------- background color -----------

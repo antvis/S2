@@ -46,48 +46,6 @@ TODO:
 
 TODO:
 
-## 多版本共存
-
-> 该部分文档参考 <https://ant-design.antgroup.com/docs/react/migration-v5-cn>
-
-### 通过别名安装 v2
-
-```bash
-$ npm install --save @antv/s2-v2@npm:@antv/s2-v2@2
-# or
-$ yarn add @antv/s2-v2@npm:@antv/s2-v2@2
-# or
-$ pnpm add @antv/s2-v2@npm:@antv/s2-v2@2
-```
-
-对应的 package.json 为：
-
-```json
-{
-  "@antv/s2": "1.x",
-  "@antv/s2-v2": "npm:@antv/s2-v2@2"
-}
-```
-
-现在，你项目中的 `S2` 还是 `v1` 版本，`@antv/s2-v2` 是 `v2` 版本。
-
-```ts
-import { PivotSheet as  PivotSheetV1 } from '@antv/s2';
-import { PivotSheet as  PivotSheetV2 } from '@antv/s2-v2';
-
-async function bootstrap(){
-  const container = document.getElementById('container');
-
-  const s2V1 = new PivotSheetV1(container, s2DataConfig, s2Options);
-  const s2V2 = new PivotSheetV2(container, s2DataConfig, s2Options);
-
-  s2V1.render();
-  await s2V2.render();
-}
-
-bootstrap()
-```
-
 ## 遇到问题
 
 如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues/2454) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions/1933) 进行反馈。我们会尽快响应和相应改进这篇文档。

@@ -64,7 +64,7 @@ const downloadData = async (s2: SpreadSheet, isFormat: boolean) => {
   }
 };
 
-function addScrollButton(s2: SpreadSheet) {
+function addButtons(s2: SpreadSheet) {
   const copyBtn = document.createElement('button');
 
   copyBtn.className = 'ant-btn ant-btn-default';
@@ -109,11 +109,14 @@ fetch(
         copyWithHeader: true,
         // 是否使用格式化数据
         copyWithFormat: true,
+        // 刷选
         brushSelection: {
           rowCell: true,
           colCell: true,
           dataCell: true,
         },
+        // 多选
+        multiSelection: true,
       },
     };
 
@@ -125,5 +128,5 @@ fetch(
 
     await s2.render();
 
-    addScrollButton(s2);
+    addButtons(s2);
   });

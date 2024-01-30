@@ -38,7 +38,7 @@ fetch(
           forceRender: true,
         },
         content:
-          '点击角头后, 整个表格不再响应 click 和 hover 和事件, 在按下 ESC, 或点击空白处关闭 tooltip 后, 移除屏蔽',
+          '点击角头后, 整个表格不再响应 click 和 hover 事件, 在按下 ESC, 或点击空白处关闭 tooltip 后, 移除屏蔽',
       });
     });
 

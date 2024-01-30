@@ -117,9 +117,13 @@ export class TableColCell extends ColCell {
   }
 
   protected getTextStyle() {
-    const style = this.getStyle();
+    const textOverflowStyle = this.getCellTextWordWrapStyle();
+    const style = this.getStyle()?.bolderText!;
 
-    return style?.bolderText!;
+    return {
+      ...textOverflowStyle,
+      ...style,
+    };
   }
 
   protected getHorizontalResizeAreaName() {

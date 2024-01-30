@@ -1,7 +1,7 @@
 import type {
   DisplayObject,
-  Line,
   Image,
+  Line,
   PointLike,
   Polygon,
   Rect,
@@ -33,6 +33,7 @@ import type { GuiIcon } from '../common/icons/gui-icon';
 import {
   CellBorderPosition,
   CellClipBox,
+  type CellTextWordWrapStyle,
   type Condition,
   type ConditionMappingResult,
   type Conditions,
@@ -205,6 +206,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public isShallowRender() {
     return false;
+  }
+
+  public getCellTextWordWrapStyle(cellType?: CellType): CellTextWordWrapStyle {
+    const { wordWrap, maxLines, textOverflow } = (this.spreadsheet.options
+      ?.style?.[cellType || this.cellType] || {}) as CellTextWordWrapStyle;
+
+    return {
+      wordWrap,
+      maxLines,
+      textOverflow,
+    };
   }
 
   /**

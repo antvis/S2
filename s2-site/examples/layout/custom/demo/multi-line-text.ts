@@ -1,5 +1,5 @@
 import {
-  DefaultCellTheme,
+  CellTextWordWrapStyle,
   PivotSheet,
   S2DataConfig,
   S2Options,
@@ -50,6 +50,15 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       ],
     };
 
+    const cellTextWordWrapStyle: CellTextWordWrapStyle = {
+      // 最大行数，文本超出后将被截断
+      maxLines: 2,
+      // 文本是否换行
+      wordWrap: true,
+      // 可选项见：https://g.antv.antgroup.com/api/basic/text#textoverflow
+      textOverflow: 'ellipsis',
+    };
+
     const s2Options: S2Options = {
       width: 600,
       height: 480,
@@ -78,45 +87,19 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         },
       },
       style: {
+        seriesNumberCell: cellTextWordWrapStyle,
+        colCell: cellTextWordWrapStyle,
+        cornerCell: cellTextWordWrapStyle,
         rowCell: {
+          ...cellTextWordWrapStyle,
           height: 50,
         },
-        colCell: {},
-        dataCell: {},
+        // 数值不建议换行, 容易产生歧义
+        // dataCell: cellTheme,
       },
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-
-    const cellTheme: DefaultCellTheme = {
-      text: {
-        // 最大行数，文本超出后将被截断
-        maxLines: 2,
-        // 文本是否换行
-        wordWrap: true,
-        // 可选项见：https://g.antv.antgroup.com/api/basic/text#textoverflow
-        textOverflow: 'ellipsis',
-      },
-      bolderText: {
-        maxLines: 2,
-        wordWrap: true,
-        textOverflow: 'ellipsis',
-      },
-      measureText: {
-        maxLines: 2,
-        wordWrap: true,
-        textOverflow: 'ellipsis',
-      },
-    };
-
-    s2.setTheme({
-      seriesNumberCell: cellTheme,
-      colCell: cellTheme,
-      cornerCell: cellTheme,
-      rowCell: cellTheme,
-      // 数值不建议换行, 容易产生歧义
-      // dataCell: cellTheme,
-    });
 
     await s2.render();
   });

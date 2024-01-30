@@ -1,6 +1,6 @@
 import type {
-  DisplayObject,
   FederatedPointerEvent as CanvasEvent,
+  DisplayObject,
   PointLike,
 } from '@antv/g';
 import {
@@ -388,6 +388,7 @@ export abstract class HeaderCell<
   }
 
   protected getTextStyle(): TextTheme {
+    const textOverflowStyle = this.getCellTextWordWrapStyle();
     const { text, bolderText, measureText } = this.getStyle()!;
     let style: TextTheme | undefined;
 
@@ -399,7 +400,10 @@ export abstract class HeaderCell<
       style = text;
     }
 
-    return this.getContainConditionMappingResultTextStyle(style);
+    return this.getContainConditionMappingResultTextStyle({
+      ...textOverflowStyle,
+      ...style,
+    });
   }
 
   public getBackgroundColor() {

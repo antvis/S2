@@ -319,14 +319,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(colWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style!.colCell).toEqual({
-      width: resizeInfo.resizedWidth!,
-      height: 30,
-      heightByField: null,
-      widthByField: {
-        [resizeInfo.meta.field!]: resizeInfo.resizedWidth!,
-      },
-    });
+    expect(s2.options.style!.colCell).toMatchSnapshot();
 
     // mark resized flag for rerender
     expect(s2.store.get('resized')).toBeTruthy();
@@ -441,18 +434,8 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(rowWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style!.rowCell).toEqual({
-      height: 2,
-      heightByField: {
-        [resizeInfo.meta.field!]: 2,
-      },
-      widthByField: null,
-      showTreeLeafNodeAlignDot: false,
-    });
-    expect(s2.options.style!.dataCell).toEqual({
-      width: 96,
-      height: 30,
-    });
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
+    expect(s2.options.style!.dataCell).toMatchSnapshot();
 
     // mark resized flag for rerender
     expect(s2.store.get('resized')).toBeTruthy();
@@ -577,28 +560,11 @@ describe('Interaction Row Column Resize Tests', () => {
   });
 
   test('should get vertical cell resize style', () => {
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Vertical,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.rowCell).toEqual({
-      height: 2,
-      heightByField: {
-        [resizeInfo.meta.field!]: 2,
-      },
-      widthByField: null,
-      showTreeLeafNodeAlignDot: false,
-    });
-    expect(s2.options.style!.colCell).toEqual({
-      height: 30,
-      heightByField: null,
-      widthByField: null,
-    });
-    expect(s2.options.style!.dataCell).toEqual({
-      width: 96,
-      height: 30,
-    });
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
+    expect(s2.options.style!.colCell).toMatchSnapshot();
+    expect(s2.options.style!.dataCell).toMatchSnapshot();
   });
 
   test('should get vertical filed resize style', () => {
@@ -687,19 +653,9 @@ describe('Interaction Row Column Resize Tests', () => {
       },
     });
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Horizontal,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.colCell).toEqual({
-      height: 30,
-      heightByField: null,
-      width: null,
-      widthByField: {
-        [resizeInfo.meta.id]: resizeInfo.width,
-      },
-    });
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 
   test('should get vertical filed resize style by field for current resize type', () => {
@@ -711,19 +667,9 @@ describe('Interaction Row Column Resize Tests', () => {
       },
     });
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Vertical,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.rowCell).toEqual({
-      widthByField: null,
-      height: null,
-      heightByField: {
-        [resizeInfo.meta.id]: resizeInfo.height,
-      },
-      showTreeLeafNodeAlignDot: false,
-    });
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
   });
 
   test('should set no drop cursor and gray guide line if disable resize', () => {
@@ -820,19 +766,9 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should get vertical filed resize style by rowId for table mode', () => {
     jest.spyOn(s2, 'isTableMode').mockImplementationOnce(() => true);
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Vertical,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.rowCell).toEqual({
-      height: 2,
-      heightByField: {
-        [resizeInfo.meta.rowId]: 2,
-      },
-      widthByField: null,
-      showTreeLeafNodeAlignDot: false,
-    });
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
   });
 
   test('should get horizontal filed resize style by field for current resize type and table mode', () => {
@@ -843,19 +779,9 @@ describe('Interaction Row Column Resize Tests', () => {
     };
     jest.spyOn(s2, 'isTableMode').mockImplementationOnce(() => true);
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Horizontal,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.colCell).toEqual({
-      height: 30,
-      heightByField: null,
-      width: null,
-      widthByField: {
-        [resizeInfo.meta.field!]: 5,
-      },
-    });
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 
   test('should get horizontal filed resize style by field for all resize type and table mode', () => {
@@ -866,18 +792,8 @@ describe('Interaction Row Column Resize Tests', () => {
     };
     jest.spyOn(s2, 'isTableMode').mockImplementationOnce(() => true);
 
-    const resizeInfo = emitResize(
-      ResizeDirectionType.Horizontal,
-      ResizeAreaEffect.Cell,
-    );
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
 
-    expect(s2.options.style!.colCell).toEqual({
-      height: 30,
-      heightByField: null,
-      width: 5,
-      widthByField: {
-        [resizeInfo.meta.field!]: 5,
-      },
-    });
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 });

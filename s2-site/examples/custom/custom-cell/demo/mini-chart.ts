@@ -6,7 +6,6 @@ import {
   S2DataConfig,
   S2Options,
 } from '@antv/s2';
-import { isArray, isObject } from 'lodash';
 
 /**
  * 自定义 DataCell，使用 drawCustomContent 绘制简易的 mini 图

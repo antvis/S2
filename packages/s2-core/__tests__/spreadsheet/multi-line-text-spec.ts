@@ -1,7 +1,11 @@
 /* eslint-disable jest/expect-expect */
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet, TableSheet, type SpreadSheet } from '../../src';
-import type { DefaultCellTheme, S2CellType, S2Options } from '../../src/common';
+import type {
+  CellTextWordWrapStyle,
+  S2CellType,
+  S2Options,
+} from '../../src/common';
 import {
   PivotSheetMultiLineTextDataCfg,
   TableSheetMultiLineTextDataCfg,
@@ -27,25 +31,19 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
   };
 
-  const updateTheme = (maxLines: number) => {
-    const cellTheme: DefaultCellTheme = {
-      text: {
-        maxLines,
-      },
-      bolderText: {
-        maxLines,
-      },
-      measureText: {
-        maxLines,
-      },
+  const updateStyle = (maxLines: number) => {
+    const cellStyle: CellTextWordWrapStyle = {
+      maxLines,
     };
 
-    s2.setTheme({
-      seriesNumberCell: cellTheme,
-      colCell: cellTheme,
-      cornerCell: cellTheme,
-      rowCell: cellTheme,
-      dataCell: cellTheme,
+    s2.setOptions({
+      style: {
+        seriesNumberCell: cellStyle,
+        colCell: cellStyle,
+        cornerCell: cellStyle,
+        rowCell: cellStyle,
+        dataCell: cellStyle,
+      },
     });
   };
 
@@ -126,7 +124,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should custom two max text lines', async () => {
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -136,7 +134,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should custom three max text lines', async () => {
-      updateTheme(3);
+      updateStyle(3);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -147,27 +145,19 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should render custom text overflow text', async () => {
-      const cellTheme: DefaultCellTheme = {
-        text: {
-          textOverflow: '@@@',
-          maxLines: 1,
-        },
-        bolderText: {
-          textOverflow: '我是省略号',
-          maxLines: 1,
-        },
-        measureText: {
-          textOverflow: '😸',
-          maxLines: 1,
-        },
+      const cellTheme: CellTextWordWrapStyle = {
+        textOverflow: '@@@',
+        maxLines: 1,
       };
 
-      s2.setTheme({
-        seriesNumberCell: cellTheme,
-        colCell: cellTheme,
-        cornerCell: cellTheme,
-        rowCell: cellTheme,
-        dataCell: cellTheme,
+      s2.setOptions({
+        style: {
+          seriesNumberCell: cellTheme,
+          colCell: cellTheme,
+          cornerCell: cellTheme,
+          rowCell: cellTheme,
+          dataCell: cellTheme,
+        },
       });
       await s2.render(false);
 
@@ -178,24 +168,18 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should not render word wrap text', async () => {
-      const cellTheme: DefaultCellTheme = {
-        text: {
-          wordWrap: false,
-        },
-        bolderText: {
-          wordWrap: false,
-        },
-        measureText: {
-          wordWrap: false,
-        },
+      const cellTheme: CellTextWordWrapStyle = {
+        wordWrap: false,
       };
 
-      s2.setTheme({
-        seriesNumberCell: cellTheme,
-        colCell: cellTheme,
-        cornerCell: cellTheme,
-        rowCell: cellTheme,
-        dataCell: cellTheme,
+      s2.setOptions({
+        style: {
+          seriesNumberCell: cellTheme,
+          colCell: cellTheme,
+          cornerCell: cellTheme,
+          rowCell: cellTheme,
+          dataCell: cellTheme,
+        },
       });
       await s2.render(false);
 
@@ -228,7 +212,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -254,7 +238,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       [
@@ -282,7 +266,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
     test('should render correctly layout if enable totals for multiple text lines', async () => {
       setupTotalsOptions();
-      updateTheme(3);
+      updateStyle(3);
       await s2.render(false);
 
       expectHierarchyHeight(165, 112, 53);
@@ -311,7 +295,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      updateTheme(1);
+      updateStyle(1);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -349,7 +333,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should custom two max text lines', async () => {
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -359,7 +343,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should custom three max text lines', async () => {
-      updateTheme(3);
+      updateStyle(3);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -381,7 +365,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       getCells().forEach((cells) => {
@@ -401,7 +385,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
         },
       });
 
-      updateTheme(2);
+      updateStyle(2);
       await s2.render(false);
 
       [s2.facet.getColLeafCells()].forEach((cells) => {
@@ -418,7 +402,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     test.skip.each([1, 2, 3, 4, 5])(
       'should always render default cell height when set %s line, but actual text not wrap',
       async (maxLines) => {
-        updateTheme(maxLines);
+        updateStyle(maxLines);
 
         s2.setDataCfg(SimpleDataCfg);
         await s2.render();

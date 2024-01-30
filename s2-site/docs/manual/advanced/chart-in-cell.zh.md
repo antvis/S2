@@ -4,7 +4,7 @@ order: 11
 tag: New
 ---
 
-如果纯文本的表格不够直观，S2 支持 [自定义单元格](/examples#custom-custom-cell)，也内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart)
+如果纯文本的表格不够直观，S2 支持 [自定义单元格](/examples#custom-custom-cell)，也内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 来实现一个组合图表。
 
 ### 数据格式
 
@@ -42,6 +42,8 @@ const s2DataConfig = {
 ```
 
 ### 1. 绘制 mini 图表
+
+S2 内置了几种简单的 `mini` 图形的绘制，无需依赖 `G2` 等专业图表库，适用于简单的展示场景。
 
 <Playground path='custom/custom-cell/demo/mini-chart.ts' rid='mini' height='400'></playground>
 

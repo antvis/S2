@@ -36,7 +36,7 @@ class CustomFacet extends PivotFacet {
 
   // 自定义列头节点坐标
   calculateColNodesCoordinate(layoutResult: LayoutResult) {
-    super.calculateRowNodesCoordinate(layoutResult);
+    super.calculateColNodesCoordinate(layoutResult);
     // 你的自定义逻辑...
   }
 

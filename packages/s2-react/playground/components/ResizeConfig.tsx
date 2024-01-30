@@ -1,7 +1,6 @@
 import {
   ResizeType,
   customMerge,
-  type DefaultCellTheme,
   type ResizeInteractionOptions,
   type S2Theme,
   type ThemeCfg,
@@ -96,25 +95,24 @@ export const ResizeConfig: React.FC<{
   const onMaxLinesChange = (e: RadioChangeEvent) => {
     const maxLines = e.target.value;
 
-    const cellTheme: DefaultCellTheme = {
-      text: {
-        maxLines,
-      },
-      bolderText: {
-        maxLines,
-      },
-      measureText: {
-        maxLines,
+    const updatedOptions: SheetComponentOptions = {
+      style: {
+        rowCell: {
+          maxLines,
+        },
+        colCell: {
+          maxLines,
+        },
+        cornerCell: {
+          maxLines,
+        },
+        dataCell: {
+          maxLines,
+        },
       },
     };
 
-    const theme: S2Theme = {
-      colCell: cellTheme,
-      rowCell: cellTheme,
-      cornerCell: cellTheme,
-    };
-
-    setThemeCfg((prev) => customMerge(prev, { theme }));
+    setOptions((prev) => customMerge(prev, updatedOptions));
 
     props.onMaxLinesChange?.(maxLines);
   };

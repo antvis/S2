@@ -306,11 +306,15 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getTextStyle(): TextTheme {
+    const textOverflowStyle = this.getCellTextWordWrapStyle();
     const { isTotals } = this.meta;
     const { dataCell } = this.theme;
     const textStyle = isTotals ? dataCell?.bolderText : dataCell?.text;
 
-    return this.getContainConditionMappingResultTextStyle(textStyle);
+    return this.getContainConditionMappingResultTextStyle({
+      ...textOverflowStyle,
+      ...textStyle,
+    });
   }
 
   protected drawConditionIntervalShape() {
