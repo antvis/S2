@@ -2,7 +2,7 @@ import type { LineStyleProps, TextStyleProps } from '@antv/g';
 import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
-import type { DeepRequired } from './util';
+import type { DeepRequired } from './type-utils';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
