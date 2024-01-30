@@ -23,7 +23,7 @@ import {
   TOTAL_VALUE,
 } from '../../common/constant';
 import type { Meta } from '../../common/interface/basic';
-import type { PickEssential } from '../../common/interface/utils';
+import type { PickEssential } from '../../common/interface/type-utils';
 import type { CellData } from '../../data-set/cell-data';
 import type {
   DataPath,
