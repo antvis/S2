@@ -96,8 +96,8 @@ export const StrategySheet: React.FC<
       header={{
         title: '趋势分析表',
         description: '支持子弹图',
-        switcherCfg: { open: true },
-        exportCfg: { open: true },
+        switcher: { open: true },
+        export: { open: true },
         extra: (
           <>
             <Switch

@@ -62,7 +62,7 @@ function MainLayout() {
     showSeriesNumber: true,
     device: DeviceType.PC,
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       linkFields: ['order_id', 'customer_name'],
     },
     style: {

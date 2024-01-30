@@ -65,7 +65,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: NewTab,
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
 
@@ -75,7 +75,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: NewTab,
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
       isAsyncExport: true,
     });

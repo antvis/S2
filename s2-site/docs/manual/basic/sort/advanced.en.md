@@ -10,7 +10,7 @@ The `React` version provides an advanced sorting component, optionally available
 
 ## Get started quickly
 
-Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSortCfg` for the `header` . For configuration details, see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSort` for the `header` . For configuration details, see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
@@ -29,7 +29,7 @@ const AdvancedSortDemo = () => {
       dataCfg={dataCfg}
       options={s2Options}
       header={{
-        advancedSortCfg: {
+        advancedSort: {
           open: true,
           sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
           onSortConfirm: (ruleValues, sortParams: SortParams) => {
@@ -49,7 +49,7 @@ ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
 ### show
 
 ```ts
-advancedSortCfg: {
+advancedSort: {
   open: true,
 }
 ```
@@ -61,7 +61,7 @@ advancedSortCfg: {
 Through the `onSortConfirm` function, the selected rule data `ruleValues` and the data `sortParams` that can be processed into a table can be directly used
 
 ```ts
-advancedSortCfg: {
+advancedSort: {
   open: true,
   onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
     console.log(ruleValues, sortParams)

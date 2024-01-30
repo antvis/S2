@@ -52,7 +52,7 @@ export interface RuleValue {
   sortByMeasure?: string;
 }
 
-export interface AdvancedSortCfgProps {
+export interface AdvancedSortBaseProps {
   open: boolean;
   className?: string;
   icon?: React.ReactNode;
@@ -65,7 +65,7 @@ export interface AdvancedSortCfgProps {
   onSortConfirm?: (ruleValues: RuleValue[], sortParams: SortParam[]) => void;
 }
 
-export interface AdvancedSortProps extends AdvancedSortCfgProps {
+export interface AdvancedSortProps extends AdvancedSortBaseProps {
   sheet: SpreadSheet;
 }
 

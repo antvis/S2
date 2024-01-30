@@ -54,7 +54,7 @@ const s2Options: S2Options = {
     enable: true,
   },
   interaction: {
-    enableCopy: true,
+    copy: { enable: true },
     autoResetSheetStyle: true,
   },
 };

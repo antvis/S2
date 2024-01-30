@@ -9,7 +9,12 @@ const s2Options: SheetComponentOptions = {
   height: 400,
   showSeriesNumber: true,
   tooltip: { enable: false },
-  interaction: { enableCopy: true, hoverHighlight: false },
+  interaction: {
+    copy: {
+      enable: true,
+    },
+    hoverHighlight: false,
+  },
   showDefaultHeaderActionIcon: false,
 };
 

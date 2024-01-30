@@ -124,7 +124,7 @@ fetch(
         },
       },
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
         hoverHighlight: true,
         brushSelection: true,
         multiSelection: true,

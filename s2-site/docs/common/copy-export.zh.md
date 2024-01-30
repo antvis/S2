@@ -18,8 +18,8 @@ const data = await asyncGetAllPlainData({
   split: '\t',
   formatOptions: false,
   // formatOptions: {
-  //   isFormatHeader: false,
-  //   isFormatData: true
+  //   formatHeader: false,
+  //   formatData: true
   // },
 });
 
@@ -33,21 +33,27 @@ copyToClipboard(data)
   })
 ```
 
+[查看示例](/examples/interaction/basic/#copy-export)
+
 #### 1.1 原始数据全量复制
 
 <img alt="originFullCopy" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*pfSsTrvuJ0UAAAAAAAAAAAAAARQnAQ" width="1000" />
 
 #### 1.2 格式化数据全量复制
 
-如果配置了 [`S2DataConfig.meta`](http://localhost:8000/api/general/s2-data-config#meta) 对数据有 [格式化处理](/manual/basic/formatter), 那么可以开启 `copyWithFormat`, 这样复制时会拿到格式化之后的数据。
+如果配置了 [`S2DataConfig.meta`](/api/general/s2-data-config#meta) 对数据有 [格式化处理](/manual/basic/formatter), 那么可以开启 `withFormat`, 这样复制时会拿到格式化之后的数据。
 
 ```ts
 const s2Options = {
   interaction: {
-    // 复制时携带表头
-    copyWithHeader: true,
-    // 复制格式化后的数据
-    copyWithFormat: true
+    copy: {
+      // 开启复制
+      enable: true,
+      // 复制时携带表头
+      withHeader: true,
+      // 复制格式化后的数据
+      withFormat: true
+    }
   }
 }
 ```
@@ -61,12 +67,14 @@ S2 默认提供局部复制的能力，开启后，使用快捷键 `Command/Ctrl
 ```ts
 const s2Options = {
   interaction: {
-    // 是否开启复制
-    enableCopy: true,
-    // 复制时携带表头
-    copyWithHeader: true,
-    // 复制格式化后的数据
-    copyWithFormat: true,
+    copy: {
+      // 是否开启复制
+      enable: true,
+      // 复制时携带表头
+      withHeader: true,
+      // 复制格式化后的数据
+      withFormat: true,
+    },
 
     // 可选：圈选复制前，需要开启圈选功能
     brushSelection: {
@@ -99,18 +107,20 @@ const s2Options = {
 
 #### 2.5 带表头复制
 
-开启 `copyWithHeader` 后，复制时会携带当前选中数据对应的行列头单元格数据。
+开启 `withHeader` 后，复制时会携带当前选中数据对应的行列头单元格数据。
 
 ```ts
 const s2Options = {
   interaction: {
-    enableCopy: true,
-    copyWithHeader: true,
+    copy: {
+      enable: true,
+      withHeader: true,
+    },
   }
 };
 ```
 
-<img alt="copyWithHeader" src="https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png" width="1000"/>
+<img alt="withHeader" src="https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png" width="1000"/>
 
 ## 导出
 
@@ -133,8 +143,8 @@ const data = await asyncGetAllPlainData({
   split: '\t',
   formatOptions: false,
   // formatOptions: {
-  //   isFormatHeader: false,
-  //   isFormatData: true
+  //   formatHeader: false,
+  //   formatData: true
   // },
 });
 
@@ -198,8 +208,8 @@ const data = await asyncGetAllPlainData({
 | ------------|-----------------|---------------|---------------| --- |
 | sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
 | split       | 分隔符           | `string`       |     | ✓    |
-| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 | `boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean }`| `false`  |      |
-| customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => `Partial<Transformer>`      | `transformer` |      |
+| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `false`  |      |
+| customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |
 | isAsyncExport  | 是否异步导出        | boolean      | false         |      |
 
 ##### copyToClipboard

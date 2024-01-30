@@ -230,7 +230,7 @@ fetch(
       interaction: {
         selectedCellsSpotlight: true,
         hoverHighlight: true,
-        enableCopy: true,
+        copy: { enable: true },
       },
       // 配置小计总计显示
       totals: {

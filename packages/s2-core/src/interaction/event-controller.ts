@@ -120,10 +120,11 @@ export class EventController {
 
   // Windows and Mac OS
   private onKeyboardCopy(event: KeyboardEvent) {
+    const { copy } = this.spreadsheet.options.interaction!;
+
     if (
       this.isCanvasEffect &&
-      this.spreadsheet.options.interaction?.enableCopy &&
-      // todo: 在copy header 时有问题
+      copy?.enable &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {

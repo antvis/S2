@@ -208,7 +208,7 @@ export const s2Options = {
   showSeriesNumber: false,
   showDefaultHeaderActionIcon: false,
   interaction: {
-    enableCopy: true,
+    copy: { enable: true },
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {

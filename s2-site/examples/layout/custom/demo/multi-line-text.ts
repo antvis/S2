@@ -77,9 +77,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       },
       // 如果有省略号, 复制到的是完整文本
       interaction: {
-        enableCopy: true,
-        copyWithFormat: true,
-        copyWithHeader: true,
+        copy: {
+          enable: true,
+          withFormat: true,
+          withHeader: true,
+        },
         brushSelection: {
           dataCell: true,
           rowCell: true,

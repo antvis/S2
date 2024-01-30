@@ -17,9 +17,9 @@ The table header, located at the top of the table container, functions as a cont
   header={ {
     title: '表头标题',
     description: '表头描述',
-    exportCfg: { open: true }, // 开启导出功能
-    advancedSortCfg: { open: true }, // 开启高级排序功能
-    switcherCfg: { open: true }, // 开启维度切换功能
+    export: { open: true }, // 开启导出功能
+    advancedSort: { open: true }, // 开启高级排序功能
+    switcher: { open: true }, // 开启维度切换功能
     extra: <button> 插入内容 </button>, //自定义 ReactNode
   } }
 />

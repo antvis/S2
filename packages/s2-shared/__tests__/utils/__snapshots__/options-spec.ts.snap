@@ -26,6 +26,11 @@ Object {
       "dataCell": true,
       "rowCell": false,
     },
+    "copy": Object {
+      "enable": true,
+      "withFormat": true,
+      "withHeader": false,
+    },
     "eventListenerOptions": false,
     "hiddenColumnFields": Array [],
     "hoverFocus": Object {

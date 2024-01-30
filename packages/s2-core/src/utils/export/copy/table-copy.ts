@@ -70,7 +70,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
         const formatter = getFormatter(
           field,
-          this.config.isFormatData,
+          this.config.formatData,
           this.spreadsheet.dataSet,
         );
         const value = row[field];
@@ -112,7 +112,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
                 const formatter = getFormatter(
                   field,
-                  this.config.isFormatData,
+                  this.config.formatData,
                   this.spreadsheet.dataSet,
                 );
                 const value = rowData[field];
@@ -141,14 +141,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   private getColMatrix(): string[] {
-    const { isFormatHeader } = this.config;
+    const { formatHeader } = this.config;
     const { showSeriesNumber } = this.spreadsheet.options;
 
     // 明细表的表头，没有格式化
     return this.columnNodes.map((node) => {
       const field: string = node.field;
 
-      if (!isFormatHeader) {
+      if (!formatHeader) {
         return field;
       }
 
@@ -169,7 +169,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     const formatter = getFormatter(
       fieldKey!,
-      this.config.isFormatData,
+      this.config.formatData,
       this.spreadsheet.dataSet,
     );
 
@@ -177,14 +177,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
   };
 
   getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
-    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+    const { copy } = this.spreadsheet.options.interaction!;
 
     // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
       map(cellsMeta, (it) => convertString(this.getValueFromMeta(it))),
     ) as string[][];
 
-    if (!copyWithHeader) {
+    if (!copy?.withHeader) {
       return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 

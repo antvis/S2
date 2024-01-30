@@ -29,7 +29,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: '\t',
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
 
@@ -394,7 +394,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {isFormatHeader: true}', async () => {
+  it('should export correct data when isFormat: {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -427,7 +427,7 @@ describe('PivotSheet Export Test', () => {
       sheetInstance: s2,
       split: '\t',
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
     const rows = data.split('\n');

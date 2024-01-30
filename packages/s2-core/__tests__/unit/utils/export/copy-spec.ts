@@ -128,7 +128,9 @@ describe('List Table Core Data Process', () => {
   it('should copy normal data with header in table mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          withHeader: true,
+        },
       },
       showSeriesNumber: false,
     });
@@ -157,8 +159,7 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
         showSeriesNumber: true,
       }),
@@ -188,8 +189,7 @@ describe('List Table Core Data Process', () => {
 
     s2.setOptions({
       interaction: {
-        enableCopy: true,
-        copyWithFormat: true,
+        copy: { enable: true, withFormat: true },
       },
       showSeriesNumber: false,
     });
@@ -221,8 +221,7 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
       }),
     );
@@ -259,7 +258,9 @@ describe('List Table Core Data Process', () => {
   it('should copy correct data with data filtered', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: false,
+        copy: {
+          withHeader: false,
+        },
       },
     });
     await s2.render();
@@ -337,7 +338,7 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
         showSeriesNumber: true,
       }),
@@ -374,7 +375,7 @@ describe('List Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
         showSeriesNumber: true,
       }),
@@ -420,12 +421,14 @@ describe('List Table Core Data Process', () => {
     s2.setOptions({
       showSeriesNumber: false,
       interaction: {
-        customTransformer: () => {
-          return {
-            [CopyMIMEType.PLAIN]: () => {
-              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
-            },
-          };
+        copy: {
+          customTransformer: () => {
+            return {
+              [CopyMIMEType.PLAIN]: () => {
+                return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+              },
+            };
+          },
         },
       },
     });
@@ -468,7 +471,7 @@ describe('Pivot Table Core Data Process', () => {
     return assembleOptions({
       hierarchyType: 'grid',
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
       },
       totals: TOTALS_OPTIONS,
     });
@@ -520,8 +523,7 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy format data when valueInCols is false in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithFormat: true,
-        enableCopy: true,
+        copy: { enable: true, withFormat: true },
       },
     });
 
@@ -563,9 +565,7 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy format total data in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithFormat: true,
-        enableCopy: true,
-        copyWithHeader: true,
+        copy: { enable: true, withHeader: true, withFormat: true },
       },
       totals: {
         row: {
@@ -647,7 +647,7 @@ describe('Pivot Table Core Data Process', () => {
       assembleOptions({
         hierarchyType: 'grid',
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
       }),
     );
@@ -685,8 +685,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
         showSeriesNumber: false,
       }),
@@ -705,7 +704,9 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy normal data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          withHeader: true,
+        },
       },
     });
     await s2.render();
@@ -738,9 +739,7 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy normal data with format header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
-        copyWithFormat: true,
-        enableCopy: true,
+        copy: { enable: true, withHeader: true, withFormat: true },
       },
     });
 
@@ -793,7 +792,9 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy col data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          withHeader: true,
+        },
       },
     });
     await s2.render();
@@ -819,7 +820,9 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy row data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          withHeader: true,
+        },
       },
     });
     await s2.render();
@@ -855,8 +858,11 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy row data with format header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
-        copyWithFormat: true,
+        copy: {
+          enable: true,
+          withHeader: true,
+          withFormat: true,
+        },
       },
     });
     s2.setDataCfg({
@@ -905,7 +911,9 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy all data with header in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          withHeader: true,
+        },
       },
     });
     await s2.render();
@@ -925,7 +933,9 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy correct data with data sorted in grid mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: false,
+        copy: {
+          withHeader: false,
+        },
       },
     });
     const node = s2.facet.getColLeafNodes()[0];
@@ -962,8 +972,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
         showSeriesNumber: false,
       }),
@@ -1001,8 +1010,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
         showSeriesNumber: false,
       }),
@@ -1034,8 +1042,7 @@ describe('Pivot Table Core Data Process', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
         showSeriesNumber: false,
       }),
@@ -1088,7 +1095,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   // https://github.com/antvis/S2/issues/1955
-  it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', async () => {
+  it('should get correct data with hideMeasureColumn、showSeriesNumber and withHeader are all true', async () => {
     const sheet = new PivotSheet(getContainer(), getDataCfg(), getOptions());
 
     sheet.setOptions({
@@ -1098,8 +1105,7 @@ describe('Pivot Table Core Data Process', () => {
         },
       },
       interaction: {
-        enableCopy: true,
-        copyWithHeader: true,
+        copy: { enable: true, withHeader: true },
       },
       showSeriesNumber: true,
     });
@@ -1132,12 +1138,14 @@ describe('Pivot Table Core Data Process', () => {
   it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
       interaction: {
-        customTransformer: () => {
-          return {
-            [CopyMIMEType.PLAIN]: () => {
-              return { type: CopyMIMEType.PLAIN, content: 'custom data' };
-            },
-          };
+        copy: {
+          customTransformer: () => {
+            return {
+              [CopyMIMEType.PLAIN]: () => {
+                return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+              },
+            };
+          },
         },
       },
     });
@@ -1180,7 +1188,7 @@ describe('Tree Table Core Data Process', () => {
       assembleOptions({
         hierarchyType: 'tree',
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
         totals: TOTALS_OPTIONS,
       }),
@@ -1283,7 +1291,10 @@ describe('Tree Table Core Data Process', () => {
     } as S2DataConfig);
     s2.setOptions({
       interaction: {
-        copyWithFormat: true,
+        copy: {
+          enable: true,
+          withFormat: true,
+        },
       },
     });
     await s2.render();
@@ -1308,8 +1319,7 @@ describe('Tree Table Core Data Process', () => {
   it('should copy normal data with header in tree mode', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
-        enableCopy: true,
+        copy: { enable: true, withHeader: true },
       },
     });
     await s2.render();
@@ -1337,7 +1347,10 @@ describe('Tree Table Core Data Process', () => {
   it('should copy normal data with header for custom field name', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
+        copy: {
+          enable: true,
+          withHeader: true,
+        },
       },
     });
     s2.setDataCfg({
@@ -1355,11 +1368,14 @@ describe('Tree Table Core Data Process', () => {
     expect(getSelectedData(s2)).toMatchSnapshot();
   });
 
-  it('should copy normal data with header for custom field formatter if enable copyWithFormat', async () => {
+  it('should copy normal data with header for custom field formatter if enable withFormat', async () => {
     s2.setOptions({
       interaction: {
-        copyWithHeader: true,
-        copyWithFormat: true,
+        copy: {
+          enable: true,
+          withHeader: true,
+          withFormat: true,
+        },
       },
     });
     s2.setDataCfg({
@@ -1394,7 +1410,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   const options = assembleOptions({
     hierarchyType: 'grid',
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       brushSelection: true,
     },
   });
@@ -1671,7 +1687,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       assembleOptions({
         hierarchyType: 'grid',
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
           brushSelection: true,
         },
         totals: TOTALS_OPTIONS,
@@ -1712,7 +1728,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       assembleOptions({
         hierarchyType: 'grid',
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
           brushSelection: true,
         },
         totals: TOTALS_OPTIONS,

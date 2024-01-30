@@ -10,13 +10,15 @@ tag: Updated
 
 ## 使用
 
-```tsx | {15-19}
+```tsx | {17-21}
 import { SheetComponent } from '@antv/s2-react'
 
 const S2Options = {
   interaction: {
     // 开启复制
-    enableCopy: true
+    copy: {
+      enable: true
+    }
   }
 }
 
@@ -26,7 +28,7 @@ const App = () => {
       dataCfg={dataCfg}
       options={S2Options}
       header={{
-        exportCfg: {
+        export: {
           open: true
         }
       }}
@@ -47,6 +49,8 @@ const App = () => {
   <source src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/file/A*EZfPRJqzl4cAAAAAAAAAAAAAARQnAQ" type="video/mp4">
   Your browser does not support HTML video.
 </video>
+
+[查看示例](/examples/react-component/export/#export)
 
 ## 在非 React 应用中使用
 

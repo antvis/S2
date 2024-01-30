@@ -139,7 +139,7 @@ function MainLayout({ callback }: Props) {
         }
       : undefined,
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       hoverHighlight: false,
       linkFields: ['order_id', 'customer_name'],
       hiddenColumnFields,

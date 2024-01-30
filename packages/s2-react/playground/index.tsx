@@ -1165,12 +1165,14 @@ function MainLayout() {
                                     checkedChildren="允许复制"
                                     unCheckedChildren="禁用复制"
                                     checked={
-                                      mergedOptions.interaction?.enableCopy
+                                      mergedOptions.interaction?.copy?.enable
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          enableCopy: checked,
+                                          copy: {
+                                            enable: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1181,12 +1183,15 @@ function MainLayout() {
                                     checkedChildren="复制包含其对应行列头的数据"
                                     unCheckedChildren="复制不包含其对应行列头的数据"
                                     checked={
-                                      mergedOptions.interaction?.copyWithHeader
+                                      mergedOptions.interaction?.copy
+                                        ?.withHeader
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          copyWithHeader: checked,
+                                          copy: {
+                                            withHeader: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1197,12 +1202,15 @@ function MainLayout() {
                                     checkedChildren="复制带格式后的数据"
                                     unCheckedChildren="复制未格式化的数据"
                                     checked={
-                                      mergedOptions.interaction?.copyWithFormat
+                                      mergedOptions.interaction?.copy
+                                        ?.withFormat
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          copyWithFormat: checked,
+                                          copy: {
+                                            withFormat: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1506,9 +1514,9 @@ function MainLayout() {
                                 </span>
                               </Space>
                             ),
-                            switcherCfg: { open: true },
-                            exportCfg: { open: true },
-                            advancedSortCfg: {
+                            switcher: { open: true },
+                            export: { open: true },
+                            advancedSort: {
                               open: true,
                             },
                           }}

@@ -13,8 +13,7 @@ import { usePlaygroundContext } from '../context/playground.context';
 const options: SheetComponentOptions = {
   height: 900,
   interaction: {
-    enableCopy: true,
-    copyWithFormat: true,
+    copy: { enable: true, withFormat: true },
     brushSelection: {
       rowCell: true,
       colCell: true,
@@ -69,7 +68,7 @@ export const ChartSheet: React.FC<
       header={{
         title: 'S2 & G2',
         description: '单元格内绘制 G2 图表',
-        exportCfg: { open: true },
+        export: { open: true },
       }}
     />
   );

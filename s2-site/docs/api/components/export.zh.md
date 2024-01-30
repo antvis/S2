@@ -10,7 +10,7 @@ tag: Updated
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
-  header={{ exportCfg: { open: true } }}
+  header={{ export: { open: true } }}
 />
 ```
 

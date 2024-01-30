@@ -145,7 +145,7 @@ fetch(
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',
-            advancedSortCfg: { open: true },
+            advancedSort: { open: true },
             extra: <Breadcrumb />,
           }}
           onDataCellMouseUp={onDataCellMouseUp}

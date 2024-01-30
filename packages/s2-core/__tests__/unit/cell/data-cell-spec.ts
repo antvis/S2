@@ -601,7 +601,7 @@ describe('Data Cell Tests', () => {
       s2 = createPivotSheet({
         showSeriesNumber: true,
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
       });
       await s2.render();

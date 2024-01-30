@@ -75,6 +75,11 @@ export const DEFAULT_OPTIONS: S2Options = {
     },
   },
   interaction: {
+    copy: {
+      enable: true,
+      withFormat: true,
+      withHeader: false,
+    },
     linkFields: [],
     hiddenColumnFields: [],
     selectedCellsSpotlight: false,

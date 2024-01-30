@@ -36,8 +36,8 @@ export type Copyable = CopyableItem | CopyableItem[];
 export type FormatOptions =
   | boolean
   | {
-      isFormatHeader?: boolean;
-      isFormatData?: boolean;
+      formatHeader?: boolean;
+      formatData?: boolean;
     };
 
 export interface Transformer {
@@ -55,8 +55,8 @@ export interface CopyOrExportConfig {
 
 export interface CopyAndExportUnifyConfig {
   separator: string;
-  isFormatHeader: boolean;
-  isFormatData: boolean;
+  formatHeader: boolean;
+  formatData: boolean;
   selectedCells: CellMeta[];
   transformers: Transformer;
   isAsyncExport: boolean;

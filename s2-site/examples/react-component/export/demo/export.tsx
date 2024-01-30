@@ -12,7 +12,7 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
       },
     };
 
@@ -31,7 +31,7 @@ fetch(
         dataCfg={s2DataConfig}
         options={s2Options}
         header={{
-          exportCfg: {
+          export: {
             open: true,
           },
         }}

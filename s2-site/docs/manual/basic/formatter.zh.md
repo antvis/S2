@@ -87,12 +87,12 @@ tag: New
 
 ## 复制导出时保留格式化信息
 
-复制导出默认使用原数据进行处理，开启 `copyWithFormat` 后，则以 `meta` 中的 `name` 和 `formatter` 进行复制导出。
+复制导出默认使用原数据进行处理，开启 `withFormat` 后，则以 `meta` 中的 `name` 和 `formatter` 进行复制导出。
 
 ```ts
 const s2Options = {
   interaction: {
-    copyWithFormat: true
+    withFormat: true
   }
 }
 ```

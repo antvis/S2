@@ -18,7 +18,7 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
       },
     };
 
@@ -38,8 +38,8 @@ fetch(
       const header: SheetComponentsProps['header'] = {
         title: '表头标题',
         description: '表头描述',
-        exportCfg: { open: true },
-        advancedSortCfg: {
+        export: { open: true },
+        advancedSort: {
           open: true,
           sortParams,
           onSortConfirm: (ruleValues, sortParams) => {
@@ -47,7 +47,7 @@ fetch(
             setSortParams(sortParams);
           },
         },
-        switcherCfg: { open: true },
+        switcher: { open: true },
         extra: (
           <Button size={'small'} style={{ verticalAlign: 'top' }}>
             自定义按钮

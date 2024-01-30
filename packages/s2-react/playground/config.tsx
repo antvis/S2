@@ -321,9 +321,11 @@ export const s2Options: SheetComponentOptions = {
   },
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
-    enableCopy: true,
-    copyWithFormat: true,
-    copyWithHeader: true,
+    copy: {
+      enable: true,
+      withFormat: true,
+      withHeader: true,
+    },
     hoverAfterScroll: true,
     selectedCellMove: true,
     rangeSelection: true,

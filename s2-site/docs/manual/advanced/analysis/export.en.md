@@ -32,11 +32,11 @@ Use the shortcut key `command/ctrl + c` to copy the selected area (partial copy)
 const s2Options = {
   interaction: {
     // 是否开启复制
-    enableCopy: true,
+    copy: { enable: true },
     // 复制格式化后的数据 (s2DataConfig.meta 中配置的 formatter)
-    copyWithFormat: false,
+    withFormat: false,
     // 复制数值时是否携带所对应的行列头维值
-    copyWithHeader: true,
+    withHeader: true,
     // 圈选复制前，需要开启圈选功能
     brushSelection: {
       dataCell: true, // 圈选数值单元格 （默认开启）
@@ -63,24 +63,24 @@ const s2Options = {
 
 <img alt="CopyCol" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_NukQpysLC8AAAAAAAAAAAAAARQnAQ" width="600"/>
 
-* CopyWithHeader **copyWithHeader** : whether to copy data with header information, the default is `false`
+* CopyWithHeader **withHeader** : whether to copy data with header information, the default is `false`
 
 ```ts
 const s2Options = {
   interaction: {
-    enableCopy: true,
-    copyWithHeader: true,
+    copy: { enable: true },
+    withHeader: true,
   }
 };
 ```
 
-<img alt="copyWithHeader" src="https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png" width="600" />
+<img alt="withHeader" src="https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png" width="600" />
 
 <br/>
 
 ##### 复制格式化后的数据
 
-**copyWithFormat**: 当 `S2DataConfig` 的 `meta` 中配置了 [自定义格式函数时](/api/general/s2-data-config#meta), 是否按照 `formatter` 复制数据
+**withFormat**: 当 `S2DataConfig` 的 `meta` 中配置了 [自定义格式函数时](/api/general/s2-data-config#meta), 是否按照 `formatter` 复制数据
 
 ```ts
 const s2DataConfig = {
@@ -96,8 +96,8 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    enableCopy: true,
-    copyWithFormat: true,
+    copy: { enable: true },
+    withFormat: true,
   }
 };
 ```
@@ -117,7 +117,7 @@ import { SheetComponent } from '@antv/s2-react'
   dataCfg={dataCfg}
   options={options}
   header={{
-    exportCfg: {
+    export: {
       open: true
     }
   }}

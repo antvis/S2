@@ -80,7 +80,7 @@ const options: S2Options = {
     },
   },
   interaction: {
-    enableCopy: true,
+    copy: { enable: true },
     hoverHighlight: false,
     selectedCellHighlight: true,
     linkFields: ['order_id', 'customer_name'],

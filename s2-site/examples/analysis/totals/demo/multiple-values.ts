@@ -48,7 +48,7 @@ fetch(
         enable: true,
       },
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
         selectedCellsSpotlight: true,
         hoverHighlight: true,
       },

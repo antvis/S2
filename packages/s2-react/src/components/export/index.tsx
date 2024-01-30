@@ -14,7 +14,7 @@ import cx from 'classnames';
 import React from 'react';
 import { DotIcon } from '../icons';
 
-export interface ExportCfgProps {
+export interface ExportBaseProps {
   open: boolean;
   className?: string;
   icon?: React.ReactNode;
@@ -30,7 +30,7 @@ export interface ExportCfgProps {
   dropdown?: DropDownProps;
 }
 
-export interface ExportProps extends ExportCfgProps {
+export interface ExportProps extends ExportBaseProps {
   sheet: SpreadSheet;
 }
 

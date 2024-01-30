@@ -261,7 +261,7 @@ const App = ({ data }) => {
     height: 400,
     showSeriesNumber: true,
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       autoResetSheetStyle: false,
       hoverFocus: false,
     },

@@ -8,7 +8,7 @@ export * from './sheets/strategy-sheet/custom-cell';
 export {
   AdvancedSort,
   type AdvancedSortProps,
-  type AdvancedSortCfgProps,
+  type AdvancedSortBaseProps as AdvancedSortCfgProps,
 } from './advanced-sort';
 export {
   DrillDown,

@@ -19,7 +19,7 @@ fetch(
           colCell: true,
         },
         // 圈选功能 + 复制功能开启后，可以通过使用快捷键 `command/ctrl + c` 即可复制选中区域（局部复制）
-        enableCopy: true,
+        copy: { enable: true },
       },
       style: {
         dataCell: {

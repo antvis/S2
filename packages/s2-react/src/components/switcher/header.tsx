@@ -9,11 +9,11 @@ import {
   getSheetType,
 } from './headerUtil';
 import type { SwitcherResult } from './interface';
-import { Switcher, type SwitcherProps } from './';
+import { Switcher, type SwitcherProps as DefaultSwitcherProps } from './';
 import './index.less';
 
 type SwitcherBasicCfg = Pick<
-  SwitcherProps,
+  DefaultSwitcherProps,
   | 'title'
   | 'resetText'
   | 'innerContentClassName'
@@ -23,7 +23,7 @@ type SwitcherBasicCfg = Pick<
   | 'allowExchangeHeader'
 >;
 
-export interface SwitcherCfgProps extends SwitcherBasicCfg {
+export interface SwitcherProps extends SwitcherBasicCfg {
   open: boolean;
 }
 

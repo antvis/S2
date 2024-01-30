@@ -104,12 +104,14 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        // 允许复制
-        enableCopy: true,
-        // 是否携带行列头数据
-        copyWithHeader: true,
-        // 是否使用格式化数据
-        copyWithFormat: true,
+        copy: {
+          // 允许复制
+          enable: true,
+          // 是否携带行列头数据
+          withHeader: true,
+          // 是否使用格式化数据
+          withFormat: true,
+        },
         // 刷选
         brushSelection: {
           rowCell: true,

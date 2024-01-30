@@ -41,9 +41,9 @@ fetch(
       height: 480,
       hierarchyType: 'grid',
       interaction: {
-        enableCopy: true,
-        copyWithFormat: true,
-        copyWithHeader: true,
+        copy: { enable: true },
+        withFormat: true,
+        withHeader: true,
       },
       // 显示序号
       // showSeriesNumber: true,

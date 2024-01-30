@@ -176,25 +176,30 @@ export interface InteractionOptions {
   hoverFocus?: HoverFocusOptions | boolean;
 
   /**
-   * 开启复制 Command/Ctrl + C
+   * 单元格文本复制
    * @see https://s2.antv.antgroup.com/examples/interaction/basic/#copy-export
    */
-  enableCopy?: boolean;
+  copy?: {
+    /**
+     * 开启复制 Command/Ctrl + C
+     */
+    enable?: boolean;
 
-  /**
-   * 复制带格式的数据
-   */
-  copyWithFormat?: boolean;
+    /**
+     * 复制带格式的数据
+     */
+    withFormat?: boolean;
 
-  /**
-   * 复制包含其对应行列头的数据
-   */
-  copyWithHeader?: boolean;
+    /**
+     * 复制包含其对应行列头的数据
+     */
+    withHeader?: boolean;
 
-  /**
-   * 复制时支持自定义 (transformer) 数据导出格式化方法
-   */
-  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+    /**
+     * 复制时支持自定义 (transformer) 数据导出格式化方法
+     */
+    customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  };
 
   /**
    * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态)
@@ -212,7 +217,7 @@ export interface InteractionOptions {
 
   /**
    * 自定义滚动速率, 默认 1
-   * @see http://localhost:8000/examples/interaction/advanced/#scroll-speed-ratio
+   * @see https://s2.antv.antgroup.com/examples/interaction/advanced/#scroll-speed-ratio
    */
   scrollSpeedRatio?: ScrollSpeedRatio;
 

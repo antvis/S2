@@ -25,7 +25,7 @@ order: 4
 
 ### AdvancedSortCfgProps
 
-在 `header` 中配置 `advancedSortCfg` 的 `props`
+在 `header` 中配置 `advancedSort` 的 `props`
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
 | -- | -- | -- | -- | -- |

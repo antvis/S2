@@ -4,9 +4,7 @@ import insertCSS from 'insert-css';
 
 import '@antv/s2-react/dist/style.min.css';
 
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const defaultSortParams = [
@@ -64,7 +62,7 @@ fetch(
             dataCfg={dataCfg}
             options={s2Options}
             header={{
-              advancedSortCfg: {
+              advancedSort: {
                 open: true,
                 sortParams,
                 onSortConfirm: (ruleValues, sortParams) => {

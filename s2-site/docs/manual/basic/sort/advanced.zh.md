@@ -10,7 +10,7 @@ tag: Updated
 
 ## 快速上手
 
-使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSort` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```tsx
 import React from 'react';
@@ -29,7 +29,7 @@ export const AdvancedSortDemo = () => {
       dataCfg={dataCfg}
       options={s2Options}
       header={{
-        advancedSortCfg: {
+        advancedSort: {
           open: true,
           sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
           onSortConfirm: (ruleValues, sortParams: SortParams) => {
@@ -50,7 +50,7 @@ export const AdvancedSortDemo = () => {
 ```tsx
 <SheetComponent
   header={{
-    advancedSortCfg: {
+    advancedSort: {
       open: true,
     },
   }}
@@ -66,7 +66,7 @@ export const AdvancedSortDemo = () => {
 ```tsx
 <SheetComponent
   header={{
-    advancedSortCfg: {
+    advancedSort: {
       open: true,
       onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
         console.log(ruleValues, sortParams)

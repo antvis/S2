@@ -66,7 +66,9 @@ const options: S2Options = {
     pageSize: 100,
   },
   interaction: {
-    enableCopy: true,
+    copy: {
+      enable: true,
+    },
     hoverHighlight: false,
     resize: true,
   },

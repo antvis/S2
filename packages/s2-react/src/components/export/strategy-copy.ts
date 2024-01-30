@@ -80,7 +80,7 @@ class StrategyCopyData extends PivotDataCellCopy {
     if (isObject(fieldValue)) {
       tempCells = processObjectValueInRow(
         fieldValue,
-        this.config.isFormatHeader,
+        this.config.formatHeader,
       ) as unknown as string[];
 
       return tempCells ?? placeholder;
@@ -92,7 +92,7 @@ class StrategyCopyData extends PivotDataCellCopy {
     }
 
     // The main measure.
-    if (!this.config.isFormatHeader) {
+    if (!this.config.formatHeader) {
       tempCells.push((fieldValue as string) ?? '');
     } else {
       const mainFormatter =
@@ -154,7 +154,7 @@ class StrategyCopyData extends PivotDataCellCopy {
     const result: string[][] = [];
 
     forEach(this.leafColNodes, (n) => {
-      const colList = this.config.isFormatHeader
+      const colList = this.config.formatHeader
         ? getNodeFormatData(n)
         : getHeaderList(n.id);
       // 倒着循环 colList

@@ -44,9 +44,9 @@ describe('<SheetComponent/> Tests', () => {
       dataCfg: null as unknown as S2DataConfig,
       showPagination: true,
       header: {
-        switcherCfg: { open: true },
-        exportCfg: { open: true },
-        advancedSortCfg: { open: true },
+        switcher: { open: true },
+        export: { open: true },
+        advancedSort: { open: true },
       },
     };
 

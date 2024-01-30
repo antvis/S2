@@ -33,7 +33,7 @@ download(data, 'filename')
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------- | -------- |
 | spreadsheet   | s2 instance                                                                                                                                                         | [SpreadSheet](/docs/api/basic-class/spreadsheet)                           |          | ✓        |
 | split         | delimiter                                                                                                                                                           | `string`                                                                   |          | ✓        |
-| formatOptions | Whether to format, you can format the data cell and row header separately, and passing Boolean values will take effect on the cell and row header at the same time. | <code>boolean | { isFormatHeader?: boolean, isFormatData?: boolean}</code> | `false`  |          |
+| formatOptions | Whether to format, you can format the data cell and row header separately, and passing Boolean values will take effect on the cell and row header at the same time. | <code>boolean | { formatHeader?: boolean, formatData?: boolean}</code> | `false`  |          |
 
 ### copyToClipboard
 

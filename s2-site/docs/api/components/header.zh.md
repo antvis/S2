@@ -16,11 +16,11 @@ tag: Updated
     title: '表头标题',
     description: '表头描述',
     // 开启导出功能
-    exportCfg: { open: true },
+    export: { open: true },
     // 开启高级排序功能
-    advancedSortCfg: { open: true },
+    advancedSort: { open: true },
     // 开启维度切换功能
-    switcherCfg: { open: true },
+    switcher: { open: true },
     // 自定义 ReactNode
     extra: <button> 插入内容 </button>,
   } }
