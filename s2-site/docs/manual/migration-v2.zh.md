@@ -334,12 +334,12 @@ const s2DataConfig = {
 
 ```diff
 const s2Options = {
-+   frozenRowHeader: true,
-+   frozenFirstRow: true,
-+   frozenRowCount: true;
-+   frozenColCount: true;
-+   frozenTrailingRowCount: true;
-+   frozenTrailingColCount: true;
+-   frozenRowHeader: true,
+-   frozenFirstRow: true,
+-   frozenRowCount: true;
+-   frozenColCount: true;
+-   frozenTrailingRowCount: true;
+-   frozenTrailingColCount: true;
 
 +  frozen: {
 +    rowHeader: true,
@@ -423,15 +423,15 @@ const header = {
 
 ### `@antv/s2`
 
-### `@antv/s2-react`
+TODO:
 
-### `@antv/s2-vue`
+### `@antv/s2-react`
 
 TODO:
 
 ## 未来迭代计划
 
-TODO:
+TODO: 是否需要？
 
 ## 遇到问题
 
