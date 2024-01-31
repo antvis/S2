@@ -311,7 +311,6 @@ export const s2Options: SheetComponentOptions = {
       // cursor: 'crosshair',
     };
   },
-  // showSeriesNumber: false,
   frozen: {
     rowHeader: true,
     // rowCount: 1,

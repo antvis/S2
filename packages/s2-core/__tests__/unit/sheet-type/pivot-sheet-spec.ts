@@ -468,14 +468,16 @@ describe('PivotSheet Tests', () => {
       .mockImplementation(() => {});
 
     const options: Partial<S2Options> = {
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     };
 
     s2.setOptions(options);
 
     // should hide tooltip if options updated
     expect(hideTooltipSpy).toHaveBeenCalledTimes(1);
-    expect(s2.options.showSeriesNumber).toBeTruthy();
+    expect(s2.options.seriesNumber?.enable).toBeTruthy();
   });
 
   test('should init new tooltip', () => {
@@ -569,7 +571,9 @@ describe('PivotSheet Tests', () => {
     const sheet = createPivotSheet(
       {
         ...s2Options,
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       },
       { useSimpleData: false },
     );

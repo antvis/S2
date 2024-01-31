@@ -9,7 +9,9 @@ describe('Table Sheet Resize Test', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       width: 800,
       height: 600,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
 
     await s2.render();
@@ -25,7 +27,9 @@ describe('Table Sheet Resize Test', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       width: 800,
       height: 600,
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
     });
 
     await s2.render();

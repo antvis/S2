@@ -495,15 +495,15 @@ export const getFrozenRowCfgPivot = (
   } => {
   /**
    * series number cell 可以自定义布局，和 row cell 不一定是 1 对 1 的关系
-   * showSeriesNumber 暂时禁用 首行冻结
+   * seriesNumber 暂时禁用 首行冻结
    * */
-  const { pagination, frozen, hierarchyType, showSeriesNumber } = options;
+  const { pagination, frozen, hierarchyType, seriesNumber } = options;
 
   const enablePagination = pagination && pagination.pageSize;
   let firstRow = false;
   const headNode = rowNodes?.[0];
 
-  if (!enablePagination && !showSeriesNumber && frozen?.firstRow) {
+  if (!enablePagination && !seriesNumber?.enable && frozen?.firstRow) {
     const treeMode = hierarchyType === 'tree';
 
     // tree mode

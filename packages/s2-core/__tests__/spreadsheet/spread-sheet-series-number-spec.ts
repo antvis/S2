@@ -6,7 +6,9 @@ const s2Options: S2Options = {
   width: 400,
   height: 400,
   hierarchyType: 'grid',
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
 };
 
 describe('SpreadSheet Series Number Tests', () => {

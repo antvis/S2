@@ -12,7 +12,9 @@ const s2 = createPivotSheet(
       firstRow: true,
     },
     totals: { row: { showGrandTotals: true, reverseGrandTotalsLayout: true } },
-    showSeriesNumber: false,
+    seriesNumber: {
+      enable: false,
+    },
   },
   { useSimpleData: false },
 );

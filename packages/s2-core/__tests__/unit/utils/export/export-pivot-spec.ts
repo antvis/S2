@@ -440,7 +440,9 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         hierarchyType: 'grid',
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
         interaction: {
           copy: {
             enable: true,

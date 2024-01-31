@@ -59,7 +59,9 @@ function MainLayout() {
   const options: SheetComponentOptions = {
     width: 800,
     height: 600,
-    showSeriesNumber: true,
+    seriesNumber: {
+      enable: true,
+    },
     device: DeviceType.PC,
     interaction: {
       copy: { enable: true },

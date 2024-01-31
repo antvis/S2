@@ -154,7 +154,9 @@ describe('Table Mode Facet Test', () => {
 
   test('should get default seriesNumberText', () => {
     const { facet } = createMockTableFacet({
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
 
     expect(facet.getColLeafNodes()[0].value).toEqual('序号');
@@ -163,8 +165,10 @@ describe('Table Mode Facet Test', () => {
   test('should get custom seriesNumberText', () => {
     const seriesNumberText = 'test';
     const { facet } = createMockTableFacet({
-      showSeriesNumber: true,
-      seriesNumberText,
+      seriesNumber: {
+        enable: true,
+        text: seriesNumberText,
+      },
     });
 
     expect(facet.getColLeafNodes()[0].value).toEqual(seriesNumberText);
@@ -216,7 +220,9 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   describe('should get correct col layout', () => {
     test('col hierarchy coordinate with adaptive layout', () => {
       const { facet } = createMockTableFacet({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       });
 
       expect(
@@ -230,7 +236,9 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   describe('should get correct col layout with seriesNumber', () => {
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { facet, s2 } = createMockTableFacet({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       });
       const { colCell } = s2.options.style!;
       const colLeafNodes = facet.getColLeafNodes();
@@ -276,7 +284,9 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
     const { facet, s2 } = createMockTableFacet(
       {
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       },
       undefined,
       (spreadsheet) => {
@@ -323,7 +333,9 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
     const { facet, s2 } = createMockTableFacet(
       {
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       },
       undefined,
       (spreadsheet) => {

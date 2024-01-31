@@ -484,7 +484,9 @@ describe('SpreadSheet Theme Tests', () => {
         });
 
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
 
         await s2.render();

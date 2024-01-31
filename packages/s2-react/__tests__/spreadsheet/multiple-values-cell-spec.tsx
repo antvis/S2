@@ -82,7 +82,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
     width: 800,
     height: 600,
     hierarchyType: 'tree',
-    showSeriesNumber: true,
+    seriesNumber: {
+      enable: true,
+    },
     frozen: {
       rowHeader: false,
     },

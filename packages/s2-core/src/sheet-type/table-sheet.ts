@@ -78,7 +78,7 @@ export class TableSheet extends SpreadSheet {
 
   protected buildFacet() {
     const defaultCell = (viewMeta: ViewMeta) => {
-      if (this.options.showSeriesNumber && viewMeta.colIndex === 0) {
+      if (this.options.seriesNumber?.enable && viewMeta.colIndex === 0) {
         return new TableSeriesNumberCell(viewMeta, this);
       }
 

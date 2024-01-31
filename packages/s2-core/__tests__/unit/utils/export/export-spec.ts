@@ -20,7 +20,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -57,7 +59,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
