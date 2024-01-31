@@ -25,7 +25,8 @@ tag: Updated
 ## 性能优化
 
 以如下透视表为例：
-![pivot sheet](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*8FDiR45m_tsAAAAAAAAAAAAAARQnAQ)
+
+<img alt="pivot sheet" height="400" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*8FDiR45m_tsAAAAAAAAAAAAAARQnAQ">
 
 ```ts
 const dataCfg={
@@ -101,7 +102,7 @@ const rowsMeta: PivotMeta = {
 
 在 `S2` 中，我们需要将用户传入一维数据`data`通过内部的数据训练转为多维数组`indexesData`。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `lodash.set` 实现），举个示例：
 
-![path](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*GyJCTq-gw-sAAAAAAAAAAAAAARQnAQ)
+<image alt="path" height="400" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*GyJCTq-gw-sAAAAAAAAAAAAAARQnAQ">
 
 上图中，紫色单元格对应的坐标为：
 
@@ -206,7 +207,8 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 * [明细表](/examples/case/performance-compare#table)
 
 详细的性能对比数据如下：
-![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
+
+<img alt="performance" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*OncTQr-vD0gAAAAAAAAAAAAADmJ7AQ/original">
 
 > 备注：
 >
