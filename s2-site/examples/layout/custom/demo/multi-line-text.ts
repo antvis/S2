@@ -62,8 +62,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
-      seriesNumberText: '序号序号序号序号序号序号',
+      seriesNumber: {
+        enable: true,
+        text: '序号序号序号序号序号序号',
+      },
       tooltip: {
         enable: true,
         content: (cell) => {

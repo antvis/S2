@@ -71,7 +71,9 @@ fetch(
       height: 480,
       // 切换到 grid 模式试试看
       hierarchyType: 'tree',
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true
+      },
       layoutSeriesNumberNodes,
       seriesNumberCell: (node, s2, headConfig) => {
         return new CustomSeriesCell(node, s2, headConfig);

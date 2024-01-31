@@ -7,7 +7,9 @@ import '@antv/s2-react/dist/style.min.css';
 const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true
+  },
   tooltip: { enable: false },
   interaction: {
     copy: {

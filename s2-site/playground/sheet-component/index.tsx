@@ -207,7 +207,9 @@ export const CustomSheet: React.FC<Props> = (props) => {
     const { showSeriesNumber, showPagination } = sheetConfig;
 
     setOptions({
-      showSeriesNumber,
+      seriesNumber: {
+        enable: showSeriesNumber,
+      },
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
