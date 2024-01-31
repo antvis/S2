@@ -100,7 +100,9 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     const s2Options: S2Options = {
       width: 300,
       height: 400,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     };
 
     beforeEach(async () => {
@@ -309,7 +311,9 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     const s2Options: S2Options = {
       width: 600,
       height: 400,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     };
 
     beforeEach(async () => {

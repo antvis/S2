@@ -36,10 +36,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      // 显示序号
-      showSeriesNumber: true,
-      // 自定义序号列文本, 默认 "序号"
-      seriesNumberText: '序号',
+      seriesNumber: {
+        enable: true,
+        text: '序号',
+      },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);

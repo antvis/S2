@@ -645,10 +645,12 @@ function MainLayout() {
                                 <Switch
                                   checkedChildren="显示序号"
                                   unCheckedChildren="不显示序号"
-                                  checked={mergedOptions.showSeriesNumber}
+                                  checked={mergedOptions.seriesNumber?.enable}
                                   onChange={(checked) => {
                                     updateOptions({
-                                      showSeriesNumber: checked,
+                                      seriesNumber: {
+                                        enable: checked,
+                                      },
                                     });
                                   }}
                                 />
@@ -656,17 +658,19 @@ function MainLayout() {
                                   checkedChildren="自定义序号文本"
                                   unCheckedChildren="默认序号文本"
                                   checked={
-                                    mergedOptions.seriesNumberText ===
+                                    mergedOptions.seriesNumber?.text ===
                                     '自定义序号文本'
                                   }
                                   onChange={(checked) => {
                                     updateOptions({
-                                      seriesNumberText: checked
-                                        ? '自定义序号文本'
-                                        : getDefaultSeriesNumberText(),
+                                      seriesNumber: {
+                                        text: checked
+                                          ? '自定义序号文本'
+                                          : getDefaultSeriesNumberText(),
+                                      },
                                     });
                                   }}
-                                  disabled={!mergedOptions.showSeriesNumber}
+                                  disabled={!mergedOptions.seriesNumber?.enable}
                                 />
                                 <Switch
                                   checkedChildren="分页"

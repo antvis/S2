@@ -40,7 +40,9 @@ describe('Col width Test', () => {
 
     test('get correct width in layoutWidthType adaptive mode when enable series number', async () => {
       s2.setOptions({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       });
       await s2.render();
 
@@ -59,7 +61,9 @@ describe('Col width Test', () => {
     test('get correct width in layoutWidthType adaptive tree mode when enable series number', async () => {
       s2.setOptions({
         hierarchyType: 'tree',
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       });
       await s2.render();
 

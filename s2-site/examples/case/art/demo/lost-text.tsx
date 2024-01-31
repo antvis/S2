@@ -205,7 +205,9 @@ export const s2Options = {
   debug: true,
   width: 600,
   height: 400,
-  showSeriesNumber: false,
+  seriesNumber: {
+    enable: false
+  },
   showDefaultHeaderActionIcon: false,
   interaction: {
     copy: { enable: true },

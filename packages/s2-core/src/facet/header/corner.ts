@@ -132,7 +132,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       const sNode: Node = new Node({
         id: '',
         field: '',
-        value: getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText),
+        value: getDefaultSeriesNumberText(
+          spreadsheet.options.seriesNumber?.text,
+        ),
       });
 
       sNode.x = position?.x;

@@ -283,7 +283,9 @@ const s2DataConfig = {
 const s2Options = {
   width: 600,
   height: 400,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true
+  },
   tooltip: {
     content: TooltipContent,
   },

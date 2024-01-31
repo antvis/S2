@@ -259,7 +259,9 @@ const App = ({ data }) => {
   const options: SheetComponentOptions = {
     width: 600,
     height: 400,
-    showSeriesNumber: true,
+    seriesNumber: {
+      enable: true
+    },
     interaction: {
       copy: { enable: true },
       autoResetSheetStyle: false,

@@ -31,7 +31,9 @@ describe('Table Left Border Tests', () => {
   test('should draw left border with series number', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...s2Options,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
 
     await s2.render();

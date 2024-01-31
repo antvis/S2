@@ -19,7 +19,9 @@ class TestColCell extends TableColCell {
 const s2Options: S2Options = {
   width: 300,
   height: 480,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
   colCell: (...args) => new TestColCell(...args),
 };
 

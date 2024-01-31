@@ -56,7 +56,7 @@ export class Frame extends Group {
      */
     return Math.max(
       dataCell!.cell!.verticalBorderWidth!,
-      spreadsheet.options.showSeriesNumber
+      spreadsheet.options.seriesNumber?.enable
         ? cornerCell!.cell!.verticalBorderWidth!
         : colCell!.cell!.verticalBorderWidth!,
     );
@@ -112,7 +112,7 @@ export class Frame extends Group {
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
-    } = spreadsheet.options.showSeriesNumber
+    } = spreadsheet.options.seriesNumber?.enable
       ? spreadsheet.theme.cornerCell!.cell!
       : spreadsheet.theme.colCell!.cell!;
 

@@ -225,7 +225,7 @@ export class TableFacet extends FrozenFacet {
         this.getTotalHeightForRange(rowIndex, cellRange.end);
     }
 
-    if (options.showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
+    if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
     } else {
       data = dataSet.getCellData({
@@ -260,11 +260,12 @@ export class TableFacet extends FrozenFacet {
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { dataCell } = this.spreadsheet.options.style!;
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
+      const colHeaderColSize =
+        colLeafNodes.length - (seriesNumber?.enable ? 1 : 0);
       const canvasW =
         this.getCanvasSize().width -
         seriesNumberWidth -

@@ -125,7 +125,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true
+      },
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
       },

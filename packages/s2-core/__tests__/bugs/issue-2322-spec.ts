@@ -12,7 +12,9 @@ import { TableSheet } from '@/sheet-type';
 const s2Options: S2Options = {
   width: 800,
   height: 480,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
   frozen: {
     colCount: 1,
   },

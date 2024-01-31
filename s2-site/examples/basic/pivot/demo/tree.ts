@@ -11,10 +11,12 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'tree',
-      // 显示序号
-      // showSeriesNumber: true,
-      // 自定义序号列文本, 默认 "序号"
-      // seriesNumberText: '自定义序号标题',
+     // 显示序号
+      // seriesNumber: {
+      //   enable: true,
+      //   自定义序号列文本, 默认 "序号"
+      //   text: '自定义序号标题', 
+      //},
       style: {
         rowCell: {
           // 自定义树状模式下行头宽度

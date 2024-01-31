@@ -58,8 +58,10 @@ Object {
     "selectedCellsSpotlight": false,
   },
   "placeholder": "-",
+  "seriesNumber": Object {
+    "enable": false,
+  },
   "showDefaultHeaderActionIcon": true,
-  "showSeriesNumber": false,
   "style": Object {
     "colCell": Object {
       "height": 30,

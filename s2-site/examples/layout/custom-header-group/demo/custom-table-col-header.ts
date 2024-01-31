@@ -48,7 +48,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true
+      }
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);

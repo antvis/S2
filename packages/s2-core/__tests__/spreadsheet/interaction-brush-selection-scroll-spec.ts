@@ -53,7 +53,9 @@ const options: S2Options = {
   width: 800,
   height: 600,
   hdAdapter: false,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
   placeholder: '',
   style: {
     layoutWidthType: LayoutWidthType.Compact,

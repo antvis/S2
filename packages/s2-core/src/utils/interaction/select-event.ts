@@ -86,7 +86,7 @@ export function getRowCellForSelectedCell(
   const { facet, options } = spreadsheet;
 
   if (spreadsheet.isTableMode()) {
-    if (!options.showSeriesNumber) {
+    if (!options.seriesNumber?.enable) {
       return [];
     }
 

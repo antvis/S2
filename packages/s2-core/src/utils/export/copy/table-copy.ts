@@ -58,13 +58,13 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   private getDataMatrix(): string[][] {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
     return this.displayData.map((row, i) =>
       this.columnNodes.map((node) => {
         const field = node.field;
 
-        if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+        if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
           return (i + 1).toString();
         }
 
@@ -81,7 +81,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   protected getDataMatrixRIC(): Promise<string[][]> {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
     const result: string[][] = [];
     let rowIndex = 0;
 
@@ -104,7 +104,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
                 const colNode = this.columnNodes[i];
                 const field = colNode.field;
 
-                if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+                if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
                   row.push((j + 1).toString());
                   // eslint-disable-next-line no-continue
                   continue;
@@ -142,7 +142,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
   private getColMatrix(): string[] {
     const { formatHeader } = this.config;
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
     // 明细表的表头，没有格式化
     return this.columnNodes.map((node) => {
@@ -152,7 +152,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
         return field;
       }
 
-      return SERIES_NUMBER_FIELD === field && showSeriesNumber
+      return SERIES_NUMBER_FIELD === field && seriesNumber?.enable
         ? getDefaultSeriesNumberText()
         : this.spreadsheet.dataSet.getFieldName(field);
     }) as string[];

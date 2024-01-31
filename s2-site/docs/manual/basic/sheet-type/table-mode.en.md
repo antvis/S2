@@ -101,11 +101,13 @@ s2.render();
 
 ### serial number
 
-Pass in `s2Options` in `showSeriesNumber` to display the built-in serial number. [view demo](/examples/basic/table#table)
+Pass in `s2Options` in `seriesNumber` to display the built-in serial number. [view demo](/examples/basic/table#table)
 
 ```ts
 const s2Options = {
-  showSeriesNumber: true
+  seriesNumber: {
+    enable: true
+  }
 }
 ```
 

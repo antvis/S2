@@ -64,7 +64,7 @@ function getDataConfig(rawData: S2DataConfig['data']): S2DataConfig {
 
 function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   return {
-    width: 600,
+    width: 800, 
     height: 200,
     interaction: {
       selectedCellsSpotlight: false,
@@ -87,7 +87,7 @@ function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   };
 }
 
-fetch('https://assets.antv.antgroup.com/s2/compare.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/performance.json')
   .then((res) => res.json())
   .then((data) => {
     reactDOMClient.createRoot(document.getElementById('container')).render(

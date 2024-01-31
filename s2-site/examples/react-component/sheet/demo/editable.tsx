@@ -37,7 +37,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: SheetComponentOptions = {
       width: 480,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
       frozen: {
         // 行头冻结数量
         rowCount: 1,

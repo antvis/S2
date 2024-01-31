@@ -52,7 +52,9 @@ describe('List Table Core Data Process', () => {
         data: testData,
       }),
       assembleOptions({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
         interaction: {
           selectedCellHighlight: {
             currentRow: true,
@@ -132,7 +134,9 @@ describe('List Table Core Data Process', () => {
           withHeader: true,
         },
       },
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
     });
     await s2.render();
 
@@ -161,7 +165,9 @@ describe('List Table Core Data Process', () => {
         interaction: {
           copy: { enable: true, withFormat: true },
         },
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -191,7 +197,9 @@ describe('List Table Core Data Process', () => {
       interaction: {
         copy: { enable: true, withFormat: true },
       },
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
     });
 
     await s2.render();
@@ -340,7 +348,9 @@ describe('List Table Core Data Process', () => {
         interaction: {
           copy: { enable: true },
         },
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -377,7 +387,9 @@ describe('List Table Core Data Process', () => {
         interaction: {
           copy: { enable: true },
         },
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -396,7 +408,9 @@ describe('List Table Core Data Process', () => {
 
   it('should copy row data when select data row cell', async () => {
     s2.setOptions({
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
       interaction: {
         selectedCellHighlight: {
           currentRow: true,
@@ -419,7 +433,9 @@ describe('List Table Core Data Process', () => {
 
   it('should support custom copy matrix transformer', async () => {
     s2.setOptions({
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
       interaction: {
         copy: {
           customTransformer: () => {
@@ -687,7 +703,9 @@ describe('Pivot Table Core Data Process', () => {
         interaction: {
           copy: { enable: true, withFormat: true },
         },
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -974,7 +992,9 @@ describe('Pivot Table Core Data Process', () => {
         interaction: {
           copy: { enable: true, withFormat: true },
         },
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -1012,7 +1032,9 @@ describe('Pivot Table Core Data Process', () => {
         interaction: {
           copy: { enable: true, withFormat: true },
         },
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -1044,7 +1066,9 @@ describe('Pivot Table Core Data Process', () => {
         interaction: {
           copy: { enable: true, withFormat: true },
         },
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -1095,7 +1119,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   // https://github.com/antvis/S2/issues/1955
-  it('should get correct data with hideMeasureColumn、showSeriesNumber and withHeader are all true', async () => {
+  it('should get correct data with hideMeasureColumn、show seriesNumber and withHeader are all true', async () => {
     const sheet = new PivotSheet(getContainer(), getDataCfg(), getOptions());
 
     sheet.setOptions({
@@ -1107,7 +1131,9 @@ describe('Pivot Table Core Data Process', () => {
       interaction: {
         copy: { enable: true, withHeader: true },
       },
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
     await sheet.render();
     const cells = sheet.facet.getDataCells();

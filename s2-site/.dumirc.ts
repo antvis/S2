@@ -147,14 +147,6 @@ export default defineConfig({
         order: 4,
       },
       {
-        slug: 'manual/advanced/layout',
-        title: {
-          zh: '布局',
-          en: 'Layout',
-        },
-        order: 3,
-      },
-      {
         slug: 'manual/advanced/custom',
         title: {
           zh: '自定义',
@@ -201,6 +193,14 @@ export default defineConfig({
           en: 'Data Process',
         },
         order: 1,
+      },
+      {
+        slug: 'manual/extended-reading/layout',
+        title: {
+          zh: '布局流程',
+          en: 'Layout',
+        },
+        order: 2,
       },
     ],
     tutorials: [

@@ -207,7 +207,9 @@ describe('TableSheet Custom Tests', () => {
 
   test('should render default series number text', async () => {
     s2.setOptions({
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
     await s2.render(false);
 
@@ -218,8 +220,10 @@ describe('TableSheet Custom Tests', () => {
     const seriesNumberText = '牛';
 
     s2.setOptions({
-      seriesNumberText,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+        text: seriesNumberText,
+      },
     });
     await s2.render(false);
 
@@ -228,7 +232,9 @@ describe('TableSheet Custom Tests', () => {
 
   test('should render correctly column height if enable series number', async () => {
     s2.setOptions({
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
     await s2.render(false);
 
@@ -244,7 +250,9 @@ describe('TableSheet Custom Tests', () => {
 
   test('should not sample series node', async () => {
     s2.setOptions({
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
     });
     await s2.render(false);
 

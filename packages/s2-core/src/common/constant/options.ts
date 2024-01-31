@@ -110,7 +110,9 @@ export const DEFAULT_OPTIONS: S2Options = {
     selectedCellHighlight: false,
     overscrollBehavior: 'auto',
   },
-  showSeriesNumber: false,
+  seriesNumber: {
+    enable: false,
+  },
   customSVGIcons: [],
   showDefaultHeaderActionIcon: false,
   headerActionIcons: [],

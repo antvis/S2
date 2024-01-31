@@ -483,9 +483,9 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
-    return showSeriesNumber
+    return seriesNumber?.enable
       ? this.spreadsheet.theme.rowCell?.seriesNumberWidth ?? 0
       : 0;
   }

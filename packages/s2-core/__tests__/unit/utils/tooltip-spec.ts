@@ -877,7 +877,11 @@ describe('Tooltip Utils Tests', () => {
     describe('Tooltip Get Data Tests For TableSheet', () => {
       beforeEach(() => {
         s2 = createTableSheet(
-          { showSeriesNumber: true },
+          {
+            seriesNumber: {
+              enable: true,
+            },
+          },
           { useSimpleData: false },
         );
         s2.render();

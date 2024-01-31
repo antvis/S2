@@ -12,11 +12,13 @@ import { asyncGetAllPlainData } from '@/utils';
 const s2Options = {
   width: 800,
   height: 600,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
 };
 
 describe('export', () => {
-  test('should export correct data with showSeriesNumber', async () => {
+  test('should export correct data with show seriesNumber', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
 
     await s2.render();
@@ -36,10 +38,12 @@ describe('export', () => {
     `);
   });
 
-  test('should export correct data without showSeriesNumber', async () => {
+  test('should export correct data without show seriesNumber', async () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
       ...s2Options,
-      showSeriesNumber: false,
+      seriesNumber: {
+        enable: false,
+      },
     });
 
     await s2.render();

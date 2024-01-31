@@ -79,15 +79,16 @@ export interface S2BasicOptions<
    */
   pagination?: P;
 
-  /**
-   * 自定义序号列文本, 默认为 "序号"
-   */
-  seriesNumberText?: string;
-
-  /**
-   * 是否显示序号
-   */
-  showSeriesNumber?: boolean;
+  seriesNumber?: {
+    /**
+     * 是否显示序号
+     */
+    enable?: boolean;
+    /**
+     * 自定义序号列文本, 默认为 "序号"
+     */
+    text?: string;
+  };
 
   /**
    * 是否显示表头默认操作图标

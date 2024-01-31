@@ -226,7 +226,9 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true
+      },
       interaction: {
         selectedCellsSpotlight: true,
         hoverHighlight: true,
