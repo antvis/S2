@@ -7,7 +7,7 @@
     {
       "filename": "custom-svg-icon.ts",
       "title": {
-        "zh": "自定义SVG图标",
+        "zh": "自定义 SVG 图标",
         "en": "custom svg icon"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24KQ3JqKkrA/67f074b6-739b-4a61-a5c5-b18488a65797.png"
@@ -21,12 +21,20 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/pBAAuAlwEB/custom.gif"
     },
     {
-      "filename": "custom-data-cell-icon.tsx",
+      "filename": "custom-data-cell-icon.ts",
       "title": {
-        "zh": "自定义单元格图标",
+        "zh": "自定义数值单元格图标",
         "en": "Custom data cell icons"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/5a0Ad8vz3/2689a04f-7965-4e30-be6f-9aaefc007482.png"
+    },
+    {
+      "filename": "display-condition.ts",
+      "title": {
+        "zh": "自定义展示条件",
+        "en": "Custom display condition"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eb5CSq0nszQAAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

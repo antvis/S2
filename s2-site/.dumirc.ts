@@ -31,7 +31,7 @@ export default defineConfig({
     showLanguageSwitcher: true, // 是否显示官网语言切换
     showWxQrcode: true, // 是否显示头部菜单的微信公众号
     showChartResize: true, // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true, // 是否在 demo 页展示API文档
+    showAPIDoc: true, // 是否在 demo 页展示 API 文档
     es5: false,
     versions: {
       // 历史版本以及切换下拉菜单
@@ -102,7 +102,7 @@ export default defineConfig({
         slug: 'api/general',
         title: {
           zh: '基础配置项',
-          en: 'Common configuration',
+          en: 'Common Configuration',
         },
         order: 0,
       },
@@ -110,7 +110,7 @@ export default defineConfig({
         slug: 'api/basic-class',
         title: {
           zh: '基础类',
-          en: 'Basic class',
+          en: 'Basic Class',
         },
         order: 1,
       },
@@ -126,7 +126,7 @@ export default defineConfig({
         slug: 'manual/basic',
         title: {
           zh: '基础教程',
-          en: 'Basic tutorial',
+          en: 'Basic Tutorial',
         },
         order: 3,
       },
@@ -134,7 +134,7 @@ export default defineConfig({
         slug: 'manual/basic/sheet-type',
         title: {
           zh: '表形态',
-          en: 'Sheet type',
+          en: 'Sheet Type',
         },
         order: 1,
       },
@@ -142,7 +142,7 @@ export default defineConfig({
         slug: 'manual/advanced',
         title: {
           zh: '进阶教程',
-          en: 'Advanced tutorial',
+          en: 'Advanced Tutorial',
         },
         order: 4,
       },
@@ -166,7 +166,7 @@ export default defineConfig({
         slug: 'manual/advanced/interaction',
         title: {
           zh: '交互',
-          en: 'interaction',
+          en: 'Interaction',
         },
         order: 5,
       },
@@ -174,7 +174,7 @@ export default defineConfig({
         slug: 'manual/advanced/analysis',
         title: {
           zh: '分析组件',
-          en: 'Analyze component',
+          en: 'Analyze Component',
         },
         order: 6,
       },
@@ -190,7 +190,7 @@ export default defineConfig({
         slug: 'manual/extended-reading',
         title: {
           zh: '扩展阅读',
-          en: 'extended-reading',
+          en: 'Extended Reading',
         },
         order: 6,
       },
@@ -341,6 +341,14 @@ export default defineConfig({
           },
           link: `/manual/migration-v2`,
         },
+        {
+          text: {
+            zh: '查看 1.x 官网',
+            en: 'View 1.x Website',
+          },
+          link: `https://s2-v1.antv.antgroup.com`,
+          type: 'primary',
+        },
         // 右上角有图表示例的入口, 2.0 过渡期间透出 [升级指南]
         // {
         //   text: {
@@ -363,18 +371,6 @@ export default defineConfig({
     news: [
       {
         type: {
-          zh: 'S2 2.0',
-          en: 'S2 2.0',
-        },
-        title: {
-          zh: 'S2 2.0 版本开始内测啦! 欢迎尝鲜使用.',
-          en: 'S2 2.0 is in beta! Welcome to use.',
-        },
-        date: '2023.12.06',
-        link: 'https://github.com/antvis/S2/issues/2454',
-      },
-      {
-        type: {
           zh: '初心 · 出新 AntV 2023 年度发布',
           en: 'AntV 2023',
         },
@@ -384,6 +380,30 @@ export default defineConfig({
         },
         date: '2023.11.22',
         link: 'https://www.yuque.com/antv/blog/1122_7_s2',
+      },
+      {
+        type: {
+          zh: 'S2 Next',
+          en: 'S2 Next',
+        },
+        title: {
+          zh: '2.0 版本开始内测啦! 欢迎尝鲜使用.',
+          en: '2.0 is in beta! Welcome to use.',
+        },
+        date: '2024.1.31',
+        link: 'https://github.com/antvis/S2/issues/2454',
+      },
+      {
+        type: {
+          zh: 'S2 1.x',
+          en: 'S2 1.x',
+        },
+        title: {
+          zh: '原 v1 文档已迁移至 https://s2-v1.antv.antgroup.com',
+          en: 'S2 2.0 is in beta! Welcome to use.',
+        },
+        date: '2024.1.31',
+        link: 'https://s2-v1.antv.antgroup.com',
       },
     ],
     /** 首页特性介绍 */

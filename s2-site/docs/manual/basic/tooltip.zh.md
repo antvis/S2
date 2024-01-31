@@ -261,6 +261,17 @@ s2.showTooltip({
 除了默认提供的操作项，还可以配置 `operation.menu` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到当前 `tooltip`
 对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
 
+:::info{title="注意"}
+如果使用的是 `@antv/s2-react`, 支持透传 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api)
+
+```ts
+menu: {
+  mode: 'vertical'
+}
+```
+
+:::
+
 ```ts
 const s2Options = {
   tooltip: {
@@ -278,14 +289,14 @@ const s2Options = {
               console.log('操作 1 点击');
               console.log('tooltip 对应的单元格：', info, cell)
             },
-            children: [ {
+            children: [{
               key: 'custom-a-a',
               label: '操作 1-1',
               icon: 'Trend',
               onClick: (info, cell) => {
                 console.log('操作 1-1 点击', info, cell);
               },
-            } ]
+            }]
           },
           {
             key: 'custom-b',

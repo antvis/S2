@@ -1,6 +1,7 @@
 ---
 title: Strategy Sheet
 order: 9
+tag: Updated
 ---
 
 In order to meet more analysis scenarios, S2 provides an out-of-the-box scenario table component - trend analysis table. With it, you can easily implement a scene table that displays multiple indicators in a cell.
@@ -28,11 +29,11 @@ The trend analysis table component uses various capabilities provided by S2 for 
 <details><summary>check the details</summary><pre> <code class="language-js">const&#x26;nbsp;s2Options&#x26;nbsp;=&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;width:&#x26;nbsp;600,
 &#x26;nbsp;&#x26;nbsp;height:&#x26;nbsp;480,
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp;角头文本
+&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 角头文本
 &#x26;nbsp;&#x26;nbsp;cornerText:&#x26;nbsp;'指标层级',
-&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp;条件格式
+&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 条件格式
 &#x26;nbsp;&#x26;nbsp;conditions:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp;同环比数值映射规则
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 同环比数值映射规则
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;text:&#x26;nbsp;[
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;field:&#x26;nbsp;'number',
@@ -57,7 +58,7 @@ The trend analysis table component uses various capabilities provided by S2 for 
 &#x26;nbsp;&#x26;nbsp;style:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;dataCell:&#x26;nbsp;{
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;valuesCfg:&#x26;nbsp;{
-&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp;原始数据字段，用于原始数据导出和&#x26;nbsp;tooltip&#x26;nbsp;展示
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;//&#x26;nbsp; 原始数据字段，用于原始数据导出和&#x26;nbsp;tooltip&#x26;nbsp; 展示
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;originalValueField:&#x26;nbsp;'originalValues',
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
 &#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
@@ -163,7 +164,7 @@ const s2DataConfig = {
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头(row)` ,`列头(col)` and`数值(data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
 
 | Configuration item name   | illustrate                             | type                            | Defaults                                                   | required |
 | ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------- | -------- |

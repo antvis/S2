@@ -13,6 +13,8 @@ fetch(
       tooltip: {
         operation: {
           menu: {
+            // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+            // mode: 'vertical',
             onClick(info, cell) {
               console.log('菜单项点击: ', info, cell);
             },

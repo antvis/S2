@@ -9,6 +9,7 @@
   "link-fragments": false,
   "code-block-style": false,
   "no-bare-urls": false,
+  "ol-prefix": false,
   "MD003": {
     "style": "atx"
   },

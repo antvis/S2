@@ -1,6 +1,7 @@
 ---
 title: 自定义折叠/展开节点
 order: 7
+tag: New
 ---
 
 S2 支持在树状结构下，配置折叠/展开的节点，默认**展开所有节点**.
@@ -31,7 +32,7 @@ const s2Options = {
 
 ## 折叠指定节点
 
-配置 `collapseFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&]浙江省` 和 `city`
+配置 `collapseFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&] 浙江省` 和 `city`
 
 ```ts
 const s2Options = {
@@ -45,13 +46,13 @@ const s2Options = {
 
 ### 根据节点对应维值 id
 
-指定 `id` 可以折叠指定节点，如配置为 `root[&]浙江省`, 那么 `浙江省` 下所有节点都会被折叠
+指定 `id` 可以折叠指定节点，如配置为 `root[&] 浙江省`, 那么 `浙江省` 下所有节点都会被折叠
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { 
+      collapseFields: {
         'root[& 浙江省': true
       },
     },
@@ -79,7 +80,7 @@ const s2DataConfig = {
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { 
+      collapseFields: {
         province: false,
         city: true
       }

@@ -13,9 +13,11 @@ fetch(
       height: 480,
       tooltip: {
         operation: {
+          // 内置操作项
           hiddenColumns: true,
-          // 其他配置, 透传 Antd Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
           menu: {
+            // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+            // mode: 'vertical',
             onClick(info, cell) {
               console.log('菜单项点击:', info, cell);
             },

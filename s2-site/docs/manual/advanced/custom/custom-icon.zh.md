@@ -1,13 +1,29 @@
 ---
 title: 自定义 Icon
 order: 3
+tag: Updated
 ---
 
-默认情况下，`S2` 会在指标行头（指标挂行头）或列头 （指标挂列头）展示默认的组内排序操作 icon，如下图：
+默认情况下，表格只会展示排序 icon, 但在很多情况下，会需要展示其他的操作 `icon`，例如：`筛选`、`下钻`、 `提示信息` 等，`S2` 提供了 `headerActionIcons` 参数让你可以通过简单的配置项快速实现行头、列头、角头的操作 `icon` 自定义。
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*qqLAS5Q3obUAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
+<Playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='custom-header-action-icon' height='400'></playground>
 
-但在很多情况下，会需要展示其他的操作 `icon`，例如：筛选、下钻等，`S2` 提供了 `headerActionIcons` 参数让你可以通过简单的配置项快速实现行头、列头、角头的操作 `icon` 自定义。
+### 关闭默认排序 icon
+
+表格的数值默认会渲染排序 icon, 可以配置 `showDefaultHeaderActionIcon` 关闭。
+
+```ts
+const s2Options = {
+  showDefaultHeaderActionIcon: false
+}
+```
+
+### 自定义行列头 icon
+
+#### 1. 使用内置 icon
+
+- `icons`: 内置 icon 或者自定义注册的 icon 名称。
+- `belongsCell`:  当前一组 icon 展示在哪个单元格内。
 
 ```ts
 const s2Options = {
@@ -20,13 +36,18 @@ const s2Options = {
 }
 ```
 
-自定义操作 `icon` 默认会展示在行列头的右侧，如果需要展示在左侧，可以使用对象的形式，如下：
+<embed src="@/docs/common/icon.zh.md"></embed>​
 
-```ts
+#### 2. 自定义展示位置
+
+自定义操作 `icon` 默认会展示在**行列头文字的右侧**，如果需要展示在左侧，可以使用对象的形式，支持更丰富的配置：
+
+```diff
 const s2Options = {
   headerActionIcons: [
     {
-      icons: [{ name: 'SortDown', position: 'left' }],
+-     icons: ['SortDown'],
++     icons: [{ name: 'SortDown', position: 'left' }],
       belongsCell: 'colCell',
     },
   ],
@@ -34,7 +55,9 @@ const s2Options = {
 
 ```
 
-1、如果内置 `icon` 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/docs/manual/basic/theme) 章节。
+#### 3. 使用自定义 icon
+
+如果内置 `icon` 不满足诉求，可以配置 `customSVGIcons` 来额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/docs/manual/basic/theme) 章节。
 
 ```ts
 const s2Options = {
@@ -47,7 +70,7 @@ const s2Options = {
 }
 ```
 
-或者覆盖默认 `icon`, 例如自定义树状表格收起展开 `icon`
+也可以覆盖内置 `icon`, 例如自定义树状表格收起展开 `icon`
 
 ``` ts
 const s2Options = {
@@ -65,25 +88,20 @@ const s2Options = {
 
 ```
 
-<embed src="@/docs/common/icon.zh.md"></embed>​
+#### 自定义展示逻辑
 
-2、配置 `headerActionIcons` 参数
-​
-⚠️ 注：注册自定义行列头操作图标需要先将 `options` 的 `showDefaultHeaderActionIcon` 设置为 `false`, 否则默认展示在指标列头的排序 icon 并不会消失
+- `defaultHide`: 默认隐藏，鼠标在对应单元格悬停时才展示。
+- `displayCondition`: 动态控制 icon 是否渲染。
 
-### 配置参数
+<Playground path='custom/custom-icon/demo/display-condition.ts' rid='display-condition' height='400'></playground
 
-<embed src="@/docs/common/header-action-icon.zh.md"></embed>
+### 自定义数值单元格 icon
 
-### 自定义行列头 icon 示例
+:::info{title="提示"}
+对于数值单元格，我们可以使用通用的 `字段标记` 能力来进行自定义 icon 的展示，详情请查看 [字段标记](/docs/manual/basic/conditions) 章节。
+:::
 
-<Playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
-
-### 自定义单元格 icon 示例
-
-> 单元格标记详情，可查看 [字段标记](/docs/manual/basic/conditions) 章节
-
-```javascript
+```ts | {15}
 const s2Options = {
   customSVGIcons: [
     {
@@ -108,4 +126,6 @@ const s2Options = {
 }
 ```
 
-<Playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-data-cell-icon.ts' rid='custom-data-cell-icon' height='400'></playground>
+
+<embed src="@/docs/common/header-action-icon.zh.md"></embed>

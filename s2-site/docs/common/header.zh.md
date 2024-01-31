@@ -14,6 +14,6 @@ order: 0
 | className       | 表头类名             | `string`               | -      |      |
 | style           | 表头样式             | `React.CSSProperties`  | -      |      |
 | extra           | 自定义表头右侧操作区   |  `React.ReactNode`         | -       |      |
-| advancedSort | 配置高级排序         | [AdvancedSortCfgProps](/docs/api/components/advanced-sort) | `{open: false}` |      |
-| export       | 配置导出             | [ExportCfgProps](/docs/api/components/export)  | `{open: false}` |      |
-| switcher       | 配置维度切换             | [SwitcherCfgProps](/docs/api/components/switcher#switchercfgprops)  | `{open: false}` |      |
+| advancedSort | 高级排序         | [AdvancedSortCfgProps](/docs/api/components/advanced-sort) | `{ open: false }` |      |
+| export       | 导出             | [ExportCfgProps](/docs/api/components/export)  | `{ open: false }` |      |
+| switcher       | 维度切换             | [SwitcherCfgProps](/docs/api/components/switcher#switchercfgprops)  | `{ open: false }` |      |

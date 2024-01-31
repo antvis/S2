@@ -11,10 +11,6 @@ order: 3
 
 ## 快速上手
 
-```html
-<div id="container"></div>
-```
-
 <details>
   <summary>查看数据</summary>
 
@@ -123,7 +119,7 @@ order: 3
 
 </details>
 
-```typescript
+```tsx
 import React from "react";
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
@@ -160,12 +156,18 @@ const s2Options = {
 };
 
 const App = () => {
+  // 编辑完成
+  const onDataCellEditEnd = (meta) => {
+    console.log('onDataCellEditEnd', meta);
+  };
+
   return (
     <SheetComponent
       sheetType="editable"
       dataCfg={s2DataCfg}
       options={s2Options}
-    />,
+      onDataCellEditEnd={onDataCellEditEnd}
+    />
   )
 }
 ```
