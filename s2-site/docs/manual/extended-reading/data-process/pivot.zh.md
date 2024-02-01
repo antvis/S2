@@ -7,7 +7,7 @@ order: 1
 
 数据处理流程是：`原始数据 -> 生成 indexesData 多维数据 -> 生成层级结构 -> 获取数据` ，接下来我们会逐一讲解，目标是实现下图透视表：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*mTjfRr7PwDwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表" />
 
 ## 原始数据
 
@@ -15,37 +15,43 @@ order: 1
 
 ```tsx
 const dataCfg = {
-    fields: {
-        rows: ['province', 'city'],
-        columns: ['type', 'sub_type'],
-        values: ['price']
+  fields: {
+    rows: ['province', 'city'],
+    columns: ['type', 'sub_type'],
+    values: ['price'],
+  },
+  data: [
+    {
+      price: 1,
+      province: '浙江省',
+      city: '杭州市',
+      type: '家具',
+      sub_type: '桌子',
     },
-    data: [{
-        "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, {
-        "price": 2,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, {
-        "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
-    }, {
-        "price": 4,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "沙发"
-    }]
+    {
+      price: 2,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      price: 3,
+      province: '浙江省',
+      city: '杭州市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      price: 4,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+  ]
 };
+
 const options = {
     width: 600,
     height: 600

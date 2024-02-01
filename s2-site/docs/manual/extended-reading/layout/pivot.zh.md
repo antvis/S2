@@ -7,7 +7,7 @@ order: 1
 
 在解析布局过程中，以下图透视表为例：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*mTjfRr7PwDwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表"/>
 
 ## 基础概念
 

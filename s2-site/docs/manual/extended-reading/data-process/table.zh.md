@@ -5,41 +5,49 @@ order: 2
 
 本文会介绍明细表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。明细表的数据处理流程相对透视表更简单，主要是针对筛选和排序，对数据做了预处理。
 
+![明细表](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gkCGSrcKrZYAAAAAAAAAAAAADmJ7AQ/original)
+
 ## 原始数据
 
 初始配置和数据如下：
 
 ```tsx
 const dataCfg = {
-    fields: {
-        columns: ['city', 'type', 'sub_type', 'price'],
+  fields: {
+    columns: ['city', 'type', 'sub_type', 'price'],
+  },
+  data: [
+    {
+      price: 1,
+      province: '浙江省',
+      city: '杭州市',
+      type: '家具',
+      sub_type: '桌子',
     },
-    data: [{
-        "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, {
-        "price": 2,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, {
-        "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
-    }, {
-        "price": 4,
-        "province": "浙江省",
-        "city": "绍兴市",
-        "type": "家具",
-        "sub_type": "沙发"
-    }]
+    {
+      price: 2,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      price: 3,
+      province: '浙江省',
+      city: '杭州市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      price: 4,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+  ],
 };
+
 const options = {
     width: 800,
     height: 600
@@ -64,8 +72,7 @@ const options = {
     filterParams: [
         {
             filterKey: 'city',
-            filteredValues: ['杭州市'],
-            customFilter: (row) => row['city'] === '杭州市' || row['city'] === '宁波市',
+            customFilter: (row) => row['city'] === '杭州市',
         }
     ]
 }
@@ -73,22 +80,24 @@ const options = {
 
 这次 S2 会对 `city` 字段做筛选，只保留值为杭州市的记录：
 
+![过滤](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*vUW1TYf_1fgAAAAAAAAAAAAADmJ7AQ/original)
+
 ```tsx
 [
-    {
-        "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, 
-    {
-        "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
-    },
+  {
+    price: 1,
+    province: '浙江省',
+    city: '杭州市',
+    type: '家具',
+    sub_type: '桌子',
+  },
+  {
+    price: 3,
+    province: '浙江省',
+    city: '杭州市',
+    type: '家具',
+    sub_type: '沙发',
+  },
 ]
 ```
 
@@ -108,22 +117,24 @@ const options = {
 
 S2 会对 `price` 字段做降序排序，数据最终变成了这样：
 
+![排序](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*ZrYCQKpWGw4AAAAAAAAAAAAADmJ7AQ/original)
+
 ```tsx
 [
-    {
-        "price": 3,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "沙发"
-    },
-    {
-        "price": 1,
-        "province": "浙江省",
-        "city": "杭州市",
-        "type": "家具",
-        "sub_type": "桌子"
-    }, 
+  {
+    price: 3,
+    province: '浙江省',
+    city: '杭州市',
+    type: '家具',
+    sub_type: '沙发',
+  },
+  {
+    price: 1,
+    province: '浙江省',
+    city: '杭州市',
+    type: '家具',
+    sub_type: '桌子',
+  },
 ]
 ```
 
@@ -133,4 +144,4 @@ S2 会对 `price` 字段做降序排序，数据最终变成了这样：
 
 我们可以通过 `s2Instance.dataSet.displayData` 获取。
 
-同时可以可以通过 `s2Instance.dataSet.getCellData({ rowIndex: number; col: number; })` API 来获取某个行列格子的数据。同样的，这里获取的是经过筛选和排序之后的展示数据。
+同时可以可以通过 `s2Instance.dataSet.getCellData({ rowIndex: number; field: string; })` API 来获取某个行列格子的数据。同样的，这里获取的是经过筛选和排序之后的展示数据。
