@@ -3,7 +3,7 @@ title: 明细表
 order: 2
 ---
 
-本文会介绍明细表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。明细表的数据处理流程相对透视表更简单，主要是针对筛选和排序，对数据做了预处理。
+本文会介绍明细表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。明细表的数据处理流程相对透视表更简单，无需数据转化和映射流程，主要是针对筛选和排序，对数据做了预处理。
 
 ![明细表](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gkCGSrcKrZYAAAAAAAAAAAAADmJ7AQ/original)
 
