@@ -103,4 +103,4 @@ const s2 = new TableSheet(container, s2DataConfig, s2Options);
 await s2.render();
 ```
 
-<Playground path='interaction/advanced/demo/double-click-hide-columns.ts' rid='container' height='400'></playground>
+<Playground path="interaction/custom/demo/double-click-hide-columns.ts" rid="container"></playground>
