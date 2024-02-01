@@ -214,6 +214,14 @@ s2.showTooltip({ ... })
 
 ![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
 
+### 表格导出后数据没有正确按格子分隔怎么办？
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*IfmPQo7qieAAAAAAAAAAAAAADmJ7AQ/original" width="900" alt="现象">
+
+请检查 `Excel` 的分隔符设置是否正确
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*OTz2Toh9H6EAAAAAAAAAAAAADmJ7AQ/original" height="500" alt="excel">
+
 ### 鼠标滚轮如何进行水平滚动？
 
 按住 `Shift` 键的同时滚动鼠标
