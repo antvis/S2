@@ -13,7 +13,7 @@ import { SheetComponent } from '@/components/sheets';
 const s2Options: SheetComponentOptions = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
   tooltip: {
     enable: true,
   },

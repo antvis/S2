@@ -242,7 +242,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initHdAdapter() {
-    if (this.options.hdAdapter) {
+    if (this.options.hd) {
       this.hdAdapter = new HdAdapter(this);
       this.hdAdapter.init();
     }

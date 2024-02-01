@@ -12,7 +12,7 @@ HD adaptation is enabled by default and can be manually disabled
 
 ```ts
 const s2Options = {
-  hdAdapter: false
+  hd: false
 }
 ```
 
@@ -54,7 +54,7 @@ Different from the browser's zoom in and zoom out, ordinary `resize` events cann
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/gBRpqwZkj/a14f1e5a-540e-4bb8-a6a4-2ff693542296.png)
 
 ```ts
-// 触摸板双指缩放 无法触发
+// 触控板双指缩放 无法触发
 window.addEventListener('resize', ...)
 ```
 
@@ -66,7 +66,7 @@ touchpad pinch zoom
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/ZDSjxFBGd/Kapture%2525202021-10-19%252520at%25252014.27.00.gif)
 
-So what if it is solved? The answer is to use the [VisualViewport API](https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport) , `VisualViewport` can be used as a pinch zoom monitor on the mobile terminal, and it is also applicable to the `mac 触摸板`
+So what if it is solved? The answer is to use the [VisualViewport API](https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport) , `VisualViewport` can be used as a pinch zoom monitor on the mobile terminal, and it is also applicable to the `mac 触控板`
 
 ```ts
 window.viewport?.visualViewport?.addEventListener(

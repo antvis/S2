@@ -124,7 +124,7 @@ export const DEFAULT_OPTIONS: S2Options = {
     trailingRowCount: 0,
     trailingColCount: 0,
   },
-  hdAdapter: true,
+  hd: true,
   cornerText: '',
   cornerExtraFieldText: '',
   placeholder: EMPTY_PLACEHOLDER,

@@ -15,7 +15,7 @@ import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
 };
 
 const S2EventCases: Array<{ event: S2Event; name: string }> = [

@@ -5,7 +5,7 @@ order: 13
 
 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
-S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` 基于 `@antv/s2-core` 封装了 `维度下钻` 的组件，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰。
+S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` 基于 `@antv/s2` 封装了 `维度下钻` 的组件，可以为你挖掘不同维度下更详细的数据，让你的数据洞察变得更清晰, 也可以通过下钻的方式实现数据按需渲染。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/J7bnG8lcf/xiazuan.gif" height="400" alt="preview" />
 
@@ -24,18 +24,19 @@ S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` �
 
 向上钻取： 存在向上钻取，查看不同区域的销售数据，您查看浙江省销售额时，可以上钻查看华东区的销售额。
 
-## 快速上手
+## 示例
 
 <details>
 <summary>点击查看 PartDrillDown 维度下钻配置</summary>
 
 ```js
 
-const sex = [ '男', '女' ];
+const sex = ['男', '女'\];
 
 const PartDrillDown = {
   drillConfig: {
-    dataSet: [ // 下钻数据源配置
+    // 下钻数据源配置
+    dataSet: [
       {
         name: '客户性别',
         value: 'sex',

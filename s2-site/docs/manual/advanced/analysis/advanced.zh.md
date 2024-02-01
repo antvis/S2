@@ -4,9 +4,13 @@ order: 2
 tag: Updated
 ---
 
-`@antv/s2-react` 提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)
+<Badge>@antv/s2-react</Badge>
 
-> 注意：内部不维护状态
+`@antv/s2-react` 基于 `@antv/s2` 的 [排序能力](/manual/basic/sort/basic)，结合 `antd` 封装了 `高级排序组件`，可按需使用。[查看示例](/examples/analysis/sort#advanced)
+
+:::warning{title="注意"}
+组件内部不维护状态，可自行实现成受控模式。
+:::
 
 ## 快速上手
 
@@ -14,9 +18,7 @@ tag: Updated
 
 ```tsx
 import React from 'react';
-import { SortParams } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
-
 import '@antv/s2-react/dist/style.min.css';
 
 export const AdvancedSortDemo = () => {
@@ -32,7 +34,7 @@ export const AdvancedSortDemo = () => {
         advancedSort: {
           open: true,
           sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
-          onSortConfirm: (ruleValues, sortParams: SortParams) => {
+          onSortConfirm: (ruleValues, sortParams) => {
             setDataCfg({ ...dataCfg, sortParams });
           },
         },
@@ -68,7 +70,7 @@ export const AdvancedSortDemo = () => {
   header={{
     advancedSort: {
       open: true,
-      onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParams) => {
+      onSortConfirm: (ruleValues, sortParams) => {
         console.log(ruleValues, sortParams)
       }
     },
@@ -77,7 +79,7 @@ export const AdvancedSortDemo = () => {
 
 ```
 
-### 定制化
+### 自定义
 
 #### 文案显示
 
@@ -88,11 +90,11 @@ export const AdvancedSortDemo = () => {
 | className    | class 类名称    | `string`            | -      |      |
 | icon    | 排序按钮图标    | `ReactNode`          | -      |      |
 | text    | 排序按钮名称    | `ReactNode`             | -      |      |
-| ruleText    | 规则描述    | `string`            | -      |      |
+| ruleText    | 规则描述    | `ReactNode`            | -      |      |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*myN3SYxjPXsAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*myN3SYxjPXsAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
 
 #### 维度列表
 
@@ -112,18 +114,24 @@ export const AdvancedSortDemo = () => {
 
 #### 规则列表
 
-支持自定义规则配置列表，不配置默认为：`首字母、手动排序、其他字段`
+支持自定义规则配置列表，默认规则为：`首字母、手动排序、其他字段`
 
-> 注意：如果这里自定义，则需在 onSortConfirm 中通过 ruleValues 自定义 sortParams
+:::warning{title="注意"}
+如果这里自定义，则需在 `onSortConfirm` 中通过 `ruleValues` 自定义 `sortParams`
+:::
 
 | 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
 | ------- | ------------------------------------------ | --- | ----- | --------- |
 | label    | `string`                                    |      | ✓      | 规则名称   |
 | value    | `'sortMethod' \| 'sortBy' \| 'sortByMeasure'` | ✓    |        | 规则值     |
-| children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
+| children | [RuleOption](/api/components/advanced-sort#ruleoption)[]                              |      | ✓      | 规则子列表 |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 #### 打开排序弹窗
 
 可通过 `onSortOpen: () => void` 回调来支持自定义打开排序弹窗，一般用于提前获取弹框数据。
+
+## 示例
+
+<Playground path='/analysis/sort/demo/advanced.tsx' rid='advanced-sort'></playground>

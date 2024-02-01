@@ -56,8 +56,8 @@ export interface AdvancedSortBaseProps {
   open: boolean;
   className?: string;
   icon?: React.ReactNode;
-  text?: string;
-  ruleText?: string;
+  text?: React.ReactNode;
+  ruleText?: React.ReactNode;
   dimensions?: Dimension[];
   ruleOptions?: RuleOption[];
   sortParams?: SortParam[];

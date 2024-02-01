@@ -13,7 +13,7 @@ describe.skip('HD Adapter Tests', () => {
   const s2Options: S2Options = {
     width: 600,
     height: 600,
-    hdAdapter: true,
+    hd: true,
     transformCanvasConfig() {
       return {
         devicePixelRatio: DPR,

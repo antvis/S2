@@ -42,7 +42,7 @@ tag: New
 
 ## 不兼容的变化
 
-### `@antv/s2`
+### 基础包 <Badge>@antv/s2</Badge>
 
 #### 底层渲染引擎升级为 `AntV/G 5.0`
 
@@ -190,11 +190,13 @@ const s2Options = {
 });
 ```
 
+3. 复制默认开启。
+
 具体请查看 [复制与导出](/manual/advanced/interaction/copy) 相关文档。
 
 #### 刷选配置调整
 
-`row/col/data` 调整为 `rowCell/colCell/dataCell`, 所有单元格默认开启刷选。
+1. `row/col/data` 调整为 `rowCell/colCell/dataCell`。
 
 ```diff
 const s2Options = {
@@ -213,6 +215,8 @@ const s2Options = {
   }
 }
 ```
+
+2. 所有单元格默认开启刷选。
 
 具体请查看 [基础交互](/manual/advanced/interaction/basic) 相关文档。
 
@@ -352,7 +356,93 @@ const s2Options = {
 }
 ```
 
-### `@antv/s2-react`
+### 高清适配配置调整
+
+```diff
+const s2Options = {
+-  hdAdapter: true,
++  hd: true,
+}
+```
+
+### 序号配置变更
+
+序号相关配置统一收拢在 `seriesNumber`
+
+```diff
+const s2Options = {
+- showSeriesNumber: true,
+- seriesNumberText: '序号';
+
++ seriesNumber: {
++   enable: true;
++   text: '序号';
++ }
+}
+```
+
+### 单元格宽高拖拽逻辑变更
+
+1. 在 `1.x` 中，宽高调整对所有单元格生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
+
+```diff
+const s2Options = {
+  interaction: {
+    resize: {
++     rowResizeType: 'current', // 'all'
++     colResizeType: 'current'  // 'all'
+    }
+  }
+}
+```
+
+2. 默认调整只对当前单元格生效。
+
+具体请查看 [行列宽高调整](/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98%E8%B0%83%E6%95%B4) 相关文档。
+
+### Facet 变更
+
+1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取。
+
+```diff
+- s2.facet.layoutResult
++ s2.facet.getLayoutResult()
+```
+
+2. `getCellMeta` 从 `layoutResult` 中移除，移动到 `facet` 层级，现在 `layoutResult` 只包含布局节点。
+
+```diff
+- s2.facet.layoutResult.getCellMeta(rowIndex, colIndex)
++ s2.facet.getCellMeta(rowIndex, colIndex)
+```
+
+3. 布局结构 `layoutResult` 新增 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`
+
+```diff
+export interface LayoutResult {
+  colNodes: Node[];
+  colLeafNodes: Node[];
+  colsHierarchy: Hierarchy;
+  rowNodes: Node[];
+  rowsHierarchy: Hierarchy;
+  rowLeafNodes: Node[];
+- getCellMeta: (rowIndex: number, colIndex: number) => ViewMeta
++ seriesNumberNodes?: Node[];
++ cornerNodes?: Node[];
+}
+```
+
+具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
+
+### 数据集处理逻辑变更
+
+TODO:
+
+### 边框绘制逻辑变更
+
+TODO:
+
+### 组件层 `@antv/s2-react`
 
 #### 支持 React 18 和 Ant Design 5.0
 
@@ -421,13 +511,7 @@ const header = {
 
 ## API 调整
 
-### `@antv/s2`
-
-TODO:
-
-### `@antv/s2-react`
-
-TODO:
+具体请查看标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 的 [`API 文档`](/api)
 
 ## 未来迭代计划
 

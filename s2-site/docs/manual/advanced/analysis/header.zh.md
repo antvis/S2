@@ -8,7 +8,7 @@ tag: Updated
 
 表头组件基于 `@antv/s2` 和 `antd` 进行封装，内置了 `标题`, `描述`, `行列切换`, `高级排序`, `导出` 等能力。
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Pui0SaMs910AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="header"/>
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Pui0SaMs910AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="header" />
 
 ## 快速上手
 
@@ -53,11 +53,27 @@ const App = () => {
 
 ```
 
-## 效果
-
-[查看示例](/examples/react-component/header#default)
+## 示例
 
 <Playground path='/react-component/header/demo/default.tsx' rid='header'></playground>
+
+## 维度切换组件
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*FTYGTLw7e5wAAAAAAAAAAAAAARQnAQ" width="600" alt="switcher" />
+
+具体请查看 [维度切换](/manual/advanced/analysis/swticher) 章节。
+
+## 导出组件
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*pfSsTrvuJ0UAAAAAAAAAAAAAARQnAQ" width="600" alt="export" />
+
+具体请查看 [导出](/manual/advanced/analysis/export) 章节。
+
+## 高级排序组件
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width="600" alt="advanced-sort" />
+
+具体请查看 [高级排序](/manual/advanced/analysis/advanced) 章节。
 
 ## API
 

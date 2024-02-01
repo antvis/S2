@@ -79,6 +79,10 @@ export interface S2BasicOptions<
    */
   pagination?: P;
 
+  /**
+   * 序号列配置
+   * @see https://s2.antv.antgroup.com/manual/basic/sheet-type/pivot-mode#%E5%BA%8F%E5%8F%B7
+   */
   seriesNumber?: {
     /**
      * 是否显示序号
@@ -117,7 +121,7 @@ export interface S2BasicOptions<
    * 是否开启高清适配
    * @see https://s2.antv.antgroup.com/manual/advanced/hd-adapter
    */
-  hdAdapter?: boolean;
+  hd?: boolean;
 
   /**
    * 空值单元格占位符

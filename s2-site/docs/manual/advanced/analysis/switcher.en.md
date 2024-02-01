@@ -1,6 +1,6 @@
 ---
 title: Switcher
-order: 10
+order: 2
 ---
 
 S2 provides out-of-the-box dimension switching component `Switcher` . With it, you can easily implement interactive row and column switching, as well as the function of dimension hiding.

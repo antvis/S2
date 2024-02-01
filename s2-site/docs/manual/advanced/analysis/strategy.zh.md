@@ -1,5 +1,5 @@
 ---
-title: 趋势分析表组件
+title: 趋势分析表
 order: 9
 tag: Updated
 ---

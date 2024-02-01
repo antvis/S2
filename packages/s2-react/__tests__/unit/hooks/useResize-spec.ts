@@ -7,7 +7,7 @@ import { useResize } from '@/hooks';
 const s2Options: S2Options = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
 };
 
 describe('useResize tests', () => {

@@ -37,7 +37,7 @@ const s2DataConfig = {
     },
   ],
   ...
-};
+}
 ```
 
 ## 方式
@@ -47,27 +47,31 @@ const s2DataConfig = {
 支持对 `行头/列头` 进行排序，类型包括数字、类数字、普通字符串，非数字兜底使用 **localeCompare** 进行比较，举例如下：
 
 ```ts
-sortParams: [
-  { sortFieldId: 'province', sortMethod: 'DESC' },
-  { sortFieldId: 'type', sortMethod: 'ASC' },
-];
+const s2DataConfig = {
+  sortParams: [
+    { sortFieldId: 'province', sortMethod: 'DESC' },
+    { sortFieldId: 'type', sortMethod: 'ASC' },
+  ]
+}
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DlG8SYEFlS8AAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DlG8SYEFlS8AAAAAAAAAAAAAARQnAQ" width="500" alt="row" />
 
 ### 2. 维度值列表（sortBy）
 
 支持对 `行头/列头` 按照指定的维值列表排序，如果行列有多级，则各子级内部进行组内排序（如下 `city` ），举例如下：
 
 ```ts
-sortParams: [
-  { sortFieldId: 'province', sortBy: ['浙江', '吉林'] },
-  { sortFieldId: 'city', sortBy: ['舟山', '杭州', '白山', '长春'] },
-  { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
-];
+const s2DataConfig = {
+  sortParams: [
+    { sortFieldId: 'province', sortBy: ['浙江', '吉林'] },
+    { sortFieldId: 'city', sortBy: ['舟山', '杭州', '白山', '长春'] },
+    { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
+  ]
+}
 ```
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*jD1iTZdrUZwAAAAAAAAAAAAADmJ7AQ/original" width = "500"  alt="row" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*jD1iTZdrUZwAAAAAAAAAAAAADmJ7AQ/original" width="500" alt="row" />
 
 ### 3. 度量值字段（sortByMeasure）
 
@@ -81,7 +85,7 @@ sortParams: [
 
 - `sortByMeasure` 取具体数值，如 `number`
 - `sortFieldId` 为 `行/列` 维度最后一个字段，如行维度中的 `city`
-- `query` 能限定到最后一级明细数据，如包含所有列维度 `type`、`sub_type` 的维值【见示例1】
+- `query` 能限定到最后一级明细数据，如包含所有列维度 `type`、`sub_type` 的维值【见示例 1】
 
 #### 按汇总数据排序
 
@@ -92,8 +96,8 @@ sortParams: [
 
 - `sortByMeasure` 取 `TOTAL_VALUE`
 - `sortFieldId` 可以取任意维度字段（非末级的 `province` 或末级的 `city`）
-  - 取 `province` 时，`query` 可限定 `type`、`sub_type` 所有维值或部分维值，此时是以 `province` 的行小计交叉格为准【见示例2】
-  - 取 `city` 时，`query` 只可限定到部分列维度，如 `type`，此时以列小计交叉格数据为准【见示例3】
+  - 取 `province` 时，`query` 可限定 `type`、`sub_type` 所有维值或部分维值，此时是以 `province` 的行小计交叉格为准【见示例 2】
+  - 取 `city` 时，`query` 只可限定到部分列维度，如 `type`，此时以列小计交叉格数据为准【见示例 3】
 
 #### 示例 1，明细数据排序
 
@@ -147,7 +151,7 @@ sortParams: [
 
 <image src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*8MlDSbozN0gAAAAAAAAAAAAADmJ7AQ/original" width="600" />
 
-#### 示例3，最内侧维度按汇总数据排序
+#### 示例 3，最内侧维度按汇总数据排序
 
 ```javascript
 {
@@ -196,7 +200,7 @@ const s2DataConfig = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7MLkQLxhliAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7MLkQLxhliAAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 #### 度量值（数值）
 
@@ -227,7 +231,7 @@ const s2DataConfig = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row" />
 
 📊 查看 demo [自定义排序](/examples/analysis/sort#custom-sort-func)。
 

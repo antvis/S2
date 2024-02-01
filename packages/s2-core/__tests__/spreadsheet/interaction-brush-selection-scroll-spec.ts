@@ -52,7 +52,7 @@ const dataCfg: S2DataConfig = {
 const options: S2Options = {
   width: 800,
   height: 600,
-  hdAdapter: false,
+  hd: false,
   seriesNumber: {
     enable: true,
   },

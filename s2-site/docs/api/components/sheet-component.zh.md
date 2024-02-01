@@ -1,6 +1,7 @@
 ---
 title: 表组件
 order: 0
+tag: Updated
 ---
 
 ## React 表组件 <Badge>@antv/s2-react</Badge>

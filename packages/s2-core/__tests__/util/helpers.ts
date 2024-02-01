@@ -83,7 +83,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.options = assembleOptions(
     {
       ...DEFAULT_OPTIONS,
-      hdAdapter: false,
+      hd: false,
     },
     s2Options,
   );
@@ -316,7 +316,7 @@ export const createTableSheet = (
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
     {
-      hdAdapter: false,
+      hd: false,
       ...s2Options,
     },
   );

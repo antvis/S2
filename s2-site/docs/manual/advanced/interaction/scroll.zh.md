@@ -53,7 +53,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/38KkNLcWR/Kapture%2525202022-06-06%252520at%25252011.31.55.gif" alt="preview" width="600" />
 
-- `none`: 滚动至边界后，不会触发父容器滚动，同时禁用浏览器的**默认滚动行为**，比如：触发页面**下拉刷新**，**Mac 触摸板横向滚动时触发返回**. [查看更多](https://css-tricks.com/almanac/properties/o/overscroll-behavior/)
+- `none`: 滚动至边界后，不会触发父容器滚动，同时禁用浏览器的**默认滚动行为**，比如：触发页面**下拉刷新**，**Mac 触控板横向滚动时触发返回**. [查看更多](https://css-tricks.com/almanac/properties/o/overscroll-behavior/)
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/8pm8Gr0Qy/437b682d-edbd-4943-a9b7-808b6a3a8461.png" alt="preview" width="600" />
 

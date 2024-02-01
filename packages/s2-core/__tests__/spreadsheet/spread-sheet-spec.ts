@@ -14,7 +14,7 @@ const s2Options: S2Options = {
   width: 200,
   height: 200,
   hierarchyType: 'grid',
-  hdAdapter: true,
+  hd: true,
 };
 
 describe('SpreadSheet Tests', () => {
@@ -502,7 +502,7 @@ describe('SpreadSheet Tests', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
 
       await s2.render();
-      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hd'];
       const partialOptions = pick(s2.options, emitAttrs);
 
       expect(partialOptions).toEqual(s2Options);
@@ -510,15 +510,16 @@ describe('SpreadSheet Tests', () => {
       s2.setOptions(
         {
           width: 300,
-          hdAdapter: false,
+          hd: false,
         },
         true,
       );
+
       expect(pick(s2.options, emitAttrs)).toEqual({
         height: DEFAULT_OPTIONS.height,
         hierarchyType: DEFAULT_OPTIONS.hierarchyType,
         width: 300,
-        hdAdapter: false,
+        hd: false,
       });
     });
 
@@ -526,12 +527,12 @@ describe('SpreadSheet Tests', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
 
       await s2.render();
-      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hd'];
 
       s2.setOptions(
         {
           width: 300,
-          hdAdapter: false,
+          hd: false,
         },
         false,
       );
@@ -540,7 +541,7 @@ describe('SpreadSheet Tests', () => {
         height: s2Options.height,
         hierarchyType: s2Options.hierarchyType,
         width: 300,
-        hdAdapter: false,
+        hd: false,
       });
     });
 

@@ -510,7 +510,7 @@
 
 * 🐛 明细表大数据量下滚动条无法滚动到顶部 ([#1529](https://github.com/antvis/S2/issues/1529)) ([2791be9](https://github.com/antvis/S2/commit/2791be9769b3082bdfe8ae9a8ae0831ca821251a)), closes [#1528](https://github.com/antvis/S2/issues/1528)
 * **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
-* **interaction:** 修复按下快捷选中按钮之后通过触摸板切换页面，快捷键状态没有 reset 的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
+* **interaction:** 修复按下快捷选中按钮之后通过触控板切换页面，快捷键状态没有 reset 的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
 * **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
 * **theme:** 修复调整序号列后色板丢失 close [#1538](https://github.com/antvis/S2/issues/1538) ([#1543](https://github.com/antvis/S2/issues/1543)) ([6678848](https://github.com/antvis/S2/commit/6678848094c5c707a5586b33117bfd0b968fc302))
 * 优化 mini 图坐标计算逻辑 ([#1534](https://github.com/antvis/S2/issues/1534)) ([88a61e0](https://github.com/antvis/S2/commit/88a61e08b70750401d86e99dd5a6d320a1390da8))

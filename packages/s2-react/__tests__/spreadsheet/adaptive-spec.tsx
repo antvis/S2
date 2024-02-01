@@ -19,7 +19,7 @@ interface Props {
 const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
 };
 
 let s2: SpreadSheet | null;

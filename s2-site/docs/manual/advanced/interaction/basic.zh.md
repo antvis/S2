@@ -376,64 +376,9 @@ const s2Options = {
 
 ### 行列宽高调整
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 
-S2 默认提供 `列等宽布局` `行列等宽布局`和 `紧凑布局` 三种布局方式 ([预览](/examples/layout/basic#compact)), 也可以拖拽行/列头进行动态调整
-
-可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 `resize` 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看示例](/examples/interaction/advanced#resize-active)
-
-```ts
-const s2Options = {
-  interaction: {
-    resize: true
-  },
-};
-
-// 等价于
-// const s2Options = {
-//   interaction: {
-//     resize: {
-//       rowCellVertical:true,
-//       cornerCellHorizontal:true,
-//       colCellHorizontal:true,
-//       colCellVertical:true
-//     }
-//   },
-// };
-```
-
-还可以配置 `resize.visible` 和 `resize.disable` 两个属性，分别用于控制 `resize` 热区的显示和自定义拖拽校验逻辑。[查看示例](/examples/interaction/advanced#resize-disable)
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600" />
-
-> 例：不允许调小单元格宽度
-
-```ts
-const s2Options = {
-  interaction: {
-    resize: {
-      disable: (resizeInfo) => resizeInfo.resizedWidth <= resizeInfo.width;
-    }
-  },
-};
-```
-
-> 例：只有前 4 个单元格显示 resize 热区
-
-```ts
-const s2Options = {
-  interaction: {
-    resize: {
-      enable: (cell) => {
-        const meta = cell.getMeta();
-        return meta.colIndex < 3
-      }
-    }
-  },
-};
-```
-
-[查看示例](/examples/interaction/basic/#resize)
+查看 [文档](/docs/manual/advanced/interaction/resize) 和 [示例](/examples/interaction/advanced#merge-cell)
 
 ### 合并单元格
 

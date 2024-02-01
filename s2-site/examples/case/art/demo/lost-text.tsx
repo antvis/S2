@@ -206,12 +206,12 @@ export const s2Options = {
   width: 600,
   height: 400,
   seriesNumber: {
-    enable: false
+    enable: false,
   },
   showDefaultHeaderActionIcon: false,
   interaction: {
     copy: { enable: true },
-    // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
+    // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
       data: true,

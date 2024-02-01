@@ -55,10 +55,10 @@
     {
       "filename": "resize.ts",
       "title": {
-        "zh": "行高列宽调整",
+        "zh": "行列宽高调整",
         "en": "Resize Height And Width"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "auto-reset-sheet-style.ts",

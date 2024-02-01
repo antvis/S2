@@ -6,13 +6,14 @@ order: 2
 :::warning{title="注意"}
 维度下钻功能需要满足以下两个前置条件：
 
-- 透视表，即 `sheetType="pivot"`
-- 树状模式，即 `hierarchyType="tree"`
+- `透视表`: 即 `sheetType="pivot"`
+- `树状模式`: 即 `hierarchyType="tree"`
+
 :::
 
 ## React 下钻组件 <Badge>@antv/s2-react</Badge>
 
-​查看 [示例](/examples/react-component/drill-dwon#for-pivot)
+[​查看示例](/examples/react-component/drill-dwon#for-pivot)
 
 ```jsx
 const s2Options = {

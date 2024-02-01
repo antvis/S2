@@ -15,7 +15,7 @@ Object {
     "trailingColCount": 0,
     "trailingRowCount": 0,
   },
-  "hdAdapter": true,
+  "hd": true,
   "headerActionIcons": Array [],
   "height": 480,
   "hierarchyType": "grid",

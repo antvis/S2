@@ -46,7 +46,7 @@ describe('MobileSheet Tests', () => {
         options={{
           height: 300,
           width: 300,
-          hdAdapter: false,
+          hd: false,
           transformCanvasConfig() {
             return {
               devicePixelRatio: 2,

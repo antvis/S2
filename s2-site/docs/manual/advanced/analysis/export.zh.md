@@ -1,12 +1,12 @@
 ---
 title: 导出
-order: 11
+order: 3
 tag: Updated
 ---
 
 <Badge>@antv/s2</Badge> <Badge>@antv/s2-react</Badge>
 
-`@antv/s2` 提供了 [复制导出的基础能力](/manual/advanced/interaction/copy), `@antv/s2-react` 组件层基于 `@antv/s2` 封装了开箱即用的导出功能。
+`@antv/s2` 提供了 [复制导出的基础能力](/manual/advanced/interaction/copy), `@antv/s2-react` 组件层基于 `@antv/s2` 和 `antd` 封装了开箱即用的导出功能。
 
 ## 使用
 

@@ -302,7 +302,7 @@ export default defineConfig({
     announcement: {
       // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
       title: {
-        zh: '🎉 S2 2.0 版本开始内测啦! 文档焕新计划, 原 1.x 官网已迁移至 https://s2-v1.antv.antgroup.com',
+        zh: '🎉 S2 2.0 版本开始内测啦! 文档焕新升级, 原 1.x 官网已迁移至 https://s2-v1.antv.antgroup.com',
         en: '🎉 S2 Next version 2.0 is in beta! see 1.x docs: https://s2-v1.antv.antgroup.com',
       },
       link: {

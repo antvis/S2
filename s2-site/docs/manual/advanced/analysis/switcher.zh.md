@@ -1,6 +1,6 @@
 ---
-title: 维度切换组件
-order: 10
+title: 维度切换
+order: 2
 ---
 
 <Badge>@antv/s2-react</Badge>
