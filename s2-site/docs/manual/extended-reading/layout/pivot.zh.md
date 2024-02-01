@@ -3,11 +3,11 @@ title: 透视表
 order: 1
 ---
 
-本文会介绍透视表的布局过程，让读者更直接了解 `S2` 内部布局逻辑。
+本文会介绍透视表的布局过程，让读者更直接了解 `S2` 内部布局逻辑。布局处理逻辑大部分都在 [facet](https://github.com/antvis/S2/tree/next/packages/s2-core/src/facet) 文件夹中.
 
 在解析布局过程中，以下图透视表为例：
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*mTjfRr7PwDwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表"/>
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Wd1xTZoHhWwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表"/>
 
 ## 基础概念
 

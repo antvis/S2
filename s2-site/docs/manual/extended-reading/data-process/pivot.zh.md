@@ -3,11 +3,11 @@ title: 透视表
 order: 1
 ---
 
-本文会介绍透视表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。
+本文会介绍透视表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。数据流处理逻辑大部分都在 [data-set](https://github.com/antvis/S2/tree/next/packages/s2-core/src/data-set) 文件夹中.
 
 数据处理流程是：`原始数据 -> 生成 indexesData 多维数据 -> 生成层级结构 -> 获取数据` ，接下来我们会逐一讲解，目标是实现下图透视表：
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*mTjfRr7PwDwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Wd1xTZoHhWwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表" />
 
 ## 原始数据
 
