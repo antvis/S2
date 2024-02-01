@@ -3,11 +3,19 @@ title: 透视表
 order: 1
 ---
 
-本文会介绍透视表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。数据流处理逻辑大部分都在 [data-set](https://github.com/antvis/S2/tree/next/packages/s2-core/src/data-set) 文件夹中.
+本文会介绍透视表的数据流处理过程，让读者更直观的了解 `S2` 内部数据逻辑。
 
-数据处理流程是：`原始数据 -> 生成 indexesData 多维数据 -> 生成层级结构 -> 获取数据` ，接下来我们会逐一讲解，目标是实现下图透视表：
+数据处理流程是：
+
+![s2-data-process](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TFcyS6P0IPsAAAAAAAAAAAAADmJ7AQ/original)
+
+![dataSet](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*yJaCSqkl4HIAAAAAAAAAAAAADmJ7AQ/original)
+
+以下图透视表为例：
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Wd1xTZoHhWwAAAAAAAAAAAAADmJ7AQ/original" alt="透视表" />
+
+> 以下的代码都是伪代码，只是为了说明关键步骤，数据流处理逻辑大部分都在 [data-set](https://github.com/antvis/S2/tree/next/packages/s2-core/src/data-set) 文件夹中。
 
 ## 原始数据
 
@@ -64,104 +72,66 @@ const options = {
 />
 ```
 
-## 生成 indexesData 多维数据
+## 数据处理
+
+### processDataCfg
+
+这一步主要是对用户传入的配置根据当前的表格类型进行配置转换，主要是处理 `fields` 的信息，增加 `meta` 配置，并根据 `valueInCols` 配置，在`rows`或者`columns`中增加 `$$extra$$` 指标字段。
+
+### transformIndexesData
+
+在这一步，S2 会将用户传入的 data 信息做映射转换，从一维数组转换为多维数组 `indexesData`，并在转换过程中生成行列头的维度信息 `rowPivotMeta`，`colPivotMeta`。索引建立后，后续获取数据就能通过映射快速查询，增加查询效率。
+
+以下面的数据为例：
+
+```js
+{
+  price: 4,
+  province: '浙江省',
+  city: '绍兴市',
+  type: '家具',
+  sub_type: '沙发',
+};
+```
 
 首先，处理数据，提取当前明细数据在初始配置条件下的行、列维度结果。
 
 ```ts
-// 以第四条数据为例
-// { "price": 4,"province": "浙江省","city": "绍兴市","type": "家具","sub_type": "沙发" }
-const rowDimensionValues = transformDimensionsValues(currentData, ['province', 'city']); // 结果是 ['浙江省', '绍兴市']
-const colDimensionValues = transformDimensionsValues(currentData, ['type', 'sub_type']); // 结果是 ['家具', '沙发']
+
+const rowDimensionValues = transformDimensionsValues(data, ['province', 'city']); // 结果是 ['浙江省', '绍兴市']
+const colDimensionValues = transformDimensionsValues(data, ['type', 'sub_type']); // 结果是 ['家具', '沙发']
 ```
 
-然后，根据数据的行列维度结果和初始配置条件，我们可以获取到当前明细数据的路径（即在行树结构和列树结构的坐标索引）
+然后，根据数据的行列维度结果和 `fields` 配置信息，S2 会同步的生成 `indexesData`, `rowPivotMeta` 和 `colPivotMeta`
 
 ```ts
-// 以第四条数据为例
+// indexesData 使用 prefix 区分普通数据和下钻数据
 const prefix = 'province[&]city[&]type[&]sub_type';
+
+// getDataPath 内部同步生成 rowPivotMeta 和 colPivotMeta 信息
 // 第 0 位 始终是小计、总计的专属位，明细数据都是从第 1 位开始
 const rowPath = getDataPath(rowDimensionValues); // 结果是 [1, 2];
 const colPath = getDataPath(colDimensionValues); // 结果是 [1, 2];
+
 const dataPath =[prefix, ...rowPath.concat(...colPath)] ; // 结果是 ['province[&]city[&]type[&]sub_type', 1, 2, 1, 2];
+
 const indexesData={};
 lodash.set(indexesData, dataPath, currentData);
 ```
 
-最后，按照上述流程，遍历所有数据，得到最终的 indexesData，结果是：
+对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形 Map 结构来实现 `rowPivotMeta` 和 `colPivotMeta`。
 
-```ts
-{
- "province[&]city[&]type[&]sub_type": [
-  null,
-  [
-   null,
-   [
-    null,
-    [
-     null,
-     [
-      null,
-      {
-       "price": 1,
-       "province": "浙江省",
-       "city": "杭州市",
-       "type": "家具",
-       "sub_type": "桌子"
-      }
-     ],
-     [
-      null,
-      {
-       "price": 3,
-       "province": "浙江省",
-       "city": "杭州市",
-       "type": "家具",
-       "sub_type": "沙发"
-      }
-     ]
-    ]
-   ],
-   [
-    null,
-    [
-     null,
-     [
-      null,
-      {
-       "price": 2,
-       "province": "浙江省",
-       "city": "绍兴市",
-       "type": "家具",
-       "sub_type": "桌子"
-      }
-     ],
-     [
-      null,
-      {
-       "price": 4,
-       "province": "浙江省",
-       "city": "绍兴市",
-       "type": "家具",
-       "sub_type": "沙发"
-      }
-     ]
-    ]
-   ]
-  ]
- ]
-}
-```
+最后，按照上述流程，遍历所有数据，就能得到最终的  `indexesData`, `rowPivotMeta` 和 `colPivotMeta`，可以通过 S2 实例中的 `dataSet` 字段查看详情：
 
-## 生成层级结构
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*rOySQIXC0tUAAAAAAAAAAAAADmJ7AQ/original" style="border-radius: 5px; margin-bottom: 20px; display:block;" width="500" alt="indexesData">
 
-接下来是按照数据结构，分别生成行列的树状结构。我们知道，存储明细数据的 Meta 结构一般有三种：扁平数组、图、树，对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构来实现 Meta。
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*lFmhQ7wd3TwAAAAAAAAAAAAADmJ7AQ/original" style="border-radius: 5px; display:block;" width="500" alt="rowPivotMeta">
 
-下面，我们以行树结构为例，生成的 Map 结构是：<br/>
+### handleSort
 
-![rowPivotMeta](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*BScNTbO2TrIAAAAAAAAAAAAADmJ7AQ/original)
+`rowPivotMeta` 和 `colPivotMeta` 都是 Map 结构，当 Map 结构获取 `keys` 或者 `values` 时，是结果按照插入顺序排序的。当存在 `sortParams` 时，我们希望获取的结果顺序就是排序后的顺序，所以在这一步，会根据排序配置，重新生成 Map 结构，使之满足排序后的结果。在后续布局时，就无需在重新排序，可以加速布局效率。
 
-## 获取数据
+## 数据获取
 
 ### 获取单个数据
 

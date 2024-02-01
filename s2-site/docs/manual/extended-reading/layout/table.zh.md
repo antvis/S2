@@ -20,14 +20,3 @@ order: 2
 ## 序列号
 
 序列号列是 S2 为了方便用户使用，自动根据数据生成的一列，用于展示序列号。这列本质上和内容区没有区别。但在样式层面可以通过 `theme.rowCell` 进行单独个性化配置。
-
-## 行列冻结
-
-被冻结的行列，在布局上会有特殊处理。简单的说，冻结行列格子的定位是固定的。其中：
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
-
-+ 冻结行（frozenRow) 在 y 轴上冻结
-+ 冻结尾部行（frozenTrailingRow) 在 y 轴上冻结，并且 y 坐标从表格可视区底部开始逆向计算布局。
-+ 冻结列（frozenCol) 在 x 轴上冻结
-+ 冻结尾部列（frozenTrailingCol) 在 x 轴上冻结，并且 x 坐标从表格可视区最右侧开始逆向计算布局。

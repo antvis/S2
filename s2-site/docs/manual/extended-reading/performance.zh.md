@@ -16,9 +16,15 @@ tag: Updated
 
 在研究 `S2` 的性能之前，我们先熟悉其核心渲染链路，弄清楚哪些环节可能会耗时，优化从何做起。
 
-`S2` 的渲染流程是，通过配置信息将原始数据处理，转换为以 行、列 纬度值为 `path` 的多维数组。在此之后，通过 `hierarchy` 来改变自动生成的层级结构。然后通过 `layout` 更改任意行、列、单元格的坐标信息。最后由 `layoutResult` 来确定行、列的笛卡尔交集的 `dataCell` 数据信息。如下图所示：
+`S2` 的渲染流程是：
 
-![s2-data-process](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZLfHQoNsLrYAAAAAAAAAAAAAARQnAQ)
+* 通过配置信息将原始数据处理，转换为以 行、列 纬度值为 `path` 的多维数组
+* 在此之后，通过 `hierarchy` 来改变自动生成的层级结构。然后通过 `layout` 更改任意行、列、单元格的坐标信息
+* 最后由 `layoutResult` 来确定行、列的笛卡尔交集的 `dataCell` 数据信息
+  
+如下图所示：
+
+![s2-data-process](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TFcyS6P0IPsAAAAAAAAAAAAADmJ7AQ/original)
 
 明确核心渲染链路后，我们就可以发现，耗时环节「发生在数据转换」、「层级结构生成」、「单元格信息获取」三个阶段。接下来，我们看看 S2 如何性能优化。
 
@@ -58,9 +64,9 @@ const dataCfg={
 
 `S2` 渲染流程的第一步，就是把用户的明细数据转换为二维数组和具有层级的数据结构，在表格布局中会频繁的查询和排序，因此数据结构的设计显得尤为重要。
 
-我们知道，存储明细数据的 `Meta` 结构一般有三种：扁平数组、图、树。对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构来实现 `Meta`。
+对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构 `Map` 来实现 `rowPivotMeta` 和 `colPivotMeta`。
 
-另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好，其`Map`具体类型定义可以参见 [PivotMeta](https://github.com/antvis/S2/blob/c76203072a78dbf6656a70bc1c5487e6b1d9f009/packages/s2-core/src/data-set/interface.ts#L7-L15)。数据结构如下：
+另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好，其 `Map` 具体类型定义可以参见 [PivotMeta](https://github.com/antvis/S2/blob/ddc12830fa32f001ff7009a2bee8ce8624a1a187/packages/s2-core/src/data-set/interface.ts#L9)。数据结构如下：
 
 ```ts
 // Meta
@@ -152,6 +158,9 @@ const rowsMeta: PivotMeta = {
 查询数据时，首先从行列的 `Meta` 层级结构中获取对应的查询路径，然后根据查询路径即可在多维数组`indexesData`中拿到对应的数据。
 
 因此在 `S2` 中查询数据不是循环遍历底层数据，基于层级结构和查询数组路径获取数据。在第一次遍历原始数据，生成必要的 `Meta` 和多维数组信息后，查询数据时间复杂度是 **O(n)**。此方案的优点是性能优异。
+
+> 实际上 `indexesData` 还包含了单元格行列信息的前缀用于区分普通数据和下钻数据，所以其真正结构是：
+> `Record<string, RawData[][]>`，其中 `RawData[][]` 对应上面的多维数组。
 
 ### 按需渲染
 
