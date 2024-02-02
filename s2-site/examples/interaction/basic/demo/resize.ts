@@ -24,6 +24,10 @@ fetch(
           rowResizeType: ResizeType.ALL,
           // 列宽调整时，只影响当前列
           colResizeType: ResizeType.CURRENT,
+          // 单元格可拖拽最小宽度
+          minCellWidth: 20,
+          // 单元格可拖拽最小高度
+          minCellHeight: 20,
         },
       },
     };

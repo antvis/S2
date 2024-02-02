@@ -1,4 +1,8 @@
-import { ResizeType } from '../../common/constant/resize';
+import {
+  RESIZE_MIN_CELL_HEIGHT,
+  RESIZE_MIN_CELL_WIDTH,
+  ResizeType,
+} from '../../common/constant/resize';
 import {
   HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
@@ -92,8 +96,8 @@ export const DEFAULT_OPTIONS: S2Options = {
     autoResetSheetStyle: true,
     brushSelection: {
       dataCell: true,
-      rowCell: false,
-      colCell: false,
+      rowCell: true,
+      colCell: true,
     },
     multiSelection: true,
     rangeSelection: true,
@@ -105,6 +109,8 @@ export const DEFAULT_OPTIONS: S2Options = {
       colCellVertical: true,
       rowResizeType: ResizeType.CURRENT,
       colResizeType: ResizeType.CURRENT,
+      minCellWidth: RESIZE_MIN_CELL_WIDTH,
+      minCellHeight: RESIZE_MIN_CELL_HEIGHT,
     },
     eventListenerOptions: false,
     selectedCellHighlight: false,

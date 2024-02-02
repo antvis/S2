@@ -22,9 +22,9 @@ Object {
   "interaction": Object {
     "autoResetSheetStyle": true,
     "brushSelection": Object {
-      "colCell": false,
+      "colCell": true,
       "dataCell": true,
-      "rowCell": false,
+      "rowCell": true,
     },
     "copy": Object {
       "enable": true,
@@ -46,6 +46,8 @@ Object {
       "colCellVertical": true,
       "colResizeType": "current",
       "cornerCellHorizontal": true,
+      "minCellHeight": 20,
+      "minCellWidth": 20,
       "rowCellVertical": true,
       "rowResizeType": "current",
     },

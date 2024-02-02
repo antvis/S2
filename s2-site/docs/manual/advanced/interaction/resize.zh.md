@@ -174,6 +174,22 @@ const s2Options = {
   </tbody>
 </table>
 
+### 最小可拖拽宽高
+
+```ts
+const s2Options = {
+  interaction: {
+    resize: {
+      // 单元格可拖拽最小宽度
+      minCellWidth: 20,
+
+      // 单元格可拖拽最小高度
+      minCellHeight: 20
+    }
+  },
+};
+```
+
 ### 主题配置
 
 支持通过调整主题修改热区大小/颜色，参考线颜色/间隔等配置，具体请查看 [主题配置](/manual/basic/theme) 章节。

@@ -545,6 +545,26 @@ describe('SpreadSheet Tests', () => {
       });
     });
 
+    test('should reset config', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
+      s2.setOptions({
+        hierarchyType: 'tree',
+        tooltip: { enable: true },
+        frozen: { firstRow: true },
+      });
+
+      s2.setDataCfg({
+        fields: { rows: [], columns: [], values: [] },
+      });
+
+      s2.resetOptions();
+      s2.resetDataCfg();
+
+      expect(s2.options).toMatchSnapshot();
+      expect(s2.dataCfg).toMatchSnapshot();
+    });
+
     describe('Measure Text Tests', () => {
       const text = '测试';
       const font: TextTheme = {

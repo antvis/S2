@@ -90,8 +90,6 @@ s2.setTheme({
 | guideLineColor    | 参考线颜色                                                                                                   | `string`                              | -        |      |
 | guideLineDash     | 热区参考线 [虚线模式](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/setLineDash) | `number[]`                            | `[3, 3]` |      |
 | interactionState  | 热区交互态样式                                                                                               | [InteractionState](#interactionstate) | -        |      |
-| minCellWidth  | 单元格可拖拽最小宽度            | `number`| -        |      |
-| minCellHeight  | 单元格可拖拽最小高度        | `number` | -        |      |
 
 #### ScrollBarTheme
 

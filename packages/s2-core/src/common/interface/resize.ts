@@ -98,4 +98,10 @@ export interface ResizeInteractionOptions {
 
   /** 是否显示热区 */
   visible?: (cell: S2CellType) => boolean;
+
+  /** 单元格可拖拽最小宽度 */
+  minCellWidth?: number;
+
+  /** 单元格可拖拽最小高度 */
+  minCellHeight?: number;
 }

@@ -436,8 +436,6 @@ export const getTheme = (
       guideLineColor: basicColors[7],
       guideLineDisableColor: 'rgba(0,0,0,0.25)',
       guideLineDash: [3, 3],
-      minCellWidth: 42,
-      minCellHeight: 40,
 
       /* ---------- interaction state ----------- */
       interactionState: {

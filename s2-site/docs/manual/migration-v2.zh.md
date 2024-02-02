@@ -370,7 +370,7 @@ const s2Options = {
 }
 ```
 
-### 高清适配配置调整
+#### 高清适配配置调整
 
 ```diff
 const s2Options = {
@@ -379,7 +379,7 @@ const s2Options = {
 }
 ```
 
-### 序号配置变更
+#### 序号配置变更
 
 序号相关配置统一收拢在 `seriesNumber`
 
@@ -395,7 +395,7 @@ const s2Options = {
 }
 ```
 
-### 单元格宽高拖拽逻辑变更
+#### 单元格宽高拖拽逻辑变更
 
 1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
 
@@ -414,7 +414,7 @@ const s2Options = {
 
 具体请查看 [行列宽高调整](/manual/advanced/interaction/resize) 相关文档。
 
-### Facet 变更
+#### Facet 变更
 
 1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取。
 
@@ -448,7 +448,24 @@ export interface LayoutResult {
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
 
-### 数据集处理逻辑变更
+#### 渲染参数变更
+
+render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean` 时，等价与 `{ reloadData: boolean }`
+
+```diff
+- s2.render(true)
+- s2.render(false)
+- s2.render(false, { reBuildHiddenColumnsDetail: false })
+
++ s2.render({ reloadData: true }) // 等价于 s2.render(true)
++ s2.render({ reloadData: false }) // 等价于 s2.render(false)
++ s2.render({
++   reloadData: false,
++   reBuildHiddenColumnsDetail: false,
++ });
+```
+
+#### 数据集处理逻辑变更
 
 TODO:
 

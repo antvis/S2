@@ -201,12 +201,6 @@ export interface ResizeArea {
 
   /** 交互态 */
   interactionState?: InteractionState;
-
-  /** 单元格可拖拽最小宽度 */
-  minCellWidth?: number;
-
-  /** 单元格可拖拽最小高度 */
-  minCellHeight?: number;
 }
 
 export interface ScrollBarTheme {

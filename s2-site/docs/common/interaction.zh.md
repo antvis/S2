@@ -71,6 +71,8 @@ interface ScrollSpeedRatio {
 | rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效 | `all`\| `current` | `all`  |       |
 | disable        | 用于控制行高 resize 是否生效。[查看示例](/examples/interaction/advanced/#resize-disable) | (resizeInfo: [S2CellType](/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
 | visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/docs/api/basic-class/base-cell)) => boolean |   |       |
+| minCellWidth  | 单元格可拖拽最小宽度            | `number`|  20       |      |
+| minCellHeight  | 单元格可拖拽最小高度        | `number` | 20        |      |
 
 ### brushSelection
 

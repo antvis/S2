@@ -402,8 +402,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {
@@ -932,8 +930,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {
@@ -1462,8 +1458,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {
@@ -1992,8 +1986,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {
@@ -2522,8 +2514,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {
@@ -3052,8 +3042,6 @@ Object {
         "backgroundOpacity": 1,
       },
     },
-    "minCellHeight": 40,
-    "minCellWidth": 42,
     "size": 3,
   },
   "rowCell": Object {

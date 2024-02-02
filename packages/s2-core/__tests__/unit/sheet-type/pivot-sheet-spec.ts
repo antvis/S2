@@ -749,7 +749,7 @@ describe('PivotSheet Tests', () => {
 
   test('should rebuild hidden columns detail by status', async () => {
     // 重新更新, 但是没有隐藏列信息
-    await s2.render(false, { reBuildHiddenColumnsDetail: true });
+    await s2.render({ reloadData: false, reBuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
@@ -758,12 +758,15 @@ describe('PivotSheet Tests', () => {
     ] as unknown as HiddenColumnsInfo[]);
 
     // 重新更新, 有隐藏列信息, 但是 reBuildHiddenColumnsDetail 为 false
-    await s2.render(false, { reBuildHiddenColumnsDetail: false });
+    await s2.render({
+      reloadData: false,
+      reBuildHiddenColumnsDetail: false,
+    });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
     // 重新更新, 有隐藏列信息, 且 reBuildHiddenColumnsDetail 为 true
-    await s2.render(false, { reBuildHiddenColumnsDetail: true });
+    await s2.render({ reloadData: false, reBuildHiddenColumnsDetail: true });
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(1);
   });
