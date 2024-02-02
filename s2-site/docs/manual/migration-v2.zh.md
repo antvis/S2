@@ -476,7 +476,49 @@ render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean`
 
 #### 数据集处理逻辑变更
 
-TODO:
+对于多个 `values` 的数据，S2 期望一个数据项中就包含所有的 `values` 信息。
+
+```js
+{
+ fields:{
+   rows: ["province", "city"],
+      columns": ["type", "subType"],
+       values": ["number1", "number2"],
+ }
+}
+
+```
+
+```diff
+- [
+-   {
+-     province: '辽宁省',
+-     city: '达州市',
+-     type: '桌子',
+-     subType: '家具',
+-     number1: 3482.28,
+-   },
+-   {
+-     province: '辽宁省',
+-     city: '达州市',
+-     type: '桌子',
+-     subType: '家具',
+-     number2: 34,
+-   },
+- ];
+
++ [
++   {
++     province: '辽宁省',
++     city: '达州市',
++     type: '桌子',
++     subType: '家具',
++     number1: 3482.28,
++     number2: 34,
++   },
++ ];
+
+```
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
