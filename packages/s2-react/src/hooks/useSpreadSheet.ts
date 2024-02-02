@@ -144,7 +144,8 @@ export function useSpreadSheet(props: SheetComponentsProps) {
       reBuildDataSet,
     });
 
-    s2Ref.current?.render(renderOptions!.reloadData, {
+    s2Ref.current?.render({
+      reloadData: renderOptions!.reloadData,
       reBuildDataSet: renderOptions!.reBuildDataSet,
     });
   }, [dataCfg, options, themeCfg, onSheetUpdate]);
