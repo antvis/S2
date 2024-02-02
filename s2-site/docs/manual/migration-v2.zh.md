@@ -21,27 +21,36 @@ tag: New
 
 :::warning{title="注意"}
 
-`S2 2.0` 版本目前处于**内测阶段**, 部分 API 可能会随时改动。
+`S2 2.0` 版本目前处于**内测阶段**, 部分 API 可能会根据合理性随时改动。
 
 `npm` 的 [`dist-tag`](https://docs.npmjs.com/cli/v10/commands/npm-dist-tag) 对应关系如下：
 
 - `@antv/s2@next` 对应 `2.x` 版本
 - `@antv/s2@latest` 对应 `1.x` 版本
 
-**在 `@antv/s2@next` 版本稳定后，`next` 将默认指向 `2.x` 版本。**
-
 :::
+
+## 📅 正式版本发布时间
+
+目前 `next` 会持续内测一段时间，https://s2.antv.antgroup.com 会作为相应的文档网站。
+
+在此期间，会持续根据用户的反馈进行 Bug fix 和代码调整，在 `@antv/s2@next` 版本稳定后，会发布正式版本，`latest` 将默认指向 `2.x` 版本，去除 `next` 标识。
 
 ## 🗓️ v1 版本维护期
 
-目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Pull Request`，截止日期为 `2024` 年年底。
+目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Feature Pull Request`，欢迎 `Bug Fix Pull Request`, 截止日期为 `2024` 年年底。
 
 ## 📦 安装
 
 ```bash
-$ npm install @antv/s2@next @antv/s2-react@next @antv/s2-vue --save
-# pnpm add @antv/s2@next @antv/s2-react@next @antv/s2-vue
-# yarn add @antv/s2@next @antv/s2-react@next @antv/s2-vue
+# 基础版本
+$ npm install @antv/s2@next --save
+
+# React 版本
+$ npm install @antv/s2-react@next antd @ant-design/icons --save
+
+# Vue3 版本
+$ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 ```
 
 | Package  | Version | Size   | Download     |
