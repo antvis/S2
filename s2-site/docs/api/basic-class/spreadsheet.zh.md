@@ -66,6 +66,7 @@ s2.isPivotMode()
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |
 | measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 | measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
+| groupSortByMethod | 组内排序（透视表有效）  | (sortMethod: `'asc' \| 'desc'`, meta: [Node](/docs/api/basic-class/node)) => void  |    |
 
 ### S2MountContainer
 

@@ -4,9 +4,7 @@ import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
 
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const s2DataConfig: S2DataConfig = {
@@ -40,6 +38,12 @@ fetch(
       width: 600,
       height: 480,
       showDefaultHeaderActionIcon: true,
+      tooltip: {
+        operation: {
+          // 开启组内排序
+          sort: true,
+        },
+      },
     };
 
     reactDOMClient
