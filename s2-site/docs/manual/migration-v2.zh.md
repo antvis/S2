@@ -6,7 +6,7 @@ tag: New
 
 本文档将帮助你从 S2 `1.x` 版本升级到 S2 `2.x` 版本。
 
-## 官网地址变化
+## 🏠 官网地址变化
 
 :::warning{title="注意"}
 原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请使用最新的文档，确保您看到的不是过时的文档。
@@ -15,7 +15,7 @@ tag: New
 - 原 `v1` 官网迁移至 <https://s2-v1.antv.antgroup.com>.
 - 原 <https://s2.antv.antgroup.com> 将作为 `v2` 默认官网。
 
-## npm dist-tag 变化
+## 🏷️ npm dist-tag 变化
 
 > 什么是 [dist-tag](https://docs.npmjs.com/adding-dist-tags-to-packages/) ?
 
@@ -28,19 +28,33 @@ tag: New
 - `@antv/s2@next` 对应 `2.x` 版本
 - `@antv/s2@latest` 对应 `1.x` 版本
 
-**在 `@antv/s2@next` 版本稳定后，`latest` 将默认指向 `2.x` 版本。**
+**在 `@antv/s2@next` 版本稳定后，`next` 将默认指向 `2.x` 版本。**
 
 :::
 
-## v1 版本维护期
+## 🗓️ v1 版本维护期
 
 目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Pull Request`，截止日期为 `2024` 年年底。
 
-## 新增功能
+## 📦 安装
+
+```bash
+$ npm install @antv/s2@next @antv/s2-react@next @antv/s2-vue --save
+# pnpm add @antv/s2@next @antv/s2-react@next @antv/s2-vue
+# yarn add @antv/s2@next @antv/s2-react@next @antv/s2-vue
+```
+
+| Package  | Version | Size   | Download     |
+| - | - | - | - |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core) |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue) | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+
+## ⭐ 新增功能
 
 官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官网语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2)
 
-## 不兼容的变化
+## 📣 不兼容的变化
 
 ### 基础包 <Badge>@antv/s2</Badge>
 
@@ -383,7 +397,7 @@ const s2Options = {
 
 ### 单元格宽高拖拽逻辑变更
 
-1. 在 `1.x` 中，宽高调整对所有单元格生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
+1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
 
 ```diff
 const s2Options = {
@@ -398,7 +412,7 @@ const s2Options = {
 
 2. 默认调整只对当前单元格生效。
 
-具体请查看 [行列宽高调整](/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98%E8%B0%83%E6%95%B4) 相关文档。
+具体请查看 [行列宽高调整](/manual/advanced/interaction/resize) 相关文档。
 
 ### Facet 变更
 
@@ -438,11 +452,7 @@ export interface LayoutResult {
 
 TODO:
 
-### 边框绘制逻辑变更
-
-TODO:
-
-### 组件层 `@antv/s2-react`
+### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
 
@@ -509,14 +519,10 @@ const header = {
 
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
-## API 调整
+## ✍️ API 调整
 
 具体请查看标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 的 [`API 文档`](/api)
 
-## 未来迭代计划
-
-TODO: 是否需要？
-
-## 遇到问题
+## 🙋 遇到问题
 
 更多新特性和改动请阅读文档，如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues/2454) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions/1933) 进行反馈。我们会尽快响应和相应改进这篇文档。

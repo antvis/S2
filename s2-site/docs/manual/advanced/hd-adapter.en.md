@@ -96,7 +96,7 @@ Turn on HD adaptation
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Q1782WWQ3/Kapture%2525202021-10-19%252520at%25252014.36.05.gif)
 
-[full code](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts)
+[full code](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts)
 
 ## Custom Device Pixel Ratio
 

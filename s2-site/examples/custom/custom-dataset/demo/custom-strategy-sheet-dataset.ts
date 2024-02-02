@@ -67,7 +67,7 @@ class CustomDataSet extends CustomTreePivotDataSet {
 
 /**
  * 自定义 DataCell
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
   drawTextShape() {

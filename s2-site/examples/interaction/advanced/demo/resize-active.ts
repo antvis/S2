@@ -3,10 +3,10 @@ import insertCSS from 'insert-css';
 
 function createRadioGroup(s2: SpreadSheet) {
   [
-    ['rowCellVertical', '行头热区'],
-    ['cornerCellHorizontal', '角头热区'],
-    ['colCellHorizontal', '列头水平方向resize热区'],
-    ['colCellVertical', '列头垂直方向resize热区'],
+    ['rowCellVertical', '行头 resize 热区'],
+    ['cornerCellHorizontal', '角头 resize 热区'],
+    ['colCellHorizontal', '列头水平方向 resize 热区'],
+    ['colCellVertical', '列头垂直方向 resize 热区'],
   ].forEach(([value, text]) => {
     const radio = document.createElement('input');
 
@@ -63,6 +63,13 @@ fetch(
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    // 这里默认将热区显示, 仅供演示使用, 请勿无脑复制.
+    s2.setTheme({
+      resizeArea: {
+        backgroundOpacity: 1,
+      },
+    });
 
     await s2.render();
 

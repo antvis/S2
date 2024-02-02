@@ -159,7 +159,7 @@ s2.setTheme({
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
 | interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
-| interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
+| interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | borderDash        | 单元格边线虚线 | `number \| string \| (string \| number)[]`                                        | `[]`      |      |
 
 #### IconTheme

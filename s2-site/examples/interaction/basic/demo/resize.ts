@@ -46,14 +46,6 @@ fetch(
         guideLineDisableColor: 'rgba(0,0,0,0.25)',
         //  参考线间隔
         guideLineDash: [3, 3],
-        // 交互状态
-        interactionState: {
-          // 热区 hover 时的背景色和透明度
-          hover: {
-            backgroundColor: '#326EF4',
-            backgroundOpacity: 1,
-          },
-        },
       },
     });
 

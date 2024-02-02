@@ -181,12 +181,12 @@ export interface InteractionOptions {
    */
   copy?: {
     /**
-     * 开启复制 Command/Ctrl + C
+     * 开启复制 Command/Ctrl + C (默认开启)
      */
     enable?: boolean;
 
     /**
-     * 复制带格式的数据
+     * 复制带格式的数据 (默认开启)
      */
     withFormat?: boolean;
 
@@ -223,7 +223,7 @@ export interface InteractionOptions {
 
   /**
    * 宽高调整
-   * @see https://s2.antv.antgroup.com/examples/interaction/basic/#resize
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/resize
    */
   resize?: ResizeInteractionOptions | boolean;
 

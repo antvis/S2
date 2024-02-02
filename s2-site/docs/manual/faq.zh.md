@@ -180,7 +180,7 @@ s2.showTooltip({
 <SheetComponent options={options} dataCfg={dataCfg}/>
 ```
 
-- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/master/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
+- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/next/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
 
 - `场景 2`: S2 默认点击非表格区域，会隐藏 tooltip, 还原交互状态，请确保你自己的业务逻辑有无相应的 `click` 事件，看是否有被冒泡影响，尝试阻止冒泡
 

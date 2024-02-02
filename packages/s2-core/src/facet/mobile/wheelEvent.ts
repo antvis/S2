@@ -18,7 +18,7 @@ const SWIPE_TIME_GAP = 100;
 
 /**
  * 移动端滚动事件
- * @see https://github.com/antvis/g-gesture/blob/master/src/event/wheel.ts
+ * @see https://github.com/antvis/g-gesture/blob/next/src/event/wheel.ts
  */
 export class WheelEvent extends EE {
   private canvas: Canvas;

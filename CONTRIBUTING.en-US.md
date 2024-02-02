@@ -11,7 +11,7 @@ a cool [pull request](https://github.com/antvis/S2/pulls), or a DingTalk group d
 
 ## Branch Management
 
-Currently, we are developing based on the `master` branch. Please check out a branch based on `master,` and Pull Request if you have any modifications. We will review your `PR` for the first time and give you feedback.
+Currently, we are developing based on the `next` branch. Please check out a branch based on `next,` and Pull Request if you have any modifications. We will review your `PR` for the first time and give you feedback.
 
 ## Report bugs
 

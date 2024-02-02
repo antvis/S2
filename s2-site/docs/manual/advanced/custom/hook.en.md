@@ -32,19 +32,19 @@ Custom icons. When the icons provided by `S2` do not meet the requirements, deve
 
 ## dataCell
 
-To change the default implementation of data cells, you need to inherit from [dataCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#data-cell)
+To change the default implementation of data cells, you need to inherit from [dataCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#data-cell)
 
 ## rowCell
 
-To change the default implementation of row header cells, you need to inherit from [rowCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#row-cell)
+To change the default implementation of row header cells, you need to inherit from [rowCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#row-cell)
 
 ## colCell
 
-To change the default implementation of column header cells, you need to inherit from [colCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#col-cell)
+To change the default implementation of column header cells, you need to inherit from [colCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#col-cell)
 
 ## cornerCell
 
-To change the default implementation of corner cells, you need to inherit from [cornerCell](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#corner-cell)
+To change the default implementation of corner cells, you need to inherit from [cornerCell](https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts) and override some methods, such as font style, background style, etc. [example](/examples/custom/custom-cell#corner-cell)
 
 ## cornerHeader
 

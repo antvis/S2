@@ -21,7 +21,7 @@ Data-driven multi-dimensional analysis table.
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
   <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="test coverage"/>
+    <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
   </a>
   <a href="https://github.com/antvis/S2/releases" target="_blank">
     <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release date"/>
@@ -210,9 +210,9 @@ bootstrap()
 
 | Package  | Latest   | Beta   | Alpha   | Next | Size   | Download     |
 | - | - | - | - | - | - | - |
-| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)   |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) |  ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/master/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)  |  ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)   |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) |  ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)  |  ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
 ## 👤 Author
 

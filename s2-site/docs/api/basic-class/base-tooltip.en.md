@@ -3,7 +3,7 @@ title: BaseTooltip
 order: 6
 ---
 
-Function description: Tooltip class. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/tooltip/index.ts)
+Function description: Tooltip class. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/tooltip/index.ts)
 
 ```ts
 s2.tooltip.show({

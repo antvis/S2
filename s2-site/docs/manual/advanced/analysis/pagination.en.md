@@ -19,8 +19,8 @@ First, you need to configure the `pagination` attribute in `s2Options`
 If you develop based on `@antv/s2-core` , you need to **introduce** or **implement paging components** yourself.
 The `core` layer only provides paging capabilities. Refer to the example
 
-* [React](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/pagination/index.tsx)
-* [Vue 3.0](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/pagination/index.vue)
+* [React](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/pagination/index.tsx)
+* [Vue 3.0](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/pagination/index.vue)
 
 If you develop based on `@antv/s2-react` or `@antv/s2-vue` , you only need to configure pagination-related configuration
 items to use it out of the box.

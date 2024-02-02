@@ -8,7 +8,7 @@ import {
 
 /**
  * 继承 RowCell, 单独修改行小计/行总计的背景色和文字颜色 (继承 ColCell, 列小计/列总计 同理)
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomTotalsRowCell extends RowCell {
   // 背景色

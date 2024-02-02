@@ -1,7 +1,7 @@
 ---
 title: 行列宽高调整
 order: 3
-tag: New
+tag: Updated
 ---
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
@@ -36,9 +36,52 @@ const s2Options = {
 
 ### 热区控制
 
-除了 `rowCellVertical`, `cornerCellHorizontal`, `colCellHorizontal`, `colCellVertical` 便捷的区域热区控制外，还支持 `resize.visible` 动态控制热区是否展示。[查看示例](/examples/interaction/basic#resize)
+支持配置 `rowCellVertical`, `cornerCellHorizontal`, `colCellHorizontal`, `colCellVertical` 来便捷的控制区域热区控制。
 
-#### 例：只有前 4 个单元格显示 resize 热区
+<table style="width: 100%; outline: none; border-collapse: collapse;">
+  <colgroup>
+    <col width="40%"/>
+    <col width="60%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">
+        rowCellVertical（行头垂直方向） - 针对行头叶子节点
+      </td>
+      <td>
+        <img height="300" alt="default" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*LdioQJ5NU-MAAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        cornerCellHorizontal |（角头水平方向） - 针对角头 CornerNodeType 为 Series 和 Row
+      </td>
+      <td>
+        <img height="300" alt="colorful" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*57S1QLpmaY8AAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        colCellHorizontal |（列头水平方向） - 针对列头叶子节点
+      </td>
+      <td>
+        <img height="300" alt="gray" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Zni8Ro69STkAAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        colCellVertical |（列头垂直方向） - 针对列头各层级节点
+      </td>
+      <td>
+        <img height="300" alt="dark" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*qtxcR7_YAYgAAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+除此之外，还支持 `resize.visible` 动态控制热区是否展示。[查看示例](/examples/interaction/basic#resize)
+
+1. 例：只有叶子节点才显示 resize 热区：
 
 ```ts
 const s2Options = {
@@ -46,14 +89,14 @@ const s2Options = {
     resize: {
       visible: (cell) => {
         const meta = cell.getMeta();
-        return meta.colIndex < 3
+        return meta.isLeaf
       }
     }
   },
 };
 ```
 
-#### 例：只有某一个单元格系那是 resize 热区
+2. 例：只有某一个单元格显示 resize 热区：
 
 ```ts
 const s2Options = {
@@ -61,7 +104,7 @@ const s2Options = {
     resize: {
       visible: (cell) => {
         const meta = cell.getMeta();
-        return meta.id === 'root[&]家具[&]桌子[&]数量'
+        return meta.id === 'root[&] 家具[&]桌子[&]数量'
       }
     }
   },
@@ -74,7 +117,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600" />
 
-#### 例：不允许调小单元格宽度
+例：不允许调小单元格宽度：
 
 ```ts
 const s2Options = {
@@ -84,4 +127,74 @@ const s2Options = {
     }
   },
 };
+```
+
+### 拖拽影响范围
+
+默认宽高调整只作用于当前单元格，可以通过 `rowResizeType`, `colResizeType` 配置拖拽后是影响所有行（列）, 还是当前行（列）。
+
+- `all`: 对应单元格维度 `{ city: 20, type: 100 }`
+- `current` 对应单元格 ID `{ 'root[&]杭州市': 20, 'root[&]类别': 100 }`
+
+```ts
+const s2Options = {
+  interaction: {
+    resize: {
+      // 行高调整时，影响全部行
+      rowResizeType: 'all',
+      // 列宽调整时，只影响当前列
+      colResizeType: 'current',
+    }
+  },
+};
+```
+
+<table style="width: 100%; outline: none; border-collapse: collapse;">
+  <colgroup>
+    <col width="40%"/>
+    <col width="60%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">
+        rowResizeType: 'all'
+      </td>
+      <td>
+        <img height="300" alt="default" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K9BHSYFdps4AAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        rowResizeType: 'current'
+      </td>
+      <td>
+        <img height="300" alt="colorful" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aXByQbhqG7AAAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### 主题配置
+
+支持通过调整主题修改热区大小/颜色，参考线颜色/间隔等配置，具体请查看 [主题配置](/manual/basic/theme) 章节。
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*4fHCSaNfxvYAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
+
+```ts
+s2.setTheme({
+  resizeArea: {
+    // 热区大小
+    size: 2,
+    // 热区背景色
+    background: '#396',
+    // 热区背景色透明度
+    backgroundOpacity: 0,
+    // 拖拽参考线颜色
+    guideLineColor: '#396',
+    // 拖拽参考线禁用颜色
+    guideLineDisableColor: 'rgba(0,0,0,0.25)',
+    //  参考线间隔
+    guideLineDash: [1, 6]
+  },
+});
 ```

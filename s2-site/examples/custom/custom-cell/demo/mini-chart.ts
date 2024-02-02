@@ -9,7 +9,7 @@ import {
 
 /**
  * 自定义 DataCell，使用 drawCustomContent 绘制简易的 mini 图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
   // 当数值为对象时，完全接管绘制, 使用内置的 `drawCustomContent` 根据不同的数据结构 (见下方) 绘制不同的图形

@@ -3,7 +3,7 @@ title: Store
 order: 3
 ---
 
-Function description: store some information. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/store/index.ts)
+Function description: store some information. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/store/index.ts)
 
 ```ts
 s2.store.get('key') // 获取

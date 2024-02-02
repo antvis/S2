@@ -72,7 +72,7 @@ class CustomDataCell extends DataCell {
 
 /**
  * 自定义 ColCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts
  * 明细表需要继承 TableColCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends ColCell {
@@ -114,7 +114,7 @@ class CustomColCell extends ColCell {
 
 /**
  * 自定义 CornerCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
   getBackgroundColor() {
@@ -147,7 +147,7 @@ class CustomCornerCell extends CornerCell {
 
 /**
  * 自定义 RowCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomRowCell extends RowCell {
   getBackgroundColor() {
