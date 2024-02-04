@@ -1,6 +1,8 @@
-import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Options, Aggregation } from '@antv/s2';
 
-fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json001215413-dev-S09001736318/s2/basic.json')
+fetch(
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json001215413-dev-S09001736318/s2/basic.json',
+)
   .then((res) => res.json())
   .then(async (data) => {
     const container = document.getElementById('container');
@@ -43,10 +45,10 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json0012154
           reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
           calcGrandTotals: {
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
         },
         col: {
@@ -56,10 +58,10 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json0012154
           reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
           calcGrandTotals: {
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
         },
       },

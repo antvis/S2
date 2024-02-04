@@ -131,9 +131,9 @@ s2.setTheme({
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
 | textAlign    | 文本内容的对齐方式                                                             | `left \| center \| right` | -                                                                                                 |      |
 | textBaseline | 绘制文本时的基线                                                               | `top \| middle \| bottom` | -                                                                                                 |      |
-| fontFamily   | 字体                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
+| fontFamily   | 字体，**如需每个字体宽度一样，请使用等宽字体**                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
-| fontWeight   | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 | `number` \| `string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
+| fontWeight   | `number` <br/> `string` （可选项：`normal` <br> `bold` <br> `bolder` <br> `lighter`) | `number \| string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
 | fontStyle   | 字体样式    | `normal \| italic \| oblique`        |  `normal` |
 | fontVariant | 字体变体  | `normal \| small-caps \| string`    |  `normal`  |
 | fill         | 字体颜色                                                                       | `string`                      | -                                                                                                 |      |

@@ -1,12 +1,13 @@
 import { PivotSheet, BaseEvent, S2Event, S2Options } from '@antv/s2';
+import '@antv/s2/dist/style.min.css';
 
 class RowColumnHoverTooltipInteraction extends BaseEvent {
   bindEvents() {
-    // 行头hover
+    // 行头 hover
     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event) => {
       this.showTooltip(event);
     });
-    // 列头hover
+    // 列头 hover
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event) => {
       this.showTooltip(event);
     });
@@ -14,10 +15,10 @@ class RowColumnHoverTooltipInteraction extends BaseEvent {
 
   showTooltip(event) {
     const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta();
-    const content = meta.value;
+    const meta = cell?.getMeta();
+    const content = meta?.value || 'custom';
 
-    this.spreadsheet.tooltip.show({
+    this.spreadsheet.showTooltip({
       position: {
         x: event.clientX,
         y: event.clientY,

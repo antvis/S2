@@ -157,10 +157,9 @@ export class TableDataSet extends BaseDataSet {
     return [];
   }
 
-  public getCellData({ query = {} }: GetCellDataParams = {}):
-    | Data
-    | SimpleData
-    | undefined {
+  public getCellData(
+    { query = {} }: GetCellDataParams = {} as GetCellDataParams,
+  ): Data | SimpleData | undefined {
     if (this.displayData.length === 0 && query['rowIndex'] === 0) {
       return undefined;
     }
@@ -174,7 +173,9 @@ export class TableDataSet extends BaseDataSet {
     return rowData[query['field']] as SimpleData;
   }
 
-  public getCellMultiData({ query = {} }: GetCellMultiDataParams = {}): Data[] {
+  public getCellMultiData(
+    { query = {} }: GetCellMultiDataParams = {} as GetCellMultiDataParams,
+  ): Data[] {
     if (!query) {
       return this.displayData as Data[];
     }

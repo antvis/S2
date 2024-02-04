@@ -1,4 +1,4 @@
-import { PivotSheet, S2DataConfig, S2Options, S2Options } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/4347c2dd-6554-451b-9d44-15b04e5de657.json',

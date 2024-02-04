@@ -1,8 +1,8 @@
 import { isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
-import React, { useState } from 'react';
+import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -10,8 +10,8 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const GridSheet = () => {
-      const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
-      const [drillDownField, setDrillDownField] = useState('');
+      const [s2DataConfig, setS2DataConfig] = React.useState(data.dataCfg);
+      const [drillDownField, setDrillDownField] = React.useState('');
       const s2Options: SheetComponentOptions = {
         width: 800,
         height: 600,

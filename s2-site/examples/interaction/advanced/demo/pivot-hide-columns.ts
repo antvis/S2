@@ -1,4 +1,5 @@
 import { PivotSheet, S2Event, S2Options } from '@antv/s2';
+import '@antv/s2/dist/style.min.css';
 
 function hideSelectedColumns(s2) {
   // 兼容多选
@@ -7,9 +8,11 @@ function hideSelectedColumns(s2) {
     .map((cell) => cell.getMeta());
 
   const selectedColumnFields = selectedColumnNodes.map((node) => node.id);
+
   s2.interaction.hideColumns(selectedColumnFields, true);
 }
 
+// 使用 `@antv/s2` tooltip 的 ui 需要自己封装, `@antv/s2-react` 已经内置.
 function getTooltipContent(cell, options) {
   const { spreadsheet, isLeaf } = cell.getMeta();
 
@@ -18,6 +21,7 @@ function getTooltipContent(cell, options) {
   }
 
   const button = document.createElement('button');
+
   button.type = 'button';
   button.innerHTML = '隐藏';
   button.className = 'ant-btn';
@@ -39,9 +43,9 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        // 透视表默认隐藏需要指定唯一列头id
-        // 可通过 `s2.facet.getColCellNodes()` 获取列头节点查看id
-        hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+        // 透视表默认隐藏需要指定唯一列头 id
+        // 可通过 `s2.facet.getColNodes()` 获取列头节点查看i d
+        hiddenColumnFields: ['root[&]家具[&]沙发[&]数量'],
       },
       tooltip: {
         enable: true,

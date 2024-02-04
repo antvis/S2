@@ -1,10 +1,12 @@
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { Button } from 'antd';
 import insertCSS from 'insert-css';
 import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
-const CustomTooltip = <div className="tooltip-custom-component">content</div>;
+const CustomTooltip = () => (
+  <div className="tooltip-custom-component">content</div>
+);
 
 const RowCellTooltip = ({ title }) => (
   <div className="tooltip-custom-component">{title}</div>

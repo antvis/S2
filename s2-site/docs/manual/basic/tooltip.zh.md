@@ -254,7 +254,7 @@ s2.showTooltip({
 
 `方法调用` > `单元格配置` > `基本配置`
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 #### 自定义 Tooltip 操作项
 
@@ -271,6 +271,8 @@ menu: {
 ```
 
 :::
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2R8ST6bBxAcAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="row" />
 
 ```ts
 const s2Options = {
@@ -350,16 +352,18 @@ const s2Options = {
 s2.showTooltip({
   options: {
     operator: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          onClick: (cell) => {
-            console.log('操作 1 点击', cell);
-          },
-        }
-      ],
+      menu: {
+        items: [
+          {
+            key: 'custom-a',
+            label: '操作 1',
+            icon: 'Trend',
+            onClick: (info, cell) => {
+              console.log('操作 1 点击：', info, cell);
+            },
+          }
+        ],
+      }
     },
   }
 })

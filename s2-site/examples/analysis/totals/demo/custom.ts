@@ -1,4 +1,4 @@
-import { PivotSheet, EXTRA_FIELD, S2DataConfig, S2Options } from '@antv/s2';
+import { PivotSheet, VALUE_FIELD, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
@@ -33,7 +33,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
 
     const calcFunc = (query, data) => {
       const sum = data.reduce((pre, next) => {
-        return pre + next[next[EXTRA_FIELD]];
+        return pre + next[VALUE_FIELD];
       }, 0);
 
       return sum * 2;

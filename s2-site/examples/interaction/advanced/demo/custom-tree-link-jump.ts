@@ -1,5 +1,16 @@
 import { S2Event, PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
+// 临时处理老数据格式
+function process(children) {
+  return children?.map((item) => {
+    return {
+      ...item,
+      field: item.key,
+      children: process(item.children),
+    };
+  });
+}
+
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/custom-tree.json',
 )
@@ -8,7 +19,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
-        rows: res.customTreeItem,
+        rows: process(res.customTreeItem),
         columns: ['type', 'sub_type'],
         values: [
           'measure-a',

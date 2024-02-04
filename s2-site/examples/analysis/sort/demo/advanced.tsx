@@ -1,13 +1,14 @@
 import React from 'react';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCSS from 'insert-css';
+import { S2DataConfig } from '@antv/s2';
 
 import '@antv/s2-react/dist/style.min.css';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
-    const defaultSortParams = [
+    const defaultSortParams: S2DataConfig['sortParams'] = [
       { sortFieldId: 'province', sortMethod: 'DESC' },
       { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
       {
@@ -17,7 +18,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       },
     ];
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -45,7 +46,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       sortParams: defaultSortParams,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };

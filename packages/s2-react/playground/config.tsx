@@ -1,19 +1,16 @@
 /* eslint-disable no-console */
-import { GithubOutlined } from '@ant-design/icons';
 import {
-  CellType,
   ResizeType,
+  customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
-  customMerge,
   type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
-import type { SliderSingleProps } from 'antd';
-import React from 'react';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
+import type { SliderSingleProps } from 'antd';
 import {
   data,
   fields,
@@ -249,49 +246,61 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
-  enable: true,
   operation: {
-    hiddenColumns: true,
     menu: {
-      mode: 'horizontal',
+      // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+      // mode: 'vertical',
       onClick(info, cell) {
-        console.log('菜单点击: ', info, cell);
+        console.log('菜单项点击: ', info, cell);
       },
       items: [
         {
-          key: 'a-1',
-          label: '操作-1',
-          icon: 'Plus',
+          key: 'custom-a',
+          label: '操作1',
+          icon: 'Trend',
           onClick: (info, cell) => {
-            console.log('操作-1', info, cell);
+            console.log('操作1点击:', info, cell);
           },
           children: [
             {
-              key: 'a-1-1',
-              label: '操作-1-1',
-              icon: 'Minus',
-              visible: (cell) => cell.cellType === CellType.COL_CELL,
+              key: 'custom-a-a',
+              label: '操作 1-1',
+              icon: 'Trend',
               onClick: (info, cell) => {
-                console.log('操作-1-1', info, cell);
+                console.log('操作1-1点击:', info, cell);
               },
             },
           ],
         },
         {
-          key: 'a-2',
-          label: '操作-2',
-          icon: <GithubOutlined />,
+          key: 'custom-b',
+          label: '操作2',
+          icon: 'EyeOutlined',
           onClick: (info, cell) => {
-            console.log('操作-2', info, cell);
+            console.log('操作2点击:', info, cell);
           },
         },
         {
-          key: 'trend',
-          label: '趋势',
-          icon: 'Trend',
-          visible: (cell) => cell.cellType === CellType.DATA_CELL,
+          key: 'custom-c',
+          label: '操作3',
+          icon: 'EyeOutlined',
+          visible: false,
           onClick: (info, cell) => {
-            console.log('趋势图 icon 点击: ', info, cell);
+            console.log('操作3点击:', info, cell);
+          },
+        },
+        {
+          key: 'custom-c',
+          label: '操作4',
+          icon: 'EyeOutlined',
+          visible: (cell) => {
+            // 叶子节点才显示
+            const meta = cell.getMeta();
+
+            return meta.isLeaf;
+          },
+          onClick: (info, cell) => {
+            console.log('操作4点击:', info, cell);
           },
         },
       ],

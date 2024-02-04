@@ -40,6 +40,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         enable: true,
         text: '序号',
       },
+      // 自定义空数据单元格占位符
+      // placeholder: '-',
+      placeholder(meta) {
+        return '-';
+      },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);

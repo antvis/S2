@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Tag } from 'antd';
 import {
   BaseEvent,
@@ -10,11 +9,12 @@ import {
   InterceptType,
   S2Event,
   CornerCell,
+  S2Theme,
 } from '@antv/s2';
-
+import { Rect } from '@antv/g';
 import '@antv/s2-react/dist/style.min.css';
 
-const Theme = {
+const Theme: S2Theme = {
   rowCell: {
     text: {
       opacity: 0,
@@ -43,21 +43,6 @@ const Theme = {
     },
   },
 };
-
-class CustomCornerCell extends CornerCell {
-  drawBackgroundShape() {
-    this.addShape('rect', {
-      attrs: {
-        ...this.getCellArea(),
-        fill: '#E0E9FD',
-      },
-    });
-  }
-
-  getCornerText() {
-    return '👍🏻';
-  }
-}
 
 class CustomInteraction extends BaseEvent {
   timer = null;
@@ -160,7 +145,7 @@ class CustomInteraction extends BaseEvent {
       const isLastCell = colIndex === 3 && rowIndex === 7;
 
       if (isLastCell) {
-        this.changeCell(CellTypes.DATA_CELL);
+        this.changeCell(CellType.DATA_CELL);
       }
     });
   }
@@ -170,16 +155,16 @@ class CustomInteraction extends BaseEvent {
       const rules = [6, 66, 666];
 
       if (rules.includes(info.resizedWidth)) {
-        this.changeCell(CellTypes.COL_CELL);
+        this.changeCell(CellType.COL_CELL);
       }
     });
 
     this.spreadsheet.on(S2Event.COL_CELL_BRUSH_SELECTION, (colCells) => {
       const isAllSelected =
-        colCells.length === this.spreadsheet.getColumnNodes().length;
+        colCells.length === this.spreadsheet.facet.getColNodes().length;
 
       if (isAllSelected) {
-        this.changeCell(CellTypes.COL_CELL);
+        this.changeCell(CellType.COL_CELL);
       }
     });
   }
@@ -189,20 +174,19 @@ class CustomInteraction extends BaseEvent {
       const selectedOddRowCells = cells.filter((cell) => {
         const meta = cell.getMeta();
 
-        return cell.cellType === CellTypes.ROW_CELL && meta.rowIndex % 2 !== 0;
+        return cell.cellType === CellType.ROW_CELL && meta.rowIndex % 2 !== 0;
       });
 
       const isAllOddRowCellsSelected = selectedOddRowCells.length === 4;
 
       if (isAllOddRowCellsSelected) {
-        this.changeCell(CellTypes.ROW_CELL);
+        this.changeCell(CellType.ROW_CELL);
       }
     });
   }
 }
 
-export const s2Options = {
-  debug: true,
+const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
   seriesNumber: {
@@ -211,12 +195,11 @@ export const s2Options = {
   showDefaultHeaderActionIcon: false,
   interaction: {
     copy: { enable: true },
-    // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
-      data: true,
-      col: true,
-      row: true,
+      dataCell: true,
+      colCell: true,
+      rowCell: true,
     },
     hoverFocus: false,
     hoverHighlight: false,
@@ -228,19 +211,18 @@ export const s2Options = {
     ],
   },
   tooltip: {
-    showTooltip: false,
+    enable: false,
   },
   hierarchyType: 'grid',
   style: {
-    rowCfg: {
+    rowCell: {
       width: 100,
     },
-    cellCfg: {
+    dataCell: {
       width: 50,
       height: 30,
     },
   },
-  cornerCell: (...args) => new CustomCornerCell(...args),
 };
 
 fetch(
@@ -248,7 +230,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    ReactDOM.render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}
@@ -295,6 +277,5 @@ fetch(
           ),
         }}
       />,
-      document.getElementById('container'),
     );
   });

@@ -1,8 +1,8 @@
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
 const PALETTE_COLORS = [
   {
@@ -116,7 +116,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
         },
       },
       interaction: {
-        selectedCellsSpotlight: true,
+        selectedCellsSpotlight: false,
         hoverHighlight: false,
       },
       style: {

@@ -1,14 +1,16 @@
-import { PivotSheet } from '@antv/s2';
+import { Aggregation, PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
-fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json')
+fetch(
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
+)
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: [],
         columns: ['province', 'city', 'type'],
-        values: ['price' ,'cost'],
+        values: ['price', 'cost'],
         valueInCols: false,
       },
       meta: [
@@ -36,7 +38,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json'
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       // 配置行小计总计显示,且按维度分组（列小计总计同理）
@@ -44,25 +46,26 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json'
         col: {
           showGrandTotals: true,
           showSubTotals: true,
-          reverseLayout: true,
-          reverseSubLayout: true,
+          reverseGrandTotalsLayout: true,
+          reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
-          calcTotals: {
+          calcGrandTotals: {
             // 设置总计汇总计算方式为求和
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
             // 设置小计汇总计算方式为求和
-            aggregation: 'SUM',
+            aggregation: Aggregation.SUM,
           },
           // 总计分组下，city 城市维度会出现分组
-          totalsGroupDimensions: ['city'],
+          grandTotalsGroupDimensions: ['city'],
           // 小计维度下，type 类别维度下会出现分组
           subTotalsGroupDimensions: ['type'],
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

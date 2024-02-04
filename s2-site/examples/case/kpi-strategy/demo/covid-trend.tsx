@@ -1,9 +1,19 @@
 import React from 'react';
-
 import { isNil } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+
+// 临时处理老数据格式
+function process(children) {
+  return children.map((item) => {
+    return {
+      ...item,
+      field: item.key,
+      children: process(item.children),
+    };
+  });
+}
 
 // 数据来源：https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_1&city=%E5%9B%9B%E5%B7%9D-%E5%9B%9B%E5%B7%9D
 fetch(
@@ -16,6 +26,7 @@ fetch(
       height: 600,
       placeholder: '',
       hierarchyType: 'tree',
+      cornerText: '指标',
       style: {
         rowCell: {
           height: 60,
@@ -30,7 +41,7 @@ fetch(
         text: [
           {
             mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
+              const { colIndex } = cellInfo || {};
               const isNilValue = isNil(value) || value === '';
 
               if (colIndex === 0 || isNilValue) {
@@ -49,7 +60,7 @@ fetch(
           {
             position: 'right',
             mapping(value, cellInfo) {
-              const { colIndex } = cellInfo;
+              const { colIndex } = cellInfo || {};
               const isNilValue = isNil(value) || value === '';
 
               if (colIndex === 0 || isNilValue) {
@@ -78,7 +89,7 @@ fetch(
           ...s2DataCfg,
           fields: {
             ...s2DataCfg.fields,
-            rows: s2DataCfg.fields.customTreeItems,
+            rows: process(s2DataCfg.fields.customTreeItems),
           },
         }}
         options={s2Options}

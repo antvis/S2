@@ -47,12 +47,18 @@ export type DataPathParams = {
 };
 
 export interface GetCellDataParams {
-  // search query
-  query?: Query;
+  /**
+   * 查询条件
+   */
+  query: Query;
+
+  /**
+   * 是否是汇总节点
+   */
   isTotals?: boolean;
 
   /**
-   * 行头节点, 用于下钻场景
+   * 行头节点，用于下钻场景
    */
   rowNode?: Node;
 
@@ -60,7 +66,10 @@ export interface GetCellDataParams {
    * 是否是行头
    */
   isRow?: boolean;
-  // use with isTotals
+
+  /**
+   * 汇总信息
+   */
   totalStatus?: TotalStatus;
 }
 
@@ -85,10 +94,12 @@ export interface GetCellMultiDataParams {
    * 查询条件
    */
   query?: Query;
+
   /**
    * 查询类型
    */
   queryType?: QueryDataType;
+
   /**
    * 下钻
    */

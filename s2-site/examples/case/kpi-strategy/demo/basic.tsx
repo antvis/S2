@@ -1,7 +1,6 @@
 import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import React from 'react';
-
 import { Line, Rect } from '@antv/g';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -61,7 +60,7 @@ class KpiStrategyDataCell extends DataCell {
 
   // 如果是进度, 格式化为百分比 (只做 demo 示例, 请根据实际情况使用)
   getFormattedFieldValue() {
-    const data = this.meta.data?.getOrigin();
+    const data = this.meta.data?.raw;
 
     if (!data || !data.isProgress) {
       return super.getFormattedFieldValue();
@@ -76,7 +75,7 @@ class KpiStrategyDataCell extends DataCell {
   renderDeriveValue() {
     // 通过 this.meta 拿到当前单元格的有效信息
     const { x, width } = this.meta;
-    const data = this.meta.data?.getOrigin();
+    const data = this.meta.data?.raw;
 
     if (!data || data.isExtra) {
       return;
@@ -115,7 +114,7 @@ class KpiStrategyDataCell extends DataCell {
 
   renderProgressBar() {
     const { x, y, width, height, data } = this.meta;
-    const originData = data?.getOrigin();
+    const originData = this.meta.data?.raw;
 
     if (!data || !originData || !originData.isProgress) {
       return;
@@ -218,6 +217,18 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       tooltip: {
         operation: {
           hiddenColumns: true,
+          menu: {
+            items: [
+              {
+                icon: 'Trend',
+                key: 'trend',
+                label: '趋势',
+                onClick: (info, cell) => {
+                  console.log('trend icon clicked:', info, cell);
+                },
+              },
+            ],
+          },
         },
       },
       totals: {
@@ -226,7 +237,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
         },
       },
       interaction: {
-        selectedCellsSpotlight: true,
+        selectedCellsSpotlight: false,
         hoverHighlight: true,
       },
       // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观

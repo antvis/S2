@@ -1,14 +1,14 @@
 export type AttributeTreeProps<
-  C extends Partial<AttributeComponentProps> = AttributeComponentProps
+  C extends Partial<AttributeComponentProps> = AttributeComponentProps,
 > = {
   // 配置端当前配置的所有属性
   attributes: any;
   relations: {
-    fromAttributeId: string,
-    toAttributeId: string,
-    action: string,
-    value: string | Array<any> | boolean,
-    operator: string
+    fromAttributeId: string;
+    toAttributeId: string;
+    action: string;
+    value: string | Array<any> | boolean;
+    operator: string;
   }[];
   config: AttributeComponentProps & C;
   disable?: boolean;

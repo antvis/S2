@@ -38,6 +38,11 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       width: 600,
       height: 480,
       showDefaultHeaderActionIcon: true,
+
+      /**
+       * `@antv/s2` 提供组内排序的能力，如果不使用 `@antv/s2-react` 的话, 可以自行实现 Tooltip 排序菜单，然后调用相关 API.
+       * 详情请查看: https://s2.antv.antgroup.com/manual/basic/sort/group
+       */
       tooltip: {
         operation: {
           // 开启组内排序

@@ -82,6 +82,9 @@ export abstract class BaseDataSet {
     this.spreadsheet = spreadsheet;
   }
 
+  /**
+   * 获取字段
+   */
   private getField = (field: CustomHeaderField): string => {
     const realField = isString(field) ? field : field?.field;
 

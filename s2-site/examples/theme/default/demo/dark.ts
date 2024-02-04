@@ -44,7 +44,9 @@ fetch(
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.setThemeCfg({ name: 'dark' });
+    s2.setThemeCfg({
+      name: 'dark',
+    });
 
     await s2.render();
   });

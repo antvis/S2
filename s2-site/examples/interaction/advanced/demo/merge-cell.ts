@@ -42,7 +42,9 @@ fetch(
     const dataCellTooltip = () => {
       button.innerText = '点击合并单元格';
       button.className = 'merge-cells-button';
-      button.onclick = () => s2.interaction.mergeCells();
+      button.onclick = () => {
+        s2.interaction.mergeCells();
+      };
 
       return button;
     };
@@ -50,7 +52,9 @@ fetch(
     const mergedCellsTooltip = (mergedCell) => {
       button.innerText = '取消合并单元格';
       button.className = 'merge-cells-button';
-      button.onclick = () => s2.interaction.unmergeCell(mergedCell);
+      button.onclick = () => {
+        s2.interaction.unmergeCell(mergedCell);
+      };
 
       return button;
     };

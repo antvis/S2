@@ -8,6 +8,7 @@ import {
   S2CellType,
   TooltipShowOptions,
 } from '@antv/s2';
+import '@antv/s2/dist/style.min.css';
 
 function hideSelectedColumns(s2: SpreadSheet) {
   // 兼容多选
@@ -20,6 +21,7 @@ function hideSelectedColumns(s2: SpreadSheet) {
   s2.interaction.hideColumns(selectedColumnFields, true);
 }
 
+// 使用 `@antv/s2` tooltip 的 ui 需要自己封装, `@antv/s2-react` 已经内置.
 function getTooltipContent(cell: S2CellType, options: TooltipShowOptions) {
   const { spreadsheet, isLeaf } = cell.getMeta();
 

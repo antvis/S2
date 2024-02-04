@@ -25,6 +25,7 @@ fetch(
                   fill: 'red',
                 };
               }
+
               return {
                 fill: '#DB6BCF',
               };

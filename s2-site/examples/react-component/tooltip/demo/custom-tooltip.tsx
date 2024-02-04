@@ -4,9 +4,9 @@ import {
   SheetComponentOptions,
   TooltipOperatorMenuOptions,
 } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
 const MyCustomTooltipContent = () => (
   <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>

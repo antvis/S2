@@ -69,7 +69,7 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 #### 底层渲染引擎升级为 `AntV/G 5.0`
 
-表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 `AntV` [其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为异步。
+表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 `AntV` [其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
 
 ```diff
 - s2.render()
@@ -108,6 +108,29 @@ const s2Options = {
     };
   },
 }
+```
+
+#### 数值指标节点 id 调整
+
+数值节点的 id 从 `field` 变更为 `格式化后的名称`.
+
+```ts
+const s2DataConfig = {
+  fields: {
+    values: ['number'],
+  },
+  meta: [
+    {
+      field: 'number',
+      name: '数量',
+    },
+  ],
+}
+```
+
+```diff
+- 'root[&] 家具 [&] 沙发 [&]number'
++ 'root[&] 家具 [&] 沙发 [&] 数量'
 ```
 
 #### 自定义宽高配置调整
@@ -474,6 +497,41 @@ render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean`
 + });
 ```
 
+#### 小计总计配置参数变更
+
+TODO: 还要改：
+
+总计配置统一增加 `grandTotals` 和 `subTotals` 前缀，避免歧义。
+
+```diff
+const s2Options = {
+  totals: {
+    row: {
+-     calcTotals: {}.
+-     reverseLayout: true,
+-     label: '总计'
+-     totalsGroupDimensions: [],
+-     reverseSubLayout: true,
+
++     calcGrandTotals: {}.
++     reverseGrandLayout: true,
++     grandLabel: '总计'
++     grandTotalsGroupDimensions: [],
++     reverseSubTotalsLayout: true
+    };
+  }
+}
+```
+
+#### 绘制自定义文本 API 变更
+
+绘制多列文本 `drawObjectText` 函数更名为 `drawCustomContent`
+
+```diff
+- import { drawObjectText } from '@antv/s2'
++ import { drawCustomContent } from '@antv/s2'
+```
+
 #### 数据集处理逻辑变更
 
 对于多个 `values` 的数据，S2 期望一个数据项中就包含所有的 `values` 信息。
@@ -481,9 +539,9 @@ render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean`
 ```js
 {
  fields:{
-   rows: ["province", "city"],
-      columns": ["type", "subType"],
-       values": ["number1", "number2"],
+  rows: ["province", "city"],
+  columns: ["type", "subType"],
+  values: ["number1", "number2"],
  }
 }
 
@@ -519,6 +577,35 @@ render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean`
 + ];
 
 ```
+
+#### 数据集查询逻辑变更
+
+1. 查询字段从 `string` 变更为 `CustomTreeNode | string`
+
+```diff
+- s2.dataSet.getField(field: string)
+- s2.dataSet.getFieldMeta(field: string)
+- s2.dataSet.getFieldName(field: string)
+- s2.dataSet.getFieldFormatter(field: string)
+
++ s2.dataSet.getField(field: CustomTreeNode | string)
++ s2.dataSet.getFieldMeta(field: CustomTreeNode | string)
++ s2.dataSet.getFieldName(field: CustomTreeNode | string)
++ s2.dataSet.getFieldFormatter(field: CustomTreeNode | string)
+```
+
+2. 获取单元格数据 API 的参数统一
+
+```diff
+- s2.dataSet.getCellData(params: CellDataParams)
++ s2.dataSet.getCellData(params: GetCellDataParams)
+
+- s2.dataSet.getMultiData(query: DateType, params: MultiDataParams)
+- s2.dataSet.getMultiData(query: DataType, isTotals?: boolean, isRow?: boolean, drillDownFields?: string[], includeTotalData:boolean)
++ s2.dataSet.getCellMultiData(params: GetCellMultiDataParams)
+```
+
+具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 

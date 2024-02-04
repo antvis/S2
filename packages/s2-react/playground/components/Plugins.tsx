@@ -22,6 +22,7 @@ export const options: SheetComponentOptions = {
     },
   },
   transformCanvasConfig(renderer) {
+    // 需要注意的是一旦使用该插件，“脏矩形渲染”便无法使用，这意味着任何图形的任何样式属性改变，都会导致画布的全量重绘, 性能会严重下降。
     renderer.registerPlugin(new PluginRoughCanvasRenderer());
     renderer.registerPlugin(
       new PluginA11y({

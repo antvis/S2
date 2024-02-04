@@ -9,7 +9,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price', 'cost'],
+        values: ['price'],
       },
       meta: [
         {
@@ -27,10 +27,6 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         {
           field: 'price',
           name: '价格',
-        },
-        {
-          field: 'cost',
-          name: '成本',
         },
       ],
       data,

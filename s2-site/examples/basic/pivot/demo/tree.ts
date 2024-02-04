@@ -11,12 +11,16 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'tree',
-     // 显示序号
+
+      // 自定义角头标题 默认 "维值1/维值2"
+      // cornerText: "指标",
+
+      // 显示序号
       // seriesNumber: {
       //   enable: true,
       //   自定义序号列文本, 默认 "序号"
-      //   text: '自定义序号标题', 
-      //},
+      //   text: '自定义序号标题',
+      // },
       style: {
         rowCell: {
           // 自定义树状模式下行头宽度

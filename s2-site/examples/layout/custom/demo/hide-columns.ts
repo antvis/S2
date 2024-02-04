@@ -45,5 +45,12 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
+    // 默认列头有一条分割线, 如果不需要的话将分割线的透明度设置为 0
+    s2.setTheme({
+      splitLine: {
+        horizontalBorderColorOpacity: 0,
+      },
+    });
+
     await s2.render();
   });
