@@ -384,12 +384,12 @@ const s2DataConfig = {
 
 ```diff
 const s2Options = {
--   frozenRowHeader: true,
--   frozenFirstRow: true,
--   frozenRowCount: true;
--   frozenColCount: true;
--   frozenTrailingRowCount: true;
--   frozenTrailingColCount: true;
+-  frozenRowHeader: true,
+-  frozenFirstRow: true,
+-  frozenRowCount: true;
+-  frozenColCount: true;
+-  frozenTrailingRowCount: true;
+-  frozenTrailingColCount: true;
 
 +  frozen: {
 +    rowHeader: true,
@@ -399,6 +399,20 @@ const s2Options = {
 +    trailingRowCount: true;
 +    trailingColCount: true;
 +  }
+}
+```
+
+#### 透视表冻结行头配置变更
+
+`rowHeader` 现在支持传递 `number` , 如果为数值则表示开启冻结行头，并自定义行头最大冻结宽度 (0 - 1)。
+
+```diff
+const s2Options = {
+  frozen: {
+-   rowHeader: true,
++   rowHeader: true,
++   rowHeader: 0.5,
+  }
 }
 ```
 
@@ -482,7 +496,7 @@ export interface LayoutResult {
 
 #### 渲染参数变更
 
-render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean` 时，等价与 `{ reloadData: boolean }`
+render 函数的参数从 `boolean` 扩展为 `boolean | object`, 当为 `boolean` 时，等价与 `{ reloadData: boolean }`
 
 ```diff
 - s2.render(true)
