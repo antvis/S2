@@ -499,8 +499,6 @@ render 函数的参数从 boolean 扩展为 `boolean | object`, 当为 `boolean`
 
 #### 小计总计配置参数变更
 
-TODO: 还要改：
-
 总计配置统一增加 `grandTotals` 和 `subTotals` 前缀，避免歧义。
 
 ```diff
@@ -514,8 +512,8 @@ const s2Options = {
 -     reverseSubLayout: true,
 
 +     calcGrandTotals: {}.
-+     reverseGrandLayout: true,
-+     grandLabel: '总计'
++     reverseGrandTotalsLayout: true,
++     grandTotalsLabel: '总计'
 +     grandTotalsGroupDimensions: [],
 +     reverseSubTotalsLayout: true
     };

@@ -90,4 +90,4 @@ const s2Options = {
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 |-----|-----|-----|-----|-----|
-|  showPagination   |   是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效）   |  `boolean`   |   `{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>}` | `false`  |
+|  showPagination   |   是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效）   |  `boolean`   |   `{  onShowSizeChange?: (pageSize: number) => void, onChange?: (current: number) => void }` | `false`  |

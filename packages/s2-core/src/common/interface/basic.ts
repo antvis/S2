@@ -147,7 +147,7 @@ export interface Total {
   showGrandTotals?: boolean;
 
   /**
-   *是否显示小计
+   * 是否显示小计
    */
   showSubTotals?:
     | boolean
@@ -174,10 +174,13 @@ export interface Total {
 
   /**
    * 总计分组
+   * @example grandTotalsGroupDimensions: ['city']
    */
   grandTotalsGroupDimensions?: string[];
+
   /**
    * 小计分组
+   * @example subTotalsGroupDimensions: ['city']
    */
   subTotalsGroupDimensions?: string[];
 
@@ -210,7 +213,7 @@ export interface Totals {
 }
 
 export interface Sort {
-  /** 字段id */
+  /** 字段 id */
   sortFieldId: string;
 
   /** 排序方式 */

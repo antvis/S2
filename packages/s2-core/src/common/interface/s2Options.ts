@@ -76,6 +76,7 @@ export interface S2BasicOptions<
 
   /**
    * 分页配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/analysis/pagination
    */
   pagination?: P;
 
@@ -88,6 +89,7 @@ export interface S2BasicOptions<
      * 是否显示序号
      */
     enable?: boolean;
+
     /**
      * 自定义序号列文本, 默认为 "序号"
      */
