@@ -1,3 +1,15 @@
+# [@antv/s2-react-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.9...@antv/s2-react-v2.0.0-next.10) (2024-02-05)
+
+
+### Features
+
+* 合并 master 到 next ([#2493](https://github.com/antvis/S2/issues/2493)) ([6da530d](https://github.com/antvis/S2/commit/6da530d0c5f53d283ddfaa4b3e510ca11c9bf83e)), closes [#2186](https://github.com/antvis/S2/issues/2186) [#2204](https://github.com/antvis/S2/issues/2204) [#2191](https://github.com/antvis/S2/issues/2191)
+
+
+### Performance Improvements
+
+* 优化多行文本渲染性能 ([#2478](https://github.com/antvis/S2/issues/2478)) ([adc5ef3](https://github.com/antvis/S2/commit/adc5ef32056ca0427942f5a118af938124821bcc))
+
 # [@antv/s2-react-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.8...@antv/s2-react-v2.0.0-next.9) (2023-12-12)
 
 * **table-sheet:** 修复明细表 tooltip 展示了错误的汇总数据的问题 ([#2457](https://github.com/antvis/S2/issues/2457)) ([51bc110](https://github.com/antvis/S2/commit/51bc1105d8c52bd46cc89dfe2698b0fe42745c69))
