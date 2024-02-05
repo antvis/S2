@@ -390,7 +390,7 @@ export default defineConfig({
           zh: '2.0 版本开始内测啦! 欢迎尝鲜使用.',
           en: '2.0 is in beta! Welcome to use.',
         },
-        date: '2024.1.31',
+        date: '2024.2.5',
         link: 'https://github.com/antvis/S2/issues/2454',
       },
       {
@@ -400,9 +400,9 @@ export default defineConfig({
         },
         title: {
           zh: '原 v1 文档已迁移至 https://s2-v1.antv.antgroup.com',
-          en: 'S2 2.0 is in beta! Welcome to use.',
+          en: 'The original v1 documentation has been migrated to https://s2-v1.antv.antgroup.com',
         },
-        date: '2024.1.31',
+        date: '2024.2.5',
         link: 'https://s2-v1.antv.antgroup.com',
       },
     ],
