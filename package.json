@@ -60,7 +60,8 @@
     "site:start": "pnpm --filter @antv/s2-site start",
     "site:build": "NODE_OPTIONS='--max-old-space-size=4096' pnpm --filter @antv/s2-site build",
     "site:preview": "pnpm --filter @antv/s2-site preview",
-    "site:deploy": "pnpm --filter @antv/s2-site deploy"
+    "site:deploy": "pnpm --filter @antv/s2-site deploy",
+    "share:test": "pnpm --filter @antv/s2-shared test"
   },
   "commitlint": {
     "extends": [

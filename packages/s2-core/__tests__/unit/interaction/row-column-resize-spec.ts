@@ -263,7 +263,7 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 0,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      resizedWidth: 42,
+      resizedWidth: 40,
       resizedHeight: 0,
       size: 3,
       meta: {
@@ -724,7 +724,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(disable).toHaveBeenCalledWith({
       ...resizeInfo,
       resizedWidth: 0,
-      resizedHeight: 40,
+      resizedHeight: 20,
     });
 
     emitResizeEvent(

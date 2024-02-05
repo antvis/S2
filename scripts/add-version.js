@@ -15,16 +15,16 @@ function generateNextVersion() {
 }
 
 function build() {
-  // 直接运行 yarn build 要报错，用一下蠢办法
-  execSync(`yarn clean`, {
+  // 直接运行 pnpm build 要报错，用一下蠢办法
+  execSync(`pnpm clean`, {
     stdio: 'inherit',
   });
 
-  execSync(`yarn build:umd & yarn build:cjs & yarn build:esm`, {
+  execSync(`pnpm build:umd & pnpm build:cjs & pnpm build:esm`, {
     stdio: 'inherit',
   });
 
-  execSync(`yarn dts:build && yarn dts:extract`, {
+  execSync(`pnpm dts:build && pnpm dts:extract`, {
     stdio: 'inherit',
   });
 }

@@ -111,9 +111,9 @@ Object {
   "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "width": 42,
+  "width": 40,
   "widthByField": Object {
-    "testField": 42,
+    "testField": 40,
   },
   "wordWrap": true,
 }

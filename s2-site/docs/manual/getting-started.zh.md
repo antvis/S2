@@ -9,14 +9,14 @@ tag: Updated
 ### 使用 npm 或 yarn 或 pnpm 安装
 
 ```bash
-# pnpm
-$ pnpm add @antv/s2@next
-
 # npm
 $ npm install @antv/s2@next --save
 
 # yarn
 $ yarn add @antv/s2@next
+
+# pnpm
+$ pnpm add @antv/s2@next
 ```
 
 ### 使用 React 或 Vue3 版本

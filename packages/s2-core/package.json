@@ -47,7 +47,7 @@
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.mjs",
     "build:dts": "run-s dts:*",
     "build:size-limit": "size-limit",
-    "build:size-limit-json": "yarn build:size-limit --json",
+    "build:size-limit-json": "pnpm build:size-limit --json",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
     "watch": "rimraf esm && pnpm build:esm -w",

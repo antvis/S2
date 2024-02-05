@@ -64,7 +64,7 @@ class CustomDataCell extends DataCell {
     let fill;
     let opacity = 1;
 
-    if (!Number.isNaN(fieldValue)) {
+    if (!isNaN(fieldValue)) {
       fill =
         paletteLegendMap.find((v) => v.text === colQuery?.['时刻'])?.color ??
         '#FAD5BB';
@@ -274,6 +274,11 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         layoutWidthType: 'compact',
         colCell: {
           hideValue: true,
+        },
+        rowCell: {
+          widthByField: {
+            成员: 42,
+          },
         },
         dataCell: {
           width: 40,
