@@ -1,4 +1,4 @@
-import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
 
 function createRadioGroup(s2: SpreadSheet) {
   [
@@ -53,13 +53,23 @@ fetch(
       hierarchyType: 'tree',
       style: {
         rowCell: {
-          // 展开一级维度的子节点
+          // 默认展开一级维度的子节点
           expandDepth: 0,
+          // 收起全部
+          // collapseAll: true,
         },
       },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    s2.on(S2Event.ROW_CELL_COLLAPSED, (data) => {
+      console.log('row-cell:collapsed', data);
+    });
+
+    s2.on(S2Event.ROW_CELL_ALL_COLLAPSED, (data) => {
+      console.log('row-cell:all-collapsed', data);
+    });
 
     await s2.render();
 

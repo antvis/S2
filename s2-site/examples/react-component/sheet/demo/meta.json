@@ -44,15 +44,6 @@
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ",
       "new": true
-    },
-    {
-      "filename": "mobile-pivot.tsx",
-      "title": {
-        "zh": "移动端透视表组件",
-        "en": "Mobile PivotSheet component"
-      },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*cf2uQYVVStQAAAAAAAAAAAAAARQnAQ",
-      "new": true
     }
   ]
 }

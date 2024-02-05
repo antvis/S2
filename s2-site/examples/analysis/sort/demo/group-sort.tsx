@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())

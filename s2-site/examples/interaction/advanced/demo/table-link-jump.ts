@@ -1,4 +1,4 @@
-import { S2DataConfig, S2Event, TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Event, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -33,7 +33,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {
@@ -51,7 +51,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       const a = document.createElement('a');
 
       a.target = '_blank';
-      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${field}=${value}`;
+      a.href = `https://s2.antv.antgroup.com/zh/docs/manual/introduction?${field}=${value}`;
       a.click();
       a.remove();
     });

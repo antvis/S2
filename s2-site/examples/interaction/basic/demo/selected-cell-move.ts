@@ -14,6 +14,11 @@ fetch(
         // 选中一个单元格, 然后使用键盘方向键移动
         selectedCellMove: true,
       },
+      style: {
+        dataCell: {
+          width: 120,
+        },
+      },
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);

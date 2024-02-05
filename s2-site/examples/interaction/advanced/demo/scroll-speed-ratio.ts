@@ -69,6 +69,11 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
     const s2Options: S2Options = {
       width: 600,
       height: 300,
+      style: {
+        dataCell: {
+          height: 200,
+        },
+      },
       interaction: {
         scrollSpeedRatio: {
           vertical: defaultScrollSpeedRatio,
