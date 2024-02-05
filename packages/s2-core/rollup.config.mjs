@@ -34,10 +34,10 @@ const plugins = [
   alias({
     entries: [
       { find: 'lodash', replacement: 'lodash-es' },
-      // {
-      //   find: /^(?<name>.*).less\?inline$/,
-      //   replacement: '$1.less',
-      // },
+      {
+        find: /^(?<name>.*).less\?inline$/,
+        replacement: '$1.less',
+      },
     ],
   }),
   replace({
