@@ -36,7 +36,7 @@ export interface CustomProps {
 
 type EditCellProps = {
   onChange?: (data: DataType[]) => void;
-  onDataCellEditEnd?: (meta: ViewMeta, cell: S2CellType) => void;
+  onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -107,7 +107,6 @@ function EditCellComponent(
           [valueField]: inputVal,
         },
       }),
-      cell,
     );
 
     onChange?.(spreadsheet.dataSet.getDisplayDataSet());
