@@ -38,7 +38,8 @@
     "build": "pnpm -r --filter './packages/*' --stream build",
     "build:esm": "pnpm -r --filter './packages/*' --stream build:esm",
     "build:umd": "pnpm -r --filter './packages/*' --stream build:umd",
-    "bundle:size": "pnpm -r --filter './packages/*' --stream bundle:size",
+    "build:size-limit": "pnpm -r --filter './packages/*' --stream build:size-limit",
+    "build:size-limit-json": "pnpm -r --filter './packages/*' --stream build:size-limit-json",
     "release": "pnpm -r --filter !@antv/s2-shared --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
     "release:preview": "pnpm release --dry-run --no-ci",
     "release:bump-version": "node ./scripts/bump-version.js",
@@ -159,6 +160,7 @@
     "semantic-release": "^19.0.5",
     "semantic-release-monorepo": "^7.0.5",
     "semver": "^7.5.4",
+    "size-limit": "^11.0.0",
     "stylelint": "^15.11.0",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-standard": "^34.0.0",
@@ -166,8 +168,7 @@
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vite-plugin-imp": "^2.4.0",
-    "vue-jest": "^5.0.0-alpha.10",
-    "size-limit": "^11.0.0"
+    "vue-jest": "^5.0.0-alpha.10"
   },
   "license": "MIT",
   "repository": {
@@ -176,5 +177,10 @@
   },
   "tnpm": {
     "mode": "pnpm"
+  },
+  "dependencies": {
+    "@size-limit/esbuild": "^11.0.2",
+    "@size-limit/esbuild-why": "^11.0.2",
+    "@size-limit/file": "^11.0.2"
   }
 }
