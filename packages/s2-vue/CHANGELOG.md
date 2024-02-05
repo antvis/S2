@@ -1,3 +1,15 @@
+# [@antv/s2-vue-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.9...@antv/s2-vue-v2.0.0-next.10) (2024-02-05)
+
+
+### Bug Fixes
+
+* **interaction:** 修复隐藏列头配置更新时未覆盖上一次的配置 close [#2495](https://github.com/antvis/S2/issues/2495) ([#2527](https://github.com/antvis/S2/issues/2527)) ([ddc1283](https://github.com/antvis/S2/commit/ddc12830fa32f001ff7009a2bee8ce8624a1a187))
+
+
+### Features
+
+* 合并 master 到 next ([#2493](https://github.com/antvis/S2/issues/2493)) ([6da530d](https://github.com/antvis/S2/commit/6da530d0c5f53d283ddfaa4b3e510ca11c9bf83e)), closes [#2186](https://github.com/antvis/S2/issues/2186) [#2204](https://github.com/antvis/S2/issues/2204) [#2191](https://github.com/antvis/S2/issues/2191)
+
 # [@antv/s2-vue-v2.0.0-next.9](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.8...@antv/s2-vue-v2.0.0-next.9) (2023-12-12)
 
 ### Features
