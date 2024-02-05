@@ -125,7 +125,9 @@ function MainLayout({ callback }: Props) {
     width: 800,
     height: 600,
     device: DeviceType.PC,
-    showSeriesNumber: true,
+    seriesNumber: {
+      enable: true,
+    },
     placeholder: '',
     style: {
       dataCell: {
@@ -139,7 +141,7 @@ function MainLayout({ callback }: Props) {
         }
       : undefined,
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       hoverHighlight: false,
       linkFields: ['order_id', 'customer_name'],
       hiddenColumnFields,

@@ -10,12 +10,15 @@ import {
 } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  DataItem,
   FilterParam,
   LayoutResult,
   ResizeInteractionOptions,
+  SimpleData,
   SortParams,
   TableSortParam,
   ViewMeta,
+  ViewMetaData,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
@@ -195,6 +198,7 @@ export class TableFacet extends FrozenFacet {
   }
 
   public getCellMeta = (rowIndex = 0, colIndex = 0) => {
+    const { options, dataSet } = this.spreadsheet;
     const { colLeafNodes } = this.getLayoutResult();
     const colNode = colLeafNodes[colIndex];
 
@@ -202,7 +206,6 @@ export class TableFacet extends FrozenFacet {
       return null;
     }
 
-    const { showSeriesNumber } = this.spreadsheet.options;
     const cellHeight = this.getCellHeightByRowIndex(rowIndex);
     const cellRange = this.getCellRange();
     const { trailingRowCount = 0 } = getValidFrozenOptions(
@@ -211,7 +214,7 @@ export class TableFacet extends FrozenFacet {
       cellRange.end - cellRange.start + 1,
     );
 
-    let data;
+    let data: ViewMetaData | SimpleData | undefined;
 
     const x = colNode.x;
     let y = this.viewCellHeights.getCellOffsetY(rowIndex);
@@ -222,10 +225,10 @@ export class TableFacet extends FrozenFacet {
         this.getTotalHeightForRange(rowIndex, cellRange.end);
     }
 
-    if (showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
+    if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
     } else {
-      data = this.spreadsheet.dataSet.getCellData({
+      data = dataSet.getCellData({
         query: {
           field: colNode.field,
           rowIndex,
@@ -233,7 +236,7 @@ export class TableFacet extends FrozenFacet {
       });
     }
 
-    return {
+    const cellMeta: ViewMeta = {
       spreadsheet: this.spreadsheet,
       x,
       y,
@@ -241,31 +244,33 @@ export class TableFacet extends FrozenFacet {
       height: cellHeight,
       data: {
         [colNode.field]: data,
-      },
+      } as unknown as SimpleData,
       rowIndex,
       colIndex,
       isTotals: false,
       colId: colNode.id,
       rowId: String(rowIndex),
       valueField: colNode.field,
-      fieldValue: data,
+      fieldValue: data as DataItem,
       id: getDataCellId(String(rowIndex), colNode.id),
-    } as ViewMeta;
+    };
+
+    return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
   };
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { dataCell } = this.spreadsheet.options.style!;
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthType.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
+      const colHeaderColSize =
+        colLeafNodes.length - (seriesNumber?.enable ? 1 : 0);
       const canvasW =
         this.getCanvasSize().width -
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
 
-      // TODO: 向下取整, 导致单元格未撑满 canvas, 在冻结情况下会有问题, 待冻结重构后解决
       return Math.max(
         dataCell?.width!,
         floor(canvasW / Math.max(1, colHeaderColSize)),

@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     // 试试 (按住 Ctrl/Command) 对行列头进行多选
@@ -18,9 +18,6 @@ fetch(
         // 多选 (按住 Ctrl/Command), 默认开启
         multiSelection: true,
       },
-      tooltip: {
-        enable: true,
-      },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
@@ -29,5 +26,5 @@ fetch(
       console.log('selected', cells);
     });
 
-    s2.render();
+    await s2.render();
   });

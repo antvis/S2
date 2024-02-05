@@ -58,19 +58,19 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   private getDataMatrix(): string[][] {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
     return this.displayData.map((row, i) =>
       this.columnNodes.map((node) => {
         const field = node.field;
 
-        if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+        if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
           return (i + 1).toString();
         }
 
         const formatter = getFormatter(
           field,
-          this.config.isFormatData,
+          this.config.formatData,
           this.spreadsheet.dataSet,
         );
         const value = row[field];
@@ -81,7 +81,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   protected getDataMatrixRIC(): Promise<string[][]> {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
     const result: string[][] = [];
     let rowIndex = 0;
 
@@ -104,7 +104,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
                 const colNode = this.columnNodes[i];
                 const field = colNode.field;
 
-                if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+                if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
                   row.push((j + 1).toString());
                   // eslint-disable-next-line no-continue
                   continue;
@@ -112,7 +112,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
                 const formatter = getFormatter(
                   field,
-                  this.config.isFormatData,
+                  this.config.formatData,
                   this.spreadsheet.dataSet,
                 );
                 const value = rowData[field];
@@ -141,18 +141,18 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   private getColMatrix(): string[] {
-    const { isFormatHeader } = this.config;
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { formatHeader } = this.config;
+    const { seriesNumber } = this.spreadsheet.options;
 
     // 明细表的表头，没有格式化
     return this.columnNodes.map((node) => {
       const field: string = node.field;
 
-      if (!isFormatHeader) {
+      if (!formatHeader) {
         return field;
       }
 
-      return SERIES_NUMBER_FIELD === field && showSeriesNumber
+      return SERIES_NUMBER_FIELD === field && seriesNumber?.enable
         ? getDefaultSeriesNumberText()
         : this.spreadsheet.dataSet.getFieldName(field);
     }) as string[];
@@ -169,7 +169,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     const formatter = getFormatter(
       fieldKey!,
-      this.config.isFormatData,
+      this.config.formatData,
       this.spreadsheet.dataSet,
     );
 
@@ -177,14 +177,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
   };
 
   getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
-    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+    const { copy } = this.spreadsheet.options.interaction!;
 
     // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
       map(cellsMeta, (it) => convertString(this.getValueFromMeta(it))),
     ) as string[][];
 
-    if (!copyWithHeader) {
+    if (!copy?.withHeader) {
       return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -8,7 +7,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       pagination: {
@@ -18,8 +17,9 @@ fetch(
       },
     };
 
-    ReactDOM.render(
-      <SheetComponent dataCfg={dataCfg} options={s2Options} showPagination />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent dataCfg={dataCfg} options={s2Options} showPagination />,
+      );
   });

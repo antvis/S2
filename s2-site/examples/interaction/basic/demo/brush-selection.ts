@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     // 支持滚动圈选, 试试圈选时鼠标向下
@@ -19,19 +19,17 @@ fetch(
         // brushSelection: false,
       },
       style: {
-        cellCfg: {
+        dataCell: {
           height: 100,
         },
       },
-      tooltip: {
-        enable: true,
-      },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
       console.log('dataCelBrushSelection', cells);
     });
 
-    s2.render();
+    await s2.render();
   });

@@ -3,7 +3,7 @@ title: Custom Interaction
 order: 1
 ---
 
-Don't worry if the built-in interactions fail to cover actual usage scenarios. You can use the interaction events provided by [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) to perform any permutation and combination to customize the interaction. Here is an example of [**double-clicking to hide the column header in the schedule**](/examples/interaction/custom#double-click-hide-columns) .
+Don't worry if the built-in interactions fail to cover actual usage scenarios. You can use the interaction events provided by [`S2Event`](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/constant/events/basic.ts) to perform any permutation and combination to customize the interaction. Here is an example of [**double-clicking to hide the column header in the schedule**](/examples/interaction/custom#double-click-hide-columns) .
 
 ## 1. Custom interaction class
 
@@ -102,4 +102,4 @@ const s2 = new TableSheet(container, s2DataConfig, s2Options);
 s2.render();
 ```
 
-<Playground path="interaction/advanced/demo/double-click-hide-columns.ts" rid="container" height="400"></Playground>
+<Playground path="interaction/custom/demo/double-click-hide-columns.ts" rid="container"></playground>

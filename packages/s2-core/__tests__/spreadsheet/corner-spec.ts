@@ -16,13 +16,37 @@ describe('PivotSheet Corner Tests', () => {
 
   const cornerTypes: Array<{
     hierarchyType: S2Options['hierarchyType'];
-    showSeriesNumber: S2Options['showSeriesNumber'];
+    seriesNumber: S2Options['seriesNumber'];
     cornerNodeCount: number;
   }> = [
-    { hierarchyType: 'tree', cornerNodeCount: 1, showSeriesNumber: false },
-    { hierarchyType: 'grid', cornerNodeCount: 2, showSeriesNumber: false },
-    { hierarchyType: 'tree', cornerNodeCount: 2, showSeriesNumber: true },
-    { hierarchyType: 'grid', cornerNodeCount: 3, showSeriesNumber: true },
+    {
+      hierarchyType: 'tree',
+      cornerNodeCount: 1,
+      seriesNumber: {
+        enable: false,
+      },
+    },
+    {
+      hierarchyType: 'grid',
+      cornerNodeCount: 2,
+      seriesNumber: {
+        enable: false,
+      },
+    },
+    {
+      hierarchyType: 'tree',
+      cornerNodeCount: 2,
+      seriesNumber: {
+        enable: true,
+      },
+    },
+    {
+      hierarchyType: 'grid',
+      cornerNodeCount: 3,
+      seriesNumber: {
+        enable: true,
+      },
+    },
   ];
 
   beforeEach(async () => {
@@ -43,7 +67,7 @@ describe('PivotSheet Corner Tests', () => {
   // https://github.com/antvis/S2/issues/1929
   test.each(cornerTypes)(
     'should render row corner when columns is empty and measure hidden for %o',
-    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, seriesNumber }) => {
       s2.setDataCfg({
         ...simpleDataConfig,
         fields: {
@@ -54,7 +78,7 @@ describe('PivotSheet Corner Tests', () => {
       });
       s2.setOptions({
         hierarchyType,
-        showSeriesNumber,
+        seriesNumber,
         style: {
           colCell: {
             hideValue: true,
@@ -87,10 +111,10 @@ describe('PivotSheet Corner Tests', () => {
 
   test.each(cornerTypes)(
     'should render row corner when measure hidden for %o',
-    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, seriesNumber }) => {
       s2.setOptions({
         hierarchyType,
-        showSeriesNumber,
+        seriesNumber,
         style: {
           colCell: {
             hideValue: true,
@@ -134,7 +158,7 @@ describe('PivotSheet Corner Tests', () => {
 
   test.each(cornerTypes)(
     'should render row corner when columns and values is empty for %o',
-    async ({ hierarchyType, cornerNodeCount, showSeriesNumber }) => {
+    async ({ hierarchyType, cornerNodeCount, seriesNumber }) => {
       s2.setDataCfg({
         ...simpleDataConfig,
         fields: {
@@ -145,7 +169,7 @@ describe('PivotSheet Corner Tests', () => {
       });
       s2.setOptions({
         hierarchyType,
-        showSeriesNumber,
+        seriesNumber,
       });
       await s2.render();
 

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  Switcher,
+} from '@antv/s2-react';
+import insertCSS from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -9,7 +12,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
@@ -75,10 +78,12 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SwitcherDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-switcher-item.checkable-item {
     align-items: center;
   }

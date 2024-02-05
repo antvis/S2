@@ -1,6 +1,7 @@
 ---
 title: Conditions
 order: 4
+tag: Updated
 ---
 
 S2 comes with field tagging feature. Users can set different rendering logics based on business semantics to mark and analyze key data. Field tag types include:

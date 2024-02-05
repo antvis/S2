@@ -16,7 +16,7 @@ import type { SheetComponentsProps } from '@/components';
 const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
 };
 
 describe('useSpreadSheet tests', () => {

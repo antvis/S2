@@ -3,7 +3,7 @@ title: Store
 order: 3
 ---
 
-功能描述：存储一些信息。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/store/index.ts)
+功能描述：存储一些信息。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/store/index.ts)
 
 ```ts
 s2.store.get('key') // 获取
@@ -22,8 +22,8 @@ s2.store.set('key', value) // 存储
 | interactionStateInfo | 当前交互状态信息 | `number` |
 | drillDownFieldInLevel | 下钻节点层级信息 | [PartDrillDownInfo[]](#partdrilldowninfo) |
 | originalDataCfg | 原始数据配置 | [S2DataConfig](/docs/api/general/S2DataConfig)|
-| panelBBox | 可视区域包裹盒模型 | [BBox](/docs/api/basic-class/spreadsheet/#bbox) |
-| activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.vision/zh/docs/api/group) |
+| panelBBox | 可视区域包裹盒模型 | [BBox](/docs/api/basic-class/base-bbox) |
+| activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.antgroup.com/docs/api/group) |
 | valueRanges | 条件格式值区间 | [ValueRanges](#valueranges) |
 | initColLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/docs/api/basic-class/node)|
 | hiddenColumnsDetail | 隐藏的列头详情 | [HiddenColumnsInfo[]](#hiddencolumnsinfo) |

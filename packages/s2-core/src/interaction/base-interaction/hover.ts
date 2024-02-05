@@ -18,6 +18,7 @@ import {
 } from '../../utils/interaction/hover-event';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from '../base-event';
+import type { Node } from '../../facet/layout/node';
 
 /**
  * @description Hover event for data cells, row cells and col cells
@@ -30,7 +31,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.bindColCellHover();
   }
 
-  public updateRowColCells(meta: ViewMeta) {
+  public updateRowColCells(meta: ViewMeta | Node) {
     const { rowId, colId } = meta;
     const { facet, interaction } = this.spreadsheet;
 
@@ -69,11 +70,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    * @param event
    * @param meta
    */
-  private changeStateToHoverFocus(
-    cell: S2CellType,
-    event: CanvasEvent,
-    meta: ViewMeta,
-  ) {
+  private changeStateToHoverFocus(cell: S2CellType, event: CanvasEvent) {
+    if (!cell) {
+      return;
+    }
+
+    const meta = cell.getMeta();
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
     const { hoverFocus } = interactionOptions!;
@@ -176,7 +178,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   }
 
   private getCellData(
-    meta: ViewMeta = {} as ViewMeta,
+    meta: ViewMeta | Node = {} as ViewMeta,
     onlyShowCellText?: boolean,
   ): TooltipData[] {
     const {
@@ -236,7 +238,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       }
 
       if (interactionOptions?.hoverFocus) {
-        this.changeStateToHoverFocus(cell, event, meta);
+        this.changeStateToHoverFocus(cell, event);
       }
     });
   }

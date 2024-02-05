@@ -3,9 +3,9 @@ title: 维度切换组件
 order: 3
 ---
 
-# React 维度切换组件
+## React 维度切换组件 <Badge>@antv/s2-react</Badge>
 
-## Switcher 组件 Props
+### Switcher 组件 Props
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | -- |
@@ -21,7 +21,7 @@ order: 3
 | onSubmit | 关闭弹窗后，处理行列切换结果的回调函数 | `(result:` [SwitcherResult](#switcherresult)`) => void` |  |  |
 | popover | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |  |  |
 
-## SwitcherField
+### SwitcherField
 
 行列头以及指标值的配置描述对象
 
@@ -33,7 +33,7 @@ order: 3
 | selectable | 是否打开字段的 checkbox 用于控制显隐 | `boolean` | `false` |  |
 | allowEmpty | 当前维度是否可以将全部子项拖出 | `boolean` | `true` |  |
 
-## SwitcherItem
+### SwitcherItem
 
 配置字段对象
 
@@ -44,7 +44,7 @@ order: 3
 | checked | 字段是否需要显示 | `boolean` | `true` |  |
 | children | 如果字段存在关联子项（如：同环比），使用该属性配置子项 | [SwitcherItem](#switcheritem)`[]` | `[]` |  |
 
-## SwitcherResult
+### SwitcherResult
 
 关闭弹窗后，处理行列切换结果的回调函数的参数
 
@@ -54,7 +54,7 @@ order: 3
 | columns | 所有列头字段操作结果 | [SwitcherResultItem](#switcherresultitem) |  |  |
 | values | 所有指标字段操作结果 | [SwitcherResultItem](#switcherresultitem) |  |  |
 
-## SwitcherResultItem
+### SwitcherResultItem
 
 关闭弹窗后，每个维度结果的描述对象
 
@@ -63,20 +63,16 @@ order: 3
 | items | 全部字段的被**扁平化**集合，按拖拽后顺序排序 | [SwitcherItem](#switcheritem)`[]` | `[]` |  |
 | hideItems | 所有需要隐藏字段被**扁平化**的集合，按拖拽后顺序排序 | [SwitcherItem](#switcheritem)`[]` | `[]` |  |
 
-## SwitcherCfgProps
+### SwitcherCfgProps
 
 内置 header 组件配置参数，本质上是 Switcher 组件 Props 的子集
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | -- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |  |  |
+| sheetType | [表格类型](/api/components/sheet-component) | `pivot` |  |  |  |
 | title | 打开切换弹窗的触发节点 | `ReactNode` |  |  |
 | contentTitleText | 弹窗默认标题文字 | `string` | 行列切换 |  |
 | resetText | 重置按钮文字 | `string` | 恢复默认 |  |
 | innerContentClassName | 弹出框内容样式名 | `string` |  |  |
 | popover | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |
 | disabled | 是否禁用 | `boolean` | `false` |  |
-
-# Vue 维度切换组件
-
-开发中，敬请期待

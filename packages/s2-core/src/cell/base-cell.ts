@@ -1,5 +1,6 @@
 import type {
   DisplayObject,
+  Image,
   Line,
   PointLike,
   Polygon,
@@ -32,6 +33,7 @@ import type { GuiIcon } from '../common/icons/gui-icon';
 import {
   CellBorderPosition,
   CellClipBox,
+  type CellTextWordWrapStyle,
   type Condition,
   type ConditionMappingResult,
   type Conditions,
@@ -90,7 +92,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected theme: InternalFullyTheme;
 
   // background control shape
-  protected backgroundShape: Rect | Polygon;
+  protected backgroundShape: Rect | Polygon | Image;
 
   // text control shape
   protected textShape: CustomText;
@@ -148,13 +150,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getIconPosition(): PointLike;
 
-  protected abstract findFieldCondition(
-    conditions: Condition[] | undefined,
-  ): Condition | undefined;
+  protected abstract findFieldCondition<Con extends Condition>(
+    conditions?: Con[],
+  ): Con | undefined;
 
-  protected abstract mappingValue(
-    condition: Condition,
-  ): ConditionMappingResult | undefined | null;
+  protected abstract mappingValue<Result>(
+    condition: Condition<Result>,
+  ): ConditionMappingResult<Result>;
 
   protected abstract getBackgroundColor(): {
     backgroundColor: string | undefined;
@@ -206,6 +208,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return false;
   }
 
+  public getCellTextWordWrapStyle(cellType?: CellType): CellTextWordWrapStyle {
+    const { wordWrap, maxLines, textOverflow } = (this.spreadsheet.options
+      ?.style?.[cellType || this.cellType] || {}) as CellTextWordWrapStyle;
+
+    return {
+      wordWrap,
+      maxLines,
+      textOverflow,
+    };
+  }
+
   /**
    * 获取实际渲染的文本 (含省略号)
    */
@@ -221,7 +234,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 实际渲染的文本宽度, 如果是多行文本, 取每一行文本高度的总和)
+   * 实际渲染的文本宽度, 如果是多行文本, 取每一行文本高度的总和
    * @alias getMultiLineActualTextHeight
    */
   public getActualTextHeight(): number {
@@ -271,6 +284,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getTextLineBoundingRects().length > 1;
   }
 
+  /**
+   * 获取单元格空值占位符
+   */
   public getEmptyPlaceholder() {
     const {
       options: { placeholder },
@@ -286,6 +302,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.textShape?.getLineBoundingRects() || [];
   }
 
+  /**
+   * 获取单元格展示的数值
+   */
   public getFieldValue() {
     return this.getFormattedFieldValue().formattedValue;
   }

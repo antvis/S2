@@ -1,6 +1,7 @@
 ---
 title: Theme
 order: 6
+tag: Updated
 ---
 
 ## Introduction
@@ -148,7 +149,7 @@ Although the custom `schema` is flexible, it has a heavy mental burden and requi
 
 #### Optional swatch color
 
-You can refer to the [built-in swatches](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) to personalize `basicColors` and `semanticColors` . The selected colors will be used to draw different parts of the table. For the relationship between colors, please refer to the [swatch comparison table below](#%E8%89%B2%E6%9D%BF%E5%AF%B9%E7%85%A7%E8%A1%A8) .
+You can refer to the [built-in swatches](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/palette/colorful.ts) to personalize `basicColors` and `semanticColors` . The selected colors will be used to draw different parts of the table. For the relationship between colors, please refer to the [swatch comparison table below](#%E8%89%B2%E6%9D%BF%E5%AF%B9%E7%85%A7%E8%A1%A8) .
 
 In addition, in order to facilitate the deployment of exclusive color palettes, S2 officially provides a [self-service color palette tool](/examples/theme/custom/#custom-manual-palette) , which helps you quickly adjust color palettes, copy and paste them into projects for use with one click.
 

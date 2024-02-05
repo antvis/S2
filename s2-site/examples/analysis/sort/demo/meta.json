@@ -13,22 +13,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/9JQrrIVN8/2021-11-16%25252020.47.11.gif"
     },
     {
-      "filename": "group-sort.tsx",
-      "title": {
-        "zh": "组内排序",
-        "en": "Group Sort"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ljBJH8o6bT/group-sort.gif"
-    },
-    {
-      "filename": "advanced.tsx",
-      "title": {
-        "zh": "高级排序",
-        "en": "Advanced Sort"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2TmM6qOU%26V/advance.gif"
-    },
-    {
       "filename": "custom-method.ts",
       "title": {
         "zh": "根据升/降序方法排序",
@@ -67,6 +51,22 @@
         "en": "Custom Function Sort"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/mkeXSyNZmk/1a50ecd2-1d81-4858-a106-c0c325e45a59.png"
+    },
+    {
+      "filename": "group-sort.tsx",
+      "title": {
+        "zh": "组内排序",
+        "en": "Group Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ljBJH8o6bT/group-sort.gif"
+    },
+    {
+      "filename": "advanced.tsx",
+      "title": {
+        "zh": "高级排序",
+        "en": "Advanced Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2TmM6qOU%26V/advance.gif"
     }
   ]
 }

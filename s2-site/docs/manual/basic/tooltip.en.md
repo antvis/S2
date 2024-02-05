@@ -1,6 +1,7 @@
 ---
 title: Tooltip
 order: 7
+tag: Updated
 ---
 
 ## Introduction
@@ -16,8 +17,8 @@ Expose table information and some analysis functions through table interaction
 In `React` version and `Vue3` version, the content of `tooltip` is rendered by means of [custom Tooltip class](#custom-tooltip-class), including `sort drop-down menu`, `cell selection information summary`, `Column header hide button` etc.
 
 View `React`
-Version [specific implementation](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
-and the `Vue3` version [concrete implementation](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
+Version [specific implementation](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+and the `Vue3` version [concrete implementation](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
 
 - If you need `tooltip`, you can directly use the out-of-the-box `@antv/s2-react` `@antv/s2-vue`, which saves you secondary packaging and is more convenient to use
 - If you don't want to depend on the framework, or want to use `tooltip` in `Vue`, `Angular` framework, please refer to [Custom Tooltip Class](#Custom-tooltip-class) chapter
@@ -389,7 +390,7 @@ Inherit `BaseTooltip` base class, you can rewrite `show (hide)`, `destroy (destr
 You can also override the `renderContent` method to render any component you encapsulate
 
 - [View BaseTooltip base class](/api/basic-class/base-tooltip)
-- [View React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+- [View React example](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [View Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
 ```ts

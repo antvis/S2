@@ -20,7 +20,9 @@ describe('Facet Layout API Tests', () => {
       s2 = createPivotSheet({
         width: 300,
         height: 300,
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       });
       await s2.render();
     });
@@ -94,7 +96,9 @@ describe('Facet Layout API Tests', () => {
 
       test('#getHeaderNodes() for seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -372,7 +376,9 @@ describe('Facet Layout API Tests', () => {
 
       test('#getCornerNodes() for seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -426,7 +432,9 @@ describe('Facet Layout API Tests', () => {
 
       test('#getCornerCells() for seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -466,7 +474,9 @@ describe('Facet Layout API Tests', () => {
 
       test('#getSeriesNumberNodes() for seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -490,7 +500,9 @@ describe('Facet Layout API Tests', () => {
 
       test('#getSeriesNumberCells() for seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -658,7 +670,9 @@ describe('Facet Layout API Tests', () => {
             {
               width: 300,
               height: 300,
-              showSeriesNumber: false,
+              seriesNumber: {
+                enable: false,
+              },
               totals: {
                 row: {
                   showGrandTotals: true,
@@ -846,7 +860,9 @@ describe('Facet Layout API Tests', () => {
             {
               width: 300,
               height: 300,
-              showSeriesNumber: false,
+              seriesNumber: {
+                enable: false,
+              },
               totals: {
                 col: {
                   showGrandTotals: true,
@@ -914,9 +930,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getDataCells() for showSeriesNumber enable', async () => {
+      test('#getDataCells() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -945,7 +963,9 @@ describe('Facet Layout API Tests', () => {
       s2 = createTableSheet({
         width: 300,
         height: 300,
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       });
       await s2.render();
     });
@@ -970,9 +990,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getHeaderNodes() for showSeriesNumber enable', async () => {
+      test('#getHeaderNodes() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -1012,9 +1034,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getHeaderCells() for showSeriesNumber enable', async () => {
+      test('#getHeaderCells() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -1072,9 +1096,11 @@ describe('Facet Layout API Tests', () => {
         ).toMatchInlineSnapshot(`Array []`);
       });
 
-      test('#getCells() for showSeriesNumber enable', async () => {
+      test('#getCells() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -1152,7 +1178,9 @@ describe('Facet Layout API Tests', () => {
     describe('SeriesNumberCell', () => {
       beforeEach(async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
       });
@@ -1197,9 +1225,11 @@ describe('Facet Layout API Tests', () => {
         );
       });
 
-      test('#getColNodes() for showSeriesNumber enable', async () => {
+      test('#getColNodes() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 
@@ -1304,9 +1334,11 @@ describe('Facet Layout API Tests', () => {
         `);
       });
 
-      test('#getDataCells() for showSeriesNumber enable', async () => {
+      test('#getDataCells() for show seriesNumber enable', async () => {
         s2.setOptions({
-          showSeriesNumber: true,
+          seriesNumber: {
+            enable: true,
+          },
         });
         await s2.render(false);
 

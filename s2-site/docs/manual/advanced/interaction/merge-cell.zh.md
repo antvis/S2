@@ -283,7 +283,9 @@ const s2DataConfig = {
 const s2Options = {
   width: 600,
   height: 400,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true
+  },
   tooltip: {
     content: TooltipContent,
   },
@@ -335,7 +337,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
   });
 });
 
-s2.render();
+await s2.render();
 ```
 
 ## demo 演示

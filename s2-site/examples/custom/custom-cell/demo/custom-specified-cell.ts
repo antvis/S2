@@ -1,9 +1,18 @@
 /* eslint-disable max-classes-per-file */
-import { PivotSheet, DataCell, ColCell, CornerCell, RowCell } from '@antv/s2';
+import {
+  PivotSheet,
+  DataCell,
+  ColCell,
+  S2Options,
+  S2DataConfig,
+  CornerCell,
+  RowCell,
+} from '@antv/s2';
 
 /**
  * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
+ * 明细表需要继承 TableDataCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends DataCell {
   getBackgroundColor() {
@@ -63,7 +72,8 @@ class CustomDataCell extends DataCell {
 
 /**
  * 自定义 ColCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/col-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/col-cell.ts
+ * 明细表需要继承 TableColCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends ColCell {
   getTextStyle() {
@@ -104,7 +114,7 @@ class CustomColCell extends ColCell {
 
 /**
  * 自定义 CornerCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
   getBackgroundColor() {
@@ -137,7 +147,7 @@ class CustomCornerCell extends CornerCell {
 
 /**
  * 自定义 RowCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomRowCell extends RowCell {
   getBackgroundColor() {
@@ -181,9 +191,9 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
-  .then((res) => {
+  .then(async (res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -192,7 +202,8 @@ fetch(
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       cornerCell: (node, spreadsheet, headerConfig) => {
@@ -208,7 +219,8 @@ fetch(
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

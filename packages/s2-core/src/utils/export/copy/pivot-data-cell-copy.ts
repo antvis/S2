@@ -228,7 +228,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     const formatter = getFormatter(
       field ?? colNode.field,
-      this.config.isFormatData,
+      this.config.formatData,
       dataSet,
     );
 
@@ -274,21 +274,21 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   protected getColMatrix(): string[][] {
     return zip(
       ...map(this.leafColNodes, (n) =>
-        this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+        this.config.formatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
       ),
     ) as string[][];
   }
 
   protected getRowMatrix(): string[][] {
     const rowMatrix: string[][] = map(this.leafRowNodes, (n) =>
-      this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+      this.config.formatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
     );
 
     return completeMatrix(rowMatrix);
   }
 
   getDataMatrixByDataCell = (cellMetaMatrix: CellMeta[][]): CopyableList => {
-    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+    const { copy } = this.spreadsheet.options.interaction!;
     const measureQuery = this.compatibleHideMeasureColumn();
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
@@ -312,13 +312,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     ) as string[][];
 
     // 不带表头复制
-    if (!copyWithHeader) {
+    if (!copy?.withHeader) {
       return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
-
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
@@ -328,18 +327,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   };
 
   getPivotCopyData(): CopyableList {
-    const { copyWithHeader } = this.spreadsheet.options.interaction!;
-
+    const { copy } = this.spreadsheet.options.interaction!;
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
     // 不带表头复制
-    if (!copyWithHeader) {
+    if (!copy?.withHeader) {
       return this.matrixTransformer(dataMatrix, this.config.separator);
     }
 
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
-
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(

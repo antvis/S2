@@ -40,7 +40,7 @@ import {
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
-import { debounce, isBoolean, isEmpty } from 'lodash';
+import { debounce, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import { createRoot } from 'react-dom/client';
@@ -228,13 +228,18 @@ function MainLayout() {
     }
   };
 
-  const getColumnOptions = (type: SheetType) => {
-    if (type === 'table') {
-      return dataCfg.fields?.columns || [];
-    }
+  const getColumnOptions = React.useCallback(
+    (type: SheetType) => {
+      if (type === 'table') {
+        return dataCfg.fields?.columns || [];
+      }
 
-    return s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || [];
-  };
+      return (
+        s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || []
+      );
+    },
+    [dataCfg.fields?.columns],
+  );
 
   //  ================== Hooks ========================
 
@@ -251,7 +256,7 @@ function MainLayout() {
     }
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetType]);
+  }, [sheetType, getColumnOptions]);
 
   React.useEffect(() => {
     console.log('env:', process.env);
@@ -640,10 +645,12 @@ function MainLayout() {
                                 <Switch
                                   checkedChildren="显示序号"
                                   unCheckedChildren="不显示序号"
-                                  checked={mergedOptions.showSeriesNumber}
+                                  checked={mergedOptions.seriesNumber?.enable}
                                   onChange={(checked) => {
                                     updateOptions({
-                                      showSeriesNumber: checked,
+                                      seriesNumber: {
+                                        enable: checked,
+                                      },
                                     });
                                   }}
                                 />
@@ -651,17 +658,19 @@ function MainLayout() {
                                   checkedChildren="自定义序号文本"
                                   unCheckedChildren="默认序号文本"
                                   checked={
-                                    mergedOptions.seriesNumberText ===
+                                    mergedOptions.seriesNumber?.text ===
                                     '自定义序号文本'
                                   }
                                   onChange={(checked) => {
                                     updateOptions({
-                                      seriesNumberText: checked
-                                        ? '自定义序号文本'
-                                        : getDefaultSeriesNumberText(),
+                                      seriesNumber: {
+                                        text: checked
+                                          ? '自定义序号文本'
+                                          : getDefaultSeriesNumberText(),
+                                      },
                                     });
                                   }}
-                                  disabled={!mergedOptions.showSeriesNumber}
+                                  disabled={!mergedOptions.seriesNumber?.enable}
                                 />
                                 <Switch
                                   checkedChildren="分页"
@@ -862,6 +871,7 @@ function MainLayout() {
                                     onChange={onAutoAdjustBoundaryChange}
                                     style={{ width: 230 }}
                                     size="small"
+                                    allowClear
                                   >
                                     <Select.Option value="container">
                                       container (表格区域)
@@ -957,6 +967,7 @@ function MainLayout() {
                                     onChange={onOverscrollBehaviorChange}
                                     style={{ width: 150 }}
                                     size="small"
+                                    allowClear
                                   >
                                     <Select.Option value="auto">
                                       auto
@@ -1125,6 +1136,7 @@ function MainLayout() {
                                     }
                                     placeholder="默认行头展开层级"
                                     size="small"
+                                    allowClear
                                     onChange={(level) => {
                                       updateOptions({
                                         style: {
@@ -1157,12 +1169,14 @@ function MainLayout() {
                                     checkedChildren="允许复制"
                                     unCheckedChildren="禁用复制"
                                     checked={
-                                      mergedOptions.interaction?.enableCopy
+                                      mergedOptions.interaction?.copy?.enable
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          enableCopy: checked,
+                                          copy: {
+                                            enable: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1173,12 +1187,15 @@ function MainLayout() {
                                     checkedChildren="复制包含其对应行列头的数据"
                                     unCheckedChildren="复制不包含其对应行列头的数据"
                                     checked={
-                                      mergedOptions.interaction?.copyWithHeader
+                                      mergedOptions.interaction?.copy
+                                        ?.withHeader
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          copyWithHeader: checked,
+                                          copy: {
+                                            withHeader: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1189,12 +1206,15 @@ function MainLayout() {
                                     checkedChildren="复制带格式后的数据"
                                     unCheckedChildren="复制未格式化的数据"
                                     checked={
-                                      mergedOptions.interaction?.copyWithFormat
+                                      mergedOptions.interaction?.copy
+                                        ?.withFormat
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
                                         interaction: {
-                                          copyWithFormat: checked,
+                                          copy: {
+                                            withFormat: checked,
+                                          },
                                         },
                                       });
                                     }}
@@ -1209,6 +1229,49 @@ function MainLayout() {
                           label: '交互配置',
                           children: (
                             <Space>
+                              <Tooltip title="选中单元格后高亮联动, selectedCellHighlight 为 boolean 值时代表全开或全关">
+                                <Select
+                                  style={{ width: 260 }}
+                                  placeholder="单元格选中高亮"
+                                  allowClear
+                                  mode="multiple"
+                                  onChange={(type) => {
+                                    let selectedCellHighlight:
+                                      | boolean
+                                      | InteractionCellHighlightOptions = false;
+
+                                    selectedCellHighlight = {
+                                      rowHeader: false,
+                                      colHeader: false,
+                                      currentCol: false,
+                                      currentRow: false,
+                                    };
+                                    type.forEach((i: number) => {
+                                      // @ts-ignore
+                                      selectedCellHighlight[i] = true;
+                                    });
+
+                                    updateOptions({
+                                      interaction: {
+                                        selectedCellHighlight,
+                                      },
+                                    });
+                                  }}
+                                >
+                                  <Select.Option value="rowHeader">
+                                    rowHeader: 高亮所在行头
+                                  </Select.Option>
+                                  <Select.Option value="colHeader">
+                                    colHeader: 高亮所在列头
+                                  </Select.Option>
+                                  <Select.Option value="currentRow">
+                                    currentRow: 高亮所在行
+                                  </Select.Option>
+                                  <Select.Option value="currentCol">
+                                    currentCol: 高亮所在列
+                                  </Select.Option>
+                                </Select>
+                              </Tooltip>
                               <Tooltip title="高亮选中单元格">
                                 <Switch
                                   checkedChildren="选中聚光灯开"
@@ -1226,64 +1289,10 @@ function MainLayout() {
                                   }}
                                 />
                               </Tooltip>
-                              <Tooltip title="高亮选中单元格行为，演示这里旧配置优先级最高">
-                                <Select
-                                  style={{ width: 260 }}
-                                  placeholder="单元格选中高亮"
-                                  allowClear
-                                  mode="multiple"
-                                  onChange={(type) => {
-                                    let selectedCellHighlight:
-                                      | boolean
-                                      | InteractionCellHighlightOptions = false;
-                                    const oldIdx = type.findIndex(
-                                      (typeItem: any) => isBoolean(typeItem),
-                                    );
-
-                                    if (oldIdx > -1) {
-                                      selectedCellHighlight = type[oldIdx];
-                                    } else {
-                                      selectedCellHighlight = {
-                                        rowHeader: false,
-                                        colHeader: false,
-                                        currentCol: false,
-                                        currentRow: false,
-                                      };
-                                      type.forEach((i: number) => {
-                                        // @ts-ignore
-                                        selectedCellHighlight[i] = true;
-                                      });
-                                    }
-
-                                    updateOptions({
-                                      interaction: {
-                                        // @ts-ignore
-                                        selectedCellHighlight,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  <Select.Option value={true}>
-                                    （旧）高亮选中单元格所在行列头
-                                  </Select.Option>
-                                  <Select.Option value="rowHeader">
-                                    rowHeader: 高亮所在行头
-                                  </Select.Option>
-                                  <Select.Option value="colHeader">
-                                    colHeader: 高亮所在列头
-                                  </Select.Option>
-                                  <Select.Option value="currentRow">
-                                    currentRow: 高亮所在行
-                                  </Select.Option>
-                                  <Select.Option value="currentCol">
-                                    currentCol: 高亮所在列
-                                  </Select.Option>
-                                </Select>
-                              </Tooltip>
                               <Tooltip title="高亮当前行列单元格">
                                 <Switch
-                                  checkedChildren="hover十字器开"
-                                  unCheckedChildren="hover十字器关"
+                                  checkedChildren="hover 十字器开"
+                                  unCheckedChildren="hover 十字器关"
                                   checked={Boolean(
                                     mergedOptions?.interaction?.hoverHighlight,
                                   )}
@@ -1296,10 +1305,10 @@ function MainLayout() {
                                   }}
                                 />
                               </Tooltip>
-                              <Tooltip title="在数值单元格悬停800ms,显示tooltip">
+                              <Tooltip title="在数值单元格悬停 800ms,显示 tooltip">
                                 <Switch
-                                  checkedChildren="hover聚焦开"
-                                  unCheckedChildren="hover聚焦关"
+                                  checkedChildren="hover 聚焦开"
+                                  unCheckedChildren="hover 聚焦关"
                                   checked={
                                     mergedOptions?.interaction
                                       ?.hoverFocus as boolean
@@ -1308,6 +1317,88 @@ function MainLayout() {
                                     updateOptions({
                                       interaction: {
                                         hoverFocus: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="开启后,可通过键盘方向键移动单元格, 如果有滚动条则自动滚动">
+                                <Switch
+                                  checkedChildren="键盘方向键移动选中单元格开"
+                                  unCheckedChildren="键盘方向键移动选中单元关"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction
+                                      ?.selectedCellMove,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        selectedCellMove: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="行头, 列头, 数值区域可单独配置">
+                                <Switch
+                                  checkedChildren="刷选开启"
+                                  unCheckedChildren="刷选关闭"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction?.brushSelection,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        brushSelection: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="按住 Ctrl/Command + click">
+                                <Switch
+                                  checkedChildren="多选开启"
+                                  unCheckedChildren="多选关闭"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction?.multiSelection,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        multiSelection: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="区间快捷多选 Shift + click">
+                                <Switch
+                                  checkedChildren="区间快捷多选开启"
+                                  unCheckedChildren="区间快捷多选关闭"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction?.rangeSelection,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        rangeSelection: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="滚动后手动触发一次 hover, 触发单元格高亮效果">
+                                <Switch
+                                  checkedChildren="表格滚动后触发 hover 开启"
+                                  unCheckedChildren="表格滚动后触发 hover 关闭"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction
+                                      ?.hoverAfterScroll,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        hoverAfterScroll: checked,
                                       },
                                     });
                                   }}
@@ -1427,16 +1518,19 @@ function MainLayout() {
                                 </span>
                               </Space>
                             ),
-                            switcherCfg: { open: true },
-                            exportCfg: { open: true },
-                            advancedSortCfg: {
+                            switcher: { open: true },
+                            export: { open: true },
+                            advancedSort: {
                               open: true,
                             },
                           }}
                           onAfterRender={logHandler('onAfterRender')}
                           onRangeSort={logHandler('onRangeSort')}
                           onRangeSorted={logHandler('onRangeSorted')}
-                          onMounted={onSheetMounted}
+                          onMounted={(s2) => {
+                            onSheetMounted(s2);
+                            setColumnOptions(getColumnOptions(sheetType));
+                          }}
                           onDestroy={onSheetDestroy}
                           onColCellClick={onColCellClick}
                           onRowCellClick={logHandler('onRowCellClick')}

@@ -52,8 +52,10 @@ const dataCfg: S2DataConfig = {
 const options: S2Options = {
   width: 800,
   height: 600,
-  hdAdapter: false,
-  showSeriesNumber: true,
+  hd: false,
+  seriesNumber: {
+    enable: true,
+  },
   placeholder: '',
   style: {
     layoutWidthType: LayoutWidthType.Compact,
@@ -66,7 +68,9 @@ const options: S2Options = {
     pageSize: 100,
   },
   interaction: {
-    enableCopy: true,
+    copy: {
+      enable: true,
+    },
     hoverHighlight: false,
     resize: true,
   },

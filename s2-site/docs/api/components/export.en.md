@@ -1,6 +1,7 @@
 ---
 title: Export
 order: 5
+tag: Updated
 ---
 
 ## React export components
@@ -9,7 +10,7 @@ order: 5
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
-  header={{ exportCfg: { open: true } }}
+  header={{ export: { open: true } }}
 />
 ```
 
@@ -30,7 +31,7 @@ order: 5
 | syncCopy             | Copy data synchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
 | drop down            | Dropdown menu configuration, transparently passed to the `Dropdown` component of `antd` | [DropdownProps](https://ant.design/components/dropdown-cn/#API) |          |          |
 
-<embed src="@/docs/common/export.en.md"></embed>
+<embed src="@/docs/common/copy-export.en.md"></embed>
 
 ## Vue export component
 

@@ -3,13 +3,13 @@ import { PivotSheet } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price', 'cost'],
+        values: ['price'],
       },
       meta: [
         {
@@ -28,10 +28,6 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
           field: 'price',
           name: '价格',
         },
-        {
-          field: 'cost',
-          name: '成本',
-        },
       ],
       data,
     };
@@ -40,13 +36,14 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       width: 600,
       height: 480,
       style: {
-        colCfg: {
+        colCell: {
           // 隐藏数值 (数值挂列头时生效, 即 s2DataConfig.fields.values)
-          hideMeasureColumn: true,
+          hideValue: true,
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

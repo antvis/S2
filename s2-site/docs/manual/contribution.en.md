@@ -1,6 +1,7 @@
 ---
 title: Contribution
 order: 7
+tag: Updated
 ---
 
 If you happen to see this article, you must want to contribute to this project
@@ -13,7 +14,7 @@ We welcome any form of contribution, whether it is a typo modification, or a fri
 
 ## branch management
 
-At present, we are developing based on the `master` branch. If there is any modification, please pull a branch based on the `master` , and then in the form of `PR` , we have integrated the DingTalk robot, which will review your PR for the first time and give feedback
+At present, we are developing based on the `next` branch. If there is any modification, please pull a branch based on the `next` , and then in the form of `PR` , we have integrated the DingTalk robot, which will review your PR for the first time and give feedback
 
 ## Submit Bug Feedback
 

@@ -55,26 +55,10 @@
     {
       "filename": "resize.ts",
       "title": {
-        "zh": "行高列宽调整",
+        "zh": "行列宽高调整",
         "en": "Resize Height And Width"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif"
-    },
-    {
-      "filename": "frozen.ts",
-      "title": {
-        "zh": "明细表 - 行列冻结",
-        "en": "TableSheet - Frozen Rows And Cols"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif"
-    },
-    {
-      "filename": "frozen-row-header.ts",
-      "title": {
-        "zh": "透视表 - 行头冻结",
-        "en": "PivotSheet - Frozen Row Header"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*kk0ETbbbnOsAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "auto-reset-sheet-style.ts",
@@ -93,12 +77,49 @@
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NbG7SakRzXUAAAAAAAAAAAAADmJ7AQ/original.gif"
     },
     {
+      "filename": "selected-cell-highlight.ts",
+      "title": {
+        "zh": "选中单元格联动高亮",
+        "en": "Selected cell highlight"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PEYmR6HdlMEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "selected-cell-move.ts",
+      "title": {
+        "zh": "键盘方向键移动选中单元格",
+        "en": "Selected cell move"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aj4OTJZG2VsAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "copy-export.ts",
+      "title": {
+        "zh": "复制与导出",
+        "en": "Copy and export"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*LzTYTpFosccAAAAAAAAAAAAAARQnAQ",
+      "new": true
+    },
+    {
       "filename": "state-theme.ts",
       "title": {
         "zh": "交互主题配置",
         "en": "Interaction state theme"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6zM5TpfV7qIAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "event.ts",
+      "title": {
+        "zh": "交互事件监听和 API",
+        "en": "Interaction Event Listener"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/a6zSe1gvvy/f97ed6ec-0a5d-49b7-8492-754611d0aea6.png",
+      "new": true
     }
   ]
 }

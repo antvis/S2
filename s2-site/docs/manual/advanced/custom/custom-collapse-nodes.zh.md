@@ -1,6 +1,7 @@
 ---
 title: 自定义折叠/展开节点
 order: 7
+tag: New
 ---
 
 S2 支持在树状结构下，配置折叠/展开的节点，默认**展开所有节点**.
@@ -22,7 +23,7 @@ const s2Options = {
       expandDepth: 0,
       // 折叠所有
       collapseAll: true
-    },
+    }
   },
 }
 ```
@@ -51,7 +52,9 @@ const s2Options = {
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { 'root[&] 浙江省': true },
+      collapseFields: {
+        'root[& 浙江省': true
+      },
     },
   },
 }
@@ -73,10 +76,14 @@ const s2DataConfig = {
     rows: ['province', 'city']
   }
 }
+
 const s2Options = {
   style: {
     rowCell: {
-      collapseFields: { province: false, city: true }
+      collapseFields: {
+        province: false,
+        city: true
+      }
     },
   },
 }

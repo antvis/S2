@@ -91,4 +91,4 @@ const s2Options = {
 }
 ```
 
-<Playground path="custom/custom-icon/demo/custom-data-cell-icon.tsx" rid="customDataCellIcon" height="400"></Playground>
+<Playground path="custom/custom-icon/demo/custom-data-cell-icon.ts" rid="custom-data-cell-icon" height="400"></Playground>

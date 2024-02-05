@@ -14,6 +14,14 @@ export class TableSeriesNumberCell extends TableDataCell {
   }
 
   protected getTextStyle(): TextTheme {
-    return this.theme.rowCell!.seriesText!;
+    const textOverflowStyle = this.getCellTextWordWrapStyle(
+      CellType.SERIES_NUMBER_CELL,
+    );
+    const style = this.theme.rowCell!.seriesText!;
+
+    return {
+      ...textOverflowStyle,
+      ...style,
+    };
   }
 }

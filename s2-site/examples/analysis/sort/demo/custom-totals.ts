@@ -1,16 +1,22 @@
-import { PivotSheet, EXTRA_FIELD, TOTAL_VALUE } from '@antv/s2';
+import {
+  PivotSheet,
+  EXTRA_FIELD,
+  TOTAL_VALUE,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/4347c2dd-6554-451b-9d44-15b04e5de657.json',
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
       meta: [
         {
@@ -29,11 +35,15 @@ fetch(
           field: 'price',
           name: '价格',
         },
+        {
+          field: 'cost',
+          name: '成本',
+        },
       ],
       data,
       sortParams: [
         {
-          // province 依据（ province - 小计 ）&（ 总计 - price ）& 升序 排序
+          // province 依据行（`province-小计`）与列（`总计-price`）交叉的数据升序排序
           sortFieldId: 'province',
           sortMethod: 'ASC',
           sortByMeasure: TOTAL_VALUE,
@@ -42,7 +52,7 @@ fetch(
           },
         },
         {
-          // type 依据 （ type - 小计 ）&（ price ）& 降序 排序
+          // type 依据行（`浙江-小计`）与列（`type-小计`）交叉的数据倒序排序
           sortFieldId: 'type',
           sortMethod: 'DESC',
           sortByMeasure: TOTAL_VALUE,
@@ -54,7 +64,7 @@ fetch(
       ],
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       totals: {
@@ -74,7 +84,8 @@ fetch(
         },
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

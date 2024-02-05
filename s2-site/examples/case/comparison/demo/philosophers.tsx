@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { max, min, replace } from 'lodash';
-import insertCss from 'insert-css';
 
-import { SheetComponent } from '@antv/s2-react';
+import { max, min, replace } from 'lodash';
+import insertCSS from 'insert-css';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2DataConfig } from '@antv/s2';
 
 const PALETTE_COLORS = [
   '#B8E1FF',
@@ -45,12 +45,12 @@ fetch(
     const getFormatter = (val) => {
       if (val < 0) {
         return `公元前${replace(val, '-', '')}年`;
-      } else {
-        return `${val}年`;
       }
+
+      return `${val}年`;
     };
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['country', 'name', 'start', 'end', 'points', 'word'],
         columns: [],
@@ -91,10 +91,12 @@ fetch(
       ],
       data,
     };
+
     const TooltipContent = (props) => {
       const { rowQuery, fieldValue } = props;
       const { name, country, start, end, points } = rowQuery;
-      const ponitsLines = points.split('&');
+      const pointsLines = points.split('&');
+
       return (
         <div className="antv-s2-tooltip-container">
           <div className="antv-s2-tooltip-head-info-list">
@@ -102,17 +104,17 @@ fetch(
             <div>国家：{country}</div>
             <div>出生：{getFormatter(start)}</div>
             <div>逝世：{getFormatter(end)}</div>
-            {ponitsLines.length > 1 ? (
+            {pointsLines.length > 1 ? (
               <div>
                 观点:
-                {ponitsLines.map((point, index) => (
-                  <div>
+                {pointsLines.map((point, index) => (
+                  <div key={index}>
                     {index + 1}: {point}
                   </div>
                 ))}
               </div>
             ) : (
-              <div>观点: {ponitsLines[0]}</div>
+              <div>观点: {pointsLines[0]}</div>
             )}
           </div>
           <div className="antv-s2-tooltip-divider"></div>
@@ -127,8 +129,8 @@ fetch(
         </div>
       );
     };
-    const s2Options = {
-      width: '',
+
+    const s2Options: SheetComponentOptions = {
       height: 400,
       conditions: {
         text: [
@@ -153,6 +155,7 @@ fetch(
                   (((value - minWeight) / weightSpan) * 100) /
                     PALETTE_COLORS.length,
                 ) - 1;
+
               if (colorIndex <= 0) {
                 backgroundColor = PALETTE_COLORS[0];
               } else if (colorIndex >= PALETTE_COLORS.length) {
@@ -176,6 +179,7 @@ fetch(
 
     const onDataCellMouseUp = (value) => {
       const viewMeta = value?.viewMeta;
+
       if (!viewMeta) {
         return;
       }
@@ -184,29 +188,28 @@ fetch(
         x: value.event.clientX,
         y: value.event.clientY,
       };
+
       viewMeta.spreadsheet.tooltip.show({
         position,
         content: TooltipContent(viewMeta),
       });
     };
 
-    ReactDOM.render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
         adaptive={true}
         header={{
           title: '哲学家的观点',
-          extra: [<PaletteLegend />],
+          extra: <PaletteLegend />,
         }}
         onDataCellMouseUp={onDataCellMouseUp}
       />,
-
-      document.getElementById('container'),
     );
   });
 
-insertCss(`
+insertCSS(`
   .ant-page-header-compact {
     width: 100% ;
   }

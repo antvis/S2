@@ -2,7 +2,7 @@ import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
@@ -36,10 +36,18 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: S2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+        text: '序号',
+      },
+      // 自定义空数据单元格占位符
+      // placeholder: '-',
+      placeholder(meta) {
+        return '-';
+      },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

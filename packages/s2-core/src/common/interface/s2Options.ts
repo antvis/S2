@@ -52,7 +52,7 @@ export interface S2BasicOptions<
   height?: number;
 
   /**
-   * 开启调试模式
+   * 开启调试模式 (打印额外信息)
    */
   debug?: boolean;
 
@@ -76,18 +76,25 @@ export interface S2BasicOptions<
 
   /**
    * 分页配置
+   * @see https://s2.antv.antgroup.com/manual/advanced/analysis/pagination
    */
   pagination?: P;
 
   /**
-   * 自定义序号列文本, 默认为 "序号"
+   * 序号列配置
+   * @see https://s2.antv.antgroup.com/manual/basic/sheet-type/pivot-mode#%E5%BA%8F%E5%8F%B7
    */
-  seriesNumberText?: string;
+  seriesNumber?: {
+    /**
+     * 是否显示序号
+     */
+    enable?: boolean;
 
-  /**
-   * 是否显示序号
-   */
-  showSeriesNumber?: boolean;
+    /**
+     * 自定义序号列文本, 默认为 "序号"
+     */
+    text?: string;
+  };
 
   /**
    * 是否显示表头默认操作图标
@@ -116,12 +123,17 @@ export interface S2BasicOptions<
    * 是否开启高清适配
    * @see https://s2.antv.antgroup.com/manual/advanced/hd-adapter
    */
-  hdAdapter?: boolean;
+  hd?: boolean;
 
   /**
    * 空值单元格占位符
+   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
    */
-  placeholder?: ((meta: Record<string, any>) => string) | string;
+  placeholder?:
+    | ((meta: Record<string, any>) => string | undefined | null)
+    | string
+    | undefined
+    | null;
 
   /**
    * 设备类型: pc / mobile
@@ -132,6 +144,7 @@ export interface S2BasicOptions<
    * 自定义 AntV/G 渲染引擎配置参数 & 插件注册
    * @see https://g.antv.antgroup.com/plugins/intro
    * @see https://g.antv.antgroup.com/api/canvas/options
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-plugins/#a11y
    * @example
     import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
@@ -182,6 +195,7 @@ export interface S2BasicOptions<
 
   /**
    * 自定义合并单元格
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-merged-cell
    */
   mergedCell?: MergedCellCallback;
 
@@ -206,35 +220,38 @@ export interface S2BasicOptions<
 
   /**
    * 自定义节点排列顺序 (树状模式有效)
-   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-arrange
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-layout-arrange
    */
   layoutArrange?: LayoutArrange;
 
   /**
-   * 自定义单元格对应节点坐标/宽高
-   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout#custom-layout-coordinate
+   * 自定义单元格节点坐标
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-coordinate
    */
   layoutCoordinate?: LayoutCoordinate;
 
   /**
    * 自定义单元格对应元数据
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-layout/#custom-data-position
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-layout-cell-meta
    */
   layoutCellMeta?: LayoutCellMeta;
 
   /**
    * 自定义序号节点
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#series-number-cell
    */
   layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
 
   /** *********** 数据集 **************** */
   /**
    * 自定义数据集
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-dataset/#custom-strategy-sheet-dataset
    */
   dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 
   /**
    * 自定义分面
+   * @see https://s2.antv.antgroup.com/examples/custom/custom-layout/#custom-facet
    */
   facet?: (spreadsheet: SpreadSheet) => BaseFacet;
 }

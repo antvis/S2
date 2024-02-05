@@ -45,7 +45,7 @@
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
     "build:size-limit": "size-limit",
-    "build:size-limit-json": "pnpm build:size-limit --json",
+    "build:size-limit-json": "pnpm build:size-limit -- --json",
     "watch": "rimraf esm && pnpm build:esm -w",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",

@@ -6,7 +6,7 @@ const s2Options: S2Options = {
   width: 400,
   height: 400,
   hierarchyType: 'grid',
-  hdAdapter: true,
+  hd: true,
 };
 
 describe('Manual Sort Tests', () => {

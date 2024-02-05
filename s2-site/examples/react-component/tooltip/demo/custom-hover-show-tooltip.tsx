@@ -1,6 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -24,9 +27,12 @@ fetch(
     const CustomRowCellTooltip = () => <div>row cell tooltip</div>;
     const CustomDataCellTooltip = () => <div>data cell tooltip</div>;
 
-    const onColCellHover = ({ event, viewMeta }) => {
+    const onColCellHover: SheetComponentsProps['onColCellHover'] = ({
+      event,
+      viewMeta,
+    }) => {
       // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
-      viewMeta.spreadsheet.tooltip.show({
+      viewMeta.spreadsheet.showTooltip({
         position: {
           x: event.clientX,
           y: event.clientY,
@@ -35,26 +41,28 @@ fetch(
         // 自定义操作项
         options: {
           operator: {
-            menus: [
-              {
-                key: 'custom-a',
-                text: '操作1',
-                icon: 'Trend',
-                onClick: (cell) => {
-                  console.log('操作1点击', cell);
-                },
-                children: [
-                  {
-                    key: 'custom-a-a',
-                    text: '操作 1-1',
-                    icon: 'Trend',
-                    onClick: (cell) => {
-                      console.log('操作 1-1 点击', cell);
-                    },
+            menu: {
+              items: [
+                {
+                  key: 'custom-a',
+                  label: '操作1',
+                  icon: 'Trend',
+                  onClick: (info, cell) => {
+                    console.log('操作1点击', info, cell);
                   },
-                ],
-              },
-            ],
+                  children: [
+                    {
+                      key: 'custom-a-a',
+                      label: '操作 1-1',
+                      icon: 'Trend',
+                      onClick: (info, cell) => {
+                        console.log('操作 1-1 点击', info, cell);
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
           },
         },
       });
@@ -80,16 +88,17 @@ fetch(
       });
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-        onColCellHover={onColCellHover}
-        onRowCellHover={onRowCellHover}
-        onDataCellHover={onDataCellHover}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+          onColCellHover={onColCellHover}
+          onRowCellHover={onRowCellHover}
+          onDataCellHover={onDataCellHover}
+        />,
+      );
   });

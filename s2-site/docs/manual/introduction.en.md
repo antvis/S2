@@ -5,7 +5,7 @@ redirect_from:
  - /en/docs/manual
 ---
 
-<div><p><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg"> </a><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg"> </a><a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank"><img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"> </a><a href="https://codecov.io/gh/antvis/S2" target="_blank"><img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="Coverage"> </a><a href="https://github.com/antvis/S2/releases" target="_blank"><img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"></a></p></div>
+<div><p><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg"> </a><a href="https://www.npmjs.com/package/@antv/s2" target="_blank"><img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg"> </a><a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank"><img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"> </a><a href="https://codecov.io/gh/antvis/S2" target="_blank"><img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="Coverage"> </a><a href="https://github.com/antvis/S2/releases" target="_blank"><img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"></a></p></div>
 
 ## ❓ What is S2
 

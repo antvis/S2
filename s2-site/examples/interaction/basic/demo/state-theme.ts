@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     const s2Options: S2Options = {
@@ -18,19 +18,16 @@ fetch(
         selectedCellMove: true,
         rangeSelection: true,
         brushSelection: {
-          row: true,
-          col: true,
-          data: true,
+          rowCell: true,
+          colCell: true,
+          dataCell: true,
         },
-      },
-      tooltip: {
-        showTooltip: true,
       },
       style: {
-        rowCfg: {
+        rowCell: {
           width: 100,
         },
-        cellCfg: {
+        dataCell: {
           width: 120,
         },
       },
@@ -114,5 +111,5 @@ fetch(
       },
     });
 
-    s2.render();
+    await s2.render();
   });

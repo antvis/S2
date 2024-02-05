@@ -1,12 +1,13 @@
-import { TableSheet } from '@antv/s2';
+/* eslint-disable max-lines-per-function */
+import { S2DataConfig, S2Options, S2Theme, TableSheet } from '@antv/s2';
 
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },
@@ -35,7 +36,7 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
     };
@@ -45,7 +46,7 @@ fetch(
     const HEADER_BACK_COLOR = '#353c59';
     const CELL_ACTIVE_BACK_COLOR = '#434c6c';
 
-    const customTheme = {
+    const customTheme: S2Theme = {
       background: {
         color: HEADER_BACK_COLOR,
       },
@@ -76,7 +77,7 @@ fetch(
         verticalBorderColor: BORDER_COLOR,
         verticalBorderColorOpacity: 1,
         verticalBorderWidth: 2,
-        showRightShadow: true,
+        showShadow: true,
         shadowWidth: 10,
         shadowColors: {
           left: 'rgba(0,0,0,0.1)',
@@ -168,5 +169,5 @@ fetch(
 
     s2.setTheme(customTheme);
 
-    s2.render();
+    await s2.render();
   });

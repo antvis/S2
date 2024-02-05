@@ -25,7 +25,7 @@ The `props` of the `AdvancedSort` component
 
 ### AdvancedSortCfgProps
 
-Configure the `props` of `advancedSortCfg` in the `header`
+Configure the `props` of `advancedSort` in the `header`
 
 | parameter     | illustrate                                                             | type                                                                                                                           | required | Defaults |
 | ------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------- | -------- |

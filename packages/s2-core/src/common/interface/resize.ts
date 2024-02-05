@@ -92,8 +92,16 @@ export interface ResizeInteractionOptions {
 
   /** 列高调整时，影响当前列还是全部列 */
   colResizeType?: ResizeType;
+
   /** 是否允许调整, 返回 false 时拖拽的宽高无效 */
   disable?: (resizeInfo: ResizeInfo) => boolean;
+
   /** 是否显示热区 */
   visible?: (cell: S2CellType) => boolean;
+
+  /** 单元格可拖拽最小宽度 */
+  minCellWidth?: number;
+
+  /** 单元格可拖拽最小高度 */
+  minCellHeight?: number;
 }

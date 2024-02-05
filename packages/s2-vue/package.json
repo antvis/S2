@@ -46,7 +46,7 @@
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
     "build:size-limit": "size-limit",
-    "build:size-limit-json": "yarn build:size-limit --json",
+    "build:size-limit-json": "pnpm build:size-limit -- --json",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
     "test": "jest --passWithNoTests",

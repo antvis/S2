@@ -3,7 +3,7 @@ title: 浏览器引入
 order: 5
 ---
 
-查看例子：
+查看示例：
 
 [![Edit @antv/s2 import in browser](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-import-in-browser-z6uspx?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
 
@@ -12,11 +12,12 @@ order: 5
 ```ts
 <script src="./dist/index.min.js"></script>
 <script>
-   async function run() { 
+   async function bootstrap() {
       const s2 = new S2.PivotSheet(container, s2DataConfig, s2Options);
       await s2.render();
    }
-   run();
+
+   bootstrap();
 </script>
 ```
 
@@ -35,14 +36,14 @@ order: 5
 <link rel="stylesheet" href="./dist/style.min.css"/>
 ```
 
-也可以直接使用 `CDN` （推荐）, 比如 [UNPKG](https://unpkg.com/@antv/s2@latest) 或者 [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
+也可以直接使用 `CDN` （推荐）, 比如 [UNPKG](https://unpkg.com/@antv/s2@next) 或者 [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)
 
 ```js
-<script src="https://unpkg.com/@antv/s2@latest/dist/index.min.js"></script>
+<script src="https://unpkg.com/@antv/s2@next/dist/index.min.js"></script>
 
 // React 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react@latest/dist/style.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-react@next/dist/style.min.css"/>
 
 // Vue3 版本 需额外引入样式：
-<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue@latest/dist/style.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2-vue@next/dist/style.min.css"/>
 ```

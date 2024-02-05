@@ -37,12 +37,12 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ReYpm%24KcI2/b923ab47-cd74-48fe-aae2-1412091d4a31.png"
     },
     {
-      "filename": "table-text.ts",
+      "filename": "icon-with-action.ts",
       "title": {
-        "zh": "明细表文本标记",
-        "en": "Table text condition"
+        "zh": "图标标记混合自定义 Action Icons",
+        "en": "Icon condition with action icons"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jdTsPFc09l/4795d9f3-f55b-4575-99de-829e0e3ab3db.png"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wClMR4kLBaoAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "multi-background.ts",
@@ -61,14 +61,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/y1IafbmC7W/c79f8906-ca2e-4bbd-b384-e663bde759e4.png"
     },
     {
-      "filename": "multi-conditions.ts",
-      "title": {
-        "zh": "混合字段标记",
-        "en": "Multi-conditions"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6FFtlY%240T/792a0865-b01d-4674-a3ef-98da6c5be285.png"
-    },
-    {
       "filename": "bidirectional-interval.ts",
       "title": {
         "zh": "双向柱状图",
@@ -77,12 +69,38 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
     },
     {
+      "filename": "multi-conditions.ts",
+      "title": {
+        "zh": "混合字段标记",
+        "en": "Multi-conditions"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6FFtlY%240T/792a0865-b01d-4674-a3ef-98da6c5be285.png"
+    },
+
+    {
       "filename": "intelligent-background.ts",
       "title": {
         "zh": "开启文字智能反色",
         "en": "Intelligent background"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*--3oTK25-wgAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "distinguish-cell.ts",
+      "title": {
+        "zh": "区分行列角头和数据单元格",
+        "en": "Distinguish different cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pxw2S5JFzUcAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "table-text.ts",
+      "title": {
+        "zh": "明细表文本标记",
+        "en": "Table text condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jdTsPFc09l/4795d9f3-f55b-4575-99de-829e0e3ab3db.png"
     }
   ]
 }

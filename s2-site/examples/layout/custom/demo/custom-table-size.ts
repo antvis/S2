@@ -2,7 +2,7 @@ import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     // 详情请查看: https://s2.antv.antgroup.com/zh/docs/manual/advanced/custom/cell-size
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
@@ -49,6 +49,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         // 明细表每一行根据行序号单独设置
         rowCell: {
           heightByField: {
+            '0': 40,
             '1': 130,
             '3': 60,
             '10': 80,
@@ -57,7 +58,8 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         },
       },
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

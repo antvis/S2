@@ -439,8 +439,6 @@ export abstract class BaseFacet {
       const originEvent = ev.originalEvent;
       const { deltaX, deltaY, x, y } = ev;
 
-      // The coordinates of mobile and pc are three times different
-      // TODO: 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, next 版本未复现
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -485,9 +483,9 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { seriesNumber } = this.spreadsheet.options;
 
-    return showSeriesNumber
+    return seriesNumber?.enable
       ? this.spreadsheet.theme.rowCell?.seriesNumberWidth ?? 0
       : 0;
   }
@@ -1730,7 +1728,7 @@ export abstract class BaseFacet {
   }
 
   /**
-   * 获取表头节点 (角头,序号, 行头,列头) (含可视区域)
+   * 获取表头节点 (角头,序号,行头,列头) (含可视区域)
    * @example 获取全部: facet.getHeaderNodes()
    * @example 获取一组 facet.getHeaderNodes(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
@@ -1899,6 +1897,7 @@ export abstract class BaseFacet {
 
   /**
    * 获取行头叶子节点节点 (含非可视区域)
+   * @example 获取全部: facet.getRowLeafNodes()
    */
   public getRowLeafNodes(): Node[] {
     return this.layoutResult.rowLeafNodes || [];
@@ -2009,7 +2008,7 @@ export abstract class BaseFacet {
   }
 
   /**
-   * 获取角头单元格
+   * 获取角头单元格 (不含可视区域)
    */
   public getCornerCells(): CornerCell[] {
     return filter(
@@ -2019,14 +2018,14 @@ export abstract class BaseFacet {
   }
 
   /**
-   * 获取序号单元格
+   * 获取序号单元格 (不含可视区域)
    */
   public abstract getSeriesNumberCells():
     | SeriesNumberCell[]
     | TableSeriesNumberCell[];
 
   /**
-   * 获取表头单元格 (角头,行头,列头) (不含可视区域)
+   * 获取表头单元格 (序号,角头,行头,列头) (不含可视区域)
    * @example 获取全部: facet.getHeaderCells()
    * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */

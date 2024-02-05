@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import insertCss from 'insert-css';
+import { Circle, Line } from '@antv/g';
+import { DataCell, Frame, ResizeType, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { DataCell, Frame, S2Theme } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
+import React from 'react';
 
 const paletteLegendMap = [
   {
@@ -15,7 +15,6 @@ const paletteLegendMap = [
     text: '工作',
     color: '#18E7CF',
   },
-
   {
     text: '上学',
     color: '#89E48A',
@@ -47,7 +46,8 @@ class CustomDataCell extends DataCell {
   initCell() {
     this.drawInteractiveBgShape();
     this.drawCircle();
-    this.drawBorderShape();
+    this.drawBorders();
+
     if (JSON.stringify(this.meta.colQuery).includes('合计')) {
       this.drawTextShape();
     }
@@ -64,7 +64,7 @@ class CustomDataCell extends DataCell {
     let fill;
     let opacity = 1;
 
-    if (!Number.isNaN(fieldValue as number)) {
+    if (!isNaN(fieldValue)) {
       fill =
         paletteLegendMap.find((v) => v.text === colQuery?.['时刻'])?.color ??
         '#FAD5BB';
@@ -74,17 +74,17 @@ class CustomDataCell extends DataCell {
         paletteLegendMap.find((v) => v.text === fieldValue)?.color ?? '#FAD5BB';
     }
 
-    this.backgroundShape = this.addShape('circle', {
-      attrs: {
-        x: positionX,
-        y: positionY,
-        width,
-        height,
-        fill,
-        opacity,
-        r: radius,
-      },
-    });
+    this.appendChild(
+      new Circle({
+        style: {
+          cx: positionX,
+          cy: positionY,
+          fill,
+          fillOpacity: opacity,
+          r: radius,
+        },
+      }),
+    );
   }
 }
 
@@ -101,8 +101,8 @@ class CustomFrame extends Frame {
   addHorizontalSplitLine() {
     const cfg = this.cfg;
     const {
-      width,
-      height,
+      cornerWidth,
+      cornerHeight,
       viewportWidth,
       position,
       scrollX = 0,
@@ -119,11 +119,14 @@ class CustomFrame extends Frame {
         const lastChild = children[children.length - 1];
         const x1 = position.x;
         const x2 =
-          x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
-        const y = position.y + height + lastChild.y + lastChild.height;
+          x1 +
+          cornerWidth +
+          viewportWidth +
+          (scrollContainsRowHeader ? scrollX : 0);
+        const y = position.y + cornerHeight + lastChild.y + lastChild.height;
 
-        this.addShape('line', {
-          attrs: {
+        const line = new Line({
+          style: {
             x1,
             y1: y,
             x2,
@@ -133,13 +136,16 @@ class CustomFrame extends Frame {
             opacity: splitLine?.verticalBorderColorOpacity,
           },
         });
+
+        this.appendChild(line);
       }
     });
   }
 
   addVerticalSplitLine() {
     const cfg = this.cfg;
-    const { height, viewportHeight, position, width, spreadsheet } = cfg;
+    const { cornerWidth, viewportHeight, position, cornerHeight, spreadsheet } =
+      cfg;
     const splitLine = spreadsheet.theme?.splitLine;
     const { colsHierarchy } = spreadsheet.facet.getLayoutResult();
     const rootNodes = colsHierarchy.getNodesLessThanLevel(0);
@@ -148,12 +154,12 @@ class CustomFrame extends Frame {
       if (key < rootNodes.length - 1) {
         const { children } = node;
         const lastChild = children[children.length - 1];
-        const x = lastChild.x + lastChild.width + width;
+        const x = lastChild.x + lastChild.width + cornerWidth;
         const y1 = position.y;
-        const y2 = position.y + height + viewportHeight;
+        const y2 = position.y + cornerHeight + viewportHeight;
 
-        this.addShape('line', {
-          attrs: {
+        const line = new Line({
+          style: {
             x1: x,
             y1,
             x2: x,
@@ -163,6 +169,8 @@ class CustomFrame extends Frame {
             opacity: splitLine?.verticalBorderColorOpacity,
           },
         });
+
+        this.appendChild(line);
       }
     });
   }
@@ -171,7 +179,7 @@ class CustomFrame extends Frame {
 fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
   .then((res) => res.json())
   .then((s2DataConfig) => {
-    const s2Palette = {
+    const s2Palette: ThemeCfg['palette'] = {
       basicColors: [
         '#FFFFFF',
         '#020138',
@@ -195,7 +203,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         green: '#29A294',
       },
     };
-    const s2Theme: S2Theme = {
+
+    const s2Theme: ThemeCfg['theme'] = {
       colCell: {
         bolderText: {
           fontSize: 12,
@@ -238,7 +247,6 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       splitLine: {
         horizontalBorderColorOpacity: 0.3,
         horizontalBorderWidth: 2,
-
         shadowColors: {
           left: 'rgba(255,255,255, 0.3)',
           right: 'rgba(255,255,255, 0.01)',
@@ -256,10 +264,21 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       frame: (cfg) => {
         return new CustomFrame(cfg);
       },
+      interaction: {
+        resize: {
+          colResizeType: ResizeType.ALL,
+          rowResizeType: ResizeType.ALL,
+        },
+      },
       style: {
         layoutWidthType: 'compact',
         colCell: {
           hideValue: true,
+        },
+        rowCell: {
+          widthByField: {
+            成员: 42,
+          },
         },
         dataCell: {
           width: 40,
@@ -267,6 +286,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         },
       },
     };
+
     const PaletteLegend = () => (
       <div className="palette">
         {paletteLegendMap.map((value, key) => (
@@ -281,7 +301,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       </div>
     );
 
-    ReactDOM.render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -291,11 +311,10 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
           themeCfg={{ theme: s2Theme, palette: s2Palette }}
         />
       </div>,
-      document.getElementById('container'),
     );
   });
 
-insertCss(`
+insertCSS(`
   .sheet-wrapper {
     background: #010138;
     padding: 16px;

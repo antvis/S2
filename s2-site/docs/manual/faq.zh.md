@@ -11,15 +11,7 @@ order: 8
 
 ### 浏览器兼容性
 
-如果出现兼容性问题请结合 `babel` 和 `@babel/polyfill` 使用，更多问题欢迎进群交流
-
-> 由于条件限制，版本下限仅供参考，并不意味着不能支持更低版本，该测试在 CDN 模式下测试完成，[在线 Demo](https://lxfu1.github.io/browser-compatibility-of-antv/?tab=s2)
-
-|             | Chrome | Edge  | Firefox |  IE   | Opera | Safari |  UC   | 360 极速浏览器 | 360 安全浏览器 |
-| ----------- | :----: | :---: | :-----: | :---: | :---: | :----: | :---: | :------------: | :------------: |
-| **AntV S2** |   40   |  12   |   85    |   9   |  40   |   14   |  6.2  |       12       |      7.3       |
-
-`@antv/s2-react` 和 `@antv/s2-vue` 见官方 [React JavaScript 环境要求](https://zh-hans.reactjs.org/docs/javascript-environment-requirements.html) 和 [Vite 浏览器兼容性](https://cn.vitejs.dev/guide/build.html#browser-compatibility)
+<embed src="@/docs/common/env.zh.md"></embed>
 
 ### 浏览器引入
 
@@ -27,10 +19,17 @@ order: 8
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
-原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 不再维护，推荐访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
+原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 和 旧版官网 [https://s2.antv.vision](https://s2.antv.vision) 不再维护，请访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
 
-[旧版官网](https://s2.antv.vision/)
-[新版官网](https://s2.antv.antgroup.com/)
+- [旧版官网](https://s2.antv.vision/)
+- [新版官网](https://s2.antv.antgroup.com/)
+
+### 目前官网是 2.x 版本，在哪里查看 1.x 版本的文档？
+
+官网右上角可以切换文档版本：
+
+- [2.x 官网](https://s2.antv.antgroup.com/)
+- [1.x 官网](https://s2-v1.antv.antgroup.com/)
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
@@ -51,7 +50,7 @@ const s2Options = {
 ```ts
 const scale = 0.8
 s2.changeSheetSize(width * scale, height * scale)
-s2.render(false)
+await s2.render(false)
 ```
 
 可参考 issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) （感谢 [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44))
@@ -66,35 +65,35 @@ const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg,
 
 ```ts
 pivotSheet.setOptions({ ... })
-pivotSheet.render(false) // 重新渲染，不更新数据
+await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
 重置 options: [可选项](/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... }, true)
-pivotSheet.render(false) // 重新渲染，不更新数据
+await pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
 更新 dataCfg: [可选项](/docs/api/general/S2DataConfig)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
-pivotSheet.render(true) // 重新渲染，且更新数据
+await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
 重置 dataCfg: [可选项](/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... }, true)
-pivotSheet.render(true) // 重新渲染，且更新数据
+await pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
 更新 theme: [可选项](/docs/api/general/S2Theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
-pivotSheet.render(false)  // 重新渲染，不更新数据
+await pivotSheet.render(false)  // 重新渲染，不更新数据
 ```
 
 ### 图表渲染不出来，怎么回事？
@@ -124,7 +123,7 @@ const pivotSheet = new PivotSheet('#container > div[title="xx"]', dataCfg, optio
 
 ```ts
 s2.changeSheetSize(200, 200)
-s2.render(false)
+await s2.render(false)
 ```
 
 ### 表格可以根据外部容器的宽高自动撑满吗？
@@ -133,11 +132,15 @@ s2.render(false)
 
 ### 如何获取单元格数据？
 
-请查看 [这篇文章](/docs/manual/advanced/get-cell-data)
+请查看 [这篇文章](/docs/manual/advanced/get-cell-data) 和 [示例](/examples/analysis/get-data/#get-cell-data)
 
 ### 为什么 Tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 
 请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+
+### 如果在 `@antv/s2` 中使用 tooltip ?
+
+请查看 [Tooltip 文档](/docs/manual/basic/tooltip) 和 [示例](/examples/react-component/tooltip/#custom-content-base)
 
 ### 如何在点击或悬停单元格的时候自定义 Tooltip?
 
@@ -158,12 +161,10 @@ s2.render(false)
 
 ```ts
 s2.showTooltip({
-  ...,
   content: <YourComponent props={"A"}/>
 })
 
 s2.showTooltip({
-  ...,
   content: <YourComponent props={"B"} />
   options: {
     forceRender: true
@@ -179,7 +180,7 @@ s2.showTooltip({
 <SheetComponent options={options} dataCfg={dataCfg}/>
 ```
 
-- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/master/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
+- `场景 1`: 当组件重新渲染，或者配置项更新后，组件会 [更新 S2 底表的配置](https://github.com/antvis/S2/blob/next/packages/s2-react/src/hooks/useSpreadSheet.ts#L111), 会触发 [隐藏 Tooltip 的逻辑](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts#L381), 请检查并尽量避免你的`上层组件更新`, 或者`配置项的引用被改变` 所导致的 `SheetComponent` 无意义的重渲染。
 
 - `场景 2`: S2 默认点击非表格区域，会隐藏 tooltip, 还原交互状态，请确保你自己的业务逻辑有无相应的 `click` 事件，看是否有被冒泡影响，尝试阻止冒泡
 
@@ -212,6 +213,14 @@ s2.showTooltip({ ... })
 请检查 `Excel` 的编码设置是否正确
 
 ![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
+
+### 表格导出后数据没有正确按格子分隔怎么办？
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*IfmPQo7qieAAAAAAAAAAAAAADmJ7AQ/original" width="900" alt="现象">
+
+请检查 `Excel` 的分隔符设置是否正确
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*OTz2Toh9H6EAAAAAAAAAAAAADmJ7AQ/original" height="500" alt="excel">
 
 ### 鼠标滚轮如何进行水平滚动？
 
@@ -297,7 +306,7 @@ const s2Options = {
 
 - 你**实际**安装的版本号：
 
-> 避免 `latest` 或者 `*` 这种没有实际意义的版本号，提供你实际使用的版本可以帮助我们更快的定位问题，有可能你使用的功能在新版本中才支持，或者 bug 在新版本中已经被修复了
+> 避免 `latest`, `next` 或者 `*` 这种没有实际意义的版本号，提供你实际使用的版本可以帮助我们更快的定位问题，有可能你使用的功能在新版本中才支持，或者 bug 在新版本中已经被修复了
 
 - **详细的** bug 描述
 
@@ -326,9 +335,9 @@ const s2Options = {
 - [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)
 - [《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545)
 
-✅  一个很好的例子：[#852](https://github.com/antvis/S2/issues/852)
+✅  一个很好的示例：[#852](https://github.com/antvis/S2/issues/852)
 
-❌  一个不好的例子：[#1057](https://github.com/antvis/S2/issues/1057)
+❌  一个不好的示例：[#1057](https://github.com/antvis/S2/issues/1057)
 
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 

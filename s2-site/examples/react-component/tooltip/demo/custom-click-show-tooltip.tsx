@@ -1,8 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { TargetCellInfo } from '@antv/s2';
 
 const CustomColCellTooltip = () => <div>col cell</div>;
 
@@ -22,7 +24,10 @@ fetch(
       },
     };
 
-    const onColCellClick = ({ viewMeta, event }) => {
+    const onColCellClick: SheetComponentsProps['onColCellClick'] = ({
+      viewMeta,
+      event,
+    }) => {
       if (!viewMeta) {
         return;
       }
@@ -42,40 +47,43 @@ fetch(
           content: <CustomColCellTooltip />,
           options: {
             operator: {
-              menus: [
-                {
-                  key: 'custom-a',
-                  text: '操作1',
-                  icon: 'Trend',
-                  onClick: (cell) => {
-                    console.log('操作1点击', cell);
-                  },
-                  children: [
-                    {
-                      key: 'custom-a-a',
-                      text: '操作 1-1',
-                      icon: 'Trend',
-                      onClick: (cell) => {
-                        console.log('操作 1-1 点击', cell);
-                      },
+              menu: {
+                items: [
+                  {
+                    key: 'custom-a',
+                    label: '操作1',
+                    icon: 'Trend',
+                    onClick: (info, cell) => {
+                      console.log('操作1点击', info, cell);
                     },
-                  ],
-                },
-              ],
+                    children: [
+                      {
+                        key: 'custom-a-a',
+                        label: '操作 1-1',
+                        icon: 'Trend',
+                        onClick: (info, cell) => {
+                          console.log('操作 1-1 点击', info, cell);
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
             },
           },
         });
       }
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-        onColCellClick={onColCellClick}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+          onColCellClick={onColCellClick}
+        />,
+      );
   });

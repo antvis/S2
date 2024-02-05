@@ -1,18 +1,21 @@
-import { PivotSheet, DataCell, drawObjectText } from '@antv/s2';
-import { isArray, isObject } from 'lodash';
+/* eslint-disable max-lines-per-function */
+import {
+  PivotSheet,
+  DataCell,
+  drawCustomContent,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 
 /**
- * 自定义 DataCell，使用 drawObjectText 绘制简易的 mini 图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/data-cell.ts
+ * 自定义 DataCell，使用 drawCustomContent 绘制简易的 mini 图
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
-  // 当数值为对象时，完全接管绘制, 使用内置的 `drawObjectText` 根据不同的数据结构 (见下方) 绘制不同的图形
+  // 当数值为对象时，完全接管绘制, 使用内置的 `drawCustomContent` 根据不同的数据结构 (见下方) 绘制不同的图形
   drawTextShape() {
-    const { fieldValue } = this.getMeta();
-
-    if (isObject(fieldValue) || isArray(fieldValue)) {
-      drawObjectText(this);
-      return;
+    if (this.isMultiData()) {
+      return drawCustomContent(this);
     }
 
     super.drawTextShape();
@@ -25,7 +28,7 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container')!;
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -142,11 +145,11 @@ fetch(
       ],
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 1000,
       height: 680,
       style: {
-        cellCfg: {
+        dataCell: {
           height: 40,
         },
       },
@@ -156,11 +159,13 @@ fetch(
             field: 'number',
             mapping: (value, cellInfo) => {
               const { meta, colIndex } = cellInfo || {};
+
               if (colIndex === 0 || !value || !meta?.fieldValue) {
                 return {
                   fill: '#000',
                 };
               }
+
               return {
                 fill: value > 0 ? '#FF4D4F' : '#29A294',
               };
@@ -172,6 +177,7 @@ fetch(
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
+
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();

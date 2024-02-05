@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  Switcher,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-
+import insertCSS from 'insert-css';
+import React, { useState } from 'react';
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/pivot-switcher-with-chidlren.json',
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
@@ -44,9 +46,11 @@ fetch(
           result.push(item);
         } else {
           const parent = result[result.length - 1];
+
           parent.children = parent.children ? parent.children : [];
           parent.children.push(item);
         }
+
         return result;
       }, []);
 
@@ -104,10 +108,12 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SwitcherDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-switcher-item.checkable-item {
     align-items: center;
   }

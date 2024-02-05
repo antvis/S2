@@ -1,6 +1,7 @@
 ---
 title: S2Options
 order: 1
+tag: Updated
 ---
 
 Form parameter configuration
@@ -25,12 +26,12 @@ const s2Options = {
 | interaction                 | [Interaction](#interaction)                         |          |                           | Form interaction configuration                                                                                                                                                                                        |
 | pagination                  | [Pagination](#pagination)                           |          |                           | paging configuration                                                                                                                                                                                                  |
 | frozen                      | [Frozen](#frozen)                                   |          |                           | Column Header Freezing Configuration                                                                                                                                                                                  |
-| showSeriesNumber            | `boolean`                                           |          | `false`                   | Whether to display the line number                                                                                                                                                                                    |
+| seriesNumber                | [SeriesNumber](#seriesnumber)                       |          |                           | Whether to display the series number                                                                                                                                                                                  |
 | showDefaultHeaderActionIcon | `boolean`                                           |          | `true`                    | Whether to display the default row and column header operation icons                                                                                                                                                  |
 | headerActionIcons           | [HeaderActionIcon\[\]](#headeractionicon)           |          | `false`                   | Customize row and column header action icons (need to set `showDefaultHeaderActionIcon` to `false` )                                                                                                                  |
 | customSVGIcons              | [CustomSVGIcon\[\]](#customsvgicon)                 |          | `false`                   | Custom svg icons                                                                                                                                                                                                      |
 | style                       | [style](#style)                                     |          |                           | Cell style settings, such as layout type, width and height, margin, whether to hide the value column header, etc.                                                                                                     |
-| hdAdapter                   | `boolean`                                           |          | `true`                    | Whether to enable high-definition screen adaptation to solve the problem of blurred font rendering on high-definition retina screens when switching between multiple screens. [see more](/manual/advanced/hd-adapter) |
+| hd                   | `boolean`                                           |          | `true`                    | Whether to enable high-definition screen adaptation to solve the problem of blurred font rendering on high-definition retina screens when switching between multiple screens. [see more](/manual/advanced/hd-adapter) |
 | mergedCellsInfo             | [MergedCellInfo\[\]\[\]](#mergedcellinfo)           |          |                           | Merge cell information                                                                                                                                                                                                |
 | placeholder                 | `string \| (meta: Record<string, any>) => string`   |          |                           | fill content for empty cells                                                                                                                                                                                          |
 | cornerText                  | string                                              |          |                           | Custom corner header text (valid when custom tree `hierarchyType: customTree` )                                                                                                                                       |
@@ -47,8 +48,10 @@ const s2Options = {
 | filterDisplayDataItem       | [FilterDataItemCallback](#filterdataitemcallback)   |          |                           | filter data                                                                                                                                                                                                           |
 | mappingDisplayDataItem      | [MappingDataItemCallback](#mappingdataitemcallback) |          |                           | Convert data for tooltip display                                                                                                                                                                                      |
 | dataSet                     | [DataSet](#dataset)                                 |          |                           | custom data set                                                                                                                                                                                                       |
-| supportsCSSTransform         | `boolean`                                           |          | `false`                   | After enabling it, CSS transform is supported, which solves the problem that the mouse coordinates respond incorrectly after the parent element is set to `transform`                                                 |
+| supportsCSSTransform        | `boolean`                                           |          | `false`                   | After enabling it, CSS transform is supported, which solves the problem that the mouse coordinates respond incorrectly after the parent element is set to `transform`                                                 |
 | devicePixelRatio            | `number`                                            |          | `window.devicePixelRatio` | Custom Device Pixel Ratio                                                                                                                                                                                             |
+
+<embed src="@/docs/common/series-number.en.md"></embed>
 
 <embed src="@/docs/common/frozen.en.md"></embed>
 
@@ -110,7 +113,7 @@ Function description: custom corner head
 
 <embed src="@/docs/common/custom/layoutCoordinate.en.md"></embed>
 
-<embed src="@/docs/common/custom/layoutDataPosition.en.md"></embed>
+<embed src="@/docs/common/custom/layoutCellMeta.en.md"></embed>
 
 <embed src="@/docs/common/custom/headerActionIcons.en.md"></embed>
 

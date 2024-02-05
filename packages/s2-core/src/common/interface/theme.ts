@@ -2,7 +2,7 @@ import type { LineStyleProps, TextStyleProps } from '@antv/g';
 import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
-import type { DeepRequired } from './util';
+import type { DeepRequired } from './type-utils';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -117,10 +117,7 @@ export interface TextTheme
       | 'fontWeight'
       | 'fill'
       | 'opacity'
-      | 'wordWrap'
-      | 'maxLines'
       | 'lineHeight'
-      | 'textOverflow'
       | 'fontStyle'
       | 'fontVariant'
     > {
@@ -204,12 +201,6 @@ export interface ResizeArea {
 
   /** 交互态 */
   interactionState?: InteractionState;
-
-  /** 单元格可拖拽最小宽度 */
-  minCellWidth?: number;
-
-  /** 单元格可拖拽最小高度 */
-  minCellHeight?: number;
 }
 
 export interface ScrollBarTheme {

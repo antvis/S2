@@ -68,7 +68,8 @@ export const useSheetUpdate = (
       return;
     }
 
-    s2Ref.value?.render(flag.reloadData, {
+    s2Ref.value?.render({
+      reloadData: flag.reloadData,
       reBuildDataSet: flag.rebuildDataset,
     });
     flag.rerender = false;

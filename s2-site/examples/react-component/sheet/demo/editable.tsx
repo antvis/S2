@@ -1,7 +1,6 @@
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -38,12 +37,18 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     const s2Options: SheetComponentOptions = {
       width: 480,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
       frozen: {
-        rowCount: 1, // 行头冻结数量
-        colCount: 1, // 列头冻结数量
-        trailingRowCount: 1, // 行尾冻结数量
-        trailingColCount: 1, // 列尾冻结数量
+        // 行头冻结数量
+        rowCount: 1,
+        // 列头冻结数量
+        colCount: 1,
+        // 行尾冻结数量
+        trailingRowCount: 1,
+        // 列尾冻结数量
+        trailingColCount: 1,
       },
     };
 
@@ -51,13 +56,14 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       console.log('onDataCellEditEnd', meta);
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        sheetType="editable"
-        onDataCellEditEnd={onDataCellEditEnd}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2Options}
+          sheetType="editable"
+          onDataCellEditEnd={onDataCellEditEnd}
+        />,
+      );
   });

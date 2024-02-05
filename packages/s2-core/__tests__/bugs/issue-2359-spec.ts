@@ -5,12 +5,12 @@
  */
 import { pick } from 'lodash';
 import { createTableSheet } from 'tests/util/helpers';
-import { TableColCell, drawObjectText } from '../../src';
+import { TableColCell, drawCustomContent } from '../../src';
 import type { S2CellType, S2Options } from '@/common/interface';
 
 class TestColCell extends TableColCell {
   drawTextShape() {
-    drawObjectText(this, {
+    drawCustomContent(this, {
       values: [['A', 'B', 'C']],
     });
   }
@@ -19,7 +19,9 @@ class TestColCell extends TableColCell {
 const s2Options: S2Options = {
   width: 300,
   height: 480,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
   colCell: (...args) => new TestColCell(...args),
 };
 
@@ -47,6 +49,7 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
         },
       },
     });
+
     await s2.render();
 
     const mapTheme = (cell: S2CellType) => {
@@ -56,11 +59,9 @@ describe('Table Sheet Custom Multiple Values Tests', () => {
     };
 
     const colCellTexts = s2.facet.getColCells().map(mapTheme);
-
     const dataCellTexts = s2.facet.getDataCells().map(mapTheme);
 
     expect(colCellTexts).toMatchSnapshot();
-
     expect(dataCellTexts).toMatchSnapshot();
   });
 });

@@ -25,7 +25,9 @@ describe('TableSheet Export Test', () => {
         data: slice(originData, 0, 10),
       }),
       assembleOptions({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -65,7 +67,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: NewTab,
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
 
@@ -75,7 +77,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: NewTab,
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
       isAsyncExport: true,
     });
@@ -94,7 +96,9 @@ describe('TableSheet Export Test', () => {
         data: slice(originData, 0, 10),
       }),
       assembleOptions({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -135,7 +139,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -166,7 +172,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 

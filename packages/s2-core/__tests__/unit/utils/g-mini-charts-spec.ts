@@ -4,7 +4,7 @@ import { forEach, map } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import type { RangeColors } from '../../../src/common/interface/theme';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellType, MiniChartTypes, type S2CellType } from '@/common';
+import { CellType, MiniChartType, type S2CellType } from '@/common';
 import {
   getBulletRangeColor,
   transformRatioToPercent,
@@ -47,7 +47,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right points of line', () => {
     const chartData = {
-      type: MiniChartTypes.Line,
+      type: MiniChartType.Line,
       data: [
         { year: '2018', value: 10 },
         { year: '2019', value: 0 },
@@ -73,7 +73,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right points of line when all values are more then 0', () => {
     const chartData = {
-      type: MiniChartTypes.Line,
+      type: MiniChartType.Line,
       data: [
         { year: '2018', value: 10 },
         { year: '2019', value: 5 },
@@ -99,7 +99,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right points of line when all values are less then 0', () => {
     const chartData = {
-      type: MiniChartTypes.Line,
+      type: MiniChartType.Line,
       data: [
         { year: '2018', value: -5 },
         { year: '2019', value: -10 },
@@ -125,7 +125,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right points of line when all values are equal to each other', () => {
     const chartData = {
-      type: MiniChartTypes.Line,
+      type: MiniChartType.Line,
       data: [
         { year: '2018', value: 0 },
         { year: '2019', value: 0 },
@@ -151,7 +151,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right scale of bar', () => {
     const chartData = {
-      type: MiniChartTypes.Bar,
+      type: MiniChartType.Bar,
       data: [
         { year: '2018', value: 10 },
         { year: '2019', value: 0 },
@@ -182,7 +182,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right scale of bar when all values are less then 0', () => {
     const chartData = {
-      type: MiniChartTypes.Bar,
+      type: MiniChartType.Bar,
       data: [
         { year: '2018', value: -5 },
         { year: '2019', value: -10 },
@@ -214,7 +214,7 @@ describe('MiniCharts Utils Tests', () => {
 
   test('should get right points of bar when all values are equal to each other', () => {
     const chartData = {
-      type: MiniChartTypes.Bar,
+      type: MiniChartType.Bar,
       data: [
         { year: '2018', value: 10 },
         { year: '2019', value: 10 },

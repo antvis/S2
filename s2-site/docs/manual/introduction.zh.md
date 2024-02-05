@@ -6,23 +6,52 @@ redirect_from:
 ---
 
 <div>
+
 <p>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
+  <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
-    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img src="https://img.shields.io/npm/v/@antv/s2/latest.svg?logo=npm" alt="latest version">
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img  src="https://img.shields.io/npm/v/@antv/s2/next.svg?logo=npm" alt="next version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
   <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="Coverage"/>
+    <img src="https://codecov.io/gh/antvis/S2/branch/next/graph/badge.svg" alt="test coverage"/>
   </a>
   <a href="https://github.com/antvis/S2/releases" target="_blank">
-    <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"/>
+    <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release date"/>
   </a>
 </p>
+
+<p>
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+  </a>
+  <a href="https://github.com/antvis/S2/discussions" target="_blank">
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
+  </a>
+  <a href="https://github.com/actions-cool/issues-helper" target="_blank">
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues helper"/>
+  </a>
+  <a href="https://github.com/antvis/S2/blob/next/LICENSE" target="_blank" target="_blank">
+    <img src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="License: MIT@AntV" />
+  </a>
+  <a href="https://github.com/antvis/S2/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/antvis/S2" alt="contributors"/>
+  <a/>
+  <a href="https://github.com/antvis/S2/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed">
+    <img src="https://img.shields.io/github/issues-closed/antvis/S2" alt="issues closed"/>
+  <a/>
+  <a href="https://github.com/antvis/S2/pulls">
+    <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg" alt="pr welcome"/>
+  <a/>
+</p>
+
 </div>
 
 ## ❓ 什么是 S2
@@ -33,18 +62,18 @@ redirect_from:
 
 ## ✨ 特性
 
-1. 开箱即用：提供不同场景下开箱即用的 `React`, `Vue3` 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景。
-2. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
-3. 高性能：能支持全量百万数据下 `<4s` 渲染，也能通过局部下钻来实现秒级渲染。
-4. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据流等）。
-5. 交互友好：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
+1. **开箱即用**：提供不同场景下开箱即用的 `React`, `Vue3` 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景。
+2. **多维交叉分析**： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
+3. **高性能**：能支持全量百万数据下 `<4s` 渲染，也能通过局部下钻来实现秒级渲染。
+4. **高扩展性**：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据流等）。
+5. **交互友好**：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
 ## 📦 安装
 
 ```bash
-npm install @antv/s2 --save
-# yarn add @antv/s2 --save
-# pnpm install @antv/s2 --save
+$ npm install @antv/s2@next --save
+# yarn add @antv/s2@next
+# pnpm add @antv/s2@next
 ```
 
 ## 🔨 使用
@@ -158,6 +187,28 @@ const s2DataConfig = {
       type: "纸张",
       cost: "1",
     }
+  ],
+  meta: [
+    {
+      field: 'price',
+      name: '价格',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
   ]
 };
 ```
@@ -182,41 +233,57 @@ const s2Options = {
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-async function run() {
+async function bootstrap() {
   const container = document.getElementById('container');
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-  await s2.render(); // 返回 Promise
+  await s2.render(); // 异步渲染
 }
 
-run();
+bootstrap();
 ```
 
 ### 4. 结果
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aTPcT4aKOq4AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 ## 📦 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
-## 👤 作者
+### 🖥️ 浏览器兼容性
 
-[**@AntV**](https://github.com/orgs/antvis/people)
+<embed src="@/docs/common/env.zh.md"></embed>
+
+## 🙋‍♂️ 问题反馈
+
+有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose), 在这之前强烈建议阅读 [《⚠️ 提 Issue 前必读》](https://github.com/antvis/S2/issues/1904)
+
+## ⌨️ 本地开发
+
+<embed src="@/docs/common/development.zh.md"></embed>
 
 ## 🤝 参与贡献
 
-<embed src="@/docs/common/development.zh.md"></embed>
+请查看 [贡献指南](https://s2.antv.antgroup.com/manual/contribution)
+
+## 👁️ 项目洞察
+
+![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
 
 ## 📧 联系我们
 
 <embed src="@/docs/common/contact-us.zh.md"></embed>
 
-## 👬 Contributors
+## 👬 贡献者们
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
+## 👤 作者
+
+[**@AntV**](https://github.com/orgs/antvis/people)
+
 ## 📄 License
 
-MIT@[AntV](https://github.com/antvis).
+MIT@[AntV](https://github.com/antvis)

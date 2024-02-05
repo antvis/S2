@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import insertCSS from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -9,19 +8,19 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
-    ReactDOM.render(
+    const App = () => (
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}
         onMounted={(instance) => {
           instance.showTooltip = (tooltipOptions) => {
             const { position, data = {}, options } = tooltipOptions;
-            const name = `${data.name} - 测试`; // 只有单元格中文案被省略才显示
+            const name = `${data.name} - 测试`;
             const infos = '按住 Shift 多选或框选，查看多个数据点';
             const tips = '说明：这是个说明';
             const customSummaries = (data.summaries || []).map((item) => {
@@ -54,6 +53,7 @@ fetch(
                 ],
               },
             };
+
             const customOptions = {
               ...tooltipOptions,
               position: { x: position.x + 1, y: position.y + 1 },
@@ -75,12 +75,15 @@ fetch(
             instance.tooltip.show(customOptions);
           };
         }}
-      />,
-      document.getElementById('container'),
+      />
     );
+
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });
 
-insertCss(`
+insertCSS(`
   .tooltip-custom-component {
     padding: 12px;
     height: 50px;

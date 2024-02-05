@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { getPalette, generatePalette } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { getPalette, generatePalette, ThemeCfg } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { ChromePicker } from 'react-color';
 import { Button, Popover, Space } from 'antd';
 
@@ -12,14 +11,14 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
     function App() {
       const [themeColor, setThemeColor] = useState('#EA1720');
-      const [themeCfg, setThemeCfg] = useState({
+      const [themeCfg, setThemeCfg] = useState<ThemeCfg>({
         name: 'colorful',
       });
 
@@ -74,5 +73,7 @@ fetch(
       );
     }
 
-    ReactDOM.render(<App />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });

@@ -1,10 +1,10 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     // 增加几条长度不一致的 mock 数据
     dataCfg.data.at(0).number = 11111111;
     dataCfg.data.at(6).number = 7777;
@@ -12,7 +12,7 @@ fetch(
 
     const container = document.getElementById('container');
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       style: {
@@ -32,5 +32,5 @@ fetch(
       },
     });
 
-    s2.render();
+    await s2.render();
   });

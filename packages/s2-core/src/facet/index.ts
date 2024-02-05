@@ -1,5 +1,7 @@
 import { BaseFacet } from './base-facet';
 import { PivotFacet } from './pivot-facet';
 import { TableFacet } from './table-facet';
+import { FrozenFacet } from './frozen-facet';
 
-export { BaseFacet, PivotFacet, TableFacet };
+export * from './header';
+export { BaseFacet, PivotFacet, TableFacet, FrozenFacet };

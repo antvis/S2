@@ -46,7 +46,7 @@ import { renderMiniChart } from './g-mini-charts';
 
 export const getDisplayText = (
   text: string | number | null | undefined,
-  placeholder?: string,
+  placeholder?: string | undefined | null,
 ) => {
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
@@ -453,7 +453,7 @@ export const getContentAreaForMultiData = (
  * @useCondition 是否使用条件格式
  */
 // eslint-disable-next-line max-lines-per-function
-export const drawObjectText = (
+export const drawCustomContent = (
   cell: S2CellType,
   multiData?: MultiData,
   useCondition = true,
@@ -615,8 +615,8 @@ export const drawObjectText = (
             x: iconX,
             y: iconY,
             name: attrs.icon!,
-            width: attrs.size ?? iconStyle?.size,
-            height: attrs.size ?? iconStyle?.size,
+            width: iconStyle?.size,
+            height: iconStyle?.size,
             fill: attrs.fill,
           });
 

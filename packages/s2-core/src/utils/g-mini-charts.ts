@@ -5,7 +5,7 @@
 
 import { isEmpty, isNil, map, max, min } from 'lodash';
 import type { DataCell } from '..';
-import { CellType, MiniChartTypes } from '../common/constant';
+import { CellType, MiniChartType } from '../common/constant';
 import {
   CellClipBox,
   type BaseChartData,
@@ -63,7 +63,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const intervalPadding = miniChart?.bar?.intervalPadding!;
 
   const intervalX =
-    type === MiniChartTypes.Bar
+    type === MiniChartType.Bar
       ? (xEnd - xStart - (measures.length - 1) * intervalPadding) /
           measures.length +
         intervalPadding
@@ -83,7 +83,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
         positionY = minMeasure > 0 ? yStart : yEnd;
       }
 
-      if (type === MiniChartTypes.Bar) {
+      if (type === MiniChartType.Bar) {
         let baseLinePositionY: number;
         let barHeight: number;
 
@@ -403,10 +403,10 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
 
 export const renderMiniChart = (cell: S2CellType, data?: MiniChartData) => {
   switch (data?.type) {
-    case MiniChartTypes.Line:
+    case MiniChartType.Line:
       drawLine(data, cell);
       break;
-    case MiniChartTypes.Bar:
+    case MiniChartType.Bar:
       drawBar(data, cell);
       break;
     default:

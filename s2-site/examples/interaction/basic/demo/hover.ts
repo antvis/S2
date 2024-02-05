@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     const s2Options: S2Options = {
@@ -21,11 +21,9 @@ fetch(
         //   currentCol = true, // 高亮悬停格子所在列
         // },
       },
-      tooltip: {
-        enable: true,
-      },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
+    await s2.render();
   });

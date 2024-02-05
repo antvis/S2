@@ -1,7 +1,7 @@
 import {
   ColCell,
   type ColHeaderConfig,
-  drawObjectText,
+  drawCustomContent,
   Node,
   safeJsonParse,
   SpreadSheet,
@@ -37,6 +37,12 @@ export class StrategySheetColCell extends ColCell {
     const displayValues =
       formattedValue !== meta?.value ? [[formattedValue]] : [value];
 
-    drawObjectText(this, { values: displayValues }, false);
+    drawCustomContent(
+      this,
+      {
+        values: displayValues,
+      },
+      false,
+    );
   }
 }

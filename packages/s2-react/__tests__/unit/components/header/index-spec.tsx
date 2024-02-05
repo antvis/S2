@@ -25,9 +25,9 @@ describe('Header Component Tests', () => {
     const { container } = render(
       <Header
         sheet={sheet}
-        exportCfg={{ open: true }}
-        advancedSortCfg={{ open: true }}
-        switcherCfg={{ open: true }}
+        export={{ open: true }}
+        advancedSort={{ open: true }}
+        switcher={{ open: true }}
       />,
     );
 
@@ -52,9 +52,9 @@ describe('Header Component Tests', () => {
         title={'title'}
         extra="extra"
         className={className}
-        exportCfg={{ open: true }}
-        advancedSortCfg={{ open: true }}
-        switcherCfg={{ open: true }}
+        export={{ open: true }}
+        advancedSort={{ open: true }}
+        switcher={{ open: true }}
       />,
     );
 

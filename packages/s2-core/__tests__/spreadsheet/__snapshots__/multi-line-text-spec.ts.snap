@@ -2526,12 +2526,12 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": "数量数量数😸",
+    "actualText": "数量数@@@",
     "actualTextHeight": 15,
     "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
-      "数量数量数😸",
+      "数量数@@@",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
     "width": 96,
@@ -2548,12 +2548,12 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": "数量数量数😸",
+    "actualText": "数量数@@@",
     "actualTextHeight": 15,
     "actualTextWidth": 73,
     "height": 30,
     "multiLineActualTexts": Array [
-      "数量数量数😸",
+      "数量数@@@",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
     "width": 96,
@@ -2575,12 +2575,12 @@ Array [
     "width": 96,
   },
   Object {
-    "actualText": "浙我是省略号",
+    "actualText": "浙江省@@@",
     "actualTextHeight": 16,
-    "actualTextWidth": 73,
+    "actualTextWidth": 72,
     "height": 30,
     "multiLineActualTexts": Array [
-      "浙我是省略号",
+      "浙江省@@@",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "width": 96,

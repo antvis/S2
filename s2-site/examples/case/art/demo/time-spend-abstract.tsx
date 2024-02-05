@@ -1,8 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import insertCss from 'insert-css';
-import { SheetComponent } from '@antv/s2-react';
-import { DataCell } from '@antv/s2';
+
+import insertCSS from 'insert-css';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { Image as GImage } from '@antv/g';
+import { DataCell, ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 const paletteLegendMap = [
@@ -40,7 +41,11 @@ const paletteLegendMap = [
     img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ',
   },
 ];
-// 自定义单元格
+
+/**
+ * 自定义 DataCell, 给单元格添加图表
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
+ */
 class CustomDataCell extends DataCell {
   drawTextShape() {
     const { fieldValue } = this.meta;
@@ -48,18 +53,22 @@ class CustomDataCell extends DataCell {
       paletteLegendMap.find((v) => v.text === fieldValue)?.img ??
       'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
     const img = new Image();
+
     img.src = url;
     const { x, y, width, height } = this.meta;
+
     img.onload = () => {
-      this.textShape = this.addShape('image', {
-        attrs: {
-          x: x + (width - img?.width) / 2,
-          y: y + (height - img?.height) / 2,
-          width: img?.width ?? width,
-          height: img?.height ?? height,
-          img: url,
-        },
-      });
+      this.textShape = this.appendChild(
+        new GImage({
+          style: {
+            x: x + (width - img?.width) / 2,
+            y: y + (height - img?.height) / 2,
+            width: img?.width ?? width,
+            height: img?.height ?? height,
+            img: url,
+          },
+        }),
+      );
     };
   }
 }
@@ -67,7 +76,7 @@ class CustomDataCell extends DataCell {
 fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
   .then((res) => res.json())
   .then((s2DataConfig) => {
-    const s2Theme = {
+    const s2Theme: ThemeCfg['theme'] = {
       colCell: {
         text: {
           opacity: 0,
@@ -144,7 +153,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       },
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 1150,
       height: 720,
       showDefaultHeaderActionIcon: false,
@@ -165,6 +174,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         },
       },
     };
+
     const PaletteLegend = () => (
       <div className="palette">
         {paletteLegendMap.map((value, key) => (
@@ -175,7 +185,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         ))}
       </div>
     );
-    ReactDOM.render(
+
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div className="sheet-wrapper">
         <PaletteLegend />
         <SheetComponent
@@ -185,11 +196,10 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
           themeCfg={{ theme: s2Theme }}
         />
       </div>,
-      document.getElementById('container'),
     );
   });
 
-insertCss(`
+insertCSS(`
   .sheet-wrapper {
     background: #010138;
     padding: 16px;

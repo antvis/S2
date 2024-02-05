@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import insertCss from 'insert-css';
+import insertCSS from 'insert-css';
 import { Button } from 'antd';
 import {
   SheetComponent,
@@ -19,7 +18,7 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        enableCopy: true,
+        copy: { enable: true },
       },
     };
 
@@ -39,8 +38,8 @@ fetch(
       const header: SheetComponentsProps['header'] = {
         title: '表头标题',
         description: '表头描述',
-        exportCfg: { open: true },
-        advancedSortCfg: {
+        export: { open: true },
+        advancedSort: {
           open: true,
           sortParams,
           onSortConfirm: (ruleValues, sortParams) => {
@@ -48,7 +47,7 @@ fetch(
             setSortParams(sortParams);
           },
         },
-        switcherCfg: { open: true },
+        switcher: { open: true },
         extra: (
           <Button size={'small'} style={{ verticalAlign: 'top' }}>
             自定义按钮
@@ -66,10 +65,12 @@ fetch(
       );
     };
 
-    ReactDOM.render(<SheetHeader />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SheetHeader />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-header {
     margin:0px !important;
   }

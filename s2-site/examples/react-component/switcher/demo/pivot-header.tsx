@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
+import React from 'react';
 
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
@@ -28,16 +27,18 @@ fetch(
             adaptive={false}
             dataCfg={{ data, fields }}
             options={s2Options}
-            header={{ switcherCfg: { open: true } }}
+            header={{ switcher: { open: true } }}
           />
         </div>
       );
     };
 
-    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<SwitcherDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-switcher-item.checkable-item {
     align-items: center;
   }

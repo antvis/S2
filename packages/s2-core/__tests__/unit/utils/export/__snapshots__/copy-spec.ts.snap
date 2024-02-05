@@ -109,7 +109,7 @@ number	number	小计	number	number",
 ]
 `;
 
-exports[`Tree Table Core Data Process should copy normal data with header for custom field formatter if enable copyWithFormat 1`] = `
+exports[`Tree Table Core Data Process should copy normal data with header for custom field formatter if enable withFormat 1`] = `
 Array [
   Object {
     "content": "		家具	家具	家具	办公用品	办公用品

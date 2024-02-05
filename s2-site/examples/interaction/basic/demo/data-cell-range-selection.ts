@@ -4,7 +4,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then(async (dataCfg) => {
     const container = document.getElementById('container');
 
     // 试试选中一个单元格, 然后按住 Shift 选中另一个单元格
@@ -17,10 +17,8 @@ fetch(
         // 区间多选 (按住 Shift), 默认开启
         rangeSelection: true,
       },
-      tooltip: {
-        enable: true,
-      },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     // 也可以监听全局的选中事件
@@ -28,5 +26,5 @@ fetch(
       console.log('selected', cells);
     });
 
-    s2.render();
+    await s2.render();
   });

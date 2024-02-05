@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { CellType } from '@antv/s2';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -14,16 +13,18 @@ fetch(
       height: 480,
       tooltip: {
         operation: {
+          // 内置操作项
           hiddenColumns: true,
-          // 其他配置, 透传 Antd Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
           menu: {
+            // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+            // mode: 'vertical',
             onClick(info, cell) {
               console.log('菜单项点击:', info, cell);
             },
             items: [
               {
                 key: 'trend',
-                text: '趋势',
+                label: '趋势',
                 icon: 'Trend',
                 // 数值单元格展示
                 visible: (cell) => cell.cellType === CellType.DATA_CELL,
@@ -37,13 +38,14 @@ fetch(
       },
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+        />,
+      );
   });

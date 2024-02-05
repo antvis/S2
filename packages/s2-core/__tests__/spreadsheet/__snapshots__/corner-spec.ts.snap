@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for { hierarchyType: 'grid', cornerNodeCount: 2, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -67,7 +71,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for { hierarchyType: 'grid', cornerNodeCount: 3, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 3,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -165,7 +173,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for { hierarchyType: 'tree', cornerNodeCount: 1, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 1,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -194,14 +206,18 @@ Array [
     "seriesNumberWidth": 0,
     "spreadsheet": Anything,
     "value": "province/city/数值",
-    "width": 145.36,
+    "width": 146.36,
     "x": 0,
     "y": 0,
   },
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for { hierarchyType: 'tree', cornerNodeCount: 2, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns and values is empty for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -261,14 +277,18 @@ Array [
     "seriesNumberWidth": 80,
     "spreadsheet": Anything,
     "value": "province/city/数值",
-    "width": 145.36,
+    "width": 146.36,
     "x": 80,
     "y": 0,
   },
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for { hierarchyType: 'grid', cornerNodeCount: 2, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -335,7 +355,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for { hierarchyType: 'grid', cornerNodeCount: 3, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 3,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -433,7 +457,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for { hierarchyType: 'tree', cornerNodeCount: 1, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 1,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -469,7 +497,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for { hierarchyType: 'tree', cornerNodeCount: 2, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when columns is empty and measure hidden for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -536,7 +568,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when measure hidden for { hierarchyType: 'grid', cornerNodeCount: 2, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when measure hidden for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -603,7 +639,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when measure hidden for { hierarchyType: 'grid', cornerNodeCount: 3, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when measure hidden for {
+  hierarchyType: 'grid',
+  cornerNodeCount: 3,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -701,7 +741,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when measure hidden for { hierarchyType: 'tree', cornerNodeCount: 1, showSeriesNumber: false } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when measure hidden for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 1,
+  seriesNumber: { enable: false }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,
@@ -737,7 +781,11 @@ Array [
 ]
 `;
 
-exports[`PivotSheet Corner Tests should render row corner when measure hidden for { hierarchyType: 'tree', cornerNodeCount: 2, showSeriesNumber: true } 1`] = `
+exports[`PivotSheet Corner Tests should render row corner when measure hidden for {
+  hierarchyType: 'tree',
+  cornerNodeCount: 2,
+  seriesNumber: { enable: true }
+} 1`] = `
 Array [
   Object {
     "belongsCell": undefined,

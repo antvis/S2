@@ -145,10 +145,12 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
           <Switch
             checkedChildren="序号开"
             unCheckedChildren="序号关"
-            checked={options.showSeriesNumber}
+            checked={options.seriesNumber?.enable}
             onChange={(checked) => {
               setOptions({
-                showSeriesNumber: checked,
+                seriesNumber: {
+                  enable: checked,
+                },
               });
             }}
           />

@@ -106,7 +106,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    showSeriesNumber: false,
+    seriesNumber: {
+      enable: false,
+    },
     frozen: {
       rowHeader: false,
     },

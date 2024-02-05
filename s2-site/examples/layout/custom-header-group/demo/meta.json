@@ -1,0 +1,44 @@
+{
+  "title": {
+    "zh": "目录树",
+    "en": "custom tree"
+  },
+  "demos": [
+    {
+      "filename": "custom-pivot-row-header.ts",
+      "title": {
+        "zh": "透视表-自定义行头",
+        "en": "custom pivot sheet row header"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png",
+      "new": true
+    },
+    {
+      "filename": "custom-pivot-col-header.ts",
+      "title": {
+        "zh": "透视表-自定义列头",
+        "en": "custom pivot sheet col header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*qRXTQLH0nOoAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "custom-table-col-header.ts",
+      "title": {
+        "zh": "明细表-自定义列头",
+        "en": "custom table sheet col header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HqD0RKp-7MIAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "custom-tree.ts",
+      "title": {
+        "zh": "自定义目录树",
+        "en": "custom tree"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/tSqlcOkaF/ee66a55f-32ea-4b33-8275-30b92439e00b.png",
+      "new": true
+    }
+  ]
+}

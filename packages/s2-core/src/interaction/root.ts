@@ -552,8 +552,8 @@ export class RootInteraction {
       return {
         rowHeader: selectedCellHighlight,
         colHeader: selectedCellHighlight,
-        currentRow: false,
-        currentCol: false,
+        currentRow: selectedCellHighlight,
+        currentCol: selectedCellHighlight,
       };
     }
 

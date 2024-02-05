@@ -5,12 +5,22 @@
   },
   "demos": [
     {
-      "filename": "custom-plugins.ts",
+      "filename": "a11y.ts",
       "title": {
-        "zh": "自定义 AntV/G 5.0 插件和配置",
-        "en": "custom AntV/G 5.0 plugins and config"
+        "zh": "无障碍功能",
+        "en": "a11y"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Ag6SSYgDpeYAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HIhnRq9EqIwAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "rough.ts",
+      "title": {
+        "zh": "手绘风格",
+        "en": "rough"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Ag6SSYgDpeYAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

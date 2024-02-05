@@ -3,37 +3,45 @@ title: 维度下钻
 order: 2
 ---
 
-## React 下钻组件
+:::warning{title="注意"}
+维度下钻功能需要满足以下两个前置条件：
+
+- `透视表`: 即 `sheetType="pivot"`
+- `树状模式`: 即 `hierarchyType="tree"`
+
+:::
+
+## React 下钻组件 <Badge>@antv/s2-react</Badge>
+
+[​查看示例](/examples/react-component/drill-dwon#for-pivot)
 
 ```jsx
 const s2Options = {
   width: 600,
   height: 480,
-  hierarchyType: 'tree', // 树形结构
+  hierarchyType: 'tree'
 };
 
 <SheetComponent
   options={s2Options}
   partDrillDown={PartDrillDown}
-  sheetType="pivot"  // 透视模式
+  sheetType="pivot"
 />
 ```
 
-​📊 查看 [React 版下钻 demo](/examples/react-component/drill-down#for-pivot)
+## Vue 下钻组件 <Badge type="success">@antv/s2-vue</Badge>
 
-## Vue 下钻组件
+[查看示例](https://codesandbox.io/s/vue-drilldown-demo-8p1lmv?file=/src/App.vue:6385-6396)
 
-下钻组件只有在表格，透视模式才能使用。
-
-```vue
+```tsx
 const s2Options = {
   width: 600,
   height: 480,
-  hierarchyType: 'tree',
+  hierarchyType: 'tree'
 };
 
 <template>
- <SheetComponent
+  <SheetComponent
     ref="s2"
     :sheetType="pivot"
     :partDrillDown="partDrillDown"
@@ -41,8 +49,6 @@ const s2Options = {
   />
 </template>
 ```
-
-​📊 查看 [Vue 版下钻 demo](https://codesandbox.io/s/vue-drilldown-demo-8p1lmv?file=/src/App.vue:6385-6396)
 
 ## 公共 API
 
@@ -72,8 +78,6 @@ const s2Options = {
 
 ##### PartDrillDownInfo
 
-类型：`object`，**必选**，默认值：`{}`
-
 <description>功能描述：下钻数据请求参数配置</description>
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
@@ -82,8 +86,6 @@ const s2Options = {
 | drillField | 下钻维度 value 值 | `string` | ✓ |  |
 
 #### DrillDownProps
-
-类型：`object`，**必选**，默认值：`{}`
 
 <description>功能描述：下钻菜单组件配置项</description>
 
@@ -101,8 +103,6 @@ const s2Options = {
 | drillFields | 允许下钻的维度      | `string[]` |  |  | 仅 `React` 组件支持此属性  |
 
 ##### DataSet
-
-类型：`object`，**必选**，默认值：`{}`
 
 <description>功能描述：下钻数据源配置</description>
 

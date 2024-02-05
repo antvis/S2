@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Tests Sheet Config Change Tests should reset config 1`] = `
+Object {
+  "conditions": Object {},
+  "cornerExtraFieldText": "",
+  "cornerText": "",
+  "customSVGIcons": Array [],
+  "debug": false,
+  "device": "pc",
+  "frozen": Object {
+    "colCount": 0,
+    "rowCount": 0,
+    "rowHeader": true,
+    "trailingColCount": 0,
+    "trailingRowCount": 0,
+  },
+  "hd": true,
+  "headerActionIcons": Array [],
+  "height": 480,
+  "hierarchyType": "grid",
+  "interaction": Object {
+    "autoResetSheetStyle": true,
+    "brushSelection": Object {
+      "colCell": true,
+      "dataCell": true,
+      "rowCell": true,
+    },
+    "copy": Object {
+      "enable": true,
+      "withFormat": true,
+      "withHeader": false,
+    },
+    "eventListenerOptions": false,
+    "hiddenColumnFields": Array [],
+    "hoverFocus": Object {
+      "duration": 800,
+    },
+    "hoverHighlight": true,
+    "linkFields": Array [],
+    "multiSelection": true,
+    "overscrollBehavior": "auto",
+    "rangeSelection": true,
+    "resize": Object {
+      "colCellHorizontal": true,
+      "colCellVertical": true,
+      "colResizeType": "current",
+      "cornerCellHorizontal": true,
+      "minCellHeight": 20,
+      "minCellWidth": 20,
+      "rowCellVertical": true,
+      "rowResizeType": "current",
+    },
+    "scrollSpeedRatio": Object {
+      "horizontal": 1,
+      "vertical": 1,
+    },
+    "scrollbarPosition": "content",
+    "selectedCellHighlight": false,
+    "selectedCellsSpotlight": false,
+  },
+  "placeholder": "-",
+  "seriesNumber": Object {
+    "enable": false,
+  },
+  "showDefaultHeaderActionIcon": false,
+  "style": Object {
+    "colCell": Object {
+      "height": 30,
+      "heightByField": null,
+      "maxLines": 1,
+      "textOverflow": "ellipsis",
+      "widthByField": null,
+      "wordWrap": true,
+    },
+    "cornerCell": Object {
+      "maxLines": 1,
+      "textOverflow": "ellipsis",
+      "wordWrap": true,
+    },
+    "dataCell": Object {
+      "height": 30,
+      "maxLines": 1,
+      "textOverflow": "ellipsis",
+      "width": 96,
+      "wordWrap": true,
+    },
+    "layoutWidthType": "adaptive",
+    "rowCell": Object {
+      "heightByField": null,
+      "maxLines": 1,
+      "showTreeLeafNodeAlignDot": false,
+      "textOverflow": "ellipsis",
+      "widthByField": null,
+      "wordWrap": true,
+    },
+    "seriesNumberCell": Object {
+      "maxLines": 1,
+      "textOverflow": "ellipsis",
+      "wordWrap": true,
+    },
+  },
+  "tooltip": Object {
+    "autoAdjustBoundary": "body",
+    "enable": false,
+    "operation": Object {
+      "hiddenColumns": false,
+      "menu": Object {
+        "items": Array [],
+      },
+      "sort": false,
+    },
+  },
+  "totals": Object {},
+  "width": 600,
+}
+`;
+
+exports[`SpreadSheet Tests Sheet Config Change Tests should reset config 2`] = `
+Object {
+  "data": Array [],
+  "fields": Object {
+    "columns": Array [],
+    "rows": Array [],
+    "valueInCols": false,
+    "values": Array [],
+  },
+  "filterParams": Array [],
+  "meta": Array [],
+  "sortParams": Array [],
+}
+`;

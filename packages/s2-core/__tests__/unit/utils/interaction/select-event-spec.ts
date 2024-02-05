@@ -50,7 +50,9 @@ describe('Select Event Utils Tests', () => {
           { colId: 'city', rowIndex: 5 } as unknown as ViewMeta,
           {
             options: {
-              showSeriesNumber: true,
+              seriesNumber: {
+                enable: true,
+              },
             },
             interaction: {
               getAllCells: () => [cell],

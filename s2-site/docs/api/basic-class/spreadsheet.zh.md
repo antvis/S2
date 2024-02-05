@@ -1,9 +1,10 @@
 ---
 title: SpreadSheet
 order: 1
+tag: Updated
 ---
 
-功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
+功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/next/packages/s2-core/src/sheet-type/spread-sheet.ts)
 
 ```ts
 const s2 = new PivotSheet()
@@ -20,10 +21,10 @@ s2.isPivotMode()
 | options | 表格配置                                                                                                                   | [S2Options](/docs/api/general/S2Options) |    |
 | dataSet | 表格数据集 （字段，数据，排序）                                                                                                       | [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
 | facet | 当前可视渲染区域                                                                                                               | [BaseFacet](/docs/api/basic-class/base-facet) |    |
-| tooltip | tooltip                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
-| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |    |
+| tooltip | 提示信息                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
+| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/docs/api/canvas) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
-| hdAdapter | 高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
+| hd | 开启高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |
 | emit | 事件发布                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), ...args: any[]) => void |    |
 | getDataSet | 获取数据集                                                                                                                  | (options: [S2Options](/docs/api/general/S2Options)) => [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
@@ -33,14 +34,16 @@ s2.isPivotMode()
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
 | clearDrillDownData | 清除下钻数据                                                                                                                 | `(rowNodeId?: string) => void` |    |
-| showTooltip | 显示 tooltip                                                                                                             | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
+| showTooltip | 显示 tooltip   （别名 `tooltip.show`)                                                                                                         | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
 | showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: `CanvasEvent \| MouseEvent`, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
-| hideTooltip | 隐藏 tooltip                                                                                                             | `() => void` |    |
-| destroyTooltip | 销毁 tooltip                                                                                                             | `() => void` |    |
+| hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`)                                                                                                           | `() => void` |    |
+| destroyTooltip | 销毁 tooltip     （别名 `tooltip.destroy`)                                                                                                      | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
-| setDataCfg | 更新数据配置                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2-v1.34.0`版本使用  |
-| setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2-v1.34.0`版本使用 |
-| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => Promise<void>` |    |
+| setDataCfg | 更新表格数据                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
+| setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
+| resetDataCfg | 重置表格数据                                                                                                                 | () => void | |
+| resetOptions | 重置表格配置                                                                                                                 | () => void |   |
+| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean \| { reloadData?: boolean, reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => Promise<void>` |    |
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名）                                                                                            | (themeCfg: [ThemeCfg](/docs/api/general/S2Theme/#themecfg)) => void |    |
 | setTheme | 更新主题 （只包含主题 scheme)                                                                                                    | (theme: [S2Theme](/docs/api/general/S2Theme/#s2theme)) => void |    |
@@ -50,10 +53,6 @@ s2.isPivotMode()
 | getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
-| getRowNodes | 获取行头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
-| getRowLeafNodes | 获取行头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
-| facet.getColNodes | 获取列头节点                                                                                                                 | (level: number) => [Node[]](/docs/api/basic-class/node/) |    |
-| facet.getColLeafNodes | 获取列头叶子节点                                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | updateScrollOffset | 更新滚动偏移                                                                                                                 | (config: [OffsetConfig](#offsetconfig)) => void |    |
 | getCell | 根据 event.target 获取当前 单元格                                                                                               | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype) |    |
 | getCellType | 根据 event.target 获取当前 单元格类型                                                                                             | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellType](/docs/api/basic-class/base-cell#celltypes) |    |
@@ -67,6 +66,7 @@ s2.isPivotMode()
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |
 | measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 | measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
+| groupSortByMethod | 组内排序（透视表有效）  | (sortMethod: `'asc' \| 'desc'`, meta: [Node](/docs/api/basic-class/node)) => void  |    |
 
 ### S2MountContainer
 
@@ -111,7 +111,7 @@ export enum CellType {
 
 ### BBox
 
-功能描述：盒模型
+功能描述：盒模型。[详情](/docs/api/basic-class/base-bbox)
 
 ```ts
 type BBox = {

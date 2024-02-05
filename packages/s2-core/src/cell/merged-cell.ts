@@ -1,14 +1,14 @@
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 import { CellType } from '../common/constant';
 import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
+import { getBorderPositionAndStyle } from '../utils';
 import { renderLine, renderPolygon } from '../utils/g-renders';
 import {
   getPolygonPoints,
   getRightAndBottomCells,
 } from '../utils/interaction/merge-cell';
-import { drawObjectText } from '../utils/text';
-import { getBorderPositionAndStyle } from '../utils';
+import { drawCustomContent } from '../utils/text';
 import { DataCell } from './data-cell';
 
 /**
@@ -61,11 +61,11 @@ export class MergedCell extends DataCell {
       return;
     }
 
-    if (isObject(this.meta.fieldValue)) {
-      drawObjectText(this);
-    } else {
-      super.drawTextShape();
+    if (this.isMultiData()) {
+      return drawCustomContent(this);
     }
+
+    super.drawTextShape();
   }
 
   override drawBorders(): void {

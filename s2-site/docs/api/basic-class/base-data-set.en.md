@@ -4,7 +4,7 @@ order: 5
 ---
 
 Function description: tabular data
-set. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/data-set/pivot-data-set.ts)
+set. [details](https://github.com/antvis/S2/blob/next/packages/s2-core/src/data-set/pivot-data-set.ts)
 
 ```ts
 s2.dataSet.getFieldName('type')
@@ -23,7 +23,7 @@ s2.dataSet.getFieldName('type')
 | getFieldName                              | get field name                                                 | `() => string`                                                                                                                                                                               |                                                                      |
 | getFieldFormatter                         | Get the field formatting function                              | `() => (v: string) => unknown`                                                                                                                                                               |                                                                      |
 | getFieldDescription                       | Get field description                                          | `() => string`                                                                                                                                                                               |                                                                      |
-| setDataCfg                                | Set data configuration                                         | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | The `reset` parameter needs to be used in `@antv/s2-v1.34.0` version |
+| setDataCfg                                | Set data configuration                                         | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | The `reset` parameter needs to be used in `@antv/s2^1.34.0` version |
 | getDisplayDataSet                         | Get the currently displayed dataset                            | () => [DataType\[\]](#datatype)                                                                                                                                                              |                                                                      |
 | getDimensionValues                        | get dimension value                                            | (filed: string, query?: [DataType](#datatype) ) => string\[]                                                                                                                                 |                                                                      |
 | getCellData                               | Get a single cell data                                         | (params: [CellDataParams](#celldataparams) ) => [DataType\[\]](#datatype)                                                                                                                    |                                                                      |

@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { compact } from 'lodash';
-import { SheetComponent } from '@antv/s2-react';
+import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { compact } from 'lodash';
+import React from 'react';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -19,19 +19,21 @@ const colors = [
 function getRange(data) {
   const values = data.map((d) => d.value);
   const compactValue = compact(values);
+
   return {
     min: Math.min(...compactValue),
     max: Math.max(...compactValue),
   };
 }
 
-function getIndex(fieldValue, rawData) {
+function getIndex(fieldValue: number, rawData: S2DataConfig['data']) {
   const { min, max } = getRange(rawData);
   const step = Math.floor((max - min) / (colors.length - 1));
+
   return Math.floor((fieldValue - min) / step);
 }
 
-function getDataConfig(rawData) {
+function getDataConfig(rawData: S2DataConfig['data']): S2DataConfig {
   return {
     fields: {
       rows: ['size', 'name'],
@@ -60,9 +62,9 @@ function getDataConfig(rawData) {
   };
 }
 
-function getOptions(rawData) {
+function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   return {
-    width: 600,
+    width: 800, 
     height: 200,
     interaction: {
       selectedCellsSpotlight: false,
@@ -74,6 +76,7 @@ function getOptions(rawData) {
           field: 'value',
           mapping(fieldValue) {
             const index = getIndex(fieldValue, rawData);
+
             return {
               fill: fieldValue ? colors[index] : disableColor,
             };
@@ -84,10 +87,10 @@ function getOptions(rawData) {
   };
 }
 
-fetch('https://assets.antv.antgroup.com/s2/compare.json')
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/performance.json')
   .then((res) => res.json())
   .then((data) => {
-    ReactDOM.render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <div>
         <h3>1000 数据规模表格渲染时间对比</h3>
         <SheetComponent
@@ -108,6 +111,5 @@ fetch('https://assets.antv.antgroup.com/s2/compare.json')
           sheetType="pivot"
         />
       </div>,
-      document.getElementById('container'),
     );
   });

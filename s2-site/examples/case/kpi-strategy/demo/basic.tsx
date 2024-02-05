@@ -1,8 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { merge } from 'lodash';
-import { DataCell, measureTextWidth, S2DataConfig, S2Theme } from '@antv/s2';
+import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import React from 'react';
+import { Line, Rect } from '@antv/g';
 import '@antv/s2-react/dist/style.min.css';
 
 // 进度条
@@ -36,12 +35,15 @@ const PADDING = 10;
 
 function getStatusColorByProgress(realProgress, expectedProgress) {
   const leftWorker = expectedProgress - realProgress;
+
   if (leftWorker <= 0.1) {
     return STATUS_COLOR.healthy;
   }
+
   if (leftWorker > 0.1 && leftWorker <= 0.3) {
     return STATUS_COLOR.late;
   }
+
   return STATUS_COLOR.danger;
 }
 
@@ -58,21 +60,27 @@ class KpiStrategyDataCell extends DataCell {
 
   // 如果是进度, 格式化为百分比 (只做 demo 示例, 请根据实际情况使用)
   getFormattedFieldValue() {
-    const { data } = this.meta;
+    const data = this.meta.data?.raw;
+
     if (!data || !data.isProgress) {
       return super.getFormattedFieldValue();
     }
+
     const formattedValue = `${data.value * 100} %`;
+
     return { formattedValue, value: data.value };
   }
 
   // 绘制衍生指标
   renderDeriveValue() {
     // 通过 this.meta 拿到当前单元格的有效信息
-    const { x, width, data } = this.meta;
+    const { x, width } = this.meta;
+    const data = this.meta.data?.raw;
+
     if (!data || data.isExtra) {
       return;
     }
+
     const value = data?.compare ?? '';
     const isDown = value.startsWith('-');
     const color = isDown ? DERIVE_COLOR.down : DERIVE_COLOR.up;
@@ -83,33 +91,37 @@ class KpiStrategyDataCell extends DataCell {
       fontSize: 12,
     };
     // 获取当前文本坐标
-    const { maxY } = this.textShape.getBBox();
+    const { bottom } = this.textShape.getBBox();
     // 获取当前文本宽度
-    const textWidth = measureTextWidth(text, textStyle);
+    const textWidth = this.spreadsheet.measureTextWidth(text, textStyle);
     // 衍生指标靠右显示
     const textX = x + width - textWidth - PADDING;
     // 衍生指标和数值对齐显示
-    const textY = maxY;
+    const textY = bottom;
 
-    this.addShape('text', {
-      attrs: {
+    this.renderTextShape(
+      {
+        ...textStyle,
         x: textX,
         y: textY,
         text,
-        ...textStyle,
       },
-    });
+      { shallowRender: true },
+    );
   }
 
   // 绘制子弹进度条
 
   renderProgressBar() {
     const { x, y, width, height, data } = this.meta;
-    if (!data || !data.isProgress) {
+    const originData = this.meta.data?.raw;
+
+    if (!data || !originData || !originData.isProgress) {
       return;
     }
-    const currentProgress = data.value;
-    const expectedProgress = data.expectedValue;
+
+    const currentProgress = originData.value;
+    const expectedProgress = originData.expectedValue;
 
     const currentProgressWidth = Math.min(
       PROGRESS_BAR.width * currentProgress,
@@ -117,45 +129,53 @@ class KpiStrategyDataCell extends DataCell {
     );
 
     // 总进度条
-    this.addShape('rect', {
-      attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.height) / 2,
-        width: PROGRESS_BAR.width,
-        height: PROGRESS_BAR.height,
-        fill: CONTAINER_COLOR,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x: x + width - PROGRESS_BAR.width - PADDING,
+          y: y + (height - PROGRESS_BAR.height) / 2,
+          width: PROGRESS_BAR.width,
+          height: PROGRESS_BAR.height,
+          fill: CONTAINER_COLOR,
+        },
+      }),
+    );
+
     // 当前进度条
-    this.addShape('rect', {
-      attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.innerHeight) / 2,
-        width: currentProgressWidth,
-        height: PROGRESS_BAR.innerHeight,
-        fill: getStatusColorByProgress(currentProgress, expectedProgress),
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x: x + width - PROGRESS_BAR.width - PADDING,
+          y: y + (height - PROGRESS_BAR.innerHeight) / 2,
+          width: currentProgressWidth,
+          height: PROGRESS_BAR.innerHeight,
+          fill: getStatusColorByProgress(currentProgress, expectedProgress),
+        },
+      }),
+    );
+
     // 期望线
-    this.addShape('line', {
-      attrs: {
-        x1:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y1: y + (height - EXPECTED_LINE.height) / 2,
-        x2:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y2: y + (height - EXPECTED_LINE.height) / 2 + EXPECTED_LINE.height,
-        stroke: EXPECTED_LINE.color,
-        lineWidth: EXPECTED_LINE.width,
-        opacity: 0.25,
-      },
-    });
+    this.appendChild(
+      new Line({
+        style: {
+          x1:
+            x +
+            width -
+            PROGRESS_BAR.width +
+            PROGRESS_BAR.width * expectedProgress,
+          y1: y + (height - EXPECTED_LINE.height) / 2,
+          x2:
+            x +
+            width -
+            PROGRESS_BAR.width +
+            PROGRESS_BAR.width * expectedProgress,
+          y2: y + (height - EXPECTED_LINE.height) / 2 + EXPECTED_LINE.height,
+          stroke: EXPECTED_LINE.color,
+          lineWidth: EXPECTED_LINE.width,
+          opacity: 0.25,
+        },
+      }),
+    );
   }
 }
 
@@ -197,6 +217,18 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       tooltip: {
         operation: {
           hiddenColumns: true,
+          menu: {
+            items: [
+              {
+                icon: 'Trend',
+                key: 'trend',
+                label: '趋势',
+                onClick: (info, cell) => {
+                  console.log('trend icon clicked:', info, cell);
+                },
+              },
+            ],
+          },
         },
       },
       totals: {
@@ -205,7 +237,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
         },
       },
       interaction: {
-        selectedCellsSpotlight: true,
+        selectedCellsSpotlight: false,
         hoverHighlight: true,
       },
       // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观
@@ -238,15 +270,14 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       },
     };
 
-    ReactDOM.render(
+    reactDOMClient.createRoot(document.getElementById('container')).render(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
         sheetType="pivot"
         themeCfg={{
-          theme: merge({}, theme),
+          theme,
         }}
       />,
-      document.getElementById('container'),
     );
   });

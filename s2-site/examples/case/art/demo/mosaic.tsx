@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
-// more Info https://observablehq.com/@pearmini/mosaic-antv-s2
-
+// 了解更多: https://observablehq.com/@pearmini/mosaic-antv-s2
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/7f6ebbb4-ffeb-4f6c-a763-6faa8c0ccf7a.json',
 )
@@ -31,10 +30,9 @@ fetch(
       style: {
         layoutWidthType: 'compact',
         colCell: {
+          // 隐藏列头
           height: 0,
-          widthByField: {
-            color: 23,
-          },
+          width: 23,
         },
         dataCell: {
           height: 23,
@@ -42,7 +40,7 @@ fetch(
       },
     };
 
-    const customTheme = {
+    const customTheme: ThemeCfg['theme'] = {
       rowCell: {
         cell: {
           backgroundColor: dataCfg.data[0].color,
@@ -71,12 +69,13 @@ fetch(
       },
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        dataCfg={dataCfg}
-        options={s2Options}
-        themeCfg={{ theme: customTheme }}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={dataCfg}
+          options={s2Options}
+          themeCfg={{ theme: customTheme }}
+        />,
+      );
   });

@@ -6,7 +6,7 @@ describe('getIconLayoutPosition Test', () => {
       getIconPosition({
         field: 'value',
         mapping: () => {
-          return { fill: 'red' };
+          return { icon: 'xxx', fill: 'red' };
         },
       }),
     ).toEqual('right');
@@ -18,7 +18,7 @@ describe('getIconLayoutPosition Test', () => {
         field: 'value',
         position: 'left',
         mapping: () => {
-          return { fill: 'red' };
+          return { icon: 'xxx', fill: 'red' };
         },
       }),
     ).toEqual('left');

@@ -1,6 +1,7 @@
 ---
 title: 快速上手
 order: 1
+tag: Updated
 ---
 
 ## 📦 安装
@@ -9,34 +10,31 @@ order: 1
 
 ```bash
 # npm
-$ npm install @antv/s2 --save
+$ npm install @antv/s2@next --save
 
 # yarn
-$ yarn add @antv/s2 --save
+$ yarn add @antv/s2@next
 
 # pnpm
-$ pnpm install @antv/s2 --save
+$ pnpm add @antv/s2@next
 ```
 
 ### 使用 React 或 Vue3 版本
 
 ```bash
 # React
-$ yarn add @antv/s2 @antv/s2-react --save
+$ pnpm add @antv/s2@next @antv/s2-react@next antd @ant-design/icons
 
 # Vue3
-$ yarn add @antv/s2 @antv/s2-vue --save
+$ pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
+
 ```
 
-### 浏览器引入（不推荐）
+### 浏览器引入 <Badge type="error">不推荐</Badge>
 
 <embed src="@/docs/common/browser.zh.md"></embed>
 
-如需兼容 `IE`，需要自行引入 `polyfill` 兼容。
-
 ## 🔨 使用
-
-创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
 
 ### 版本
 
@@ -171,13 +169,13 @@ const s2Options = {
 #### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-async function run() {
+async function bootstrap() {
   const container = document.getElementById('container');
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -185,7 +183,7 @@ async function run() {
   await s2.render(); // 返回 Promise
 }
 
-run();
+bootstrap();
 ```
 
 #### 4. 结果
@@ -201,26 +199,27 @@ run();
 
 ```tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2Options}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <SheetComponent
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />
+  )
+}
 ```
 
 :::warning{title='注意事项'}
 `React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
-yarn add antd @ant-design/icons --save
+pnpm add antd @ant-design/icons
 ```
+
+:::
 
 ​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 
@@ -228,17 +227,16 @@ yarn add antd @ant-design/icons --save
 
 ```ts
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { MobileSheet } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-ReactDOM.render(
-  <MobileSheet
-    dataCfg={s2DataConfig}
-  />,
-  document.getElementById('container'),
-);
-
+const App = () => {
+  return (
+    <MobileSheet
+      dataCfg={s2DataConfig}
+    />
+  )
+}
 ```
 
 #### 注意事项
@@ -296,10 +294,10 @@ createApp(App).mount('#app');
 
 :::warning{title='注意事项'}
 
-`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式。
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue@3.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
-yarn add ant-design-vue --save
+pnpm add ant-design-vue@3.x
 ```
 
 :::

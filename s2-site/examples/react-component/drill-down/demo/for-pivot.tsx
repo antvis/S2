@@ -1,20 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2DataConfig } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       hierarchyType: 'tree',
     };
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
@@ -26,7 +30,7 @@ fetch(
 
     const sex = ['男', '女'];
 
-    const PartDrillDown = {
+    const PartDrillDown: SheetComponentsProps['partDrillDown'] = {
       drillConfig: {
         dataSet: [
           {
@@ -36,7 +40,6 @@ fetch(
           },
         ],
       },
-
       fetchData: (meta, drillFields) =>
         new Promise((resolve) => {
           const dataSet = meta.spreadsheet.dataSet;
@@ -77,13 +80,14 @@ fetch(
         }),
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        partDrillDown={PartDrillDown}
-        adaptive={false}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2Options}
+          partDrillDown={PartDrillDown}
+          adaptive={false}
+        />,
+      );
   });

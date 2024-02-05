@@ -5,9 +5,16 @@ redirect_from:
   - /zh/docs/api
 ---
 
-表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
+表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[查看全部事件定义](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/constant/events/basic.ts), [文档](/manual/advanced/interaction/basic) 和 [示例](/examples/interaction/basic/#event)
 
+:::info{title="提示"}
 如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/docs/api/components/sheet-component)
+
+```tsx | pure
+<SheetComponent onRowCellClick={...} />
+```
+
+:::
 
 ```ts
 import { S2Event } from '@antv/s2'
@@ -80,13 +87,13 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 | 名称     | 事件名                             | 描述               |
 | ------- | --------------------------------- | ----------------- |
-| 点击     | `S2Event.CORNER_CELL_CLICK`        | 合并单元格点击     |
-| 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 合并单元格双击     |
-| 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 合并单元格右键     |
-| 悬停     | `S2Event.CORNER_CELL_HOVER`        | 合并单元格悬停     |
-| 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 合并单元格鼠标按下 |
-| 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 合并单元格鼠标移动 |
-| 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 合并单元格鼠标松开 |
+| 点击     | `S2Event.MERGED_CELLS_CLICK`        | 合并单元格点击     |
+| 双击     | `S2Event.MERGED_CELLS_DOUBLE_CLICK` | 合并单元格双击     |
+| 右键     | `S2Event.MERGED_CELLS_CONTEXT_MENU` | 合并单元格右键     |
+| 悬停     | `S2Event.MERGED_CELLS_HOVER`        | 合并单元格悬停     |
+| 鼠标按下 | `S2Event.MERGED_CELLS_MOUSE_DOWN`   | 合并单元格鼠标按下 |
+| 鼠标移动 | `S2Event.MERGED_CELLS_MOUSE_MOVE`   | 合并单元格鼠标移动 |
+| 鼠标松开 | `S2Event.MERGED_CELLS_MOUSE_UP`     | 合并单元格鼠标松开 |
 | 单元格渲染                 | `S2Event.MERGED_CELLS_RENDER`       | 合并单元格布局渲染完成事件                  |
 
 ### 序号单元格 (SeriesNumberCell)

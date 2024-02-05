@@ -1,24 +1,27 @@
 # S2 官网
 
-- 老官网：<https://s2.antv.vision>
-- 新官网 （推荐）：<https://s2.antv.antgroup.com>
+- 老官网 （已废弃）：
+  - <https://s2.antv.vision>
+- 新官网 （推荐）:
+  - `2.x`: <https://s2.antv.antgroup.com>
+  - `1.x`: <https://s2-v1.antv.antgroup.com>
 
 ## 开发
 
 ```bash
-# 安装依赖
-yarn
+# 切到根目录安装
+pnpm install
 
 # 调试
-yarn start
+pnpm start
 ```
 
 ## 发布
 
-记得将 `package.json` 对应的 `@antv/s2` 和 `@antv/s2-react` **更新到最新版本**, 并将更新后的 `yarn.lock` 提交上来。
+非特殊情况，无需手动操作，通过 GitHub Action 自动发布
 
 ```bash
-yarn deploy
+pnpm deploy
 ```
 
 ## 内容建设
@@ -55,4 +58,4 @@ yarn deploy
 
   ```
 
-- 热更新没有特别灵敏，如果没有时时更新请手动重刷或重启服务
+- 热更新没有特别灵敏，如果没有试试更新请手动重刷或重启服务

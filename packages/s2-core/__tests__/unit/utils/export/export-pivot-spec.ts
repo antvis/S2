@@ -304,7 +304,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {isFormatHeader: true}', async () => {
+  it('should export correct data when isFormat: {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -327,9 +327,7 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithHeader: true,
-          copyWithFormat: true,
+          copy: { enable: true, withHeader: true, withFormat: true },
         },
       }),
     );
@@ -338,7 +336,7 @@ describe('PivotSheet Export Test', () => {
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
-      formatOptions: { isFormatHeader: true },
+      formatOptions: { formatHeader: true },
     });
 
     const rows = data.split('\n');
@@ -350,7 +348,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[3].split(NewTab)[0]).toEqual('家具-type');
   });
 
-  it('should export correct data when isFormat: {isFormatData: true}', async () => {
+  it('should export correct data when isFormat: {formatData: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -363,8 +361,7 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         interaction: {
-          enableCopy: true,
-          copyWithFormat: true,
+          copy: { enable: true, withFormat: true },
         },
       }),
     );
@@ -374,7 +371,7 @@ describe('PivotSheet Export Test', () => {
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: NewTab,
-      formatOptions: { isFormatData: true },
+      formatOptions: { formatData: true },
     });
 
     expect(data).toMatchInlineSnapshot(`
@@ -443,8 +440,15 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         hierarchyType: 'grid',
-        showSeriesNumber: true,
-        interaction: { enableCopy: true, copyWithHeader: true },
+        seriesNumber: {
+          enable: true,
+        },
+        interaction: {
+          copy: {
+            enable: true,
+            withHeader: true,
+          },
+        },
       }),
     );
 
@@ -484,7 +488,7 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({
         hierarchyType: 'grid',
-        interaction: { enableCopy: true, copyWithHeader: true },
+        interaction: { copy: { enable: true, withHeader: true } },
       }),
     );
 
@@ -542,7 +546,7 @@ describe('PivotSheet Export Test', () => {
       sheetInstance: pivotSheet,
       split: ',',
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
 

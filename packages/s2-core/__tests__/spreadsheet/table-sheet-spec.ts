@@ -71,7 +71,9 @@ const dataCfg: S2DataConfig = {
 const options: S2Options = {
   width: 800,
   height: 600,
-  showSeriesNumber: true,
+  seriesNumber: {
+    enable: true,
+  },
   placeholder: '',
   style: {
     layoutWidthType: LayoutWidthType.Compact,
@@ -80,7 +82,7 @@ const options: S2Options = {
     },
   },
   interaction: {
-    enableCopy: true,
+    copy: { enable: true },
     hoverHighlight: false,
     selectedCellHighlight: true,
     linkFields: ['order_id', 'customer_name'],

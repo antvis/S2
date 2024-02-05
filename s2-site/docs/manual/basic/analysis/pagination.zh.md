@@ -17,8 +17,8 @@ S2 内置提供了分页能力。本质上是前端分页，点击下一页滚�
 
 如果基于 `@antv/s2-core` 开发，需要**自行引入**或**实现分页组件**，`core` 层仅提供分页能力，参考示例
 
-* [React](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/pagination/index.tsx)
-* [Vue 3.0](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/pagination/index.vue)
+* [React](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/pagination/index.tsx)
+* [Vue 3.0](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/pagination/index.vue)
 
 如果基于 `@antv/s2-react` 或  `@antv/s2-vue` 开发，则只需配置分页相关配置项即可开箱即用。
 

@@ -1,8 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
+import React from 'react';
 
 // 临时处理老数据格式
 function process(children) {
@@ -80,12 +79,13 @@ fetch(
       },
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="strategy"
-        dataCfg={s2DataConfig}
-        options={s2Options}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="strategy"
+          dataCfg={s2DataConfig}
+          options={s2Options}
+        />,
+      );
   });

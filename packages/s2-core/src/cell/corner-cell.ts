@@ -114,7 +114,6 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     }
 
     const resizeStyle = this.getResizeAreaStyle();
-
     const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,

@@ -1,6 +1,7 @@
 ---
 title: Customize Category Tree
 order: 2
+tag: New
 ---
 
 By default, `S2` provides two row header layout modes [: tile mode (grid)](/examples/basic/pivot#grid) and [tree mode (tree)](/examples/basic/pivot#tree) .

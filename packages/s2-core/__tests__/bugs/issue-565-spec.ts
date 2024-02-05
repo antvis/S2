@@ -1,7 +1,7 @@
 /**
  * @description spec for issue #565
  * https://github.com/antvis/S2/issues/565
- * copyData error in tree mode
+ * #asyncGetAllPlainData error in tree mode
  *
  */
 import * as mockDataConfig from 'tests/data/data-issue-565.json';

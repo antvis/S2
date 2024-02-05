@@ -7,18 +7,29 @@
     {
       "filename": "get-cell-data.ts",
       "title": {
+        "zh": "获取单元格数据",
+        "en": "Get Cell Data"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*l-MsQKCGsnEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "get-single-cell-data.ts",
+      "title": {
         "zh": "获取单个单元格数据",
         "en": "Get Single Cell Data"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png",
+      "new": true
     },
     {
-      "filename": "get-multi-data.ts",
+      "filename": "get-multi-cell-data.ts",
       "title": {
         "zh": "获取多个单元格数据",
         "en": "Get Multi Cell Data"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png",
+      "new": true
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { defineConfig } from 'dumi';
+// import { version } from '@antv/s2';
 import { repository } from './package.json';
 
 export default defineConfig({
@@ -12,12 +13,12 @@ export default defineConfig({
   ], // 网站 favicon
   metas: [
     // 自定义 meta 标签
-    { name: 'keywords', content: 'S2' },
-    { name: 'description', content: '多维交叉分析表格' },
+    { name: 'keywords', content: 'S2 2.0' },
+    { name: 'description', content: '多维交叉分析表格 2.0, S2 Next' },
   ],
   themeConfig: {
     title: 'S2',
-    description: '多维交叉分析表格',
+    description: '多维交叉分析表格 2.0',
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light', // 白色 底部主题
@@ -30,8 +31,14 @@ export default defineConfig({
     showLanguageSwitcher: true, // 是否显示官网语言切换
     showWxQrcode: true, // 是否显示头部菜单的微信公众号
     showChartResize: true, // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true, // 是否在 demo 页展示API文档
-    themeSwitcher: 'g2',
+    showAPIDoc: true, // 是否在 demo 页展示 API 文档
+    es5: false,
+    versions: {
+      // 历史版本以及切换下拉菜单
+      // [version || '2.x']: 'https://s2.antv.antgroup.com',
+      '2.x': 'https://s2.antv.antgroup.com',
+      '1.x': 'https://s2-v1.antv.antgroup.com',
+    },
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
@@ -39,13 +46,13 @@ export default defineConfig({
       indexName: 's2-antv-antgroup',
       appId: 'LWCKDMVZ87',
     },
-    internalSite: {
-      url: 'https://s2.antv.antgroup.com',
-      name: {
-        zh: '国内镜像',
-        en: 'China Mirror',
-      },
-    },
+    // internalSite: {
+    //   url: 'https://s2.antv.antgroup.com',
+    //   name: {
+    //     zh: '国内镜像',
+    //     en: 'China Mirror',
+    //   },
+    // },
     navs: [
       {
         slug: 'docs/manual',
@@ -75,13 +82,27 @@ export default defineConfig({
           en: 'Playground',
         },
       },
+      {
+        slug: 'manual/faq',
+        title: {
+          zh: '常见问题',
+          en: 'FAQ',
+        },
+      },
+      {
+        slug: 'https://github.com/antvis/S2/releases',
+        title: {
+          zh: '更新日志',
+          en: 'ChangeLog',
+        },
+      },
     ],
     docs: [
       {
         slug: 'api/general',
         title: {
           zh: '基础配置项',
-          en: 'Common configuration',
+          en: 'Common Configuration',
         },
         order: 0,
       },
@@ -89,14 +110,14 @@ export default defineConfig({
         slug: 'api/basic-class',
         title: {
           zh: '基础类',
-          en: 'Basic class',
+          en: 'Basic Class',
         },
         order: 1,
       },
       {
         slug: 'api/components',
         title: {
-          zh: '组件',
+          zh: '分析组件',
           en: 'Components',
         },
         order: 2,
@@ -105,7 +126,7 @@ export default defineConfig({
         slug: 'manual/basic',
         title: {
           zh: '基础教程',
-          en: 'Basic tutorial',
+          en: 'Basic Tutorial',
         },
         order: 3,
       },
@@ -113,7 +134,7 @@ export default defineConfig({
         slug: 'manual/basic/sheet-type',
         title: {
           zh: '表形态',
-          en: 'Sheet type',
+          en: 'Sheet Type',
         },
         order: 1,
       },
@@ -121,25 +142,9 @@ export default defineConfig({
         slug: 'manual/advanced',
         title: {
           zh: '进阶教程',
-          en: 'Advanced tutorial',
+          en: 'Advanced Tutorial',
         },
         order: 4,
-      },
-      {
-        slug: 'manual/advanced/data-process',
-        title: {
-          zh: '数据流处理',
-          en: 'Data Process',
-        },
-        order: 2,
-      },
-      {
-        slug: 'manual/advanced/layout',
-        title: {
-          zh: '布局',
-          en: 'Layout',
-        },
-        order: 3,
       },
       {
         slug: 'manual/advanced/custom',
@@ -153,9 +158,17 @@ export default defineConfig({
         slug: 'manual/advanced/interaction',
         title: {
           zh: '交互',
-          en: 'interaction',
+          en: 'Interaction',
         },
         order: 5,
+      },
+      {
+        slug: 'manual/advanced/analysis',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze Component',
+        },
+        order: 6,
       },
       {
         slug: 'manual/basic/sort',
@@ -166,12 +179,28 @@ export default defineConfig({
         order: 6,
       },
       {
-        slug: 'manual/basic/analysis',
+        slug: 'manual/extended-reading',
         title: {
-          zh: '分析组件',
-          en: 'Analyze component',
+          zh: '扩展阅读',
+          en: 'Extended Reading',
         },
-        order: 7,
+        order: 6,
+      },
+      {
+        slug: 'manual/extended-reading/data-process',
+        title: {
+          zh: '数据流处理',
+          en: 'Data Process',
+        },
+        order: 1,
+      },
+      {
+        slug: 'manual/extended-reading/layout',
+        title: {
+          zh: '布局流程',
+          en: 'Layout',
+        },
+        order: 2,
       },
     ],
     tutorials: [
@@ -251,8 +280,7 @@ export default defineConfig({
       },
     ],
     playground: {
-      playgroundDidMount: 'console.log("playgroundDidMount");',
-      playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
+      extraLib: '',
       devDependencies: {
         typescript: 'latest',
       },
@@ -266,14 +294,24 @@ export default defineConfig({
             <div id="container" />
             <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
             <script>
-        {{code}}
+              {{code}}
             </script>
           </body>
         </html>`,
     },
     announcement: {
-      zh: '',
-      en: '',
+      // icon: 'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1PTTQLk3j5AAAAAAAAAAAAAADmJ7AQ/original',
+      title: {
+        zh: '🎉 S2 2.0 版本开始内测啦! 文档焕新升级, 原 1.x 官网已迁移至 https://s2-v1.antv.antgroup.com',
+        en: '🎉 S2 Next version 2.0 is in beta! see 1.x docs: https://s2-v1.antv.antgroup.com',
+      },
+      link: {
+        text: {
+          zh: '查看升级指南',
+          en: 'Upgrade Guide',
+        },
+        url: '/manual/migration-v2',
+      },
     },
     /** 首页技术栈介绍 */
     detail: {
@@ -282,8 +320,8 @@ export default defineConfig({
         en: 'S2',
       },
       title: {
-        zh: 'S2·多维交叉分析表格',
-        en: 'S2·Multi Cross Analysis Table',
+        zh: 'S2 多维交叉分析表格 2.0',
+        en: 'S2 Multi Cross Analysis Table 2.0',
       },
       description: {
         zh: 'S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。',
@@ -298,48 +336,76 @@ export default defineConfig({
       buttons: [
         {
           text: {
+            zh: '2.0 升级指南',
+            en: 'Migration v2',
+          },
+          link: `/manual/migration-v2`,
+        },
+        {
+          text: {
+            zh: '查看 1.x 官网',
+            en: 'View 1.x Website',
+          },
+          link: `https://s2-v1.antv.antgroup.com`,
+          type: 'primary',
+        },
+        // 右上角有图表示例的入口, 2.0 过渡期间透出 [升级指南]
+        // {
+        //   text: {
+        //     zh: '图表示例',
+        //     en: 'Examples',
+        //   },
+        //   link: `/examples`,
+        // },
+        {
+          text: {
             zh: '开始使用',
             en: 'Getting Started',
           },
           link: `/manual/getting-started`,
-        },
-        {
-          text: {
-            zh: '图表示例',
-            en: 'Examples',
-          },
-          link: `/examples`,
           type: 'primary',
         },
       ],
     },
     /** 新闻公告，优先选择配置的，如果没有配置则使用远程的！ */
-    // news: [
-    //   {
-    //     type: {
-    //       zh: '论坛',
-    //       en: 'Forum',
-    //     },
-    //     title: {
-    //       zh: 'AntV 芒种日 图新物：GraphInsight 发布',
-    //       en: 'AntV New Product Launch: GraphInsight',
-    //     },
-    //     date: '2022.06.06',
-    //     link: 'https://github.com/antvis/GraphInsight',
-    //   },
-    //   {
-    //     type: {
-    //       zh: '论坛',
-    //       en: 'Forum',
-    //     },
-    //     title: {
-    //       zh: 'SEE Conf 2022 支付宝体验科技大会',
-    //       en: 'Alipay Experience Technology Conference',
-    //     },
-    //     date: '2022.01.08',
-    //     link: 'https://seeconf.antfin.com/',
-    //   },
-    // ],
+    news: [
+      {
+        type: {
+          zh: '初心 · 出新 AntV 2023 年度发布',
+          en: 'AntV 2023',
+        },
+        title: {
+          zh: 'S2 2.0 表格看数新纪元',
+          en: 'S2 2.0 Next Version',
+        },
+        date: '2023.11.22',
+        link: 'https://www.yuque.com/antv/blog/1122_7_s2',
+      },
+      {
+        type: {
+          zh: 'S2 Next',
+          en: 'S2 Next',
+        },
+        title: {
+          zh: '2.0 版本开始内测啦! 欢迎尝鲜使用.',
+          en: '2.0 is in beta! Welcome to use.',
+        },
+        date: '2024.1.31',
+        link: 'https://github.com/antvis/S2/issues/2454',
+      },
+      {
+        type: {
+          zh: 'S2 1.x',
+          en: 'S2 1.x',
+        },
+        title: {
+          zh: '原 v1 文档已迁移至 https://s2-v1.antv.antgroup.com',
+          en: 'S2 2.0 is in beta! Welcome to use.',
+        },
+        date: '2024.1.31',
+        link: 'https://s2-v1.antv.antgroup.com',
+      },
+    ],
     /** 首页特性介绍 */
     features: [
       {
@@ -435,14 +501,16 @@ export default defineConfig({
       },
     ],
   },
+  mfsu: false,
   alias: {
     '@': __dirname,
   },
   styles: ['/site.css'],
   links: [],
   scripts: [],
-  monorepoRedirect: {
-    peerDeps: true,
-    srcDir: ['src', 'esm', 'lib'],
-  },
+  // TODO: S2用的 antd@5.x @antv/dumi-theme-antv 是 4.x, 导致本地跑不起来
+  // monorepoRedirect: {
+  //   peerDeps: true,
+  //   srcDir: ['src', 'esm', 'lib'],
+  // },
 });

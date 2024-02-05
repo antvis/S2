@@ -3,7 +3,7 @@ title: 自定义交互
 order: 1
 ---
 
-如果内置交互未能覆盖实际的使用场景，不用担心。你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) 所提供的交互事件，进行任意排列组合，自定义交互。这里以 [**明细表双击隐藏列头**](/examples/interaction/custom#double-click-hide-columns) 的例子说明。
+如果内置交互未能覆盖实际的使用场景，不用担心。你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/constant/events/basic.ts) 所提供的交互事件，进行任意排列组合，自定义交互。这里以 [**明细表双击隐藏列头**](/examples/interaction/custom#double-click-hide-columns) 的示例说明。
 
 ## 1. 自定义交互类
 
@@ -16,8 +16,7 @@ import { BaseEvent } from '@antv/s2';
 
 // 继承 BaseEvent, 可以拿到 this.spreadsheet
 class HiddenInteraction extends BaseEvent {
-  bindEvents() {
-  }
+  bindEvents() { }
 }
 ```
 
@@ -54,15 +53,16 @@ const s2Options = {
     customInteractions: [
       {
         // 交互的唯一标识，需要保证和已有交互不冲突
-        key: 'MyInteraction',
-        interaction: MyInteraction,
+        key: 'HiddenInteraction',
+        interaction: HiddenInteraction,
       },
     ],
   }
 };
+
 const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+await s2.render();
 ```
 
 ## 3. 多个自定义交互
@@ -87,8 +87,8 @@ const s2Options = {
   interaction: {
     customInteractions: [
       {
-        key: 'MyInteraction',
-        interaction: MyInteraction,
+        key: 'HiddenInteraction',
+        interaction: HiddenInteraction,
       },
       {
         key: 'ContextMenuInteraction',
@@ -100,7 +100,7 @@ const s2Options = {
 
 const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-s2.render();
+await s2.render();
 ```
 
-<Playground path='interaction/advanced/demo/double-click-hide-columns.ts' rid='container' height='400'></playground>
+<Playground path="interaction/custom/demo/double-click-hide-columns.ts" rid="container"></playground>

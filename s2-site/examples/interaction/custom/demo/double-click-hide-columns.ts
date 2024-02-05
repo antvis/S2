@@ -1,4 +1,11 @@
-import { TableSheet, BaseEvent, S2Event } from '@antv/s2';
+/* eslint-disable max-classes-per-file */
+import {
+  TableSheet,
+  BaseEvent,
+  S2Event,
+  S2DataConfig,
+  S2Options,
+} from '@antv/s2';
 
 class HiddenInteraction extends BaseEvent {
   bindEvents() {
@@ -37,9 +44,9 @@ fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['type', 'province', 'city', 'price', 'cost'],
       },
@@ -68,7 +75,7 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       tooltip: {
@@ -90,5 +97,5 @@ fetch(
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
   });

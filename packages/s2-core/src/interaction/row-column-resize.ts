@@ -20,6 +20,8 @@ import {
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
   S2Event,
+  RESIZE_MIN_CELL_WIDTH,
+  RESIZE_MIN_CELL_HEIGHT,
 } from '../common/constant';
 import type {
   ResizeDetail,
@@ -489,7 +491,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       end: ResizeGuideLinePath;
     },
   ) {
-    const { minCellWidth } = this.getResizeAreaTheme();
+    const { minCellWidth = RESIZE_MIN_CELL_WIDTH } =
+      (this.spreadsheet.options.interaction
+        ?.resize as ResizeInteractionOptions) || {};
     let nextOffsetX = offsetX - this.resizeStartPosition.offsetX!;
 
     if (resizeInfo.width + nextOffsetX < minCellWidth) {
@@ -517,7 +521,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       end: ResizeGuideLinePath;
     },
   ) {
-    const { minCellHeight } = this.getResizeAreaTheme();
+    const { minCellHeight = RESIZE_MIN_CELL_HEIGHT } =
+      (this.spreadsheet.options.interaction
+        ?.resize as ResizeInteractionOptions) || {};
     let nextOffsetY = offsetY - this.resizeStartPosition.offsetY!;
 
     if (resizeInfo.height + nextOffsetY < minCellHeight) {

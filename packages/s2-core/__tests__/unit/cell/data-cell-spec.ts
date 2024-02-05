@@ -599,9 +599,11 @@ describe('Data Cell Tests', () => {
   describe('Data Cell Interaction', () => {
     beforeEach(async () => {
       s2 = createPivotSheet({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
         interaction: {
-          enableCopy: true,
+          copy: { enable: true },
         },
       });
       await s2.render();

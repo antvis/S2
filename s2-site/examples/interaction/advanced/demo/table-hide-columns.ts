@@ -1,7 +1,16 @@
 /* eslint-disable no-console */
-import { TableSheet, S2Event, S2Options, S2DataConfig } from '@antv/s2';
+import {
+  TableSheet,
+  S2Event,
+  S2Options,
+  S2DataConfig,
+  SpreadSheet,
+  S2CellType,
+  TooltipShowOptions,
+} from '@antv/s2';
+import '@antv/s2/dist/style.min.css';
 
-function hideSelectedColumns(s2) {
+function hideSelectedColumns(s2: SpreadSheet) {
   // 兼容多选
   const selectedColumnNodes = s2.interaction
     .getActiveCells()
@@ -12,10 +21,11 @@ function hideSelectedColumns(s2) {
   s2.interaction.hideColumns(selectedColumnFields, true);
 }
 
-function getTooltipContent(cell, options) {
+// 使用 `@antv/s2` tooltip 的 ui 需要自己封装, `@antv/s2-react` 已经内置.
+function getTooltipContent(cell: S2CellType, options: TooltipShowOptions) {
   const { spreadsheet, isLeaf } = cell.getMeta();
 
-  if (!isLeaf || !spreadsheet.options.tooltip.operation.hiddenColumns) {
+  if (!isLeaf || !spreadsheet.options.tooltip?.operation?.hiddenColumns) {
     return null;
   }
 

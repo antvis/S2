@@ -1,0 +1,17 @@
+{
+  "title": {
+    "zh": "自定义数据集",
+    "en": "Custom Dataset"
+  },
+  "demos": [
+    {
+      "filename": "custom-strategy-sheet-dataset.ts",
+      "title": {
+        "zh": "自定义趋势分析表数据集",
+        "en": "Custom StrategySheet Dataset"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*JS6VQKsFBSAAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    }
+  ]
+}

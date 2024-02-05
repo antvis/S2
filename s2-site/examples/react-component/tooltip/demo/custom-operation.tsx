@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -14,13 +13,15 @@ fetch(
       tooltip: {
         operation: {
           menu: {
+            // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
+            // mode: 'vertical',
             onClick(info, cell) {
               console.log('菜单项点击: ', info, cell);
             },
             items: [
               {
                 key: 'custom-a',
-                text: '操作1',
+                label: '操作1',
                 icon: 'Trend',
                 onClick: (info, cell) => {
                   console.log('操作1点击:', info, cell);
@@ -28,7 +29,7 @@ fetch(
                 children: [
                   {
                     key: 'custom-a-a',
-                    text: '操作 1-1',
+                    label: '操作 1-1',
                     icon: 'Trend',
                     onClick: (info, cell) => {
                       console.log('操作1-1点击:', info, cell);
@@ -38,7 +39,7 @@ fetch(
               },
               {
                 key: 'custom-b',
-                text: '操作2',
+                label: '操作2',
                 icon: 'EyeOutlined',
                 onClick: (info, cell) => {
                   console.log('操作2点击:', info, cell);
@@ -46,7 +47,7 @@ fetch(
               },
               {
                 key: 'custom-c',
-                text: '操作3',
+                label: '操作3',
                 icon: 'EyeOutlined',
                 visible: false,
                 onClick: (info, cell) => {
@@ -55,7 +56,7 @@ fetch(
               },
               {
                 key: 'custom-c',
-                text: '操作4',
+                label: '操作4',
                 icon: 'EyeOutlined',
                 visible: (cell) => {
                   // 叶子节点才显示
@@ -73,13 +74,14 @@ fetch(
       },
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-      />,
-      document.getElementById('container'),
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(
+        <SheetComponent
+          sheetType="pivot"
+          adaptive={false}
+          dataCfg={dataCfg}
+          options={s2Options}
+        />,
+      );
   });

@@ -1,10 +1,10 @@
-import { TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['type', 'province', 'city', 'price', 'cost'],
       },
@@ -33,7 +33,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       style: {
@@ -42,7 +42,15 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         },
       },
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.render();
+    // 默认列头有一条分割线, 如果不需要的话将分割线的透明度设置为 0
+    s2.setTheme({
+      splitLine: {
+        horizontalBorderColorOpacity: 0,
+      },
+    });
+
+    await s2.render();
   });

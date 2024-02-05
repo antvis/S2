@@ -242,7 +242,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private initHdAdapter() {
-    if (this.options.hdAdapter) {
+    if (this.options.hd) {
       this.hdAdapter = new HdAdapter(this);
       this.hdAdapter.init();
     }
@@ -270,6 +270,19 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
+  /**
+   * 展示 Tooltip 提示
+   * @alias s2.tooltip.show()
+   * @example
+      s2.showTooltip({
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+        content: '<div>xxx</div>',
+        options: {}
+      })
+   */
   public showTooltip<
     T = TooltipContentType,
     Menu = BaseTooltipOperatorMenuOptions,
@@ -355,16 +368,16 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * Update data config and keep pre-sort operations
-   * Group sort params kept in {@see store} and
-   * Priority: group sort > advanced sort
-   * @param dataCfg
-   * @param reset 是否使用传入的 dataCfg 重置已保存的 dataCfg
-   *
-   * @example setDataCfg(dataCfg, true) 直接使用传入的 DataCfg，不再与上次数据进行合并
+   * 更新表格数据
+   * @param dataCfg 数据源配置
+   * @param reset 是否重置数据源配置, 直接使用传入的 dataCfg，不再与之前的配置进行合并
+   * @example s2.setDataCfg(dataCfg)
+   * @example s2.setDataCfg(dataCfg, true)
    */
   public setDataCfg<T extends boolean = false>(
-    dataCfg: T extends true ? S2DataConfig : Partial<S2DataConfig>,
+    dataCfg: T extends true
+      ? S2DataConfig | undefined | null
+      : Partial<S2DataConfig>,
     reset?: T,
   ) {
     this.store.set('originalDataCfg', dataCfg);
@@ -378,7 +391,17 @@ export abstract class SpreadSheet extends EE {
     clearValueRangeState(this);
   }
 
-  public setOptions(options: Partial<S2Options>, reset?: boolean) {
+  /**
+   * 更新表格配置
+   * @param options 配置
+   * @param reset 是否重置配置, 直接使用传入的 options，不再与之前的配置进行合并
+   * @example s2.setOptions(dataCfg)
+   * @example s2.setOptions(dataCfg, true)
+   */
+  public setOptions<T extends boolean = false>(
+    options: T extends true ? S2Options | undefined | null : Partial<S2Options>,
+    reset?: T,
+  ) {
     this.hideTooltip();
 
     if (reset) {
@@ -387,12 +410,28 @@ export abstract class SpreadSheet extends EE {
       this.options = customMerge(this.options, options);
     }
 
-    if (reset || options.tooltip?.render) {
+    if (reset || options?.tooltip?.render) {
       this.initTooltip();
     }
 
     this.resetHiddenColumnsDetailInfoIfNeeded();
     this.registerIcons();
+  }
+
+  /**
+   * 重置表格数据
+   * @example s2.resetDataCfg()
+   */
+  public resetDataCfg() {
+    this.setDataCfg(null, true);
+  }
+
+  /**
+   * 重置表格配置
+   * @example s2.resetOptions()
+   */
+  public resetOptions() {
+    this.setOptions(null, true);
   }
 
   private resetHiddenColumnsDetailInfoIfNeeded() {
@@ -401,7 +440,7 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
-  private async doRender(reloadData = true, options: S2RenderOptions = {}) {
+  private async doRender(options?: S2RenderOptions) {
     // 防止表格卸载后, 再次调用 render 函数的报错
     if (
       !this.getCanvasElement() ||
@@ -410,8 +449,11 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
-      options;
+    const {
+      reloadData = true,
+      reBuildDataSet = false,
+      reBuildHiddenColumnsDetail = true,
+    } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
 
@@ -434,26 +476,38 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 同步渲染
-   * @deprecated 适配 g5.0 异步渲染过程中暂时保留
+   * 渲染表格
+   * @param reloadData
+   * @param options
+   * @example
+      s2.render(true)
+      s2.render(false)
+      s2.render({
+        reloadData: true;
+        reBuildDataSet: true;
+        reBuildHiddenColumnsDetail: true;
+      })
    */
-  // eslint-disable-next-line camelcase
-  public UNSAFE_render(reloadData?: boolean, options?: S2RenderOptions) {
-    this.doRender(reloadData, options);
-  }
-
-  public async render(
-    reloadData?: boolean,
-    options?: S2RenderOptions,
-  ): Promise<void> {
+  public async render(options?: S2RenderOptions | boolean): Promise<void> {
     if (this.destroyed) {
       return;
     }
 
+    const renderOptions: S2RenderOptions =
+      typeof options === 'boolean'
+        ? {
+            reloadData: options,
+          }
+        : options!;
+
     await this.container.ready;
-    await this.doRender(reloadData, options);
+    await this.doRender(renderOptions);
   }
 
+  /**
+   * 卸载表格
+   * @example s2.destroy()
+   */
   public destroy() {
     if (this.destroyed) {
       return;

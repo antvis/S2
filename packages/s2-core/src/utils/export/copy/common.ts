@@ -60,10 +60,10 @@ export const Transformers: {
 
 export function getFormatter(
   field: string,
-  isFormatData = false,
+  formatData = false,
   dataSet: BaseDataSet,
 ) {
-  if (isFormatData) {
+  if (formatData) {
     return dataSet.getFieldFormatter(field!);
   }
 
@@ -143,17 +143,17 @@ export function completeMatrix(matrix: string[][]): string[][] {
   });
 }
 
-export const getFormatOptions = (isFormat?: FormatOptions) => {
-  if (typeof isFormat === 'object') {
+export const getFormatOptions = (formatOptions?: FormatOptions) => {
+  if (typeof formatOptions === 'object') {
     return {
-      isFormatHeader: isFormat.isFormatHeader ?? false,
-      isFormatData: isFormat.isFormatData ?? false,
+      formatHeader: formatOptions.formatHeader ?? false,
+      formatData: formatOptions.formatData ?? false,
     };
   }
 
   return {
-    isFormatHeader: isFormat ?? false,
-    isFormatData: isFormat ?? false,
+    formatHeader: formatOptions ?? false,
+    formatData: formatOptions ?? false,
   };
 };
 
@@ -190,24 +190,23 @@ export function unifyConfig({
   },
   isExport,
 }: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
-  const { copyWithFormat, customTransformer: brushCopyCustomTransformer } =
-    interaction ?? {};
-  const { isFormatData, isFormatHeader } = isExport
+  const { copy } = interaction!;
+  const { formatData, formatHeader } = isExport
     ? getFormatOptions(formatOptions)
     : {
-        isFormatData: copyWithFormat ?? false,
-        isFormatHeader: copyWithFormat ?? false,
+        formatData: copy?.withFormat ?? false,
+        formatHeader: copy?.withFormat ?? false,
       };
   const transformers = getTransformer(
-    isExport ? customTransformer : brushCopyCustomTransformer,
+    isExport ? customTransformer : copy?.customTransformer,
   );
 
   return {
     separator,
     selectedCells,
     transformers,
-    isFormatData,
-    isFormatHeader,
+    formatData,
+    formatHeader,
     isAsyncExport,
   };
 }

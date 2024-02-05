@@ -94,7 +94,10 @@ export const updateBySelectedCellsHighlight = (
   const isRowCell = dataCell.cellType === CellType.ROW_CELL;
   // 高亮序号
   const showSNWhenRowHeaderHighlight =
-    s2.isTableMode() && s2.options.showSeriesNumber && rowHeader && isRowCell;
+    s2.isTableMode() &&
+    s2.options.seriesNumber?.enable &&
+    rowHeader &&
+    isRowCell;
 
   if (currentRow || showSNWhenRowHeaderHighlight) {
     updateCurrentRowCellState(cells, dataCell);

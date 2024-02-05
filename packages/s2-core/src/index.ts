@@ -11,4 +11,4 @@ export * from './sheet-type';
 export * from './data-set';
 export * from './interaction';
 export * from './ui/tooltip';
-export * from './facet/header';
+export * from './facet';

@@ -129,7 +129,10 @@ export const hideColumns = async (
     });
     spreadsheet.interaction.reset();
     spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
-    await spreadsheet.render(false, { reBuildHiddenColumnsDetail: false });
+    await spreadsheet.render({
+      reloadData: false,
+      reBuildHiddenColumnsDetail: false,
+    });
   };
 
   if (isEmpty(selectedColumnFields) && forceRender) {

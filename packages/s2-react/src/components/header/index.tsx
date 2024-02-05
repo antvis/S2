@@ -2,24 +2,24 @@ import React from 'react';
 import { Space } from 'antd';
 import cx from 'classnames';
 import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
-import { Export, type ExportCfgProps } from '../export';
-import { AdvancedSort, type AdvancedSortCfgProps } from '../advanced-sort';
-import { type SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
+import { Export, type ExportBaseProps } from '../export';
+import { AdvancedSort, type AdvancedSortBaseProps } from '../advanced-sort';
+import { type SwitcherProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
 import type { SheetComponentOptions } from '../sheets/interface';
 
-export interface HeaderCfgProps {
+export interface HeaderBaseProps {
   style?: React.CSSProperties;
   className?: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  exportCfg?: ExportCfgProps;
-  advancedSortCfg?: AdvancedSortCfgProps;
-  switcherCfg?: SwitcherCfgProps;
+  export?: ExportBaseProps;
+  advancedSort?: AdvancedSortBaseProps;
+  switcher?: SwitcherProps;
   extra?: React.ReactNode;
 }
 
-export interface HeaderProps extends HeaderCfgProps {
+export interface HeaderProps extends HeaderBaseProps {
   dataCfg?: S2DataConfig;
   options?: SheetComponentOptions;
   sheet: SpreadSheet;
@@ -31,9 +31,9 @@ export const Header: React.FC<HeaderProps> = React.memo(
     style,
     title,
     description,
-    exportCfg,
-    advancedSortCfg,
-    switcherCfg,
+    export: exportProps,
+    advancedSort,
+    switcher,
     sheet,
     extra,
     dataCfg,
@@ -45,18 +45,16 @@ export const Header: React.FC<HeaderProps> = React.memo(
     const renderExtra = () => (
       <Space align="center">
         {extra}
-        {switcherCfg?.open && (
+        {switcher?.open && (
           <SwitcherHeader
             sheet={sheet}
             dataCfg={dataCfg!}
             options={options!}
-            {...switcherCfg}
+            {...switcher}
           />
         )}
-        {advancedSortCfg?.open && (
-          <AdvancedSort sheet={sheet} {...advancedSortCfg} />
-        )}
-        {exportCfg?.open && <Export sheet={sheet} {...exportCfg} />}
+        {advancedSort?.open && <AdvancedSort sheet={sheet} {...advancedSort} />}
+        {exportProps?.open && <Export sheet={sheet} {...exportProps} />}
       </Space>
     );
 
@@ -76,7 +74,7 @@ export const Header: React.FC<HeaderProps> = React.memo(
 
 Header.displayName = 'Header';
 Header.defaultProps = {
-  exportCfg: { open: false },
-  advancedSortCfg: { open: false },
-  switcherCfg: { open: false },
+  export: { open: false },
+  advancedSort: { open: false },
+  switcher: { open: false },
 };

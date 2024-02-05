@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { orderBy } from 'lodash';
-import { Button } from 'antd';
-import { SheetComponent } from '@antv/s2-react';
-import insertCss from 'insert-css';
+import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { Button } from 'antd';
+import insertCSS from 'insert-css';
+import { orderBy } from 'lodash';
+import React from 'react';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },
@@ -50,7 +50,8 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
     };
 
     const App = () => {
-      const [dataCfg, setDataCfg] = useState(s2DataConfig);
+      const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(s2DataConfig);
+
       return (
         <>
           <Button
@@ -129,15 +130,17 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       );
     };
 
-    ReactDOM.render(<App />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });
 
 // 我们用 insert-css 演示引入自定义样式
 // 推荐将样式添加到自己的样式文件中
 // 若拷贝官方代码，别忘了 npm install insert-css
-insertCss(`
-.ant-btn {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
+insertCSS(`
+  .ant-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 `);

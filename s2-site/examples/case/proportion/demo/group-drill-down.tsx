@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
 import { isUpDataValue } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import insertCSS from 'insert-css';
+import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -10,9 +10,9 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const GridSheet = () => {
-      const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
-      const [drillDownField, setDrillDownField] = useState('');
-      const s2Options = {
+      const [s2DataConfig, setS2DataConfig] = React.useState(data.dataCfg);
+      const [drillDownField, setDrillDownField] = React.useState('');
+      const s2Options: SheetComponentOptions = {
         width: 800,
         height: 600,
         tooltip: {
@@ -42,8 +42,9 @@ fetch(
                   };
                 }
 
+                // 同环比红张绿跌
                 return {
-                  fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
+                  fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
                 };
               },
             },
@@ -144,18 +145,20 @@ fetch(
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',
-            advancedSortCfg: { open: true },
-            extra: [<Breadcrumb />],
+            advancedSort: { open: true },
+            extra: <Breadcrumb />,
           }}
           onDataCellMouseUp={onDataCellMouseUp}
         />
       );
     };
 
-    ReactDOM.render(<GridSheet />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<GridSheet />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-tooltip-operator {
     display: flex
   }

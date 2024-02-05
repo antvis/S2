@@ -1,6 +1,7 @@
 ---
 title: Tooltip
 order: 7
+tag: Updated
 ---
 
 ## 简介
@@ -11,17 +12,19 @@ order: 7
 
 ## 注意事项
 
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**
+:::warning
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**.
 
 `React` 版本 和 `Vue3` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
 
-查看 `React`
-版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
-和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
+:::
 
-- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便
-- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
-- 别忘了引入样式
+查看 `React` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
+
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便。
+- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节。
+- 别忘了引入样式。
 
 ```ts
 import "@antv/s2/dist/style.min.css";
@@ -29,7 +32,7 @@ import "@antv/s2/dist/style.min.css";
 
 ## 使用
 
-在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
+在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格。
 
 ```ts
 const s2Options = {
@@ -37,7 +40,7 @@ const s2Options = {
 };
 ```
 
-还可以对不同类型的单元格单独配置：
+**还可以对不同类型的单元格单独配置**：
 
 - `cornerCell`: 角头单元格
 - `rowCell`: 行头单元格
@@ -57,7 +60,7 @@ const s2Options = {
 
 ### 显示配置项
 
-通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`
+通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`.
 
 ```ts
 const s2Options = {
@@ -111,7 +114,15 @@ const s2Options = {
 
 #### 自定义 Tooltip 内容
 
-对于 `@antv/s2` 类的使用方式：tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
+##### 在基础类中使用 <Badge>@antv/s2</Badge>
+
+<Playground path='react-component/tooltip/demo/custom-content-base.ts' rid='custom-content-base' height='300'></playground>
+
+对于 `@antv/s2` 类的使用方式：`tooltip` 内容可以是任意 `dom` 节点或者 `字符串 (innerHTML)`.
+
+:::warning
+请注意 XSS 过滤！
+:::
 
 ```ts
 const content = document.createElement('div')
@@ -120,18 +131,35 @@ content.innerHTML = '我是自定义内容'
 const s2Options = {
   tooltip: {
     content,
-    // content: '我是字符串'
+    // content: '<div>我是字符串</div>'
   },
 };
 ```
 
+```ts
+const s2Options = {
+  tooltip: {
+    content: `
+      <div>
+        <div>我是自定义内容</div>
+        <p>我也是是自定义内容</p>
+      </div>
+    `,
+  },
+};
+```
+
+##### 在 React 中使用 <Badge>@antv/s2-react</Badge>
+
 对于 `@antv/s2-react` 组件的使用方式：tooltip 内容 可以是任意的 `jsx` 元素
 
-```ts
+<Playground path='react-component/tooltip/demo/custom-content-react.tsx' rid='react-custom-content' height='300'></playground>
+
+```tsx
 const content = (
   <div>
-    <span>我是自定义内容 < /span>
-  < /div>
+    <span>我是自定义内容</span>
+  </div>
 )
 
 const s2Options = {
@@ -141,21 +169,17 @@ const s2Options = {
 };
 ```
 
-同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
+同时 `content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
-const TooltipContent = (props) => <div>
-...
-</div>
+const TooltipContent = (props) => <div>...</div>
 
 const s2Options = {
   tooltip: {
     content: (cell, defaultTooltipShowOptions) => {
       console.log('当前单元格：', cell)
       console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
-      return <TooltipContent cell = { cell }
-      detail = { detail }
-      />
+      return <TooltipContent cell={ cell } detail={ detail } />
     },
   },
 };
@@ -215,29 +239,40 @@ const s2Options = {
 通过表格实例 可以手动显示 `tooltip`
 
 ```ts
-const TooltipContent = (
-  <div>content < /div>
+const TooltipContent = () => (
+  <div>content</div>
 );
 
 s2.showTooltip({
-  content: TooltipContent
+  content: <TooltipContent />
 })
 
-// 或者 s2.tooltip.show({ content: TooltipContent })
+// 或者 s2.tooltip.show({ content: <TooltipContent/> })
 ```
-
-<Playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
 
 ##### 3. 内容显示优先级
 
 `方法调用` > `单元格配置` > `基本配置`
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
 #### 自定义 Tooltip 操作项
 
 除了默认提供的操作项，还可以配置 `operation.menu` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到当前 `tooltip`
 对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
+
+:::info{title="注意"}
+如果使用的是 `@antv/s2-react`, 支持透传 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api)
+
+```ts
+menu: {
+  mode: 'vertical'
+}
+```
+
+:::
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2R8ST6bBxAcAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="row" />
 
 ```ts
 const s2Options = {
@@ -256,14 +291,14 @@ const s2Options = {
               console.log('操作 1 点击');
               console.log('tooltip 对应的单元格：', info, cell)
             },
-            children: [ {
+            children: [{
               key: 'custom-a-a',
               label: '操作 1-1',
               icon: 'Trend',
               onClick: (info, cell) => {
                 console.log('操作 1-1 点击', info, cell);
               },
-            } ]
+            }]
           },
           {
             key: 'custom-b',
@@ -317,16 +352,18 @@ const s2Options = {
 s2.showTooltip({
   options: {
     operator: {
-      menus: [
-        {
-          key: 'custom-a',
-          text: '操作 1',
-          icon: 'Trend',
-          onClick: (cell) => {
-            console.log('操作 1 点击', cell);
-          },
-        }
-      ],
+      menu: {
+        items: [
+          {
+            key: 'custom-a',
+            label: '操作 1',
+            icon: 'Trend',
+            onClick: (info, cell) => {
+              console.log('操作 1 点击：', info, cell);
+            },
+          }
+        ],
+      }
     },
   }
 })
@@ -413,7 +450,7 @@ const s2Options = {
 也可以重写 `renderContent` 方法，渲染你封装的任意组件
 
 - [查看 BaseTooltip 基类](/api/basic-class/base-tooltip)
-- [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+- [查看 React 示例](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
 ```ts
@@ -466,7 +503,7 @@ const s2Options = {
 
 比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/docs/manual/advanced/interaction/custom),
 监听行头单元格的 [交互事件](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`
-. [例子](/examples/interaction/custom#row-col-hover-tooltip)
+. [示例](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
 import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
@@ -499,7 +536,7 @@ const s2Options = {
 ```
 
 如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/docs/api/components/sheet-component)
-来进行自定义。[例子](/examples/react-component/tooltip#custom-hover-show-tooltip)
+来进行自定义。[示例](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;
@@ -531,16 +568,9 @@ const onRowCellHover = ({ event, viewMeta }) => {
 // TooltipContent.vue
 
 <template>
-  <div>我是自定义
-Tooltip
-内容 < /div>
-< p > 当前值：{
-  {
-    meta?.label ?? meta?.fieldValue
-  }
-}
-</p>
-< /template>
+  <div>我是自定义 tooltip 内容</div>
+  <p>当前值：{{ meta?.label ?? meta?.fieldValue}} </p>
+</template>
 
 < script
 lang = "ts"
@@ -578,7 +608,7 @@ class CustomTooltip extends BaseTooltip {
 }
 ```
 
-##### `defineCustomElement` 自定义内容的方式 （不推荐）
+##### `defineCustomElement` 自定义内容的方式 <Badge type="error">不推荐</Badge>
 
 > 注意，customElements 不能重复注册，否则浏览器会报错
 

@@ -59,10 +59,12 @@ function MainLayout() {
   const options: SheetComponentOptions = {
     width: 800,
     height: 600,
-    showSeriesNumber: true,
+    seriesNumber: {
+      enable: true,
+    },
     device: DeviceType.PC,
     interaction: {
-      enableCopy: true,
+      copy: { enable: true },
       linkFields: ['order_id', 'customer_name'],
     },
     style: {

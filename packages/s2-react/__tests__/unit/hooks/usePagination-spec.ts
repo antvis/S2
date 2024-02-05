@@ -9,7 +9,7 @@ import type { SheetComponentsProps } from '@/components/sheets/interface';
 const s2Options: S2Options = {
   width: 200,
   height: 200,
-  hdAdapter: false,
+  hd: false,
   pagination: {
     current: 1,
     pageSize: 5,

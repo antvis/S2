@@ -2,7 +2,7 @@ import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
-  .then((data) => {
+  .then(async (data) => {
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
@@ -37,10 +37,12 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       width: 600,
       height: 480,
       interaction: {
-        autoResetSheetStyle: true, // 在鼠标移出表格区域后，自动 reset hover 高亮状态
+        // 在按下 ESC 键或者鼠标移出表格区域后，自动重置单元格选中,高亮状态
+        autoResetSheetStyle: true,
       },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
-    s2.render();
+
+    await s2.render();
   });

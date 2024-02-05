@@ -1,6 +1,7 @@
 ---
 title: Customize Cell Size
 order: 5
+tag: Updated
 ---
 
 S2 can manually drag and drop to dynamically change the width and height of cells. At the same time, there are three built-in layouts: row and column`行列等宽`,`列等宽`and`行列紧凑布局`layout ( [see examples](/examples/layout/basic/#compact) )

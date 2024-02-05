@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
-import insertCss from 'insert-css';
-import 'antd/es/cascader/style/index.css';
+import React from 'react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import insertCSS from 'insert-css';
+import { S2DataConfig } from '@antv/s2';
+
 import '@antv/s2-react/dist/style.min.css';
 
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
-    const defaultSortParams = [
+    const defaultSortParams: S2DataConfig['sortParams'] = [
       { sortFieldId: 'province', sortMethod: 'DESC' },
       { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
       {
@@ -20,7 +18,7 @@ fetch(
       },
     ];
 
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -48,13 +46,13 @@ fetch(
       sortParams: defaultSortParams,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
     };
 
     const AdvancedSortDemo = () => {
-      const [dataCfg, setDataCfg] = useState(s2DataConfig);
+      const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
       const [sortParams, setSortParams] = React.useState(defaultSortParams);
 
       return (
@@ -65,7 +63,7 @@ fetch(
             dataCfg={dataCfg}
             options={s2Options}
             header={{
-              advancedSortCfg: {
+              advancedSort: {
                 open: true,
                 sortParams,
                 onSortConfirm: (ruleValues, sortParams) => {
@@ -79,10 +77,12 @@ fetch(
       );
     };
 
-    ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<AdvancedSortDemo />);
   });
 
-insertCss(`
+insertCSS(`
   .antv-s2-advanced-sort-btn.ant-btn svg path {
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }

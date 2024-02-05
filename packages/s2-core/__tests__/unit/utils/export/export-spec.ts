@@ -20,7 +20,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: true,
+        seriesNumber: {
+          enable: true,
+        },
       }),
     );
 
@@ -29,7 +31,7 @@ describe('TableSheet Export Test', () => {
       sheetInstance: s2,
       split: '\t',
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
 
@@ -57,7 +59,9 @@ describe('TableSheet Export Test', () => {
         },
       }),
       assembleOptions({
-        showSeriesNumber: false,
+        seriesNumber: {
+          enable: false,
+        },
       }),
     );
 
@@ -394,7 +398,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {isFormatHeader: true}', async () => {
+  it('should export correct data when isFormat: {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -427,7 +431,7 @@ describe('PivotSheet Export Test', () => {
       sheetInstance: s2,
       split: '\t',
       formatOptions: {
-        isFormatHeader: true,
+        formatHeader: true,
       },
     });
     const rows = data.split('\n');

@@ -1,15 +1,16 @@
 ---
 title: 导出
 order: 5
+tag: Updated
 ---
 
-## React 导出组件
+## React 导出组件 <Badge>@antv/s2-react</Badge>
 
 ```tsx
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
-  header={{ exportCfg: { open: true } }}
+  header={{ export: { open: true } }}
 />
 ```
 
@@ -30,8 +31,4 @@ order: 5
 | syncCopy | 同步复制数据 （默认异步） | `boolean` | `false` |  |
 | dropdown | 下拉菜单配置，透传给 `antd` 的 `Dropdown` 组件 | [DropdownProps](https://ant.design/components/dropdown-cn/#API) | | |
 
-<embed src="@/docs/common/export.zh.md"></embed>
-
-## Vue 导出组件
-
-开发中，敬请期待
+<embed src="@/docs/common/copy-export.zh.md"></embed>

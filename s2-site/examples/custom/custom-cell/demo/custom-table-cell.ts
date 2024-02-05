@@ -2,8 +2,8 @@
 import { TableColCell, TableDataCell, TableSheet } from '@antv/s2';
 
 /**
- * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-data-cell.ts
+ * 自定义 TableDataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends TableDataCell {
   getBackgroundColor() {
@@ -70,7 +70,7 @@ class CustomDataCell extends TableDataCell {
 
 /**
  * 自定义 ColCell, 通过复写基类方法, 给特定单元格设置文字大小, 颜色等...
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/table-col-cell.ts
+ * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends TableColCell {
   getTextStyle() {
@@ -125,7 +125,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      showSeriesNumber: true,
+      seriesNumber: {
+        enable: true,
+      },
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
       },
@@ -133,6 +135,7 @@ fetch(
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
+
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();
