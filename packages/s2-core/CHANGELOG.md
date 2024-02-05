@@ -1,3 +1,23 @@
+# [@antv/s2-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.10...@antv/s2-v2.0.0-next.11) (2024-02-05)
+
+
+### Bug Fixes
+
+* **interaction:** 修复隐藏列头配置更新时未覆盖上一次的配置 close [#2495](https://github.com/antvis/S2/issues/2495) ([#2527](https://github.com/antvis/S2/issues/2527)) ([ddc1283](https://github.com/antvis/S2/commit/ddc12830fa32f001ff7009a2bee8ce8624a1a187))
+* **table-sheet:** 修复明细表配置自定义行高后展示异常 close [#2501](https://github.com/antvis/S2/issues/2501) ([#2521](https://github.com/antvis/S2/issues/2521)) ([47fdee3](https://github.com/antvis/S2/commit/47fdee3ebbae900ba815fba8c18e3a0566aa8f8c))
+* 增加树状模式自定义宽度的容错 ([#2519](https://github.com/antvis/S2/issues/2519)) ([5f2c582](https://github.com/antvis/S2/commit/5f2c582378510e13cf34ccf92edb0a7d172ec07d))
+* 自定义 icon 支持跨域 close [#2513](https://github.com/antvis/S2/issues/2513) ([#2524](https://github.com/antvis/S2/issues/2524)) ([cdf58ea](https://github.com/antvis/S2/commit/cdf58ea34e7342b5fdd169d43cccc63309b36103))
+
+
+### Features
+
+* 合并 master 到 next ([#2493](https://github.com/antvis/S2/issues/2493)) ([6da530d](https://github.com/antvis/S2/commit/6da530d0c5f53d283ddfaa4b3e510ca11c9bf83e)), closes [#2186](https://github.com/antvis/S2/issues/2186) [#2204](https://github.com/antvis/S2/issues/2204) [#2191](https://github.com/antvis/S2/issues/2191)
+
+
+### Performance Improvements
+
+* 优化多行文本渲染性能 ([#2478](https://github.com/antvis/S2/issues/2478)) ([adc5ef3](https://github.com/antvis/S2/commit/adc5ef32056ca0427942f5a118af938124821bcc))
+
 # [@antv/s2-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.9...@antv/s2-v2.0.0-next.10) (2023-12-12)
 
 ### Features
