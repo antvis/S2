@@ -8,11 +8,7 @@ import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
 import './drag-copy-point.less';
 
-export type DragCopyProps = {
-  onChange?: (val) => void;
-};
-
-export const DragCopyPoint = memo((props: DragCopyProps) => {
+export const DragCopyPoint = memo(() => {
   const spreadsheet = useSpreadSheetRef();
 
   const [scroll, setScroll] = useState<
@@ -134,7 +130,6 @@ export const DragCopyPoint = memo((props: DragCopyProps) => {
   useS2Event(S2Event.ROW_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.CORNER_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected, spreadsheet);
-
   useS2Event(S2Event.DATA_CELL_CLICK, fixPosition, spreadsheet);
 
   return (
@@ -152,3 +147,5 @@ export const DragCopyPoint = memo((props: DragCopyProps) => {
     </div>
   );
 });
+
+DragCopyPoint.displayName = 'DragCopyPoint';

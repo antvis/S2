@@ -17,7 +17,7 @@ type DragCopyProps = {
 export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   const spreadsheet = useSpreadSheetRef();
 
-  const [startCell, setstartCell] = useState<DataCell>();
+  const [startCell, setStartCell] = useState<DataCell>();
   const [maskPosition, setMaskPosition] = useState({ right: 0, bottom: 0 });
   const [dragPoint, setDragPoint] = useState<Point>();
 
@@ -67,9 +67,9 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
   const getCurrentHoverCell = (event: MouseEvent) => {
     const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-    const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
 
-    return allCelles.find((v) =>
+    return allCells.find((v) =>
       isInCell({ y: event.y - rect.y, x: event.x - rect.x }, v),
     );
   };
@@ -81,8 +81,9 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     const maxX = Math.max(startCellMeta.colIndex, endCellMeta.colIndex);
     const maxY = Math.max(startCellMeta.rowIndex, endCellMeta.rowIndex);
     const minY = Math.min(startCellMeta.rowIndex, endCellMeta.rowIndex);
-    const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
-    return allCelles.filter((item) => {
+    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+
+    return allCells.filter((item) => {
       const itemMeta = item.getMeta();
       return (
         itemMeta.rowIndex <= maxY &&
@@ -127,25 +128,24 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   }, 10);
 
   const dragMouseUp = (event: MouseEvent) => {
-    let targetCell = getCurrentHoverCell(event);
-
     if (!startCell) {
       return;
     }
-    if (!targetCell) {
-      targetCell = getCurrentHoverCell(lastHoverPoint as MouseEvent);
-    }
-    const source = spreadsheet.dataSet.originData;
 
+    const targetCell =
+      getCurrentHoverCell(event) ||
+      getCurrentHoverCell(lastHoverPoint as MouseEvent);
+
+    const displayData = spreadsheet.dataSet.getDisplayDataSet();
     const selectedRange = getSelectedCellRange(startCell, targetCell);
     const { fieldValue } = startCell.getMeta();
     const changedCells = selectedRange.map((item) => {
       const { rowIndex, valueField } = item.getMeta();
       if (
-        source[rowIndex] &&
-        typeof source[rowIndex][valueField] !== undefined
+        displayData[rowIndex] &&
+        typeof displayData[rowIndex][valueField] !== undefined
       ) {
-        source[rowIndex][valueField] = fieldValue;
+        displayData[rowIndex][valueField] = fieldValue;
       }
       return item;
     });
@@ -160,7 +160,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     setMaskPosition({ right: 0, bottom: 0 });
     spreadsheet.off(S2Event.GLOBAL_MOUSE_MOVE, dragMove);
     spreadsheet.off(S2Event.GLOBAL_MOUSE_UP, dragMouseUp);
-    setstartCell(undefined);
+    setStartCell(undefined);
     onCopyFinished?.();
   };
 
@@ -178,12 +178,12 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
     const { top, left } = get(event, 'target.style', {} as any);
-    const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
-    const targetCell = allCelles.find((v) =>
+    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const targetCell = allCells.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),
     );
     setDragPoint({ x: rect.x, y: rect.y });
-    setstartCell(targetCell as DataCell);
+    setStartCell(targetCell as DataCell);
   };
 
   useEffect(() => {

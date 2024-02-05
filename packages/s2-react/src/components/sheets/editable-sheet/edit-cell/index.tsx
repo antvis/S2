@@ -1,5 +1,12 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
+import {
+  BaseCell,
+  S2Event,
+  SpreadSheet,
+  type DataType,
+  type S2CellType,
+  type ViewMeta,
+} from '@antv/s2';
 import { Input } from 'antd';
 import { merge, pick } from 'lodash';
 import React, {
@@ -20,22 +27,22 @@ import './index.less';
 
 export interface CustomProps {
   style: React.CSSProperties;
-  onChange: (val: string) => void;
+  onChange: (value: string) => void;
   onSave: () => void;
-  value: any;
+  value: string;
   spreadsheet: SpreadSheet;
-  cell: any;
+  cell: S2CellType;
 }
 
-type onChangeProps = {
-  onChange?: (val: any[]) => void;
-  onDataCellEditEnd?: (meta: ViewMeta) => void;
+type EditCellProps = {
+  onChange?: (data: DataType[]) => void;
+  onDataCellEditEnd?: (meta: ViewMeta, cell: S2CellType) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
 
 function EditCellComponent(
-  props: InvokeComponentProps<{ event: CanvasEvent } & onChangeProps>,
+  props: InvokeComponentProps<{ event: CanvasEvent } & EditCellProps>,
 ) {
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
@@ -64,7 +71,6 @@ function EditCellComponent(
     height: cellHeight,
   } = useMemo(() => {
     const scroll = spreadsheet.facet.getScrollOffset();
-
     const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
 
     cellMeta.x -= scroll.scrollX || 0;
@@ -74,26 +80,24 @@ function EditCellComponent(
 
     return cellMeta;
   }, [cell, spreadsheet]);
-  const [inputVal, setinputVal] = useState(cell.getMeta().fieldValue);
 
+  const [inputVal, setInputVal] = useState(cell.getMeta().fieldValue);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTimeout(() => {
       // 防止触发表格全选
-      if (containerRef.current) {
-        containerRef.current!.click();
-      }
-      if (inputRef.current) {
-        inputRef.current!.focus();
-      }
+      containerRef.current?.click();
+      // 开启 preventScroll, 防止页面有滚动条时触发滚动
+      inputRef.current?.focus({ preventScroll: true });
     });
   }, []);
 
   const onSave = () => {
     const { rowIndex, valueField } = cell.getMeta();
-    spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
+    const displayData = spreadsheet.dataSet.getDisplayDataSet();
+    displayData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
 
     onDataCellEditEnd?.(
@@ -103,12 +107,10 @@ function EditCellComponent(
           [valueField]: inputVal,
         },
       }),
+      cell,
     );
 
-    if (onChange) {
-      onChange(spreadsheet.dataSet.originData);
-    }
-
+    onChange?.(spreadsheet.dataSet.getDisplayDataSet());
     resolver(true);
   };
 
@@ -119,7 +121,7 @@ function EditCellComponent(
     }
   };
 
-  const styleProps = React.useMemo(() => {
+  const styleProps = React.useMemo<React.CSSProperties>(() => {
     return {
       left: cellLeft,
       top: cellTop,
@@ -129,8 +131,8 @@ function EditCellComponent(
     };
   }, []);
 
-  const changeValue = (val: string) => {
-    setinputVal(val);
+  const onChangeValue = (val: string) => {
+    setInputVal(val);
   };
 
   return (
@@ -150,9 +152,9 @@ function EditCellComponent(
         <CustomComponent
           cell={cell}
           spreadsheet={spreadsheet}
-          value={inputVal}
+          value={inputVal as string}
           style={styleProps}
-          onChange={changeValue}
+          onChange={onChangeValue}
           onSave={onSave}
         />
       ) : (
@@ -160,10 +162,10 @@ function EditCellComponent(
           required
           style={styleProps}
           className={'s2-edit-cell'}
-          value={inputVal as any}
+          value={inputVal as string}
           ref={inputRef}
           onChange={(e) => {
-            setinputVal(e.target.value);
+            setInputVal(e.target.value);
           }}
           onBlur={onSave}
           onKeyDown={onKeyDown}
@@ -173,15 +175,15 @@ function EditCellComponent(
   );
 }
 
-const EditCell = memo(
-  ({ onChange, onDataCellEditEnd, CustomComponent }: onChangeProps) => {
+export const EditCell: React.FC<EditCellProps> = memo(
+  ({ onChange, onDataCellEditEnd, CustomComponent }) => {
     const spreadsheet = useSpreadSheetRef();
 
     const cb = useCallback(
-      (e: CanvasEvent) => {
+      (event: CanvasEvent) => {
         invokeComponent(
           EditCellComponent,
-          { event: e, onChange, onDataCellEditEnd, CustomComponent },
+          { event, onChange, onDataCellEditEnd, CustomComponent },
           spreadsheet,
         );
       },
@@ -194,4 +196,4 @@ const EditCell = memo(
   },
 );
 
-export { EditCell };
+EditCell.displayName = 'EditCell';
