@@ -32,7 +32,7 @@ tag: New
 
 ## 📅 正式版本发布时间
 
-目前 `next` 会持续内测一段时间，https://s2.antv.antgroup.com 会作为相应的文档网站。
+目前 `next` 版本会持续内测一段时间，<https://s2.antv.antgroup.com> 会作为相应的文档网站。
 
 在此期间，会持续根据用户的反馈进行 Bug fix 和代码调整，在 `@antv/s2@next` 版本稳定后，会发布正式版本，`latest` 将默认指向 `2.x` 版本，去除 `next` 标识。
 
@@ -61,7 +61,7 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ## ⭐ 新增功能
 
-官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官网语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2)
+官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官方语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2)
 
 ## 📣 不兼容的变化
 
@@ -69,14 +69,14 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 #### 底层渲染引擎升级为 `AntV/G 5.0`
 
-表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 `AntV` [其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
+表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
 
 ```diff
 - s2.render()
 + await s2.render()
 ```
 
-如果在你的业务场景中，有使用 `G` 的一些自定义 `shape`, 如自定义矩形，图片等场景，请注意替换，具体请查看 G 的 [官网文档](https://g.antv.antgroup.com/api/basic/image).
+如果在你的业务场景中，有使用 `G` 的一些自定义 `shape`, 如自定义矩形，图片等场景，或者其他能力，请注意替换，具体请查看 G 的 [官网文档](https://g.antv.antgroup.com/api/basic/image).
 
 ```diff
 + import { Image } from '@antv/g';
@@ -129,13 +129,13 @@ const s2DataConfig = {
 ```
 
 ```diff
-- 'root[&] 家具 [&] 沙发 [&]number'
-+ 'root[&] 家具 [&] 沙发 [&] 数量'
+- 'root[&]家具[&]沙发[&]number'
++ 'root[&]家具[&]沙发[&]数量'
 ```
 
 #### 自定义宽高配置调整
 
-1. `rowCfg/colCfg/cellCfg` 调整为 `rowCell/colCell/dataCell`
+1. `rowCfg/colCfg/cellCfg` 调整为 `rowCell/colCell/dataCell`.
 
 ```diff
 const s2Options = {
@@ -151,8 +151,8 @@ const s2Options = {
 }
 ```
 
-2. 废弃 `widthByFieldValue`, 新增 `widthByField`
-3. 行列宽高支持动态配置
+2. 废弃 `widthByFieldValue`, 新增 `widthByField`.
+3. 行列宽高支持动态配置.
 
 ```diff
 export interface ColCfg {
@@ -164,6 +164,8 @@ export interface ColCfg {
   heightByField?: Record<string, number>;
 }
 ```
+
+4. 现在 `widthByField` 和 `heightByField` 同时支持维度 `id` 和 维度 `field`
 
 具体请查看 [自定义单元格宽高](/manual/advanced/custom/cell-size) 相关文档。
 
@@ -292,12 +294,12 @@ const s2Options = {
   headerActionIcons: [
     {
 +     icons: [{
-+        name: 'SortDown',
-+        position: 'right',
-+        fill: '#000',
-+        displayCondition: () => {},
-+        defaultHide: () => {},
-      }]
++       name: 'SortDown',
++       position: 'right',
++       fill: '#000',
++       displayCondition: () => {},
++       defaultHide: () => {},
++     }]
     },
   ],
 }
@@ -550,10 +552,10 @@ const s2Options = {
 
 ```js
 {
- fields:{
-  rows: ["province", "city"],
-  columns: ["type", "subType"],
-  values: ["number1", "number2"],
+  fields:{
+    rows: ["province", "city"],
+    columns: ["type", "subType"],
+    values: ["number1", "number2"],
  }
 }
 
@@ -623,7 +625,7 @@ const s2Options = {
 
 #### 支持 React 18 和 Ant Design 5.0
 
-`@antv/s2-react` 2.x 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@v5`.
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@v5`.
 
 #### 表头组件配置调整
 
@@ -692,4 +694,4 @@ const header = {
 
 ## 🙋 遇到问题
 
-更多新特性和改动请阅读文档，如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues/2454) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions/1933) 进行反馈。我们会尽快响应和相应改进这篇文档。
+更多新特性和改动请阅读文档，如果您在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/antvis/S2/issues/2454) 或者 [GitHub Discussions](https://github.com/antvis/S2/discussions/1933) 进行反馈。我们会尽快响应和改进这篇文档。

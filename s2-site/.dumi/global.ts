@@ -46,10 +46,6 @@ if (window) {
       version: (window as any).s2React?.version || 'development',
     },
     {
-      package: '@antv/s2-vue',
-      version: (window as any).s2Vue?.version || 'development',
-    },
-    {
       package: 'react',
       version: (window as any).react?.version || 'development',
     },
