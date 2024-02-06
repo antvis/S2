@@ -1,5 +1,10 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { createMockCellInfo, getContainer } from 'tests/util/helpers';
+import {
+  createMockCellInfo,
+  createPivotSheet,
+  getContainer,
+  sleep,
+} from 'tests/util/helpers';
 import { size, sumBy } from 'lodash';
 import { getTooltipData, mergeCellInfo } from '../../src/utils/tooltip';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -20,8 +25,8 @@ const s2Options: S2Options = {
 describe('Interaction Multi Selection Tests', () => {
   let s2: SpreadSheet;
 
-  const expectNodes = (ids: string[] = []) => {
-    const state = s2.interaction.getState();
+  const expectNodes = (ids: string[] = [], instance: SpreadSheet = s2) => {
+    const state = instance.interaction.getState();
     const nodeIds = state.nodes.map((node) => node.id);
     expect(nodeIds).toEqual(ids);
   };
@@ -120,7 +125,11 @@ describe('Interaction Multi Selection Tests', () => {
       cell: rowRootCell,
     });
 
-    expectNodes(['root[&]中国[&]浙江[&]义乌', 'root[&]中国[&]浙江[&]杭州']);
+    expectNodes([
+      'root[&]中国[&]浙江',
+      'root[&]中国[&]浙江[&]义乌',
+      'root[&]中国[&]浙江[&]杭州',
+    ]);
 
     const tooltipData = getTestTooltipData(rowRootCell);
 
@@ -150,11 +159,61 @@ describe('Interaction Multi Selection Tests', () => {
       cell: colRootCell,
     });
 
-    expectNodes(['root[&]中国[&]浙江[&]price', 'root[&]中国[&]浙江[&]cost']);
+    expectNodes([
+      'root[&]中国[&]浙江',
+      'root[&]中国[&]浙江[&]price',
+      'root[&]中国[&]浙江[&]cost',
+    ]);
 
     const tooltipData = getTestTooltipData(colRootCell);
 
     expect(getSelectedCount(tooltipData.summaries)).toEqual(4);
     expect(getSelectedSum(tooltipData.summaries)).toEqual(6);
+  });
+
+  // https://github.com/antvis/S2/issues/2503
+  test('should keep all cell highlighted after scroll', async () => {
+    const pivotSheet = createPivotSheet(
+      {
+        style: {
+          // 显示滚动条
+          cellCfg: {
+            width: 200,
+          },
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    pivotSheet.render();
+
+    const colRootCell = pivotSheet.interaction.getAllColHeaderCells()[0];
+
+    pivotSheet.interaction.selectHeaderCell({
+      cell: colRootCell,
+    });
+
+    await sleep(100);
+
+    pivotSheet.updateScrollOffset({
+      offsetX: {
+        value: 100,
+        animate: true,
+      },
+    });
+
+    await sleep(500);
+
+    expectNodes(
+      [
+        'root[&]家具[&]桌子',
+        'root[&]家具[&]桌子[&]number',
+        'root[&]家具[&]沙发',
+        'root[&]家具[&]沙发[&]number',
+      ],
+      pivotSheet,
+    );
+
+    expect(pivotSheet.interaction.getInteractedCells()).toHaveLength(26);
   });
 });

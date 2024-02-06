@@ -63,6 +63,7 @@ import type {
 import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import type { Node as S2Node } from '../facet/layout/node';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -330,7 +331,11 @@ export const getSummaryName = (
   return name && name !== 'undefined' ? name : '';
 };
 
-const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
+const getRowOrColSelectedIndexes = (
+  nodes: S2Node[],
+  leafNodes: S2Node[],
+  isRow = true,
+) => {
   const selectedIndexes = [];
   forEach(leafNodes, (leaf, index) => {
     forEach(nodes, (item) => {
@@ -352,12 +357,15 @@ export const getSelectedCellIndexes = (
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
+  // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算 https://github.com/antvis/S2/pull/1443
+  const needCalcNodes = nodes.filter((node) => node?.isLeaf);
 
   if (cellType === CellTypes.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
+    return getRowOrColSelectedIndexes(needCalcNodes, rowLeafNodes, false);
   }
+
   if (cellType === CellTypes.ROW_CELL) {
-    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
+    return getRowOrColSelectedIndexes(needCalcNodes, colLeafNodes);
   }
 
   return [];
