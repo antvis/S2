@@ -25,8 +25,8 @@ tag: New
 
 `npm` 的 [`dist-tag`](https://docs.npmjs.com/cli/v10/commands/npm-dist-tag) 对应关系如下：
 
-- `@antv/s2@next` 对应 `2.x` 版本
-- `@antv/s2@latest` 对应 `1.x` 版本
+- `@antv/s2@next` 对应 `2.x` 版本。
+- `@antv/s2@latest` 对应 `1.x` 版本。
 
 :::
 
@@ -38,7 +38,7 @@ tag: New
 
 ## 🗓️ v1 版本维护期
 
-目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Feature Pull Request`，欢迎 `Bug Fix Pull Request`, 截止日期为 `2024` 年年底。
+目前 `v1` 版本会继续维护，针对 `BUG` 发布 `Patch` 版本修复，但不再接收新的 `Feature Request` 和 `Feature Pull Request`，欢迎 `Bug Fix Pull Request`, 截止日期为 `2024 年` 年底。
 
 ## 📦 安装
 
@@ -61,7 +61,7 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ## ⭐ 新增功能
 
-官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官方语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2)
+官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官方语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2).
 
 ## 📣 不兼容的变化
 
@@ -90,11 +90,11 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 #### S2 和 G 的配置分离
 
-在 `1.x` 中，我们会将 `S2Options` 中的 `supportsCSSTransform` 和 `devicePixelRatio` 等熟悉透传给 `G`
+在 `1.x` 中，我们会将 `S2Options` 中的 `supportsCSSTransform` 和 `devicePixelRatio` 等属性透传给 `G`.
 
 在 `2.x` 中：
 
-- 移除 `devicePixelRatio` 和 `supportsCSSTransform (supportCSSTransform)`
+- 移除 `devicePixelRatio` 和 `supportsCSSTransform (supportCSSTransform)`.
 - 新增 `transformCanvasConfig` 支持透传 `G` 的配置，以及注册插件，具体请查阅 [注册 AntV/G 插件](/manual/advanced/g-plugins) 相关文档。
 
 ```tsx
@@ -108,29 +108,6 @@ const s2Options = {
     };
   },
 }
-```
-
-#### 数值指标节点 id 调整
-
-数值节点的 id 从 `field` 变更为 `格式化后的名称`.
-
-```ts
-const s2DataConfig = {
-  fields: {
-    values: ['number'],
-  },
-  meta: [
-    {
-      field: 'number',
-      name: '数量',
-    },
-  ],
-}
-```
-
-```diff
-- 'root[&]家具[&]沙发[&]number'
-+ 'root[&]家具[&]沙发[&]数量'
 ```
 
 #### 自定义宽高配置调整
@@ -152,7 +129,7 @@ const s2Options = {
 ```
 
 2. 废弃 `widthByFieldValue`, 新增 `widthByField`.
-3. 行列宽高支持动态配置.
+3. 行列宽高支持动态配置。
 
 ```diff
 export interface ColCfg {
@@ -165,13 +142,13 @@ export interface ColCfg {
 }
 ```
 
-4. 现在 `widthByField` 和 `heightByField` 同时支持维度 `id` 和 维度 `field`
+4. 现在 `widthByField` 和 `heightByField` 同时支持维度 `id` 和 维度 `field`.
 
 具体请查看 [自定义单元格宽高](/manual/advanced/custom/cell-size) 相关文档。
 
 #### Tooltip 配置调整
 
-1. `row/col/data/corner` 调整为 `rowCell/colCell/dataCell/cornerCell`
+1. `row/col/data/corner` 调整为 `rowCell/colCell/dataCell/cornerCell`.
 
 ```diff
 const s2Options = {
@@ -189,7 +166,7 @@ const s2Options = {
 }
 ```
 
-2. `showTooltip` 和 `renderTooltip` 调整为 `enable` 和 `render`
+2. `showTooltip` 和 `renderTooltip` 调整为 `enable` 和 `render`.
 
 ```diff
 const s2Options = {
@@ -270,7 +247,7 @@ const s2Options = {
 
 #### headerActionIcons 配置调整
 
-`iconsNames` 调整为 `icons`, 废弃 `action`, 新增 `onClick` 和 `onHover`
+`iconsNames` 调整为 `icons`, 废弃 `action`, 新增 `onClick` 和 `onHover`.
 
 ```diff
 const s2Options = {
@@ -287,7 +264,7 @@ const s2Options = {
 }
 ```
 
-现在支持配置 `position (icon 相对文本的位置）` 和 `fill （颜色配置）`, 并且支持给单个 icon 配置独立的 `displayCondition` 和 `defaultHide`
+现在支持配置 `position (icon 相对文本的位置）` 和 `fill （颜色配置）`, 并且支持给单个 icon 配置独立的 `displayCondition` 和 `defaultHide`.
 
 ```diff
 const s2Options = {
@@ -346,7 +323,7 @@ const s2Options = {
 }
 ```
 
-3. `customTree` 和 `customTreeItems` 已废弃
+3. `customTree` 和 `customTreeItems` 已废弃。
 
 原本自定义树状结构的方式已废弃，现在自定义结构同时支持 `平铺` 和 `树状` 两种模式。
 
@@ -382,7 +359,7 @@ const s2DataConfig = {
 
 #### 行列冻结配置调整
 
-透视表和明细表的行列冻结配置统一收拢到 `frozen`
+透视表和明细表的行列冻结配置统一收拢到 `frozen`.
 
 ```diff
 const s2Options = {
@@ -429,7 +406,7 @@ const s2Options = {
 
 #### 序号配置变更
 
-序号相关配置统一收拢在 `seriesNumber`
+序号相关配置统一收拢在 `seriesNumber`.
 
 ```diff
 const s2Options = {
@@ -539,7 +516,7 @@ const s2Options = {
 
 #### 绘制自定义文本 API 变更
 
-绘制多列文本 `drawObjectText` 函数更名为 `drawCustomContent`
+绘制多列文本 `drawObjectText` 函数更名为 `drawCustomContent`.
 
 ```diff
 - import { drawObjectText } from '@antv/s2'
@@ -594,7 +571,7 @@ const s2Options = {
 
 #### 数据集查询逻辑变更
 
-1. 查询字段从 `string` 变更为 `CustomTreeNode | string`
+1. 查询字段从 `string` 变更为 `CustomTreeNode | string`.
 
 ```diff
 - s2.dataSet.getField(field: string)
@@ -608,7 +585,7 @@ const s2Options = {
 + s2.dataSet.getFieldFormatter(field: CustomTreeNode | string)
 ```
 
-2. 获取单元格数据 API 的参数统一
+2. 获取单元格数据 API 的参数统一。
 
 ```diff
 - s2.dataSet.getCellData(params: CellDataParams)
@@ -629,7 +606,7 @@ const s2Options = {
 
 #### 表头组件配置调整
 
-`exportCfg/advancedSortCfg/switcherCfg` 调整为 `export/advancedSort/switcher`
+`exportCfg/advancedSortCfg/switcherCfg` 调整为 `export/advancedSort/switcher`.
 
 ```diff
 const header = {
