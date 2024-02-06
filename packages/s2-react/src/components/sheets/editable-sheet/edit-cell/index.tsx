@@ -109,7 +109,7 @@ function EditCellComponent(
       }),
     );
 
-    onChange?.(spreadsheet.dataSet.getDisplayDataSet());
+    onChange?.(displayData);
     resolver(true);
   };
 
