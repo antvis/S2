@@ -1562,7 +1562,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
       "家具	家具	办公用品	办公用品
       桌子	沙发	笔	纸张
-      数值	数值	数值	数值"
+      number	number	number	number"
     `);
   });
 

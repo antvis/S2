@@ -179,26 +179,26 @@ describe('Pivot Table Core Data Process', () => {
 
       // 节点正确
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
-      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]数量
+      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]number
       // 叶子节点正确
       expect(colsHierarchy.getLeaves().map((node) => node.value)).toEqual([
-        '数量',
-        '数量',
-        '数量',
-        '数量',
+        'number',
+        'number',
+        'number',
+        'number',
       ]);
       // 层级正确
       expect(colsHierarchy.getNodes().map((node) => node.value)).toEqual([
         '家具',
         '桌子',
-        '数量',
+        'number',
         '沙发',
-        '数量',
+        'number',
         '办公用品',
         '笔',
-        '数量',
+        'number',
         '纸张',
-        '数量',
+        'number',
       ]);
       expect(colsHierarchy.getNodes(0).map((node) => node.value)).toEqual([
         '家具',
@@ -211,17 +211,17 @@ describe('Pivot Table Core Data Process', () => {
         '纸张',
       ]);
       expect(colsHierarchy.getNodes(2).map((node) => node.value)).toEqual([
-        '数量',
-        '数量',
-        '数量',
-        '数量',
+        'number',
+        'number',
+        'number',
+        'number',
       ]);
 
       // 父子关系正确
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
 
-      expect(firstLeafNode.value).toEqual('数量');
+      expect(firstLeafNode.value).toEqual('number');
       expect(firstLeafNode.parent!.value).toEqual('桌子');
       expect(firstLeafNode.parent!.parent?.value).toEqual('家具');
       expect(
@@ -229,7 +229,7 @@ describe('Pivot Table Core Data Process', () => {
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
 
-      expect(lastLeafNode.value).toEqual('数量');
+      expect(lastLeafNode.value).toEqual('number');
       expect(lastLeafNode.parent!.value).toEqual('纸张');
       expect(lastLeafNode.parent!.parent?.value).toEqual('办公用品');
       expect(
