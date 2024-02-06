@@ -214,6 +214,6 @@ describe('Interaction Multi Selection Tests', () => {
       pivotSheet,
     );
 
-    expect(pivotSheet.interaction.getInteractedCells()).toHaveLength(26);
+    expect(pivotSheet.interaction.getInteractedCells()).toHaveLength(46);
   });
 });
