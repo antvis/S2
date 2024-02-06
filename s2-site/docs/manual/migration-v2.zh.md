@@ -110,29 +110,6 @@ const s2Options = {
 }
 ```
 
-#### 数值指标节点 id 调整
-
-数值节点的 id 从 `field` 变更为 `格式化后的名称`.
-
-```ts
-const s2DataConfig = {
-  fields: {
-    values: ['number'],
-  },
-  meta: [
-    {
-      field: 'number',
-      name: '数量',
-    },
-  ],
-}
-```
-
-```diff
-- 'root[&]家具[&]沙发[&]number'
-+ 'root[&]家具[&]沙发[&]数量'
-```
-
 #### 自定义宽高配置调整
 
 1. `rowCfg/colCfg/cellCfg` 调整为 `rowCell/colCell/dataCell`.

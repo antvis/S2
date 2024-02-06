@@ -80,9 +80,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     }
 
-    // 优先找序列字段对应的格式化名称, 找不到则是普通维值
-    const formattedValue = spreadsheet.dataSet.getFieldName(value) || value;
-    const nodeId = generateId(parentNode.id, formattedValue);
+    const nodeId = generateId(parentNode.id, value);
 
     if (!nodeId) {
       return;
@@ -93,7 +91,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: nodeId,
-      value: formattedValue,
+      value,
       level,
       field: adjustedField,
       parent: parentNode,
