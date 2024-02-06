@@ -1,16 +1,16 @@
 import type { ScrollOffset } from '@antv/s2';
 import { DataCell, GEvent, S2Event, S2_PREFIX_CLS } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
 import { DragCopyMask } from './drag-copy-mask';
 import './drag-copy-point.less';
 
-export function DragCopyPoint() {
+export const DragCopyPoint = React.memo(() => {
   const spreadsheet = useSpreadSheetInstance();
 
-  const [scroll, setScroll] = useState<
+  const [scroll, setScroll] = React.useState<
     ScrollOffset & { width?: number; overflow?: boolean }
   >({
     scrollX: -999,
@@ -18,8 +18,8 @@ export function DragCopyPoint() {
     width: 8,
     overflow: true,
   });
-  const [position, setPosition] = useState({ left: -999, top: -999 });
-  const [cell, setCell] = useState<DataCell>();
+  const [position, setPosition] = React.useState({ left: -999, top: -999 });
+  const [cell, setCell] = React.useState<DataCell>();
 
   const handleScroll = () => {
     if (spreadsheet) {
@@ -82,7 +82,7 @@ export function DragCopyPoint() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     handleScroll();
     if (spreadsheet) {
       spreadsheet.off(S2Event.GLOBAL_SCROLL, handleScroll);
@@ -95,13 +95,13 @@ export function DragCopyPoint() {
   }, [cell]);
 
   /** 单元格实例更改，选中态去除 */
-  useEffect(() => {
+  React.useEffect(() => {
     if (cell) {
       setCell(undefined);
     }
   }, [spreadsheet?.dataSet.sortParams, spreadsheet?.dataSet.filterParams]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!spreadsheet?.getCanvasElement()) {
       return;
     }
@@ -129,7 +129,7 @@ export function DragCopyPoint() {
   /**
    * 多选时隐藏拖拽点
    */
-  const batchSelected = useCallback(() => {
+  const batchSelected = React.useCallback(() => {
     setCell(undefined);
   }, []);
 
@@ -153,4 +153,6 @@ export function DragCopyPoint() {
       <DragCopyMask onCopyFinished={batchSelected} />
     </div>
   );
-}
+});
+
+DragCopyPoint.displayName = 'DragCopyPoint';
