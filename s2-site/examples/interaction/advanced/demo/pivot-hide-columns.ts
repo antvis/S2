@@ -45,7 +45,7 @@ fetch(
       interaction: {
         // 透视表默认隐藏需要指定唯一列头 id
         // 可通过 `s2.facet.getColNodes()` 获取列头节点查看i d
-        hiddenColumnFields: ['root[&]家具[&]沙发[&]数量'],
+        hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
       },
       tooltip: {
         enable: true,
