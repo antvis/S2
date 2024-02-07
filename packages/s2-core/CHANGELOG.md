@@ -1,3 +1,11 @@
+# [@antv/s2-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.11...@antv/s2-v2.0.0-next.12) (2024-02-07)
+
+
+### Bug Fixes
+
+* 修复表格排序后, 编辑单元格后数据更新错误 ([e841d3d](https://github.com/antvis/S2/commit/e841d3db020afb418f0b2f9223271c329390b192))
+* 回退生成 nodeId 时对 extra 字段的格式化 ([#2546](https://github.com/antvis/S2/issues/2546)) ([7d1cf9a](https://github.com/antvis/S2/commit/7d1cf9a68dd434b4843236d0e3570afc6ca22148))
+
 # [@antv/s2-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.10...@antv/s2-v2.0.0-next.11) (2024-02-05)
 
 
