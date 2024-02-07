@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.4](https://github.com/antvis/S2/compare/@antv/s2-v1.54.3...@antv/s2-v1.54.4) (2024-02-07)
+
+
+### Bug Fixes
+
+* 修复表格排序后, 编辑单元格后数据更新错误 close [#2573](https://github.com/antvis/S2/issues/2573) ([#2544](https://github.com/antvis/S2/issues/2544)) ([9075896](https://github.com/antvis/S2/commit/9075896def56eb3841c552da0c5cf5603572023e))
+
 # [@antv/s2-v1.54.3](https://github.com/antvis/S2/compare/@antv/s2-v1.54.2...@antv/s2-v1.54.3) (2024-01-26)
 
 
