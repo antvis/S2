@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.10...@antv/s2-react-v2.0.0-next.11) (2024-02-07)
+
+
+### Bug Fixes
+
+* 修复表格排序后, 编辑单元格后数据更新错误 ([e841d3d](https://github.com/antvis/S2/commit/e841d3db020afb418f0b2f9223271c329390b192))
+
 # [@antv/s2-react-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.9...@antv/s2-react-v2.0.0-next.10) (2024-02-05)
 
 
