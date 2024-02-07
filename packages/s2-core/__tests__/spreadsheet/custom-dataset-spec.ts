@@ -1,6 +1,6 @@
-import { pick } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
-import { Node, PivotDataSet } from '../../src';
+import { PivotDataSet } from '../../src';
+import { pickMap } from '../util/fp';
 
 describe('SpreadSheet Custom Dataset Tests', () => {
   class CustomDataSet extends PivotDataSet {
@@ -9,10 +9,6 @@ describe('SpreadSheet Custom Dataset Tests', () => {
     }
   }
 
-  const mapNodes = (nodes: Node[]) => {
-    return nodes.map((node) => pick(node, ['id', 'value']));
-  };
-
   test('should render custom data set', async () => {
     const s2 = createPivotSheet({
       dataSet: (spreadsheet) => new CustomDataSet(spreadsheet),
@@ -20,7 +16,7 @@ describe('SpreadSheet Custom Dataset Tests', () => {
 
     await s2.render();
 
-    const headerNodes = mapNodes(s2.facet.getHeaderNodes());
+    const headerNodes = pickMap(['id', 'values'])(s2.facet.getHeaderNodes());
 
     expect(headerNodes).toMatchSnapshot();
   });

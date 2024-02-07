@@ -4,35 +4,30 @@ exports[`SpreadSheet Custom Dataset Tests should render custom data set 1`] = `
 Array [
   Object {
     "id": "province",
-    "value": "test",
   },
   Object {
     "id": "city",
-    "value": "test",
   },
   Object {
     "id": "type",
-    "value": "test",
   },
   Object {
-    "id": "root[&]test",
-    "value": "test",
+    "id": "root[&]浙江",
   },
   Object {
-    "id": "root[&]test[&]test",
-    "value": "test",
+    "id": "root[&]浙江[&]义乌",
   },
   Object {
-    "id": "root[&]test",
-    "value": "test",
+    "id": "root[&]浙江[&]杭州",
   },
   Object {
-    "id": "root[&]test[&]test",
-    "value": "test",
+    "id": "root[&]笔",
   },
   Object {
-    "id": "root[&]test[&]test",
-    "value": "test",
+    "id": "root[&]笔[&]price",
+  },
+  Object {
+    "id": "root[&]笔[&]cost",
   },
 ]
 `;

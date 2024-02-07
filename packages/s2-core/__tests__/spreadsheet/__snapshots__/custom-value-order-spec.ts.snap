@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Custom Value Order Tests should use custom grid pivot dataSet 1`] = `
+Array [
+  Object {
+    "id": "root[&]家具[&]number[&]桌子",
+    "query": Object {
+      "$$extra$$": "number",
+      "sub_type": "桌子",
+      "type": "家具",
+    },
+    "value": "桌子",
+  },
+  Object {
+    "id": "root[&]家具[&]number[&]沙发",
+    "query": Object {
+      "$$extra$$": "number",
+      "sub_type": "沙发",
+      "type": "家具",
+    },
+    "value": "沙发",
+  },
+  Object {
+    "id": "root[&]办公用品[&]number[&]笔",
+    "query": Object {
+      "$$extra$$": "number",
+      "sub_type": "笔",
+      "type": "办公用品",
+    },
+    "value": "笔",
+  },
+  Object {
+    "id": "root[&]办公用品[&]number[&]纸张",
+    "query": Object {
+      "$$extra$$": "number",
+      "sub_type": "纸张",
+      "type": "办公用品",
+    },
+    "value": "纸张",
+  },
+]
+`;

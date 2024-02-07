@@ -53,11 +53,11 @@ Array [
   Object {
     "content": "家具	家具	办公用品	办公用品
 桌子	沙发	笔	纸张
-数量	数量	数量	数量",
+number	number	number	number",
     "type": "text/plain",
   },
   Object {
-    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr></tbody></table>",
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>number</td><td>number</td></tr></tbody></table>",
     "type": "text/html",
   },
 ]
@@ -84,14 +84,14 @@ Array [
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mode with formatter 1`] = `
-"浙江省	杭州市	数值
-浙江省	绍兴市	数值
-浙江省	宁波市	数值
-浙江省	舟山市	数值
-四川省	成都市	数值
-四川省	绵阳市	数值
-四川省	南充市	数值
-四川省	乐山市	数值"
+"浙江省	杭州市	number
+浙江省	绍兴市	number
+浙江省	宁波市	number
+浙江省	舟山市	number
+四川省	成都市	number
+四川省	绵阳市	number
+四川省	南充市	number
+四川省	乐山市	number"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy col total data in grid mode 1`] = `

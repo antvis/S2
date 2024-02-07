@@ -513,9 +513,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       // 模拟一列一列的手动隐藏最后一列
       const colIds = [
-        'root[&]办公用品[&]纸张[&]数量',
-        'root[&]办公用品[&]笔[&]数量',
-        'root[&]家具[&]沙发[&]数量',
+        'root[&]办公用品[&]纸张[&]number',
+        'root[&]办公用品[&]笔[&]number',
+        'root[&]家具[&]沙发[&]number',
       ];
 
       await Promise.all(
@@ -527,7 +527,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       const leafNodes = sheet.facet.getColLeafNodes();
 
       expect(leafNodes).toHaveLength(1);
-      expect(leafNodes[0].id).toEqual('root[&]家具[&]桌子[&]数量');
+      expect(leafNodes[0].id).toEqual('root[&]家具[&]桌子[&]number');
     });
 
     test('should hide columns for multiple columns', async () => {
@@ -634,8 +634,8 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       test('should hide measure node', async () => {
         const nodeIds = [
-          'root[&]家具[&]桌子[&]数量',
-          'root[&]办公用品[&]笔[&]数量',
+          'root[&]家具[&]桌子[&]number',
+          'root[&]办公用品[&]笔[&]number',
         ];
 
         await waitForRender(sheet, async () => {
@@ -653,8 +653,8 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         const nodeIds = [
           'root[&]总计',
           'root[&]家具[&]小计',
-          'root[&]家具[&]桌子[&]数量',
-          'root[&]办公用品[&]笔[&]数量',
+          'root[&]家具[&]桌子[&]number',
+          'root[&]办公用品[&]笔[&]number',
         ];
 
         await waitForRender(sheet, async () => {
@@ -677,7 +677,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       // https://github.com/antvis/S2/issues/1721
       test('should hide grand totals node', async () => {
-        const nodeId = 'root[&]总计[&]子类别';
+        const nodeId = 'root[&]总计[&]sub_type';
 
         sheet.setDataCfg({
           ...mockDataConfig,
