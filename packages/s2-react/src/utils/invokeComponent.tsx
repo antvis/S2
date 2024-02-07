@@ -1,6 +1,6 @@
 import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, type Root } from 'react-dom/client';
 import { SpreadSheetContext } from '../context/SpreadSheetContext';
 
 export type InvokeComponentProps<P> = {
@@ -12,7 +12,7 @@ export type InvokeComponentProps<P> = {
 export type InvokeComponentOptions<P> = {
   component: React.ComponentType<InvokeComponentProps<P>>;
   params: P;
-  spreadsheet: SpreadSheet;
+  s2: SpreadSheet;
   id?: string;
   onCleanup?: () => void;
 };
@@ -21,7 +21,7 @@ export type InvokeComponentOptions<P> = {
  * 挂载组件
  */
 export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
-  const { id, spreadsheet, params, onCleanup, component: Component } = options;
+  const { id, s2, params, onCleanup, component: Component } = options;
 
   if (id) {
     const domNode = document.querySelector(`#${id}`);
@@ -37,6 +37,7 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
     }
   }
 
+  let root: Root;
   const container = document.createElement('div');
 
   if (id) {
@@ -49,8 +50,7 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
   let rejectCb: (reason?: unknown) => void;
 
   function destroy() {
-    // const unmountResult = ReactDOM.unmountComponentAtNode(container);
-
+    root?.unmount();
     if (container.parentNode) {
       container.parentNode.removeChild(container);
 
@@ -76,8 +76,10 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
 
   function render() {
     setTimeout(() => {
-      createRoot(container!).render(
-        <SpreadSheetContext.Provider value={spreadsheet}>
+      root = createRoot(container!);
+
+      root.render(
+        <SpreadSheetContext.Provider value={s2}>
           <Component onCancel={close} resolver={resolveCb} params={params} />
         </SpreadSheetContext.Provider>,
       );

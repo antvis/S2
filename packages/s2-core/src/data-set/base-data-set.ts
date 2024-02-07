@@ -235,7 +235,7 @@ export abstract class BaseDataSet {
   }
 
   public getDisplayDataSet() {
-    return this.displayData;
+    return this.displayData || [];
   }
 
   public isEmpty() {

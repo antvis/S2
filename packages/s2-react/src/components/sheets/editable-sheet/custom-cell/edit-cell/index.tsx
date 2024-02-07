@@ -6,6 +6,7 @@ import {
   type DataItem,
   type S2CellType,
   type ViewMeta,
+  type RawData,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, merge, pick } from 'lodash';
@@ -27,15 +28,15 @@ import './index.less';
 
 export interface CustomProps {
   style: React.CSSProperties;
-  onChange: (val: string) => void;
+  onChange: (value: string) => void;
   onSave: () => void;
   value: DataItem;
   spreadsheet: SpreadSheet;
   cell: S2CellType | null;
 }
 
-type onChangeProps = {
-  onChange?: (val: any[]) => void;
+type EditCellProps = {
+  onChange?: (val: RawData[]) => void;
   onDataCellEditEnd?: (meta: ViewMeta) => void;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
@@ -44,7 +45,7 @@ type onChangeProps = {
 const EDIT_CELL_CLASS = `${S2_PREFIX_CLS}-edit-cell`;
 
 function EditCellComponent(
-  props: InvokeComponentProps<{ cell: S2CellType } & onChangeProps>,
+  props: InvokeComponentProps<{ cell: S2CellType } & EditCellProps>,
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
@@ -97,27 +98,30 @@ function EditCellComponent(
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * 在 Enter 确定输入后，会执行 onSave 逻辑，然后组件被销毁后，又会通过 blur 再执行一遍，这个时候 displayData 顺序已经变了，再执行获取的 rowIndex 是错误的
+   * 本质上，还是和 invokeComponent 中在移除 dom 节点前，没有提前 unmount 组件有关（1.x 中进行了处理，2.x 中现在只对其中一个分支处理了）
+   * */
+  const hasSaved = useRef(false);
+
   useEffect(() => {
     setTimeout(() => {
       // 防止触发表格全选
-      if (containerRef.current) {
-        containerRef.current!.click();
-      }
-
-      if (inputRef.current) {
-        inputRef.current!.focus();
-      }
+      containerRef.current?.click();
+      // 开启 preventScroll, 防止页面有滚动条时触发滚动
+      inputRef.current?.focus({ preventScroll: true });
     });
   }, []);
 
   const onSave = () => {
-    if (!cell) {
+    if (!cell || hasSaved.current) {
       return;
     }
 
     const { rowIndex, valueField } = cell.getMeta();
+    const displayData = s2.dataSet.getDisplayDataSet();
 
-    s2.dataSet.originData[rowIndex][valueField] = inputVal;
+    displayData[rowIndex][valueField] = inputVal;
     s2.render(true);
 
     const meta = merge(cell.getMeta(), {
@@ -131,17 +135,11 @@ function EditCellComponent(
     onDataCellEditEnd?.(meta);
 
     if (onChange) {
-      onChange(s2.dataSet.originData);
+      onChange(displayData);
     }
 
+    hasSaved.current = true;
     resolver(true);
-  };
-
-  const onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if (e.keyCode === 13) {
-      e.preventDefault();
-      onSave();
-    }
   };
 
   const styleProps: React.CSSProperties = {
@@ -152,7 +150,7 @@ function EditCellComponent(
     zIndex: 1000,
   };
 
-  const changeValue = (val: string) => {
+  const onChangeValue = (val: string) => {
     setInputVal(val);
   };
 
@@ -175,7 +173,7 @@ function EditCellComponent(
           spreadsheet={s2}
           value={inputVal}
           style={styleProps}
-          onChange={changeValue}
+          onChange={onChangeValue}
           onSave={onSave}
         />
       ) : (
@@ -189,32 +187,34 @@ function EditCellComponent(
             setInputVal(e.target.value);
           }}
           onBlur={onSave}
-          onKeyDown={onKeyDown}
+          onPressEnter={onSave}
         />
       )}
     </div>
   );
 }
 
-export const EditCell = memo(({ onChange, CustomComponent }: onChangeProps) => {
-  const spreadsheet = useSpreadSheetInstance();
+export const EditCell = memo(({ onChange, CustomComponent }: EditCellProps) => {
+  const s2 = useSpreadSheetInstance();
 
   const onEditCell = useCallback(
     (event: GEvent) => {
       invokeComponent({
         component: EditCellComponent,
         params: {
-          cell: spreadsheet.getCell(event.target)!,
+          cell: s2.getCell(event.target)!,
           onChange,
           CustomComponent,
         },
-        spreadsheet,
+        s2,
       });
     },
-    [CustomComponent, onChange, spreadsheet],
+    [CustomComponent, onChange, s2],
   );
 
-  useS2Event(S2Event.DATA_CELL_CLICK, onEditCell, spreadsheet);
+  useS2Event(S2Event.DATA_CELL_CLICK, onEditCell, s2);
 
   return null;
 });
+
+EditCell.displayName = 'EditCell';

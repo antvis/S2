@@ -131,17 +131,15 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
   }, 10);
 
   const dragMouseUp = (event: MouseEvent) => {
-    let targetCell = getCurrentHoverCell(event);
-
     if (!startCell) {
       return;
     }
 
-    if (!targetCell) {
-      targetCell = getCurrentHoverCell(lastHoverPoint as MouseEvent);
-    }
+    const targetCell =
+      getCurrentHoverCell(event) ||
+      getCurrentHoverCell(lastHoverPoint as MouseEvent);
 
-    const source = spreadsheet.dataSet.originData;
+    const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
     const selectedRange = getSelectedCellRange(startCell, targetCell!);
     const { fieldValue } = startCell.getMeta();
@@ -149,10 +147,10 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
       const { rowIndex, valueField } = item.getMeta();
 
       if (
-        source[rowIndex] &&
-        typeof source[rowIndex][valueField] !== 'undefined'
+        displayData[rowIndex] &&
+        typeof displayData[rowIndex][valueField] !== 'undefined'
       ) {
-        source[rowIndex][valueField] = fieldValue;
+        displayData[rowIndex][valueField] = fieldValue;
       }
 
       return item;

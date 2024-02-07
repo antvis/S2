@@ -137,7 +137,6 @@ export function DragCopyPoint() {
   useS2Event(S2Event.ROW_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.CORNER_CELL_CLICK, batchSelected, spreadsheet);
   useS2Event(S2Event.DATA_CELL_BRUSH_SELECTION, batchSelected, spreadsheet);
-
   useS2Event(S2Event.DATA_CELL_CLICK, fixPosition, spreadsheet);
 
   return (
