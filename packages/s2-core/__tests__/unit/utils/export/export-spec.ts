@@ -175,7 +175,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[1].split('\t')[0]).toEqual('子类别');
     expect(rows[1].split('\t')[1]).toEqual('桌子');
     expect(rows[2].split('\t')[0]).toEqual('省份');
-    expect(rows[2].split('\t')[1]).toEqual('number');
+    expect(rows[2].split('\t')[1]).toEqual('数量');
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
@@ -208,7 +208,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[1].split('\t')[2]).toEqual('桌子');
     expect(rows[2].split('\t')[0]).toEqual('省份');
     expect(rows[2].split('\t')[1]).toEqual('城市');
-    expect(rows[2].split('\t')[2]).toEqual('number');
+    expect(rows[2].split('\t')[2]).toEqual('数量');
   });
 
   it('should export correct data in grid mode with valueInCols is false', async () => {

@@ -4,14 +4,14 @@ exports[`PivotSheet Export Test should export correct $$extra$$ field name 1`] =
 Array [
   "type",
   "sub_type",
-  "number",
-  "number",
-  "number",
-  "number",
-  "number",
-  "number",
-  "number",
-  "number
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值",
+  "数值
 ",
 ]
 `;

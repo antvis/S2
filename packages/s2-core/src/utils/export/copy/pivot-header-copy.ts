@@ -1,7 +1,11 @@
 import { filter, isEmpty, map, max, repeat, zip } from 'lodash';
 import type { ColCell, RowCell } from '../../../cell';
 import type { CopyableList } from '../../../common/interface/export';
-import { getAllLevels, getHeaderList } from '../method';
+import {
+  getAllLevels,
+  getHeaderList,
+  getHeaderMeasureFieldNames,
+} from '../method';
 import { CellType, NODE_ID_SEPARATOR } from '../../../common';
 import { matrixHtmlTransformer, matrixPlainTextTransformer } from './common';
 
@@ -38,7 +42,7 @@ function getHeaderCellMatrix(
 ): string[][] {
   return map(lastLevelCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
-    const { id, value, isTotals, level } = meta;
+    const { id, value, isTotals, level, spreadsheet } = meta;
     let cellId = id;
 
     // 为总计小计补齐高度
@@ -46,7 +50,10 @@ function getHeaderCellMatrix(
       cellId = id + NODE_ID_SEPARATOR + repeat(value, maxLevel - level);
     }
 
-    return getHeaderList(cellId, allLevel.size);
+    return getHeaderMeasureFieldNames(
+      getHeaderList(cellId, allLevel.size),
+      spreadsheet,
+    );
   });
 }
 

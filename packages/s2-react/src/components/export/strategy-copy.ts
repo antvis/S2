@@ -153,10 +153,10 @@ class StrategyCopyData extends PivotDataCellCopy {
   protected getColMatrix(): string[][] {
     const result: string[][] = [];
 
-    forEach(this.leafColNodes, (n) => {
+    forEach(this.leafColNodes, (node) => {
       const colList = this.config.formatHeader
-        ? getNodeFormatData(n)
-        : getHeaderList(n.id);
+        ? getNodeFormatData(node)
+        : getHeaderList(node.id);
       // 倒着循环 colList
       let maxLen = 0;
 

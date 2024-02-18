@@ -1,11 +1,12 @@
 /**
  * 导出和复制的公共方法，这里的方法都比较纯，参数中都不包含 spreadsheet 对象
  */
-import { forEach } from 'lodash';
+import { forEach, map } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import type { DataItem } from '../../common';
 import { type CellMeta, CellType, NODE_ID_SEPARATOR } from '../../common';
 import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -44,6 +45,15 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
 
   return allLevels;
 }
+
+export const getHeaderMeasureFieldNames = (
+  fields: string[],
+  spreadsheet: SpreadSheet,
+): string[] => {
+  return map(fields, (field) => {
+    return spreadsheet.dataSet.getFieldName(field);
+  });
+};
 
 /**
  * 根据 id 计算出行头或者列头展示的文本数组

@@ -629,7 +629,7 @@ describe('Pivot Table Core Data Process', () => {
     const copyContent = getCopyPlainContent(s2);
 
     // 主要查看行列小计总计对应的值都格式化成功了
-    expect(copyContent).toMatchInlineSnapshot(`
+    expect(copyContent).toMatchSnapshot(`
       "			总计	家具	家具	家具
       				小计	桌子	沙发
       总计			78868元	49709元	26193元	23516元
@@ -784,12 +784,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "		家具-类
-      		桌子-子类
-      		number
-      浙江省-省	杭州市-市	7789元"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
 
     // 小计节点
     s2.interaction.changeState({
@@ -798,12 +793,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     // 这里的小计格式化有误，但与复制无关，后续格式化修复后，这里的单测可能会错误，是正常的
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "		家具-类
-      		桌子-子类
-      		number
-      浙江省-省	小计-市	18375元"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   // 看图更清晰 https://gw.alipayobjects.com/zos/antfincdn/zK68PhcnX/d852ffb8-603a-43e5-b841-dbf3c7577638.png
@@ -901,6 +891,7 @@ describe('Pivot Table Core Data Process', () => {
         values: ['number'],
       },
     } as S2DataConfig);
+
     await s2.render();
 
     const allColCells = s2.facet.getColCells();
@@ -914,16 +905,7 @@ describe('Pivot Table Core Data Process', () => {
 
     const copyContent = getCopyPlainContent(s2);
 
-    expect(copyContent).toMatchInlineSnapshot(`
-      "		浙江省-province	浙江省-province	浙江省-province	浙江省-province
-      		杭州市	绍兴市	宁波市	舟山市
-      		number	number	number	number
-      家具	桌子-sub_type	7789	2367	3877	4342
-      家具	沙发-sub_type	5343	632	7234	834
-      办公用品	笔-sub_type	945	1304	1145	1432
-      办公用品	纸张-sub_type	1343	1354	1523	1634
-      总计		15420	5657	13779	8242"
-    `);
+    expect(copyContent).toMatchSnapshot();
   });
 
   it('should copy all data with header in grid mode', async () => {
@@ -1103,19 +1085,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toMatchInlineSnapshot(`
-      "7789	5343	13132	945	1343
-      2367	632	2999	1304	1354
-      3877	7234	11111	1145	1523
-      4342	834	5176	1432	1634
-      18375	14043	32418	4826	5854
-      1723	2451	4174	2335	4004
-      1822	2244	4066	245	3077
-      1943	2333	4276	2457	3551
-      2330	2445	4775	2458	352
-      7818	9473	17291	7495	10984
-      26193	23516	49709	12321	16838"
-    `);
+    expect(data).toMatchSnapshot();
   });
 
   // https://github.com/antvis/S2/issues/1955
@@ -1144,21 +1114,7 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(sheet);
 
-    expect(data).toMatchInlineSnapshot(`
-      "		家具	家具	家具	办公用品
-      		桌子	沙发	小计	笔
-      浙江省	杭州市	7789	5343	13132	945
-      浙江省	绍兴市	2367	632	2999	1304
-      浙江省	宁波市	3877	7234	11111	1145
-      浙江省	舟山市	4342	834	5176	1432
-      浙江省	小计	18375	14043	32418	4826
-      四川省	成都市	1723	2451	4174	2335
-      四川省	绵阳市	1822	2244	4066	245
-      四川省	南充市	1943	2333	4276	2457
-      四川省	乐山市	2330	2445	4775	2458
-      四川省	小计	7818	9473	17291	7495
-      总计		26193	23516	49709	12321"
-    `);
+    expect(data).toMatchSnapshot();
   });
 
   it('should support custom copy matrix transformer', async () => {
@@ -1235,19 +1191,7 @@ describe('Tree Table Core Data Process', () => {
   it('should copy normal data in tree mode', () => {
     setSelectedVisibleCell();
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375	14043	32418	4826	5854
-      7789	5343	13132	945	1343
-      2367	632	2999	1304	1354
-      3877	7234	11111	1145	1523
-      4342	834	5176	1432	1634
-      7818	9473	17291	7495	10984
-      1723	2451	4174	2335	4004
-      1822	2244	4066	245	3077
-      1943	2333	4276	2457	3551
-      2330	2445	4775	2458	352
-      26193	23516	49709	12321	16838"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy col data in grid tree', () => {
@@ -1258,19 +1202,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375	14043	32418
-      7789	5343	13132
-      2367	632	2999
-      3877	7234	11111
-      4342	834	5176
-      7818	9473	17291
-      1723	2451	4174
-      1822	2244	4066
-      1943	2333	4276
-      2330	2445	4775
-      26193	23516	49709"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy row data in grid tree', () => {
@@ -1291,19 +1223,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375	14043	32418	4826	5854	10680	43098
-      7789	5343	13132	945	1343	2288	15420
-      2367	632	2999	1304	1354	2658	5657
-      3877	7234	11111	1145	1523	2668	13779
-      4342	834	5176	1432	1634	3066	8242
-      7818	9473	17291	7495	10984	18479	35770
-      1723	2451	4174	2335	4004	6339	10513
-      1822	2244	4066	245	3077	3322	7388
-      1943	2333	4276	2457	3551	6008	10284
-      2330	2445	4775	2458	352	2810	7585
-      26193	23516	49709	12321	16838	29159	78868"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy all data in tree mode with format', async () => {
@@ -1327,19 +1247,7 @@ describe('Tree Table Core Data Process', () => {
 
     setSelectedVisibleCell();
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375元	14043元	32418元	4826元	5854元
-      7789元	5343元	13132元	945元	1343元
-      2367元	632元	2999元	1304元	1354元
-      3877元	7234元	11111元	1145元	1523元
-      4342元	834元	5176元	1432元	1634元
-      7818元	9473元	17291元	7495元	10984元
-      1723元	2451元	4174元	2335元	4004元
-      1822元	2244元	4066元	245元	3077元
-      1943元	2333元	4276元	2457元	3551元
-      2330元	2445元	4775元	2458元	352元
-      26193元	23516元	49709元	12321元	16838元"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy normal data with header in tree mode', async () => {
@@ -1352,22 +1260,24 @@ describe('Tree Table Core Data Process', () => {
 
     setSelectedVisibleCell();
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "		家具	家具	家具	办公用品	办公用品
-      		桌子	沙发	小计	笔	纸张
-      		number	number		number	number
-      浙江省		18375	14043	32418	4826	5854
-      浙江省	杭州市	7789	5343	13132	945	1343
-      浙江省	绍兴市	2367	632	2999	1304	1354
-      浙江省	宁波市	3877	7234	11111	1145	1523
-      浙江省	舟山市	4342	834	5176	1432	1634
-      四川省		7818	9473	17291	7495	10984
-      四川省	成都市	1723	2451	4174	2335	4004
-      四川省	绵阳市	1822	2244	4066	245	3077
-      四川省	南充市	1943	2333	4276	2457	3551
-      四川省	乐山市	2330	2445	4775	2458	352
-      总计		26193	23516	49709	12321	16838"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy format data with header in tree mode', async () => {
+    s2.setDataCfg({
+      meta: [{ field: 'number', name: '数量', formatter: (v) => `${v}元` }],
+    } as S2DataConfig);
+
+    s2.setOptions({
+      interaction: {
+        copy: { enable: true, withHeader: true },
+      },
+    });
+    await s2.render();
+
+    setSelectedVisibleCell();
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   it('should copy normal data with header for custom field name', async () => {
@@ -1457,16 +1367,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "浙江省	杭州市
-      浙江省	绍兴市
-      浙江省	宁波市
-      浙江省	舟山市
-      四川省	成都市
-      四川省	绵阳市
-      四川省	南充市
-      四川省	乐山市"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   test('should copy all row data in grid mode with formatter', async () => {
@@ -1531,11 +1432,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     });
 
     // 列头高度
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "家具	家具	办公用品	办公用品
-      桌子	沙发	笔	纸张
-      number	number	number	number"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   test('should copy all col data in grid mode with formatter', async () => {
@@ -1559,11 +1456,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "家具	家具	办公用品	办公用品
-      桌子	沙发	笔	纸张
-      number	number	number	number"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
   test('should copy all col data in grid mode for custom field meta', async () => {
@@ -1621,14 +1514,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-      "家具	桌子
-      家具	沙发
-      办公用品	笔
-      办公用品	纸张
-      家具	桌子
-      家具	沙发"
-    `);
+    expect(getCopyPlainContent(sheet)).toMatchSnapshot();
 
     // 圈选行头前两列 中 y < 180 的区域
     const cells2 = sheet.facet.getRowCells().filter((rowCell) => {
@@ -1645,10 +1531,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-      "浙江省	杭州市
-      浙江省	绍兴市"
-    `);
+    expect(getCopyPlainContent(sheet)).toMatchSnapshot();
   });
 
   test('should copy selection col data in grid mode', async () => {
@@ -1681,10 +1564,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-      "桌子	沙发	笔	纸张	桌子
-      number	number	number	number	number"
-    `);
+    expect(getCopyPlainContent(sheet)).toMatchSnapshot();
 
     const cells2 = sheet.facet.getColCells().filter((c) => {
       const meta = c.getMeta();
@@ -1700,10 +1580,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-      "浙江省	浙江省
-      杭州市	绍兴市"
-    `);
+    expect(getCopyPlainContent(sheet)).toMatchSnapshot();
   });
 
   test('should copy row total data in grid mode', async () => {
@@ -1732,19 +1609,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       },
     });
 
-    expect(getCopyPlainContent(sheet)).toMatchInlineSnapshot(`
-      "浙江省	杭州市
-      浙江省	绍兴市
-      浙江省	宁波市
-      浙江省	舟山市
-      浙江省	小计
-      四川省	成都市
-      四川省	绵阳市
-      四川省	南充市
-      四川省	乐山市
-      四川省	小计
-      总计	总计"
-    `);
+    expect(getCopyPlainContent(sheet)).toMatchSnapshot();
   });
 
   test('should copy col total data in grid mode', async () => {

@@ -37,22 +37,16 @@ describe('TableSheet Export Test', () => {
       const rows = data.split(NewLine);
       const headers = rows[0].split(NewTab);
 
-      expect(slice(rows, 0, 5)).toMatchInlineSnapshot(`
-      Array [
-        "序号	province	city	产品类型	sub_type	number",
-        "1	浙江省	杭州市	家具	桌子	7789",
-        "2	浙江省	绍兴市	家具	桌子	2367",
-        "3	浙江省	宁波市	家具	桌子	3877",
-        "4	浙江省	舟山市	家具	桌子	4342",
-      ]
-    `);
+      expect(slice(rows, 0, 5)).toMatchSnapshot();
 
       // 33行数据 包括一行列头
       expect(rows).toHaveLength(11);
+
       // 6列数据 包括序列号
       rows.forEach((e) => {
         expect(e.split(NewTab)).toHaveLength(6);
       });
+
       expect(headers).toEqual([
         '序号',
         'province',
@@ -152,14 +146,7 @@ describe('TableSheet Export Test', () => {
       formatOptions: true,
     });
 
-    expect(data).toMatchInlineSnapshot(`
-      "province	type	sub_type	number
-      浙江省-province	家具-type	桌子	7789
-      浙江省-province	家具-type	桌子	2367
-      浙江省-province	家具-type	桌子	3877
-      浙江省-province	家具-type	桌子	4342
-      浙江省-province	家具-type	沙发	5343"
-    `);
+    expect(data).toMatchSnapshot();
   });
 
   it('should support custom export matrix transformer', async () => {
@@ -216,14 +203,56 @@ describe('TableSheet Export Test', () => {
     // 只取前10行数据
     const result = slice(data.split(NewLine), 0, 5);
 
-    expect(result).toMatchInlineSnapshot(`
-      Array [
-        "province,city,type,sub_type,number",
-        "浙江省,杭州市,家具,桌子,7789",
-        "浙江省,绍兴市,家具,桌子,2367",
-        "浙江省,宁波市,家具,桌子,3877",
-        "浙江省,舟山市,家具,桌子,4342",
-      ]
-    `);
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should export correct data with formatter', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            name: '数量',
+            description: '数量说明。。',
+          },
+          {
+            field: 'province',
+            name: '省份',
+            description: '省份说明。。',
+          },
+          {
+            field: 'city',
+            name: '城市',
+            description: '城市说明。。',
+          },
+          {
+            field: 'type',
+            name: '类别',
+            description: '类别说明。。',
+          },
+          {
+            field: 'sub_type',
+            name: '子类别',
+            description: '子类别说明。。',
+          },
+        ],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: ',',
+      formatOptions: {
+        formatHeader: true,
+      },
+    });
+
+    expect(data.split(NewLine)).toMatchSnapshot();
   });
 });

@@ -48,19 +48,116 @@ exports[`List Table Core Data Process should copy correct data when selected dia
 	宁波市"
 `;
 
+exports[`Pivot Table Core Data Process should copy format total data in grid mode: 
+      "			总计	家具	家具	家具
+      				小计	桌子	沙发
+      总计			78868元	49709元	26193元	23516元
+      浙江省	小计		43098元	32418元	18375元	14043元
+      浙江省	杭州市	number	15420元	13132元	7789元	5343元
+      浙江省	绍兴市	number	5657元	2999元	2367元	632元
+      浙江省	宁波市	number	13779元	11111元	3877元	7234元
+      浙江省	舟山市	number	8242元	5176元	4342元	834元
+      四川省	小计		35770元	17291元	7818元	9473元
+      四川省	成都市	number	10513元	4174元	1723元	2451元
+      四川省	绵阳市	number	7388元	4066元	1822元	2244元
+      四川省	南充市	number	10284元	4276元	1943元	2333元
+      四川省	乐山市	number	7585元	4775元	2330元	2445元"
+     1`] = `
+"			总计	家具	家具	家具
+				小计	桌子	沙发
+总计			78868元	49709元	26193元	23516元
+浙江省	小计		43098元	32418元	18375元	14043元
+浙江省	杭州市	number	15420元	13132元	7789元	5343元
+浙江省	绍兴市	number	5657元	2999元	2367元	632元
+浙江省	宁波市	number	13779元	11111元	3877元	7234元
+浙江省	舟山市	number	8242元	5176元	4342元	834元
+四川省	小计		35770元	17291元	7818元	9473元
+四川省	成都市	number	10513元	4174元	1723元	2451元
+四川省	绵阳市	number	7388元	4066元	1822元	2244元
+四川省	南充市	number	10284元	4276元	1943元	2333元
+四川省	乐山市	number	7585元	4775元	2330元	2445元"
+`;
+
+exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 1`] = `
+"		家具-类
+		桌子-子类
+		number
+浙江省-省	杭州市-市	7789元"
+`;
+
+exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 2`] = `
+"		家具-类
+		桌子-子类
+		number
+浙江省-省	小计-市	18375元"
+`;
+
+exports[`Pivot Table Core Data Process should copy row data with format header in grid mode 1`] = `
+"		浙江省-province	浙江省-province	浙江省-province	浙江省-province
+		杭州市	绍兴市	宁波市	舟山市
+		number	number	number	number
+家具	桌子-sub_type	7789	2367	3877	4342
+家具	沙发-sub_type	5343	632	7234	834
+办公用品	笔-sub_type	945	1304	1145	1432
+办公用品	纸张-sub_type	1343	1354	1523	1634
+总计		15420	5657	13779	8242"
+`;
+
+exports[`Pivot Table Core Data Process should get correct data with hideMeasureColumn is true 1`] = `
+"7789	5343	13132	945	1343
+2367	632	2999	1304	1354
+3877	7234	11111	1145	1523
+4342	834	5176	1432	1634
+18375	14043	32418	4826	5854
+1723	2451	4174	2335	4004
+1822	2244	4066	245	3077
+1943	2333	4276	2457	3551
+2330	2445	4775	2458	352
+7818	9473	17291	7495	10984
+26193	23516	49709	12321	16838"
+`;
+
+exports[`Pivot Table Core Data Process should get correct data with hideMeasureColumn、show seriesNumber and withHeader are all true 1`] = `
+"		家具	家具	家具	办公用品
+		桌子	沙发	小计	笔
+浙江省	杭州市	7789	5343	13132	945
+浙江省	绍兴市	2367	632	2999	1304
+浙江省	宁波市	3877	7234	11111	1145
+浙江省	舟山市	4342	834	5176	1432
+浙江省	小计	18375	14043	32418	4826
+四川省	成都市	1723	2451	4174	2335
+四川省	绵阳市	1822	2244	4066	245
+四川省	南充市	1943	2333	4276	2457
+四川省	乐山市	2330	2445	4775	2458
+四川省	小计	7818	9473	17291	7495
+总计		26193	23516	49709	12321"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all col data in grid mode 1`] = `
+"家具	家具	办公用品	办公用品
+桌子	沙发	笔	纸张
+number	number	number	number"
+`;
+
 exports[`Pivot Table getBrushHeaderCopyable should copy all col data in grid mode for custom field meta 1`] = `
 Array [
   Object {
     "content": "家具	家具	办公用品	办公用品
 桌子	沙发	笔	纸张
-number	number	number	number",
+数量	数量	数量	数量",
     "type": "text/plain",
   },
   Object {
-    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>number</td><td>number</td><td>number</td><td>number</td></tr></tbody></table>",
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr></tbody></table>",
     "type": "text/html",
   },
 ]
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all col data in grid mode with formatter 1`] = `
+"家具	家具	办公用品	办公用品
+桌子	沙发	笔	纸张
+数值	数值	数值	数值"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy all original row data in grid mode if contains text ellipses 1`] = `
@@ -83,15 +180,26 @@ Array [
 ]
 `;
 
+exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mode 1`] = `
+"浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
 exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mode with formatter 1`] = `
-"浙江省	杭州市	number
-浙江省	绍兴市	number
-浙江省	宁波市	number
-浙江省	舟山市	number
-四川省	成都市	number
-四川省	绵阳市	number
-四川省	南充市	number
-四川省	乐山市	number"
+"浙江省	杭州市	数值
+浙江省	绍兴市	数值
+浙江省	宁波市	数值
+浙江省	舟山市	数值
+四川省	成都市	数值
+四川省	绵阳市	数值
+四川省	南充市	数值
+四川省	乐山市	数值"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy col total data in grid mode 1`] = `
@@ -107,6 +215,117 @@ number	number	小计	number	number",
     "type": "text/html",
   },
 ]
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy row total data in grid mode 1`] = `
+"浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+浙江省	小计
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市
+四川省	小计
+总计	总计"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy selection col data in grid mode 1`] = `
+"桌子	沙发	笔	纸张	桌子
+number	number	number	number	number"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy selection col data in grid mode 2`] = `
+"浙江省	浙江省
+杭州市	绍兴市"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy selection row data in grid mode 1`] = `
+"家具	桌子
+家具	沙发
+办公用品	笔
+办公用品	纸张
+家具	桌子
+家具	沙发"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy selection row data in grid mode 2`] = `
+"浙江省	杭州市
+浙江省	绍兴市"
+`;
+
+exports[`Tree Table Core Data Process should copy all data in tree mode 1`] = `
+"18375	14043	32418	4826	5854	10680	43098
+7789	5343	13132	945	1343	2288	15420
+2367	632	2999	1304	1354	2658	5657
+3877	7234	11111	1145	1523	2668	13779
+4342	834	5176	1432	1634	3066	8242
+7818	9473	17291	7495	10984	18479	35770
+1723	2451	4174	2335	4004	6339	10513
+1822	2244	4066	245	3077	3322	7388
+1943	2333	4276	2457	3551	6008	10284
+2330	2445	4775	2458	352	2810	7585
+26193	23516	49709	12321	16838	29159	78868"
+`;
+
+exports[`Tree Table Core Data Process should copy all data in tree mode with format 1`] = `
+"18375元	14043元	32418元	4826元	5854元
+7789元	5343元	13132元	945元	1343元
+2367元	632元	2999元	1304元	1354元
+3877元	7234元	11111元	1145元	1523元
+4342元	834元	5176元	1432元	1634元
+7818元	9473元	17291元	7495元	10984元
+1723元	2451元	4174元	2335元	4004元
+1822元	2244元	4066元	245元	3077元
+1943元	2333元	4276元	2457元	3551元
+2330元	2445元	4775元	2458元	352元
+26193元	23516元	49709元	12321元	16838元"
+`;
+
+exports[`Tree Table Core Data Process should copy col data in grid tree 1`] = `
+"18375	14043	32418
+7789	5343	13132
+2367	632	2999
+3877	7234	11111
+4342	834	5176
+7818	9473	17291
+1723	2451	4174
+1822	2244	4066
+1943	2333	4276
+2330	2445	4775
+26193	23516	49709"
+`;
+
+exports[`Tree Table Core Data Process should copy format data with header in tree mode 1`] = `
+"		家具	家具	家具	办公用品	办公用品
+		桌子	沙发	小计	笔	纸张
+		数量	数量		数量	数量
+浙江省		18375元	14043元	32418元	4826元	5854元
+浙江省	杭州市	7789元	5343元	13132元	945元	1343元
+浙江省	绍兴市	2367元	632元	2999元	1304元	1354元
+浙江省	宁波市	3877元	7234元	11111元	1145元	1523元
+浙江省	舟山市	4342元	834元	5176元	1432元	1634元
+四川省		7818元	9473元	17291元	7495元	10984元
+四川省	成都市	1723元	2451元	4174元	2335元	4004元
+四川省	绵阳市	1822元	2244元	4066元	245元	3077元
+四川省	南充市	1943元	2333元	4276元	2457元	3551元
+四川省	乐山市	2330元	2445元	4775元	2458元	352元
+总计		26193元	23516元	49709元	12321元	16838元"
+`;
+
+exports[`Tree Table Core Data Process should copy normal data in tree mode 1`] = `
+"18375	14043	32418	4826	5854
+7789	5343	13132	945	1343
+2367	632	2999	1304	1354
+3877	7234	11111	1145	1523
+4342	834	5176	1432	1634
+7818	9473	17291	7495	10984
+1723	2451	4174	2335	4004
+1822	2244	4066	245	3077
+1943	2333	4276	2457	3551
+2330	2445	4775	2458	352
+26193	23516	49709	12321	16838"
 `;
 
 exports[`Tree Table Core Data Process should copy normal data with header for custom field formatter if enable withFormat 1`] = `
@@ -159,4 +378,21 @@ Array [
     "type": "text/html",
   },
 ]
+`;
+
+exports[`Tree Table Core Data Process should copy normal data with header in tree mode 1`] = `
+"		家具	家具	家具	办公用品	办公用品
+		桌子	沙发	小计	笔	纸张
+		number	number		number	number
+浙江省		18375	14043	32418	4826	5854
+浙江省	杭州市	7789	5343	13132	945	1343
+浙江省	绍兴市	2367	632	2999	1304	1354
+浙江省	宁波市	3877	7234	11111	1145	1523
+浙江省	舟山市	4342	834	5176	1432	1634
+四川省		7818	9473	17291	7495	10984
+四川省	成都市	1723	2451	4174	2335	4004
+四川省	绵阳市	1822	2244	4066	245	3077
+四川省	南充市	1943	2333	4276	2457	3551
+四川省	乐山市	2330	2445	4775	2458	352
+总计		26193	23516	49709	12321	16838"
 `;

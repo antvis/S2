@@ -218,12 +218,13 @@ const getNodeFormatLabel = (node: Node) => {
 };
 
 /**
- * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
- * @param rowLeafNode
+ * 获取到当前节点所有数据
+ * @param leafNode
  */
-export const getNodeFormatData = (rowLeafNode: Node) => {
+export const getNodeFormatData = (leafNode: Node) => {
   const line: string[] = [];
-  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
+
+  const getNodeFormatterLabel = (node: Node): string | undefined => {
     // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
     if (node.id === ROOT_NODE_ID) {
       return;
@@ -233,11 +234,11 @@ export const getNodeFormatData = (rowLeafNode: Node) => {
 
     line.unshift(formatterLabel);
     if (node?.parent) {
-      return getRowNodeFormatterLabel(node.parent);
+      return getNodeFormatterLabel(node.parent);
     }
   };
 
-  getRowNodeFormatterLabel(rowLeafNode);
+  getNodeFormatterLabel(leafNode);
 
   return line;
 };

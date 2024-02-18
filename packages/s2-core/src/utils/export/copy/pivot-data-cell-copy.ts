@@ -20,6 +20,7 @@ import {
   convertString,
   getColNodeFieldFromNode,
   getHeaderList,
+  getHeaderMeasureFieldNames,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
@@ -273,15 +274,22 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected getColMatrix(): string[][] {
     return zip(
-      ...map(this.leafColNodes, (n) =>
-        this.config.formatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+      ...map(this.leafColNodes, (node) =>
+        this.config.formatHeader
+          ? getNodeFormatData(node)
+          : getHeaderMeasureFieldNames(
+              getHeaderList(node.id),
+              node.spreadsheet,
+            ),
       ),
     ) as string[][];
   }
 
   protected getRowMatrix(): string[][] {
-    const rowMatrix: string[][] = map(this.leafRowNodes, (n) =>
-      this.config.formatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+    const rowMatrix: string[][] = map(this.leafRowNodes, (node) =>
+      this.config.formatHeader
+        ? getNodeFormatData(node)
+        : getHeaderMeasureFieldNames(getHeaderList(node.id), node.spreadsheet),
     );
 
     return completeMatrix(rowMatrix);
