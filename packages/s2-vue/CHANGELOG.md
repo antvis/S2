@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v1.6.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.6.0...@antv/s2-vue-v1.6.1) (2024-01-26)
+
+
+### Bug Fixes
+
+* **interaction:** 修复隐藏列头配置更新时未覆盖上一次的配置 close [#2495](https://github.com/antvis/S2/issues/2495) ([#2527](https://github.com/antvis/S2/issues/2527)) ([d68adcc](https://github.com/antvis/S2/commit/d68adcc7219d43da3f336c0cac5f538e7d83de01))
+
 # [@antv/s2-vue-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.5.0...@antv/s2-vue-v1.6.0) (2023-12-15)
 
 
