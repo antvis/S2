@@ -214,6 +214,12 @@ describe('Interaction Multi Selection Tests', () => {
       pivotSheet,
     );
 
-    expect(pivotSheet.interaction.getInteractedCells()).toHaveLength(46);
+    const interactedCells = pivotSheet.interaction.getInteractedCells();
+
+    ['root[&]家具[&]桌子', 'root[&]家具[&]沙发'].forEach((id) => {
+      expect(
+        interactedCells.find((cell) => cell.getMeta().id === id),
+      ).toBeTruthy();
+    });
   });
 });

@@ -383,7 +383,7 @@ export const getSelectedCellsData = (
    * 1. [点击列头单元格时], 选中列所对应的数值单元格的数据如果是小计/总计, 则不应该参与计算:
    *  - 1.1 [小计/总计 位于行头]: 点击的都是 (普通列头), 需要去除 (数值单元格) 对应 (行头为小计) 的单元格的数据
    *  - 1.2 [小计/总计 位于列头]: 点击的是 (普通列头/小计/总计列头), 由于行头没有, 所有数值单元格参与计算即可
-   *  - 1.3  [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
+   *  - 1.3 [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
 
    * 2. [点击行头单元格时]:
    *  - 2.1 如果本身就是小计/总计单元格, 且列头无小计/总计, 则当前行所有 (数值单元格) 参与计算
@@ -576,6 +576,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     details = getTooltipDetailList(spreadsheet, firstCellInfo, options);
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
+
   return {
     summaries,
     interpretation,
