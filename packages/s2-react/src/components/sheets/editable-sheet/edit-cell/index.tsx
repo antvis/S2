@@ -1,22 +1,15 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import {
-  BaseCell,
   S2Event,
   SpreadSheet,
   type DataType,
   type S2CellType,
+  type TableDataCell,
   type ViewMeta,
 } from '@antv/s2';
 import { Input } from 'antd';
-import { merge, pick } from 'lodash';
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { pick } from 'lodash';
+import React from 'react';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import {
@@ -34,9 +27,15 @@ export interface CustomProps {
   cell: S2CellType;
 }
 
+type DateCellEdit = (meta: ViewMeta, cell: TableDataCell) => void;
+
 type EditCellProps = {
+  /**
+   * @deprecated use `onDataCellEditEnd` instead.
+   */
   onChange?: (data: DataType[]) => void;
-  onDataCellEditEnd?: (meta: ViewMeta) => void;
+  onDataCellEditStart?: DateCellEdit;
+  onDataCellEditEnd?: DateCellEdit;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
@@ -46,30 +45,32 @@ function EditCellComponent(
 ) {
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
-  const { event, onChange, onDataCellEditEnd, CustomComponent } = params;
-  const cell: BaseCell<ViewMeta> = event.target.cfg.parent;
+  const {
+    event,
+    onChange,
+    onDataCellEditStart,
+    onDataCellEditEnd,
+    CustomComponent,
+  } = params;
 
-  const { left, top, width, height } = useMemo(() => {
-    const rect = (
-      spreadsheet?.container.cfg.container as HTMLElement
-    ).getBoundingClientRect();
+  const cell = spreadsheet.getCell<TableDataCell>(event.target);
+  const { left, top, width, height } = React.useMemo<Partial<DOMRect>>(() => {
+    const rect = spreadsheet.getCanvasElement()?.getBoundingClientRect();
 
-    const modified = {
+    return {
       left: window.scrollX + rect.left,
       top: window.scrollY + rect.top,
       width: rect.width,
       height: rect.height,
     };
-
-    return modified;
-  }, [spreadsheet?.container.cfg.container]);
+  }, [spreadsheet]);
 
   const {
     x: cellLeft,
     y: cellTop,
     width: cellWidth,
     height: cellHeight,
-  } = useMemo(() => {
+  } = React.useMemo(() => {
     const scroll = spreadsheet.facet.getScrollOffset();
     const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
 
@@ -81,43 +82,44 @@ function EditCellComponent(
     return cellMeta;
   }, [cell, spreadsheet]);
 
-  const [inputVal, setInputVal] = useState(cell.getMeta().fieldValue);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [inputVal, setInputVal] = React.useState(() => {
+    return cell.getFieldValue();
+  });
 
-  useEffect(() => {
-    setTimeout(() => {
-      // 防止触发表格全选
-      containerRef.current?.click();
-      // 开启 preventScroll, 防止页面有滚动条时触发滚动
-      inputRef.current?.focus({ preventScroll: true });
-    });
-  }, []);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const onSave = () => {
-    const { rowIndex, valueField } = cell.getMeta();
+    const { rowIndex, valueField, fieldValue } = cell.getMeta();
+
+    cell.setMeta({
+      fieldValue: inputVal,
+      originalFieldValue: fieldValue,
+      data: {
+        [valueField]: inputVal,
+      },
+    });
+
     const displayData = spreadsheet.dataSet.getDisplayDataSet();
     displayData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
 
-    onDataCellEditEnd?.(
-      merge(cell.getMeta(), {
-        fieldValue: inputVal,
-        data: {
-          [valueField]: inputVal,
-        },
-      }),
-    );
-
+    onDataCellEditEnd?.(cell.getMeta(), cell);
     onChange?.(displayData);
     resolver(true);
   };
 
   const onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter') {
       e.preventDefault();
       onSave();
     }
+  };
+
+  // 让输入框聚焦时光标在文字的末尾
+  const onFocus: React.FocusEventHandler<HTMLTextAreaElement> = (e) => {
+    e.target.selectionStart = e.target.value.length;
+    e.target.selectionEnd = e.target.value.length;
   };
 
   const styleProps = React.useMemo<React.CSSProperties>(() => {
@@ -133,6 +135,16 @@ function EditCellComponent(
   const onChangeValue = (val: string) => {
     setInputVal(val);
   };
+
+  React.useEffect(() => {
+    onDataCellEditStart?.(cell.getMeta(), cell);
+    setTimeout(() => {
+      // 防止触发表格全选
+      containerRef.current?.click();
+      // 开启 preventScroll, 防止页面有滚动条时触发滚动
+      inputRef.current?.focus({ preventScroll: true });
+    });
+  }, []);
 
   return (
     <div
@@ -168,31 +180,26 @@ function EditCellComponent(
           }}
           onBlur={onSave}
           onKeyDown={onKeyDown}
+          onFocus={onFocus}
         />
       )}
     </div>
   );
 }
 
-export const EditCell: React.FC<EditCellProps> = memo(
-  ({ onChange, onDataCellEditEnd, CustomComponent }) => {
-    const spreadsheet = useSpreadSheetRef();
+export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
+  const spreadsheet = useSpreadSheetRef();
 
-    const cb = useCallback(
-      (event: CanvasEvent) => {
-        invokeComponent(
-          EditCellComponent,
-          { event, onChange, onDataCellEditEnd, CustomComponent },
-          spreadsheet,
-        );
-      },
-      [spreadsheet],
-    );
+  const cb = React.useCallback(
+    (event: CanvasEvent) => {
+      invokeComponent(EditCellComponent, { ...props, event }, spreadsheet);
+    },
+    [spreadsheet],
+  );
 
-    useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
+  useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, cb, spreadsheet);
 
-    return null;
-  },
-);
+  return null;
+});
 
 EditCell.displayName = 'EditCell';

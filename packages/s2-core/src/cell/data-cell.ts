@@ -180,8 +180,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  public setMeta(viewMeta: ViewMeta) {
-    super.setMeta(viewMeta);
+  public setMeta(viewMeta: Partial<ViewMeta>) {
+    super.setMeta(viewMeta as ViewMeta);
     this.initCell();
   }
 

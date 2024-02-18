@@ -19,6 +19,7 @@ import type {
   S2RenderOptions,
   SortParams,
   SpreadSheet,
+  TableDataCell,
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
@@ -121,7 +122,8 @@ export interface BaseSheetComponentProps<
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
-  onDataCellEditEnd?: (meta: ViewMeta) => void;
+  onDataCellEditStart?: (meta: ViewMeta, cell: TableDataCell) => void;
+  onDataCellEditEnd?: (meta: ViewMeta, cell: TableDataCell) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

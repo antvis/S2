@@ -77,7 +77,7 @@ export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
 });
 
 export const s2Options: SheetComponentOptions = {
-  debug: false,
+  debug: true,
   width: 600,
   height: 400,
   frozenFirstRow: false,
