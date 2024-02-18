@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.46.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.1...@antv/s2-react-v1.46.2) (2024-02-07)
+
+
+### Bug Fixes
+
+* 修复表格排序后, 编辑单元格后数据更新错误 close [#2573](https://github.com/antvis/S2/issues/2573) ([#2544](https://github.com/antvis/S2/issues/2544)) ([9075896](https://github.com/antvis/S2/commit/9075896def56eb3841c552da0c5cf5603572023e))
+
+# [@antv/s2-react-v1.46.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.0...@antv/s2-react-v1.46.1) (2024-01-26)
+
+
+### Bug Fixes
+
+* **interaction:** 修复隐藏列头配置更新时未覆盖上一次的配置 close [#2495](https://github.com/antvis/S2/issues/2495) ([#2527](https://github.com/antvis/S2/issues/2527)) ([d68adcc](https://github.com/antvis/S2/commit/d68adcc7219d43da3f336c0cac5f538e7d83de01))
+
 # [@antv/s2-react-v1.46.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.45.0...@antv/s2-react-v1.46.0) (2023-12-15)
 
 
