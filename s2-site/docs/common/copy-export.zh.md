@@ -235,6 +235,29 @@ enum CopyMIMEType {
 }
 ```
 
+##### FormatOptions
+
+```ts
+type FormatOptions =
+  | boolean
+  | {
+      formatHeader?: boolean;
+      formatData?: boolean;
+    };
+```
+
+##### CopyAllDataParams
+
+```ts
+interface CopyAllDataParams {
+  sheetInstance: SpreadSheet;
+  split?: string;
+  formatOptions?: FormatOptions;
+  customTransformer?: (transformer: Transformer) => Partial<Transformer>;
+  isAsyncExport?: boolean;
+}
+```
+
 ##### Transformer
 
 ```ts | pure

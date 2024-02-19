@@ -46,6 +46,7 @@ export interface DataCellStyle extends CellTextWordWrapStyle {
    * 宽度
    */
   width?: number;
+
   /**
    * 高度
    */
@@ -56,7 +57,7 @@ export interface DataCellStyle extends CellTextWordWrapStyle {
    */
   valuesCfg?: {
     /**
-     * 原始值字段
+     * 原始数据字段，用于原始数据导出和 tooltip 展示
      */
     originalValueField?: string;
 

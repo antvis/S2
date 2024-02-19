@@ -655,10 +655,10 @@ export abstract class SpreadSheet extends EE {
   ): T | null {
     let parent = target;
 
-    // 一直索引到 g 顶层的 canvas 来检查是否在指定的cell中
+    // 一直索引到 g 顶层的 Canvas 来检查是否在指定的 cell 中
     while (parent && !(parent instanceof Canvas)) {
       if (this.isCellType(parent)) {
-        // 在单元格中，返回true
+        // 在单元格中则返回
         return parent as T;
       }
 

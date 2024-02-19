@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { RawData } from '@antv/s2';
 import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
@@ -384,7 +385,6 @@ export const StrategySheetDataConfig: S2DataConfig = {
 };
 
 export const StrategyOptions: SheetComponentOptions = {
-  width: 800,
   height: 800,
   cornerText: '指标',
   placeholder: (v) => (v?.['fieldValue'] ? '-' : ''),
@@ -404,7 +404,12 @@ export const StrategyOptions: SheetComponentOptions = {
       icons: ['Trend'],
       belongsCell: 'rowCell',
       defaultHide: true,
-      onClick: () => {},
+      onHover: (params) => {
+        console.log('trend icon hover:', params);
+      },
+      onClick: (params) => {
+        console.log('trend icon click:', params);
+      },
     },
   ],
   conditions: {

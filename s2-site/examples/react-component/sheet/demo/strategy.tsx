@@ -1,7 +1,8 @@
-import { S2DataConfig } from '@antv/s2';
+import { S2DataConfig, isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import { isNil } from 'lodash';
 import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
 // 临时处理老数据格式
 function process(children) {
@@ -47,22 +48,59 @@ fetch(
       width: 600,
       height: 480,
       cornerText: '指标层级',
+      headerActionIcons: [
+        {
+          icons: ['Trend'],
+          belongsCell: 'rowCell',
+          defaultHide: true,
+          onClick: (params) => {
+            console.log('trend icon click:', params);
+          },
+          onHover: (params) => {
+            console.log('trend icon hover:', params);
+          },
+        },
+      ],
       conditions: {
         text: [
           {
-            field: 'number',
             mapping: (value, cellInfo) => {
-              const { meta, colIndex } = cellInfo;
+              const { colIndex } = cellInfo;
+              const isNilValue = isNil(value) || value === '';
 
-              if (colIndex === 0 || !value || !meta?.fieldValue) {
+              if (colIndex === 0 || isNilValue) {
                 return {
                   fill: '#000',
                 };
               }
 
               return {
-                fill: value > 0 ? '#FF4D4F' : '#29A294',
+                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
               };
+            },
+          },
+        ],
+        icon: [
+          {
+            field: 'number',
+            position: 'left',
+            mapping(value, cellInfo) {
+              const { colIndex } = cellInfo;
+
+              if (colIndex === 0) {
+                return null;
+              }
+
+              return isUpDataValue(value)
+                ? {
+                    // icon 用于指定图标条件格式所使用的 icon 类型
+                    icon: 'CellUp',
+                    fill: '#FF4D4F',
+                  }
+                : {
+                    icon: 'CellDown',
+                    fill: '#29A294',
+                  };
             },
           },
         ],

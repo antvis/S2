@@ -93,9 +93,10 @@ export const StrategySheet: React.FC<
         ...StrategyOptions,
         conditions: showConditions ? conditions : null,
       }}
+      adaptive
       header={{
         title: '趋势分析表',
-        description: '支持子弹图',
+        description: '支持子弹图,折线图,柱状图等简易 mini 图形绘制',
         switcher: { open: true },
         export: { open: true },
         extra: (

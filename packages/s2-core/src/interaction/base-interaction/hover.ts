@@ -208,6 +208,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
+      // FIXME: 趋势分析表 hover 的时候拿到的 event target 是错误的
       const cell = this.spreadsheet.getCell(event.target);
 
       if (isEmpty(cell)) {
