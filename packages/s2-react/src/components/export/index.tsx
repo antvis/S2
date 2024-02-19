@@ -1,21 +1,20 @@
 import {
-  AsyncRequestThreshold,
   NewTab,
   S2_PREFIX_CLS,
   SpreadSheet,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
-  getAllPlainData,
   i18n,
+  type CopyAllDataParams,
 } from '@antv/s2';
-import { Dropdown, message, type DropDownProps, Button } from 'antd';
+import { Button, Dropdown, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import { DotIcon } from '../icons';
 
 export interface ExportBaseProps {
-  open: boolean;
+  open?: boolean;
   className?: string;
   icon?: React.ReactNode;
   copyOriginalText?: string;
@@ -28,6 +27,7 @@ export interface ExportBaseProps {
   syncCopy?: boolean;
   // ref: https://ant.design/components/dropdown-cn/#API
   dropdown?: DropDownProps;
+  customCopyMethod?: (params: CopyAllDataParams) => Promise<string> | string;
 }
 
 export interface ExportProps extends ExportBaseProps {
@@ -50,25 +50,21 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     open,
     dropdown,
+    customCopyMethod,
     ...restProps
   } = props;
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
-  const isAsyncRequest = sheet?.dataCfg?.data?.length >= AsyncRequestThreshold;
-
   const copyData = async (isFormat: boolean) => {
-    const data = isAsyncRequest
-      ? await asyncGetAllPlainData({
-          sheetInstance: sheet,
-          split: NewTab,
-          formatOptions: isFormat,
-        })
-      : getAllPlainData({
-          sheetInstance: sheet,
-          split: NewTab,
-          formatOptions: isFormat,
-        });
+    const params: CopyAllDataParams = {
+      sheetInstance: sheet,
+      split: NewTab,
+      formatOptions: isFormat,
+    };
+
+    const data = await (customCopyMethod?.(params) ||
+      asyncGetAllPlainData(params));
 
     copyToClipboard(data, syncCopy)
       .then(() => {
@@ -76,7 +72,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
-        console.log('copy failed: ', error);
+        console.error('copy failed: ', error);
         message.error(errorText);
       });
   };
@@ -91,7 +87,9 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     try {
       download(data, fileName);
       message.success(successText);
-    } catch (err) {
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('download failed: ', error);
       message.error(errorText);
     }
   };

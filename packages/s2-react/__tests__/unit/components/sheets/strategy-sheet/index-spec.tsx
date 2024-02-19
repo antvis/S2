@@ -301,7 +301,11 @@ describe('<StrategySheet/> Tests', () => {
 
     test('should export correct data', async () => {
       await waitFor(() => {
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
 
         /*
          * 角头部分展示如下：
@@ -324,7 +328,11 @@ describe('<StrategySheet/> Tests', () => {
           cornerText: undefined,
         });
 
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
 
         expect(result).toMatchSnapshot();
       });
@@ -336,7 +344,11 @@ describe('<StrategySheet/> Tests', () => {
           cornerText: '自定义',
         });
 
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
 
         expect(result).toMatchSnapshot();
       });
@@ -350,7 +362,11 @@ describe('<StrategySheet/> Tests', () => {
          * 2022-10 包含 [数值，环比]
          * 它们都应和各自的列头数值一栏对齐
          */
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
 
         const rows = result.split('\n');
         const col1: string[] = rows[0].split('\t').slice(3);
@@ -375,7 +391,11 @@ describe('<StrategySheet/> Tests', () => {
          * 2022-09 包含 [数值，环比，同比], 但是数值均为空
          * 对应数据应该空三格
          */
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
 
         const rows = result.split('\n');
         // 自定义节点A - 指标A
@@ -388,7 +408,11 @@ describe('<StrategySheet/> Tests', () => {
 
     test('should export correct headers when label have array and string', async () => {
       await waitFor(() => {
-        const result = strategyCopy(s2, '\t', true);
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: '\t',
+          formatOptions: true,
+        });
         const rows = result.split('\n');
 
         expect(rows[0].split('\t')[8]).toEqual('2022-11');

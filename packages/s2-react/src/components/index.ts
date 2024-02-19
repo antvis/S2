@@ -23,6 +23,7 @@ export { TooltipComponent } from './tooltip';
 export { CustomTooltip } from './tooltip/custom-tooltip';
 export type { TooltipRenderProps } from './tooltip/interface';
 export { Switcher, type SwitcherProps } from './switcher';
+export { strategyCopy } from './export/strategy-copy';
 
 export * from './sheets';
 export * from './sheets/interface';

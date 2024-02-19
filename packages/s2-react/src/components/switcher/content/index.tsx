@@ -31,10 +31,6 @@ import './index.less';
 
 const CLASS_NAME_PREFIX = 'content';
 
-export interface SwitcherContentRef {
-  getResult: () => SwitcherResult;
-}
-
 export interface SwitcherContentProps extends SwitcherFields {
   sheetType?: SheetType;
   contentTitleText?: string;
@@ -201,7 +197,6 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
 );
 
 SwitcherContent.displayName = 'SwitcherContent';
-
 SwitcherContent.defaultProps = {
   sheetType: 'pivot',
 };

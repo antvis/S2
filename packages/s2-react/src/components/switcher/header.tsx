@@ -24,7 +24,7 @@ type SwitcherBasicCfg = Pick<
 >;
 
 export interface SwitcherProps extends SwitcherBasicCfg {
-  open: boolean;
+  open?: boolean;
 }
 
 export interface SwitcherHeaderProps extends SwitcherBasicCfg {

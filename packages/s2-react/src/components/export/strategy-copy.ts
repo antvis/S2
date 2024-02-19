@@ -1,15 +1,13 @@
 import {
   CornerNodeType,
-  NewTab,
   PivotDataCellCopy,
-  SpreadSheet,
   assembleMatrix,
   getHeaderList,
   getMaxRowLen,
   getNodeFormatData,
   safeJsonParse,
+  type CopyAllDataParams,
   type CopyableList,
-  type FormatOptions,
   type Node,
   type SheetCopyConstructorParams,
   type ViewMeta,
@@ -111,8 +109,7 @@ class StrategyCopyData extends PivotDataCellCopy {
     const maxRowLen = this.spreadsheet.isHierarchyTreeType()
       ? getMaxRowLen(rowMatrix ?? [])
       : rows.length;
-    const sheetInstance = this.spreadsheet;
-    const cornerNodes = sheetInstance.facet.cornerHeader.getNodes();
+    const cornerNodes = this.spreadsheet.facet.getCornerNodes();
 
     // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
     const sortedCornerNodes = sortBy(cornerNodes, (node) => {
@@ -199,11 +196,8 @@ class StrategyCopyData extends PivotDataCellCopy {
   };
 }
 
-export const strategyCopy = (
-  sheetInstance: SpreadSheet,
-  split = NewTab,
-  formatOptions?: FormatOptions,
-) => {
+export const strategyCopy = (params: CopyAllDataParams): string => {
+  const { sheetInstance, split, formatOptions } = params;
   const strategyCopyData = new StrategyCopyData({
     spreadsheet: sheetInstance,
     isExport: true,

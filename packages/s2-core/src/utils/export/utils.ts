@@ -109,9 +109,9 @@ export const download = (dataString: string, fileName: string) => {
     link.href = URL.createObjectURL(dataBlob);
     link.click();
     URL.revokeObjectURL(link.href);
-  } catch (e) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(e);
+    console.error(error);
   }
 };
 
@@ -128,7 +128,13 @@ export const getAllPlainData = (params: CopyAllDataParams) => {
 };
 
 /**
- * @name 异步获取文本数据
+ * 异步获取文本数据
+ * @example
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
  */
 export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
   const result = await processAllSelectedAsync(params);

@@ -41,13 +41,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected leafColNodes: Node[] = [];
 
-  /**
-   * @param {{
-   * spreadsheet: SpreadSheet,
-   * selectedCells?: CellMeta[],
-   * formatOptions?: FormatOptions,
-   * }} params
-   */
   constructor(params: SheetCopyConstructorParams) {
     super(params);
     this.leafRowNodes = this.getLeafRowNodes();
