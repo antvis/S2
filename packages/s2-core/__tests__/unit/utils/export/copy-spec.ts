@@ -7,7 +7,9 @@ import {
   waitForRender,
 } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import type { S2DataConfig } from '../../../../src/common';
+import type { S2CellType, S2DataConfig } from '../../../../src/common';
+import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
 import { TableSeriesNumberCell } from '@/cell';
 import { NewLine, NewTab, S2Event } from '@/common/constant';
 import {
@@ -36,6 +38,29 @@ const getCopyPlainContent = (sheet: SpreadSheet): string => {
   const data = getSelectedData(sheet);
 
   return data[0].content;
+};
+
+const customRowDataCfg: S2DataConfig = {
+  data: CustomGridData,
+  meta: [
+    {
+      field: 'type',
+      name: '类型',
+    },
+    {
+      field: 'sub_type',
+      name: '子类型',
+    },
+    {
+      field: 'a-1',
+      name: '层级1',
+    },
+    {
+      field: 'a-2',
+      name: '层级2',
+    },
+  ],
+  fields: customRowGridSimpleFields,
 };
 
 describe('List Table Core Data Process', () => {
@@ -1329,6 +1354,24 @@ describe('Tree Table Core Data Process', () => {
 
     expect(getSelectedData(s2)).toMatchSnapshot();
   });
+
+  it('should copy all data in tree mode for custom row cell', async () => {
+    s2.setDataCfg(customRowDataCfg);
+    s2.setOptions({
+      interaction: {
+        copy: {
+          enable: true,
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+    });
+    await s2.render();
+
+    setSelectedVisibleCell();
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
 });
 
 describe('Pivot Table getBrushHeaderCopyable', () => {
@@ -1351,6 +1394,16 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     },
   });
 
+  const selectCells = (cells: S2CellType[], instance: SpreadSheet = s2) => {
+    instance.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(cells);
+      },
+    });
+  };
+
   beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), dataCfg, options);
     await s2.render();
@@ -1359,13 +1412,18 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   test('should copy all row data in grid mode', () => {
     const cells = s2.facet.getRowCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells);
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  test('should copy all row data in tree mode', async () => {
+    s2.setOptions({ hierarchyType: 'tree' });
+    await s2.render(false);
+
+    const cells = s2.facet.getRowCells();
+
+    selectCells(cells);
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
@@ -1386,18 +1444,12 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells = s2.facet.getRowCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells);
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 
-  test('should copy all original row data in grid mode if contains text ellipses', () => {
+  test('should copy all original row data in grid mode if contains text ellipses', async () => {
     s2.setOptions({
       style: {
         rowCell: {
@@ -1406,16 +1458,29 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         },
       },
     });
-
+    await s2.render(false);
     const cells = s2.facet.getRowCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(s2.facet.getRowCells());
+    selectCells(cells);
+
+    expect(getSelectedData(s2)).toMatchSnapshot();
+  });
+
+  test('should copy all original row data in tree mode if contains text ellipses', async () => {
+    s2.setOptions({
+      hierarchyType: 'tree',
+      style: {
+        rowCell: {
+          // 展示省略号
+          width: 10,
+        },
       },
     });
+
+    await s2.render(false);
+    const cells = s2.facet.getRowCells();
+
+    selectCells(cells);
 
     expect(getSelectedData(s2)).toMatchSnapshot();
   });
@@ -1423,13 +1488,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   test('should copy all col data in grid mode', () => {
     const cells = s2.facet.getColCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells);
 
     // 列头高度
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
@@ -1448,13 +1507,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells = s2.facet.getColCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells);
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
@@ -1473,13 +1526,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells = s2.facet.getColCells();
 
-    s2.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells);
 
     expect(getSelectedData(s2)).toMatchSnapshot();
   });
@@ -1601,13 +1648,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells = sheet.facet.getRowCells();
 
-    sheet.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(sheet.facet.getRowCells());
-      },
-    });
+    selectCells(cells, sheet);
 
     expect(getCopyPlainContent(sheet)).toMatchSnapshot();
   });
@@ -1630,16 +1671,31 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells = sheet.facet.getColCells();
 
-    sheet.interaction.changeState({
-      cells: map(cells, getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(cells);
-      },
-    });
+    selectCells(cells, sheet);
 
     const copyableList = getSelectedData(sheet);
 
     expect(copyableList).toMatchSnapshot();
+  });
+
+  it('should copy all row data in tree mode for custom row cell', async () => {
+    s2.setDataCfg(customRowDataCfg);
+    s2.setOptions({
+      hierarchyType: 'tree',
+      interaction: {
+        copy: {
+          enable: true,
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+    });
+    await s2.render();
+
+    const cells = s2.facet.getRowCells();
+
+    selectCells(cells);
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
   });
 });

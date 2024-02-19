@@ -33,11 +33,15 @@ exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed 1`] = `
 Array [
   Object {
     "iconName": "Plus",
-    "id": "root[&]自定义节点A",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
   },
   Object {
     "iconName": "Plus",
-    "id": "root[&]指标E",
+    "id": "root[&]measure-e",
+    "isCollapsed": true,
+    "value": "指标E",
   },
 ]
 `;
@@ -46,19 +50,27 @@ exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed field 1
 Array [
   Object {
     "iconName": "Minus",
-    "id": "root[&]自定义节点 a-1",
+    "id": "root[&]a-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1",
   },
   Object {
     "iconName": "Plus",
-    "id": "root[&]自定义节点 a-1[&]自定义节点 a-1-1",
+    "id": "root[&]a-1[&]a-1-1",
+    "isCollapsed": true,
+    "value": "自定义节点 a-1-1",
   },
   Object {
     "iconName": undefined,
-    "id": "root[&]自定义节点 a-1[&]自定义节点 a-1-2",
+    "id": "root[&]a-1[&]a-1-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-2",
   },
   Object {
     "iconName": undefined,
-    "id": "root[&]自定义节点 a-2",
+    "id": "root[&]a-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-2",
   },
 ]
 `;
@@ -66,12 +78,40 @@ Array [
 exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed fields id 1`] = `
 Array [
   Object {
-    "iconName": "Plus",
-    "id": "root[&]自定义节点 a-1",
+    "iconName": "Minus",
+    "id": "root[&]a-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]a-1[&]a-1-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-1",
   },
   Object {
     "iconName": undefined,
-    "id": "root[&]自定义节点 a-2",
+    "id": "root[&]a-1[&]a-1-1[&]measure-1",
+    "isCollapsed": false,
+    "value": "指标1",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-1[&]measure-2",
+    "isCollapsed": false,
+    "value": "指标2",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-2",
   },
 ]
 `;
@@ -80,11 +120,44 @@ exports[`SpreadSheet Custom Tree Tests should collapse node by user collapseFiel
 Array [
   Object {
     "iconName": "Plus",
-    "id": "root[&]自定义节点A",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
   },
   Object {
     "iconName": "Plus",
-    "id": "root[&]指标E",
+    "id": "root[&]measure-e",
+    "isCollapsed": true,
+    "value": "指标E",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should only collapse first node by node id 1`] = `
+Array [
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]measure-e",
+    "isCollapsed": false,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]measure-e[&]custom-node-3",
+    "isCollapsed": false,
+    "value": "自定义节点C",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]measure-e[&]custom-node-4",
+    "isCollapsed": true,
+    "value": "自定义节点D",
   },
 ]
 `;

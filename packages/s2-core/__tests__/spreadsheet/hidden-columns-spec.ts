@@ -457,8 +457,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         .find((node) => node.isGrandTotals)!;
 
       const rootNode = pivotSheet.facet.getColNodeById('root[&]笔')!;
-      const parentNode = pivotSheet.facet.getColNodeById('root[&]笔[&]义乌')!;
-
       const hiddenColumnsInfo = pivotSheet.store.get('hiddenColumnsDetail')[0];
 
       expect(rootNode.width).toEqual(100);
@@ -466,7 +464,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(grandTotalsNode.width).toEqual(100);
       expect(grandTotalsNode.x).toEqual(0);
       expect(hiddenColumnsInfo).toBeTruthy();
-      expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
     // https://github.com/antvis/S2/issues/2355

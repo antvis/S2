@@ -1,4 +1,7 @@
+import type { S2DataConfig } from '../../../../src';
 import { asyncGetAllPlainData } from '../../../../src/utils';
+import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -473,5 +476,47 @@ describe('PivotSheet Export Test', () => {
     const headers = rows[2].split('\t');
 
     expect(headers).toMatchSnapshot();
+  });
+
+  it('should export correct data in tree mode for custom row cell', async () => {
+    const customRowDataCfg: S2DataConfig = {
+      data: CustomGridData,
+      meta: [
+        {
+          field: 'type',
+          name: '类型',
+        },
+        {
+          field: 'sub_type',
+          name: '子类型',
+        },
+        {
+          field: 'a-1',
+          name: '层级1',
+        },
+        {
+          field: 'a-2',
+          name: '层级2',
+        },
+      ],
+      fields: customRowGridSimpleFields,
+    };
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      customRowDataCfg,
+      assembleOptions({
+        hierarchyType: 'tree',
+      }),
+    );
+
+    await s2.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+    });
+    const rows = data.split('\n');
+
+    expect(rows).toMatchSnapshot();
   });
 });

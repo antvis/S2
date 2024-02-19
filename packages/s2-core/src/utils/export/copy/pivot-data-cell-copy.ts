@@ -1,4 +1,4 @@
-import { find, isEmpty, isPlainObject, map, slice, zip } from 'lodash';
+import { isEmpty, isPlainObject, map, slice, zip } from 'lodash';
 import {
   AsyncRenderThreshold,
   EXTRA_FIELD,
@@ -8,14 +8,15 @@ import {
   type MiniChartData,
   type MultiData,
 } from '../../../common';
-import type { Node } from '../../../facet/layout/node';
-import type { SpreadSheet } from '../../../sheet-type';
 import type {
   CopyAllDataParams,
   CopyableList,
   MeasureQuery,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
+import type { CellData } from '../../../data-set';
+import type { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type';
 import {
   convertString,
   getColNodeFieldFromNode,
@@ -24,7 +25,6 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import type { CellData } from '../../../data-set';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 import { BaseDataCellCopy } from './base-data-cell-copy';
 import {
@@ -236,7 +236,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
   };
 
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
-    const { fields, meta } = this.spreadsheet.dataCfg;
+    const { fields } = this.spreadsheet.dataCfg;
     const { columns = [], rows = [] } = fields;
     // 为了对齐数值
     const customColumns = [...columns, ''];
@@ -248,16 +248,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     /*
      * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
      */
-    return map(customColumns, (col, colIndex) =>
-      map(customRows, (row, rowIndex) => {
+    return map(customColumns, (colField, colIndex) =>
+      map(customRows, (rowField, rowIndex) => {
         // 角头的最后一行，为行头
         if (colIndex === customColumns.length - 1) {
-          return find(meta, ['field', row])?.name ?? row;
+          return this.spreadsheet.dataSet.getFieldName(rowField);
         }
 
         // 角头的最后一列，为列头
         if (rowIndex === maxRowLen - 1) {
-          return find(meta, ['field', col])?.name ?? col;
+          return this.spreadsheet.dataSet.getFieldName(colField);
         }
 
         return '';
@@ -348,9 +348,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   getAsyncAllPivotCopyData = async (): Promise<CopyableList> => {
     const rowMatrix = this.getRowMatrix();
-
     const colMatrix = this.getColMatrix();
-
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
     let dataMatrix: string[][] = [];
@@ -374,11 +372,8 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   getPivotAllCopyData = (): CopyableList => {
     const rowMatrix = this.getRowMatrix();
-
     const colMatrix = this.getColMatrix();
-
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
-
     const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
 
     const resultMatrix = this.matrixTransformer(
