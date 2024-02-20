@@ -1,4 +1,12 @@
-import { isEmpty, isPlainObject, map, slice, zip } from 'lodash';
+import {
+  groupBy,
+  isEmpty,
+  isPlainObject,
+  map,
+  slice,
+  sortBy,
+  zip,
+} from 'lodash';
 import {
   AsyncRenderThreshold,
   EXTRA_FIELD,
@@ -7,6 +15,7 @@ import {
   type DataItem,
   type MiniChartData,
   type MultiData,
+  CornerNodeType,
 } from '../../../common';
 import type {
   CopyAllDataParams,
@@ -235,7 +244,42 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     return formatter(value ?? '');
   };
 
+  protected getCustomRowCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+    const maxRowLen = getMaxRowLen(rowMatrix ?? []);
+    const cornerNodes = this.spreadsheet.facet.getCornerNodes();
+    // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
+    const sortedCornerNodes = sortBy(cornerNodes, (node) => {
+      return node.cornerType === CornerNodeType.Col ? 0 : 1;
+    });
+
+    // 树状模式
+    if (this.spreadsheet.isHierarchyTreeType()) {
+      // 角头需要根据行头的最大长度进行填充，最后一列的值为角头的值
+      return map(sortedCornerNodes, (node) => {
+        const result: string[] = new Array(maxRowLen).fill('');
+
+        result[maxRowLen - 1] = node.value;
+
+        return result;
+      });
+    }
+
+    // 平铺模式
+    return Object.values(groupBy(sortedCornerNodes, 'y')).map((nodes) => {
+      const placeholder: string[] = new Array(maxRowLen - nodes.length).fill(
+        '',
+      );
+      const result = nodes.map((node) => node.value);
+
+      return [...placeholder, ...result];
+    });
+  };
+
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+    if (this.spreadsheet.isCustomRowFields()) {
+      return this.getCustomRowCornerMatrix(rowMatrix);
+    }
+
     const { fields } = this.spreadsheet.dataCfg;
     const { columns = [], rows = [] } = fields;
     // 为了对齐数值
@@ -262,7 +306,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
         return '';
       }),
-    ) as unknown as string[][];
+    );
   };
 
   protected getColMatrix(): string[][] {

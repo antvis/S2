@@ -1,9 +1,7 @@
 import {
-  CornerNodeType,
   PivotDataCellCopy,
   assembleMatrix,
   getHeaderList,
-  getMaxRowLen,
   getNodeFormatData,
   safeJsonParse,
   type CopyAllDataParams,
@@ -21,7 +19,6 @@ import {
   isNil,
   isObject,
   map,
-  sortBy,
 } from 'lodash';
 
 /**
@@ -104,29 +101,7 @@ class StrategyCopyData extends PivotDataCellCopy {
   };
 
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
-    const { fields } = this.spreadsheet.dataCfg;
-    const { rows = [] } = fields;
-    const maxRowLen = this.spreadsheet.isHierarchyTreeType()
-      ? getMaxRowLen(rowMatrix ?? [])
-      : rows.length;
-    const cornerNodes = this.spreadsheet.facet.getCornerNodes();
-
-    // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
-    const sortedCornerNodes = sortBy(cornerNodes, (node) => {
-      const { cornerType } = node;
-
-      return cornerType === CornerNodeType.Col ? 0 : 1;
-    });
-
-    // 角头需要根据行头的最大长度进行填充，最后一列的值为角头的值
-    return map(sortedCornerNodes, (node) => {
-      const { value } = node;
-      const result: string[] = new Array(maxRowLen).fill('');
-
-      result[maxRowLen - 1] = value;
-
-      return result;
-    });
+    return this.getCustomRowCornerMatrix(rowMatrix);
   };
 
   protected getDataMatrixByHeaderNode = () => {
