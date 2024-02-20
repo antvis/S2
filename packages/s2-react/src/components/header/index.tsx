@@ -5,8 +5,8 @@ import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { Export, type ExportBaseProps } from '../export';
 import { AdvancedSort, type AdvancedSortBaseProps } from '../advanced-sort';
 import { type SwitcherProps, SwitcherHeader } from '../switcher/header';
-import './index.less';
 import type { SheetComponentOptions } from '../sheets/interface';
+import './index.less';
 
 export interface HeaderBaseProps {
   style?: React.CSSProperties;

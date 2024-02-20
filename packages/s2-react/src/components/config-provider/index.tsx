@@ -1,5 +1,5 @@
 import { getLang, type ThemeName } from '@antv/s2';
-import { ConfigProvider as AntdConfigProvider, theme } from 'antd';
+import { ConfigProvider as AntdConfigProvider, App, theme } from 'antd';
 import enUS from 'antd/es/locale/en_US';
 import zhCN from 'antd/es/locale/zh_CN';
 import React from 'react';
@@ -21,7 +21,7 @@ export const ConfigProvider: React.FC<ConfigProviderProps> = (props) => {
         algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      {children}
+      <App>{children}</App>
     </AntdConfigProvider>
   );
 };
