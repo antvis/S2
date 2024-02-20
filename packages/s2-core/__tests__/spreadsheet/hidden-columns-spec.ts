@@ -166,9 +166,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should hide columns for multiple columns', async () => {
-      const hiddenColumns = [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-      ];
+      const hiddenColumns = ['root[&]a-1[&]a-1-1[&]province'];
 
       tableSheet.setDataCfg({
         ...mockTableDataConfig,
@@ -528,9 +526,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should hide columns for multiple columns', async () => {
-      const hiddenColumns = [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-      ];
+      const hiddenColumns = ['root[&]a-1[&]a-1-1[&]measure-1'];
 
       pivotSheet.setDataCfg({
         ...mockPivotDataConfig,

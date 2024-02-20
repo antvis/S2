@@ -144,9 +144,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
       // 高亮子节点
       expectHighlightActiveNodes(s2, [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-2',
+        'root[&]a-1[&]a-1-1[&]measure-1',
+        'root[&]a-1[&]a-1-1[&]measure-2',
+        'root[&]a-1[&]a-1-2',
       ]);
 
       // 取消选中 a - 1
@@ -319,9 +319,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
       // 高亮子节点
       expectHighlightActiveNodes(s2, [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-2',
+        'root[&]a-1[&]a-1-1[&]measure-1',
+        'root[&]a-1[&]a-1-1[&]measure-2',
+        'root[&]a-1[&]a-1-2',
       ]);
 
       // 取消选中 a - 1
@@ -374,9 +374,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should hide columns', async () => {
-      const hiddenColumns = [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
-      ];
+      const hiddenColumns = ['root[&]a-1[&]a-1-1[&]measure-2'];
 
       await waitForRender(s2, () => {
         s2.interaction.hideColumns(hiddenColumns);

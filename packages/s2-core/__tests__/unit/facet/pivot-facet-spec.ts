@@ -91,6 +91,7 @@ jest.mock('@/sheet-type', () => {
             [FrozenGroupType.FROZEN_TRAILING_COL]: {},
           },
           cornerBBox: {},
+          getHeaderNodes: jest.fn().mockReturnValue([]),
         },
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -152,6 +153,8 @@ describe('Pivot Mode Facet Test', () => {
     dataCell: (viewMeta) => new DataCell(viewMeta, s2),
   });
   const facet = new PivotFacet(s2);
+
+  s2.facet = facet;
 
   beforeEach(async () => {
     await s2.container.ready;

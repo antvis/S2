@@ -59,6 +59,7 @@ jest.mock('@/sheet-type', () => {
           getColNodes: jest.fn().mockReturnValue([]),
           getHiddenColumnsInfo: jest.fn(),
           getColNodeHeight: jest.fn(),
+          getHeaderNodes: jest.fn().mockReturnValue([]),
         },
         dataSet: {
           isEmpty: jest.fn(),
