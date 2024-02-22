@@ -51,6 +51,7 @@ import {
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
+  ScrollDirection,
   ScrollbarPositionType,
 } from '../common/constant';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
@@ -201,6 +202,8 @@ export abstract class BaseFacet {
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
+
+  protected scrollDirection: ScrollDirection;
 
   get scrollBarTheme() {
     return this.spreadsheet.theme.scrollBar;
@@ -418,12 +421,44 @@ export abstract class BaseFacet {
     this.hScrollBar?.setAttribute('visibility', 'visible');
   };
 
+  onContainerWheelForMobileCompatibility = () => {
+    const canvas = this.spreadsheet.getCanvasElement();
+    let startY: number;
+    let endY: number;
+
+    canvas.addEventListener('touchstart', (event) => {
+      startY = event.touches[0].clientY;
+    });
+
+    canvas.addEventListener('touchend', (event) => {
+      endY = event.changedTouches[0].clientY;
+      if (endY < startY) {
+        this.scrollDirection = ScrollDirection.SCROLL_UP;
+      } else if (endY > startY) {
+        this.scrollDirection = ScrollDirection.SCROLL_DOWN;
+      }
+    });
+  };
+
   onContainerWheel = () => {
     if (isMobile()) {
       this.onContainerWheelForMobile();
     } else {
       this.onContainerWheelForPc();
     }
+  };
+
+  // g-gesture@1.0.1 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, 修正一下.
+  getMobileWheelDeltaY = (deltaY: number) => {
+    if (this.scrollDirection === ScrollDirection.SCROLL_UP) {
+      return Math.max(0, deltaY);
+    }
+
+    if (this.scrollDirection === ScrollDirection.SCROLL_DOWN) {
+      return Math.min(0, deltaY);
+    }
+
+    return deltaY;
   };
 
   onContainerWheelForPc = () => {
@@ -437,7 +472,8 @@ export abstract class BaseFacet {
     this.mobileWheel.on('wheel', (ev: FederatedWheelEvent) => {
       this.spreadsheet.hideTooltip();
       const originEvent = ev.originalEvent;
-      const { deltaX, deltaY, x, y } = ev;
+      const { deltaX, deltaY: defaultDeltaY, x, y } = ev;
+      const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
 
       this.onWheel({
         ...originEvent,
@@ -447,6 +483,8 @@ export abstract class BaseFacet {
         offsetY: y,
       } as unknown as WheelEvent);
     });
+
+    this.onContainerWheelForMobileCompatibility();
   };
 
   bindEvents = () => {
@@ -1163,6 +1201,7 @@ export abstract class BaseFacet {
     const { interaction } = this.spreadsheet.options;
 
     if (interaction?.overscrollBehavior !== 'auto') {
+      this.cancelScrollFrame();
       this.stopScrollChaining(event);
     }
   };
