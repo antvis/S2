@@ -1,4 +1,4 @@
-import type { IElement, IGroup, Event as GraphEvent } from '@antv/g-canvas';
+import type { Event as GraphEvent, IElement, IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { Wheel, type GestureEvent } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -24,6 +24,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   OriginEventType,
   S2Event,
+  ScrollDirection,
   ScrollbarPositionType,
 } from '../common/constant';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
@@ -74,7 +75,6 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import type { BaseHeader, BaseHeaderConfig } from './header/base';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -133,6 +133,8 @@ export abstract class BaseFacet {
     layoutResult?: LayoutResult,
   ): ViewCellHeights;
 
+  protected scrollDirection: ScrollDirection;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
   get scrollBarTheme() {
@@ -183,9 +185,41 @@ export abstract class BaseFacet {
     this.hScrollBar?.show();
   };
 
+  onContainerWheelForMobileCompatibility = () => {
+    const canvas = this.spreadsheet.getCanvasElement();
+    let startY: number;
+    let endY: number;
+
+    canvas.addEventListener('touchstart', (event) => {
+      startY = event.touches[0].clientY;
+    });
+
+    canvas.addEventListener('touchend', (event) => {
+      endY = event.changedTouches[0].clientY;
+      if (endY < startY) {
+        this.scrollDirection = ScrollDirection.SCROLL_UP;
+      } else if (endY > startY) {
+        this.scrollDirection = ScrollDirection.SCROLL_DOWN;
+      }
+    });
+  };
+
   onContainerWheel = () => {
     this.onContainerWheelForPc();
     this.onContainerWheelForMobile();
+  };
+
+  // g-gesture@1.0.1 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, 修正一下.
+  getMobileWheelDeltaY = (deltaY: number) => {
+    if (this.scrollDirection === ScrollDirection.SCROLL_UP) {
+      return Math.max(0, deltaY);
+    }
+
+    if (this.scrollDirection === ScrollDirection.SCROLL_DOWN) {
+      return Math.min(0, deltaY);
+    }
+
+    return deltaY;
   };
 
   onContainerWheelForPc = () => {
@@ -194,15 +228,14 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForMobile = () => {
-    // mock wheel event fo mobile
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
     this.mobileWheel.on('wheel', (ev: GestureEvent) => {
       this.spreadsheet.hideTooltip();
       const originEvent = ev.event;
-      const { deltaX, deltaY, x, y } = ev;
-      // The coordinates of mobile and pc are three times different
-      // TODO: 手指快速往上滚动时, deltaY 有时会为负数, 导致向下滚动时然后回弹, 看起来就像表格在抖动, 需要判断滚动方向, next 版本未复现
+      const { deltaX, deltaY: defaultDeltaY, x, y } = ev;
+      const deltaY = this.getMobileWheelDeltaY(defaultDeltaY);
+
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -211,6 +244,8 @@ export abstract class BaseFacet {
         offsetY: y,
       } as unknown as WheelEvent);
     });
+
+    this.onContainerWheelForMobileCompatibility();
   };
 
   bindEvents = () => {
@@ -930,6 +965,7 @@ export abstract class BaseFacet {
     const { interaction } = this.spreadsheet.options;
 
     if (interaction.overscrollBehavior !== 'auto') {
+      this.cancelScrollFrame();
       this.stopScrollChaining(event);
     }
   };
