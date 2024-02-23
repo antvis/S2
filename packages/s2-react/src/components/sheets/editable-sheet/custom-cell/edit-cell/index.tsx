@@ -3,14 +3,14 @@ import {
   S2Event,
   SpreadSheet,
   customMerge,
+  type DataItem,
   type RawData,
   type S2CellType,
-  type TableDataCell,
   type ViewMeta,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, pick } from 'lodash';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
 import { useS2Event } from '../../../../../hooks';
 import {
@@ -23,12 +23,12 @@ export interface CustomProps {
   style: React.CSSProperties;
   onChange: (value: string) => void;
   onSave: () => void;
-  value: string;
+  value: DataItem;
   spreadsheet: SpreadSheet;
-  cell: S2CellType;
+  cell: S2CellType | null;
 }
 
-type DateCellEdit = (meta: ViewMeta, cell: TableDataCell) => void;
+type DateCellEdit = (meta: ViewMeta, cell: S2CellType) => void;
 
 type EditCellProps = {
   /**
@@ -42,19 +42,18 @@ type EditCellProps = {
 };
 
 function EditCellComponent(
-  props: InvokeComponentProps<{ event: CanvasEvent } & EditCellProps>,
+  props: InvokeComponentProps<{ cell: S2CellType } & EditCellProps>,
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
   const {
-    event,
+    cell,
     onChange,
     onDataCellEditStart,
     onDataCellEditEnd,
     CustomComponent,
   } = params;
 
-  const cell = s2.getCell<TableDataCell>(event.target);
   const { left, top, width, height } = React.useMemo<Partial<DOMRect>>(() => {
     const rect = s2.getCanvasElement()?.getBoundingClientRect();
 
@@ -71,7 +70,7 @@ function EditCellComponent(
     y: cellTop,
     width: cellWidth,
     height: cellHeight,
-  } = useMemo(() => {
+  } = React.useMemo(() => {
     const scroll = s2.facet.getScrollOffset();
     const cellMeta = pick(cell?.getMeta(), ['x', 'y', 'width', 'height']);
 
@@ -147,7 +146,7 @@ function EditCellComponent(
   };
 
   React.useEffect(() => {
-    onDataCellEditStart?.(cell!.getMeta(), cell!);
+    onDataCellEditStart?.(cell!.getMeta() as ViewMeta, cell!);
     setTimeout(() => {
       // 防止触发表格全选
       containerRef.current?.click();

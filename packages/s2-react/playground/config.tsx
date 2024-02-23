@@ -58,7 +58,10 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta,
+  meta: [
+    { field: 'number', name: '数值', formatter: (v) => `${v}-@` },
+    ...meta,
+  ],
   fields: {
     columns: tableSheetSingleColumns,
   },

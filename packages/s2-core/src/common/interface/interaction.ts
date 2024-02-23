@@ -6,6 +6,7 @@ import type {
   MergedCell,
   RowCell,
   TableCornerCell,
+  TableDataCell,
   TableSeriesNumberCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
@@ -33,6 +34,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | SeriesNumberCell
   | MergedCell
+  | TableDataCell
   | TableCornerCell
   | TableSeriesNumberCell
   | BaseCell<T>;
