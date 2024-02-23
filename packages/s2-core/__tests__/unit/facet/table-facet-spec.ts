@@ -63,6 +63,7 @@ jest.mock('@/sheet-type', () => {
         },
         dataSet: {
           isEmpty: jest.fn(),
+          displayFormattedValueMap: new Map(),
         },
       };
     }),

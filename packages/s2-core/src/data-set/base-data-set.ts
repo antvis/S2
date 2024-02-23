@@ -53,6 +53,9 @@ export abstract class BaseDataSet {
   // 透视表入口对象实例
   public spreadsheet: SpreadSheet;
 
+  // 单元格所对应格式化后的值（用于编辑表）
+  public displayFormattedValueMap = new Map<string, string>();
+
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }

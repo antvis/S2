@@ -33,7 +33,7 @@ export const tableSheetMultipleColumns: Columns = [
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta,
+  meta: [{ field: 'number', formatter: (v) => `${v}-@` }, ...meta],
   fields: {
     columns: tableSheetSingleColumns,
   },
@@ -77,11 +77,11 @@ export const pivotSheetDataCfgForCompactMode = customMerge(pivotSheetDataCfg, {
 });
 
 export const s2Options: SheetComponentOptions = {
-  debug: false,
+  debug: true,
   width: 600,
   height: 400,
   frozenFirstRow: false,
-  showSeriesNumber: true,
+  showSeriesNumber: false,
   interaction: {
     enableCopy: true,
     copyWithHeader: true,
@@ -95,6 +95,7 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   tooltip: {
+    showTooltip: true,
     operation: {
       trend: true,
     },

@@ -1299,6 +1299,7 @@ function MainLayout() {
             ref={s2Ref}
             themeCfg={themeCfg}
             onMounted={onSheetMounted}
+            onDataCellEditStart={logHandler('onDataCellEditStart')}
             onDataCellEditEnd={logHandler('onDataCellEditEnd')}
           />
         </TabPane>
