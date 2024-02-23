@@ -13,7 +13,6 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
-import { checkIsLinkField } from '../utils/interaction/link-field';
 
 export class TableDataCell extends DataCell {
   protected getLinkFieldStyle() {

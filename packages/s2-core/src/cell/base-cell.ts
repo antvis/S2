@@ -53,6 +53,7 @@ import type { GuiIcon } from '../common/icons/gui-icon';
 import { checkIsLinkField } from '../utils/interaction/link-field';
 import type { Node } from '../facet/layout/node';
 import type { ViewMeta } from '../common/interface/basic';
+import { customMerge } from '../utils/merge';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -113,7 +114,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public setMeta(viewMeta: T) {
-    this.meta = viewMeta;
+    this.meta = customMerge(this.meta, viewMeta);
   }
 
   public getIconStyle() {

@@ -44,8 +44,12 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       frozenTrailingColCount: 1, // 列尾冻结数量
     };
 
-    const onDataCellEditEnd = (meta) => {
-      console.log('onDataCellEditEnd', meta);
+    const onDataCellEditStart = (meta, cell) => {
+      console.log('onDataCellEditStart:', meta, cell);
+    };
+
+    const onDataCellEditEnd = (meta, cell) => {
+      console.log('onDataCellEditEnd:', meta, cell);
     };
 
     ReactDOM.render(
@@ -53,6 +57,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         dataCfg={s2DataConfig}
         options={s2Options}
         sheetType="editable"
+        onDataCellEditStart={onDataCellEditStart}
         onDataCellEditEnd={onDataCellEditEnd}
       />,
       document.getElementById('container'),
