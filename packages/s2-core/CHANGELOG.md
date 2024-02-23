@@ -1,3 +1,12 @@
+# [@antv/s2-v1.54.5](https://github.com/antvis/S2/compare/@antv/s2-v1.54.4...@antv/s2-v1.54.5) (2024-02-23)
+
+
+### Bug Fixes
+
+* **interaction:** 修复表格滚动后, 行列头部分单元格选中高亮效果丢失 close [#2503](https://github.com/antvis/S2/issues/2503) ([#2545](https://github.com/antvis/S2/issues/2545)) ([31cc240](https://github.com/antvis/S2/commit/31cc240a3d4bcf4d83e97bda75ecdca9276cc6d2))
+* **scroll:** 修复移动端滚动至边缘时抖动 ([#2556](https://github.com/antvis/S2/issues/2556)) ([cfab9f4](https://github.com/antvis/S2/commit/cfab9f40b78bcef4c3a4ecb74f9b9f7102a0e422))
+* 修复编辑表的输入框未回填格式化后的数据 close [#2528](https://github.com/antvis/S2/issues/2528) ([#2549](https://github.com/antvis/S2/issues/2549)) ([8d9c5b2](https://github.com/antvis/S2/commit/8d9c5b29ef5c05ada8fcbc9ea35b297e3e565ce3))
+
 # [@antv/s2-v1.54.4](https://github.com/antvis/S2/compare/@antv/s2-v1.54.3...@antv/s2-v1.54.4) (2024-02-07)
 
 
