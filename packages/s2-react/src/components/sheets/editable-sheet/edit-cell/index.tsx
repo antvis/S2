@@ -2,6 +2,7 @@ import type { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   S2Event,
   SpreadSheet,
+  customMerge,
   type DataType,
   type S2CellType,
   type TableDataCell,
@@ -82,29 +83,27 @@ function EditCellComponent(
     return cellMeta;
   }, [cell, spreadsheet]);
 
-  const [inputVal, setInputVal] = React.useState(() => {
-    return cell.getFieldValue();
-  });
+  const [inputVal, setInputVal] = React.useState(() => cell.getFieldValue());
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const onSave = () => {
-    const { rowIndex, valueField, fieldValue } = cell.getMeta();
+    const { rowIndex, valueField, id } = cell.getMeta();
+    const displayData = spreadsheet.dataSet.getDisplayDataSet();
+    displayData[rowIndex][valueField] = inputVal;
+    // 编辑后的值作为格式化后的结果, formatter 不再触发, 避免二次格式化
+    spreadsheet.dataSet.displayFormattedValueMap.set(id, inputVal);
+    spreadsheet.render();
 
-    cell.setMeta({
+    const editedMeta = customMerge(cell.getMeta(), {
       fieldValue: inputVal,
-      originalFieldValue: fieldValue,
       data: {
         [valueField]: inputVal,
       },
     });
 
-    const displayData = spreadsheet.dataSet.getDisplayDataSet();
-    displayData[rowIndex][valueField] = inputVal;
-    spreadsheet.render(true);
-
-    onDataCellEditEnd?.(cell.getMeta(), cell);
+    onDataCellEditEnd?.(editedMeta, cell);
     onChange?.(displayData);
     resolver(true);
   };

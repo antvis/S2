@@ -293,12 +293,16 @@ export class DataCell extends BaseCell<ViewMeta> {
         formattedValue: EMPTY_PLACEHOLDER,
       };
     }
-    const { rowId, valueField, fieldValue, data } = this.meta;
+
+    const { rowId, valueField, fieldValue, data, id } = this.meta;
+    const displayFormattedValue =
+      this.spreadsheet.dataSet.displayFormattedValueMap.get(id);
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId);
     // TODO: 这里只用 formatter(fieldValue, this.meta) 即可, 为了保持兼容, 暂时在第三个参入传入 meta 信息
-    const formattedValue = formatter(fieldValue, data, this.meta);
+    const formattedValue =
+      displayFormattedValue ?? formatter(fieldValue, data, this.meta);
 
     return {
       value: fieldValue,
