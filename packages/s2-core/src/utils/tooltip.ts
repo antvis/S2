@@ -63,6 +63,7 @@ import type {
 import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import type { Node as S2Node } from '../facet/layout/node';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -330,7 +331,11 @@ export const getSummaryName = (
   return name && name !== 'undefined' ? name : '';
 };
 
-const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
+const getRowOrColSelectedIndexes = (
+  nodes: S2Node[],
+  leafNodes: S2Node[],
+  isRow = true,
+) => {
   const selectedIndexes = [];
   forEach(leafNodes, (leaf, index) => {
     forEach(nodes, (item) => {
@@ -352,12 +357,15 @@ export const getSelectedCellIndexes = (
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
+  // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算 https://github.com/antvis/S2/pull/1443
+  const needCalcNodes = nodes.filter((node) => node?.isLeaf);
 
   if (cellType === CellTypes.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
+    return getRowOrColSelectedIndexes(needCalcNodes, rowLeafNodes, false);
   }
+
   if (cellType === CellTypes.ROW_CELL) {
-    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
+    return getRowOrColSelectedIndexes(needCalcNodes, colLeafNodes);
   }
 
   return [];
@@ -375,7 +383,7 @@ export const getSelectedCellsData = (
    * 1. [点击列头单元格时], 选中列所对应的数值单元格的数据如果是小计/总计, 则不应该参与计算:
    *  - 1.1 [小计/总计 位于行头]: 点击的都是 (普通列头), 需要去除 (数值单元格) 对应 (行头为小计) 的单元格的数据
    *  - 1.2 [小计/总计 位于列头]: 点击的是 (普通列头/小计/总计列头), 由于行头没有, 所有数值单元格参与计算即可
-   *  - 1.3  [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
+   *  - 1.3 [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
 
    * 2. [点击行头单元格时]:
    *  - 2.1 如果本身就是小计/总计单元格, 且列头无小计/总计, 则当前行所有 (数值单元格) 参与计算
@@ -568,6 +576,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     details = getTooltipDetailList(spreadsheet, firstCellInfo, options);
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
+
   return {
     summaries,
     interpretation,

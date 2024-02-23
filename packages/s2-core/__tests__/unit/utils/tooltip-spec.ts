@@ -450,9 +450,13 @@ describe('Tooltip Utils Tests', () => {
     let s2: SpreadSheet;
 
     const getMockTooltipData = (cell: S2CellType) => {
+      const node = cell.getMeta() as Node;
+      // #getSelectedCellIndexes mock
+      node.isLeaf = true;
+
       jest.spyOn(s2.interaction, 'getState').mockImplementationOnce(() => ({
         cells: [getCellMeta(cell)],
-        nodes: [cell.getMeta() as Node],
+        nodes: [node],
       }));
 
       jest
