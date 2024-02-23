@@ -33,10 +33,10 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       return;
     }
 
-    // query只与值本身有关，不会涉及到 parent节点
+    // query 只与值本身有关，不会涉及到 parent 节点
     const valueQuery = { [EXTRA_FIELD]: field };
-    // 保持和其他场景头部生成id的格式一致
-    const nodeId = generateId(parentNode.id, title || field);
+    // 使用 field 作为 id, 保证其唯一性, 复制时再做二次转换
+    const nodeId = generateId(parentNode.id, field);
 
     const defaultCollapsed = collapsed ?? false;
     const isDefaultCollapsed =

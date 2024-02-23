@@ -166,9 +166,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should hide columns for multiple columns', async () => {
-      const hiddenColumns = [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-      ];
+      const hiddenColumns = ['root[&]a-1[&]a-1-1[&]province'];
 
       tableSheet.setDataCfg({
         ...mockTableDataConfig,
@@ -457,8 +455,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         .find((node) => node.isGrandTotals)!;
 
       const rootNode = pivotSheet.facet.getColNodeById('root[&]笔')!;
-      const parentNode = pivotSheet.facet.getColNodeById('root[&]笔[&]义乌')!;
-
       const hiddenColumnsInfo = pivotSheet.store.get('hiddenColumnsDetail')[0];
 
       expect(rootNode.width).toEqual(100);
@@ -466,7 +462,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(grandTotalsNode.width).toEqual(100);
       expect(grandTotalsNode.x).toEqual(0);
       expect(hiddenColumnsInfo).toBeTruthy();
-      expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
     });
 
     // https://github.com/antvis/S2/issues/2355
@@ -531,9 +526,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should hide columns for multiple columns', async () => {
-      const hiddenColumns = [
-        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标1',
-      ];
+      const hiddenColumns = ['root[&]a-1[&]a-1-1[&]measure-1'];
 
       pivotSheet.setDataCfg({
         ...mockPivotDataConfig,

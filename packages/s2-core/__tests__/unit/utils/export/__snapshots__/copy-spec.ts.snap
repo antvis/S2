@@ -180,6 +180,26 @@ Array [
 ]
 `;
 
+exports[`Pivot Table getBrushHeaderCopyable should copy all original row data in tree mode if contains text ellipses 1`] = `
+Array [
+  Object {
+    "content": "浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>浙江省</td><td>杭州市</td></tr><tr><td>浙江省</td><td>绍兴市</td></tr><tr><td>浙江省</td><td>宁波市</td></tr><tr><td>浙江省</td><td>舟山市</td></tr><tr><td>四川省</td><td>成都市</td></tr><tr><td>四川省</td><td>绵阳市</td></tr><tr><td>四川省</td><td>南充市</td></tr><tr><td>四川省</td><td>乐山市</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
 exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mode 1`] = `
 "浙江省	杭州市
 浙江省	绍兴市
@@ -200,6 +220,22 @@ exports[`Pivot Table getBrushHeaderCopyable should copy all row data in grid mod
 四川省	绵阳市	数值
 四川省	南充市	数值
 四川省	乐山市	数值"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all row data in tree mode 1`] = `
+"浙江省	杭州市
+浙江省	绍兴市
+浙江省	宁波市
+浙江省	舟山市
+四川省	成都市
+四川省	绵阳市
+四川省	南充市
+四川省	乐山市"
+`;
+
+exports[`Pivot Table getBrushHeaderCopyable should copy all row data in tree mode for custom row cell 1`] = `
+"层级1	自定义节点 a-1-1	指标1
+层级1	自定义节点 a-1-1	指标2"
 `;
 
 exports[`Pivot Table getBrushHeaderCopyable should copy col total data in grid mode 1`] = `
@@ -267,6 +303,15 @@ exports[`Tree Table Core Data Process should copy all data in tree mode 1`] = `
 1943	2333	4276	2457	3551	6008	10284
 2330	2445	4775	2458	352	2810	7585
 26193	23516	49709	12321	16838	29159	78868"
+`;
+
+exports[`Tree Table Core Data Process should copy all data in tree mode for custom row cell 1`] = `
+"			
+			
+13	11		
+2	8		
+			
+			"
 `;
 
 exports[`Tree Table Core Data Process should copy all data in tree mode with format 1`] = `

@@ -7,11 +7,16 @@ export const PlaygroundContext = React.createContext<
   Partial<SheetComponentsProps> & {
     ref?: React.MutableRefObject<SpreadSheet | null>;
     setThemeCfg: (theme: ThemeCfg) => void;
+    logHandler: (
+      name: string,
+      callback?: (...args: any[]) => void,
+    ) => (...args: any[]) => void;
   }
 >({
   onMounted: noop,
   themeCfg: { name: 'default' },
   setThemeCfg: () => {},
+  logHandler: () => () => {},
 });
 
 export function usePlaygroundContext() {

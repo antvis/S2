@@ -3,56 +3,39 @@
 exports[`Header Component Tests should render component 1`] = `
 <DocumentFragment>
   <div
-    class="antv-s2-header test"
+    class="css-dev-only-do-not-override-p7e5j5 ant-app"
   >
     <div
-      class="antv-s2-header-heading"
+      class="antv-s2-header test"
     >
       <div
-        class="antv-s2-header-heading-left"
+        class="antv-s2-header-heading"
       >
         <div
-          class="antv-s2-header-heading-title"
+          class="antv-s2-header-heading-left"
         >
-          title
+          <div
+            class="antv-s2-header-heading-title"
+          >
+            title
+          </div>
         </div>
-      </div>
-      <div
-        class="antv-s2-header-heading-extra"
-      >
         <div
-          class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
+          class="antv-s2-header-heading-extra"
         >
           <div
-            class="ant-space-item"
-          >
-            extra
-          </div>
-          <div
-            class="ant-space-item"
-          >
-            <button
-              class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
-              type="button"
-            >
-              <span
-                class="ant-btn-icon"
-              >
-                <div />
-              </span>
-              <span>
-                行列切换
-              </span>
-            </button>
-          </div>
-          <div
-            class="ant-space-item"
+            class="ant-space css-dev-only-do-not-override-p7e5j5 ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small"
           >
             <div
-              class="antv-s2-advanced-sort"
+              class="ant-space-item"
+            >
+              extra
+            </div>
+            <div
+              class="ant-space-item"
             >
               <button
-                class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
                 type="button"
               >
                 <span
@@ -61,27 +44,48 @@ exports[`Header Component Tests should render component 1`] = `
                   <div />
                 </span>
                 <span>
-                  高级排序
+                  行列切换
                 </span>
               </button>
             </div>
-          </div>
-          <div
-            class="ant-space-item"
-          >
-            <button
-              class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
-              type="button"
+            <div
+              class="ant-space-item"
             >
-              <div />
-            </button>
+              <div
+                class="antv-s2-advanced-sort"
+              >
+                <button
+                  class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                  type="button"
+                >
+                  <span
+                    class="ant-btn-icon"
+                  >
+                    <div />
+                  </span>
+                  <span>
+                    高级排序
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <button
+                class="ant-btn css-dev-only-do-not-override-p7e5j5 ant-btn-text ant-dropdown-trigger antv-s2-export"
+                type="button"
+              >
+                <div />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <div
+        class="antv-s2-header-content"
+      />
     </div>
-    <div
-      class="antv-s2-header-content"
-    />
   </div>
 </DocumentFragment>
 `;

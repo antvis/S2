@@ -9,7 +9,6 @@ import { type DataItem, NewTab } from '../../../common';
 import { CopyMIMEType } from '../../../common/interface/export';
 import { unifyConfig } from './common';
 
-// BaseDataCellCopy class
 export abstract class BaseDataCellCopy {
   protected spreadsheet: SpreadSheet;
 

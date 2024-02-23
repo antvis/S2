@@ -38,6 +38,8 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
       return {
         id: node.id,
+        value: node.value,
+        isCollapsed: node.isCollapsed,
         iconName,
       };
     });
@@ -119,7 +121,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     // 选中单元格本身
     expect(s2.interaction.getActiveCells()).toHaveLength(1);
     // 高亮子节点
-    expectHighlightActiveNodes(s2, ['root[&]自定义节点 a-1']);
+    expectHighlightActiveNodes(s2, ['root[&]a-1']);
 
     // 取消选中 a - 1
     s2.interaction.selectHeaderCell({
@@ -158,11 +160,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should render custom corner text by default title', async () => {
     s2.setDataCfg({
-      ...customRowDataCfg,
       meta: [],
     });
 
-    await s2.render();
+    await s2.render(true);
 
     const cornerCellLabels = getCornerCellLabels();
 
@@ -174,7 +175,6 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should render custom corner text by meta formatter', async () => {
     s2.setDataCfg({
-      ...customRowDataCfg,
       meta: [
         {
           field: 'a-1',
@@ -187,7 +187,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ],
     });
 
-    await s2.render();
+    await s2.render(true);
     const cornerCellLabels = getCornerCellLabels();
 
     expect(cornerCellLabels).toEqual(['文本1/文本2/数值', 'type']);
@@ -224,9 +224,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should collapse node by collapsed', async () => {
     s2.setDataCfg({
-      ...customRowDataCfg,
       fields: {
-        ...s2.dataSet.fields,
         rows: customTreeNodes.map((node) => {
           return {
             ...node,
@@ -273,13 +271,42 @@ describe('SpreadSheet Custom Tree Tests', () => {
     const collapsedField = 'custom-node-1';
 
     s2.setDataCfg({
-      ...customRowDataCfg,
       fields: {
-        ...s2.dataSet.fields,
         rows: customTreeNodes.map((node) => {
           return {
             ...node,
             collapsed: node.field !== collapsedField,
+          };
+        }),
+      },
+    });
+
+    s2.setOptions({
+      style: {
+        rowCell: {
+          collapseFields: {
+            [collapsedField]: true,
+          },
+        },
+      },
+    });
+    await s2.render(true);
+
+    expect(mapRowNodes(s2)).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2455
+  test('should only collapse first node by node id', async () => {
+    const collapsedField = 'custom-node-1';
+
+    s2.setDataCfg({
+      fields: {
+        rows: customTreeNodes.map((node) => {
+          return {
+            ...node,
+            // 让两个节点名一样
+            title: '自定义节点A',
+            collapsed: false,
           };
         }),
       },

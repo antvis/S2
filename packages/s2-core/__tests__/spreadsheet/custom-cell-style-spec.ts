@@ -38,7 +38,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     });
 
     afterEach(() => {
-      // s2.destroy();
+      s2.destroy();
     });
 
     test('should render default cell style', () => {

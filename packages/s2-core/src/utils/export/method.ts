@@ -28,7 +28,6 @@ export const convertString = (value: DataItem) => {
 /**
  * 获取 intersection cell 所有的层级
  * @param {(RowCell | ColCell)[]} interactedCells
- * @returns { Set<number>} allLevels
  */
 export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
   const allLevels = new Set<number>();

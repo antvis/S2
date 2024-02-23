@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Description Tests should get col cell descriptions 1`] = `
+Object {
+  "description": "类别说明。。",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Description Tests should get data cell description 1`] = `
+Object {
+  "description": "数量说明。。",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests Tooltip Description Tests should get row cell description 1`] = `
+Object {
+  "description": "省份说明。。",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "数量",
+      "originValue": 15420,
+      "selectedData": Array [
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "city": "杭州市",
+            "number": 7789,
+            "province": "浙江省",
+            "sub_type": "桌子",
+            "type": "家具",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "city": "杭州市",
+            "number": 5343,
+            "province": "浙江省",
+            "sub_type": "沙发",
+            "type": "家具",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "city": "杭州市",
+            "number": 945,
+            "province": "浙江省",
+            "sub_type": "笔",
+            "type": "办公用品",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "city": "杭州市",
+            "number": 1343,
+            "province": "浙江省",
+            "sub_type": "纸张",
+            "type": "办公用品",
+          },
+        },
+      ],
+      "value": 15420,
+    },
+  ],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests should get custom tree row cell summary data 1`] = `
+Object {
+  "description": "指标1描述",
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "指标1",
+      "selectedData": Array [
+        CellData {
+          "extraField": "measure-1",
+          "raw": Object {
+            "measure-1": 13,
+            "measure-2": 2,
+            "measure-3": 3,
+            "measure-4": 4,
+            "measure-5": 5,
+            "measure-6": 6,
+            "sub_type": "桌子",
+            "type": "家具",
+          },
+        },
+        CellData {
+          "extraField": "measure-1",
+          "raw": Object {
+            "measure-1": 11,
+            "measure-2": 8,
+            "measure-3": 32,
+            "measure-4": 43,
+            "measure-5": 45,
+            "measure-6": 65,
+            "sub_type": "椅子",
+            "type": "家具",
+          },
+        },
+      ],
+      "value": 24,
+    },
+  ],
+  "tips": undefined,
+}
+`;
+
+exports[`Tooltip Utils Tests Tooltip Get Data Tests should get grand totals row cell summary data 1`] = `
+Object {
+  "description": undefined,
+  "details": null,
+  "headInfo": null,
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [
+    Object {
+      "name": "数量",
+      "originValue": 78868,
+      "selectedData": Array [
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "number": 26193,
+            "sub_type": "桌子",
+            "type": "家具",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "number": 23516,
+            "sub_type": "沙发",
+            "type": "家具",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "number": 12321,
+            "sub_type": "笔",
+            "type": "办公用品",
+          },
+        },
+        CellData {
+          "extraField": "number",
+          "raw": Object {
+            "number": 16838,
+            "sub_type": "纸张",
+            "type": "办公用品",
+          },
+        },
+      ],
+      "value": 78868,
+    },
+  ],
+  "tips": undefined,
+}
+`;

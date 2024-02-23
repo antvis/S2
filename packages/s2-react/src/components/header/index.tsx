@@ -1,12 +1,12 @@
 import React from 'react';
-import { Space } from 'antd';
+import { App, Space } from 'antd';
 import cx from 'classnames';
 import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { Export, type ExportBaseProps } from '../export';
 import { AdvancedSort, type AdvancedSortBaseProps } from '../advanced-sort';
 import { type SwitcherProps, SwitcherHeader } from '../switcher/header';
-import './index.less';
 import type { SheetComponentOptions } from '../sheets/interface';
+import './index.less';
 
 export interface HeaderBaseProps {
   style?: React.CSSProperties;
@@ -59,15 +59,17 @@ export const Header: React.FC<HeaderProps> = React.memo(
     );
 
     return (
-      <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>
-        <div className={`${PRE_CLASS}-heading`}>
-          <div className={`${PRE_CLASS}-heading-left`}>
-            <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
+      <App>
+        <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>
+          <div className={`${PRE_CLASS}-heading`}>
+            <div className={`${PRE_CLASS}-heading-left`}>
+              <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
+            </div>
+            <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
           </div>
-          <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
+          <div className={`${PRE_CLASS}-content`}>{description}</div>
         </div>
-        <div className={`${PRE_CLASS}-content`}>{description}</div>
-      </div>
+      </App>
     );
   },
 );

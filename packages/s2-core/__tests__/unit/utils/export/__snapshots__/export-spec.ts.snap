@@ -1,5 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PivotSheet Export Test Custom Tree Export Test should export correct data in grid mode for custom row cell 1`] = `
+Array [
+  "		类型	家具	家具
+",
+  "层级1	自定义节点 a-1-1	指标1	桌子	椅子
+",
+  "层级1	自定义节点 a-1-1	指标1	13	11
+",
+  "层级1	自定义节点 a-1-1	指标2	2	8
+",
+  "层级1	自定义节点 a-1-2			
+",
+  "层级2				",
+]
+`;
+
+exports[`PivotSheet Export Test Custom Tree Export Test should export correct data in tree mode for custom row cell 1`] = `
+Array [
+  "		类型	家具	家具
+",
+  "		层级1/层级2/数值	桌子	椅子
+",
+  "层级1				
+",
+  "层级1	自定义节点 a-1-1			
+",
+  "层级1	自定义节点 a-1-1	指标1	13	11
+",
+  "层级1	自定义节点 a-1-1	指标2	2	8
+",
+  "层级1	自定义节点 a-1-2			
+",
+  "层级2				",
+]
+`;
+
+exports[`PivotSheet Export Test Custom Tree Export Test should export correct data in tree mode for custom row cell and custom corner text 1`] = `
+Array [
+  "		类型	家具	家具
+",
+  "		自定义	桌子	椅子
+",
+  "层级1				
+",
+  "层级1	自定义节点 a-1-1			
+",
+  "层级1	自定义节点 a-1-1	指标1	13	11
+",
+  "层级1	自定义节点 a-1-1	指标2	2	8
+",
+  "层级1	自定义节点 a-1-2			
+",
+  "层级2				",
+]
+`;
+
 exports[`PivotSheet Export Test should export correct $$extra$$ field name 1`] = `
 Array [
   "type",

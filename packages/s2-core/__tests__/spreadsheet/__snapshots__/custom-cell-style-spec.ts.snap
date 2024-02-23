@@ -411,37 +411,37 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "root[&]地区",
+    "id": "root[&]area",
     "width": 180,
   },
   Object {
     "height": 30,
-    "id": "root[&]地区[&]省份",
+    "id": "root[&]area[&]province",
     "width": 100,
   },
   Object {
     "height": 30,
-    "id": "root[&]地区[&]城市",
+    "id": "root[&]area[&]city",
     "width": 80,
   },
   Object {
     "height": 60,
-    "id": "root[&]类型",
+    "id": "root[&]type",
     "width": 119.8,
   },
   Object {
     "height": 30,
-    "id": "root[&]金额",
+    "id": "root[&]money",
     "width": 210,
   },
   Object {
     "height": 30,
-    "id": "root[&]金额[&]价格",
+    "id": "root[&]money[&]price",
     "width": 90,
   },
   Object {
     "height": 30,
-    "id": "root[&]金额[&]数量",
+    "id": "root[&]money[&]number",
     "width": 120,
   },
 ]

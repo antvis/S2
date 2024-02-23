@@ -133,8 +133,6 @@ export class Node {
 
   public isTotalRoot?: boolean;
 
-  public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
-
   public isFrozen?: boolean;
 
   public extra?: {

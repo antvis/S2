@@ -1,4 +1,7 @@
+import type { S2DataConfig, SpreadSheet } from '../../../../src';
 import { asyncGetAllPlainData } from '../../../../src/utils';
+import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -473,5 +476,74 @@ describe('PivotSheet Export Test', () => {
     const headers = rows[2].split('\t');
 
     expect(headers).toMatchSnapshot();
+  });
+
+  describe('Custom Tree Export Test', () => {
+    let s2: SpreadSheet;
+
+    const getResult = async () => {
+      const data = await asyncGetAllPlainData({
+        sheetInstance: s2,
+        split: '\t',
+      });
+
+      return data.split('\n');
+    };
+
+    beforeEach(async () => {
+      const customRowDataCfg: S2DataConfig = {
+        data: CustomGridData,
+        meta: [
+          {
+            field: 'type',
+            name: '类型',
+          },
+          {
+            field: 'sub_type',
+            name: '子类型',
+          },
+          {
+            field: 'a-1',
+            name: '层级1',
+          },
+          {
+            field: 'a-2',
+            name: '层级2',
+          },
+        ],
+        fields: customRowGridSimpleFields,
+      };
+
+      s2 = new PivotSheet(getContainer(), customRowDataCfg, assembleOptions());
+
+      await s2.render();
+    });
+
+    it('should export correct data in grid mode for custom row cell', async () => {
+      s2.setOptions({ hierarchyType: 'grid' });
+      await s2.render(false);
+
+      const rows = await getResult();
+
+      expect(rows).toMatchSnapshot();
+    });
+
+    it('should export correct data in tree mode for custom row cell', async () => {
+      s2.setOptions({ hierarchyType: 'tree' });
+      await s2.render(false);
+
+      const rows = await getResult();
+
+      expect(rows).toMatchSnapshot();
+    });
+
+    it('should export correct data in tree mode for custom row cell and custom corner text', async () => {
+      s2.setOptions({ hierarchyType: 'tree', cornerText: '自定义' });
+      await s2.render(false);
+
+      const rows = await getResult();
+
+      expect(rows).toMatchSnapshot();
+    });
   });
 });

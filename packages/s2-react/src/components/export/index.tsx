@@ -56,6 +56,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const copyData = async (isFormat: boolean) => {
     const params: CopyAllDataParams = {
       sheetInstance: sheet,
@@ -68,12 +70,12 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
     copyToClipboard(data, syncCopy)
       .then(() => {
-        message.success(successText);
+        messageApi.success(successText);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error('copy failed: ', error);
-        message.error(errorText);
+        messageApi.error(errorText);
       });
   };
 
@@ -86,55 +88,58 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
     try {
       download(data, fileName);
-      message.success(successText);
+      messageApi.success(successText);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('download failed: ', error);
-      message.error(errorText);
+      messageApi.error(errorText);
     }
   };
 
   return (
-    <Dropdown
-      menu={{
-        items: [
-          {
-            key: 'copyOriginal',
-            label: copyOriginalText,
-            onClick: () => {
-              copyData(false);
+    <>
+      {contextHolder}
+      <Dropdown
+        menu={{
+          items: [
+            {
+              key: 'copyOriginal',
+              label: copyOriginalText,
+              onClick: () => {
+                copyData(false);
+              },
             },
-          },
-          {
-            key: 'copyFormat',
-            label: copyFormatText,
-            onClick: () => {
-              copyData(true);
+            {
+              key: 'copyFormat',
+              label: copyFormatText,
+              onClick: () => {
+                copyData(true);
+              },
             },
-          },
-          {
-            key: 'downloadOriginal',
-            label: downloadOriginalText,
-            onClick: () => {
-              downloadData(false);
+            {
+              key: 'downloadOriginal',
+              label: downloadOriginalText,
+              onClick: () => {
+                downloadData(false);
+              },
             },
-          },
-          {
-            key: 'downloadFormat',
-            label: downloadFormatText,
-            onClick: () => {
-              downloadData(true);
+            {
+              key: 'downloadFormat',
+              label: downloadFormatText,
+              onClick: () => {
+                downloadData(true);
+              },
             },
-          },
-        ],
-      }}
-      trigger={['click']}
-      className={cx(PRE_CLASS, className)}
-      {...restProps}
-      {...dropdown}
-    >
-      <Button type="text">{icon || <DotIcon />}</Button>
-    </Dropdown>
+          ],
+        }}
+        trigger={['click']}
+        className={cx(PRE_CLASS, className)}
+        {...restProps}
+        {...dropdown}
+      >
+        <Button type="text">{icon || <DotIcon />}</Button>
+      </Dropdown>
+    </>
   );
 });
 

@@ -86,6 +86,7 @@ type CustomGridProps = Partial<SheetComponentsProps>;
 export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
   (props, ref) => {
     const context = usePlaygroundContext();
+    const { logHandler } = context;
     const [customType, setCustomType] = React.useState<CustomType>(
       (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
         CustomType.Row,
@@ -103,12 +104,6 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     });
     const [sheetType, setSheetType] =
       React.useState<SheetComponentsProps['sheetType']>('pivot');
-
-    const logHandler =
-      (name: string) =>
-      (...args: unknown[]) => {
-        console.log(name, ...args);
-      };
 
     const dataCfg =
       customType === CustomType.Row

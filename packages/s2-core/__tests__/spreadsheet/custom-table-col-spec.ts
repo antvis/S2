@@ -126,8 +126,8 @@ describe('TableSheet Custom Tests', () => {
     expect(s2.interaction.getActiveCells()).toHaveLength(1);
     // 高亮子节点
     expectHighlightActiveNodes(s2, [
-      'root[&]地区[&]省份',
-      'root[&]地区[&]城市',
+      'root[&]area[&]province',
+      'root[&]area[&]city',
     ]);
 
     // 取消选中 a - 1
@@ -138,7 +138,7 @@ describe('TableSheet Custom Tests', () => {
   });
 
   test('should hide columns', async () => {
-    const hiddenColumns = ['root[&]金额[&]价格'];
+    const hiddenColumns = ['root[&]money[&]price'];
 
     await waitForRender(s2, () => {
       s2.interaction.hideColumns(hiddenColumns);

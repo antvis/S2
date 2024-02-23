@@ -7,6 +7,8 @@ import {
 } from 'tests/util/helpers';
 import { omit } from 'lodash';
 import * as dataConfig from 'tests/data/mock-dataset.json';
+import { customRowGridSimpleFields } from '../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../data/data-custom-grid';
 import { CellData } from '@/data-set/cell-data';
 import type { CellMeta } from '@/common/interface/interaction';
 import {
@@ -777,6 +779,7 @@ describe('Tooltip Utils Tests', () => {
       const tooltipData = getMockTooltipData(grandTotalRowCell!);
 
       expect(tooltipData.summaries?.[0].value).toStrictEqual(78868);
+      expect(tooltipData).toMatchSnapshot();
 
       s2.destroy();
     });
@@ -807,6 +810,49 @@ describe('Tooltip Utils Tests', () => {
       },
     );
 
+    // https://github.com/antvis/S2/issues/2455
+    test('should get custom tree row cell summary data', async () => {
+      const customRowDataCfg: S2DataConfig = {
+        data: CustomGridData,
+        meta: [
+          {
+            field: 'type',
+            name: '类型',
+          },
+          {
+            field: 'sub_type',
+            name: '子类型',
+          },
+          {
+            field: 'a-1',
+            name: '层级1',
+          },
+          {
+            field: 'a-2',
+            name: '层级2',
+          },
+        ],
+        fields: customRowGridSimpleFields,
+      };
+
+      s2 = new PivotSheet(getContainer(), customRowDataCfg, {
+        width: 600,
+        height: 600,
+        hierarchyType: 'tree',
+      });
+      await s2.render();
+
+      const measureRowCell = s2.facet.getRowCells().find((cell) => {
+        const meta = cell.getMeta();
+
+        return meta.field === 'measure-1';
+      });
+
+      const tooltipData = getMockTooltipData(measureRowCell!);
+
+      expect(tooltipData).toMatchSnapshot();
+    });
+
     describe('Tooltip Description Tests', () => {
       afterEach(() => {
         s2.destroy();
@@ -821,6 +867,7 @@ describe('Tooltip Utils Tests', () => {
         const tooltipData = getMockTooltipData(rowCell);
 
         expect(tooltipData.description).toEqual('省份说明。。');
+        expect(tooltipData).toMatchSnapshot();
       });
 
       test('should get col cell descriptions', async () => {
@@ -832,6 +879,7 @@ describe('Tooltip Utils Tests', () => {
         const tooltipData = getMockTooltipData(colCell);
 
         expect(tooltipData.description).toEqual('类别说明。。');
+        expect(tooltipData).toMatchSnapshot();
       });
 
       test('should get data cell description', async () => {
@@ -843,6 +891,7 @@ describe('Tooltip Utils Tests', () => {
         const tooltipData = getMockTooltipData(dataCell);
 
         expect(tooltipData.description).toEqual('数量说明。。');
+        expect(tooltipData).toMatchSnapshot();
       });
 
       test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(

@@ -75,12 +75,13 @@ export function getBrushHeaderCopyable(
 
   // 拼接选中行列头的内容矩阵
   const isCol = interactedCells[0].cellType === CellType.COL_CELL;
-  let cellMatrix = getHeaderCellMatrix(lastLevelCells, maxLevel, allLevels);
-
+  const headerCellMatrix = getHeaderCellMatrix(
+    lastLevelCells,
+    maxLevel,
+    allLevels,
+  );
   // 如果是列头，需要转置
-  if (isCol) {
-    cellMatrix = zip(...cellMatrix) as string[][];
-  }
+  const cellMatrix = isCol ? zip(...headerCellMatrix) : headerCellMatrix;
 
   return [
     matrixPlainTextTransformer(cellMatrix),

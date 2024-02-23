@@ -434,6 +434,8 @@ describe('<StrategySheet/> Tests', () => {
       renderStrategySheet(
         {
           ...StrategyOptions,
+          width: 800,
+          height: 800,
           interaction: {
             selectedCellsSpotlight: true,
           },
@@ -445,7 +447,8 @@ describe('<StrategySheet/> Tests', () => {
     // https://github.com/antvis/S2/issues/1960
     it('should selected cell and update spotlight style', async () => {
       await waitFor(() => {
-        const dataCellId = `root[&]自定义节点A[&]指标A-root[&]2022-11[&]["数值","环比","同比"]`;
+        const dataCellId =
+          'root[&]custom-node-1[&]measure-a-root[&]2022-11[&]["数值","环比","同比"]';
 
         const selectedDataCell = s2.facet.getCellById(dataCellId)!;
 

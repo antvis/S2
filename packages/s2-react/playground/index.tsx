@@ -394,6 +394,7 @@ function MainLayout() {
           onDestroy: onSheetDestroy,
           themeCfg,
           setThemeCfg,
+          logHandler,
         }}
       >
         <div className="playground">
