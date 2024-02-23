@@ -93,7 +93,7 @@ function EditCellComponent(
     const displayData = spreadsheet.dataSet.getDisplayDataSet();
     displayData[rowIndex][valueField] = inputVal;
     // 编辑后的值作为格式化后的结果, formatter 不再触发, 避免二次格式化
-    spreadsheet.dataSet.displayFormattedValueMap.set(id, inputVal);
+    spreadsheet.dataSet.displayFormattedValueMap?.set(id, inputVal);
     spreadsheet.render();
 
     const editedMeta = customMerge(cell.getMeta(), {

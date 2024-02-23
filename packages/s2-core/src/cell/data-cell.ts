@@ -296,7 +296,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     const { rowId, valueField, fieldValue, data, id } = this.meta;
     const displayFormattedValue =
-      this.spreadsheet.dataSet.displayFormattedValueMap.get(id);
+      this.spreadsheet.dataSet.displayFormattedValueMap?.get(id);
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId);

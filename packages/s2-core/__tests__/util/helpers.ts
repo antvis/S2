@@ -72,6 +72,7 @@ export const createFakeSpreadSheet = () => {
     getMultiData() {
       return [];
     },
+    displayFormattedValueMap: new Map(),
   } as unknown as any;
   s2.facet = {
     layoutResult: {
