@@ -33,7 +33,7 @@ export const tableSheetMultipleColumns: Columns = [
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta,
+  meta: [{ field: 'number', formatter: (v) => `${v}-@` }, ...meta],
   fields: {
     columns: tableSheetSingleColumns,
   },
