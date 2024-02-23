@@ -1,5 +1,10 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { createMockCellInfo, getContainer } from 'tests/util/helpers';
+import {
+  createMockCellInfo,
+  createPivotSheet,
+  getContainer,
+  sleep,
+} from 'tests/util/helpers';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
@@ -97,6 +102,7 @@ describe('Interaction Multi Selection Tests', () => {
     });
 
     expectHighlightActiveNodes(s2, [
+      'root[&]中国[&]浙江',
       'root[&]中国[&]浙江[&]义乌',
       'root[&]中国[&]浙江[&]杭州',
     ]);
@@ -132,6 +138,7 @@ describe('Interaction Multi Selection Tests', () => {
     });
 
     expectHighlightActiveNodes(s2, [
+      'root[&]中国[&]浙江',
       'root[&]中国[&]浙江[&]price',
       'root[&]中国[&]浙江[&]cost',
     ]);
@@ -140,5 +147,54 @@ describe('Interaction Multi Selection Tests', () => {
 
     expect(getSelectedCount(tooltipData.summaries)).toEqual(4);
     expect(getSelectedSum(tooltipData.summaries)).toEqual(6);
+  });
+
+  // https://github.com/antvis/S2/issues/2503
+  test('should keep all cell highlighted after scroll', async () => {
+    const pivotSheet = createPivotSheet(
+      {
+        style: {
+          // 显示滚动条
+          dataCell: {
+            width: 200,
+          },
+        },
+      },
+      { useSimpleData: false },
+    );
+
+    pivotSheet.render();
+
+    const colRootCell = pivotSheet.facet.getColCells()[0];
+
+    pivotSheet.interaction.selectHeaderCell({
+      cell: colRootCell,
+    });
+
+    await sleep(100);
+
+    pivotSheet.updateScrollOffset({
+      offsetX: {
+        value: 100,
+        animate: true,
+      },
+    });
+
+    await sleep(500);
+
+    expectHighlightActiveNodes(pivotSheet, [
+      'root[&]家具[&]桌子',
+      'root[&]家具[&]桌子[&]number',
+      'root[&]家具[&]沙发',
+      'root[&]家具[&]沙发[&]number',
+    ]);
+
+    const interactedCells = pivotSheet.interaction.getInteractedCells();
+
+    ['root[&]家具[&]桌子', 'root[&]家具[&]沙发'].forEach((id) => {
+      expect(
+        interactedCells.find((cell) => cell.getMeta().id === id),
+      ).toBeTruthy();
+    });
   });
 });

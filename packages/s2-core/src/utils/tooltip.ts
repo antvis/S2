@@ -358,13 +358,15 @@ export const getSelectedCellIndexes = (spreadsheet: SpreadSheet) => {
   const colLeafNodes = spreadsheet.facet.getColLeafNodes();
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
+  // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算 https://github.com/antvis/S2/pull/1443
+  const needCalcNodes = nodes.filter((node) => node?.isLeaf);
 
   if (cellType === CellType.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
+    return getRowOrColSelectedIndexes(needCalcNodes, rowLeafNodes, false);
   }
 
   if (cellType === CellType.ROW_CELL) {
-    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
+    return getRowOrColSelectedIndexes(needCalcNodes, colLeafNodes);
   }
 
   return [];
@@ -382,8 +384,8 @@ export const getSelectedCellsData = (
    * 1. [点击列头单元格时], 选中列所对应的数值单元格的数据如果是小计/总计, 则不应该参与计算:
    *  - 1.1 [小计/总计 位于行头]: 点击的都是 (普通列头), 需要去除 (数值单元格) 对应 (行头为小计) 的单元格的数据
    *  - 1.2 [小计/总计 位于列头]: 点击的是 (普通列头/小计/总计列头), 由于行头没有, 所有数值单元格参与计算即可
-   *  - 1.3  [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
-   *
+   *  - 1.3 [小计/总计 同时位于行头/列头]: 和 1.1 处理一致
+
    * 2. [点击行头单元格时]:
    *  - 2.1 如果本身就是小计/总计单元格, 且列头无小计/总计, 则当前行所有 (数值单元格) 参与计算
    *  - 2.2 如果本身不是小计/总计单元格, 去除当前行/列 (含子节点) 所对应小计/总计数据

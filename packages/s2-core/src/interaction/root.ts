@@ -272,16 +272,10 @@ export class RootInteraction {
       return;
     }
 
-    // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算
-    const leafNodes = childrenNodes.filter((node) => node?.isLeaf);
-    const needCalcNodes = isEmpty(leafNodes)
-      ? [cell.getMeta() as Node]
-      : leafNodes;
-
     // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
-      nodes: needCalcNodes,
+      nodes: childrenNodes,
       stateName: InteractionStateName.SELECTED,
     });
 
