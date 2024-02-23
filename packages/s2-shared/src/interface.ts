@@ -24,6 +24,7 @@ import type {
   SeriesNumberCell,
   SortParams,
   SpreadSheet,
+  TableDataCell,
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
@@ -137,7 +138,8 @@ export interface BaseSheetComponentProps<
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metaList: ViewMetaData[]) => void;
   onDataCellRender?: (cell: DataCell) => void;
-  onDataCellEditEnd?: (meta: ViewMeta) => void;
+  onDataCellEditStart?: (meta: ViewMeta, cell: TableDataCell) => void;
+  onDataCellEditEnd?: (meta: ViewMeta, cell: TableDataCell) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

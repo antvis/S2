@@ -1,23 +1,16 @@
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import {
-  GEvent,
   S2Event,
-  S2_PREFIX_CLS,
   SpreadSheet,
-  type DataItem,
-  type S2CellType,
-  type ViewMeta,
+  customMerge,
   type RawData,
+  type S2CellType,
+  type TableDataCell,
+  type ViewMeta,
 } from '@antv/s2';
 import { Input } from 'antd';
-import { isNil, merge, pick } from 'lodash';
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { isNil, pick } from 'lodash';
+import React, { useMemo } from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
 import { useS2Event } from '../../../../../hooks';
 import {
@@ -30,38 +23,47 @@ export interface CustomProps {
   style: React.CSSProperties;
   onChange: (value: string) => void;
   onSave: () => void;
-  value: DataItem;
+  value: string;
   spreadsheet: SpreadSheet;
-  cell: S2CellType | null;
+  cell: S2CellType;
 }
 
+type DateCellEdit = (meta: ViewMeta, cell: TableDataCell) => void;
+
 type EditCellProps = {
-  onChange?: (val: RawData[]) => void;
-  onDataCellEditEnd?: (meta: ViewMeta) => void;
+  /**
+   * @deprecated use `onDataCellEditEnd` instead.
+   */
+  onChange?: (data: RawData[]) => void;
+  onDataCellEditStart?: DateCellEdit;
+  onDataCellEditEnd?: DateCellEdit;
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
 
-const EDIT_CELL_CLASS = `${S2_PREFIX_CLS}-edit-cell`;
-
 function EditCellComponent(
-  props: InvokeComponentProps<{ cell: S2CellType } & EditCellProps>,
+  props: InvokeComponentProps<{ event: CanvasEvent } & EditCellProps>,
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
-  const { cell, onChange, onDataCellEditEnd, CustomComponent } = params;
+  const {
+    event,
+    onChange,
+    onDataCellEditStart,
+    onDataCellEditEnd,
+    CustomComponent,
+  } = params;
 
-  const { left, top, width, height } = useMemo(() => {
-    const rect = s2?.getCanvasElement().getBoundingClientRect();
+  const cell = s2.getCell<TableDataCell>(event.target);
+  const { left, top, width, height } = React.useMemo<Partial<DOMRect>>(() => {
+    const rect = s2.getCanvasElement()?.getBoundingClientRect();
 
-    const modified = {
+    return {
       left: window.scrollX + rect.left,
       top: window.scrollY + rect.top,
       width: rect.width,
       height: rect.height,
     };
-
-    return modified;
   }, [s2]);
 
   const {
@@ -91,20 +93,61 @@ function EditCellComponent(
     return cellMeta;
   }, [cell, s2]);
 
-  const [inputVal, setInputVal] = useState<DataItem>(
-    cell?.getMeta()?.fieldValue,
-  );
+  const [inputVal, setInputVal] = React.useState(() => cell!.getFieldValue());
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  /**
-   * 在 Enter 确定输入后，会执行 onSave 逻辑，然后组件被销毁后，又会通过 blur 再执行一遍，这个时候 displayData 顺序已经变了，再执行获取的 rowIndex 是错误的
-   * 本质上，还是和 invokeComponent 中在移除 dom 节点前，没有提前 unmount 组件有关（1.x 中进行了处理，2.x 中现在只对其中一个分支处理了）
-   * */
-  const hasSaved = useRef(false);
+  const onSave = () => {
+    const { rowIndex, valueField, id } = cell!.getMeta();
+    const displayData = s2.dataSet.getDisplayDataSet();
 
-  useEffect(() => {
+    displayData[rowIndex][valueField] = inputVal;
+    // 编辑后的值作为格式化后的结果, formatter 不再触发, 避免二次格式化
+    s2.dataSet.displayFormattedValueMap?.set(id, inputVal);
+    s2.render();
+
+    const editedMeta = customMerge<ViewMeta>(cell!.getMeta(), {
+      fieldValue: inputVal,
+      data: {
+        [valueField]: inputVal,
+      },
+    });
+
+    onDataCellEditEnd?.(editedMeta, cell!);
+    onChange?.(displayData);
+    resolver(true);
+  };
+
+  const onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onSave();
+    }
+  };
+
+  // 让输入框聚焦时光标在文字的末尾
+  const onFocus: React.FocusEventHandler<HTMLTextAreaElement> = (e) => {
+    e.target.selectionStart = e.target.value.length;
+    e.target.selectionEnd = e.target.value.length;
+  };
+
+  const styleProps = React.useMemo<React.CSSProperties>(() => {
+    return {
+      left: cellLeft,
+      top: cellTop,
+      width: cellWidth,
+      height: cellHeight,
+      zIndex: 1000,
+    };
+  }, []);
+
+  const onChangeValue = (val: string) => {
+    setInputVal(val);
+  };
+
+  React.useEffect(() => {
+    onDataCellEditStart?.(cell!.getMeta(), cell!);
     setTimeout(() => {
       // 防止触发表格全选
       containerRef.current?.click();
@@ -112,47 +155,6 @@ function EditCellComponent(
       inputRef.current?.focus({ preventScroll: true });
     });
   }, []);
-
-  const onSave = () => {
-    if (!cell || hasSaved.current) {
-      return;
-    }
-
-    const { rowIndex, valueField } = cell.getMeta();
-    const displayData = s2.dataSet.getDisplayDataSet();
-
-    displayData[rowIndex][valueField] = inputVal;
-    s2.render(true);
-
-    const meta = merge(cell.getMeta(), {
-      fieldValue: inputVal,
-      valueField,
-      data: {
-        [valueField]: inputVal,
-      },
-    }) as ViewMeta;
-
-    onDataCellEditEnd?.(meta);
-
-    if (onChange) {
-      onChange(displayData);
-    }
-
-    hasSaved.current = true;
-    resolver(true);
-  };
-
-  const styleProps: React.CSSProperties = {
-    left: cellLeft,
-    top: cellTop,
-    width: cellWidth,
-    height: cellHeight,
-    zIndex: 1000,
-  };
-
-  const onChangeValue = (val: string) => {
-    setInputVal(val);
-  };
 
   return (
     <div
@@ -169,9 +171,9 @@ function EditCellComponent(
     >
       {CustomComponent ? (
         <CustomComponent
-          cell={cell}
+          cell={cell!}
           spreadsheet={s2}
-          value={inputVal}
+          value={inputVal as string}
           style={styleProps}
           onChange={onChangeValue}
           onSave={onSave}
@@ -180,25 +182,27 @@ function EditCellComponent(
         <Input.TextArea
           required
           style={styleProps}
-          className={EDIT_CELL_CLASS}
+          className={'s2-edit-cell'}
           value={inputVal as string}
           ref={inputRef}
           onChange={(e) => {
             setInputVal(e.target.value);
           }}
           onBlur={onSave}
-          onPressEnter={onSave}
+          onKeyDown={onKeyDown}
+          onFocus={onFocus}
         />
       )}
     </div>
   );
 }
 
-export const EditCell = memo(({ onChange, CustomComponent }: EditCellProps) => {
+export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
+  const { onChange, CustomComponent } = props;
   const s2 = useSpreadSheetInstance();
 
-  const onEditCell = useCallback(
-    (event: GEvent) => {
+  const onEditCell = React.useCallback(
+    (event: CanvasEvent) => {
       invokeComponent({
         component: EditCellComponent,
         params: {
@@ -212,7 +216,7 @@ export const EditCell = memo(({ onChange, CustomComponent }: EditCellProps) => {
     [CustomComponent, onChange, s2],
   );
 
-  useS2Event(S2Event.DATA_CELL_CLICK, onEditCell, s2);
+  useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, onEditCell, s2);
 
   return null;
 });

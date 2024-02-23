@@ -78,6 +78,11 @@ export abstract class BaseDataSet {
    */
   protected displayData: RawData[];
 
+  /**
+   * 单元格所对应格式化后的值（用于编辑表）
+   */
+  public displayFormattedValueMap = new Map<string, string>();
+
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }

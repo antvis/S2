@@ -34,6 +34,7 @@ s2.dataSet.getFieldName('type')
 | getCellMultiData                           | 获取批量的单元格数据               | (params?: [GetCellMultiDataParams](#getcellmultidataparams)) => [DataType[]](#datatype)                                                                                       |                                             |
 | moreThanOneValue                       | 是否超过 1 个数值                  | () => [ViewMeta](#viewmeta)                                                                                                                                                                  |                                             |
 | isEmpty                                | 是否为空数据集                     | () => `boolean`                                                                                                                                                                              | `@antv/s2^1.51.1`                          |
+| displayFormattedValueMap                                |  单元格所对应格式化后的值（用于编辑表）                  | `Map<string, string>`                                                                                                                                                                             | `@antv/s2-v1.54.5`                          |
 
 ### SimpleData
 

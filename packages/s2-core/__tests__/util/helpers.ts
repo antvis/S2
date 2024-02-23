@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
@@ -101,6 +102,7 @@ export const createFakeSpreadSheet = (config?: {
       return [];
     },
     getField: jest.fn(),
+    displayFormattedValueMap: new Map(),
   } as unknown as any;
 
   const layoutResult: LayoutResult = {

@@ -52,8 +52,12 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       },
     };
 
-    const onDataCellEditEnd = (meta) => {
-      console.log('onDataCellEditEnd', meta);
+    const onDataCellEditStart = (meta, cell) => {
+      console.log('onDataCellEditStart:', meta, cell);
+    };
+
+    const onDataCellEditEnd = (meta, cell) => {
+      console.log('onDataCellEditEnd:', meta, cell);
     };
 
     reactDOMClient
@@ -63,6 +67,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           dataCfg={s2DataConfig}
           options={s2Options}
           sheetType="editable"
+          onDataCellEditStart={onDataCellEditStart}
           onDataCellEditEnd={onDataCellEditEnd}
         />,
       );

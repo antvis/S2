@@ -131,6 +131,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
         getFieldsAndPivotMetaByField:
           actualPivotDataSet.prototype.getFieldsAndPivotMetaByField,
+        displayFormattedValueMap: new Map(),
       };
     }),
   };

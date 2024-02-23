@@ -167,8 +167,11 @@ ReactDOM.render(
     sheetType="editable" // 此处指定 sheetType 为 editable
     dataCfg={s2DataCfg}
     options={s2Options}
-    onDataCellEditEnd={(meta) => {
-      console.log('onDataCellEditEnd', meta);
+    onDataCellEditStart={(meta, cell) => {
+      console.log('onDataCellEditStart:', meta, cell);
+    }}
+    onDataCellEditEnd={(meta, cell) => {
+      console.log('onDataCellEditEnd:', meta, cell);
     }}
   />,
   document.getElementById('container')
