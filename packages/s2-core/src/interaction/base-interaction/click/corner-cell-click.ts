@@ -1,6 +1,11 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty } from 'lodash';
-import { CellType, type CellMeta, type Data } from '../../../common';
+import {
+  CellType,
+  type CellMeta,
+  type Data,
+  CornerNodeType,
+} from '../../../common';
 import {
   InteractionStateName,
   InterceptType,
@@ -19,7 +24,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
   private bindCornerCellClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (event) => {
-      const { interaction, facet } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
       const cornerCell = this.spreadsheet.getCell(event.target);
 
       if (!cornerCell) {
@@ -28,11 +33,17 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
       // 获取当前角头所对应那一列的行头单元格节点
       const cornerCellMeta = cornerCell.getMeta();
-      const rowNodes = cornerCellMeta?.field
-        ? facet.getRowNodesByField(cornerCellMeta?.field)
-        : [];
+
+      // TODO: 列角头的交互待拓展
+      if (cornerCellMeta?.cornerType === CornerNodeType.Col) {
+        interaction.reset();
+
+        return;
+      }
+
+      const rowNodes = this.getSelectedRowNodes(cornerCellMeta?.field!);
       const sample = rowNodes[0]?.belongsCell;
-      const cells = this.getRowCells(rowNodes);
+      const cells = this.getRowCellMetas(rowNodes);
 
       if (sample && interaction.isSelectedCell(sample)) {
         interaction.reset();
@@ -63,7 +74,25 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getRowCells(nodes: Node[]): CellMeta[] {
+  private getSelectedRowNodes(field: string) {
+    const { facet } = this.spreadsheet;
+
+    // 树状模式只有一列
+    if (this.spreadsheet.isHierarchyTreeType()) {
+      return facet.getRowNodes();
+    }
+
+    if (!this.spreadsheet.isCustomRowFields()) {
+      return facet.getRowNodesByField(field);
+    }
+
+    // 自定义行头 field 都是独立的, 需要根据 level 区查找.
+    const sampleNode = facet.getRowNodesByField(field)[0];
+
+    return facet.getRowNodes(sampleNode?.level);
+  }
+
+  private getRowCellMetas(nodes: Node[]): CellMeta[] {
     return nodes.map((node) => {
       return {
         id: node.id,
