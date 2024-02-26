@@ -1,12 +1,12 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   S2Event,
   SpreadSheet,
+  TableDataCell,
   customMerge,
   type DataItem,
   type RawData,
-  type S2CellType,
   type ViewMeta,
+  GEvent,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, pick } from 'lodash';
@@ -25,10 +25,10 @@ export interface CustomProps {
   onSave: () => void;
   value: DataItem;
   spreadsheet: SpreadSheet;
-  cell: S2CellType | null;
+  cell: TableDataCell | null;
 }
 
-type DateCellEdit = (meta: ViewMeta, cell: S2CellType) => void;
+type DateCellEdit = (meta: ViewMeta, cell: TableDataCell) => void;
 
 type EditCellProps = {
   /**
@@ -42,7 +42,7 @@ type EditCellProps = {
 };
 
 function EditCellComponent(
-  props: InvokeComponentProps<{ cell: S2CellType } & EditCellProps>,
+  props: InvokeComponentProps<{ cell: TableDataCell } & EditCellProps>,
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
@@ -201,11 +201,11 @@ export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
   const s2 = useSpreadSheetInstance();
 
   const onEditCell = React.useCallback(
-    (event: CanvasEvent) => {
+    (event: GEvent) => {
       invokeComponent({
         component: EditCellComponent,
         params: {
-          cell: s2.getCell(event.target)!,
+          cell: s2.getCell(event.target) as TableDataCell,
           onChange,
           CustomComponent,
         },

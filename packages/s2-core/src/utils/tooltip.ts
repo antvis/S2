@@ -359,7 +359,9 @@ export const getSelectedCellIndexes = (spreadsheet: SpreadSheet) => {
   const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
   // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算 https://github.com/antvis/S2/pull/1443
-  const needCalcNodes = nodes.filter((node) => node?.isLeaf);
+  const needCalcNodes = spreadsheet.isHierarchyTreeType()
+    ? nodes
+    : nodes.filter((node) => node?.isLeaf);
 
   if (cellType === CellType.COL_CELL) {
     return getRowOrColSelectedIndexes(needCalcNodes, rowLeafNodes, false);

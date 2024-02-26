@@ -144,6 +144,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
       // 高亮子节点
       expectHighlightActiveNodes(s2, [
+        'root[&]a-1[&]a-1-1',
         'root[&]a-1[&]a-1-1[&]measure-1',
         'root[&]a-1[&]a-1-1[&]measure-2',
         'root[&]a-1[&]a-1-2',
@@ -253,7 +254,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      // s2.destroy();
+      s2.destroy();
     });
 
     test('should enable valueInCols', () => {
@@ -319,6 +320,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
       // 高亮子节点
       expectHighlightActiveNodes(s2, [
+        'root[&]a-1[&]a-1-1',
         'root[&]a-1[&]a-1-1[&]measure-1',
         'root[&]a-1[&]a-1-1[&]measure-2',
         'root[&]a-1[&]a-1-2',

@@ -163,7 +163,7 @@ describe('Interaction Multi Selection Tests', () => {
       { useSimpleData: false },
     );
 
-    pivotSheet.render();
+    await pivotSheet.render();
 
     const colRootCell = pivotSheet.facet.getColCells()[0];
 

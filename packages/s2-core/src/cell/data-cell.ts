@@ -351,7 +351,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         value: null,
 
         /**
-         * 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+         * 这里使用默认的 placeholder，而不是空字符串，是为了防止后续使用用户自定义的 placeholder
          * 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
          */
         formattedValue: EMPTY_PLACEHOLDER,

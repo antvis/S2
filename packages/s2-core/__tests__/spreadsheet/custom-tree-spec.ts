@@ -123,7 +123,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     // 高亮子节点
     expectHighlightActiveNodes(s2, ['root[&]a-1']);
 
-    // 取消选中 a - 1
+    // 取消选中 a-1
     s2.interaction.selectHeaderCell({
       cell: rowNode.belongsCell!,
     });

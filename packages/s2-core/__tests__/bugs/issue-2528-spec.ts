@@ -28,8 +28,8 @@ describe('Table Sheet Editable Formatter Tests', () => {
   });
 
   test('should get formatted data', () => {
-    const costValues = s2.interaction
-      .getPanelGroupAllDataCells()
+    const costValues = s2.facet
+      .getDataCells()
       .filter((cell) => cell.getMeta().valueField === 'cost')
       .map((cell) => cell.getFieldValue());
 
@@ -43,13 +43,13 @@ describe('Table Sheet Editable Formatter Tests', () => {
     // 模拟一次编辑 (更新第一行的 cost)
     const displayData = s2.dataSet.getDisplayDataSet();
 
-    displayData[0].cost = inputValue;
+    displayData[0]['cost'] = inputValue;
     s2.dataSet.displayFormattedValueMap?.set(id, inputValue);
 
     s2.render();
 
-    const costValues = s2.interaction
-      .getPanelGroupAllDataCells()
+    const costValues = s2.facet
+      .getDataCells()
       .filter((cell) => cell.getMeta().valueField === 'cost')
       .map((cell) => cell.getFieldValue());
 

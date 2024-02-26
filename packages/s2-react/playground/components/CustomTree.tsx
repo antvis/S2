@@ -27,7 +27,7 @@ export const CustomTreeOptions: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 480,
-  hierarchyType: 'grid',
+  hierarchyType: 'tree',
   showDefaultHeaderActionIcon: false,
   interaction: {
     copy: {

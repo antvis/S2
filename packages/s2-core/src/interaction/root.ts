@@ -272,10 +272,14 @@ export class RootInteraction {
       return;
     }
 
+    const nodes = isEmpty(childrenNodes)
+      ? [cell.getMeta() as Node]
+      : childrenNodes;
+
     // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
-      nodes: childrenNodes,
+      nodes,
       stateName: InteractionStateName.SELECTED,
     });
 

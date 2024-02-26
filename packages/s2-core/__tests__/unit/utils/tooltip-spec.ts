@@ -474,6 +474,29 @@ describe('Tooltip Utils Tests', () => {
       description: undefined,
     };
 
+    const customRowDataCfg: S2DataConfig = {
+      data: CustomGridData,
+      meta: [
+        {
+          field: 'type',
+          name: '类型',
+        },
+        {
+          field: 'sub_type',
+          name: '子类型',
+        },
+        {
+          field: 'a-1',
+          name: '层级1',
+        },
+        {
+          field: 'a-2',
+          name: '层级2',
+        },
+      ],
+      fields: customRowGridSimpleFields,
+    };
+
     const getCellData = (
       value: number,
       isTotalCell = false,
@@ -815,34 +838,12 @@ describe('Tooltip Utils Tests', () => {
 
     // https://github.com/antvis/S2/issues/2455
     test('should get custom tree row cell summary data', async () => {
-      const customRowDataCfg: S2DataConfig = {
-        data: CustomGridData,
-        meta: [
-          {
-            field: 'type',
-            name: '类型',
-          },
-          {
-            field: 'sub_type',
-            name: '子类型',
-          },
-          {
-            field: 'a-1',
-            name: '层级1',
-          },
-          {
-            field: 'a-2',
-            name: '层级2',
-          },
-        ],
-        fields: customRowGridSimpleFields,
-      };
-
       s2 = new PivotSheet(getContainer(), customRowDataCfg, {
         width: 600,
         height: 600,
         hierarchyType: 'tree',
       });
+
       await s2.render();
 
       const measureRowCell = s2.facet.getRowCells().find((cell) => {
@@ -852,6 +853,26 @@ describe('Tooltip Utils Tests', () => {
       });
 
       const tooltipData = getMockTooltipData(measureRowCell!);
+
+      expect(tooltipData).toMatchSnapshot();
+    });
+
+    test('should get custom tree row root cell summary data', async () => {
+      s2 = new PivotSheet(getContainer(), customRowDataCfg, {
+        width: 600,
+        height: 600,
+        hierarchyType: 'tree',
+      });
+
+      await s2.render();
+
+      const rootRowCell = s2.facet.getRowCells().find((cell) => {
+        const meta = cell.getMeta();
+
+        return meta.field === 'a-1';
+      });
+
+      const tooltipData = getMockTooltipData(rootRowCell!);
 
       expect(tooltipData).toMatchSnapshot();
     });
