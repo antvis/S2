@@ -131,6 +131,7 @@ export const createFakeSpreadSheet = (config?: {
     getColCells: () => [],
     getRowCells: () => [],
     getDataCells: () => [],
+    getRowNodesByField: () => [],
     getRowNodes: () => [],
     getRowLeafNodes: () => [],
     getColNodes: () => [],
