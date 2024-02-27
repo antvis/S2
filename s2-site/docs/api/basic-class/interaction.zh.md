@@ -14,7 +14,8 @@ s2.interaction.reset()
 | --- |--------------------------------------------------| --- |
 | spreadsheet | 表格实例                                             | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
 | interactions | 当前已注册的交互                                         | `Map<string, BaseEvent>` |
-| intercept | 当前拦截的交互，防止不同交互之间冲突                               | `Set<Intercept>` |
+| intercepts | 当前拦截的交互，防止不同交互之间冲突 ([查看示例](/examples/interaction/advanced/#intercepts))                              | `Set<Intercept>` |
+| eventController | 事件控制器                              | [EventController](#eventcontroller) |
 | destroy | 卸载所有交互实例，并重置为初始状态                                | `() => void` |
 | reset | 重置所有交互                                           | `() => void` |
 | setState | 设置状态                                             | (data: [InteractionStateInfo](#interactionstateinfo)) => void |
@@ -25,7 +26,7 @@ s2.interaction.reset()
 | setInteractedCells | 设置当前发生改变的单元格                                     | (cell: [S2CellType](#s2celltype)) => void |
 | getInteractedCells | 获取当前发生改变的单元格                                     | () => [S2CellType](#s2celltype)[] |
 | getCurrentStateName | 获取当前状态名                                          | `() => void` |
-| isEqualStateName | 是否是相同的状态名                                        | `(name: InteractionStateName) => void` |
+| isEqualStateName | 是否是相同的状态名                                        | (name: [InteractionStateName](#interactionstatename)) => void |
 | isSelectedState | 是否是选中状态                                          | `() => void` |
 | isHoverState | 是否是悬停状态                                          | `() => void` |
 | isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后）       | `() => void` |
@@ -121,6 +122,48 @@ interface MergedCellInfo {
 }
 ```
 
+### CellType
+
+```ts
+enum CellType {
+  DATA_CELL = 'dataCell',
+  ROW_CELL = 'rowCell',
+  COL_CELL = 'colCell',
+  SERIES_NUMBER_CELL = 'seriesNumberCell',
+  CORNER_CELL = 'cornerCell',
+  MERGED_CELL = 'mergedCell',
+}
+```
+
+### CellMeta
+
+```ts
+interface CellMeta {
+  id: string;
+  colIndex: number;
+  rowIndex: number;
+  type: CellType;
+  rowQuery?: Record<string, any>;
+  [key: string]: unknown;
+}
+```
+
+### InteractionStateName
+
+```ts
+enum InteractionStateName {
+  ALL_SELECTED = 'allSelected',
+  SELECTED = 'selected',
+  BRUSH_SELECTED = 'brushSelected',
+  UNSELECTED = 'unselected',
+  HOVER = 'hover',
+  HOVER_FOCUS = 'hoverFocus',
+  HIGHLIGHT = 'highlight',
+  SEARCH_RESULT = 'searchResult',
+  PREPARE_SELECT = 'prepareSelect',
+}
+```
+
 ### InteractionStateInfo
 
 ```ts
@@ -130,6 +173,51 @@ interface InteractionStateInfo {
   interactedCells?: S2CellType[];
   nodes?: Node[];
   force?: boolean;
+}
+```
+
+### EventController
+
+| 参数 | 说明    | 类型 |
+| --- |--------| --- |
+| spreadsheet | 表格实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
+| canvasEventHandlers | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
+| s2EventHandlers | 当前已注册的交互            | [S2EventHandler](#s2eventhandler)[] |
+| domEventListeners | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
+| isCanvasEffect | 是否是图表内部引起的事件            | boolean |
+| canvasMousemoveEvent | 表格鼠标移动事件            | CanvasEvent |
+| isMatchElement | 是否是表格内部的元素            | (event: MouseEvent) => void |
+| isMatchPoint | 是否是表格内部的坐标            | (event: MouseEvent) => void |
+| bindEvents | 绑定交互事件            | `() => void`) |
+| clear | 清空交互事件            | `() => void`) |
+| getViewportPoint | 获取表格内的鼠标坐标 （兼容 `supportsCSSTransform`)  | `(event: MouseEvent \| PointerEvent \| WheelEvent) => PointLike` |
+
+### EventListener
+
+```ts
+interface EventListener {
+  target: EventTarget;
+  type: string;
+  handler: EventListenerOrEventListenerObject;
+  options?: AddEventListenerOptions | boolean;
+}
+```
+
+### S2EventHandler
+
+```ts
+interface S2EventHandler {
+  type: keyof EmitterType;
+  handler: EmitterType[keyof EmitterType];
+}
+```
+
+### EventHandler
+
+```ts
+interface EventHandler {
+  type: string;
+  handler: (event: CanvasEvent) => void;
 }
 ```
 

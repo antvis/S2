@@ -40,10 +40,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.client2Viewport({
-        x: event.clientX,
-        y: event.clientY,
-      });
+      const pointInCanvas =
+        this.spreadsheet.interaction.eventController.getViewportPoint(event);
 
       if (this.autoBrushScroll(pointInCanvas)) {
         return;

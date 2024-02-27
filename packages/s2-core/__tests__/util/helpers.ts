@@ -173,6 +173,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
+  s2.getCanvasConfig = () => s2.container.getConfig();
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
