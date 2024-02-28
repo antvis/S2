@@ -5,7 +5,7 @@ import {
   type Copyable,
   type CopyableItem,
 } from '../../common/interface/export';
-import { processAllSelected, processAllSelectedAsync } from './copy/core';
+import { asyncProcessAllSelected } from './copy/core';
 
 /**
  * 同步复制
@@ -116,18 +116,6 @@ export const download = (dataString: string, fileName: string) => {
 };
 
 /**
- * 同步获取文本数据
- * @param params CopyAllDataParams
- * @deprecated 后续将废弃方法，将使用 asyncGetAllPlainData
- */
-
-export const getAllPlainData = (params: CopyAllDataParams) => {
-  const result = processAllSelected(params);
-
-  return result[0].content;
-};
-
-/**
  * 异步获取文本数据
  * @example
     const data = await asyncGetAllPlainData({
@@ -137,7 +125,7 @@ export const getAllPlainData = (params: CopyAllDataParams) => {
     });
  */
 export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
-  const result = await processAllSelectedAsync(params);
+  const result = await asyncProcessAllSelected(params);
 
   return result[0].content;
 };

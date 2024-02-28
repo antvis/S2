@@ -177,7 +177,6 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.POINTER_UP,
       OriginEventType.MOUSE_OUT,
       GEventType.RIGHT_MOUSE_UP,
-      OriginEventType.DOUBLE_CLICK,
       OriginEventType.CLICK,
       OriginEventType.TOUCH_START,
     ];

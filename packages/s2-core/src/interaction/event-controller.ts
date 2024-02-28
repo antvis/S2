@@ -82,8 +82,6 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
-    // TODO: g5.0 目前没支持 dbclick 事件
-    this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(GEventType.RIGHT_MOUSE_UP, this.onCanvasContextMenu);
 
     // spreadsheet events
