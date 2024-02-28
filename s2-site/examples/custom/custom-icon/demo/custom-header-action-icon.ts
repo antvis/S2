@@ -79,13 +79,13 @@ fetch(
               displayCondition: (meta) => meta.rowIndex > 2,
               onHover: (options) => {
                 const { meta, event } = options;
-                const div = document.createElement('div');
+                const content = document.createElement('div');
 
-                div.innerHTML = '我是 RowTooltip 自定义内容';
+                content.innerHTML = '我是 RowTooltip 自定义内容';
 
                 meta.spreadsheet.tooltip.show({
                   position: { x: event.clientX, y: event.clientY },
-                  content: div,
+                  content,
                 });
               },
             },

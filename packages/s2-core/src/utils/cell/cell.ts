@@ -1,4 +1,5 @@
 import type { LineStyleProps } from '@antv/g';
+import { isEmpty } from 'lodash';
 import type { SimpleBBox } from '../../engine';
 import {
   CellClipBox,
@@ -199,6 +200,11 @@ export const getBorderPositionAndStyle = (
     borderDash,
   } = style;
 
+  // 如果是空数组 G 底层绘制会报错
+  const lineDash: LineStyleProps['lineDash'] = isEmpty(borderDash)
+    ? ''
+    : borderDash;
+
   const borderStyle: Partial<LineStyleProps> = [
     CellBorderPosition.TOP,
     CellBorderPosition.BOTTOM,
@@ -207,13 +213,13 @@ export const getBorderPositionAndStyle = (
         lineWidth: horizontalBorderWidth,
         stroke: horizontalBorderColor,
         strokeOpacity: horizontalBorderColorOpacity,
-        lineDash: borderDash,
+        lineDash,
       }
     : {
         lineWidth: verticalBorderWidth,
         stroke: verticalBorderColor,
         strokeOpacity: verticalBorderColorOpacity,
-        lineDash: borderDash,
+        lineDash,
       };
 
   let x1 = 0;
