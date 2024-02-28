@@ -1,4 +1,4 @@
-import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
+import type { FederatedPointerEvent as CanvasEvent, PointLike } from '@antv/g';
 import { isEmpty, map } from 'lodash';
 import type { ColCell } from '../../cell/col-cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -34,7 +34,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
     });
   }
 
-  protected isPointInCanvas(point: { x: number; y: number }) {
+  protected isPointInCanvas(point: PointLike) {
     // 获取列头的区域范围
     const { width: maxX } = this.spreadsheet.facet.getCanvasSize();
     const { width: minX, minY, maxY } = this.spreadsheet.facet.cornerBBox;
@@ -55,7 +55,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
 
       const pointInCanvas =
-        this.spreadsheet.interaction.eventController.getViewportPoint(event);
+        this.spreadsheet.interaction.eventController?.getViewportPoint(event);
 
       if (!this.isPointInCanvas(pointInCanvas)) {
         return;

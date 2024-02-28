@@ -14,7 +14,13 @@ import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import { getTheme, type BaseDataSet, type Node, Hierarchy } from '../../src';
+import {
+  getTheme,
+  type BaseDataSet,
+  type Node,
+  Hierarchy,
+  EventController,
+} from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
 import { RootInteraction } from '@/interaction/root';
@@ -194,6 +200,7 @@ export const createFakeSpreadSheet = (config?: {
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 
   s2.interaction = interaction;
+  s2.interaction.eventController = new EventController(s2);
 
   return s2;
 };

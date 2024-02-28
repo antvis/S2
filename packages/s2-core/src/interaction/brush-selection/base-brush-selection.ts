@@ -115,7 +115,10 @@ export class BaseBrushSelection
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
     return (
-      point.x > minX && point.x < width && point.y > minY && point.y < height
+      point?.x > minX &&
+      point?.x < width &&
+      point?.y > minY &&
+      point?.y < height
     );
   }
 

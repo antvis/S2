@@ -13,6 +13,7 @@ import {
   type OriginalEvent,
   type S2DataConfig,
   type ViewMeta,
+  EventController,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 
@@ -61,6 +62,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     await s2.render();
 
     mockRootInteraction = new MockRootInteraction(s2);
+    mockRootInteraction.eventController = new EventController(s2);
+    mockRootInteraction.eventController.getViewportPoint = (event) => {
+      return s2.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
     mockRootInteraction.getBrushSelection = () => {
       return {
         dataCell: true,

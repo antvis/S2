@@ -1,4 +1,4 @@
-import type { FederatedPointerEvent as Event } from '@antv/g';
+import type { FederatedPointerEvent as Event, PointLike } from '@antv/g';
 import type { DataCell, MergedCell } from '../../cell';
 import type {
   CustomTreeNode,
@@ -507,9 +507,6 @@ export interface GridInfo {
   rows: number[];
 }
 
-export interface Point {
-  x: number;
-  y: number;
-}
+export interface Point extends PointLike {}
 
 export type RowData = Data | CellData[];

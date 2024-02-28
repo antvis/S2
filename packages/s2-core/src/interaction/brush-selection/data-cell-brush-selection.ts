@@ -1,3 +1,4 @@
+import type { PointLike } from '@antv/g';
 import { isEmpty, range } from 'lodash';
 import type { DataCell } from '../../cell/data-cell';
 import { S2Event } from '../../common/constant';
@@ -6,12 +7,7 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type {
-  BrushRange,
-  CellMeta,
-  Point,
-  ViewMeta,
-} from '../../common/interface';
+import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
@@ -148,7 +144,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     super.bindMouseUp(true);
   }
 
-  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
     const x = Math.max(brushRange.start.x, minX);
     const y = Math.max(brushRange.start.y, minY);
