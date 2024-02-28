@@ -154,6 +154,7 @@ export const createFakeSpreadSheet = (config?: {
       [FrozenGroupType.FROZEN_TRAILING_COL]: {},
     },
     cornerBBox: {},
+    destroy: jest.fn(),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
