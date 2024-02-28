@@ -598,15 +598,24 @@ const s2Options = {
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
 
-#### 数值单元格刷选选中状态变更
+#### 单元格刷选选中状态变更
 
-`1.x` 中，数值单元格的刷选选中状态为 `selected`, `2.x` 中行头，列头，数值单元格的刷选状态统一为 `brushSelected`.
+`1.x` 中，行列头刷选选中状态为 `brushSelected`, 数值单元格的刷选选中状态为 `selected`, `2.x` 中做了进一步统一和区分：
 
 ```diff
 s2.interaction.getState()
 
+// 行头
+- stateName: "brushSelected"
++ stateName: "rowCellBrushSelected"
+
+// 列头
+- stateName: "brushSelected"
++ stateName: "colCellBrushSelected"
+
+// 数值
 - stateName: "selected"
-+ stateName: "brushSelected"
++ stateName: "dataCellBrushSelected"
 ```
 
 ### 组件层 <Badge>@antv/s2-react</Badge>

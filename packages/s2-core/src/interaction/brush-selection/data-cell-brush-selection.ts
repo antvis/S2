@@ -110,7 +110,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
     this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
-      stateName: InteractionStateName.BRUSH_SELECTED,
+      stateName: InteractionStateName.DATA_CELL_BRUSH_SELECTED,
       onUpdateCells: afterSelectDataCells,
     });
 

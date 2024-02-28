@@ -236,7 +236,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     switch (stateName) {
       case InteractionStateName.SELECTED:
-      case InteractionStateName.BRUSH_SELECTED:
+      case InteractionStateName.DATA_CELL_BRUSH_SELECTED:
         this.handleSelect(cells);
         break;
       case InteractionStateName.HOVER_FOCUS:

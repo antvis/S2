@@ -31,6 +31,9 @@ describe('Header Brush Selection Tests', () => {
       await s2.render();
 
       const isRow = cellType === CellType.ROW_CELL;
+      const stateName = isRow
+        ? InteractionStateName.ROW_CELL_BRUSH_SELECTED
+        : InteractionStateName.COL_CELL_BRUSH_SELECTED;
       const targetCells = isRow
         ? s2.facet.getRowCells()
         : s2.facet.getColCells();
@@ -45,7 +48,7 @@ describe('Header Brush Selection Tests', () => {
 
       s2.interaction.changeState({
         cells: cells.map(getCellMeta),
-        stateName: InteractionStateName.BRUSH_SELECTED,
+        stateName,
       });
 
       await sleep(500);
@@ -65,9 +68,7 @@ describe('Header Brush Selection Tests', () => {
       });
 
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
-      expect(s2.interaction.getCurrentStateName()).toEqual(
-        InteractionStateName.BRUSH_SELECTED,
-      );
+      expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
 
       // 交互过的不应该有 dataCell (未触发过列头多选)
       s2.interaction.getInteractedCells().forEach((cell) => {
