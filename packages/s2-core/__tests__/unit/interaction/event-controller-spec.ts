@@ -874,6 +874,8 @@ describe('Interaction Event Controller Tests', () => {
     { cellType: CellType.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
     { cellType: CellType.COL_CELL, event: S2Event.COL_CELL_CLICK },
     { cellType: CellType.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+    { cellType: CellType.DATA_CELL, event: S2Event.DATA_CELL_CLICK },
+    { cellType: CellType.MERGED_CELL, event: S2Event.MERGED_CELLS_CLICK },
   ])(
     'should not trigger click event if event target is gui icon image shape for event %o',
     async ({ cellType, event }) => {
@@ -881,6 +883,7 @@ describe('Interaction Event Controller Tests', () => {
         ({
           cellType,
           getMeta: () => {},
+          getConditionIconShapes: () => [],
         }) as any;
 
       const handler = jest.fn();
@@ -926,6 +929,8 @@ describe('Interaction Event Controller Tests', () => {
     { cellType: CellType.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
     { cellType: CellType.COL_CELL, event: S2Event.COL_CELL_CLICK },
     { cellType: CellType.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+    { cellType: CellType.DATA_CELL, event: S2Event.DATA_CELL_CLICK },
+    { cellType: CellType.MERGED_CELL, event: S2Event.MERGED_CELLS_CLICK },
   ])(
     'should trigger click event if event target is custom image shape for event %o',
     ({ cellType, event }) => {
@@ -933,6 +938,7 @@ describe('Interaction Event Controller Tests', () => {
         ({
           cellType,
           getMeta: () => {},
+          getConditionIconShapes: () => [],
         }) as any;
 
       const handler = jest.fn();
@@ -955,6 +961,51 @@ describe('Interaction Event Controller Tests', () => {
 
       image.dispatchEvent(
         createFederatedMouseEvent(spreadsheet, OriginEventType.POINTER_UP),
+      );
+
+      expect(handler).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  test.each([
+    { cellType: CellType.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellType.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellType.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+    { cellType: CellType.DATA_CELL, event: S2Event.DATA_CELL_CLICK },
+    { cellType: CellType.MERGED_CELL, event: S2Event.MERGED_CELLS_CLICK },
+  ])(
+    'should trigger click event if event target is condition icon image shape for event %o',
+    async ({ cellType, event }) => {
+      const guiIcon = new GuiIcon({
+        name: 'SortUp',
+        width: 10,
+        height: 10,
+      });
+
+      spreadsheet.getCell = () =>
+        ({
+          cellType,
+          getMeta: () => {},
+          // 模拟当前的 target 是字段标记的 icon
+          getConditionIconShapes: () => [guiIcon],
+        }) as any;
+
+      const handler = jest.fn();
+
+      await sleep(200); // 图片加载
+
+      spreadsheet.container.appendChild(guiIcon); // 加入 g 渲染树才有事件传递
+      spreadsheet.once(event, handler);
+
+      // 内部的 GuiIcon
+      const { iconImageShape } = guiIcon;
+
+      Object.defineProperty(eventController, 'target', {
+        value: iconImageShape,
+        writable: true,
+      });
+      iconImageShape.dispatchEvent(
+        createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
       );
 
       expect(handler).toHaveBeenCalledTimes(1);

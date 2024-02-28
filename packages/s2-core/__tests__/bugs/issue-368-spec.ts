@@ -4,11 +4,12 @@
  * Wrong style when show the totals in multi-value mode
  *
  */
+import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-368.json';
 import { getContainer } from '../util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
   totals: {
@@ -32,7 +33,7 @@ const s2Options = {
 describe('Total Cells Rendering Test', () => {
   let s2: SpreadSheet;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
     await s2.render();
@@ -66,7 +67,7 @@ describe('Total Cells Rendering Test', () => {
       totals: {
         ...s2Options.totals,
         row: {
-          ...s2Options.totals.row,
+          ...s2Options.totals!.row,
           subTotalsDimensions: ['row0'],
         },
       },

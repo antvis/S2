@@ -56,7 +56,6 @@ export class GuiIcon extends Group {
 
       const img = new Image();
 
-      // 成功
       img.onload = () => {
         ImageCache[cacheKey] = img;
         resolve(img);

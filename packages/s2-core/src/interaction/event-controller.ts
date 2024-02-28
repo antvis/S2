@@ -15,7 +15,7 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type { EmitterType, ResizeInfo } from '../common/interface';
+import type { EmitterType, ResizeInfo, S2CellType } from '../common/interface';
 import { CustomImage } from '../engine';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
@@ -116,6 +116,15 @@ export class EventController {
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
   private isGuiIconShape = (target: CanvasEvent['target']) => {
     return target instanceof CustomImage && target.imgType === GuiIcon.type;
+  };
+
+  private isConditionIconShape = (
+    target: CanvasEvent['target'],
+    cell: S2CellType,
+  ) => {
+    return cell
+      .getConditionIconShapes()
+      .some((shape) => shape?.name === (target as Group)?.attributes?.name);
   };
 
   // Windows and Mac OS
@@ -469,34 +478,27 @@ export class EventController {
     if (cell) {
       const cellType = cell.cellType;
 
-      // target相同，说明是一个cell内的 click 事件
+      // target 相同，说明是一个 cell 内的 click 事件
       if (this.target === event.target) {
-        const isGuiIconShape = this.isGuiIconShape(event.target);
+        // 屏蔽 actionIcons 的点击，字段标记增加的 icon 除外.
+        if (
+          this.isGuiIconShape(event.target) &&
+          !this.isConditionIconShape(event.target, cell)
+        ) {
+          return;
+        }
 
         switch (cellType) {
           case CellType.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
             break;
           case CellType.ROW_CELL:
-            // 屏蔽 actionIcons 的点击，只有 HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
-            if (isGuiIconShape) {
-              break;
-            }
-
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellType.COL_CELL:
-            if (isGuiIconShape) {
-              break;
-            }
-
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellType.CORNER_CELL:
-            if (isGuiIconShape) {
-              break;
-            }
-
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
           case CellType.MERGED_CELL:
@@ -507,7 +509,7 @@ export class EventController {
         }
       }
 
-      // 通用的mouseup事件
+      // 通用的 mouseup 事件
       switch (cellType) {
         case CellType.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);

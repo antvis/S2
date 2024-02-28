@@ -5,9 +5,10 @@
  */
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-511.json';
+import type { S2Options } from '../../src';
 import { PivotSheet } from '@/sheet-type';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
 };
