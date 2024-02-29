@@ -221,7 +221,7 @@ export type Data = RawData & ExtraData;
 
 ## DataSet
 
-功能描述：自定义数据集。[查看示例](#TODO)
+功能描述：自定义数据集。[查看示例](/examples/custom/custom-dataset/#custom-strategy-sheet-dataset)
 
 ```js
 DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;

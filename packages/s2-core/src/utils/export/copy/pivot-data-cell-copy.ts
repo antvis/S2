@@ -461,7 +461,7 @@ export const processSelectedAllPivot = (
   return pivotDataCellCopy.getPivotAllCopyData();
 };
 
-export const processSelectedAllPivotAsync = (
+export const asyncProcessSelectedAllPivot = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
   const { sheetInstance, split, formatOptions, customTransformer } = params;

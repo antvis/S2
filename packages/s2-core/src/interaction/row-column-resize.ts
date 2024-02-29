@@ -439,8 +439,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    event?.preventDefault?.();
-
     const resizeInfo = this.getResizeInfo();
     const resizeShapes =
       (this.resizeReferenceGroup?.children as DisplayObject[]) || [];

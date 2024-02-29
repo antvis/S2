@@ -11,6 +11,23 @@ fetch(
     const s2Options: S2Options = {
       width: 600,
       height: 480,
+      // 自定义 Icon 点击后显示 Tooltip
+      headerActionIcons: [
+        {
+          icons: ['Trend'],
+          belongsCell: 'rowCell',
+          defaultHide: false,
+          onClick({ event, meta }) {
+            meta.spreadsheet.showTooltip({
+              position: {
+                x: event?.clientX || 0,
+                y: event?.clientX || 0,
+              },
+              content: `<p>我是 Trend Icon 自定义内容</p>`,
+            });
+          },
+        },
+      ],
       tooltip: {
         enable: true,
         // 1. 支持字符串

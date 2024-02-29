@@ -206,8 +206,6 @@ class TableDataCellCopy extends BaseDataCellCopy {
   /**
    * allSelected: false 时，明细表点击 行头/列头 进行复制逻辑
    * allSelected: true 时，明细表点击 全选 进行复制逻辑
-   * @param {boolean} allSelected
-   * @return {CopyableList}
    * @deprecated 后续将废弃，使用 asyncProcessSelectedTable 替代
    */
   processSelectedTable(allSelected = false): CopyableList {
@@ -246,45 +244,21 @@ class TableDataCellCopy extends BaseDataCellCopy {
 /**
  * 明细表点击行头进行复制逻辑
  * @param {SpreadSheet} spreadsheet
- * @param {CellMeta[]} selectedRowsOrCols
+ * @param {CellMeta[]} selectedHeaders
  * @return {CopyableList}
  */
 export const processSelectedTableByHeader = (
   spreadsheet: SpreadSheet,
-  selectedRowsOrCols: CellMeta[],
+  selectedHeaders: CellMeta[],
 ): CopyableList => {
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet,
     config: {
-      selectedCells: selectedRowsOrCols,
+      selectedCells: selectedHeaders,
     },
   });
 
   return tableDataCellCopy.processSelectedTable();
-};
-
-/**
- * 导出全部数据
- * @param {CopyAllDataParams} params
- * @return {CopyableList}
- * @deprecated 后续将废弃，使用 asyncProcessSelectedAllTable 替代
- */
-export const processSelectedAllTable = (
-  params: CopyAllDataParams,
-): CopyableList => {
-  const { sheetInstance, split, formatOptions, customTransformer } = params;
-  const tableDataCellCopy = new TableDataCellCopy({
-    spreadsheet: sheetInstance,
-    config: {
-      selectedCells: [],
-      separator: split,
-      formatOptions,
-      customTransformer,
-    },
-    isExport: true,
-  });
-
-  return tableDataCellCopy.processSelectedTable(true);
 };
 
 // 导出全部数据

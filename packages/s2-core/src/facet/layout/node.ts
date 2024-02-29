@@ -74,7 +74,7 @@ export class Node {
   // node height
   public height = 0;
 
-  // cell index in layout list(TODO What's use for?)
+  // cell index in layout list
   public colIndex = -1;
 
   // node's level in tree hierarchy

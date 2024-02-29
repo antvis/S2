@@ -24,7 +24,7 @@ export function useSpreadSheet(
     themeCfg,
     loading: loadingProps,
     sheetType,
-    onSpreadsheet,
+    spreadsheet: customSpreadSheet,
     onMounted: onS2Mounted,
   } = props;
   const wrapperRef = ref<HTMLDivElement>();
@@ -35,15 +35,14 @@ export function useSpreadSheet(
   const { loading, setLoading } = useLoading(s2Ref, loadingProps);
   const pagination = usePagination(s2Ref, props);
 
-  // TODO: 如果 onSpreadsheet 属性变更了怎么办？？？
   const renderSpreadSheet = (container: HTMLDivElement) => {
     const rawDataCfg = toRaw(dataCfg!);
     const rawOptions = toRaw(options);
 
     const s2Options = getSheetComponentOptions(rawOptions as S2Options);
 
-    if (onSpreadsheet) {
-      return onSpreadsheet(container, rawDataCfg, s2Options);
+    if (customSpreadSheet) {
+      return customSpreadSheet(container, rawDataCfg, s2Options);
     }
 
     if (sheetType === 'table') {

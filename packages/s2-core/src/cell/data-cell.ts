@@ -236,6 +236,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     switch (stateName) {
       case InteractionStateName.SELECTED:
+      case InteractionStateName.DATA_CELL_BRUSH_SELECTED:
         this.handleSelect(cells);
         break;
       case InteractionStateName.HOVER_FOCUS:
@@ -364,7 +365,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId!);
     const fieldId = rowMeta ? rowId : valueField;
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId!);
-    // TODO: 这里只用 formatter(fieldValue, this.meta) 即可, 为了保持兼容, 暂时在第三个参入传入 meta 信息
     const formattedValue =
       displayFormattedValue ?? formatter(fieldValue, data, this.meta);
 
