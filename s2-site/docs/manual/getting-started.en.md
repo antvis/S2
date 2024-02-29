@@ -215,30 +215,6 @@ yarn add antd @ant-design/icons
 
 ​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
 
-#### Table mobile component usage
-
-```ts
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { MobileSheet } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
-
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <MobileSheet
-    dataCfg={s2DataConfig}
-  />,
-  document.getElementById('container'),
-);
-```
-
-#### Precautions
-
-The mobile-side component `MobileSheet` will have built-in mobile-specific `options` , and there are special components on the mobile side, which are different from those on the PC side.
-
-​📊 Check out the [React version pivot table mobile demo](/zh/examples/react-component/sheet#mobile-pivot) .
-
 ### `Vue3` version
 
 `S2` also provides an out-of-the-box `Vue3` version of the table component to help developers quickly meet business analysis needs.

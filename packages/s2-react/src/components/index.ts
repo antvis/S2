@@ -4,7 +4,6 @@ export { EditableSheet } from './sheets/editable-sheet';
 export { EditCell } from './sheets/editable-sheet/custom-cell';
 export { GridAnalysisSheet } from './sheets/grid-analysis-sheet';
 export { StrategySheet } from './sheets/strategy-sheet';
-export { MobileSheet } from './sheets/mobile-sheet';
 export { ChartSheet } from './sheets/chart-sheet';
 export { StrategySheetDataSet } from './sheets/strategy-sheet/custom-data-set';
 export * from './sheets/strategy-sheet/custom-tooltip';
