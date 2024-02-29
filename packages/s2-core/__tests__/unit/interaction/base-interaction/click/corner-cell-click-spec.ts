@@ -4,11 +4,11 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import { CellType, InteractionStateName, type Node } from '../../../../../src';
-import type { GEvent } from '@/index';
-import type { S2Options } from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
 import { InterceptType, S2Event } from '@/common/constant';
+import type { HierarchyType, S2Options } from '@/common/interface';
+import type { GEvent } from '@/index';
 import { CornerCellClick } from '@/interaction';
+import type { SpreadSheet } from '@/sheet-type';
 
 jest.mock('@/interaction/event-controller');
 
@@ -43,30 +43,40 @@ describe('Interaction Corner Cell Click Tests', () => {
     expect(cornerCellClick.bindEvents).toBeDefined();
   });
 
-  test('should select current column cells when row corner cell click', () => {
-    const selected = jest.fn();
+  test.each(['grid', 'tree'] as HierarchyType[])(
+    'should select current column cells when row corner cell click by %s mode',
+    async (hierarchyType) => {
+      s2.setOptions({ hierarchyType });
+      await s2.render();
 
-    s2.on(S2Event.GLOBAL_SELECTED, selected);
+      const selected = jest.fn();
 
-    s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
 
-    expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
-    expect(s2.showTooltipWithInfo).toHaveBeenCalledWith(expect.anything(), [], {
-      data: { summaries: [{ name: '', selectedData: [], value: null }] },
-    });
-    expect(s2.interaction.getState()).toEqual({
-      cells: [
+      s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+      expect(s2.showTooltipWithInfo).toHaveBeenCalledWith(
+        expect.anything(),
+        [],
         {
-          colIndex: -1,
-          rowIndex: -1,
-          type: CellType.ROW_CELL,
-          id: mockCellInfo.mockCellMeta['id'],
+          data: { summaries: [{ name: '', selectedData: [], value: null }] },
         },
-      ],
-      stateName: InteractionStateName.SELECTED,
-    });
-    expect(selected).toHaveBeenCalled();
-  });
+      );
+      expect(s2.interaction.getState()).toEqual({
+        cells: [
+          {
+            colIndex: -1,
+            rowIndex: -1,
+            type: CellType.ROW_CELL,
+            id: mockCellInfo.mockCellMeta['id'],
+          },
+        ],
+        stateName: InteractionStateName.SELECTED,
+      });
+      expect(selected).toHaveBeenCalled();
+    },
+  );
 
   test('should not select current column cells when column corner cell click', () => {
     s2.getCell = () => null;
