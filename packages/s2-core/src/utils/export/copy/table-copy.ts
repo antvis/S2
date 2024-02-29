@@ -62,7 +62,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     return this.displayData.map((row, i) =>
       this.columnNodes.map((node) => {
-        const field = node.field;
+        const field = node?.field;
 
         if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
           return (i + 1).toString();
@@ -73,7 +73,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
           this.config.formatData,
           this.spreadsheet.dataSet,
         );
-        const value = row[field];
+        const value = row?.[field];
 
         return formatter(value);
       }),
@@ -140,9 +140,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
     });
   }
 
+  private isSeriesNumberField(field: string) {
+    const { seriesNumber } = this.spreadsheet.options;
+
+    return SERIES_NUMBER_FIELD === field && seriesNumber?.enable;
+  }
+
   private getColMatrix(): string[] {
     const { formatHeader } = this.config;
-    const { seriesNumber } = this.spreadsheet.options;
 
     // 明细表的表头，没有格式化
     return this.columnNodes.map((node) => {
@@ -152,7 +157,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
         return field;
       }
 
-      return SERIES_NUMBER_FIELD === field && seriesNumber?.enable
+      return this.isSeriesNumberField(field)
         ? getDefaultSeriesNumberText()
         : this.spreadsheet.dataSet.getFieldName(field);
     }) as string[];
@@ -161,14 +166,16 @@ class TableDataCellCopy extends BaseDataCellCopy {
   private getValueFromMeta = (meta: CellMeta) => {
     const [, colNode] = getHeaderNodeFromMeta(meta, this.spreadsheet);
 
-    const fieldKey = getColNodeFieldFromNode(
+    const field = getColNodeFieldFromNode(
       this.spreadsheet.isPivotMode,
       colNode,
-    );
-    const value = this.displayData[meta.rowIndex]?.[fieldKey!];
+    )!;
+    const value = this.isSeriesNumberField(field)
+      ? meta.rowIndex + 1
+      : this.displayData[meta.rowIndex]?.[field];
 
     const formatter = getFormatter(
-      fieldKey!,
+      field!,
       this.config.formatData,
       this.spreadsheet.dataSet,
     );

@@ -24,6 +24,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     spreadsheet,
   } = params;
 
+  const isTableMode = spreadsheet.isTableMode();
+
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
@@ -63,7 +65,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isGrandTotals = parentNode.isGrandTotals!;
       isSubTotals = parentNode.isSubTotals!;
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
-    } else if (spreadsheet.isTableMode()) {
+    } else if (isTableMode) {
       value = fieldValue;
       adjustedField = fields[index];
       nodeQuery = { ...query, [adjustedField]: value };
@@ -80,7 +82,9 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     }
 
-    const nodeId = generateId(parentNode.id, value);
+    // 明细表使用 field 生成 id, 保证唯一性, 避免同名的情况
+    const displayField = isTableMode ? adjustedField : value;
+    const nodeId = generateId(parentNode.id, displayField);
 
     if (!nodeId) {
       return;

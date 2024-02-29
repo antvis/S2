@@ -45,6 +45,23 @@ describe('SpreadSheet Tests', () => {
       s2.destroy();
     });
 
+    test('should generate header node by field value', async () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
+      await s2.render();
+
+      expect(s2.facet.getRowNodes().map((node) => node.id)).toEqual([
+        'root[&]浙江',
+        'root[&]浙江[&]义乌',
+        'root[&]浙江[&]杭州',
+      ]);
+      expect(s2.facet.getColNodes().map((node) => node.id)).toEqual([
+        'root[&]笔',
+        'root[&]笔[&]price',
+        'root[&]笔[&]cost',
+      ]);
+    });
+
     test('should init sheet by selector container', async () => {
       const CONTAINER_ID = 'container';
 

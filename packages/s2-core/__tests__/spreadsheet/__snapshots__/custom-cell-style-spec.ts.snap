@@ -246,12 +246,12 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "root[&]类别",
+    "id": "root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "root[&]子类别",
+    "id": "root[&]sub_type",
     "width": 299.5,
   },
 ]
@@ -261,132 +261,132 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "0-root[&]类别",
+    "id": "0-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "1-root[&]类别",
+    "id": "1-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "2-root[&]类别",
+    "id": "2-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "3-root[&]类别",
+    "id": "3-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "4-root[&]类别",
+    "id": "4-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "5-root[&]类别",
+    "id": "5-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "6-root[&]类别",
+    "id": "6-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "7-root[&]类别",
+    "id": "7-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "8-root[&]类别",
+    "id": "8-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "9-root[&]类别",
+    "id": "9-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "10-root[&]类别",
+    "id": "10-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "11-root[&]类别",
+    "id": "11-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "12-root[&]类别",
+    "id": "12-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "0-root[&]子类别",
+    "id": "0-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "1-root[&]子类别",
+    "id": "1-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "2-root[&]子类别",
+    "id": "2-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "3-root[&]子类别",
+    "id": "3-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "4-root[&]子类别",
+    "id": "4-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "5-root[&]子类别",
+    "id": "5-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "6-root[&]子类别",
+    "id": "6-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "7-root[&]子类别",
+    "id": "7-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "8-root[&]子类别",
+    "id": "8-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "9-root[&]子类别",
+    "id": "9-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "10-root[&]子类别",
+    "id": "10-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "11-root[&]子类别",
+    "id": "11-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "12-root[&]子类别",
+    "id": "12-root[&]sub_type",
     "width": 299.5,
   },
 ]
@@ -396,12 +396,12 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "root[&]类别",
+    "id": "root[&]type",
     "width": 50,
   },
   Object {
     "height": 30,
-    "id": "root[&]子类别",
+    "id": "root[&]sub_type",
     "width": 120,
   },
 ]
@@ -451,13 +451,13 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "root[&]类别",
-    "width": 100,
+    "id": "root[&]type",
+    "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "root[&]子类别",
-    "width": 200,
+    "id": "root[&]sub_type",
+    "width": 299.5,
   },
 ]
 `;
@@ -466,12 +466,12 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 30,
-    "id": "root[&]类别",
+    "id": "root[&]type",
     "width": 100,
   },
   Object {
     "height": 30,
-    "id": "root[&]子类别",
+    "id": "root[&]sub_type",
     "width": 100,
   },
 ]
@@ -481,72 +481,72 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 60,
-    "id": "0-root[&]类别",
+    "id": "0-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "1-root[&]类别",
+    "id": "1-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "2-root[&]类别",
+    "id": "2-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "3-root[&]类别",
+    "id": "3-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "4-root[&]类别",
+    "id": "4-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "5-root[&]类别",
+    "id": "5-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "6-root[&]类别",
+    "id": "6-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "0-root[&]子类别",
+    "id": "0-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "1-root[&]子类别",
+    "id": "1-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "2-root[&]子类别",
+    "id": "2-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "3-root[&]子类别",
+    "id": "3-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "4-root[&]子类别",
+    "id": "4-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "5-root[&]子类别",
+    "id": "5-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 60,
-    "id": "6-root[&]子类别",
+    "id": "6-root[&]sub_type",
     "width": 299.5,
   },
 ]
@@ -556,102 +556,102 @@ exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests 
 Array [
   Object {
     "height": 40,
-    "id": "0-root[&]类别",
+    "id": "0-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "1-root[&]类别",
+    "id": "1-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 100,
-    "id": "2-root[&]类别",
+    "id": "2-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "3-root[&]类别",
+    "id": "3-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "4-root[&]类别",
+    "id": "4-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "5-root[&]类别",
+    "id": "5-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "6-root[&]类别",
+    "id": "6-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "7-root[&]类别",
+    "id": "7-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "8-root[&]类别",
+    "id": "8-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "9-root[&]类别",
+    "id": "9-root[&]type",
     "width": 299.5,
   },
   Object {
     "height": 40,
-    "id": "0-root[&]子类别",
+    "id": "0-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "1-root[&]子类别",
+    "id": "1-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 100,
-    "id": "2-root[&]子类别",
+    "id": "2-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "3-root[&]子类别",
+    "id": "3-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "4-root[&]子类别",
+    "id": "4-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "5-root[&]子类别",
+    "id": "5-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "6-root[&]子类别",
+    "id": "6-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "7-root[&]子类别",
+    "id": "7-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "8-root[&]子类别",
+    "id": "8-root[&]sub_type",
     "width": 299.5,
   },
   Object {
     "height": 30,
-    "id": "9-root[&]子类别",
+    "id": "9-root[&]sub_type",
     "width": 299.5,
   },
 ]
