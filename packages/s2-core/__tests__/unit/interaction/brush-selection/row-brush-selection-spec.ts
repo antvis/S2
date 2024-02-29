@@ -11,6 +11,7 @@ import {
   SpreadSheet,
   type OriginalEvent,
   type S2DataConfig,
+  EventController,
 } from '@/index';
 
 jest.mock('@/interaction/event-controller');
@@ -73,6 +74,13 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     s2.showTooltipWithInfo = jest.fn();
     s2.getCell = jest.fn(() => startBrushRowCell) as any;
     mockRootInteraction = new MockRootInteraction(s2);
+    mockRootInteraction.eventController = new EventController(s2);
+    mockRootInteraction.eventController.getViewportPoint = (event) => {
+      return s2.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
     mockRootInteraction.getBrushSelection = () => {
       return {
         dataCell: true,
@@ -259,7 +267,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     expect(brushSelectionInstance.brushRangeCells.length).toEqual(8);
   });
 
-  test('should not emit brush secletion event', () => {
+  test('should not emit brush selection event', () => {
     mockRootInteraction.getBrushSelection = () => ({
       dataCell: true,
       rowCell: false,

@@ -3,6 +3,7 @@ import {
   DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
   type Group,
+  type PointLike,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
@@ -698,5 +699,28 @@ export class EventController {
     this.canvasEventHandlers = [];
     this.s2EventHandlers = [];
     this.domEventListeners = [];
+  }
+
+  public getViewportPoint(
+    event: MouseEvent | PointerEvent | CanvasEvent,
+  ): PointLike {
+    const config = this.spreadsheet.getCanvasConfig();
+
+    // https://github.com/antvis/G/blob/a43c19a662684945d0bf9dc1876af43ac26b1243/packages/g-lite/src/plugins/EventPlugin.ts#L216
+    if (
+      config.supportsCSSTransform &&
+      !isNil(event.offsetX) &&
+      !isNil(event.offsetY)
+    ) {
+      return {
+        x: event.offsetX,
+        y: event.offsetY,
+      };
+    }
+
+    return this.spreadsheet.container.client2Viewport({
+      x: event.clientX,
+      y: event.clientY,
+    });
   }
 }
