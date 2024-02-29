@@ -24,7 +24,7 @@
     },
     {
       "field": "type",
-      "name": "类别",
+      "name": "省份",
       "description": "类别说明。。"
     },
     {

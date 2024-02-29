@@ -48,21 +48,38 @@ exports[`List Table Core Data Process should copy correct data when selected dia
 	宁波市"
 `;
 
-exports[`Pivot Table Core Data Process should copy format total data in grid mode: 
-      "			总计	家具	家具	家具
-      				小计	桌子	沙发
-      总计			78868元	49709元	26193元	23516元
-      浙江省	小计		43098元	32418元	18375元	14043元
-      浙江省	杭州市	number	15420元	13132元	7789元	5343元
-      浙江省	绍兴市	number	5657元	2999元	2367元	632元
-      浙江省	宁波市	number	13779元	11111元	3877元	7234元
-      浙江省	舟山市	number	8242元	5176元	4342元	834元
-      四川省	小计		35770元	17291元	7818元	9473元
-      四川省	成都市	number	10513元	4174元	1723元	2451元
-      四川省	绵阳市	number	7388元	4066元	1822元	2244元
-      四川省	南充市	number	10284元	4276元	1943元	2333元
-      四川省	乐山市	number	7585元	4775元	2330元	2445元"
-     1`] = `
+exports[`List Table Core Data Process should copy format data with col header if contain repeat column name 1`] = `
+Array [
+  Object {
+    "content": "浙江省	杭州市	家具	桌子	7789
+浙江省	绍兴市	家具	桌子	2367
+浙江省	宁波市	家具	桌子	3877
+浙江省	舟山市	家具	桌子	4342
+浙江省	杭州市	家具	沙发	5343
+浙江省	绍兴市	家具	沙发	632
+浙江省	宁波市	家具	沙发	7234
+浙江省	舟山市	家具	沙发	834
+浙江省	杭州市	办公用品	笔	945
+浙江省	绍兴市	办公用品	笔	1304
+浙江省	宁波市	办公用品	笔	1145
+浙江省	舟山市	办公用品	笔	1432
+浙江省	杭州市	办公用品	纸张	1343
+浙江省	绍兴市	办公用品	纸张	1354
+浙江省	宁波市	办公用品	纸张	1523
+浙江省	舟山市	办公用品	纸张	1634
+四川省	成都市	家具	桌子	1723
+四川省	绵阳市	家具	桌子	1822
+四川省	南充市	家具	桌子	1943",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>浙江省</td><td>杭州市</td><td>家具</td><td>桌子</td><td>7789</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>家具</td><td>桌子</td><td>2367</td></tr><tr><td>浙江省</td><td>宁波市</td><td>家具</td><td>桌子</td><td>3877</td></tr><tr><td>浙江省</td><td>舟山市</td><td>家具</td><td>桌子</td><td>4342</td></tr><tr><td>浙江省</td><td>杭州市</td><td>家具</td><td>沙发</td><td>5343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>家具</td><td>沙发</td><td>632</td></tr><tr><td>浙江省</td><td>宁波市</td><td>家具</td><td>沙发</td><td>7234</td></tr><tr><td>浙江省</td><td>舟山市</td><td>家具</td><td>沙发</td><td>834</td></tr><tr><td>浙江省</td><td>杭州市</td><td>办公用品</td><td>笔</td><td>945</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>办公用品</td><td>笔</td><td>1304</td></tr><tr><td>浙江省</td><td>宁波市</td><td>办公用品</td><td>笔</td><td>1145</td></tr><tr><td>浙江省</td><td>舟山市</td><td>办公用品</td><td>笔</td><td>1432</td></tr><tr><td>浙江省</td><td>杭州市</td><td>办公用品</td><td>纸张</td><td>1343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>办公用品</td><td>纸张</td><td>1354</td></tr><tr><td>浙江省</td><td>宁波市</td><td>办公用品</td><td>纸张</td><td>1523</td></tr><tr><td>浙江省</td><td>舟山市</td><td>办公用品</td><td>纸张</td><td>1634</td></tr><tr><td>四川省</td><td>成都市</td><td>家具</td><td>桌子</td><td>1723</td></tr><tr><td>四川省</td><td>绵阳市</td><td>家具</td><td>桌子</td><td>1822</td></tr><tr><td>四川省</td><td>南充市</td><td>家具</td><td>桌子</td><td>1943</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
+exports[`Pivot Table Core Data Process should copy format total data in grid mode 1`] = `
 "			总计	家具	家具	家具
 				小计	桌子	沙发
 总计			78868元	49709元	26193元	23516元

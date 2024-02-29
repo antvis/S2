@@ -259,4 +259,30 @@ describe('TableSheet normal spec', () => {
 
     s2.destroy();
   });
+
+  test('should generate col node by field id', async () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+
+    await s2.render();
+
+    expect(s2.facet.getColNodes().map((node) => node.id)).toEqual([
+      'root[&]$$series_number$$',
+      'root[&]order_id',
+      'root[&]ship_date',
+      'root[&]express_type',
+      'root[&]customer_name',
+      'root[&]customer_type',
+      'root[&]city',
+      'root[&]province',
+      'root[&]counter',
+      'root[&]area',
+      'root[&]type',
+      'root[&]sub_type',
+      'root[&]product_name',
+      'root[&]sale_amt',
+      'root[&]count',
+      'root[&]discount',
+      'root[&]profit',
+    ]);
+  });
 });
