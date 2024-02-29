@@ -1,6 +1,6 @@
-import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
+import type { FederatedPointerEvent as CanvasEvent, PointLike } from '@antv/g';
 import type * as CSS from 'csstype';
-import type { Point, S2CellType, ViewMetaData } from '../../common/interface';
+import type { S2CellType, ViewMetaData } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseTooltip } from '../../ui/tooltip';
 
@@ -66,7 +66,7 @@ export interface TooltipOperatorOptions<Menu = BaseTooltipOperatorMenuOptions> {
   menu?: Menu;
 }
 
-export type TooltipPosition = Point;
+export type TooltipPosition = PointLike;
 
 export type TooltipDetailListItem = {
   name: string;

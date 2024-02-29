@@ -1004,9 +1004,9 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     const pointInCanvas = getClientPointOnCanvas(spreadsheet.container, 10, 10);
-    const evt = new window.CustomEvent('click');
+    const event = new window.CustomEvent('click');
 
-    Object.defineProperties(evt, {
+    Object.defineProperties(event, {
       clientX: {
         value: pointInCanvas.clientX,
       },
@@ -1014,10 +1014,41 @@ describe('Interaction Event Controller Tests', () => {
         value: pointInCanvas.clientY,
       },
     });
-    spreadsheet.getCanvasElement().dispatchEvent(evt);
+    spreadsheet.getCanvasElement().dispatchEvent(event);
 
     expect(eventController.isCanvasEffect).toBe(true);
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  // https://github.com/antvis/S2/issues/2553
+  test('should use offset point if enable supportsCSSTransform', () => {
+    jest.spyOn(spreadsheet, 'getCanvasConfig').mockImplementationOnce(() => {
+      return {
+        supportsCSSTransform: true,
+      };
+    });
+
+    const event = new MouseEvent('click');
+
+    Object.defineProperties(event, {
+      offsetX: {
+        value: 100,
+      },
+      offsetY: {
+        value: 200,
+      },
+      clientX: {
+        value: 300,
+      },
+      clientY: {
+        value: 400,
+      },
+    });
+
+    expect(eventController.getViewportPoint(event)).toStrictEqual({
+      x: 100,
+      y: 200,
+    });
   });
 });

@@ -599,9 +599,18 @@ export abstract class SpreadSheet extends EE {
 
   /**
    * 获取 G Canvas 实例
+   * @see https://g.antv.antgroup.com/api/renderer/canvas
    */
   public getCanvas(): Canvas {
     return this.container;
+  }
+
+  /**
+   * 获取 G Canvas 配置
+   * @see https://g.antv.antgroup.com/api/canvas/options
+   */
+  public getCanvasConfig(): Partial<CanvasConfig> {
+    return this.getCanvas().getConfig();
   }
 
   /**

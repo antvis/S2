@@ -1,3 +1,4 @@
+import type { PointLike } from '@antv/g';
 import { isNil, last, map } from 'lodash';
 import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -9,7 +10,6 @@ import {
 import type {
   BrushRange,
   OnUpdateCells,
-  Point,
   ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine';
@@ -32,7 +32,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
     });
   }
 
-  protected isPointInCanvas(point: Point) {
+  protected isPointInCanvas(point: PointLike) {
     // 获取行头的区域范围
     const { height: maxY } = this.spreadsheet.facet.getCanvasSize();
     const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
@@ -52,10 +52,8 @@ export class RowCellBrushSelection extends BaseBrushSelection {
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
 
-      const pointInCanvas = this.spreadsheet.container.client2Viewport({
-        x: event.clientX,
-        y: event.clientY,
-      });
+      const pointInCanvas =
+        this.spreadsheet.interaction.eventController.getViewportPoint(event);
 
       if (this.autoBrushScroll(pointInCanvas, true)) {
         return;
@@ -182,7 +180,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
     return this.validateYIndex(nextRowIndex);
   };
 
-  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): PointLike {
     const { minY } = this.spreadsheet.facet.panelBBox;
     const x = brushRange.start.x;
     const y = Math.max(brushRange.start.y, minY);
