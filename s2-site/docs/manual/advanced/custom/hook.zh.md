@@ -68,7 +68,7 @@ S2 默认提供丰富的功能配置，除此之外，也提供丰富的 [`自�
 
 ## cornerHeader
 
-改变角头的默认实现，需要继承自 [Group](https://g.antv.antgroup.com/docs/api/group)，重写某些方法，比如渲染内容更换等。[查看示例](/examples/custom/custom-cell#corner-cell)
+改变角头的默认实现，需要继承自 [Group](https://g.antv.antgroup.com/api/basic/group)，重写某些方法，比如渲染内容更换等。[查看示例](/examples/custom/custom-cell#corner-cell)
 
 ## frame
 

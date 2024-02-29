@@ -22,7 +22,7 @@ s2.isPivotMode()
 | dataSet | 表格数据集 （字段，数据，排序）                                                                                                       | [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
 | facet | 当前可视渲染区域                                                                                                               | [BaseFacet](/docs/api/basic-class/base-facet) |    |
 | tooltip | 提示信息                                                                                                                | [BaseTooltip](/docs/api/basic-class/base-tooltip) |    |
-| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/docs/api/canvas) |    |
+| container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.antgroup.com/api/renderer/canvas) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
 | hd | 开启高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/next/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |

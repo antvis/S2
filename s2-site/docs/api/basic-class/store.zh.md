@@ -23,7 +23,7 @@ s2.store.set('key', value) // 存储
 | drillDownFieldInLevel | 下钻节点层级信息 | [PartDrillDownInfo[]](#partdrilldowninfo) |
 | originalDataCfg | 原始数据配置 | [S2DataConfig](/docs/api/general/S2DataConfig)|
 | panelBBox | 可视区域包裹盒模型 | [BBox](/docs/api/basic-class/base-bbox) |
-| activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.antgroup.com/docs/api/group) |
+| activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.antgroup.com/api/basic/group) |
 | valueRanges | 条件格式值区间 | [ValueRanges](#valueranges) |
 | initColLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/docs/api/basic-class/node)|
 | hiddenColumnsDetail | 隐藏的列头详情 | [HiddenColumnsInfo[]](#hiddencolumnsinfo) |
