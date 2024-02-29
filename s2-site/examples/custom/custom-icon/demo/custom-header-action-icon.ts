@@ -1,19 +1,14 @@
-import React from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
-
-const CornerTooltip = () => <div>CornerTooltip</div>;
-
-const RowTooltip = () => <div>RowTooltip</div>;
-
-const ColTooltip = () => <div>ColTooltip</div>;
+import { PivotSheet, S2Options } from '@antv/s2';
+import '@antv/s2/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
-    const s2Options: SheetComponentOptions = {
+  .then(async (dataCfg) => {
+    const container = document.getElementById('container');
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       customSVGIcons: [
@@ -45,7 +40,7 @@ fetch(
 
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              content: <ColTooltip />,
+              content: `<div>ColTooltip</div>`,
             });
           },
         },
@@ -58,7 +53,7 @@ fetch(
 
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              content: <CornerTooltip />,
+              content: `<div>CornerTooltip</div>`,
             });
           },
         },
@@ -73,7 +68,7 @@ fetch(
 
                 meta.spreadsheet.tooltip.show({
                   position: { x: event.clientX, y: event.clientY },
-                  content: <RowTooltip />,
+                  content: `<div>RowTooltip</div>`,
                 });
               },
             },
@@ -84,10 +79,13 @@ fetch(
               displayCondition: (meta) => meta.rowIndex > 2,
               onHover: (options) => {
                 const { meta, event } = options;
+                const content = document.createElement('div');
+
+                content.innerHTML = '我是 RowTooltip 自定义内容';
 
                 meta.spreadsheet.tooltip.show({
                   position: { x: event.clientX, y: event.clientY },
-                  content: <RowTooltip />,
+                  content,
                 });
               },
             },
@@ -102,7 +100,7 @@ fetch(
       },
     };
 
-    reactDOMClient
-      .createRoot(document.getElementById('container'))
-      .render(<SheetComponent dataCfg={dataCfg} options={s2Options} />);
+    const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    await s2.render();
   });

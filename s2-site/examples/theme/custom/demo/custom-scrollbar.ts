@@ -1,4 +1,4 @@
-import { PivotSheet, S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())

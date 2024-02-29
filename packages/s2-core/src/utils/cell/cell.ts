@@ -200,7 +200,7 @@ export const getBorderPositionAndStyle = (
     borderDash,
   } = style;
 
-  // TODO: 如果是空数组 G 底层绘制会报错
+  // 如果是空数组 G 底层绘制会报错
   const lineDash: LineStyleProps['lineDash'] = isEmpty(borderDash)
     ? ''
     : borderDash;

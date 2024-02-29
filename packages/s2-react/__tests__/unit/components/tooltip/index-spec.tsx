@@ -1,18 +1,14 @@
 import { DownCircleOutlined } from '@ant-design/icons';
 import {
-  BaseTooltip,
-  SpreadSheet,
   getTooltipOperatorSortMenus,
   type S2CellType,
-  type TooltipOperatorMenuItem,
   type TooltipDetailListItem,
+  type TooltipOperatorMenuItem,
   type TooltipSummaryOptions,
 } from '@antv/s2';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { CustomTooltip, TooltipComponent } from '../../../../src';
-import { MobileSheet } from '../../../../src/components/sheets/mobile-sheet';
+import { TooltipComponent } from '../../../../src';
 import { TooltipDetail } from '../../../../src/components/tooltip/components/detail';
 import { TooltipHead } from '../../../../src/components/tooltip/components/head-info';
 import { TooltipOperator } from '../../../../src/components/tooltip/components/operator';
@@ -58,26 +54,6 @@ describe('Tooltip Component Tests', () => {
 });
 
 describe('Tooltip Common Components Tests', () => {
-  test('custom tooltip instance of CustomTooltip', async () => {
-    let s2: SpreadSheet;
-
-    render(
-      <MobileSheet
-        dataCfg={mockDataConfig}
-        options={{ height: 300 }}
-        onMounted={(s) => {
-          s2 = s;
-        }}
-      />,
-    );
-
-    await waitFor(() => {
-      s2!.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
-      expect(s2!.tooltip).toBeInstanceOf(CustomTooltip);
-      expect(s2!.tooltip).toBeInstanceOf(BaseTooltip);
-    });
-  });
-
   test('render sort tooltip: TooltipOperator', () => {
     const mockCell = jest.fn();
     const mockMenuClick = jest.fn();

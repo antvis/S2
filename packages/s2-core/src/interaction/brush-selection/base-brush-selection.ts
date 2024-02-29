@@ -668,7 +668,6 @@ export class BaseBrushSelection
   };
 
   protected mouseDown(event: CanvasEvent) {
-    event?.preventDefault?.();
     if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
       return;
     }

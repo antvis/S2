@@ -107,7 +107,7 @@ export class ColCellBrushSelection extends BaseBrushSelection {
       onUpdateCells: (root) => {
         root.updateCells(facet.getColCells());
       },
-      stateName: InteractionStateName.BRUSH_SELECTED,
+      stateName: InteractionStateName.COL_CELL_BRUSH_SELECTED,
     });
 
     this.spreadsheet.emit(

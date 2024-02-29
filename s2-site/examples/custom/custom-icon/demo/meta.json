@@ -13,7 +13,7 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24KQ3JqKkrA/67f074b6-739b-4a61-a5c5-b18488a65797.png"
     },
     {
-      "filename": "custom-header-action-icon.tsx",
+      "filename": "custom-header-action-icon.ts",
       "title": {
         "zh": "自定义行列头操作图标",
         "en": "Custom header action icons"

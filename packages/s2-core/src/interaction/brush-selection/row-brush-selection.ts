@@ -103,7 +103,7 @@ export class RowCellBrushSelection extends BaseBrushSelection {
 
     this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
-      stateName: InteractionStateName.BRUSH_SELECTED,
+      stateName: InteractionStateName.ROW_CELL_BRUSH_SELECTED,
       onUpdateCells: this.onUpdateCells,
     });
 

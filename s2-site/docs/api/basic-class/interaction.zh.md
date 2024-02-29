@@ -98,8 +98,11 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
-  | MergedCell
   | SeriesNumberCell
+  | MergedCell
+  | TableDataCell
+  | TableCornerCell
+  | TableSeriesNumberCell
   | BaseCell<T>;
 ```
 
@@ -154,7 +157,9 @@ interface CellMeta {
 enum InteractionStateName {
   ALL_SELECTED = 'allSelected',
   SELECTED = 'selected',
-  BRUSH_SELECTED = 'brushSelected',
+  ROW_CELL_BRUSH_SELECTED = 'rowCellBrushSelected',
+  COL_CELL_BRUSH_SELECTED = 'colCellBrushSelected',
+  DATA_CELL_BRUSH_SELECTED = 'dataCellBrushSelected',
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',

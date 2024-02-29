@@ -144,9 +144,31 @@ const s2Options = {
         <div>我是自定义内容</div>
         <p>我也是是自定义内容</p>
       </div>
-    `,
+    `
   },
 };
+```
+
+或者是手动调用：
+
+```ts
+const content = document.createElement('div')
+content.innerHTML = '我是自定义内容'
+
+s2.showTooltip({
+  position: {},
+  content
+})
+
+s2.showTooltip({
+  position: {},
+  content: `
+    <div>
+      <div>我是自定义内容</div>
+      <p>我也是是自定义内容</p>
+    </div>
+  `
+})
 ```
 
 ##### 在 React 中使用 <Badge>@antv/s2-react</Badge>
@@ -391,7 +413,7 @@ const s2Options = {
           {
             key: 'custom-a',
             label: <div>操作 1</div>,
-            icon: <StarOutlined/>,
+            icon: <StarOutlined />,
           }
         ]
       }
@@ -506,7 +528,7 @@ const s2Options = {
 . [示例](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
-import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
+import { BaseEvent, S2Event } from '@antv/s2';
 
 class RowHoverInteraction extends BaseEvent {
   bindEvents() {

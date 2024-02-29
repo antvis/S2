@@ -111,6 +111,7 @@ describe('Data Cell Tests', () => {
         getRowLeafNodes: () => [],
         getRowLeafNodeByIndex: jest.fn(),
         getCells: () => [],
+        destroy: jest.fn(),
       } as unknown as PivotFacet;
 
       await s2.render();
@@ -222,6 +223,7 @@ describe('Data Cell Tests', () => {
         getRowLeafNodes: () => [],
         getRowLeafNodeByIndex: jest.fn(),
         getCells: () => [],
+        destroy: jest.fn(),
       } as unknown as PivotFacet;
 
       await s2.render();

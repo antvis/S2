@@ -80,8 +80,7 @@ describe('<ChartSheet/> Tests', () => {
     });
   });
 
-  // TODO: G2 发布新版后修复
-  test.skip('should find canvas container for g2 library', async () => {
+  test('should find canvas container for g2 library', async () => {
     const errorSpy = jest
       .spyOn(console, 'error')
       .mockImplementationOnce(() => {});
