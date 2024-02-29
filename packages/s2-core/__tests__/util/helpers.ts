@@ -137,6 +137,7 @@ export const createFakeSpreadSheet = (config?: {
     getColCells: () => [],
     getRowCells: () => [],
     getDataCells: () => [],
+    getRowNodesByField: () => [],
     getRowNodes: () => [],
     getRowLeafNodes: () => [],
     getColNodes: () => [],
@@ -208,7 +209,7 @@ export const createFakeSpreadSheet = (config?: {
 
 export const createMockCellInfo = (
   cellId: string,
-  { colIndex = 0, rowIndex = 0, colId = '0', level = 0 } = {},
+  { colIndex = 0, rowIndex = 0, colId = '0', level = 0, cornerType = '' } = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
@@ -218,6 +219,7 @@ export const createMockCellInfo = (
     colId,
     level,
     type: undefined,
+    cornerType,
     x: 0,
     y: 0,
     spreadsheet: {
@@ -246,6 +248,7 @@ export const createMockCellInfo = (
     'field',
     'colId',
     'field',
+    'cornerType',
   ]);
   const mockCell = {
     ...mockCellViewMeta,
