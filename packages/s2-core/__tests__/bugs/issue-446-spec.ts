@@ -6,10 +6,11 @@
  */
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-446.json';
+import type { S2Options } from '../../src';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
   seriesNumber: {

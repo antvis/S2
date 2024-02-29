@@ -57,15 +57,15 @@ describe('Spreadsheet Empty Test', () => {
   });
 
   test('should render skeleton when tree sheet in the valueInCols mode', async () => {
-    const valueInColstreeS2 = new PivotSheet(
+    const valueInColsTreeS2 = new PivotSheet(
       getContainer(),
       valueInCols,
       treeOptions,
     );
 
-    await valueInColstreeS2.render();
+    await valueInColsTreeS2.render();
 
-    const layoutResult = valueInColstreeS2.facet.getLayoutResult();
+    const layoutResult = valueInColsTreeS2.facet.getLayoutResult();
 
     expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toBeEmpty();

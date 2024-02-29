@@ -56,7 +56,7 @@ export enum S2Event {
   MERGED_CELLS_HOVER = 'merged-cells:hover',
   MERGED_CELLS_CLICK = 'merged-cells:click',
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
-  MERGED_CELLS_CONTEXT_MENU = 'merged-cell:context-menu',
+  MERGED_CELLS_CONTEXT_MENU = 'merged-cells:context-menu',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
   MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
   MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
