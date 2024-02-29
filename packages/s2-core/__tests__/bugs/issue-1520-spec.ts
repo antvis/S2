@@ -6,9 +6,9 @@
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-1520.json';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { GuiIcon } from '@/common';
+import { GuiIcon, type S2Options } from '@/common';
 
-const s2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
   conditions: {
