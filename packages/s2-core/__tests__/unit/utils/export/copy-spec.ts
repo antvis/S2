@@ -152,7 +152,79 @@ describe('List Table Core Data Process', () => {
     );
   });
 
-  it('should copy normal data with header in table mode', async () => {
+  it('should copy all data with header in table mode', async () => {
+    s2.setOptions({
+      interaction: {
+        copy: {
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+      seriesNumber: {
+        enable: false,
+      },
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy correctly data with header in table mode if contain repeat column', async () => {
+    s2.setOptions({
+      interaction: {
+        copy: {
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+      seriesNumber: {
+        enable: false,
+      },
+    });
+    s2.setDataCfg({
+      meta: [
+        { field: 'province', name: '城市' },
+        { field: 'city', name: '城市' },
+        { field: 'type', name: '城市' },
+        { field: 'sub_type', name: '城市' },
+        { field: 'number', name: '城市' },
+      ],
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy series number data', async () => {
+    s2.setOptions({
+      seriesNumber: {
+        enable: true,
+      },
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy province data with header in table mode', async () => {
     s2.setOptions({
       interaction: {
         copy: {
@@ -483,54 +555,6 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
-  });
-
-  it('should copy format data with col header if contain repeat column name', async () => {
-    const sheet = new TableSheet(
-      getContainer(),
-      assembleDataCfg({
-        meta: [
-          {
-            field: 'province',
-            name: '省份',
-          },
-          {
-            field: 'city',
-            name: '城市',
-          },
-          {
-            field: 'type',
-            name: '省份',
-          },
-          {
-            field: 'sub_type',
-            name: '城市',
-          },
-          {
-            field: 'number',
-            name: '数量',
-          },
-        ],
-        data: originalData,
-        fields: {
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
-        },
-      }),
-      assembleOptions({
-        interaction: {
-          copy: { enable: true, withFormat: true, withHeader: true },
-        },
-      }),
-    );
-
-    await sheet.render();
-
-    sheet.interaction.changeState({
-      cells: s2.facet.getDataCells().map(getCellMeta),
-      stateName: InteractionStateName.SELECTED,
-    });
-
-    expect(getSelectedData(sheet)).toMatchSnapshot();
   });
 });
 

@@ -33,65 +33,10 @@ describe('Facet Layout API Tests', () => {
 
     describe('Cell', () => {
       test('#getHeaderNodes()', () => {
-        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
-        expect(mapNodes(s2.facet.getHeaderNodes(['root[&]浙江[&]义乌'])))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchSnapshot();
+        expect(
+          mapNodes(s2.facet.getHeaderNodes(['root[&]浙江[&]义乌'])),
+        ).toMatchSnapshot();
       });
 
       test('#getHeaderNodes() for seriesNumber enable', async () => {
@@ -102,276 +47,45 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-            Object {
-              "field": "",
-              "id": "",
-              "value": "1",
-            },
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchSnapshot();
       });
 
       test('#getHeaderCells()', () => {
-        expect(mapCells(s2.facet.getHeaderCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
-        expect(mapCells(s2.facet.getHeaderCells(['root[&]浙江[&]义乌'])))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getHeaderCells())).toMatchSnapshot();
+        expect(
+          mapCells(s2.facet.getHeaderCells(['root[&]浙江[&]义乌'])),
+        ).toMatchSnapshot();
       });
 
       test('#getCells()', () => {
-        expect(mapCells(s2.facet.getCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
-            },
-          ]
-        `);
-        expect(mapCells(s2.facet.getCells(['root[&]浙江[&]义乌'])))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCells())).toMatchSnapshot();
+        expect(
+          mapCells(s2.facet.getCells(['root[&]浙江[&]义乌'])),
+        ).toMatchSnapshot();
       });
 
       test('#getCellById()', () => {
-        expect(mapCells([s2.facet.getCellById('root[&]浙江[&]义乌')!]))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-          ]
-        `);
+        expect(
+          mapCells([s2.facet.getCellById('root[&]浙江[&]义乌')!]),
+        ).toMatchSnapshot();
       });
 
       test('#getCellsByField()', () => {
-        expect(mapCells(s2.facet.getCellsByField('type')))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCellsByField('type'))).toMatchSnapshot();
       });
 
       test('#getCellChildrenNodes()', () => {
         const rowCell = s2.facet.getRowCells()[0];
 
-        expect(mapNodes(s2.facet.getCellChildrenNodes(rowCell)))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(
+          mapNodes(s2.facet.getCellChildrenNodes(rowCell)),
+        ).toMatchSnapshot();
       });
     });
 
     describe('CornerCell', () => {
       test('#getCornerNodes()', () => {
-        expect(mapNodes(s2.facet.getCornerNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getCornerNodes())).toMatchSnapshot();
       });
 
       test('#getCornerNodes() for seriesNumber enable', async () => {
@@ -382,52 +96,11 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapNodes(s2.facet.getCornerNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getCornerNodes())).toMatchSnapshot();
       });
 
       test('#getCornerCell()s', () => {
-        expect(mapCells(s2.facet.getCornerCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCornerCells())).toMatchSnapshot();
       });
 
       test('#getCornerCells() for seriesNumber enable', async () => {
@@ -438,36 +111,13 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getCornerCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "field": "province",
-              "id": "province",
-              "value": "province",
-            },
-            Object {
-              "field": "city",
-              "id": "city",
-              "value": "city",
-            },
-            Object {
-              "field": "type",
-              "id": "type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCornerCells())).toMatchSnapshot();
       });
     });
 
     describe('SeriesNumberCell', () => {
       test('#getSeriesNumberNodes()', () => {
-        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchInlineSnapshot(
+        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchSnapshot(
           `Array []`,
         );
       });
@@ -480,22 +130,11 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapNodes(s2.facet.getSeriesNumberNodes()))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "1",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchSnapshot();
       });
 
       test('#getSeriesNumberCells()', () => {
-        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchInlineSnapshot(
-          `Array []`,
-        );
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toBeEmpty();
       });
 
       test('#getSeriesNumberCells() for seriesNumber enable', async () => {
@@ -506,16 +145,7 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getSeriesNumberCells()))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "1",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchSnapshot();
       });
     });
 
@@ -531,137 +161,36 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getMergedCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getMergedCells())).toMatchSnapshot();
       });
     });
 
     describe('RowCell', () => {
       test('#getRowNodes()', () => {
-        expect(mapNodes(s2.facet.getRowNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
-
-        expect(mapNodes(s2.facet.getRowNodes(1))).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getRowNodes())).toMatchSnapshot();
+        expect(mapNodes(s2.facet.getRowNodes(1))).toMatchSnapshot();
       });
 
       test('#getRowLeafNodes()', () => {
-        expect(mapNodes(s2.facet.getRowLeafNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getRowLeafNodes())).toMatchSnapshot();
       });
 
       test('#getRowNodesByField()', () => {
-        expect(mapNodes(s2.facet.getRowNodesByField('city')))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getRowNodesByField('city'))).toMatchSnapshot();
       });
 
       test('#getRowNodeById()', () => {
-        expect(mapNode(s2.facet.getRowNodeById('root[&]浙江[&]杭州')!))
-          .toMatchInlineSnapshot(`
-          Object {
-            "field": "city",
-            "id": "root[&]浙江[&]杭州",
-            "value": "杭州",
-          }
-        `);
+        expect(
+          mapNode(s2.facet.getRowNodeById('root[&]浙江[&]杭州')!),
+        ).toMatchSnapshot();
       });
 
       test('#getRowCells()', () => {
-        expect(mapCells(s2.facet.getRowCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "province",
-              "id": "root[&]浙江",
-              "value": "浙江",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getRowCells())).toMatchSnapshot();
       });
 
       test('#getRowLeafCells()', () => {
-        expect(mapCells(s2.facet.getRowLeafCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]义乌",
-              "value": "义乌",
-            },
-            Object {
-              "field": "city",
-              "id": "root[&]浙江[&]杭州",
-              "value": "杭州",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getRowLeafCells())).toMatchSnapshot();
       });
 
       describe('Row Total Cell', () => {
@@ -688,170 +217,49 @@ describe('Facet Layout API Tests', () => {
         });
 
         test('#getRowTotalsNodes()', () => {
-          expect(mapNodes(s2.facet.getRowTotalsNodes())).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "field": "province",
-                "id": "root[&]总计",
-                "value": "总计",
-              },
-            ]
-          `);
+          expect(mapNodes(s2.facet.getRowTotalsNodes())).toMatchSnapshot();
         });
 
         test('#getRowGrandTotalsNodes()', () => {
-          expect(mapNodes(s2.facet.getRowGrandTotalsNodes()))
-            .toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "field": "province",
-                "id": "root[&]总计",
-                "value": "总计",
-              },
-            ]
-          `);
+          expect(mapNodes(s2.facet.getRowGrandTotalsNodes())).toMatchSnapshot();
         });
 
         test('#getRowSubTotalsNodes()', () => {
-          expect(
-            mapNodes(s2.facet.getRowSubTotalsNodes()),
-          ).toMatchInlineSnapshot(`Array []`);
+          expect(mapNodes(s2.facet.getRowSubTotalsNodes())).toBeEmpty();
         });
       });
     });
 
     describe('ColCell', () => {
       test('#getColNodes()', () => {
-        expect(mapNodes(s2.facet.getColNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
-        expect(mapNodes(s2.facet.getColNodes(1))).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColNodes())).toMatchSnapshot();
+        expect(mapNodes(s2.facet.getColNodes(1))).toMatchSnapshot();
       });
 
       test('#getColLeafNodes()', () => {
-        expect(mapNodes(s2.facet.getColLeafNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColLeafNodes())).toMatchSnapshot();
       });
 
       test('#getColNodeById()', () => {
-        expect(mapNode(s2.facet.getColNodeById('root[&]笔[&]cost')!))
-          .toMatchInlineSnapshot(`
-          Object {
-            "field": "$$extra$$",
-            "id": "root[&]笔[&]cost",
-            "value": "cost",
-          }
-        `);
+        expect(
+          mapNode(s2.facet.getColNodeById('root[&]笔[&]cost')!),
+        ).toMatchSnapshot();
       });
 
       test('#getColNodesByField()', () => {
-        expect(mapNodes(s2.facet.getColNodesByField('type')))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColNodesByField('type'))).toMatchSnapshot();
       });
 
       test('#getInitColLeafNodes()', () => {
-        expect(mapNodes(s2.facet.getInitColLeafNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getInitColLeafNodes())).toMatchSnapshot();
       });
 
       test('#getColCells()', () => {
-        expect(mapCells(s2.facet.getColCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]笔",
-              "value": "笔",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getColCells())).toMatchSnapshot();
       });
 
       test('#getColLeafCells()', () => {
-        expect(mapCells(s2.facet.getColLeafCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]price",
-              "value": "price",
-            },
-            Object {
-              "field": "$$extra$$",
-              "id": "root[&]笔[&]cost",
-              "value": "cost",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getColLeafCells())).toMatchSnapshot();
       });
 
       describe('Col Total Cell', () => {
@@ -878,56 +286,22 @@ describe('Facet Layout API Tests', () => {
         });
 
         test('#getColTotalsNodes()', () => {
-          expect(mapNodes(s2.facet.getColTotalsNodes())).toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "field": "type",
-                "id": "root[&]总计",
-                "value": "总计",
-              },
-            ]
-          `);
+          expect(mapNodes(s2.facet.getColTotalsNodes())).toMatchSnapshot();
         });
 
         test('#getColGrandTotalsNodes()', () => {
-          expect(mapNodes(s2.facet.getColGrandTotalsNodes()))
-            .toMatchInlineSnapshot(`
-            Array [
-              Object {
-                "field": "type",
-                "id": "root[&]总计",
-                "value": "总计",
-              },
-            ]
-          `);
+          expect(mapNodes(s2.facet.getColGrandTotalsNodes())).toMatchSnapshot();
         });
 
         test('#getColSubTotalsNodes()', () => {
-          expect(
-            mapNodes(s2.facet.getColSubTotalsNodes()),
-          ).toMatchInlineSnapshot(`Array []`);
+          expect(mapNodes(s2.facet.getColSubTotalsNodes())).toBeEmpty();
         });
       });
     });
 
     describe('DataCell', () => {
       test('#getDataCells()', () => {
-        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getDataCells())).toMatchSnapshot();
       });
 
       test('#getDataCells() for show seriesNumber enable', async () => {
@@ -938,22 +312,7 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
-            },
-            Object {
-              "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
-            },
-            Object {
-              "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getDataCells())).toMatchSnapshot();
       });
     });
   });
@@ -976,18 +335,10 @@ describe('Facet Layout API Tests', () => {
 
     describe('Cell', () => {
       test('#getHeaderNodes()', () => {
-        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchSnapshot();
         expect(
           mapNodes(s2.facet.getHeaderNodes(['root[&]浙江[&]义乌'])),
-        ).toMatchInlineSnapshot(`Array []`);
+        ).toBeEmpty();
       });
 
       test('#getHeaderNodes() for show seriesNumber enable', async () => {
@@ -998,40 +349,14 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "field": "$$series_number$$",
-              "id": "root[&]序号",
-              "value": "序号",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getHeaderNodes())).toMatchSnapshot();
       });
 
       test('#getHeaderCells()', () => {
-        expect(mapCells(s2.facet.getHeaderCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getHeaderCells())).toMatchSnapshot();
         expect(
           mapCells(s2.facet.getHeaderCells(['root[&]浙江[&]义乌'])),
-        ).toMatchInlineSnapshot(`Array []`);
+        ).toBeEmpty();
       });
 
       test('#getHeaderCells() for show seriesNumber enable', async () => {
@@ -1042,58 +367,12 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getHeaderCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "id": "0-root[&]序号",
-            },
-            Object {
-              "id": "1-root[&]序号",
-            },
-            Object {
-              "id": "2-root[&]序号",
-            },
-            Object {
-              "field": "$$series_number$$",
-              "id": "root[&]序号",
-              "value": "序号",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getHeaderCells())).toMatchSnapshot();
       });
 
       test('#getCells()', () => {
-        expect(mapCells(s2.facet.getCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-            Object {
-              "id": "0-root[&]type",
-            },
-            Object {
-              "id": "1-root[&]type",
-            },
-            Object {
-              "id": "2-root[&]type",
-            },
-          ]
-        `);
-        expect(
-          mapCells(s2.facet.getCells(['root[&]浙江[&]义乌'])),
-        ).toMatchInlineSnapshot(`Array []`);
+        expect(mapCells(s2.facet.getCells())).toMatchSnapshot();
+        expect(mapCells(s2.facet.getCells(['root[&]浙江[&]义乌']))).toBeEmpty();
       });
 
       test('#getCells() for show seriesNumber enable', async () => {
@@ -1104,74 +383,17 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "",
-              "id": "",
-              "value": "序号",
-            },
-            Object {
-              "id": "0-root[&]序号",
-            },
-            Object {
-              "id": "1-root[&]序号",
-            },
-            Object {
-              "id": "2-root[&]序号",
-            },
-            Object {
-              "field": "$$series_number$$",
-              "id": "root[&]序号",
-              "value": "序号",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-            Object {
-              "id": "0-root[&]序号",
-            },
-            Object {
-              "id": "1-root[&]序号",
-            },
-            Object {
-              "id": "2-root[&]序号",
-            },
-            Object {
-              "id": "0-root[&]type",
-            },
-            Object {
-              "id": "1-root[&]type",
-            },
-            Object {
-              "id": "2-root[&]type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCells())).toMatchSnapshot();
       });
 
       test('#getCellById()', () => {
-        expect(mapCells([s2.facet.getCellById('root[&]浙江[&]义乌')!]))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {},
-          ]
-        `);
+        expect(
+          mapCells([s2.facet.getCellById('root[&]浙江[&]义乌')!]),
+        ).toMatchSnapshot();
       });
 
       test('#getCellsByField()', () => {
-        expect(mapCells(s2.facet.getCellsByField('type')))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getCellsByField('type'))).toMatchSnapshot();
       });
     });
 
@@ -1186,43 +408,18 @@ describe('Facet Layout API Tests', () => {
       });
 
       test('#getSeriesNumberNodes()', () => {
-        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toMatchInlineSnapshot(
-          `Array []`,
-        );
+        expect(mapNodes(s2.facet.getSeriesNumberNodes())).toBeEmpty();
       });
 
       test('#getSeriesNumberCells()', () => {
-        expect(mapCells(s2.facet.getSeriesNumberCells()))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "0-root[&]序号",
-            },
-            Object {
-              "id": "1-root[&]序号",
-            },
-            Object {
-              "id": "2-root[&]序号",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getSeriesNumberCells())).toMatchSnapshot();
       });
     });
 
     describe('ColCell', () => {
       test('#getColNodes()', () => {
-        expect(mapNodes(s2.facet.getColNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
-        expect(mapNodes(s2.facet.getColNodes(1))).toMatchInlineSnapshot(
-          `Array []`,
-        );
+        expect(mapNodes(s2.facet.getColNodes())).toMatchSnapshot();
+        expect(mapNodes(s2.facet.getColNodes(1))).toBeEmpty();
       });
 
       test('#getColNodes() for show seriesNumber enable', async () => {
@@ -1233,105 +430,39 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapNodes(s2.facet.getColNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "$$series_number$$",
-              "id": "root[&]序号",
-              "value": "序号",
-            },
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
       test('#getColLeafNodes()', () => {
-        expect(mapNodes(s2.facet.getColLeafNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColLeafNodes())).toMatchSnapshot();
       });
 
       test('#getColNodeById()', () => {
         expect(
           mapNode(s2.facet.getColNodeById('root[&]笔[&]cost')!),
-        ).toMatchInlineSnapshot(`Object {}`);
+        ).toBeEmpty();
       });
 
       test('#getColNodesByField()', () => {
-        expect(mapNodes(s2.facet.getColNodesByField('type')))
-          .toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getColNodesByField('type'))).toMatchSnapshot();
       });
 
       test('#getInitColLeafNodes()', () => {
-        expect(mapNodes(s2.facet.getInitColLeafNodes())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapNodes(s2.facet.getInitColLeafNodes())).toMatchSnapshot();
       });
 
       test('#getColCells()', () => {
-        expect(mapCells(s2.facet.getColCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getColCells())).toMatchSnapshot();
       });
 
       test('#getColLeafCells()', () => {
-        expect(mapCells(s2.facet.getColLeafCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "field": "type",
-              "id": "root[&]type",
-              "value": "type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getColLeafCells())).toMatchSnapshot();
       });
     });
 
     describe('DataCell', () => {
       test('#getDataCells()', () => {
-        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "0-root[&]type",
-            },
-            Object {
-              "id": "1-root[&]type",
-            },
-            Object {
-              "id": "2-root[&]type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getDataCells())).toMatchSnapshot();
       });
 
       test('#getDataCells() for show seriesNumber enable', async () => {
@@ -1342,28 +473,7 @@ describe('Facet Layout API Tests', () => {
         });
         await s2.render(false);
 
-        expect(mapCells(s2.facet.getDataCells())).toMatchInlineSnapshot(`
-          Array [
-            Object {
-              "id": "0-root[&]序号",
-            },
-            Object {
-              "id": "1-root[&]序号",
-            },
-            Object {
-              "id": "2-root[&]序号",
-            },
-            Object {
-              "id": "0-root[&]type",
-            },
-            Object {
-              "id": "1-root[&]type",
-            },
-            Object {
-              "id": "2-root[&]type",
-            },
-          ]
-        `);
+        expect(mapCells(s2.facet.getDataCells())).toMatchSnapshot();
       });
     });
   });
