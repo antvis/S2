@@ -32,10 +32,14 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
       }
 
       // 获取当前角头所对应那一列的行头单元格节点
-      const cornerCellMeta = cornerCell.getMeta();
+      const cornerCellMeta = cornerCell.getMeta() as Node;
 
-      // TODO: 列角头的交互待拓展
-      if (cornerCellMeta?.cornerType === CornerNodeType.Col) {
+      // TODO: 序号/列角头的交互待拓展
+      if (
+        [CornerNodeType.Series, CornerNodeType.Col].includes(
+          cornerCellMeta?.cornerType!,
+        )
+      ) {
         interaction.reset();
 
         return;
