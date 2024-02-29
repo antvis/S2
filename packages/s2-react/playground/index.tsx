@@ -54,7 +54,6 @@ import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
 import { LinkGroup } from './components/LinkGroup';
-import { MobileSheetComponent } from './components/Mobile';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
@@ -1615,11 +1614,6 @@ function MainLayout() {
                     onDataCellEditEnd={logHandler('onDataCellEditEnd')}
                   />
                 ),
-              },
-              {
-                key: 'mobile',
-                label: '移动端表格',
-                children: <MobileSheetComponent />,
               },
               {
                 key: 'plugins',

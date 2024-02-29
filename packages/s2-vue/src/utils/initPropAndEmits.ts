@@ -22,10 +22,8 @@ export const initBaseSheetProps = () => {
       default: false as SheetComponentProps['showPagination'],
     },
     loading: Boolean,
-    // TODO: 待后续完善
     partDrillDown: Object,
     header: Object,
-
     options: {
       type: Object as PropType<SheetComponentProps['options']>,
       default: {} as SheetComponentProps['options'],
@@ -34,7 +32,7 @@ export const initBaseSheetProps = () => {
       type: [Object, Boolean] as PropType<Adaptive>,
       default: false as Adaptive,
     },
-    onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
+    spreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
     onMounted: Function as PropType<SheetComponentProps['onMounted']>,
   };
 };

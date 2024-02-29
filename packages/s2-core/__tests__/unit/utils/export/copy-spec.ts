@@ -152,7 +152,79 @@ describe('List Table Core Data Process', () => {
     );
   });
 
-  it('should copy normal data with header in table mode', async () => {
+  it('should copy all data with header in table mode', async () => {
+    s2.setOptions({
+      interaction: {
+        copy: {
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+      seriesNumber: {
+        enable: false,
+      },
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy correctly data with header in table mode if contain repeat column', async () => {
+    s2.setOptions({
+      interaction: {
+        copy: {
+          withHeader: true,
+          withFormat: true,
+        },
+      },
+      seriesNumber: {
+        enable: false,
+      },
+    });
+    s2.setDataCfg({
+      meta: [
+        { field: 'province', name: '城市' },
+        { field: 'city', name: '城市' },
+        { field: 'type', name: '城市' },
+        { field: 'sub_type', name: '城市' },
+        { field: 'number', name: '城市' },
+      ],
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy series number data', async () => {
+    s2.setOptions({
+      seriesNumber: {
+        enable: true,
+      },
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchSnapshot();
+  });
+
+  it('should copy province data with header in table mode', async () => {
     s2.setOptions({
       interaction: {
         copy: {
@@ -637,6 +709,7 @@ describe('Pivot Table Core Data Process', () => {
         },
       },
     });
+
     const meta = [
       { field: 'number', formatter: (v: string) => `${v}元` },
     ] as Meta[];
@@ -654,21 +727,7 @@ describe('Pivot Table Core Data Process', () => {
     const copyContent = getCopyPlainContent(s2);
 
     // 主要查看行列小计总计对应的值都格式化成功了
-    expect(copyContent).toMatchSnapshot(`
-      "			总计	家具	家具	家具
-      				小计	桌子	沙发
-      总计			78868元	49709元	26193元	23516元
-      浙江省	小计		43098元	32418元	18375元	14043元
-      浙江省	杭州市	number	15420元	13132元	7789元	5343元
-      浙江省	绍兴市	number	5657元	2999元	2367元	632元
-      浙江省	宁波市	number	13779元	11111元	3877元	7234元
-      浙江省	舟山市	number	8242元	5176元	4342元	834元
-      四川省	小计		35770元	17291元	7818元	9473元
-      四川省	成都市	number	10513元	4174元	1723元	2451元
-      四川省	绵阳市	number	7388元	4066元	1822元	2244元
-      四川省	南充市	number	10284元	4276元	1943元	2333元
-      四川省	乐山市	number	7585元	4775元	2330元	2445元"
-    `);
+    expect(copyContent).toMatchSnapshot();
   });
 
   it('should copy col data in grid mode', () => {

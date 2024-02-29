@@ -97,7 +97,6 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
             positionY = baseLinePositionY;
           }
         } else {
-          // TODO 之后看需不需要把基准线画出来
           baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
           measureRange = max([Math.abs(maxMeasure), Math.abs(minMeasure)])!;
           barHeight =
@@ -178,7 +177,6 @@ export const drawBar = (chartData: BaseChartData, cell: S2CellType) => {
       y: points[i][1],
       width: box[i][0],
       height: box[i][1],
-      // TODO: 支持色板配置
       fill: bar.fill,
       fillOpacity: bar.opacity,
     });
@@ -345,9 +343,8 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const bulletWidth = widthPercent * contentWidth;
   const measureWidth = contentWidth - bulletWidth;
 
-  /*
-   * TODO 先支持默认右对齐
-   * 绘制子弹图
+  /**
+   * 绘制子弹图 (右对齐)
    * 1. 背景
    */
   const positionX = x + width - padding.right - bulletWidth;

@@ -62,7 +62,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     return this.displayData.map((row, i) =>
       this.columnNodes.map((node) => {
-        const field = node.field;
+        const field = node?.field;
 
         if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
           return (i + 1).toString();
@@ -73,7 +73,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
           this.config.formatData,
           this.spreadsheet.dataSet,
         );
-        const value = row[field];
+        const value = row?.[field];
 
         return formatter(value);
       }),
@@ -140,9 +140,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
     });
   }
 
+  private isSeriesNumberField(field: string) {
+    const { seriesNumber } = this.spreadsheet.options;
+
+    return SERIES_NUMBER_FIELD === field && seriesNumber?.enable;
+  }
+
   private getColMatrix(): string[] {
     const { formatHeader } = this.config;
-    const { seriesNumber } = this.spreadsheet.options;
 
     // 明细表的表头，没有格式化
     return this.columnNodes.map((node) => {
@@ -152,7 +157,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
         return field;
       }
 
-      return SERIES_NUMBER_FIELD === field && seriesNumber?.enable
+      return this.isSeriesNumberField(field)
         ? getDefaultSeriesNumberText()
         : this.spreadsheet.dataSet.getFieldName(field);
     }) as string[];
@@ -161,14 +166,16 @@ class TableDataCellCopy extends BaseDataCellCopy {
   private getValueFromMeta = (meta: CellMeta) => {
     const [, colNode] = getHeaderNodeFromMeta(meta, this.spreadsheet);
 
-    const fieldKey = getColNodeFieldFromNode(
+    const field = getColNodeFieldFromNode(
       this.spreadsheet.isPivotMode,
       colNode,
-    );
-    const value = this.displayData[meta.rowIndex]?.[fieldKey!];
+    )!;
+    const value = this.isSeriesNumberField(field)
+      ? meta.rowIndex + 1
+      : this.displayData[meta.rowIndex]?.[field];
 
     const formatter = getFormatter(
-      fieldKey!,
+      field!,
       this.config.formatData,
       this.spreadsheet.dataSet,
     );
@@ -199,8 +206,6 @@ class TableDataCellCopy extends BaseDataCellCopy {
   /**
    * allSelected: false 时，明细表点击 行头/列头 进行复制逻辑
    * allSelected: true 时，明细表点击 全选 进行复制逻辑
-   * @param {boolean} allSelected
-   * @return {CopyableList}
    * @deprecated 后续将废弃，使用 asyncProcessSelectedTable 替代
    */
   processSelectedTable(allSelected = false): CopyableList {
@@ -239,45 +244,21 @@ class TableDataCellCopy extends BaseDataCellCopy {
 /**
  * 明细表点击行头进行复制逻辑
  * @param {SpreadSheet} spreadsheet
- * @param {CellMeta[]} selectedRowsOrCols
+ * @param {CellMeta[]} selectedHeaders
  * @return {CopyableList}
  */
 export const processSelectedTableByHeader = (
   spreadsheet: SpreadSheet,
-  selectedRowsOrCols: CellMeta[],
+  selectedHeaders: CellMeta[],
 ): CopyableList => {
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet,
     config: {
-      selectedCells: selectedRowsOrCols,
+      selectedCells: selectedHeaders,
     },
   });
 
   return tableDataCellCopy.processSelectedTable();
-};
-
-/**
- * 导出全部数据
- * @param {CopyAllDataParams} params
- * @return {CopyableList}
- * @deprecated 后续将废弃，使用 asyncProcessSelectedAllTable 替代
- */
-export const processSelectedAllTable = (
-  params: CopyAllDataParams,
-): CopyableList => {
-  const { sheetInstance, split, formatOptions, customTransformer } = params;
-  const tableDataCellCopy = new TableDataCellCopy({
-    spreadsheet: sheetInstance,
-    config: {
-      selectedCells: [],
-      separator: split,
-      formatOptions,
-      customTransformer,
-    },
-    isExport: true,
-  });
-
-  return tableDataCellCopy.processSelectedTable(true);
 };
 
 // 导出全部数据

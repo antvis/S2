@@ -946,7 +946,6 @@ export abstract class BaseFacet {
         scrollBar?.thumbHorizontalMinSize!,
       );
 
-      // TODO abstract
       this.hScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: finalWidth,

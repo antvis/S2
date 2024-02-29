@@ -135,25 +135,3 @@ export const DEFAULT_OPTIONS: S2Options = {
   cornerExtraFieldText: '',
   placeholder: EMPTY_PLACEHOLDER,
 };
-
-const mobileWidth = document.documentElement.clientWidth;
-
-export const DEFAULT_MOBILE_OPTIONS: S2Options = {
-  width: mobileWidth - 40,
-  height: 380,
-  style: {
-    layoutWidthType: LayoutWidthType.ColAdaptive,
-  },
-  interaction: {
-    hoverHighlight: false,
-    hoverFocus: false,
-    brushSelection: {
-      dataCell: false,
-      rowCell: false,
-      colCell: false,
-    },
-    multiSelection: false,
-    rangeSelection: false,
-  },
-  device: DeviceType.MOBILE,
-} as const;

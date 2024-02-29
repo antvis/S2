@@ -60,6 +60,7 @@ s2.isPivotMode()
 | getInitColLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前）                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素                                                                                            | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |    |
 | getCanvas | 获取 G Canvas 实例                                                                                           | () => [Canvas](https://g.antv.antgroup.com/api/renderer/canvas) |    |
+| getCanvasConfig | 获取 G Canvas 配置                                                                                           | () => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> |    |
 | clearInitColLeafNodes | 清空存储在 store 中的初始叶子节点                                                                                                   | () => void |    |
 | updateSortMethodMap | 更新存储在 store 中的节点排序方式 map, replace 为是否覆盖上一次的值                                                                           | (nodeId: string, sortMethod: string, replace?: boolean) => void |    |
 | getMenuDefaultSelectedKeys | 获取 tooltip 中选中的菜单项 key 值 | `(nodeId: string) => string[]` |    |

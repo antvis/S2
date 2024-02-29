@@ -15,10 +15,9 @@ const addTotals = (
 ) => {
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
 
-  /*
+  /**
    * tree mode only has grand totals, but if there are subTotals configs,
    * it will display in cross-area cell
-   * TODO valueInCol = false and one or more values
    */
   if (totalsConfig?.showGrandTotals) {
     const func = totalsConfig.reverseGrandTotalsLayout ? 'unshift' : 'push';
@@ -95,7 +94,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     const { collapseFields, collapseAll, expandDepth } =
       spreadsheet.options.style?.rowCell!;
-    /*
+
+    /**
      * 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
      * 优先从读取 collapseFields 中的特定 node 的值
      * 如果没有特定配置，再查看是否配置了层级展开配置，

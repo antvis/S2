@@ -4,7 +4,6 @@ import {
   TableDataCell,
   customMerge,
   type DataItem,
-  type RawData,
   type ViewMeta,
   GEvent,
 } from '@antv/s2';
@@ -19,7 +18,7 @@ import {
 } from '../../../../../utils/invokeComponent';
 import './index.less';
 
-export interface CustomProps {
+export interface CustomEditComponentProps {
   style: React.CSSProperties;
   onChange: (value: string) => void;
   onSave: () => void;
@@ -31,14 +30,10 @@ export interface CustomProps {
 type DateCellEdit = (meta: ViewMeta, cell: TableDataCell) => void;
 
 type EditCellProps = {
-  /**
-   * @deprecated use `onDataCellEditEnd` instead.
-   */
-  onChange?: (data: RawData[]) => void;
   onDataCellEditStart?: DateCellEdit;
   onDataCellEditEnd?: DateCellEdit;
   trigger?: number;
-  CustomComponent?: React.FunctionComponent<CustomProps>;
+  CustomComponent?: React.FunctionComponent<CustomEditComponentProps>;
 };
 
 function EditCellComponent(
@@ -46,13 +41,8 @@ function EditCellComponent(
 ) {
   const { params, resolver } = props;
   const s2 = useSpreadSheetInstance();
-  const {
-    cell,
-    onChange,
-    onDataCellEditStart,
-    onDataCellEditEnd,
-    CustomComponent,
-  } = params;
+  const { cell, onDataCellEditStart, onDataCellEditEnd, CustomComponent } =
+    params;
 
   const { left, top, width, height } = React.useMemo<Partial<DOMRect>>(() => {
     const rect = s2.getCanvasElement()?.getBoundingClientRect();
@@ -114,7 +104,6 @@ function EditCellComponent(
     });
 
     onDataCellEditEnd?.(editedMeta, cell!);
-    onChange?.(displayData);
     resolver(true);
   };
 
@@ -141,9 +130,18 @@ function EditCellComponent(
     };
   }, []);
 
-  const onChangeValue = (val: string) => {
+  const onChangeValue = React.useCallback((val: string) => {
     setInputVal(val);
-  };
+  }, []);
+
+  const onChange = React.useCallback<
+    React.ChangeEventHandler<HTMLTextAreaElement>
+  >(
+    (e) => {
+      onChangeValue(e.target.value);
+    },
+    [onChangeValue],
+  );
 
   React.useEffect(() => {
     onDataCellEditStart?.(cell!.getMeta() as ViewMeta, cell!);
@@ -184,9 +182,7 @@ function EditCellComponent(
           className={'s2-edit-cell'}
           value={inputVal as string}
           ref={inputRef}
-          onChange={(e) => {
-            setInputVal(e.target.value);
-          }}
+          onChange={onChange}
           onBlur={onSave}
           onKeyDown={onKeyDown}
           onFocus={onFocus}
@@ -197,7 +193,7 @@ function EditCellComponent(
 }
 
 export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
-  const { onChange, CustomComponent } = props;
+  const { CustomComponent } = props;
   const s2 = useSpreadSheetInstance();
 
   const onEditCell = React.useCallback(
@@ -206,13 +202,12 @@ export const EditCell: React.FC<EditCellProps> = React.memo((props) => {
         component: EditCellComponent,
         params: {
           cell: s2.getCell(event.target) as TableDataCell,
-          onChange,
           CustomComponent,
         },
         s2,
       });
     },
-    [CustomComponent, onChange, s2],
+    [CustomComponent, s2],
   );
 
   useS2Event(S2Event.DATA_CELL_DOUBLE_CLICK, onEditCell, s2);

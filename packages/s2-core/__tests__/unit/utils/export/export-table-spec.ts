@@ -255,4 +255,49 @@ describe('TableSheet Export Test', () => {
 
     expect(data.split(NewLine)).toMatchSnapshot();
   });
+
+  it('should export correct data with formatter if contain repeat column name', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            name: '子类别',
+          },
+          {
+            field: 'province',
+            name: '省份',
+          },
+          {
+            field: 'city',
+            name: '子类别',
+          },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'sub_type',
+            name: '子类别',
+          },
+        ],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: ',',
+      formatOptions: {
+        formatHeader: true,
+      },
+    });
+
+    expect(data.split(NewLine)).toMatchSnapshot();
+  });
 });

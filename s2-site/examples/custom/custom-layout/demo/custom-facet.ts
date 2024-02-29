@@ -8,7 +8,6 @@ import {
   PivotFacet,
 } from '@antv/s2';
 
-// TODO: 目前没有导出 PivotFacet
 /**
  * 自定义 Facet, 修改单元格布局逻辑和宽高坐标
  * 查看更多 https://github.com/antvis/S2/blob/next/packages/s2-core/src/facet/pivot-facet.ts
