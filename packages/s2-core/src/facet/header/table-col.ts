@@ -27,19 +27,38 @@ export class TableColHeader extends ColHeader {
 
   public frozenTrailingColGroup: IGroup;
 
+  private finalColCount: number;
+
+  private finalTrailingColCount: number;
+
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
     const { frozenColCount, frozenTrailingColCount } =
       this.headerConfig.spreadsheet?.options;
 
-    if (frozenColCount) {
+    const topLevelNodes =
+      this.headerConfig.spreadsheet?.facet?.layoutResult.colNodes.filter(
+        (cell) => {
+          return isTopLevelNode(cell);
+        },
+      );
+    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      frozenColCount,
+      frozenTrailingColCount,
+    );
+
+    this.finalColCount = colCount;
+    this.finalTrailingColCount = trailingColCount;
+
+    if (colCount) {
       this.frozenColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN,
         zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
       });
     }
 
-    if (frozenTrailingColCount) {
+    if (trailingColCount) {
       this.frozenTrailingColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN_TRAILING,
         zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
@@ -82,24 +101,16 @@ export class TableColHeader extends ColHeader {
 
   protected getCellGroup(node: Node) {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
-      (cell) => {
-        return isTopLevelNode(cell);
-      },
-    );
-    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      frozenColCount,
-      frozenTrailingColCount,
-    );
-    if (isFrozenCol(getLeftLeafNode(node).colIndex, colCount)) {
+
+    const leafNode = getLeftLeafNode(node).colIndex;
+
+    if (isFrozenCol(leafNode, this.finalColCount)) {
       return this.frozenColGroup;
     }
     if (
       isFrozenTrailingCol(
-        getLeftLeafNode(node).colIndex,
-        trailingColCount,
+        leafNode,
+        this.finalTrailingColCount,
         spreadsheet?.facet?.layoutResult.colLeafNodes.length,
       )
     ) {
@@ -110,25 +121,12 @@ export class TableColHeader extends ColHeader {
 
   protected isColCellInRect(item: Node): boolean {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
-    const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
-      (cell) => {
-        return isTopLevelNode(cell);
-      },
-    );
-    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      frozenColCount,
-      frozenTrailingColCount,
-    );
+
+    const leafNode = getLeftLeafNode(item).colIndex;
     if (
-      isFrozenCol(getLeftLeafNode(item).colIndex, colCount) ||
-      isFrozenTrailingCol(
-        getLeftLeafNode(item).colIndex,
-        trailingColCount,
-        colLength,
-      )
+      isFrozenCol(leafNode, this.finalColCount) ||
+      isFrozenTrailingCol(leafNode, this.finalTrailingColCount, colLength)
     ) {
       return true;
     }
