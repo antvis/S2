@@ -7,9 +7,9 @@ redirect_from:
 
 :::warning{title="注意"}
 
-S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/docs/guide/introduce) 作为绘图引擎，一些图形的样式配置，如单元格的 `fill` 属性，`stroke` 属性，以及绘制字体的 `fontFamily` 和 `fontSize` 等，都是直接透传 [AntV/G 的绘图属性](https://g.antv.antgroup.com/docs/api/shape/attrs)。
+S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/guide/getting-started) 作为绘图引擎，一些图形的样式配置，如单元格的 `fill` 属性，`stroke` 属性，以及绘制字体的 `fontFamily` 和 `fontSize` 等，都是直接透传 [AntV/G 的绘图属性](https://g.antv.antgroup.com/api/basic/display-object#%E7%BB%98%E5%9B%BE%E5%B1%9E%E6%80%A7)。
 
-理论上，你可以通过 [自定义单元格](https://s2.antv.antgroup.com/examples/custom/custom-cell/#data-cell), 在表格绘制任意内容，前提是请确保你已经掌握了一定的 [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) 和 [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) 知识，并对 [AntV/G](https://g.antv.antgroup.com/docs/guide/introduce) 有一定了解。
+理论上，你可以通过 [自定义单元格](https://s2.antv.antgroup.com/examples/custom/custom-cell/#data-cell), 在表格绘制任意内容，前提是请确保你已经掌握了一定的 [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) 和 [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) 知识，并对 [AntV/G](https://g.antv.antgroup.com/guide/getting-started) 有一定了解。
 :::
 
 这里对 S2 常用的绘图属性进行简单介绍：

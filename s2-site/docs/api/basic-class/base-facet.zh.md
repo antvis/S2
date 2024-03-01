@@ -15,19 +15,19 @@ s2.facet.getRealWidth()
 | spreadsheet | 表格实例 |  [SpreadSheet](/docs/api/basic-class/spreadsheet) |
 | cornerBBox | 角头区域包围盒 |  [BBox](/docs/api/basic-class/base-bbox) |
 | panelBBox | 数值区域包围盒 | [BBox](/docs/api/basic-class/base-bbox) |
-| backgroundGroup | 背景区域 |  [Group](https://g.antv.antgroup.com/docs/api/group) |
-| panelGroup | 数值区域 | [Group](https://g.antv.antgroup.com/docs/api/group) |
-| foregroundGroup | 前景区域 |  [Group](https://g.antv.antgroup.com/docs/api/group) |
+| backgroundGroup | 背景区域 |  [Group](https://g.antv.antgroup.com/api/basic/group) |
+| panelGroup | 数值区域 | [Group](https://g.antv.antgroup.com/api/basic/group) |
+| foregroundGroup | 前景区域 |  [Group](https://g.antv.antgroup.com/api/basic/group) |
 | getLayoutResult | 获取布局信息 （角头，序号，行头，列头） |  () => [LayoutResult](#layoutresult) |
 | viewCellWidths | 单元格宽度信息 | `number[]` |
-| hScrollBar | 数值区域水平滚动条 | () =>  [Group](https://g.antv.antgroup.com/docs/api/group) |
-| hRowScrollBar | 行头区域水平滚动条 | () =>  [Group](https://g.antv.antgroup.com/docs/api/group) |
-| vScrollBar | 数值区域垂直滚动条 | () =>  [Group](https://g.antv.antgroup.com/docs/api/group) |
+| hScrollBar | 数值区域水平滚动条 | () =>  [Group](https://g.antv.antgroup.com/api/basic/group) |
+| hRowScrollBar | 行头区域水平滚动条 | () =>  [Group](https://g.antv.antgroup.com/api/basic/group) |
+| vScrollBar | 数值区域垂直滚动条 | () =>  [Group](https://g.antv.antgroup.com/api/basic/group) |
 | rowHeader | 行头 |  [BaseHeaderConfig](#baseheaderconfig) |
 | columnHeader | 列头 |  [BaseHeaderConfig](#baseheaderconfig)  |
 | cornerHeader | 角头 |  [BaseHeaderConfig](#baseheaderconfig)  |
 | seriesNumberHeader | 序号 |  [BaseHeaderConfig](#baseheaderconfig)  |
-| centerFrame | 框架 |  [Group](https://g.antv.antgroup.com/docs/api/group) |
+| centerFrame | 框架 |  [Group](https://g.antv.antgroup.com/api/basic/group) |
 | gridInfo | 网格信息 |  [GridInfo](#gridinfo) |
 | getViewCellHeights | 获取单元格高度信息 | () => [ViewCellHeights](#viewcellheights) |
 | scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/docs/api/general/S2Theme/#scrollbartheme) |
@@ -70,16 +70,16 @@ s2.facet.getRealWidth()
 | addCell | 添加单元格 | (cell: [BaseCell](/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
 | getCanvasSize | 获取画布宽高 | `{width: number, height: number}` |
-| backgroundGroup | 背景颜色区域 group                                                                                                           | [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| foregroundGroup | 背景颜色区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| panelGroup | 可视范围单元格区域 group                                                                                                        |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| panelScrollGroup | 可视范围单元格滚动区域 group                                                                                                      |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenRowGroup | 行头冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenColGroup | 列头冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenTrailingRowGroup | 行头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenTrailingColGroup | 列头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenTopGroup | 顶部冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
-| frozenBottomGroup | 底部冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/docs/api/group) |    |
+| backgroundGroup | 背景颜色区域 group                                                                                                           | [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| foregroundGroup | 背景颜色区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| panelGroup | 可视范围单元格区域 group                                                                                                        |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| panelScrollGroup | 可视范围单元格滚动区域 group                                                                                                      |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenRowGroup | 行头冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenColGroup | 列头冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenTrailingRowGroup | 行头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenTrailingColGroup | 列头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenTopGroup | 顶部冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
+| frozenBottomGroup | 底部冻结区域 group                                                                                                           |  [Group](https://g.antv.antgroup.com/api/basic/group) |    |
 | getHiddenColumnsInfo | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/docs/api/basic-class/node)) => [HiddenColumnsInfo](/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  |  |
 | getHeaderNodes | 获取表头节点 （角头，序号，行头，列头） （含可视区域） | (ids?: string[]) => [Node](/docs/api/basic-class/node)[]  |  |
 | getSeriesNumberNodes | 获取序号节点 | () => [Node](/docs/api/basic-class/node)[]  |  |
