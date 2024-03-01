@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.6](https://github.com/antvis/S2/compare/@antv/s2-v1.54.5...@antv/s2-v1.54.6) (2024-03-01)
+
+
+### Performance Improvements
+
+* 优化明细表滚动性能 close [#2548](https://github.com/antvis/S2/issues/2548), [#2402](https://github.com/antvis/S2/issues/2402) ([#2561](https://github.com/antvis/S2/issues/2561)) ([cee4f83](https://github.com/antvis/S2/commit/cee4f831aa6a652c057ea12d23dc6dc4034cd5b1))
+
 # [@antv/s2-v1.54.5](https://github.com/antvis/S2/compare/@antv/s2-v1.54.4...@antv/s2-v1.54.5) (2024-02-23)
 
 
