@@ -24,58 +24,49 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
   private bindCornerCellClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (event) => {
-      const { interaction } = this.spreadsheet;
       const cornerCell = this.spreadsheet.getCell(event.target);
 
       if (!cornerCell) {
         return;
       }
 
-      // 获取当前角头所对应那一列的行头单元格节点
       const cornerCellMeta = cornerCell.getMeta() as Node;
 
-      // TODO: 序号/列角头的交互待拓展
-      if (
-        [CornerNodeType.Series, CornerNodeType.Col].includes(
-          cornerCellMeta?.cornerType!,
-        )
-      ) {
-        interaction.reset();
+      switch (cornerCellMeta?.cornerType) {
+        case CornerNodeType.Row:
+          this.onRowCornerClick(cornerCellMeta?.field, event);
 
-        return;
+          break;
+        case CornerNodeType.Col:
+          this.onColCornerClick(cornerCellMeta?.field, event);
+
+          break;
+        case CornerNodeType.Series:
+          this.onSeriesCornerClick(cornerCellMeta?.field, event);
+
+          break;
+        default:
+          break;
       }
-
-      const rowNodes = this.getSelectedRowNodes(cornerCellMeta?.field!);
-      const sample = rowNodes[0]?.belongsCell;
-      const cells = this.getRowCellMetas(rowNodes);
-
-      if (sample && interaction.isSelectedCell(sample)) {
-        interaction.reset();
-        this.spreadsheet.emit(
-          S2Event.GLOBAL_SELECTED,
-          interaction.getActiveCells(),
-        );
-
-        return;
-      }
-
-      if (isEmpty(rowNodes) || isEmpty(cells)) {
-        return;
-      }
-
-      interaction.addIntercepts([InterceptType.HOVER]);
-      interaction.changeState({
-        cells,
-        stateName: InteractionStateName.SELECTED,
-      });
-      interaction.highlightNodes(rowNodes);
-
-      this.showTooltip(event);
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_SELECTED,
-        interaction.getActiveCells(),
-      );
     });
+  }
+
+  private onRowCornerClick(field: string, event: CanvasEvent) {
+    const rowNodes = this.getSelectedRowNodes(field);
+
+    this.selectCells(rowNodes, event);
+  }
+
+  private onColCornerClick(field: string, event: CanvasEvent) {
+    const colNodes = this.getSelectedColNodes(field);
+
+    this.selectCells(colNodes, event);
+  }
+
+  private onSeriesCornerClick(field: string, event: CanvasEvent) {
+    const seriesNodes = this.spreadsheet.facet.getSeriesNumberNodes();
+
+    this.selectCells(seriesNodes, event);
   }
 
   private getSelectedRowNodes(field: string) {
@@ -96,16 +87,62 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     return facet.getRowNodes(sampleNode?.level);
   }
 
-  private getRowCellMetas(nodes: Node[]): CellMeta[] {
+  private getSelectedColNodes(field: string) {
+    const { facet } = this.spreadsheet;
+
+    if (!this.spreadsheet.isCustomColumnFields()) {
+      return facet.getColNodesByField(field);
+    }
+
+    // 自定义列头 field 都是独立的, 需要根据 level 区查找.
+    const sampleNode = facet.getColNodesByField(field)[0];
+
+    return facet.getColNodes(sampleNode?.level);
+  }
+
+  private getCellMetas(nodes: Node[], cellType: CellType): CellMeta[] {
     return nodes.map((node) => {
       return {
         id: node.id,
         // 选中角头而高亮的行头, 不需要联动数值单元格, 所以索引设置为 -1
         colIndex: -1,
         rowIndex: -1,
-        type: CellType.ROW_CELL,
+        type: cellType,
       };
     });
+  }
+
+  private selectCells(nodes: Node[], event: CanvasEvent) {
+    const { interaction } = this.spreadsheet;
+    const sample = nodes[0]?.belongsCell;
+    const cells = this.getCellMetas(nodes, sample?.cellType!);
+
+    if (sample && interaction.isSelectedCell(sample)) {
+      interaction.reset();
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_SELECTED,
+        interaction.getActiveCells(),
+      );
+
+      return;
+    }
+
+    if (isEmpty(nodes) || isEmpty(cells)) {
+      return;
+    }
+
+    interaction.addIntercepts([InterceptType.HOVER]);
+    interaction.changeState({
+      cells,
+      stateName: InteractionStateName.SELECTED,
+    });
+    interaction.highlightNodes(nodes);
+
+    this.showTooltip(event);
+    this.spreadsheet.emit(
+      S2Event.GLOBAL_SELECTED,
+      interaction.getActiveCells(),
+    );
   }
 
   private showTooltip(event: CanvasEvent) {

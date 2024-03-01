@@ -1,5 +1,4 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import { forEach } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
@@ -13,16 +12,14 @@ import type {
   ViewMetaData,
 } from '../../../common/interface';
 import {
-  getCellMeta,
   afterSelectDataCells,
-  getRowCellForSelectedCell,
+  getCellMeta,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import { updateAllColHeaderCellState } from '../../../utils/interaction';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -33,7 +30,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
 
-      const { interaction, facet } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
 
       interaction.clearHoverTimer();
 
@@ -47,7 +44,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const cell = this.spreadsheet.getCell(event.target) as DataCell;
+      const cell = this.spreadsheet.getCell<DataCell>(event.target)!;
       const meta = cell.getMeta();
 
       if (!meta) {
@@ -80,29 +77,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.showTooltip(event, meta);
 
       // 点击单元格，高亮对应的行头、列头
-      const { rowId, colId, spreadsheet } = meta;
-      const { colHeader, rowHeader } = interaction.getSelectedCellHighlight();
-
-      if (colHeader) {
-        updateAllColHeaderCellState(
-          colId,
-          facet.getColCells(),
-          InteractionStateName.SELECTED,
-        );
-      }
-
-      if (rowHeader) {
-        if (rowId) {
-          const allRowHeaderCells = getRowCellForSelectedCell(
-            meta,
-            spreadsheet,
-          );
-
-          forEach(allRowHeaderCells, (rowCell) => {
-            rowCell.updateByState(InteractionStateName.SELECTED);
-          });
-        }
-      }
+      interaction.updateDataCellRelevancyHeaderCells(
+        meta,
+        InteractionStateName.SELECTED,
+      );
     });
   }
 
