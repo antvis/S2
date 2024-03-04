@@ -256,7 +256,7 @@ Array [
   },
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
   Object {
@@ -694,7 +694,7 @@ exports[`Facet Layout API Tests PivotSheet SeriesNumberCell #getSeriesNumberCell
 Array [
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
 ]
@@ -704,7 +704,7 @@ exports[`Facet Layout API Tests PivotSheet SeriesNumberCell #getSeriesNumberNode
 Array [
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
 ]
