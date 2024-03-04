@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.10...@antv/s2-vue-v2.0.0-next.11) (2024-03-04)
+
+
+### Features
+
+* 移除已废弃的方法和逻辑 & 优化文档 ([#2566](https://github.com/antvis/S2/issues/2566)) ([de7c97b](https://github.com/antvis/S2/commit/de7c97b862e5b467fd335dd65f9dac5a95e4b621))
+
 # [@antv/s2-vue-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.9...@antv/s2-vue-v2.0.0-next.10) (2024-02-05)
 
 
