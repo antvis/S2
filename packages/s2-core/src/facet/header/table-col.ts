@@ -29,6 +29,12 @@ export class TableColHeader extends ColHeader {
 
   public frozenTrailingColGroup: Group;
 
+  private finalColCount: number;
+
+  private finalTrailingColCount: number;
+
+  private topLevelColNodeLength: number;
+
   constructor(config: ColHeaderConfig) {
     super(config);
     this.initFrozenColGroups();
@@ -59,7 +65,18 @@ export class TableColHeader extends ColHeader {
       trailingColCount: frozenTrailingColCount,
     } = headerConfig.spreadsheet.options.frozen!;
 
-    if (frozenColCount) {
+    const topLevelNodes = headerConfig.spreadsheet.facet.getColNodes(0);
+    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      frozenColCount!,
+      frozenTrailingColCount!,
+    );
+
+    this.finalColCount = colCount;
+    this.finalTrailingColCount = trailingColCount;
+    this.topLevelColNodeLength = topLevelNodes.length;
+
+    if (colCount) {
       this.frozenColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN,
@@ -68,7 +85,7 @@ export class TableColHeader extends ColHeader {
       );
     }
 
-    if (frozenTrailingColCount) {
+    if (trailingColCount) {
       this.frozenTrailingColGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN_TRAILING,
@@ -80,6 +97,7 @@ export class TableColHeader extends ColHeader {
 
   public clear() {
     super.clear();
+
     this.frozenTrailingColGroup?.removeChildren();
     this.frozenColGroup?.removeChildren();
 
@@ -94,16 +112,13 @@ export class TableColHeader extends ColHeader {
   }
 
   private getColFrozenOptionsByNode(node: Node) {
-    const { spreadsheet } = this.getHeaderConfig();
-    const { colCount = 0, trailingColCount = 0 } = spreadsheet.options.frozen!;
-
     const leftLeafNode = getLeftLeafNode(node);
-    const topLevelNodes = spreadsheet.facet.getColNodes(0);
 
     return {
-      colLength: topLevelNodes.length,
+      colLength: this.topLevelColNodeLength,
       leftLeafNodeColIndex: leftLeafNode.colIndex,
-      ...getFrozenLeafNodesCount(topLevelNodes, colCount, trailingColCount),
+      colCount: this.finalColCount,
+      trailingColCount: this.finalTrailingColCount,
     };
   }
 

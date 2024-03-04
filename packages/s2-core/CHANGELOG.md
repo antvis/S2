@@ -1,3 +1,26 @@
+# [@antv/s2-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.12...@antv/s2-v2.0.0-next.13) (2024-03-04)
+
+
+### Bug Fixes
+
+* **interaction:** 修复表格滚动后, 行列头部分单元格选中高亮效果丢失 close [#2503](https://github.com/antvis/S2/issues/2503) ([#2545](https://github.com/antvis/S2/issues/2545)) ([3a7803b](https://github.com/antvis/S2/commit/3a7803bd460fa332ff4d1a5b37f3192bf58bf866))
+* **scroll:** 修复移动端滚动至边缘时抖动 ([#2556](https://github.com/antvis/S2/issues/2556)) ([3a2cd7c](https://github.com/antvis/S2/commit/3a2cd7c10bb59cc1eb9e23f366db3e65674eede1))
+* 修复数值单元格内的自定义 icon 点击时会选中单元格的问题 close [#2333](https://github.com/antvis/S2/issues/2333) ([#2567](https://github.com/antvis/S2/issues/2567)) ([3d9f9aa](https://github.com/antvis/S2/commit/3d9f9aaba931b54226e4fd9e6004fc1bd9688791))
+* 修复树状模式选中非叶子节点时不展示汇总信息的问题 ([48b7073](https://github.com/antvis/S2/commit/48b70737f32d58d75c356a4d37afeb74a917cf23))
+* 修复父容器存在 transform 缩放时单元格刷选偏移 close [#2553](https://github.com/antvis/S2/issues/2553) ([#2565](https://github.com/antvis/S2/issues/2565)) ([715bbf4](https://github.com/antvis/S2/commit/715bbf41541ca6b5bee47c44695345bfaa0605ea))
+* 修复编辑表双击失效 ([9edcb74](https://github.com/antvis/S2/commit/9edcb74576c8137481c375258fa9d9e310fafc7c))
+* 修复编辑表的输入框未回填格式化后的数据 close [#2528](https://github.com/antvis/S2/issues/2528) ([#2549](https://github.com/antvis/S2/issues/2549)) ([95d67ca](https://github.com/antvis/S2/commit/95d67ca02b774aed426a179a16aa27f0c172356e))
+* 修复自定义目录树同名节点展示异常 & 导出缺失角头 close [#2455](https://github.com/antvis/S2/issues/2455) ([#2551](https://github.com/antvis/S2/issues/2551)) ([6d315bf](https://github.com/antvis/S2/commit/6d315bff20e74f0ce5f1d286105eeba749ebabaf))
+* 修复行列头数值复制时未使用格式化的值 & 优化单测 ([989366f](https://github.com/antvis/S2/commit/989366fc740b7c1367c4cf246a6e3eb80e4f3338))
+* 修复趋势分析表复制错误 ([2e24418](https://github.com/antvis/S2/commit/2e24418cabebdbe1cd306cdf931c0c8fa7bae050))
+* 角头选中列兼容树状模式和自定义行头场景 ([#2562](https://github.com/antvis/S2/issues/2562)) ([49ad04d](https://github.com/antvis/S2/commit/49ad04d4bcfdc932ac793bcf1d2866c01a694f9e))
+
+
+### Features
+
+* 明细表支持同名列渲染 closes [#2502](https://github.com/antvis/S2/issues/2502) [#2510](https://github.com/antvis/S2/issues/2510) ([#2568](https://github.com/antvis/S2/issues/2568)) ([e324c93](https://github.com/antvis/S2/commit/e324c934a310a3b514cc49f607d21434e095f1f7)), closes [#2519](https://github.com/antvis/S2/issues/2519)
+* 移除已废弃的方法和逻辑 & 优化文档 ([#2566](https://github.com/antvis/S2/issues/2566)) ([de7c97b](https://github.com/antvis/S2/commit/de7c97b862e5b467fd335dd65f9dac5a95e4b621))
+
 # [@antv/s2-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.11...@antv/s2-v2.0.0-next.12) (2024-02-07)
 
 
