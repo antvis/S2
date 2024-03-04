@@ -639,16 +639,16 @@ export class RootInteraction {
   }
 
   public updateDataCellRelevancyHeaderCells(
-    meta: ViewMeta,
     stateName: InteractionStateName,
+    meta: ViewMeta,
   ) {
-    this.updateDataCellRelevancyColCells(meta, stateName);
-    this.updateDataCellRelevancyRowCells(meta, stateName);
+    this.updateDataCellRelevancyColCells(stateName, meta);
+    this.updateDataCellRelevancyRowCells(stateName, meta);
   }
 
   public updateDataCellRelevancyRowCells(
-    meta: ViewMeta,
     stateName: InteractionStateName,
+    meta: ViewMeta,
   ) {
     const { rowId } = meta;
     const { facet, interaction } = this.spreadsheet;
@@ -683,8 +683,8 @@ export class RootInteraction {
   }
 
   public updateDataCellRelevancyColCells(
-    meta: ViewMeta,
     stateName: InteractionStateName,
+    meta: ViewMeta,
   ) {
     const { colId } = meta;
     const { facet, interaction } = this.spreadsheet;

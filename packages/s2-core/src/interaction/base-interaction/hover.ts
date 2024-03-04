@@ -61,8 +61,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
       if (interactionOptions?.hoverHighlight) {
         interaction.updateDataCellRelevancyHeaderCells(
-          meta,
           InteractionStateName.HOVER,
+          meta,
         );
       }
 
@@ -189,8 +189,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
       if (interactionOptions?.hoverHighlight) {
         interaction.updateDataCellRelevancyHeaderCells(
-          meta,
           InteractionStateName.HOVER,
+          meta,
         );
       }
 

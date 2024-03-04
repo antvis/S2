@@ -78,8 +78,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       // 点击单元格，高亮对应的行头、列头
       interaction.updateDataCellRelevancyHeaderCells(
-        meta,
         InteractionStateName.SELECTED,
+        meta,
       );
     });
   }

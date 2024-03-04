@@ -11,8 +11,9 @@ import {
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
+import { CellType, InteractionStateName } from '../../src';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface';
+import type { HierarchyType, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,
@@ -21,6 +22,16 @@ const s2Options: S2Options = {
     enable: true,
   },
 };
+
+const highlightCellConfig: Array<{
+  hierarchyType: HierarchyType;
+  stateName: InteractionStateName;
+}> = [
+  { hierarchyType: 'tree', stateName: InteractionStateName.HOVER },
+  { hierarchyType: 'tree', stateName: InteractionStateName.SELECTED },
+  { hierarchyType: 'grid', stateName: InteractionStateName.HOVER },
+  { hierarchyType: 'grid', stateName: InteractionStateName.SELECTED },
+];
 
 describe('Interaction Multi Selection Tests', () => {
   let s2: SpreadSheet;
@@ -197,4 +208,86 @@ describe('Interaction Multi Selection Tests', () => {
       ).toBeTruthy();
     });
   });
+
+  test.each(highlightCellConfig)(
+    'should highlight relevancy header cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevancyHeaderCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      expect(s2.interaction.getInteractedCells()).toHaveLength(
+        s2.isHierarchyTreeType() ? 4 : 5,
+      );
+    },
+  );
+
+  test.each(highlightCellConfig)(
+    'should highlight relevancy row cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevancyRowCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      const interactedCells = s2.interaction
+        .getInteractedCells()
+        .filter((cell) => cell.cellType === CellType.ROW_CELL);
+
+      expect(interactedCells).toHaveLength(s2.isHierarchyTreeType() ? 2 : 3);
+    },
+  );
+
+  test.each(highlightCellConfig)(
+    'should highlight relevancy row cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevancyColCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      const interactedCells = s2.interaction
+        .getInteractedCells()
+        .filter((cell) => cell.cellType === CellType.COL_CELL);
+
+      expect(interactedCells).toHaveLength(2);
+    },
+  );
 });

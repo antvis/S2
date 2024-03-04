@@ -1,6 +1,6 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '../../src';
+import { CornerNodeType, PivotSheet } from '../../src';
 import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
@@ -17,7 +17,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
   });
 
   afterEach(() => {
-    container?.remove();
+    // container?.remove();
   });
 
   describe('Facet Tests', () => {
@@ -89,6 +89,26 @@ describe('SpreadSheet Tree Mode Tests', () => {
 
       expect(cornerCell.getTextShapes()).toHaveLength(1);
       expect(cornerCell.isMultiLineText()).toBeFalsy();
+    });
+
+    // https://github.com/antvis/S2/issues/2563
+    test('should render correctly tree icon position in row cell', async () => {
+      const s2 = createPivotSheet({
+        ...s2Options,
+        width: 300,
+        seriesNumber: {
+          enable: true,
+        },
+      });
+
+      await s2.render();
+
+      const [seriesNumberCell, rowCell] = s2.facet
+        .getCornerCells()
+        .filter((cell) => cell.getMeta().cornerType !== CornerNodeType.Col);
+
+      expect(seriesNumberCell.getTreeIcon()).toBeFalsy();
+      expect(rowCell.getTreeIcon()).toBeTruthy();
     });
   });
 });
