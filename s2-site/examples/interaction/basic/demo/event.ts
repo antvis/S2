@@ -8,26 +8,26 @@ import {
 } from '@antv/s2';
 
 function addButtons(s2: SpreadSheet) {
-  const selectAllBtn = document.createElement('button');
-  const selectHeaderCellBtn = document.createElement('button');
-  const selectDataCellBtn = document.createElement('button');
-  const hideColumnsBtn = document.createElement('button');
-  const resetBtn = document.createElement('button');
-
-  [
+  const [
     selectAllBtn,
     selectHeaderCellBtn,
     selectDataCellBtn,
     hideColumnsBtn,
+    highlightHeaderBtn,
     resetBtn,
-  ].forEach((btn) => {
+  ] = Array.from({ length: 6 }).map(() => {
+    const btn = document.createElement('button');
+
     btn.className = 'ant-btn ant-btn-default';
+
+    return btn;
   });
 
   selectAllBtn.innerHTML = '选中全部';
   selectHeaderCellBtn.innerHTML = '选中指定行列头单元格';
   selectDataCellBtn.innerHTML = '选中指定数值单元格';
   hideColumnsBtn.innerHTML = '隐藏指定列头';
+  highlightHeaderBtn.innerHTML = '高亮数值和对应的行列头单元格';
   resetBtn.innerHTML = '重置';
 
   // 查看更多 API: https://s2.antv.antgroup.com/api/basic-class/interaction
@@ -81,6 +81,25 @@ function addButtons(s2: SpreadSheet) {
     ]);
   });
 
+  highlightHeaderBtn.addEventListener('click', () => {
+    const dataCellViewMeta = s2.facet.getCellMeta(1, 1);
+
+    s2.interaction.updateDataCellRelevancyHeaderCells(
+      dataCellViewMeta,
+      InteractionStateName.HOVER,
+    );
+
+    // s2.interaction.updateDataCellRelevancyRowCells(
+    //   dataCellViewMeta,
+    //   InteractionStateName.HOVER,
+    // );
+
+    // s2.interaction.updateDataCellRelevancyColCells(
+    //   dataCellViewMeta,
+    //   InteractionStateName.HOVER,
+    // );
+  });
+
   resetBtn.addEventListener('click', () => {
     console.log('当前状态:', s2.interaction.getState());
     console.log('当前发生过交互的单元格:', s2.interaction.getInteractedCells());
@@ -96,10 +115,12 @@ function addButtons(s2: SpreadSheet) {
 
   if (canvas) {
     canvas.style.marginTop = '10px';
+
     canvas.before(selectAllBtn);
     canvas.before(selectHeaderCellBtn);
     canvas.before(selectDataCellBtn);
     canvas.before(hideColumnsBtn);
+    canvas.before(highlightHeaderBtn);
     canvas.before(resetBtn);
   }
 }
@@ -150,6 +171,9 @@ fetch(
     [
       S2Event.GLOBAL_SCROLL,
       S2Event.ROW_CELL_CLICK,
+      S2Event.COL_CELL_CLICK,
+      S2Event.CORNER_CELL_CLICK,
+      S2Event.DATA_CELL_CLICK,
       S2Event.GLOBAL_SELECTED,
       S2Event.DATA_CELL_BRUSH_SELECTION,
     ].forEach((eventName) => {
