@@ -1,3 +1,22 @@
+# [@antv/s2-react-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.11...@antv/s2-react-v2.0.0-next.12) (2024-03-04)
+
+
+### Bug Fixes
+
+* 修复树状模式选中非叶子节点时不展示汇总信息的问题 ([48b7073](https://github.com/antvis/S2/commit/48b70737f32d58d75c356a4d37afeb74a917cf23))
+* 修复父容器存在 transform 缩放时单元格刷选偏移 close [#2553](https://github.com/antvis/S2/issues/2553) ([#2565](https://github.com/antvis/S2/issues/2565)) ([715bbf4](https://github.com/antvis/S2/commit/715bbf41541ca6b5bee47c44695345bfaa0605ea))
+* 修复编辑表双击失效 ([9edcb74](https://github.com/antvis/S2/commit/9edcb74576c8137481c375258fa9d9e310fafc7c))
+* 修复编辑表的输入框未回填格式化后的数据 close [#2528](https://github.com/antvis/S2/issues/2528) ([#2549](https://github.com/antvis/S2/issues/2549)) ([95d67ca](https://github.com/antvis/S2/commit/95d67ca02b774aed426a179a16aa27f0c172356e))
+* 修复自定义目录树同名节点展示异常 & 导出缺失角头 close [#2455](https://github.com/antvis/S2/issues/2455) ([#2551](https://github.com/antvis/S2/issues/2551)) ([6d315bf](https://github.com/antvis/S2/commit/6d315bff20e74f0ce5f1d286105eeba749ebabaf))
+* 修复行列头数值复制时未使用格式化的值 & 优化单测 ([989366f](https://github.com/antvis/S2/commit/989366fc740b7c1367c4cf246a6e3eb80e4f3338))
+* 修复表格排序后, 编辑单元格后数据更新错误 close [#2573](https://github.com/antvis/S2/issues/2573) ([#2544](https://github.com/antvis/S2/issues/2544)) ([c4ff49a](https://github.com/antvis/S2/commit/c4ff49a47c5ef6155a623edaf72e65ab3dccbc68))
+* 修复趋势分析表复制错误 ([2e24418](https://github.com/antvis/S2/commit/2e24418cabebdbe1cd306cdf931c0c8fa7bae050))
+
+
+### Features
+
+* 移除已废弃的方法和逻辑 & 优化文档 ([#2566](https://github.com/antvis/S2/issues/2566)) ([de7c97b](https://github.com/antvis/S2/commit/de7c97b862e5b467fd335dd65f9dac5a95e4b621))
+
 # [@antv/s2-react-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.10...@antv/s2-react-v2.0.0-next.11) (2024-02-07)
 
 
