@@ -8,7 +8,7 @@ tag: New
 阅读本章前，请确保已经对 S2 足够了解，并且熟悉 [`AntV/G`](https://g.antv.antgroup.com/) 渲染引擎的相关内容。
 :::
 
-如果纯文本的表格不够直观，S2 内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 同时也支持 [自定义单元格](/examples#custom-custom-cell) 的方式结合 [`AntV/G2`](https://g2.antv.antgroup.com/) 来实现一个组合图表。
+如果纯文本的表格不够直观，S2 内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 同时也支持 [自定义单元格](/examples#custom-custom-cell) 的方式结合 [`AntV/G2`](https://g2.antv.antgroup.com/) 来实现一个组合图表，也可以绘制 `AntV/G` 的基础图形。
 
 ### 数据格式
 
