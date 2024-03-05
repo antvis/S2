@@ -20,7 +20,7 @@ fetch(
           disable: (resizeInfo) => {
             return resizeInfo.meta.id === 'root[&]家具[&]桌子[&]数量';
           },
-          // 行高调整时，影响全部行
+          // 行高调整时，影响全部行 (可选 'all' | 'current' | 'selected')
           rowResizeType: ResizeType.ALL,
           // 列宽调整时，只影响当前列
           colResizeType: ResizeType.CURRENT,

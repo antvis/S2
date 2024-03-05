@@ -199,6 +199,24 @@ export class RootInteraction {
     ).filter(Boolean) as S2CellType[];
   }
 
+  public getActiveDataCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.DATA_CELL,
+    );
+  }
+
+  public getActiveRowCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.ROW_CELL,
+    );
+  }
+
+  public getActiveColCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.COL_CELL,
+    );
+  }
+
   public clearStyleIndependent() {
     if (
       !this.isSelectedState() &&
