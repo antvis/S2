@@ -34,6 +34,9 @@ s2.interaction.reset()
 | isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | `() => Partial<ViewMeta>[]` |
 | getActiveCells | 获取当前在可视区域的单元格实例                                  | `() => S2CellType[]` |
+| getActiveDataCells | 获取当前在可视区域的数值单元格实例                                  | `() => S2CellType[]` |
+| getActiveRowCells | 获取当前在可视区域的行头单元格实例                                  | `() => S2CellType[]` |
+| getActiveColCells | 获取当前在可视区域的列头单元格实例                                  | `() => S2CellType[]` |
 | clearStyleIndependent | 清除单元格样式                                          | `() => void` |
 | getUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
