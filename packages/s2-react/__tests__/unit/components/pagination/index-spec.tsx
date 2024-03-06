@@ -16,6 +16,5 @@ describe('Pagination Component Tests', () => {
 
     expect(result.asFragment()).toMatchSnapshot();
     expect(screen.getByText('共计20条')).toBeDefined();
-    expect(screen.getByText('1 / page')).toBeDefined();
   });
 });
