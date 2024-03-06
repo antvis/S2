@@ -1,0 +1,26 @@
+{
+  "title": {
+    "zh": "在单元格内绘制自定义图形和图表",
+    "en": "Render Custom Shape And Charts"
+  },
+  "demos": [
+    {
+      "filename": "custom-g-shape.ts",
+      "title": {
+        "zh": "在单元格内绘制 AntV/G 图形",
+        "en": "Render G Shape"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TPuRQaXCSQEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "custom-g2-chart.ts",
+      "title": {
+        "zh": "在单元格内绘制 AntV/G2 图表",
+        "en": "Render AntV/G2 Charts"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    }
+  ]
+}
