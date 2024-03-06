@@ -426,4 +426,100 @@ S2 的每一个单元格对应 [`AntV/G`](https://g.antv.antgroup.com/) 的一�
 
 <Playground path='custom/custom-shape-and-chart/demo/custom-g-shape.ts' rid='custom-g-shape' height='400'></playground>
 
+#### 3.1 自定义单元格，重写绘制逻辑，添加任意图形
+
+```ts
+import { Image as GImage } from '@antv/g';
+import { CornerCell } from '@antv/s2';
+
+class CustomCornerCell extends CornerCell {
+  drawBackgroundShape() {
+    const img = new Image();
+
+    img.src =
+      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+
+    img.onload = () => {
+      this.backgroundShape = this.appendChild(
+        new GImage({
+          style: {
+            ...this.getBBoxByType(),
+            img,
+          },
+        }),
+      );
+
+      this.drawTextShape();
+    };
+  }
+}
+
+const s2Options = {
+  cornerCell: (node, spreadsheet, headerConfig) => {
+    return new CustomCornerCell(node, spreadsheet, headerConfig);
+  }
+};
+```
+
+#### 3.2 直接在表格 (Canvas) 上绘制任意图形
+
+通过 `s2.getCanvas()` 获取 `G` 的 `Canvas` 实例。
+
+```ts
+import { Rect } from '@antv/g';
+
+await s2.render();
+
+// 2. 直接在表格 (Canvas) 上绘制任意图形
+s2.getCanvas().appendChild(
+  new Rect({
+    style: {
+      x: 300,
+      y: 200,
+      width: 100,
+      height: 100,
+      fill: '#1890FF',
+      fillOpacity: 0.8,
+      stroke: '#F04864',
+      strokeOpacity: 0.8,
+      lineWidth: 4,
+      radius: 100,
+      zIndex: 999,
+    },
+  }),
+);
+```
+
+#### 3.3 手动获取指定单元格实例 (Group) 后绘制任意图形
+
+```ts
+import { Rect } from '@antv/g';
+
+await s2.render();
+
+const targetCell = s2.facet.getDataCells()[0];
+
+targetCell?.appendChild(
+  new Rect({
+    style: {
+      x: 0,
+      y: 100,
+      width: 20,
+      height: 20,
+      fill: '#396',
+      fillOpacity: 0.8,
+      stroke: '#ddd',
+      strokeOpacity: 0.8,
+      lineWidth: 4,
+      radius: 10,
+      zIndex: 999,
+    },
+  }),
+);
+```
+
+#### 3.4 效果
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TPuRQaXCSQEAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
+
 [查看示例](/examples/custom/custom-shape-and-chart/#custom-g-shape)

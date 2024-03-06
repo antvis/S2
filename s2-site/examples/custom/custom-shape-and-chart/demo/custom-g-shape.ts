@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { Image as GImage, Path, Polygon, Polyline } from '@antv/g';
+import { Image as GImage, Polygon, Polyline, Rect } from '@antv/g';
 import {
-  ColCell,
   CornerCell,
   DataCell,
   PivotSheet,
@@ -42,6 +41,10 @@ class CustomCornerCell extends CornerCell {
  */
 class CustomDataCell extends DataCell {
   drawBackgroundShape() {
+    if (this.meta.colIndex > 0) {
+      return super.drawBackgroundShape();
+    }
+
     this.backgroundShape = this.appendChild(
       new Polygon({
         style: {
@@ -53,6 +56,7 @@ class CustomDataCell extends DataCell {
           ],
           stroke: '#1890FF',
           lineWidth: 2,
+          zIndex: 999,
         },
       }),
     );
@@ -64,6 +68,10 @@ class CustomDataCell extends DataCell {
  */
 class CustomRowCell extends RowCell {
   drawBackgroundShape() {
+    if (this.meta.rowIndex > 0) {
+      return super.drawBackgroundShape();
+    }
+
     this.backgroundShape = this.appendChild(
       new Polyline({
         style: {
@@ -87,25 +95,7 @@ class CustomRowCell extends RowCell {
           ],
           stroke: '#1890FF',
           lineWidth: 2,
-        },
-      }),
-    );
-  }
-}
-
-/**
- * 自定义 Path 路径 https://g.antv.antgroup.com/api/basic/path
- */
-class CustomColCell extends ColCell {
-  drawBackgroundShape() {
-    this.backgroundShape = this.appendChild(
-      new Path({
-        style: {
-          path: [
-            ['M', 100, 100],
-            ['L', 200, 200],
-          ],
-          stroke: '#F04864',
+          zIndex: 999,
         },
       }),
     );
@@ -134,11 +124,9 @@ fetch(
       interaction: {
         hoverHighlight: false,
       },
+      // 1. 自定义单元格, 重写绘制逻辑, 添加任意图形
       cornerCell: (node, spreadsheet, headerConfig) => {
         return new CustomCornerCell(node, spreadsheet, headerConfig);
-      },
-      colCell: (node, spreadsheet, headerConfig) => {
-        return new CustomColCell(node, spreadsheet, headerConfig);
       },
       rowCell: (node, spreadsheet, headerConfig) => {
         return new CustomRowCell(node, spreadsheet, headerConfig);
@@ -151,4 +139,44 @@ fetch(
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     await s2.render();
+
+    // 2. 直接在表格 (Canvas) 上绘制任意图形
+    s2.getCanvas().appendChild(
+      new Rect({
+        style: {
+          x: 300,
+          y: 200,
+          width: 100,
+          height: 100,
+          fill: '#1890FF',
+          fillOpacity: 0.8,
+          stroke: '#F04864',
+          strokeOpacity: 0.8,
+          lineWidth: 4,
+          radius: 100,
+          zIndex: 999,
+        },
+      }),
+    );
+
+    // 3. 手动获取指定单元格实例 (Group) 后绘制任意图形
+    const targetCell = s2.facet.getDataCells()[3];
+
+    targetCell?.appendChild(
+      new Rect({
+        style: {
+          x: 0,
+          y: 100,
+          width: 20,
+          height: 20,
+          fill: '#396',
+          fillOpacity: 0.8,
+          stroke: '#ddd',
+          strokeOpacity: 0.8,
+          lineWidth: 4,
+          radius: 10,
+          zIndex: 999,
+        },
+      }),
+    );
   });
