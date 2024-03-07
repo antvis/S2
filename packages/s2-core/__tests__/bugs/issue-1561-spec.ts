@@ -25,10 +25,10 @@ describe('Grid Border Tests', () => {
     const gridGroup = (panelScrollGroup as any).gridGroup as Group;
     const originalLeftBorderBBox = (gridGroup.children[0] as Group).getBBox();
 
-    s2.facet.updateScrollOffset({ offsetX: { value: 100, animate: false } });
-    s2.facet.updateScrollOffset({ offsetX: { value: 200, animate: false } });
-    s2.facet.updateScrollOffset({ offsetX: { value: 300, animate: false } });
-    s2.facet.updateScrollOffset({ offsetX: { value: 0, animate: false } });
+    s2.interaction.scrollTo({ offsetX: { value: 100, animate: false } });
+    s2.interaction.scrollTo({ offsetX: { value: 200, animate: false } });
+    s2.interaction.scrollTo({ offsetX: { value: 300, animate: false } });
+    s2.interaction.scrollTo({ offsetX: { value: 0, animate: false } });
 
     const newLeftBorderBBbox = (gridGroup.children[0] as Group).getBBox();
 

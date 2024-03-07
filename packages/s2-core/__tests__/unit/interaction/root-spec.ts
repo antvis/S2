@@ -168,7 +168,7 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should set header cell selected interaction state correct', () => {
-    rootInteraction.selectHeaderCell({ cell: mockCell });
+    rootInteraction.changeCell({ cell: mockCell });
     const state = rootInteraction.getState();
 
     expect(state.stateName).toEqual(InteractionStateName.SELECTED);
@@ -186,7 +186,7 @@ describe('RootInteraction Tests', () => {
     const mockCellB = createMockCellInfo('test-B').mockCell;
 
     // 选中 cellA
-    rootInteraction.selectHeaderCell({
+    rootInteraction.changeCell({
       cell: mockCellA,
       isMultiSelection: true,
     });
@@ -194,7 +194,7 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
 
     // 选中 cellB
-    rootInteraction.selectHeaderCell({
+    rootInteraction.changeCell({
       cell: mockCellB,
       isMultiSelection: true,
     });
@@ -205,7 +205,7 @@ describe('RootInteraction Tests', () => {
     ]);
 
     // 再次选中 cellB
-    rootInteraction.selectHeaderCell({
+    rootInteraction.changeCell({
       cell: mockCellB,
       isMultiSelection: true,
     });
@@ -430,10 +430,11 @@ describe('RootInteraction Tests', () => {
     });
 
     test.each`
-      stateName                           | handler
-      ${InteractionStateName.SELECTED}    | ${'isSelectedState'}
-      ${InteractionStateName.HOVER}       | ${'isHoverState'}
-      ${InteractionStateName.HOVER_FOCUS} | ${'isHoverFocusState'}
+      stateName                            | handler
+      ${InteractionStateName.SELECTED}     | ${'isSelectedState'}
+      ${InteractionStateName.ALL_SELECTED} | ${'isAllSelectedState'}
+      ${InteractionStateName.HOVER}        | ${'isHoverState'}
+      ${InteractionStateName.HOVER_FOCUS}  | ${'isHoverFocusState'}
     `('should get correctly %s state', ({ stateName, handler }) => {
       rootInteraction.changeState({
         cells: [getCellMeta(mockCell)],

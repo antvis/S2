@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { get } from 'lodash';
+import { get, last } from 'lodash';
 import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -65,7 +65,6 @@ describe('Scroll Tests', () => {
 
   afterEach(() => {
     s2.destroy();
-    canvas.remove();
   });
 
   test('should hide tooltip when start scroll', () => {
@@ -526,7 +525,7 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(200, 200); // 显示横/竖滚动条
     await s2.render(false);
 
-    s2.updateScrollOffset({
+    s2.interaction.scrollTo({
       offsetX: {
         value: 999,
       },
@@ -534,6 +533,8 @@ describe('Scroll Tests', () => {
         value: 999,
       },
     });
+
+    await sleep(500);
 
     const { hScrollBar, vScrollBar, panelBBox } = s2.facet;
 
@@ -908,7 +909,7 @@ describe('Scroll Tests', () => {
       const colCell = s2.facet.getColLeafCells()[0]!;
 
       s2.on(S2Event.GLOBAL_RESET, reset);
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: colCell,
       });
 
@@ -941,4 +942,106 @@ describe('Scroll Tests', () => {
       isMatchElementSpy.mockClear();
     },
   );
+
+  test('should scroll to custom offset', async () => {
+    const value = 20;
+
+    s2.interaction.scrollTo({
+      offsetX: {
+        value,
+        animate: false,
+      },
+      offsetY: {
+        value,
+        animate: false,
+      },
+      rowHeaderOffsetX: {
+        value,
+        animate: false,
+      },
+    });
+
+    await sleep(500);
+
+    expect(Math.floor(s2.facet.hScrollBar.thumbOffset)).toBeCloseTo(9);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(14);
+    expect(Math.floor(s2.facet.hRowScrollBar.thumbOffset)).toBeCloseTo(10);
+  });
+
+  test('should scroll to cell by id', async () => {
+    s2.interaction.scrollToCellById('root[&]浙江[&]杭州-root[&]笔[&]price');
+
+    await sleep(500);
+
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+  });
+
+  test('should scroll to cell by id when cell outside of viewport', async () => {
+    s2.interaction.scrollToCellById('root[&]浙江[&]杭州');
+
+    await sleep(500);
+
+    expect(Math.floor(s2.facet.hRowScrollBar.thumbOffset)).toBeCloseTo(52);
+  });
+
+  test('should scroll to cell', async () => {
+    const dataCell = last(s2.facet.getDataCells());
+
+    s2.interaction.scrollToCell(dataCell!);
+
+    await sleep(500);
+
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+  });
+
+  test('should scroll to node', async () => {
+    const rowNode = last(s2.facet.getRowNodes());
+
+    s2.interaction.scrollToNode(rowNode!);
+
+    await sleep(500);
+
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(49);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+  });
+
+  test('should scroll to top', async () => {
+    s2.interaction.scrollTo({ offsetY: { value: 10 } });
+    await sleep(100);
+
+    s2.interaction.scrollToTop();
+    await sleep(500);
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(s2.facet.vScrollBar.thumbOffset).toBeCloseTo(0);
+  });
+
+  test('should scroll to left', async () => {
+    s2.interaction.scrollTo({ offsetX: { value: 10 } });
+    await sleep(100);
+
+    s2.interaction.scrollToLeft();
+    await sleep(500);
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(s2.facet.vScrollBar.thumbOffset).toBeCloseTo(0);
+  });
+
+  test('should scroll to bottom', async () => {
+    s2.interaction.scrollToBottom(false);
+
+    await sleep(500);
+
+    expect(s2.facet.hScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(Math.floor(s2.facet.vScrollBar.thumbOffset)).toBeCloseTo(20);
+  });
+
+  test('should scroll to right', async () => {
+    s2.interaction.scrollToRight(false);
+
+    await sleep(500);
+
+    expect(s2.facet.vScrollBar.thumbOffset).toBeCloseTo(0);
+    expect(Math.floor(s2.facet.hScrollBar.thumbOffset)).toBeCloseTo(49);
+  });
 });

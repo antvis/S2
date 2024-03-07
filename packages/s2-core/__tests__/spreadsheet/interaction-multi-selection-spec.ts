@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import {
   createMockCellInfo,
@@ -11,6 +12,7 @@ import {
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
+import { InteractionStateName, RootInteraction } from '../../src';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
 
@@ -23,6 +25,14 @@ const s2Options: S2Options = {
 };
 
 describe('Interaction Multi Selection Tests', () => {
+  const config: Array<{
+    method: keyof typeof RootInteraction.prototype;
+    stateName: InteractionStateName;
+  }> = [
+    { method: 'selectCell', stateName: InteractionStateName.SELECTED },
+    { method: 'highlightCell', stateName: InteractionStateName.HOVER },
+  ];
+
   let s2: SpreadSheet;
 
   beforeEach(async () => {
@@ -35,7 +45,7 @@ describe('Interaction Multi Selection Tests', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   // https://github.com/antvis/S2/issues/1306
@@ -48,7 +58,7 @@ describe('Interaction Multi Selection Tests', () => {
     const colRootCell = s2.facet.getColCells()[0];
 
     // 选中
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: colRootCell,
     });
 
@@ -70,7 +80,7 @@ describe('Interaction Multi Selection Tests', () => {
     expectHighlightActiveNodes(s2, ['root[&]笔[&]price', 'root[&]笔[&]cost']);
 
     // 取消选中
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: colRootCell,
     });
 
@@ -97,7 +107,7 @@ describe('Interaction Multi Selection Tests', () => {
 
     const rowRootCell = s2.facet.getRowCells()[0];
 
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: rowRootCell,
     });
 
@@ -133,7 +143,7 @@ describe('Interaction Multi Selection Tests', () => {
 
     const colRootCell = s2.facet.getColCells()[0];
 
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: colRootCell,
     });
 
@@ -167,13 +177,13 @@ describe('Interaction Multi Selection Tests', () => {
 
     const colRootCell = pivotSheet.facet.getColCells()[0];
 
-    pivotSheet.interaction.selectHeaderCell({
+    pivotSheet.interaction.changeCell({
       cell: colRootCell,
     });
 
     await sleep(100);
 
-    pivotSheet.updateScrollOffset({
+    pivotSheet.interaction.scrollTo({
       offsetX: {
         value: 100,
         animate: true,
@@ -196,5 +206,55 @@ describe('Interaction Multi Selection Tests', () => {
         interactedCells.find((cell) => cell.getMeta().id === id),
       ).toBeTruthy();
     });
+  });
+
+  test.each(config)('should %o for root row cell', ({ method, stateName }) => {
+    // @ts-ignore
+    s2.interaction[method](s2.facet.getRowCells()[0]);
+
+    expectHighlightActiveNodes(s2, [
+      'root[&]浙江[&]义乌',
+      'root[&]浙江[&]杭州',
+    ]);
+
+    expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
+  });
+
+  test.each(config)('should %o for leaf row cell', ({ method, stateName }) => {
+    // @ts-ignore
+    s2.interaction[method](s2.facet.getRowLeafCells()[0]);
+
+    expectHighlightActiveNodes(s2, ['root[&]浙江[&]义乌']);
+    expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
+  });
+
+  test.each(config)(
+    'should %o for root row cell by tree mode',
+    async ({ method, stateName }) => {
+      s2.setOptions({ hierarchyType: 'tree' });
+      await s2.render(false);
+
+      // @ts-ignore
+      s2.interaction[method](s2.facet.getRowCells()[0]);
+
+      expectHighlightActiveNodes(s2, ['root[&]浙江']);
+      expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
+    },
+  );
+
+  test.each(config)('should %o for root col cell', ({ method, stateName }) => {
+    // @ts-ignore
+    s2.interaction[method](s2.facet.getColCells()[0]);
+
+    expectHighlightActiveNodes(s2, ['root[&]笔[&]price', 'root[&]笔[&]cost']);
+    expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
+  });
+
+  test.each(config)('should %o for leaf col cell', ({ method, stateName }) => {
+    // @ts-ignore
+    s2.interaction[method](s2.facet.getColLeafCells()[0]);
+
+    expectHighlightActiveNodes(s2, ['root[&]笔[&]price']);
+    expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
   });
 });

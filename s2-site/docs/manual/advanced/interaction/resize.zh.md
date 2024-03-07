@@ -104,7 +104,7 @@ const s2Options = {
     resize: {
       visible: (cell) => {
         const meta = cell.getMeta();
-        return meta.id === 'root[&] 家具[&]桌子[&]数量'
+        return meta.id === 'root[&]家具[&]桌子[&]number'
       }
     }
   },

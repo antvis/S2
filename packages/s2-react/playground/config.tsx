@@ -340,6 +340,7 @@ export const s2Options: SheetComponentOptions = {
     hoverAfterScroll: true,
     selectedCellMove: true,
     rangeSelection: true,
+    autoResetSheetStyle: false,
     // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {

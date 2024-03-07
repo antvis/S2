@@ -438,6 +438,13 @@ export abstract class HeaderCell<
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
+
+    if (stateInfo?.stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+
+      return;
+    }
+
     const cells = interaction?.getCells([
       CellType.CORNER_CELL,
       CellType.COL_CELL,

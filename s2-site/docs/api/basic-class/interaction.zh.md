@@ -34,22 +34,88 @@ s2.interaction.reset()
 | isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | `() => Partial<ViewMeta>[]` |
 | getActiveCells | 获取当前在可视区域的单元格实例                                  | `() => S2CellType[]` |
-| clearStyleIndependent | 清除单元格样式                                          | `() => void` |
+| clearStyleIndependent | 清除单元格交互样式                                          | `() => void` |
 | getUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
-| selectHeaderCell | 选中指定行列头单元格                                       | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
 | hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格                                            | (cellsInfo?: [MergedCellInfo](#mergedcellinfo)[], hideData?: boolean) => void |
-| unmergeCells | 取消合并单元格                                          | `(removedCells: MergedCell[]) => void` |
-| updatePanelGroupAllDataCells | 更新所有数值单元格                                        | `() => void` |
+| unmergeCell | 取消合并单元格                                          | `(removedCell: MergedCell) => void` |
+| updateAllDataCells | 更新所有数值单元格                                        | `() => void` |
 | updateCells | 更新指定单元格                                          | (cells: [S2CellType](#s2celltype)[]) => void |
 | addIntercepts | 新增交互拦截                                           | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/docs/api/basic-class/node)[]) => void |
+| scrollTo | 滚动至指定位置   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |    |
+| scrollToNode | 滚动至指定单元格节点   | (node: [Node](/docs/api/basic-class/node), animate?: boolean) => void |    |
+| scrollToCell | 滚动至指定单元格   | (cell: [S2CellType](#s2celltype), animate?: boolean) => void |    |
+| scrollToCellById | 滚动至指定单元格 id 对应的位置，如果不在可视化范围内，则会自动滚动   | (id: string, animate?: boolean) => void |    |
+| scrollToTop | 滚动至顶部  | (animate?: boolean) => void |    |
+| scrollToRight | 滚动至右边  | (animate?: boolean) => void |    |
+| scrollToBottom | 滚动至底部  | (animate?: boolean) => void |    |
+| scrollToLeft | 滚动至左边  | (animate?: boolean) => void |    |
+| highlightCell | 高亮指定单元格 （可视范围内）  | (cell: [S2CellType](#s2celltype)) => void |    |
+| selectCell | 选中指定单元格 （可视范围内）  | (cell: [S2CellType](#s2celltype)) => void |    |
+| changeCell | 改变指定单元格状态 （可视范围内） （如：选中/高亮/多选等）  | (options: [ChangeCellOptions](#changecelloptions)) => void |    |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
+
+### ChangeCellOptions
+
+```ts
+
+export interface ChangeCellOptions {
+  /**
+   * 目标单元格
+   */
+  cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
+  isMultiSelection?: boolean;
+
+  /**
+   * 状态名 （默认 `selected`)
+   */
+  stateName?: InteractionStateName;
+
+  /**
+   * 如果单元格不在可视范围，是否自动滚动
+   */
+  scrollIntoView?: boolean;
+}
+```
+
+### ScrollOffsetConfig
+
+```ts
+export interface ScrollOffsetConfig {
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetY?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+}
+```
+
+### ScrollOffset
+
+```ts
+export interface ScrollOffset {
+  scrollX?: number;
+  scrollY?: number;
+  rowHeaderScrollX?: number;
+}
+```
 
 ### InteractionConstructor
 
@@ -106,12 +172,29 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | BaseCell<T>;
 ```
 
-### SelectHeaderCellInfo
+### ChangeCellOptions
 
 ```ts
-interface SelectHeaderCellInfo {
-  cell: S2CellType<ViewMeta>; // 目标单元格
-  isMultiSelection?: boolean; // 是否是多选
+interface ChangeCellOptions {
+  /**
+   * 目标单元格
+   */
+  cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
+  isMultiSelection?: boolean;
+
+  /**
+   * 状态名
+   */
+  stateName?: InteractionStateName;
+
+  /**
+   * 如果单元格不在可视范围，是否自动滚动
+   */
+  scrollIntoView?: boolean;
 }
 ```
 

@@ -1,6 +1,7 @@
 ---
 title: 滚动
 order: 6
+tag: Updated
 ---
 
 ## 虚拟滚动
@@ -104,3 +105,16 @@ s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
 - [循环滚动](/examples/interaction/advanced#scroll-loop)
 
 <Playground path='interaction/advanced/demo/scroll-to-cell.ts' rid='scroll-to-cell' height='400'></playground>
+
+```ts
+// 滚动至指定位置
+s2.interaction.scrollTo({
+  offsetX: { value: 100, animate: true },
+  offsetY: { value: 100, animate: true },
+})
+
+// 滚动至顶部
+s2.interaction.scrollToTop(true)
+```
+
+查看更多 [API](/api/basic-class/interaction)

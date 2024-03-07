@@ -52,7 +52,6 @@ s2.isPivotMode()
 | getRowLeafNodes            | Get the row header leaf node                                                                                                                                                                     | () => [Node\[\]](/docs/api/basic-class/node/)                                                                                                                          |                                                                      |
 | facet.getColNodes             | Get column head node                                                                                                                                                                             | (level: number) => [Node\[\]](/docs/api/basic-class/node/)                                                                                                             |                                                                      |
 | facet.getColLeafNodes         | Get the column head leaf node                                                                                                                                                                    | () => [Node\[\]](/docs/api/basic-class/node/)                                                                                                                          |                                                                      |
-| updateScrollOffset         | update scroll offset                                                                                                                                                                             | (config: [OffsetConfig](#offsetconfig) ) => void                                                                                                                       |                                                                      |
 | getCell                    | Get the current cell according to event.target                                                                                                                                                   | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target) ) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype)                    |                                                                      |
 | getCellType                | Get the current cell type according to event.target                                                                                                                                              | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target) ) => [CellType](/docs/api/basic-class/base-cell#celltypes)                      |                                                                      |
 | getTotalsConfig            | Get Total Subtotal Configuration                                                                                                                                                                 | (dimension: string) => [Total](/docs/api/general/S2Options#totals)                                                                                                     |                                                                      |
@@ -71,12 +70,12 @@ s2.isPivotMode()
 type S2MountContainer = string | HTMLElement;
 ```
 
-### OffsetConfig
+### ScrollOffsetConfig
 
 Function description: Scroll offset configuration
 
 ```ts
-interface OffsetConfig {
+interface ScrollOffsetConfig {
   offsetX?: {
     value: number | undefined;
     animate?: boolean;

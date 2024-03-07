@@ -192,8 +192,8 @@ describe('Interaction Row & Column Cell Click Tests', () => {
 
     s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
 
-    const selectHeaderCellSpy = jest
-      .spyOn(s2.interaction, 'selectHeaderCell')
+    const changeCellSpy = jest
+      .spyOn(s2.interaction, 'changeCell')
       .mockImplementationOnce(() => undefined);
 
     const mockCellData = {
@@ -218,7 +218,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     expect(linkFieldJump).toHaveBeenCalledTimes(1);
     expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();
     expect(s2.showTooltip).not.toHaveBeenCalled();
-    expect(selectHeaderCellSpy).not.toHaveBeenCalled();
+    expect(changeCellSpy).not.toHaveBeenCalled();
   });
 
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
@@ -261,8 +261,8 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     ({ event, enableMultiSelection, result }) => {
       s2.options.interaction!.multiSelection = enableMultiSelection;
 
-      const selectHeaderCellSpy = jest
-        .spyOn(s2.interaction, 'selectHeaderCell')
+      const changeCellSpy = jest
+        .spyOn(s2.interaction, 'changeCell')
         .mockImplementation(() => true);
 
       Object.defineProperty(rowColumnClick, 'isMultiSelection', {
@@ -274,9 +274,10 @@ describe('Interaction Row & Column Cell Click Tests', () => {
         stopPropagation() {},
       } as unknown as GEvent);
 
-      expect(selectHeaderCellSpy).toHaveBeenCalledWith({
+      expect(changeCellSpy).toHaveBeenCalledWith({
         cell: expect.anything(),
         isMultiSelection: result,
+        scrollIntoView: false,
       });
     },
   );

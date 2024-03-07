@@ -260,7 +260,7 @@ const App = ({ data }) => {
     width: 600,
     height: 400,
     seriesNumber: {
-      enable: true
+      enable: true,
     },
     interaction: {
       copy: { enable: true },

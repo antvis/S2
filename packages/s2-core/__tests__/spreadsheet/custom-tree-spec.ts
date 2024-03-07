@@ -114,7 +114,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     const rowNode = s2.facet.getRowNodes()[0];
 
     // 选中 a-1
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: rowNode.belongsCell!,
     });
 
@@ -124,7 +124,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expectHighlightActiveNodes(s2, ['root[&]a-1']);
 
     // 取消选中 a-1
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: rowNode.belongsCell!,
     });
     expect(s2.interaction.getActiveCells()).toBeEmpty();
@@ -145,7 +145,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
         .find((node) => node.field === field)!;
 
       // 选中
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: rowNode.belongsCell!,
       });
 
