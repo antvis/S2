@@ -84,17 +84,17 @@ function addButtons(s2: SpreadSheet) {
   highlightHeaderBtn.addEventListener('click', () => {
     const dataCellViewMeta = s2.facet.getCellMeta(1, 1);
 
-    s2.interaction.updateDataCellRelevancyHeaderCells(
+    s2.interaction.updateDataCellRelevantHeaderCells(
       dataCellViewMeta,
       InteractionStateName.HOVER,
     );
 
-    // s2.interaction.updateDataCellRelevancyRowCells(
+    // s2.interaction.updateDataCellRelevantRowCells(
     //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
     // );
 
-    // s2.interaction.updateDataCellRelevancyColCells(
+    // s2.interaction.updateDataCellRelevantColCells(
     //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
     // );

@@ -48,9 +48,9 @@ s2.interaction.reset()
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/docs/api/basic-class/node)[]) => void |
-| updateDataCellRelevancyHeaderCells | 高亮数值单元格和所对应行列单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
-| updateDataCellRelevancyRowCells | 高亮数值单元格和所对应行头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
-| updateDataCellRelevancyColCells | 高亮数值单元格和所对应列头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantHeaderCells | 高亮数值单元格和所对应行列单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantRowCells | 高亮数值单元格和所对应行头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantColCells | 高亮数值单元格和所对应列头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 

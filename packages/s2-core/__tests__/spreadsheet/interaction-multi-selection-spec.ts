@@ -224,7 +224,7 @@ describe('Interaction Multi Selection Tests', () => {
 
       const dataCell = s2.facet.getDataCells()[0];
 
-      s2.interaction.updateDataCellRelevancyHeaderCells(
+      s2.interaction.updateDataCellRelevantHeaderCells(
         stateName,
         dataCell.getMeta(),
       );
@@ -250,7 +250,7 @@ describe('Interaction Multi Selection Tests', () => {
 
       const dataCell = s2.facet.getDataCells()[0];
 
-      s2.interaction.updateDataCellRelevancyRowCells(
+      s2.interaction.updateDataCellRelevantRowCells(
         stateName,
         dataCell.getMeta(),
       );
@@ -278,7 +278,7 @@ describe('Interaction Multi Selection Tests', () => {
 
       const dataCell = s2.facet.getDataCells()[0];
 
-      s2.interaction.updateDataCellRelevancyColCells(
+      s2.interaction.updateDataCellRelevantColCells(
         stateName,
         dataCell.getMeta(),
       );

@@ -638,15 +638,15 @@ export class RootInteraction {
     };
   }
 
-  public updateDataCellRelevancyHeaderCells(
+  public updateDataCellRelevantHeaderCells(
     stateName: InteractionStateName,
     meta: ViewMeta,
   ) {
-    this.updateDataCellRelevancyColCells(stateName, meta);
-    this.updateDataCellRelevancyRowCells(stateName, meta);
+    this.updateDataCellRelevantColCells(stateName, meta);
+    this.updateDataCellRelevantRowCells(stateName, meta);
   }
 
-  public updateDataCellRelevancyRowCells(
+  public updateDataCellRelevantRowCells(
     stateName: InteractionStateName,
     meta: ViewMeta,
   ) {
@@ -682,7 +682,7 @@ export class RootInteraction {
     }
   }
 
-  public updateDataCellRelevancyColCells(
+  public updateDataCellRelevantColCells(
     stateName: InteractionStateName,
     meta: ViewMeta,
   ) {

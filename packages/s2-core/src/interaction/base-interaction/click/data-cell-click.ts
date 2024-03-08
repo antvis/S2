@@ -77,7 +77,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.showTooltip(event, meta);
 
       // 点击单元格，高亮对应的行头、列头
-      interaction.updateDataCellRelevancyHeaderCells(
+      interaction.updateDataCellRelevantHeaderCells(
         InteractionStateName.SELECTED,
         meta,
       );
