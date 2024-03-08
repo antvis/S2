@@ -77,7 +77,7 @@ const s2DataConfig = {
 
 支持 `行头/列头` 按照交叉的度量值（数值）进行排序。以下图为例，如果需要对行头的 `城市` 维度排序，首先需要找出用于排序的数据。`城市` 维度在交叉区域对应了 7 列数值数据，使用任何一列数据做比较，都可以决定 `城市` 维度的排序，所以在使用 `度量值字段（sortByMeasure）` 时，不仅要指定需要排序的 `sortFieldId`，还需要使用 `query` 属性限定用于比较的数值数据。
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gAxoSaj9Z4IAAAAAAAAAAAAADmJ7AQ/original" width="600" />
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gAxoSaj9Z4IAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 根据维度所在的层级，以及用于排序的数据不同，可以分为两类排序，示例如下：
 

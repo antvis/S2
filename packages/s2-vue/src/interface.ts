@@ -26,17 +26,18 @@ interface RequiredPropOption<T = any> {
 export type EmitFn<
   Options = Record<string, (...args: any[]) => any>,
   Event extends keyof Options = keyof Options,
-> = Options extends Array<infer V>
-  ? (event: V, ...args: any[]) => void
-  : Record<string, any> extends Options
-  ? (event: string, ...args: any[]) => void
-  : UnionToIntersection<
-      {
-        [key in Event]: Options[key] extends (...args: infer Args) => any
-          ? (event: key, ...args: Args) => void
-          : (event: key, ...args: any[]) => void;
-      }[Event]
-    >;
+> =
+  Options extends Array<infer V>
+    ? (event: V, ...args: any[]) => void
+    : Record<string, any> extends Options
+      ? (event: string, ...args: any[]) => void
+      : UnionToIntersection<
+          {
+            [key in Event]: Options[key] extends (...args: infer Args) => any
+              ? (event: key, ...args: Args) => void
+              : (event: key, ...args: any[]) => void;
+          }[Event]
+        >;
 
 /* -------------------------------------------------------------------------- */
 /*                                   一些工具类型                                   */
@@ -46,9 +47,8 @@ type GetOptionalKeys<T> = keyof {
   [K in keyof T as Pick<T, K> extends Required<Pick<T, K>> ? never : K]: K;
 };
 
-type IsEmitKey<Type> = Exclude<Type, undefined> extends (...args: any) => any
-  ? true
-  : false;
+type IsEmitKey<Type> =
+  Exclude<Type, undefined> extends (...args: any) => any ? true : false;
 
 type TransformEmitKey<T> = T extends `on${infer R}` ? Uncapitalize<R> : T;
 
