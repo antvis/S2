@@ -251,7 +251,10 @@ describe('PivotSheet Corner Tests', () => {
 
       const getCellSpy = jest.spyOn(s2, 'getCell').mockImplementation(() => {
         return {
-          getMeta: () => node,
+          getMeta: () => ({
+            ...node,
+            cornerType: CornerNodeType.Row,
+          }),
         } as unknown as S2CellType;
       });
       const selected = jest.fn();
@@ -286,7 +289,10 @@ describe('PivotSheet Corner Tests', () => {
 
     jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
       return {
-        getMeta: () => node,
+        getMeta: () => ({
+          ...node,
+          cornerType: CornerNodeType.Row,
+        }),
       } as unknown as S2CellType;
     });
     const selected = jest.fn();
@@ -308,7 +314,10 @@ describe('PivotSheet Corner Tests', () => {
     jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
     jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
       return {
-        getMeta: () => node,
+        getMeta: () => ({
+          ...node,
+          cornerType: CornerNodeType.Row,
+        }),
       } as unknown as S2CellType;
     });
 

@@ -3,7 +3,11 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
-import { CellType, InteractionStateName, type Node } from '../../../../../src';
+import {
+  CornerNodeType,
+  InteractionStateName,
+  type Node,
+} from '../../../../../src';
 import { InterceptType, S2Event } from '@/common/constant';
 import type { HierarchyType, S2Options } from '@/common/interface';
 import type { GEvent } from '@/index';
@@ -14,7 +18,9 @@ jest.mock('@/interaction/event-controller');
 
 describe('Interaction Corner Cell Click Tests', () => {
   let s2: SpreadSheet;
-  const mockCellInfo = createMockCellInfo('testId');
+  const mockCellInfo = createMockCellInfo('testId', {
+    cornerType: CornerNodeType.Row,
+  });
   let cornerCellClick: CornerCellClick;
 
   beforeEach(() => {
@@ -68,7 +74,6 @@ describe('Interaction Corner Cell Click Tests', () => {
           {
             colIndex: -1,
             rowIndex: -1,
-            type: CellType.ROW_CELL,
             id: mockCellInfo.mockCellMeta['id'],
           },
         ],

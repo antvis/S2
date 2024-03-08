@@ -256,7 +256,7 @@ Array [
   },
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
   Object {
@@ -430,7 +430,7 @@ Array [
 ]
 `;
 
-exports[`Facet Layout API Tests PivotSheet CornerCell #getCornerCell()s 1`] = `
+exports[`Facet Layout API Tests PivotSheet CornerCell #getCornerCells() 1`] = `
 Array [
   Object {
     "field": "province",
@@ -694,7 +694,7 @@ exports[`Facet Layout API Tests PivotSheet SeriesNumberCell #getSeriesNumberCell
 Array [
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
 ]
@@ -704,7 +704,7 @@ exports[`Facet Layout API Tests PivotSheet SeriesNumberCell #getSeriesNumberNode
 Array [
   Object {
     "field": "",
-    "id": "",
+    "id": "1",
     "value": "1",
   },
 ]

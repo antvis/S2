@@ -442,6 +442,7 @@ export abstract class HeaderCell<
       CellType.CORNER_CELL,
       CellType.COL_CELL,
       CellType.ROW_CELL,
+      CellType.SERIES_NUMBER_CELL,
     ]);
 
     if (!first(cells)) {
@@ -479,7 +480,7 @@ export abstract class HeaderCell<
     return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
   }
 
-  mappingValue<Result>(
+  public mappingValue<Result>(
     condition: Condition<Result>,
   ): ConditionMappingResult<Result> {
     const value = this.getMeta().value;

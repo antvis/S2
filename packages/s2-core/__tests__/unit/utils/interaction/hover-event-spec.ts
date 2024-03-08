@@ -1,6 +1,6 @@
 import type { Node } from '@/facet/layout/node';
 import {
-  getActiveHoverRowColCells,
+  getActiveHoverHeaderCells,
   updateAllColHeaderCellState,
 } from '@/utils/interaction/hover-event';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
@@ -32,13 +32,13 @@ describe('Hover Event Utils Tests', () => {
       const cells = [
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
-      let result = getActiveHoverRowColCells('root[&]city', cells, false);
+      let result = getActiveHoverHeaderCells('root[&]city', cells, false);
 
       expect(result.map((cell) => cell.getMeta()?.id)).toStrictEqual([
         'root[&]city',
       ]);
 
-      result = getActiveHoverRowColCells('root[&]city', cells, true);
+      result = getActiveHoverHeaderCells('root[&]city', cells, true);
       expect(result.map((cell) => cell.getMeta()?.id)).toStrictEqual([
         'root[&]city',
       ]);

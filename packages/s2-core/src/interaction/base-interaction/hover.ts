@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import { forEach, isBoolean, isEmpty } from 'lodash';
+import { isBoolean, isEmpty } from 'lodash';
 import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
@@ -12,56 +12,17 @@ import type {
   TooltipOptions,
   ViewMeta,
 } from '../../common/interface';
-import {
-  getActiveHoverRowColCells,
-  updateAllColHeaderCellState,
-} from '../../utils/interaction/hover-event';
+import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from '../base-event';
-import type { Node } from '../../facet/layout/node';
 
 /**
  * @description Hover event for data cells, row cells and col cells
  */
 export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
-    this.bindCornerCellHover();
     this.bindDataCellHover();
-    this.bindRowCellHover();
-    this.bindColCellHover();
-  }
-
-  public updateRowColCells(meta: ViewMeta | Node) {
-    const { rowId, colId } = meta;
-    const { facet, interaction } = this.spreadsheet;
-
-    updateAllColHeaderCellState(
-      colId,
-      facet.getColCells(),
-      InteractionStateName.HOVER,
-    );
-    const { rowHeader, colHeader } = interaction.getHoverHighlight();
-
-    if (colHeader) {
-      updateAllColHeaderCellState(
-        colId,
-        facet.getColCells(),
-        InteractionStateName.HOVER,
-      );
-    }
-
-    if (rowHeader && rowId) {
-      // update rowHeader cells
-      const allRowHeaderCells = getActiveHoverRowColCells(
-        rowId,
-        facet.getRowCells(),
-        this.spreadsheet.isHierarchyTreeType(),
-      );
-
-      forEach(allRowHeaderCells, (cell) => {
-        cell.updateByState(InteractionStateName.HOVER);
-      });
-    }
+    this.bindHeaderCellHover();
   }
 
   /**
@@ -75,7 +36,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    const meta = cell.getMeta();
+    const meta = cell.getMeta() as ViewMeta;
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
     const { hoverFocus } = interactionOptions!;
@@ -99,23 +60,20 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       };
 
       if (interactionOptions?.hoverHighlight) {
-        const { rowHeader, colHeader } = interaction.getHoverHighlight();
-
-        if (rowHeader || colHeader) {
-          // highlight all the row and column cells which the cell belongs to
-          this.updateRowColCells(meta);
-        }
+        interaction.updateDataCellRelevantHeaderCells(
+          InteractionStateName.HOVER,
+          meta,
+        );
       }
 
       const data = this.getCellData(meta, onlyShowCellText);
 
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     };
-    let hoverFocusDuration = HOVER_FOCUS_DURATION;
 
-    if (!isBoolean(hoverFocus)) {
-      hoverFocusDuration = hoverFocus?.duration ?? HOVER_FOCUS_DURATION;
-    }
+    const hoverFocusDuration = !isBoolean(hoverFocus)
+      ? hoverFocus?.duration ?? HOVER_FOCUS_DURATION
+      : HOVER_FOCUS_DURATION;
 
     if (hoverFocusDuration === 0) {
       handleHoverFocus();
@@ -230,12 +188,10 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       });
 
       if (interactionOptions?.hoverHighlight) {
-        const { rowHeader, colHeader } = interaction.getHoverHighlight();
-
-        if (rowHeader || colHeader) {
-          // highlight all the row and column cells which the cell belongs to
-          this.updateRowColCells(meta);
-        }
+        interaction.updateDataCellRelevantHeaderCells(
+          InteractionStateName.HOVER,
+          meta,
+        );
       }
 
       if (interactionOptions?.hoverFocus) {
@@ -244,21 +200,15 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  public bindRowCellHover() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
-      this.handleHeaderHover(event);
-    });
-  }
-
-  public bindColCellHover() {
-    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
-      this.handleHeaderHover(event);
-    });
-  }
-
-  public bindCornerCellHover() {
-    this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
-      this.handleHeaderHover(event);
+  public bindHeaderCellHover() {
+    [
+      S2Event.ROW_CELL_HOVER,
+      S2Event.COL_CELL_HOVER,
+      S2Event.CORNER_CELL_HOVER,
+    ].forEach((eventName) => {
+      this.spreadsheet.on(eventName, (event: CanvasEvent) => {
+        this.handleHeaderHover(event);
+      });
     });
   }
 }

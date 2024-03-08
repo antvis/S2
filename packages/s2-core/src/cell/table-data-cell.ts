@@ -1,6 +1,7 @@
 import { Frame } from '../facet/header/frame';
 import { DataCell } from '../cell/data-cell';
 import {
+  CellType,
   FrozenGroupType,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -18,6 +19,7 @@ import {
 } from '../utils/interaction/resize';
 import { CustomRect, type SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet/frozen-facet';
+import type { CellMeta } from '../common';
 import { BaseCell } from './base-cell';
 
 export class TableDataCell extends DataCell {
@@ -159,5 +161,9 @@ export class TableDataCell extends DataCell {
         attrs.appendInfo,
       ),
     );
+  }
+
+  protected isDisableHover(cellMeta: CellMeta) {
+    return cellMeta?.type === CellType.COL_CELL;
   }
 }

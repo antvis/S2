@@ -2,24 +2,12 @@ import type { PointLike } from '@antv/g';
 import { CellType } from '../common/constant/interaction';
 import type { AreaRange, FormatResult } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
-import type { BaseHeaderConfig } from '../facet/header/interface';
-import type { Node } from '../facet/layout/node';
 import { getHorizontalTextIconPosition } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
-import { BaseCell } from './base-cell';
+import { HeaderCell } from './header-cell';
 
-export class SeriesNumberCell extends BaseCell<Node> {
-  protected declare headerConfig: BaseHeaderConfig;
-
-  protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
-    this.headerConfig = { ...headerConfig };
-  }
-
-  public getHeaderConfig() {
-    return this.headerConfig || {};
-  }
-
+export class SeriesNumberCell extends HeaderCell {
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -30,23 +18,22 @@ export class SeriesNumberCell extends BaseCell<Node> {
 
   protected initCell(): void {
     this.drawBackgroundShape();
+    this.drawInteractiveBgShape();
+    this.drawInteractiveBorderShape();
     this.drawBorders();
     this.drawTextShape();
+    this.update();
   }
 
-  protected getBackgroundColor() {
+  public getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } =
-      this.getStyle()?.cell || {};
+      this.getCrossBackgroundColor(this.meta.rowIndex);
 
     return {
       backgroundColor,
       backgroundColorOpacity,
       intelligentReverseTextColor: false,
     };
-  }
-
-  public update(): void {
-    /** 序号单元格暂时没有交互的联动 */
   }
 
   protected getTextStyle() {
@@ -116,15 +103,19 @@ export class SeriesNumberCell extends BaseCell<Node> {
     return { x: textX, y: textStart };
   }
 
-  protected findFieldCondition() {
+  protected isBolderText() {
+    return false;
+  }
+
+  public findFieldCondition() {
     return undefined;
   }
 
-  protected mappingValue() {
+  public mappingValue() {
     return undefined;
   }
 
-  protected getIconPosition(): PointLike {
+  public getIconPosition(): PointLike {
     return { x: 0, y: 0 };
   }
 }

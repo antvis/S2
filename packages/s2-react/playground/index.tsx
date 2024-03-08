@@ -82,7 +82,7 @@ const onSheetMounted = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
-  window.g_instances = [s2.container];
+  window.__g_instances__ = [s2.container];
 };
 
 const CustomTooltip = () => (
@@ -1289,7 +1289,7 @@ function MainLayout() {
                                   }}
                                 />
                               </Tooltip>
-                              <Tooltip title="高亮当前行列单元格">
+                              <Tooltip title="悬停后高亮当前行列单元格 (含序号)">
                                 <Switch
                                   checkedChildren="hover 十字器开"
                                   unCheckedChildren="hover 十字器关"
@@ -1300,6 +1300,23 @@ function MainLayout() {
                                     updateOptions({
                                       interaction: {
                                         hoverHighlight: checked,
+                                      },
+                                    });
+                                  }}
+                                />
+                              </Tooltip>
+                              <Tooltip title="选中后高亮当前行列单元格 (含序号)">
+                                <Switch
+                                  checkedChildren="选中后高亮当前行列单元格开"
+                                  unCheckedChildren="选中后高亮当前行列单元格关"
+                                  checked={Boolean(
+                                    mergedOptions?.interaction
+                                      ?.selectedCellHighlight,
+                                  )}
+                                  onChange={(checked) => {
+                                    updateOptions({
+                                      interaction: {
+                                        selectedCellHighlight: checked,
                                       },
                                     });
                                   }}

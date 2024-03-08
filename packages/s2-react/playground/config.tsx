@@ -316,6 +316,9 @@ export const s2Options: SheetComponentOptions = {
   width: 800,
   height: 600,
   hierarchyType: 'grid',
+  seriesNumber: {
+    enable: true,
+  },
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
@@ -338,6 +341,8 @@ export const s2Options: SheetComponentOptions = {
       withHeader: true,
     },
     hoverAfterScroll: true,
+    hoverHighlight: true,
+    selectedCellHighlight: true,
     selectedCellMove: true,
     rangeSelection: true,
     // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新

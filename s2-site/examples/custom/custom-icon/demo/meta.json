@@ -35,6 +35,15 @@
         "en": "Custom display condition"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eb5CSq0nszQAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "custom-tree-icon.ts",
+      "title": {
+        "zh": "自定义树状模式展开收起图标",
+        "en": "Custom tree icon"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*EjLvQ6LrFOEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }
