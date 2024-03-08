@@ -1,10 +1,14 @@
 ---
-title: 单元格内绘制图表
+title: 单元格内绘制图表和图形
 order: 11
 tag: New
 ---
 
-如果纯文本的表格不够直观，S2 支持 [自定义单元格](/examples#custom-custom-cell)，也内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 来实现一个组合图表。
+:::warning{title='提示'}
+阅读本章前，请确保已经对 S2 足够了解，并且熟悉 [`AntV/G`](https://g.antv.antgroup.com/) 渲染引擎的相关内容。
+:::
+
+如果纯文本的表格不够直观，S2 内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 同时也支持 [自定义单元格](/examples#custom-custom-cell) 的方式结合 [`AntV/G2`](https://g2.antv.antgroup.com/) 来实现一个组合图表，也可以绘制 `AntV/G` 的基础图形。
 
 ### 数据格式
 
@@ -247,7 +251,7 @@ S2 内置了一些基于 [`AntV/G`](https://g.antv.antgroup.com/) 简单的图�
 `S2` 和 `G2` 底层都使用 [AntV/G](https://g.antv.antgroup.com/) 渲染引擎绘制，也就意味着可以**共享渲染引擎**, 实现在 `S2` 表格中绘制 `G2` 图表的梦幻联动，实现真 `图·表`.
 :::
 
-<Playground path='custom/custom-g2-chart/demo/custom-g2-chart.ts' rid='container' height='400'></playground>
+<Playground path='custom/custom-shape-and-chart/demo/custom-g2-chart.ts' rid='custom-g2-chart' height='400'></playground>
 
 <br/>
 
@@ -412,6 +416,110 @@ function App() {
 
 #### 2.5 效果
 
-[查看示例](/examples/custom/custom-cell#custom-g2-chart)
+[查看示例](/examples/custom/custom-shape-and-chart/#custom-g2-chart)
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="800"/>
+
+### 3. 绘制 G 自定义图形
+
+S2 的每一个单元格对应 [`AntV/G`](https://g.antv.antgroup.com/) 的一个 [Group 图形分组](https://g.antv.antgroup.com/api/basic/group). 所以可以在单元格内添加任意 G 的图形，甚至是任意基于 G 的图表库，比如 [`AntV/G2`](https://g2.antv.antgroup.com/).
+
+<Playground path='custom/custom-shape-and-chart/demo/custom-g-shape.ts' rid='custom-g-shape' height='400'></playground>
+
+#### 3.1 自定义单元格，重写绘制逻辑，添加任意图形
+
+```ts
+import { Image as GImage } from '@antv/g';
+import { CornerCell } from '@antv/s2';
+
+class CustomCornerCell extends CornerCell {
+  drawBackgroundShape() {
+    const img = new Image();
+
+    img.src =
+      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+
+    img.onload = () => {
+      this.backgroundShape = this.appendChild(
+        new GImage({
+          style: {
+            ...this.getBBoxByType(),
+            img,
+          },
+        }),
+      );
+
+      this.drawTextShape();
+    };
+  }
+}
+
+const s2Options = {
+  cornerCell: (node, spreadsheet, headerConfig) => {
+    return new CustomCornerCell(node, spreadsheet, headerConfig);
+  }
+};
+```
+
+#### 3.2 直接在表格 (Canvas) 上绘制任意图形
+
+通过 `s2.getCanvas()` 获取 `G` 的 `Canvas` 实例。
+
+```ts
+import { Rect } from '@antv/g';
+
+await s2.render();
+
+// 2. 直接在表格 (Canvas) 上绘制任意图形
+s2.getCanvas().appendChild(
+  new Rect({
+    style: {
+      x: 300,
+      y: 200,
+      width: 100,
+      height: 100,
+      fill: '#1890FF',
+      fillOpacity: 0.8,
+      stroke: '#F04864',
+      strokeOpacity: 0.8,
+      lineWidth: 4,
+      radius: 100,
+      zIndex: 999,
+    },
+  }),
+);
+```
+
+#### 3.3 手动获取指定单元格实例 (Group) 后绘制任意图形
+
+```ts
+import { Rect } from '@antv/g';
+
+await s2.render();
+
+const targetCell = s2.facet.getDataCells()[0];
+
+targetCell?.appendChild(
+  new Rect({
+    style: {
+      x: 0,
+      y: 100,
+      width: 20,
+      height: 20,
+      fill: '#396',
+      fillOpacity: 0.8,
+      stroke: '#ddd',
+      strokeOpacity: 0.8,
+      lineWidth: 4,
+      radius: 10,
+      zIndex: 999,
+    },
+  }),
+);
+```
+
+#### 3.4 效果
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TPuRQaXCSQEAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
+
+[查看示例](/examples/custom/custom-shape-and-chart/#custom-g-shape)

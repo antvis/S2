@@ -64,16 +64,15 @@ export default defineConfig({
   },
 
   build: {
+    target: 'es2015',
     minify: isUmdFormat ? 'esbuild' : false,
     sourcemap: true,
-
     lib: {
       name: 'S2-Vue',
       entry: './src/index.ts',
       formats: [format],
     },
     outDir,
-
     rollupOptions: {
       output: {
         entryFileNames: `[name]${isUmdFormat ? '.min' : ''}.js`,

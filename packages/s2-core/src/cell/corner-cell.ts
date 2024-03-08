@@ -54,10 +54,10 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   }
 
   /**
-   * 绘制折叠展开的icon
+   * 绘制折叠展开的 icon
    */
   protected drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
+    if (!this.showTreeIcon()) {
       return;
     }
 
@@ -191,8 +191,11 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
   }
 
   protected showTreeIcon() {
-    // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
-    return this.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0;
+    // 批量折叠或者展开的 icon，渲染在行头对应的角头中
+    return (
+      this.spreadsheet.isHierarchyTreeType() &&
+      this.meta.cornerType === CornerNodeType.Row
+    );
   }
 
   protected getTreeIconWidth() {

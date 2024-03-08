@@ -1,5 +1,5 @@
-import { forEach, reduce, uniqBy } from 'lodash';
-import { ColCell, RowCell, TableSeriesNumberCell } from '../../cell';
+import { reduce, uniqBy } from 'lodash';
+import { HeaderCell, TableSeriesNumberCell } from '../../cell';
 import {
   CellType,
   InteractionKeyboardKey,
@@ -15,10 +15,7 @@ import type {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { getDataCellId } from '../cell/data-cell';
-import {
-  getActiveHoverRowColCells,
-  updateAllColHeaderCellState,
-} from './hover-event';
+import { getActiveHoverHeaderCells } from './hover-event';
 
 type HeaderGetter = {
   getter: typeof getRowHeaderByCellId;
@@ -82,7 +79,7 @@ export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
 export function getRowCellForSelectedCell(
   meta: ViewMeta,
   spreadsheet: SpreadSheet,
-): (ColCell | RowCell | TableSeriesNumberCell)[] {
+): HeaderCell[] {
   const { facet, options } = spreadsheet;
 
   if (spreadsheet.isTableMode()) {
@@ -99,33 +96,14 @@ export function getRowCellForSelectedCell(
       result.push(rowCell);
     }
 
-    return result;
+    return result as unknown as HeaderCell[];
   }
 
-  return getActiveHoverRowColCells(
+  return getActiveHoverHeaderCells(
     meta.rowId!,
     facet.getRowCells(),
     spreadsheet.isHierarchyTreeType(),
   );
-}
-
-export function updateRowColCells(meta: ViewMeta) {
-  const { rowId, colId, spreadsheet } = meta;
-  const { facet } = spreadsheet;
-
-  updateAllColHeaderCellState(
-    colId!,
-    facet.getColCells(),
-    InteractionStateName.SELECTED,
-  );
-
-  if (rowId) {
-    const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
-
-    forEach(allRowHeaderCells, (cell) => {
-      cell.updateByState(InteractionStateName.SELECTED);
-    });
-  }
 }
 
 export const getRowHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>

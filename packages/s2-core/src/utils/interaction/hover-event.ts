@@ -1,23 +1,23 @@
 import { filter, forEach } from 'lodash';
-import type { ColCell, RowCell } from '../../cell';
-import { NODE_ID_SEPARATOR, InteractionStateName } from '../../common/constant';
+import type { ColCell, HeaderCell } from '../../cell';
+import { InteractionStateName, NODE_ID_SEPARATOR } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
 
 /**
  * @description Return all the row cells or column cells which are needed to be highlighted.
  * @param id rowId or colId
  * @param headerCells all the rowHeader cells or all the colHeader cells
- * @param isRowInHierarchyTreeType  The tree mode will only highlight the leaf nodes at the head of the row
+ * @param isHierarchyTree The tree mode will only highlight the leaf nodes at the head of the row
  */
-export const getActiveHoverRowColCells = (
+export const getActiveHoverHeaderCells = (
   id: string,
-  headerCells: (ColCell | RowCell)[],
-  isRowInHierarchyTreeType?: boolean,
+  headerCells: HeaderCell[],
+  isHierarchyTree?: boolean,
 ) => {
   let allHeaderIds: string[];
   const ids = id.split(NODE_ID_SEPARATOR);
 
-  if (isRowInHierarchyTreeType) {
+  if (isHierarchyTree) {
     allHeaderIds = [id];
   } else {
     allHeaderIds = [generateId(ids[0], ids[1])];
@@ -26,7 +26,7 @@ export const getActiveHoverRowColCells = (
     }
   }
 
-  const allHeaderCells = filter(headerCells, (cell: ColCell | RowCell) =>
+  const allHeaderCells = filter(headerCells, (cell) =>
     allHeaderIds.includes(cell.getMeta()?.id),
   );
 
@@ -39,7 +39,7 @@ export const updateAllColHeaderCellState = (
   stateName: InteractionStateName,
 ) => {
   if (colId) {
-    const allColHeaderCells = getActiveHoverRowColCells(colId, colHeaderCells);
+    const allColHeaderCells = getActiveHoverHeaderCells(colId, colHeaderCells);
 
     forEach(allColHeaderCells, (cell) => {
       cell.updateByState(stateName);

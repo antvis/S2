@@ -29,6 +29,15 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/XYZaL1w%24M/Kapture%2525202022-04-15%252520at%25252011.45.55.gif"
     },
     {
+      "filename": "corner-cell-click-selection.ts",
+      "title": {
+        "zh": "角头多选",
+        "en": "Corner Cell Click Selection"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*0csYQK0JHaQAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
       "filename": "data-cell-range-selection.ts",
       "title": {
         "zh": "区间多选",

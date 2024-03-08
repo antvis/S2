@@ -29,6 +29,7 @@ import {
   getTooltipVisibleOperator,
   mergeCellInfo,
 } from '../../../utils/tooltip';
+import { SeriesNumberCell } from '../../../cell';
 import type { ViewMeta } from './../../../common/interface/basic';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
@@ -98,10 +99,13 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const { interaction, options } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target)!;
 
+    if (cell instanceof SeriesNumberCell) {
+      return;
+    }
+
     const { multiSelection: enableMultiSelection } = options.interaction!;
     // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
     const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
-
     const success = interaction.selectHeaderCell({
       cell,
       isMultiSelection,

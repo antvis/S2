@@ -53,18 +53,39 @@ tag: Updated
 
 ## ⌨️ 本地开发
 
-:::info{title="提示"}
-
-我们使用 `pnpm` 作为包管理
-
-```bash
-npm i -g pnpm
-```
-
-推荐本地运行 `pnpm react:playground` 来调试 `@antv/s2` 和 `@antv/s2-react`
-:::
-
 <embed src="@/docs/common/development.zh.md#L4-L100"></embed>
+
+### 调试功能
+
+根目录运行 `pnpm react:playground` 来运行 `S2`, 可用于调试 `@antv/s2` 和 `@antv/s2-react`, 提供了一些常用的图表场景和配置。
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*6t8RRbg5x_kAAAAAAAAAAAAADmJ7AQ/original" />
+
+S2 基于 `AntV/G` 渲染引擎绘制，如果想像 DOM 一样调试的话，可以安装 [G 开发者工具](https://g.antv.antgroup.com/api/devtools/g-devtools)
+
+1. 访问 `chrome://extensions/` 安装后
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*RTYXTpb3WuIAAAAAAAAAAAAADmJ7AQ/original" />
+
+1. 开始调试
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*sP9eQaWxDpcAAAAAAAAAAAAADmJ7AQ/original" />
+
+### 调试单测
+
+如果你想查看单测的运行结果，除了常规的 `pnpm core:test` 和 `pnpm react:test` 来运行测试之外，还可以 `可视化的调试单测（基于 jest-electron)`, 可以更快的发现单测的问题。
+
+1. 选择单测
+
+命令行运行 `pnpm core:start` 或者 `pnpm react:start`
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*g52KT5CybhYAAAAAAAAAAAAADmJ7AQ/original" />
+
+2. 查看结果
+
+因为本质上就是一个浏览器，如果单测结果不符合预期，可以正常打断点进行调试，快速分析原因。
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*E71uSYmhz9cAAAAAAAAAAAAADmJ7AQ/original" />
 
 ## 📦 版本
 

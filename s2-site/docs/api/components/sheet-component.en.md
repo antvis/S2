@@ -132,7 +132,7 @@ Function description: The props of the Vue SheetComponent component, such as `<S
 | dataCfg | pivot table data mapping configuration item | [S2DataConfig](/docs/api/general/S2DataConfig) | | ✓ |
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions-1) | | ✓ |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
-| showPagination | whether to show the default pagination<br> (only
+| showPagination | whether to show the default pagination | boolean | | |
 | themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/S2Theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
 | header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |
