@@ -1,4 +1,13 @@
-import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
+import {
+  concat,
+  find,
+  forEach,
+  isBoolean,
+  isEmpty,
+  isNil,
+  map,
+  unionBy,
+} from 'lodash';
 import { type MergedCell } from '../cell';
 import {
   CellType,
@@ -207,6 +216,24 @@ export class RootInteraction {
     ).filter(Boolean) as S2CellType[];
   }
 
+  public getActiveDataCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.DATA_CELL,
+    );
+  }
+
+  public getActiveRowCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.ROW_CELL,
+    );
+  }
+
+  public getActiveColCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.COL_CELL,
+    );
+  }
+
   public clearStyleIndependent() {
     if (
       !this.isSelectedState() &&
@@ -281,6 +308,11 @@ export class RootInteraction {
       this.reset();
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
 
+      return;
+    }
+
+    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义.
+    if (unionBy(selectedCells, 'type').length > 1) {
       return;
     }
 

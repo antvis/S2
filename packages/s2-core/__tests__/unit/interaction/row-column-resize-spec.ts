@@ -159,6 +159,20 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.tooltip.container = document.createElement('div');
     s2.hideTooltip = jest.fn();
     s2.interaction.reset = jest.fn();
+    s2.interaction.getActiveRowCells = () => [
+      createMockCellInfo('test-row-cell').mockCell,
+    ];
+    s2.interaction.getActiveColCells = () => [
+      createMockCellInfo('test-col-cell').mockCell,
+    ];
+
+    // 模拟多选
+    jest
+      .spyOn(Node, 'getAllLeaveNodes')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-cell-a').getNode(),
+        createMockCellInfo('test-cell-b').getNode(),
+      ]);
   });
 
   test('should register events', () => {
@@ -601,7 +615,7 @@ describe('Interaction Row Column Resize Tests', () => {
     });
   });
 
-  test('should reset interaction and hidden tooltip when resize start', () => {
+  test('should not reset interaction and hidden tooltip when resize start', () => {
     const resizeInfo = {
       theme: {},
       type: ResizeDirectionType.Vertical,
@@ -622,7 +636,8 @@ describe('Interaction Row Column Resize Tests', () => {
       },
       resizeInfo,
     );
-    expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
+    expect(s2.interaction.reset).toHaveBeenCalledTimes(0);
+    expect(s2.hideTooltip).toHaveBeenCalledTimes(1);
   });
 
   test('should not update col width after resized if resize disabled', () => {
@@ -795,5 +810,37 @@ describe('Interaction Row Column Resize Tests', () => {
     emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
 
     expect(s2.options.style!.colCell).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2574
+  test('should get horizontal filed resize style by field for selected resize type', () => {
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2574
+  test('should get vertical filed resize style by field for selected resize type', () => {
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
   });
 });

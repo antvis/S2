@@ -353,8 +353,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.ALL,
-      colResizeType: ResizeType.CURRENT,
+      rowResizeType: ResizeType.SELECTED,
+      colResizeType: ResizeType.SELECTED,
     },
   },
   // totals: {

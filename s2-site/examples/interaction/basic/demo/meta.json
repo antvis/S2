@@ -70,6 +70,15 @@
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*WdvmQ5pd4BwAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
+      "filename": "resize-selected.ts",
+      "title": {
+        "zh": "行列宽高批量调整",
+        "en": "Batch Resize Height And Width"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HuK4SK1EKykAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
       "filename": "auto-reset-sheet-style.ts",
       "title": {
         "zh": "自动交互状态重置",

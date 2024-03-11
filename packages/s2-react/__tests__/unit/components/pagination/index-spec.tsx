@@ -1,5 +1,5 @@
+import { render } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { S2Pagination } from '@/components/pagination';
 
 describe('Pagination Component Tests', () => {
@@ -15,6 +15,5 @@ describe('Pagination Component Tests', () => {
     );
 
     expect(result.asFragment()).toMatchSnapshot();
-    expect(screen.getByText('共计20条')).toBeDefined();
   });
 });
