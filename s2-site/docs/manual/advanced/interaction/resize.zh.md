@@ -12,6 +12,10 @@ S2 默认提供 [`行列等宽`](/examples/layout/basic#adaptive), [`列等宽`]
 
 可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 `角头`，`行头`，`列头` 三个部分，默认为**全部开启**。可以通过设置 `boolean` 类型值快捷开启或关闭所有 `resize` 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看示例](/examples/interaction/advanced#resize-active)
 
+:::info{title="提示"}
+调整宽高时，会关闭 tooltip 避免遮挡，但是交互状态会保留（如选中）.
+:::
+
 ```ts
 const s2Options = {
   interaction: {
@@ -81,7 +85,7 @@ const s2Options = {
 
 除此之外，还支持 `resize.visible` 动态控制热区是否展示。[查看示例](/examples/interaction/basic#resize)
 
-1. 例：只有叶子节点才显示 resize 热区：
+1. 例：只有叶子节点才显示 `resize` 热区：
 
 ```ts
 const s2Options = {
@@ -96,7 +100,7 @@ const s2Options = {
 };
 ```
 
-2. 例：只有某一个单元格显示 resize 热区：
+2. 例：只有某一个单元格显示 `resize` 热区：
 
 ```ts
 const s2Options = {
@@ -135,13 +139,14 @@ const s2Options = {
 
 - `all`: 对应单元格维度 `{ city: 20, type: 100 }`
 - `current` 对应单元格 ID `{ 'root[&]杭州市': 20, 'root[&]类别': 100 }`
+- `selected` 对应当前选中的单元格 ID `{ 'root[&]杭州市': 20, 'root[&]成都市': 100 }`
 
 ```ts
 const s2Options = {
   interaction: {
     resize: {
       // 行高调整时，影响全部行
-      rowResizeType: 'all',
+      rowResizeType: 'all', // 'all' | 'current' | 'selected'
       // 列宽调整时，只影响当前列
       colResizeType: 'current',
     }
@@ -157,7 +162,7 @@ const s2Options = {
   <tbody>
     <tr>
       <td style="text-align: center;">
-        rowResizeType: 'all'
+        resizeType: 'all'
       </td>
       <td>
         <img height="300" alt="default" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K9BHSYFdps4AAAAAAAAAAAAADmJ7AQ/original" />
@@ -165,10 +170,18 @@ const s2Options = {
     </tr>
     <tr>
       <td style="text-align: center;">
-        rowResizeType: 'current'
+        resizeType: 'current'
       </td>
       <td>
         <img height="300" alt="colorful" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*aXByQbhqG7AAAAAAAAAAAAAADmJ7AQ/original" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        resizeType: 'selected'
+      </td>
+      <td>
+        <img height="300" alt="colorful" style="max-height: unset;" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HuK4SK1EKykAAAAAAAAAAAAADmJ7AQ/original" />
       </td>
     </tr>
   </tbody>
@@ -182,7 +195,6 @@ const s2Options = {
     resize: {
       // 单元格可拖拽最小宽度
       minCellWidth: 20,
-
       // 单元格可拖拽最小高度
       minCellHeight: 20
     }

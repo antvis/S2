@@ -1692,9 +1692,8 @@ export abstract class BaseFacet {
       return;
     }
 
-    return hiddenColumnsDetail.find(
-      (detail) =>
-        detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
+    return hiddenColumnsDetail.find((detail) =>
+      detail?.hideColumnNodes?.some((node) => node.id === columnNode.id),
     );
   }
 

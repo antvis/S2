@@ -32,9 +32,13 @@ s2.interaction.reset()
 | isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后）       | `() => void` |
 | isSelectedCell | 是否是选中的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
 | isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
-| getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | `() => Partial<ViewMeta>[]` |
+| getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | () => Partial<[ViewMeta](#viewmeta)>[] |
 | getActiveCells | 获取当前在可视区域的单元格实例                                  | `() => S2CellType[]` |
 | clearStyleIndependent | 清除单元格交互样式                                          | `() => void` |
+| getActiveDataCells | 获取当前在可视区域的数值单元格实例                                  | `() => S2CellType[]` |
+| getActiveRowCells | 获取当前在可视区域的行头单元格实例                                  | `() => S2CellType[]` |
+| getActiveColCells | 获取当前在可视区域的列头单元格实例                                  | `() => S2CellType[]` |
+| clearStyleIndependent | 清除单元格样式                                          | `() => void` |
 | getUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
@@ -58,6 +62,9 @@ s2.interaction.reset()
 | highlightCell | 高亮指定单元格 （可视范围内）  | (cell: [S2CellType](#s2celltype)) => void |    |
 | selectCell | 选中指定单元格 （可视范围内）  | (cell: [S2CellType](#s2celltype)) => void |    |
 | changeCell | 改变指定单元格状态 （可视范围内） （如：选中/高亮/多选等）  | (options: [ChangeCellOptions](#changecelloptions)) => void |    |
+| updateDataCellRelevantHeaderCells | 高亮数值单元格和所对应行列单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantRowCells | 高亮数值单元格和所对应行头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
+| updateDataCellRelevantColCells | 高亮数值单元格和所对应列头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 

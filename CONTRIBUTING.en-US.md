@@ -1,5 +1,5 @@
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./CONTRIBUTING.md) ｜
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18" alt="language"/>  [简体中文](./CONTRIBUTING.md) ｜
 English
 
 ## Any kind of contribution is welcome

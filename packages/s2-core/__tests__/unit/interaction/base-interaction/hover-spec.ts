@@ -113,8 +113,13 @@ describe('Interaction Hover Tests', () => {
   });
 
   test('should trigger data cell hover depend on separate config', async () => {
-    s2.facet.getColCells = jest.fn();
-    s2.facet.getRowCells = jest.fn();
+    s2.facet.getRowCells().forEach((cell) => {
+      jest.spyOn(cell, 'update').mockImplementationOnce(() => {});
+    });
+
+    s2.facet.getColCells().forEach((cell) => {
+      jest.spyOn(cell, 'update').mockImplementationOnce(() => {});
+    });
 
     s2.setOptions({
       interaction: {
@@ -126,6 +131,7 @@ describe('Interaction Hover Tests', () => {
     });
 
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
+
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
       stateName: InteractionStateName.HOVER,
@@ -138,8 +144,13 @@ describe('Interaction Hover Tests', () => {
       stateName: InteractionStateName.HOVER_FOCUS,
     });
 
-    expect(s2.facet.getColCells).toHaveBeenCalled();
-    expect(s2.facet.getRowCells).not.toHaveBeenCalled();
+    s2.facet.getColCells().forEach((cell) => {
+      expect(cell.update).toHaveBeenCalled();
+    });
+
+    s2.facet.getRowCells().forEach((cell) => {
+      expect(cell.update).not.toHaveBeenCalled();
+    });
   });
 
   test('should not trigger data cell hover when hover cell not change', () => {

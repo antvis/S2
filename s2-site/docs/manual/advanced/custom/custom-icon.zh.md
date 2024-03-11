@@ -70,7 +70,7 @@ const s2Options = {
 }
 ```
 
-也可以覆盖内置 `icon`, 例如自定义树状表格收起展开 `icon`
+也可以覆盖内置 `icon`, 例如自定义树状表格收起展开 `icon`. [查看示例](/examples/custom/custom-icon/#custom-tree-icon)
 
 ``` ts
 const s2Options = {

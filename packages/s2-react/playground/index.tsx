@@ -82,7 +82,7 @@ const onSheetMounted = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
-  window.g_instances = [s2.container];
+  window.__g_instances__ = [s2.container];
 };
 
 const CustomTooltip = () => (
@@ -1312,6 +1312,214 @@ function MainLayout() {
                                     <Select.Option value="currentCol">
                                       currentCol: 高亮所在列
                                     </Select.Option>
+                                  </Select>
+                                </Tooltip>
+                                <Tooltip title="高亮选中单元格">
+                                  <Switch
+                                    checkedChildren="选中聚光灯开"
+                                    unCheckedChildren="选中聚光灯关"
+                                    checked={
+                                      mergedOptions?.interaction
+                                        ?.selectedCellsSpotlight
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellsSpotlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="悬停后高亮当前行列单元格 (含序号)">
+                                  <Switch
+                                    checkedChildren="hover 十字器开"
+                                    unCheckedChildren="hover 十字器关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.hoverHighlight,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverHighlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="选中后高亮当前行列单元格 (含序号)">
+                                  <Switch
+                                    checkedChildren="选中后高亮当前行列单元格开"
+                                    unCheckedChildren="选中后高亮当前行列单元格关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.selectedCellHighlight,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellHighlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="在数值单元格悬停 800ms,显示 tooltip">
+                                  <Switch
+                                    checkedChildren="hover 聚焦开"
+                                    unCheckedChildren="hover 聚焦关"
+                                    checked={
+                                      mergedOptions?.interaction
+                                        ?.hoverFocus as boolean
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverFocus: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="开启后,可通过键盘方向键移动单元格, 如果有滚动条则自动滚动">
+                                  <Switch
+                                    checkedChildren="键盘方向键移动选中单元格开"
+                                    unCheckedChildren="键盘方向键移动选中单元关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.selectedCellMove,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellMove: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="行头, 列头, 数值区域可单独配置">
+                                  <Switch
+                                    checkedChildren="刷选开启"
+                                    unCheckedChildren="刷选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.brushSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          brushSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="按住 Ctrl/Command + click">
+                                  <Switch
+                                    checkedChildren="多选开启"
+                                    unCheckedChildren="多选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.multiSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          multiSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="区间快捷多选 Shift + click">
+                                  <Switch
+                                    checkedChildren="区间快捷多选开启"
+                                    unCheckedChildren="区间快捷多选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.rangeSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          rangeSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="滚动后手动触发一次 hover, 触发单元格高亮效果">
+                                  <Switch
+                                    checkedChildren="表格滚动后触发 hover 开启"
+                                    unCheckedChildren="表格滚动后触发 hover 关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.hoverAfterScroll,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverAfterScroll: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+                                  <Switch
+                                    checkedChildren="自动重置交互样式开"
+                                    unCheckedChildren="自动重置交互样式关"
+                                    defaultChecked={
+                                      mergedOptions?.interaction
+                                        ?.autoResetSheetStyle
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          autoResetSheetStyle: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip
+                                  title={
+                                    <>
+                                      <p>默认隐藏列 </p>
+                                      <p>明细表: 列头指定 field: number</p>
+                                      <p>
+                                        透视表: 列头指定id:
+                                        root[&]家具[&]沙发[&]number
+                                      </p>
+                                    </>
+                                  }
+                                >
+                                  <Select
+                                    style={{ width: 300 }}
+                                    defaultValue={
+                                      mergedOptions?.interaction
+                                        ?.hiddenColumnFields
+                                    }
+                                    mode="multiple"
+                                    placeholder="默认隐藏列"
+                                    onChange={(fields) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hiddenColumnFields: fields,
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    {columnOptions.map((column) => (
+                                      <Select.Option
+                                        value={column}
+                                        key={column as string}
+                                      >
+                                        {column as string}
+                                      </Select.Option>
+                                    ))}
                                   </Select>
                                 </Tooltip>
                               </Space>

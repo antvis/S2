@@ -56,11 +56,9 @@ s2.isPivotMode()
 | getCell | 根据 event.target 获取当前 单元格                                                                                               | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype) |    |
 | getCellType | 根据 event.target 获取当前 单元格类型                                                                                             | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellType](/docs/api/basic-class/base-cell#celltypes) |    |
 | getTotalsConfig | 获取总计小计配置                                                                                                               | (dimension: string) => [Total](/docs/api/general/S2Options#totals) |    |
-| getInitColLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前）                                                                                               | () => [Node[]](/docs/api/basic-class/node/) |    |
 | getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素                                                                                            | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |    |
 | getCanvas | 获取 G Canvas 实例                                                                                           | () => [Canvas](https://g.antv.antgroup.com/api/renderer/canvas) |    |
 | getCanvasConfig | 获取 G Canvas 配置                                                                                           | () => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> |    |
-| clearInitColLeafNodes | 清空存储在 store 中的初始叶子节点                                                                                                   | () => void |    |
 | updateSortMethodMap | 更新存储在 store 中的节点排序方式 map, replace 为是否覆盖上一次的值                                                                           | (nodeId: string, sortMethod: string, replace?: boolean) => void |    |
 | getMenuDefaultSelectedKeys | 获取 tooltip 中选中的菜单项 key 值 | `(nodeId: string) => string[]` |    |
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |

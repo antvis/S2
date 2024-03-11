@@ -6,15 +6,15 @@ import {
   getContainer,
   sleep,
 } from 'tests/util/helpers';
+import { CellType, InteractionStateName, RootInteraction } from '../../src';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import { InteractionStateName, RootInteraction } from '../../src';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface';
+import type { HierarchyType, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,
@@ -23,6 +23,16 @@ const s2Options: S2Options = {
     enable: true,
   },
 };
+
+const highlightCellConfig: Array<{
+  hierarchyType: HierarchyType;
+  stateName: InteractionStateName;
+}> = [
+  { hierarchyType: 'tree', stateName: InteractionStateName.HOVER },
+  { hierarchyType: 'tree', stateName: InteractionStateName.SELECTED },
+  { hierarchyType: 'grid', stateName: InteractionStateName.HOVER },
+  { hierarchyType: 'grid', stateName: InteractionStateName.SELECTED },
+];
 
 describe('Interaction Multi Selection Tests', () => {
   const config: Array<{
@@ -257,4 +267,85 @@ describe('Interaction Multi Selection Tests', () => {
     expectHighlightActiveNodes(s2, ['root[&]笔[&]price']);
     expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
   });
+  test.each(highlightCellConfig)(
+    'should highlight relevancy header cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevantHeaderCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      expect(s2.interaction.getInteractedCells()).toHaveLength(
+        s2.isHierarchyTreeType() ? 4 : 5,
+      );
+    },
+  );
+
+  test.each(highlightCellConfig)(
+    'should highlight relevancy row cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevantRowCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      const interactedCells = s2.interaction
+        .getInteractedCells()
+        .filter((cell) => cell.cellType === CellType.ROW_CELL);
+
+      expect(interactedCells).toHaveLength(s2.isHierarchyTreeType() ? 2 : 3);
+    },
+  );
+
+  test.each(highlightCellConfig)(
+    'should highlight relevancy row cell after selected data cell by %s mode',
+    async ({ hierarchyType, stateName }) => {
+      s2.setOptions({
+        hierarchyType,
+        interaction: {
+          selectedCellHighlight: true,
+          hoverHighlight: true,
+        },
+        seriesNumber: { enable: true },
+      });
+      await s2.render(false);
+
+      const dataCell = s2.facet.getDataCells()[0];
+
+      s2.interaction.updateDataCellRelevantColCells(
+        stateName,
+        dataCell.getMeta(),
+      );
+
+      const interactedCells = s2.interaction
+        .getInteractedCells()
+        .filter((cell) => cell.cellType === CellType.COL_CELL);
+
+      expect(interactedCells).toHaveLength(2);
+    },
+  );
 });

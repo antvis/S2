@@ -28,6 +28,7 @@ S2 内部适配了 `AntV/G 5.0` 的 [多行布局能力](https://g.antv.antgroup
   - 'clip' 直接截断文本
   - 'ellipsis' 使用 ... 表示被截断的文本
   - 自定义字符串，使用它表示被截断的文本
+
 :::
 
 在 S2 中，通过 [Style](/api/general/s2-options#style) 即可实现渲染多行文本，当文本自动换行后，如果小于单元格高度，则会自动调整。

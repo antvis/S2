@@ -10,6 +10,7 @@
   "code-block-style": false,
   "no-bare-urls": false,
   "ol-prefix": false,
+  "table-column-count": false,
   "MD003": {
     "style": "atx"
   },

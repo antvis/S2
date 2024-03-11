@@ -428,14 +428,16 @@ const s2Options = {
 const s2Options = {
   interaction: {
     resize: {
-+     rowResizeType: 'current', // 'all'
-+     colResizeType: 'current'  // 'all'
++     rowResizeType: 'current', // 'all' | 'selected'
++     colResizeType: 'current'  // 'all' | 'selected'
     }
   }
 }
 ```
 
 2. 默认调整只对当前单元格生效。
+3. 宽高调整后现在不再重置选中状态，仅关闭 tooltip 提示。
+4. 现在支持多选后，进行批量调整。
 
 具体请查看 [行列宽高调整](/manual/advanced/interaction/resize) 相关文档。
 

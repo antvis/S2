@@ -1,5 +1,14 @@
-import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
-import type { MergedCell } from '../cell';
+import {
+  concat,
+  find,
+  forEach,
+  isBoolean,
+  isEmpty,
+  isNil,
+  map,
+  unionBy,
+} from 'lodash';
+import { type MergedCell } from '../cell';
 import {
   CellType,
   INTERACTION_STATE_INFO_KEY,
@@ -18,18 +27,25 @@ import type {
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
-  ScrollOffsetConfig,
   S2CellType,
+  ScrollOffsetConfig,
   ViewMeta,
 } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
+import { customMerge } from '../utils';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import {
+  getActiveHoverHeaderCells,
+  updateAllColHeaderCellState,
+} from '../utils/interaction/hover-event';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
-import { getCellMeta } from '../utils/interaction/select-event';
+import {
+  getCellMeta,
+  getRowCellForSelectedCell,
+} from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
-import { customMerge } from '../utils';
 import type { BaseEvent } from './base-event';
 import {
   DataCellClick,
@@ -282,6 +298,24 @@ export class RootInteraction {
    * 清除单元格交互样式
    * @example s2.interaction.clearStyleIndependent()
    */
+  public getActiveDataCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.DATA_CELL,
+    );
+  }
+
+  public getActiveRowCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.ROW_CELL,
+    );
+  }
+
+  public getActiveColCells(): S2CellType[] {
+    return this.getActiveCells().filter(
+      (cell) => cell.cellType === CellType.COL_CELL,
+    );
+  }
+
   public clearStyleIndependent() {
     if (
       !this.isSelectedState() &&
@@ -551,6 +585,11 @@ export class RootInteraction {
       this.reset();
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
 
+      return;
+    }
+
+    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义.
+    if (unionBy(selectedCells, 'type').length > 1) {
       return;
     }
 
@@ -955,5 +994,65 @@ export class RootInteraction {
       rowCell,
       colCell,
     };
+  }
+
+  public updateDataCellRelevantHeaderCells(
+    stateName: InteractionStateName,
+    meta: ViewMeta,
+  ) {
+    this.updateDataCellRelevantColCells(stateName, meta);
+    this.updateDataCellRelevantRowCells(stateName, meta);
+  }
+
+  public updateDataCellRelevantRowCells(
+    stateName: InteractionStateName,
+    meta: ViewMeta,
+  ) {
+    const { rowId } = meta;
+    const { facet, interaction } = this.spreadsheet;
+    const isHoverState = stateName === InteractionStateName.HOVER;
+    const { rowHeader } = isHoverState
+      ? interaction.getHoverHighlight()
+      : interaction.getSelectedCellHighlight();
+
+    if (rowHeader && rowId) {
+      const activeRowCells = isHoverState
+        ? getActiveHoverHeaderCells(
+            rowId,
+            facet.getRowCells(),
+            this.spreadsheet.isHierarchyTreeType(),
+          )
+        : getRowCellForSelectedCell(meta, this.spreadsheet);
+
+      const activeSeriesNumberCells = facet
+        .getSeriesNumberCells()
+        .filter((seriesNumberCell) => {
+          return activeRowCells.find(
+            (rowCell) => rowCell.getMeta().y === seriesNumberCell.getMeta().y,
+          );
+        });
+
+      const activeHeaderCells = [...activeSeriesNumberCells, ...activeRowCells];
+
+      forEach(activeHeaderCells, (cell) => {
+        cell.updateByState(stateName);
+      });
+    }
+  }
+
+  public updateDataCellRelevantColCells(
+    stateName: InteractionStateName,
+    meta: ViewMeta,
+  ) {
+    const { colId } = meta;
+    const { facet, interaction } = this.spreadsheet;
+    const { colHeader } =
+      stateName === InteractionStateName.HOVER
+        ? interaction.getHoverHighlight()
+        : interaction.getSelectedCellHighlight();
+
+    if (colHeader && colId) {
+      updateAllColHeaderCellState(colId, facet.getColCells(), stateName);
+    }
   }
 }

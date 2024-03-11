@@ -13,15 +13,15 @@ import type {
 } from '../common';
 import {
   InterceptType,
+  RESIZE_END_GUIDE_LINE_ID,
+  RESIZE_MASK_ID,
+  RESIZE_MIN_CELL_HEIGHT,
+  RESIZE_MIN_CELL_WIDTH,
+  RESIZE_START_GUIDE_LINE_ID,
   ResizeAreaEffect,
   ResizeDirectionType,
   ResizeType,
-  RESIZE_END_GUIDE_LINE_ID,
-  RESIZE_MASK_ID,
-  RESIZE_START_GUIDE_LINE_ID,
   S2Event,
-  RESIZE_MIN_CELL_WIDTH,
-  RESIZE_MIN_CELL_HEIGHT,
 } from '../common/constant';
 import type {
   ResizeDetail,
@@ -32,6 +32,7 @@ import type {
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
 import { floor } from '../utils/math';
+import { Node } from '../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -152,7 +153,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     this.setResizeMaskCursor(this.cursorType);
 
     /*
-     * resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被clip
+     * resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被 clip
      * 后续计算 resized 尺寸时，需要把收缩的部分加回来
      */
     const halfSize = size / 2;
@@ -195,8 +196,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      // 鼠标在 resize 热区 按下时, 将 tooltip 关闭, 避免造成干扰
-      this.spreadsheet.interaction.reset();
+      // 鼠标在 resize 热区 按下时, 保留交互态, 但是把 tooltip 关闭, 避免造成干扰
+      this.spreadsheet.hideTooltip();
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeTarget(shape);
       this.showResizeGroup();
@@ -260,9 +261,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private getResizeCellField(resizeInfo: ResizeInfo) {
     const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
-    const isOnlyEffectCurrent = isVertical
-      ? this.isOnlyEffectCurrentRow()
-      : this.isOnlyEffectCurrentCol();
+    const isOnlyEffectPartial = isVertical
+      ? !this.isEffectRowOf(ResizeType.ALL)
+      : !this.isEffectColOf(ResizeType.ALL);
 
     if (this.spreadsheet.isTableMode()) {
       return isVertical
@@ -270,21 +271,56 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         : resizeInfo?.meta?.field;
     }
 
-    return isOnlyEffectCurrent ? resizeInfo?.meta?.id : resizeInfo?.meta?.field;
+    return isOnlyEffectPartial ? resizeInfo?.meta?.id : resizeInfo?.meta?.field;
   }
 
-  private isOnlyEffectCurrentRow() {
+  private isEffectRowOf(resizeType: ResizeType) {
     return (
       (this.spreadsheet.options.interaction?.resize as ResizeInteractionOptions)
-        ?.rowResizeType === ResizeType.CURRENT
+        ?.rowResizeType === resizeType
     );
   }
 
-  private isOnlyEffectCurrentCol() {
+  private isEffectColOf(resizeType: ResizeType) {
     return (
       (this.spreadsheet.options.interaction?.resize as ResizeInteractionOptions)
-        ?.colResizeType === ResizeType.CURRENT
+        ?.colResizeType === resizeType
     );
+  }
+
+  private getCellStyleByField(resizeValue: number): Record<string, number> {
+    const { interaction } = this.spreadsheet;
+    const resizeInfo = this.getResizeInfo();
+
+    // 非多选: 正常设置即可
+    if (
+      !this.isEffectRowOf(ResizeType.SELECTED) ||
+      !this.isEffectColOf(ResizeType.SELECTED)
+    ) {
+      return {
+        [this.getResizeCellField(resizeInfo)]: resizeValue,
+      };
+    }
+
+    // 多选: 将当前选中的行列单元格对应的叶子节点统一设置宽高
+    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
+    const activeCells = isVertical
+      ? interaction.getActiveRowCells()
+      : interaction.getActiveColCells();
+
+    return activeCells.reduce<Record<string, number>>((result, cell) => {
+      // 热区是绘制在叶子节点的, 如果选中的父节点, 那么叶子节点也算是多选, 需要给每一个叶子节点批量设置
+      Node.getAllLeaveNodes(cell.getMeta() as Node).forEach((node) => {
+        const newResizeInfo: ResizeInfo = {
+          ...resizeInfo,
+          meta: node,
+        };
+
+        result![this.getResizeCellField(newResizeInfo)!] = resizeValue;
+      });
+
+      return result;
+    }, {});
   }
 
   private getResizeWidthDetail(): ResizeDetail | null {
@@ -319,10 +355,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
             colCell: {
-              width: this.isOnlyEffectCurrentCol() ? null : displayWidth,
-              widthByField: {
-                [this.getResizeCellField(resizeInfo)!]: displayWidth,
-              },
+              width: !this.isEffectColOf(ResizeType.ALL) ? null : displayWidth,
+              widthByField: this.getCellStyleByField(displayWidth),
             },
           },
         };
@@ -341,7 +375,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getResizeHeightDetail(): ResizeDetail | null {
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
-    const height = displayHeight!;
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
@@ -359,10 +392,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
             rowCell: {
-              height: this.isOnlyEffectCurrentRow() ? null : height,
-              heightByField: {
-                [this.getResizeCellField(resizeInfo)!]: height,
-              },
+              height: !this.isEffectRowOf(ResizeType.ALL)
+                ? null
+                : displayHeight,
+              heightByField: this.getCellStyleByField(displayHeight),
             },
           },
         };

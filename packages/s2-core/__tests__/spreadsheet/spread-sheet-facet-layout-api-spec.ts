@@ -99,7 +99,7 @@ describe('Facet Layout API Tests', () => {
         expect(mapNodes(s2.facet.getCornerNodes())).toMatchSnapshot();
       });
 
-      test('#getCornerCell()s', () => {
+      test('#getCornerCells()', () => {
         expect(mapCells(s2.facet.getCornerCells())).toMatchSnapshot();
       });
 

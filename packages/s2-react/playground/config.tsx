@@ -316,6 +316,9 @@ export const s2Options: SheetComponentOptions = {
   width: 800,
   height: 600,
   hierarchyType: 'grid',
+  seriesNumber: {
+    enable: true,
+  },
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
@@ -338,6 +341,8 @@ export const s2Options: SheetComponentOptions = {
       withHeader: true,
     },
     hoverAfterScroll: true,
+    hoverHighlight: true,
+    selectedCellHighlight: true,
     selectedCellMove: true,
     rangeSelection: true,
     autoResetSheetStyle: false,
@@ -349,8 +354,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.ALL,
-      colResizeType: ResizeType.CURRENT,
+      rowResizeType: ResizeType.SELECTED,
+      colResizeType: ResizeType.SELECTED,
     },
   },
   // totals: {

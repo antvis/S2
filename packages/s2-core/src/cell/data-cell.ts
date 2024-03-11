@@ -178,10 +178,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cells: CellMeta[]) {
-    const currentHoverCell = first(cells) as CellMeta;
+  protected isDisableHover(cellMeta: CellMeta) {
+    return cellMeta.type !== CellType.DATA_CELL;
+  }
 
-    if (currentHoverCell.type !== CellType.DATA_CELL) {
+  protected handleHover(cells: CellMeta[]) {
+    const hoverCellMeta = first(cells) as CellMeta;
+
+    if (this.isDisableHover(hoverCellMeta)) {
       this.hideInteractionShape();
 
       return;
@@ -197,8 +201,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        (currentCol && currentColIndex === currentHoverCell?.colIndex) ||
-        (currentRow && currentRowIndex === currentHoverCell?.rowIndex)
+        (currentCol && currentColIndex === hoverCellMeta?.colIndex) ||
+        (currentRow && currentRowIndex === hoverCellMeta?.rowIndex)
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -211,9 +215,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // fix issue: https://github.com/antvis/S2/issues/1781
     if (
-      isEqual(currentHoverCell.id, id) &&
-      isEqual(currentHoverCell.rowIndex, rowIndex) &&
-      isEqual(currentHoverCell.colIndex, colIndex)
+      isEqual(hoverCellMeta.id, id) &&
+      isEqual(hoverCellMeta.rowIndex, rowIndex) &&
+      isEqual(hoverCellMeta.colIndex, colIndex)
     ) {
       this.updateByState(InteractionStateName.HOVER_FOCUS);
     }

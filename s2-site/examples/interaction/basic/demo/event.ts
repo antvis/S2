@@ -1,18 +1,15 @@
 /* eslint-disable no-console */
-import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import {
+  InteractionStateName,
+  PivotSheet,
+  S2Event,
+  S2Options,
+  SpreadSheet,
+} from '@antv/s2';
 import { random } from 'lodash';
 
 function addButtons(s2: SpreadSheet) {
-  const selectAllBtn = document.createElement('button');
-  const selectCornerCellBtn = document.createElement('button');
-  const selectRowCellBtn = document.createElement('button');
-  const selectColCellBtn = document.createElement('button');
-  const selectDataCellBtn = document.createElement('button');
-  const highlightCellBtn = document.createElement('button');
-  const hideColumnsBtn = document.createElement('button');
-  const resetBtn = document.createElement('button');
-
-  [
+  const [
     selectAllBtn,
     selectCornerCellBtn,
     selectRowCellBtn,
@@ -20,9 +17,14 @@ function addButtons(s2: SpreadSheet) {
     selectDataCellBtn,
     highlightCellBtn,
     hideColumnsBtn,
+    highlightHeaderBtn,
     resetBtn,
-  ].forEach((btn) => {
+  ] = Array.from({ length: 6 }).map(() => {
+    const btn = document.createElement('button');
+
     btn.className = 'ant-btn ant-btn-default';
+
+    return btn;
   });
 
   selectAllBtn.innerHTML = '选中全部';
@@ -32,6 +34,7 @@ function addButtons(s2: SpreadSheet) {
   selectDataCellBtn.innerHTML = '选中指定数值单元格';
   highlightCellBtn.innerHTML = '高亮指定单元格';
   hideColumnsBtn.innerHTML = '隐藏指定列头';
+  highlightHeaderBtn.innerHTML = '高亮数值和对应的行列头单元格';
   resetBtn.innerHTML = '重置';
 
   // 查看更多 API: https://s2.antv.antgroup.com/api/basic-class/interaction
@@ -92,6 +95,25 @@ function addButtons(s2: SpreadSheet) {
     ]);
   });
 
+  highlightHeaderBtn.addEventListener('click', () => {
+    const dataCellViewMeta = s2.facet.getCellMeta(1, 1);
+
+    s2.interaction.updateDataCellRelevantHeaderCells(
+      dataCellViewMeta,
+      InteractionStateName.HOVER,
+    );
+
+    // s2.interaction.updateDataCellRelevantRowCells(
+    //   dataCellViewMeta,
+    //   InteractionStateName.HOVER,
+    // );
+
+    // s2.interaction.updateDataCellRelevantColCells(
+    //   dataCellViewMeta,
+    //   InteractionStateName.HOVER,
+    // );
+  });
+
   resetBtn.addEventListener('click', () => {
     console.log('当前状态:', s2.interaction.getState());
     console.log('当前发生过交互的单元格:', s2.interaction.getInteractedCells());
@@ -107,6 +129,7 @@ function addButtons(s2: SpreadSheet) {
 
   if (canvas) {
     canvas.style.marginTop = '10px';
+
     canvas.before(selectAllBtn);
     canvas.before(selectCornerCellBtn);
     canvas.before(selectRowCellBtn);
@@ -114,6 +137,7 @@ function addButtons(s2: SpreadSheet) {
     canvas.before(selectDataCellBtn);
     canvas.before(highlightCellBtn);
     canvas.before(hideColumnsBtn);
+    canvas.before(highlightHeaderBtn);
     canvas.before(resetBtn);
   }
 }
@@ -165,6 +189,9 @@ fetch(
     [
       S2Event.GLOBAL_SCROLL,
       S2Event.ROW_CELL_CLICK,
+      S2Event.COL_CELL_CLICK,
+      S2Event.CORNER_CELL_CLICK,
+      S2Event.DATA_CELL_CLICK,
       S2Event.GLOBAL_SELECTED,
       S2Event.DATA_CELL_BRUSH_SELECTION,
     ].forEach((eventName) => {
