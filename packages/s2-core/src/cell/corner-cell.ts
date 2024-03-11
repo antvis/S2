@@ -45,6 +45,8 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     super.initCell();
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
+    this.drawInteractiveBgShape();
+    this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawTreeIcon();
     this.drawActionAndConditionIcons();
