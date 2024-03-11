@@ -1175,7 +1175,7 @@ function MainLayout() {
               ref={s2Ref}
               themeCfg={themeCfg}
               partDrillDown={partDrillDown}
-              showPagination={true}
+              showPagination={showPagination}
               header={{
                 title: (
                   <a href="https://github.com/antvis/S2">
