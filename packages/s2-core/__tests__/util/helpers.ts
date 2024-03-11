@@ -215,8 +215,8 @@ export const createMockCellInfo = (
     colId = '0',
     level = 0,
     cornerType = '',
-    cellType = ' ',
-  } = {},
+    cellType = undefined,
+  }: Partial<ViewMeta> = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
