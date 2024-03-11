@@ -139,7 +139,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.SELECTED,
     });
     interaction.highlightNodes(nodes);
-    cornerCell.updateByState(InteractionStateName.SELECTED);
+    cornerCell?.updateByState(InteractionStateName.SELECTED);
 
     this.showTooltip(event);
     this.spreadsheet.emit(

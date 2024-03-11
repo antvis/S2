@@ -1,6 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TableSheet Export Test should export correct data When the split separator is configured 1`] = `
+exports[`Interaction Event Controller Tests should not trigger click event if event target is gui icon image shape for event { cellType: 'cornerCell', event: 'corner-cell:click' } 1`] = `
+Array [
+  "序号	province	city	产品类型	sub_type	number",
+  "1	浙江省	杭州市	家具	桌子	7789",
+  "2	浙江省	绍兴市	家具	桌子	2367",
+  "3	浙江省	宁波市	家具	桌子	3877",
+  "4	浙江省	舟山市	家具	桌子	4342",
+]
+`;
+
+exports[`Interaction Event Controller Tests should not trigger click event if event target is gui icon image shape for event { cellType: 'dataCell', event: 'data-cell:click' } 1`] = `
+Array [
+  "序号	province	city	产品类型	sub_type	number",
+  "1	浙江省	杭州市	家具	桌子	7789",
+  "2	浙江省	绍兴市	家具	桌子	2367",
+  "3	浙江省	宁波市	家具	桌子	3877",
+  "4	浙江省	舟山市	家具	桌子	4342",
+]
+`;
+
+exports[`Interaction Event Controller Tests should trigger click event if event target is condition icon image shape for event { cellType: 'colCell', event: 'col-cell:click' } 1`] = `
+"province	type	sub_type	number
+浙江省-province	家具-type	桌子	7789
+浙江省-province	家具-type	桌子	2367
+浙江省-province	家具-type	桌子	3877
+浙江省-province	家具-type	桌子	4342
+浙江省-province	家具-type	沙发	5343"
+`;
+
+exports[`Interaction Event Controller Tests should trigger click event if event target is condition icon image shape for event { cellType: 'dataCell', event: 'data-cell:click' } 1`] = `
 Array [
   "province,city,type,sub_type,number",
   "浙江省,杭州市,家具,桌子,7789",
@@ -10,7 +39,7 @@ Array [
 ]
 `;
 
-exports[`TableSheet Export Test should export correct data with formatter 1`] = `
+exports[`Interaction Event Controller Tests should trigger click event if event target is condition icon image shape for event { cellType: 'mergedCell', event: 'merged-cells:click' } 1`] = `
 Array [
   "省份,城市,类别,子类别,数量",
   "浙江省,杭州市,家具,桌子,7789",
@@ -93,7 +122,7 @@ Array [
 ]
 `;
 
-exports[`TableSheet Export Test should export correct data with formatter if contain repeat column name 1`] = `
+exports[`Interaction Event Controller Tests should use offset point if enable supportsCSSTransform 1`] = `
 Array [
   "省份,子类别,类别,子类别,子类别",
   "浙江省,杭州市,家具,桌子,7789",
@@ -174,33 +203,4 @@ Array [
   "四川省,,,,35770",
   ",,,,78868",
 ]
-`;
-
-exports[`TableSheet Export Test should export correct data with series number 1`] = `
-Array [
-  "序号	province	city	产品类型	sub_type	number",
-  "1	浙江省	杭州市	家具	桌子	7789",
-  "2	浙江省	绍兴市	家具	桌子	2367",
-  "3	浙江省	宁波市	家具	桌子	3877",
-  "4	浙江省	舟山市	家具	桌子	4342",
-]
-`;
-
-exports[`TableSheet Export Test should export correct data with series number 2`] = `
-Array [
-  "序号	province	city	产品类型	sub_type	number",
-  "1	浙江省	杭州市	家具	桌子	7789",
-  "2	浙江省	绍兴市	家具	桌子	2367",
-  "3	浙江省	宁波市	家具	桌子	3877",
-  "4	浙江省	舟山市	家具	桌子	4342",
-]
-`;
-
-exports[`TableSheet Export Test should export correct data with totals 1`] = `
-"province	type	sub_type	number
-浙江省-province	家具-type	桌子	7789
-浙江省-province	家具-type	桌子	2367
-浙江省-province	家具-type	桌子	3877
-浙江省-province	家具-type	桌子	4342
-浙江省-province	家具-type	沙发	5343"
 `;
