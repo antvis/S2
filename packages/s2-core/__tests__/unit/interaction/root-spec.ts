@@ -214,6 +214,33 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
   });
 
+  test('should disable multi selected header cells when cell type is difference', () => {
+    jest
+      .spyOn(rootInteraction, 'isEqualStateName')
+      .mockImplementationOnce(() => false);
+
+    const mockCellA = createMockCellInfo('test-A', {
+      cellType: CellType.ROW_CELL,
+    }).mockCell;
+    const mockCellB = createMockCellInfo('test-B', {
+      cellType: CellType.COL_CELL,
+    }).mockCell;
+
+    rootInteraction.selectHeaderCell({
+      cell: mockCellA,
+      isMultiSelection: true,
+    });
+
+    expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
+
+    rootInteraction.selectHeaderCell({
+      cell: mockCellB,
+      isMultiSelection: true,
+    });
+
+    expect(rootInteraction.getState().cells).toEqual([getCellMeta(mockCellA)]);
+  });
+
   test('should call merge cells', () => {
     rootInteraction.mergeCells();
     expect(mergeCell).toHaveBeenCalled();

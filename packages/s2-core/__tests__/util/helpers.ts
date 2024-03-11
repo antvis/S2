@@ -209,7 +209,14 @@ export const createFakeSpreadSheet = (config?: {
 
 export const createMockCellInfo = (
   cellId: string,
-  { colIndex = 0, rowIndex = 0, colId = '0', level = 0, cornerType = '' } = {},
+  {
+    colIndex = 0,
+    rowIndex = 0,
+    colId = '0',
+    level = 0,
+    cornerType = '',
+    cellType = ' ',
+  } = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
@@ -252,6 +259,7 @@ export const createMockCellInfo = (
   ]);
   const mockCell = {
     ...mockCellViewMeta,
+    cellType,
     getMeta: () => mockCellViewMeta,
     update: jest.fn(),
     getActualText: jest.fn(),
