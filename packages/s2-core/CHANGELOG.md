@@ -1,3 +1,16 @@
+# [@antv/s2-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.13...@antv/s2-v2.0.0-next.14) (2024-03-11)
+
+
+### Features
+
+* **interaction:** 支持批量调整行高列宽 close [#2574](https://github.com/antvis/S2/issues/2574) ([#2580](https://github.com/antvis/S2/issues/2580)) ([7d1be20](https://github.com/antvis/S2/commit/7d1be206442396371ab08a8224b2685aea2c025d))
+* 增加角头和序号列的交互能力 ([#2571](https://github.com/antvis/S2/issues/2571)) ([fcb77cc](https://github.com/antvis/S2/commit/fcb77cce65ee56aeec189cf46d4226ef6a62a671))
+
+
+### Performance Improvements
+
+* 优化明细表滚动性能 close [#2548](https://github.com/antvis/S2/issues/2548), [#2402](https://github.com/antvis/S2/issues/2402) ([#2561](https://github.com/antvis/S2/issues/2561)) ([c2d5812](https://github.com/antvis/S2/commit/c2d581286253e09cf09ecba00673be738bf14cf9))
+
 # [@antv/s2-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.12...@antv/s2-v2.0.0-next.13) (2024-03-04)
 
 
