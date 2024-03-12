@@ -942,6 +942,28 @@ function MainLayout() {
                     });
                   }}
                 />
+                <Switch
+                  checkedChildren="冻结首列开"
+                  unCheckedChildren="冻结首列关"
+                  checked={mergedOptions.frozenColCount === 1}
+                  onChange={(checked) => {
+                    updateOptions({
+                      frozenColCount: checked ? 1 : 0,
+                    });
+                  }}
+                  disabled={sheetType !== 'table'}
+                />
+                <Switch
+                  checkedChildren="冻结尾列开"
+                  unCheckedChildren="冻结尾列关"
+                  checked={mergedOptions.frozenTrailingColCount === 1}
+                  onChange={(checked) => {
+                    updateOptions({
+                      frozenTrailingColCount: checked ? 1 : 0,
+                    });
+                  }}
+                  disabled={sheetType !== 'table'}
+                />
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
