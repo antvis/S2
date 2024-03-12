@@ -94,7 +94,7 @@ const s2 = new PivotSheet()
 
 await s2.render()
 
-console.log(s2.facet.getColCellNodes())
+console.log(s2.facet.getColNodes())
 ```
 
 </details>
