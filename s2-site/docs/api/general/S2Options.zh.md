@@ -52,6 +52,8 @@ const s2Options = {
 | facet                       | (spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => [BaseFacet](/api/basic-class/base-facet)                                                                                                                       |      |         | 自定义分面                                                                                                                                |
 | transformCanvasConfig       | (renderer: [Renderer](https://g.antv.antgroup.com/api/canvas/options#renderer), spreadsheet: [SpreadSheet](/api/basic-class/spreadsheet)) => Partial<[CanvasConfig](https://g.antv.antgroup.com/api/canvas/options)> \| void |      | `-`     | 自定义 AntV/G 渲染引擎 [配置参数](https://g.antv.antgroup.com/api/canvas/options) & [插件注册](https://g.antv.antgroup.com/plugins/intro) |
 
+<embed src="@/docs/common/conditions.zh.md"></embed>
+
 <embed src="@/docs/common/series-number.zh.md"></embed>
 
 <embed src="@/docs/common/frozen.zh.md"></embed>
@@ -70,7 +72,7 @@ const s2Options = {
 
 ## DataCellCallback
 
-```js
+```js | pure
 DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
@@ -94,8 +96,8 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 ## MergedCellCallback
 
-```js
-DataCellCallback = (s2: Spreadsheet, cells: S2CellType[],viewMeta: ViewMeta) => MergedCell;
+```js | ViewMeta
+DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
 ```
 
 功能描述：自定义合并单元格。[查看示例](/examples/custom/custom-cell/#custom-merged-cell)

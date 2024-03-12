@@ -404,6 +404,32 @@ const s2Options = {
 }
 ```
 
+#### 字段标记
+
+文本字段标记能力和 [文本主题配置](/api/general/s2-theme#texttheme) 保持一致，支持字体大小，透明度，对齐方式等配置。
+
+```diff
+const s2Options = {
+  conditions: {
+    text: [
+      {
+        field: 'city',
+        mapping() {
+          return {
+            fill: '#DB6BCF',
++           fontSize: 16,
++           opacity: 0.8,
++           textAlign: 'right',
+          };
+        },
+      },
+    ]
+  },
+}
+```
+
+具体请查看 [字段标记](/manual/basic/conditions) 相关文档和 [文本标记示例](/examples/analysis/conditions#text)。
+
 #### 序号配置变更
 
 序号相关配置统一收拢在 `seriesNumber`.

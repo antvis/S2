@@ -52,7 +52,7 @@ fetch(
             },
           },
           {
-            field: new RegExp('co*'),
+            field: /co*/,
             mapping(fieldValue, data) {
               return {
                 fill: '#F4664A',

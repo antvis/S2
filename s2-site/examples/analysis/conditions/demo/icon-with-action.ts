@@ -31,6 +31,7 @@ fetch(
         icon: [
           {
             field: 'city',
+            position: 'right',
             mapping() {
               return {
                 icon: 'Trend',

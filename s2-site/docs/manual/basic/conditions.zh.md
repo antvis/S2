@@ -19,10 +19,9 @@ tag: Updated
 
 ## 快速上手
 
-`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/docs/api/general/S2Options#conditions) 属性。
+`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/api/general/S2Options#conditions) 属性。
 
 ```ts
-// 构建 options
 const s2Options = {
   width: 600,
   height: 600,
@@ -30,6 +29,7 @@ const s2Options = {
   conditions: {
     text: [
       {
+        // 维度字段，支持正则  /^price+$/
         field: "price",
         mapping(fieldValue, data) {
           return {
@@ -45,39 +45,39 @@ const s2Options = {
 
 ## 配置解释
 
-[Conditions 属性](/docs/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
+[Conditions 属性](/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
 
-* `text`，`background` 和 `interval` ,`icon` 均是继承自[Condition](/docs/api/general/S2Options#condition) 数组类型
-  * 包含 `field` 和 `mapping` 两个字段
-  * 一个字段 ID 多次匹配到同一范围的字段标记规则，以最后一个规则为准
-* `icon` 稍有不同，为 [IconCondition](/docs/api/general/S2Options#iconcondition) 数组类型
-  * 多一个额外的`position` 字段用于指定图标相对于文字的位置，定义图标相对于单元格文本的位置。这个位置可以是文本的左侧、右侧
+* `text`，`background` 和 `interval` ,`icon` 均是继承自 [Condition](/api/general/S2Options#condition) 数组类型
+  * 包含 `field` 和 `mapping` 两个字段。
+  * 一个字段 ID 多次匹配到同一范围的字段标记规则，**以最后一个规则为准**.
+* `icon` 稍有不同，为 [IconCondition](/api/general/S2Options#iconcondition) 数组类型。
+  * 多一个额外的`position` 字段用于指定图标相对于文字的位置，定义图标相对于单元格文本的位置。这个位置可以是文本的左侧、右侧。
 
 ### field
 
 `field` 用于指定将字段标记应用于哪些字段上，其取值范围会因表的形态不同而不同：
 
-* 对于透视表，`field` 取值范围或正则匹配范围是 `rows`，`columns`，`values`，作用范围为行头、列头、角头和数据单元格
-* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`，作用范围为数据单元格
+* 对于透视表，`field` 取值或正则匹配范围是 `rows`，`columns`，`values`，作用范围为行头、列头、角头和数据单元格。
+* 对于明细表，`field` 取值或正则匹配范围是 `columns`，作用范围为数据单元格。
 
 <table
   style="width: 100%; outline: none; border-collapse: collapse;"
 >
   <tbody>
-  <tr style="height: 33px;" >
+    <tr style="height: 33px;" >
       <td style="text-align: center;width:74px;">
-      透视表
+        透视表
       </td>
-      <td>
-          <Playground path="analysis/conditions/demo/text.ts" rid='pivot' height='300'></playground>
-      </td>
+    <td>
+       <Playground path="analysis/conditions/demo/text.ts" rid='pivot-text' height='300'></playground>
+    </td>
     </tr>
     <tr>
       <td style="text-align: center;width:74px;">
         明细表
       </td>
-        <td >
-          <Playground path="analysis/conditions/demo/table-text.ts" rid='table' height='300'></playground>
+      <td>
+        <Playground path="analysis/conditions/demo/table-text.ts" rid='table-text' height='300'></playground>
       </td>
     </tr>
   </tbody>
@@ -85,29 +85,29 @@ const s2Options = {
 
 ### ​mapping
 
-其中的重点是`mapping`函数，它用于处理字段标记的回调函数，如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记。
+其中的重点是 `mapping` 函数，它用于处理字段标记的回调函数，如果 `mapping` 函数返回值为空，则表明不渲染该单元格的字段标记。
 
 ```ts
 export type ConditionMapping<T = unknown> = (
   fieldValue: number | string,
   data: RawData,
-  cell?: DataCell | HeaderCell,
+  cell?: S2CellType,
 ) => ConditionMappingResult<T>;
 ```
 
-`mapping`接收三个参数，分别是:
+`mapping` 接收三个参数，分别是：
 
-* fieldValue: 当前单元格的值
-* data: 如果是数据单元格，则是格子对应的数据；如果是角头、行头、列头，则是格子的 meta 信息
-* cell: 对应当前格子的实例，如果前两个参数不满足业务需求，可以通过这个参数获取任意你想要的数据
+* `fieldValue`: 当前单元格的值。
+* `data`: 如果是数据单元格，则是单元格对应的数据；如果是角头、行头、列头，则是单元格的 [Node](/api/basic-class/node) 信息。
+* `cell`: 对应当前单元格的实例，如果前两个参数不满足业务需求，可以通过这个参数获取任意你想要的数据。
 
-不同的字段标记类型所需的返回值类型`ConditionMappingResult<T>`有所不同，主要是泛型`T`不同。S2 提供了完备的类型提示：
+不同的字段标记类型所需的返回值类型 `ConditionMappingResult<T>` 有所不同，主要是泛型 `T` 不同。S2 提供了完备的类型提示：
 
-![类型提示](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wgC1QoXRWkAAAAAAAAAAAAAADmJ7AQ/original)
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wgC1QoXRWkAAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="类型提示" />
 
 > 也可以通过 [condition.ts](https://github.com/antvis/S2/blob/next/packages/s2-core/src/common/interface/condition.ts) 查看具体的类型定义。
 
-🎨 字段标记详细的配置参考 [Conditions API](/docs/api/general/S2Options#conditions) 文档。
+🎨 字段标记详细的配置参考 [Conditions API](/api/general/S2Options#conditions) 文档。
 
 ## 特性
 
@@ -126,7 +126,7 @@ export type ConditionMapping<T = unknown> = (
 
 <Playground path="analysis/conditions/demo/icon-with-action.ts" rid='icon-with-action' height="200"></playground>
 
-> 自定义 Icon 详情，可查看 [自定义 Icon](/docs/manual/advanced/custom/custom-icon) 章节
+> 自定义 Icon 详情，可查看 [自定义 Icon](/manual/advanced/custom/custom-icon) 章节
 
 ### 自定义柱状图范围
 
