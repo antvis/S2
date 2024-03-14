@@ -55,7 +55,6 @@ export class TableFacet extends FrozenFacet {
   }
 
   public init() {
-    // this.initRowOffsets();
     super.init();
     this.initRowOffsets();
   }
@@ -208,10 +207,6 @@ export class TableFacet extends FrozenFacet {
       (s2.dataSet as TableDataSet).getDisplayDataSet(),
     );
   };
-
-  get dataCellTheme() {
-    return this.spreadsheet.theme.dataCell?.cell;
-  }
 
   public destroy(): void {
     super.destroy();
