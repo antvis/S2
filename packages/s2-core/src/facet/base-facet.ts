@@ -28,7 +28,6 @@ import {
   ColCell,
   CornerCell,
   DataCell,
-  HeaderCell,
   MergedCell,
   RowCell,
   SeriesNumberCell,
@@ -336,7 +335,7 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: HeaderCell, defaultHeight: number) {
+  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number) {
     if (!cell) {
       return defaultHeight;
     }
@@ -1854,7 +1853,7 @@ export abstract class BaseFacet {
    * 获取列头叶子节点节点 (含非可视区域)
    */
   public getColLeafNodes(): Node[] {
-    return this.layoutResult.colLeafNodes || [];
+    return this.layoutResult?.colLeafNodes || [];
   }
 
   /**
@@ -1937,7 +1936,7 @@ export abstract class BaseFacet {
    * @example 获取全部: facet.getRowLeafNodes()
    */
   public getRowLeafNodes(): Node[] {
-    return this.layoutResult.rowLeafNodes || [];
+    return this.layoutResult?.rowLeafNodes || [];
   }
 
   /**

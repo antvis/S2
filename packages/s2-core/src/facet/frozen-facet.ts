@@ -660,14 +660,6 @@ export abstract class FrozenFacet extends BaseFacet {
     };
   };
 
-  public getCellHeightByRowIndex(rowIndex: number) {
-    if (this.rowOffsets) {
-      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
-    }
-
-    return this.getDefaultCellHeight();
-  }
-
   public getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) {
       return 0;

@@ -22,6 +22,9 @@ fetch(
           // width: (rowNode) => 100,
           // height: (rowNode) => 100,
           heightByField: {
+            // 特定维度 (如: 城市)
+            city: 50,
+            // 特定维值
             'root[&]浙江省[&]杭州市': 30,
             'root[&]浙江省[&]宁波市': 100,
           },
@@ -32,9 +35,12 @@ fetch(
           widthByField: {
             // 默认 [数值挂列头], EXTRA_FIELD 为内部虚拟数值列
             [EXTRA_FIELD]: 60,
+            // 特定维值
             'root[&]家具[&]沙发[&]number': 120,
           },
           heightByField: {
+            // 特定维度 (如: 类别)
+            type: 50,
             [EXTRA_FIELD]: 80,
           },
         },

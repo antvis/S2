@@ -10,7 +10,8 @@
         "zh": "自定义透视表行列宽高",
         "en": "Custom PivotSheet Size"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24sNoM1o7b/8a35f685-f989-4125-aada-046f90b93969.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24sNoM1o7b/8a35f685-f989-4125-aada-046f90b93969.png",
+      "new": true
     },
     {
       "filename": "custom-table-size.ts",
@@ -18,7 +19,8 @@
         "zh": "自定义明细表行列宽高",
         "en": "Custom TableSheet Height"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oIjIixviI/ccba0c66-c8ba-4285-b0ec-fc776d0a4cdf.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oIjIixviI/ccba0c66-c8ba-4285-b0ec-fc776d0a4cdf.png",
+      "new": true
     },
     {
       "filename": "custom-row-col-cell-width.ts",
@@ -26,7 +28,8 @@
         "zh": "自定义行列单元格宽度",
         "en": "Custom Row/Column Cell Height"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/gzR%26xlnjG/7b23ff29-0789-4420-ad23-e1df96e4489d.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/gzR%26xlnjG/7b23ff29-0789-4420-ad23-e1df96e4489d.png",
+      "new": true
     },
     {
       "filename": "custom-tree-row-width.ts",
@@ -47,12 +50,22 @@
       "new": true
     },
     {
-      "filename": "hide-columns.ts",
+      "filename": "hide-table-columns.ts",
       "title": {
-        "zh": "隐藏列头",
-        "en": "Hide Columns"
+        "zh": "隐藏明细表列头",
+        "en": "Hide Table Columns"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7uLsxYg0N/b85dc985-6a07-40fd-a73e-4f0f17e63b72.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7uLsxYg0N/b85dc985-6a07-40fd-a73e-4f0f17e63b72.png",
+      "new": true
+    },
+    {
+      "filename": "hide-pivot-columns.ts",
+      "title": {
+        "zh": "隐藏透视表列头",
+        "en": "Hide Pivot Table Columns"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*1obvQq2BkOEAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "hide-value.ts",
@@ -69,15 +82,6 @@
         "en": "Only Show Row Header"
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pezZTI9lp50AAAAAAAAAAAAADmJ7AQ/original"
-    },
-    {
-      "filename": "multi-line-text.ts",
-      "title": {
-        "zh": "多行文本 / 文本自动换行",
-        "en": "Multi Line Text"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original",
-      "new": true
     }
   ]
 }
