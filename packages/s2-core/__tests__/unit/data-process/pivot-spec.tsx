@@ -329,30 +329,29 @@ describe('Pivot Table Core Data Process', () => {
 
   describe('4、Calculate data cell info', () => {
     test('should get correct data value', () => {
-      const { getCellMeta } = s2.facet;
       const getData = (meta: ViewMeta | null) =>
         (meta?.data as CellData)?.[VALUE_FIELD];
 
       // 左上角
-      expect(getData(getCellMeta(0, 0))).toBe(7789);
-      expect(getData(getCellMeta(1, 0))).toBe(2367);
-      expect(getData(getCellMeta(0, 1))).toBe(5343);
-      expect(getData(getCellMeta(1, 1))).toBe(632);
+      expect(getData(s2.facet.getCellMeta(0, 0))).toBe(7789);
+      expect(getData(s2.facet.getCellMeta(1, 0))).toBe(2367);
+      expect(getData(s2.facet.getCellMeta(0, 1))).toBe(5343);
+      expect(getData(s2.facet.getCellMeta(1, 1))).toBe(632);
       // 右下角
-      expect(getData(getCellMeta(7, 3))).toBe(352);
-      expect(getData(getCellMeta(7, 2))).toBe(2458);
-      expect(getData(getCellMeta(6, 3))).toBe(3551);
-      expect(getData(getCellMeta(6, 2))).toBe(2457);
+      expect(getData(s2.facet.getCellMeta(7, 3))).toBe(352);
+      expect(getData(s2.facet.getCellMeta(7, 2))).toBe(2458);
+      expect(getData(s2.facet.getCellMeta(6, 3))).toBe(3551);
+      expect(getData(s2.facet.getCellMeta(6, 2))).toBe(2457);
       // 右上角
-      expect(getData(getCellMeta(0, 3))).toBe(1343);
-      expect(getData(getCellMeta(0, 2))).toBe(945);
-      expect(getData(getCellMeta(1, 3))).toBe(1354);
-      expect(getData(getCellMeta(1, 2))).toBe(1304);
+      expect(getData(s2.facet.getCellMeta(0, 3))).toBe(1343);
+      expect(getData(s2.facet.getCellMeta(0, 2))).toBe(945);
+      expect(getData(s2.facet.getCellMeta(1, 3))).toBe(1354);
+      expect(getData(s2.facet.getCellMeta(1, 2))).toBe(1304);
       // 左下角
-      expect(getData(getCellMeta(7, 0))).toBe(2330);
-      expect(getData(getCellMeta(7, 1))).toBe(2445);
-      expect(getData(getCellMeta(6, 0))).toBe(1943);
-      expect(getData(getCellMeta(6, 1))).toBe(2333);
+      expect(getData(s2.facet.getCellMeta(7, 0))).toBe(2330);
+      expect(getData(s2.facet.getCellMeta(7, 1))).toBe(2445);
+      expect(getData(s2.facet.getCellMeta(6, 0))).toBe(1943);
+      expect(getData(s2.facet.getCellMeta(6, 1))).toBe(2333);
     });
   });
 });
