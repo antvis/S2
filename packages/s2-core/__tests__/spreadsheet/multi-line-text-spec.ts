@@ -144,7 +144,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectColHierarchyHeight(90);
     });
 
-    test('should custom two max text lines', async () => {
+    test('should render two max text lines', async () => {
       updateStyle(2);
       await s2.render(false);
 
@@ -154,7 +154,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectColHierarchyHeight(118, 80, 38);
     });
 
-    test('should custom three max text lines', async () => {
+    test('should render three max text lines', async () => {
       updateStyle(3);
       await s2.render(false);
 
@@ -384,7 +384,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectColHierarchyHeight(30, 0, 30, 1);
     });
 
-    test('should custom two max text lines', async () => {
+    test('should render two max text lines', async () => {
       updateStyle(2);
       await s2.render(false);
 
@@ -394,7 +394,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectColHierarchyHeight(40, 0, 40, 1);
     });
 
-    test('should custom three max text lines', async () => {
+    test('should render three max text lines', async () => {
       updateStyle(3);
       await s2.render(false);
 
@@ -514,6 +514,37 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       expect(
         rowDataCells.every((cell) => cell.getMeta().height === 61),
+      ).toBeTruthy();
+    });
+
+    test('should calc correctly row cell height if actual text lines is difference', async () => {
+      updateStyle(4);
+      s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        data: [
+          {
+            province: '浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江',
+            city: '杭州杭州杭州杭州',
+            type: '纸张纸张纸张纸张纸张',
+            price: 2,
+            cost: 20,
+          },
+          ...s2.dataCfg.data,
+        ],
+      });
+
+      await s2.render();
+
+      getCells().forEach((cells) => {
+        expect(mapCells(cells)).toMatchSnapshot();
+      });
+
+      const rowDataCells = s2.facet
+        .getDataCells()
+        .filter((cell) => cell.getMeta().rowIndex === 0);
+
+      expect(
+        rowDataCells.every((cell) => cell.getMeta().height === 46),
       ).toBeTruthy();
     });
 

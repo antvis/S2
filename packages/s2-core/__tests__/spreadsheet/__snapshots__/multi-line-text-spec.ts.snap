@@ -924,686 +924,6 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom three max text lines 1`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-  Object {
-    "actualText": "省份",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "省份",
-    ],
-    "originalText": "省份",
-    "width": 96,
-  },
-  Object {
-    "actualText": "城市城市城市城市城市城市城市城市城...",
-    "actualTextHeight": 48,
-    "actualTextWidth": 217,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "城市城市城市",
-      "城市城市城市",
-      "城市城市城...",
-    ],
-    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 96,
-  },
-  Object {
-    "actualText": "类别类别类别类别类别类别类别类别类别类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 241,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "类别类别类别类别类别类别类别类别类别类别",
-    ],
-    "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 272,
-  },
-  Object {
-    "actualText": "子类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "子类别",
-    ],
-    "originalText": "子类别",
-    "width": 272,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom three max text lines 2`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 189,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom three max text lines 3`] = `
-Array [
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 192,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 96,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数量数量数量数...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 217,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "数量数量数量",
-      "数量数量数量",
-      "数量数量数...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 96,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 96,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数量数量数量数...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 217,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "数量数量数量",
-      "数量数量数量",
-      "数量数量数...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 96,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom three max text lines 4`] = `
-Array [
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 189,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 96,
-  },
-  Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 48,
-    "actualTextWidth": 217,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "浙江省浙江省",
-      "浙江省浙江省",
-      "浙江省浙江...",
-    ],
-    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 96,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom three max text lines 5`] = `
-Array [
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
-    ],
-    "originalText": "236723672361111",
-    "width": 96,
-  },
-  Object {
-    "actualText": "3877",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "3877",
-    ],
-    "originalText": "3877",
-    "width": 96,
-  },
-  Object {
-    "actualText": "4342",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "4342",
-    ],
-    "originalText": "4342",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-  Object {
-    "actualText": "632",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "632",
-    ],
-    "originalText": "632",
-    "width": 96,
-  },
-  Object {
-    "actualText": "7234",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "7234",
-    ],
-    "originalText": "7234",
-    "width": 96,
-  },
-  Object {
-    "actualText": "834",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "834",
-    ],
-    "originalText": "834",
-    "width": 96,
-  },
-  Object {
-    "actualText": "5343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 53,
-    "multiLineActualTexts": Array [
-      "5343",
-    ],
-    "originalText": "5343",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 56,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom two max text lines 1`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-  Object {
-    "actualText": "省份",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "省份",
-    ],
-    "originalText": "省份",
-    "width": 96,
-  },
-  Object {
-    "actualText": "城市城市城市城市城市城...",
-    "actualTextHeight": 32,
-    "actualTextWidth": 144,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "城市城市城市",
-      "城市城市城...",
-    ],
-    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 96,
-  },
-  Object {
-    "actualText": "类别类别类别类别类别类别类别类别类别类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 241,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "类别类别类别类别类别类别类别类别类别类别",
-    ],
-    "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 272,
-  },
-  Object {
-    "actualText": "子类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "子类别",
-    ],
-    "originalText": "子类别",
-    "width": 272,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom two max text lines 2`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 144,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 152,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": "3",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom two max text lines 3`] = `
-Array [
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 192,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 96,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 144,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "数量数量数量",
-      "数量数量数...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 96,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 96,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 144,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "数量数量数量",
-      "数量数量数...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 96,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom two max text lines 4`] = `
-Array [
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 144,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 96,
-  },
-  Object {
-    "actualText": "浙江省浙江省浙江省浙江...",
-    "actualTextHeight": 32,
-    "actualTextWidth": 144,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "浙江省浙江省",
-      "浙江省浙江...",
-    ],
-    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 96,
-  },
-  Object {
-    "actualText": "四川省",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 152,
-    "multiLineActualTexts": Array [
-      "四川省",
-    ],
-    "originalText": "四川省",
-    "width": 96,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests PivotSheet should custom two max text lines 5`] = `
-Array [
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 99,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "23672367236",
-      "1111",
-    ],
-    "originalText": "236723672361111",
-    "width": 96,
-  },
-  Object {
-    "actualText": "3877",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "3877",
-    ],
-    "originalText": "3877",
-    "width": 96,
-  },
-  Object {
-    "actualText": "4342",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "4342",
-    ],
-    "originalText": "4342",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-  Object {
-    "actualText": "1723",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "1723",
-    ],
-    "originalText": "1723",
-    "width": 96,
-  },
-  Object {
-    "actualText": "1822",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "1822",
-    ],
-    "originalText": "1822",
-    "width": 96,
-  },
-  Object {
-    "actualText": "1943",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "1943",
-    ],
-    "originalText": "1943",
-    "width": 96,
-  },
-  Object {
-    "actualText": "632",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "632",
-    ],
-    "originalText": "632",
-    "width": 96,
-  },
-  Object {
-    "actualText": "7234",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "7234",
-    ],
-    "originalText": "7234",
-    "width": 96,
-  },
-  Object {
-    "actualText": "834",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "834",
-    ],
-    "originalText": "834",
-    "width": 96,
-  },
-  Object {
-    "actualText": "5343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "5343",
-    ],
-    "originalText": "5343",
-    "width": 96,
-  },
-  Object {
-    "actualText": "-",
-    "actualTextHeight": 15,
-    "actualTextWidth": 4,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "-",
-    ],
-    "originalText": "-",
-    "width": 96,
-  },
-  Object {
-    "actualText": "2451",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "2451",
-    ],
-    "originalText": "2451",
-    "width": 96,
-  },
-  Object {
-    "actualText": "2244",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "2244",
-    ],
-    "originalText": "2244",
-    "width": 96,
-  },
-  Object {
-    "actualText": "2333",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 38,
-    "multiLineActualTexts": Array [
-      "2333",
-    ],
-    "originalText": "2333",
-    "width": 96,
-  },
-]
-`;
-
 exports[`SpreadSheet Multi Line Text Tests PivotSheet should default render one line text 1`] = `
 Array [
   Object {
@@ -3726,6 +3046,686 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 1`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": "省份",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "省份",
+    ],
+    "originalText": "省份",
+    "width": 96,
+  },
+  Object {
+    "actualText": "城市城市城市城市城市城市城市城市城...",
+    "actualTextHeight": 48,
+    "actualTextWidth": 217,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "城市城市城市",
+      "城市城市城市",
+      "城市城市城...",
+    ],
+    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
+    "width": 96,
+  },
+  Object {
+    "actualText": "类别类别类别类别类别类别类别类别类别类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 241,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "类别类别类别类别类别类别类别类别类别类别",
+    ],
+    "originalText": "类别类别类别类别类别类别类别类别类别类别",
+    "width": 272,
+  },
+  Object {
+    "actualText": "子类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "子类别",
+    ],
+    "originalText": "子类别",
+    "width": 272,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 189,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 3`] = `
+Array [
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 192,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 96,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数量数量数...",
+    "actualTextHeight": 45,
+    "actualTextWidth": 217,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "数量数量数量",
+      "数量数量数量",
+      "数量数量数...",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 96,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 96,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数量数量数...",
+    "actualTextHeight": 45,
+    "actualTextWidth": 217,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "数量数量数量",
+      "数量数量数量",
+      "数量数量数...",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 4`] = `
+Array [
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 189,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 96,
+  },
+  Object {
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江...",
+    "actualTextHeight": 48,
+    "actualTextWidth": 217,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "浙江省浙江省",
+      "浙江省浙江省",
+      "浙江省浙江...",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render three max text lines 5`] = `
+Array [
+  Object {
+    "actualText": "236723672361111",
+    "actualTextHeight": 30,
+    "actualTextWidth": 99,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "23672367236",
+      "1111",
+    ],
+    "originalText": "236723672361111",
+    "width": 96,
+  },
+  Object {
+    "actualText": "3877",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "3877",
+    ],
+    "originalText": "3877",
+    "width": 96,
+  },
+  Object {
+    "actualText": "4342",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "4342",
+    ],
+    "originalText": "4342",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "632",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "632",
+    ],
+    "originalText": "632",
+    "width": 96,
+  },
+  Object {
+    "actualText": "7234",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "7234",
+    ],
+    "originalText": "7234",
+    "width": 96,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": "834",
+    "width": 96,
+  },
+  Object {
+    "actualText": "5343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 53,
+    "multiLineActualTexts": Array [
+      "5343",
+    ],
+    "originalText": "5343",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 56,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 1`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": "省份",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "省份",
+    ],
+    "originalText": "省份",
+    "width": 96,
+  },
+  Object {
+    "actualText": "城市城市城市城市城市城...",
+    "actualTextHeight": 32,
+    "actualTextWidth": 144,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "城市城市城市",
+      "城市城市城...",
+    ],
+    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
+    "width": 96,
+  },
+  Object {
+    "actualText": "类别类别类别类别类别类别类别类别类别类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 241,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "类别类别类别类别类别类别类别类别类别类别",
+    ],
+    "originalText": "类别类别类别类别类别类别类别类别类别类别",
+    "width": 272,
+  },
+  Object {
+    "actualText": "子类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "子类别",
+    ],
+    "originalText": "子类别",
+    "width": 272,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 144,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 152,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": "3",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 3`] = `
+Array [
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 192,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 96,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 144,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "数量数量数量",
+      "数量数量数...",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 96,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 96,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 144,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "数量数量数量",
+      "数量数量数...",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 4`] = `
+Array [
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 144,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 96,
+  },
+  Object {
+    "actualText": "浙江省浙江省浙江省浙江...",
+    "actualTextHeight": 32,
+    "actualTextWidth": 144,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "浙江省浙江省",
+      "浙江省浙江...",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 96,
+  },
+  Object {
+    "actualText": "四川省",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 152,
+    "multiLineActualTexts": Array [
+      "四川省",
+    ],
+    "originalText": "四川省",
+    "width": 96,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests PivotSheet should render two max text lines 5`] = `
+Array [
+  Object {
+    "actualText": "236723672361111",
+    "actualTextHeight": 30,
+    "actualTextWidth": 99,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "23672367236",
+      "1111",
+    ],
+    "originalText": "236723672361111",
+    "width": 96,
+  },
+  Object {
+    "actualText": "3877",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "3877",
+    ],
+    "originalText": "3877",
+    "width": 96,
+  },
+  Object {
+    "actualText": "4342",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "4342",
+    ],
+    "originalText": "4342",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1723",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "1723",
+    ],
+    "originalText": "1723",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1822",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "1822",
+    ],
+    "originalText": "1822",
+    "width": 96,
+  },
+  Object {
+    "actualText": "1943",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "1943",
+    ],
+    "originalText": "1943",
+    "width": 96,
+  },
+  Object {
+    "actualText": "632",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "632",
+    ],
+    "originalText": "632",
+    "width": 96,
+  },
+  Object {
+    "actualText": "7234",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "7234",
+    ],
+    "originalText": "7234",
+    "width": 96,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": "834",
+    "width": 96,
+  },
+  Object {
+    "actualText": "5343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "5343",
+    ],
+    "originalText": "5343",
+    "width": 96,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2451",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "2451",
+    ],
+    "originalText": "2451",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2244",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "2244",
+    ],
+    "originalText": "2244",
+    "width": 96,
+  },
+  Object {
+    "actualText": "2333",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 38,
+    "multiLineActualTexts": Array [
+      "2333",
+    ],
+    "originalText": "2333",
+    "width": 96,
+  },
+]
+`;
+
 exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly col cell height if actual text lines is difference 1`] = `
 Array [
   Object {
@@ -5353,13 +5353,13 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom three max text lines 1`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly row cell height if actual text lines is difference 1`] = `
 Array [
   Object {
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 56,
+    "height": 72,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -5369,7 +5369,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom three max text lines 2`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly row cell height if actual text lines is difference 2`] = `
 Array [
   Object {
     "actualText": "1",
@@ -5386,7 +5386,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 61,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -5397,7 +5397,7 @@ Array [
     "actualText": "3",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 61,
     "multiLineActualTexts": Array [
       "3",
     ],
@@ -5481,16 +5481,82 @@ Array [
     "originalText": "10",
     "width": 80,
   },
+  Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": "11",
+    "width": 80,
+  },
+  Object {
+    "actualText": "12",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "12",
+    ],
+    "originalText": "12",
+    "width": 80,
+  },
+  Object {
+    "actualText": "13",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "13",
+    ],
+    "originalText": "13",
+    "width": 80,
+  },
+  Object {
+    "actualText": "14",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "14",
+    ],
+    "originalText": "14",
+    "width": 80,
+  },
+  Object {
+    "actualText": "15",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "15",
+    ],
+    "originalText": "15",
+    "width": 80,
+  },
+  Object {
+    "actualText": "16",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "16",
+    ],
+    "originalText": "16",
+    "width": 80,
+  },
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom three max text lines 3`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly row cell height if actual text lines is difference 3`] = `
 Array [
   Object {
     "actualText": "序号",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 56,
+    "height": 72,
     "multiLineActualTexts": Array [
       "序号",
     ],
@@ -5501,69 +5567,68 @@ Array [
     "actualText": "省份",
     "actualTextHeight": 16,
     "actualTextWidth": 25,
-    "height": 56,
+    "height": 72,
     "multiLineActualTexts": Array [
       "省份",
     ],
     "originalText": "省份",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "城市城市城市城市城市城市城市城市城市城市...",
+    "actualText": "城市城市城市城市城市城市城市城市城市城市城市城市",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
-    "height": 56,
+    "actualTextWidth": 291,
+    "height": 72,
     "multiLineActualTexts": Array [
-      "城市城市城市城",
-      "市城市城市城市",
-      "城市城市城市...",
+      "城市城市城市城市城市",
+      "城市城市城市城市城市",
+      "城市城市",
     ],
     "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "类别类别类别类别类别类别类别类别类别类别",
-    "actualTextHeight": 48,
-    "actualTextWidth": 243,
-    "height": 56,
+    "actualTextHeight": 32,
+    "actualTextWidth": 242,
+    "height": 72,
     "multiLineActualTexts": Array [
-      "类别类别类别类",
-      "别类别类别类别",
-      "类别类别类别",
+      "类别类别类别类别类别",
+      "类别类别类别类别类别",
     ],
     "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "子类别",
     "actualTextHeight": 16,
     "actualTextWidth": 37,
-    "height": 56,
+    "height": 72,
     "multiLineActualTexts": Array [
       "子类别",
     ],
     "originalText": "子类别",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "数量数量数量数量数量数量数量数量数量数量...",
+    "actualText": "数量数量数量数量数量数量数量数量数量数量数量",
     "actualTextHeight": 48,
-    "actualTextWidth": 253,
-    "height": 56,
+    "actualTextWidth": 267,
+    "height": 72,
     "multiLineActualTexts": Array [
-      "数量数量数量数",
-      "量数量数量数量",
-      "数量数量数量...",
+      "数量数量数量数量数量",
+      "数量数量数量数量数量",
+      "数量",
     ],
     "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103.8,
+    "width": 143.8,
   },
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom three max text lines 4`] = `Array []`;
+exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly row cell height if actual text lines is difference 4`] = `Array []`;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom three max text lines 5`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should calc correctly row cell height if actual text lines is difference 5`] = `
 Array [
   Object {
     "actualText": "1",
@@ -5580,7 +5645,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 61,
+    "height": 30,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -5591,7 +5656,7 @@ Array [
     "actualText": "3",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 46,
+    "height": 61,
     "multiLineActualTexts": Array [
       "3",
     ],
@@ -5676,263 +5741,462 @@ Array [
     "width": 80,
   },
   Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": "11",
+    "width": 80,
+  },
+  Object {
+    "actualText": "12",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "12",
+    ],
+    "originalText": "12",
+    "width": 80,
+  },
+  Object {
+    "actualText": "13",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "13",
+    ],
+    "originalText": "13",
+    "width": 80,
+  },
+  Object {
+    "actualText": "14",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "14",
+    ],
+    "originalText": "14",
+    "width": 80,
+  },
+  Object {
+    "actualText": "15",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "15",
+    ],
+    "originalText": "15",
+    "width": 80,
+  },
+  Object {
+    "actualText": "16",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "16",
+    ],
+    "originalText": "16",
+    "width": 80,
+  },
+  Object {
+    "actualText": "浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江",
+    "actualTextHeight": 30,
+    "actualTextWidth": 242,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江浙江浙江浙江浙江",
+      "浙江浙江浙江浙江浙江",
+    ],
+    "originalText": "浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江",
+    "width": 143.8,
+  },
+  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
     "originalText": "浙江省",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
+    "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
     "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualTextWidth": 363,
     "height": 61,
     "multiLineActualTexts": Array [
-      "浙江省浙江省浙",
-      "江省浙江省浙江",
-      "省浙江省浙江...",
+      "浙江省浙江省浙江省浙",
+      "江省浙江省浙江省浙江",
+      "省浙江省浙江省浙江省",
     ],
     "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "杭州杭州杭州杭州",
+    "actualTextHeight": 15,
+    "actualTextWidth": 97,
     "height": 46,
     "multiLineActualTexts": Array [
-      "浙江省",
+      "杭州杭州杭州杭州",
     ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
+    "originalText": "杭州杭州杭州杭州",
+    "width": 143.8,
   },
   Object {
     "actualText": "绍兴市",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "绍兴市",
     ],
     "originalText": "绍兴市",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
+    "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualTextWidth": 363,
     "height": 61,
     "multiLineActualTexts": Array [
-      "杭州市杭州市杭",
-      "州市杭州市杭州",
-      "市杭州市杭州...",
+      "杭州市杭州市杭州市杭",
+      "州市杭州市杭州市杭州",
+      "市杭州市杭州市杭州市",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "绍兴市",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "宁波市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "宁波市",
+    ],
+    "originalText": "宁波市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "宁波市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "宁波市",
+    ],
+    "originalText": "宁波市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "宁波市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "宁波市",
+    ],
+    "originalText": "宁波市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "纸张纸张纸张纸张纸张",
+    "actualTextHeight": 15,
+    "actualTextWidth": 121,
     "height": 46,
     "multiLineActualTexts": Array [
-      "绍兴市",
+      "纸张纸张纸张纸张纸张",
     ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
+    "originalText": "纸张纸张纸张纸张纸张",
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
+    "actualText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualTextWidth": 339,
     "height": 61,
     "multiLineActualTexts": Array [
-      "家具家具家具家",
-      "具家具家具家具",
-      "家具家具家具...",
+      "家具家具家具家具家具",
+      "家具家具家具家具家具",
+      "家具家具家具家具",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5943,7 +6207,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5954,7 +6218,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5965,7 +6229,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5976,7 +6240,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5987,7 +6251,7 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "家具",
@@ -5998,7 +6262,18 @@ Array [
       "家具",
     ],
     "originalText": "家具",
-    "width": 103.8,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 143.8,
   },
   Object {
     "actualText": "办公用品",
@@ -6009,42 +6284,97 @@ Array [
       "办公用品",
     ],
     "originalText": "办公用品",
-    "width": 103.8,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 143.8,
   },
   Object {
     "actualText": "桌子",
     "actualTextHeight": 15,
     "actualTextWidth": 25,
-    "height": 46,
+    "height": 30,
     "multiLineActualTexts": Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "actualTextHeight": 45,
-    "actualTextWidth": 253,
+    "actualTextWidth": 363,
     "height": 61,
     "multiLineActualTexts": Array [
-      "桌子桌子桌子桌",
-      "子桌子桌子桌子",
-      "桌子桌子桌子...",
+      "桌子桌子桌子桌子桌子",
+      "桌子桌子桌子桌子桌子",
+      "桌子桌子桌子桌子桌子",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "桌子",
@@ -6055,7 +6385,7 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "桌子",
@@ -6066,7 +6396,18 @@ Array [
       "桌子",
     ],
     "originalText": "桌子",
-    "width": 103.8,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 143.8,
   },
   Object {
     "actualText": "沙发",
@@ -6077,7 +6418,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "沙发",
@@ -6088,7 +6429,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "沙发",
@@ -6099,7 +6440,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "沙发",
@@ -6110,7 +6451,7 @@ Array [
       "沙发",
     ],
     "originalText": "沙发",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "笔",
@@ -6121,44 +6462,107 @@ Array [
       "笔",
     ],
     "originalText": "笔",
-    "width": 103.8,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "纸张",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "纸张",
+    ],
+    "originalText": "纸张",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "纸张",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "纸张",
+    ],
+    "originalText": "纸张",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "-",
+    "actualTextHeight": 15,
+    "actualTextWidth": 4,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "-",
+    ],
+    "originalText": "-",
+    "width": 143.8,
   },
   Object {
     "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
-    "height": 46,
+    "actualTextHeight": 15,
+    "actualTextWidth": 98,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "236723672361111",
     ],
     "originalText": "236723672361111",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "7789778977897789778977897789",
-    "actualTextHeight": 45,
-    "actualTextWidth": 189,
+    "actualTextHeight": 30,
+    "actualTextWidth": 188,
     "height": 61,
     "multiLineActualTexts": Array [
-      "7789778977897",
-      "7897789778977",
-      "89",
+      "778977897789778977",
+      "8977897789",
     ],
     "originalText": "7789778977897789778977897789",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
-    "height": 46,
+    "actualTextHeight": 15,
+    "actualTextWidth": 98,
+    "height": 30,
     "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
+      "236723672361111",
     ],
     "originalText": "236723672361111",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "3877",
@@ -6169,7 +6573,7 @@ Array [
       "3877",
     ],
     "originalText": "3877",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "4342",
@@ -6180,7 +6584,7 @@ Array [
       "4342",
     ],
     "originalText": "4342",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "5343",
@@ -6191,7 +6595,7 @@ Array [
       "5343",
     ],
     "originalText": "5343",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "632",
@@ -6202,7 +6606,7 @@ Array [
       "632",
     ],
     "originalText": "632",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "7234",
@@ -6213,7 +6617,7 @@ Array [
       "7234",
     ],
     "originalText": "7234",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "834",
@@ -6224,7 +6628,7 @@ Array [
       "834",
     ],
     "originalText": "834",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "945",
@@ -6235,952 +6639,7 @@ Array [
       "945",
     ],
     "originalText": "945",
-    "width": 103.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom two max text lines 1`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom two max text lines 2`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": "3",
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": "4",
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": "5",
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": "6",
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": "7",
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": "8",
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": "9",
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": "10",
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom two max text lines 3`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-  Object {
-    "actualText": "省份",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "省份",
-    ],
-    "originalText": "省份",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "城市城市城市城市城市城市城...",
-    "actualTextHeight": 32,
-    "actualTextWidth": 168,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "城市城市城市城",
-      "市城市城市城...",
-    ],
-    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "类别类别类别类别类别类别类...",
-    "actualTextHeight": 32,
-    "actualTextWidth": 168,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "类别类别类别类",
-      "别类别类别类...",
-    ],
-    "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "子类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "子类别",
-    ],
-    "originalText": "子类别",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "数量数量数量数量数量数量数...",
-    "actualTextHeight": 32,
-    "actualTextWidth": 168,
-    "height": 40,
-    "multiLineActualTexts": Array [
-      "数量数量数量数",
-      "量数量数量数...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom two max text lines 4`] = `Array []`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should custom two max text lines 5`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": "3",
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": "4",
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": "5",
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": "6",
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": "7",
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": "8",
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": "9",
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": "10",
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省浙江省浙江省浙江省浙...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "浙江省浙江省浙",
-      "江省浙江省浙...",
-    ],
-    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市杭州市杭州市杭州市杭...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "杭州市杭州市杭",
-      "州市杭州市杭...",
-    ],
-    "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具家具家具家具家具家具家...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "家具家具家具家",
-      "具家具家具家...",
-    ],
-    "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 168,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "桌子桌子桌子桌",
-      "子桌子桌子桌...",
-    ],
-    "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
-    ],
-    "originalText": "236723672361111",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "778977897789778977897789...",
-    "actualTextHeight": 30,
-    "actualTextWidth": 172,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "7789778977897",
-      "78977897789...",
-    ],
-    "originalText": "7789778977897789778977897789",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "236723672361111",
-    "actualTextHeight": 30,
-    "actualTextWidth": 100,
-    "height": 46,
-    "multiLineActualTexts": Array [
-      "2367236723611",
-      "11",
-    ],
-    "originalText": "236723672361111",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "3877",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3877",
-    ],
-    "originalText": "3877",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "4342",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4342",
-    ],
-    "originalText": "4342",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "5343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5343",
-    ],
-    "originalText": "5343",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "632",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "632",
-    ],
-    "originalText": "632",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "7234",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7234",
-    ],
-    "originalText": "7234",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "834",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "834",
-    ],
-    "originalText": "834",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "945",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "945",
-    ],
-    "originalText": "945",
-    "width": 103.8,
+    "width": 143.8,
   },
   Object {
     "actualText": "1304",
@@ -7191,7 +6650,51 @@ Array [
       "1304",
     ],
     "originalText": "1304",
-    "width": 103.8,
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1145",
+    "actualTextHeight": 15,
+    "actualTextWidth": 26,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1145",
+    ],
+    "originalText": "1145",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1432",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1432",
+    ],
+    "originalText": "1432",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1343",
+    ],
+    "originalText": "1343",
+    "width": 143.8,
+  },
+  Object {
+    "actualText": "1354",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "1354",
+    ],
+    "originalText": "1354",
+    "width": 143.8,
   },
 ]
 `;
@@ -10444,1107 +9947,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom col height 1`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom col height 2`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": "3",
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": "4",
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": "5",
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": "6",
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": "7",
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": "8",
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": "9",
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": "10",
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
-  Object {
-    "actualText": "12",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "12",
-    ],
-    "originalText": "12",
-    "width": 80,
-  },
-  Object {
-    "actualText": "13",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "13",
-    ],
-    "originalText": "13",
-    "width": 80,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom col height 3`] = `
-Array [
-  Object {
-    "actualText": "序号",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "序号",
-    ],
-    "originalText": "序号",
-    "width": 80,
-  },
-  Object {
-    "actualText": "省份",
-    "actualTextHeight": 16,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "省份",
-    ],
-    "originalText": "省份",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "城市城市城市...",
-    "actualTextHeight": 16,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "城市城市城市...",
-    ],
-    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "类别类别类别...",
-    "actualTextHeight": 16,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "类别类别类别...",
-    ],
-    "originalText": "类别类别类别类别类别类别类别类别类别类别",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "子类别",
-    "actualTextHeight": 16,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "子类别",
-    ],
-    "originalText": "子类别",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "数量数量数量...",
-    "actualTextHeight": 16,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "数量数量数量...",
-    ],
-    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
-    "width": 103.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom col height 4`] = `Array []`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom col height 5`] = `
-Array [
-  Object {
-    "actualText": "1",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1",
-    ],
-    "originalText": "1",
-    "width": 80,
-  },
-  Object {
-    "actualText": "2",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "2",
-    ],
-    "originalText": "2",
-    "width": 80,
-  },
-  Object {
-    "actualText": "3",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3",
-    ],
-    "originalText": "3",
-    "width": 80,
-  },
-  Object {
-    "actualText": "4",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4",
-    ],
-    "originalText": "4",
-    "width": 80,
-  },
-  Object {
-    "actualText": "5",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5",
-    ],
-    "originalText": "5",
-    "width": 80,
-  },
-  Object {
-    "actualText": "6",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "6",
-    ],
-    "originalText": "6",
-    "width": 80,
-  },
-  Object {
-    "actualText": "7",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7",
-    ],
-    "originalText": "7",
-    "width": 80,
-  },
-  Object {
-    "actualText": "8",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "8",
-    ],
-    "originalText": "8",
-    "width": 80,
-  },
-  Object {
-    "actualText": "9",
-    "actualTextHeight": 15,
-    "actualTextWidth": 7,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "9",
-    ],
-    "originalText": "9",
-    "width": 80,
-  },
-  Object {
-    "actualText": "10",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "10",
-    ],
-    "originalText": "10",
-    "width": 80,
-  },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
-  Object {
-    "actualText": "12",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "12",
-    ],
-    "originalText": "12",
-    "width": 80,
-  },
-  Object {
-    "actualText": "13",
-    "actualTextHeight": 15,
-    "actualTextWidth": 14,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "13",
-    ],
-    "originalText": "13",
-    "width": 80,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省浙江省...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省浙江省...",
-    ],
-    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市杭州市...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市杭州市...",
-    ],
-    "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "杭州市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "杭州市",
-    ],
-    "originalText": "杭州市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "绍兴市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "绍兴市",
-    ],
-    "originalText": "绍兴市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "宁波市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "宁波市",
-    ],
-    "originalText": "宁波市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "舟山市",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "舟山市",
-    ],
-    "originalText": "舟山市",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具家具家具...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具家具家具...",
-    ],
-    "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "家具",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "家具",
-    ],
-    "originalText": "家具",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "办公用品",
-    "actualTextHeight": 15,
-    "actualTextWidth": 49,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "办公用品",
-    ],
-    "originalText": "办公用品",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子桌子桌子...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 83,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子桌子桌子...",
-    ],
-    "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "桌子",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "桌子",
-    ],
-    "originalText": "桌子",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "沙发",
-    "actualTextHeight": 15,
-    "actualTextWidth": 25,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "沙发",
-    ],
-    "originalText": "沙发",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "笔",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "笔",
-    ],
-    "originalText": "笔",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "23672367236...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 84,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "23672367236...",
-    ],
-    "originalText": "236723672361111",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "77897789778...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 84,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "77897789778...",
-    ],
-    "originalText": "7789778977897789778977897789",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "23672367236...",
-    "actualTextHeight": 15,
-    "actualTextWidth": 84,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "23672367236...",
-    ],
-    "originalText": "236723672361111",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "3877",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "3877",
-    ],
-    "originalText": "3877",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "4342",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "4342",
-    ],
-    "originalText": "4342",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "5343",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "5343",
-    ],
-    "originalText": "5343",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "632",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "632",
-    ],
-    "originalText": "632",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "7234",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "7234",
-    ],
-    "originalText": "7234",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "834",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "834",
-    ],
-    "originalText": "834",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "945",
-    "actualTextHeight": 15,
-    "actualTextWidth": 21,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "945",
-    ],
-    "originalText": "945",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "1304",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1304",
-    ],
-    "originalText": "1304",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "1145",
-    "actualTextHeight": 15,
-    "actualTextWidth": 26,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1145",
-    ],
-    "originalText": "1145",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "1432",
-    "actualTextHeight": 15,
-    "actualTextWidth": 27,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "1432",
-    ],
-    "originalText": "1432",
-    "width": 103.8,
-  },
-]
-`;
-
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom row height 1`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render three max text lines 1`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -11560,7 +9963,7 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom row height 2`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render three max text lines 2`] = `
 Array [
   Object {
     "actualText": "1",
@@ -11577,7 +9980,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 30,
+    "height": 61,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -11672,21 +10075,10 @@ Array [
     "originalText": "10",
     "width": 80,
   },
-  Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom row height 3`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render three max text lines 3`] = `
 Array [
   Object {
     "actualText": "序号",
@@ -11763,9 +10155,9 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom row height 4`] = `Array []`;
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render three max text lines 4`] = `Array []`;
 
-exports[`SpreadSheet Multi Line Text Tests TableSheet should use custom row height 5`] = `
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render three max text lines 5`] = `
 Array [
   Object {
     "actualText": "1",
@@ -11782,7 +10174,7 @@ Array [
     "actualText": "2",
     "actualTextHeight": 15,
     "actualTextWidth": 7,
-    "height": 30,
+    "height": 61,
     "multiLineActualTexts": Array [
       "2",
     ],
@@ -11878,17 +10270,6 @@ Array [
     "width": 80,
   },
   Object {
-    "actualText": "11",
-    "actualTextHeight": 15,
-    "actualTextWidth": 13,
-    "height": 30,
-    "multiLineActualTexts": Array [
-      "11",
-    ],
-    "originalText": "11",
-    "width": 80,
-  },
-  Object {
     "actualText": "浙江省",
     "actualTextHeight": 15,
     "actualTextWidth": 37,
@@ -11903,7 +10284,7 @@ Array [
     "actualText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 30,
+    "height": 61,
     "multiLineActualTexts": Array [
       "浙江省浙江省浙",
       "江省浙江省浙江",
@@ -11917,17 +10298,6 @@ Array [
     "actualTextHeight": 15,
     "actualTextWidth": 37,
     "height": 46,
-    "multiLineActualTexts": Array [
-      "浙江省",
-    ],
-    "originalText": "浙江省",
-    "width": 103.8,
-  },
-  Object {
-    "actualText": "浙江省",
-    "actualTextHeight": 15,
-    "actualTextWidth": 37,
-    "height": 30,
     "multiLineActualTexts": Array [
       "浙江省",
     ],
@@ -12026,11 +10396,926 @@ Array [
     "actualText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州...",
     "actualTextHeight": 45,
     "actualTextWidth": 253,
-    "height": 30,
+    "height": 61,
     "multiLineActualTexts": Array [
       "杭州市杭州市杭",
       "州市杭州市杭州",
       "市杭州市杭州...",
+    ],
+    "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "宁波市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "宁波市",
+    ],
+    "originalText": "宁波市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "宁波市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "宁波市",
+    ],
+    "originalText": "宁波市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "舟山市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "舟山市",
+    ],
+    "originalText": "舟山市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "杭州市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "杭州市",
+    ],
+    "originalText": "杭州市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
+    "actualTextHeight": 45,
+    "actualTextWidth": 253,
+    "height": 61,
+    "multiLineActualTexts": Array [
+      "家具家具家具家",
+      "具家具家具家具",
+      "家具家具家具...",
+    ],
+    "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "家具",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "家具",
+    ],
+    "originalText": "家具",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "办公用品",
+    "actualTextHeight": 15,
+    "actualTextWidth": 49,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "办公用品",
+    ],
+    "originalText": "办公用品",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
+    "actualTextHeight": 45,
+    "actualTextWidth": 253,
+    "height": 61,
+    "multiLineActualTexts": Array [
+      "桌子桌子桌子桌",
+      "子桌子桌子桌子",
+      "桌子桌子桌子...",
+    ],
+    "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "桌子",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "桌子",
+    ],
+    "originalText": "桌子",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "沙发",
+    "actualTextHeight": 15,
+    "actualTextWidth": 25,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "沙发",
+    ],
+    "originalText": "沙发",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "笔",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "笔",
+    ],
+    "originalText": "笔",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "236723672361111",
+    "actualTextHeight": 30,
+    "actualTextWidth": 100,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "2367236723611",
+      "11",
+    ],
+    "originalText": "236723672361111",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "7789778977897789778977897789",
+    "actualTextHeight": 45,
+    "actualTextWidth": 189,
+    "height": 61,
+    "multiLineActualTexts": Array [
+      "7789778977897",
+      "7897789778977",
+      "89",
+    ],
+    "originalText": "7789778977897789778977897789",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "236723672361111",
+    "actualTextHeight": 30,
+    "actualTextWidth": 100,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "2367236723611",
+      "11",
+    ],
+    "originalText": "236723672361111",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "3877",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "3877",
+    ],
+    "originalText": "3877",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "4342",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "4342",
+    ],
+    "originalText": "4342",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "5343",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "5343",
+    ],
+    "originalText": "5343",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "632",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "632",
+    ],
+    "originalText": "632",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "7234",
+    "actualTextHeight": 15,
+    "actualTextWidth": 27,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "7234",
+    ],
+    "originalText": "7234",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "834",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "834",
+    ],
+    "originalText": "834",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "945",
+    "actualTextHeight": 15,
+    "actualTextWidth": 21,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "945",
+    ],
+    "originalText": "945",
+    "width": 103.8,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render two max text lines 1`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render two max text lines 2`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": "3",
+    "width": 80,
+  },
+  Object {
+    "actualText": "4",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "4",
+    ],
+    "originalText": "4",
+    "width": 80,
+  },
+  Object {
+    "actualText": "5",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "5",
+    ],
+    "originalText": "5",
+    "width": 80,
+  },
+  Object {
+    "actualText": "6",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "6",
+    ],
+    "originalText": "6",
+    "width": 80,
+  },
+  Object {
+    "actualText": "7",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "7",
+    ],
+    "originalText": "7",
+    "width": 80,
+  },
+  Object {
+    "actualText": "8",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "8",
+    ],
+    "originalText": "8",
+    "width": 80,
+  },
+  Object {
+    "actualText": "9",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "9",
+    ],
+    "originalText": "9",
+    "width": 80,
+  },
+  Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": "10",
+    "width": 80,
+  },
+  Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": "11",
+    "width": 80,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render two max text lines 3`] = `
+Array [
+  Object {
+    "actualText": "序号",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "序号",
+    ],
+    "originalText": "序号",
+    "width": 80,
+  },
+  Object {
+    "actualText": "省份",
+    "actualTextHeight": 16,
+    "actualTextWidth": 25,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "省份",
+    ],
+    "originalText": "省份",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "城市城市城市城市城市城市城...",
+    "actualTextHeight": 32,
+    "actualTextWidth": 168,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "城市城市城市城",
+      "市城市城市城...",
+    ],
+    "originalText": "城市城市城市城市城市城市城市城市城市城市城市城市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "类别类别类别类别类别类别类...",
+    "actualTextHeight": 32,
+    "actualTextWidth": 168,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "类别类别类别类",
+      "别类别类别类...",
+    ],
+    "originalText": "类别类别类别类别类别类别类别类别类别类别",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "子类别",
+    "actualTextHeight": 16,
+    "actualTextWidth": 37,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "子类别",
+    ],
+    "originalText": "子类别",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "数量数量数量数量数量数量数...",
+    "actualTextHeight": 32,
+    "actualTextWidth": 168,
+    "height": 40,
+    "multiLineActualTexts": Array [
+      "数量数量数量数",
+      "量数量数量数...",
+    ],
+    "originalText": "数量数量数量数量数量数量数量数量数量数量数量",
+    "width": 103.8,
+  },
+]
+`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render two max text lines 4`] = `Array []`;
+
+exports[`SpreadSheet Multi Line Text Tests TableSheet should render two max text lines 5`] = `
+Array [
+  Object {
+    "actualText": "1",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "1",
+    ],
+    "originalText": "1",
+    "width": 80,
+  },
+  Object {
+    "actualText": "2",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "2",
+    ],
+    "originalText": "2",
+    "width": 80,
+  },
+  Object {
+    "actualText": "3",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "3",
+    ],
+    "originalText": "3",
+    "width": 80,
+  },
+  Object {
+    "actualText": "4",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "4",
+    ],
+    "originalText": "4",
+    "width": 80,
+  },
+  Object {
+    "actualText": "5",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "5",
+    ],
+    "originalText": "5",
+    "width": 80,
+  },
+  Object {
+    "actualText": "6",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "6",
+    ],
+    "originalText": "6",
+    "width": 80,
+  },
+  Object {
+    "actualText": "7",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "7",
+    ],
+    "originalText": "7",
+    "width": 80,
+  },
+  Object {
+    "actualText": "8",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "8",
+    ],
+    "originalText": "8",
+    "width": 80,
+  },
+  Object {
+    "actualText": "9",
+    "actualTextHeight": 15,
+    "actualTextWidth": 7,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "9",
+    ],
+    "originalText": "9",
+    "width": 80,
+  },
+  Object {
+    "actualText": "10",
+    "actualTextHeight": 15,
+    "actualTextWidth": 14,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "10",
+    ],
+    "originalText": "10",
+    "width": 80,
+  },
+  Object {
+    "actualText": "11",
+    "actualTextHeight": 15,
+    "actualTextWidth": 13,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "11",
+    ],
+    "originalText": "11",
+    "width": 80,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省浙江省浙江省浙江省浙...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 168,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省浙江省浙",
+      "江省浙江省浙...",
+    ],
+    "originalText": "浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "浙江省",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 30,
+    "multiLineActualTexts": Array [
+      "浙江省",
+    ],
+    "originalText": "浙江省",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "绍兴市",
+    "actualTextHeight": 15,
+    "actualTextWidth": 37,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "绍兴市",
+    ],
+    "originalText": "绍兴市",
+    "width": 103.8,
+  },
+  Object {
+    "actualText": "杭州市杭州市杭州市杭州市杭...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 168,
+    "height": 46,
+    "multiLineActualTexts": Array [
+      "杭州市杭州市杭",
+      "州市杭州市杭...",
     ],
     "originalText": "杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市",
     "width": 103.8,
@@ -12146,14 +11431,13 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "家具家具家具家具家具家具家具家具家具家具...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
-    "height": 30,
+    "actualText": "家具家具家具家具家具家具家...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 168,
+    "height": 46,
     "multiLineActualTexts": Array [
       "家具家具家具家",
-      "具家具家具家具",
-      "家具家具家具...",
+      "具家具家具家...",
     ],
     "originalText": "家具家具家具家具家具家具家具家具家具家具家具家具家具家具",
     "width": 103.8,
@@ -12269,14 +11553,13 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子...",
-    "actualTextHeight": 45,
-    "actualTextWidth": 253,
-    "height": 30,
+    "actualText": "桌子桌子桌子桌子桌子桌子桌...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 168,
+    "height": 46,
     "multiLineActualTexts": Array [
       "桌子桌子桌子桌",
-      "子桌子桌子桌子",
-      "桌子桌子桌子...",
+      "子桌子桌子桌...",
     ],
     "originalText": "桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子桌子",
     "width": 103.8,
@@ -12393,14 +11676,13 @@ Array [
     "width": 103.8,
   },
   Object {
-    "actualText": "7789778977897789778977897789",
-    "actualTextHeight": 45,
-    "actualTextWidth": 189,
-    "height": 30,
+    "actualText": "778977897789778977897789...",
+    "actualTextHeight": 30,
+    "actualTextWidth": 172,
+    "height": 46,
     "multiLineActualTexts": Array [
       "7789778977897",
-      "7897789778977",
-      "89",
+      "78977897789...",
     ],
     "originalText": "7789778977897789778977897789",
     "width": 103.8,
