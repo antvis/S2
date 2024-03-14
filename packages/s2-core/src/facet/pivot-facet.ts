@@ -505,7 +505,8 @@ export class PivotFacet extends FrozenFacet {
           (rowNode) => this.getRowNodeHeight(rowNode),
         );
         // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准
-        const nodeHeight = max(currentBranchNodeHeights) || 0;
+        const nodeHeight =
+          max(currentBranchNodeHeights) || this.getRowNodeHeight(currentNode);
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;

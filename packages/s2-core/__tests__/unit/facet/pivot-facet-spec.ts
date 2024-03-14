@@ -82,7 +82,7 @@ jest.mock('@/sheet-type', () => {
           getRowNodes: () => [],
           getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
-          getCellMeta: jest.fn(),
+          getCellMeta: jest.fn().mockRejectedValue({}),
           getRowLeafNodeByIndex: () => [],
           frozenGroupInfo: {
             [FrozenGroupType.FROZEN_ROW]: {},
@@ -230,18 +230,16 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct cell meta', () => {
-    const { getCellMeta } = facet;
-
     test('should get correct cell meta', () => {
       expect(
-        (getCellMeta(0, 1)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(0, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(5343);
       expect(
-        (getCellMeta(1, 1)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(1, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(632);
 
       expect(
-        (getCellMeta(1, 0)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(1, 0)?.data as CellData)?.getValueByField('number'),
       ).toBe(2367);
     });
   });

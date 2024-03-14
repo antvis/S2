@@ -60,6 +60,7 @@ jest.mock('@/sheet-type', () => {
           getHiddenColumnsInfo: jest.fn(),
           getColNodeHeight: jest.fn(),
           getHeaderNodes: jest.fn().mockReturnValue([]),
+          getCellMeta: jest.fn().mockRejectedValue({}),
         },
         dataSet: {
           isEmpty: jest.fn(),
@@ -426,14 +427,13 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
       displayData
         .slice(-trailingRowCount!)
         .reverse()
-        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
+        .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([532, 502]);
   });
 
@@ -709,14 +709,13 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
-    const { getCellMeta } = facet;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
       displayData
         .slice(-trailingRowCount!)
         .reverse()
-        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
+        .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([532, 502]);
   });
 

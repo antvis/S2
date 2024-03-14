@@ -353,6 +353,39 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectRowHierarchyHeight(568, 0, 72);
       expectColHierarchyHeight(212, 144, 68);
     });
+
+    test('should render three max text lines for tree mode', async () => {
+      updateStyle(3);
+      s2.setOptions({
+        hierarchyType: 'tree',
+        style: {
+          rowCell: {
+            width: 100,
+          },
+        },
+      });
+      s2.changeSheetSize(800, 600);
+      s2.setDataCfg({
+        data: [
+          {
+            province:
+              '浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江',
+            city: '杭州杭州杭州杭州',
+            type: '纸张纸张纸张纸张纸张',
+            price: 2,
+            cost: 20,
+          },
+          ...s2.dataCfg.data,
+        ],
+      });
+      await s2.render();
+
+      getCells().forEach((cells) => {
+        expect(mapCells(cells)).toMatchSnapshot();
+      });
+
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(760);
+    });
   });
 
   describe('TableSheet', () => {
@@ -374,7 +407,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      // s2.destroy();
+      s2.destroy();
     });
 
     test('should default render one line text', () => {
