@@ -106,7 +106,7 @@ export class Frame extends Group {
         y2,
         stroke: verticalBorderColor,
         lineWidth: frameVerticalWidth,
-        opacity: verticalBorderColorOpacity,
+        strokeOpacity: verticalBorderColorOpacity,
       });
 
       return;
@@ -127,7 +127,7 @@ export class Frame extends Group {
       y2: position.y + cornerHeight,
       stroke: headerVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      opacity: headerVerticalBorderColorOpacity,
+      strokeOpacity: headerVerticalBorderColorOpacity,
     });
 
     const {
@@ -142,7 +142,7 @@ export class Frame extends Group {
       y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
       stroke: cellVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      opacity: cellVerticalBorderColorOpacity,
+      strokeOpacity: cellVerticalBorderColorOpacity,
     });
   }
 
