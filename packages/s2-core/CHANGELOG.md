@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.7](https://github.com/antvis/S2/compare/@antv/s2-v1.54.6...@antv/s2-v1.54.7) (2024-03-15)
+
+
+### Bug Fixes
+
+* 修复树状模式下开启分页, 行头展开收起后表格渲染异常 close [#2582](https://github.com/antvis/S2/issues/2582) ([#2590](https://github.com/antvis/S2/issues/2590)) ([dd210db](https://github.com/antvis/S2/commit/dd210dbbe65207219fad6522e6027fc17b5962f8))
+
 # [@antv/s2-v1.54.6](https://github.com/antvis/S2/compare/@antv/s2-v1.54.5...@antv/s2-v1.54.6) (2024-03-01)
 
 
