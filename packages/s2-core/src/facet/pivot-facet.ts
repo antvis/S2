@@ -938,7 +938,7 @@ export class PivotFacet extends FrozenFacet {
 
     return {
       getTotalHeight: () => last(heights) || 0,
-      getCellOffsetY: (index: number) => heights[index],
+      getCellOffsetY: (index: number) => heights[index] || 0,
       // 多了一个数据 [0]
       getTotalLength: () => heights.length - 1,
       getIndexRange: (minHeight: number, maxHeight: number) =>
