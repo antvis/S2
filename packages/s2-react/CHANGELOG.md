@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.13...@antv/s2-react-v2.0.0-next.14) (2024-03-15)
+
+
+### Bug Fixes
+
+* 修复文本行数不一致时自动换行高度自适应失效 close [#2594](https://github.com/antvis/S2/issues/2594) ([#2598](https://github.com/antvis/S2/issues/2598)) ([fae5496](https://github.com/antvis/S2/commit/fae5496e503205f319e7bdc79240d31dacd4e850))
+
 # [@antv/s2-react-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.12...@antv/s2-react-v2.0.0-next.13) (2024-03-11)
 
 
