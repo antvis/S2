@@ -1,3 +1,11 @@
+# [@antv/s2-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.14...@antv/s2-v2.0.0-next.15) (2024-03-15)
+
+
+### Bug Fixes
+
+* 修复文本行数不一致时自动换行高度自适应失效 close [#2594](https://github.com/antvis/S2/issues/2594) ([#2598](https://github.com/antvis/S2/issues/2598)) ([fae5496](https://github.com/antvis/S2/commit/fae5496e503205f319e7bdc79240d31dacd4e850))
+* 修复树状模式下开启分页, 行头展开收起后表格渲染异常 close [#2582](https://github.com/antvis/S2/issues/2582) ([#2590](https://github.com/antvis/S2/issues/2590)) ([6bab9f6](https://github.com/antvis/S2/commit/6bab9f630e26bdfb9513bb0d5fe0b4c0903f885b))
+
 # [@antv/s2-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.13...@antv/s2-v2.0.0-next.14) (2024-03-11)
 
 
