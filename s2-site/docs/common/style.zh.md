@@ -70,10 +70,10 @@ order: 3
 
 ### CellTextWordWrapStyle
 
-功能描述：单元格换行配置
+功能描述：单元格换行配置。[查看示例](/examples/layout/multi-line-text#pivot)
 
 | 参数    | 说明 | 类型   | 默认值 | 必选  |
 | ------- | ------------ | ------ | ------ | ---- |
-| wordWrap      | 文本是否自动换行 （数值单元格不建议换行）。[了解更多](https://g.antv.antgroup.com/api/basic/text#wordwrap)                                                                    | `boolean`                      | `true`                                                                                                 |      |
-| maxLines      | 最大行数，文本超出后将被截断 （数值单元格不建议换行），需要配合 `wordWrap` 和 `textOverflow` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#maxlines)                                                                      | `number`                      | `1`                                                                                                 |      |
+| wordWrap      | 文本是否自动换行（数值单元格不建议换行）。[了解更多](https://g.antv.antgroup.com/api/basic/text#wordwrap)                                                                    | `boolean`                      | `true`                                                                                                 |      |
+| maxLines      | 最大行数，文本超出后将被截断（数值单元格不建议换行），需要配合 `wordWrap` 和 `textOverflow` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#maxlines)                                                                      | `number`                      | `1`                                                                                                 |      |
 | textOverflow      | 自定义隐藏的文本溢出内容，例如直接裁剪、追加省略号或一个自定义字符串，需要配合 `wordWrap` 和 `maxLines` 一起使用。[了解更多](https://g.antv.antgroup.com/api/basic/text#textoverflow)                                                                 | `string`                      | `ellipsis`                                                                                                |      |

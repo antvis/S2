@@ -1,4 +1,4 @@
-import { head, isEmpty, isEqual } from 'lodash';
+import { head, isEmpty } from 'lodash';
 import { SERIES_NUMBER_FIELD } from '../../common';
 import { ROOT_NODE_ID } from '../../common/constant/node';
 import type {
@@ -283,7 +283,6 @@ export class Node {
   }
 
   /**
-   * Get all children branch in this node branch, eg:
    *        c1
    *    b1〈
    *        c2
@@ -291,34 +290,23 @@ export class Node {
    *        c3
    *    b2〈
    *        c4
-   * get all branch [[b1,c1],[b1,c2],[b2,c3],[b2,c4]]
-   * @param parent
+   * c1 => (a, b1, c1)
+   * @param node
    */
-  public static getAllBranch(parent: Node): Node[][] {
-    const all: Node[][] = [];
-    const leaves = this.getAllLeaveNodes(parent);
-    let current = leaves.shift();
-    let tempBranch = [];
+  public static getBranchNodes(node: Node): Node[] {
+    if (node && !node.isTotals) {
+      let parent = node.parent;
+      const pathNodes = [node];
 
-    while (current) {
-      tempBranch.unshift(current);
-      let pa = current.parent;
-
-      while (pa) {
-        if (!isEqual(pa, parent)) {
-          tempBranch.unshift(pa);
-        } else {
-          break;
-        }
-
-        pa = pa.parent;
+      while (parent && parent.id !== ROOT_NODE_ID) {
+        pathNodes.push(parent);
+        parent = parent.parent;
       }
-      all.push(tempBranch);
-      current = leaves.shift();
-      tempBranch = [];
+
+      return pathNodes.reverse();
     }
 
-    return all;
+    return [];
   }
 
   public static blankNode(): Node {

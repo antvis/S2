@@ -9,6 +9,7 @@ import {
   keys,
   last,
   map,
+  max,
   maxBy,
   merge,
   reduce,
@@ -96,7 +97,7 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 根据行列索引获取单元格元数据
    */
-  public getCellMeta = (rowIndex = 0, colIndex = 0) => {
+  public getCellMeta(rowIndex = 0, colIndex = 0) {
     const { options, dataSet } = this.spreadsheet;
     const { rowLeafNodes, colLeafNodes } = this.getLayoutResult();
     const row = rowLeafNodes[rowIndex];
@@ -153,7 +154,7 @@ export class PivotFacet extends FrozenFacet {
     };
 
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
-  };
+  }
 
   private getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
     // 之前是采样每一级第一个节点, 现在 sampleNodesForAllLevels 是采样每一级高度最大的节点
@@ -500,7 +501,12 @@ export class PivotFacet extends FrozenFacet {
       if (isLeaf) {
         // 1. 普通树状结构, 叶子节点各占一行, 2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const nodeHeight = this.getRowNodeHeight(currentNode);
+        const currentBranchNodeHeights = Node.getBranchNodes(currentNode).map(
+          (rowNode) => this.getRowNodeHeight(rowNode),
+        );
+        // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准
+        const nodeHeight =
+          max(currentBranchNodeHeights) || this.getRowNodeHeight(currentNode);
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
@@ -569,12 +575,10 @@ export class PivotFacet extends FrozenFacet {
 
       if (prevRowParent !== parent && parent) {
         leafNodes.push(parent);
-        // parent's y = first child's y
+        // 父节点 y 坐标 = 第一个未隐藏的子节点的 y 坐标
         parent.y = parent.children[0].y;
-        // parent's height = all children's height
-        parent.height = parent.children
-          .map((value) => value.height)
-          .reduce((sum, current) => sum + current, 0);
+        // 父节点高度 = 所有子节点高度之和
+        parent.height = sumBy(parent.children, 'height');
         prevRowParent = parent;
       }
     }

@@ -1,5 +1,14 @@
 import { Group } from '@antv/g';
-import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
+import {
+  isBoolean,
+  isEmpty,
+  isNumber,
+  keys,
+  last,
+  max,
+  maxBy,
+  set,
+} from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
@@ -31,12 +40,12 @@ import { floor } from '../utils/math';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
 import { ColHeader, Frame } from './header';
+import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
-import { TableColHeader } from './header/table-col';
 
 export class TableFacet extends FrozenFacet {
   public constructor(spreadsheet: SpreadSheet) {
@@ -46,21 +55,72 @@ export class TableFacet extends FrozenFacet {
   }
 
   public init() {
-    this.initRowOffsets();
     super.init();
+    this.initRowOffsets();
+  }
+
+  private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
+    const dataCell = new TableDataCell(viewMeta, this.spreadsheet, {
+      shallowRender: true,
+    });
+    const defaultHeight = this.getDefaultCellHeight();
+
+    return this.getCellAdaptiveHeight(dataCell, defaultHeight);
+  }
+
+  private getCellHeightByRowIndex(rowIndex: number) {
+    if (this.rowOffsets) {
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
+    }
+
+    return this.getDefaultCellHeight();
+  }
+
+  /**
+   * 开启换行后, 需要自适应调整高度, 明细表通过 rowCell.heightByField 调整, 同时还有一个 rowOffsets 控制行高, 所以要提前设置好, 保证渲染正确.
+   */
+  private presetRowCellHeightIfNeeded(rowIndex: number) {
+    const { style } = this.spreadsheet.options;
+    const colLeafNodes = this.getColLeafNodes();
+
+    // 不超过一行或者用户已经配置过当前行高则无需预设
+    if (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) {
+      return;
+    }
+
+    // 当前行高取整行 dataCell 高度最大的值
+    const maxDataCellHeight = max(
+      colLeafNodes.map((colNode) => {
+        const viewMeta = this.getCellMeta(rowIndex, colNode.colIndex);
+
+        return this.getDataCellAdaptiveHeight(viewMeta!);
+      }),
+    );
+
+    // getCellHeightByRowIndex 会优先读取 heightByField, 保持逻辑统一
+    this.spreadsheet.setOptions({
+      style: {
+        rowCell: {
+          heightByField: {
+            [rowIndex]: maxDataCellHeight || this.getDefaultCellHeight(),
+          },
+        },
+      },
+    });
   }
 
   protected initRowOffsets() {
-    const heightByField =
-      this.spreadsheet.options.style?.rowCell?.heightByField;
+    const { style } = this.spreadsheet.options;
+    const heightByField = style?.rowCell?.heightByField;
 
-    if (keys(heightByField!).length) {
+    if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
       this.rowOffsets = [0];
       let lastOffset = 0;
 
       data.forEach((_, rowIndex) => {
+        this.presetRowCellHeightIfNeeded(rowIndex);
         const currentHeight = this.getCellHeightByRowIndex(rowIndex);
         const currentOffset = lastOffset + currentHeight;
 
@@ -148,10 +208,6 @@ export class TableFacet extends FrozenFacet {
     );
   };
 
-  get dataCellTheme() {
-    return this.spreadsheet.theme.dataCell?.cell;
-  }
-
   public destroy(): void {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT, this.onSortHandler);
@@ -197,9 +253,9 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  public getCellMeta = (rowIndex = 0, colIndex = 0) => {
+  public getCellMeta(rowIndex = 0, colIndex = 0) {
     const { options, dataSet } = this.spreadsheet;
-    const { colLeafNodes } = this.getLayoutResult();
+    const colLeafNodes = this.getColLeafNodes();
     const colNode = colLeafNodes[colIndex];
 
     if (!colNode) {
@@ -256,7 +312,7 @@ export class TableFacet extends FrozenFacet {
     };
 
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
-  };
+  }
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { dataCell } = this.spreadsheet.options.style!;

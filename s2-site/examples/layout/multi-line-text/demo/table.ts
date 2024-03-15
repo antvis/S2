@@ -1,8 +1,8 @@
 import {
   CellTextWordWrapStyle,
-  PivotSheet,
   S2DataConfig,
   S2Options,
+  TableSheet,
 } from '@antv/s2';
 import '@antv/s2/dist/style.min.css';
 
@@ -12,9 +12,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
     const container = document.getElementById('container');
     const s2DataConfig: S2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['province', 'city', 'type', 'price', 'cost'],
       },
       meta: [
         {
@@ -40,7 +38,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       ],
       data: [
         {
-          province: '浙江浙江浙江浙江浙江浙江',
+          province: '浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江浙江',
           city: '杭州杭州杭州杭州杭州杭州',
           type: '纸张纸张纸张纸张纸张',
           price: '2',
@@ -52,7 +50,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
 
     const cellTextWordWrapStyle: CellTextWordWrapStyle = {
       // 最大行数，文本超出后将被截断
-      maxLines: 2,
+      maxLines: 3,
       // 文本是否换行
       wordWrap: true,
       // 可选项见：https://g.antv.antgroup.com/api/basic/text#textoverflow
@@ -69,7 +67,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       tooltip: {
         enable: true,
         content: (cell) => {
-          const text = cell.getOriginalText();
+          const text = cell?.getOriginalText();
           const span = document.createElement('span');
 
           span.innerHTML = text;
@@ -91,19 +89,13 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         },
       },
       style: {
-        seriesNumberCell: cellTextWordWrapStyle,
         colCell: cellTextWordWrapStyle,
-        cornerCell: cellTextWordWrapStyle,
-        rowCell: {
-          ...cellTextWordWrapStyle,
-          height: 50,
-        },
-        // 数值不建议换行, 容易产生歧义
-        // dataCell: cellTheme,
+        // 如果是数值不建议换行, 容易产生歧义
+        dataCell: cellTextWordWrapStyle,
       },
     };
 
-    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     await s2.render();
   });

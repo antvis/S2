@@ -1,0 +1,26 @@
+{
+  "title": {
+    "zh": "透视表",
+    "en": "Pivot"
+  },
+  "demos": [
+    {
+      "filename": "pivot.ts",
+      "title": {
+        "zh": "透视表 - 文本自动换行",
+        "en": "Multi Line Text"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*uMV6QYL-TcwAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "table.ts",
+      "title": {
+        "zh": "明细表 - 文本自动换行",
+        "en": "Multi Line Text"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*psedTKQWiWUAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    }
+  ]
+}
