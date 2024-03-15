@@ -618,6 +618,8 @@ export class RootInteraction {
       this.scrollToCell(cell);
     }
 
+    // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
+    this.spreadsheet.facet.centerFrame?.toFront();
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
 
     return true;

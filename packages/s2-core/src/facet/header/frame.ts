@@ -1,4 +1,4 @@
-import { Group, Rect } from '@antv/g';
+import { Group, Rect, Line } from '@antv/g';
 import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
@@ -7,6 +7,10 @@ import { floor } from '../../utils/math';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;
+
+  public cornerRightBorder: Line;
+
+  public cornerBottomBorder: Line;
 
   constructor(cfg: FrameConfig) {
     super();
@@ -95,7 +99,7 @@ export class Frame extends Group {
       const y2 =
         position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
 
-      renderLine(this, {
+      this.cornerRightBorder = renderLine(this, {
         x1: x,
         y1: position.y,
         x2: x,
@@ -166,7 +170,7 @@ export class Frame extends Group {
       (spreadsheet.isFrozenRowHeader() ? 0 : scrollX);
     const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
-    renderLine(this, {
+    this.cornerBottomBorder = renderLine(this, {
       x1,
       y1: y,
       x2,
