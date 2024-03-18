@@ -843,4 +843,56 @@ describe('Interaction Row Column Resize Tests', () => {
 
     expect(s2.options.style!.rowCell).toMatchSnapshot();
   });
+
+  test('should get multiple vertical filed resize style by field for selected resize type', () => {
+    // 模拟多选
+    jest
+      .spyOn(s2.interaction, 'getActiveRowCells')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-row-cell-1').mockCell,
+        createMockCellInfo('test-row-cell-2').mockCell,
+      ]);
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
+  });
+
+  test('should get multiple horizontal filed resize style by field for selected resize type', () => {
+    // 模拟多选
+    jest
+      .spyOn(s2.interaction, 'getActiveColCells')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-col-cell-1').mockCell,
+        createMockCellInfo('test-col-cell-2').mockCell,
+      ]);
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
+  });
 });
