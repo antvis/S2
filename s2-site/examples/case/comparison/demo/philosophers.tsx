@@ -178,16 +178,14 @@ fetch(
 
     const App = () => {
       const s2Ref = React.useRef();
-      const onDataCellMouseUp = (value) => {
-        const viewMeta = value?.viewMeta;
-
+      const onDataCellClick = ({ viewMeta, event }) => {
         if (!viewMeta) {
           return;
         }
 
         const position = {
-          x: value.event.clientX,
-          y: value.event.clientY,
+          x: event.clientX,
+          y: event.clientY,
         };
 
         s2Ref.current?.showTooltip({
@@ -206,7 +204,7 @@ fetch(
             title: '哲学家的观点',
             extra: <PaletteLegend />,
           }}
-          onDataCellMouseUp={onDataCellMouseUp}
+          onDataCellClick={onDataCellClick}
         />
       );
     };
