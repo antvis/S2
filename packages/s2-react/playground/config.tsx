@@ -384,15 +384,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    rowCell: {
-      collapseAll: true,
-      // collapseFields: {
-      //   'root[&]浙江省': true,
-      //   'root[&]四川省': true,
-      // },
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
