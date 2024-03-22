@@ -315,7 +315,7 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
   height: 600,
-  hierarchyType: 'grid',
+  hierarchyType: 'tree',
   seriesNumber: {
     enable: true,
   },
@@ -384,7 +384,15 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {},
+  style: {
+    rowCell: {
+      collapseAll: true,
+      // collapseFields: {
+      //   'root[&]浙江省': true,
+      //   'root[&]四川省': true,
+      // },
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {
