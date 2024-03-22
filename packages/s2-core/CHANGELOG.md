@@ -1,3 +1,13 @@
+# [@antv/s2-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.15...@antv/s2-v2.0.0-next.16) (2024-03-22)
+
+
+### Bug Fixes
+
+* **g:** 修复表格初次渲染时部分 icon 不展示 close [#2014](https://github.com/antvis/S2/issues/2014) ([#2606](https://github.com/antvis/S2/issues/2606)) ([3f9a176](https://github.com/antvis/S2/commit/3f9a176f75c46fa58e50d0fd70a652242f7b6df3))
+* **interaction:** 修复在未选中状态下调整宽高, 错误的修改了相邻单元格的样式 ([#2605](https://github.com/antvis/S2/issues/2605)) ([8019788](https://github.com/antvis/S2/commit/8019788bf5b44414a2006f34c89f68fcb37207f0))
+* 修复组件层事件回调无法获取单元格信息 closes [#2615](https://github.com/antvis/S2/issues/2615) [#2610](https://github.com/antvis/S2/issues/2610) ([#2616](https://github.com/antvis/S2/issues/2616)) ([3682d50](https://github.com/antvis/S2/commit/3682d501a71dbff3c91d7be86c852546f3e8f271))
+* 修复角头和行头折叠展开 icon 的状态未同步以及展开异常的问题 close [#2607](https://github.com/antvis/S2/issues/2607) ([#2620](https://github.com/antvis/S2/issues/2620)) ([99829a6](https://github.com/antvis/S2/commit/99829a667c69394c0554ece841d6f6eb5c3f9b9e))
+
 # [@antv/s2-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.14...@antv/s2-v2.0.0-next.15) (2024-03-15)
 
 
