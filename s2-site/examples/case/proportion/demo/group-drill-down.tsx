@@ -74,7 +74,7 @@ fetch(
         );
       };
 
-      const dataCellTooltip = (viewMeta) => {
+      const DataCellTooltip = (viewMeta) => {
         const { spreadsheet, fieldValue } = viewMeta;
 
         return (
@@ -133,7 +133,7 @@ fetch(
 
         s2Ref.current?.showTooltip({
           position,
-          content: dataCellTooltip(viewMeta),
+          content: <DataCellTooltip {...viewMeta} />,
         });
       };
 
