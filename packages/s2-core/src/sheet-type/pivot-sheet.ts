@@ -114,7 +114,6 @@ export class PivotSheet extends SpreadSheet {
     this.setOptions({
       style: {
         rowCell: {
-          collapseAll: false,
           collapseFields,
         },
       },

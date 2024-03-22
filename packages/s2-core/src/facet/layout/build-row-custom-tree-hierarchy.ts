@@ -40,7 +40,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
 
     const defaultCollapsed = collapsed ?? false;
     const isDefaultCollapsed =
-      collapseFields?.[nodeId] || collapseFields?.[field];
+      collapseFields?.[nodeId] ?? collapseFields?.[field];
     const isCollapsed = isDefaultCollapsed ?? (collapseAll || defaultCollapsed);
 
     // TODO: 平铺模式支持 折叠/展开

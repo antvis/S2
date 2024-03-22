@@ -315,7 +315,7 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
   height: 600,
-  hierarchyType: 'grid',
+  hierarchyType: 'tree',
   seriesNumber: {
     enable: true,
   },

@@ -41,6 +41,11 @@ export const CustomTreeOptions: SheetComponentOptions = {
       withFormat: true,
     },
   },
+  style: {
+    rowCell: {
+      collapseAll: true,
+    },
+  },
   // cornerText: '指标',
 };
 

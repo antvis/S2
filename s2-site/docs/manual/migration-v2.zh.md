@@ -357,7 +357,11 @@ const s2DataConfig = {
 
 具体请查看 [自定义行列头分组](/manual/advanced/custom/custom-header) 相关文档。
 
-#### 行列冻结配置调整
+#### 树状结构 icon 折叠展开状态同步
+
+现在行头节点的 icon 展开/收起，会同步更新角头 icon（全部展开/收起）的状态。
+
+#### 行列冻结配置
 
 透视表和明细表的行列冻结配置统一收拢到 `frozen`.
 
