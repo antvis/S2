@@ -123,7 +123,7 @@ const s2Options = {
 
 +   rowCell: {},
 +   colCell: {},
-+   cellCell: {},
++   dataCell: {},
   }
 }
 ```
@@ -133,7 +133,7 @@ const s2Options = {
 
 ```diff
 export interface ColCfg {
-  width?: CellCustomWidth;
+  width?: number | (cell) => number;
 - height?: number;
 + height?: number | (cell) => number;
 - widthByFieldValue?: Record<string, number>;
