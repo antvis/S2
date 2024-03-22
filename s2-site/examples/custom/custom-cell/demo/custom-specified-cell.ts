@@ -15,6 +15,13 @@ import {
  * 明细表需要继承 TableDataCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends DataCell {
+  getStyle(name) {
+    // 重写单元格样式
+    const defaultCellStyle = super.getStyle(name);
+
+    return defaultCellStyle;
+  }
+
   getBackgroundColor() {
     // 特定数据
     if (this.meta.fieldValue >= 6000) {
@@ -76,6 +83,13 @@ class CustomDataCell extends DataCell {
  * 明细表需要继承 TableColCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends ColCell {
+  getStyle(name) {
+    // 重写单元格样式
+    const defaultCellStyle = super.getStyle(name);
+
+    return defaultCellStyle;
+  }
+
   getTextStyle() {
     const defaultTextStyle = super.getTextStyle();
 
@@ -117,6 +131,13 @@ class CustomColCell extends ColCell {
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
+  getStyle(name) {
+    // 重写单元格样式
+    const defaultCellStyle = super.getStyle(name);
+
+    return defaultCellStyle;
+  }
+
   getBackgroundColor() {
     // 特定数据
     if (this.meta.field === 'province') {
@@ -150,6 +171,13 @@ class CustomCornerCell extends CornerCell {
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomRowCell extends RowCell {
+  getStyle(name) {
+    // 重写单元格样式
+    const defaultCellStyle = super.getStyle(name);
+
+    return defaultCellStyle;
+  }
+
   getBackgroundColor() {
     // 特定数据
     if (this.meta.field === 'province') {

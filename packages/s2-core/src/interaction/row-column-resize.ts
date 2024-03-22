@@ -292,10 +292,18 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     const resizeInfo = this.getResizeInfo();
 
+    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
+    const activeCells = isVertical
+      ? interaction.getActiveRowCells()
+      : interaction.getActiveColCells();
+    const isMultiSelected =
+      interaction.isSelectedState() && activeCells.length > 1;
+
     // 非多选: 正常设置即可
     if (
       !this.isEffectRowOf(ResizeType.SELECTED) ||
-      !this.isEffectColOf(ResizeType.SELECTED)
+      !this.isEffectColOf(ResizeType.SELECTED) ||
+      !isMultiSelected
     ) {
       return {
         [this.getResizeCellField(resizeInfo)]: resizeValue,
@@ -303,11 +311,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     // 多选: 将当前选中的行列单元格对应的叶子节点统一设置宽高
-    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
-    const activeCells = isVertical
-      ? interaction.getActiveRowCells()
-      : interaction.getActiveColCells();
-
     return activeCells.reduce<Record<string, number>>((result, cell) => {
       // 热区是绘制在叶子节点的, 如果选中的父节点, 那么叶子节点也算是多选, 需要给每一个叶子节点批量设置
       Node.getAllLeaveNodes(cell.getMeta() as Node).forEach((node) => {
