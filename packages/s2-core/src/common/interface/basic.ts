@@ -453,21 +453,6 @@ export interface ViewMeta {
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
-export interface OffsetConfig {
-  rowHeaderOffsetX?: {
-    value: number | undefined;
-    animate?: boolean;
-  };
-  offsetX?: {
-    value: number | undefined;
-    animate?: boolean;
-  };
-  offsetY?: {
-    value: number | undefined;
-    animate?: boolean;
-  };
-}
-
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   isLinkFieldText?: boolean;
   cellData?: T;

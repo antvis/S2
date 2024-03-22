@@ -456,11 +456,15 @@ s2.interaction.removeIntercepts([InterceptType.HOVER, InterceptType.CLICK]);
 
 ## 调用 API
 
-`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction) 和 [示例](/examples/analysis/get-data/#get-cell-data)
+`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/docs/api/basic-class/interaction) 和 [示例](/examples/interaction/basic/#event)
 
 ```ts
 const s2 = new PivotSheet()
+
 s2.interaction.selectAll()
+s2.interaction.selectCell()
+s2.interaction.highlightCell()
+s2.interaction.changeCell()
 ```
 
 [查看示例](/examples/interaction/basic/#event)

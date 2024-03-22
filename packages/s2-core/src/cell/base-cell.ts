@@ -565,7 +565,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
             (this[shapeName] as DisplayObject);
 
         // 兼容多列文本 (MultiData)
-        const shapes = !isArray(shapeGroup) ? [shapeGroup] : shapeGroup;
+        const shapes = (
+          !isArray(shapeGroup) ? [shapeGroup] : shapeGroup
+        ) as DisplayObject[];
 
         // stateShape 默认 visible 为 false
         if (isStateShape) {

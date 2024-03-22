@@ -106,9 +106,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const { multiSelection: enableMultiSelection } = options.interaction!;
     // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
     const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
-    const success = interaction.selectHeaderCell({
+
+    const success = interaction.changeCell({
       cell,
       isMultiSelection,
+      // 能主动触发点击一定是在可视范围内, 无需额外触发滚动
+      scrollIntoView: false,
     });
 
     if (success) {

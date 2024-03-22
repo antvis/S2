@@ -34,7 +34,7 @@ tag: New
 
 目前 `next` 版本会持续内测一段时间，<https://s2.antv.antgroup.com> 会作为相应的文档网站。
 
-在此期间，会持续根据用户的反馈进行 Bug fix 和代码调整，在 `@antv/s2@next` 版本稳定后，会发布正式版本，`latest` 将默认指向 `2.x` 版本，去除 `next` 标识。
+在此期间，会持续根据用户的反馈进行 Bug fix 和代码调整，在 `@antv/s2@next` 版本稳定后，会发布正式版本（时间待定），`latest` 将默认指向 `2.x` 版本，去除 `next` 标识。
 
 ## 🗓️ v1 版本维护期
 
@@ -404,6 +404,32 @@ const s2Options = {
 }
 ```
 
+#### 字段标记
+
+文本字段标记能力和 [文本主题配置](/api/general/s2-theme#texttheme) 保持一致，支持字体大小，透明度，对齐方式等配置。
+
+```diff
+const s2Options = {
+  conditions: {
+    text: [
+      {
+        field: 'city',
+        mapping() {
+          return {
+            fill: '#DB6BCF',
++           fontSize: 16,
++           opacity: 0.8,
++           textAlign: 'right',
+          };
+        },
+      },
+    ]
+  },
+}
+```
+
+具体请查看 [字段标记](/manual/basic/conditions) 相关文档和 [文本标记示例](/examples/analysis/conditions#text)。
+
 #### 序号配置变更
 
 序号相关配置统一收拢在 `seriesNumber`.
@@ -619,6 +645,31 @@ s2.interaction.getState()
 - stateName: "selected"
 + stateName: "dataCellBrushSelected"
 ```
+
+#### 选中单元格 API 调整
+
+`selectHeaderCell` 变更为 `changeCell`, 支持所有类型单元格的选中。同时支持 `选中 (selectCell)` 和 `高亮 (highlightCell)` 等语法糖。
+
+```diff
+- s2.interaction.selectHeaderCell(selectHeaderCellInfo: SelectHeaderCellInfo)
++ s2.interaction.changeCell(options: ChangeCellOptions)
+
++ s2.interaction.selectCell(cell: S2CellType)
++ s2.interaction.highlightCell(cell: S2CellType)
+```
+
+具体请查看 [高亮/选中单元格](/manual/advanced/interaction/highlight-and-select-cell) 相关文档。
+
+#### 滚动 API 调整
+
+滚动 API `s2.updateScrollOffset` 移除，统一至 `s2.interaction` 命名空间下。同时支持 `scrollToCell` 和 `scrollToTop` 等语法糖。
+
+```diff
+- s2.updateScrollOffset(offsetConfig: ScrollOffsetConfig)
++ s2.interaction.scrollTo(offsetConfig: ScrollOffsetConfig)
+```
+
+具体请查看 [滚动](/manual/advanced/interaction/scroll) 相关文档。
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 

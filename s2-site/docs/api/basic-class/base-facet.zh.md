@@ -41,9 +41,9 @@ s2.facet.getRealWidth()
 | getSeriesNumberWidth | 获取序号宽度 | () => number |
 | getContentHeight | 获取当前渲染的区域高度 | () => number |
 | getPaginationScrollY | x | () => number |
-| updateScrollOffset | 滚动 | (offsetConfig: [OffsetConfig](#offsetconfig)) => void |
-| scrollWithAnimation | 滚动 （带缓动动画） | (offsetConfig: [OffsetConfig](#offsetconfig), duration?: number, callback?: () => void) => void |
-| scrollImmediately | 滚动 （无动画） | (offsetConfig: [OffsetConfig](#offsetconfig)) => void |
+| updateScrollOffset | 滚动 | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |
+| scrollWithAnimation | 滚动 （带缓动动画） | (offsetConfig: [ScrollOffsetConfig](#offsetconfig), duration?: number, callback?: () => void) => void |
+| scrollImmediately | 滚动 （无动画） | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |
 | destroy | 卸载 | () => void |
 | getScrollOffset | 获取当前滚动偏移 | () => [ScrollOffset](#scrolloffset) |
 | setScrollOffset | 设置当前滚动偏移 | (scrollOffset: [ScrollOffset](#scrolloffset)) => void |
@@ -190,10 +190,10 @@ export interface ViewCellHeights {
 }
 ```
 
-### OffsetConfig
+### ScrollOffsetConfig
 
 ```ts
-export interface OffsetConfig {
+export interface ScrollOffsetConfig {
   rowHeaderOffsetX?: {
     value: number | undefined;
     animate?: boolean;

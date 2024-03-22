@@ -388,19 +388,19 @@ export const removeUnmergedCellsInfo = (
 
 /**
  * unmerge MergedCell
- * @param removedCells
+ * @param removedCell
  * @param sheet
  */
-export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
-  if (!removedCells || removedCells.cellType !== CellType.MERGED_CELL) {
+export const unmergeCell = (sheet: SpreadSheet, removedCell: MergedCell) => {
+  if (!removedCell || removedCell.cellType !== CellType.MERGED_CELL) {
     // eslint-disable-next-line no-console
-    console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
+    console.error(`unmergeCell: the ${removedCell} is not a MergedCell`);
 
     return;
   }
 
   const newMergedCellsInfo = removeUnmergedCellsInfo(
-    removedCells,
+    removedCell,
     sheet.options?.mergedCellsInfo || [],
   );
 
@@ -408,7 +408,7 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
     sheet.setOptions({
       mergedCellsInfo: newMergedCellsInfo,
     });
-    removedCells.remove();
+    removedCell.remove();
   }
 };
 

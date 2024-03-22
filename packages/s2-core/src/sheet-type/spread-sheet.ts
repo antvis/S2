@@ -39,7 +39,6 @@ import type {
   Fields,
   InteractionOptions,
   InternalFullyTheme,
-  OffsetConfig,
   Pagination,
   S2CellType,
   S2DataConfig,
@@ -63,6 +62,7 @@ import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
+import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
@@ -76,7 +76,6 @@ import {
 } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { getTheme } from '../theme';
 
 /**
  * 关闭 CSS 解析的开关，可以提升首屏性能,
@@ -624,34 +623,6 @@ export abstract class SpreadSheet extends EE {
 
   public getLayoutWidthType(): LayoutWidthType {
     return this.options.style?.layoutWidthType!;
-  }
-
-  /**
-   * Update scroll's offset, the value can be undefined,
-   * indicate not update current value
-   * @param offsetConfig
-   * default offsetX(horizontal scroll need animation)
-   * but offsetY(vertical scroll don't need animation)
-   */
-  public updateScrollOffset(offsetConfig: OffsetConfig) {
-    const config: OffsetConfig = {
-      offsetX: {
-        value: undefined,
-        animate: false,
-      },
-      offsetY: {
-        value: undefined,
-        animate: false,
-      },
-      rowHeaderOffsetX: {
-        value: undefined,
-        animate: false,
-      },
-    };
-
-    this.facet.updateScrollOffset(
-      customMerge(config, offsetConfig) as OffsetConfig,
-    );
   }
 
   protected isCellType(cell?: CellEventTarget) {

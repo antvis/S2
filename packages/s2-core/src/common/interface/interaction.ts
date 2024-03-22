@@ -22,8 +22,8 @@ import type {
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
-import type { Transformer } from './export';
 import type { ViewMeta } from './basic';
+import type { Transformer } from './export';
 import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
@@ -85,9 +85,26 @@ export interface InteractionStateInfo {
   onUpdateCells?: OnUpdateCells;
 }
 
-export interface SelectHeaderCellInfo {
+export interface ChangeCellOptions {
+  /**
+   * 目标单元格
+   */
   cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
   isMultiSelection?: boolean;
+
+  /**
+   * 状态名 (默认 `selected`)
+   */
+  stateName?: InteractionStateName;
+
+  /**
+   * 如果单元格不在可视范围, 是否自动滚动
+   */
+  scrollIntoView?: boolean;
 }
 
 export type InteractionConstructor = new (
@@ -302,4 +319,19 @@ export interface InteractionCellHighlightOptions {
   currentRow?: boolean;
   /** 高亮选中单元格所在列 */
   currentCol?: boolean;
+}
+
+export interface ScrollOffsetConfig {
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetY?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
 }

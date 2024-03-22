@@ -118,7 +118,7 @@ describe('TableSheet Custom Tests', () => {
     const colNode = s2.facet.getColNodes()[0];
 
     // 选中地区
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: colNode.belongsCell!,
     });
 
@@ -131,7 +131,7 @@ describe('TableSheet Custom Tests', () => {
     ]);
 
     // 取消选中 a - 1
-    s2.interaction.selectHeaderCell({
+    s2.interaction.changeCell({
       cell: colNode.belongsCell!,
     });
     expect(s2.interaction.getActiveCells()).toBeEmpty();

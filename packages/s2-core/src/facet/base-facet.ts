@@ -66,7 +66,7 @@ import type {
   GridInfo,
   HiddenColumnsInfo,
   LayoutResult,
-  OffsetConfig,
+  ScrollOffsetConfig,
   S2CellType,
   ScrollChangeParams,
   ViewMeta,
@@ -542,7 +542,10 @@ export abstract class BaseFacet {
     return rowsHierarchy.height + colsHierarchy.height;
   }
 
-  public updateScrollOffset(offsetConfig: OffsetConfig) {
+  /**
+   * @alias s2.interaction.scrollTo(offsetConfig)
+   */
+  public updateScrollOffset(offsetConfig: ScrollOffsetConfig) {
     if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
       if (offsetConfig.rowHeaderOffsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
@@ -722,7 +725,7 @@ export abstract class BaseFacet {
   }
 
   scrollWithAnimation = (
-    offsetConfig: OffsetConfig = {},
+    offsetConfig: ScrollOffsetConfig = {},
     duration = 200,
     cb?: () => void,
   ) => {
@@ -774,7 +777,7 @@ export abstract class BaseFacet {
     });
   };
 
-  scrollImmediately = (offsetConfig: OffsetConfig = {}) => {
+  scrollImmediately = (offsetConfig: ScrollOffsetConfig = {}) => {
     const { scrollX, scrollY, rowHeaderScrollX } = this.getAdjustedScrollOffset(
       {
         scrollX: offsetConfig.offsetX?.value || 0,

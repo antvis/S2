@@ -1,19 +1,20 @@
 ---
 title: 隐藏列头
 order: 2
+tag: Updated
 ---
 
-当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头
+当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头。
 
 <Playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>
 
 ## 1. 手动隐藏 - 通过点击
 
-点击列头在弹出的 `tooltip` 里，点击 `隐藏` 按钮即可
+在 `@antv/s2` 中，可以通过 [自定义 tooltip 内容](/examples/interaction/advanced/#pivot-hide-columns) 的方式添加 `隐藏按钮`, `@antv/s2-react` 中已经内置，点击列头 `tooltip` 内的 `隐藏` 按钮即可。
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview" />
 
-关闭交互式隐藏
+关闭交互式隐藏：
 
 ```ts
 const s2Options = {
@@ -27,11 +28,11 @@ const s2Options = {
 
 ## 2. 自动隐藏 - 通过配置
 
-可配置默认隐藏的列头，透视表和明细表
+可配置默认隐藏的列头，支持透视表和明细表。
 
 ### 1. 明细表
 
-明细表不存在多列头，指定 `fields` 的 `columns` 里面任意字段即可
+如果是单列头的明细表，指定 `s2DataConfig.fields.columns` 的任意字段即可。
 
 ```ts
 const s2DataConfig = {
@@ -49,17 +50,51 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/GHizMg2ok/f8d667c9-910a-40da-a6e3-74c238e7afa8.png)
 
-### 2. 透视表
-
-透视表存在多列头，需要指定列头对应的 [节点 id](/docs/api/basic-class/node)
-
-<details>
-  <summary>如何获取列头 Id?</summary>
+对于 [自定义列头](/manual/advanced/custom/custom-header#21-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) 的明细表，指定 `field` 字段。
 
 ```ts
-// /docs/api/basic-class/spreadsheet
+const s2DataConfig = {
+  fields: {
+    columns:  [
+      {
+        field: 'a-1',
+        title: '自定义节点 a-1',
+        children: [
+          {
+            field: 'a-1-1',
+            title: '自定义节点 a-1-1',
+          },
+        ],
+      },
+      {
+        field: 'a-2',
+        title: '自定义节点 a-2',
+        children: [],
+      }
+    ]
+  }
+};
+
+const s2Options = {
+  interaction: {
+    hiddenColumnFields: ['a-1-1']
+  }
+}
+```
+
+### 2. 透视表
+
+透视表存在多列头，需要指定列头对应的 [节点 id](/docs/api/basic-class/node), 如果是 [自定义列头](/manual/advanced/custom/custom-header#12-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E5%A4%B4) , 那么和明细表相同，指定 `field` 字段即可，这里不再赘述。
+
+<details>
+  <summary>如何获取列头 ID?</summary>
+
+```ts | pure
 const s2 = new PivotSheet()
-console.log(s2.facet.getColCellNodes())
+
+await s2.render()
+
+console.log(s2.facet.getColNodes())
 ```
 
 </details>

@@ -227,9 +227,10 @@ fetch(
       width: 600,
       height: 480,
       seriesNumber: {
-        enable: true
+        enable: true,
       },
       interaction: {
+        autoResetSheetStyle: false,
         selectedCellsSpotlight: true,
         hoverHighlight: true,
         copy: { enable: true },

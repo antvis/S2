@@ -10,7 +10,8 @@
         "zh": "文本标记",
         "en": "Text condition"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*50NlSIHAly0AAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*50NlSIHAly0AAAAAAAAAAAAAARQnAQ",
+      "new": true
     },
     {
       "filename": "background.ts",
@@ -42,7 +43,8 @@
         "zh": "图标标记混合自定义 Action Icons",
         "en": "Icon condition with action icons"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wClMR4kLBaoAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*wClMR4kLBaoAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "multi-background.ts",
@@ -92,7 +94,8 @@
         "zh": "区分行列角头和数据单元格",
         "en": "Distinguish different cell"
       },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pxw2S5JFzUcAAAAAAAAAAAAADmJ7AQ/original"
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pxw2S5JFzUcAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     },
     {
       "filename": "table-text.ts",
@@ -100,7 +103,8 @@
         "zh": "明细表文本标记",
         "en": "Table text condition"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jdTsPFc09l/4795d9f3-f55b-4575-99de-829e0e3ab3db.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jdTsPFc09l/4795d9f3-f55b-4575-99de-829e0e3ab3db.png",
+      "new": true
     }
   ]
 }

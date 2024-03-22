@@ -41,12 +41,12 @@ s2.interaction.reset()
 | getRowColActiveCells                | Get the active cell of row header and column header                                                                       | `() => RowCell[] \| ColCell[]`                                                    |
 | getAllCells                         | Get all cells in the visible area                                                                                         | () => [S2CellType](#s2celltype) \[]                                               |
 | selectAll                           | select all cells                                                                                                          | `() => void`                                                                      |
-| selectHeaderCell                    | Select the specified row and column header cell                                                                           | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo) ) => boolean |
+| changeCell                    | Select the specified row and column header cell                                                                           | (changeCellInfo: [ChangeCellOptions](#selectheadercellinfo) ) => boolean |
 | getCellChildrenNodes                | Get all child nodes of the current cell                                                                                   | (cell: [S2CellType](#s2celltype) ) => [Node](\(/docs/api/basic-class/node\)) \[]  |
 | hideColumns                         | Hidden column (when forceRender is `false` , if the hidden column is empty, the table update will no longer be triggered) | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void`            |
 | mergeCells                          | Merge Cells                                                                                                               | (cellsInfo?: [MergedCellInfo](#mergedcellinfo) \[], hideData?: boolean) => void   |
 | unmergeCells                        | unmerge cells                                                                                                             | `(removedCells: MergedCell[]) => void`                                            |
-| updatePanelGroupAllDataCells        | update all value cells                                                                                                    | `() => void`                                                                      |
+| updateAllDataCells        | update all value cells                                                                                                    | `() => void`                                                                      |
 | updateCells                         | Update the specified cell                                                                                                 | (cells: [S2CellType](#s2celltype) \[]) => void                                    |
 | addIntercepts                       | Added interactive interception                                                                                            | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                     |
 | hasIntercepts                       | Whether there is an interaction specified for interception                                                                | (interceptTypes: [InterceptType](#intercepttype) \[]) => boolean                  |
@@ -105,10 +105,10 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | BaseCell<T>;
 ```
 
-### SelectHeaderCellInfo
+### ChangeCellOptions
 
 ```ts
-interface SelectHeaderCellInfo {
+interface ChangeCellOptions {
   cell: S2CellType<ViewMeta>; // 目标单元格
   isMultiSelection?: boolean; // 是否是多选
 }

@@ -9,14 +9,14 @@ order: 2
 
 | 参数       | 说明           | 类型                                          | 默认值 | 必选 |
 | ---------- | -------------- | --------------------------------------------- | ------ | ---- |
-| text       | 文本字段标记   | [TextCondition](#textcondition)[]             | -      |      |
-| background | 背景字段标记   | [BackgroundCondition](#backgroundcondition)[] | -      |      |
-| interval   | 柱状图字段标记 | [IntervalCondition](#intervalcondition)[]     | -      |      |
-| icon       | 图标字段标记   | [IconCondition](#iconcondition)[]             | -      |      |
+| text       | 文本字段标记 ([查看示例](/examples/analysis/conditions/#text))   | [TextCondition](#textcondition)[]             | -      |      |
+| background | 背景字段标记 ([查看示例](/examples/analysis/conditions/#background))  | [BackgroundCondition](#backgroundcondition)[] | -      |      |
+| interval   | 柱状图字段标记 ([查看示例](/examples/analysis/conditions/#interval)) | [IntervalCondition](#intervalcondition)[]     | -      |      |
+| icon       | 图标字段标记 ([查看示例](/examples/analysis/conditions/#icon))  | [IconCondition](#iconcondition)[]             | -      |      |
 
 ### Condition
 
-功能描述： 配置条件格式。TextCondition，BackgroundCondition，IntervalCondition，IconCondition 具继承于 Condition。
+功能描述： 配置条件格式。TextCondition，BackgroundCondition，IntervalCondition，IconCondition 均继承于 Condition。
 
 | 参数    | 说明                                           | 类型                                  | 默认值 | 必选 |
 | ------- | ---------------------------------------------- | ------------------------------------- | ------ | ---- |
@@ -45,17 +45,25 @@ const options = {
     text: [
       {
         field: "province",
-        mapping: () => ({
-          fill: "rgba(0, 0, 0, .65)",
-        }),
+        mapping: (fieldValue, data, cell) => {
+          return {
+            fill: "green",
+            fontSize: 16,
+            opacity: 0.2,
+            textAlign: 'right'
+          };
+        },
       },
     ],
     interval: [
       {
         field: "sub_type",
-        mapping: () => {
+        mapping: (fieldValue, data, cell) => {
           return {
             fill: "green",
+            isCompare: true,
+            maxValue: 8000,
+            minValue: 300,
           };
         },
       },
@@ -63,9 +71,24 @@ const options = {
     background: [
       {
         field: "count",
-        mapping: () => ({
-          fill: "#ff00ff",
-        }),
+        mapping: (fieldValue, data, cell) => {
+          return {
+            fill: "green",
+            intelligentReverseTextColor: true,
+          };
+        },
+      },
+    ],
+    icon: [
+      {
+        field: "number",
+        position: 'left',
+        mapping: (fieldValue, data, cell) => {
+          return {
+            icon: "InfoCircle",
+            fill: "green",
+          };
+        },
       },
     ],
   },
@@ -73,9 +96,47 @@ const options = {
 
 ```
 
+### TextCondition
+
+同 [Condition](#condition) 一致，`ConditionMappingResult` 配置和 [文本主题配置一致（部分生效）](/api/general/s2-theme#texttheme), 也就意味着可以控制不同文本的颜色，透明度，对齐方式，字体等配置。
+
+```ts
+export type TextConditionMappingResult = TextTheme;
+```
+
+[查看示例](/examples/analysis/conditions/#text)
+
+### BackgroundCondition
+
+同 [Condition](#condition) 一致，`ConditionMappingResult` 配置为：
+
+```ts
+export type BackgroundConditionMappingResult = {
+  fill: string;
+  intelligentReverseTextColor?: boolean;
+};
+```
+
+[查看示例](/examples/analysis/conditions/#background)
+
+### IntervalCondition
+
+同 [Condition](#condition) 一致，`ConditionMappingResult` 配置为：
+
+```ts
+export type IntervalConditionMappingResult = {
+  fill?: string;
+  isCompare?: boolean;
+  minValue?: number;
+  maxValue?: number;
+}
+```
+
+[查看示例](/examples/analysis/conditions/#interval)
+
 ### IconCondition
 
-功能描述： 配置图标 (icon) 条件格式，和其他 Condition 的唯一区别在于多了 position 参数用于自定义 icon 相对于文本的位置。查看 [文档](/manual/basic/conditions) 和 [示例](/examples/analysis/conditions/#icon)
+功能描述： 配置图标 (icon) 条件格式，和其他 [Condition](#condition) 的唯一区别在于多了 position 参数用于自定义 icon 相对于文本的位置。查看 [文档](/manual/basic/conditions) 和 [示例](/examples/analysis/conditions/#icon)
 
 | 参数     | 说明                  | 类型            | 默认值  | 必选 |
 | -------- | --------------------- | --------------- | ------- | ---- |
@@ -90,7 +151,7 @@ const options = {
       {
         field: "profit",
         position: "left",
-        mapping: () => {
+        mapping: (fieldValue, data, cell) => {
           return {
             icon: "InfoCircle",
             fill: "red",
@@ -101,6 +162,15 @@ const options = {
   },
 };
 
+```
+
+`ConditionMappingResult` 配置为：
+
+```ts
+export type IconConditionMappingResult = {
+  fill: string;
+  icon: string;
+};
 ```
 
 <embed src="@/docs/common/icon.zh.md"></embed>​

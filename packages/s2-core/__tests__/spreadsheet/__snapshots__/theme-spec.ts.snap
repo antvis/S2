@@ -107,6 +107,34 @@ Object {
       "horizontalBorderColor": "#5286FA",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#87B5FF",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#2C60D4",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#000000",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#F0F7FF",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#2C60D4",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,
@@ -635,6 +663,34 @@ Object {
       "horizontalBorderColor": "#0647b1",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#4b91ff",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#213f94",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#dcdcdc",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#213f94",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#213f94",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,
@@ -1163,6 +1219,34 @@ Object {
       "horizontalBorderColor": "#CCDBFC",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#87B5FF",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#000000",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#F0F7FF",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,
@@ -1691,6 +1775,34 @@ Object {
       "horizontalBorderColor": "#E7E9ED",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#87B5FF",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#E7E9ED",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#000000",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#F0F7FF",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#E7E9ED",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,
@@ -2219,6 +2331,34 @@ Object {
       "horizontalBorderColor": "#CCDBFC",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#87B5FF",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#000000",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#F0F7FF",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,
@@ -2747,6 +2887,34 @@ Object {
       "horizontalBorderColor": "#CCDBFC",
       "horizontalBorderColorOpacity": 1,
       "horizontalBorderWidth": 1,
+      "interactionState": Object {
+        "highlight": Object {
+          "backgroundColor": "#87B5FF",
+          "backgroundOpacity": 1,
+        },
+        "hover": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "prepareSelect": Object {
+          "borderColor": "#000000",
+          "borderOpacity": 1,
+          "borderWidth": 1,
+        },
+        "searchResult": Object {
+          "backgroundColor": "#F0F7FF",
+          "backgroundOpacity": 1,
+        },
+        "selected": Object {
+          "backgroundColor": "#CCDBFC",
+          "backgroundOpacity": 0.6,
+        },
+        "unselected": Object {
+          "backgroundOpacity": 0.3,
+          "opacity": 0.3,
+          "textOpacity": 0.3,
+        },
+      },
       "padding": Object {
         "bottom": 4,
         "left": 8,

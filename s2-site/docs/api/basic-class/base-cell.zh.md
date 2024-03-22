@@ -12,8 +12,8 @@ cell.getActualText()
 
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| getMeta | 获取单元格元数据 | () => [ViewMeta](#viewmeta) |
-| setMeta | 设置单元格元数据 | (vieMeta: [Partial<ViewMeta>](#viewmeta)) => void |
+| getMeta | 获取单元格元数据 | () => [`ViewMeta`](#viewmeta) |
+| setMeta | 设置单元格元数据 | (vieMeta: [`Partial<ViewMeta>`](#viewmeta)) => void |
 | getIconStyle | 获取单元格图标样式 | () => [IconTheme](/docs/api/general/S2Theme#icontheme) |
 | getStyle | 获取单元格样式 | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
 | getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [TextAndIconPosition](#textandiconposition) |
@@ -84,10 +84,8 @@ export enum CellType {
 
 ### S2CellType
 
-```ts
-import type { SimpleBBox } from '@antv/g-canvas';
-
-export type S2CellType<T extends SimpleBBox = ViewMeta> =
+```ts | pure
+export type S2CellType =
   | DataCell
   | HeaderCell
   | ColCell
@@ -95,5 +93,5 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | MergedCell
   | SeriesNumberCell
-  | BaseCell<T>;
+  | BaseCell;
 ```

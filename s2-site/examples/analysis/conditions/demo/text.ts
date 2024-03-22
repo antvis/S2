@@ -17,18 +17,41 @@ fetch(
         text: [
           // 行头
           {
+            // 支持正则: /^city+$/,
             field: 'city',
-            mapping() {
+            mapping(fieldValue, data, cell) {
+              const meta = cell.getMeta();
+
+              // 根据单元格信息动态标记
+              if (meta.rowIndex === 2) {
+                return {
+                  textAlign: 'left',
+                };
+              }
+
+              // 根据维值动态标记
+              if (fieldValue === '成都市') {
+                return {
+                  fill: '#327039',
+                  fontSize: 14,
+                  textAlign: 'left',
+                };
+              }
+
               return {
                 // fill 是文本字段标记下唯一必须的字段，用于指定文本颜色
                 fill: '#DB6BCF',
+                // 其他配置同文本主题: https://s2.antv.antgroup.com/api/general/s2-theme#texttheme
+                fontSize: 16,
+                opacity: 0.8,
+                textAlign: 'right',
               };
             },
           },
           // 列头
           {
             field: 'sub_type',
-            mapping() {
+            mapping(fieldValue, data) {
               return {
                 fill: '#025DF4',
               };
@@ -37,8 +60,8 @@ fetch(
           // 单独控制角头
           {
             field: 'type',
-            mapping(field) {
-              if (field === '类别') {
+            mapping(fieldValue, data) {
+              if (fieldValue === '类别') {
                 return {
                   fill: '#327039',
                 };
@@ -48,7 +71,7 @@ fetch(
           // 单独配置指标名
           {
             field: EXTRA_FIELD,
-            mapping() {
+            mapping(fieldValue, data) {
               return {
                 fill: '#5B8FF9',
               };
@@ -57,7 +80,14 @@ fetch(
           // 配置数据单元格
           {
             field: 'number',
-            mapping() {
+            mapping(fieldValue, data) {
+              // 根据单元格数据动态标记
+              if (data.number < 1000) {
+                return {
+                  fill: '#cf2f2fd9',
+                };
+              }
+
               return {
                 fill: '#2498D1',
               };

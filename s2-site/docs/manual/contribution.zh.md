@@ -87,6 +87,24 @@ S2 基于 `AntV/G` 渲染引擎绘制，如果想像 DOM 一样调试的话，�
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*E71uSYmhz9cAAAAAAAAAAAAADmJ7AQ/original" />
 
+### 调试文档
+
+如果有涉及到官网文档的改动，可以在本地调试运行，便于更直观的看到改动效果。
+
+- `使用文档` - `s2-site/docs/manual`
+- `API 文档` - `s2-site/docs/api`
+- `图表示例` - `s2-site/examples`
+
+```bash
+# 开发
+pnpm site:start
+
+# 预览
+pnpm site:preview
+```
+
+<img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*OmeaT5vR0a8AAAAAAAAAAAAADmJ7AQ/original" />
+
 ## 📦 版本
 
 <embed src="@/docs/common/packages.zh.md"></embed>
