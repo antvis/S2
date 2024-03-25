@@ -113,22 +113,6 @@ export abstract class SpreadSheet extends EE {
    */
   private destroyed = false;
 
-  // @ts-ignore
-  private untypedOn = this.on;
-
-  // @ts-ignore
-  private untypedEmit = this.emit;
-
-  public on = <K extends keyof EmitterType>(
-    event: K,
-    listener: EmitterType[K],
-  ): this => this.untypedOn(event, listener);
-
-  public emit = <K extends keyof EmitterType>(
-    event: K,
-    ...args: Parameters<EmitterType[K]>
-  ): boolean => this.untypedEmit(event, ...args);
-
   protected abstract bindEvents(): void;
 
   public abstract getDataSet(): BaseDataSet;
@@ -595,6 +579,20 @@ export abstract class SpreadSheet extends EE {
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.resize(width, height);
+  }
+
+  public override on<K extends keyof EmitterType>(
+    event: K,
+    listener: EmitterType[K],
+  ): this {
+    return super.on(event, listener);
+  }
+
+  public override emit<K extends keyof EmitterType>(
+    event: K,
+    ...args: Parameters<EmitterType[K]>
+  ): void {
+    super.emit(event, ...args);
   }
 
   /**
