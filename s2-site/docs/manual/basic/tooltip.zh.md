@@ -76,7 +76,7 @@ const s2Options = {
 
 ### 操作配置项
 
-通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
+通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/api/general/s2-options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项)。
 
 ```ts
 const s2Options = {
