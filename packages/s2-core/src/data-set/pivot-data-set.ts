@@ -398,7 +398,7 @@ export class PivotDataSet extends BaseDataSet {
     const calcAction = calcActionByType[aggregation!];
 
     // 前端计算汇总值
-    if (calcAction || !!calcFunc) {
+    if (calcAction || calcFunc) {
       const data = this.getCellMultiData({
         query,
         queryType: QueryDataType.DetailOnly,
@@ -467,7 +467,7 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  public getTotalStatus = (query: Query) => {
+  public getTotalStatus = (query: Query): TotalStatus => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
       if (isSubTotal) {
@@ -480,9 +480,9 @@ export class PivotDataSet extends BaseDataSet {
     };
 
     return {
-      isRowTotal: isTotals(filterExtraDimension(rows as string[])),
+      isRowGrandTotal: isTotals(filterExtraDimension(rows as string[])),
       isRowSubTotal: isTotals(rows as string[], true),
-      isColTotal: isTotals(filterExtraDimension(columns as string[])),
+      isColGrandTotal: isTotals(filterExtraDimension(columns as string[])),
       isColSubTotal: isTotals(columns as string[], true),
     };
   };

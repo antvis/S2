@@ -40,6 +40,7 @@ import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
+import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { FrozenFacet } from './frozen-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -112,6 +113,7 @@ export class PivotFacet extends FrozenFacet {
     const isTotals =
       row.isTotals || row.isTotalMeasure || col.isTotals || col.isTotalMeasure;
 
+    const totalStatus = getHeaderTotalStatus(row, col);
     const hideMeasure = options.style?.colCell?.hideValue ?? false;
 
     /*
@@ -129,6 +131,7 @@ export class PivotFacet extends FrozenFacet {
       query: dataQuery,
       rowNode: row,
       isTotals,
+      totalStatus,
     });
 
     const valueField = dataQuery[EXTRA_FIELD]!;

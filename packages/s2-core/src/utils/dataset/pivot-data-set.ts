@@ -442,9 +442,9 @@ export function generateExtraFieldMeta(
 
 export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
   return {
-    isRowTotal: row.isGrandTotals!,
+    isRowGrandTotal: row.isGrandTotals!,
     isRowSubTotal: row.isSubTotals!,
-    isColTotal: col.isGrandTotals!,
+    isColGrandTotal: col.isGrandTotals!,
     isColSubTotal: col.isSubTotals!,
   };
 }
