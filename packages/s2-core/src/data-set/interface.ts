@@ -83,9 +83,9 @@ export interface CheckAccordQueryParams {
 }
 
 export interface TotalStatus {
-  isRowTotal: boolean;
+  isRowGrandTotal: boolean;
   isRowSubTotal: boolean;
-  isColTotal: boolean;
+  isColGrandTotal: boolean;
   isColSubTotal: boolean;
 }
 

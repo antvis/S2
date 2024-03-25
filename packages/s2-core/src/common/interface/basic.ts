@@ -115,13 +115,6 @@ export interface Fields extends BaseFields {
   customValueOrder?: number;
 }
 
-export interface TotalsStatus {
-  isRowTotal: boolean;
-  isRowSubTotal: boolean;
-  isColTotal: boolean;
-  isColSubTotal: boolean;
-}
-
 export enum Aggregation {
   SUM = 'SUM',
   MIN = 'MIN',
