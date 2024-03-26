@@ -396,6 +396,10 @@ export class PivotFacet extends FrozenFacet {
   }
 
   private getRowNodeHeight(rowNode: Node): number {
+    if (!rowNode) {
+      return 0;
+    }
+
     const rowCell = new RowCell(rowNode, this.spreadsheet, {
       shallowRender: true,
     });

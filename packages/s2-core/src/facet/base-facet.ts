@@ -313,6 +313,10 @@ export abstract class BaseFacet {
   }
 
   protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+    if (!colNode) {
+      return 0;
+    }
+
     const { colCell: colCellStyle } = this.spreadsheet.options.style!;
     // 优先级: 列头拖拽 > 列头自定义高度 > 多行文本自适应高度 > 通用单元格高度
     const height =
@@ -339,6 +343,10 @@ export abstract class BaseFacet {
     colNode: Node,
     colsHierarchy: Hierarchy,
   ): number {
+    if (!colNode) {
+      return 0;
+    }
+
     const { colCell } = this.spreadsheet.options.style!;
 
     // 当前层级高度最大的单元格
