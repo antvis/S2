@@ -18,6 +18,7 @@ import {
   isEmpty,
   isFunction,
   isNil,
+  isNumber,
   isUndefined,
   last,
   maxBy,
@@ -31,11 +32,13 @@ import {
   MergedCell,
   RowCell,
   SeriesNumberCell,
+  TableColCell,
   TableSeriesNumberCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
+  DEFAULT_STYLE,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -194,11 +197,6 @@ export abstract class BaseFacet {
     colIndex: number,
   ): ViewMeta | null;
 
-  protected abstract getColNodeHeight(
-    colNode: Node,
-    colsHierarchy: Hierarchy,
-  ): number;
-
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
 
@@ -312,6 +310,29 @@ export abstract class BaseFacet {
       colCell?.heightByField?.[node?.id] ??
       colCell?.heightByField?.[node?.field]
     );
+  }
+
+  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+    const { colCell: colCellStyle } = this.spreadsheet.options.style!;
+    // 优先级: 列头拖拽 > 列头自定义高度 > 多行文本自适应高度 > 通用单元格高度
+    const height =
+      this.getColCellDraggedHeight(colNode) ??
+      this.getCellCustomSize(colNode, colCellStyle?.height);
+
+    if (isNumber(height) && height !== DEFAULT_STYLE.colCell?.height) {
+      return height;
+    }
+
+    const CellInstance = this.spreadsheet.isTableMode()
+      ? TableColCell
+      : ColCell;
+
+    const colCell = new CellInstance(colNode, this.spreadsheet, {
+      shallowRender: true,
+    });
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   protected getDefaultColNodeHeight(
