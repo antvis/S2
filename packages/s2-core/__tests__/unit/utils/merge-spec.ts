@@ -1,5 +1,5 @@
 import { LayoutWidthType, type S2DataConfig } from '@/common';
-import { customMerge, setupS2DataConfig, setupS2Options } from '@/utils/merge';
+import { customMerge, setupDataConfig, setupOptions } from '@/utils/merge';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -23,7 +23,7 @@ describe('merge test', () => {
   });
 
   test('should get safety data config', () => {
-    expect(setupS2DataConfig(null)).toMatchInlineSnapshot(`
+    expect(setupDataConfig(null)).toMatchInlineSnapshot(`
       Object {
         "data": Array [],
         "fields": Object {
@@ -41,7 +41,7 @@ describe('merge test', () => {
 
   test('should unique dataConfig fields', () => {
     expect(
-      setupS2DataConfig({
+      setupDataConfig({
         fields: {
           rows: ['province', 'city', 'city'],
           columns: ['type', 'type'],
@@ -82,7 +82,7 @@ describe('merge test', () => {
     };
 
     expect(
-      setupS2DataConfig({
+      setupDataConfig({
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -115,7 +115,7 @@ describe('merge test', () => {
     };
 
     expect(
-      setupS2DataConfig({
+      setupDataConfig({
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -144,7 +144,7 @@ describe('merge test', () => {
     };
 
     expect(
-      setupS2DataConfig(oldDataCfg, {
+      setupDataConfig(oldDataCfg, {
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -172,13 +172,13 @@ describe('merge test', () => {
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
-    expect(setupS2Options(null)).toMatchSnapshot();
+    expect(setupOptions(null)).toMatchSnapshot();
   });
 
   test('should setup correctly compact layout width type options', () => {
     // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
     expect(
-      setupS2Options({
+      setupOptions({
         style: {
           layoutWidthType: LayoutWidthType.Compact,
         },
@@ -187,7 +187,7 @@ describe('merge test', () => {
   });
 
   test('should get custom options', () => {
-    const options = setupS2Options({
+    const options = setupOptions({
       tooltip: {
         enable: false,
         operation: {
@@ -225,7 +225,7 @@ describe('merge test', () => {
   });
 
   test('should get custom data config', () => {
-    const dataConfig = setupS2DataConfig({
+    const dataConfig = setupDataConfig({
       fields: {
         rows: ['test'],
         values: ['value'],

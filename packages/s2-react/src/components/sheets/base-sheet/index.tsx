@@ -1,4 +1,4 @@
-import { setupS2DataConfig, S2_PREFIX_CLS } from '@antv/s2';
+import { setupDataConfig, S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'antd';
 import React from 'react';
 import { injectThemeVars } from '@antv/s2-shared';
@@ -32,7 +32,7 @@ export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
             style={{
               width: options?.width,
             }}
-            dataCfg={setupS2DataConfig(dataCfg)}
+            dataCfg={setupDataConfig(dataCfg)}
             options={getSheetComponentOptions(options!)}
           />
         )}

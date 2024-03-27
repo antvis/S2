@@ -12,7 +12,7 @@ import type {
 } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
-import { customMerge, setupS2DataConfig } from '@/utils';
+import { customMerge, setupDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { GEvent } from '@/index';
@@ -457,7 +457,7 @@ describe('PivotSheet Tests', () => {
     // save original data cfg
     expect(s2.store.get('originalDataCfg')).toEqual(newDataCfg);
     // update data cfg
-    expect(s2.dataCfg).toEqual(setupS2DataConfig(originalDataCfg, newDataCfg));
+    expect(s2.dataCfg).toEqual(setupDataConfig(originalDataCfg, newDataCfg));
   });
 
   test('should set options', () => {

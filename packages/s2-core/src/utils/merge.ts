@@ -41,7 +41,7 @@ const uniqueFields = (fields: Fields): Fields => {
   };
 };
 
-export const setupS2DataConfig = (
+export const setupDataConfig = (
   ...dataConfig: (Partial<S2DataConfig> | null | undefined)[]
 ): S2DataConfig => {
   const mergedDataCfg = customMerge<S2DataConfig>(
@@ -65,7 +65,7 @@ export const setupS2DataConfig = (
   return mergedDataCfg;
 };
 
-export const setupS2Options = (
+export const setupOptions = (
   options: Partial<S2Options> | null | undefined,
 ): S2Options => {
   const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, options);
