@@ -70,7 +70,10 @@ export const setupOptions = (
 ): S2Options => {
   const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, options);
 
-  if (mergedOptions.style?.layoutWidthType === LayoutWidthType.Compact) {
+  if (
+    mergedOptions.style?.layoutWidthType === LayoutWidthType.Compact &&
+    mergedOptions.style?.dataCell!.maxLines! <= 1
+  ) {
     mergedOptions.style.dataCell!.wordWrap = false;
   }
 
