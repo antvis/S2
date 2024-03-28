@@ -1,7 +1,12 @@
 /* eslint-disable jest/expect-expect */
 import { getContainer } from 'tests/util/helpers';
 import { range } from 'lodash';
-import { PivotSheet, TableSheet, type SpreadSheet } from '../../src';
+import {
+  PivotSheet,
+  TableSheet,
+  type SpreadSheet,
+  EXTRA_FIELD,
+} from '../../src';
 import type {
   CellTextWordWrapStyle,
   S2CellType,
@@ -115,6 +120,13 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     s2.facet.getDataCells(),
   ];
 
+  const matchCellStyleSnapshot = (cb?: (cells: S2CellType[]) => void) => {
+    getCells().forEach((cells) => {
+      expect(mapCells(cells)).toMatchSnapshot();
+      cb?.(cells);
+    });
+  };
+
   describe('PivotSheet', () => {
     const s2Options: S2Options = {
       width: 300,
@@ -138,9 +150,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should default render one line text', () => {
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(90);
     });
 
@@ -148,9 +158,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(2);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(118, 80, 38);
     });
 
@@ -158,55 +166,49 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(3);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
-
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(165, 112, 53);
     });
 
     test('should render custom text overflow text', async () => {
-      const cellTheme: CellTextWordWrapStyle = {
+      const cellStyle: CellTextWordWrapStyle = {
         textOverflow: '@@@',
         maxLines: 1,
       };
 
       s2.setOptions({
         style: {
-          seriesNumberCell: cellTheme,
-          colCell: cellTheme,
-          cornerCell: cellTheme,
-          rowCell: cellTheme,
-          dataCell: cellTheme,
+          seriesNumberCell: cellStyle,
+          colCell: cellStyle,
+          cornerCell: cellStyle,
+          rowCell: cellStyle,
+          dataCell: cellStyle,
         },
       });
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(90);
     });
 
     test('should not render word wrap text', async () => {
-      const cellTheme: CellTextWordWrapStyle = {
+      const cellStyle: CellTextWordWrapStyle = {
         wordWrap: false,
+        maxLines: 2,
       };
 
       s2.setOptions({
         style: {
-          seriesNumberCell: cellTheme,
-          colCell: cellTheme,
-          cornerCell: cellTheme,
-          rowCell: cellTheme,
-          dataCell: cellTheme,
+          seriesNumberCell: cellStyle,
+          colCell: cellStyle,
+          cornerCell: cellStyle,
+          rowCell: cellStyle,
+          dataCell: cellStyle,
         },
       });
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-
+      matchCellStyleSnapshot((cells) => {
         // wordWrap 关闭时, 不会渲染省略号
         cells.forEach((cell) => {
           expect(cell.getActualText()).not.toContain('...');
@@ -215,30 +217,123 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expectColHierarchyHeight(90);
     });
 
-    test('should force adaptive adjust cell height if custom cell style less than actual text height', async () => {
+    test('should not adaptive adjust cell height if custom cell style less than actual text height by rowCell.height', async () => {
+      updateStyle(2);
+
       s2.setOptions({
         style: {
           rowCell: {
             height: 20,
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style less than actual text height by rowCell.height()', async () => {
+      updateStyle(2);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            height: () => 20,
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style more than actual text height by rowCell.heightByField', async () => {
+      updateStyle(2);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
             heightByField: {
-              city: 10,
+              city: 35,
+              'root[&]四川省[&]成都市': 50,
             },
           },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style less than actual text height by colCell.height', async () => {
+      updateStyle(2);
+
+      s2.setOptions({
+        style: {
           colCell: {
             height: 20,
           },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style less than actual text height by colCell.height()', async () => {
+      updateStyle(2);
+
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: () => 20,
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style more than actual text height by colCell.heightByField', async () => {
+      updateStyle(4);
+
+      s2.setOptions({
+        style: {
+          colCell: {
+            heightByField: {
+              type: 50,
+              sub_type: 40,
+              [EXTRA_FIELD]: 120,
+            },
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style less than actual text height by dataCell.height', async () => {
+      updateStyle(2);
+
+      s2.setOptions({
+        style: {
           dataCell: {
             height: 20,
           },
         },
       });
 
-      updateStyle(2);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(118, 80, 38);
     });
 
@@ -319,9 +414,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(1);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(0, 0, 0);
     });
 
@@ -345,9 +438,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
 
       // 省份 4行文本, 叶子节点 (城市) 3行文本, 省份应该和城市高度一致, 才能展示所有文本 (maxLines: 4)
       expectRowHierarchyHeight(568, 0, 72);
@@ -380,10 +471,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       });
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
-
+      matchCellStyleSnapshot();
       expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(760);
     });
   });
@@ -411,9 +499,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     test('should default render one line text', () => {
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(30, 0, 30, 1);
     });
 
@@ -421,9 +507,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(2);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(40, 0, 40, 1);
     });
 
@@ -431,20 +515,56 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(3);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
 
       expectColHierarchyHeight(56, 0, 56, 1);
     });
 
-    test('should force adaptive adjust cell height if custom cell style less than actual text height', async () => {
+    test('should render custom text overflow text', async () => {
+      const cellStyle: CellTextWordWrapStyle = {
+        textOverflow: '@@@',
+        maxLines: 1,
+      };
+
+      s2.setOptions({
+        style: {
+          seriesNumberCell: cellStyle,
+          colCell: cellStyle,
+          dataCell: cellStyle,
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not render word wrap text', async () => {
+      const cellStyle: CellTextWordWrapStyle = {
+        wordWrap: false,
+        maxLines: 2,
+      };
+
+      s2.setOptions({
+        style: {
+          seriesNumberCell: cellStyle,
+          colCell: cellStyle,
+          dataCell: cellStyle,
+        },
+      });
+      await s2.render(false);
+
+      matchCellStyleSnapshot((cells) => {
+        // wordWrap 关闭时, 不会渲染省略号
+        cells.forEach((cell) => {
+          expect(cell.getActualText()).not.toContain('...');
+        });
+      });
+    });
+
+    test('should not force adaptive adjust cell height if custom cell style less than actual text height by colCell.height', async () => {
       s2.setOptions({
         style: {
           colCell: {
-            height: 20,
-          },
-          dataCell: {
             height: 20,
           },
         },
@@ -453,10 +573,8 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(2);
       await s2.render(false);
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
-      expectColHierarchyHeight(40, 0, 40, 1);
+      matchCellStyleSnapshot();
+      expectColHierarchyHeight(20, 0, 20, 1);
     });
 
     test('should not adaptive adjust cell height if custom cell style more than actual text height', async () => {
@@ -497,10 +615,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
-
+      matchCellStyleSnapshot();
       expectColHierarchyHeight(72, 0, 72, 1);
     });
 
@@ -510,9 +625,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
 
       const rowDataCells = s2.facet
         .getDataCells()
@@ -523,7 +636,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       ).toBeTruthy();
     });
 
-    test('should force adaptive adjust row height if custom cell style less than actual text height', async () => {
+    test('should not force adaptive adjust row height if custom cell style less than actual text height by rowCell.heightByField', async () => {
       updateStyle(3);
 
       s2.setOptions({
@@ -531,23 +644,186 @@ describe('SpreadSheet Multi Line Text Tests', () => {
           rowCell: {
             heightByField: {
               1: 20,
+              4: 100,
             },
           },
         },
       });
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
+      matchCellStyleSnapshot();
+    });
+
+    test('should not force adaptive adjust row height if custom cell style less than actual text height by rowCell.height', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            height: 20,
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not force adaptive adjust row height if custom cell style more than actual text height by rowCell.heightByField', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            heightByField: {
+              0: 100,
+              1: 100,
+            },
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not force adaptive adjust row height if custom cell style more than actual text height by rowCell.height', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            height: 100,
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    // https://github.com/antvis/S2/issues/2613
+    test('should get correctly cell height priority if actual text not wrap', async () => {
+      updateStyle(3);
+
+      // 清空多行文本
+      s2.setDataCfg({ meta: [], data: s2.dataCfg.data.slice(3) });
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: 20,
+          },
+          rowCell: {
+            heightByField: {
+              1: 20,
+              4: 100,
+            },
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should get correctly cell height priority if actual text wrap', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: 70,
+          },
+          rowCell: {
+            heightByField: {
+              0: 70,
+              1: 100,
+            },
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust data cell height if custom cell style more than actual text height by dataCell.height', async () => {
+      s2.setOptions({
+        style: {
+          dataCell: {
+            height: 100,
+          },
+        },
       });
 
-      const rowDataCells = s2.facet
-        .getDataCells()
-        .filter((cell) => cell.getMeta().rowIndex === 1);
+      updateStyle(2);
+      await s2.render(false);
 
-      expect(
-        rowDataCells.every((cell) => cell.getMeta().height === 61),
-      ).toBeTruthy();
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust data cell height if custom cell style less than actual text height by dataCell.height', async () => {
+      s2.setOptions({
+        style: {
+          dataCell: {
+            height: 20,
+          },
+        },
+      });
+
+      updateStyle(2);
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should force adaptive adjust row height if custom cell style more than actual text height by rowCell.height', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            height: null,
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should force adaptive adjust row height if custom cell style more than actual text height by rowCell.heightByField', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            heightByField: null,
+          },
+        },
+      });
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should not adaptive adjust cell height if custom cell style more than actual text height by colCell.heightByField', async () => {
+      updateStyle(4);
+
+      s2.setOptions({
+        style: {
+          colCell: {
+            height: 100,
+            heightByField: {
+              type: 50,
+            },
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      matchCellStyleSnapshot();
     });
 
     test('should calc correctly row cell height if actual text lines is difference', async () => {
@@ -568,9 +844,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       await s2.render();
 
-      getCells().forEach((cells) => {
-        expect(mapCells(cells)).toMatchSnapshot();
-      });
+      matchCellStyleSnapshot();
 
       const rowDataCells = s2.facet
         .getDataCells()

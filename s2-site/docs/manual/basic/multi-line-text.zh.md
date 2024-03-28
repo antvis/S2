@@ -22,7 +22,7 @@ S2 内部适配了 `AntV/G 5.0` 的 [多行布局能力](https://g.antv.antgroup
 
 具体参数请跳转 `AntV/G` [官网查看](https://g.antv.antgroup.com/api/basic/text#%E5%A4%9A%E8%A1%8C%E5%B8%83%E5%B1%80).
 
-- `maxLines`: 最大行数，一个具体的整数，文本超出后将被截断 （默认值为 `1`)。
+- `maxLines`: 最大行数，一个具体的正整数，文本超出后将被截断 （默认值为 `1`)。
 - `wordWrap`: 是否开启自动折行，（默认值为 `false`).
 - `textOverflow`:
   - 'clip': 直接截断文本。
@@ -59,6 +59,14 @@ const s2Options = {
 };
 
 ```
+
+## 高度优先级
+
+:::info{title="提示"}
+
+开启文本自动换行后，默认会根据**文本实际的高度**调整对应单元格的高度。如果配置了 [自定义单元格宽高](/manual/advanced/custom/cell-size), 则高度自适应失效，以自定义的宽高为准。
+
+:::
 
 ## 效果
 

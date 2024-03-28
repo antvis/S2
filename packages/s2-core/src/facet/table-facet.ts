@@ -9,8 +9,9 @@ import {
   maxBy,
   set,
 } from 'lodash';
-import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
+import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
+  DEFAULT_STYLE,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
@@ -60,10 +61,28 @@ export class TableFacet extends FrozenFacet {
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
+    const { rowCell: rowCellStyle, dataCell: dataCellStyle } =
+      this.spreadsheet.options.style!;
+    const node = { id: String(viewMeta?.rowIndex) } as Node;
+
+    // 优先级: 行头拖拽 > 行头自定义高度 > 多行文本自适应高度 > 通用单元格高度
+    const rowHeight =
+      this.getRowCellDraggedHeight(node) ??
+      this.getCellCustomSize(node, rowCellStyle?.height) ??
+      dataCellStyle?.height;
+
+    if (
+      isNumber(rowHeight) &&
+      rowHeight !== DEFAULT_STYLE.rowCell?.height &&
+      rowHeight !== DEFAULT_STYLE.dataCell?.height
+    ) {
+      return rowHeight;
+    }
+
     const dataCell = new TableDataCell(viewMeta, this.spreadsheet, {
       shallowRender: true,
     });
-    const defaultHeight = this.getDefaultCellHeight();
+    const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
 
     return this.getCellAdaptiveHeight(dataCell, defaultHeight);
   }
@@ -341,15 +360,6 @@ export class TableFacet extends FrozenFacet {
     const { colsHierarchy } = this.layoutResult;
 
     return getTotalHeight() + colsHierarchy.height;
-  }
-
-  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
-    const colCell = new TableColCell(colNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
-
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   private calculateColNodesCoordinate(

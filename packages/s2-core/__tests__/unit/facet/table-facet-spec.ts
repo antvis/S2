@@ -103,6 +103,7 @@ jest.mock('@/data-set/table-data-set', () => {
         getDisplayDataSet: jest.fn(() => data),
         getCellData: () => 1,
         getFieldMeta: jest.fn(),
+        getField: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         isEmpty: jest.fn(),
       };

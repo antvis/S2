@@ -88,7 +88,9 @@ export const DEFAULT_OPTIONS: S2Options = {
     hiddenColumnFields: [],
     selectedCellsSpotlight: false,
     hoverHighlight: true,
-    hoverFocus: { duration: HOVER_FOCUS_DURATION },
+    hoverFocus: {
+      duration: HOVER_FOCUS_DURATION,
+    },
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,

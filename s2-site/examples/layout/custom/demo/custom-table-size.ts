@@ -44,6 +44,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
           height: 50,
         },
         colCell: {
+          width: 200,
           height: 50,
           widthByField: {
             // 特定维度 (如: 城市)
@@ -52,8 +53,10 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
             'root[&]province': 80,
           },
         },
-        // 明细表每一行根据行序号单独设置 (从 0 开始)
         rowCell: {
+          // 设置行高
+          height: 40,
+          // 明细表每一行根据行索引单独设置 (从 0 开始)
           heightByField: {
             '0': 40,
             '1': 130,
