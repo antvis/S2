@@ -93,7 +93,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
     );
     const [options, setOptions] = React.useState<SheetComponentOptions>({
       ...customRowGridOptions,
-      hierarchyType: 'grid',
+      hierarchyType: 'tree',
       interaction: {
         overscrollBehavior: 'none',
       },
