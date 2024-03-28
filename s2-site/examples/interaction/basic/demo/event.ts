@@ -176,6 +176,7 @@ fetch(
       S2Event.DATA_CELL_CLICK,
       S2Event.GLOBAL_SELECTED,
       S2Event.DATA_CELL_BRUSH_SELECTION,
+      S2Event.LAYOUT_RESIZE,
     ].forEach((eventName) => {
       s2.on(eventName, (...args) => {
         console.log(eventName, ...args);
