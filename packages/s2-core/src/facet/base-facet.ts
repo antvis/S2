@@ -463,7 +463,7 @@ export abstract class BaseFacet {
   onContainerWheelForPc = () => {
     const canvas = this.spreadsheet.getCanvasElement();
 
-    canvas?.addEventListener('wheel', this.onWheel);
+    canvas?.addEventListener('wheel', this.onWheel, { passive: true });
   };
 
   onContainerWheelForMobile = () => {
@@ -1622,7 +1622,7 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
 
-    this.clip(scrollX, scrollY);
+    // this.clip(scrollX, scrollY);
 
     if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });

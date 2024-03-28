@@ -136,7 +136,7 @@ export class GuiIcon extends Group {
 
     if (img) {
       // already in cache
-      image.attr('img', img);
+      image.attr('src', img);
       this.appendChild(image);
     } else {
       this.getImage(name, cacheKey, fill)
@@ -148,7 +148,7 @@ export class GuiIcon extends Group {
             return;
           }
 
-          image.attr('img', value);
+          image.attr('src', value);
           this.appendChild(image);
         })
         .catch((event: string | Event) => {

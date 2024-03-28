@@ -61,7 +61,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { width, height } = this.spreadsheet.options;
     const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();
     const style: PathStyleProps = {
-      path: '',
+      d: '',
       lineDash: guideLineDash,
       stroke: guideLineColor,
       lineWidth: size,
@@ -159,11 +159,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const halfSize = size / 2;
 
     if (type === ResizeDirectionType.Horizontal) {
-      startResizeGuideLineShape.attr('path', [
+      startResizeGuideLineShape.attr('d', [
         ['M', offsetX + halfSize, offsetY],
         ['L', offsetX + halfSize, guideLineMaxHeight],
       ]);
-      endResizeGuideLineShape.attr('path', [
+      endResizeGuideLineShape.attr('d', [
         ['M', offsetX + width - halfSize, offsetY],
         ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
@@ -173,11 +173,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    startResizeGuideLineShape.attr('path', [
+    startResizeGuideLineShape.attr('d', [
       ['M', offsetX, offsetY + halfSize],
       ['L', guideLineMaxWidth, offsetY + halfSize],
     ]);
-    endResizeGuideLineShape.attr('path', [
+    endResizeGuideLineShape.attr('d', [
       ['M', offsetX, offsetY + height - halfSize],
       ['L', guideLineMaxWidth, offsetY + height - halfSize],
     ]);
@@ -216,8 +216,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getResizeGuideLinePosition(): ResizeGuideLinePosition {
     const [startGuideLineShape, endGuideLineShape] = (this.resizeReferenceGroup
       ?.children || []) as [Path, Path];
-    const startGuideLinePath = startGuideLineShape?.attr('path') || [];
-    const endGuideLinePath = endGuideLineShape?.attr('path') || [];
+    const startGuideLinePath = startGuideLineShape?.attr('d') || [];
+    const endGuideLinePath = endGuideLineShape?.attr('d') || [];
 
     const [, startX = 0, startY = 0] = startGuideLinePath[0] || [];
     const [, endX = 0, endY = 0] = endGuideLinePath[0] || [];
@@ -485,7 +485,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const [, endGuideLineShape] = resizeShapes;
     const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
-      endGuideLineShape.attr('path'),
+      endGuideLineShape.attr('d'),
     );
 
     if (resizeInfo.type === ResizeDirectionType.Horizontal) {
@@ -503,7 +503,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     this.updateResizeGuideLineTheme(endGuideLineShape);
-    endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
+    endGuideLineShape.attr('d', [guideLineStart, guideLineEnd]);
   }
 
   private updateResizeGuideLineTheme(endGuideLineShape: DisplayObject) {

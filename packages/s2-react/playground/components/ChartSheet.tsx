@@ -44,6 +44,8 @@ const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
 
   // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
   renderToMountedElement(chartOptions, {
+    // @ts-ignore
+    // FIXME: After upgrading @antv/g2, the type of group should be Group
     group: cell,
     library: stdlib(),
   });
