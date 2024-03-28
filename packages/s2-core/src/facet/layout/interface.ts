@@ -93,6 +93,7 @@ export interface CustomTreeHeaderParams {
   level: number;
   hierarchy: Hierarchy;
   tree: CustomTreeNode[];
+  isRowHeader: boolean;
 }
 
 export interface WhetherLeafParams {

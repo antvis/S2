@@ -85,6 +85,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expect(s2.dataSet).toBeInstanceOf(CustomTreePivotDataSet);
   });
 
+  test('should get correctly dataset fields', () => {
+    expect(s2.dataSet.fields).toMatchSnapshot();
+  });
+
   test('should render custom layout row nodes', () => {
     const rowNodes = s2.facet.getRowNodes().map((node) => {
       return {
