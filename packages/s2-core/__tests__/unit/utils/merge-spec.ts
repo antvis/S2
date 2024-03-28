@@ -175,14 +175,13 @@ describe('merge test', () => {
     expect(setupOptions(null)).toMatchSnapshot();
   });
 
-  test('should setup correctly compact layout width type options', () => {
-    // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
+  test('should setup correctly compact layout width type style', () => {
     expect(
       setupOptions({
         style: {
           layoutWidthType: LayoutWidthType.Compact,
         },
-      }),
+      }).style,
     ).toMatchSnapshot();
   });
 
