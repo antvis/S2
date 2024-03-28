@@ -1,6 +1,6 @@
 import { isArray, isEmpty, isEqual, isString, mergeWith, uniq } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
-import { DEFAULT_OPTIONS } from '../common/constant/options';
+import { DEFAULT_OPTIONS, LayoutWidthType } from '../common/constant/options';
 import type {
   CustomHeaderFields,
   Fields,
@@ -41,9 +41,9 @@ const uniqueFields = (fields: Fields): Fields => {
   };
 };
 
-export const getSafetyDataConfig = (
+export const setupDataConfig = (
   ...dataConfig: (Partial<S2DataConfig> | null | undefined)[]
-) => {
+): S2DataConfig => {
   const mergedDataCfg = customMerge<S2DataConfig>(
     DEFAULT_DATA_CONFIG,
     ...dataConfig,
@@ -65,6 +65,17 @@ export const getSafetyDataConfig = (
   return mergedDataCfg;
 };
 
-export const getSafetyOptions = (
+export const setupOptions = (
   options: Partial<S2Options> | null | undefined,
-) => customMerge<S2Options>(DEFAULT_OPTIONS, options);
+): S2Options => {
+  const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, options);
+
+  if (
+    mergedOptions.style?.layoutWidthType === LayoutWidthType.Compact &&
+    mergedOptions.style?.dataCell!.maxLines! <= 1
+  ) {
+    mergedOptions.style.dataCell!.wordWrap = false;
+  }
+
+  return mergedOptions;
+};

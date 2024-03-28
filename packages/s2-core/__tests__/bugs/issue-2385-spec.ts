@@ -5,7 +5,7 @@
 import { LayoutWidthType, type S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2385.json';
 import { getContainer } from '../util/helpers';
-import { PivotSheet, TableSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 800,
@@ -19,6 +19,12 @@ const s2Options: S2Options = {
 };
 
 describe('Compare Layout Tests', () => {
+  const expectTextOverflowing = (s2: SpreadSheet) => {
+    [...s2.facet.getColCells(), ...s2.facet.getDataCells()].forEach((cell) => {
+      expect(cell.getTextShape().isOverflowing()).toBeFalsy();
+    });
+  };
+
   test('should get max col width for pivot sheet', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
@@ -35,6 +41,7 @@ describe('Compare Layout Tests', () => {
 
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(189);
     expect(Math.floor(colLeafNodes[1].width)).toEqual(90);
+    expectTextOverflowing(s2);
   });
 
   test('should get max col width for table sheet', async () => {
@@ -58,5 +65,6 @@ describe('Compare Layout Tests', () => {
     const colLeafNodes = s2.facet.getColLeafNodes();
 
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(182);
+    expectTextOverflowing(s2);
   });
 });

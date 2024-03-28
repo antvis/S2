@@ -886,8 +886,10 @@ export class PivotFacet extends FrozenFacet {
               valueData,
             ) ?? valueData;
           const cellLabel = `${formattedValue}`;
-          const cellLabelWidth =
-            this.spreadsheet.measureTextWidthRoughly(cellLabel);
+          const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
+            cellLabel,
+            dataCellTextStyle,
+          );
 
           if (cellLabelWidth > maxDataLabelWidth) {
             maxDataLabel = cellLabel;
