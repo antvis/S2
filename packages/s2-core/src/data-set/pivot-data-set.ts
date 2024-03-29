@@ -375,7 +375,7 @@ export class PivotDataSet extends BaseDataSet {
 
     // 暂时先对获取某一个维度所有的 labels 这样的场景做缓存处理，因为内部 flatten 逻辑比较耗时
     if (this.dimensionValuesCache.has(field) && isGetAllDimensionValues) {
-      return this.dimensionValuesCache.get(field);
+      return this.dimensionValuesCache.get(field) ?? [];
     }
 
     const dimensionValues = transformDimensionsValues(
