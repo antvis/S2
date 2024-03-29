@@ -4,14 +4,12 @@ import {
   flatMap,
   forEach,
   get,
-  indexOf,
   intersection,
   isArray,
   isEmpty,
   isNull,
   last,
   set,
-  sortBy,
 } from 'lodash';
 import type { PickEssential } from '../../common/interface/utils';
 import {
@@ -477,19 +475,25 @@ export function getSatisfiedPivotMetaValues(params: {
 
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
-      const values = [...metaValue.children.values()];
-      return values.filter(
-        (v) =>
+      const values: PivotMetaValue[] = [];
+      for (const v of metaValue.children.values()) {
+        if (
           v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
-          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
-      );
+          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE)
+        ) {
+          values.push(v);
+        }
+      }
+      return values;
     });
     if (list.length > 1) {
       // 从不同父维度中获取的子维度需要再排一次，比如province => city 按照字母倒序，那么在获取了所有 province 的 city 后需要再排一次
       const sortedDimensionValue = sortedDimensionValues[field] ?? [];
-      return sortBy(allValues, (item) =>
-        indexOf(sortedDimensionValue, item.id),
+      const indexMap = new Map(
+        sortedDimensionValue.map((id, index) => [id, index]),
       );
+      allValues.sort((a, b) => indexMap.get(a.id) - indexMap.get(b.id));
+      return allValues;
     }
     return allValues;
   }
