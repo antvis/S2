@@ -109,6 +109,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         getFieldsAndPivotMetaByField:
           actualPivotDataSet.prototype.getFieldsAndPivotMetaByField,
         displayFormattedValueMap: new Map(),
+        dimensionValuesCache: new Map(),
       };
     }),
   };
