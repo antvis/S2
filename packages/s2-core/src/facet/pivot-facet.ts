@@ -16,7 +16,7 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { ColCell, RowCell, SeriesNumberCell } from '../cell';
+import { RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
@@ -36,11 +36,11 @@ import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { renderLine, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
+import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getRowsForGrid } from '../utils/grid';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
-import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { FrozenFacet } from './frozen-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -396,26 +396,16 @@ export class PivotFacet extends FrozenFacet {
   }
 
   private getRowNodeHeight(rowNode: Node): number {
+    if (!rowNode) {
+      return 0;
+    }
+
     const rowCell = new RowCell(rowNode, this.spreadsheet, {
       shallowRender: true,
     });
     const defaultHeight = this.getRowCellHeight(rowNode);
 
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);
-  }
-
-  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy): number {
-    if (!colNode) {
-      return 0;
-    }
-
-    const colCell = new ColCell(colNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-
-    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
-
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
 
   /**
