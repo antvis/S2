@@ -1,3 +1,10 @@
+# [@antv/s2-v1.54.8](https://github.com/antvis/S2/compare/@antv/s2-v1.54.7...@antv/s2-v1.54.8) (2024-03-29)
+
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([37aecc8](https://github.com/antvis/S2/commit/37aecc8cb94630147882c5bc15dbe14f70d40516))
+
 # [@antv/s2-v1.54.7](https://github.com/antvis/S2/compare/@antv/s2-v1.54.6...@antv/s2-v1.54.7) (2024-03-15)
 
 
