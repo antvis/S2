@@ -83,6 +83,8 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
+  private dimensionValuesCache: Map<string, string[]>;
+
   getExistValuesByDataItem(data: RawData, values: string[]) {
     return getExistValues(data, values);
   }
@@ -101,6 +103,7 @@ export class PivotDataSet extends BaseDataSet {
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    this.dimensionValuesCache = new Map();
     this.transformIndexesData(this.originData, rows as string[]);
     this.handleDimensionValuesSort();
   }
@@ -368,6 +371,13 @@ export class PivotDataSet extends BaseDataSet {
       return [];
     }
 
+    const isGetAllDimensionValues = isEmpty(query);
+
+    // 暂时先对获取某一个维度所有的 labels 这样的场景做缓存处理，因为内部 flatten 逻辑比较耗时
+    if (this.dimensionValuesCache.has(field) && isGetAllDimensionValues) {
+      return this.dimensionValuesCache.get(field);
+    }
+
     const dimensionValues = transformDimensionsValues(
       query,
       dimensions,
@@ -383,7 +393,13 @@ export class PivotDataSet extends BaseDataSet {
       sortedDimensionValues: this.sortedDimensionValues,
     });
 
-    return uniq(values.map((v) => v.value));
+    const result = uniq(values.map((v) => v.value));
+
+    if (isGetAllDimensionValues) {
+      this.dimensionValuesCache.set(field, result);
+    }
+
+    return result;
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
