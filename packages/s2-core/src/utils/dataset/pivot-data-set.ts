@@ -518,7 +518,9 @@ export function getSatisfiedPivotMetaValues(params: {
         sortedDimensionValue.map((id, index) => [id, index]),
       );
 
-      allValues.sort((a, b) => indexMap.get(a.id) - indexMap.get(b.id));
+      allValues.sort(
+        (a, b) => (indexMap.get(a.id) ?? 0) - (indexMap.get(b.id) ?? 0),
+      );
 
       return allValues;
     }
