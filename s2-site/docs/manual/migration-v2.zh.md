@@ -691,6 +691,13 @@ const header = {
 
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
+#### 配置预处理 API 变更
+
+```diff
+- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
++ import { setupOptions, setupDataConfig } from '@antv/s2'
+```
+
 ## ✍️ API 调整
 
 具体请查看标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 的 [`API 文档`](/api)

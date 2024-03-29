@@ -69,11 +69,7 @@ import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
-import {
-  customMerge,
-  getSafetyDataConfig,
-  getSafetyOptions,
-} from '../utils/merge';
+import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import { getTheme } from '../theme';
@@ -146,8 +142,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = getSafetyDataConfig(dataCfg);
-    this.options = getSafetyOptions(options);
+    this.dataCfg = setupDataConfig(dataCfg);
+    this.options = setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -366,9 +362,9 @@ export abstract class SpreadSheet extends EE {
   ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
-      this.dataCfg = getSafetyDataConfig(dataCfg);
+      this.dataCfg = setupDataConfig(dataCfg);
     } else {
-      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+      this.dataCfg = setupDataConfig(this.dataCfg, dataCfg);
     }
 
     // clear value ranger after each updated data cfg
@@ -389,7 +385,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = getSafetyOptions(options);
+      this.options = setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
