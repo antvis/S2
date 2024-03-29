@@ -1,3 +1,17 @@
+# [@antv/s2-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.16...@antv/s2-v2.0.0-next.17) (2024-03-29)
+
+
+### Bug Fixes
+
+* **layout:** 修复行头收起全部时, 自定义列头被折叠的问题 closes [#2018](https://github.com/antvis/S2/issues/2018) [#2019](https://github.com/antvis/S2/issues/2019) ([#2639](https://github.com/antvis/S2/issues/2639)) ([dfc3225](https://github.com/antvis/S2/commit/dfc3225bbc431e8dcc30d0f42f7fb5389ec53c82))
+* 修复紧凑模式下数值单元格错误的展示了省略号 ([#2632](https://github.com/antvis/S2/issues/2632)) ([2822471](https://github.com/antvis/S2/commit/2822471e9f73ba7b19292dc88a93b96d38afa471))
+* 调整换行高度自适应和自定义高度的优先级 close [#2613](https://github.com/antvis/S2/issues/2613) ([#2630](https://github.com/antvis/S2/issues/2630)) ([4caabed](https://github.com/antvis/S2/commit/4caabed679b4959faf598e38efbf23b4802ae29b))
+
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([e0348d7](https://github.com/antvis/S2/commit/e0348d77e6c0296151566214ad975f810732e5b8))
+
 # [@antv/s2-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.15...@antv/s2-v2.0.0-next.16) (2024-03-22)
 
 
