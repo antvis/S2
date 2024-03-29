@@ -19,7 +19,7 @@ import type {
 import { Node } from '../layout/node';
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
-  const { rootNode, hierarchy, fields, spreadsheet } = params;
+  const { rootNode, hierarchy, fields, spreadsheet, isRowHeader } = params;
 
   // 自定义行/列 需要去除额外添加的 EXTRA_FIELD 虚拟数值字段, 即不参与布局, 只用于定位数据
   const withoutExtraFieldsTree = filter(
@@ -34,6 +34,7 @@ const handleCustomTreeHierarchy = (params: HeaderParams) => {
     level: 0,
     parentNode: rootNode,
     hierarchy,
+    isRowHeader,
   });
 };
 

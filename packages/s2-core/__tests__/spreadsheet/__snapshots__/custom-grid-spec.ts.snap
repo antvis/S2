@@ -225,6 +225,61 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should get correctly dataset fields 1`] = `
+Object {
+  "columns": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "description": "指标1描述",
+              "field": "measure-1",
+              "title": "指标1",
+            },
+            Object {
+              "children": Array [],
+              "description": "指标2描述",
+              "field": "measure-2",
+              "title": "指标2",
+            },
+          ],
+          "description": "a-1-1 描述",
+          "field": "a-1-1",
+          "title": "自定义节点 a-1-1",
+        },
+        Object {
+          "children": Array [],
+          "description": "a-1-2 描述",
+          "field": "a-1-2",
+          "title": "自定义节点 a-1-2",
+        },
+      ],
+      "description": "a-1 描述",
+      "field": "a-1",
+      "title": "自定义节点 a-1",
+    },
+    Object {
+      "children": Array [],
+      "description": "a-2 描述",
+      "field": "a-2",
+      "title": "自定义节点 a-2",
+    },
+    "$$extra$$",
+  ],
+  "rows": Array [
+    "type",
+    "sub_type",
+  ],
+  "valueInCols": true,
+  "values": Array [
+    "measure-1",
+    "measure-2",
+  ],
+}
+`;
+
 exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should render custom format corner text 1`] = `
 Array [
   Object {
@@ -406,6 +461,61 @@ Array [
   "&-null",
   "*-null",
 ]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should get correctly dataset fields 1`] = `
+Object {
+  "columns": Array [
+    "type",
+    "sub_type",
+  ],
+  "rows": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "description": "指标1描述",
+              "field": "measure-1",
+              "title": "指标1",
+            },
+            Object {
+              "children": Array [],
+              "description": "指标2描述",
+              "field": "measure-2",
+              "title": "指标2",
+            },
+          ],
+          "description": "a-1-1 描述",
+          "field": "a-1-1",
+          "title": "自定义节点 a-1-1",
+        },
+        Object {
+          "children": Array [],
+          "description": "a-1-2 描述",
+          "field": "a-1-2",
+          "title": "自定义节点 a-1-2",
+        },
+      ],
+      "description": "a-1 描述",
+      "field": "a-1",
+      "title": "自定义节点 a-1",
+    },
+    Object {
+      "children": Array [],
+      "description": "a-2 描述",
+      "field": "a-2",
+      "title": "自定义节点 a-2",
+    },
+    "$$extra$$",
+  ],
+  "valueInCols": false,
+  "values": Array [
+    "measure-1",
+    "measure-2",
+  ],
+}
 `;
 
 exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should render custom format corner text 1`] = `

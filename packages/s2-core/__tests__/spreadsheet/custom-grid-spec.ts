@@ -1,8 +1,8 @@
 import type { Group } from '@antv/g';
-import { CustomGridData } from 'tests/data/data-custom-grid';
-import { getContainer } from 'tests/util/helpers';
 import { pick } from 'lodash';
+import { CustomGridData } from 'tests/data/data-custom-grid';
 import { waitForRender } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
 import {
@@ -75,6 +75,10 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should use custom grid pivot dataSet', () => {
       expect(s2.dataSet).toBeInstanceOf(CustomGridPivotDataSet);
+    });
+
+    test('should get correctly dataset fields', () => {
+      expect(s2.dataSet.fields).toMatchSnapshot();
     });
 
     test('should render custom layout row nodes', () => {
@@ -232,6 +236,24 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(rowNodes).toMatchSnapshot();
       expect(dataCellTexts).toMatchSnapshot();
     });
+
+    test('should collapse all custom row node', async () => {
+      s2.setOptions({
+        hierarchyType: 'tree',
+        style: {
+          rowCell: {
+            collapseAll: true,
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(60);
+      expect(
+        s2.facet.getRowNodes().every((node) => node.isCollapsed),
+      ).toBeTruthy();
+    });
   });
 
   describe('Custom Col Grid Tests', () => {
@@ -260,6 +282,10 @@ describe('SpreadSheet Custom Grid Tests', () => {
     test('should enable valueInCols', () => {
       expect(s2.dataCfg.fields.valueInCols).toBeTruthy();
       expect(s2.dataSet.fields.valueInCols).toBeTruthy();
+    });
+
+    test('should get correctly dataset fields', () => {
+      expect(s2.dataSet.fields).toMatchSnapshot();
     });
 
     /*
@@ -492,6 +518,25 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(node1?.height).toEqual(node2?.height);
       expect(colNodes).toMatchSnapshot();
       expect(cornerNodes).toMatchSnapshot();
+    });
+
+    // https://github.com/antvis/S2/issues/2019
+    test('should not collapse custom col node after row node collapsed', async () => {
+      s2.setOptions({
+        hierarchyType: 'tree',
+        style: {
+          rowCell: {
+            collapseAll: true,
+          },
+        },
+      });
+
+      await s2.render(false);
+
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(90);
+      expect(
+        s2.facet.getColNodes().some((node) => node.isCollapsed),
+      ).toBeFalsy();
     });
   });
 });
