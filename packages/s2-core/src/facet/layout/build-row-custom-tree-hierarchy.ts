@@ -16,7 +16,14 @@ import { layoutHierarchy } from './layout-hooks';
  * @param params
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
-  const { tree = [], level, parentNode, hierarchy, spreadsheet } = params;
+  const {
+    tree = [],
+    level,
+    parentNode,
+    hierarchy,
+    spreadsheet,
+    isRowHeader,
+  } = params;
   const { collapseFields, collapseAll } = spreadsheet.options.style?.rowCell!;
 
   const hiddenColumnsDetail =
@@ -44,7 +51,9 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const isCollapsed = isDefaultCollapsed ?? (collapseAll || defaultCollapsed);
 
     // TODO: 平铺模式支持 折叠/展开
-    const isCollapsedNode = spreadsheet.isHierarchyTreeType() && isCollapsed;
+    // https://github.com/antvis/S2/issues/2019
+    const isCollapsedNode =
+      spreadsheet.isHierarchyTreeType() && isRowHeader && isCollapsed;
     const isLeaf = isEmpty(children);
 
     const node = new Node({
@@ -80,13 +89,14 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hierarchy,
     );
 
-    if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
+    if (!isEmpty(children) && !isCollapsedNode && expandCurrentNode) {
       buildCustomTreeHierarchy({
         spreadsheet,
         parentNode: node,
         level: level + 1,
         hierarchy,
         tree: (children || []) as CustomTreeNode[],
+        isRowHeader,
       });
     }
   });

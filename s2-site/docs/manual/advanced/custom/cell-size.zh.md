@@ -8,7 +8,7 @@ S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等
 
 我们可以通过 [主题](/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/docs/api/general/S2Options#style) 配置来实现
 
-<Playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
+<Playground path='layout/custom/demo/custom-pivot-size.ts' rid='custom-pivot-size' height='400'></playground>
 
 <br/>
 
@@ -81,7 +81,7 @@ const s2Options = {
       },
       height: (rowNode) => {
         // 例：偶数行高度 300pox, 奇数行默认高度
-        return rowNode.level % 2 === 0 ? 300 : null,
+        return rowNode.level % 2 === 0 ? 300 : null
       }
     },
   },
@@ -126,30 +126,6 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/oaGLPvya5/bf8b9dfe-1873-4567-9c4b-400632cebbe3.png" alt="preview" width="600" />
-
-:::info{title="提示"}
-
-明细表有一点特殊，由于只有列头，如果想给**特定行**设置不同的高度，则可以根据**行序号**调整 （从 `0` 开始）
-
-:::
-
-```ts
-const s2Options = {
-  style: {
-    rowCell: {
-      // 给第一行和第三行设置不同的高度
-      heightByField: {
-        '0': 130,
-        '2': 60,
-      },
-    },
-  },
-}
-```
-
-<br/>
-
-<Playground path='layout/custom/demo/custom-table-size.ts' rid='container' height='400'></playground>
 
 ## 调整树状模式下行头宽度
 
@@ -242,6 +218,37 @@ const s2Options = {
 ```
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*lcRNQpDF2eMAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
+
+## 调整明细表行高
+
+:::info{title="提示"}
+
+明细表有一点特殊，由于只有列头
+
+1. 如果想给**所有行**设置固定的行高，则可以通过 `rowCell.height` 调整
+2. 如果想给**特定行**设置不同的行高，则可以通过 `rowCell.heightByField` 根据**行索引**调整 （从 `0` 开始）
+
+:::
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      // 设置行高
+      height: 40,
+      // 给第一行和第三行设置不同的高度
+      heightByField: {
+        '0': 130,
+        '2': 60,
+      },
+    },
+  },
+}
+```
+
+<br/>
+
+<Playground path='layout/custom/demo/custom-table-size.ts' rid='custom-table-size' height='400'></playground>
 
 ## 隐藏列头
 
