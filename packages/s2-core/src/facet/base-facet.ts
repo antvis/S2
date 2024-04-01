@@ -1651,7 +1651,7 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
 
-    // this.clip(scrollX, scrollY);
+    this.clip(scrollX, scrollY);
 
     if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });

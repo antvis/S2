@@ -255,7 +255,7 @@ function MainLayout() {
     }
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetType, getColumnOptions]);
+  }, [sheetType]);
 
   React.useEffect(() => {
     console.log('env:', process.env);

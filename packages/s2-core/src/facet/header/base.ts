@@ -54,7 +54,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     // offset group
     this.offset();
     // clip group
-    // this.clip();
+    this.clip();
   }
 
   /**
