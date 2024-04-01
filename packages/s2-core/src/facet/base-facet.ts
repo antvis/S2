@@ -172,6 +172,11 @@ export abstract class BaseFacet {
 
   public gridInfo: GridInfo;
 
+  // 标记当前滑动的方向
+  private vScrollStatus: boolean;
+
+  private hScrollStatus: boolean;
+
   protected abstract doLayout(): LayoutResult;
 
   protected abstract clip(scrollX: number, scrollY: number): void;
@@ -1220,6 +1225,40 @@ export abstract class BaseFacet {
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
+    const {
+      scrollX: currentScrollX,
+      scrollY: currentScrollY,
+      rowHeaderScrollX,
+    } = this.getScrollOffset();
+
+    if (this.hScrollStatus !== deltaX > 0) {
+      this.cancelScrollFrame();
+      this.hScrollStatus = deltaX > 0;
+
+      this.updateHorizontalRowScrollOffset({
+        offsetX,
+        offsetY,
+        offset: rowHeaderScrollX,
+      });
+      this.updateHorizontalScrollOffset({
+        offsetX,
+        offsetY,
+        offset: currentScrollX,
+      });
+
+      return;
+    }
+
+    if (this.vScrollStatus !== deltaY > 0) {
+      this.cancelScrollFrame();
+      this.vScrollStatus = deltaY > 0;
+      this.vScrollBar?.emitScrollChange(currentScrollY);
+
+      return;
+    }
+
+    this.vScrollStatus = deltaY > 0;
+    this.hScrollStatus = deltaX > 0;
     const { shiftKey } = event;
 
     // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
