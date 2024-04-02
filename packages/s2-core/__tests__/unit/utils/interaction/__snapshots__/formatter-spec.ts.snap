@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#getBaseCellData() should get correctly cell data 1`] = `
+Object {
+  "target": Object {
+    "cellType": undefined,
+    "colId": "0",
+    "colIndex": 0,
+    "cornerType": "",
+    "field": "test-a",
+    "getActualText": [MockFunction],
+    "getFieldValue": [MockFunction],
+    "getMeta": [Function],
+    "hideInteractionShape": [MockFunction],
+    "id": "test-a",
+    "isTextOverflowing": [MockFunction],
+    "level": 0,
+    "parentNode": [Circular],
+    "rowIndex": 0,
+    "spreadsheet": Object {
+      "dataCfg": Object {
+        "data": Array [],
+        "fields": Object {},
+        "meta": null,
+      },
+      "dataSet": Object {
+        "getCustomRowFieldDescription": [MockFunction],
+        "getFieldDescription": [MockFunction],
+      },
+      "facet": Object {
+        "layoutResult": Object {
+          "getCellMeta": [MockFunction],
+        },
+      },
+    },
+    "type": undefined,
+    "update": [MockFunction],
+    "updateByState": [MockFunction],
+    "x": 0,
+    "y": 0,
+  },
+  "viewMeta": Object {
+    "colId": "0",
+    "colIndex": 0,
+    "cornerType": "",
+    "field": "test-a",
+    "id": "test-a",
+    "level": 0,
+    "rowIndex": 0,
+    "spreadsheet": Object {
+      "dataCfg": Object {
+        "data": Array [],
+        "fields": Object {},
+        "meta": null,
+      },
+      "dataSet": Object {
+        "getCustomRowFieldDescription": [MockFunction],
+        "getFieldDescription": [MockFunction],
+      },
+      "facet": Object {
+        "layoutResult": Object {
+          "getCellMeta": [MockFunction],
+        },
+      },
+    },
+    "type": undefined,
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
+
+exports[`#getBaseCellData() should get empty cell data 1`] = `
+Object {
+  "target": undefined,
+  "viewMeta": undefined,
+}
+`;

@@ -1,3 +1,27 @@
+# [@antv/s2-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.16...@antv/s2-v2.0.0-next.17) (2024-03-29)
+
+
+### Bug Fixes
+
+* **layout:** 修复行头收起全部时, 自定义列头被折叠的问题 closes [#2018](https://github.com/antvis/S2/issues/2018) [#2019](https://github.com/antvis/S2/issues/2019) ([#2639](https://github.com/antvis/S2/issues/2639)) ([dfc3225](https://github.com/antvis/S2/commit/dfc3225bbc431e8dcc30d0f42f7fb5389ec53c82))
+* 修复紧凑模式下数值单元格错误的展示了省略号 ([#2632](https://github.com/antvis/S2/issues/2632)) ([2822471](https://github.com/antvis/S2/commit/2822471e9f73ba7b19292dc88a93b96d38afa471))
+* 调整换行高度自适应和自定义高度的优先级 close [#2613](https://github.com/antvis/S2/issues/2613) ([#2630](https://github.com/antvis/S2/issues/2630)) ([4caabed](https://github.com/antvis/S2/commit/4caabed679b4959faf598e38efbf23b4802ae29b))
+
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([e0348d7](https://github.com/antvis/S2/commit/e0348d77e6c0296151566214ad975f810732e5b8))
+
+# [@antv/s2-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.15...@antv/s2-v2.0.0-next.16) (2024-03-22)
+
+
+### Bug Fixes
+
+* **g:** 修复表格初次渲染时部分 icon 不展示 close [#2014](https://github.com/antvis/S2/issues/2014) ([#2606](https://github.com/antvis/S2/issues/2606)) ([3f9a176](https://github.com/antvis/S2/commit/3f9a176f75c46fa58e50d0fd70a652242f7b6df3))
+* **interaction:** 修复在未选中状态下调整宽高, 错误的修改了相邻单元格的样式 ([#2605](https://github.com/antvis/S2/issues/2605)) ([8019788](https://github.com/antvis/S2/commit/8019788bf5b44414a2006f34c89f68fcb37207f0))
+* 修复组件层事件回调无法获取单元格信息 closes [#2615](https://github.com/antvis/S2/issues/2615) [#2610](https://github.com/antvis/S2/issues/2610) ([#2616](https://github.com/antvis/S2/issues/2616)) ([3682d50](https://github.com/antvis/S2/commit/3682d501a71dbff3c91d7be86c852546f3e8f271))
+* 修复角头和行头折叠展开 icon 的状态未同步以及展开异常的问题 close [#2607](https://github.com/antvis/S2/issues/2607) ([#2620](https://github.com/antvis/S2/issues/2620)) ([99829a6](https://github.com/antvis/S2/commit/99829a667c69394c0554ece841d6f6eb5c3f9b9e))
+
 # [@antv/s2-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.14...@antv/s2-v2.0.0-next.15) (2024-03-15)
 
 

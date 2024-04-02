@@ -90,9 +90,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: true,
+            isRowGrandTotal: true,
             isRowSubTotal: false,
-            isColTotal: false,
+            isColGrandTotal: false,
             isColSubTotal: false,
           },
           totalsOptions,
@@ -102,9 +102,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: true,
+            isRowGrandTotal: true,
             isRowSubTotal: false,
-            isColTotal: true,
+            isColGrandTotal: true,
             isColSubTotal: false,
           },
           totalsOptions,
@@ -116,9 +116,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: true,
+            isRowGrandTotal: true,
             isRowSubTotal: false,
-            isColTotal: false,
+            isColGrandTotal: false,
             isColSubTotal: true,
           },
           totalsOptions,
@@ -133,9 +133,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: false,
+            isRowGrandTotal: false,
             isRowSubTotal: true,
-            isColTotal: false,
+            isColGrandTotal: false,
             isColSubTotal: false,
           },
           totalsOptions,
@@ -150,9 +150,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: false,
+            isRowGrandTotal: false,
             isRowSubTotal: true,
-            isColTotal: true,
+            isColGrandTotal: true,
             isColSubTotal: false,
           },
           totalsOptions,
@@ -167,9 +167,9 @@ describe('Data Set Operate Test', () => {
       expect(
         getAggregationAndCalcFuncByQuery(
           {
-            isRowTotal: false,
+            isRowGrandTotal: false,
             isRowSubTotal: true,
-            isColTotal: false,
+            isColGrandTotal: false,
             isColSubTotal: true,
           },
           totalsOptions,

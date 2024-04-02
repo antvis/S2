@@ -10,6 +10,7 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const GridSheet = () => {
+      const s2Ref = React.useRef();
       const [s2DataConfig, setS2DataConfig] = React.useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = React.useState('');
       const s2Options: SheetComponentOptions = {
@@ -73,7 +74,7 @@ fetch(
         );
       };
 
-      const dataCellTooltip = (viewMeta) => {
+      const DataCellTooltip = (viewMeta) => {
         const { spreadsheet, fieldValue } = viewMeta;
 
         return (
@@ -120,21 +121,19 @@ fetch(
         );
       };
 
-      const onDataCellMouseUp = (value) => {
-        const viewMeta = value?.viewMeta;
-
+      const onDataCellClick = ({ viewMeta, event }) => {
         if (!viewMeta) {
           return;
         }
 
         const position = {
-          x: value.event.clientX,
-          y: value.event.clientY,
+          x: event.clientX,
+          y: event.clientY,
         };
 
-        viewMeta.spreadsheet.tooltip.show({
+        s2Ref.current?.showTooltip({
           position,
-          content: dataCellTooltip(viewMeta),
+          content: <DataCellTooltip {...viewMeta} />,
         });
       };
 
@@ -142,13 +141,14 @@ fetch(
         <SheetComponent
           dataCfg={s2DataConfig}
           options={s2Options}
+          ref={s2Ref}
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',
             advancedSort: { open: true },
             extra: <Breadcrumb />,
           }}
-          onDataCellMouseUp={onDataCellMouseUp}
+          onDataCellClick={onDataCellClick}
         />
       );
     };

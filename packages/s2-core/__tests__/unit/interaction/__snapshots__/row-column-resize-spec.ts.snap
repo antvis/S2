@@ -50,9 +50,38 @@ Object {
   "textOverflow": "ellipsis",
   "width": null,
   "widthByField": Object {
+    "testFieldId": 5,
+  },
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should get multiple horizontal filed resize style by field for selected resize type 1`] = `
+Object {
+  "height": 30,
+  "heightByField": null,
+  "maxLines": 1,
+  "textOverflow": "ellipsis",
+  "width": null,
+  "widthByField": Object {
     "test-cell-a": 5,
     "test-cell-b": 5,
   },
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should get multiple vertical filed resize style by field for selected resize type 1`] = `
+Object {
+  "height": null,
+  "heightByField": Object {
+    "test-cell-a": 2,
+    "test-cell-b": 2,
+  },
+  "maxLines": 1,
+  "showTreeLeafNodeAlignDot": false,
+  "textOverflow": "ellipsis",
+  "widthByField": null,
   "wordWrap": true,
 }
 `;
@@ -110,8 +139,7 @@ exports[`Interaction Row Column Resize Tests should get vertical filed resize st
 Object {
   "height": null,
   "heightByField": Object {
-    "test-cell-a": 2,
-    "test-cell-b": 2,
+    "testFieldId": 2,
   },
   "maxLines": 1,
   "showTreeLeafNodeAlignDot": false,

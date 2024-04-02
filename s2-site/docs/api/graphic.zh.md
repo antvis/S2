@@ -2,7 +2,7 @@
 title: 绘图属性
 order: 3
 redirect_from:
-  - /en/docs/api
+  - /zh/docs/api
 ---
 
 :::warning{title="注意"}
@@ -12,7 +12,9 @@ S2 使用 `Canvas` , 底层基于 [AntV/G](https://g.antv.antgroup.com/guide/get
 理论上，你可以通过 [自定义单元格](https://s2.antv.antgroup.com/examples/custom/custom-cell/#data-cell), 在表格绘制任意内容，前提是请确保你已经掌握了一定的 [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) 和 [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) 知识，并对 [AntV/G](https://g.antv.antgroup.com/guide/getting-started) 有一定了解。
 :::
 
-这里对 S2 常用的绘图属性进行简单介绍：
+<br/>
+
+<Playground path='/custom/custom-shape-and-chart/demo/custom-g-shape.ts' rid='advanced-sort'></playground>
 
 ## 配置图形样式
 

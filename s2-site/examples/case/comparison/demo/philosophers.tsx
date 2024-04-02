@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { max, min, replace } from 'lodash';
 import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { S2DataConfig } from '@antv/s2';
+import '@antv/s2-react/dist/style.min.css';
 
 const PALETTE_COLORS = [
   '#B8E1FF',
@@ -177,36 +176,42 @@ fetch(
       },
     };
 
-    const onDataCellMouseUp = (value) => {
-      const viewMeta = value?.viewMeta;
+    const App = () => {
+      const s2Ref = React.useRef();
+      const onDataCellClick = ({ viewMeta, event }) => {
+        if (!viewMeta) {
+          return;
+        }
 
-      if (!viewMeta) {
-        return;
-      }
+        const position = {
+          x: event.clientX,
+          y: event.clientY,
+        };
 
-      const position = {
-        x: value.event.clientX,
-        y: value.event.clientY,
+        s2Ref.current?.showTooltip({
+          position,
+          content: <TooltipContent {...viewMeta} />,
+        });
       };
 
-      viewMeta.spreadsheet.tooltip.show({
-        position,
-        content: TooltipContent(viewMeta),
-      });
+      return (
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2Options}
+          ref={s2Ref}
+          adaptive={true}
+          header={{
+            title: '哲学家的观点',
+            extra: <PaletteLegend />,
+          }}
+          onDataCellClick={onDataCellClick}
+        />
+      );
     };
 
-    reactDOMClient.createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        adaptive={true}
-        header={{
-          title: '哲学家的观点',
-          extra: <PaletteLegend />,
-        }}
-        onDataCellMouseUp={onDataCellMouseUp}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });
 
 insertCSS(`

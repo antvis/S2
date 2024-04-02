@@ -83,6 +83,8 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
+  private dimensionValuesCache: Map<string, string[]>;
+
   getExistValuesByDataItem(data: RawData, values: string[]) {
     return getExistValues(data, values);
   }
@@ -101,6 +103,7 @@ export class PivotDataSet extends BaseDataSet {
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    this.dimensionValuesCache = new Map();
     this.transformIndexesData(this.originData, rows as string[]);
     this.handleDimensionValuesSort();
   }
@@ -368,6 +371,13 @@ export class PivotDataSet extends BaseDataSet {
       return [];
     }
 
+    const isGetAllDimensionValues = isEmpty(query);
+
+    // 暂时先对获取某一个维度所有的 labels 这样的场景做缓存处理，因为内部 flatten 逻辑比较耗时
+    if (this.dimensionValuesCache.has(field) && isGetAllDimensionValues) {
+      return this.dimensionValuesCache.get(field) ?? [];
+    }
+
     const dimensionValues = transformDimensionsValues(
       query,
       dimensions,
@@ -383,7 +393,13 @@ export class PivotDataSet extends BaseDataSet {
       sortedDimensionValues: this.sortedDimensionValues,
     });
 
-    return uniq(values.map((v) => v.value));
+    const result = uniq(values.map((v) => v.value));
+
+    if (isGetAllDimensionValues) {
+      this.dimensionValuesCache.set(field, result);
+    }
+
+    return result;
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
@@ -398,7 +414,7 @@ export class PivotDataSet extends BaseDataSet {
     const calcAction = calcActionByType[aggregation!];
 
     // 前端计算汇总值
-    if (calcAction || !!calcFunc) {
+    if (calcAction || calcFunc) {
       const data = this.getCellMultiData({
         query,
         queryType: QueryDataType.DetailOnly,
@@ -467,7 +483,7 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  public getTotalStatus = (query: Query) => {
+  public getTotalStatus = (query: Query): TotalStatus => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
       if (isSubTotal) {
@@ -480,9 +496,9 @@ export class PivotDataSet extends BaseDataSet {
     };
 
     return {
-      isRowTotal: isTotals(filterExtraDimension(rows as string[])),
+      isRowGrandTotal: isTotals(filterExtraDimension(rows as string[])),
       isRowSubTotal: isTotals(rows as string[], true),
-      isColTotal: isTotals(filterExtraDimension(columns as string[])),
+      isColGrandTotal: isTotals(filterExtraDimension(columns as string[])),
       isColSubTotal: isTotals(columns as string[], true),
     };
   };

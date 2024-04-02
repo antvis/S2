@@ -5,7 +5,7 @@ import {
   SheetComponentsProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { S2DataConfig } from '@antv/s2';
+import { S2DataConfig, ORIGIN_FIELD } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -42,34 +42,43 @@ fetch(
       },
       fetchData: (meta, drillFields) =>
         new Promise((resolve) => {
+          // 弹窗 -> 选择 -> 请求数据
           const dataSet = meta.spreadsheet.dataSet;
           const field = drillFields[0];
-          const rowData = dataSet.getCellMultiData({ query: meta.query });
+
+          const rowData = dataSet
+            .getCellMultiData({
+              query: meta.query,
+            })
+            .filter(
+              (item) =>
+                item.getValueByField('type') &&
+                item.getValueByField('sub_type'),
+            );
+
           const drillDownData = [];
 
           rowData.forEach((data) => {
-            const { city, number, province, sub_type: subType, type } = data;
+            const { number, sub_type: subType, type } = data[ORIGIN_FIELD];
             const number0 = Math.ceil(Math.random() * (number - 50)) + 50;
             const number1 = number - number0;
+
             const dataItem0 = {
-              city,
-              number: number0,
-              province,
-              sub_type: subType,
+              ...meta.query,
               type,
+              sub_type: subType,
+              number: number0,
               [field]: sex[0],
             };
-
             drillDownData.push(dataItem0);
+
             const dataItem1 = {
-              city,
-              number: number1,
-              province,
-              sub_type: subType,
+              ...meta.query,
               type,
+              sub_type: subType,
+              number: number1,
               [field]: sex[1],
             };
-
             drillDownData.push(dataItem1);
           });
 

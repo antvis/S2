@@ -1,3 +1,19 @@
+# [@antv/s2-react-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.15...@antv/s2-react-v2.0.0-next.16) (2024-03-29)
+
+
+### Bug Fixes
+
+* 修复紧凑模式下数值单元格错误的展示了省略号 ([#2632](https://github.com/antvis/S2/issues/2632)) ([2822471](https://github.com/antvis/S2/commit/2822471e9f73ba7b19292dc88a93b96d38afa471))
+* 调整 peerDependencies 命中规则 ([#2633](https://github.com/antvis/S2/issues/2633)) ([73378c7](https://github.com/antvis/S2/commit/73378c70339c1d5536be33cdf3cece5404d1f5c9))
+
+# [@antv/s2-react-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.14...@antv/s2-react-v2.0.0-next.15) (2024-03-22)
+
+
+### Bug Fixes
+
+* **g:** 修复表格初次渲染时部分 icon 不展示 close [#2014](https://github.com/antvis/S2/issues/2014) ([#2606](https://github.com/antvis/S2/issues/2606)) ([3f9a176](https://github.com/antvis/S2/commit/3f9a176f75c46fa58e50d0fd70a652242f7b6df3))
+* 修复角头和行头折叠展开 icon 的状态未同步以及展开异常的问题 close [#2607](https://github.com/antvis/S2/issues/2607) ([#2620](https://github.com/antvis/S2/issues/2620)) ([99829a6](https://github.com/antvis/S2/commit/99829a667c69394c0554ece841d6f6eb5c3f9b9e))
+
 # [@antv/s2-react-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.13...@antv/s2-react-v2.0.0-next.14) (2024-03-15)
 
 

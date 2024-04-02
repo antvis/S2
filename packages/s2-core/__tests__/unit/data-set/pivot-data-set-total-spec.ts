@@ -484,9 +484,9 @@ describe('Pivot Dataset Total Test', () => {
 
       test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
         const totalStatus = {
-          isRowTotal: true,
-          isColTotal: true,
+          isRowGrandTotal: true,
           isRowSubTotal: true,
+          isColGrandTotal: true,
           isColSubTotal: true,
         };
 
@@ -713,53 +713,53 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct total status', () => {
       const {
-        isRowTotal: isRowTotal1,
+        isRowGrandTotal: isRowGrandTotal1,
         isRowSubTotal: isRowSubTotal1,
-        isColTotal: isColTotal1,
+        isColGrandTotal: isColGrandTotal1,
         isColSubTotal: isColSubTotal1,
       } = dataSet.getTotalStatus({
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal1).toBeTrue();
+      expect(isRowGrandTotal1).toBeTrue();
       expect(isRowSubTotal1).toBeFalse();
-      expect(isColTotal1).toBeTrue();
+      expect(isColGrandTotal1).toBeTrue();
       expect(isColSubTotal1).toBeFalse();
 
       const {
-        isRowTotal: isRowTotal2,
+        isRowGrandTotal: isRowGrandTotal2,
         isRowSubTotal: isRowSubTotal2,
-        isColTotal: isColTotal2,
+        isColGrandTotal: isColGrandTotal2,
         isColSubTotal: isColSubTotal2,
       } = dataSet.getTotalStatus({
         type: '家具',
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal2).toBeTrue();
+      expect(isRowGrandTotal2).toBeTrue();
       expect(isRowSubTotal2).toBeFalse();
-      expect(isColTotal2).toBeFalse();
+      expect(isColGrandTotal2).toBeFalse();
       expect(isColSubTotal2).toBeTrue();
 
       const {
-        isRowTotal: isRowTotal3,
+        isRowGrandTotal: isRowGrandTotal3,
         isRowSubTotal: isRowSubTotal3,
-        isColTotal: isColTotal3,
+        isColGrandTotal: isColGrandTotal3,
         isColSubTotal: isColSubTotal3,
       } = dataSet.getTotalStatus({
         province: '浙江',
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal3).toBeFalse();
+      expect(isRowGrandTotal3).toBeFalse();
       expect(isRowSubTotal3).toBeTrue();
-      expect(isColTotal3).toBeTrue();
+      expect(isColGrandTotal3).toBeTrue();
       expect(isColSubTotal3).toBeFalse();
 
       const {
-        isRowTotal: isRowTotal4,
+        isRowGrandTotal: isRowGrandTotal4,
         isRowSubTotal: isRowSubTotal4,
-        isColTotal: isColTotal4,
+        isColGrandTotal: isColGrandTotal4,
         isColSubTotal: isColSubTotal4,
       } = dataSet.getTotalStatus({
         province: '浙江',
@@ -767,9 +767,9 @@ describe('Pivot Dataset Total Test', () => {
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal4).toBeFalse();
+      expect(isRowGrandTotal4).toBeFalse();
       expect(isRowSubTotal4).toBeTrue();
-      expect(isColTotal4).toBeFalse();
+      expect(isColGrandTotal4).toBeFalse();
       expect(isColSubTotal4).toBeTrue();
     });
   });

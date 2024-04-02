@@ -69,11 +69,7 @@ import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { isMobile } from '../utils/is-mobile';
-import {
-  customMerge,
-  getSafetyDataConfig,
-  getSafetyOptions,
-} from '../utils/merge';
+import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import { getTheme } from '../theme';
@@ -113,22 +109,6 @@ export abstract class SpreadSheet extends EE {
    */
   private destroyed = false;
 
-  // @ts-ignore
-  private untypedOn = this.on;
-
-  // @ts-ignore
-  private untypedEmit = this.emit;
-
-  public on = <K extends keyof EmitterType>(
-    event: K,
-    listener: EmitterType[K],
-  ): this => this.untypedOn(event, listener);
-
-  public emit = <K extends keyof EmitterType>(
-    event: K,
-    ...args: Parameters<EmitterType[K]>
-  ): boolean => this.untypedEmit(event, ...args);
-
   protected abstract bindEvents(): void;
 
   public abstract getDataSet(): BaseDataSet;
@@ -162,8 +142,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = getSafetyDataConfig(dataCfg);
-    this.options = getSafetyOptions(options);
+    this.dataCfg = setupDataConfig(dataCfg);
+    this.options = setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -382,9 +362,9 @@ export abstract class SpreadSheet extends EE {
   ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
-      this.dataCfg = getSafetyDataConfig(dataCfg);
+      this.dataCfg = setupDataConfig(dataCfg);
     } else {
-      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+      this.dataCfg = setupDataConfig(this.dataCfg, dataCfg);
     }
 
     // clear value ranger after each updated data cfg
@@ -405,7 +385,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = getSafetyOptions(options);
+      this.options = setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
@@ -595,6 +575,20 @@ export abstract class SpreadSheet extends EE {
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.resize(width, height);
+  }
+
+  public override on<K extends keyof EmitterType>(
+    event: K,
+    listener: EmitterType[K],
+  ): this {
+    return super.on(event, listener);
+  }
+
+  public override emit<K extends keyof EmitterType>(
+    event: K,
+    ...args: Parameters<EmitterType[K]>
+  ): void {
+    super.emit(event, ...args);
   }
 
   /**

@@ -1,9 +1,5 @@
-import type { S2DataConfig } from '@/common';
-import {
-  customMerge,
-  getSafetyDataConfig,
-  getSafetyOptions,
-} from '@/utils/merge';
+import { LayoutWidthType, type S2DataConfig } from '@/common';
+import { customMerge, setupDataConfig, setupOptions } from '@/utils/merge';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -27,7 +23,7 @@ describe('merge test', () => {
   });
 
   test('should get safety data config', () => {
-    expect(getSafetyDataConfig(null)).toMatchInlineSnapshot(`
+    expect(setupDataConfig(null)).toMatchInlineSnapshot(`
       Object {
         "data": Array [],
         "fields": Object {
@@ -45,7 +41,7 @@ describe('merge test', () => {
 
   test('should unique dataConfig fields', () => {
     expect(
-      getSafetyDataConfig({
+      setupDataConfig({
         fields: {
           rows: ['province', 'city', 'city'],
           columns: ['type', 'type'],
@@ -86,7 +82,7 @@ describe('merge test', () => {
     };
 
     expect(
-      getSafetyDataConfig({
+      setupDataConfig({
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -119,7 +115,7 @@ describe('merge test', () => {
     };
 
     expect(
-      getSafetyDataConfig({
+      setupDataConfig({
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -148,7 +144,7 @@ describe('merge test', () => {
     };
 
     expect(
-      getSafetyDataConfig(oldDataCfg, {
+      setupDataConfig(oldDataCfg, {
         fields,
       }),
     ).toMatchInlineSnapshot(`
@@ -176,11 +172,21 @@ describe('merge test', () => {
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑 demo 修改了默认配置 直接提交
-    expect(getSafetyOptions(null)).toMatchSnapshot();
+    expect(setupOptions(null)).toMatchSnapshot();
+  });
+
+  test('should setup correctly compact layout width type style', () => {
+    expect(
+      setupOptions({
+        style: {
+          layoutWidthType: LayoutWidthType.Compact,
+        },
+      }).style,
+    ).toMatchSnapshot();
   });
 
   test('should get custom options', () => {
-    const options = getSafetyOptions({
+    const options = setupOptions({
       tooltip: {
         enable: false,
         operation: {
@@ -218,7 +224,7 @@ describe('merge test', () => {
   });
 
   test('should get custom data config', () => {
-    const dataConfig = getSafetyDataConfig({
+    const dataConfig = setupDataConfig({
       fields: {
         rows: ['test'],
         values: ['value'],
