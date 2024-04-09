@@ -159,6 +159,7 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setOverscrollBehavior();
+    this.mountSheetInstance();
   }
 
   private setOverscrollBehavior() {
@@ -431,6 +432,22 @@ export abstract class SpreadSheet extends EE {
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
+  private mountSheetInstance() {
+    const canvas = this.getCanvasElement();
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      canvas.__s2_instance__ = this;
+    }
+  }
+
+  private unmountSheetInstance() {
+    const canvas = this.getCanvasElement();
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      delete canvas.__s2_instance__;
+    }
+  }
+
   public destroy() {
     this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
@@ -440,8 +457,8 @@ export abstract class SpreadSheet extends EE {
     this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.unmountSheetInstance();
     this.container?.destroy();
-
     removeOffscreenCanvas();
   }
 
@@ -517,8 +534,14 @@ export abstract class SpreadSheet extends EE {
   /**
    * 获取 <canvas/> HTML元素
    */
-  public getCanvasElement(): HTMLCanvasElement {
-    return this.container.get('el') as HTMLCanvasElement;
+  public getCanvasElement(): HTMLCanvasElement & {
+    // eslint-disable-next-line camelcase
+    __s2_instance__: SpreadSheet;
+  } {
+    return this.container.get('el') as HTMLCanvasElement & {
+      // eslint-disable-next-line camelcase
+      __s2_instance__: SpreadSheet;
+    };
   }
 
   public getLayoutWidthType(): LayoutWidthType {
