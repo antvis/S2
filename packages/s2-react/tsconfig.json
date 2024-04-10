@@ -11,5 +11,9 @@
     }
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
+<<<<<<< HEAD
   "include": ["src", "./typings.d.ts", "playground", "__tests__/"]
+=======
+  "include": ["src", "./typings.d.ts", "playground", "../../global.d.ts"]
+>>>>>>> ac8e13397 (feat: canvas 支持挂载 s2 实例 (#2645))
 }

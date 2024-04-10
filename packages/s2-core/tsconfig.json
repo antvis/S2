@@ -8,5 +8,6 @@
       "tests/*": ["s2-core/__tests__/*"]
     },
   },
-  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
+  "include": ["src", "../../global.d.ts"]
 }

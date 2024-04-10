@@ -266,4 +266,14 @@ describe('TableSheet Tests', () => {
   test('should get content height', () => {
     expect(s2.getContentHeight()).toEqual(120);
   });
+
+  test('get sheetInstance from canvas', () => {
+    const canvas = s2.getCanvasElement();
+
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toEqual(s2);
+    s2.destroy();
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toBe(undefined);
+  });
 });
