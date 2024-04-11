@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { SeriesNumberCell } from '@/cell';
-import { type Formatter, type HeaderActionIcon } from '@/common';
+import type { Formatter, HeaderActionIcon } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import { Node } from '@/facet/layout/node';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';

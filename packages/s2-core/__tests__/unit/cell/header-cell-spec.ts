@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { type Formatter, type HeaderActionIcon } from '@/common';
+import type { Formatter, HeaderActionIcon } from '@/common';
 import { PivotDataSet, TableDataSet } from '@/data-set';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
