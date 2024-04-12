@@ -36,6 +36,7 @@ export const filterOutDetail = (values: string[] = []) => {
     (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
   );
 };
+
 export const customFlattenDeep = (
   data: Record<any, any>[] | Record<any, any>,
 ) => {
@@ -43,22 +44,6 @@ export const customFlattenDeep = (
     return [data];
   }
   return flattenDeep(data);
-};
-
-export const getFieldKeysByDimensionValues = (
-  dimensionValues: string[] | undefined[],
-  dimensions: string[] | undefined[],
-) => {
-  const result = [];
-  dimensionValues?.forEach((item, index) => {
-    if (item === undefined) {
-      if (dimensions[index]) {
-        result.push(dimensions[index]);
-      }
-    }
-  });
-
-  return result;
 };
 
 /**

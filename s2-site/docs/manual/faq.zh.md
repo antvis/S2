@@ -311,10 +311,4 @@ s2.setTheme({
 
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
 
-### 有讨论群吗？
-
-交流群不提供任何答疑，有任何问题请直接提交 [Issue](https://github.com/antvis/S2/issues/new/choose) 或者 [Discussion](https://github.com/antvis/S2/discussions/new?category=q-a), 当然，也期待你的 [Pull request](https://github.com/antvis/S2/pulls).
-
-<embed src="@/docs/common/contact-us.zh.md"></embed>
-
 ## 2. 错误和警告
