@@ -42,7 +42,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected treeLeafNodeAlignDot: IShape | undefined;
 
-  protected actionIcons: GuiIcon[] = [];
+  protected actionIcons: GuiIcon[];
 
   protected hasDefaultHiddenIcon: boolean;
 

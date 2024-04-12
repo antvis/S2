@@ -54,6 +54,8 @@ describe('header cell formatter test', () => {
 
       const seriesNumberCell = new SeriesNumberCell(rowNode, s2);
       // @ts-ignore
+      seriesNumberCell.actionIcons = [];
+      // @ts-ignore
       seriesNumberCell.drawActionIcons();
       // @ts-ignore
       expect(seriesNumberCell.actionIcons).toHaveLength(1);

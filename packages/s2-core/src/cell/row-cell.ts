@@ -69,10 +69,10 @@ export class RowCell extends BaseRowCell {
       // frozen row cell
       return 0;
     }
-    const { spreadsheet } = this.headerConfig;
-    const { facet } = spreadsheet;
+
+    const { facet, options } = this.spreadsheet;
     const { frozenRowHeight } = getFrozenRowCfgPivot(
-      spreadsheet.options,
+      options,
       facet?.layoutResult?.rowNodes,
     );
     return frozenRowHeight;

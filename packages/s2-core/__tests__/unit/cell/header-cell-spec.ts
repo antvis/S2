@@ -159,6 +159,8 @@ describe('header cell formatter test', () => {
 
       const rowCell = new RowCell(rowNode, s2);
       // @ts-ignore
+      rowCell.actionIcons = [];
+      // @ts-ignore
       rowCell.drawActionIcons();
       // @ts-ignore
       expect(rowCell.actionIcons).toHaveLength(1);
@@ -168,6 +170,8 @@ describe('header cell formatter test', () => {
       s2.options.headerActionIcons = colHeaderActionIcons;
 
       const colCell = new ColCell(colNode, s2);
+      // @ts-ignore
+      colCell.actionIcons = [];
       // @ts-ignore
       colCell.drawActionIcons();
       // @ts-ignore
@@ -179,11 +183,17 @@ describe('header cell formatter test', () => {
       jest.spyOn(s2, 'isValueInCols').mockImplementationOnce(() => true);
       const colCell = new ColCell(colNode, s2);
       // @ts-ignore
-      jest.spyOn(colCell, 'showSortIcon').mockImplementation(() => true);
+      colCell.actionIcons = [];
+      const showSortIconSpy = jest
+        // @ts-ignore
+        .spyOn(colCell, 'showSortIcon')
+        .mockImplementation(() => true);
       // @ts-ignore
       colCell.drawActionIcons();
       // @ts-ignore
       expect(colCell.actionIcons).toHaveLength(1);
+
+      showSortIconSpy.mockRestore();
     });
   });
 
