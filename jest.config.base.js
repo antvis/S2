@@ -11,6 +11,7 @@ module.exports = {
     '!**/interface/**',
     '!**/interface.ts',
   ],
+  coveragePathIgnorePatterns: ['hd-adapter/index.ts'],
   coverageReporters: ['text', 'clover', 'html'],
   transformIgnorePatterns: [],
   testRegex: '/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js|vue)?$',

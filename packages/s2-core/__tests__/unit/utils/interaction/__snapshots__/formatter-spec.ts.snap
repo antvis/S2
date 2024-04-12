@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#getBaseCellData() should get correctly cell data 1`] = `
+Object {
+  "target": undefined,
+  "viewMeta": undefined,
+}
+`;
+
+exports[`#getBaseCellData() should get empty cell data 1`] = `
+Object {
+  "target": undefined,
+  "viewMeta": undefined,
+}
+`;

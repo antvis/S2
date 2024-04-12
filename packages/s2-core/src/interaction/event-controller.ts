@@ -224,7 +224,7 @@ export class EventController {
 
   private getContainerRect() {
     const { facet, options } = this.spreadsheet;
-    const scrollBar = facet.hRowScrollBar || facet.hScrollBar;
+    const scrollBar = facet?.hRowScrollBar || facet?.hScrollBar;
     const { maxX, maxY } = facet?.panelBBox || {};
     const { width, height } = options;
 
