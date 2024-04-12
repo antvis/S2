@@ -73,6 +73,7 @@ export const createFakeSpreadSheet = () => {
       return [];
     },
     displayFormattedValueMap: new Map(),
+    moreThanOneValue: jest.fn(),
   } as unknown as any;
   s2.facet = {
     layoutResult: {
