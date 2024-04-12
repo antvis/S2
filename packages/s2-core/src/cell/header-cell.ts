@@ -297,7 +297,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected isSortCell() {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
-    const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
+    const isValueInCols = this.spreadsheet?.isValueInCols?.();
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
     if (isValueInCols) {
       return isMaxLevel && this.cellType === CellTypes.COL_CELL;
