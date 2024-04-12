@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.47.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.4...@antv/s2-react-v1.47.0) (2024-04-12)
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ac8e133](https://github.com/antvis/S2/commit/ac8e13397b8d5f40fb1de9fc9b49aedbe47e86c0))
+
 # [@antv/s2-react-v1.46.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.3...@antv/s2-react-v1.46.4) (2024-03-15)
 
 
