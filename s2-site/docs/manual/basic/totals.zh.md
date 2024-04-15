@@ -101,8 +101,8 @@ order: 5
 | subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     | ✓    |
 | reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
 | reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| label               | 总计别名                 | `string`     |        |      |
-| subLabel            | 小计别名                 | `string`     |        |      |
+| grandTotalsLabel               | 总计别名                 | `string`     |   `总计`     |      |
+| subTotalsLabel            | 小计别名                 | `string`     |   `小计`     |      |
 | calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
