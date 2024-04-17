@@ -675,10 +675,12 @@ export class PivotFacet extends FrozenFacet {
     const { rows, columns } = dataSet.fields;
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals.row : totals.col;
-    const dimensionGroup = isSubTotal
+    const defaultDimensionGroup = isSubTotal
       ? totalConfig.subTotalsGroupDimensions || []
       : totalConfig.totalsGroupDimensions || [];
+    const dimensionGroup = !dataSet.isEmpty() ? defaultDimensionGroup : [];
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
+
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields[level] as string;
       // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
@@ -716,9 +718,10 @@ export class PivotFacet extends FrozenFacet {
       }
       let res = 0;
       for (let i = 0; i < multiple; i++) {
-        res += hierarchy.sampleNodesForAllLevels.find(
-          (sampleNode) => sampleNode.level === node.level + i,
-        )[key];
+        res +=
+          hierarchy.sampleNodesForAllLevels.find(
+            (sampleNode) => sampleNode.level === node.level + i,
+          )?.[key] || 0;
       }
       node[key] = res;
     });
