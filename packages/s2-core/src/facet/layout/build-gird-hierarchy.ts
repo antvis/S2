@@ -27,9 +27,10 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
 
   let query: Record<string, unknown> = {};
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
-  const dimensionGroup = parentNode.isGrandTotals
-    ? totalsConfig.grandTotalsGroupDimensions
-    : totalsConfig.subTotalsGroupDimensions;
+  const defaultDimensionGroup = parentNode.isGrandTotals
+    ? totalsConfig.grandTotalsGroupDimensions || []
+    : totalsConfig.subTotalsGroupDimensions || [];
+  const dimensionGroup = !dataSet.isEmpty() ? defaultDimensionGroup : [];
 
   if (dimensionGroup?.includes(currentField)) {
     query = getDimsCondition(parentNode);

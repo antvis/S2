@@ -329,4 +329,42 @@ describe('Total Group Dimension Test', () => {
       cost: 9999,
     });
   });
+
+  // https://github.com/antvis/S2/issues/2661
+  test.each([
+    { totalsGroupDimensions: [] },
+    { totalsGroupDimensions: ['city'] },
+  ])(
+    'should render correctly group totals layout if data is empty by %o',
+    async (config) => {
+      s2 = new PivotSheet(container, dataCfg, {
+        totals: {
+          ...config,
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseGrandTotalsLayout: true,
+            reverseSubTotalsLayout: true,
+          },
+        },
+      });
+
+      s2.setDataCfg({
+        fields: {
+          rows: ['type'],
+          columns: ['province', 'city'],
+          values: ['price', 'cost'],
+        },
+        data: [],
+      });
+      await s2.render();
+
+      const { colNodes, colsHierarchy } = s2.facet.getLayoutResult();
+
+      expect(colsHierarchy.height).toEqual(90);
+      expect(colNodes).toHaveLength(4);
+      expect(colNodes.find((node) => node.value === '总计')).toBeFalsy();
+      expect(colNodes.find((node) => node.value === '小计')).toBeFalsy();
+    },
+  );
 });
