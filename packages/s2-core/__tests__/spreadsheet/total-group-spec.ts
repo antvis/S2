@@ -13,7 +13,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   afterEach(() => {
-    s2?.destroy();
+    // s2?.destroy();
   });
 
   test(`should get correct layout with row total group dimension 'type'`, () => {
@@ -357,4 +357,38 @@ describe('Total Group Dimension Test', () => {
       [VALUE_FIELD]: 9999,
     });
   });
+
+  // https://github.com/antvis/S2/issues/2661
+  test.each([
+    { totalsGroupDimensions: [] },
+    { totalsGroupDimensions: ['city'] },
+  ])(
+    'should render correctly group totals layout if data is empty by %o',
+    (config) => {
+      s2 = new PivotSheet(container, dataCfg, {
+        ...config,
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+      });
+
+      s2.setDataCfg({
+        fields: {
+          rows: ['type'],
+          columns: ['province', 'city'],
+          values: ['price', 'cost'],
+        },
+        data: [],
+      });
+      s2.render();
+
+      const { colNodes, colsHierarchy } = s2.facet.layoutResult;
+
+      expect(colsHierarchy.height).toEqual(90);
+      expect(colNodes).toHaveLength(4);
+      expect(colNodes.find((node) => node.value === '总计')).toBeFalsy();
+      expect(colNodes.find((node) => node.value === '小计')).toBeFalsy();
+    },
+  );
 });
