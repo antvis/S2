@@ -2,9 +2,9 @@
  * @description spec for issue #2385
  * https://github.com/antvis/S2/issues/2385
  */
-import { createPivotSheet, getContainer } from '../util/helpers';
+import type { S2Options, SpreadSheet } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2385.json';
-import type { S2Options } from '../../src';
+import { getContainer } from '../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
@@ -16,12 +16,32 @@ const s2Options: S2Options = {
     },
     layoutWidthType: 'compact',
   },
-  showDefaultHeaderActionIcon: true,
+  showDefaultHeaderActionIcon: false,
 };
 
 describe('Compare Layout Tests', () => {
-  test('should get max col width for pivot sheet', () => {
-    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  const mapWidthList = (s2: SpreadSheet) => {
+    const colLeafNodeWidthList = s2.facet.layoutResult.colLeafNodes.map(
+      (node) => Math.floor(node.width),
+    );
+    const dataCellWidthList = s2.interaction
+      .getPanelGroupAllDataCells()
+      .map((cell) => Math.floor(cell.getMeta().width));
+
+    return {
+      colLeafNodeWidthList,
+      dataCellWidthList,
+    };
+  };
+
+  test.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])('should get max col width for pivot sheet by %o', (options) => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, {
+      ...s2Options,
+      ...options,
+    });
     s2.setTheme({
       dataCell: {
         text: {
@@ -31,22 +51,26 @@ describe('Compare Layout Tests', () => {
     });
     s2.render();
 
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
+    const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
 
-    const measureCell = s2.panelGroup.cfg.children[0].cfg.children[8];
-    const cellStyle = measureCell.getStyle() || measureCell.theme.dataCell;
-    const {
-      padding: { left = 0, right = 0 },
-    } = cellStyle?.cell;
-    expect(measureCell.getMaxTextWidth()).toEqual(
-      colLeafNodes[2].width - left - right,
+    expect(dataCellWidthList).toEqual(
+      options.showDefaultHeaderActionIcon
+        ? [179, 179, 179, 179, 98, 98, 98, 98, 81, 81, 81, 81]
+        : [179, 179, 179, 179, 98, 98, 98, 98, 69, 69, 69, 69],
     );
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(179);
-    expect(Math.floor(colLeafNodes[1].width)).toEqual(98);
+    expect(colLeafNodeWidthList).toEqual(
+      options.showDefaultHeaderActionIcon ? [179, 98, 81] : [179, 98, 69],
+    );
   });
 
-  test('should get max col width for table sheet', () => {
-    const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
+  test.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])('should get max col width for table sheet by %o', (options) => {
+    const s2 = new TableSheet(getContainer(), mockDataConfig, {
+      ...s2Options,
+      ...options,
+    });
     s2.setDataCfg({
       fields: {
         columns: ['price'],
@@ -61,7 +85,57 @@ describe('Compare Layout Tests', () => {
     });
     s2.render();
 
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
-    expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(165);
+    const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
+
+    expect(dataCellWidthList.every((width) => width === 165)).toBeTruthy();
+    expect(colLeafNodeWidthList).toEqual(
+      options.showDefaultHeaderActionIcon ? [165] : [165],
+    );
   });
+
+  test.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])(
+    'should get max col width for pivot sheet by condition and %o',
+    (options) => {
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, {
+        ...s2Options,
+        ...options,
+        conditions: {
+          icon: [
+            {
+              field: 'price',
+              position: 'left',
+              mapping: () => {
+                return {
+                  icon: 'Plus',
+                  fill: '#396',
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.setTheme({
+        dataCell: {
+          text: {
+            fontSize: 20,
+          },
+        },
+      });
+      s2.render();
+
+      const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
+
+      expect(dataCellWidthList).toEqual(
+        options.showDefaultHeaderActionIcon
+          ? [179, 179, 179, 179, 98, 98, 98, 98, 81, 81, 81, 81]
+          : [179, 179, 179, 179, 98, 98, 98, 98, 69, 69, 69, 69],
+      );
+      expect(colLeafNodeWidthList).toEqual(
+        options.showDefaultHeaderActionIcon ? [179, 98, 81] : [179, 98, 69],
+      );
+    },
+  );
 });

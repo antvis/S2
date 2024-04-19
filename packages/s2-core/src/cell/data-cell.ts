@@ -318,11 +318,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
     const iconCfg = normalizeIconCfg(this.getIconStyle());
-    const appendWidth =
-      this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact
-        ? iconCfg.size + iconCfg.margin.left + iconCfg.margin.right
-        : 0;
-    return getMaxTextWidth(width, iconCfg) + appendWidth;
+
+    if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
+      return width + iconCfg.size + iconCfg.margin.left + iconCfg.margin.right;
+    }
+
+    return getMaxTextWidth(width, iconCfg);
   }
 
   protected getTextPosition(): Point {
