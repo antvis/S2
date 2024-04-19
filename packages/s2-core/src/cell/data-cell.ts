@@ -21,11 +21,7 @@ import type {
   ViewMeta,
   ViewMetaIndexType,
 } from '../common/interface';
-import {
-  getBorderPositionAndStyle,
-  getMaxTextWidth,
-  normalizeIconCfg,
-} from '../utils/cell/cell';
+import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import {
   includeCell,
   shouldUpdateBySelectedCellsHighlight,
@@ -40,7 +36,6 @@ import {
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 import { shouldReverseFontColor } from '../utils/color';
-import { LayoutWidthTypes } from '../common/constant/options';
 
 /**
  * DataCell for panelGroup area
@@ -317,12 +312,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    const iconCfg = normalizeIconCfg(this.getIconStyle());
-    const appendWidth =
-      this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact
-        ? iconCfg.size + iconCfg.margin.left + iconCfg.margin.right
-        : 0;
-    return getMaxTextWidth(width, iconCfg) + appendWidth;
+    return getMaxTextWidth(width, this.getIconStyle());
   }
 
   protected getTextPosition(): Point {

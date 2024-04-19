@@ -127,34 +127,6 @@
       "province": "吉林",
       "price": "3",
       "cost": "1.5"
-    },
-    {
-      "type": "圆规",
-      "province": "浙江",
-      "city": "杭州",
-      "price": "111",
-      "cost": "1.5"
-    },
-    {
-      "type": "圆规",
-      "province": "浙江",
-      "city": "舟山",
-      "price": "111",
-      "cost": "1.5"
-    },
-    {
-      "type": "圆规",
-      "province": "吉林",
-      "city": "长春",
-      "price": "11122",
-      "cost": "1.5"
-    },
-    {
-      "type": "圆规",
-      "province": "吉林",
-      "city": "白山",
-      "price": "111",
-      "cost": "1.5"
     }
   ],
   "fields": {
