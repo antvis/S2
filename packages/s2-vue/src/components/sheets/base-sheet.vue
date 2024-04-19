@@ -65,6 +65,7 @@ export default defineComponent({
         :current="pagination.current.value"
         :pageSize="pagination.pageSize.value"
         :total="pagination.total.value"
+        :customOptions="pagination.customOptions"
         @change="handlePageChange"
         @showSizeChange="handlePageSizeChange"
       />

@@ -25,6 +25,7 @@ export default defineComponent({
       type: Number,
       default: DEFAULT_PAGE_SIZE,
     },
+    customOptions: Object,
   },
   emits: ['change', 'showSizeChange'] as unknown as {
     change: (current: number) => void;
@@ -51,14 +52,15 @@ export default defineComponent({
 <template>
   <div :class="PRE_CLASS">
     <AntDPagination
+      size="small"
       :default-current="1"
+      :showSizeChanger="true"
+      :showQuickJumper="showQuickJumper"
+      v-bind="customOptions"
       :current="current"
       :total="total"
       :pageSize="pageSize"
-      :showSizeChanger="true"
       @showSizeChange="(_, size) => $emit('showSizeChange', size)"
-      size="small"
-      :showQuickJumper="showQuickJumper"
       @change="(current) => $emit('change', current)"
     />
     <span :class="`${PRE_CLASS}-count`">
