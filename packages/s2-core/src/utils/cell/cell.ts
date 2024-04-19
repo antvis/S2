@@ -43,7 +43,7 @@ export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
  */
 
-export const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
+const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
   return merge(
     {
       size: 0,
