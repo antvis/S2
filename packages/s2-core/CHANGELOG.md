@@ -1,3 +1,16 @@
+# [@antv/s2-v1.55.1](https://github.com/antvis/S2/compare/@antv/s2-v1.55.0...@antv/s2-v1.55.1) (2024-04-19)
+
+
+### Bug Fixes
+
+* **layout:** 修复空数据的情况开启汇总分组渲染报错 close [#2661](https://github.com/antvis/S2/issues/2661) ([#2662](https://github.com/antvis/S2/issues/2662)) ([ab0d0e7](https://github.com/antvis/S2/commit/ab0d0e768cf627249b38205b8c77d95a20b3a901))
+* 修复紧凑模式下数值单元格maxWidth计算错误的问题 ([#2668](https://github.com/antvis/S2/issues/2668)) ([c6bc0b8](https://github.com/antvis/S2/commit/c6bc0b845e2ff4434db4770ea62e351b866c3a6f))
+
+
+### Reverts
+
+* Revert "fix: 修复紧凑模式下数值单元格maxWidth计算错误的问题 (#2668)" (#2671) ([3737da3](https://github.com/antvis/S2/commit/3737da3a6f6a2f358fcc5bb44a375b668e801e0f)), closes [#2668](https://github.com/antvis/S2/issues/2668) [#2671](https://github.com/antvis/S2/issues/2671)
+
 # [@antv/s2-v1.55.0](https://github.com/antvis/S2/compare/@antv/s2-v1.54.8...@antv/s2-v1.55.0) (2024-04-12)
 
 

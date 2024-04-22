@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v1.7.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.7.0...@antv/s2-vue-v1.7.1) (2024-04-19)
+
+
+### Bug Fixes
+
+* 修复分页配置无法透传 ([#2666](https://github.com/antvis/S2/issues/2666)) ([2d5aaa4](https://github.com/antvis/S2/commit/2d5aaa4c5e70f48d007e4fb0f3c75871cc4148f1))
+
 # [@antv/s2-vue-v1.7.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.6.1...@antv/s2-vue-v1.7.0) (2024-04-12)
 
 
