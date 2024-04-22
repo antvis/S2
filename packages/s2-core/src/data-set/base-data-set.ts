@@ -9,6 +9,7 @@ import {
   max,
   memoize,
   min,
+  isArray,
 } from 'lodash';
 import type { Indexes } from '../utils/indexes';
 import type { CellMeta, Data, RowData, ViewMeta } from '../common';
@@ -66,7 +67,9 @@ export abstract class BaseDataSet {
    * 查找字段信息
    */
   public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
-    return find(this.meta || meta, (m: Meta) => m.field === field);
+    return find(this.meta || meta, (m: Meta) =>
+      isArray(m.field) ? m.field.includes(field) : m.field === field,
+    );
   });
 
   /**

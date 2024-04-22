@@ -49,7 +49,7 @@ export enum CellBorderPosition {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  field?: string; // 字段 id
+  field?: string | string[]; // 字段 id
   name?: string; // 字段名称
   description?: string; // 字段描述
   // 格式化
