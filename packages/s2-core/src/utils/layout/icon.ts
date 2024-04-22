@@ -1,6 +1,11 @@
 import { merge } from 'lodash';
 import { findFieldCondition, getIconPositionCfg } from '../condition/condition';
-import type { Conditions, IconCfg, IconCondition, IconTheme } from '@/common';
+import type {
+  Conditions,
+  IconCfg,
+  IconCondition,
+  IconTheme,
+} from '../../common';
 
 export const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
   return merge(
