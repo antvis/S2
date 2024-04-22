@@ -56,10 +56,10 @@ describe('Compare Layout Tests', () => {
     expect(dataCellWidthList).toEqual(
       options.showDefaultHeaderActionIcon
         ? [179, 179, 179, 179, 98, 98, 98, 98, 81, 81, 81, 81]
-        : [179, 179, 179, 179, 98, 98, 98, 98, 69, 69, 69, 69],
+        : [179, 179, 179, 179, 98, 98, 98, 98, 63, 63, 63, 63],
     );
     expect(colLeafNodeWidthList).toEqual(
-      options.showDefaultHeaderActionIcon ? [179, 98, 81] : [179, 98, 69],
+      options.showDefaultHeaderActionIcon ? [179, 98, 81] : [179, 98, 63],
     );
   });
 
@@ -130,11 +130,11 @@ describe('Compare Layout Tests', () => {
 
       expect(dataCellWidthList).toEqual(
         options.showDefaultHeaderActionIcon
-          ? [179, 179, 179, 179, 98, 98, 98, 98, 81, 81, 81, 81]
-          : [179, 179, 179, 179, 98, 98, 98, 98, 69, 69, 69, 69],
+          ? [197, 197, 197, 197, 116, 116, 116, 116, 81, 81, 81, 81]
+          : [197, 197, 197, 197, 116, 116, 116, 116, 62, 62, 62, 62],
       );
       expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [179, 98, 81] : [179, 98, 69],
+        options.showDefaultHeaderActionIcon ? [197, 116, 81] : [197, 116, 62],
       );
     },
   );
