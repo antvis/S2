@@ -1,6 +1,7 @@
 import {
   getIconPositionCfg,
   getIntervalScale,
+  findFieldCondition,
 } from '@/utils/condition/condition';
 
 describe('getIconLayoutPosition Test', () => {
@@ -21,6 +22,37 @@ describe('getIconLayoutPosition Test', () => {
         mapping: () => ({ fill: 'red' }),
       }),
     ).toEqual('left');
+  });
+});
+
+describe('getFieldCondition Test', () => {
+  test('should find the condition where fill is green', () => {
+    const conditions = [
+      {
+        field: 'value',
+        mapping: () => ({ fill: 'red' }),
+      },
+      { field: 'price', mapping: () => ({ fill: 'blue' }) },
+      { field: 'price', mapping: () => ({ fill: 'green' }) },
+    ];
+    expect(findFieldCondition(conditions, 'price').mapping().fill).toBe(
+      'green',
+    );
+  });
+
+  test('should not find the condition where fill is orange', () => {
+    const conditions = [
+      {
+        field: 'value',
+        mapping: () => ({ fill: 'red' }),
+      },
+      { field: 'price', mapping: () => ({ fill: 'blue' }) },
+      { field: /price/, mapping: () => ({ fill: 'orange' }) },
+      { field: 'p', mapping: () => ({ fill: 'pink' }) },
+    ];
+    expect(findFieldCondition(conditions, 'price').mapping().fill).toBe(
+      'orange',
+    );
   });
 });
 
