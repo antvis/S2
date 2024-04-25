@@ -97,8 +97,8 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
           while (
             (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
-            count > 0 &&
-            rowIndex <= rowLength - 1
+            rowIndex <= rowLength - 1 &&
+            count > 0
           ) {
             for (let j = rowIndex; j < rowLength && count > 0; j++) {
               const rowData = this.displayData[j];

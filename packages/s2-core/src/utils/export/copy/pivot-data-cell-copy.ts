@@ -152,7 +152,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
               : rowLength;
 
           while (
-            deadline.timeRemaining() > 0 &&
+            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
             rowIndex <= rowLength - 1 &&
             count > 0
           ) {
