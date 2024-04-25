@@ -1,11 +1,11 @@
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from '../../../util';
-import { getContainer } from '../../../util/helpers';
+import { createTableSheet, getContainer } from '../../../util/helpers';
+import { NewLine, NewTab } from '@/common';
+import { CopyMIMEType } from '@/common/interface/export';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
-import { NewTab, NewLine } from '@/common';
-import { CopyMIMEType } from '@/common/interface/export';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', async () => {
@@ -360,6 +360,30 @@ describe('TableSheet Export Test', () => {
       });
 
       // 自定义列头, 不管有没有开启格式化, 配置 meta, 都使用 field.title 展示
+      expect(data.split(NewLine)).toMatchSnapshot();
+    },
+  );
+
+  // https://github.com/antvis/S2/issues/2681
+  it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
+    'should export correctly data for single row data by %o',
+    async (options) => {
+      const tableSheet = createTableSheet({ width: 600, height: 400 });
+
+      tableSheet.setDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'price', 'cost'],
+        },
+        data: [{ province: '浙江', city: '杭州', type: '笔', price: 1 }],
+      });
+
+      await tableSheet.render();
+      const data = await asyncGetAllPlainData({
+        sheetInstance: tableSheet,
+        split: '\t',
+        ...options,
+      });
+
       expect(data.split(NewLine)).toMatchSnapshot();
     },
   );

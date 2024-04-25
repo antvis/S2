@@ -2,7 +2,7 @@ import { NewLine, NewTab, PivotSheet, asyncGetAllPlainData } from '@antv/s2';
 import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import {
   customColGridSimpleFields,
   customRowGridSimpleFields,
@@ -601,4 +601,25 @@ describe('PivotSheet Export Test', () => {
 
     expect(data.split(NewLine)).toMatchSnapshot();
   });
+
+  // https://github.com/antvis/S2/issues/2681
+  it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
+    'should export correctly data for single row data by %o',
+    async (options) => {
+      const sheet = createPivotSheet({ width: 600, height: 400 });
+
+      sheet.setDataCfg({
+        data: sheet.dataCfg.data.slice(0, 1),
+      });
+
+      await sheet.render();
+      const data = await asyncGetAllPlainData({
+        sheetInstance: sheet,
+        split: '\t',
+        ...options,
+      });
+
+      expect(data.split(NewLine)).toMatchSnapshot();
+    },
+  );
 });
