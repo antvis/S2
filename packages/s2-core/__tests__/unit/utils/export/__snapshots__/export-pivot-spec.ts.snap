@@ -21,3 +21,24 @@ type	sub_type	数值	数值	数值	数值	数值	数值	数值	数值
 办公用品	笔	945	1304	1145	1432	2335	245	2457	2458
 办公用品	纸张	1343	1354	1523	1634	4004	3077	3551	352"
 `;
+
+exports[`PivotSheet Export Test should export correct data with formatter for custom column headers 1`] = `
+Array [
+  "	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2",
+  "	自定义节点 a-2	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	",
+  "type	sub_type	指标1	指标2		",
+  "家具	桌子	13	2		",
+  "家具	椅子	11	8		",
+]
+`;
+
+exports[`PivotSheet Export Test should export correct data with formatter for custom row headers 1`] = `
+Array [
+  "		type	家具	家具",
+  "自定义节点 a-1	自定义节点 a-1-1	指标1	桌子	椅子",
+  "自定义节点 a-1	自定义节点 a-1-1	指标1	13	11",
+  "自定义节点 a-1	自定义节点 a-1-1	指标2	2	8",
+  "自定义节点 a-1	自定义节点 a-1-2			",
+  "自定义节点 a-2				",
+]
+`;

@@ -1,27 +1,27 @@
-import { map } from 'lodash';
-import type { SpreadSheet } from '../../../sheet-type';
+import { map, zip } from 'lodash';
 import {
+  AsyncRenderThreshold,
+  SERIES_NUMBER_FIELD,
+  getDefaultSeriesNumberText,
   type CellMeta,
   type RawData,
-  getDefaultSeriesNumberText,
-  SERIES_NUMBER_FIELD,
-  AsyncRenderThreshold,
 } from '../../../common';
-import type { Node } from '../../../facet/layout/node';
 import type {
-  CopyableList,
   CopyAllDataParams,
+  CopyableList,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
+import type { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type';
 import {
   convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import { assembleMatrix, getFormatter } from './common';
-import { getHeaderNodeFromMeta } from './core';
 import { BaseDataCellCopy } from './base-data-cell-copy';
+import { assembleMatrix, getFormatter, getNodeFormatData } from './common';
+import { getHeaderNodeFromMeta } from './core';
 
 class TableDataCellCopy extends BaseDataCellCopy {
   private displayData: RawData[];
@@ -37,13 +37,13 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
   private getSelectedColNodes(): Node[] {
     const selectedCols = getSelectedCols(this.config.selectedCells);
-    const allColNodes = this.spreadsheet.facet.getColNodes();
+    const colLeafNodes = this.spreadsheet.facet.getColLeafNodes();
 
     if (selectedCols.length === 0) {
-      return allColNodes;
+      return colLeafNodes;
     }
 
-    return map(selectedCols, (meta) => allColNodes[meta.colIndex]);
+    return map(selectedCols, (meta) => colLeafNodes[meta.colIndex]);
   }
 
   private getSelectedDisplayData(): RawData[] {
@@ -146,21 +146,14 @@ class TableDataCellCopy extends BaseDataCellCopy {
     return SERIES_NUMBER_FIELD === field && seriesNumber?.enable;
   }
 
-  private getColMatrix(): string[] {
-    const { formatHeader } = this.config;
-
-    // 明细表的表头，没有格式化
-    return this.columnNodes.map((node) => {
-      const field: string = node.field;
-
-      if (!formatHeader) {
-        return field;
-      }
-
-      return this.isSeriesNumberField(field)
-        ? getDefaultSeriesNumberText()
-        : this.spreadsheet.dataSet.getFieldName(field);
-    }) as string[];
+  private getColMatrix(): string[][] {
+    return zip(
+      ...this.columnNodes.map((node) => {
+        return this.isSeriesNumberField(node.field)
+          ? [getDefaultSeriesNumberText()]
+          : getNodeFormatData(node);
+      }),
+    ) as string[][];
   }
 
   private getValueFromMeta = (meta: CellMeta) => {
@@ -198,7 +191,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix }),
+      assembleMatrix({ colMatrix, dataMatrix }),
       this.config.separator,
     );
   }
@@ -218,7 +211,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      assembleMatrix({ colMatrix, dataMatrix: matrix }),
       this.config.separator,
     );
   }
@@ -235,7 +228,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      assembleMatrix({ colMatrix, dataMatrix: matrix }),
       this.config.separator,
     );
   }
