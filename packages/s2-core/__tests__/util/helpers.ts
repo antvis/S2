@@ -109,6 +109,7 @@ export const createFakeSpreadSheet = (config?: {
     },
     getField: jest.fn(),
     displayFormattedValueMap: new Map(),
+    moreThanOneValue: jest.fn(),
   } as unknown as any;
 
   const layoutResult: LayoutResult = {

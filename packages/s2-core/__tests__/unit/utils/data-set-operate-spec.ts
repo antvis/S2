@@ -35,6 +35,10 @@ describe('Data Set Operate Test', () => {
         flattenIndexesData(data, QueryDataType.DetailOnly),
       ).toBeArrayOfSize(4);
     });
+
+    test('custom flattenDeep', () => {
+      expect(keys(customFlattenDeep(data))).toHaveLength(8);
+    });
   });
 
   describe('Dataset Operate Test GetListBySorted', () => {
@@ -58,6 +62,15 @@ describe('Data Set Operate Test', () => {
     it('should get correct list by sub sorted list', () => {
       expect(getListBySorted(list, ['四川省'])).toEqual(['四川省', '浙江省']);
       expect(getListBySorted(list, ['浙江省'])).toEqual(['浙江省', '四川省']);
+    });
+
+    it('should get correct list by empty sorted list', () => {
+      expect(getListBySorted(list, [])).toEqual(['浙江省', '四川省']);
+      expect(getListBySorted(list, ['', ''])).toEqual(['浙江省', '四川省']);
+      expect(getListBySorted(list, [null, undefined])).toEqual([
+        '浙江省',
+        '四川省',
+      ]);
     });
   });
 
@@ -181,5 +194,36 @@ describe('Data Set Operate Test', () => {
         }.toString(),
       );
     });
+  });
+
+  it('#filterOutDetail()', () => {
+    expect(filterOutDetail()).toEqual([]);
+    expect(filterOutDetail([TOTAL_VALUE])).toEqual([]);
+    expect(filterOutDetail([EMPTY_EXTRA_FIELD_PLACEHOLDER])).toEqual([]);
+    expect(filterOutDetail(['test'])).toEqual(['test']);
+    expect(filterOutDetail([''])).toEqual(['']);
+  });
+
+  it('#sortByItems()', () => {
+    expect(sortByItems([], [])).toEqual([]);
+    expect(sortByItems(['1', '2', '5'], ['1', '2', '3'])).toEqual([
+      '5',
+      '1',
+      '2',
+      '3',
+    ]);
+    expect(sortByItems(['1', '2', '3'], ['3', '2', '1'])).toEqual([
+      '3',
+      '2',
+      '1',
+    ]);
+    expect(sortByItems(['1', '2', '3'], ['4', '5', '6'])).toEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+    ]);
   });
 });
