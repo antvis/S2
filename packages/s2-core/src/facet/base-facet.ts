@@ -283,15 +283,14 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getRowCellHeight(node: Node): number {
+  protected getRowCellHeight(node: Node): number | undefined {
     const { rowCell, dataCell } = this.spreadsheet.options.style!;
 
     // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
     return (
       this.getRowCellDraggedHeight(node) ??
       this.getCellCustomSize(node, rowCell?.height) ??
-      dataCell?.height ??
-      0
+      dataCell?.height
     );
   }
 
@@ -364,7 +363,7 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number) {
+  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number = 0) {
     if (!cell) {
       return defaultHeight;
     }
@@ -424,6 +423,14 @@ export abstract class BaseFacet {
 
       colsHierarchy.height += levelSampleNode.height;
     });
+  }
+
+  isCustomRowCellHeight(defaultHeight: number | undefined) {
+    return (
+      isNumber(defaultHeight) &&
+      defaultHeight !== DEFAULT_STYLE.rowCell?.height &&
+      defaultHeight !== DEFAULT_STYLE.dataCell?.height
+    );
   }
 
   hideScrollBar = () => {
