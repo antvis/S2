@@ -15,7 +15,6 @@ import type {
   Condition,
   FormatResult,
   IconCfg,
-  IconCondition,
   MappingResult,
   TextTheme,
   ViewMeta,
@@ -27,7 +26,10 @@ import {
   shouldUpdateBySelectedCellsHighlight,
   updateBySelectedCellsHighlight,
 } from '../utils/cell/data-cell';
-import { getIconPositionCfg } from '../utils/condition/condition';
+import {
+  getIconPositionCfg,
+  findFieldCondition,
+} from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
@@ -36,6 +38,8 @@ import {
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 import { shouldReverseFontColor } from '../utils/color';
+import { LayoutWidthTypes } from '../common/constant/options';
+import { getDataCellIconStyle } from '../utils/layout';
 
 /**
  * DataCell for panelGroup area
@@ -244,18 +248,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getIconStyle(): IconCfg | undefined {
-    const { size, margin } = this.theme.dataCell.icon;
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
+    return getDataCellIconStyle(
+      this.conditions,
+      this.theme.dataCell.icon,
+      this.meta.valueField,
     );
-
-    const iconCfg: IconCfg = iconCondition &&
-      iconCondition.mapping && {
-        size,
-        margin,
-        position: getIconPositionCfg(iconCondition),
-      };
-    return iconCfg;
   }
 
   protected drawConditionIntervalShape() {
@@ -312,7 +309,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    return getMaxTextWidth(width, this.getIconStyle());
+    const iconCfg = this.getIconStyle();
+
+    return getMaxTextWidth(width, iconCfg);
   }
 
   protected getTextPosition(): Point {
@@ -455,11 +454,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   public findFieldCondition(conditions: Condition[]): Condition {
-    return findLast(conditions, (item) => {
-      return item.field instanceof RegExp
-        ? item.field.test(this.meta.valueField)
-        : item.field === this.meta.valueField;
-    });
+    return findFieldCondition(conditions, this.meta.valueField);
   }
 
   /**
