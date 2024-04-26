@@ -67,7 +67,7 @@ export class PivotSheet extends SpreadSheet {
    * Check if the value is in the columns
    */
   public isValueInCols(): boolean {
-    return this.dataSet.fields.valueInCols!;
+    return this.dataSet?.fields?.valueInCols!;
   }
 
   public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {

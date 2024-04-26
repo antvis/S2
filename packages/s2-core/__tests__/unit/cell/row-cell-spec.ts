@@ -189,4 +189,23 @@ describe('Row Cell Tests', () => {
       expect(rowCell2.getBackgroundShape().style.fill).toEqual(defaultColor);
     });
   });
+
+  describe('Tree Icon Tests', () => {
+    const s2 = createPivotSheet({
+      width: 800,
+      height: 600,
+      hierarchyType: 'tree',
+    });
+
+    s2.render();
+
+    test('should render tree icon', () => {
+      const icons = s2
+        .getRowNodes()
+        .map((rowNode) => (rowNode.belongsCell as RowCell).getTreeIcon())
+        .filter(Boolean);
+
+      expect(icons).toHaveLength(1);
+    });
+  });
 });
