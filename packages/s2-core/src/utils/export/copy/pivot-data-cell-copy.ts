@@ -144,15 +144,19 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       try {
         // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 this.leafRowNodes 和 this.leafColNodes
         const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-          let count = AsyncRenderThreshold;
-          const rowLen: number = this.leafRowNodes.length;
+          const rowLength: number = this.leafRowNodes.length;
+          // requestIdleCallback 浏览器空闲时会多次执行, 只有一行数据时执行一次即可, 避免生成重复数据
+          let count =
+            rowLength >= AsyncRenderThreshold
+              ? AsyncRenderThreshold
+              : rowLength;
 
           while (
-            deadline.timeRemaining() > 0 &&
-            rowIndex < rowLen - 1 &&
+            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+            rowIndex <= rowLength - 1 &&
             count > 0
           ) {
-            for (let j = rowIndex; j < rowLen && count > 0; j++) {
+            for (let j = rowIndex; j < rowLength && count > 0; j++) {
               const row: DataItem[] = [];
               const rowNode = this.leafRowNodes[j];
 
@@ -177,7 +181,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
             }
           }
 
-          if (rowIndex === rowLen - 1) {
+          if (rowIndex === rowLength - 1) {
             resolve(matrix);
           } else {
             requestIdleCallback(dataMatrixIdleCallback);
