@@ -1,3 +1,10 @@
+# [@antv/s2-v1.55.2](https://github.com/antvis/S2/compare/@antv/s2-v1.55.1...@antv/s2-v1.55.2) (2024-04-26)
+
+
+### Bug Fixes
+
+* 修复紧凑模式下单元格宽度计算忽略了icon宽度的问题 ([#2673](https://github.com/antvis/S2/issues/2673)) ([dd053c3](https://github.com/antvis/S2/commit/dd053c3c54ef084255f07a97f5dfef42e0b50d79))
+
 # [@antv/s2-v1.55.1](https://github.com/antvis/S2/compare/@antv/s2-v1.55.0...@antv/s2-v1.55.1) (2024-04-19)
 
 
