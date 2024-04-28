@@ -27,23 +27,6 @@ describe('Options Tests', () => {
     };
     const options = getBaseSheetComponentOptions(tooltipOptions);
 
-    expect(options.tooltip).toMatchInlineSnapshot(`
-      Object {
-        "autoAdjustBoundary": "body",
-        "enable": false,
-        "operation": Object {
-          "hiddenColumns": true,
-          "menu": Object {
-            "items": Array [
-              Object {
-                "key": "custom",
-                "label": "custom",
-              },
-            ],
-          },
-          "sort": false,
-        },
-      }
-    `);
+    expect(options.tooltip).toMatchSnapshot();
   });
 });

@@ -36,27 +36,11 @@ describe('drill-down test', () => {
       id: 'test',
     } as Node;
 
-    expect(getDrillDownCache(s2, node)).toMatchInlineSnapshot(`
-      Object {
-        "drillDownCurrentCache": undefined,
-        "drillDownDataCache": Array [],
-      }
-    `);
+    expect(getDrillDownCache(s2, node)).toMatchSnapshot();
 
     s2.store.set('drillDownDataCache', [{ rowId: node.id }]);
 
-    expect(getDrillDownCache(s2, node)).toMatchInlineSnapshot(`
-      Object {
-        "drillDownCurrentCache": Object {
-          "rowId": "test",
-        },
-        "drillDownDataCache": Array [
-          Object {
-            "rowId": "test",
-          },
-        ],
-      }
-    `);
+    expect(getDrillDownCache(s2, node)).toMatchSnapshot();
   });
 
   test('#handleActionIconClick()', () => {
@@ -111,14 +95,10 @@ describe('drill-down test', () => {
         {
           headerActionIcons: [],
         },
-        null,
+        {} as PartDrillDown,
         callback,
       ),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "headerActionIcons": Array [],
-      }
-    `);
+    ).toMatchSnapshot();
 
     expect(
       buildDrillDownOptions(
@@ -128,21 +108,7 @@ describe('drill-down test', () => {
         partDrillDown,
         callback,
       ),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "headerActionIcons": Array [
-          Object {
-            "action": [Function],
-            "belongsCell": "rowCell",
-            "defaultHide": true,
-            "displayCondition": [Function],
-            "iconNames": Array [
-              "DrillDownIcon",
-            ],
-          },
-        ],
-      }
-    `);
+    ).toMatchSnapshot();
   });
 
   test('#handleDrillDown()', async () => {
