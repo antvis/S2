@@ -16,6 +16,7 @@ const s2Options: S2Options = {
     },
     layoutWidthType: LayoutWidthType.Compact,
   },
+  showDefaultHeaderActionIcon: false,
 };
 
 describe('Compare Layout Tests', () => {
@@ -25,8 +26,28 @@ describe('Compare Layout Tests', () => {
     });
   };
 
-  test('should get max col width for pivot sheet', async () => {
-    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+  const mapWidthList = (s2: SpreadSheet) => {
+    const colLeafNodeWidthList = s2.facet
+      .getColLeafNodes()
+      .map((node) => Math.floor(node.width));
+    const dataCellWidthList = s2.facet
+      .getDataCells()
+      .map((cell) => Math.floor(cell.getMeta().width));
+
+    return {
+      colLeafNodeWidthList,
+      dataCellWidthList,
+    };
+  };
+
+  test.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])('should get max col width for pivot sheet by %o', async (options) => {
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, {
+      ...s2Options,
+      ...options,
+    });
 
     s2.setTheme({
       dataCell: {
@@ -44,8 +65,14 @@ describe('Compare Layout Tests', () => {
     expectTextOverflowing(s2);
   });
 
-  test('should get max col width for table sheet', async () => {
-    const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
+  test.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])('should get max col width for table sheet by %o', async (options) => {
+    const s2 = new TableSheet(getContainer(), mockDataConfig, {
+      ...s2Options,
+      ...options,
+    });
 
     s2.setDataCfg({
       fields: {
@@ -66,5 +93,56 @@ describe('Compare Layout Tests', () => {
 
     expect(Math.floor(colLeafNodes[0].width)).toBeCloseTo(182);
     expectTextOverflowing(s2);
+    const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
+
+    expect(dataCellWidthList.every((width) => width === 182)).toBeTruthy();
+    expect(colLeafNodeWidthList).toEqual([182]);
   });
+
+  test.skip.each([
+    { showDefaultHeaderActionIcon: true },
+    { showDefaultHeaderActionIcon: false },
+  ])(
+    'should get max col width for pivot sheet by condition and %o',
+    async (options) => {
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, {
+        ...s2Options,
+        ...options,
+        conditions: {
+          icon: [
+            {
+              field: 'price',
+              position: 'left',
+              mapping: () => {
+                return {
+                  icon: 'Plus',
+                  fill: '#396',
+                };
+              },
+            },
+          ],
+        },
+      });
+
+      s2.setTheme({
+        dataCell: {
+          text: {
+            fontSize: 20,
+          },
+        },
+      });
+      await s2.render();
+
+      const { dataCellWidthList, colLeafNodeWidthList } = mapWidthList(s2);
+
+      expect(dataCellWidthList).toEqual(
+        options.showDefaultHeaderActionIcon
+          ? [197, 197, 197, 197, 116, 116, 116, 116, 81, 81, 81, 81]
+          : [197, 197, 197, 197, 116, 116, 116, 116, 62, 62, 62, 62],
+      );
+      expect(colLeafNodeWidthList).toEqual(
+        options.showDefaultHeaderActionIcon ? [197, 116, 81] : [197, 116, 62],
+      );
+    },
+  );
 });

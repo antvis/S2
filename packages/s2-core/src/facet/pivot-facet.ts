@@ -262,9 +262,11 @@ export class PivotFacet extends FrozenFacet {
     const { rows, columns } = dataSet.fields;
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals!.row : totals!.col;
-    const dimensionGroup = isSubTotal
+    const defaultDimensionGroup = isSubTotal
       ? totalConfig?.subTotalsGroupDimensions || []
       : totalConfig?.grandTotalsGroupDimensions || [];
+    const dimensionGroup = !dataSet.isEmpty() ? defaultDimensionGroup : [];
+
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
 
     for (let level = maxLevel; level > 0; level--) {

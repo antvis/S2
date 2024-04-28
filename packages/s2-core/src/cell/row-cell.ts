@@ -374,10 +374,10 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected handleViewport() {
-    const { scrollY, viewportHeight, spreadsheet } = this.getHeaderConfig();
+    const { scrollY, viewportHeight } = this.getHeaderConfig();
 
-    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+    const frozenRowGroupHeight = (this.spreadsheet.facet as FrozenFacet)
+      ?.frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
 
     const viewport: AreaRange = {
       start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,

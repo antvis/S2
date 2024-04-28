@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.16...@antv/s2-react-v2.0.0-next.17) (2024-04-26)
+
+
+### Bug Fixes
+
+* 修复明细表自定义多级列头导出格式错误 close [#2664](https://github.com/antvis/S2/issues/2664) ([#2674](https://github.com/antvis/S2/issues/2674)) ([ae9add9](https://github.com/antvis/S2/commit/ae9add9c722877aced481340f798408a09ad98fb))
+
 # [@antv/s2-react-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.15...@antv/s2-react-v2.0.0-next.16) (2024-03-29)
 
 

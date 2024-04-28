@@ -1,5 +1,5 @@
 import { type S2Options } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '../../src';
+import { getBaseSheetComponentOptions } from '../../../src/utils/options';
 
 describe('Options Tests', () => {
   test('should get safety options', () => {

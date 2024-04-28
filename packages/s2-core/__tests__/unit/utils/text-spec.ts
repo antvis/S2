@@ -1,5 +1,6 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import type { TextTheme } from '../../../src/common';
+import { safeJsonParse } from '../../../src/utils/common';
 import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   isUpDataValue,
@@ -199,6 +200,20 @@ describe('Text Utils Tests', () => {
         },
       ],
     ]);
+  });
+
+  test('should get cell width', () => {
+    expect(getCellWidth({ width: 30 })).toEqual(30);
+    expect(getCellWidth({ width: 30 }, 2)).toEqual(60);
+  });
+
+  test('should safe parse json', () => {
+    const value = {
+      a: [1],
+    };
+
+    expect(safeJsonParse('')).toEqual(null);
+    expect(safeJsonParse(JSON.stringify(value))).toEqual(value);
   });
 });
 

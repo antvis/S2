@@ -18,3 +18,4 @@ export * from './cell/data-cell';
 export * from './sort-action';
 export * from './inject-css-text';
 export * from './math';
+export * from './canvas';

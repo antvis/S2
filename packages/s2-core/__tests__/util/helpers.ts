@@ -109,6 +109,7 @@ export const createFakeSpreadSheet = (config?: {
     },
     getField: jest.fn(),
     displayFormattedValueMap: new Map(),
+    moreThanOneValue: jest.fn(),
   } as unknown as any;
 
   const layoutResult: LayoutResult = {
@@ -166,6 +167,7 @@ export const createFakeSpreadSheet = (config?: {
     getFieldDescription: jest.fn(),
     getCustomFieldDescription: jest.fn(),
     getCellMultiData: jest.fn(() => []),
+    moreThanOneValue: jest.fn(),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();
@@ -264,6 +266,8 @@ export const createMockCellInfo = (
     update: jest.fn(),
     getActualText: jest.fn(),
     getFieldValue: jest.fn(),
+    getBBoxByType: jest.fn(() => {}),
+    getStyle: jest.fn(() => {}),
     hideInteractionShape: jest.fn(),
     updateByState: jest.fn(),
     isTextOverflowing: jest.fn(),

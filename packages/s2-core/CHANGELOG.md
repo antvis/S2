@@ -1,3 +1,11 @@
+# [@antv/s2-v2.0.0-next.18](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.17...@antv/s2-v2.0.0-next.18) (2024-04-26)
+
+
+### Bug Fixes
+
+* 修复只有一行数据时异步导出数据为空 close [#2681](https://github.com/antvis/S2/issues/2681) ([#2682](https://github.com/antvis/S2/issues/2682)) ([fecd455](https://github.com/antvis/S2/commit/fecd455cf3b18a76cbae680ebb27ae7c1dcb66ec))
+* 修复明细表自定义多级列头导出格式错误 close [#2664](https://github.com/antvis/S2/issues/2664) ([#2674](https://github.com/antvis/S2/issues/2674)) ([ae9add9](https://github.com/antvis/S2/commit/ae9add9c722877aced481340f798408a09ad98fb))
+
 # [@antv/s2-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.16...@antv/s2-v2.0.0-next.17) (2024-03-29)
 
 

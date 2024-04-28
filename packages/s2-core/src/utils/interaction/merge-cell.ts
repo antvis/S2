@@ -118,12 +118,12 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
   const bottomRightCornerCell: DataCell[] = [];
 
   cells.forEach((cell) => {
-    const [row, col] = cell.position;
+    const [row, col] = cell.position || [];
 
     if (
       !find(
         cells,
-        (temp) => temp.position[0] === row + 1 && temp.position[1] === col,
+        (temp) => temp.position?.[0] === row + 1 && temp.position?.[1] === col,
       )
     ) {
       bottom.push(cell);
@@ -132,7 +132,7 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
     if (
       !find(
         cells,
-        (temp) => temp.position[1] === col + 1 && temp.position[0] === row,
+        (temp) => temp.position?.[1] === col + 1 && temp.position?.[0] === row,
       )
     ) {
       right.push(cell);
@@ -141,10 +141,10 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
 
   // 在绘制了 right border 后，如果它上面的 cell 也是 merge cell 中的，且无需绘制 right 时，需要单独为其位置 bottomRight corner 的 border，反正连线会断
   right.forEach((cell) => {
-    const [row, col] = cell.position;
+    const [row, col] = cell.position || [];
     const top = find(
       cells,
-      (temp) => temp.position[0] === row - 1 && temp.position[1] === col,
+      (temp) => temp.position?.[0] === row - 1 && temp.position?.[1] === col,
     );
 
     if (top && !includes(right, top)) {

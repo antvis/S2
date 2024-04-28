@@ -154,6 +154,7 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setOverscrollBehavior();
+    this.mountSheetInstance();
   }
 
   public isCustomHeaderFields(
@@ -484,6 +485,24 @@ export abstract class SpreadSheet extends EE {
     await this.doRender(renderOptions);
   }
 
+  private mountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      canvas.__s2_instance__ = this;
+    }
+  }
+
+  private unmountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      delete canvas.__s2_instance__;
+    }
+  }
+
   /**
    * 卸载表格
    * @example s2.destroy()
@@ -502,8 +521,8 @@ export abstract class SpreadSheet extends EE {
     this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.unmountSheetInstance();
     this.container?.destroy();
-
     removeOffscreenCanvas();
   }
 
@@ -610,10 +629,16 @@ export abstract class SpreadSheet extends EE {
   /**
    * 获取 <canvas/> HTML 元素
    */
-  public getCanvasElement(): HTMLCanvasElement {
+  public getCanvasElement(): HTMLCanvasElement & {
+    // eslint-disable-next-line camelcase
+    __s2_instance__: SpreadSheet;
+  } {
     return this.getCanvas()
       .getContextService()
-      .getDomElement() as HTMLCanvasElement;
+      .getDomElement() as HTMLCanvasElement & {
+      // eslint-disable-next-line camelcase
+      __s2_instance__: SpreadSheet;
+    };
   }
 
   public getLayoutWidthType(): LayoutWidthType {
