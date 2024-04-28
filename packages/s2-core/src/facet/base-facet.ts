@@ -283,15 +283,30 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getRowCellHeight(node: Node): number | undefined {
-    const { rowCell, dataCell } = this.spreadsheet.options.style!;
+  protected isCustomRowCellHeight(node: Node) {
+    const { dataCell } = this.spreadsheet.options.style!;
+    const defaultDataCellHeight = DEFAULT_STYLE.dataCell?.height;
 
-    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return (
+      isNumber(this.getCustomRowCellHeight(node)) ||
+      dataCell?.height !== defaultDataCellHeight
+    );
+  }
+
+  protected getCustomRowCellHeight(node: Node) {
+    const { rowCell } = this.spreadsheet.options.style!;
+
     return (
       this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCell?.height) ??
-      dataCell?.height
+      this.getCellCustomSize(node, rowCell?.height)
     );
+  }
+
+  protected getRowCellHeight(node: Node): number | undefined {
+    const { dataCell } = this.spreadsheet.options.style!;
+
+    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return this.getCustomRowCellHeight(node) ?? dataCell?.height;
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
@@ -423,14 +438,6 @@ export abstract class BaseFacet {
 
       colsHierarchy.height += levelSampleNode.height;
     });
-  }
-
-  isCustomRowCellHeight(defaultHeight: number | undefined) {
-    return (
-      isNumber(defaultHeight) &&
-      defaultHeight !== DEFAULT_STYLE.rowCell?.height &&
-      defaultHeight !== DEFAULT_STYLE.dataCell?.height
-    );
   }
 
   hideScrollBar = () => {

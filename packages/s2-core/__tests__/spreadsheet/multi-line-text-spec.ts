@@ -476,18 +476,16 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/2678
-    // TODO: 还有问题: 和 issues/2594 互斥
     test('should get correctly row cell height priority if actual text not wrap', async () => {
       updateStyle(3);
 
-      // 清空多行文本
-      s2.setDataCfg({ meta: [], data: s2.dataCfg.data.slice(3) });
       s2.setOptions({
         style: {
           rowCell: {
             heightByField: {
               'root[&]浙江省[&]宁波市': 20,
-              'root[&]浙江省[&]舟山市': 40,
+              'root[&]浙江省[&]舟山市': 60,
+              'root[&]浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省[&]杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市': 20,
               'root[&]四川省[&]成都市': 100,
             },
           },

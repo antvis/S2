@@ -63,7 +63,7 @@ export class TableFacet extends FrozenFacet {
     const node = { id: String(viewMeta?.rowIndex) } as Node;
     const rowHeight = this.getRowCellHeight(node);
 
-    if (this.isCustomRowCellHeight(rowHeight)) {
+    if (this.isCustomRowCellHeight(node)) {
       return rowHeight || 0;
     }
 
@@ -431,7 +431,7 @@ export class TableFacet extends FrozenFacet {
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
     while (leafNodes.length) {
