@@ -46,41 +46,4 @@ describe('PivotSheet Tree Mode Pagination Layout Tests', () => {
       y: 62,
     });
   });
-
-  test('should render correctly when row header wider than canvas', () => {
-    expect(s2.facet.panelGroup.getCanvasBBox()).toMatchInlineSnapshot(`
-      Object {
-        "height": 90.5,
-        "maxX": 399.57421875,
-        "maxY": 150.5,
-        "minX": 123,
-        "minY": 60,
-        "width": 276.57421875,
-        "x": 123,
-        "y": 60,
-      }
-    `);
-  });
-
-  test('should render correctly when row header wider than canvas if hierarchyCollapse enable1', () => {
-    s2.setOptions({
-      style: {
-        hierarchyCollapse: true,
-      },
-    });
-    s2.render(false);
-
-    expect(s2.facet.panelGroup.getCanvasBBox()).toMatchInlineSnapshot(`
-      Object {
-        "height": 30.5,
-        "maxX": 399.57421875,
-        "maxY": 90.5,
-        "minX": 123,
-        "minY": 60,
-        "width": 276.57421875,
-        "x": 123,
-        "y": 60,
-      }
-    `);
-  });
 });

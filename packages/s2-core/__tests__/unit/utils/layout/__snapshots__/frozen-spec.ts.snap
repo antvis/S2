@@ -2,27 +2,27 @@
 
 exports[`frozen test should get valid frozen options 1`] = `
 Object {
-  "frozenColCount": 0,
-  "frozenRowCount": 0,
-  "frozenTrailingColCount": 0,
-  "frozenTrailingRowCount": 0,
+  "colCount": 0,
+  "rowCount": 0,
+  "trailingColCount": 0,
+  "trailingRowCount": 0,
 }
 `;
 
 exports[`frozen test should get valid frozen options 2`] = `
 Object {
-  "frozenColCount": 1,
-  "frozenRowCount": 2,
-  "frozenTrailingColCount": 3,
-  "frozenTrailingRowCount": 4,
+  "colCount": 1,
+  "rowCount": 2,
+  "trailingColCount": 3,
+  "trailingRowCount": 4,
 }
 `;
 
 exports[`frozen test should get valid frozen options 3`] = `
 Object {
-  "frozenColCount": 10,
-  "frozenRowCount": 10,
-  "frozenTrailingColCount": 0,
-  "frozenTrailingRowCount": 0,
+  "colCount": 10,
+  "rowCount": 10,
+  "trailingColCount": 0,
+  "trailingRowCount": 0,
 }
 `;

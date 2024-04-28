@@ -5,10 +5,10 @@ describe('frozen test', () => {
     expect(
       getValidFrozenOptions(
         {
-          frozenColCount: 0,
-          frozenRowCount: 0,
-          frozenTrailingColCount: 0,
-          frozenTrailingRowCount: 0,
+          colCount: 0,
+          rowCount: 0,
+          trailingColCount: 0,
+          trailingRowCount: 0,
         },
         10,
         10,
@@ -18,10 +18,10 @@ describe('frozen test', () => {
     expect(
       getValidFrozenOptions(
         {
-          frozenColCount: 1,
-          frozenRowCount: 2,
-          frozenTrailingColCount: 3,
-          frozenTrailingRowCount: 4,
+          colCount: 1,
+          rowCount: 2,
+          trailingColCount: 3,
+          trailingRowCount: 4,
         },
         10,
         10,
@@ -31,10 +31,10 @@ describe('frozen test', () => {
     expect(
       getValidFrozenOptions(
         {
-          frozenColCount: 11,
-          frozenRowCount: 11,
-          frozenTrailingColCount: 11,
-          frozenTrailingRowCount: 11,
+          colCount: 11,
+          rowCount: 11,
+          trailingColCount: 11,
+          trailingRowCount: 11,
         },
         10,
         10,

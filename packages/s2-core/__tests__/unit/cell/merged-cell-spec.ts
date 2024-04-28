@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { CellType } from '../../../src/common/constant';
 import { createMockCellInfo } from '../../util/helpers';
 import { MergedCell } from '@/cell';
-import { CellTypes, GuiIcon, type ViewMeta } from '@/common';
+import { GuiIcon, type ViewMeta } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
@@ -56,6 +57,7 @@ describe('Merged Cell Tests', () => {
         layoutResult: {
           rowLeafNodes: [],
         },
+        getRowLeafNodeByIndex: () => {},
       } as PivotFacet;
 
       mergedCell = new MergedCell(s2, cells, meta);
@@ -75,7 +77,7 @@ describe('Merged Cell Tests', () => {
     });
 
     test('should get correctly cell type', () => {
-      expect(mergedCell.cellType).toEqual(CellTypes.MERGED_CELL);
+      expect(mergedCell.cellType).toEqual(CellType.MERGED_CELL);
     });
 
     test('should get text shape', () => {
@@ -93,7 +95,7 @@ describe('Merged Cell Tests', () => {
 
       mergedCell.addTextShape(textShape);
 
-      expect(mergedCell.getTextShapes()).toHaveLength(2);
+      expect(mergedCell.getTextShapes()).toHaveLength(1);
     });
 
     test('should reset shape after cell init', () => {

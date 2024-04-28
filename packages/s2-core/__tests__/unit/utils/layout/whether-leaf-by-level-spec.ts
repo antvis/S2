@@ -7,11 +7,7 @@ describe('whether-leaf-by-level test', () => {
 
     expect(
       whetherLeafByLevel({
-        facetCfg: {
-          colCfg: {},
-          spreadsheet: s2,
-          dataSet: s2.dataSet,
-        },
+        spreadsheet: s2,
         level: 0,
         fields: [],
       }),
@@ -19,11 +15,7 @@ describe('whether-leaf-by-level test', () => {
 
     expect(
       whetherLeafByLevel({
-        facetCfg: {
-          colCfg: {},
-          spreadsheet: s2,
-          dataSet: s2.dataSet,
-        },
+        spreadsheet: s2,
         level: 1,
         fields: ['a', 'b'],
       }),

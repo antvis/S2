@@ -1,7 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import { map } from 'lodash';
 import { s2Options, dataCfg } from '../data/total-group-data';
-import { CellData } from '../../src';
+import { CellData, S2DataConfig } from '../../src';
 import type { PivotFacet } from '../../src/facet';
 import { PivotSheet } from '@/sheet-type';
 import { type S2Options, ORIGIN_FIELD } from '@/common';
@@ -56,7 +56,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   test(`should get correct layout with row total group dimension 'city'`, async () => {
-    const newS2Options = {
+    const newS2Options: S2Options = {
       ...s2Options,
       totals: {
         ...s2Options.totals,
@@ -67,7 +67,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    s2 = new PivotSheet(container, dataCfg, newS2Options as S2Options);
+    s2 = new PivotSheet(container, dataCfg, newS2Options);
     await s2.render();
 
     const facet = s2.facet;
@@ -116,7 +116,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   test(`should get correct layout with row sub group dimension 'type'`, async () => {
-    const newS2Options = {
+    const newS2Options: S2Options = {
       ...s2Options,
       totals: {
         ...s2Options.totals,
@@ -129,7 +129,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    const newDataCfg = {
+    const newDataCfg: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
@@ -139,7 +139,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    s2 = new PivotSheet(container, newDataCfg, newS2Options as S2Options);
+    s2 = new PivotSheet(container, newDataCfg, newS2Options);
     await s2.render();
 
     const facet = s2.facet;
@@ -162,7 +162,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   test(`should get correct layout with col total group dimension 'type'`, async () => {
-    const newS2Options = {
+    const newS2Options: S2Options = {
       ...s2Options,
       totals: {
         ...s2Options.totals,
@@ -173,7 +173,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    const newDataCfg = {
+    const newDataCfg: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
@@ -183,7 +183,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    s2 = new PivotSheet(container, newDataCfg, newS2Options as S2Options);
+    s2 = new PivotSheet(container, newDataCfg, newS2Options);
     await s2.render();
 
     const facet = s2.facet;
@@ -200,7 +200,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   test(`should get correct layout with col total group dimension 'sub_type'`, async () => {
-    const newS2Options = {
+    const newS2Options: S2Options = {
       ...s2Options,
       totals: {
         ...s2Options.totals,
@@ -211,7 +211,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    const newDataCfg = {
+    const newDataCfg: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
@@ -221,7 +221,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    s2 = new PivotSheet(container, newDataCfg, newS2Options as S2Options);
+    s2 = new PivotSheet(container, newDataCfg, newS2Options);
     await s2.render();
 
     const facet = s2.facet;
@@ -248,7 +248,7 @@ describe('Total Group Dimension Test', () => {
   });
 
   test(`should get correct layout with col sub total group dimension 'sub_type'`, async () => {
-    const newS2Options = {
+    const newS2Options: S2Options = {
       ...s2Options,
       totals: {
         ...s2Options.totals,
@@ -261,7 +261,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    const newDataCfg = {
+    const newDataCfg: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
@@ -271,7 +271,7 @@ describe('Total Group Dimension Test', () => {
       },
     };
 
-    s2 = new PivotSheet(container, newDataCfg, newS2Options as S2Options);
+    s2 = new PivotSheet(container, newDataCfg, newS2Options);
     await s2.render();
 
     const facet = s2.facet;
@@ -362,8 +362,8 @@ describe('Total Group Dimension Test', () => {
       const { colNodes, colsHierarchy } = s2.facet.getLayoutResult();
 
       expect(colsHierarchy.height).toEqual(90);
-      expect(colNodes).toHaveLength(4);
-      expect(colNodes.find((node) => node.value === '总计')).toBeFalsy();
+      expect(colNodes).toHaveLength(7);
+      expect(colNodes.find((node) => node.value === '总计')).toBeTruthy();
       expect(colNodes.find((node) => node.value === '小计')).toBeFalsy();
     },
   );

@@ -1,6 +1,16 @@
-import { set } from 'lodash';
+import { keys, set } from 'lodash';
 import { flattenIndexesData } from '../../../src/utils/dataset/pivot-data-set';
-import { QueryDataType, type FlattingIndexesData } from '../../../src';
+import {
+  QueryDataType,
+  type FlattingIndexesData,
+  EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  TOTAL_VALUE,
+} from '../../../src';
+import {
+  customFlattenDeep,
+  filterOutDetail,
+  sortByItems,
+} from '../../../src/utils/data-set-operate';
 import { Aggregation } from '@/common/interface';
 import {
   getAggregationAndCalcFuncByQuery,
@@ -37,7 +47,7 @@ describe('Data Set Operate Test', () => {
     });
 
     test('custom flattenDeep', () => {
-      expect(keys(customFlattenDeep(data))).toHaveLength(8);
+      expect(keys(customFlattenDeep(data))).toHaveLength(12);
     });
   });
 

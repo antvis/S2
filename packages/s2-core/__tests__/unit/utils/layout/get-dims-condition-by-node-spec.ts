@@ -3,14 +3,14 @@ import { getDimsCondition } from '../../../../src/utils/layout/get-dims-conditio
 
 describe('get-dims-condition-by-node test', () => {
   test('should get dimension condition', () => {
-    const node = new Node({ key: 'test', id: 'test', value: 'value' });
+    const node = new Node({ field: 'test', id: 'test', value: 'value' });
     const emptyFieldNode = new Node({
-      key: EMPTY_FIELD_VALUE,
+      field: EMPTY_FIELD_VALUE,
       id: EMPTY_FIELD_VALUE,
       value: EMPTY_FIELD_VALUE,
     });
     const totalRootNode = new Node({
-      key: 'root',
+      field: 'root',
       id: 'root',
       value: 'root',
       isTotalRoot: true,

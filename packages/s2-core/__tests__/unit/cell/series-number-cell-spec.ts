@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { SeriesNumberCell } from '@/cell';
-import type { Formatter, HeaderActionIcon } from '@/common';
+import type { Formatter } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import { Node } from '@/facet/layout/node';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -8,25 +8,15 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-describe('header cell formatter test', () => {
-  const root = new Node({ id: `root`, key: '', value: '', children: [] });
+describe('series number cell cell formatter test', () => {
+  const root = new Node({ id: `root`, value: '', children: [] });
 
   const rowNode = new Node({
     id: `root[&]杭州`,
-    key: '',
-    value: '1',
+    value: '杭州',
     field: 'city',
     parent: root,
-    label: '杭州',
   });
-
-  const rowHeaderActionIcons: HeaderActionIcon[] = [
-    {
-      iconNames: ['Plus'],
-      belongsCell: 'rowCell',
-      defaultHide: false,
-    },
-  ];
 
   let s2: SpreadSheet;
 
@@ -50,23 +40,14 @@ describe('header cell formatter test', () => {
       expect(seriesNumberCell.getFieldValue()).toBe('杭州1');
     });
 
-    test('should render row header action icons', () => {
-      s2.options.headerActionIcons = rowHeaderActionIcons;
-
+    test('should get correctly icon style', () => {
       const seriesNumberCell = new SeriesNumberCell(rowNode, s2);
 
-      // @ts-ignore
-      seriesNumberCell.actionIcons = [];
-      // @ts-ignore
-      seriesNumberCell.drawActionIcons();
-      // @ts-ignore
-      expect(seriesNumberCell.actionIcons).toHaveLength(1);
-    });
-
-    test('should get empty icon style', () => {
-      const seriesNumberCell = new SeriesNumberCell(rowNode, s2);
-
-      expect(seriesNumberCell.getIconStyle()).toBeUndefined();
+      expect(seriesNumberCell.getIconStyle()).toEqual({
+        fill: '#000000',
+        margin: { left: 4, right: 4 },
+        size: 10,
+      });
     });
 
     test('should get empty field condition', () => {

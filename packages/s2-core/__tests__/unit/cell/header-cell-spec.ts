@@ -29,7 +29,7 @@ describe('header cell formatter test', () => {
 
   const rowHeaderActionIcons: HeaderActionIcon[] = [
     {
-      iconNames: ['Plus'],
+      icons: ['Plus'],
       belongsCell: 'rowCell',
       defaultHide: false,
     },
@@ -37,7 +37,7 @@ describe('header cell formatter test', () => {
 
   const colHeaderActionIcons: HeaderActionIcon[] = [
     {
-      iconNames: ['Plus'],
+      icons: ['Plus'],
       belongsCell: 'colCell',
       defaultHide: false,
     },
@@ -154,11 +154,11 @@ describe('header cell formatter test', () => {
       const rowCell = new RowCell(rowNode, s2);
 
       // @ts-ignore
-      rowCell.actionIcons = [];
+      rowCell.initCell();
       // @ts-ignore
-      rowCell.drawActionIcons();
+      rowCell.drawActionAndConditionIcons();
       // @ts-ignore
-      expect(rowCell.actionIcons).toHaveLength(1);
+      expect(rowCell.actionIcons).toHaveLength(2);
     });
 
     test('should render col header action icons', () => {
@@ -167,29 +167,29 @@ describe('header cell formatter test', () => {
       const colCell = new ColCell(colNode, s2);
 
       // @ts-ignore
-      colCell.actionIcons = [];
+      colCell.initCell();
       // @ts-ignore
-      colCell.drawActionIcons();
+      colCell.drawActionAndConditionIcons();
       // @ts-ignore
-      expect(colCell.actionIcons).toHaveLength(1);
+      expect(colCell.actionIcons).toHaveLength(2);
     });
 
     test('should render col header sort icons', () => {
       s2.options.showDefaultHeaderActionIcon = true;
       jest.spyOn(s2, 'isValueInCols').mockImplementationOnce(() => true);
+      const showSortIconSpy = jest
+        .spyOn(ColCell.prototype, 'showSortIcon')
+        .mockImplementation(() => true);
+
       const colCell = new ColCell(colNode, s2);
 
       // @ts-ignore
-      colCell.actionIcons = [];
-      const showSortIconSpy = jest
-        // @ts-ignore
-        .spyOn(colCell, 'showSortIcon')
-        .mockImplementation(() => true);
+      colCell.initCell();
 
       // @ts-ignore
-      colCell.drawActionIcons();
+      colCell.drawActionAndConditionIcons();
       // @ts-ignore
-      expect(colCell.actionIcons).toHaveLength(1);
+      expect(colCell.actionIcons).toHaveLength(2);
 
       showSortIconSpy.mockRestore();
     });

@@ -1,4 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
+import { RowCell } from '../../../src/cell/row-cell';
 import type { TextAlign } from '@/common';
 import type { SpreadSheet } from '@/sheet-type';
 
@@ -191,16 +192,15 @@ describe('Row Cell Tests', () => {
   });
 
   describe('Tree Icon Tests', () => {
-    const s2 = createPivotSheet({
-      width: 800,
-      height: 600,
-      hierarchyType: 'tree',
-    });
+    test('should render tree icon', async () => {
+      const s2 = createPivotSheet({
+        width: 800,
+        height: 600,
+        hierarchyType: 'tree',
+      });
 
-    s2.render();
-
-    test('should render tree icon', () => {
-      const icons = s2
+      await s2.render();
+      const icons = s2.facet
         .getRowNodes()
         .map((rowNode) => (rowNode.belongsCell as RowCell).getTreeIcon())
         .filter(Boolean);
