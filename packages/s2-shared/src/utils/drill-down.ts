@@ -51,7 +51,7 @@ export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
     'drillDownDataCache',
     [],
   ) as PartDrillDownDataCache[];
-  const cache = drillDownDataCache?.find((cache) => cache.rowId === meta.id);
+  const cache = drillDownDataCache?.find(({ rowId }) => rowId === meta.id);
 
   return {
     drillDownDataCache,
