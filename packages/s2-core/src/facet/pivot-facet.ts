@@ -422,10 +422,8 @@ export class PivotFacet extends FrozenFacet {
         colIconStyle,
       );
       const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(
-          leafNodeLabel,
-          colCellTextStyle,
-        ) + colIconWidth;
+        this.spreadsheet.measureTextWidth(leafNodeLabel, colCellTextStyle) +
+        colIconWidth;
 
       const measureInfo = this.getMeasureInfo();
 
@@ -467,10 +465,8 @@ export class PivotFacet extends FrozenFacet {
             );
             const dataCellIconWidth = size + left + right;
             const cellLabelWidth =
-              this.spreadsheet.measureTextWidthRoughly(
-                cellLabel,
-                dataCellTextStyle,
-              ) + dataCellIconWidth;
+              this.spreadsheet.measureTextWidth(cellLabel, dataCellTextStyle) +
+              dataCellIconWidth;
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
