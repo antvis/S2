@@ -410,7 +410,7 @@ export class PivotFacet extends FrozenFacet {
       } = this.spreadsheet.theme.colCell;
       const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
-      // leaf node rough width
+      // leaf node width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
         col.field,
       );
@@ -421,7 +421,7 @@ export class PivotFacet extends FrozenFacet {
           this.spreadsheet.options.showDefaultHeaderActionIcon,
         colIconStyle,
       );
-      const leafNodeRoughWidth =
+      const leafNodeWidth =
         this.spreadsheet.measureTextWidth(leafNodeLabel, colCellTextStyle) +
         colIconWidth;
 
@@ -477,7 +477,7 @@ export class PivotFacet extends FrozenFacet {
         }
       }
 
-      const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
+      const isLeafNodeWidthLonger = leafNodeWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger
         ? colIconWidth
