@@ -265,7 +265,7 @@ export abstract class BaseFacet {
     this.renderHeaders();
     this.renderScrollBars();
     this.renderBackground();
-    this.dynamicRenderCell();
+    this.dynamicRenderCell(true);
   }
 
   /**
@@ -641,24 +641,24 @@ export abstract class BaseFacet {
 
       this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-        const rowHeaderScrollX = Math.floor(newOffset);
-        this.setScrollOffset({ rowHeaderScrollX });
+        const newRowHeaderScrollX = Math.floor(newOffset);
+        this.setScrollOffset({ rowHeaderScrollX: newRowHeaderScrollX });
 
         this.rowHeader?.onRowScrollX(
-          rowHeaderScrollX,
+          newRowHeaderScrollX,
           KEY_GROUP_ROW_RESIZE_AREA,
         );
         this.rowIndexHeader?.onRowScrollX(
-          rowHeaderScrollX,
+          newRowHeaderScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
         );
         this.cornerHeader.onRowScrollX(
-          rowHeaderScrollX,
+          newRowHeaderScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
         );
 
         const scrollBarOffsetX = this.getScrollBarOffset(
-          rowHeaderScrollX,
+          newRowHeaderScrollX,
           this.hRowScrollBar,
         );
 
