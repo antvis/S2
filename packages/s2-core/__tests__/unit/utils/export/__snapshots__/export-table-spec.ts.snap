@@ -38,7 +38,7 @@ exports[`TableSheet Export Test should apply formatter for col header 1`] = `
 
 exports[`TableSheet Export Test should apply formatter for custom col header 1`] = `
 "地区	地区	类型	金额	金额
-省份	城市-#		价格	数量
+省份	城市		价格	数量
 浙江省	杭州市-@	家具		7789-$
 浙江省	绍兴市-@	家具		2367-$
 浙江省	宁波市-@	家具		3877-$

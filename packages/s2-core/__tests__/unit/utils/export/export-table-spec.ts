@@ -63,7 +63,7 @@ describe('TableSheet Export Test', () => {
         //  地区不格式化
         { field: 'area', formatter: (v) => `${v}-#` },
         // 自定义列头时, name 无效, 以 field.title 为准, formatter 只对 数值生效
-        { field: 'city', name: '城市-#', formatter: (v) => `${v}-@` },
+        { field: 'city', formatter: (v) => `${v}-@` },
         { field: 'number', formatter: (v) => `${v}-$` },
       ],
     };
