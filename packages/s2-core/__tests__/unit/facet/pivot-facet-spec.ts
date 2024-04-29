@@ -97,6 +97,7 @@ jest.mock('@/sheet-type', () => {
           container.getContextService().getDomElement() as HTMLCanvasElement,
         hideTooltip: jest.fn(),
         interaction: {
+          intercepts: new Set(),
           clearHoverTimer: jest.fn(),
         },
         measureTextWidth:
