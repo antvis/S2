@@ -68,8 +68,8 @@ describe('Scroll Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
-    // canvas.remove();
+    s2.destroy();
+    canvas.remove();
   });
 
   test('should hide tooltip when start scroll', () => {
