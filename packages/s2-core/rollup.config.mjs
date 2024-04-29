@@ -51,7 +51,7 @@ const plugins = [
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
       outDir,
-      include: ['src'],
+      include: ['src', '../../global.d.ts'],
     },
   }),
   postcss({

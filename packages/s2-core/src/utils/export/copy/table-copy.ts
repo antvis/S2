@@ -88,13 +88,17 @@ class TableDataCellCopy extends BaseDataCellCopy {
     return new Promise((resolve, reject) => {
       try {
         const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-          let count = AsyncRenderThreshold;
           const rowLength = this.displayData.length;
+          // requestIdleCallback 浏览器空闲时会多次执行, 只有一行数据时执行一次即可, 避免生成重复数据
+          let count =
+            rowLength >= AsyncRenderThreshold
+              ? AsyncRenderThreshold
+              : rowLength;
 
           while (
-            deadline.timeRemaining() > 0 &&
-            count > 0 &&
-            rowIndex < rowLength - 1
+            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+            rowIndex <= rowLength - 1 &&
+            count > 0
           ) {
             for (let j = rowIndex; j < rowLength && count > 0; j++) {
               const rowData = this.displayData[j];

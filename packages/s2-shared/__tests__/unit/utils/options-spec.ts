@@ -1,5 +1,5 @@
 import { type S2Options } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '../../src';
+import { getBaseSheetComponentOptions } from '../../../src/utils/options';
 
 describe('Options Tests', () => {
   test('should get safety options', () => {
@@ -27,23 +27,6 @@ describe('Options Tests', () => {
     };
     const options = getBaseSheetComponentOptions(tooltipOptions);
 
-    expect(options.tooltip).toMatchInlineSnapshot(`
-      Object {
-        "autoAdjustBoundary": "body",
-        "enable": false,
-        "operation": Object {
-          "hiddenColumns": true,
-          "menu": Object {
-            "items": Array [
-              Object {
-                "key": "custom",
-                "label": "custom",
-              },
-            ],
-          },
-          "sort": false,
-        },
-      }
-    `);
+    expect(options.tooltip).toMatchSnapshot();
   });
 });

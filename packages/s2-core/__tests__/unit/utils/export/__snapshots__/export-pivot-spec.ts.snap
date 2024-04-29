@@ -42,3 +42,19 @@ Array [
   "自定义节点 a-2				",
 ]
 `;
+
+exports[`PivotSheet Export Test should export correctly data for single row data by { isAsyncExport: false } 1`] = `
+Array [
+  "	type	笔	笔",
+  "province	city	price	cost",
+  "浙江	义乌	1	2",
+]
+`;
+
+exports[`PivotSheet Export Test should export correctly data for single row data by { isAsyncExport: true } 1`] = `
+Array [
+  "	type	笔	笔",
+  "province	city	price	cost",
+  "浙江	义乌	1	2",
+]
+`;
