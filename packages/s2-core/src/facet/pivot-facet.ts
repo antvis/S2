@@ -845,19 +845,20 @@ export class PivotFacet extends FrozenFacet {
     } = this.spreadsheet.theme.colCell!;
     const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
-    // leaf node rough width
+    // leaf node width
     const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
       colNode.field,
     );
     const leafNodeLabel = cellFormatter?.(colNode.value) ?? colNode.value;
-    const iconWidth = this.getExpectedCellIconWidth(
+    const colIconWidth = this.getExpectedCellIconWidth(
       CellType.COL_CELL,
       this.spreadsheet.isValueInCols() &&
         this.spreadsheet.options.showDefaultHeaderActionIcon!,
       colIconStyle!,
     );
-    const leafNodeRoughWidth =
-      this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+    const leafNodeWidth =
+      this.spreadsheet.measureTextWidth(leafNodeLabel, colCellTextStyle) +
+      colIconWidth;
 
     // 采样 50 个 label，逐个计算找出最长的 label
     let maxDataLabel = '';
@@ -887,7 +888,7 @@ export class PivotFacet extends FrozenFacet {
               valueData,
             ) ?? valueData;
           const cellLabel = `${formattedValue}`;
-          const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
+          const cellLabelWidth = this.spreadsheet.measureTextWidth(
             cellLabel,
             dataCellTextStyle,
           );
@@ -901,9 +902,9 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // compare result
-    const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
+    const isLeafNodeWidthLonger = leafNodeWidth > maxDataLabelWidth;
     const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
-    const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
+    const appendedWidth = isLeafNodeWidthLonger ? colIconWidth : 0;
 
     DebuggerUtil.getInstance().logger(
       'Max Label In Col:',
