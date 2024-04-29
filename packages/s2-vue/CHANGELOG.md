@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.11...@antv/s2-vue-v2.0.0-next.12) (2024-03-29)
+
+
+### Bug Fixes
+
+* 调整 peerDependencies 命中规则 ([#2633](https://github.com/antvis/S2/issues/2633)) ([73378c7](https://github.com/antvis/S2/commit/73378c70339c1d5536be33cdf3cece5404d1f5c9))
+
 # [@antv/s2-vue-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.10...@antv/s2-vue-v2.0.0-next.11) (2024-03-04)
 
 

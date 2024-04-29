@@ -3,6 +3,11 @@ import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
+import {
+  customColGridSimpleFields,
+  customRowGridSimpleFields,
+} from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
 import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
@@ -555,5 +560,45 @@ describe('PivotSheet Export Test', () => {
       四川省,南充市,1943,2333,2457,3551
       四川省,乐山市,2330,2445,2458,352"
     `);
+  });
+
+  it('should export correct data with formatter for custom row headers', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: customRowGridSimpleFields,
+      },
+      assembleOptions(),
+    );
+
+    await sheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: sheet,
+      split: '\t',
+      formatOptions: true,
+    });
+
+    expect(data.split(NewLine)).toMatchSnapshot();
+  });
+
+  it('should export correct data with formatter for custom column headers', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: customColGridSimpleFields,
+      },
+      assembleOptions(),
+    );
+
+    await sheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: sheet,
+      split: '\t',
+      formatOptions: true,
+    });
+
+    expect(data.split(NewLine)).toMatchSnapshot();
   });
 });

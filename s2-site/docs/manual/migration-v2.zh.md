@@ -507,12 +507,14 @@ const s2Options = {
 -     calcTotals: {}.
 -     reverseLayout: true,
 -     label: '总计'
+-     subLabel: '小计'
 -     totalsGroupDimensions: [],
 -     reverseSubLayout: true,
 
 +     calcGrandTotals: {}.
 +     reverseGrandTotalsLayout: true,
-+     grandTotalsLabel: '总计'
++     grandTotalsLabel: '总计',
++     subTotalsLabel: '小计',
 +     grandTotalsGroupDimensions: [],
 +     reverseSubTotalsLayout: true
     };

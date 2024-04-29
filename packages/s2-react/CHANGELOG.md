@@ -1,3 +1,11 @@
+# [@antv/s2-react-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.15...@antv/s2-react-v2.0.0-next.16) (2024-03-29)
+
+
+### Bug Fixes
+
+* 修复紧凑模式下数值单元格错误的展示了省略号 ([#2632](https://github.com/antvis/S2/issues/2632)) ([2822471](https://github.com/antvis/S2/commit/2822471e9f73ba7b19292dc88a93b96d38afa471))
+* 调整 peerDependencies 命中规则 ([#2633](https://github.com/antvis/S2/issues/2633)) ([73378c7](https://github.com/antvis/S2/commit/73378c70339c1d5536be33cdf3cece5404d1f5c9))
+
 # [@antv/s2-react-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.14...@antv/s2-react-v2.0.0-next.15) (2024-03-22)
 
 

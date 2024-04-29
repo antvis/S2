@@ -51,7 +51,7 @@ describe('TableSheet Export Test', () => {
         '序号',
         'province',
         'city',
-        '产品类型',
+        '产品类型产品',
         'sub_type',
         'number',
       ]);
@@ -184,7 +184,7 @@ describe('TableSheet Export Test', () => {
   });
 
   // https://github.com/antvis/S2/issues/2236
-  it('should export correct data When the split separator is configured', async () => {
+  it('should export correct data when the split separator is configured', async () => {
     const tableSheet = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -199,6 +199,7 @@ describe('TableSheet Export Test', () => {
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
       split: ',',
+      formatOptions: true,
     });
     // 只取前10行数据
     const result = slice(data.split(NewLine), 0, 5);
@@ -300,4 +301,66 @@ describe('TableSheet Export Test', () => {
 
     expect(data.split(NewLine)).toMatchSnapshot();
   });
+
+  // https://github.com/antvis/S2/issues/2664
+  it.each([{ formatOptions: true }, { formatOptions: false }])(
+    'should export correct data with formatter for custom column headers by %o',
+    async (options) => {
+      const tableSheet = new TableSheet(
+        getContainer(),
+        assembleDataCfg({
+          meta: [],
+          fields: {
+            columns: [
+              { field: 'name1', title: '板块' },
+              {
+                field: 'name2',
+                title: '二级板块',
+                children: [
+                  { field: 'IncomeQuota', title: '上年度收入基数' },
+                  { field: 'Quota', title: '本年度收入指标' },
+                  { field: 'CheckTotal', title: '本年累计收入指标' },
+                  { field: 'GrowthRate', title: '收入增长率指标' },
+                ],
+              },
+            ],
+          },
+          data: [
+            {
+              name1: '集团',
+              IncomeQuota: 0.1,
+              Quota: 0.2,
+              CheckTotal: 3222,
+              GrowthRate: 55555,
+            },
+            {
+              name1: '集团1',
+              IncomeQuota: 0.1,
+              Quota: 0.2,
+              CheckTotal: 3222,
+              GrowthRate: 55555,
+            },
+            {
+              name1: '集团2',
+              IncomeQuota: 0.1,
+              Quota: 0.2,
+              CheckTotal: 3222,
+              GrowthRate: 55555,
+            },
+          ],
+        }),
+        assembleOptions(),
+      );
+
+      await tableSheet.render();
+      const data = await asyncGetAllPlainData({
+        sheetInstance: tableSheet,
+        split: '\t',
+        ...options,
+      });
+
+      // 自定义列头, 不管有没有开启格式化, 配置 meta, 都使用 field.title 展示
+      expect(data.split(NewLine)).toMatchSnapshot();
+    },
+  );
 });

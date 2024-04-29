@@ -52,6 +52,8 @@ fetch(
           reverseGrandTotalsLayout: true,
           reverseSubTotalsLayout: true,
           subTotalsDimensions: ['province'],
+          // grandTotalsLabel: '总计',
+          // subTotalsLabel: '小计',
         },
         col: {
           showGrandTotals: true,
@@ -59,6 +61,8 @@ fetch(
           reverseGrandTotalsLayout: true,
           reverseSubTotalsLayout: true,
           subTotalsDimensions: ['type'],
+          // grandTotalsLabel: '总计',
+          // subTotalsLabel: '小计',
         },
       },
     };

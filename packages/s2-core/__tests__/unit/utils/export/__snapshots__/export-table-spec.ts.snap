@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TableSheet Export Test should export correct data When the split separator is configured 1`] = `
+exports[`TableSheet Export Test should export correct data when the split separator is configured 1`] = `
 Array [
-  "province,city,type,sub_type,number",
+  "省份,城市,类别,子类别,数量",
   "浙江省,杭州市,家具,桌子,7789",
   "浙江省,绍兴市,家具,桌子,2367",
   "浙江省,宁波市,家具,桌子,3877",
@@ -93,6 +93,26 @@ Array [
 ]
 `;
 
+exports[`TableSheet Export Test should export correct data with formatter for custom column headers by { formatOptions: false } 1`] = `
+Array [
+  "板块	二级板块	二级板块	二级板块	二级板块",
+  "	上年度收入基数	本年度收入指标	本年累计收入指标	收入增长率指标",
+  "集团	0.1	0.2	3222	55555",
+  "集团1	0.1	0.2	3222	55555",
+  "集团2	0.1	0.2	3222	55555",
+]
+`;
+
+exports[`TableSheet Export Test should export correct data with formatter for custom column headers by { formatOptions: true } 1`] = `
+Array [
+  "板块	二级板块	二级板块	二级板块	二级板块",
+  "	上年度收入基数	本年度收入指标	本年累计收入指标	收入增长率指标",
+  "集团	0.1	0.2	3222	55555",
+  "集团1	0.1	0.2	3222	55555",
+  "集团2	0.1	0.2	3222	55555",
+]
+`;
+
 exports[`TableSheet Export Test should export correct data with formatter if contain repeat column name 1`] = `
 Array [
   "省份,子类别,类别,子类别,子类别",
@@ -178,7 +198,7 @@ Array [
 
 exports[`TableSheet Export Test should export correct data with series number 1`] = `
 Array [
-  "序号	province	city	产品类型	sub_type	number",
+  "序号	province	city	产品类型产品	sub_type	number",
   "1	浙江省	杭州市	家具	桌子	7789",
   "2	浙江省	绍兴市	家具	桌子	2367",
   "3	浙江省	宁波市	家具	桌子	3877",
@@ -188,7 +208,7 @@ Array [
 
 exports[`TableSheet Export Test should export correct data with series number 2`] = `
 Array [
-  "序号	province	city	产品类型	sub_type	number",
+  "序号	province	city	产品类型产品	sub_type	number",
   "1	浙江省	杭州市	家具	桌子	7789",
   "2	浙江省	绍兴市	家具	桌子	2367",
   "3	浙江省	宁波市	家具	桌子	3877",
@@ -197,7 +217,7 @@ Array [
 `;
 
 exports[`TableSheet Export Test should export correct data with totals 1`] = `
-"province	type	sub_type	number
+"province-province	type-type	sub_type	number
 浙江省-province	家具-type	桌子	7789
 浙江省-province	家具-type	桌子	2367
 浙江省-province	家具-type	桌子	3877
