@@ -366,11 +366,15 @@ describe('Total Group Dimension Test', () => {
     'should render correctly group totals layout if data is empty by %o',
     (config) => {
       s2 = new PivotSheet(container, dataCfg, {
-        ...config,
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
+        totals: {
+          col: {
+            ...config,
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+          },
+        },
       });
 
       s2.setDataCfg({
@@ -386,8 +390,8 @@ describe('Total Group Dimension Test', () => {
       const { colNodes, colsHierarchy } = s2.facet.layoutResult;
 
       expect(colsHierarchy.height).toEqual(90);
-      expect(colNodes).toHaveLength(4);
-      expect(colNodes.find((node) => node.value === '总计')).toBeFalsy();
+      expect(colNodes).toHaveLength(7);
+      expect(colNodes.find((node) => node.value === '总计')).toBeTruthy();
       expect(colNodes.find((node) => node.value === '小计')).toBeFalsy();
     },
   );

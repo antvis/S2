@@ -1,12 +1,11 @@
-import { isEqual, forEach, isBoolean } from 'lodash';
+import { forEach, isEqual } from 'lodash';
 import type { DataCell } from '../../cell';
-import type { SpreadSheet } from '../../sheet-type';
 import {
-  EXTRA_FIELD,
-  VALUE_FIELD,
-  InteractionStateName,
   CellTypes,
-  EMPTY_PLACEHOLDER,
+  DATA_CELL_ID_SEPARATOR,
+  EXTRA_FIELD,
+  InteractionStateName,
+  VALUE_FIELD,
 } from '../../common/constant';
 import type {
   CellMeta,
@@ -15,6 +14,7 @@ import type {
   MappingDataItemCallback,
   S2CellType,
 } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 
 export const handleDataItem = (
   data: Data,
@@ -37,8 +37,8 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   });
 };
 
-export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
+export const getDataCellId = (rowId: string, colId: string) => {
+  return `${rowId}${DATA_CELL_ID_SEPARATOR}${colId}`;
 };
 
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
