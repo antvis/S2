@@ -286,6 +286,24 @@ const s2Options = {
 }
 ```
 
+### 禁用右键菜单不生效？
+
+表格内部监听 `G` 的 `rightup/rightdown` 事件，而不是 `<canvas/>` DOM 的 `contextmenu` 事件，因此默认行为**并不是弹出右键系统菜单**，所以 `event.preventDefault()` 无效：
+
+```ts | pure
+// ❌ 无效写法
+s2.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
+  event.preventDefault();
+})
+
+// ✅ 正确写法
+s2.getCanvasElement().addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+});
+```
+
+[了解更多](https://g.antv.antgroup.com/api/event/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95)
+
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
 <embed src="@/docs/common/packages.zh.md"></embed>

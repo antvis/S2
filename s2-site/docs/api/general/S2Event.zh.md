@@ -140,7 +140,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 复制      | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                           |
 | 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                             |
 | 点击      | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                 |
-| 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键                             |
+| 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88))                          |
 | 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
 | 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
 | 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |

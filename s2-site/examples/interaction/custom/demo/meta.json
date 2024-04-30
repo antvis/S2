@@ -19,6 +19,15 @@
         "en": "Show tooltip when hover row or column"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/c%24ICO1qvb/Kapture%2525202021-12-03%252520at%25252016.30.11.gif"
+    },
+    {
+      "filename": "disable-context-menu.ts",
+      "title": {
+        "zh": "禁用右键菜单",
+        "en": "Disable context menu"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*i57MR6OphToAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }
