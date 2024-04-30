@@ -1,6 +1,8 @@
+/* eslint-disable jest/expect-expect */
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { cloneDeep } from 'lodash';
 import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -909,7 +911,7 @@ describe('Scroll Tests', () => {
         new MouseEvent('click', {
           clientX: x + scrollbar.position.x,
           // 在滚动条内点击
-          clientY: y + scrollbar.position.y + scrollbar.theme.size - 2,
+          clientY: y + scrollbar.position.y + scrollbar.theme.size! - 2,
         } as MouseEventInit),
       );
 
@@ -928,4 +930,30 @@ describe('Scroll Tests', () => {
       containsMock.mockReset();
     },
   );
+
+  test('should not trigger scroll event when first rendered', () => {
+    const expectScroll = getScrollExpect();
+
+    expectScroll();
+  });
+
+  test('should not trigger scroll event when options changed', () => {
+    const expectScroll = getScrollExpect();
+
+    s2.setOptions({
+      hierarchyType: 'tree',
+    });
+    s2.render();
+
+    expectScroll();
+  });
+
+  test('should not trigger scroll event when data config changed', () => {
+    const expectScroll = getScrollExpect();
+
+    s2.setDataCfg(cloneDeep(mockDataConfig));
+    s2.render();
+
+    expectScroll();
+  });
 });

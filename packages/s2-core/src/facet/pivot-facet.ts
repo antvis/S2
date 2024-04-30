@@ -410,7 +410,7 @@ export class PivotFacet extends FrozenFacet {
       } = this.spreadsheet.theme.colCell;
       const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
-      // leaf node rough width
+      // leaf node width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
         col.field,
       );
@@ -421,11 +421,9 @@ export class PivotFacet extends FrozenFacet {
           this.spreadsheet.options.showDefaultHeaderActionIcon,
         colIconStyle,
       );
-      const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(
-          leafNodeLabel,
-          colCellTextStyle,
-        ) + colIconWidth;
+      const leafNodeWidth =
+        this.spreadsheet.measureTextWidth(leafNodeLabel, colCellTextStyle) +
+        colIconWidth;
 
       const measureInfo = this.getMeasureInfo();
 
@@ -467,10 +465,8 @@ export class PivotFacet extends FrozenFacet {
             );
             const dataCellIconWidth = size + left + right;
             const cellLabelWidth =
-              this.spreadsheet.measureTextWidthRoughly(
-                cellLabel,
-                dataCellTextStyle,
-              ) + dataCellIconWidth;
+              this.spreadsheet.measureTextWidth(cellLabel, dataCellTextStyle) +
+              dataCellIconWidth;
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
@@ -481,7 +477,7 @@ export class PivotFacet extends FrozenFacet {
         }
       }
 
-      const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
+      const isLeafNodeWidthLonger = leafNodeWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger
         ? colIconWidth

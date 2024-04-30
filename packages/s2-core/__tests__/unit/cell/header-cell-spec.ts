@@ -181,13 +181,13 @@ describe('header cell formatter test', () => {
     test('should render col header sort icons', () => {
       s2.options.showDefaultHeaderActionIcon = true;
       jest.spyOn(s2, 'isValueInCols').mockImplementationOnce(() => true);
+      const showSortIconSpy = jest
+        .spyOn(ColCell.prototype, 'showSortIcon')
+        .mockImplementation(() => true);
+
       const colCell = new ColCell(colNode, s2);
       // @ts-ignore
       colCell.actionIcons = [];
-      const showSortIconSpy = jest
-        // @ts-ignore
-        .spyOn(colCell, 'showSortIcon')
-        .mockImplementation(() => true);
       // @ts-ignore
       colCell.drawActionIcons();
       // @ts-ignore
