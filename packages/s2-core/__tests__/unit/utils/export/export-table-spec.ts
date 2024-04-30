@@ -413,7 +413,7 @@ describe('TableSheet Export Test', () => {
     });
   });
 
-  // https://github.com/antvis/S2/pull/2692
+  // https://github.com/antvis/S2/issues/2688
   it('should apply formatter for custom col header by { formatHeader: true, formatData: true }', async () => {
     await expectCustomColumnsFormatterTest({
       formatHeader: true,
