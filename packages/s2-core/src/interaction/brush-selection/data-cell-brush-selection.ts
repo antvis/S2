@@ -10,6 +10,7 @@ import {
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { TableDataCell } from '../../cell/table-data-cell';
+import { getDataCellId } from '../../utils';
 import { BaseBrushSelection } from './base-brush-selection';
 
 export class DataCellBrushSelection extends BaseBrushSelection {
@@ -82,7 +83,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         metas.push({
           colIndex,
           rowIndex,
-          id: `${rowId}-${colId}`,
+          id: getDataCellId(rowId, colId),
           type: CellTypes.DATA_CELL,
           rowId,
           colId,

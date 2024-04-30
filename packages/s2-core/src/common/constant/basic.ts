@@ -52,6 +52,8 @@ export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
 export const ROOT_ID = 'root';
 export const ID_SEPARATOR = '[&]';
+// 数值单元格 ID 分割符 TODO: 2.0 版本使用唯一标识
+export const DATA_CELL_ID_SEPARATOR = '-';
 export const EMPTY_PLACEHOLDER = '-';
 
 export const PADDING_TOP = 0;

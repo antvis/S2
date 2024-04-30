@@ -2,9 +2,11 @@ import {
   escape,
   every,
   filter,
+  first,
   forEach,
   isEmpty,
   isNil,
+  last,
   map,
   max,
   orderBy,
@@ -14,8 +16,8 @@ import {
 import type { ColCell, HeaderCell, RowCell } from '../../cell';
 import {
   CellTypes,
+  DATA_CELL_ID_SEPARATOR,
   CopyType,
-  EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
@@ -354,6 +356,7 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   });
   return twoDimDataArray;
 };
+
 const processTableColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
@@ -631,7 +634,10 @@ const getDataWithHeaderMatrix = (
 ): Copyable => {
   const colMatrix = zip(
     ...map(cellMetaMatrix[0], (cellMeta) => {
-      const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+      const colId =
+        cellMeta?.colId ||
+        last(cellMeta?.id?.split(DATA_CELL_ID_SEPARATOR)) ||
+        '';
       return getHeaderMeasureFieldNames(
         getHeaderMeasureFields(colId),
         spreadsheet,
@@ -640,7 +646,10 @@ const getDataWithHeaderMatrix = (
   );
 
   const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
-    const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+    const rowId =
+      cellsMeta?.[0]?.rowId ||
+      first(cellsMeta?.[0]?.id?.split(DATA_CELL_ID_SEPARATOR)) ||
+      '';
     return getHeaderMeasureFieldNames(
       getHeaderMeasureFields(rowId),
       spreadsheet,
