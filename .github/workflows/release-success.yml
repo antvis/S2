@@ -57,39 +57,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
 
-      # 开始部署官网
-      - name: 🔊 Deploy start notify
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          ignoreError: true
-          body: |
-            {
-              "msgtype": "link",
-              "link": {
-                "title": "📢 开始自动部署旧版官网 (https://s2.antv.vision) 📢 ",
-                "text": "🔗 请点击链接查看详情",
-                "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
-                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"
-              }
-            }
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
-
-      # 安装官网依赖
-      - name: Install Dependencies
-        run: yarn
-
-      # 部署官网
-      - name: Deploy Site
-        run: yarn deploy
-
       # 失败通知
-      - name: 🔊 Deploy failed notify
+      - name: 🔊 Create failed notify
         if: ${{ failure() }}
         uses: zcong1993/actions-ding@master
         with:
@@ -99,8 +68,8 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🚨 旧版官网部署失败",
-                "text": "🔗 请点击链接查看具体原因, 尝试点击右上角 [Re-run all jobs] 重试, 或者手动部署 🚑",
+                "title": "🚨 同步 CHANGELOG 失败",
+                "text": "🔗 请点击链接查看具体原因, 尝试点击右上角 [Re-run all jobs] 重试 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
                 "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PRSkSqsE_vYAAAAAAAAAAAAADmJ7AQ/original"
               }
