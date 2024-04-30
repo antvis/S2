@@ -332,8 +332,8 @@ describe('Total Group Dimension Test', () => {
 
   // https://github.com/antvis/S2/issues/2661
   test.each([
-    { totalsGroupDimensions: [] },
-    { totalsGroupDimensions: ['city'] },
+    { grandTotalsGroupDimensions: [] },
+    { grandTotalsGroupDimensions: ['city'] },
   ])(
     'should render correctly group totals layout if data is empty by %o',
     async (config) => {
@@ -343,8 +343,8 @@ describe('Total Group Dimension Test', () => {
             ...config,
             showGrandTotals: true,
             showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
+            reverseGrandTotalsLayout: true,
+            reverseSubTotalsLayout: true,
           },
         },
       });

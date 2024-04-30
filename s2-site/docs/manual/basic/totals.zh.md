@@ -115,7 +115,7 @@ const s2Options = {
       reverseGrandTotalsLayout: true,
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      totalsGroupDimensions: ['city'],
+      grandTotalsGroupDimensions: ['city'],
       subTotalsGroupDimensions: ['type', 'sub_type'],
     },
     col: {

@@ -15,13 +15,15 @@ const s2Options: S2Options = {
   width: 600,
   height: 480,
   interaction: {
-    enableCopy: true,
-    copyWithHeader: true,
-    copyWithFormat: true,
+    copy: {
+      enable: true,
+      withHeader: true,
+      withFormat: true,
+    },
     brushSelection: {
-      data: true,
-      row: true,
-      col: true,
+      dataCell: true,
+      rowCell: true,
+      colCell: true,
     },
     multiSelection: true,
   },
@@ -30,15 +32,15 @@ const s2Options: S2Options = {
 describe('PivotSheet Special Dimension Values Copy Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createPivotSheet(s2Options);
     s2.setDataCfg(mockDataConfig);
-    s2.render();
+    await s2.render();
   });
 
   test('should correctly copy data with header', () => {
-    const { rowLeafNodes, colLeafNodes } = s2.facet.layoutResult;
-    const cells = s2.interaction.getPanelGroupAllDataCells().map((cell) => {
+    const { rowLeafNodes, colLeafNodes } = s2.facet.getLayoutResult();
+    const cells = s2.facet.getDataCells().map((cell) => {
       const meta = cell.getMeta();
       const colId = String(colLeafNodes[meta.colIndex].id);
       const rowId = isEmpty(rowLeafNodes)

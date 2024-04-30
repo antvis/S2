@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`List Table Core Data Process should copy all data 1`] = `
-"1	浙江省	杭州市	家具	### 问题摘要 
+"1	浙江省	杭州市	家具	### 问题摘要
 - **会话地址**：	7789
 2	浙江省	绍兴市	家具	桌子	2367
 3	浙江省	宁波市	家具	桌子	3877
@@ -38,7 +38,7 @@ exports[`List Table Core Data Process should copy all data 1`] = `
 
 exports[`List Table Core Data Process should copy all data with header in table mode 1`] = `
 "province	city	type	sub_type	number
-浙江省	杭州市	家具	\\"### 问题摘要 
+浙江省	杭州市	家具	\\"### 问题摘要
 - **会话地址**：\\"	7789
 浙江省	绍兴市	家具	桌子	2367
 浙江省	宁波市	家具	桌子	3877
@@ -61,20 +61,20 @@ exports[`List Table Core Data Process should copy all data with header in table 
 `;
 
 exports[`List Table Core Data Process should copy correct data when selected diagonal cells 1`] = `
-"浙江省	
-	
-	
-	
-	
-	
-	
-	
+"浙江省
+
+
+
+
+
+
+
 	宁波市"
 `;
 
 exports[`List Table Core Data Process should copy correctly data with header in table mode if contain repeat column 1`] = `
 "城市	城市	城市	城市	城市
-浙江省	杭州市	家具	\\"### 问题摘要 
+浙江省	杭州市	家具	\\"### 问题摘要
 - **会话地址**：\\"	7789
 浙江省	绍兴市	家具	桌子	2367
 浙江省	宁波市	家具	桌子	3877
@@ -97,7 +97,7 @@ exports[`List Table Core Data Process should copy correctly data with header in 
 `;
 
 exports[`List Table Core Data Process should copy series number data 1`] = `
-"1	浙江省	杭州市	家具	### 问题摘要 
+"1	浙江省	杭州市	家具	### 问题摘要
 - **会话地址**：	7789
 2	浙江省	绍兴市	家具	桌子	2367
 3	浙江省	宁波市	家具	桌子	3877
@@ -363,11 +363,13 @@ exports[`Tree Table Core Data Process should copy all data in tree mode 1`] = `
 `;
 
 exports[`Tree Table Core Data Process should copy all data in tree mode for custom row cell 1`] = `
-"			
-			
-13	11		
-2	8		
-			
+"家具	家具	家具	总计
+桌子	椅子	小计
+
+
+13	11
+2	8
+
 			"
 `;
 
