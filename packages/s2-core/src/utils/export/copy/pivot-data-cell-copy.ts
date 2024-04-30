@@ -312,14 +312,13 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected getColMatrix(): string[][] {
     return zip(
-      ...map(this.leafColNodes, this.getHeaderNodeMatrix),
+      ...map(this.leafColNodes, (node) => this.getHeaderNodeMatrix(node)),
     ) as string[][];
   }
 
   protected getRowMatrix(): string[][] {
-    const rowMatrix: string[][] = map(
-      this.leafRowNodes,
-      this.getHeaderNodeMatrix,
+    const rowMatrix: string[][] = map(this.leafRowNodes, (node) =>
+      this.getHeaderNodeMatrix(node),
     );
 
     return completeMatrix(rowMatrix);
