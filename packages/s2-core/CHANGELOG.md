@@ -1,3 +1,23 @@
+# [@antv/s2-v2.0.0-next.19](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.18...@antv/s2-v2.0.0-next.19) (2024-04-30)
+
+
+### Bug Fixes
+
+* **layout:** 修复空数据的情况开启汇总分组渲染报错 close [#2661](https://github.com/antvis/S2/issues/2661) ([#2662](https://github.com/antvis/S2/issues/2662)) ([8158660](https://github.com/antvis/S2/commit/81586601ea7451f6ca56932bd4bf4ef7738dbd7d))
+* 修复数据导出时列头被格式化 close [#2688](https://github.com/antvis/S2/issues/2688) ([#2694](https://github.com/antvis/S2/issues/2694)) ([19d8e60](https://github.com/antvis/S2/commit/19d8e608c27da89771cef7439402585af00750b9))
+* 修复树状模式下开启分页, 行头展开收起后表格渲染异常 close [#2582](https://github.com/antvis/S2/issues/2582) ([#2590](https://github.com/antvis/S2/issues/2590)) ([b9e48a0](https://github.com/antvis/S2/commit/b9e48a0202d4105b75b0961096f106ca6039c553))
+* 修复紧凑模式下单元格宽度计算忽略了icon宽度的问题 ([#2673](https://github.com/antvis/S2/issues/2673)) ([23ee734](https://github.com/antvis/S2/commit/23ee734ee09106f05b4278b8ab02202a78949a1d))
+* 修复维值带有 '-' 时刷选复制无法复制表头 close [#2684](https://github.com/antvis/S2/issues/2684) ([#2691](https://github.com/antvis/S2/issues/2691)) ([11c0325](https://github.com/antvis/S2/commit/11c03256cf7bdc369601d9efd8f8e65807ae7b2f))
+* 修复表格右键事件无法触发 close [#2687](https://github.com/antvis/S2/issues/2687) ([#2690](https://github.com/antvis/S2/issues/2690)) ([8b4f3e3](https://github.com/antvis/S2/commit/8b4f3e3dab83e6ae38b1d3362049af8352a7a4a9))
+* 修复计算列宽时计算的文字宽度和判断文本是否溢出隐藏的文字宽度不一致的问题 ([#2689](https://github.com/antvis/S2/issues/2689)) ([2f52f3b](https://github.com/antvis/S2/commit/2f52f3be865327230d7a44762f34eb5711452cfa))
+* 修复透视表开启多行文本后自定义行高不生效 close [#2678](https://github.com/antvis/S2/issues/2678) ([#2686](https://github.com/antvis/S2/issues/2686)) ([164259b](https://github.com/antvis/S2/commit/164259b66194de03c2073520389d2edfc352f9ab))
+* 修复非滚动引起的渲染也会触发滚动事件的问题 ([#2692](https://github.com/antvis/S2/issues/2692)) ([0cc2839](https://github.com/antvis/S2/commit/0cc2839c4058bb8fea8d73b03db00165612d6515))
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ed21dcb](https://github.com/antvis/S2/commit/ed21dcb82ea4cb434587a4ffa4819f2a619ca1aa))
+
 # [@antv/s2-v2.0.0-next.18](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.17...@antv/s2-v2.0.0-next.18) (2024-04-26)
 
 
