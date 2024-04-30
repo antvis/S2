@@ -339,12 +339,12 @@ describe('Total Group Dimension Test', () => {
     async (config) => {
       s2 = new PivotSheet(container, dataCfg, {
         totals: {
-          ...config,
           col: {
+            ...config,
             showGrandTotals: true,
             showSubTotals: true,
-            reverseGrandTotalsLayout: true,
-            reverseSubTotalsLayout: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
           },
         },
       });
