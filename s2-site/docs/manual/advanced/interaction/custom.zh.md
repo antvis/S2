@@ -74,7 +74,7 @@ import { TableSheet } from '@antv/s2';
 
 class ContextMenuInteraction extends BaseEvent {
   bindEvents() {
-    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
+    this.spreadsheet.getCanvasElement().addEventListener('contextmenu', (event) => {
       // 禁止弹出右键菜单
       event.preventDefault();
     });

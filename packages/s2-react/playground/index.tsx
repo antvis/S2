@@ -1593,6 +1593,10 @@ function MainLayout() {
                           onRowCellAllCollapsed={logHandler(
                             'onRowCellAllCollapsed',
                           )}
+                          onContextMenu={logHandler('onContextMenu')}
+                          onDataCellContextMenu={logHandler(
+                            'onDataCellContextMenu',
+                          )}
                         />
                       </React.StrictMode>
                     )}

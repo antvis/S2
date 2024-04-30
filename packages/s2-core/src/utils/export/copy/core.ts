@@ -1,26 +1,26 @@
-import { concat, every, isEmpty } from 'lodash';
+import { concat, every, first, isEmpty, last } from 'lodash';
+import type { ColCell, RowCell } from '../../../cell';
 import {
-  type CellMeta,
   CellType,
-  EMPTY_PLACEHOLDER,
+  DATA_CELL_ID_SEPARATOR,
   InteractionStateName,
+  type CellMeta,
   type S2CellType,
 } from '../../../common';
-import type { SpreadSheet } from '../../../sheet-type';
-import { copyToClipboard } from '../utils';
-import type { ColCell, RowCell } from '../../../cell';
-import { getSelectedCols, getSelectedRows } from '../method';
 import {
-  type CopyableList,
-  type CopyAllDataParams,
   CopyMIMEType,
+  type CopyAllDataParams,
+  type CopyableList,
 } from '../../../common/interface/export';
-import { getBrushHeaderCopyable } from './pivot-header-copy';
+import type { SpreadSheet } from '../../../sheet-type';
+import { getSelectedCols, getSelectedRows } from '../method';
+import { copyToClipboard } from '../utils';
 import {
   asyncProcessSelectedAllPivot,
   processSelectedPivotByDataCell,
   processSelectedPivotByHeader,
 } from './pivot-data-cell-copy';
+import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   asyncProcessSelectedAllTable,
   processSelectedTableByDataCell,
@@ -161,14 +161,20 @@ function getDataCellCopyable(
     const selectedColMetas = selectedCellsMeta[0].map((cellMeta) => {
       return {
         ...cellMeta,
-        id: cellMeta?.id?.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
+        id:
+          cellMeta?.colId ||
+          last(cellMeta?.id?.split(DATA_CELL_ID_SEPARATOR)) ||
+          '',
         type: CellType.COL_CELL,
       };
     });
     const selectedRowMetas = selectedCellsMeta.map((cellMeta) => {
       return {
         ...cellMeta[0],
-        id: cellMeta[0]?.id?.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
+        id:
+          cellMeta[0]?.rowId ||
+          first(cellMeta[0]?.id?.split(DATA_CELL_ID_SEPARATOR)) ||
+          '',
         type: CellType.ROW_CELL,
       };
     });

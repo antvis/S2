@@ -332,15 +332,15 @@ describe('Total Group Dimension Test', () => {
 
   // https://github.com/antvis/S2/issues/2661
   test.each([
-    { totalsGroupDimensions: [] },
-    { totalsGroupDimensions: ['city'] },
+    { grandTotalsGroupDimensions: [] },
+    { grandTotalsGroupDimensions: ['city'] },
   ])(
     'should render correctly group totals layout if data is empty by %o',
     async (config) => {
       s2 = new PivotSheet(container, dataCfg, {
         totals: {
-          ...config,
           col: {
+            ...config,
             showGrandTotals: true,
             showSubTotals: true,
             reverseGrandTotalsLayout: true,

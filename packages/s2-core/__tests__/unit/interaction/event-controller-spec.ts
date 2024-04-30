@@ -14,7 +14,7 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import { Renderer } from '@antv/g-canvas';
-import { GEventType, GuiIcon } from '@/common';
+import { GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
   CellType,
@@ -79,10 +79,7 @@ describe('Interaction Event Controller Tests', () => {
   };
 
   const expectEvents =
-    (
-      eventType: OriginEventType | GEventType,
-      customEvent?: (evt: FederatedEvent) => void,
-    ) =>
+    (eventType: OriginEventType, customEvent?: (evt: FederatedEvent) => void) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellType }) => {
       const { eventNames, type } = options;
 
@@ -176,7 +173,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.POINTER_MOVE,
       OriginEventType.POINTER_UP,
       OriginEventType.MOUSE_OUT,
-      GEventType.RIGHT_MOUSE_UP,
+      OriginEventType.RIGHT_DOWN,
       OriginEventType.CLICK,
       OriginEventType.TOUCH_START,
     ];
@@ -388,7 +385,7 @@ describe('Interaction Event Controller Tests', () => {
     },
   ])(
     'should emit context menu event for %s',
-    expectEvents(GEventType.RIGHT_MOUSE_UP),
+    expectEvents(OriginEventType.RIGHT_DOWN),
   );
 
   test('should emit global context menu event', () => {
@@ -398,7 +395,7 @@ describe('Interaction Event Controller Tests', () => {
 
     const evt = createFederatedPointerEvent(
       spreadsheet,
-      GEventType.RIGHT_MOUSE_UP,
+      OriginEventType.RIGHT_DOWN,
     );
 
     evt.client.x = MOCK_CLIENT.x;
