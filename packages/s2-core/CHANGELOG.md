@@ -1,3 +1,12 @@
+# [@antv/s2-v1.55.3](https://github.com/antvis/S2/compare/@antv/s2-v1.55.2...@antv/s2-v1.55.3) (2024-04-30)
+
+
+### Bug Fixes
+
+* 修复维值带有 '-' 时刷选复制无法复制表头 close [#2684](https://github.com/antvis/S2/issues/2684) ([#2691](https://github.com/antvis/S2/issues/2691)) ([0c0e888](https://github.com/antvis/S2/commit/0c0e8881d1d88ad7596fa29aeecdf7bc86381b1c))
+* 修复计算列宽时计算的文字宽度和判断文本是否溢出隐藏的文字宽度不一致的问题 ([#2689](https://github.com/antvis/S2/issues/2689)) ([49aa4cf](https://github.com/antvis/S2/commit/49aa4cfbf44ad73631c007fe3a9f480dbdfeaed6))
+* 修复非滚动引起的渲染也会触发滚动事件的问题 ([#2692](https://github.com/antvis/S2/issues/2692)) ([7bfe0f5](https://github.com/antvis/S2/commit/7bfe0f5f1536e6193abd30f216a2ea302ea01cd9))
+
 # [@antv/s2-v1.55.2](https://github.com/antvis/S2/compare/@antv/s2-v1.55.1...@antv/s2-v1.55.2) (2024-04-26)
 
 
