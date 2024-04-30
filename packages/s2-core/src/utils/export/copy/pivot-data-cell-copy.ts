@@ -9,13 +9,13 @@ import {
 } from 'lodash';
 import {
   AsyncRenderThreshold,
+  CornerNodeType,
   EXTRA_FIELD,
   VALUE_FIELD,
   type CellMeta,
   type DataItem,
   type MiniChartData,
   type MultiData,
-  CornerNodeType,
 } from '../../../common';
 import type {
   CopyAllDataParams,
@@ -29,8 +29,6 @@ import type { SpreadSheet } from '../../../sheet-type';
 import {
   convertString,
   getColNodeFieldFromNode,
-  getHeaderList,
-  getHeaderMeasureFieldNames,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
@@ -54,6 +52,15 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     super(params);
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
+  }
+
+  protected getHeaderNodeMatrix(node: Node) {
+    // 透视表的表头也是可以格式化的 (虚拟数值列 (EXTRA_FIELD)除外)
+    if (this.config.formatHeader) {
+      return getNodeFormatData(node);
+    }
+
+    return super.getHeaderNodeMatrix(node);
   }
 
   private getLeafRowNodes() {
@@ -315,22 +322,13 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected getColMatrix(): string[][] {
     return zip(
-      ...map(this.leafColNodes, (node) =>
-        this.config.formatHeader
-          ? getNodeFormatData(node)
-          : getHeaderMeasureFieldNames(
-              getHeaderList(node.id),
-              node.spreadsheet,
-            ),
-      ),
+      ...map(this.leafColNodes, (node) => this.getHeaderNodeMatrix(node)),
     ) as string[][];
   }
 
   protected getRowMatrix(): string[][] {
     const rowMatrix: string[][] = map(this.leafRowNodes, (node) =>
-      this.config.formatHeader
-        ? getNodeFormatData(node)
-        : getHeaderMeasureFieldNames(getHeaderList(node.id), node.spreadsheet),
+      this.getHeaderNodeMatrix(node),
     );
 
     return completeMatrix(rowMatrix);

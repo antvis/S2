@@ -20,7 +20,7 @@ import {
   getSelectedRows,
 } from '../method';
 import { BaseDataCellCopy } from './base-data-cell-copy';
-import { assembleMatrix, getFormatter, getNodeFormatData } from './common';
+import { assembleMatrix, getFormatter } from './common';
 import { getHeaderNodeFromMeta } from './core';
 
 class TableDataCellCopy extends BaseDataCellCopy {
@@ -33,6 +33,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     this.displayData = this.getSelectedDisplayData();
     this.columnNodes = this.getSelectedColNodes();
+  }
+
+  protected getHeaderNodeMatrix(node: Node) {
+    // 明细表的表头配置即作为列头, 也作为数值, 所以列头不应该被格式化
+    return super.getHeaderNodeMatrix(node);
   }
 
   private getSelectedColNodes(): Node[] {
@@ -153,9 +158,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
   private getColMatrix(): string[][] {
     return zip(
       ...this.columnNodes.map((node) => {
+        const matrix = this.getHeaderNodeMatrix(node);
+
         return this.isSeriesNumberField(node.field)
           ? [getDefaultSeriesNumberText()]
-          : getNodeFormatData(node);
+          : matrix;
       }),
     ) as string[][];
   }

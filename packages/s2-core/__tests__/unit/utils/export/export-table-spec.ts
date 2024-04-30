@@ -1,13 +1,72 @@
+/* eslint-disable jest/expect-expect */
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from '../../../util';
-import { createTableSheet, getContainer } from '../../../util/helpers';
+import {
+  createTableSheet,
+  expectMatchSnapshot,
+  getContainer,
+} from '../../../util/helpers';
+import { FormatOptions, S2DataConfig, S2Options } from '../../../../src';
+import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import { NewLine, NewTab } from '@/common';
 import { CopyMIMEType } from '@/common/interface/export';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
 
 describe('TableSheet Export Test', () => {
+  const expectColumnsFormatterMatchSnapshot = async (
+    dataCfg: S2DataConfig,
+    formatOptions: FormatOptions,
+  ) => {
+    const s2Options: S2Options = {
+      width: 800,
+      height: 600,
+    };
+
+    const tableSheet = new TableSheet(getContainer(), dataCfg, s2Options);
+
+    await expectMatchSnapshot(tableSheet, formatOptions);
+  };
+
+  const expectColumnsFormatterTest = async (formatOptions: FormatOptions) => {
+    const s2DataCfg: S2DataConfig = {
+      data: originData,
+      fields: {
+        columns: ['province', 'type', 'city', 'number'],
+      },
+      meta: [
+        // 无 name 和 formatter 不做任何处理
+        { field: 'province' },
+        // name 只对列头生效, formatter 只对 数值生效
+        { field: 'city', name: '城市-#', formatter: (v) => `${v}-@` },
+        { field: 'number', name: '数值', formatter: (v) => `${v}-$` },
+      ],
+    };
+
+    await expectColumnsFormatterMatchSnapshot(s2DataCfg, formatOptions);
+  };
+
+  const expectCustomColumnsFormatterTest = async (
+    formatOptions: FormatOptions,
+  ) => {
+    const customColDataCfg: S2DataConfig = {
+      data: originData,
+      fields: {
+        columns: customColSimpleColumns,
+      },
+      meta: [
+        //  地区 name 有效, formatter 无效
+        { field: 'area', formatter: (v) => `${v}-#` },
+        // 自定义列头时, name 无效, 以 field.title 为准, formatter 只对 数值生效
+        { field: 'city', formatter: (v) => `${v}-@` },
+        { field: 'number', formatter: (v) => `${v}-$` },
+      ],
+    };
+
+    await expectColumnsFormatterMatchSnapshot(customColDataCfg, formatOptions);
+  };
+
   it('should export correct data with series number', async () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -51,7 +110,7 @@ describe('TableSheet Export Test', () => {
         '序号',
         'province',
         'city',
-        '产品类型产品',
+        '产品类型',
         'sub_type',
         'number',
       ]);
@@ -302,68 +361,6 @@ describe('TableSheet Export Test', () => {
     expect(data.split(NewLine)).toMatchSnapshot();
   });
 
-  // https://github.com/antvis/S2/issues/2664
-  it.each([{ formatOptions: true }, { formatOptions: false }])(
-    'should export correct data with formatter for custom column headers by %o',
-    async (options) => {
-      const tableSheet = new TableSheet(
-        getContainer(),
-        assembleDataCfg({
-          meta: [],
-          fields: {
-            columns: [
-              { field: 'name1', title: '板块' },
-              {
-                field: 'name2',
-                title: '二级板块',
-                children: [
-                  { field: 'IncomeQuota', title: '上年度收入基数' },
-                  { field: 'Quota', title: '本年度收入指标' },
-                  { field: 'CheckTotal', title: '本年累计收入指标' },
-                  { field: 'GrowthRate', title: '收入增长率指标' },
-                ],
-              },
-            ],
-          },
-          data: [
-            {
-              name1: '集团',
-              IncomeQuota: 0.1,
-              Quota: 0.2,
-              CheckTotal: 3222,
-              GrowthRate: 55555,
-            },
-            {
-              name1: '集团1',
-              IncomeQuota: 0.1,
-              Quota: 0.2,
-              CheckTotal: 3222,
-              GrowthRate: 55555,
-            },
-            {
-              name1: '集团2',
-              IncomeQuota: 0.1,
-              Quota: 0.2,
-              CheckTotal: 3222,
-              GrowthRate: 55555,
-            },
-          ],
-        }),
-        assembleOptions(),
-      );
-
-      await tableSheet.render();
-      const data = await asyncGetAllPlainData({
-        sheetInstance: tableSheet,
-        split: '\t',
-        ...options,
-      });
-
-      // 自定义列头, 不管有没有开启格式化, 配置 meta, 都使用 field.title 展示
-      expect(data.split(NewLine)).toMatchSnapshot();
-    },
-  );
-
   // https://github.com/antvis/S2/issues/2681
   it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
     'should export correctly data for single row data by %o',
@@ -387,4 +384,47 @@ describe('TableSheet Export Test', () => {
       expect(data.split(NewLine)).toMatchSnapshot();
     },
   );
+
+  it('should not apply formatter for col header by { formatHeader: false, formatData: true }', async () => {
+    await expectColumnsFormatterTest({
+      formatHeader: false,
+      formatData: true,
+    });
+  });
+
+  it('should apply formatter for col header by { formatHeader: true, formatData: true }', async () => {
+    await expectColumnsFormatterTest({
+      formatHeader: true,
+      formatData: true,
+    });
+  });
+
+  it('should not apply formatter for col header and data cells by { formatHeader: false, formatData: false }', async () => {
+    await expectColumnsFormatterTest({
+      formatHeader: false,
+      formatData: false,
+    });
+  });
+
+  it('should not apply formatter for custom col header by { formatHeader: false, formatData: true }', async () => {
+    await expectCustomColumnsFormatterTest({
+      formatHeader: false,
+      formatData: true,
+    });
+  });
+
+  // https://github.com/antvis/S2/issues/2688
+  it('should apply formatter for custom col header by { formatHeader: true, formatData: true }', async () => {
+    await expectCustomColumnsFormatterTest({
+      formatHeader: true,
+      formatData: true,
+    });
+  });
+
+  it('should not apply formatter for custom col header and data cells by { formatHeader: false, formatData: false }', async () => {
+    await expectCustomColumnsFormatterTest({
+      formatHeader: false,
+      formatData: false,
+    });
+  });
 });
