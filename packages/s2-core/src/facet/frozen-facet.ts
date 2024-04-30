@@ -681,7 +681,7 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   protected getDefaultCellHeight(): number {
-    return this.getRowCellHeight(null as unknown as Node);
+    return this.getRowCellHeight(null as unknown as Node) ?? 0;
   }
 
   protected getShadowFill = (angle: number) => {

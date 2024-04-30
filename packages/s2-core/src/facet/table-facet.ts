@@ -11,7 +11,6 @@ import {
 } from 'lodash';
 import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
-  DEFAULT_STYLE,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
@@ -61,22 +60,11 @@ export class TableFacet extends FrozenFacet {
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
-    const { rowCell: rowCellStyle, dataCell: dataCellStyle } =
-      this.spreadsheet.options.style!;
     const node = { id: String(viewMeta?.rowIndex) } as Node;
+    const rowHeight = this.getRowCellHeight(node);
 
-    // 优先级: 行头拖拽 > 行头自定义高度 > 多行文本自适应高度 > 通用单元格高度
-    const rowHeight =
-      this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCellStyle?.height) ??
-      dataCellStyle?.height;
-
-    if (
-      isNumber(rowHeight) &&
-      rowHeight !== DEFAULT_STYLE.rowCell?.height &&
-      rowHeight !== DEFAULT_STYLE.dataCell?.height
-    ) {
-      return rowHeight;
+    if (this.isCustomRowCellHeight(node)) {
+      return rowHeight || 0;
     }
 
     const dataCell = new TableDataCell(viewMeta, this.spreadsheet, {
@@ -89,7 +77,7 @@ export class TableFacet extends FrozenFacet {
 
   private getCellHeightByRowIndex(rowIndex: number) {
     if (this.rowOffsets) {
-      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node) ?? 0;
     }
 
     return this.getDefaultCellHeight();
@@ -443,7 +431,7 @@ export class TableFacet extends FrozenFacet {
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
     while (leafNodes.length) {

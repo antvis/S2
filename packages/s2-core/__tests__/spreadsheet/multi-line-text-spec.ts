@@ -146,7 +146,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should default render one line text', () => {
@@ -473,6 +473,50 @@ describe('SpreadSheet Multi Line Text Tests', () => {
 
       matchCellStyleSnapshot();
       expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(760);
+    });
+
+    // https://github.com/antvis/S2/issues/2678
+    test('should get correctly row cell height priority if actual text not wrap', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            heightByField: {
+              'root[&]浙江省[&]宁波市': 20,
+              'root[&]浙江省[&]舟山市': 60,
+              'root[&]浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省[&]杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市': 20,
+              'root[&]四川省[&]成都市': 100,
+            },
+          },
+        },
+      });
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should get correctly col cell height priority if actual text not wrap', async () => {
+      updateStyle(3);
+
+      // 清空多行文本
+      s2.setDataCfg({ meta: [], data: s2.dataCfg.data.slice(3) });
+      s2.setOptions({
+        style: {
+          colCell: {
+            heightByField: {
+              type: 20,
+              sub_type: 20,
+              [EXTRA_FIELD]: 20,
+            },
+          },
+        },
+      });
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
     });
   });
 

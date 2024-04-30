@@ -283,16 +283,30 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getRowCellHeight(node: Node): number {
-    const { rowCell, dataCell } = this.spreadsheet.options.style!;
+  protected isCustomRowCellHeight(node: Node) {
+    const { dataCell } = this.spreadsheet.options.style!;
+    const defaultDataCellHeight = DEFAULT_STYLE.dataCell?.height;
 
-    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return (
+      isNumber(this.getCustomRowCellHeight(node)) ||
+      dataCell?.height !== defaultDataCellHeight
+    );
+  }
+
+  protected getCustomRowCellHeight(node: Node) {
+    const { rowCell } = this.spreadsheet.options.style!;
+
     return (
       this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCell?.height) ??
-      dataCell?.height ??
-      0
+      this.getCellCustomSize(node, rowCell?.height)
     );
+  }
+
+  protected getRowCellHeight(node: Node): number | undefined {
+    const { dataCell } = this.spreadsheet.options.style!;
+
+    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return this.getCustomRowCellHeight(node) ?? dataCell?.height;
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
@@ -364,7 +378,7 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number) {
+  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number = 0) {
     if (!cell) {
       return defaultHeight;
     }

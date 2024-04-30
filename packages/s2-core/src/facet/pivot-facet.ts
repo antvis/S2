@@ -402,10 +402,15 @@ export class PivotFacet extends FrozenFacet {
       return 0;
     }
 
+    const defaultHeight = this.getRowCellHeight(rowNode);
+
+    if (this.isCustomRowCellHeight(rowNode)) {
+      return defaultHeight || 0;
+    }
+
     const rowCell = new RowCell(rowNode, this.spreadsheet, {
       shallowRender: true,
     });
-    const defaultHeight = this.getRowCellHeight(rowNode);
 
     return this.getCellAdaptiveHeight(rowCell, defaultHeight);
   }
@@ -499,9 +504,13 @@ export class PivotFacet extends FrozenFacet {
         const currentBranchNodeHeights = Node.getBranchNodes(currentNode).map(
           (rowNode) => this.getRowNodeHeight(rowNode),
         );
-        // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准
-        const nodeHeight =
-          max(currentBranchNodeHeights) || this.getRowNodeHeight(currentNode);
+
+        const defaultHeight = this.getRowNodeHeight(currentNode);
+        // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678
+        // 自定义高度除外:  https://github.com/antvis/S2/issues/2594
+        const nodeHeight = this.isCustomRowCellHeight(currentNode)
+          ? defaultHeight
+          : max(currentBranchNodeHeights) ?? defaultHeight;
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
@@ -560,7 +569,7 @@ export class PivotFacet extends FrozenFacet {
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
     // 3、in grid type, all no-leaf node's height, y are auto calculated
-    let prevRowParent = null;
+    let prevRowParent: Node | null = null;
     let i = 0;
     const leafNodes = rowLeafNodes.slice(0);
 
