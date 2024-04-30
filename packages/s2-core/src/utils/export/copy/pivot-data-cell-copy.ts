@@ -39,6 +39,7 @@ import {
   completeMatrix,
   getFormatter,
   getMaxRowLen,
+  getNodeFormatData,
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
 
@@ -51,6 +52,15 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     super(params);
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
+  }
+
+  protected getHeaderNodeMatrix(node: Node) {
+    // 透视表的表头也是可以格式化的 (虚拟数值列 (EXTRA_FIELD)除外)
+    if (this.config.formatHeader) {
+      return getNodeFormatData(node);
+    }
+
+    return super.getHeaderNodeMatrix(node);
   }
 
   private getLeafRowNodes() {

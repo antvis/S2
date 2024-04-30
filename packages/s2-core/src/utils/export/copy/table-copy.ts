@@ -35,6 +35,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
     this.columnNodes = this.getSelectedColNodes();
   }
 
+  protected getHeaderNodeMatrix(node: Node) {
+    // 明细表的表头配置即作为列头, 也作为数值, 所以列头不应该被格式化
+    return super.getHeaderNodeMatrix(node);
+  }
+
   private getSelectedColNodes(): Node[] {
     const selectedCols = getSelectedCols(this.config.selectedCells);
     const colLeafNodes = this.spreadsheet.facet.getColLeafNodes();

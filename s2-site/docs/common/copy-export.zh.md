@@ -16,9 +16,9 @@ import { asyncGetAllPlainData, copyToClipboard } from '@antv/s2'
 const data = await asyncGetAllPlainData({
   sheetInstance: s2,
   split: '\t',
-  formatOptions: false,
+  formatOptions: true,
   // formatOptions: {
-  //   formatHeader: false,
+  //   formatHeader: true,
   //   formatData: true
   // },
 });
@@ -141,9 +141,9 @@ import { asyncGetAllPlainData, download } from '@antv/s2'
 const data = await asyncGetAllPlainData({
   sheetInstance: s2,
   split: '\t',
-  formatOptions: false,
+  formatOptions: true,
   // formatOptions: {
-  //   formatHeader: false,
+  //   formatHeader: true,
   //   formatData: true
   // },
 });
@@ -185,7 +185,7 @@ import { asyncGetAllPlainData, CopyMIMEType } from '@antv/s2'
 const data = await asyncGetAllPlainData({
   sheetInstance: s2,
   split: '\t',
-  formatOptions: false,
+  formatOptions: true,
   // 自定义导出类型
   customTransformer: () => {
     return {
@@ -208,7 +208,7 @@ const data = await asyncGetAllPlainData({
 | ------------|-----------------|---------------|---------------| --- |
 | sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
 | split       | 分隔符           | `string`       |     | ✓    |
-| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `false`  |      |
+| formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `false`  |      |
 | customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |
 | isAsyncExport  | 是否异步导出        | boolean      | false         |      |
 

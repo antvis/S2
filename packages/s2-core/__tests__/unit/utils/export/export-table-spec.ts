@@ -2,7 +2,11 @@
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from '../../../util';
-import { createTableSheet, getContainer } from '../../../util/helpers';
+import {
+  createTableSheet,
+  expectMatchSnapshot,
+  getContainer,
+} from '../../../util/helpers';
 import { FormatOptions, S2DataConfig, S2Options } from '../../../../src';
 import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import { NewLine, NewTab } from '@/common';
@@ -22,15 +26,7 @@ describe('TableSheet Export Test', () => {
 
     const tableSheet = new TableSheet(getContainer(), dataCfg, s2Options);
 
-    await tableSheet.render();
-
-    const data = await asyncGetAllPlainData({
-      sheetInstance: tableSheet,
-      split: '\t',
-      formatOptions,
-    });
-
-    expect(data).toMatchSnapshot();
+    await expectMatchSnapshot(tableSheet, formatOptions);
   };
 
   const expectColumnsFormatterTest = async (formatOptions: FormatOptions) => {
@@ -42,9 +38,9 @@ describe('TableSheet Export Test', () => {
       meta: [
         // 无 name 和 formatter 不做任何处理
         { field: 'province' },
-        // name 只对数值生效, formatter 只对 数值生效
+        // name 只对列头生效, formatter 只对 数值生效
         { field: 'city', name: '城市-#', formatter: (v) => `${v}-@` },
-        { field: 'number', formatter: (v) => `${v}-$` },
+        { field: 'number', name: '数值', formatter: (v) => `${v}-$` },
       ],
     };
 
@@ -60,7 +56,7 @@ describe('TableSheet Export Test', () => {
         columns: customColSimpleColumns,
       },
       meta: [
-        //  地区不格式化
+        //  地区 name 有效, formatter 无效
         { field: 'area', formatter: (v) => `${v}-#` },
         // 自定义列头时, name 无效, 以 field.title 为准, formatter 只对 数值生效
         { field: 'city', formatter: (v) => `${v}-@` },
@@ -389,29 +385,28 @@ describe('TableSheet Export Test', () => {
     },
   );
 
-  it('should not apply formatter for col header', async () => {
+  it('should not apply formatter for col header by { formatHeader: false, formatData: true }', async () => {
     await expectColumnsFormatterTest({
       formatHeader: false,
       formatData: true,
     });
   });
 
-  it('should apply formatter for col header', async () => {
+  it('should apply formatter for col header by { formatHeader: true, formatData: true }', async () => {
     await expectColumnsFormatterTest({
       formatHeader: true,
       formatData: true,
     });
   });
 
-  it('should not apply formatter for col header and data cells', async () => {
+  it('should not apply formatter for col header and data cells by { formatHeader: false, formatData: false }', async () => {
     await expectColumnsFormatterTest({
       formatHeader: false,
       formatData: false,
     });
   });
 
-  // https://github.com/antvis/S2/pull/2692
-  it('should not apply formatter for custom col header', async () => {
+  it('should not apply formatter for custom col header by { formatHeader: false, formatData: true }', async () => {
     await expectCustomColumnsFormatterTest({
       formatHeader: false,
       formatData: true,
@@ -419,14 +414,14 @@ describe('TableSheet Export Test', () => {
   });
 
   // https://github.com/antvis/S2/pull/2692
-  it('should apply formatter for custom col header', async () => {
+  it('should apply formatter for custom col header by { formatHeader: true, formatData: true }', async () => {
     await expectCustomColumnsFormatterTest({
       formatHeader: true,
       formatData: true,
     });
   });
 
-  it('should not apply formatter for custom col header and data cells', async () => {
+  it('should not apply formatter for custom col header and data cells by { formatHeader: false, formatData: false }', async () => {
     await expectCustomColumnsFormatterTest({
       formatHeader: false,
       formatData: false,

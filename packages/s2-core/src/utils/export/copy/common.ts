@@ -224,8 +224,10 @@ export const getNodeFormatData = (leafNode: Node) => {
       return;
     }
 
-    const formatterLabel =
-      node.spreadsheet?.dataSet?.getFieldName?.(node.field) ?? node.value;
+    const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
+      node.field,
+    );
+    const formatterLabel = formatter?.(node.value) ?? node.value;
 
     line.unshift(formatterLabel);
     if (node?.parent) {
