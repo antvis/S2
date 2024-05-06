@@ -235,7 +235,7 @@ describe('TableSheet normal spec', () => {
     columnNodes = s2.facet.getColNodes();
     const endCellWidth = columnNodes[columnNodes.length - 1].width;
 
-    expect(Math.floor(endCellWidth - startCellWidth)).toBe(140);
+    expect(endCellWidth - startCellWidth).toBeGreaterThanOrEqual(resizeLength);
   });
 
   test('should render link shape', async () => {

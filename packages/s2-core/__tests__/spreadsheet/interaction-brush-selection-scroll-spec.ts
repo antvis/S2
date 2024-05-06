@@ -275,9 +275,11 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     );
 
     await s2.render();
-    await sleep(20); // wait for anthor loop;
+    await sleep(20); // wait for another loop;
 
     const rowCell = s2.facet.getRowCells()[0];
+
+    s2.getCell = jest.fn(() => rowCell);
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,
