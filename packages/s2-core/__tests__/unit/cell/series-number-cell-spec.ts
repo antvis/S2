@@ -8,7 +8,7 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-describe('series number cell cell formatter test', () => {
+describe('series number cell formatter test', () => {
   const root = new Node({ id: `root`, value: '', children: [] });
 
   const rowNode = new Node({

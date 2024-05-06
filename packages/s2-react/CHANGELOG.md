@@ -1,3 +1,20 @@
+# [@antv/s2-react-v2.0.0-next.18](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.17...@antv/s2-react-v2.0.0-next.18) (2024-04-30)
+
+
+### Bug Fixes
+
+* 修复表格右键事件无法触发 close [#2687](https://github.com/antvis/S2/issues/2687) ([#2690](https://github.com/antvis/S2/issues/2690)) ([8b4f3e3](https://github.com/antvis/S2/commit/8b4f3e3dab83e6ae38b1d3362049af8352a7a4a9))
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ed21dcb](https://github.com/antvis/S2/commit/ed21dcb82ea4cb434587a4ffa4819f2a619ca1aa))
+
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([41980c5](https://github.com/antvis/S2/commit/41980c5a092e24214d21f41cfa288d5350f99c16))
+
 # [@antv/s2-react-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.16...@antv/s2-react-v2.0.0-next.17) (2024-04-26)
 
 

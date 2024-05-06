@@ -1,3 +1,6 @@
+/**
+ * @see https://g.antv.antgroup.com/api/event/intro
+ */
 export enum OriginEventType {
   MOUSE_DOWN = 'mousedown',
   MOUSE_MOVE = 'mousemove',
@@ -19,4 +22,6 @@ export enum OriginEventType {
   POINTER_CANCEL = 'pointercancel',
   POINTER_ENTER = 'pointerenter',
   POINTER_OVER = 'pointerover',
+  RIGHT_DOWN = 'rightdown',
+  RIGHT_UP = 'rightup',
 }

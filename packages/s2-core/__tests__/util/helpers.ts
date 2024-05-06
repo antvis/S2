@@ -20,6 +20,8 @@ import {
   type Node,
   Hierarchy,
   EventController,
+  FormatOptions,
+  asyncGetAllPlainData,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -368,4 +370,18 @@ export const getClientPointOnCanvas = (
     clientX: point.x,
     clientY: point.y,
   };
+};
+
+export const expectMatchSnapshot = async (
+  s2: SpreadSheet,
+  formatOptions: FormatOptions = true,
+) => {
+  await s2.render();
+  const data = await asyncGetAllPlainData({
+    sheetInstance: s2,
+    split: '\t',
+    formatOptions,
+  });
+
+  expect(data).toMatchSnapshot();
 };

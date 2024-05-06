@@ -211,12 +211,6 @@ export function unifyConfig({
   };
 }
 
-const getNodeFormatLabel = (node: Node) => {
-  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
-
-  return formatter?.(node.value) ?? node.value;
-};
-
 /**
  * 获取到当前节点所有数据
  * @param leafNode
@@ -230,7 +224,10 @@ export const getNodeFormatData = (leafNode: Node) => {
       return;
     }
 
-    const formatterLabel = getNodeFormatLabel(node);
+    const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
+      node.field,
+    );
+    const formatterLabel = formatter?.(node.value) ?? node.value;
 
     line.unshift(formatterLabel);
     if (node?.parent) {

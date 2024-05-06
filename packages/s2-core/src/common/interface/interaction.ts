@@ -45,6 +45,8 @@ export interface CellMeta {
   rowIndex: number;
   type: CellType;
   rowQuery?: Record<string, any>;
+  rowId?: string;
+  colId?: string;
   [key: string]: unknown;
 }
 

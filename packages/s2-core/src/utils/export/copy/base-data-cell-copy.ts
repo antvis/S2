@@ -1,12 +1,14 @@
-import type { SpreadSheet } from '../../../sheet-type';
+import { NewTab, type DataItem } from '../../../common';
 import type {
   CopyableHTML,
   CopyablePlain,
   CopyAndExportUnifyConfig,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
-import { type DataItem, NewTab } from '../../../common';
 import { CopyMIMEType } from '../../../common/interface/export';
+import { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type';
+import { getHeaderList, getHeaderMeasureFieldNames } from '../method';
 import { unifyConfig } from './common';
 
 export abstract class BaseDataCellCopy {
@@ -19,6 +21,16 @@ export abstract class BaseDataCellCopy {
 
     this.spreadsheet = spreadsheet;
     this.config = unifyConfig({ config, spreadsheet, isExport });
+  }
+
+  protected getHeaderNodeMatrix(node: Node) {
+    const { formatHeader } = this.config;
+
+    return getHeaderMeasureFieldNames(
+      getHeaderList(node.id),
+      node.spreadsheet,
+      formatHeader,
+    );
   }
 
   private matrixPlainTextTransformer(

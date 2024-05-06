@@ -845,13 +845,13 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
 
-    const meta = [
-      { field: 'number', formatter: (v: string) => `${v}元` },
+    const meta: Meta[] = [
+      { field: 'number', name: '数量', formatter: (v: string) => `${v}元` },
       { field: 'province', formatter: (v: string) => `${v}-省` },
-      { field: 'city', formatter: (v: string) => `${v}-市` },
+      { field: 'city', name: '城市', formatter: (v: string) => `${v}-市` },
       { field: 'type', formatter: (v: string) => `${v}-类` },
       { field: 'sub_type', formatter: (v: string) => `${v}-子类` },
-    ] as Meta[];
+    ];
 
     s2.setDataCfg(getDataCfg(meta));
 

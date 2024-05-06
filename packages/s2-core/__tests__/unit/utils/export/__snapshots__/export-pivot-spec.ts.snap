@@ -1,5 +1,149 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PivotSheet Export Test should export correct data When the split separator is configured 1`] = `
+",类别,家具,家具,办公用品,办公用品
+,子类别,桌子,沙发,笔,纸张
+省份,城市,数量,数量,数量,数量
+浙江省,杭州市,7789,5343,945,1343
+浙江省,绍兴市,2367,632,1304,1354
+浙江省,宁波市,3877,7234,1145,1523
+浙江省,舟山市,4342,834,1432,1634
+四川省,成都市,1723,2451,2335,4004
+四川省,绵阳市,1822,2244,245,3077
+四川省,南充市,1943,2333,2457,3551
+四川省,乐山市,2330,2445,2458,352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode 1`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode 2`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode with totals in col 1`] = `
+"	类别	家具	家具	家具	办公用品	办公用品	办公用品	总计
+	子类别	桌子	沙发	小计	笔	纸张	小计	
+省份	城市	数量	数量		数量	数量		
+浙江省	杭州市	7789	5343	13132	945	1343	2288	15420
+浙江省	绍兴市	2367	632	2999	1304	1354	2658	5657
+浙江省	宁波市	3877	7234	11111	1145	1523	2668	13779
+浙江省	舟山市	4342	834	5176	1432	1634	3066	8242
+浙江省	小计	18375	14043	32418	4826	5854	10680	43098
+四川省	成都市	1723	2451	4174	2335	4004	6339	10513
+四川省	绵阳市	1822	2244	4066	245	3077	3322	7388
+四川省	南充市	1943	2333	4276	2457	3551	6008	10284
+四川省	乐山市	2330	2445	4775	2458	352	2810	7585
+四川省	小计	7818	9473	17291	7495	10984	18479	35770
+总计		26193	23516	49709	12321	16838	29159	78868"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode with totals in row 1`] = `
+"	类别		家具	家具	家具	办公用品	办公用品	办公用品	总计
+	子类别		桌子	沙发	小计	笔	纸张	小计	
+浙江省	杭州市	数量	7789	5343	13132	945	1343	2288	15420
+浙江省	绍兴市	数量	2367	632	2999	1304	1354	2658	5657
+浙江省	宁波市	数量	3877	7234	11111	1145	1523	2668	13779
+浙江省	舟山市	数量	4342	834	5176	1432	1634	3066	8242
+浙江省	小计		18375	14043	32418	4826	5854	10680	43098
+四川省	成都市	数量	1723	2451	4174	2335	4004	6339	10513
+四川省	绵阳市	数量	1822	2244	4066	245	3077	3322	7388
+四川省	南充市	数量	1943	2333	4276	2457	3551	6008	10284
+四川省	乐山市	数量	2330	2445	4775	2458	352	2810	7585
+四川省	小计		7818	9473	17291	7495	10984	18479	35770
+总计			26193	23516	49709	12321	16838	29159	78868"
+`;
+
+exports[`PivotSheet Export Test should export correct data in grid mode with valueInCols is false 1`] = `
+"	type		家具	家具	办公用品	办公用品
+	sub_type		桌子	沙发	笔	纸张
+浙江省	杭州市	number	7789	5343	945	1343
+浙江省	绍兴市	number	2367	632	1304	1354
+浙江省	宁波市	number	3877	7234	1145	1523
+浙江省	舟山市	number	4342	834	1432	1634
+四川省	成都市	number	1723	2451	2335	4004
+四川省	绵阳市	number	1822	2244	245	3077
+四川省	南充市	number	1943	2333	2457	3551
+四川省	乐山市	number	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode 1`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省		18375	14043	4826	5854
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省		7818	9473	7495	10984
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode 2`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省		18375	14043	4826	5854
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省		7818	9473	7495	10984
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is false 1`] = `
+"	类别	家具	家具	办公用品	办公用品
+	子类别	桌子	沙发	笔	纸张
+省份	城市	数量	数量	数量	数量
+浙江省		18375	14043	4826	5854
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省		7818	9473	7495	10984
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data in tree mode and collapseAll is true 1`] = `
+"类别	家具	家具	办公用品	办公用品
+子类别	桌子	沙发	笔	纸张
+省份	数量	数量	数量	数量
+浙江省	18375	14043	4826	5854
+四川省	7818	9473	7495	10984"
+`;
+
 exports[`PivotSheet Export Test should export correct data when data is incomplete 1`] = `
 "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
 	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
@@ -12,35 +156,77 @@ type	sub_type	number	number	number	number	number	number	number	number
 办公用品	纸张		1354	1523	1634	4004	3077	3551	352"
 `;
 
+exports[`PivotSheet Export Test should export correct data when isFormat: {formatData: true} 1`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省	杭州市	7789%	5343%	945%	1343%
+浙江省	绍兴市	2367%	632%	1304%	1354%
+浙江省	宁波市	3877%	7234%	1145%	1523%
+浙江省	舟山市	4342%	834%	1432%	1634%
+四川省	成都市	1723%	2451%	2335%	4004%
+四川省	绵阳市	1822%	2244%	245%	3077%
+四川省	南充市	1943%	2333%	2457%	3551%
+四川省	乐山市	2330%	2445%	2458%	352%"
+`;
+
+exports[`PivotSheet Export Test should export correct data when isFormat: {formatHeader: true} 1`] = `
+"	type	家具-type	家具-type	办公用品-type	办公用品-type
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省-province	杭州市	7789	5343	945	1343
+浙江省-province	绍兴市	2367	632	1304	1354
+浙江省-province	宁波市	3877	7234	1145	1523
+浙江省-province	舟山市	4342	834	1432	1634
+四川省-province	成都市	1723	2451	2335	4004
+四川省-province	绵阳市	1822	2244	245	3077
+四川省-province	南充市	1943	2333	2457	3551
+四川省-province	乐山市	2330	2445	2458	352"
+`;
+
+exports[`PivotSheet Export Test should export correct data when series number 1`] = `
+"	类别	家具	家具	办公用品	办公用品
+	子类别	桌子	沙发	笔	纸张
+省份	城市	数量	数量	数量	数量
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
+`;
+
 exports[`PivotSheet Export Test should export correct data with formatter 1`] = `
-"	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
-	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
-type	sub_type	数值	数值	数值	数值	数值	数值	数值	数值
-家具	桌子	7789	2367	3877	4342	1723	1822	1943	2330
-家具	沙发	5343	632	7234	834	2451	2244	2333	2445
-办公用品	笔	945	1304	1145	1432	2335	245	2457	2458
-办公用品	纸张	1343	1354	1523	1634	4004	3077	3551	352"
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	数值	数值	数值	数值
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352"
 `;
 
 exports[`PivotSheet Export Test should export correct data with formatter for custom column headers 1`] = `
-Array [
-  "	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2",
-  "	自定义节点 a-2	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	",
-  "type	sub_type	指标1	指标2		",
-  "家具	桌子	13	2		",
-  "家具	椅子	11	8		",
-]
+"	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2
+	自定义节点 a-2	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	
+type	sub_type	指标1	指标2		
+家具	桌子	13	2		
+家具	椅子	11	8		"
 `;
 
 exports[`PivotSheet Export Test should export correct data with formatter for custom row headers 1`] = `
-Array [
-  "		type	家具	家具",
-  "自定义节点 a-1	自定义节点 a-1-1	指标1	桌子	椅子",
-  "自定义节点 a-1	自定义节点 a-1-1	指标1	13	11",
-  "自定义节点 a-1	自定义节点 a-1-1	指标2	2	8",
-  "自定义节点 a-1	自定义节点 a-1-2			",
-  "自定义节点 a-2				",
-]
+"		type	家具	家具
+自定义节点 a-1	自定义节点 a-1-1	指标1	桌子	椅子
+自定义节点 a-1	自定义节点 a-1-1	指标1	13	11
+自定义节点 a-1	自定义节点 a-1-1	指标2	2	8
+自定义节点 a-1	自定义节点 a-1-2			
+自定义节点 a-2				"
 `;
 
 exports[`PivotSheet Export Test should export correctly data for single row data by { isAsyncExport: false } 1`] = `
