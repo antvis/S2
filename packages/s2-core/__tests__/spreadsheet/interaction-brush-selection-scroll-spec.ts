@@ -129,7 +129,7 @@ const expectScrollBrush = async (
   s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, dataCellBrushSelectionFn);
 
   // g5.0 异步渲染，第一时刻底层 base-brush 可能无法通过 elementsFromPointSync 取到元素
-  await sleep(50);
+  await sleep(500);
 
   s2.emit(mouseDownEventType, {
     target: targetCell,
