@@ -234,7 +234,7 @@ function MainLayout() {
       }
 
       return (
-        s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || []
+        s2Ref.current?.facet?.getInitColLeafNodes().map(({ id }) => id) || []
       );
     },
     [dataCfg.fields?.columns],

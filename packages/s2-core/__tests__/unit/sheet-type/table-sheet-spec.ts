@@ -200,7 +200,7 @@ describe('TableSheet Tests', () => {
                 { key: 'none', label: groupNoneText },
               ],
               onClick: expect.anything(),
-              defaultSelectedKeys: [],
+              selectedKeys: [],
             },
           },
         };

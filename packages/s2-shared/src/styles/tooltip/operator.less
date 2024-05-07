@@ -14,15 +14,6 @@
   border: 0;
   cursor: pointer;
 
-  // menu hover 时的下划线
-  // .ant-menu-submenu {
-  //   &::after {
-  //     border: none !important;
-  //     transition: none !important;
-  //     background: transparent !important;
-  //   }
-  // }
-
   .ant-menu-horizontal:not(.ant-menu-dark) {
     background: transparent;
     line-height: @tooltip-menu-item-height;
@@ -45,18 +36,23 @@
       height: @tooltip-menu-item-height;
     }
 
-    // .ant-menu-item:not(:last-child) {
-    //   margin: 0;
-    // }
+    .ant-menu-submenu {
+      > .ant-menu-submenu-title {
+        height: @tooltip-menu-item-height;
+        width: 100%;
 
-    .ant-menu-submenu > .ant-menu-submenu-title {
-      height: @tooltip-menu-item-height;
-      width: 100%;
+        .ant-menu-submenu-arrow {
+          color: var(
+            ~'@{css-var-prefix}-font',
+            ~'@{tooltip-menu-item-text-color}'
+          );
+        }
+      }
 
-      .ant-menu-submenu-arrow {
-        color: var(
-          ~'@{css-var-prefix}-font',
-          ~'@{tooltip-menu-item-text-color}'
+      &.ant-menu-submenu-selected {
+        background-color: var(
+          --antv-s2-tooltip-operator-menu-selected-background,
+          #e6f4ff
         );
       }
     }

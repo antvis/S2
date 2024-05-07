@@ -22,7 +22,7 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
         className,
         items: menus,
         onClick,
-        defaultSelectedKeys,
+        selectedKeys,
         ...otherMenuProps
       },
     } = props;
@@ -65,7 +65,7 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
           mode={onlyShowOperator ? 'vertical' : 'horizontal'}
           className={cls(`${TOOLTIP_PREFIX_CLS}-operator-menus`, className)}
           onClick={onMenuClick}
-          defaultSelectedKeys={defaultSelectedKeys}
+          selectedKeys={selectedKeys}
           items={items}
           selectable={onlyShowOperator}
           {...otherMenuProps}
