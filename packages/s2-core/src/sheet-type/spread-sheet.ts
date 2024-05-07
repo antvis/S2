@@ -3,7 +3,6 @@ import {
   Canvas,
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
-  runtime,
   type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
@@ -73,13 +72,6 @@ import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import { getTheme } from '../theme';
-
-/**
- * 关闭 CSS 解析的开关，可以提升首屏性能,
- * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
- * 而是要用 circle.style.r = 20;
- */
-runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;

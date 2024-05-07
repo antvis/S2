@@ -65,7 +65,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public clip(): void {
-    const { width, height, viewportHeight, position, spreadsheet } =
+    const { width, viewportHeight, position, spreadsheet } =
       this.getHeaderConfig();
 
     this.style.clipPath = new Rect({
@@ -73,7 +73,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         x: spreadsheet.facet.cornerBBox.x,
         y: position.y,
         width,
-        height: height + viewportHeight,
+        height: viewportHeight,
       },
     });
   }

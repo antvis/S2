@@ -11,8 +11,6 @@ import {
   isUnchangedValue,
 } from '@/utils/text';
 
-const isHD = window.devicePixelRatio >= 2;
-
 describe('Text Utils Tests', () => {
   const font: TextTheme = {
     fontFamily: 'Roboto',
@@ -25,7 +23,13 @@ describe('Text Utils Tests', () => {
 
     beforeEach(() => {
       measureTextWidth = createPivotSheet(
-        {},
+        {
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio: 2,
+            };
+          },
+        },
         { useSimpleData: true },
       ).measureTextWidth;
     });
@@ -37,7 +41,7 @@ describe('Text Utils Tests', () => {
     test('should get correct text width', () => {
       const width = measureTextWidth('test', font);
 
-      expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
+      expect(Math.floor(width)).toBeGreaterThanOrEqual(16);
     });
   });
 

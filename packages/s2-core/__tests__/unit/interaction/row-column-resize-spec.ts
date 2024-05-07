@@ -251,11 +251,11 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetX: 10,
       clientX: 10,
     });
-    expect(getStartGuideLine().attr('path')).toStrictEqual([
+    expect(getStartGuideLine().attr('d')).toStrictEqual([
       ['M', 3.5, 2],
       ['L', 3.5, s2Options.height],
     ]);
-    expect(getEndGuideLine().attr('path')).toStrictEqual([
+    expect(getEndGuideLine().attr('d')).toStrictEqual([
       ['M', 5.5, 2],
       ['L', 5.5, s2Options.height],
     ]);
@@ -376,11 +376,11 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetY: 20,
       clientY: 20,
     });
-    expect(getStartGuideLine().attr('path')).toStrictEqual([
+    expect(getStartGuideLine().attr('d')).toStrictEqual([
       ['M', 2, 3.5],
       ['L', s2Options.width, 3.5],
     ]);
-    expect(getEndGuideLine().attr('path')).toStrictEqual([
+    expect(getEndGuideLine().attr('d')).toStrictEqual([
       ['M', 2, 2.5],
       ['L', s2Options.width, 2.5],
     ]);

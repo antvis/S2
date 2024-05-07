@@ -385,3 +385,33 @@ export const expectMatchSnapshot = async (
 
   expect(data).toMatchSnapshot();
 };
+
+export function generateRawData(
+  dimensions: [string, number][],
+  values: string[],
+) {
+  const res: Record<string, any>[] = [];
+
+  function generateItem(index: number, prev: Record<string, any> = {}) {
+    const [name, count] = dimensions[index];
+
+    for (let i = 1; i <= count; i++) {
+      const current = { ...prev, [name]: `${name}-${i}` };
+
+      if (index === dimensions.length - 1) {
+        values.forEach((v) => {
+          res.push({
+            ...current,
+            [v]: Math.random() * 10000,
+          });
+        });
+      } else {
+        generateItem(index + 1, current);
+      }
+    }
+  }
+
+  generateItem(0);
+
+  return res;
+}
