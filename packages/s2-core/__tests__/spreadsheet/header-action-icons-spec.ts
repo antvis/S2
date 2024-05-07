@@ -205,7 +205,7 @@ describe('HeaderActionIcons Tests', () => {
     `);
   });
 
-  test('should not render icons by displayCondition1', async () => {
+  test('should only trigger plus icon click event', async () => {
     const onPlusClick = jest.fn();
     const onPlusHover = jest.fn();
     const onTrendClick = jest.fn();

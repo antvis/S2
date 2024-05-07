@@ -441,7 +441,7 @@ describe('PivotSheet Tests', () => {
   test('should register icons', () => {
     s2.registerIcons();
 
-    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.svg);
+    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.src);
   });
 
   test('should set data config', () => {
