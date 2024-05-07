@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { renderToMountedElement, stdlib } from '@antv/g2';
+import type { DisplayObject } from '@antv/g';
 import { SpreadSheet, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
@@ -44,7 +45,7 @@ const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
 
   // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
   renderToMountedElement(chartOptions, {
-    group: cell,
+    group: cell as unknown as DisplayObject,
     library: stdlib(),
   });
 };

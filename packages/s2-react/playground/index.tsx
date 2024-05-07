@@ -327,11 +327,11 @@ function MainLayout() {
       customSVGIcons: !options.showDefaultHeaderActionIcon && [
         {
           name: 'Filter',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
         },
         {
           name: 'FilterAsc',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
         },
       ],
       headerActionIcons: !options.showDefaultHeaderActionIcon && [

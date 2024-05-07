@@ -14,7 +14,7 @@ fetch(
       customSVGIcons: [
         {
           name: 'Filter',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
         },
       ],
       showDefaultHeaderActionIcon: false,

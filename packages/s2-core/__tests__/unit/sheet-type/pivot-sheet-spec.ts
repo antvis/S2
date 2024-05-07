@@ -48,7 +48,7 @@ describe('PivotSheet Tests', () => {
 
   const customSVGIcon: CustomSVGIcon = {
     name: 'test',
-    svg: '===',
+    src: '===',
   };
 
   const s2Options: S2Options = {

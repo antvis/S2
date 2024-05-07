@@ -15,7 +15,7 @@ async function measureTableSheetRender(s2DataCfg: S2DataConfig, title) {
 }
 
 describe('table sheet benchmark', () => {
-  const baseDataCfg = {
+  const baseDataCfg: S2DataConfig = {
     fields: {
       columns: ['province', 'city', 'type', 'subType', 'number'],
     },
