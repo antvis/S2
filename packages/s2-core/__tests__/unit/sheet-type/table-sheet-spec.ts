@@ -64,7 +64,6 @@ describe('TableSheet Tests', () => {
         {
           operator: expect.anything(),
           onlyShowOperator: true,
-          forceRender: true,
         },
       );
 
@@ -191,7 +190,6 @@ describe('TableSheet Tests', () => {
 
         const options: TooltipOptions = {
           onlyShowOperator: true,
-          forceRender: true,
           operator: {
             menu: {
               items: [
