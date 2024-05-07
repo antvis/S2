@@ -82,6 +82,35 @@ describe('HeaderActionIcons Tests', () => {
     });
   });
 
+  test('should custom icon origin fill', async () => {
+    s2.setOptions({
+      customSVGIcons: [
+        {
+          name: 'CustomIcon',
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><path fill="#90CAF9" d="M43 30V18c0-2.2-1.8-4-4-4H9c-2.2 0-4 1.8-4 4v12c0 2.2 1.8 4 4 4h30c2.2 0 4-1.8 4-4M9 18h30v12H9z"/><circle cx="38" cy="38" r="10" fill="#43A047"/><g fill="#fff"><path d="M32 36h12v4H32z"/><path d="M36 32h4v12h-4z"/></g></svg>`,
+        },
+      ],
+      headerActionIcons: [
+        {
+          icons: [
+            {
+              name: 'CustomIcon',
+              position: 'right',
+              fill: null,
+            },
+          ],
+          belongsCell: 'rowCell',
+        },
+      ],
+    });
+
+    await s2.render(false);
+
+    s2.facet.getRowCells().forEach((cell) => {
+      expect(get(cell.getActionIcons()[0], 'cfg.fill')).toEqual(undefined);
+    });
+  });
+
   test('should default hide icon', async () => {
     const innerDefaultHide = jest.fn(() => true);
     const defaultHide = jest.fn(() => false);
