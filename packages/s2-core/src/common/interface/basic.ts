@@ -286,7 +286,7 @@ export interface HeaderIconHoverParams extends HeaderIconClickParams {
 }
 
 export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
-  fill?: string;
+  fill?: string | null;
   name: string;
   x: number;
   y: number;
@@ -296,9 +296,9 @@ export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
 export type HeaderActionNameOptions = HeaderActionIconBaseOptions & {
   /**
    * icon 颜色配置
-   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色
+   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色，null 则使用图标原有颜色
    */
-  fill?: string;
+  fill?: string | null;
 
   /**
    * icon 名称

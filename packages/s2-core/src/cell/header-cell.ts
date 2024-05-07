@@ -203,7 +203,10 @@ export abstract class HeaderCell<
       width: icon?.size,
       height: icon?.size,
       // 优先级: 单个 icon 颜色配置 > 全部 icon 颜色配置 > 主题 icon 颜色配置 > 文本默认颜色
-      fill: options?.fill || icon?.fill || defaultTextFill,
+      fill:
+        options.fill === null
+          ? undefined
+          : options?.fill || icon?.fill || defaultTextFill,
       cursor: 'pointer',
     };
   }
