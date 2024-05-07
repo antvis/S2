@@ -245,6 +245,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 获取实际渲染的多行文本 (含省略号)
    */
   public getMultiLineActualTexts(): string[] {
+    // G6.0 优化延迟了包围盒计算的逻辑，先调用一下 getGeometryBounds 触发包围盒计算（内部有 cache 的不用担心多次调用）
+    this.textShape?.getGeometryBounds();
+
     return this.textShape?.parsedStyle.metrics?.lines || [];
   }
 

@@ -942,7 +942,7 @@ describe('Interaction Event Controller Tests', () => {
       const image = new Image({
         name: 'test',
         style: {
-          img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
         },
       });
 

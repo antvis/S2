@@ -1,5 +1,4 @@
 import { debounce } from 'lodash';
-import { MIN_DEVICE_PIXEL_RATIO } from '../../common/constant/options';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
 
@@ -103,20 +102,14 @@ export class HdAdapter {
       options: { width, height },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
-    const lastRatio = container.getConfig().devicePixelRatio;
+    const lastRatio = container.getConfig().devicePixelRatio ?? 1;
 
     if (lastRatio === ratio || !canvas) {
       return;
     }
 
-    /*
-     * 缩放时, 以向上取整后的缩放比为准
-     * 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
-     */
-    const pixelRatio = Math.max(ratio, lastRatio!, MIN_DEVICE_PIXEL_RATIO);
-
     // https://github.com/antvis/G/issues/1143
-    container.getConfig().devicePixelRatio = pixelRatio;
+    container.getConfig().devicePixelRatio = ratio;
     container.resize(width!, height!);
 
     this.spreadsheet.render(false);
