@@ -33,7 +33,7 @@ const s2Options = {
   customSVGIcons: [
     {
       name: 'customKingIcon',
-      svg: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
+      src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
     },
   ],
   ...

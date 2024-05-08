@@ -263,14 +263,14 @@ export interface CustomSVGIcon {
 
    import Icon from 'path/to/xxx.svg'
 
-   => { name: 'iconA', svg: Icon }
-   => { name: 'iconB', svg: '<svg>...</svg>' }
+   => { name: 'iconA', src: Icon }
+   => { name: 'iconB', src: '<svg>...</svg>' }
 
-   * @example 3. 线上支持的图片地址
+   * @example 3. 线上支持的图片地址 (不支持改颜色)
     带后缀: https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg
     无后缀: https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*5nsESLuvc_EAAAAAAAAAAAAADmJ7AQ/original
    */
-  svg: string;
+  src: string;
 }
 
 export interface HeaderIconClickParams {
@@ -286,7 +286,7 @@ export interface HeaderIconHoverParams extends HeaderIconClickParams {
 }
 
 export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
-  fill?: string;
+  fill?: string | null;
   name: string;
   x: number;
   y: number;
@@ -296,9 +296,9 @@ export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
 export type HeaderActionNameOptions = HeaderActionIconBaseOptions & {
   /**
    * icon 颜色配置
-   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色
+   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色，null 则使用图标原有颜色
    */
-  fill?: string;
+  fill?: string | null;
 
   /**
    * icon 名称
