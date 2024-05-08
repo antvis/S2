@@ -48,7 +48,7 @@ describe('PivotSheet Tests', () => {
 
   const customSVGIcon: CustomSVGIcon = {
     name: 'test',
-    svg: '===',
+    src: '===',
   };
 
   const s2Options: S2Options = {
@@ -441,7 +441,7 @@ describe('PivotSheet Tests', () => {
   test('should register icons', () => {
     s2.registerIcons();
 
-    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.svg);
+    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.src);
   });
 
   test('should set data config', () => {

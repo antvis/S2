@@ -16,7 +16,7 @@ async function measurePivotSheetRender(s2DataCfg: S2DataConfig, title) {
 
 describe('pivot sheet benchmark', () => {
   describe('single values', () => {
-    const baseDataCfg = {
+    const baseDataCfg: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'subType'],
@@ -107,7 +107,7 @@ describe('pivot sheet benchmark', () => {
   });
 
   describe('multi values', () => {
-    const baseDataCfg = {
+    const baseDataCfg: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'subType'],
