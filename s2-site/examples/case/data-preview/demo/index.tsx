@@ -260,7 +260,7 @@ const App = ({ data }) => {
     width: 600,
     height: 400,
     seriesNumber: {
-      enable: true
+      enable: true,
     },
     interaction: {
       copy: { enable: true },
@@ -282,15 +282,15 @@ const App = ({ data }) => {
     customSVGIcons: [
       {
         name: 'Filter',
-        svg: filterIcon,
+        src: filterIcon,
       },
       {
         name: 'SortUp',
-        svg: sortUp,
+        src: sortUp,
       },
       {
         name: 'SortDown',
-        svg: sortDown,
+        src: sortDown,
       },
     ],
     tooltip: {

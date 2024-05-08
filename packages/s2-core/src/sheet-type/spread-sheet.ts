@@ -32,7 +32,6 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   BaseTooltipOperatorMenuOptions,
   CellEventTarget,
-  CustomSVGIcon,
   EmitterType,
   Fields,
   InteractionOptions,
@@ -326,8 +325,8 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      registerIcon(customSVGIcon.name, customSVGIcon.svg);
+    forEach(customSVGIcons, (customSVGIcon) => {
+      registerIcon(customSVGIcon.name, customSVGIcon.src);
     });
   }
 

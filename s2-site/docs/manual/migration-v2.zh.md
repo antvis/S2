@@ -284,6 +284,22 @@ const s2Options = {
 
 具体请查看 [自定义 Icon](/manual/advanced/custom/custom-icon) 相关文档。
 
+#### customSVGIcons 配置调整
+
+`svg` 调整为 `src`, 保持 API 统一。
+
+```diff | pure
+const s2Options = {
+  customSVGIcons: [
+    {
+      name: 'CustomIcon',
+-     svg: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
++     src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
+    },
+  ]
+}
+```
+
 #### 树状结构配置调整
 
 1. 行头折叠展开配置调整

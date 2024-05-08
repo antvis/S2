@@ -1,9 +1,7 @@
-// 不本地直接引用svg文件，避免下游无依赖
-
 export const ArrowDown = `
 <svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
-    <text id="↓" fill="#29A294">
+    <text id="↓" fill="none">
         <tspan x="-0.225097656" y="8.5">↓</tspan>
     </text>
 </g>
@@ -11,7 +9,7 @@ export const ArrowDown = `
 
 export const ArrowUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
-    <text id="↑" fill="#FF4D4F">
+    <text id="↑" fill="none">
         <tspan x="-0.225097656" y="8.5">↑</tspan>
     </text>
 </g>
@@ -24,7 +22,7 @@ export const CellDown = `<?xml version="1.0" encoding="UTF-8"?>
     <title>down</title>
     <desc>Created with Sketch.</desc>
     <g id="一期开发" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <polygon id="down" fill="#58AE57" transform="translate(3.500000, 4.500000) scale(1, -1) translate(-3.500000, -4.500000) " points="3.5 0 7 9 0 9"></polygon>
+        <polygon id="down" fill="none" transform="translate(3.500000, 4.500000) scale(1, -1) translate(-3.500000, -4.500000) " points="3.5 0 7 9 0 9"></polygon>
     </g>
 </svg>`;
 
@@ -34,40 +32,32 @@ export const CellUp = `<?xml version="1.0" encoding="UTF-8"?>
     <title>up</title>
     <desc>Created with Sketch.</desc>
     <g id="一期开发" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <polygon id="up" fill="#F46649" points="3.5 0 7 9 0 9"></polygon>
+        <polygon id="up" fill="none" points="3.5 0 7 9 0 9"></polygon>
     </g>
 </svg> `;
 
-export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-xmlns="http://www.w3.org/2000/svg" p-id="17452"
-xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
+export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17452" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
 <defs>
   <style type="text/css"></style>
 </defs>
 <path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 626.944h176c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8h-176A8 8 0 0 1 384 857.984v-56c0-4.416 3.584-8 8-8z m0-424h368c4.416 0 8 3.648 8 8v56a8 8 0 0 1-8 8h-368A8 8 0 0 1 384 433.984v-56c0-4.352 3.584-8 8-8z m528-139.968h-528A8 8 0 0 1 384 222.016v-56c0-4.416 3.584-8 8-8h528c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z m-256 424h-272A8 8 0 0 1 384 646.016v-56c0-4.416 3.584-8 8-8h272c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z" p-id="17453"></path>
 </svg>`;
 
-export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" p-id="17561"
-  xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
+export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17561" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
   </defs>
   <path d="M182.272 856.96a8 8 0 0 1-12.544 0l-112-141.952A8 8 0 0 1 64 702.08h76.032V172.032c0-4.416 3.584-8 7.936-8h56.064c4.352 0 7.936 3.584 7.936 8v529.984H288c6.72 0 10.496 7.808 6.272 12.992l-112 141.888z m209.728-626.944h176A8 8 0 0 0 576 222.016v-56a8 8 0 0 0-8-8h-176A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h368a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-368A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m-256-424h-272A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h272a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z" p-id="17562"></path>
 </svg>`;
 
-export const GroupAsc = `<svg t="1557124695786" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" p-id="17670"
-  xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
+export const GroupAsc = `<svg t="1557124695786" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17670" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
   </defs>
   <path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 62.976h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z" p-id="17671"></path>
 </svg>`;
 
-export const GroupDesc = `<svg t="1557124710652" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" p-id="17779"
-  xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
+export const GroupDesc = `<svg t="1557124710652" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17779" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
   </defs>
@@ -111,9 +101,7 @@ export const ExpandColIcon = `<?xml version="1.0" encoding="UTF-8"?>
     </g>
 </svg>`;
 
-export const Minus = `<svg t="1557140120188" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-xmlns="http://www.w3.org/2000/svg" p-id="16909" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="200" height="200">
+export const Minus = `<svg t="1557140120188" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="16909" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
 	<defs>
 		<style type="text/css">
 		</style>
@@ -126,9 +114,7 @@ width="200" height="200">
 	</path>
 </svg>`;
 
-export const Plus = `<svg t="1557140186692" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-xmlns="http://www.w3.org/2000/svg" p-id="17025" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="200" height="200">
+export const Plus = `<svg t="1557140186692" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17025" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
 	<defs>
 		<style type="text/css">
 		</style>
@@ -141,8 +127,7 @@ width="200" height="200">
 	</path>
 </svg>`;
 
-export const SortDownSelected = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-     p-id="17472" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+export const SortDownSelected = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17472" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
   <defs>
     <style type="text/css"></style>
   </defs>
@@ -152,8 +137,7 @@ export const SortDownSelected = `<svg t="1565940955886" class="icon" viewBox="0 
 </svg>
 `;
 
-export const SortDown = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-     p-id="17472" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+export const SortDown = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17472" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
   <defs>
     <style type="text/css"></style>
   </defs>
@@ -164,8 +148,7 @@ export const SortDown = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1
 </svg>
 `;
 
-export const SortUpSelected = `<svg t="1565940979768" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-p-id="17620" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+export const SortUpSelected = `<svg t="1565940979768" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17620" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
 <defs>
 <style type="text/css"></style>
 </defs>
@@ -175,8 +158,7 @@ p-id="17621"></path>
 </svg>
 `;
 
-export const SortUp = `<svg t="1565940979768" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-     p-id="17620" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+export const SortUp = `<svg t="1565940979768" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17620" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
   <defs>
     <style type="text/css"></style>
   </defs>
