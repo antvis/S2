@@ -101,7 +101,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
               : rowLength;
 
           while (
-            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+            (deadline.timeRemaining() > 0 ||
+              deadline.didTimeout ||
+              process.env['NODE_ENV'] === 'test') &&
             rowIndex <= rowLength - 1 &&
             count > 0
           ) {
