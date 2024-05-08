@@ -1,5 +1,4 @@
 /* eslint-disable jest/expect-expect */
-import { NewLine, NewTab, PivotSheet, asyncGetAllPlainData } from '@antv/s2';
 import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
@@ -10,7 +9,12 @@ import {
 } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
 import { expectMatchSnapshot } from '../../../util/helpers';
-import { CSV_SEPARATOR, TAB_SEPARATOR } from '../../../../src/common/constant';
+import {
+  CSV_SEPARATOR,
+  LINE_SEPARATOR,
+  TAB_SEPARATOR,
+} from '../../../../src/common/constant';
+import { asyncGetAllPlainData, PivotSheet } from '../../../../src';
 import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
@@ -42,7 +46,7 @@ describe('PivotSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -50,7 +54,7 @@ describe('PivotSheet Export Test', () => {
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
       async: true,
     });
@@ -75,7 +79,7 @@ describe('PivotSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -83,7 +87,7 @@ describe('PivotSheet Export Test', () => {
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
       async: true,
     });
@@ -340,7 +344,7 @@ describe('PivotSheet Export Test', () => {
 
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       customTransformer: () => {
         return {
           [CopyMIMEType.PLAIN]: () => {
@@ -409,7 +413,7 @@ describe('PivotSheet Export Test', () => {
         ...options,
       });
 
-      expect(data.split(NewLine)).toMatchSnapshot();
+      expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
     },
   );
 });
