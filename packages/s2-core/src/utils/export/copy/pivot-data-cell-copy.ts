@@ -400,7 +400,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     let dataMatrix: string[][] = [];
 
     // 把两类导出都封装成异步的，保证导出类型的一致
-    if (this.config.isAsyncExport) {
+    if (this.config.async) {
       dataMatrix = (await this.getDataMatrixByHeaderNodeRIC()) as string[][];
     } else {
       dataMatrix = (await Promise.resolve(
@@ -466,7 +466,8 @@ export const processSelectedAllPivot = (
 export const asyncProcessSelectedAllPivot = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
-  const { sheetInstance, split, formatOptions, customTransformer } = params;
+  const { sheetInstance, split, formatOptions, customTransformer, async } =
+    params;
   const pivotDataCellCopy = new PivotDataCellCopy({
     spreadsheet: sheetInstance,
     isExport: true,
@@ -474,7 +475,7 @@ export const asyncProcessSelectedAllPivot = (
       separator: split,
       formatOptions,
       customTransformer,
-      isAsyncExport: true,
+      async: async ?? true,
     },
   });
 

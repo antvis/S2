@@ -7,7 +7,13 @@ import {
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
-import { FormatOptions, S2DataConfig, S2Options } from '../../../../src';
+import {
+  CSV_SEPARATOR,
+  FormatOptions,
+  S2DataConfig,
+  S2Options,
+  TAB_SEPARATOR,
+} from '../../../../src';
 import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import { NewLine, NewTab } from '@/common';
 import { CopyMIMEType } from '@/common/interface/export';
@@ -132,7 +138,7 @@ describe('TableSheet Export Test', () => {
       formatOptions: {
         formatHeader: true,
       },
-      isAsyncExport: true,
+      async: true,
     });
 
     testCase(asyncData);
@@ -257,7 +263,7 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: true,
     });
     // 只取前10行数据
@@ -307,7 +313,7 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
@@ -352,7 +358,7 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
@@ -362,7 +368,7 @@ describe('TableSheet Export Test', () => {
   });
 
   // https://github.com/antvis/S2/issues/2681
-  it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
+  it.each([{ async: false }, { async: true }])(
     'should export correctly data for single row data by %o',
     async (options) => {
       const tableSheet = createTableSheet({ width: 600, height: 400 });
@@ -377,7 +383,7 @@ describe('TableSheet Export Test', () => {
       await tableSheet.render();
       const data = await asyncGetAllPlainData({
         sheetInstance: tableSheet,
-        split: '\t',
+        split: TAB_SEPARATOR,
         ...options,
       });
 

@@ -278,14 +278,14 @@ exports[`TableSheet Export Test should export correct data with totals 1`] = `
 浙江省-province	家具-type	沙发	5343"
 `;
 
-exports[`TableSheet Export Test should export correctly data for single row data by { isAsyncExport: false } 1`] = `
+exports[`TableSheet Export Test should export correctly data for single row data by { async: false } 1`] = `
 Array [
   "province	city	type	price	cost",
   "浙江	杭州	笔	1	",
 ]
 `;
 
-exports[`TableSheet Export Test should export correctly data for single row data by { isAsyncExport: true } 1`] = `
+exports[`TableSheet Export Test should export correctly data for single row data by { async: true } 1`] = `
 Array [
   "province	city	type	price	cost",
   "浙江	杭州	笔	1	",

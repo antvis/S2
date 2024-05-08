@@ -7,6 +7,7 @@ import {
   SpreadSheet,
   customMerge,
   getCellMeta,
+  TAB_SEPARATOR,
   type GEvent,
   type S2DataConfig,
 } from '@antv/s2';
@@ -303,7 +304,7 @@ describe('<StrategySheet/> Tests', () => {
       await waitFor(() => {
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -330,7 +331,7 @@ describe('<StrategySheet/> Tests', () => {
 
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -346,7 +347,7 @@ describe('<StrategySheet/> Tests', () => {
 
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -364,7 +365,7 @@ describe('<StrategySheet/> Tests', () => {
          */
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -393,7 +394,7 @@ describe('<StrategySheet/> Tests', () => {
          */
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -410,7 +411,7 @@ describe('<StrategySheet/> Tests', () => {
       await waitFor(() => {
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
         const rows = result.split('\n');
