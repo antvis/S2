@@ -90,7 +90,7 @@ export abstract class BaseDataSet {
   /**
    * 获取字段
    */
-  private getField = (field: CustomHeaderField): string => {
+  public getField = (field: CustomHeaderField): string => {
     const realField = isString(field) ? field : field?.field;
 
     return realField || (field as string);

@@ -16,6 +16,7 @@ import {
   type DataItem,
   type MiniChartData,
   type MultiData,
+  type CustomHeaderField,
 } from '../../../common';
 import type {
   CopyAllDataParams,
@@ -286,6 +287,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     });
   };
 
+  protected getFieldName = (field: CustomHeaderField) => {
+    return this.config.formatHeader
+      ? this.spreadsheet.dataSet.getFieldName(field)
+      : this.spreadsheet.dataSet.getField(field);
+  };
+
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
     if (this.spreadsheet.isCustomRowFields()) {
       return this.getCustomRowCornerMatrix(rowMatrix);
@@ -307,12 +314,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       map(customRows, (rowField, rowIndex) => {
         // 角头的最后一行，为行头
         if (colIndex === customColumns.length - 1) {
-          return this.spreadsheet.dataSet.getFieldName(rowField);
+          return this.getFieldName(rowField);
         }
 
         // 角头的最后一列，为列头
         if (rowIndex === maxRowLen - 1) {
-          return this.spreadsheet.dataSet.getFieldName(colField);
+          return this.getFieldName(colField);
         }
 
         return '';

@@ -212,7 +212,7 @@ describe('PivotSheet Export Test', () => {
     await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data when isFormat: {formatHeader: true}', async () => {
+  it('should export correct data when by {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -239,7 +239,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {formatData: true}', async () => {
+  it('should export correct data when by {formatData: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -248,17 +248,65 @@ describe('PivotSheet Export Test', () => {
             field: 'number',
             formatter: (value) => `${value}%`,
           },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'type',
+            name: '子类别',
+          },
+          {
+            field: 'province',
+            name: '省份',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
         ],
       }),
       assembleOptions({
         interaction: {
-          copy: { enable: true, withFormat: true },
+          copy: { enable: true, withHeader: true, withFormat: true },
         },
       }),
     );
 
     await expectMatchSnapshot(s2, {
       formatData: true,
+    });
+  });
+
+  it('should export correct data when by {formatHeader: false, formatData: false}', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter: (value) => `${value}%`,
+          },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
+        ],
+      }),
+      assembleOptions({
+        interaction: {
+          copy: { enable: true, withHeader: true, withFormat: true },
+        },
+      }),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: false,
+      formatData: false,
     });
   });
 
