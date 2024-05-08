@@ -7,6 +7,7 @@ import {
   SpreadSheet,
   customMerge,
   getCellMeta,
+  CSV_SEPARATOR,
   TAB_SEPARATOR,
   type GEvent,
   type S2DataConfig,
@@ -320,6 +321,48 @@ describe('<StrategySheet/> Tests', () => {
         expect(result).toMatchSnapshot();
         expect(corner1).toEqual(['', '', '日期']);
         expect(corner2).toEqual(['', '', '指标']);
+      });
+    });
+
+    test('should export correct data by {formatHeader: false, formatData: true}', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: TAB_SEPARATOR,
+          formatOptions: {
+            formatHeader: false,
+            formatData: true,
+          },
+        });
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data by {formatHeader: false, formatData: false}', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: TAB_SEPARATOR,
+          formatOptions: {
+            formatHeader: false,
+            formatData: false,
+          },
+        });
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data by custom separator', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: CSV_SEPARATOR,
+          formatOptions: true,
+        });
+
+        expect(result).toMatchSnapshot();
       });
     });
 

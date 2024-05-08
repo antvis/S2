@@ -59,16 +59,22 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const copyData = async (isFormat: boolean) => {
+  const getPlainData = async (split: string, isFormat: boolean) => {
     const params: CopyAllDataParams = {
       sheetInstance: sheet,
-      split: TAB_SEPARATOR,
+      split,
       formatOptions: isFormat,
       async,
     };
 
     const data = await (customCopyMethod?.(params) ||
       asyncGetAllPlainData(params));
+
+    return data;
+  };
+
+  const copyData = async (isFormat: boolean) => {
+    const data = await getPlainData(TAB_SEPARATOR, isFormat);
 
     copyToClipboard(data, async)
       .then(() => {
@@ -82,13 +88,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   };
 
   const downloadData = async (isFormat: boolean) => {
-    const data = await asyncGetAllPlainData({
-      sheetInstance: sheet,
-      // 导出的是 csv 格式, 复制时需要以逗号分割 https://github.com/antvis/S2/issues/2701
-      split: CSV_SEPARATOR,
-      formatOptions: isFormat,
-      async,
-    });
+    // 导出的是 csv 格式, 复制时需要以逗号分割 https://github.com/antvis/S2/issues/2701
+    const data = await getPlainData(CSV_SEPARATOR, isFormat);
 
     try {
       download(data, fileName);
