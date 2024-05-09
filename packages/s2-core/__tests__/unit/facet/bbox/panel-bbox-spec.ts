@@ -18,7 +18,6 @@ describe('PanelBBox Tests', () => {
     realWidth: number,
     realHeight: number,
     extraOptions: S2Options = {},
-    shouldEnableFrozenHeaders = true,
   ) =>
     ({
       layoutResult: {
@@ -53,9 +52,6 @@ describe('PanelBBox Tests', () => {
       spreadsheet: {
         isFrozenRowHeader() {
           return true;
-        },
-        enableFrozenHeaders() {
-          return shouldEnableFrozenHeaders;
         },
         isPivotMode() {
           return true;

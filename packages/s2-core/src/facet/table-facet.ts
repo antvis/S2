@@ -35,7 +35,6 @@ import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
@@ -45,18 +44,12 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
 
 export class TableFacet extends FrozenFacet {
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
-  }
-
-  public init() {
-    super.init();
-    this.initRowOffsets();
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
@@ -237,6 +230,8 @@ export class TableFacet extends FrozenFacet {
 
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
+    this.initRowOffsets();
+
     return {
       colNodes: colsHierarchy.getNodes(),
       colLeafNodes,
@@ -269,24 +264,11 @@ export class TableFacet extends FrozenFacet {
       return null;
     }
 
-    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
-    const cellRange = this.getCellRange();
-    const { trailingRowCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      colLeafNodes.length,
-      cellRange.end - cellRange.start + 1,
-    );
-
     let data: ViewMetaData | SimpleData | undefined;
 
     const x = colNode.x;
-    let y = this.viewCellHeights.getCellOffsetY(rowIndex);
-
-    if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
-      y =
-        this.panelBBox.height -
-        this.getTotalHeightForRange(rowIndex, cellRange.end);
-    }
+    const y = this.viewCellHeights.getCellOffsetY(rowIndex);
+    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
     if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
@@ -386,36 +368,6 @@ export class TableFacet extends FrozenFacet {
       }
 
       currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
-    }
-
-    const topLevelNodes = colsHierarchy.getNodes(0);
-    const { trailingColCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      topLevelNodes.length,
-    );
-
-    preLeafNode = Node.blankNode();
-
-    const width =
-      this.getCanvasSize().width -
-      Frame.getVerticalBorderWidth(this.spreadsheet);
-
-    if (trailingColCount > 0) {
-      const { trailingColCount: realFrozenTrailingColCount } =
-        getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
-      const leafNodes = allNodes.filter((node) => node.isLeaf);
-
-      for (let i = 1; i <= realFrozenTrailingColCount; i++) {
-        const currentNode = leafNodes[leafNodes.length - i];
-
-        if (i === 1) {
-          currentNode.x = width - currentNode.width;
-        } else {
-          currentNode.x = preLeafNode.x - currentNode.width;
-        }
-
-        preLeafNode = currentNode;
-      }
     }
 
     this.updateCustomFieldsSampleNodes(colsHierarchy);

@@ -33,10 +33,6 @@ export class PivotSheet extends SpreadSheet {
     return new PivotDataSet(this);
   }
 
-  public enableFrozenHeaders(): boolean {
-    return false;
-  }
-
   public getContentHeight() {
     return this.facet.getContentHeight();
   }

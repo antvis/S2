@@ -209,14 +209,16 @@ export const calculateFrozenCornerCells = (
   } = frozenOptions;
 
   const result = {
-    [FrozenGroupType.Top]: [] as FrozenCellIndex[],
-    [FrozenGroupType.Bottom]: [] as FrozenCellIndex[],
+    [FrozenGroupType.TopLeft]: [] as FrozenCellIndex[],
+    [FrozenGroupType.TopRight]: [] as FrozenCellIndex[],
+    [FrozenGroupType.BottomLeft]: [] as FrozenCellIndex[],
+    [FrozenGroupType.BottomRight]: [] as FrozenCellIndex[],
   };
 
   // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and Bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenGroupType.Top].push({
+      result[FrozenGroupType.TopLeft].push({
         x: i,
         y: j,
       });
@@ -226,7 +228,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenGroupType.Bottom].push({
+        result[FrozenGroupType.BottomLeft].push({
           x: i,
           y: index,
         });
@@ -239,7 +241,7 @@ export const calculateFrozenCornerCells = (
     const colIndex = colLength - 1 - i;
 
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenGroupType.Top].push({
+      result[FrozenGroupType.TopRight].push({
         x: colIndex,
         y: j,
       });
@@ -249,7 +251,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenGroupType.Bottom].push({
+        result[FrozenGroupType.BottomRight].push({
           x: colIndex,
           y: index,
         });

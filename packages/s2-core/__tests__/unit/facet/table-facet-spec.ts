@@ -75,9 +75,6 @@ jest.mock('@/sheet-type', () => {
           getState: jest.fn(),
           getCells: jest.fn(() => []),
         },
-        enableFrozenHeaders() {
-          return false;
-        },
         isFrozenRowHeader() {
           return false;
         },

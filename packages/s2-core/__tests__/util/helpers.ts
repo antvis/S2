@@ -20,7 +20,7 @@ import {
   type Node,
   Hierarchy,
   EventController,
-  FormatOptions,
+  type FormatOptions,
   asyncGetAllPlainData,
 } from '../../src';
 
@@ -195,7 +195,6 @@ export const createFakeSpreadSheet = (config?: {
   s2.isCustomRowFields = jest.fn();
   s2.getTotalsConfig = jest.fn();
   s2.getLayoutWidthType = jest.fn();
-  s2.enableFrozenHeaders = jest.fn();
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
   s2.theme = getTheme({

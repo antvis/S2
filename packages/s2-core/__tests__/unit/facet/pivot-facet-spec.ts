@@ -102,9 +102,6 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
-        enableFrozenHeaders() {
-          return true;
-        },
       };
     }),
   };

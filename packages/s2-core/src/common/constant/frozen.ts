@@ -10,8 +10,10 @@ export enum FrozenGroupType {
   Col = 'frozenColGroup',
   TrailingCol = 'frozenTrailingColGroup',
   TrailingRow = 'frozenTrailingRowGroup',
-  Top = 'frozenTopGroup',
-  Bottom = 'frozenBottomGroup',
+  TopLeft = 'frozenTopLeftGroup',
+  TopRight = 'frozenTopRightGroup',
+  BottomLeft = 'frozenBottomLeftGroup',
+  BottomRight = 'frozenBottomRightGroup',
   Scroll = 'scrollGroup',
 }
 

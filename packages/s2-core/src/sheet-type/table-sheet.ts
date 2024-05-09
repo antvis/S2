@@ -21,22 +21,6 @@ export class TableSheet extends SpreadSheet {
     return new TableDataSet(this);
   }
 
-  public enableFrozenHeaders(): boolean {
-    const {
-      rowCount: frozenRowCount = 0,
-      trailingRowCount: frozenTrailingRowCount = 0,
-      colCount: frozenColCount = 0,
-      trailingColCount: frozenTrailingColCount = 0,
-    } = this.options.frozen!;
-
-    return (
-      frozenRowCount > 0 ||
-      frozenTrailingRowCount > 0 ||
-      frozenColCount > 0 ||
-      frozenTrailingColCount > 0
-    );
-  }
-
   /**
    * Check if is pivot mode
    */
