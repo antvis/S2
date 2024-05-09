@@ -21,6 +21,9 @@ const data = await asyncGetAllPlainData({
   //   formatHeader: true,
   //   formatData: true
   // },
+
+  // 同步复制
+  // async: false
 });
 
 // 同步复制：copyToClipboard(data, false)
@@ -140,16 +143,19 @@ import { asyncGetAllPlainData, download } from '@antv/s2'
 // 拿到复制数据
 const data = await asyncGetAllPlainData({
   sheetInstance: s2,
-  split: '\t',
+  split: ',',
   formatOptions: true,
   // formatOptions: {
   //   formatHeader: true,
   //   formatData: true
   // },
+
+  // 同步导出
+  // async: false
 });
 
 // 导出数据 (csv)
-download(data, 'filename')
+download(data, 'filename') // filename.csv
 ```
 
 #### 2. 复制数据到剪贴板
@@ -207,17 +213,17 @@ const data = await asyncGetAllPlainData({
 | 参数          | 说明      | 类型              | 默认值           | 必选 |
 | ------------|-----------------|---------------|---------------| --- |
 | sheetInstance | s2 实例    | [SpreadSheet](/docs/api/basic-class/spreadsheet)     |      | ✓    |
-| split       | 分隔符           | `string`       |     | ✓    |
-| formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `false`  |      |
+| split       | 分隔符    | `string`       |     | ✓    |
+| formatOptions  | 是否使用 [S2DataConfig.Meta](/api/general/s2-data-config#meta) 进行格式化，可以分别对数据单元格和行列头进行格式化，传 `boolean` 会同时对单元格和行列头生效。 | `boolean \|  { formatHeader?: boolean, formatData?: boolean }`| `true`  |      |
 | customTransformer  | 导出时支持自定义 (transformer) 数据导出格式化方法  | (transformer: `Transformer`) => [`Partial<Transformer>`](#transformer)      |  |      |
-| isAsyncExport  | 是否异步导出        | boolean      | false         |      |
+| async  | 是否异步复制/导出        | boolean      | `true`         |      |
 
 ##### copyToClipboard
 
 | 参数 | 说明     | 类型     | 默认值 | 必选 |
 | --- | --- | ------- | ----- | --- |
 | data | 数据源 | `string` |        | ✓    |
-| sync | 是否同步复制数据 （默认异步） | `boolean` |   `false`     |     |
+| async | 是否异步复制数据（默认异步） | `boolean` |   `true`     |     |
 
 ##### download
 
@@ -254,7 +260,7 @@ interface CopyAllDataParams {
   split?: string;
   formatOptions?: FormatOptions;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
-  isAsyncExport?: boolean;
+  async?: boolean;
 }
 ```
 

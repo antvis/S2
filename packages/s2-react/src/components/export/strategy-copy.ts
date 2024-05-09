@@ -168,6 +168,8 @@ class StrategyCopyData extends PivotDataCellCopy {
         rowMatrix,
         cornerMatrix,
       }),
+      // https://github.com/antvis/S2/issues/2701
+      this.config.separator,
     );
   };
 }

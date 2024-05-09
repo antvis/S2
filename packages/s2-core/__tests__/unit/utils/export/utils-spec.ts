@@ -20,7 +20,7 @@ describe('Export & Copy Utils Tests', () => {
       .spyOn(document.body, 'removeChild')
       .mockImplementationOnce(() => null as unknown as Node);
 
-    await copyToClipboard(text, true);
+    await copyToClipboard(text, false);
 
     const result = await navigator.clipboard.readText();
     const textareaValue = document.querySelector('textarea')?.value;
@@ -64,7 +64,7 @@ describe('Export & Copy Utils Tests', () => {
 
     const text = '222';
 
-    await copyToClipboard(text, true);
+    await copyToClipboard(text, false);
 
     expect(window.scrollY).toEqual(scrollY);
   });

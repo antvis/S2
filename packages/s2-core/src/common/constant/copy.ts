@@ -4,9 +4,11 @@ export enum CopyType {
   ROW,
 }
 
-export const NewLine = '\r\n';
+export const LINE_SEPARATOR = '\r\n';
 
-export const NewTab = '\t';
+export const TAB_SEPARATOR = '\t';
+
+export const CSV_SEPARATOR = ',';
 
 // 每次异步渲染数据的阈值
 export const AsyncRenderThreshold = 5000;

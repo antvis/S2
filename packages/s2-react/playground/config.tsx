@@ -315,9 +315,9 @@ export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
   height: 600,
-  hierarchyType: 'tree',
+  hierarchyType: 'grid',
   seriesNumber: {
-    enable: true,
+    enable: false,
   },
   transformCanvasConfig() {
     return {

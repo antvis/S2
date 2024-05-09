@@ -40,7 +40,7 @@ download(data, 'filename')
 | parameter | illustrate                                                   | type      | Defaults | required |
 | --------- | ------------------------------------------------------------ | --------- | -------- | -------- |
 | data      | data source                                                  | `string`  |          | ✓        |
-| sync      | Whether to copy data synchronously (default is asynchronous) | `boolean` | `false`  |          |
+| async      | Whether to copy data asynchronously (default is asynchronous) | `boolean` | `true`  |          |
 
 ### download
 
