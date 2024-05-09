@@ -350,34 +350,33 @@ export class TableFacet extends FrozenFacet {
     return getTotalHeight() + colsHierarchy.height;
   }
 
-  private calculateColNodesCoordinate(
+  private calculateColLeafNodesWidth(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
-    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
-
     let preLeafNode = Node.blankNode();
     let currentCollIndex = 0;
 
-    const allNodes = colsHierarchy.getNodes();
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
 
-    for (let i = 0; i < allNodes.length; i++) {
-      const currentNode = allNodes[i];
+    colsHierarchy.getLeaves().forEach((currentNode) => {
+      currentNode.colIndex = currentCollIndex;
+      currentCollIndex += 1;
+      currentNode.x = preLeafNode.x + preLeafNode.width;
+      currentNode.width = this.getColLeafNodesWidth(
+        currentNode,
+        adaptiveColWidth,
+      );
+      layoutCoordinate(this.spreadsheet, null, currentNode);
+      colsHierarchy.width += currentNode.width;
+      preLeafNode = currentNode;
+    });
+  }
 
-      if (currentNode.isLeaf) {
-        currentNode.colIndex = currentCollIndex;
-        currentCollIndex += 1;
-        currentNode.x = preLeafNode.x + preLeafNode.width;
-        currentNode.width = this.calculateColLeafNodesWidth(
-          currentNode,
-          adaptiveColWidth,
-        );
-        layoutCoordinate(this.spreadsheet, null, currentNode);
-        colsHierarchy.width += currentNode.width;
-        preLeafNode = currentNode;
-      }
+  private calculateColNodesHeight(colsHierarchy: Hierarchy) {
+    const colNodes = colsHierarchy.getNodes();
 
+    colNodes.forEach((currentNode) => {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
@@ -386,15 +385,34 @@ export class TableFacet extends FrozenFacet {
       }
 
       currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
-    }
+    });
+  }
 
+  private calculateColNodesCoordinate(
+    colLeafNodes: Node[],
+    colsHierarchy: Hierarchy,
+  ) {
+    this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+    this.calculateColNodesHeight(colsHierarchy);
+    this.calculateColNodeWidthAndX(colLeafNodes);
+    this.calculateFrozenColNodeX(colsHierarchy);
+    this.updateCustomFieldsSampleNodes(colsHierarchy);
+    this.adjustCustomColLeafNodesHeight({
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    });
+  }
+
+  private calculateFrozenColNodeX(colsHierarchy: Hierarchy) {
     const topLevelNodes = colsHierarchy.getNodes(0);
     const { trailingColCount = 0 } = getValidFrozenOptions(
       this.spreadsheet.options.frozen!,
       topLevelNodes.length,
     );
 
-    preLeafNode = Node.blankNode();
+    const colNodes = colsHierarchy.getNodes();
+    let preLeafNode = Node.blankNode();
 
     const width =
       this.getCanvasSize().width -
@@ -403,7 +421,7 @@ export class TableFacet extends FrozenFacet {
     if (trailingColCount > 0) {
       const { trailingColCount: realFrozenTrailingColCount } =
         getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
-      const leafNodes = allNodes.filter((node) => node.isLeaf);
+      const leafNodes = colNodes.filter((node) => node.isLeaf);
 
       for (let i = 1; i <= realFrozenTrailingColCount; i++) {
         const currentNode = leafNodes[leafNodes.length - i];
@@ -417,20 +435,13 @@ export class TableFacet extends FrozenFacet {
         preLeafNode = currentNode;
       }
     }
-
-    this.updateCustomFieldsSampleNodes(colsHierarchy);
-    this.adjustColLeafNodesHeight({
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    });
-    this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
 
   /**
    * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
-  private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
+  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
@@ -451,7 +462,7 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(
+  private getColLeafNodesWidth(
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
