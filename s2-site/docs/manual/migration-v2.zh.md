@@ -725,6 +725,21 @@ const header = {
 <SheetComponent options={s2Options} />
 ```
 
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
+
+```diff
+s2.showTooltip({
+  options: {
+    operator: {
+      menu: {
+-       defaultSelectedKeys: ['key-1'],
++       selectedKeys: ['key-1'],
+      },
+    },
+  },
+});
+```
+
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
 #### 配置预处理 API 变更

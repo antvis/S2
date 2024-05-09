@@ -131,7 +131,7 @@ export const getTooltipDefaultOptions = <Menu = BaseTooltipOperatorMenuOptions>(
       menu: {
         onClick: noop,
         items: [],
-        defaultSelectedKeys: [],
+        selectedKeys: [],
       },
     },
     enableFormat: true,

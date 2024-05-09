@@ -54,9 +54,9 @@ export interface TooltipOperatorMenuOptions<Icon, Text> {
   onClick?: TooltipOperatorClickHandler;
 
   /**
-   * 默认选中的菜单项 key
+   * 选中的菜单项 key
    */
-  defaultSelectedKeys?: string[];
+  selectedKeys?: string[];
 }
 
 export interface TooltipOperatorOptions<Menu = BaseTooltipOperatorMenuOptions> {

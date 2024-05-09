@@ -7,7 +7,6 @@ import {
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
-  delay,
   forEach,
   forIn,
   get,
@@ -61,16 +60,15 @@ import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
+import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
-import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { getTheme } from '../theme';
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -272,14 +270,7 @@ export abstract class SpreadSheet extends EE {
         onMounted: resolve,
       };
 
-      if (isMobile()) {
-        // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
-        delay(() => {
-          this.tooltip.show?.(options);
-        }, 50);
-      } else {
-        this.tooltip.show?.(options);
-      }
+      this.tooltip?.show?.(options);
     });
   }
 
@@ -320,11 +311,11 @@ export abstract class SpreadSheet extends EE {
   }
 
   public hideTooltip() {
-    this.tooltip.hide?.();
+    this.tooltip?.hide?.();
   }
 
   public destroyTooltip() {
-    this.tooltip.destroy?.();
+    this.tooltip?.destroy?.();
   }
 
   public registerIcons() {
@@ -897,14 +888,14 @@ export abstract class SpreadSheet extends EE {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
+    const selectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const menuItems: TooltipOperatorMenuItems = this.isTableMode()
       ? getTooltipOperatorTableSortMenus()
       : getTooltipOperatorSortMenus();
 
     const operator: TooltipOperatorOptions = {
       menu: {
-        defaultSelectedKeys,
+        selectedKeys,
         items: menuItems,
         onClick: ({ key: sortMethod }) => {
           this.groupSortByMethod(sortMethod as SortMethod, meta);
@@ -916,8 +907,6 @@ export abstract class SpreadSheet extends EE {
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyShowOperator: true,
-      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-      forceRender: true,
     });
   }
 }

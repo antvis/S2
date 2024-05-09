@@ -1005,7 +1005,6 @@ describe('PivotSheet Tests', () => {
 
       const options: TooltipOptions = {
         onlyShowOperator: true,
-        forceRender: true,
         operator: {
           menu: {
             items: [
@@ -1014,7 +1013,7 @@ describe('PivotSheet Tests', () => {
               { key: 'none', label: groupNoneText },
             ],
             onClick: expect.anything(),
-            defaultSelectedKeys: [],
+            selectedKeys: [],
           },
         },
       };
@@ -1033,14 +1032,6 @@ describe('PivotSheet Tests', () => {
       .spyOn(s2, 'render')
       .mockImplementation(async () => {});
 
-    const showTooltipWithInfoSpy = jest
-      .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation((_, __, options) => {
-        return {
-          forceRender: options?.forceRender,
-        } as unknown as void;
-      });
-
     const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });
 
     s2.handleGroupSort(
@@ -1049,8 +1040,6 @@ describe('PivotSheet Tests', () => {
       } as GEvent,
       nodeMeta,
     );
-
-    expect(showTooltipWithInfoSpy).toHaveReturnedWith({ forceRender: true });
 
     s2.groupSortByMethod('asc', nodeMeta);
 
