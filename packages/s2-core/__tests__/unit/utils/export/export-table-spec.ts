@@ -7,9 +7,15 @@ import {
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
-import { FormatOptions, S2DataConfig, S2Options } from '../../../../src';
+import {
+  CSV_SEPARATOR,
+  FormatOptions,
+  S2DataConfig,
+  S2Options,
+  LINE_SEPARATOR,
+  TAB_SEPARATOR,
+} from '../../../../src';
 import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
-import { NewLine, NewTab } from '@/common';
 import { CopyMIMEType } from '@/common/interface/export';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
@@ -93,8 +99,8 @@ describe('TableSheet Export Test', () => {
     await s2.render();
 
     function testCase(data: string): void {
-      const rows = data.split(NewLine);
-      const headers = rows[0].split(NewTab);
+      const rows = data.split(LINE_SEPARATOR);
+      const headers = rows[0].split(TAB_SEPARATOR);
 
       expect(slice(rows, 0, 5)).toMatchSnapshot();
 
@@ -103,7 +109,7 @@ describe('TableSheet Export Test', () => {
 
       // 6列数据 包括序列号
       rows.forEach((e) => {
-        expect(e.split(NewTab)).toHaveLength(6);
+        expect(e.split(TAB_SEPARATOR)).toHaveLength(6);
       });
 
       expect(headers).toEqual([
@@ -118,7 +124,7 @@ describe('TableSheet Export Test', () => {
 
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
@@ -128,11 +134,11 @@ describe('TableSheet Export Test', () => {
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
-      isAsyncExport: true,
+      async: true,
     });
 
     testCase(asyncData);
@@ -158,16 +164,16 @@ describe('TableSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
     });
-    const rows = data.split(NewLine);
-    const headers = rows[0].split(NewTab);
+    const rows = data.split(LINE_SEPARATOR);
+    const headers = rows[0].split(TAB_SEPARATOR);
 
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(11);
     // 5列数据 包括序列号
     rows.forEach((e) => {
-      expect(e.split(NewTab)).toHaveLength(5);
+      expect(e.split(TAB_SEPARATOR)).toHaveLength(5);
     });
     expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
   });
@@ -201,7 +207,7 @@ describe('TableSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -227,7 +233,7 @@ describe('TableSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
       customTransformer: () => {
         return {
@@ -257,11 +263,11 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: true,
     });
     // 只取前10行数据
-    const result = slice(data.split(NewLine), 0, 5);
+    const result = slice(data.split(LINE_SEPARATOR), 0, 5);
 
     expect(result).toMatchSnapshot();
   });
@@ -307,13 +313,13 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
     });
 
-    expect(data.split(NewLine)).toMatchSnapshot();
+    expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
   });
 
   it('should export correct data with formatter if contain repeat column name', async () => {
@@ -352,17 +358,17 @@ describe('TableSheet Export Test', () => {
     await tableSheet.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: tableSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
     });
 
-    expect(data.split(NewLine)).toMatchSnapshot();
+    expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
   });
 
   // https://github.com/antvis/S2/issues/2681
-  it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
+  it.each([{ async: false }, { async: true }])(
     'should export correctly data for single row data by %o',
     async (options) => {
       const tableSheet = createTableSheet({ width: 600, height: 400 });
@@ -377,11 +383,11 @@ describe('TableSheet Export Test', () => {
       await tableSheet.render();
       const data = await asyncGetAllPlainData({
         sheetInstance: tableSheet,
-        split: '\t',
+        split: TAB_SEPARATOR,
         ...options,
       });
 
-      expect(data.split(NewLine)).toMatchSnapshot();
+      expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
     },
   );
 

@@ -1,4 +1,4 @@
-import { NewTab, type DataItem } from '../../../common';
+import { TAB_SEPARATOR, type DataItem } from '../../../common';
 import type {
   CopyableHTML,
   CopyablePlain,
@@ -51,7 +51,7 @@ export abstract class BaseDataCellCopy {
 
   protected matrixTransformer(
     dataMatrix: string[][],
-    separator = NewTab,
+    separator = TAB_SEPARATOR,
   ): [CopyablePlain, CopyableHTML] {
     return [
       this.matrixPlainTextTransformer(dataMatrix, separator),

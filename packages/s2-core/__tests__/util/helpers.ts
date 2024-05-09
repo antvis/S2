@@ -22,6 +22,7 @@ import {
   EventController,
   type FormatOptions,
   asyncGetAllPlainData,
+  TAB_SEPARATOR,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -378,7 +379,7 @@ export const expectMatchSnapshot = async (
   await s2.render();
   const data = await asyncGetAllPlainData({
     sheetInstance: s2,
-    split: '\t',
+    split: TAB_SEPARATOR,
     formatOptions,
   });
 
