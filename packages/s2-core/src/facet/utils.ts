@@ -1,7 +1,7 @@
 import type { Group } from '@antv/g';
 import { findIndex, isEmpty, isNil } from 'lodash';
 import type { FrozenCellIndex } from '../common/constant/frozen';
-import { FrozenCellType } from '../common/constant/frozen';
+import { FrozenGroupType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
   CustomHeaderFields,
@@ -151,7 +151,7 @@ export const translateGroupY = (group: Group, scrollY: number) => {
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * @description returns which group data cell belongs in frozen mode
  */
-export const getFrozenDataCellType = (
+export const getFrozenGroupTypeByCell = (
   meta: {
     colIndex: number;
     rowIndex: number;
@@ -172,22 +172,22 @@ export const getFrozenDataCellType = (
   const { colIndex, rowIndex } = meta;
 
   if (isFrozenRow(rowIndex, cellRange.start, rowCount)) {
-    return FrozenCellType.ROW;
+    return FrozenGroupType.Row;
   }
 
   if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
-    return FrozenCellType.TRAILING_ROW;
+    return FrozenGroupType.TrailingRow;
   }
 
   if (isFrozenCol(colIndex, colCount)) {
-    return FrozenCellType.COL;
+    return FrozenGroupType.Col;
   }
 
   if (isFrozenTrailingCol(colIndex, trailingColCount, colLength)) {
-    return FrozenCellType.TRAILING_COL;
+    return FrozenGroupType.TrailingCol;
   }
 
-  return FrozenCellType.SCROLL;
+  return FrozenGroupType.Scroll;
 };
 
 /**
@@ -208,17 +208,15 @@ export const calculateFrozenCornerCells = (
     trailingRowCount: frozenTrailingRowCount = 0,
   } = frozenOptions;
 
-  const result: {
-    [key: string]: FrozenCellIndex[];
-  } = {
-    [FrozenCellType.TOP]: [],
-    [FrozenCellType.BOTTOM]: [],
+  const result = {
+    [FrozenGroupType.Top]: [] as FrozenCellIndex[],
+    [FrozenGroupType.Bottom]: [] as FrozenCellIndex[],
   };
 
-  // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and bottom left corner.
+  // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and Bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenCellType.TOP].push({
+      result[FrozenGroupType.Top].push({
         x: i,
         y: j,
       });
@@ -228,7 +226,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenCellType.BOTTOM].push({
+        result[FrozenGroupType.Bottom].push({
           x: i,
           y: index,
         });
@@ -241,7 +239,7 @@ export const calculateFrozenCornerCells = (
     const colIndex = colLength - 1 - i;
 
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenCellType.TOP].push({
+      result[FrozenGroupType.Top].push({
         x: colIndex,
         y: j,
       });
@@ -251,7 +249,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenCellType.BOTTOM].push({
+        result[FrozenGroupType.Bottom].push({
           x: colIndex,
           y: index,
         });

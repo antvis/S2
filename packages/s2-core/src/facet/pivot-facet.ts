@@ -20,13 +20,14 @@ import { RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
   SPLIT_LINE_WIDTH,
   type IconTheme,
   type MultiData,
   type ViewMeta,
+  FrozenGroupPositionTypeMaps,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthType, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
@@ -965,8 +966,8 @@ export class PivotFacet extends FrozenFacet {
   }
 
   protected updateFrozenGroupGrid(): void {
-    [FrozenGroupType.FROZEN_ROW].forEach((key) => {
-      if (!this.frozenGroupInfo[key].range) {
+    [FrozenGroupPosition.Row].forEach((key) => {
+      if (!this.frozenGroupPositions[key].range) {
         return;
       }
 
@@ -974,18 +975,20 @@ export class PivotFacet extends FrozenFacet {
       let rows: number[] = [];
 
       if (key.toLowerCase().includes('row')) {
-        const [rowMin, rowMax] = this.frozenGroupInfo[key].range || [];
+        const [rowMin, rowMax] = this.frozenGroupPositions[key].range || [];
 
         cols = this.gridInfo.cols;
         rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
       }
 
-      this[`${key}Group`].updateGrid(
+      const frozenGroup = FrozenGroupPositionTypeMaps[key];
+
+      this.frozenGroups[frozenGroup].updateGrid(
         {
           cols,
           rows,
         },
-        `${key}Group`,
+        frozenGroup,
       );
     });
   }

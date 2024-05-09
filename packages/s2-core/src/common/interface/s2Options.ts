@@ -262,7 +262,19 @@ export enum DeviceType {
   MOBILE = 'mobile',
 }
 
-export interface S2PivotSheetFrozenOptions {
+export interface S2BaseFrozenOptions {
+  /**
+   * 行头冻结数量
+   */
+  rowCount?: number;
+
+  /**
+   * 行尾冻结数量
+   */
+  trailingRowCount?: number;
+}
+
+export interface S2PivotSheetFrozenOptions extends S2BaseFrozenOptions {
   /**
    * 是否冻结行头 (含角头区域, 透视表有效),
    * 当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头
@@ -276,21 +288,11 @@ export interface S2PivotSheetFrozenOptions {
   firstRow?: boolean;
 }
 
-export interface S2TableSheetFrozenOptions {
-  /**
-   * 行头冻结数量 (明细表有效)
-   */
-  rowCount?: number;
-
+export interface S2TableSheetFrozenOptions extends S2BaseFrozenOptions {
   /**
    * 列头冻结数量 (明细表有效)
    */
   colCount?: number;
-
-  /**
-   * 行尾冻结数量 (明细表有效)
-   */
-  trailingRowCount?: number;
 
   /**
    * 列尾冻结数量 (明细表有效)

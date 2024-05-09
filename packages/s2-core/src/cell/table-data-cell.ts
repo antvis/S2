@@ -2,7 +2,7 @@ import { Frame } from '../facet/header/frame';
 import { DataCell } from '../cell/data-cell';
 import {
   CellType,
-  FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
@@ -101,10 +101,10 @@ export class TableDataCell extends DataCell {
       y + headerHeight + Frame.getHorizontalBorderWidth(this.spreadsheet);
 
     const frozenGroupInfo = (this.spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo;
-    const rowHeight = frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+      .frozenGroupPositions;
+    const rowHeight = frozenGroupInfo[FrozenGroupPosition.Row].height;
     const rowTrailingHeight =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].height;
+      frozenGroupInfo[FrozenGroupPosition.TrailingRow].height;
 
     const resizeAreaBBox: SimpleBBox = {
       x: 0,

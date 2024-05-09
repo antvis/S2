@@ -1,28 +1,25 @@
-export enum FrozenCellType {
-  ROW = 'row',
-  COL = 'col',
-  TRAILING_ROW = 'trailingRow',
-  TRAILING_COL = 'trailingCol',
-  SCROLL = 'scroll',
-  TOP = 'top',
-  BOTTOM = 'bottom',
+export enum FrozenGroupPosition {
+  Row = 'frozenRow',
+  Col = 'frozenCol',
+  TrailingRow = 'frozenTrailingRow',
+  TrailingCol = 'frozenTrailingCol',
 }
 
 export enum FrozenGroupType {
-  FROZEN_COL = 'frozenCol',
-  FROZEN_ROW = 'frozenRow',
-  FROZEN_TRAILING_COL = 'frozenTrailingCol',
-  FROZEN_TRAILING_ROW = 'frozenTrailingRow',
+  Row = 'frozenRowGroup',
+  Col = 'frozenColGroup',
+  TrailingCol = 'frozenTrailingColGroup',
+  TrailingRow = 'frozenTrailingRowGroup',
+  Top = 'frozenTopGroup',
+  Bottom = 'frozenBottomGroup',
+  Scroll = 'scrollGroup',
 }
 
-export const FrozenCellGroupMap = {
-  [FrozenCellType.ROW]: 'frozenRowGroup',
-  [FrozenCellType.COL]: 'frozenColGroup',
-  [FrozenCellType.TRAILING_COL]: 'frozenTrailingColGroup',
-  [FrozenCellType.TRAILING_ROW]: 'frozenTrailingRowGroup',
-  [FrozenCellType.SCROLL]: 'panelScrollGroup',
-  [FrozenCellType.TOP]: 'frozenTopGroup',
-  [FrozenCellType.BOTTOM]: 'frozenBottomGroup',
+export const FrozenGroupPositionTypeMaps = {
+  [FrozenGroupPosition.Row]: FrozenGroupType.Row,
+  [FrozenGroupPosition.Col]: FrozenGroupType.Col,
+  [FrozenGroupPosition.TrailingRow]: FrozenGroupType.TrailingRow,
+  [FrozenGroupPosition.TrailingCol]: FrozenGroupType.TrailingCol,
 };
 
 export interface FrozenCellIndex {

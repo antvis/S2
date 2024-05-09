@@ -79,7 +79,6 @@ import type {
   CellScrollPosition,
   ScrollOffset,
 } from '../common/interface/scroll';
-import type { FrozenGroup } from '../group/frozen-group';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -127,18 +126,6 @@ export abstract class BaseFacet {
   public panelGroup: Group;
 
   public panelScrollGroup: PanelScrollGroup;
-
-  public frozenRowGroup: FrozenGroup;
-
-  public frozenColGroup: FrozenGroup;
-
-  public frozenTrailingRowGroup: FrozenGroup;
-
-  public frozenTrailingColGroup: FrozenGroup;
-
-  public frozenTopGroup: FrozenGroup;
-
-  public frozenBottomGroup: FrozenGroup;
 
   // render header/corner/scrollbar/resize
   public foregroundGroup: Group;

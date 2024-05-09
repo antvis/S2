@@ -3,18 +3,13 @@ import { last } from 'lodash';
 import type { DataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenCellGroupMap,
   FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_FROZEN_SPLIT_LINE,
-  KEY_GROUP_PANEL_FROZEN_BOTTOM,
-  KEY_GROUP_PANEL_FROZEN_COL,
-  KEY_GROUP_PANEL_FROZEN_ROW,
-  KEY_GROUP_PANEL_FROZEN_TOP,
-  KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-  KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   SPLIT_LINE_WIDTH,
+  FrozenGroupPositionTypeMaps,
 } from '../common/constant';
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
@@ -26,13 +21,17 @@ import {
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { floor } from '../utils/math';
+import type {
+  FrozenGroupPositions,
+  FrozenGroups,
+} from '../common/interface/frozen';
 import { BaseFacet } from './base-facet';
 import { Frame } from './header/frame';
 import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
   calculateInViewIndexes,
-  getFrozenDataCellType,
+  getFrozenGroupTypeByCell,
   getFrozenLeafNodesCount,
   splitInViewIndexesWithFrozen,
   translateGroup,
@@ -44,57 +43,44 @@ import {
 export abstract class FrozenFacet extends BaseFacet {
   public rowOffsets: number[];
 
-  public frozenGroupInfo = {
-    [FrozenGroupType.FROZEN_COL]: {
+  public frozenGroups: FrozenGroups;
+
+  public frozenGroupPositions = {
+    [FrozenGroupPosition.Col]: {
       width: 0,
       x: 0,
       range: [] as number[],
     },
-    [FrozenGroupType.FROZEN_TRAILING_COL]: {
+    [FrozenGroupPosition.TrailingCol]: {
       width: 0,
       x: 0,
       range: [] as number[],
     },
-    [FrozenGroupType.FROZEN_ROW]: {
+    [FrozenGroupPosition.Row]: {
       height: 0,
       y: 0,
       range: [] as number[],
     },
-    [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+    [FrozenGroupPosition.TrailingRow]: {
       height: 0,
       y: 0,
       range: [] as number[],
     },
-  } satisfies Record<
-    FrozenGroupType,
-    {
-      width?: number;
-      height?: number;
-      x?: number;
-      y?: number;
-      range: number[];
-    }
-  >;
+  } satisfies FrozenGroupPositions;
 
   public panelScrollGroupIndexes: Indexes = [0, 0, 0, 0];
 
   protected override initPanelGroups(): void {
     super.initPanelGroups();
-    [
-      this.frozenRowGroup,
-      this.frozenColGroup,
-      this.frozenTrailingRowGroup,
-      this.frozenTrailingColGroup,
-      this.frozenTopGroup,
-      this.frozenBottomGroup,
-    ] = [
-      KEY_GROUP_PANEL_FROZEN_ROW,
-      KEY_GROUP_PANEL_FROZEN_COL,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-      KEY_GROUP_PANEL_FROZEN_TOP,
-      KEY_GROUP_PANEL_FROZEN_BOTTOM,
-    ].map((name) => {
+
+    this.frozenGroups = [
+      FrozenGroupType.Row,
+      FrozenGroupType.Col,
+      FrozenGroupType.TrailingRow,
+      FrozenGroupType.TrailingCol,
+      FrozenGroupType.Top,
+      FrozenGroupType.Bottom,
+    ].reduce((acc, name) => {
       const frozenGroup = new FrozenGroup({
         name,
         zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
@@ -102,9 +88,10 @@ export abstract class FrozenFacet extends BaseFacet {
       });
 
       this.panelGroup.appendChild(frozenGroup);
+      acc[name] = frozenGroup;
 
-      return frozenGroup;
-    });
+      return acc;
+    }, {} as FrozenGroups);
   }
 
   protected getFrozenOptions() {
@@ -130,7 +117,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
     const { frozenCol, frozenTrailingCol, frozenRow, frozenTrailingRow } =
-      this.frozenGroupInfo;
+      this.frozenGroupPositions;
 
     if (colCount > 0) {
       frozenCol.width =
@@ -189,14 +176,14 @@ export abstract class FrozenFacet extends BaseFacet {
     };
 
     if (colCount > 0 || trailingColCount > 0) {
-      const { frozenTrailingCol, frozenCol } = this.frozenGroupInfo;
+      const { frozenTrailingCol, frozenCol } = this.frozenGroupPositions;
 
       finalViewport.width -= frozenTrailingCol.width! + frozenCol.width!;
       finalViewport.x += frozenCol.width!;
     }
 
     if (rowCount > 0 || trailingRowCount > 0) {
-      const { frozenRow, frozenTrailingRow } = this.frozenGroupInfo;
+      const { frozenRow, frozenTrailingRow } = this.frozenGroupPositions;
 
       // canvas 高度小于 row height 和 trailingRow height 的时候 height 为 0
       if (
@@ -270,7 +257,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const { colCount: realColCount, trailingColCount: realTrailingColCount } =
       this.getRealFrozenColumns(colCount, trailingColCount);
 
-    const frozenCellType = getFrozenDataCellType(
+    const frozenGroupType = getFrozenGroupTypeByCell(
       cell.getMeta(),
       {
         rowCount,
@@ -282,14 +269,10 @@ export abstract class FrozenFacet extends BaseFacet {
       cellRange,
     );
 
-    const groupName = FrozenCellGroupMap[frozenCellType];
-
-    if (groupName) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const group = this[groupName] as Group;
-
-      group.appendChild(cell);
+    if (frozenGroupType === FrozenGroupType.Scroll) {
+      this.panelScrollGroup.appendChild(cell);
+    } else {
+      this.frozenGroups[frozenGroupType].appendChild(cell);
     }
 
     setTimeout(() => {
@@ -311,12 +294,12 @@ export abstract class FrozenFacet extends BaseFacet {
 
   protected updateFrozenGroupGrid(): void {
     [
-      FrozenGroupType.FROZEN_COL,
-      FrozenGroupType.FROZEN_ROW,
-      FrozenGroupType.FROZEN_TRAILING_COL,
-      FrozenGroupType.FROZEN_TRAILING_ROW,
+      FrozenGroupPosition.Col,
+      FrozenGroupPosition.Row,
+      FrozenGroupPosition.TrailingCol,
+      FrozenGroupPosition.TrailingRow,
     ].forEach((key) => {
-      if (!this.frozenGroupInfo[key].range) {
+      if (!this.frozenGroupPositions[key].range) {
         return;
       }
 
@@ -324,14 +307,14 @@ export abstract class FrozenFacet extends BaseFacet {
       let rows: number[] = [];
 
       if (key.toLowerCase().includes('row')) {
-        const [rowMin, rowMax] = this.frozenGroupInfo[key].range || [];
+        const [rowMin, rowMax] = this.frozenGroupPositions[key].range || [];
 
         cols = this.gridInfo.cols;
         rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
 
-        if (key === FrozenGroupType.FROZEN_TRAILING_ROW) {
+        if (key === FrozenGroupPosition.TrailingRow) {
           const top =
-            this.frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].y;
+            this.frozenGroupPositions[FrozenGroupPosition.TrailingRow].y;
 
           rows = getFrozenRowsForGrid(
             rowMin,
@@ -341,19 +324,21 @@ export abstract class FrozenFacet extends BaseFacet {
           );
         }
       } else {
-        const [colMin, colMax] = this.frozenGroupInfo[key].range || [];
+        const [colMin, colMax] = this.frozenGroupPositions[key].range || [];
         const nodes = this.getTopLevelColNodes();
 
         cols = getColsForGrid(colMin, colMax, nodes);
         rows = this.gridInfo.rows;
       }
 
-      this[`${key}Group`].updateGrid(
+      const frozenGroup = FrozenGroupPositionTypeMaps[key];
+
+      this.frozenGroups[frozenGroup].updateGrid(
         {
           cols,
           rows,
         },
-        `${key}Group`,
+        frozenGroup,
       );
     });
   }
@@ -380,15 +365,31 @@ export abstract class FrozenFacet extends BaseFacet {
 
     const { x, y } = this.panelBBox;
 
-    translateGroup(this.frozenTopGroup, x, y - paginationScrollY);
-    translateGroup(this.frozenBottomGroup, x, y);
-
-    translateGroup(this.frozenRowGroup, x - scrollX, y - paginationScrollY);
-    translateGroup(this.frozenTrailingRowGroup, x - scrollX, y);
-
-    translateGroup(this.frozenColGroup, x, y - scrollY - paginationScrollY);
     translateGroup(
-      this.frozenTrailingColGroup,
+      this.frozenGroups[FrozenGroupType.Top],
+      x,
+      y - paginationScrollY,
+    );
+    translateGroup(this.frozenGroups[FrozenGroupType.Bottom], x, y);
+
+    translateGroup(
+      this.frozenGroups[FrozenGroupType.Row],
+      x - scrollX,
+      y - paginationScrollY,
+    );
+    translateGroup(
+      this.frozenGroups[FrozenGroupType.TrailingRow],
+      x - scrollX,
+      y,
+    );
+
+    translateGroup(
+      this.frozenGroups[FrozenGroupType.Col],
+      x,
+      y - scrollY - paginationScrollY,
+    );
+    translateGroup(
+      this.frozenGroups[FrozenGroupType.TrailingCol],
       x,
       y - scrollY - paginationScrollY,
     );
@@ -630,11 +631,9 @@ export abstract class FrozenFacet extends BaseFacet {
       cellRange,
     );
 
-    Object.keys(result).forEach((key) => {
+    (Object.keys(result) as (keyof typeof result)[]).forEach((key) => {
       const cells = result[key];
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const group = this[FrozenCellGroupMap[key]] as Group;
+      const group = this.frozenGroups[key];
 
       if (group) {
         cells.forEach((cell) => {
@@ -691,18 +690,17 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   protected clip() {
-    const { frozenGroupInfo, spreadsheet } = this;
+    const { frozenGroupPositions: frozenGroupInfo, spreadsheet } = this;
 
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
-    const frozenColGroupWidth =
-      frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const frozenColGroupWidth = frozenGroupInfo[FrozenGroupPosition.Col].width;
     const frozenTrailingColWidth =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+      frozenGroupInfo[FrozenGroupPosition.TrailingCol].width;
     const frozenRowGroupHeight =
-      frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+      frozenGroupInfo[FrozenGroupPosition.Row].height;
     const frozenTrailingRowHeight =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_ROW].height;
+      frozenGroupInfo[FrozenGroupPosition.TrailingRow].height;
 
     const panelScrollGroupClipX =
       (isFrozenRowHeader ? this.panelBBox.x : 0) + frozenColGroupWidth;
@@ -724,7 +722,8 @@ export abstract class FrozenFacet extends BaseFacet {
       },
     });
 
-    this.frozenColGroup.style.clipPath = new Rect({
+    /* frozen groups clip */
+    this.frozenGroups[FrozenGroupType.Col].style.clipPath = new Rect({
       style: {
         x: this.panelBBox.x,
         y: panelScrollGroupClipY,
@@ -733,7 +732,7 @@ export abstract class FrozenFacet extends BaseFacet {
       },
     });
 
-    this.frozenTrailingColGroup.style.clipPath = new Rect({
+    this.frozenGroups[FrozenGroupType.TrailingCol].style.clipPath = new Rect({
       style: {
         x: this.panelBBox.x + this.panelBBox.width - frozenTrailingColWidth,
         y: panelScrollGroupClipY,
@@ -742,7 +741,7 @@ export abstract class FrozenFacet extends BaseFacet {
       },
     });
 
-    this.frozenRowGroup.style.clipPath = new Rect({
+    this.frozenGroups[FrozenGroupType.Row].style.clipPath = new Rect({
       style: {
         x: panelScrollGroupClipX,
         y: this.panelBBox.y,
@@ -751,7 +750,7 @@ export abstract class FrozenFacet extends BaseFacet {
       },
     });
 
-    this.frozenTrailingRowGroup.style.clipPath = new Rect({
+    this.frozenGroups[FrozenGroupType.TrailingRow].style.clipPath = new Rect({
       style: {
         x: panelScrollGroupClipX,
         y: this.panelBBox.y + this.panelBBox.height - frozenTrailingRowHeight,

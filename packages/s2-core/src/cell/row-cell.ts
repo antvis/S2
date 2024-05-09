@@ -2,7 +2,7 @@ import type { PointLike } from '@antv/g';
 import { find, get, merge } from 'lodash';
 import {
   CellType,
-  FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -257,7 +257,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const isFrozen = this.getMeta().isFrozen;
 
     const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW]?.height;
+      .frozenGroupPositions[FrozenGroupPosition.Row]?.height;
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
@@ -377,7 +377,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const { scrollY, viewportHeight } = this.getHeaderConfig();
 
     const frozenRowGroupHeight = (this.spreadsheet.facet as FrozenFacet)
-      ?.frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+      ?.frozenGroupPositions[FrozenGroupPosition.Row].height;
 
     const viewport: AreaRange = {
       start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,

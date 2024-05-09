@@ -1,7 +1,7 @@
 import { find } from 'lodash';
 import { ColCell } from '../cell/col-cell';
 import {
-  FrozenGroupType,
+  FrozenGroupPosition,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
@@ -62,10 +62,11 @@ export class TableColCell extends ColCell {
       height,
     };
 
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
-    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+    const colWidth = frozenGroupInfo[FrozenGroupPosition.Col].width;
     const trailingColWidth =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+      frozenGroupInfo[FrozenGroupPosition.TrailingCol].width;
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: colWidth,

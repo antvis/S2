@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { S2DataConfig, TableSheet } from '../../src';
+import { type S2DataConfig, TableSheet } from '../../src';
 import { generateRawData, getContainer } from '../util/helpers';
 
 async function measureTableSheetRender(s2DataCfg: S2DataConfig, title) {

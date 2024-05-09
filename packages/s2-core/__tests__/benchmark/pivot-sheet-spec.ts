@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { PivotSheet, S2DataConfig } from '../../src';
+import { PivotSheet, type S2DataConfig } from '../../src';
 import { generateRawData, getContainer } from '../util/helpers';
 
-async function measurePivotSheetRender(s2DataCfg: S2DataConfig, title) {
+async function measurePivotSheetRender(s2DataCfg: S2DataConfig, title: string) {
   performance.mark('startTask');
   const s2 = new PivotSheet(getContainer(), s2DataCfg, null);
 

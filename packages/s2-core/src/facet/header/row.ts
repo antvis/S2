@@ -6,7 +6,7 @@ import { getFrozenRowCfgPivot, translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
-  FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_ROW_HEADER_FROZEN,
   KEY_GROUP_ROW_SCROLL,
   S2Event,
@@ -136,7 +136,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       this.getHeaderConfig();
 
     const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+      .frozenGroupPositions[FrozenGroupPosition.Row].height;
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {

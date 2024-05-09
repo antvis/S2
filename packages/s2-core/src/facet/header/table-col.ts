@@ -2,7 +2,7 @@ import { Group, Rect, type RectStyleProps } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroupType,
+  FrozenGroupPosition,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
@@ -155,10 +155,11 @@ export class TableColHeader extends ColHeader {
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
     const { width, height, spreadsheet, position } = this.getHeaderConfig();
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
-    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+    const colWidth = frozenGroupInfo[FrozenGroupPosition.Col].width;
     const trailingColWidth =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+      frozenGroupInfo[FrozenGroupPosition.TrailingCol].width;
     const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {

@@ -1,12 +1,18 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
 import { get } from 'lodash';
-import { type CellMeta, CellType, type ViewMeta } from '../common';
+import {
+  type CellMeta,
+  CellType,
+  type ViewMeta,
+  FrozenGroupType,
+} from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
 import { floor } from '../utils/math';
+import type { FrozenFacet } from '../facet';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
@@ -253,35 +259,30 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       rowCount: frozenRowCount = 0,
       trailingRowCount: frozenTrailingRowCount = 0,
     } = spreadsheet.options.frozen!;
-    const facet = spreadsheet.facet;
-    const {
-      frozenColGroup,
-      frozenTrailingColGroup,
-      frozenRowGroup,
-      frozenTrailingRowGroup,
-    } = facet;
+    const facet = spreadsheet.facet as FrozenFacet;
+    const frozenGroups = facet.frozenGroups;
 
     const colLeafNodes = facet.getColLeafNodes();
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
     const splitLineStyle = get(spreadsheet, 'theme.splitLine');
-    const frozenColWidth = frozenColGroup
+    const frozenColWidth = frozenGroups[FrozenGroupType.Col]
       ? floor(
-          frozenColGroup.getBBox().width -
+          frozenGroups[FrozenGroupType.Col].getBBox().width -
             splitLineStyle.verticalBorderWidth / 2,
         )
       : 0;
-    const frozenTrailingColWidth = frozenTrailingColGroup
-      ? floor(frozenTrailingColGroup.getBBox().width)
+    const frozenTrailingColWidth = frozenGroups[FrozenGroupType.TrailingCol]
+      ? floor(frozenGroups[FrozenGroupType.TrailingCol].getBBox().width)
       : 0;
-    const frozenRowHeight = frozenRowGroup
+    const frozenRowHeight = frozenGroups[FrozenGroupType.Row]
       ? floor(
-          frozenRowGroup.getBBox().height -
+          frozenGroups[FrozenGroupType.Row].getBBox().height -
             splitLineStyle.horizontalBorderWidth / 2,
         )
       : 0;
-    const frozenTrailingRowHeight = frozenTrailingRowGroup
-      ? floor(frozenTrailingRowGroup.getBBox().height)
+    const frozenTrailingRowHeight = frozenGroups[FrozenGroupType.TrailingRow]
+      ? floor(frozenGroups[FrozenGroupType.TrailingRow].getBBox().height)
       : 0;
 
     const indexes = calculateInViewIndexes({
