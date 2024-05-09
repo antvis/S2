@@ -464,6 +464,13 @@ describe('Pivot Dataset Test', () => {
       dataSet.setDataCfg(dataConfig);
     });
 
+    test('should return correct field', () => {
+      expect(dataSet.getField('price')).toStrictEqual('price');
+      expect(dataSet.getField({ field: 'price', title: '价格' })).toStrictEqual(
+        'price',
+      );
+    });
+
     test('should return correct field name', () => {
       expect(dataSet.getFieldName('price')).toStrictEqual('价格');
       expect(dataSet.getFieldName('cost')).toStrictEqual('成本');

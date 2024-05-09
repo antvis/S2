@@ -67,11 +67,11 @@ export const copyToClipboardByClipboard = (data: Copyable): Promise<void> =>
 /**
  * @name 复制数据
  * @param data 数据源
- * @param sync 同步复制
+ * @param async 异步复制
  */
 export const copyToClipboard = (
   data: Copyable | string,
-  sync = false,
+  async = true,
 ): Promise<void> => {
   let copyableItem: Copyable;
 
@@ -84,7 +84,7 @@ export const copyToClipboard = (
     copyableItem = data;
   }
 
-  if (!navigator.clipboard || !window.ClipboardItem || sync) {
+  if (!navigator.clipboard || !window.ClipboardItem || !async) {
     return copyToClipboardByExecCommand(copyableItem);
   }
 

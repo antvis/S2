@@ -98,7 +98,7 @@ order: 5
 | ------- | -------------------------------------------- | ------ | ------ | ------------------------------------------------------------------------------------------ |
 | items   | [TooltipOperatorMenuItem[]](#tooltipoperatormenuitem)  |     |        | 操作项列表  |
 | onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
-| defaultSelectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组，透传 `antd` `Menu` 组件的 [defaultSelectedKeys](https://ant.design/components/menu-cn/#Menu)  |
+| selectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组，透传 `antd` `Menu` 组件的 [selectedKeys](https://ant.design/components/menu-cn/#Menu)  |
 
 ##### TooltipOperatorMenuItem
 

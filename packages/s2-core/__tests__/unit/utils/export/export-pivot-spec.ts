@@ -1,5 +1,4 @@
 /* eslint-disable jest/expect-expect */
-import { NewLine, NewTab, PivotSheet, asyncGetAllPlainData } from '@antv/s2';
 import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
@@ -10,6 +9,12 @@ import {
 } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
 import { expectMatchSnapshot } from '../../../util/helpers';
+import {
+  CSV_SEPARATOR,
+  LINE_SEPARATOR,
+  TAB_SEPARATOR,
+} from '../../../../src/common/constant';
+import { asyncGetAllPlainData, PivotSheet } from '../../../../src';
 import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
@@ -41,7 +46,7 @@ describe('PivotSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -49,9 +54,9 @@ describe('PivotSheet Export Test', () => {
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
-      isAsyncExport: true,
+      async: true,
     });
 
     expect(asyncData).toMatchSnapshot();
@@ -74,7 +79,7 @@ describe('PivotSheet Export Test', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -82,9 +87,9 @@ describe('PivotSheet Export Test', () => {
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       formatOptions: true,
-      isAsyncExport: true,
+      async: true,
     });
 
     expect(asyncData).toMatchSnapshot();
@@ -207,7 +212,7 @@ describe('PivotSheet Export Test', () => {
     await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data when isFormat: {formatHeader: true}', async () => {
+  it('should export correct data when by {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -234,7 +239,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  it('should export correct data when isFormat: {formatData: true}', async () => {
+  it('should export correct data when by {formatData: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -243,17 +248,65 @@ describe('PivotSheet Export Test', () => {
             field: 'number',
             formatter: (value) => `${value}%`,
           },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'type',
+            name: '子类别',
+          },
+          {
+            field: 'province',
+            name: '省份',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
         ],
       }),
       assembleOptions({
         interaction: {
-          copy: { enable: true, withFormat: true },
+          copy: { enable: true, withHeader: true, withFormat: true },
         },
       }),
     );
 
     await expectMatchSnapshot(s2, {
       formatData: true,
+    });
+  });
+
+  it('should export correct data when by {formatHeader: false, formatData: false}', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter: (value) => `${value}%`,
+          },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
+        ],
+      }),
+      assembleOptions({
+        interaction: {
+          copy: { enable: true, withHeader: true, withFormat: true },
+        },
+      }),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: false,
+      formatData: false,
     });
   });
 
@@ -339,7 +392,7 @@ describe('PivotSheet Export Test', () => {
 
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       customTransformer: () => {
         return {
           [CopyMIMEType.PLAIN]: () => {
@@ -356,7 +409,7 @@ describe('PivotSheet Export Test', () => {
   it('should export correct data When the split separator is configured', async () => {
     const data = await asyncGetAllPlainData({
       sheetInstance: pivotSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
@@ -392,7 +445,7 @@ describe('PivotSheet Export Test', () => {
   });
 
   // https://github.com/antvis/S2/issues/2681
-  it.each([{ isAsyncExport: false }, { isAsyncExport: true }])(
+  it.each([{ async: false }, { async: true }])(
     'should export correctly data for single row data by %o',
     async (options) => {
       const sheet = createPivotSheet({ width: 600, height: 400 });
@@ -404,11 +457,11 @@ describe('PivotSheet Export Test', () => {
       await sheet.render();
       const data = await asyncGetAllPlainData({
         sheetInstance: sheet,
-        split: '\t',
+        split: TAB_SEPARATOR,
         ...options,
       });
 
-      expect(data.split(NewLine)).toMatchSnapshot();
+      expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
     },
   );
 });

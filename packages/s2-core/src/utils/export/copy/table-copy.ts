@@ -101,7 +101,9 @@ class TableDataCellCopy extends BaseDataCellCopy {
               : rowLength;
 
           while (
-            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+            (deadline.timeRemaining() > 0 ||
+              deadline.didTimeout ||
+              process.env['NODE_ENV'] === 'test') &&
             rowIndex <= rowLength - 1 &&
             count > 0
           ) {
@@ -228,7 +230,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
   }
 
   async asyncProcessSelectedTable(allSelected = false): Promise<CopyableList> {
-    const matrix = this.config.isAsyncExport
+    const matrix = this.config.async
       ? await this.getDataMatrixRIC()
       : await Promise.resolve(this.getDataMatrix());
 
@@ -269,13 +271,8 @@ export const processSelectedTableByHeader = (
 export const asyncProcessSelectedAllTable = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
-  const {
-    sheetInstance,
-    split,
-    formatOptions,
-    customTransformer,
-    isAsyncExport,
-  } = params;
+  const { sheetInstance, split, formatOptions, customTransformer, async } =
+    params;
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet: sheetInstance,
     config: {
@@ -283,7 +280,7 @@ export const asyncProcessSelectedAllTable = (
       separator: split,
       formatOptions,
       customTransformer,
-      isAsyncExport: true ?? isAsyncExport,
+      async: async ?? true,
     },
     isExport: true,
   });

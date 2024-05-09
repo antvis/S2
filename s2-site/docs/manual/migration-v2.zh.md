@@ -212,10 +212,19 @@ const s2Options = {
 +  sheetInstance: s2,
 +  split: '\t',
 +  formatOptions: false,
++  async: true,
 });
 ```
 
-3. 复制默认开启。
+3. `copyToClipboard` 第二个参数含义 从 `sync` 变更为 `async`.
+
+```diff
+- const data = copyToClipboard(data: string, sync: boolean)
++ const data = copyToClipboard(data: string, async: boolean)
+```
+
+4. 复制默认开启。
+5. 复制导出默认异步。
 
 具体请查看 [复制与导出](/manual/advanced/interaction/copy) 相关文档。
 
@@ -668,6 +677,15 @@ const header = {
 
 具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
 
+#### 导出组件配置调整
+
+`syncCopy` 变更为 `async`
+
+```diff
+- <Export syncCopy={true} />
++ <Export async={false} />
+```
+
 #### Tooltip 菜单项配置调整
 
 菜单项调整到 `menu` 下，和 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api) 保持一致，同时支持透传 props.
@@ -705,6 +723,21 @@ const header = {
 };
 
 <SheetComponent options={s2Options} />
+```
+
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
+
+```diff
+s2.showTooltip({
+  options: {
+    operator: {
+      menu: {
+-       defaultSelectedKeys: ['key-1'],
++       selectedKeys: ['key-1'],
+      },
+    },
+  },
+});
 ```
 
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。

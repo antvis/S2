@@ -1,24 +1,15 @@
-import {
-  BaseTooltip,
-  isMobile,
-  MOBILE_TOOLTIP_PREFIX_CLS,
-  SpreadSheet,
-} from '@antv/s2';
-import React from 'react';
-import { LeftOutlined } from '@ant-design/icons';
-import { Drawer } from 'antd';
+import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import { startsWith } from 'lodash';
+import React from 'react';
 // eslint-disable-next-line react/no-deprecated
 import { render, unmountComponentAtNode, version } from 'react-dom';
 import { createRoot, type Root } from 'react-dom/client';
-import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
 import { ConfigProvider } from '../config-provider';
 import type {
   TooltipOperatorMenuOptions,
   TooltipRenderProps,
 } from './interface';
 import { TooltipComponent } from './index';
-import './style.less';
 
 /**
  * 自定义 Tooltip 组件, 兼容 React 18 参考如下
@@ -28,7 +19,7 @@ export class CustomTooltip extends BaseTooltip<
   React.ReactNode,
   TooltipOperatorMenuOptions
 > {
-  root: Root;
+  root: Root | null;
 
   isLegacyReactVersion = !startsWith(version, '18');
 
@@ -60,27 +51,11 @@ export class CustomTooltip extends BaseTooltip<
       this.forceClearContent();
     }
 
-    const Content = this.isMobileDevice() ? (
-      <Drawer
-        rootClassName={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
-        title={cell?.getActualText()}
-        open={this.visible}
-        closeIcon={<LeftOutlined />}
-        placement="right"
-        width={MOBILE_DRAWER_WIDTH}
-        onClose={() => {
-          this.hide();
-        }}
-      >
-        <TooltipComponent {...tooltipProps} content={content} />
-      </Drawer>
-    ) : (
-      <TooltipComponent {...tooltipProps} content={content} />
-    );
-
     const themeName = this.spreadsheet.getThemeName();
     const TooltipContent = (
-      <ConfigProvider themeName={themeName}>{Content}</ConfigProvider>
+      <ConfigProvider themeName={themeName}>
+        <TooltipComponent {...tooltipProps} content={content} />
+      </ConfigProvider>
     );
 
     if (this.isLegacyReactVersion) {
@@ -125,6 +100,8 @@ export class CustomTooltip extends BaseTooltip<
     // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
     Promise.resolve().then(() => {
       this.root?.unmount();
+      // Fiber 节点卸载后不能再重新渲染, 需要重新创建
+      this.root = null;
     });
   }
 }
