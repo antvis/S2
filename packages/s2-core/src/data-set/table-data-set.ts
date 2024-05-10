@@ -126,7 +126,7 @@ export class TableDataSet extends BaseDataSet {
       } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
         const placeholder = getEmptyPlaceholder(
           this.spreadsheet,
-          this.spreadsheet.options.placeholder,
+          this.spreadsheet.options?.placeholder,
         );
         const customSortBy = isFunction(sortBy) ? sortBy : null;
         const customSort = (record: DataType) => {
