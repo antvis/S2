@@ -34,7 +34,11 @@ import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, SimpleData } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
-import { renderLine, safeJsonParse } from '../utils';
+import {
+  getValidFrozenOptionsForPivot,
+  renderLine,
+  safeJsonParse,
+} from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
@@ -48,7 +52,6 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenRowCfgPivot } from './utils';
 
 export class PivotFacet extends FrozenFacet {
   get rowCellTheme() {
@@ -994,10 +997,16 @@ export class PivotFacet extends FrozenFacet {
   }
 
   protected getFrozenOptions() {
-    return getFrozenRowCfgPivot(
-      this.spreadsheet.options,
-      this.layoutResult.rowNodes,
-    );
+    if (!this.validFrozenOptions) {
+      const cellRange = this.getCellRange();
+
+      this.validFrozenOptions = getValidFrozenOptionsForPivot(
+        this.spreadsheet.options,
+        cellRange.end - cellRange.start + 1,
+      );
+    }
+
+    return this.validFrozenOptions;
   }
 
   public enableFrozenFirstRow(): boolean {

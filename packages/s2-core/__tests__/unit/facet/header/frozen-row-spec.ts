@@ -29,11 +29,11 @@ describe('Pivot Frozen Row Header Test', () => {
       const rowHeader = s2.facet.rowHeader as RowHeader;
 
       expect(rowHeader).toBeTruthy();
-      expect(rowHeader.frozenRowGroup).toBeTruthy();
+      expect(rowHeader.frozenGroup).toBeTruthy();
       expect(rowHeader.scrollGroup).toBeTruthy();
 
-      expect(rowHeader.frozenRowGroup.children).toHaveLength(1);
-      const frozenRowCell = rowHeader.frozenRowGroup.children[0];
+      expect(rowHeader.frozenGroup.children).toHaveLength(1);
+      const frozenRowCell = rowHeader.frozenGroup.children[0];
 
       expect(frozenRowCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);

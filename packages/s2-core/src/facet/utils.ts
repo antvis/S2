@@ -7,8 +7,6 @@ import type {
   CustomHeaderFields,
   Fields,
   Pagination,
-  S2Options,
-  S2PivotSheetFrozenOptions,
   S2TableSheetFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
@@ -430,46 +428,4 @@ export const areAllFieldsEmpty = (fields: Fields) => {
   return (
     isEmpty(fields.rows) && isEmpty(fields.columns) && isEmpty(fields.values)
   );
-};
-
-/**
- * get frozen options pivot-sheet (business limit)
- * @param options
- * @returns
- */
-export const getFrozenRowCfgPivot = (
-  options: S2Options,
-  rowNodes: Node[],
-): S2PivotSheetFrozenOptions &
-  S2TableSheetFrozenOptions & {
-    rowHeight: number;
-  } => {
-  /**
-   * series number cell 可以自定义布局，和 row cell 不一定是 1 对 1 的关系
-   * seriesNumber 暂时禁用 首行冻结
-   * */
-  const { pagination, frozen, hierarchyType, seriesNumber } = options;
-
-  const enablePagination = pagination && pagination.pageSize;
-  let firstRow = false;
-  const headNode = rowNodes?.[0];
-
-  if (!enablePagination && !seriesNumber?.enable && frozen?.firstRow) {
-    const treeMode = hierarchyType === 'tree';
-
-    // tree mode
-    // first node no children: entire row
-    firstRow = treeMode || headNode?.children?.length === 0;
-  }
-
-  const effectiveFrozenFirstRow = firstRow && !!headNode;
-
-  return {
-    rowCount: effectiveFrozenFirstRow ? 1 : 0,
-    colCount: 0,
-    trailingColCount: 0,
-    trailingRowCount: 0,
-    firstRow,
-    rowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
-  };
 };

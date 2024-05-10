@@ -40,6 +40,10 @@ import {
   splitInViewIndexesWithFrozen,
   translateGroup,
 } from './utils';
+import {
+  getFrozenTrailingColOffset,
+  getFrozenTrailingRowOffset,
+} from './header/util';
 
 /**
  * Defines the row freeze  abstract standard interface
@@ -72,9 +76,9 @@ export abstract class FrozenFacet extends BaseFacet {
     },
   } satisfies FrozenGroupPositions;
 
-  private validFrozenOptions: Required<S2TableSheetFrozenOptions>;
+  protected validFrozenOptions: Required<S2TableSheetFrozenOptions>;
 
-  private realFrozenOptionsForLeafNodes: Required<S2TableSheetFrozenOptions>;
+  protected realFrozenOptionsForLeafNodes: Required<S2TableSheetFrozenOptions>;
 
   public panelScrollGroupIndexes: Indexes = [0, 0, 0, 0];
 
@@ -371,20 +375,16 @@ export abstract class FrozenFacet extends BaseFacet {
 
     const { x, y, viewportWidth, viewportHeight } = this.panelBBox;
 
-    const trailingCol =
-      this.frozenGroupPositions[FrozenGroupPosition.TrailingCol];
-    const trailingColWidth = trailingCol.x + trailingCol.width;
-    const trailingColOffset =
-      viewportWidth > trailingColWidth ? 0 : trailingColWidth - viewportWidth;
+    const trailingColOffset = getFrozenTrailingColOffset(
+      this.frozenGroupPositions,
+      viewportWidth,
+    );
 
-    const trailingRow =
-      this.frozenGroupPositions[FrozenGroupPosition.TrailingRow];
-    const trailingRowHeight =
-      trailingRow.y + trailingRow.height - paginationScrollY;
-    const trailingRowOffset =
-      viewportHeight > trailingRowHeight
-        ? paginationScrollY
-        : paginationScrollY + trailingRowHeight - viewportHeight;
+    const trailingRowOffset = getFrozenTrailingRowOffset(
+      this.frozenGroupPositions,
+      viewportHeight,
+      paginationScrollY,
+    );
 
     translateGroup(
       this.frozenGroups[FrozenGroupType.TopLeft],

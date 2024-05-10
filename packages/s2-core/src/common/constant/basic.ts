@@ -36,6 +36,8 @@ export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
 export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
+export const KEY_GROUP_ROW_HEADER_FROZEN_TRAILING =
+  'rowHeaderFrozenTrailingGroup';
 
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 

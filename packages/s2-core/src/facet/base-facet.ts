@@ -1953,6 +1953,12 @@ export abstract class BaseFacet {
     return this.getRowLeafNodes().find((node) => node.rowIndex === rowIndex);
   }
 
+  public getRowLeafNodeByRange(minIndex: number, maxIndex: number) {
+    return this.getRowLeafNodes().filter(
+      (node) => node.rowIndex >= minIndex && node.rowIndex <= maxIndex,
+    );
+  }
+
   /**
    * 根据 field 获取行头节点
    * @example facet.getRowNodeByField('number')

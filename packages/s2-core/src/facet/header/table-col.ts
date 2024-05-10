@@ -19,6 +19,7 @@ import {
 import type { FrozenFacet } from '../frozen-facet';
 import { ColHeader } from './col';
 import type { ColHeaderConfig } from './interface';
+import { getFrozenTrailingColOffset } from './util';
 
 /**
  * Column Header for SpreadSheet
@@ -167,12 +168,11 @@ export class TableColHeader extends ColHeader {
     const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
       .frozenGroupPositions;
 
-    const trailingCol = frozenGroupPositions[FrozenGroupPosition.TrailingCol];
-
-    const trailingColWidth = trailingCol.x + trailingCol.width;
     const viewportWidth = spreadsheet.facet.panelBBox.viewportWidth;
-    const trailingColOffset =
-      viewportWidth > trailingColWidth ? 0 : trailingColWidth - viewportWidth;
+    const trailingColOffset = getFrozenTrailingColOffset(
+      frozenGroupPositions,
+      viewportWidth,
+    );
 
     translateGroupX(this.frozenGroup, position.x);
     translateGroupX(this.frozenTrailingGroup, position.x - trailingColOffset);

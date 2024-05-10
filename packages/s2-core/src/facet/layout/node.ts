@@ -135,6 +135,8 @@ export class Node {
 
   public isFrozen?: boolean;
 
+  public isFrozenTrailing?: boolean;
+
   public extra?: {
     description?: string;
     isCustomNode?: boolean;
@@ -353,5 +355,9 @@ export class Node {
 
   public isSeriesNumberNode() {
     return this.field === SERIES_NUMBER_FIELD;
+  }
+
+  public clone() {
+    return Object.create(this) as Node;
   }
 }
