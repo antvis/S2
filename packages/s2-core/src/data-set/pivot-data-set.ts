@@ -380,7 +380,10 @@ export class PivotDataSet extends BaseDataSet {
         this.spreadsheet.options?.totals,
       ) || {};
     // 聚合方式从用户配置的 s2Options.totals 取, 在触发前端兜底计算汇总逻辑时, 如果没有汇总的配置, 默认按 [求和] 计算,避免排序失效.
-    const calcAction = calcActionByType[aggregation || Aggregation.SUM];
+    const defaultAggregation = !this.spreadsheet.isHierarchyTreeType()
+      ? Aggregation.SUM
+      : '';
+    const calcAction = calcActionByType[aggregation || defaultAggregation];
 
     // 前端计算汇总值
     if (calcAction || calcFunc) {

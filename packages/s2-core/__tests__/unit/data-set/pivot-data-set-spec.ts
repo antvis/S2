@@ -456,7 +456,14 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
-      expect(cellData).toBeUndefined();
+      expect(cellData).toEqual({
+        $$extra$$: 'number',
+        $$value$$: 15420,
+        city: '杭州市',
+        district: '西湖区',
+        number: 15420,
+        province: '浙江省',
+      });
     });
   });
 
