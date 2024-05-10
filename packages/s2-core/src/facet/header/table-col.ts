@@ -11,7 +11,6 @@ import {
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 import {
-  getFrozenLeafNodesCount,
   getLeftLeafNode,
   isFrozenCol,
   isFrozenTrailingCol,
@@ -25,13 +24,9 @@ import type { ColHeaderConfig } from './interface';
  * Column Header for SpreadSheet
  */
 export class TableColHeader extends ColHeader {
-  public frozenColGroup: Group;
+  public frozenGroup: Group;
 
-  public frozenTrailingColGroup: Group;
-
-  private finalColCount: number;
-
-  private finalTrailingColCount: number;
+  public frozenTrailingGroup: Group;
 
   private topLevelColNodeLength: number;
 
@@ -58,26 +53,24 @@ export class TableColHeader extends ColHeader {
     return colCell?.(...args) || new TableColCell(...args);
   }
 
+  private getRealFrozenOptions() {
+    const headerConfig = this.getHeaderConfig();
+
+    return (
+      headerConfig.spreadsheet.facet as FrozenFacet
+    ).getRealFrozenOptions();
+  }
+
   private initFrozenColGroups() {
     const headerConfig = this.getHeaderConfig();
-    const {
-      colCount: frozenColCount,
-      trailingColCount: frozenTrailingColCount,
-    } = headerConfig.spreadsheet.options.frozen!;
-
     const topLevelNodes = headerConfig.spreadsheet.facet.getColNodes(0);
-    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      frozenColCount!,
-      frozenTrailingColCount!,
-    );
 
-    this.finalColCount = colCount;
-    this.finalTrailingColCount = trailingColCount;
     this.topLevelColNodeLength = topLevelNodes.length;
 
+    const { colCount, trailingColCount } = this.getRealFrozenOptions();
+
     if (colCount) {
-      this.frozenColGroup = this.appendChild(
+      this.frozenGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN,
           style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
@@ -86,7 +79,7 @@ export class TableColHeader extends ColHeader {
     }
 
     if (trailingColCount) {
-      this.frozenTrailingColGroup = this.appendChild(
+      this.frozenTrailingGroup = this.appendChild(
         new Group({
           name: KEY_GROUP_COL_FROZEN_TRAILING,
           style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
@@ -98,8 +91,8 @@ export class TableColHeader extends ColHeader {
   public clear() {
     super.clear();
 
-    this.frozenTrailingColGroup?.removeChildren();
-    this.frozenColGroup?.removeChildren();
+    this.frozenTrailingGroup?.removeChildren();
+    this.frozenGroup?.removeChildren();
 
     const { spreadsheet } = this.getHeaderConfig();
     // 额外清除冻结列的 Resizer Area
@@ -111,41 +104,38 @@ export class TableColHeader extends ColHeader {
     resizerArea?.removeChildren();
   }
 
-  private getColFrozenOptionsByNode(node: Node) {
-    const leftLeafNode = getLeftLeafNode(node);
-
-    return {
-      colLength: this.topLevelColNodeLength,
-      leftLeafNodeColIndex: leftLeafNode.colIndex,
-      colCount: this.finalColCount,
-      trailingColCount: this.finalTrailingColCount,
-    };
-  }
-
   protected getCellGroup(node: Node): Group {
-    const { colLength, leftLeafNodeColIndex, colCount, trailingColCount } =
-      this.getColFrozenOptionsByNode(node);
+    const leftLeafNodeColIndex = getLeftLeafNode(node).colIndex;
+    const { colCount, trailingColCount } = this.getRealFrozenOptions();
 
     if (isFrozenCol(leftLeafNodeColIndex, colCount)) {
-      return this.frozenColGroup;
+      return this.frozenGroup;
     }
 
     if (
-      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
+      isFrozenTrailingCol(
+        leftLeafNodeColIndex,
+        trailingColCount,
+        this.topLevelColNodeLength,
+      )
     ) {
-      return this.frozenTrailingColGroup;
+      return this.frozenTrailingGroup;
     }
 
     return this.scrollGroup;
   }
 
   protected isColCellInRect(node: Node): boolean {
-    const { leftLeafNodeColIndex, colLength, colCount, trailingColCount } =
-      this.getColFrozenOptionsByNode(node);
+    const leftLeafNodeColIndex = getLeftLeafNode(node).colIndex;
+    const { colCount, trailingColCount } = this.getRealFrozenOptions();
 
     if (
       isFrozenCol(leftLeafNodeColIndex, colCount) ||
-      isFrozenTrailingCol(leftLeafNodeColIndex, trailingColCount, colLength)
+      isFrozenTrailingCol(
+        leftLeafNodeColIndex,
+        trailingColCount,
+        this.topLevelColNodeLength,
+      )
     ) {
       return true;
     }
@@ -155,11 +145,11 @@ export class TableColHeader extends ColHeader {
 
   public getScrollGroupClipBBox = (): RectStyleProps => {
     const { width, height, spreadsheet, position } = this.getHeaderConfig();
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
+    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
       .frozenGroupPositions;
-    const colWidth = frozenGroupInfo[FrozenGroupPosition.Col].width;
+    const colWidth = frozenGroupPositions[FrozenGroupPosition.Col].width;
     const trailingColWidth =
-      frozenGroupInfo[FrozenGroupPosition.TrailingCol].width;
+      frozenGroupPositions[FrozenGroupPosition.TrailingCol].width;
     const scrollGroupWidth = width - colWidth - trailingColWidth;
 
     return {
@@ -173,10 +163,19 @@ export class TableColHeader extends ColHeader {
   protected override offset() {
     super.offset();
 
-    const { position } = this.getHeaderConfig();
+    const { position, spreadsheet } = this.getHeaderConfig();
+    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
 
-    translateGroupX(this.frozenColGroup, position.x);
-    translateGroupX(this.frozenTrailingColGroup, position.x);
+    const trailingCol = frozenGroupPositions[FrozenGroupPosition.TrailingCol];
+
+    const trailingColWidth = trailingCol.x + trailingCol.width;
+    const viewportWidth = spreadsheet.facet.panelBBox.viewportWidth;
+    const trailingColOffset =
+      viewportWidth > trailingColWidth ? 0 : trailingColWidth - viewportWidth;
+
+    translateGroupX(this.frozenGroup, position.x);
+    translateGroupX(this.frozenTrailingGroup, position.x - trailingColOffset);
   }
 
   protected clip(): void {

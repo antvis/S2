@@ -11,13 +11,13 @@ import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
   Node,
   customMerge,
   type HiddenColumnsInfo,
   type S2DataConfig,
   type S2Options,
+  getFrozenLeafNodesCount,
 } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
