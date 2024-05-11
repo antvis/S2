@@ -38,10 +38,6 @@ export const getSeriesNumberNodes = (
 export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
   const extraNodes: Node[] = [];
 
-  if (spreadsheet.isHierarchyTreeType()) {
-    return extraNodes;
-  }
-
   function getAllParents(nodes: Node[]) {
     const parents = nodes.reduce((pre, leaf) => {
       let parent = leaf.parent;

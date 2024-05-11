@@ -31,7 +31,6 @@ import type {
 } from '../common/interface/frozen';
 import type { S2TableSheetFrozenOptions } from '../common';
 import { BaseFacet } from './base-facet';
-import { Frame } from './header/frame';
 import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
@@ -489,10 +488,6 @@ export abstract class FrozenFacet extends BaseFacet {
       opacity: splitLine?.horizontalBorderColorOpacity,
     };
 
-    const frameVerticalBorderWidth = Frame.getVerticalBorderWidth(
-      this.spreadsheet,
-    );
-
     if (frozenColCount > 0) {
       const x =
         panelBBoxStartX +
@@ -512,40 +507,11 @@ export abstract class FrozenFacet extends BaseFacet {
         splitLineGroup.appendChild(
           new Rect({
             style: {
-              x: x + panelBBoxStartX,
+              x,
               y: 0,
               width: splitLine?.shadowWidth!,
               height,
               fill: this.getShadowFill(0),
-            },
-          }),
-        );
-      }
-    }
-
-    if (frozenRowCount > 0) {
-      const y =
-        panelBBoxStartY +
-        this.frozenGroupPositions[FrozenGroupPosition.Row].height;
-      const width = viewportWidth;
-
-      renderLine(splitLineGroup, {
-        ...horizontalBorderStyle,
-        x1: 0,
-        x2: width + frameVerticalBorderWidth,
-        y1: y,
-        y2: y,
-      });
-
-      if (splitLine?.showShadow && relativeScrollY > 0) {
-        splitLineGroup.appendChild(
-          new Rect({
-            style: {
-              x: 0,
-              y,
-              width: width + frameVerticalBorderWidth,
-              height: splitLine?.shadowWidth!,
-              fill: this.getShadowFill(90),
             },
           }),
         );
@@ -583,16 +549,45 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    if (frozenTrailingRowCount > 0) {
+    if (frozenRowCount > 0) {
       const y =
-        this.panelBBox.maxY -
-        this.frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
-      const width = viewportWidth;
+        panelBBoxStartY +
+        this.frozenGroupPositions[FrozenGroupPosition.Row].height;
+      const width = panelBBoxStartX + viewportWidth;
 
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,
         x1: 0,
-        x2: width + frameVerticalBorderWidth,
+        x2: width,
+        y1: y,
+        y2: y,
+      });
+
+      if (splitLine?.showShadow && relativeScrollY > 0) {
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x: 0,
+              y,
+              width,
+              height: splitLine?.shadowWidth!,
+              fill: this.getShadowFill(90),
+            },
+          }),
+        );
+      }
+    }
+
+    if (frozenTrailingRowCount > 0) {
+      const y =
+        this.panelBBox.maxY -
+        this.frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+      const width = panelBBoxStartX + viewportWidth;
+
+      renderLine(splitLineGroup, {
+        ...horizontalBorderStyle,
+        x1: 0,
+        x2: width,
         y1: y,
         y2: y,
       });
@@ -603,7 +598,7 @@ export abstract class FrozenFacet extends BaseFacet {
             style: {
               x: 0,
               y: y - splitLine.shadowWidth!,
-              width: width + frameVerticalBorderWidth,
+              width,
               height: splitLine.shadowWidth!,
               fill: this.getShadowFill(270),
             },

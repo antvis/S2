@@ -1,4 +1,3 @@
-import { Group, Rect, type LineStyleProps } from '@antv/g';
 import {
   filter,
   forEach,
@@ -19,11 +18,8 @@ import {
 import { RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
-  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FrozenGroupPosition,
-  KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
-  SPLIT_LINE_WIDTH,
   type IconTheme,
   type MultiData,
   type ViewMeta,
@@ -34,11 +30,7 @@ import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, SimpleData } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
-import {
-  getValidFrozenOptionsForPivot,
-  renderLine,
-  safeJsonParse,
-} from '../utils';
+import { getValidFrozenOptionsForPivot, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
@@ -1032,63 +1024,4 @@ export class PivotFacet extends FrozenFacet {
 
     return this.validFrozenOptions;
   }
-
-  public enableFrozenFirstRow(): boolean {
-    return !!this.getFrozenOptions().rowCount;
-  }
-
-  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
-    this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
-    if (this.enableFrozenFirstRow()) {
-      // 在分页条件下需要额外处理 Y 轴滚动值
-      const relativeScrollY = floor(scrollY - this.getPaginationScrollY());
-      const splitLineGroup = this.foregroundGroup.appendChild(
-        new Group({
-          id: KEY_GROUP_FROZEN_SPLIT_LINE,
-          style: {
-            zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-          },
-        }),
-      );
-
-      const { splitLine } = this.spreadsheet.theme;
-
-      const horizontalBorderStyle: Partial<LineStyleProps> = {
-        lineWidth: SPLIT_LINE_WIDTH,
-        stroke: splitLine?.horizontalBorderColor,
-        opacity: splitLine?.horizontalBorderColorOpacity,
-      };
-
-      const cellRange = this.getCellRange();
-      const y =
-        this.panelBBox.y +
-        this.getTotalHeightForRange(cellRange.start, cellRange.start);
-      const width =
-        this.cornerBBox.width +
-        Frame.getVerticalBorderWidth(this.spreadsheet) +
-        this.panelBBox.viewportWidth;
-
-      renderLine(splitLineGroup, {
-        ...horizontalBorderStyle,
-        x1: 0,
-        x2: width,
-        y1: y,
-        y2: y,
-      });
-
-      if (splitLine!.showShadow && relativeScrollY > 0) {
-        splitLineGroup.appendChild(
-          new Rect({
-            style: {
-              x: 0,
-              y,
-              width,
-              height: splitLine?.shadowWidth!,
-              fill: this.getShadowFill(90),
-            },
-          }),
-        );
-      }
-    }
-  };
 }
