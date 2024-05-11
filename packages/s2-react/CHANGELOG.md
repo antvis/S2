@@ -1,3 +1,37 @@
+# [@antv/s2-react-v2.0.0-next.19](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.18...@antv/s2-react-v2.0.0-next.19) (2024-05-11)
+
+
+### Bug Fixes
+
+* 修复 React 18 环境下 Tooltip 卸载后无法再次渲染 & 排序菜单选中效果丢失的问题 ([#2698](https://github.com/antvis/S2/issues/2698)) ([0af329d](https://github.com/antvis/S2/commit/0af329da596733eee8013a7a1f04676a720767d3))
+* 修复导出 CSV 时分隔符错误导致的展示格式错误 close [#2701](https://github.com/antvis/S2/issues/2701) ([#2703](https://github.com/antvis/S2/issues/2703)) ([98c051a](https://github.com/antvis/S2/commit/98c051a58c1d8b7c7831343ba909238e514615ae))
+* 修复配置了多行文本但实际渲染的文本未换行时, 单元格高度也会自适应调整的问题 ([#2705](https://github.com/antvis/S2/issues/2705)) ([5d19e62](https://github.com/antvis/S2/commit/5d19e623c8f726d4f417ea2cb55cc489ef09f1b2))
+
+
+### Features
+
+* **options:** customSVGIcons API 变更 ([#2700](https://github.com/antvis/S2/issues/2700)) ([fde8e8f](https://github.com/antvis/S2/commit/fde8e8f57d176057d052cbf0dd401211e2839a0e))
+* 更新 g 到最新版 ([#2631](https://github.com/antvis/S2/issues/2631)) ([7647605](https://github.com/antvis/S2/commit/7647605dcd60e1e34f2014aafb180ac931bf0725)), closes [#2629](https://github.com/antvis/S2/issues/2629)
+
+
+### BREAKING CHANGES
+
+* Export 组件 和 asyncGetAllPlainData, copyToClipboard
+的是否异步导出参数统一为 async
+
+* test: 修复循环依赖
+
+* fix: 修复格式化对角头未生效
+
+* fix: 修复趋势分析表导出 CSV 错误
+
+* test: 单测修复
+* **options:** svg 变更为 src
+
+* test: 单测修复
+
+* test: 单测修复
+
 # [@antv/s2-react-v2.0.0-next.18](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.17...@antv/s2-react-v2.0.0-next.18) (2024-04-30)
 
 
