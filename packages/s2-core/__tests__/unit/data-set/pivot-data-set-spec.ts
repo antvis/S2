@@ -439,6 +439,10 @@ describe('Pivot Dataset Test', () => {
     });
 
     test('clearDrillDownData function with totalData', () => {
+      jest
+        .spyOn(dataSet.spreadsheet, 'isHierarchyTreeType')
+        .mockImplementationOnce(() => true);
+
       dataSet.transformDrillDownData(
         'district',
         [...drillDownData, ...drillDownTotalData],
@@ -456,14 +460,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
-      expect(cellData).toEqual({
-        $$extra$$: 'number',
-        $$value$$: 15420,
-        city: '杭州市',
-        district: '西湖区',
-        number: 15420,
-        province: '浙江省',
-      });
+      expect(cellData).toBeUndefined();
     });
   });
 
