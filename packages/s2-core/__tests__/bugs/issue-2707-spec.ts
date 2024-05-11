@@ -17,31 +17,31 @@ const s2Options: S2Options = {
 describe('PivotSheet Special Dimension Values Copy Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     s2 = createTableSheet(s2Options);
     s2.setDataCfg(mockDataConfig);
-    s2.render();
+    await s2.render();
   });
 
-  test('should sort correctly data by DESC sort method', () => {
+  test('should sort correctly data by DESC sort method', async () => {
     s2.setDataCfg({
       sortParams: [{ sortFieldId: 'key7', sortMethod: 'DESC' }],
     });
-    s2.render();
+    await s2.render();
 
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
-  test('should sort correctly data by ASC sort method', () => {
+  test('should sort correctly data by ASC sort method', async () => {
     s2.setDataCfg({
       sortParams: [{ sortFieldId: 'key7', sortMethod: 'ASC' }],
     });
-    s2.render();
+    await s2.render();
 
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
-  test('should sort correctly data by DESC sort method and custom sortBy', () => {
+  test('should sort correctly data by DESC sort method and custom sortBy', async () => {
     s2.setDataCfg({
       sortParams: [
         {
@@ -57,7 +57,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
         },
       ],
     });
-    s2.render();
+    await s2.render();
 
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
