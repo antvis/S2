@@ -1,17 +1,12 @@
-import { Frame } from '../facet/header/frame';
 import { DataCell } from '../cell/data-cell';
 import {
   CellType,
   FrozenGroupPosition,
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
 } from '../common/constant';
-import {
-  isFrozenRow as isFrozenRowUtil,
-  isFrozenTrailingRow as isFrozenTrailingRowUtil,
-} from '../facet/utils';
+import { isFrozenRow, isFrozenTrailingRow } from '../facet/utils';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
@@ -43,14 +38,8 @@ export class TableDataCell extends DataCell {
       this.spreadsheet,
       KEY_GROUP_ROW_RESIZE_AREA,
     );
-    const frozenResizeArea = getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-    );
 
-    return (
-      !resizeArea?.getElementById(id) && !frozenResizeArea?.getElementById(id)
-    );
+    return !resizeArea?.getElementById(id);
   }
 
   public drawResizeArea() {
@@ -58,84 +47,92 @@ export class TableDataCell extends DataCell {
       return;
     }
 
-    const { y, height } = this.getBBoxByType();
-    const { rowIndex } = this.meta;
-    const resizeStyle = this.getResizeAreaStyle();
-    const {
-      rowCount: frozenRowCount = 0,
-      trailingRowCount: frozenTrailingRowCount = 0,
-    } = this.spreadsheet.options.frozen!;
-    const cellRange = this.spreadsheet.facet.getCellRange();
-    const isFrozenRow = isFrozenRowUtil(
-      rowIndex,
-      cellRange.start,
-      frozenRowCount,
-    );
-    const isFrozenTrailingRow = isFrozenTrailingRowUtil(
-      rowIndex,
-      cellRange.end,
-      frozenTrailingRowCount,
-    );
-    const isFrozen = isFrozenRow || isFrozenTrailingRow;
-
-    const resizeAreaId = isFrozen
-      ? KEY_GROUP_FROZEN_ROW_RESIZE_AREA
-      : KEY_GROUP_ROW_RESIZE_AREA;
-
     const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
-      resizeAreaId,
+      KEY_GROUP_ROW_RESIZE_AREA,
     );
 
     if (!resizeArea) {
       return;
     }
 
-    const { height: headerHeight, viewportWidth: headerWidth } =
-      this.spreadsheet.facet.columnHeader.getHeaderConfig();
+    const { rowIndex } = this.getMeta();
+    const cellRange = this.spreadsheet.facet.getCellRange();
+    const { rowCount, trailingRowCount } = (
+      this.spreadsheet.facet as FrozenFacet
+    ).getRealFrozenOptions();
+
+    const isFrozenHead = isFrozenRow(rowIndex, cellRange.start, rowCount);
+
+    const isFrozenTrailing = isFrozenTrailingRow(
+      rowIndex,
+      cellRange.end,
+      trailingRowCount,
+    );
+
+    const isFrozen = isFrozenHead || isFrozenTrailing;
+
+    const { y, height } = this.getBBoxByType();
+
+    const {
+      x: panelBBoxX,
+      y: panelBBoxY,
+      viewportWidth,
+      viewportHeight,
+    } = this.spreadsheet.facet.panelBBox;
 
     const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
 
-    let offsetY =
-      y + headerHeight + Frame.getHorizontalBorderWidth(this.spreadsheet);
-
-    const frozenGroupInfo = (this.spreadsheet.facet as FrozenFacet)
+    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
       .frozenGroupPositions;
-    const rowHeight = frozenGroupInfo[FrozenGroupPosition.Row].height;
-    const rowTrailingHeight =
-      frozenGroupInfo[FrozenGroupPosition.TrailingRow].height;
+    const frozenRowGroup = frozenGroupPositions[FrozenGroupPosition.Row];
+    const frozenTrailingRowGroup =
+      frozenGroupPositions[FrozenGroupPosition.TrailingRow];
+
+    const resizeStyle = this.getResizeAreaStyle();
+
+    const width = panelBBoxX + viewportWidth;
+    const resizeClipAreaBBox: SimpleBBox = {
+      x: 0,
+      y: isFrozen ? 0 : frozenRowGroup.height,
+      width,
+      height: isFrozen
+        ? Number.POSITIVE_INFINITY
+        : viewportHeight -
+          frozenRowGroup.height -
+          frozenTrailingRowGroup.height,
+    };
 
     const resizeAreaBBox: SimpleBBox = {
       x: 0,
       y: y + height - resizeStyle.size!,
-      width: headerWidth,
+      width,
       height: resizeStyle.size!,
-    };
-    const resizeClipAreaBBox: SimpleBBox = {
-      x: 0,
-      y: rowHeight,
-      width: headerWidth,
-      height:
-        this.spreadsheet.facet.panelBBox.height - rowHeight - rowTrailingHeight,
     };
 
     if (
-      !isFrozen &&
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX: 0,
-        scrollY,
+        scrollY: isFrozen ? 0 : paginationSy + scrollY,
       })
     ) {
       return;
     }
 
-    if (!isFrozen) {
-      offsetY -= scrollY + paginationSy;
-    }
+    let offsetY = panelBBoxY;
 
-    const resizeWidth =
-      headerWidth + Frame.getVerticalBorderWidth(this.spreadsheet);
+    if (isFrozenHead) {
+      offsetY += y - frozenRowGroup.y;
+    } else if (isFrozenTrailing) {
+      offsetY +=
+        viewportHeight -
+        frozenTrailingRowGroup.height +
+        y -
+        frozenTrailingRowGroup.y;
+    } else {
+      offsetY += y - paginationSy - scrollY;
+    }
 
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,
@@ -143,7 +140,7 @@ export class TableDataCell extends DataCell {
       effect: ResizeAreaEffect.Cell,
       offsetX: 0,
       offsetY,
-      width: resizeWidth,
+      width,
       height,
       meta: this.meta,
     });
@@ -155,7 +152,7 @@ export class TableDataCell extends DataCell {
             ...attrs.style,
             x: 0,
             y: offsetY + height - resizeStyle!.size!,
-            width: resizeWidth,
+            width,
           },
         },
         attrs.appendInfo,

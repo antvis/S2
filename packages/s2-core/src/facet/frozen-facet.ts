@@ -364,7 +364,7 @@ export abstract class FrozenFacet extends BaseFacet {
   ) {
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
     this.translateFrozenGroups();
-    this.updateRowResizeArea();
+    this.renderRowResizeArea();
     this.renderFrozenGroupSplitLine(scrollX, scrollY);
   }
 
@@ -432,7 +432,7 @@ export abstract class FrozenFacet extends BaseFacet {
     );
   };
 
-  protected updateRowResizeArea() {}
+  protected renderRowResizeArea() {}
 
   // eslint-disable-next-line max-lines-per-function
   protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
@@ -610,8 +610,8 @@ export abstract class FrozenFacet extends BaseFacet {
 
   public render(): void {
     this.calculateFrozenGroupInfo();
-    this.renderFrozenPanelCornerGroup();
     super.render();
+    this.renderFrozenPanelCornerGroup();
   }
 
   protected override getCenterFrameScrollX(scrollX: number): number {

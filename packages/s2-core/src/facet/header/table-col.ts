@@ -6,7 +6,6 @@ import {
   FrozenGroupPosition,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
-  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
@@ -74,15 +73,6 @@ export class TableColHeader extends ColHeader {
 
     this.frozenTrailingGroup?.removeChildren();
     this.frozenGroup?.removeChildren();
-
-    const { spreadsheet } = this.getHeaderConfig();
-    // 额外清除冻结列的 Resizer Area
-    const resizerArea =
-      spreadsheet.facet?.foregroundGroup.getElementById<Group>(
-        KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-      );
-
-    resizerArea?.removeChildren();
   }
 
   protected getCellGroup(node: Node): Group {

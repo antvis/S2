@@ -3,7 +3,6 @@ import { ColCell } from '../cell/col-cell';
 import {
   FrozenGroupPosition,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
@@ -11,10 +10,7 @@ import type { SimpleBBox } from '../engine';
 import type { BaseHeaderConfig } from '../facet/header';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
-import {
-  getOrCreateResizeAreaGroupById,
-  shouldAddResizeArea,
-} from '../utils/interaction/resize';
+import { shouldAddResizeArea } from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
 import type { FrozenFacet } from '../facet/frozen-facet';
 
@@ -96,17 +92,6 @@ export class TableColCell extends ColCell {
       x: position?.x + x - scrollX,
       y: position?.y + y,
     };
-  }
-
-  protected getColResizeArea() {
-    if (!this.getMeta().isFrozen) {
-      return super.getColResizeArea();
-    }
-
-    return getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
   }
 
   protected isSortCell() {

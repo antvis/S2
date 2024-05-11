@@ -11,7 +11,6 @@ import {
 } from 'lodash';
 import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
   S2Event,
@@ -541,7 +540,7 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  protected updateRowResizeArea() {
+  protected renderRowResizeArea() {
     const { resize } = this.spreadsheet.options.interaction!;
 
     const shouldDrawResize = isBoolean(resize)
@@ -555,16 +554,9 @@ export class TableFacet extends FrozenFacet {
     const rowResizeGroup = this.foregroundGroup.getElementById<Group>(
       KEY_GROUP_ROW_RESIZE_AREA,
     );
-    const rowResizeFrozenGroup = this.foregroundGroup.getElementById<Group>(
-      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-    );
 
     if (rowResizeGroup) {
       rowResizeGroup.removeChildren();
-    }
-
-    if (rowResizeFrozenGroup) {
-      rowResizeFrozenGroup.removeChildren();
     }
 
     const cells = getAllChildCells<TableDataCell>(
