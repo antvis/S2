@@ -284,7 +284,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 是否是多行文本
    */
   public isMultiLineText() {
-    return this.getTextLineBoundingRects().length > 1;
+    const { parsedStyle } = this.getTextShape();
+
+    return (
+      parsedStyle?.maxLines! > 1 && this.getTextLineBoundingRects().length > 1
+    );
   }
 
   /**

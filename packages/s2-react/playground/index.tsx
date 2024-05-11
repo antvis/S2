@@ -409,7 +409,12 @@ function MainLayout() {
                 children: (
                   <>
                     <Collapse
-                      defaultActiveKey={['filter', 'resize']}
+                      defaultActiveKey={
+                        localStorage.getItem('debugCollapseKey') || [
+                          'filter',
+                          'resize',
+                        ]
+                      }
                       items={[
                         {
                           key: 'filter',
