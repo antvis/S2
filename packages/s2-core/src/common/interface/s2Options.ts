@@ -281,11 +281,6 @@ export interface S2PivotSheetFrozenOptions extends S2BaseFrozenOptions {
    * 当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0
    */
   rowHeader?: boolean | number;
-
-  /**
-   * 是否冻结首行 (适用于总计置于顶部, 树状模式等场景)
-   */
-  firstRow?: boolean;
 }
 
 export interface S2TableSheetFrozenOptions extends S2BaseFrozenOptions {
