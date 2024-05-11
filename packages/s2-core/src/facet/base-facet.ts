@@ -1862,6 +1862,12 @@ export abstract class BaseFacet {
     return this.getColNodes().find((node) => node.colIndex === colIndex);
   }
 
+  public getColLeafNodesByRange(minIndex: number, maxIndex: number) {
+    return this.getColLeafNodes().filter(
+      (node) => node.colIndex >= minIndex && node.colIndex <= maxIndex,
+    );
+  }
+
   /**
    * 根据列头索引获取指定列头叶子节点
    * @example facet.getColLeafNodes(colIndex)
@@ -1952,7 +1958,7 @@ export abstract class BaseFacet {
     return this.getRowLeafNodes().find((node) => node.rowIndex === rowIndex);
   }
 
-  public getRowLeafNodeByRange(minIndex: number, maxIndex: number) {
+  public getRowLeafNodesByRange(minIndex: number, maxIndex: number) {
     return this.getRowLeafNodes().filter(
       (node) => node.rowIndex >= minIndex && node.rowIndex <= maxIndex,
     );

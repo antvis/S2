@@ -244,7 +244,6 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
-      spreadsheet,
     } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -256,28 +255,46 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const isFrozen = this.getMeta().isFrozen;
 
-    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions[FrozenGroupPosition.Row]?.height;
+    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+    const frozenRowGroup = frozenGroupPositions[FrozenGroupPosition.Row];
+
+    const frozenTrailingRowGroup =
+      frozenGroupPositions[FrozenGroupPosition.TrailingRow];
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
-      y: frozenRowGroupHeight,
+      y: isFrozen ? 0 : frozenRowGroup.height,
       width: headerWidth,
-      height: headerHeight,
+      height: isFrozen
+        ? Number.POSITIVE_INFINITY
+        : headerHeight - frozenRowGroup.height - frozenTrailingRowGroup.height,
     };
 
     if (
-      !isFrozen &&
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,
-        scrollY,
+        scrollY: isFrozen ? 0 : scrollY,
       })
     ) {
       return;
     }
 
     const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y - (isFrozen ? 0 : scrollY);
+
+    let offsetY: number = position.y;
+
+    if (this.getMeta().isFrozenHead) {
+      offsetY += y - frozenRowGroup.y;
+    } else if (this.getMeta().isFrozenTrailing) {
+      offsetY +=
+        headerHeight -
+        frozenTrailingRowGroup.height +
+        y -
+        frozenTrailingRowGroup.y;
+    } else {
+      offsetY += y - scrollY;
+    }
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - position.x - (x - scrollX)
@@ -376,12 +393,21 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   protected handleViewport() {
     const { scrollY, viewportHeight } = this.getHeaderConfig();
 
-    const frozenRowGroupHeight = (this.spreadsheet.facet as FrozenFacet)
-      ?.frozenGroupPositions[FrozenGroupPosition.Row].height;
+    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+    const frozenRowGroupHeight =
+      frozenGroupPositions[FrozenGroupPosition.Row].height;
+
+    const frozenTrailingRowGroupHeight =
+      frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+
+    const isFrozen = this.getMeta().isFrozen;
 
     const viewport: AreaRange = {
-      start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
-      size: viewportHeight - frozenRowGroupHeight,
+      start: isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
+      size: isFrozen
+        ? Number.POSITIVE_INFINITY
+        : viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
     };
 
     return viewport;

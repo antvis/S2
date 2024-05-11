@@ -3,11 +3,13 @@ import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  FrozenGroupPosition,
   KEY_GROUP_COL_SCROLL,
   S2Event,
 } from '../../common/constant';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
+import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
 
@@ -60,11 +62,19 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { height, width, spreadsheet, position } = this.getHeaderConfig();
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
+    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: isFrozenRowHeader ? position.x : 0,
+        x:
+          (isFrozenRowHeader ? position.x : 0) +
+          frozenGroupPositions[FrozenGroupPosition.Col].width,
         y: isFrozenRowHeader ? position.y : 0,
-        width: isFrozenRowHeader ? width : position.x + width,
+        width:
+          (isFrozenRowHeader ? width : position.x + width) -
+          frozenGroupPositions[FrozenGroupPosition.Col].width -
+          frozenGroupPositions[FrozenGroupPosition.TrailingCol].width,
         height,
       },
     });
@@ -87,30 +97,38 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       scrollX = 0,
     } = this.getHeaderConfig();
 
+    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+
     return (
       // don't care about scrollY, because there is only freeze col-header exist
-      width + scrollX > node.x &&
-      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
-        node.x + node.width
+      width - frozenGroupPositions[FrozenGroupPosition.TrailingCol].width >
+        node.x - scrollX &&
+      frozenGroupPositions[FrozenGroupPosition.Col].width -
+        (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
+        node.x + node.width - scrollX
     );
   }
 
+  protected appendNode(node: Node) {
+    const { spreadsheet } = this.getHeaderConfig();
+    const group = this.getCellGroup(node);
+
+    const cell = this.getCellInstance(node);
+
+    node.belongsCell = cell;
+
+    group?.appendChild(cell);
+    spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);
+    spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+  }
+
   protected layout() {
-    const { nodes, spreadsheet } = this.getHeaderConfig();
+    const { nodes } = this.getHeaderConfig();
 
     each(nodes, (node) => {
       if (this.isColCellInRect(node)) {
-        const group = this.getCellGroup(node);
-
-        node.isFrozen = group !== this.scrollGroup;
-
-        const cell = this.getCellInstance(node);
-
-        node.belongsCell = cell;
-
-        group?.appendChild(cell);
-        spreadsheet.emit(S2Event.COL_CELL_RENDER, cell as ColCell);
-        spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+        this.appendNode(node);
       }
     });
   }

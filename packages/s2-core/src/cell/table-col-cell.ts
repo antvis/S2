@@ -147,6 +147,7 @@ export class TableColCell extends ColCell {
 
     if (this.getMeta().isFrozen) {
       viewport.start = 0;
+      viewport.size = Number.POSITIVE_INFINITY;
     }
 
     return viewport;

@@ -35,27 +35,27 @@ export const getSeriesNumberNodes = (
   });
 };
 
-export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
-  const extraNodes: Node[] = [];
+function getAllParents(nodes: Node[]) {
+  const parents = nodes.reduce((pre, leaf) => {
+    let parent = leaf.parent;
 
-  function getAllParents(nodes: Node[]) {
-    const parents = nodes.reduce((pre, leaf) => {
-      let parent = leaf.parent;
-
-      while (parent && parent.id !== ROOT_NODE_ID) {
-        // eslint-disable-next-line no-loop-func
-        if (!pre.find((node) => node.id === parent!.id)) {
-          pre.push(parent);
-        }
-
-        parent = parent.parent;
+    while (parent && parent.id !== ROOT_NODE_ID) {
+      // eslint-disable-next-line no-loop-func
+      if (!pre.find((node) => node.id === parent!.id)) {
+        pre.push(parent);
       }
 
-      return pre;
-    }, [] as Node[]);
+      parent = parent.parent;
+    }
 
-    return parents;
-  }
+    return pre;
+  }, [] as Node[]);
+
+  return parents;
+}
+
+export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
+  const extraNodes: Node[] = [];
 
   const facet = spreadsheet.facet as FrozenFacet;
 
@@ -65,7 +65,7 @@ export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
   if (rowCount) {
     const { y, height } = facet.frozenGroupPositions[FrozenGroupPosition.Row];
 
-    const frozenLeafNodes = facet.getRowLeafNodeByRange(
+    const frozenLeafNodes = facet.getRowLeafNodesByRange(
       start,
       start + rowCount - 1,
     )!;
@@ -73,7 +73,7 @@ export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
     frozenLeafNodes.forEach((leafNode) => {
       const newLeafNode = leafNode.clone();
 
-      newLeafNode.isFrozen = true;
+      newLeafNode.isFrozenHead = true;
       extraNodes.push(newLeafNode);
     });
 
@@ -82,7 +82,7 @@ export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
     parents.forEach((parent) => {
       const newParent = parent.clone();
 
-      newParent.isFrozen = true;
+      newParent.isFrozenHead = true;
 
       if (newParent.y < y) {
         newParent.height -= y - newParent.y;
@@ -101,7 +101,7 @@ export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
     const { y, height } =
       facet.frozenGroupPositions[FrozenGroupPosition.TrailingRow];
 
-    const frozenLeafNodes = facet.getRowLeafNodeByRange(
+    const frozenLeafNodes = facet.getRowLeafNodesByRange(
       end - trailingRowCount + 1,
       end,
     )!;
@@ -131,6 +131,47 @@ export const getExtraFrozenNodes = (spreadsheet: SpreadSheet) => {
 
       extraNodes.push(newParent);
     });
+  }
+
+  return extraNodes;
+};
+
+export const getExtraFrozenColNodes = (spreadsheet: SpreadSheet) => {
+  const extraNodes: Node[] = [];
+
+  const facet = spreadsheet.facet as FrozenFacet;
+
+  const { colCount, trailingColCount } = facet.getRealFrozenOptions();
+
+  function getFrozenNodes(range: [number, number], key: string) {
+    const frozenLeafNodes = facet.getColLeafNodesByRange(range[0], range[1])!;
+
+    frozenLeafNodes.forEach((leafNode) => {
+      const newLeafNode = leafNode.clone();
+
+      newLeafNode[key] = true;
+      extraNodes.push(newLeafNode);
+    });
+
+    const parents = getAllParents(frozenLeafNodes);
+
+    parents.forEach((parent) => {
+      const newParent = parent.clone();
+
+      newParent[key] = true;
+
+      extraNodes.push(newParent);
+    });
+  }
+
+  if (colCount) {
+    getFrozenNodes([0, colCount - 1], 'isFrozenHead');
+  }
+
+  if (trailingColCount) {
+    const total = facet.getColLeafNodes().length;
+
+    getFrozenNodes([total - trailingColCount, total - 1], 'isFrozenTrailing');
   }
 
   return extraNodes;

@@ -133,8 +133,10 @@ export class Node {
 
   public isTotalRoot?: boolean;
 
-  public isFrozen?: boolean;
+  /* 是否是冻结开头的 node , 比如 frozenRow frozenCol */
+  public isFrozenHead?: boolean;
 
+  /* 是否是冻结结尾的 node , 比如 frozenTrailingRow frozenTrailingCol */
   public isFrozenTrailing?: boolean;
 
   public extra?: {
@@ -359,5 +361,9 @@ export class Node {
 
   public clone() {
     return Object.create(this) as Node;
+  }
+
+  public get isFrozen() {
+    return this.isFrozenHead || this.isFrozenTrailing;
   }
 }

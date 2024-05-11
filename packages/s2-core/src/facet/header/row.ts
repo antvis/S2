@@ -15,7 +15,7 @@ import {
 import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
-import { getExtraFrozenNodes, getFrozenTrailingRowOffset } from './util';
+import { getExtraFrozenRowNodes, getFrozenTrailingRowOffset } from './util';
 
 /**
  * Row Header for SpreadSheet
@@ -32,7 +32,9 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   constructor(config: RowHeaderConfig) {
     super(config);
     this.initGroups();
-    this.extraFrozenNodes = getExtraFrozenNodes(this.headerConfig.spreadsheet);
+    this.extraFrozenNodes = getExtraFrozenRowNodes(
+      this.headerConfig.spreadsheet,
+    );
   }
 
   private initGroups() {
@@ -99,7 +101,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected getCellGroup(item: Node): Group {
-    if (item.isFrozen) {
+    if (item.isFrozenHead) {
       return this.frozenGroup;
     }
 
@@ -113,7 +115,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   protected layout() {
     const { nodes, spreadsheet } = this.getHeaderConfig();
 
-    const appendChild = (node: Node) => {
+    const appendNode = (node: Node) => {
       const group = this.getCellGroup(node);
 
       const cell = this.getCellInstance(node);
@@ -128,13 +130,13 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     // row'cell only show when visible
     each(nodes, (node) => {
       if (this.isRowCellInRect(node) && node.height !== 0) {
-        appendChild(node);
+        appendNode(node);
       }
     });
 
     each(this.extraFrozenNodes, (node) => {
       if (node.height !== 0) {
-        appendChild(node);
+        appendNode(node);
       }
     });
   }
