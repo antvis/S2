@@ -2,14 +2,14 @@ import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
 import type { HierarchyType, RowHeader } from '../../../../src';
 import type { FrozenFacet } from '../../../../src/facet/frozen-facet';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common';
+import { DEFAULT_OPTIONS, FrozenGroupPosition } from '@/common';
 import { RowCell } from '@/cell';
 
 const s2 = createPivotSheet(
   {
     ...DEFAULT_OPTIONS,
     frozen: {
-      firstRow: true,
+      rowCount: 1,
     },
     totals: { row: { showGrandTotals: true, reverseGrandTotalsLayout: true } },
     seriesNumber: {
@@ -45,7 +45,7 @@ describe('Pivot Frozen Row Header Test', () => {
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
       expect(
-        (s2.facet as FrozenFacet).frozenGroupInfo[FrozenGroupType.FROZEN_ROW]
+        (s2.facet as FrozenFacet).frozenGroupPositions[FrozenGroupPosition.Row]
           .height,
       ).toBe(30);
     },
