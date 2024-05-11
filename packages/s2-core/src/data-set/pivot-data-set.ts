@@ -372,17 +372,17 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
+    const { options } = this.spreadsheet;
     const effectiveStatus = some(totalStatus);
     const status = effectiveStatus ? totalStatus : this.getTotalStatus(query);
     const { aggregation, calcFunc } =
-      getAggregationAndCalcFuncByQuery(
-        status,
-        this.spreadsheet.options?.totals,
-      ) || {};
+      getAggregationAndCalcFuncByQuery(status, options?.totals) || {};
+
     // 聚合方式从用户配置的 s2Options.totals 取, 在触发前端兜底计算汇总逻辑时, 如果没有汇总的配置, 默认按 [求和] 计算,避免排序失效.
-    const defaultAggregation = !this.spreadsheet.isHierarchyTreeType()
-      ? Aggregation.SUM
-      : '';
+    const defaultAggregation =
+      isEmpty(options?.totals) && !this.spreadsheet.isHierarchyTreeType()
+        ? Aggregation.SUM
+        : '';
     const calcAction = calcActionByType[aggregation || defaultAggregation];
 
     // 前端计算汇总值
