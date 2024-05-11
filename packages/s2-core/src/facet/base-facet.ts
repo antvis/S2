@@ -341,6 +341,7 @@ export abstract class BaseFacet {
       return height;
     }
 
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
     const CellInstance = this.spreadsheet.isTableMode()
       ? TableColCell
       : ColCell;
@@ -348,7 +349,6 @@ export abstract class BaseFacet {
     const colCell = new CellInstance(colNode, this.spreadsheet, {
       shallowRender: true,
     });
-    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
 
     return this.getCellAdaptiveHeight(colCell, defaultHeight);
   }
@@ -387,11 +387,10 @@ export abstract class BaseFacet {
 
     cell.drawTextShape();
 
-    const { parsedStyle } = cell.getTextShape();
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
 
-    return parsedStyle?.maxLines! > 1 && textHeight >= defaultHeight
+    return cell.isMultiLineText() && textHeight >= defaultHeight
       ? adaptiveHeight
       : defaultHeight;
   }
@@ -1758,7 +1757,7 @@ export abstract class BaseFacet {
    * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
    * -------------------------------------------------
    */
-  public adjustRowLeafNodesWidth(params: AdjustLeafNodesParams) {
+  public adjustCustomRowLeafNodesWidth(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomRowFields()) {
       return;
     }
@@ -1776,7 +1775,7 @@ export abstract class BaseFacet {
    * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
    * ----------------------------------------------------------------------
    */
-  public adjustColLeafNodesHeight(params: AdjustLeafNodesParams) {
+  public adjustCustomColLeafNodesHeight(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomColumnFields()) {
       return;
     }
