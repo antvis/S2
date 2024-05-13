@@ -375,10 +375,10 @@ describe('Table Mode Facet With Frozen Test', () => {
     },
   });
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupPositions).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -432,7 +432,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {
@@ -669,9 +669,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     },
   );
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupPositions).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -714,7 +714,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {

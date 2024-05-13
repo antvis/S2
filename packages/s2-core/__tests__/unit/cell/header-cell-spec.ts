@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { Formatter, HeaderActionIcon } from '@/common';
+import {
+  FrozenGroupPosition,
+  type Formatter,
+  type HeaderActionIcon,
+} from '@/common';
 import { PivotDataSet, TableDataSet } from '@/data-set';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
@@ -149,8 +153,32 @@ describe('header cell formatter test', () => {
     });
 
     test('should render row header action icons', () => {
+      s2.facet = {
+        // @ts-ignore
+        frozenGroupPositions: {
+          [FrozenGroupPosition.Col]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupPosition.TrailingCol]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupPosition.Row]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupPosition.TrailingRow]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+        },
+      };
       s2.options.headerActionIcons = rowHeaderActionIcons;
-
       const rowCell = new RowCell(rowNode, s2);
 
       // @ts-ignore

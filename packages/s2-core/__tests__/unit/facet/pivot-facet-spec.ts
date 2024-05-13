@@ -5,7 +5,6 @@ import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { find, size } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroupType } from '../../../src';
 import { createFakeSpreadSheet } from '../../util/helpers';
 import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
@@ -84,12 +83,7 @@ jest.mock('@/sheet-type', () => {
           getHiddenColumnsInfo: jest.fn(),
           getCellMeta: jest.fn().mockRejectedValue({}),
           getRowLeafNodeByIndex: () => [],
-          frozenGroupInfo: {
-            [FrozenGroupType.FROZEN_ROW]: {},
-            [FrozenGroupType.FROZEN_COL]: {},
-            [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
-            [FrozenGroupType.FROZEN_TRAILING_COL]: {},
-          },
+          getCellRange: jest.fn().mockReturnValue([0, 100]),
           cornerBBox: {},
           getHeaderNodes: jest.fn().mockReturnValue([]),
         },

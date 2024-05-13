@@ -657,9 +657,8 @@ describe('PivotSheet Tests', () => {
     // sheet group
     expect(s2.facet.backgroundGroup.children).toHaveLength(1);
     expect(s2.facet.foregroundGroup.children).toHaveLength(10);
-
     // panel scroll group
-    expect(s2.facet.panelGroup.children).toHaveLength(7);
+    expect(s2.facet.panelGroup.children).toHaveLength(9);
     expect(
       s2.facet.panelGroup.getElementsByName(KEY_GROUP_PANEL_SCROLL),
     ).toHaveLength(1);

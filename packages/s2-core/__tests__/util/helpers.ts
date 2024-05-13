@@ -19,10 +19,10 @@ import {
   type BaseDataSet,
   type Node,
   Hierarchy,
-  EventController,
   type FormatOptions,
   asyncGetAllPlainData,
   TAB_SEPARATOR,
+  EventController,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -39,7 +39,12 @@ import type {
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
+import {
+  DEFAULT_FROZEN_COUNTS,
+  DEFAULT_OPTIONS,
+  FrozenGroupPosition,
+  FrozenGroupType,
+} from '@/common/constant';
 import type { BaseFacet } from '@/facet';
 import type { PanelBBox } from '@/facet/bbox/panel-bbox';
 
@@ -148,18 +153,49 @@ export const createFakeSpreadSheet = (config?: {
     getColLeafNodes: () => [],
     getInitColLeafNodes: () => [],
     getHeaderCells: () => [],
+    getPaginationScrollY: jest.fn().mockReturnValue(0),
     getHiddenColumnsInfo: jest.fn(),
     getCellAdaptiveHeight: jest.fn(),
     getRowLeafNodeByIndex: jest.fn(),
     getColLeafNodeByIndex: jest.fn(),
-    frozenGroupInfo: {
-      [FrozenGroupType.FROZEN_ROW]: {},
-      [FrozenGroupType.FROZEN_COL]: {},
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {},
+    frozenGroupPositions: {
+      [FrozenGroupPosition.Col]: {
+        width: 0,
+        x: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupPosition.TrailingCol]: {
+        width: 0,
+        x: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupPosition.Row]: {
+        height: 0,
+        y: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupPosition.TrailingRow]: {
+        height: 0,
+        y: 0,
+        range: [] as number[],
+      },
     },
+    frozenGroups: {
+      [FrozenGroupType.Row]: {},
+      [FrozenGroupType.TrailingRow]: {},
+      [FrozenGroupType.Col]: {},
+      [FrozenGroupType.TrailingCol]: {},
+      [FrozenGroupType.TopLeft]: {},
+      [FrozenGroupType.TopRight]: {},
+      [FrozenGroupType.BottomLeft]: {},
+      [FrozenGroupType.BottomRight]: {},
+    },
+    getCellRange: jest.fn().mockReturnValue([0, 100]),
     cornerBBox: {},
     destroy: jest.fn(),
+    getRealFrozenOptions: jest.fn().mockReturnValue({
+      ...DEFAULT_FROZEN_COUNTS,
+    }),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -185,7 +221,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
   s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
-    s2.container.getContextService().getDomElement() as HTMLCanvasElement;
+    s2.container.getContextService().getDomElement() as any;
   s2.getCanvasConfig = () => s2.container.getConfig();
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
@@ -206,6 +242,7 @@ export const createFakeSpreadSheet = (config?: {
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 
   s2.interaction = interaction;
+  s2.interaction.intercepts = new Set();
   s2.interaction.eventController = new EventController(s2);
 
   return s2;

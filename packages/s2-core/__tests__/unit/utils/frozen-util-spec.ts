@@ -166,17 +166,15 @@ describe('Frozen util test', () => {
       expect(
         calculateFrozenCornerCells(frozenOptions, colLength, cellRange),
       ).toStrictEqual({
-        bottom: [
-          {
-            x: 0,
-            y: 999,
-          },
+        frozenBottomLeftGroup: [{ x: 0, y: 999 }],
+        frozenBottomRightGroup: [
           {
             x: 3,
             y: 999,
           },
         ],
-        top: [
+
+        frozenTopLeftGroup: [
           {
             x: 0,
             y: 0,
@@ -185,6 +183,8 @@ describe('Frozen util test', () => {
             x: 0,
             y: 1,
           },
+        ],
+        frozenTopRightGroup: [
           {
             x: 3,
             y: 0,

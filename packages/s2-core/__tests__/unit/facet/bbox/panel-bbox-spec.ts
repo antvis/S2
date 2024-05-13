@@ -99,7 +99,7 @@ describe('PanelBBox Tests', () => {
     expect(bbox.originalWidth).toBe(2000);
   });
 
-  test('should return full viewport when frozen trailing col and row', () => {
+  test('should return actual viewport when frozen trailing col and row', () => {
     const facet = getMockFacet(200, 200, {
       frozen: {
         trailingColCount: 2,
@@ -111,26 +111,21 @@ describe('PanelBBox Tests', () => {
 
     expect(bbox.width).toBe(578);
     expect(bbox.height).toBe(573);
-    expect(bbox.viewportWidth).toBe(578);
-    expect(bbox.viewportHeight).toBe(573);
-    expect(bbox.maxX).toBe(600);
-    expect(bbox.maxY).toBe(595);
+    expect(bbox.viewportWidth).toBe(200);
+    expect(bbox.viewportHeight).toBe(200);
+    expect(bbox.maxX).toBe(222);
+    expect(bbox.maxY).toBe(222);
     expect(bbox.originalHeight).toBe(200);
     expect(bbox.originalWidth).toBe(200);
   });
 
   test('should return correct viewport when disable frozen trailing col and row', () => {
-    const facet = getMockFacet(
-      200,
-      200,
-      {
-        frozen: {
-          trailingColCount: 2,
-          trailingRowCount: 2,
-        },
+    const facet = getMockFacet(200, 200, {
+      frozen: {
+        trailingColCount: 0,
+        trailingRowCount: 0,
       },
-      false,
-    );
+    });
 
     const bbox = new PanelBBox(facet, true);
 
