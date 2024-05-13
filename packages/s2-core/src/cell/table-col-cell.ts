@@ -79,17 +79,35 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.getHeaderConfig();
+    const {
+      scrollX = 0,
+      position,
+      spreadsheet,
+      viewportWidth,
+    } = this.getHeaderConfig();
 
-    if (this.getMeta().isFrozen) {
-      return {
-        x: position?.x + x,
-        y: position?.y + y,
-      };
+    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupPositions;
+
+    const frozenColGroup = frozenGroupInfo[FrozenGroupPosition.Col];
+    const frozenTrailingColGroup =
+      frozenGroupInfo[FrozenGroupPosition.TrailingCol];
+    let offsetX = position?.x;
+
+    if (this.getMeta().isFrozenHead) {
+      offsetX += x - frozenColGroup.x;
+    } else if (this.getMeta().isFrozenTrailing) {
+      offsetX +=
+        x -
+        frozenTrailingColGroup.x +
+        viewportWidth -
+        frozenTrailingColGroup.width;
+    } else {
+      offsetX += x - scrollX;
     }
 
     return {
-      x: position?.x + x - scrollX,
+      x: offsetX,
       y: position?.y + y,
     };
   }

@@ -568,7 +568,6 @@ describe('SpreadSheet Tests', () => {
       s2.setOptions({
         hierarchyType: 'tree',
         tooltip: { enable: true },
-        frozen: { firstRow: true },
       });
 
       s2.setDataCfg({

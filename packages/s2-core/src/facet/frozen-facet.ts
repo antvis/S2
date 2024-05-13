@@ -108,9 +108,12 @@ export abstract class FrozenFacet extends BaseFacet {
     }, {} as FrozenGroups);
   }
 
+  /**
+   * 获取冻结数量结果，主要是针对 col top level 的结果
+   */
   protected getFrozenOptions() {
     if (!this.validFrozenOptions) {
-      const colLength = this.getColLeafNodes().length;
+      const colLength = this.getTopLevelColNodes().length;
       const cellRange = this.getCellRange();
 
       this.validFrozenOptions = getValidFrozenOptions(
@@ -123,6 +126,9 @@ export abstract class FrozenFacet extends BaseFacet {
     return this.validFrozenOptions;
   }
 
+  /**
+   * 获取转换为叶子节点的冻结数量结果
+   */
   getRealFrozenOptions() {
     if (!this.realFrozenOptionsForLeafNodes) {
       const options = this.getFrozenOptions();
@@ -143,15 +149,15 @@ export abstract class FrozenFacet extends BaseFacet {
 
   public calculateFrozenGroupInfo() {
     const { colCount, rowCount, trailingColCount, trailingRowCount } =
-      this.getFrozenOptions();
+      this.getRealFrozenOptions();
 
-    const topLevelColNodes = this.getTopLevelColNodes();
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
+    const leafColNodes = this.getColLeafNodes();
 
     if (colCount > 0) {
       this.frozenGroupPositions[FrozenGroupPosition.Col].width =
-        topLevelColNodes[colCount - 1].x + topLevelColNodes[colCount - 1].width;
+        leafColNodes[colCount - 1].x + leafColNodes[colCount - 1].width;
       this.frozenGroupPositions[FrozenGroupPosition.Col].x = 0;
       this.frozenGroupPositions[FrozenGroupPosition.Col].range = [
         0,
@@ -173,14 +179,14 @@ export abstract class FrozenFacet extends BaseFacet {
 
     if (trailingColCount > 0) {
       this.frozenGroupPositions[FrozenGroupPosition.TrailingCol].width =
-        topLevelColNodes[topLevelColNodes.length - 1].x -
-        topLevelColNodes[topLevelColNodes.length - trailingColCount].x +
-        topLevelColNodes[topLevelColNodes.length - 1].width;
+        leafColNodes[leafColNodes.length - 1].x -
+        leafColNodes[leafColNodes.length - trailingColCount].x +
+        leafColNodes[leafColNodes.length - 1].width;
       this.frozenGroupPositions[FrozenGroupPosition.TrailingCol].x =
-        topLevelColNodes[topLevelColNodes.length - trailingColCount].x;
+        leafColNodes[leafColNodes.length - trailingColCount].x;
       this.frozenGroupPositions[FrozenGroupPosition.TrailingCol].range = [
-        topLevelColNodes.length - trailingColCount,
-        topLevelColNodes.length - 1,
+        leafColNodes.length - trailingColCount,
+        leafColNodes.length - 1,
       ];
     }
 
@@ -201,7 +207,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const { colCount, rowCount, trailingColCount, trailingRowCount } =
-      this.getFrozenOptions();
+      this.getRealFrozenOptions();
 
     const finalViewport: SimpleBBox = {
       width,
@@ -268,13 +274,13 @@ export abstract class FrozenFacet extends BaseFacet {
   }
 
   addDataCell = (cell: DataCell) => {
-    const colLength = this.getColNodes().length;
+    const colLeafLength = this.getColLeafNodes().length;
     const cellRange = this.getCellRange();
 
     const frozenGroupType = getFrozenGroupTypeByCell(
       cell.getMeta(),
       this.getRealFrozenOptions(),
-      colLength,
+      colLeafLength,
       cellRange,
     );
 
@@ -334,7 +340,7 @@ export abstract class FrozenFacet extends BaseFacet {
         }
       } else {
         const [colMin, colMax] = this.frozenGroupPositions[key].range || [];
-        const nodes = this.getTopLevelColNodes();
+        const nodes = this.getColLeafNodes();
 
         cols = getColsForGrid(colMin, colMax, nodes);
         rows = this.gridInfo.rows;
@@ -449,7 +455,7 @@ export abstract class FrozenFacet extends BaseFacet {
       colCount: frozenColCount,
       trailingColCount: frozenTrailingColCount,
       trailingRowCount: frozenTrailingRowCount,
-    } = this.getFrozenOptions();
+    } = this.getRealFrozenOptions();
 
     // 在分页条件下需要额外处理 Y 轴滚动值
     const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
@@ -615,7 +621,7 @@ export abstract class FrozenFacet extends BaseFacet {
   }
 
   protected override getCenterFrameScrollX(scrollX: number): number {
-    if (this.getFrozenOptions().colCount > 0) {
+    if (this.getRealFrozenOptions().colCount > 0) {
       return 0;
     }
 
