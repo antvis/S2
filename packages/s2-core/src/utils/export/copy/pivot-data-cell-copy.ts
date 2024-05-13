@@ -183,15 +183,21 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
                 row.push(dataItem);
               }
-              rowIndex = j;
+              rowIndex++;
               matrix.push(row);
               count--;
             }
           }
 
-          if (rowIndex === rowLength - 1) {
+          if (rowIndex === rowLength) {
             resolve(matrix);
           } else {
+            // 重置 count，避免下次 requestIdleCallback 时 count 为 0
+            count =
+              rowLength >= AsyncRenderThreshold
+                ? AsyncRenderThreshold
+                : rowLength;
+
             requestIdleCallback(dataMatrixIdleCallback);
           }
         };
