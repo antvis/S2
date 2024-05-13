@@ -8,6 +8,7 @@ import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+  FrozenGroupPosition,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -28,7 +29,7 @@ import type {
   ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine/interface';
-import type { TableFacet } from '../../facet';
+import type { FrozenFacet, TableFacet } from '../../facet';
 import type { Node } from '../../facet/layout/node';
 import {
   isFrozenCol,
@@ -42,7 +43,6 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../../utils/interaction';
-import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
 
@@ -236,11 +236,10 @@ export class BaseBrushSelection
 
   public validateXIndex = (xIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenGroupPositions = (facet as unknown as TableFacet)
-      .frozenGroupPositions;
+    const frozenGroupPositions = (facet as TableFacet).frozenGroupPositions;
 
     let min = 0;
-    const frozenColRange = frozenGroupPositions?.frozenCol?.range;
+    const frozenColRange = frozenGroupPositions[FrozenGroupPosition.Col].range;
 
     if (frozenColRange?.[1]) {
       min = frozenColRange[1] + 1;
@@ -252,7 +251,7 @@ export class BaseBrushSelection
 
     let max = facet.getColLeafNodes().length - 1;
     const frozenTrailingColRange =
-      frozenGroupPositions?.frozenTrailingCol?.range;
+      frozenGroupPositions[FrozenGroupPosition.TrailingCol].range;
 
     if (frozenTrailingColRange?.[0]) {
       max = frozenTrailingColRange[0] - 1;
@@ -269,31 +268,29 @@ export class BaseBrushSelection
     colIndex: number,
     dir: ScrollDirection,
   ) => {
-    const { facet, dataSet, options } = this.spreadsheet;
-    const dataLength = dataSet.getDisplayDataSet().length;
+    const { facet } = this.spreadsheet;
     const colLength = facet.getColLeafNodes().length;
 
-    const {
-      trailingColCount: frozenTrailingColCount,
-      colCount: frozenColCount,
-    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
+    const { colCount, trailingColCount } = (
+      facet as FrozenFacet
+    ).getRealFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 
     if (
-      frozenTrailingColCount! > 0 &&
-      dir === ScrollDirection.SCROLL_DOWN &&
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount!, colLength)
+      colCount > 0 &&
+      dir === ScrollDirection.SCROLL_UP &&
+      isFrozenCol(colIndex, colCount)
     ) {
-      return panelIndexes[1];
+      return panelIndexes[0];
     }
 
     if (
-      frozenColCount! > 0 &&
-      dir === ScrollDirection.SCROLL_UP &&
-      isFrozenCol(colIndex, frozenColCount!)
+      trailingColCount > 0 &&
+      dir === ScrollDirection.SCROLL_DOWN &&
+      isFrozenTrailingCol(colIndex, trailingColCount, colLength)
     ) {
-      return panelIndexes[0];
+      return panelIndexes[1];
     }
 
     return colIndex;
@@ -303,31 +300,28 @@ export class BaseBrushSelection
     rowIndex: number,
     dir: ScrollDirection,
   ) => {
-    const { facet, dataSet, options } = this.spreadsheet;
-    const dataLength = dataSet.getDisplayDataSet().length;
-    const colLength = facet.getColLeafNodes().length;
+    const { facet } = this.spreadsheet;
     const cellRange = facet.getCellRange();
-    const {
-      trailingRowCount: frozenTrailingRowCount,
-      rowCount: frozenRowCount,
-    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
+    const { rowCount, trailingRowCount } = (
+      facet as FrozenFacet
+    ).getRealFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 
     if (
-      frozenTrailingRowCount! > 0 &&
-      dir === ScrollDirection.SCROLL_DOWN &&
-      isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount!)
+      rowCount > 0 &&
+      dir === ScrollDirection.SCROLL_UP &&
+      isFrozenRow(rowIndex, cellRange.start, rowCount)
     ) {
-      return panelIndexes[3];
+      return panelIndexes[2];
     }
 
     if (
-      frozenRowCount! > 0 &&
-      dir === ScrollDirection.SCROLL_UP &&
-      isFrozenRow(rowIndex, cellRange.start, frozenRowCount!)
+      trailingRowCount > 0 &&
+      dir === ScrollDirection.SCROLL_DOWN &&
+      isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)
     ) {
-      return panelIndexes[2];
+      return panelIndexes[3];
     }
 
     return rowIndex;

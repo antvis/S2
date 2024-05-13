@@ -6,7 +6,6 @@ import type { TableFacet } from '@/facet';
 import {
   CellType,
   DataCellBrushSelection,
-  FrozenGroupType,
   InteractionBrushSelectionStage,
   Node,
   PivotSheet,
@@ -21,6 +20,7 @@ import {
   type S2Options,
   type ViewMeta,
   EventController,
+  FrozenGroupPosition,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 
@@ -451,6 +451,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         return {};
       });
     (s2.facet as TableFacet).panelScrollGroupIndexes = [1, 8, 1, 8];
+    (s2.facet as TableFacet).getRealFrozenOptions = jest.fn().mockReturnValue({
+      colCount: 1,
+      rowCount: 1,
+      trailingColCount: 1,
+      trailingRowCount: 1,
+    });
 
     expect(adjustNextColIndexWithFrozen(9, ScrollDirection.SCROLL_DOWN)).toBe(
       8,
@@ -473,35 +479,42 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const { facet } = s2;
 
     expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
-    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(202);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(800);
 
-    (facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroupType.FROZEN_COL]: {
+    (facet as TableFacet).frozenGroupPositions = {
+      [FrozenGroupPosition.Col]: {
         width: 100,
         x: 0,
-        range: [],
+        range: [] as number[],
       },
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {
+      [FrozenGroupPosition.TrailingCol]: {
         width: 100,
         x: 0,
-        range: [],
+        range: [] as number[],
       },
-      [FrozenGroupType.FROZEN_ROW]: {
+      [FrozenGroupPosition.Row]: {
         height: 0,
         y: 0,
-        range: [],
+        range: [] as number[],
       },
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupPosition.TrailingRow]: {
         height: 0,
         y: 0,
-        range: [],
+        range: [] as number[],
       },
     };
+    (s2.facet as TableFacet).getRealFrozenOptions = jest.fn().mockReturnValue({
+      colCount: 1,
+      rowCount: 1,
+      trailingColCount: 1,
+      trailingRowCount: 1,
+    });
 
     expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
-    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(302);
+    expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(900);
 
     facet.panelBBox = {
+      viewportHeight: facet.getCanvasSize().height,
       height: facet.getCanvasSize().height,
     } as any;
 
@@ -510,26 +523,26 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(320);
 
-    (facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroupType.FROZEN_COL]: {
-        x: 0,
+    (facet as TableFacet).frozenGroupPositions = {
+      [FrozenGroupPosition.Col]: {
         width: 0,
-        range: [],
-      },
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         x: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupPosition.TrailingCol]: {
         width: 0,
-        range: [],
+        x: 0,
+        range: [] as number[],
       },
-      [FrozenGroupType.FROZEN_ROW]: {
-        y: 0,
-        range: [],
-        height: 100,
-      },
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupPosition.Row]: {
         height: 100,
         y: 0,
-        range: [],
+        range: [] as number[],
+      },
+      [FrozenGroupPosition.TrailingRow]: {
+        height: 100,
+        y: 0,
+        range: [] as number[],
       },
     };
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(600);
@@ -549,26 +562,26 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateYIndex(10)).toBe(null);
     expect(validateYIndex(9)).toBe(9);
 
-    (s2.facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroupType.FROZEN_COL]: {
+    (s2.facet as TableFacet).frozenGroupPositions = {
+      [FrozenGroupPosition.Col]: {
         width: 0,
         x: 0,
-        range: [0, 1],
+        range: [0, 1] as number[],
       },
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {
+      [FrozenGroupPosition.TrailingCol]: {
         width: 0,
         x: 0,
-        range: [8, 9],
+        range: [8, 9] as number[],
       },
-      [FrozenGroupType.FROZEN_ROW]: {
-        y: 0,
+      [FrozenGroupPosition.Row]: {
         height: 0,
-        range: [0, 1],
+        y: 0,
+        range: [0, 1] as number[],
       },
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
-        y: 0,
+      [FrozenGroupPosition.TrailingRow]: {
         height: 0,
-        range: [8, 9],
+        y: 0,
+        range: [8, 9] as number[],
       },
     };
 
