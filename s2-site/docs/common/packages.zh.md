@@ -7,7 +7,7 @@ order: 5
 
 创建 `S2` 表格有三种方式，基础类版本 `@antv/s2` 和 基于 `@antv/s2` 封装的 `React` 和 `Vue3` 版本：
 
-- `@antv/s2`: 基于 `Canvas` 和 [AntV/G 5.0](https://g.antv.antgroup.com) 开发，提供基本的表格展示/交互等能力。
+- `@antv/s2`: 基于 `Canvas` 和 [AntV/G 6.0](https://g.antv.antgroup.com) 开发，提供基本的表格展示/交互等能力。
 - `@antv/s2-react`: 基于 `React 18`, `@antv/s2`, `antd` 封装，提供配套的 [分析组件](/manual/basic/analysis/switcher).
 - `@antv/s2-vue`: 基于 `Vue3`, `@antv/s2` , `ant-design-vue` 封装，提供配套的分析组件。
 

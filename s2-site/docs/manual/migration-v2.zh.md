@@ -67,9 +67,9 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ### 基础包 <Badge>@antv/s2</Badge>
 
-#### 底层渲染引擎升级为 `AntV/G 5.0`
+#### 底层渲染引擎升级为 `AntV/G 6.0`
 
-表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
+表格绘制引擎升级到 [`G 6.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
 
 ```diff
 - s2.render()
@@ -309,7 +309,7 @@ const s2Options = {
 }
 ```
 
-#### 树状结构配置调整
+#### 树状结构配置和回调事件调整
 
 1. 行头折叠展开配置调整
 
@@ -381,6 +381,19 @@ const s2DataConfig = {
 ```
 
 具体请查看 [自定义行列头分组](/manual/advanced/custom/custom-header) 相关文档。
+
+4. 行头单元格折叠展开事件划分到 `RowCell`
+
+移除 `LAYOUT_AFTER_COLLAPSE_ROWS`
+
+```diff
+- S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL
++ S2Event.ROW_CELL_ALL_COLLAPSED
+
+- S2Event.LAYOUT_COLLAPSE_ROWS
+- S2Event.LAYOUT_AFTER_COLLAPSE_ROWS
++ S2Event.ROW_CELL_COLLAPSED
+```
 
 #### 树状结构 icon 折叠展开状态同步
 
@@ -651,6 +664,13 @@ s2.interaction.getState()
 + stateName: "dataCellBrushSelected"
 ```
 
+#### 配置预处理 API 变更
+
+```diff
+- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
++ import { setupOptions, setupDataConfig } from '@antv/s2'
+```
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
@@ -742,11 +762,17 @@ s2.showTooltip({
 
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
-#### 配置预处理 API 变更
+#### 行头单元格折叠展开事件划分到 `RowCell`
+
+`onCollapseRowsAll`, `onLayoutAfterCollapseRows` 更名为 `onRowCellAllCollapsed`, `onRowCellCollapsed`
 
 ```diff
-- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
-+ import { setupOptions, setupDataConfig } from '@antv/s2'
+- <SheetComponent options={s2Options} onCollapseRowsAll={} />
++ <SheetComponent options={s2Options} onRowCellAllCollapsed={} />
+
+- <SheetComponent options={s2Options} onLayoutAfterCollapseRows={} />
++ <SheetComponent options={s2Options} onRowCellCollapsed={} />
+
 ```
 
 ## ✍️ API 调整
