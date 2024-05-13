@@ -190,7 +190,7 @@ export const createFakeSpreadSheet = (config?: {
       [FrozenGroupType.BottomLeft]: {},
       [FrozenGroupType.BottomRight]: {},
     },
-    getCellRange: jest.fn().mockReturnValue([0, 100]),
+    getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
     cornerBBox: {},
     destroy: jest.fn(),
     getRealFrozenOptions: jest.fn().mockReturnValue({

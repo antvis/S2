@@ -83,7 +83,7 @@ jest.mock('@/sheet-type', () => {
           getHiddenColumnsInfo: jest.fn(),
           getCellMeta: jest.fn().mockRejectedValue({}),
           getRowLeafNodeByIndex: () => [],
-          getCellRange: jest.fn().mockReturnValue([0, 100]),
+          getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
           cornerBBox: {},
           getHeaderNodes: jest.fn().mockReturnValue([]),
         },

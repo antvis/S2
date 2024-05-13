@@ -1,17 +1,14 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
-import { get } from 'lodash';
 import {
   type CellMeta,
   CellType,
   type ViewMeta,
-  FrozenGroupType,
+  FrozenGroupPosition,
 } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
-import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
-import { floor } from '../utils/math';
 import type { FrozenFacet } from '../facet';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
@@ -180,28 +177,20 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
   private getMoveInfo(code: string, cell: CellMeta | null, isJump: boolean) {
     const { spreadsheet } = this;
-    const {
-      rowCount: frozenRowCount = 0,
-      trailingRowCount: frozenTrailingRowCount = 0,
-      colCount: frozenColCount = 0,
-      trailingColCount: frozenTrailingColCount = 0,
-    } = spreadsheet.options.frozen!;
 
-    const rowLeafNodes = spreadsheet.facet.getRowLeafNodes();
+    const { rowCount, trailingRowCount, colCount, trailingColCount } = (
+      spreadsheet.facet as FrozenFacet
+    ).getRealFrozenOptions();
+
+    const { start, end } = spreadsheet.facet.getCellRange();
+
     const colLeafNodes = spreadsheet.facet.getColLeafNodes();
 
     const [minCol, maxCol] = [
-      0 + frozenColCount,
-      colLeafNodes.length - frozenTrailingColCount - 1,
+      0 + colCount,
+      colLeafNodes.length - trailingColCount - 1,
     ];
-    const [minRow, maxRow] = [
-      0 + frozenRowCount,
-      (spreadsheet.isTableMode()
-        ? spreadsheet.dataSet.getDisplayDataSet().length
-        : rowLeafNodes.length) -
-        frozenTrailingRowCount -
-        1,
-    ];
+    const [minRow, maxRow] = [start + rowCount, end - trailingRowCount];
 
     if (!cell) {
       return;
@@ -255,64 +244,33 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     rowIndex: number,
     colIndex: number,
   ) {
-    const {
-      rowCount: frozenRowCount = 0,
-      trailingRowCount: frozenTrailingRowCount = 0,
-    } = spreadsheet.options.frozen!;
     const facet = spreadsheet.facet as FrozenFacet;
-    const frozenGroups = facet.frozenGroups;
+    const { rowCount } = facet.getRealFrozenOptions();
 
     const colLeafNodes = facet.getColLeafNodes();
-    const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
-    const splitLineStyle = get(spreadsheet, 'theme.splitLine');
-    const frozenColWidth = frozenGroups[FrozenGroupType.Col]
-      ? floor(
-          frozenGroups[FrozenGroupType.Col].getBBox().width -
-            splitLineStyle.verticalBorderWidth / 2,
-        )
-      : 0;
-    const frozenTrailingColWidth = frozenGroups[FrozenGroupType.TrailingCol]
-      ? floor(frozenGroups[FrozenGroupType.TrailingCol].getBBox().width)
-      : 0;
-    const frozenRowHeight = frozenGroups[FrozenGroupType.Row]
-      ? floor(
-          frozenGroups[FrozenGroupType.Row].getBBox().height -
-            splitLineStyle.horizontalBorderWidth / 2,
-        )
-      : 0;
-    const frozenTrailingRowHeight = frozenGroups[FrozenGroupType.TrailingRow]
-      ? floor(frozenGroups[FrozenGroupType.TrailingRow].getBBox().height)
-      : 0;
 
-    const indexes = calculateInViewIndexes({
-      scrollX,
-      scrollY,
-      widths: facet.viewCellWidths,
-      heights: facet.viewCellHeights,
-      viewport: {
-        width: width - frozenColWidth - frozenTrailingColWidth,
-        height: height - frozenRowHeight - frozenTrailingRowHeight,
-        x: frozenColWidth,
-        y: frozenRowHeight,
-      },
-      rowRemainWidth: facet.getRealScrollX(facet.cornerBBox.width),
-    });
+    const frozenGroupPositions = facet.frozenGroupPositions;
+    const frozenColWidth = frozenGroupPositions[FrozenGroupPosition.Col].width;
 
-    // 小于0的初始值
-    let offsetX = -1;
-    let offsetY = -1;
+    const frozenTrailingColWidth =
+      frozenGroupPositions[FrozenGroupPosition.TrailingCol].width;
+
+    const frozenTrailingRowHeight =
+      frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+
+    const indexes = facet.panelScrollGroupIndexes;
 
     const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
+
+    let offsetX = null;
+    let offsetY = null;
 
     // offsetX
     if (colIndex <= indexes[0]) {
       // scroll left
       offsetX = targetNode?.x! - frozenColWidth;
-    } else if (
-      colIndex >= indexes[1] &&
-      colIndex < colLeafNodes.length - frozenTrailingRowCount
-    ) {
+    } else if (colIndex >= indexes[1]) {
       // scroll right
       offsetX =
         targetNode?.x! + targetNode?.width! - width + frozenTrailingColWidth;
@@ -321,12 +279,12 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     // offsetY
     if (rowIndex <= indexes[2]) {
       // scroll top
-      offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - frozenRowCount);
+      offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - rowCount);
     } else if (rowIndex >= indexes[3]) {
       // scroll bottom
       const y = facet.viewCellHeights.getCellOffsetY(rowIndex + 1);
 
-      offsetY = y + frozenTrailingRowHeight - height;
+      offsetY = y - height + frozenTrailingRowHeight;
     }
 
     return { offsetX, offsetY };
@@ -346,8 +304,8 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { scrollX, scrollY } = spreadsheet.facet.getScrollOffset();
 
     facet.scrollWithAnimation({
-      offsetX: { value: offsetX > -1 ? offsetX : scrollX },
-      offsetY: { value: offsetY > -1 ? offsetY : scrollY },
+      offsetX: { value: offsetX ?? scrollX },
+      offsetY: { value: offsetY ?? scrollY },
     });
   }
 }
