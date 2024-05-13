@@ -1,3 +1,11 @@
+# [@antv/s2-v1.55.4](https://github.com/antvis/S2/compare/@antv/s2-v1.55.3...@antv/s2-v1.55.4) (2024-05-11)
+
+
+### Bug Fixes
+
+* 修复无汇总数据时前端计算汇总值缺少聚合方式导致排序失效的问题 ([#2711](https://github.com/antvis/S2/issues/2711)) ([ab53003](https://github.com/antvis/S2/commit/ab53003456cdaca5935cea2bac4b3b78c1bce855))
+* 修复明细表含有空数据占位符时排序错误 close [#2707](https://github.com/antvis/S2/issues/2707) ([#2708](https://github.com/antvis/S2/issues/2708)) ([8174c38](https://github.com/antvis/S2/commit/8174c38c6a6b10d6e6564eef2365d0f39a5da909))
+
 # [@antv/s2-v1.55.3](https://github.com/antvis/S2/compare/@antv/s2-v1.55.2...@antv/s2-v1.55.3) (2024-04-30)
 
 
