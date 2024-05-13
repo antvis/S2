@@ -131,15 +131,22 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
                 row.push(dataItem as string);
               }
-              rowIndex = j;
+              // 生成一行数据后，rowIndex + 1，下次 requestIdleCallback 时从下一行开始
+              rowIndex++;
               result.push(row);
               count--;
             }
           }
 
-          if (rowIndex === rowLength - 1) {
+          if (rowIndex === rowLength) {
             resolve(result);
           } else {
+            // 重置 count，避免下次 requestIdleCallback 时 count 为 0
+            count =
+              rowLength >= AsyncRenderThreshold
+                ? AsyncRenderThreshold
+                : rowLength;
+
             requestIdleCallback(dataMatrixIdleCallback);
           }
         };
