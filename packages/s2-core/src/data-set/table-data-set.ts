@@ -8,7 +8,6 @@ import type {
 } from '../common/interface';
 import { isAscSort, isDescSort } from '../utils/sort-action';
 import { getEmptyPlaceholder } from '../utils';
-import type { FrozenFacet } from '../facet';
 import { BaseDataSet } from './base-data-set';
 import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
 
@@ -28,9 +27,7 @@ export class TableDataSet extends BaseDataSet {
    * @returns
    */
   protected getStartFrozenRows(displayData: RawData[]): RawData[] {
-    const { rowCount } = (
-      this.spreadsheet.facet as FrozenFacet
-    ).getRealFrozenOptions();
+    const { rowCount } = this.spreadsheet.options.frozen! || {};
 
     if (!rowCount) {
       return [];
@@ -44,9 +41,7 @@ export class TableDataSet extends BaseDataSet {
    * @returns
    */
   protected getEndFrozenRows(displayData: RawData[]): RawData[] {
-    const { trailingRowCount } = (
-      this.spreadsheet.facet as FrozenFacet
-    ).getRealFrozenOptions();
+    const { trailingRowCount } = this.spreadsheet.options.frozen! || {};
 
     // 没有冻结行时返回空数组
     if (!trailingRowCount) {
