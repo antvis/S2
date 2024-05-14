@@ -53,6 +53,14 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
       { field: 'number', title: '数量' },
     ],
   },
+  {
+    field: 'money1',
+    title: '金额1',
+    children: [
+      { field: 'price1', title: '价格1', description: '价格描述' },
+      { field: 'number1', title: '数量1' },
+    ],
+  },
 ];
 
 export const tableSheetDataCfg: S2DataConfig = {
@@ -248,6 +256,11 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
   trailingColCount: 1,
 };
 
+export const PivotSheetFrozenOptions: S2TableSheetFrozenOptions = {
+  rowCount: 1,
+  trailingRowCount: 1,
+};
+
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
   operation: {
     menu: {
@@ -319,6 +332,7 @@ export const s2Options: SheetComponentOptions = {
   seriesNumber: {
     enable: false,
   },
+
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
