@@ -11,7 +11,8 @@ fetch(
       width: 600,
       height: 300,
       frozen: {
-        firstRow: true,
+        rowCount: 1,
+        trailingRowCount: 1,
       },
       totals: {
         row: {

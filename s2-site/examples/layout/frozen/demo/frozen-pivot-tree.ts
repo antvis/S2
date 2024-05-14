@@ -12,7 +12,8 @@ fetch(
       height: 300,
       hierarchyType: 'tree',
       frozen: {
-        firstRow: true,
+        rowCount: 1,
+        trailingRowCount:1
       },
     };
 

@@ -414,7 +414,6 @@ const s2Options = {
 
 +  frozen: {
 +    rowHeader: true,
-+    firstRow: true,
 +    rowCount: true;
 +    colCount: true;
 +    trailingRowCount: true;
