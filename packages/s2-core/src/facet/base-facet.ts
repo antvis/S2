@@ -701,6 +701,11 @@ export abstract class BaseFacet {
     this.viewCellHeights = this.getViewCellHeights();
   };
 
+  /**
+   * 提供给明细表做 rowOffsets 计算的 hook
+   */
+  protected calculateRowOffsets() {}
+
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
     this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
 
@@ -1436,6 +1441,7 @@ export abstract class BaseFacet {
 
     // all cell's width&height
     this.calculateCellWidthHeight();
+    this.calculateRowOffsets();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
     this.bindEvents();

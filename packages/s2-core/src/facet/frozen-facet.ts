@@ -616,8 +616,8 @@ export abstract class FrozenFacet extends BaseFacet {
 
   public render(): void {
     this.calculateFrozenGroupInfo();
-    super.render();
     this.renderFrozenPanelCornerGroup();
+    super.render();
   }
 
   protected override getCenterFrameScrollX(scrollX: number): number {

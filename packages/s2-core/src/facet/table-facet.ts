@@ -108,7 +108,7 @@ export class TableFacet extends FrozenFacet {
     });
   }
 
-  protected initRowOffsets() {
+  protected calculateRowOffsets() {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
 
@@ -228,8 +228,6 @@ export class TableFacet extends FrozenFacet {
     const { colLeafNodes, colsHierarchy } = this.buildColHeaderHierarchy();
 
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
-
-    this.initRowOffsets();
 
     return {
       colNodes: colsHierarchy.getNodes(),
