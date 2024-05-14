@@ -107,43 +107,6 @@ Object {
 }
 `;
 
-exports[`Table Mode Facet With Column Grouping Frozen Test should get correct frozenInfo 1`] = `
-Object {
-  "frozenCol": Object {
-    "range": Array [
-      0,
-      0,
-    ],
-    "width": 199.66,
-    "x": 0,
-  },
-  "frozenRow": Object {
-    "height": 60,
-    "range": Array [
-      0,
-      1,
-    ],
-    "y": 0,
-  },
-  "frozenTrailingCol": Object {
-    "range": Array [
-      2,
-      2,
-    ],
-    "width": 199.66,
-    "x": 399.34000000000003,
-  },
-  "frozenTrailingRow": Object {
-    "height": 60,
-    "range": Array [
-      30,
-      31,
-    ],
-    "y": 502,
-  },
-}
-`;
-
 exports[`Table Mode Facet With Frozen Test should get correct frozen group positions 1`] = `
 Object {
   "frozenCol": Object {
@@ -177,43 +140,6 @@ Object {
       31,
     ],
     "y": 900,
-  },
-}
-`;
-
-exports[`Table Mode Facet With Frozen Test should get correct frozenInfo 1`] = `
-Object {
-  "frozenCol": Object {
-    "range": Array [
-      0,
-      1,
-    ],
-    "width": 239.6,
-    "x": 0,
-  },
-  "frozenRow": Object {
-    "height": 60,
-    "range": Array [
-      0,
-      1,
-    ],
-    "y": 0,
-  },
-  "frozenTrailingCol": Object {
-    "range": Array [
-      3,
-      4,
-    ],
-    "width": 239.60000000000002,
-    "x": 359.4,
-  },
-  "frozenTrailingRow": Object {
-    "height": 60,
-    "range": Array [
-      30,
-      31,
-    ],
-    "y": 502,
   },
 }
 `;
