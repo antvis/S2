@@ -473,7 +473,7 @@ describe('PivotSheet Export Test', () => {
 
     const bigData = generateRawData(
       { province: 10, city: 1 },
-      { type: typeCount, sub_type: subTypeCount },
+      { type: typeCount, subType: subTypeCount },
     );
 
     const sheet = new PivotSheet(
