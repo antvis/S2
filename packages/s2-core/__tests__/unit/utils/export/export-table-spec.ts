@@ -9,9 +9,9 @@ import {
 } from '../../../util/helpers';
 import {
   CSV_SEPARATOR,
-  FormatOptions,
-  S2DataConfig,
-  S2Options,
+  type FormatOptions,
+  type S2DataConfig,
+  type S2Options,
   LINE_SEPARATOR,
   TAB_SEPARATOR,
 } from '../../../../src';

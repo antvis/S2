@@ -2,7 +2,7 @@
 import { type S2DataConfig, TableSheet } from '../../src';
 import { generateRawData, getContainer } from '../util/helpers';
 
-async function measureTableSheetRender(s2DataCfg: S2DataConfig, title) {
+async function measureTableSheetRender(s2DataCfg: S2DataConfig, title: string) {
   performance.mark('startTask');
   const s2 = new TableSheet(getContainer(), s2DataCfg, null);
 
