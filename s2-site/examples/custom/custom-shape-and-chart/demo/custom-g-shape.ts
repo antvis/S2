@@ -26,7 +26,7 @@ class CustomCornerCell extends CornerCell {
         new GImage({
           style: {
             ...this.getBBoxByType(),
-            img,
+            src: img,
           },
         }),
       );

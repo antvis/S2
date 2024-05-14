@@ -18,7 +18,7 @@ class CustomRowCell extends RowCell {
         new GImage({
           style: {
             ...this.getBBoxByType(),
-            img,
+            src: img,
           },
         }),
       );

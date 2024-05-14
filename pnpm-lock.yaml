@@ -475,10 +475,10 @@ importers:
         specifier: ^5.1.19
         version: 5.1.19
       '@antv/s2':
-        specifier: next
+        specifier: ^2.0.0-next
         version: link:../packages/s2-core
       '@antv/s2-react':
-        specifier: next
+        specifier: ^2.0.0-next
         version: link:../packages/s2-react
       antd:
         specifier: ^5.17.0

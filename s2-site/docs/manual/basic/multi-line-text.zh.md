@@ -16,7 +16,7 @@ tag: New
 
 ## 使用
 
-S2 内部适配了 `AntV/G 5.0` 的 [多行布局能力](https://g.antv.antgroup.com/api/basic/text#%E5%A4%9A%E8%A1%8C%E5%B8%83%E5%B1%80), 可以根据文本高度自适应单元格高度，并支持如下配置：
+S2 内部适配了 `AntV/G 6.0` 的 [多行布局能力](https://g.antv.antgroup.com/api/basic/text#%E5%A4%9A%E8%A1%8C%E5%B8%83%E5%B1%80), 可以根据文本高度自适应单元格高度，并支持如下配置：
 
 :::info{title="提示"}
 
