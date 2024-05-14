@@ -1,7 +1,11 @@
 /* eslint-disable jest/expect-expect */
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
-import { assembleDataCfg, assembleOptions } from '../../../util';
+import {
+  assembleDataCfg,
+  assembleOptions,
+  generateRawData,
+} from '../../../util';
 import {
   createTableSheet,
   expectMatchSnapshot,
@@ -432,5 +436,34 @@ describe('TableSheet Export Test', () => {
       formatHeader: false,
       formatData: false,
     });
+  });
+
+  // https://github.com/antvis/S2/issues/2718
+  it('should export the correct amount of data and have no duplicate data', async () => {
+    const bigData = generateRawData(
+      { province: 10, city: 10 },
+      { type: 10, sub_type: 10 },
+    );
+
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        data: bigData,
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: CSV_SEPARATOR,
+      formatOptions: true,
+    });
+
+    // The first line is the header, so the number of lines should be the same as the number of data plus one
+    expect(data.split(LINE_SEPARATOR)).toHaveLength(bigData.length + 1);
   });
 });

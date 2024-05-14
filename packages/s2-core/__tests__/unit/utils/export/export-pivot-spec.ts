@@ -15,6 +15,7 @@ import {
   TAB_SEPARATOR,
 } from '../../../../src/common/constant';
 import { asyncGetAllPlainData, PivotSheet } from '../../../../src';
+import { generateRawData } from '../../../util';
 import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
@@ -464,4 +465,40 @@ describe('PivotSheet Export Test', () => {
       expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
     },
   );
+
+  // https://github.com/antvis/S2/issues/2718
+  it('should export the correct amount of data and have no duplicate data', async () => {
+    const typeCount = 100;
+    const subTypeCount = 100;
+
+    const bigData = generateRawData(
+      { province: 10, city: 1 },
+      { type: typeCount, subType: subTypeCount },
+    );
+
+    const sheet = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        data: bigData,
+        fields: {
+          rows: ['type', 'subType'],
+          columns: ['province', 'city'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({}),
+    );
+
+    await sheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: sheet,
+      split: CSV_SEPARATOR,
+      formatOptions: true,
+    });
+
+    // row header count + data count
+    const count = typeCount * subTypeCount + 3;
+
+    expect(data.split(LINE_SEPARATOR)).toHaveLength(count);
+  });
 });
