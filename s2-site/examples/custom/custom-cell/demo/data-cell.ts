@@ -19,7 +19,7 @@ class CustomDataCell extends DataCell {
         new GImage({
           style: {
             ...this.getBBoxByType(),
-            img,
+            src: img,
           },
         }),
       );

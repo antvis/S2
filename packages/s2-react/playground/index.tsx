@@ -1646,7 +1646,7 @@ function MainLayout() {
               },
               {
                 key: 'plugins',
-                label: 'G 5.0 插件系统',
+                label: 'AntV/G 插件系统',
                 children: <PluginsSheet />,
               },
               {

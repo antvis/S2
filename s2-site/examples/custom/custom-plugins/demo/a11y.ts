@@ -1,6 +1,8 @@
 import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
+// 请确保 AntV/G 版本大于 5.0
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )

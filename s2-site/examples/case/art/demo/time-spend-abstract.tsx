@@ -1,5 +1,4 @@
 import React from 'react';
-
 import insertCSS from 'insert-css';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Image as GImage } from '@antv/g';
@@ -9,36 +8,36 @@ import '@antv/s2-react/dist/style.min.css';
 const paletteLegendMap = [
   {
     text: '睡觉',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zGyiSa2A8ZMAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zGyiSa2A8ZMAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '工作',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RdyWRpg3hRAAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RdyWRpg3hRAAAAAAAAAAAAAAARQnAQ',
   },
 
   {
     text: '上学',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '吃饭',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XHHcSZxmR7gAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XHHcSZxmR7gAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '学习',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '娱乐',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZRaUT55QCaoAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZRaUT55QCaoAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '运动',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*xpO5Sawk8YIAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*xpO5Sawk8YIAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '其他',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ',
   },
 ];
 
@@ -50,7 +49,7 @@ class CustomDataCell extends DataCell {
   drawTextShape() {
     const { fieldValue } = this.meta;
     const url =
-      paletteLegendMap.find((v) => v.text === fieldValue)?.img ??
+      paletteLegendMap.find((legend) => legend.text === fieldValue)?.src ??
       'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
     const img = new Image();
 
@@ -65,7 +64,7 @@ class CustomDataCell extends DataCell {
             y: y + (height - img?.height) / 2,
             width: img?.width ?? width,
             height: img?.height ?? height,
-            img: url,
+            src: img,
           },
         }),
       );
@@ -177,10 +176,10 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
 
     const PaletteLegend = () => (
       <div className="palette">
-        {paletteLegendMap.map((value, key) => (
+        {paletteLegendMap.map((legend, key) => (
           <div key={key} className="palette-group">
-            <img className="palette-img" src={value.img} />
-            <span className="palette-text">{value.text}</span>
+            <img className="palette-img" src={legend.src} />
+            <span className="palette-text">{legend.text}</span>
           </div>
         ))}
       </div>
