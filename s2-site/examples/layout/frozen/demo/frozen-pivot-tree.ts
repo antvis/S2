@@ -13,7 +13,7 @@ fetch(
       hierarchyType: 'tree',
       frozen: {
         rowCount: 1,
-        trailingRowCount:1
+        trailingRowCount: 1
       },
     };
 
