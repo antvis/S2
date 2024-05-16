@@ -7,6 +7,7 @@ import {
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
   type ThemeCfg,
+  EMPTY_PLACEHOLDER,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
@@ -56,7 +57,7 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
 ];
 
 export const tableSheetDataCfg: S2DataConfig = {
-  data: [],
+  data,
   totalData,
   meta: [
     { field: 'number', name: '数值', formatter: (v) => `${v}-@` },
@@ -314,9 +315,10 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
-  height: 400,
+  height: 600,
   hierarchyType: 'grid',
   placeholder: {
+    cell: EMPTY_PLACEHOLDER,
     empty: {
       icon: 'Trend',
       description: '暂无数据',

@@ -1,4 +1,5 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import type { SpreadSheet, TableFacet } from '../../esm';
 import {
   DeviceType,
   ResizeType,
@@ -109,6 +110,22 @@ const options: S2Options = {
 };
 
 describe('TableSheet normal spec', () => {
+  const expectEmptyPlaceholder = async (s2: SpreadSheet) => {
+    s2.setDataCfg({
+      data: [],
+    });
+    await s2.render();
+    const [rect, icon, text] = (s2.facet as TableFacet).emptyPlaceholderGroup
+      .children;
+
+    expect(
+      (s2.facet as TableFacet).emptyPlaceholderGroup.children,
+    ).toHaveLength(3);
+    expect(rect.parsedStyle).toMatchSnapshot();
+    expect(icon.getCfg()).toMatchSnapshot();
+    expect(text.parsedStyle).toMatchSnapshot();
+  };
+
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
@@ -286,5 +303,64 @@ describe('TableSheet normal spec', () => {
       'root[&]discount',
       'root[&]profit',
     ]);
+  });
+
+  test('should render empty placeholder', async () => {
+    const s2 = new TableSheet(
+      getContainer(),
+      { ...dataCfg, data: [] },
+      { ...options, frozen: {} },
+    );
+
+    await expectEmptyPlaceholder(s2);
+  });
+
+  test('should render empty placeholder by custom icon and description', async () => {
+    const s2 = new TableSheet(
+      getContainer(),
+      { ...dataCfg, data: [] },
+      {
+        ...options,
+        frozen: {},
+        placeholder: {
+          empty: {
+            icon: 'Trend',
+            describe: '没有数据',
+          },
+        },
+      },
+    );
+
+    await expectEmptyPlaceholder(s2);
+  });
+
+  test('should render empty placeholder by custom icon and description style', async () => {
+    const s2 = new TableSheet(
+      getContainer(),
+      { ...dataCfg, data: [] },
+      {
+        ...options,
+        frozen: {},
+      },
+    );
+
+    s2.setTheme({
+      empty: {
+        icon: {
+          fill: 'green',
+          width: 100,
+          height: 100,
+          margin: {
+            bottom: 80,
+          },
+        },
+        description: {
+          fontSize: 20,
+          fill: 'red',
+        },
+      },
+    });
+
+    await expectEmptyPlaceholder(s2);
   });
 });

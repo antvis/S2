@@ -664,14 +664,14 @@ s2.interaction.getState()
 + stateName: "dataCellBrushSelected"
 ```
 
-#### 配置预处理 API 变更
+##### 配置预处理 API 变更
 
 ```diff
 - import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
 + import { setupOptions, setupDataConfig } from '@antv/s2'
 ```
 
-### 空数据占位符配置变更
+#### 空数据占位符配置变更
 
 除了支持配置单元格的空数据占位符，现在支持配置明细表的 [空数据状态](/examples/custom/custom-cell/#empty-placeholder)，类似于 [Ant Design 的 Empty 组件](https://ant-design.antgroup.com/components/empty-cn) 的空状态效果，配置独立为 `cell` 和 `empty` 两个配置项，以区分两种状态。
 
