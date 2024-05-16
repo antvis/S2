@@ -126,14 +126,36 @@ export interface S2BasicOptions<
   hd?: boolean;
 
   /**
-   * 空值单元格占位符
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
+   * 占位符
    */
-  placeholder?:
-    | ((meta: Record<string, any>) => string | undefined | null)
-    | string
-    | undefined
-    | null;
+  placeholder?: {
+    /**
+     * 空值单元格占位符
+     * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
+     */
+
+    cell?:
+      | ((meta: Record<string, any>) => string | undefined | null)
+      | string
+      | null;
+
+    /**
+     * 空数据占位符 (明细表有效)
+     */
+    empty?: {
+      /**
+       * 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon
+       * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+       */
+      icon?: string;
+
+      /**
+       * 自定义描述内容
+       * @example description: "暂无数据"
+       */
+      description?: string;
+    };
+  };
 
   /**
    * 设备类型: pc / mobile

@@ -56,7 +56,9 @@ const options: S2Options = {
   seriesNumber: {
     enable: true,
   },
-  placeholder: '',
+  placeholder: {
+    cell: '',
+  },
   style: {
     layoutWidthType: LayoutWidthType.Compact,
     dataCell: {

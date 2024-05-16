@@ -30,7 +30,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           name: '成本',
         },
       ],
-      data,
+      data: [],
     };
 
     const s2Options: S2Options = {
@@ -40,11 +40,8 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
         enable: true,
         text: '序号',
       },
+      // 自定义空数据占位符: 文本,图标的大小和间距可以通过主题配置修改 https://s2.antv.antgroup.com/api/general/s2-theme#empty
       placeholder: {
-        // 自定义空数据单元格占位符
-        cell: '-',
-        // cell: (meta) => '-',
-        // 自定义空数据占位符: 文本,图标的大小和间距可以通过主题配置修改 https://s2.antv.antgroup.com/api/general/s2-theme#empty
         empty: {
           /**
            * 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon

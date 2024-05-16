@@ -56,7 +56,7 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
 ];
 
 export const tableSheetDataCfg: S2DataConfig = {
-  data,
+  data: [],
   totalData,
   meta: [
     { field: 'number', name: '数值', formatter: (v) => `${v}-@` },
@@ -314,8 +314,14 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 800,
-  height: 600,
+  height: 400,
   hierarchyType: 'grid',
+  placeholder: {
+    empty: {
+      icon: 'Trend',
+      description: '暂无数据',
+    },
+  },
   seriesNumber: {
     enable: false,
   },

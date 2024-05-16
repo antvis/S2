@@ -1,4 +1,4 @@
-import { Group } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import {
   isBoolean,
   isEmpty,
@@ -11,6 +11,8 @@ import {
 } from 'lodash';
 import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
+  EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
+  KEY_GROUP_EMPTY_PLACEHOLDER,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
@@ -31,6 +33,7 @@ import type {
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { renderIcon, renderText } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
@@ -48,15 +51,98 @@ import { Node } from './layout/node';
 import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
 
 export class TableFacet extends FrozenFacet {
+  public emptyPlaceholderGroup: Group;
+
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
+  protected initGroups() {
+    super.initGroups();
+    this.initEmptyPlaceholderGroup();
+  }
+
   public init() {
     super.init();
     this.initRowOffsets();
+  }
+
+  public render() {
+    super.render();
+    this.renderEmptyPlaceholder();
+  }
+
+  public clearAllGroup() {
+    super.clearAllGroup();
+    this.emptyPlaceholderGroup.removeChildren();
+  }
+
+  private initEmptyPlaceholderGroup() {
+    this.emptyPlaceholderGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_EMPTY_PLACEHOLDER,
+        style: { zIndex: EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
+
+  private renderEmptyPlaceholder() {
+    if (!this.spreadsheet.dataSet?.isEmpty()) {
+      return;
+    }
+
+    const { empty } = this.spreadsheet.options.placeholder!;
+    const { icon, description } = this.spreadsheet.theme.empty;
+    const {
+      horizontalBorderWidth,
+      horizontalBorderColor,
+      horizontalBorderColorOpacity,
+    } = this.spreadsheet.theme.dataCell.cell!;
+    const { maxY, width, height } = this.panelBBox;
+    const iconX = width / 2 - icon.width / 2;
+    const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
+    const text = empty?.description || '';
+    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descX = width / 2 - descWidth / 2;
+    const descY = iconY + icon.height + icon.margin.bottom;
+
+    // 边框
+    const border = new Rect({
+      style: {
+        x: 0,
+        y: maxY,
+        width,
+        height,
+        stroke: horizontalBorderColor,
+        strokeWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    });
+
+    this.emptyPlaceholderGroup.appendChild(border);
+
+    // 空状态 Icon
+    renderIcon(this.emptyPlaceholderGroup, {
+      ...icon,
+      name: empty?.icon!,
+      x: iconX,
+      y: iconY,
+      width: icon.width,
+      height: icon.height,
+    });
+
+    // 空状态描述文本
+    renderText({
+      group: this.emptyPlaceholderGroup,
+      style: {
+        ...description,
+        text,
+        x: descX,
+        y: descY,
+      },
+    });
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {

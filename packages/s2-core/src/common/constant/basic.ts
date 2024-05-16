@@ -17,6 +17,9 @@ export const PANEL_GRID_GROUP_Z_INDEX = 2;
 export const PANEL_MERGE_GROUP_Z_INDEX = 3;
 export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 4;
 
+// emptyPlaceholderGroup 上的 children 层叠顺序
+export const EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX = 4;
+
 // group's key
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
 export const KEY_GROUP_FORE_GROUND = 'foreGroundGroup';
@@ -42,6 +45,7 @@ export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
 export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
+export const KEY_GROUP_EMPTY_PLACEHOLDER = 'emptyPlaceholderGroup';
 
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 
