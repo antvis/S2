@@ -485,7 +485,7 @@ const s2Options = {
 
 #### Facet 变更
 
-1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取。
+1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取，现在包含 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`。
 
 ```diff
 - s2.facet.layoutResult
@@ -664,12 +664,47 @@ s2.interaction.getState()
 + stateName: "dataCellBrushSelected"
 ```
 
-#### 配置预处理 API 变更
+##### 配置预处理 API 变更
 
 ```diff
 - import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
 + import { setupOptions, setupDataConfig } from '@antv/s2'
 ```
+
+#### 空数据占位符配置变更
+
+除了支持配置单元格的空数据占位符，现在支持配置明细表的 [空数据状态](/examples/custom/custom-cell/#empty-placeholder)，类似于 [Ant Design 的 Empty 组件](https://ant-design.antgroup.com/components/empty-cn) 的空状态效果，配置独立为 `cell` 和 `empty` 两个配置项，以区分两种状态。
+
+```diff
+const s2Options = {
+- placeholder: "-",
++ placeholder: {
++   cell: '-'
++ }
+}
+```
+
+```diff
+const s2Options = {
++ placeholder: {
++   empty: {
++     icon: 'Empty',
++     description: '暂无数据'
++   }
++ }
+}
+```
+
+具体请查看 [自定义空数据占位符](/examples/custom/custom-cell/#empty-placeholder) 和 [自定义单元格空数据占位符](/examples/custom/custom-cell/#data-cell-placeholder) 示例。
+
+### 内部常量重命名
+
+```diff
+- import { ROOT_ID, ID_SEPARATOR } from '@antv/s2'
++ import { ROOT_NODE_ID, NODE_ID_SEPARATOR } from '@antv/s2'
+```
+
+如有消费请注意修改，具体请查看 [源代码定义](https://github.com/antvis/S2/tree/next/packages/s2-core/src/common/constant).
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 

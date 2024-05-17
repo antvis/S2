@@ -78,7 +78,12 @@ Object {
     "selectedCellHighlight": false,
     "selectedCellsSpotlight": false,
   },
-  "placeholder": "-",
+  "placeholder": Object {
+    "cell": "-",
+    "empty": Object {
+      "icon": "Empty",
+    },
+  },
   "seriesNumber": Object {
     "enable": false,
   },

@@ -24,7 +24,9 @@ fetch(
     const s2Options: SheetComponentOptions = {
       width: 1200,
       height: 600,
-      placeholder: '',
+      placeholder: {
+        cell: '',
+      },
       hierarchyType: 'tree',
       cornerText: '指标',
       style: {

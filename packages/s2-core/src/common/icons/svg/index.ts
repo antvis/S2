@@ -19,4 +19,5 @@ export {
   Trend,
   DrillDownIcon,
   EyeOutlined,
+  Empty,
 } from './svgs';

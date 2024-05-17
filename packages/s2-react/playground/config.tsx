@@ -7,6 +7,7 @@ import {
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
   type ThemeCfg,
+  EMPTY_PLACEHOLDER,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
@@ -316,6 +317,13 @@ export const s2Options: SheetComponentOptions = {
   width: 800,
   height: 600,
   hierarchyType: 'grid',
+  placeholder: {
+    cell: EMPTY_PLACEHOLDER,
+    empty: {
+      icon: 'Empty',
+      description: '暂无数据',
+    },
+  },
   seriesNumber: {
     enable: false,
   },

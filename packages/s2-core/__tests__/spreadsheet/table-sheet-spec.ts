@@ -1,4 +1,7 @@
+/* eslint-disable jest/expect-expect */
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import type { SpreadSheet, TableFacet } from '../../esm';
+import { setLang } from '../../src';
 import {
   DeviceType,
   ResizeType,
@@ -74,7 +77,9 @@ const options: S2Options = {
   seriesNumber: {
     enable: true,
   },
-  placeholder: '',
+  placeholder: {
+    cell: '',
+  },
   style: {
     layoutWidthType: LayoutWidthType.Compact,
     dataCell: {
@@ -107,6 +112,22 @@ const options: S2Options = {
 };
 
 describe('TableSheet normal spec', () => {
+  const expectEmptyPlaceholder = async (s2: SpreadSheet) => {
+    s2.setDataCfg({
+      data: [],
+    });
+    await s2.render();
+    const [rect, icon, text] = (s2.facet as TableFacet).emptyPlaceholderGroup
+      .children;
+
+    expect(
+      (s2.facet as TableFacet).emptyPlaceholderGroup.children,
+    ).toHaveLength(3);
+    expect(rect.parsedStyle).toMatchSnapshot();
+    expect(icon.getCfg()).toMatchSnapshot();
+    expect(text.parsedStyle).toMatchSnapshot();
+  };
+
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
 
@@ -284,5 +305,128 @@ describe('TableSheet normal spec', () => {
       'root[&]discount',
       'root[&]profit',
     ]);
+  });
+
+  describe('Empty Placeholder', () => {
+    test('should render empty placeholder', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder by custom icon and description', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          ...options,
+          frozen: {},
+          placeholder: {
+            empty: {
+              icon: 'Trend',
+              describe: '没有数据',
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder by custom icon and description style', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          ...options,
+          frozen: {},
+        },
+      );
+
+      s2.setTheme({
+        empty: {
+          icon: {
+            fill: 'green',
+            width: 100,
+            height: 100,
+            margin: {
+              bottom: 80,
+            },
+          },
+          description: {
+            fontSize: 20,
+            fill: 'red',
+          },
+        },
+      });
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder if contains horizontal scrollbar', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
+      );
+
+      await expectEmptyPlaceholder(s2);
+      expect(s2.facet.hScrollBar.position).toEqual({
+        x: 4,
+        y: 594,
+      });
+    });
+
+    test('should render empty placeholder by custom col height', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          options,
+          frozen: {},
+          style: {
+            colCell: {
+              height: 200,
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder by custom col width', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          options,
+          frozen: {},
+          style: {
+            colCell: {
+              width: 30,
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder for en_US lang', async () => {
+      setLang('en_US');
+
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
   });
 });

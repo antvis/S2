@@ -187,3 +187,9 @@ const s2Options = {
 ### 列头自定义分组
 
 列头结构默认根据传入的维值进行分组，同时支持自定义分组，可实现多级列头。[了解更多](/manual/advanced/custom/custom-header)
+
+### 空数据占位符
+
+当数据为空时，可以自定义展示图标和描述。图标支持 [customSVGIcons](/manual/advanced/custom/custom-icon) 自定义注册和内置的 Icon, 图标，文字的大小和间距可以通过 [主题配置](/api/general/s2-theme#empty) 修改。
+
+<Playground path='/custom/custom-cell/demo/empty-placeholder.ts' rid='empty-placeholder' height='300'></playground>

@@ -25,16 +25,20 @@ fetch(
       width: 600,
       height: 480,
       // 默认 "-"
-      // placeholder: '',
-      placeholder: (cell) => {
-        // 或者根据当前单元格动态设置
-        console.log('cell: ', cell);
-        if (cell.cellType === 'dataCell') {
-          return '*****';
-        }
+      // placeholder: {
+      //   cell: '',
+      // },
+      placeholder: {
+        cell: (cell) => {
+          // 或者根据当前单元格动态设置
+          console.log('cell: ', cell);
+          if (cell.cellType === 'dataCell') {
+            return '*****';
+          }
 
-        // 返回 null, 使用默认值 ("-")
-        return null;
+          // 返回 null, 使用默认值 ("-")
+          return null;
+        },
       },
     };
 
