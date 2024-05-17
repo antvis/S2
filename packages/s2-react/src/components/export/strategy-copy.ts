@@ -1,6 +1,7 @@
 import {
   PivotDataCellCopy,
   assembleMatrix,
+  getEmptyPlaceholder,
   getHeaderList,
   getNodeFormatData,
   safeJsonParse,
@@ -10,16 +11,7 @@ import {
   type SheetCopyConstructorParams,
   type ViewMeta,
 } from '@antv/s2';
-import {
-  flatten,
-  forEach,
-  get,
-  isArray,
-  isFunction,
-  isNil,
-  isObject,
-  map,
-} from 'lodash';
+import { flatten, forEach, get, isArray, isNil, isObject, map } from 'lodash';
 
 /**
  * Process the multi-measure with single-lines
@@ -53,10 +45,8 @@ class StrategyCopyData extends PivotDataCellCopy {
   private getPlaceholder = (viewMeta: ViewMeta, leafNode: Node) => {
     const label = getHeaderLabel(leafNode.value);
     const labelLength = isArray(label) ? label.length : 1;
-    const placeholder = this.spreadsheet.options.placeholder;
-    const placeholderStr = isFunction(placeholder)
-      ? placeholder(viewMeta)
-      : placeholder;
+    const { placeholder } = this.spreadsheet.options;
+    const placeholderStr = getEmptyPlaceholder(viewMeta, placeholder);
 
     return Array(labelLength).fill(placeholderStr);
   };
