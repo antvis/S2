@@ -43,6 +43,10 @@ import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 
 export class PivotFacet extends FrozenFacet {
+  get rowCellTheme() {
+    return this.spreadsheet.theme.rowCell!.cell;
+  }
+
   protected doLayout(): LayoutResult {
     const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
       this.buildAllHeaderHierarchy();

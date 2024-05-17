@@ -1868,6 +1868,10 @@ export abstract class BaseFacet {
     return this.getColNodes().find((node) => node.colIndex === colIndex);
   }
 
+  /**
+   * 获取在索引范围内的列头叶子节点
+   * @example facet.getColLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的列头叶子节点
+   */
   public getColLeafNodesByRange(minIndex: number, maxIndex: number) {
     return this.getColLeafNodes().filter(
       (node) => node.colIndex >= minIndex && node.colIndex <= maxIndex,
@@ -1964,6 +1968,10 @@ export abstract class BaseFacet {
     return this.getRowLeafNodes().find((node) => node.rowIndex === rowIndex);
   }
 
+  /**
+   * 获取在索引范围内的行头叶子节点
+   * @example facet.getRowLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的行头叶子节点
+   */
   public getRowLeafNodesByRange(minIndex: number, maxIndex: number) {
     return this.getRowLeafNodes().filter(
       (node) => node.rowIndex >= minIndex && node.rowIndex <= maxIndex,
