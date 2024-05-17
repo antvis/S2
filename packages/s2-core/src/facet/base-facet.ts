@@ -1022,7 +1022,7 @@ export abstract class BaseFacet {
     }
   };
 
-  private getScrollbarPosition = () => {
+  protected getScrollbarPosition() {
     const { maxX, maxY } = this.panelBBox;
     const { width, height } = this.getCanvasSize();
     const isContentMode =
@@ -1031,9 +1031,9 @@ export abstract class BaseFacet {
 
     return {
       maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
-      maxY: isContentMode ? maxY : height - this.scrollBarSize,
+      maxY: (isContentMode ? maxY : height) - this.scrollBarSize,
     };
-  };
+  }
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {

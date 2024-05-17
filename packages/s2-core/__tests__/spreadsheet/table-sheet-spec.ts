@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import type { SpreadSheet, TableFacet } from '../../esm';
 import {
@@ -305,62 +306,96 @@ describe('TableSheet normal spec', () => {
     ]);
   });
 
-  test('should render empty placeholder', async () => {
-    const s2 = new TableSheet(
-      getContainer(),
-      { ...dataCfg, data: [] },
-      { ...options, frozen: {} },
-    );
+  describe('Empty Placeholder', () => {
+    test('should render empty placeholder', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
+      );
 
-    await expectEmptyPlaceholder(s2);
-  });
-
-  test('should render empty placeholder by custom icon and description', async () => {
-    const s2 = new TableSheet(
-      getContainer(),
-      { ...dataCfg, data: [] },
-      {
-        ...options,
-        frozen: {},
-        placeholder: {
-          empty: {
-            icon: 'Trend',
-            describe: '没有数据',
-          },
-        },
-      },
-    );
-
-    await expectEmptyPlaceholder(s2);
-  });
-
-  test('should render empty placeholder by custom icon and description style', async () => {
-    const s2 = new TableSheet(
-      getContainer(),
-      { ...dataCfg, data: [] },
-      {
-        ...options,
-        frozen: {},
-      },
-    );
-
-    s2.setTheme({
-      empty: {
-        icon: {
-          fill: 'green',
-          width: 100,
-          height: 100,
-          margin: {
-            bottom: 80,
-          },
-        },
-        description: {
-          fontSize: 20,
-          fill: 'red',
-        },
-      },
+      await expectEmptyPlaceholder(s2);
     });
 
-    await expectEmptyPlaceholder(s2);
+    test('should render empty placeholder by custom icon and description', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          ...options,
+          frozen: {},
+          placeholder: {
+            empty: {
+              icon: 'Trend',
+              describe: '没有数据',
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder by custom icon and description style', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          ...options,
+          frozen: {},
+        },
+      );
+
+      s2.setTheme({
+        empty: {
+          icon: {
+            fill: 'green',
+            width: 100,
+            height: 100,
+            margin: {
+              bottom: 80,
+            },
+          },
+          description: {
+            fontSize: 20,
+            fill: 'red',
+          },
+        },
+      });
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder if contains horizontal scrollbar', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
+      );
+
+      await expectEmptyPlaceholder(s2);
+      expect(s2.facet.hScrollBar.position).toEqual({
+        x: 4,
+        y: 594,
+      });
+    });
+
+    test('should render empty placeholder by custom col height', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          options,
+          frozen: {},
+          style: {
+            colCell: {
+              height: 200,
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
   });
 });

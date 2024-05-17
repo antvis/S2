@@ -320,7 +320,7 @@ export const s2Options: SheetComponentOptions = {
   placeholder: {
     cell: EMPTY_PLACEHOLDER,
     empty: {
-      icon: 'Trend',
+      icon: 'Empty',
       description: '暂无数据',
     },
   },
@@ -392,7 +392,11 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {},
+  style: {
+    colCell: {
+      width: 500,
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

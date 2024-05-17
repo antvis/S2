@@ -743,6 +743,20 @@ export class TableFacet extends FrozenFacet {
     return null;
   }
 
+  protected getScrollbarPosition() {
+    const { height } = this.getCanvasSize();
+    const position = super.getScrollbarPosition();
+    // 滚动条有两种模式, 一种是根据实际内容撑开, 一种是根据 Canvas 高度撑开, 现在有空数据占位符, 对于这种, 滚动条需要撑满
+    const maxY = this.spreadsheet.dataSet.isEmpty()
+      ? height - this.scrollBarSize
+      : position.maxY;
+
+    return {
+      ...position,
+      maxY,
+    };
+  }
+
   /**
    * 获取序号单元格
    * @description 明细表序号单元格是基于 DataCell 实现
