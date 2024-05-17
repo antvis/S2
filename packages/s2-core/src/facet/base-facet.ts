@@ -343,7 +343,14 @@ export abstract class BaseFacet {
       return height;
     }
 
+    const isEnableHeightAdaptive =
+      colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    if (!isEnableHeightAdaptive) {
+      return defaultHeight;
+    }
+
     const CellInstance = this.spreadsheet.isTableMode()
       ? TableColCell
       : ColCell;
