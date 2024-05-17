@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
-  FrozenGroupPosition,
+  FrozenGroupArea,
   type Formatter,
   type HeaderActionIcon,
 } from '@/common';
@@ -155,23 +155,23 @@ describe('header cell formatter test', () => {
     test('should render row header action icons', () => {
       s2.facet = {
         // @ts-ignore
-        frozenGroupPositions: {
-          [FrozenGroupPosition.Col]: {
+        frozenGroupAreas: {
+          [FrozenGroupArea.Col]: {
             width: 0,
             x: 0,
             range: [] as number[],
           },
-          [FrozenGroupPosition.TrailingCol]: {
+          [FrozenGroupArea.TrailingCol]: {
             width: 0,
             x: 0,
             range: [] as number[],
           },
-          [FrozenGroupPosition.Row]: {
+          [FrozenGroupArea.Row]: {
             height: 0,
             y: 0,
             range: [] as number[],
           },
-          [FrozenGroupPosition.TrailingRow]: {
+          [FrozenGroupArea.TrailingRow]: {
             height: 0,
             y: 0,
             range: [] as number[],

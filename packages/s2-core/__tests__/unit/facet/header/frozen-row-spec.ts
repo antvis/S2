@@ -2,7 +2,7 @@ import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
 import type { HierarchyType, RowHeader } from '../../../../src';
 import type { FrozenFacet } from '../../../../src/facet/frozen-facet';
-import { DEFAULT_OPTIONS, FrozenGroupPosition } from '@/common';
+import { DEFAULT_OPTIONS, FrozenGroupArea } from '@/common';
 import { RowCell } from '@/cell';
 
 const s2 = createPivotSheet(
@@ -45,8 +45,7 @@ describe('Pivot Frozen Row Header Test', () => {
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
       expect(
-        (s2.facet as FrozenFacet).frozenGroupPositions[FrozenGroupPosition.Row]
-          .height,
+        (s2.facet as FrozenFacet).frozenGroupAreas[FrozenGroupArea.Row].height,
       ).toBe(30);
     },
   );

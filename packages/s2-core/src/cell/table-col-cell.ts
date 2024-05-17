@@ -1,7 +1,7 @@
 import { find } from 'lodash';
 import { ColCell } from '../cell/col-cell';
 import {
-  FrozenGroupPosition,
+  FrozenGroupArea,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
@@ -58,11 +58,11 @@ export class TableColCell extends ColCell {
       height,
     };
 
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
-    const colWidth = frozenGroupInfo[FrozenGroupPosition.Col].width;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const colWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
     const trailingColWidth =
-      frozenGroupInfo[FrozenGroupPosition.TrailingCol].width;
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: colWidth,
@@ -86,12 +86,12 @@ export class TableColCell extends ColCell {
       viewportWidth,
     } = this.getHeaderConfig();
 
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
-    const frozenColGroup = frozenGroupInfo[FrozenGroupPosition.Col];
+    const frozenColGroup = frozenGroupAreas[FrozenGroupArea.Col];
     const frozenTrailingColGroup =
-      frozenGroupInfo[FrozenGroupPosition.TrailingCol];
+      frozenGroupAreas[FrozenGroupArea.TrailingCol];
     let offsetX = position?.x;
 
     if (this.getMeta().isFrozenHead) {

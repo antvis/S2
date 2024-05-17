@@ -3,7 +3,7 @@ import { each } from 'lodash';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
   SERIES_NUMBER_FIELD,
@@ -98,11 +98,11 @@ export class TableColHeader extends ColHeader {
     super.offset();
 
     const { position, spreadsheet, viewportWidth } = this.getHeaderConfig();
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     const trailingColOffset = getFrozenTrailingColOffset(
-      frozenGroupPositions,
+      frozenGroupAreas,
       viewportWidth,
     );
 
@@ -116,13 +116,12 @@ export class TableColHeader extends ColHeader {
     const { height, viewportWidth, position, spreadsheet } =
       this.getHeaderConfig();
 
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
-    const frozenColGroupWidth =
-      frozenGroupPositions[FrozenGroupPosition.Col].width;
+    const frozenColGroupWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
     const frozenTrailingColGroupWidth =
-      frozenGroupPositions[FrozenGroupPosition.TrailingCol].width;
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
 
     this.frozenGroup.style.clipPath = new Rect({
       style: {

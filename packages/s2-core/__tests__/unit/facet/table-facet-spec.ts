@@ -378,7 +378,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupPositions).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -671,7 +671,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupPositions).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {

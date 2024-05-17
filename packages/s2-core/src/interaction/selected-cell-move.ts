@@ -3,7 +3,7 @@ import {
   type CellMeta,
   CellType,
   type ViewMeta,
-  FrozenGroupPosition,
+  FrozenGroupArea,
 } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import type { SpreadSheet } from '../sheet-type';
@@ -250,14 +250,14 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const colLeafNodes = facet.getColLeafNodes();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
 
-    const frozenGroupPositions = facet.frozenGroupPositions;
-    const frozenColWidth = frozenGroupPositions[FrozenGroupPosition.Col].width;
+    const frozenGroupAreas = facet.frozenGroupAreas;
+    const frozenColWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
 
     const frozenTrailingColWidth =
-      frozenGroupPositions[FrozenGroupPosition.TrailingCol].width;
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
 
     const frozenTrailingRowHeight =
-      frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
     const indexes = facet.panelScrollGroupIndexes;
 

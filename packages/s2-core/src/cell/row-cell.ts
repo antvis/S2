@@ -2,7 +2,7 @@ import type { PointLike } from '@antv/g';
 import { find, get, merge } from 'lodash';
 import {
   CellType,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -255,12 +255,12 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
 
     const isFrozen = this.getMeta().isFrozen;
 
-    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
-    const frozenRowGroup = frozenGroupPositions[FrozenGroupPosition.Row];
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroup = frozenGroupAreas[FrozenGroupArea.Row];
 
     const frozenTrailingRowGroup =
-      frozenGroupPositions[FrozenGroupPosition.TrailingRow];
+      frozenGroupAreas[FrozenGroupArea.TrailingRow];
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
@@ -393,13 +393,12 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   protected handleViewport() {
     const { scrollY, viewportHeight } = this.getHeaderConfig();
 
-    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
-    const frozenRowGroupHeight =
-      frozenGroupPositions[FrozenGroupPosition.Row].height;
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
 
     const frozenTrailingRowGroupHeight =
-      frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
     const isFrozen = this.getMeta().isFrozen;
 

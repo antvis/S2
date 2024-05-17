@@ -6,7 +6,7 @@ import { translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   KEY_GROUP_ROW_HEADER_FROZEN,
   KEY_GROUP_ROW_HEADER_FROZEN_TRAILING,
   KEY_GROUP_ROW_SCROLL,
@@ -81,17 +81,17 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollX = 0,
       spreadsheet,
     } = this.getHeaderConfig();
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     return (
       // bottom
       viewportHeight +
         scrollY -
-        frozenGroupPositions[FrozenGroupPosition.TrailingRow].height >
+        frozenGroupAreas[FrozenGroupArea.TrailingRow].height >
         node.y &&
       // top
-      scrollY + frozenGroupPositions[FrozenGroupPosition.Row].height <
+      scrollY + frozenGroupAreas[FrozenGroupArea.Row].height <
         node.y + node.height &&
       // left
       width - position.x + scrollX > node.x &&
@@ -154,11 +154,11 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const paginationScrollY = spreadsheet.facet.getPaginationScrollY();
 
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     const trailingRowOffset = getFrozenTrailingRowOffset(
-      frozenGroupPositions,
+      frozenGroupAreas,
       viewportHeight,
       paginationScrollY,
     );
@@ -180,13 +180,12 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     const { width, viewportHeight, position, spreadsheet } =
       this.getHeaderConfig();
 
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
-    const frozenRowGroupHeight =
-      frozenGroupPositions[FrozenGroupPosition.Row].height;
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
     const frozenTrailingRowGroupHeight =
-      frozenGroupPositions[FrozenGroupPosition.TrailingRow].height;
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {

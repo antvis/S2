@@ -1,5 +1,5 @@
-import { FrozenGroupPosition, ROOT_NODE_ID } from '../../common';
-import type { FrozenGroupPositions } from '../../common/interface/frozen';
+import { FrozenGroupArea, ROOT_NODE_ID } from '../../common';
+import type { FrozenGroupAreas } from '../../common/interface/frozen';
 import type { SpreadSheet } from '../../sheet-type';
 import type { FrozenFacet } from '../frozen-facet';
 import type { Hierarchy } from '../layout/hierarchy';
@@ -63,7 +63,7 @@ export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
   const { rowCount, trailingRowCount } = facet.getRealFrozenOptions();
 
   if (rowCount) {
-    const { y, height } = facet.frozenGroupPositions[FrozenGroupPosition.Row];
+    const { y, height } = facet.frozenGroupAreas[FrozenGroupArea.Row];
 
     const frozenLeafNodes = facet.getRowLeafNodesByRange(
       start,
@@ -98,8 +98,7 @@ export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
   }
 
   if (trailingRowCount) {
-    const { y, height } =
-      facet.frozenGroupPositions[FrozenGroupPosition.TrailingRow];
+    const { y, height } = facet.frozenGroupAreas[FrozenGroupArea.TrailingRow];
 
     const frozenLeafNodes = facet.getRowLeafNodesByRange(
       end - trailingRowCount + 1,
@@ -178,10 +177,10 @@ export const getExtraFrozenColNodes = (spreadsheet: SpreadSheet) => {
 };
 
 export const getFrozenTrailingColOffset = (
-  frozenGroupPositions: FrozenGroupPositions,
+  frozenGroupAreas: FrozenGroupAreas,
   viewportWidth: number,
 ) => {
-  const trailingCol = frozenGroupPositions[FrozenGroupPosition.TrailingCol];
+  const trailingCol = frozenGroupAreas[FrozenGroupArea.TrailingCol];
   const trailingColWidth = trailingCol.x! + trailingCol.width!;
   const trailingColOffset =
     viewportWidth > trailingColWidth ? 0 : trailingColWidth - viewportWidth;
@@ -190,11 +189,11 @@ export const getFrozenTrailingColOffset = (
 };
 
 export const getFrozenTrailingRowOffset = (
-  frozenGroupPositions: FrozenGroupPositions,
+  frozenGroupAreas: FrozenGroupAreas,
   viewportHeight: number,
   paginationScrollY: number,
 ) => {
-  const trailingRow = frozenGroupPositions[FrozenGroupPosition.TrailingRow];
+  const trailingRow = frozenGroupAreas[FrozenGroupArea.TrailingRow];
   const trailingRowHeight =
     trailingRow.y! + trailingRow.height! - paginationScrollY;
   const trailingRowOffset =

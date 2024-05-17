@@ -8,7 +8,7 @@ import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -206,10 +206,9 @@ export class BaseBrushSelection
 
   public validateYIndex = (yIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenGroupPositions = (facet as unknown as TableFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (facet as unknown as TableFacet).frozenGroupAreas;
     let min = 0;
-    const frozenRowRange = frozenGroupPositions?.frozenRow?.range;
+    const frozenRowRange = frozenGroupAreas?.frozenRow?.range;
 
     if (frozenRowRange?.[1]) {
       min = frozenRowRange[1] + 1;
@@ -220,8 +219,7 @@ export class BaseBrushSelection
     }
 
     let max = facet.getCellRange().end;
-    const frozenTrailingRowRange =
-      frozenGroupPositions?.frozenTrailingRow?.range;
+    const frozenTrailingRowRange = frozenGroupAreas?.frozenTrailingRow?.range;
 
     if (frozenTrailingRowRange?.[0]) {
       max = frozenTrailingRowRange[0] - 1;
@@ -236,10 +234,10 @@ export class BaseBrushSelection
 
   public validateXIndex = (xIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenGroupPositions = (facet as TableFacet).frozenGroupPositions;
+    const frozenGroupAreas = (facet as TableFacet).frozenGroupAreas;
 
     let min = 0;
-    const frozenColRange = frozenGroupPositions[FrozenGroupPosition.Col].range;
+    const frozenColRange = frozenGroupAreas[FrozenGroupArea.Col].range;
 
     if (frozenColRange?.[1]) {
       min = frozenColRange[1] + 1;
@@ -251,7 +249,7 @@ export class BaseBrushSelection
 
     let max = facet.getColLeafNodes().length - 1;
     const frozenTrailingColRange =
-      frozenGroupPositions[FrozenGroupPosition.TrailingCol].range;
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].range;
 
     if (frozenTrailingColRange?.[0]) {
       max = frozenTrailingColRange[0] - 1;

@@ -20,7 +20,7 @@ import {
   type S2Options,
   type ViewMeta,
   EventController,
-  FrozenGroupPosition,
+  FrozenGroupArea,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 
@@ -481,23 +481,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
     expect(getScrollOffsetForCol(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(800);
 
-    (facet as TableFacet).frozenGroupPositions = {
-      [FrozenGroupPosition.Col]: {
+    (facet as TableFacet).frozenGroupAreas = {
+      [FrozenGroupArea.Col]: {
         width: 100,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingCol]: {
+      [FrozenGroupArea.TrailingCol]: {
         width: 100,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.Row]: {
+      [FrozenGroupArea.Row]: {
         height: 0,
         y: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingRow]: {
+      [FrozenGroupArea.TrailingRow]: {
         height: 0,
         y: 0,
         range: [] as number[],
@@ -523,23 +523,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_UP, s2)).toBe(700);
     expect(getScrollOffsetForRow(7, ScrollDirection.SCROLL_DOWN, s2)).toBe(320);
 
-    (facet as TableFacet).frozenGroupPositions = {
-      [FrozenGroupPosition.Col]: {
+    (facet as TableFacet).frozenGroupAreas = {
+      [FrozenGroupArea.Col]: {
         width: 0,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingCol]: {
+      [FrozenGroupArea.TrailingCol]: {
         width: 0,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.Row]: {
+      [FrozenGroupArea.Row]: {
         height: 100,
         y: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingRow]: {
+      [FrozenGroupArea.TrailingRow]: {
         height: 100,
         y: 0,
         range: [] as number[],
@@ -562,23 +562,23 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateYIndex(10)).toBe(null);
     expect(validateYIndex(9)).toBe(9);
 
-    (s2.facet as TableFacet).frozenGroupPositions = {
-      [FrozenGroupPosition.Col]: {
+    (s2.facet as TableFacet).frozenGroupAreas = {
+      [FrozenGroupArea.Col]: {
         width: 0,
         x: 0,
         range: [0, 1] as number[],
       },
-      [FrozenGroupPosition.TrailingCol]: {
+      [FrozenGroupArea.TrailingCol]: {
         width: 0,
         x: 0,
         range: [8, 9] as number[],
       },
-      [FrozenGroupPosition.Row]: {
+      [FrozenGroupArea.Row]: {
         height: 0,
         y: 0,
         range: [0, 1] as number[],
       },
-      [FrozenGroupPosition.TrailingRow]: {
+      [FrozenGroupArea.TrailingRow]: {
         height: 0,
         y: 0,
         range: [8, 9] as number[],

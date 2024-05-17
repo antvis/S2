@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { ScrollDirection } from '../../common/constant/interaction';
 import type { TableFacet } from '../../facet';
 import type { SpreadSheet } from '../../sheet-type';
-import { FrozenGroupPosition } from '../../common';
+import { FrozenGroupArea } from '../../common';
 
 // 获取滚动指定列到视口内的滚动 x 轴 Offset。滚动到视口边缘位置，左侧和右侧视滚动方向而定。
 export const getScrollOffsetForCol = (
@@ -12,10 +12,9 @@ export const getScrollOffsetForCol = (
 ) => {
   const { facet } = spreadsheet;
   const { viewportWidth } = facet.panelBBox;
-  const positions = (facet as TableFacet)?.frozenGroupPositions;
-  const frozenColWidth = positions[FrozenGroupPosition.Col].width;
-  const frozenTrailingColWidth =
-    positions[FrozenGroupPosition.TrailingCol].width;
+  const areas = (facet as TableFacet)?.frozenGroupAreas;
+  const frozenColWidth = areas[FrozenGroupArea.Col].width;
+  const frozenTrailingColWidth = areas[FrozenGroupArea.TrailingCol].width;
 
   const colNode = facet.getColLeafNodes()[colIndex];
 
@@ -41,10 +40,9 @@ export const getScrollOffsetForRow = (
     return 0;
   }
 
-  const positions = (facet as TableFacet)?.frozenGroupPositions;
-  const frozenRowHeight = positions[FrozenGroupPosition.Row].height;
-  const frozenTrailingRowHeight =
-    positions[FrozenGroupPosition.TrailingRow].height;
+  const areas = (facet as TableFacet)?.frozenGroupAreas;
+  const frozenRowHeight = areas[FrozenGroupArea.Row].height;
+  const frozenTrailingRowHeight = areas[FrozenGroupArea.TrailingRow].height;
 
   if (direction === ScrollDirection.SCROLL_UP) {
     return getCellOffsetY(rowIndex) - frozenRowHeight;

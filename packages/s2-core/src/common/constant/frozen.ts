@@ -1,4 +1,4 @@
-export enum FrozenGroupPosition {
+export enum FrozenGroupArea {
   Row = 'frozenRow',
   Col = 'frozenCol',
   TrailingRow = 'frozenTrailingRow',
@@ -17,11 +17,11 @@ export enum FrozenGroupType {
   Scroll = 'scrollGroup',
 }
 
-export const FrozenGroupPositionTypeMaps = {
-  [FrozenGroupPosition.Row]: FrozenGroupType.Row,
-  [FrozenGroupPosition.Col]: FrozenGroupType.Col,
-  [FrozenGroupPosition.TrailingRow]: FrozenGroupType.TrailingRow,
-  [FrozenGroupPosition.TrailingCol]: FrozenGroupType.TrailingCol,
+export const FrozenGroupAreaTypeMap = {
+  [FrozenGroupArea.Row]: FrozenGroupType.Row,
+  [FrozenGroupArea.Col]: FrozenGroupType.Col,
+  [FrozenGroupArea.TrailingRow]: FrozenGroupType.TrailingRow,
+  [FrozenGroupArea.TrailingCol]: FrozenGroupType.TrailingCol,
 };
 
 export interface FrozenCellIndex {

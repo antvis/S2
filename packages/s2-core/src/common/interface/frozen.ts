@@ -1,8 +1,8 @@
 import type { FrozenGroup } from '../../group/frozen-group';
-import type { FrozenGroupPosition, FrozenGroupType } from '../constant/frozen';
+import type { FrozenGroupArea, FrozenGroupType } from '../constant/frozen';
 
-export type FrozenGroupPositions = Record<
-  FrozenGroupPosition,
+export type FrozenGroupAreas = Record<
+  FrozenGroupArea,
   {
     width?: number;
     height?: number;

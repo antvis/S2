@@ -3,7 +3,7 @@ import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   KEY_GROUP_COL_SCROLL,
   S2Event,
 } from '../../common/constant';
@@ -62,19 +62,19 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { height, width, spreadsheet, position } = this.getHeaderConfig();
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
         x:
           (isFrozenRowHeader ? position.x : 0) +
-          frozenGroupPositions[FrozenGroupPosition.Col].width,
+          frozenGroupAreas[FrozenGroupArea.Col].width,
         y: isFrozenRowHeader ? position.y : 0,
         width:
           (isFrozenRowHeader ? width : position.x + width) -
-          frozenGroupPositions[FrozenGroupPosition.Col].width -
-          frozenGroupPositions[FrozenGroupPosition.TrailingCol].width,
+          frozenGroupAreas[FrozenGroupArea.Col].width -
+          frozenGroupAreas[FrozenGroupArea.TrailingCol].width,
         height,
       },
     });
@@ -97,14 +97,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       scrollX = 0,
     } = this.getHeaderConfig();
 
-    const frozenGroupPositions = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
-      width - frozenGroupPositions[FrozenGroupPosition.TrailingCol].width >
+      width - frozenGroupAreas[FrozenGroupArea.TrailingCol].width >
         node.x - scrollX &&
-      frozenGroupPositions[FrozenGroupPosition.Col].width -
+      frozenGroupAreas[FrozenGroupArea.Col].width -
         (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
         node.x + node.width - scrollX
     );

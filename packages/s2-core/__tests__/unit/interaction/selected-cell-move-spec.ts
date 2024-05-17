@@ -3,7 +3,7 @@ import type { BaseFacet } from '../../../src/facet';
 import type { InternalFullyTheme, OffsetConfig } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
-  FrozenGroupPosition,
+  FrozenGroupArea,
   InteractionKeyboardKey,
   S2Event,
 } from '@/common/constant';
@@ -72,23 +72,23 @@ describe('Interaction Keyboard Move Tests', () => {
       cornerBBox: {
         width: 80,
       },
-      frozenGroupPositions: {
-        [FrozenGroupPosition.Col]: {
+      frozenGroupAreas: {
+        [FrozenGroupArea.Col]: {
           width: 0,
           x: 0,
           range: [] as number[],
         },
-        [FrozenGroupPosition.TrailingCol]: {
+        [FrozenGroupArea.TrailingCol]: {
           width: 0,
           x: 0,
           range: [] as number[],
         },
-        [FrozenGroupPosition.Row]: {
+        [FrozenGroupArea.Row]: {
           height: 0,
           y: 0,
           range: [] as number[],
         },
-        [FrozenGroupPosition.TrailingRow]: {
+        [FrozenGroupArea.TrailingRow]: {
           height: 0,
           y: 0,
           range: [] as number[],

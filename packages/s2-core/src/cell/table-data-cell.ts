@@ -1,7 +1,7 @@
 import { DataCell } from '../cell/data-cell';
 import {
   CellType,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -84,11 +84,11 @@ export class TableDataCell extends DataCell {
     const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
 
-    const frozenGroupPositions = (this.spreadsheet.facet as FrozenFacet)
-      .frozenGroupPositions;
-    const frozenRowGroup = frozenGroupPositions[FrozenGroupPosition.Row];
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroup = frozenGroupAreas[FrozenGroupArea.Row];
     const frozenTrailingRowGroup =
-      frozenGroupPositions[FrozenGroupPosition.TrailingRow];
+      frozenGroupAreas[FrozenGroupArea.TrailingRow];
 
     const resizeStyle = this.getResizeAreaStyle();
 

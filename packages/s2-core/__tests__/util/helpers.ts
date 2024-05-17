@@ -42,7 +42,7 @@ import { customMerge } from '@/utils/merge';
 import {
   DEFAULT_FROZEN_COUNTS,
   DEFAULT_OPTIONS,
-  FrozenGroupPosition,
+  FrozenGroupArea,
   FrozenGroupType,
 } from '@/common/constant';
 import type { BaseFacet } from '@/facet';
@@ -158,23 +158,23 @@ export const createFakeSpreadSheet = (config?: {
     getCellAdaptiveHeight: jest.fn(),
     getRowLeafNodeByIndex: jest.fn(),
     getColLeafNodeByIndex: jest.fn(),
-    frozenGroupPositions: {
-      [FrozenGroupPosition.Col]: {
+    frozenGroupAreas: {
+      [FrozenGroupArea.Col]: {
         width: 0,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingCol]: {
+      [FrozenGroupArea.TrailingCol]: {
         width: 0,
         x: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.Row]: {
+      [FrozenGroupArea.Row]: {
         height: 0,
         y: 0,
         range: [] as number[],
       },
-      [FrozenGroupPosition.TrailingRow]: {
+      [FrozenGroupArea.TrailingRow]: {
         height: 0,
         y: 0,
         range: [] as number[],
