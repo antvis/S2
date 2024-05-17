@@ -59,7 +59,13 @@ Object {
     "selectedCellHighlight": false,
     "selectedCellsSpotlight": false,
   },
-  "placeholder": "-",
+  "placeholder": Object {
+    "cell": "-",
+    "empty": Object {
+      "description": "暂无数据",
+      "icon": "Empty",
+    },
+  },
   "seriesNumber": Object {
     "enable": false,
   },

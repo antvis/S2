@@ -259,6 +259,26 @@ Object {
       "textBaseline": "middle",
     },
   },
+  "empty": Object {
+    "description": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
+    },
+  },
   "mergedCell": Object {
     "bolderText": Object {
       "fill": "#000000",
@@ -785,6 +805,26 @@ Object {
       "opacity": 1,
       "textAlign": "right",
       "textBaseline": "middle",
+    },
+  },
+  "empty": Object {
+    "description": Object {
+      "fill": "#dcdcdc",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
     },
   },
   "mergedCell": Object {
@@ -1315,6 +1355,26 @@ Object {
       "textBaseline": "middle",
     },
   },
+  "empty": Object {
+    "description": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
+    },
+  },
   "mergedCell": Object {
     "bolderText": Object {
       "fill": "#000000",
@@ -1841,6 +1901,26 @@ Object {
       "opacity": 1,
       "textAlign": "right",
       "textBaseline": "middle",
+    },
+  },
+  "empty": Object {
+    "description": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
     },
   },
   "mergedCell": Object {
@@ -2371,6 +2451,26 @@ Object {
       "textBaseline": "middle",
     },
   },
+  "empty": Object {
+    "description": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
+    },
+  },
   "mergedCell": Object {
     "bolderText": Object {
       "fill": "#000000",
@@ -2897,6 +2997,26 @@ Object {
       "opacity": 1,
       "textAlign": "right",
       "textBaseline": "middle",
+    },
+  },
+  "empty": Object {
+    "description": Object {
+      "fill": "#000000",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "opacity": 1,
+    },
+    "icon": Object {
+      "fill": "",
+      "height": 41,
+      "margin": Object {
+        "bottom": 24,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      },
+      "width": 64,
     },
   },
   "mergedCell": Object {
