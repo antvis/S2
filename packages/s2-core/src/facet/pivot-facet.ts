@@ -725,8 +725,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   /**
-   *  计算平铺模式等宽条件下的列宽
-   * @returns number
+   * 计算平铺模式等宽条件下的列宽
    */
   private getAdaptGridColWidth(colLeafNodes: Node[], rowHeaderWidth?: number) {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
