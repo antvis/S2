@@ -412,9 +412,14 @@ export class PivotFacet extends FrozenFacet {
       return 0;
     }
 
+    const { rowCell: rowCellStyle } = this.spreadsheet.options.style!;
     const defaultHeight = this.getRowCellHeight(rowNode);
 
-    if (this.isCustomRowCellHeight(rowNode)) {
+    // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
+    const isEnableHeightAdaptive =
+      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
+
+    if (this.isCustomRowCellHeight(rowNode) || !isEnableHeightAdaptive) {
       return defaultHeight || 0;
     }
 
