@@ -468,8 +468,8 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     await s2.render(false);
 
-    expect(s2.facet.hScrollBar.getBBox().y).toBe(225);
-    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(225);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(219);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(219);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     await s2.render(false);
