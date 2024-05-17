@@ -704,7 +704,7 @@ export abstract class BaseFacet {
   /**
    * 提供给明细表做 rowOffsets 计算的 hook
    */
-  protected calculateRowOffsets() {}
+  protected abstract calculateRowOffsets(): void;
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
     this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
