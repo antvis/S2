@@ -139,7 +139,6 @@ export const DEFAULT_OPTIONS: S2Options = {
     cell: EMPTY_PLACEHOLDER,
     empty: {
       icon: 'Empty',
-      description: '暂无数据',
     },
   },
 };

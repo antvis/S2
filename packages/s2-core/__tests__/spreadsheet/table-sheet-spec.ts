@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import type { SpreadSheet, TableFacet } from '../../esm';
+import { setLang } from '../../src';
 import {
   DeviceType,
   ResizeType,
@@ -393,6 +394,18 @@ describe('TableSheet normal spec', () => {
             },
           },
         },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
+    test('should render empty placeholder for en_US lang', async () => {
+      setLang('en_US');
+
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        { ...options, frozen: {} },
       );
 
       await expectEmptyPlaceholder(s2);

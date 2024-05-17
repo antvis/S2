@@ -40,6 +40,7 @@ import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
+import { i18n } from '../common';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
 import { ColHeader, Frame } from './header';
@@ -103,7 +104,7 @@ export class TableFacet extends FrozenFacet {
     const { maxY, width, height } = this.panelBBox;
     const iconX = width / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
-    const text = empty?.description || '';
+    const text = empty?.description ?? i18n('暂无数据');
     const descWidth = this.spreadsheet.measureTextWidth(text, description);
     const descX = width / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;

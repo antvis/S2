@@ -236,6 +236,65 @@ Object {
 }
 `;
 
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 367.5,
+  "y": 292.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "No Data",
+  "x": 377.4892578125,
+  "y": 357.5,
+}
+`;
+
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder if contains horizontal scrollbar 1`] = `
 Object {
   "height": 562,
