@@ -399,6 +399,24 @@ describe('TableSheet normal spec', () => {
       await expectEmptyPlaceholder(s2);
     });
 
+    test('should render empty placeholder by custom col width', async () => {
+      const s2 = new TableSheet(
+        getContainer(),
+        { ...dataCfg, data: [] },
+        {
+          options,
+          frozen: {},
+          style: {
+            colCell: {
+              width: 30,
+            },
+          },
+        },
+      );
+
+      await expectEmptyPlaceholder(s2);
+    });
+
     test('should render empty placeholder for en_US lang', async () => {
       setLang('en_US');
 

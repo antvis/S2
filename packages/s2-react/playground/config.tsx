@@ -392,11 +392,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    colCell: {
-      width: 500,
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -118,6 +118,65 @@ Object {
 }
 `;
 
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 1`] = `
+Object {
+  "height": 442,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 510,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 223,
+  "y": 232.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 231,
+  "y": 297.5,
+}
+`;
+
 exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description 1`] = `
 Object {
   "height": 562,

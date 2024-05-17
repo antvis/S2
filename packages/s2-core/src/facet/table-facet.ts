@@ -101,12 +101,12 @@ export class TableFacet extends FrozenFacet {
       horizontalBorderColor,
       horizontalBorderColorOpacity,
     } = this.spreadsheet.theme.dataCell.cell!;
-    const { maxY, width, height } = this.panelBBox;
-    const iconX = width / 2 - icon.width / 2;
+    const { maxY, viewportWidth, height } = this.panelBBox;
+    const iconX = viewportWidth / 2 - icon.width / 2;
     const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
     const text = empty?.description ?? i18n('暂无数据');
     const descWidth = this.spreadsheet.measureTextWidth(text, description);
-    const descX = width / 2 - descWidth / 2;
+    const descX = viewportWidth / 2 - descWidth / 2;
     const descY = iconY + icon.height + icon.margin.bottom;
 
     // 边框
@@ -114,7 +114,7 @@ export class TableFacet extends FrozenFacet {
       style: {
         x: 0,
         y: maxY,
-        width,
+        width: viewportWidth,
         height,
         stroke: horizontalBorderColor,
         strokeWidth: horizontalBorderWidth,
