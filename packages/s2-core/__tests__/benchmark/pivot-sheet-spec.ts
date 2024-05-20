@@ -1,10 +1,14 @@
 /* eslint-disable no-console */
-import { PivotSheet, S2DataConfig } from '../../src';
+import { PivotSheet, S2DataConfig, type S2Options } from '../../src';
 import { generateRawData, getContainer } from '../util/helpers';
 
-async function measurePivotSheetRender(s2DataCfg: S2DataConfig, title) {
+async function measurePivotSheetRender(
+  title: string,
+  s2DataCfg: S2DataConfig,
+  s2Options?: S2Options,
+) {
   performance.mark('startTask');
-  const s2 = new PivotSheet(getContainer(), s2DataCfg, null);
+  const s2 = new PivotSheet(getContainer(), s2DataCfg, s2Options || null);
 
   await s2.render();
   performance.mark('endTask');
@@ -40,8 +44,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 10 * 100 for single measure',
+        s2DataCfg,
       );
     });
 
@@ -60,8 +64,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 100 * 100 for single measure',
+        s2DataCfg,
       );
     });
 
@@ -80,8 +84,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 1000 * 100 for single measure',
+        s2DataCfg,
       );
     });
 
@@ -100,8 +104,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 1000 * 1000 for single measure',
+        s2DataCfg,
       );
     });
   });
@@ -130,7 +134,7 @@ describe('pivot sheet benchmark', () => {
         ),
       };
 
-      await measurePivotSheetRender(s2DataCfg, '🚀 10 * 100 for multi measure');
+      await measurePivotSheetRender('🚀 10 * 100 for multi measure', s2DataCfg);
     });
 
     test('should render 100 * 100', async () => {
@@ -148,8 +152,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 100 * 100 for multi measure',
+        s2DataCfg,
       );
     });
 
@@ -168,8 +172,8 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 1000 * 100 for multi measure',
+        s2DataCfg,
       );
     });
 
@@ -188,8 +192,78 @@ describe('pivot sheet benchmark', () => {
       };
 
       await measurePivotSheetRender(
-        s2DataCfg,
         '🚀 1000 * 1000 for multi measure',
+        s2DataCfg,
+      );
+    });
+  });
+
+  describe('multi line text', () => {
+    const baseDataCfg: S2DataConfig = {
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type', 'subType'],
+        values: ['number'],
+      },
+      data: [],
+    };
+
+    const s2Options: S2Options = {
+      style: {
+        cornerCell: {
+          maxLines: 3,
+        },
+        rowCell: {
+          maxLines: 3,
+        },
+        colCell: {
+          maxLines: 3,
+        },
+        dataCell: {
+          maxLines: 3,
+        },
+      },
+    };
+
+    test('should render 100 * 100', async () => {
+      const s2DataCfg: S2DataConfig = {
+        ...baseDataCfg,
+        data: generateRawData(
+          [
+            ['province', 10],
+            ['city', 10],
+            ['type', 10],
+            ['subType', 10],
+          ],
+          ['number'],
+        ),
+      };
+
+      await measurePivotSheetRender(
+        '🚀 100 * 100 for single measure',
+        s2DataCfg,
+        s2Options,
+      );
+    });
+
+    test('should render 1000 * 1000', async () => {
+      const s2DataCfg: S2DataConfig = {
+        ...baseDataCfg,
+        data: generateRawData(
+          [
+            ['province', 100],
+            ['city', 10],
+            ['type', 100],
+            ['subType', 10],
+          ],
+          ['number'],
+        ),
+      };
+
+      await measurePivotSheetRender(
+        '🚀 1000 * 1000 for single measure',
+        s2DataCfg,
+        s2Options,
       );
     });
   });
