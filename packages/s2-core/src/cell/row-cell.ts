@@ -253,7 +253,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       height: resizeStyle.size!,
     };
 
-    const isFrozen = this.getMeta().isFrozen;
+    const isFrozen = this.meta.isFrozen;
 
     const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
       .frozenGroupAreas;
@@ -280,21 +280,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       return;
     }
 
-    const offsetX = position.x + x - scrollX;
-
-    let offsetY: number = position.y;
-
-    if (this.getMeta().isFrozenHead) {
-      offsetY += y - frozenRowGroup.y;
-    } else if (this.getMeta().isFrozenTrailing) {
-      offsetY +=
-        headerHeight -
-        frozenTrailingRowGroup.height +
-        y -
-        frozenTrailingRowGroup.y;
-    } else {
-      offsetY += y - scrollY;
-    }
+    const { offsetX, offsetY } = this.getHorizontalResizeAreaOffset();
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - position.x - (x - scrollX)
@@ -324,6 +310,45 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
         attrs.appendInfo,
       ),
     );
+  }
+
+  protected getHorizontalResizeAreaOffset() {
+    const {
+      position,
+      viewportHeight: headerHeight,
+      scrollX = 0,
+      scrollY = 0,
+    } = this.getHeaderConfig();
+
+    const { x, y } = this.getBBoxByType();
+
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroup = frozenGroupAreas[FrozenGroupArea.Row];
+
+    const frozenTrailingRowGroup =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow];
+
+    const offsetX = position.x + x - scrollX;
+
+    let offsetY: number = position.y;
+
+    if (this.meta.isFrozenHead) {
+      offsetY += y - frozenRowGroup.y;
+    } else if (this.meta.isFrozenTrailing) {
+      offsetY +=
+        headerHeight -
+        frozenTrailingRowGroup.height +
+        y -
+        frozenTrailingRowGroup.y;
+    } else {
+      offsetY += y - scrollY;
+    }
+
+    return {
+      offsetX,
+      offsetY,
+    };
   }
 
   protected getContentIndent() {
@@ -400,7 +425,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     const frozenTrailingRowGroupHeight =
       frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
-    const isFrozen = this.getMeta().isFrozen;
+    const isFrozen = this.meta.isFrozen;
 
     const viewport: AreaRange = {
       start: isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
