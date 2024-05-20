@@ -34,6 +34,7 @@ import {
   SeriesNumberCell,
   TableColCell,
   TableSeriesNumberCell,
+  type HeaderCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -49,6 +50,7 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  NODE_ID_SEPARATOR,
   OriginEventType,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
@@ -97,6 +99,7 @@ import {
   Frame,
   RowHeader,
   SeriesNumberHeader,
+  type BaseHeaderConfig,
   type RowHeaderConfig,
 } from './header';
 import type { Hierarchy } from './layout/hierarchy';
@@ -175,6 +178,24 @@ export abstract class BaseFacet {
 
   public gridInfo: GridInfo;
 
+  public textWrapNodeCache: Map<string, number>;
+
+  protected textWrapTempRowCell: RowCell;
+
+  protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected abstract getRowCellInstance(
+    node: Node,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): RowCell;
+
+  protected abstract getColCellInstance(
+    node: Node,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): ColCell;
+
   protected abstract doLayout(): LayoutResult;
 
   protected abstract clip(scrollX: number, scrollY: number): void;
@@ -224,6 +245,15 @@ export abstract class BaseFacet {
       seriesNumberNodes: this.getSeriesNumberNodes(),
     };
   };
+
+  protected initTextWrap() {
+    const node = {} as Node;
+    const args = [node, this.spreadsheet, { shallowRender: true }];
+
+    this.textWrapTempRowCell = this.getRowCellInstance(...args);
+    this.textWrapTempColCell = this.getColCellInstance(...args);
+    this.textWrapNodeCache = new Map();
+  }
 
   protected initGroups() {
     this.initBackgroundGroup();
@@ -328,7 +358,11 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+  protected getColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+    useCache: boolean = true,
+  ) {
     if (!colNode) {
       return 0;
     }
@@ -351,15 +385,12 @@ export abstract class BaseFacet {
       return defaultHeight;
     }
 
-    const CellInstance = this.spreadsheet.isTableMode()
-      ? TableColCell
-      : ColCell;
-
-    const colCell = new CellInstance(colNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      colNode,
+      this.textWrapTempColCell,
+      defaultHeight,
+      useCache,
+    );
   }
 
   protected getDefaultColNodeHeight(
@@ -387,21 +418,42 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number = 0) {
-    if (!cell) {
+  protected getNodeAdaptiveHeight(
+    node: Node | ViewMeta,
+    cell: HeaderCell,
+    defaultHeight: number = 0,
+    useCache = true,
+  ) {
+    if (!node) {
       return defaultHeight;
     }
 
-    const { padding } = cell.getStyle().cell;
+    // 初始化一次单元格, 通过动态更新 meta 的方式, 避免数据量大时频繁 GC
+    cell.setMeta(node as Node);
+
+    const fieldValue = cell.getFieldValue();
+    const maxTextWidth = cell.getMaxTextWidth();
+    // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
+    const cacheKey = `${fieldValue.length}${NODE_ID_SEPARATOR}${maxTextWidth}`;
+    const cacheHeight = this.textWrapNodeCache.get(cacheKey);
+
+    if (cacheHeight && useCache) {
+      return cacheHeight || defaultHeight;
+    }
 
     cell.drawTextShape();
 
+    const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+    const height =
+      cell.isMultiLineText() && textHeight >= defaultHeight
+        ? adaptiveHeight
+        : defaultHeight;
 
-    return cell.isMultiLineText() && textHeight >= defaultHeight
-      ? adaptiveHeight
-      : defaultHeight;
+    this.textWrapNodeCache.set(cacheKey, height);
+
+    return height;
   }
 
   /**
@@ -641,6 +693,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    this.textWrapNodeCache.clear();
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
@@ -1445,6 +1498,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initTextWrap();
     this.initGroups();
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {

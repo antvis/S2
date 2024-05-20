@@ -378,7 +378,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width - this.getActionAndConditionIconWidth();

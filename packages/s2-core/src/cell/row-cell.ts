@@ -356,7 +356,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     );
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width - this.getTextIndent() - this.getActionAndConditionIconWidth();

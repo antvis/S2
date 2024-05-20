@@ -16,7 +16,7 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { RowCell, SeriesNumberCell } from '../cell';
+import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
@@ -52,6 +52,18 @@ import { getFrozenRowCfgPivot } from './utils';
 export class PivotFacet extends FrozenFacet {
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell!.cell;
+  }
+
+  protected getRowCellInstance(...args) {
+    const { rowCell } = this.spreadsheet.options;
+
+    return rowCell?.(...args) || new RowCell(...args);
+  }
+
+  protected getColCellInstance(...args) {
+    const { colCell } = this.spreadsheet.options;
+
+    return colCell?.(...args) || new ColCell(...args);
   }
 
   protected doLayout(): LayoutResult {
@@ -246,7 +258,11 @@ export class PivotFacet extends FrozenFacet {
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
-      const colNodeHeight = this.getColNodeHeight(currentNode, colsHierarchy);
+      const colNodeHeight = this.getColNodeHeight(
+        currentNode,
+        colsHierarchy,
+        false,
+      );
 
       currentNode.height =
         currentNode.isGrandTotals &&
@@ -423,11 +439,11 @@ export class PivotFacet extends FrozenFacet {
       return defaultHeight || 0;
     }
 
-    const rowCell = new RowCell(rowNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-
-    return this.getCellAdaptiveHeight(rowCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      rowNode,
+      this.textWrapTempRowCell,
+      defaultHeight,
+    );
   }
 
   /**

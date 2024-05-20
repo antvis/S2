@@ -144,7 +144,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getFormattedFieldValue(): FormatResult;
 
-  protected abstract getMaxTextWidth(): number;
+  public abstract getMaxTextWidth(): number;
 
   protected abstract getTextPosition(): PointLike;
 
