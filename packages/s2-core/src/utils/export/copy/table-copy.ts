@@ -1,6 +1,5 @@
 import { map, zip } from 'lodash';
 import {
-  AsyncRenderThreshold,
   SERIES_NUMBER_FIELD,
   getDefaultSeriesNumberText,
   type CellMeta,
@@ -94,20 +93,22 @@ class TableDataCellCopy extends BaseDataCellCopy {
       try {
         const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
           const rowLength = this.displayData.length;
+
           // requestIdleCallback 浏览器空闲时会多次执行, 只有一行数据时执行一次即可, 避免生成重复数据
-          let count =
-            rowLength >= AsyncRenderThreshold
-              ? AsyncRenderThreshold
-              : rowLength;
+          this.initIdleCallbackCount(rowLength);
 
           while (
             (deadline.timeRemaining() > 0 ||
               deadline.didTimeout ||
               process.env['NODE_ENV'] === 'test') &&
             rowIndex <= rowLength - 1 &&
-            count > 0
+            this.idleCallbackCount > 0
           ) {
-            for (let j = rowIndex; j < rowLength && count > 0; j++) {
+            for (
+              let j = rowIndex;
+              j < rowLength && this.idleCallbackCount > 0;
+              j++
+            ) {
               const rowData = this.displayData[j];
               const row: string[] = [];
 
@@ -131,15 +132,19 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
                 row.push(dataItem as string);
               }
-              rowIndex = j;
+              // 生成一行数据后，rowIndex + 1，下次 requestIdleCallback 时从下一行开始
+              rowIndex++;
               result.push(row);
-              count--;
+              this.idleCallbackCount--;
             }
           }
 
-          if (rowIndex === rowLength - 1) {
+          if (rowIndex === rowLength) {
             resolve(result);
           } else {
+            // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
+            this.initIdleCallbackCount(rowLength);
+
             requestIdleCallback(dataMatrixIdleCallback);
           }
         };

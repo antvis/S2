@@ -1,9 +1,13 @@
 /* eslint-disable max-lines-per-function */
-import { S2DataConfig, S2Options, S2Theme, TableSheet } from '@antv/s2';
+import {
+  FONT_FAMILY,
+  S2DataConfig,
+  S2Options,
+  S2Theme,
+  TableSheet,
+} from '@antv/s2';
 
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then(async (data) => {
     const container = document.getElementById('container');
@@ -49,6 +53,26 @@ fetch(
     const customTheme: S2Theme = {
       background: {
         color: HEADER_BACK_COLOR,
+      },
+      empty: {
+        icon: {
+          fill: '#fff',
+          width: 64,
+          height: 41,
+          margin: {
+            top: 0,
+            right: 0,
+            bottom: 24,
+            left: 0,
+          },
+        },
+        description: {
+          fontFamily: FONT_FAMILY,
+          fontSize: 12,
+          fontWeight: 'normal',
+          fill: '#fff',
+          opacity: 1,
+        },
       },
       cornerCell: {
         cell: {

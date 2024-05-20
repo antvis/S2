@@ -128,7 +128,9 @@ function MainLayout({ callback }: Props) {
     seriesNumber: {
       enable: true,
     },
-    placeholder: '',
+    placeholder: {
+      cell: '',
+    },
     style: {
       dataCell: {
         height: 32,

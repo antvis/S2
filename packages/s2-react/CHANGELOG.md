@@ -1,3 +1,31 @@
+# [@antv/s2-react-v2.0.0-next.20](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.19...@antv/s2-react-v2.0.0-next.20) (2024-05-17)
+
+
+### Features
+
+* 明细表新增空数据占位符能力 ([#2729](https://github.com/antvis/S2/issues/2729)) ([19dbda5](https://github.com/antvis/S2/commit/19dbda5e9719d6a8f6d05ce0a93386e80c31ffab))
+
+
+### BREAKING CHANGES
+
+* s2Options.placeholder 配置更改为 cell 和 empty
+
+* test: 增加单测
+
+* fix: 兼容滚动条的展示
+
+* test: 单测和文档补充
+
+* test: 修改滚动条位置单测断言
+
+* test: 更新 shared 包快照
+
+* fix: 修复英文环境下未展示英文文案
+
+* fix: 修复列头单元格宽度很小时占位符坐标错误的问题
+
+* fix: 修复趋势分析表导出占位符解析错误
+
 # [@antv/s2-react-v2.0.0-next.19](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.18...@antv/s2-react-v2.0.0-next.19) (2024-05-11)
 
 ### Bug Fixes

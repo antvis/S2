@@ -606,7 +606,7 @@ export abstract class FrozenFacet extends BaseFacet {
     }
   };
 
-  public render(): void {
+  public render() {
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();

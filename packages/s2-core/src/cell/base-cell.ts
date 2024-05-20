@@ -470,8 +470,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public drawTextShape() {
-    // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号 https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
-    const maxTextWidth = Math.max(this.getMaxTextWidth(), 0);
+    // 额外添加一像素余量，防止出现省略号 (文本和省略后的宽度一致): https://github.com/antvis/S2/issues/2726
+    const EXTRA_PIXEL = 1;
+    // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号: https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
+    const maxTextWidth = Math.max(this.getMaxTextWidth(), 0) + EXTRA_PIXEL;
     const textStyle = this.getTextStyle();
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标

@@ -1,3 +1,43 @@
+# [@antv/s2-v2.0.0-next.21](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.20...@antv/s2-v2.0.0-next.21) (2024-05-17)
+
+
+### Bug Fixes
+
+* 修复下载数据重复 close [#2718](https://github.com/antvis/S2/issues/2718) ([#2719](https://github.com/antvis/S2/issues/2719)) ([f0d5192](https://github.com/antvis/S2/commit/f0d5192e769a392df84a4e85e245496ac7c0ef31))
+* 修复列等宽布局模式下角头出现省略号 close [#2726](https://github.com/antvis/S2/issues/2726) ([#2732](https://github.com/antvis/S2/issues/2732)) ([b4e07b9](https://github.com/antvis/S2/commit/b4e07b94a1c77163254ff3acc39baa93b0d151aa))
+* 修复滚动边界问题 close [#2720](https://github.com/antvis/S2/issues/2720) ([#2721](https://github.com/antvis/S2/issues/2721)) ([24591fb](https://github.com/antvis/S2/commit/24591fbb65d9e760a566223a0a0fde6ce360c189))
+
+
+### Features
+
+* 明细表新增空数据占位符能力 ([#2729](https://github.com/antvis/S2/issues/2729)) ([19dbda5](https://github.com/antvis/S2/commit/19dbda5e9719d6a8f6d05ce0a93386e80c31ffab))
+
+
+### Performance Improvements
+
+* 优化未开启多行文本时的布局性能 close [#2693](https://github.com/antvis/S2/issues/2693) ([#2728](https://github.com/antvis/S2/issues/2728)) ([439162d](https://github.com/antvis/S2/commit/439162d8e14adedd26f1a125b319f2ab6636b8b1))
+
+
+### BREAKING CHANGES
+
+* s2Options.placeholder 配置更改为 cell 和 empty
+
+* test: 增加单测
+
+* fix: 兼容滚动条的展示
+
+* test: 单测和文档补充
+
+* test: 修改滚动条位置单测断言
+
+* test: 更新 shared 包快照
+
+* fix: 修复英文环境下未展示英文文案
+
+* fix: 修复列头单元格宽度很小时占位符坐标错误的问题
+
+* fix: 修复趋势分析表导出占位符解析错误
+
 # [@antv/s2-v2.0.0-next.20](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.19...@antv/s2-v2.0.0-next.20) (2024-05-11)
 
 

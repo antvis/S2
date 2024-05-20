@@ -84,7 +84,7 @@ describe('Text Utils Tests', () => {
       field: '',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, '*');
+    const placeholder = getEmptyPlaceholder(meta, { cell: '*' });
 
     expect(placeholder).toEqual('*');
   });
@@ -95,7 +95,9 @@ describe('Text Utils Tests', () => {
       value: 'test',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, (meta) => meta['value']);
+    const placeholder = getEmptyPlaceholder(meta, {
+      cell: (meta) => meta['value'],
+    });
 
     expect(placeholder).toEqual('test');
   });

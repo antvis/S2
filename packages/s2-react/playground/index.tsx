@@ -18,6 +18,7 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
+  safeJsonParse,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -411,10 +412,9 @@ function MainLayout() {
                   <>
                     <Collapse
                       defaultActiveKey={
-                        localStorage.getItem('debugCollapseKey') || [
-                          'filter',
-                          'resize',
-                        ]
+                        safeJsonParse(
+                          localStorage.getItem('debugCollapseKey')!,
+                        ) || ['filter', 'resize']
                       }
                       items={[
                         {

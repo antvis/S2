@@ -213,18 +213,13 @@ export abstract class BaseFacet {
   };
 
   protected initGroups() {
-    const container = this.spreadsheet.container;
-
-    this.backgroundGroup = container.appendChild(
-      new Group({
-        name: KEY_GROUP_BACK_GROUND,
-        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
-      }),
-    );
-
+    this.initBackgroundGroup();
     this.initPanelGroups();
+    this.initForegroundGroup();
+  }
 
-    this.foregroundGroup = container.appendChild(
+  private initForegroundGroup() {
+    this.foregroundGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_FORE_GROUND,
         style: { zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX },
@@ -232,10 +227,17 @@ export abstract class BaseFacet {
     );
   }
 
-  protected initPanelGroups() {
-    const container = this.spreadsheet.container;
+  private initBackgroundGroup() {
+    this.backgroundGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_BACK_GROUND,
+        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
 
-    this.panelGroup = container.appendChild(
+  protected initPanelGroups() {
+    this.panelGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_PANEL_GROUND,
         style: { zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX },
@@ -328,7 +330,14 @@ export abstract class BaseFacet {
       return height;
     }
 
+    const isEnableHeightAdaptive =
+      colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap;
     const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    if (!isEnableHeightAdaptive) {
+      return defaultHeight;
+    }
+
     const CellInstance = this.spreadsheet.isTableMode()
       ? TableColCell
       : ColCell;
@@ -738,7 +747,7 @@ export abstract class BaseFacet {
     return heights.getTotalHeight();
   };
 
-  clearAllGroup() {
+  public clearAllGroup() {
     const { children = [] } = this.panelGroup;
 
     for (let i = children.length - 1; i >= 0; i--) {
@@ -1012,7 +1021,7 @@ export abstract class BaseFacet {
     }
   };
 
-  private getScrollbarPosition = () => {
+  protected getScrollbarPosition() {
     const { maxX, maxY } = this.panelBBox;
     const { width, height } = this.getCanvasSize();
     const isContentMode =
@@ -1021,9 +1030,9 @@ export abstract class BaseFacet {
 
     return {
       maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
-      maxY: isContentMode ? maxY : height - this.scrollBarSize,
+      maxY: (isContentMode ? maxY : height) - this.scrollBarSize,
     };
-  };
+  }
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {

@@ -142,5 +142,10 @@ export const DEFAULT_OPTIONS: S2Options = {
   hd: true,
   cornerText: '',
   cornerExtraFieldText: '',
-  placeholder: EMPTY_PLACEHOLDER,
+  placeholder: {
+    cell: EMPTY_PLACEHOLDER,
+    empty: {
+      icon: 'Empty',
+    },
+  },
 };

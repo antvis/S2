@@ -37,7 +37,7 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
+export type SortMethod = 'ASC' | 'DESC' | 'NONE' | 'asc' | 'desc' | 'none';
 
 export enum CellBorderPosition {
   TOP = 'TOP',

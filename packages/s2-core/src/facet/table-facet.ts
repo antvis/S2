@@ -1,4 +1,4 @@
-import { Group } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import {
   isBoolean,
   isEmpty,
@@ -11,6 +11,8 @@ import {
 } from 'lodash';
 import { TableDataCell, TableSeriesNumberCell } from '../cell';
 import {
+  EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
+  KEY_GROUP_EMPTY_PLACEHOLDER,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
   S2Event,
@@ -30,11 +32,13 @@ import type {
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { renderIcon, renderText } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { floor } from '../utils/math';
+import { i18n } from '../common';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
 import { ColHeader, Frame } from './header';
@@ -45,10 +49,93 @@ import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 
 export class TableFacet extends FrozenFacet {
+  public emptyPlaceholderGroup: Group;
+
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+  }
+
+  protected initGroups() {
+    super.initGroups();
+    this.initEmptyPlaceholderGroup();
+  }
+
+  public render() {
+    super.render();
+    this.renderEmptyPlaceholder();
+  }
+
+  public clearAllGroup() {
+    super.clearAllGroup();
+    this.emptyPlaceholderGroup.removeChildren();
+  }
+
+  private initEmptyPlaceholderGroup() {
+    this.emptyPlaceholderGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_EMPTY_PLACEHOLDER,
+        style: { zIndex: EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
+
+  private renderEmptyPlaceholder() {
+    if (!this.spreadsheet.dataSet?.isEmpty()) {
+      return;
+    }
+
+    const { empty } = this.spreadsheet.options.placeholder!;
+    const { icon, description } = this.spreadsheet.theme.empty;
+    const {
+      horizontalBorderWidth,
+      horizontalBorderColor,
+      horizontalBorderColorOpacity,
+    } = this.spreadsheet.theme.dataCell.cell!;
+    const { maxY, viewportWidth, height } = this.panelBBox;
+    const iconX = viewportWidth / 2 - icon.width / 2;
+    const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
+    const text = empty?.description ?? i18n('暂无数据');
+    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descX = viewportWidth / 2 - descWidth / 2;
+    const descY = iconY + icon.height + icon.margin.bottom;
+
+    // 边框
+    const border = new Rect({
+      style: {
+        x: 0,
+        y: maxY,
+        width: viewportWidth,
+        height,
+        stroke: horizontalBorderColor,
+        strokeWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    });
+
+    this.emptyPlaceholderGroup.appendChild(border);
+
+    // 空状态 Icon
+    renderIcon(this.emptyPlaceholderGroup, {
+      ...icon,
+      name: empty?.icon!,
+      x: iconX,
+      y: iconY,
+      width: icon.width,
+      height: icon.height,
+    });
+
+    // 空状态描述文本
+    renderText({
+      group: this.emptyPlaceholderGroup,
+      style: {
+        ...description,
+        text,
+        x: descX,
+        y: descY,
+      },
+    });
   }
 
   private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
@@ -593,6 +680,20 @@ export class TableFacet extends FrozenFacet {
 
   protected getSeriesNumberHeader() {
     return null;
+  }
+
+  protected getScrollbarPosition() {
+    const { height } = this.getCanvasSize();
+    const position = super.getScrollbarPosition();
+    // 滚动条有两种模式, 一种是根据实际内容撑开, 一种是根据 Canvas 高度撑开, 现在有空数据占位符, 对于这种, 滚动条需要撑满
+    const maxY = this.spreadsheet.dataSet.isEmpty()
+      ? height - this.scrollBarSize
+      : position.maxY;
+
+    return {
+      ...position,
+      maxY,
+    };
   }
 
   /**

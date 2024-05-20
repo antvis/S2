@@ -1,4 +1,8 @@
-import { TAB_SEPARATOR, type DataItem } from '../../../common';
+import {
+  AsyncRenderThreshold,
+  TAB_SEPARATOR,
+  type DataItem,
+} from '../../../common';
 import type {
   CopyableHTML,
   CopyablePlain,
@@ -15,6 +19,13 @@ export abstract class BaseDataCellCopy {
   protected spreadsheet: SpreadSheet;
 
   protected config: CopyAndExportUnifyConfig;
+
+  protected idleCallbackCount: number;
+
+  protected initIdleCallbackCount(rowLength: number) {
+    this.idleCallbackCount =
+      rowLength >= AsyncRenderThreshold ? AsyncRenderThreshold : rowLength;
+  }
 
   constructor(params: SheetCopyConstructorParams) {
     const { spreadsheet, isExport = false, config } = params;
