@@ -23,6 +23,7 @@ import {
   last,
   maxBy,
   reduce,
+  size,
   sumBy,
 } from 'lodash';
 import {
@@ -419,22 +420,27 @@ export abstract class BaseFacet {
   }
 
   protected getNodeAdaptiveHeight(
-    node: Node | ViewMeta,
+    meta: Node | ViewMeta,
     cell: HeaderCell,
     defaultHeight: number = 0,
     useCache = true,
   ) {
-    if (!node) {
+    if (!meta) {
       return defaultHeight;
     }
 
-    // 初始化一次单元格, 通过动态更新 meta 的方式, 避免数据量大时频繁 GC
-    cell.setMeta(node as Node);
+    // 共用一个单元格用于测量, 通过动态更新 meta 的方式, 避免数据量大时频繁实例化触发 GC
+    cell.setMeta({ ...meta, shallowRender: true } as Node);
 
-    const fieldValue = cell.getFieldValue();
-    const maxTextWidth = cell.getMaxTextWidth();
+    const fieldValue = String(cell.getFieldValue());
+
+    if (!fieldValue) {
+      return defaultHeight;
+    }
+
+    const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
     // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
-    const cacheKey = `${fieldValue.length}${NODE_ID_SEPARATOR}${maxTextWidth}`;
+    const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
     const cacheHeight = this.textWrapNodeCache.get(cacheKey);
 
     if (cacheHeight && useCache) {

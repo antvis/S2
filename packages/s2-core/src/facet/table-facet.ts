@@ -41,6 +41,7 @@ import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
+import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
 import { ColHeader, Frame } from './header';
@@ -50,10 +51,11 @@ import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
 import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
-import type { BaseFacet } from './base-facet';
 
 export class TableFacet extends FrozenFacet {
   public emptyPlaceholderGroup: Group;
+
+  private lastRowOffset: number;
 
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
@@ -206,15 +208,13 @@ export class TableFacet extends FrozenFacet {
     );
 
     // getCellHeightByRowIndex 会优先读取 heightByField, 保持逻辑统一
-    this.spreadsheet.setOptions({
-      style: {
-        rowCell: {
-          heightByField: {
-            [rowIndex]: maxDataCellHeight || this.getDefaultCellHeight(),
-          },
-        },
-      },
-    });
+    const height = maxDataCellHeight || this.getDefaultCellHeight();
+
+    set(
+      this.spreadsheet.options,
+      `style.rowCell.heightByField.${rowIndex}`,
+      height,
+    );
   }
 
   protected initRowOffsets() {
@@ -224,16 +224,17 @@ export class TableFacet extends FrozenFacet {
     if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
+      this.textWrapNodeCache.clear();
       this.rowOffsets = [0];
-      let lastOffset = 0;
+      this.lastRowOffset = 0;
 
       data.forEach((_, rowIndex) => {
         this.presetRowCellHeightIfNeeded(rowIndex);
         const currentHeight = this.getCellHeightByRowIndex(rowIndex);
-        const currentOffset = lastOffset + currentHeight;
+        const currentOffset = this.lastRowOffset + currentHeight;
 
         this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
+        this.lastRowOffset = currentOffset;
       });
     }
   }

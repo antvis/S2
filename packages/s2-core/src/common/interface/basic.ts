@@ -440,6 +440,7 @@ export interface ViewMeta {
   value?: string | number;
   query?: Query;
   isLeaf?: boolean;
+  shallowRender?: boolean;
 
   [key: string]: unknown;
 }

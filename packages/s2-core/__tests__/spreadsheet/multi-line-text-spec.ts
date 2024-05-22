@@ -4,8 +4,9 @@ import { range } from 'lodash';
 import {
   PivotSheet,
   TableSheet,
-  type SpreadSheet,
   EXTRA_FIELD,
+  type SpreadSheet,
+  type TableFacet,
 } from '../../src';
 import type {
   CellTextWordWrapStyle,
@@ -704,6 +705,44 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         rowDataCells.every((cell) => cell.getMeta().height === 76),
       ).toBeTruthy();
+    });
+
+    test('should calc correctly data cell height if actual text lines is difference and partial outside the canvas', async () => {
+      updateStyle(4);
+      s2.setOptions({
+        style: {
+          rowCell: {
+            // 让第二行部分超出屏幕
+            heightByField: {
+              0: 300,
+            },
+          },
+        },
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
+    });
+
+    test('should calc correctly data cell height if actual text lines is difference and outside the canvas', async () => {
+      updateStyle(4);
+      s2.setOptions({
+        style: {
+          rowCell: {
+            // 让第二行超出屏幕
+            heightByField: {
+              0: 360,
+            },
+          },
+        },
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
     });
 
     test('should not force adaptive adjust row height if custom cell style less than actual text height by rowCell.heightByField', async () => {
