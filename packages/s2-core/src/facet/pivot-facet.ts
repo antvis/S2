@@ -31,7 +31,11 @@ import {
 import { EXTRA_FIELD, LayoutWidthType, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, SimpleData } from '../common/interface';
+import type {
+  CellCallbackParams,
+  LayoutResult,
+  SimpleData,
+} from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { renderLine, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
@@ -54,16 +58,12 @@ export class PivotFacet extends FrozenFacet {
     return this.spreadsheet.theme.rowCell!.cell;
   }
 
-  protected getRowCellInstance(...args) {
-    const { rowCell } = this.spreadsheet.options;
-
-    return rowCell?.(...args) || new RowCell(...args);
+  protected override getRowCellInstance(...args: CellCallbackParams) {
+    return this.spreadsheet.options.rowCell?.(...args) || new RowCell(...args);
   }
 
-  protected getColCellInstance(...args) {
-    const { colCell } = this.spreadsheet.options;
-
-    return colCell?.(...args) || new ColCell(...args);
+  protected override getColCellInstance(...args: CellCallbackParams) {
+    return this.spreadsheet.options.colCell?.(...args) || new ColCell(...args);
   }
 
   protected doLayout(): LayoutResult {

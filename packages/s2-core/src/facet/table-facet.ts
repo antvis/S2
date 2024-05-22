@@ -22,6 +22,7 @@ import {
 } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  CellCallbackParams,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -44,7 +45,7 @@ import { floor } from '../utils/math';
 import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
-import { ColHeader, Frame } from './header';
+import { Frame } from './header';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
@@ -63,13 +64,16 @@ export class TableFacet extends FrozenFacet {
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
-  protected getRowCellInstance(...args) {
+  protected override getRowCellInstance(node: ViewMeta) {
     const { dataCell } = this.spreadsheet.options;
 
-    return dataCell?.(...args) || new TableDataCell(...args);
+    return (
+      dataCell?.(node, this.spreadsheet) ||
+      new TableDataCell(node, this.spreadsheet)
+    );
   }
 
-  protected getColCellInstance(...args) {
+  protected override getColCellInstance(...args: CellCallbackParams) {
     const { colCell } = this.spreadsheet.options;
 
     return colCell?.(...args) || new TableColCell(...args);
@@ -738,7 +742,7 @@ export class TableFacet extends FrozenFacet {
     return null;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 

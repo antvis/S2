@@ -1,5 +1,5 @@
 import { Group, Rect, type RectStyleProps } from '@antv/g';
-import { TableColCell, TableCornerCell } from '../../cell';
+import { TableColCell, TableCornerCell, type ColCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FrozenGroupType,
@@ -52,7 +52,8 @@ export class TableColHeader extends ColHeader {
     ];
 
     if (node.field === SERIES_NUMBER_FIELD) {
-      return seriesNumberCell?.(...args) || new TableCornerCell(...args);
+      return (seriesNumberCell?.(...args) ||
+        new TableCornerCell(...args)) as ColCell;
     }
 
     return colCell?.(...args) || new TableColCell(...args);

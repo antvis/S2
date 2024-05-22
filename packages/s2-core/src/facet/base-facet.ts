@@ -35,7 +35,6 @@ import {
   SeriesNumberCell,
   TableColCell,
   TableSeriesNumberCell,
-  type HeaderCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -67,6 +66,7 @@ import {
 } from '../common/debug';
 import type {
   AdjustLeafNodesParams,
+  CellCallbackParams,
   CellCustomSize,
   FrameConfig,
   GridInfo,
@@ -113,6 +113,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import type { TableColHeader } from './header/table-col';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -169,7 +170,7 @@ export abstract class BaseFacet {
 
   public rowHeader: RowHeader | null;
 
-  public columnHeader: ColHeader;
+  public columnHeader: ColHeader | TableColHeader;
 
   public cornerHeader: CornerHeader;
 
@@ -181,15 +182,15 @@ export abstract class BaseFacet {
 
   public textWrapNodeCache: Map<string, number>;
 
-  protected textWrapTempRowCell: RowCell;
+  protected textWrapTempRowCell: RowCell | DataCell;
 
   protected textWrapTempColCell: ColCell | TableColCell;
 
   protected abstract getRowCellInstance(
-    node: Node,
+    node: Node | ViewMeta,
     spreadsheet: SpreadSheet,
     config: Partial<BaseHeaderConfig>,
-  ): RowCell;
+  ): RowCell | DataCell;
 
   protected abstract getColCellInstance(
     node: Node,
@@ -249,7 +250,11 @@ export abstract class BaseFacet {
 
   protected initTextWrap() {
     const node = {} as Node;
-    const args = [node, this.spreadsheet, { shallowRender: true }];
+    const args: CellCallbackParams = [
+      node,
+      this.spreadsheet,
+      { shallowRender: true } as BaseHeaderConfig,
+    ];
 
     this.textWrapTempRowCell = this.getRowCellInstance(...args);
     this.textWrapTempColCell = this.getColCellInstance(...args);
@@ -421,7 +426,7 @@ export abstract class BaseFacet {
 
   protected getNodeAdaptiveHeight(
     meta: Node | ViewMeta,
-    cell: HeaderCell,
+    cell: S2CellType,
     defaultHeight: number = 0,
     useCache = true,
   ) {
@@ -430,7 +435,7 @@ export abstract class BaseFacet {
     }
 
     // 共用一个单元格用于测量, 通过动态更新 meta 的方式, 避免数据量大时频繁实例化触发 GC
-    cell.setMeta({ ...meta, shallowRender: true } as Node);
+    cell.setMeta({ ...meta, shallowRender: true } as Node & ViewMeta);
 
     const fieldValue = String(cell.getFieldValue());
 
@@ -1463,7 +1468,10 @@ export abstract class BaseFacet {
         const viewMeta = this.getCellMeta(j, i);
 
         if (viewMeta) {
-          const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
+          const cell = this.spreadsheet.options.dataCell?.(
+            viewMeta,
+            this.spreadsheet,
+          )!;
 
           if (!cell) {
             return;
@@ -1620,7 +1628,7 @@ export abstract class BaseFacet {
     return this.rowHeader;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 

@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as Event, PointLike } from '@antv/g';
-import type { DataCell, MergedCell } from '../../cell';
+import type { DataCell, MergedCell, TableDataCell } from '../../cell';
 import type {
   CustomTreeNode,
   Data,
@@ -368,13 +368,18 @@ export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
   isSortIcon?: boolean;
 }
 
-export type CellCallback<T extends BaseHeaderConfig, K extends S2CellType> = (
-  node: Node,
-  spreadsheet: SpreadSheet,
-  headerConfig: T,
-) => K;
+export type CellCallbackParams<T extends BaseHeaderConfig = BaseHeaderConfig> =
+  [node: Node, spreadsheet: SpreadSheet, headerConfig: T];
 
-export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
+export type CellCallback<
+  T extends Partial<BaseHeaderConfig>,
+  K extends S2CellType,
+> = (node: Node, spreadsheet: SpreadSheet, headerConfig: T) => K;
+
+export type DataCellCallback = (
+  viewMeta: ViewMeta,
+  spreadsheet: SpreadSheet,
+) => DataCell | TableDataCell;
 
 export type MergedCellCallback = (
   spreadsheet: SpreadSheet,
