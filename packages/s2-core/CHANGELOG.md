@@ -1,3 +1,10 @@
+# [@antv/s2-v1.55.5](https://github.com/antvis/S2/compare/@antv/s2-v1.55.4...@antv/s2-v1.55.5) (2024-05-23)
+
+
+### Bug Fixes
+
+* 在 resize 时加上 preventDefault 事件，兼容 chrome 125 事件更新的处理 ([#2739](https://github.com/antvis/S2/issues/2739)) ([827462b](https://github.com/antvis/S2/commit/827462b2b1af8c0650734d6c74ac73087e56c7f8))
+
 # [@antv/s2-v1.55.4](https://github.com/antvis/S2/compare/@antv/s2-v1.55.3...@antv/s2-v1.55.4) (2024-05-11)
 
 
