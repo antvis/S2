@@ -32,9 +32,7 @@ const s2Options = {
 ## 调整数值单元格宽高
 
 :::warning{title="注意"}
-
-优先级小于 `rowCell.height` 和 `colCell.width`
-
+**优先级**: 小于 `rowCell.height/rowCell.heightByField` 和 `colCell.width/colCell.widthByField`
 :::
 
 ```ts
@@ -56,6 +54,8 @@ const s2Options = {
 
 :::warning{title="注意"}
 行头单元格高度调整**作用于叶子节点** （非叶子节点的高度是所有子节点高度度总和）, 且高度始终和 **数值单元格** 高度一致。
+
+**优先级**: `rowCell.heightByField > rowCell.height > dataCell.height`
 :::
 
 ```ts
@@ -69,7 +69,7 @@ const s2Options = {
 }
 ```
 
-还可以根据当前行头节点信息动态调整，返回 `null` 代表使用默认宽高
+还可以根据当前行头节点信息动态调整，返回 `null` 代表使用**默认宽高**.
 
 ```ts
 const s2Options = {
@@ -145,7 +145,9 @@ const s2Options = {
 ## 调整列头单元格宽高
 
 :::warning{title="注意"}
-列头单元格宽度调整**作用于叶子节点** （非叶子节点的宽度是所有子节点宽度总和）, 且**宽度**始终和 **数值单元格** 宽度一致
+列头单元格宽度调整**作用于叶子节点** （非叶子节点的宽度是所有子节点宽度总和）, 且**宽度**始终和 **数值单元格** 宽度一致。
+
+**优先级**: `colCell.widthByField > colCell.width > dataCell.width`
 :::
 
 ```ts
@@ -165,7 +167,7 @@ const s2Options = {
 
 <br/>
 
-如果想给每一列设置**不同**的宽高，可以根据当前列头节点信息动态调整宽高，返回 `null` 代表使用默认宽高
+如果想给每一列设置**不同**的宽高，可以根据当前列头节点信息动态调整宽高，返回 `null` 代表使用**默认宽高**.
 
 ```ts
 const s2Options = {
@@ -176,8 +178,8 @@ const s2Options = {
         return colNode.colIndex <= 2 ? 100 : 50
       },
       height: (colNode) => {
-        // 例：前两列高度 100px, 其他 50px
-        return colNode.colIndex <= 2 ? 100 : 50
+        // 例：前两列高度 100px, 其他 默认
+        return colNode.colIndex <= 2 ? 100 : null
       },
     },
   },
@@ -223,10 +225,11 @@ const s2Options = {
 
 :::info{title="提示"}
 
-明细表有一点特殊，由于只有列头
+明细表有一点特殊，由于只有列头：
 
 1. 如果想给**所有行**设置固定的行高，则可以通过 `rowCell.height` 调整
 2. 如果想给**特定行**设置不同的行高，则可以通过 `rowCell.heightByField` 根据**行索引**调整 （从 `0` 开始）
+3. **优先级：`rowCell.heightByField > rowCell.height > dataCell.height`**
 
 :::
 
@@ -249,6 +252,8 @@ const s2Options = {
 <br/>
 
 <Playground path='layout/custom/demo/custom-table-size.ts' rid='custom-table-size' height='400'></playground>
+
+[查看示例](/examples/layout/custom/#custom-table-size)
 
 ## 隐藏列头
 
