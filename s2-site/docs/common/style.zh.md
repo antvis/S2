@@ -23,8 +23,8 @@ order: 3
 
 | 参数    | 说明 | 类型   | 默认值 | 必选  |
 | ------- | ------------ | ------ | ------ | ---- |
-| width   | 单元格宽度   | `number` |    96 | - |
-| height  | 单元格高度   | `number` |    30 | - |
+| width   | 单元格宽度 （优先级：`colCell.widthByField > colCell.width > dataCell.width`)   | `number` |    96 | - |
+| height  | 单元格高度 （优先级：`rowCell.heightByField > rowCell.height > dataCell.height`)  | `number` |    30 | - |
 | valuesCfg  | 单元格配置   | `{ originalValueField?: string, widthPercent?: number[], showOriginalValue?: boolean }` |   | - |
 
 其他公用配置见 [CellTextWordWrapStyle](#celltextwordwrapstyle)
@@ -37,8 +37,8 @@ order: 3
 | --- | --- | --- | --- | ---  |
 | width |   单元格宽度，可根据当前列头节点动态设置 （叶子节点有效） | `number \| (colNode: Node) => number` | 96 |  |
 | height |  单元格高度，可根据当前列头节点动态设置 （叶子节点有效） | `number \| (colNode: Node) => number` | 30 |  |
-| widthByField | 根据度量值设置宽度（拖拽或者预设宽度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
-| heightByField | 根据度量值设置高度（拖拽或者预设高度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
+| widthByField | 根据度量值设置宽度（拖拽或者预设宽度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id （优先级大于 `width`) [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
+| heightByField | 根据度量值设置高度（拖拽或者预设高度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id （优先级大于 `height`) [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
 | hideValue | 默认数值挂列头，会同时显示列头和数值，隐藏数值，使其更美观。（即 `s2DataConfig.fields.values` 且仅在单数值时有效，多数值时推荐使用 [隐藏列头](https://s2.antv.vision/manual/advanced/interaction/hide-columns#2-%E9%80%8F%E8%A7%86%E8%A1%A8)) | `boolean` | false |  |
 
 ### RowCell
@@ -53,8 +53,8 @@ order: 3
 | collapseAll | 在树状结构模式下行头是否默认收起全部。 | `boolean` |   `false` | |
 | expandDepth | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）,  设置为 `null` 时优先级最低 |  `number` |  | |
 | showTreeLeafNodeAlignDot | 树状模式下行头叶子节点是否显示层级占位点 | `boolean` | `false` |  |
-| withByField | 根据 `field` 设置每行的宽度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
-| heightByField | 根据 `field` 设置每行的高度。<br/> 1. 透视表：`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id. <br/> 2. 明细表：`field` 对应 行序号，从 `1` 开始。[查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
+| withByField | 根据 `field` 设置每行的宽度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id （优先级大于 `width`) [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
+| heightByField | 根据 `field` 设置每行的高度。<br/> 1. 透视表：`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id. <br/> 2. 明细表：`field` 对应 行序号，从 `1` 开始。（优先级大于 `height`) [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
 
 ### CornerCell
 
