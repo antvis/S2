@@ -180,7 +180,7 @@ export abstract class BaseFacet {
 
   public gridInfo: GridInfo;
 
-  public textWrapNodeCache: Map<string, number>;
+  protected textWrapNodeHeightCache: Map<string, number>;
 
   protected textWrapTempRowCell: RowCell | DataCell;
 
@@ -248,7 +248,7 @@ export abstract class BaseFacet {
     };
   };
 
-  protected initTextWrap() {
+  protected initTextWrapTemp() {
     const node = {} as Node;
     const args: CellCallbackParams = [
       node,
@@ -258,7 +258,7 @@ export abstract class BaseFacet {
 
     this.textWrapTempRowCell = this.getRowCellInstance(...args);
     this.textWrapTempColCell = this.getColCellInstance(...args);
-    this.textWrapNodeCache = new Map();
+    this.textWrapNodeHeightCache = new Map();
   }
 
   protected initGroups() {
@@ -446,7 +446,7 @@ export abstract class BaseFacet {
     const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
     // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
     const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
-    const cacheHeight = this.textWrapNodeCache.get(cacheKey);
+    const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);
 
     if (cacheHeight && useCache) {
       return cacheHeight || defaultHeight;
@@ -462,7 +462,7 @@ export abstract class BaseFacet {
         ? adaptiveHeight
         : defaultHeight;
 
-    this.textWrapNodeCache.set(cacheKey, height);
+    this.textWrapNodeHeightCache.set(cacheKey, height);
 
     return height;
   }
@@ -704,7 +704,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
-    this.textWrapNodeCache.clear();
+    this.textWrapNodeHeightCache.clear();
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
@@ -1512,7 +1512,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
-    this.initTextWrap();
+    this.initTextWrapTemp();
     this.initGroups();
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
