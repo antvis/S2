@@ -9,7 +9,8 @@ import {
   maxBy,
   set,
 } from 'lodash';
-import { TableDataCell, TableSeriesNumberCell } from '../cell';
+import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
+import { i18n } from '../common';
 import {
   EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_EMPTY_PLACEHOLDER,
@@ -21,6 +22,7 @@ import {
 } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  CellCallbackParams,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -40,10 +42,10 @@ import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
-import { i18n } from '../common';
+import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
-import { ColHeader, Frame } from './header';
+import { Frame } from './header';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
@@ -54,10 +56,27 @@ import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
 export class TableFacet extends FrozenFacet {
   public emptyPlaceholderGroup: Group;
 
+  private lastRowOffset: number;
+
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+  }
+
+  protected override getRowCellInstance(node: ViewMeta) {
+    const { dataCell } = this.spreadsheet.options;
+
+    return (
+      dataCell?.(node, this.spreadsheet) ||
+      new TableDataCell(node, this.spreadsheet)
+    );
+  }
+
+  protected override getColCellInstance(...args: CellCallbackParams) {
+    const { colCell } = this.spreadsheet.options;
+
+    return colCell?.(...args) || new TableColCell(...args);
   }
 
   protected initGroups() {
@@ -154,12 +173,13 @@ export class TableFacet extends FrozenFacet {
       return rowHeight || 0;
     }
 
-    const dataCell = new TableDataCell(viewMeta, this.spreadsheet, {
-      shallowRender: true,
-    });
     const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
 
-    return this.getCellAdaptiveHeight(dataCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      viewMeta,
+      this.textWrapTempRowCell,
+      defaultHeight,
+    );
   }
 
   private getCellHeightByRowIndex(rowIndex: number) {
@@ -192,15 +212,13 @@ export class TableFacet extends FrozenFacet {
     );
 
     // getCellHeightByRowIndex 会优先读取 heightByField, 保持逻辑统一
-    this.spreadsheet.setOptions({
-      style: {
-        rowCell: {
-          heightByField: {
-            [rowIndex]: maxDataCellHeight || this.getDefaultCellHeight(),
-          },
-        },
-      },
-    });
+    const height = maxDataCellHeight || this.getDefaultCellHeight();
+
+    set(
+      this.spreadsheet.options,
+      `style.rowCell.heightByField.${rowIndex}`,
+      height,
+    );
   }
 
   protected initRowOffsets() {
@@ -210,16 +228,17 @@ export class TableFacet extends FrozenFacet {
     if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
+      this.textWrapNodeHeightCache.clear();
       this.rowOffsets = [0];
-      let lastOffset = 0;
+      this.lastRowOffset = 0;
 
       data.forEach((_, rowIndex) => {
         this.presetRowCellHeightIfNeeded(rowIndex);
         const currentHeight = this.getCellHeightByRowIndex(rowIndex);
-        const currentOffset = lastOffset + currentHeight;
+        const currentOffset = this.lastRowOffset + currentHeight;
 
         this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
+        this.lastRowOffset = currentOffset;
       });
     }
   }
@@ -312,8 +331,7 @@ export class TableFacet extends FrozenFacet {
     const { colsHierarchy } = this.getLayoutResult();
     const height = floor(colsHierarchy.height);
 
-    this.cornerBBox = new CornerBBox(this);
-
+    this.cornerBBox = new CornerBBox(this as unknown as BaseFacet);
     this.cornerBBox.height = height;
     this.cornerBBox.maxY = height;
   }
@@ -471,7 +489,11 @@ export class TableFacet extends FrozenFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
+      currentNode.height = this.getColNodeHeight(
+        currentNode,
+        colsHierarchy,
+        false,
+      );
     });
   }
 
@@ -720,7 +742,7 @@ export class TableFacet extends FrozenFacet {
     return null;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 

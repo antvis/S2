@@ -59,7 +59,7 @@ export class SeriesNumberCell extends HeaderCell {
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width;

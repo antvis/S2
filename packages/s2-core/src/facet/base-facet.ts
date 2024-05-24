@@ -23,6 +23,7 @@ import {
   last,
   maxBy,
   reduce,
+  size,
   sumBy,
 } from 'lodash';
 import {
@@ -49,6 +50,7 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  NODE_ID_SEPARATOR,
   OriginEventType,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
@@ -64,6 +66,7 @@ import {
 } from '../common/debug';
 import type {
   AdjustLeafNodesParams,
+  CellCallbackParams,
   CellCustomSize,
   FrameConfig,
   GridInfo,
@@ -97,6 +100,7 @@ import {
   Frame,
   RowHeader,
   SeriesNumberHeader,
+  type BaseHeaderConfig,
   type RowHeaderConfig,
 } from './header';
 import type { Hierarchy } from './layout/hierarchy';
@@ -109,6 +113,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import type { TableColHeader } from './header/table-col';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -165,7 +170,7 @@ export abstract class BaseFacet {
 
   public rowHeader: RowHeader | null;
 
-  public columnHeader: ColHeader;
+  public columnHeader: ColHeader | TableColHeader;
 
   public cornerHeader: CornerHeader;
 
@@ -174,6 +179,24 @@ export abstract class BaseFacet {
   public centerFrame: Frame;
 
   public gridInfo: GridInfo;
+
+  protected textWrapNodeHeightCache: Map<string, number>;
+
+  protected textWrapTempRowCell: RowCell | DataCell;
+
+  protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected abstract getRowCellInstance(
+    node: Node | ViewMeta,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): RowCell | DataCell;
+
+  protected abstract getColCellInstance(
+    node: Node,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): ColCell;
 
   protected abstract doLayout(): LayoutResult;
 
@@ -224,6 +247,19 @@ export abstract class BaseFacet {
       seriesNumberNodes: this.getSeriesNumberNodes(),
     };
   };
+
+  protected initTextWrapTemp() {
+    const node = {} as Node;
+    const args: CellCallbackParams = [
+      node,
+      this.spreadsheet,
+      { shallowRender: true } as BaseHeaderConfig,
+    ];
+
+    this.textWrapTempRowCell = this.getRowCellInstance(...args);
+    this.textWrapTempColCell = this.getColCellInstance(...args);
+    this.textWrapNodeHeightCache = new Map();
+  }
 
   protected initGroups() {
     this.initBackgroundGroup();
@@ -328,7 +364,11 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
+  protected getColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+    useCache: boolean = true,
+  ) {
     if (!colNode) {
       return 0;
     }
@@ -351,15 +391,12 @@ export abstract class BaseFacet {
       return defaultHeight;
     }
 
-    const CellInstance = this.spreadsheet.isTableMode()
-      ? TableColCell
-      : ColCell;
-
-    const colCell = new CellInstance(colNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      colNode,
+      this.textWrapTempColCell,
+      defaultHeight,
+      useCache,
+    );
   }
 
   protected getDefaultColNodeHeight(
@@ -387,21 +424,47 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: S2CellType, defaultHeight: number = 0) {
-    if (!cell) {
+  protected getNodeAdaptiveHeight(
+    meta: Node | ViewMeta,
+    cell: S2CellType,
+    defaultHeight: number = 0,
+    useCache = true,
+  ) {
+    if (!meta) {
       return defaultHeight;
     }
 
-    const { padding } = cell.getStyle().cell;
+    // 共用一个单元格用于测量, 通过动态更新 meta 的方式, 避免数据量大时频繁实例化触发 GC
+    cell.setMeta({ ...meta, shallowRender: true } as Node & ViewMeta);
+
+    const fieldValue = String(cell.getFieldValue());
+
+    if (!fieldValue) {
+      return defaultHeight;
+    }
+
+    const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
+    // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
+    const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
+    const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);
+
+    if (cacheHeight && useCache) {
+      return cacheHeight || defaultHeight;
+    }
 
     cell.drawTextShape();
 
+    const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+    const height =
+      cell.isMultiLineText() && textHeight >= defaultHeight
+        ? adaptiveHeight
+        : defaultHeight;
 
-    return cell.isMultiLineText() && textHeight >= defaultHeight
-      ? adaptiveHeight
-      : defaultHeight;
+    this.textWrapNodeHeightCache.set(cacheKey, height);
+
+    return height;
   }
 
   /**
@@ -641,6 +704,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    this.textWrapNodeHeightCache.clear();
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
@@ -1404,7 +1468,10 @@ export abstract class BaseFacet {
         const viewMeta = this.getCellMeta(j, i);
 
         if (viewMeta) {
-          const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
+          const cell = this.spreadsheet.options.dataCell?.(
+            viewMeta,
+            this.spreadsheet,
+          )!;
 
           if (!cell) {
             return;
@@ -1445,6 +1512,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initTextWrapTemp();
     this.initGroups();
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
@@ -1560,7 +1628,7 @@ export abstract class BaseFacet {
     return this.rowHeader;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 

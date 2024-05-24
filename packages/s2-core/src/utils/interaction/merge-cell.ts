@@ -178,7 +178,7 @@ export const getInvisibleInfo = (
     );
 
     if (meta) {
-      const cell = sheet?.options?.dataCell?.(meta);
+      const cell = sheet?.options?.dataCell?.(meta, meta.spreadsheet);
 
       viewMeta = cellInfo?.showText ? meta : viewMeta;
       cells.push(cell!);

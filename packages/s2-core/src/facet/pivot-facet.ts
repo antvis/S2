@@ -16,7 +16,7 @@ import {
   size,
   sumBy,
 } from 'lodash';
-import { RowCell, SeriesNumberCell } from '../cell';
+import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
@@ -31,7 +31,11 @@ import {
 import { EXTRA_FIELD, LayoutWidthType, VALUE_FIELD } from '../common/constant';
 import { CellType } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, SimpleData } from '../common/interface';
+import type {
+  CellCallbackParams,
+  LayoutResult,
+  SimpleData,
+} from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { renderLine, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
@@ -52,6 +56,14 @@ import { getFrozenRowCfgPivot } from './utils';
 export class PivotFacet extends FrozenFacet {
   get rowCellTheme() {
     return this.spreadsheet.theme.rowCell!.cell;
+  }
+
+  protected override getRowCellInstance(...args: CellCallbackParams) {
+    return this.spreadsheet.options.rowCell?.(...args) || new RowCell(...args);
+  }
+
+  protected override getColCellInstance(...args: CellCallbackParams) {
+    return this.spreadsheet.options.colCell?.(...args) || new ColCell(...args);
   }
 
   protected doLayout(): LayoutResult {
@@ -246,7 +258,11 @@ export class PivotFacet extends FrozenFacet {
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
-      const colNodeHeight = this.getColNodeHeight(currentNode, colsHierarchy);
+      const colNodeHeight = this.getColNodeHeight(
+        currentNode,
+        colsHierarchy,
+        false,
+      );
 
       currentNode.height =
         currentNode.isGrandTotals &&
@@ -423,11 +439,11 @@ export class PivotFacet extends FrozenFacet {
       return defaultHeight || 0;
     }
 
-    const rowCell = new RowCell(rowNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-
-    return this.getCellAdaptiveHeight(rowCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      rowNode,
+      this.textWrapTempRowCell,
+      defaultHeight,
+    );
   }
 
   /**

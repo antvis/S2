@@ -210,7 +210,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     return this.showTreeIcon() ? size! + margin!.right! : 0;
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return (

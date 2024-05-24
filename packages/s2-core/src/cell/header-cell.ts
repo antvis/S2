@@ -75,7 +75,7 @@ export abstract class HeaderCell<
   }
 
   public isShallowRender() {
-    return this.headerConfig.shallowRender!;
+    return super.isShallowRender() || this.headerConfig.shallowRender!;
   }
 
   protected shouldInit() {
