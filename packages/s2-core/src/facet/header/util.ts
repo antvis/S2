@@ -60,7 +60,7 @@ export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
   const facet = spreadsheet.facet as FrozenFacet;
 
   const { start, end } = facet.getCellRange();
-  const { rowCount, trailingRowCount } = facet.getRealFrozenOptions();
+  const { rowCount, trailingRowCount } = facet.getFrozenOptions();
 
   if (rowCount) {
     const { y, height } = facet.frozenGroupAreas[FrozenGroupArea.Row];
@@ -140,7 +140,7 @@ export const getExtraFrozenColNodes = (spreadsheet: SpreadSheet) => {
 
   const facet = spreadsheet.facet as FrozenFacet;
 
-  const { colCount, trailingColCount } = facet.getRealFrozenOptions();
+  const { colCount, trailingColCount } = facet.getFrozenOptions();
 
   function getFrozenNodes(range: [number, number], key: string) {
     const frozenLeafNodes = facet.getColLeafNodesByRange(range[0], range[1])!;

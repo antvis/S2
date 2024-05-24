@@ -60,7 +60,7 @@ export class TableDataCell extends DataCell {
     const cellRange = this.spreadsheet.facet.getCellRange();
     const { rowCount, trailingRowCount } = (
       this.spreadsheet.facet as FrozenFacet
-    ).getRealFrozenOptions();
+    ).getFrozenOptions();
 
     const isFrozenHead = isFrozenRow(rowIndex, cellRange.start, rowCount);
 

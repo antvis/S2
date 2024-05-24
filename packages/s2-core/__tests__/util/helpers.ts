@@ -193,7 +193,7 @@ export const createFakeSpreadSheet = (config?: {
     getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
     cornerBBox: {},
     destroy: jest.fn(),
-    getRealFrozenOptions: jest.fn().mockReturnValue({
+    getFrozenOptions: jest.fn().mockReturnValue({
       ...DEFAULT_FROZEN_COUNTS,
     }),
   } as unknown as BaseFacet;

@@ -180,7 +180,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
     const { rowCount, trailingRowCount, colCount, trailingColCount } = (
       spreadsheet.facet as FrozenFacet
-    ).getRealFrozenOptions();
+    ).getFrozenOptions();
 
     const { start, end } = spreadsheet.facet.getCellRange();
 
@@ -245,7 +245,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     colIndex: number,
   ) {
     const facet = spreadsheet.facet as FrozenFacet;
-    const { rowCount } = facet.getRealFrozenOptions();
+    const { rowCount } = facet.getFrozenOptions();
 
     const colLeafNodes = facet.getColLeafNodes();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
@@ -263,8 +263,8 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
     const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
 
-    let offsetX = null;
-    let offsetY = null;
+    let offsetX: number;
+    let offsetY: number;
 
     // offsetX
     if (colIndex <= indexes[0]) {

@@ -13,11 +13,7 @@ import {
 } from '../common/constant';
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
-import {
-  getFrozenLeafNodesCount,
-  getValidFrozenOptions,
-  renderLine,
-} from '../utils';
+import { getValidFrozenOptions, renderLine } from '../utils';
 import {
   getColsForGrid,
   getFrozenRowsForGrid,
@@ -77,8 +73,6 @@ export abstract class FrozenFacet extends BaseFacet {
 
   protected validFrozenOptions: Required<S2TableSheetFrozenOptions>;
 
-  protected realFrozenOptionsForLeafNodes: Required<S2TableSheetFrozenOptions>;
-
   public panelScrollGroupIndexes: Indexes = [0, 0, 0, 0];
 
   protected override initPanelGroups(): void {
@@ -111,9 +105,9 @@ export abstract class FrozenFacet extends BaseFacet {
   /**
    * 获取冻结数量结果，主要是针对 col top level 的结果
    */
-  protected getFrozenOptions() {
+  public getFrozenOptions() {
     if (!this.validFrozenOptions) {
-      const colLength = this.getTopLevelColNodes().length;
+      const colLength = this.getColLeafNodes().length;
       const cellRange = this.getCellRange();
 
       this.validFrozenOptions = getValidFrozenOptions(
@@ -126,30 +120,9 @@ export abstract class FrozenFacet extends BaseFacet {
     return this.validFrozenOptions;
   }
 
-  /**
-   * 获取转换为叶子节点的冻结数量结果
-   */
-  getRealFrozenOptions() {
-    if (!this.realFrozenOptionsForLeafNodes) {
-      const options = this.getFrozenOptions();
-      const nodes = this.getTopLevelColNodes();
-
-      this.realFrozenOptionsForLeafNodes = {
-        ...options,
-        ...getFrozenLeafNodesCount(
-          nodes,
-          options.colCount,
-          options.trailingColCount,
-        ),
-      };
-    }
-
-    return this.realFrozenOptionsForLeafNodes;
-  }
-
   public calculateFrozenGroupInfo() {
     const { colCount, rowCount, trailingColCount, trailingRowCount } =
-      this.getRealFrozenOptions();
+      this.getFrozenOptions();
 
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
@@ -204,7 +177,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const { colCount, rowCount, trailingColCount, trailingRowCount } =
-      this.getRealFrozenOptions();
+      this.getFrozenOptions();
 
     const finalViewport: SimpleBBox = {
       width,
@@ -262,7 +235,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
     return splitInViewIndexesWithFrozen(
       indexes,
-      this.getRealFrozenOptions(),
+      this.getFrozenOptions(),
       colLength,
       cellRange,
     );
@@ -274,7 +247,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
     const frozenGroupType = getFrozenGroupTypeByCell(
       cell.getMeta(),
-      this.getRealFrozenOptions(),
+      this.getFrozenOptions(),
       colLeafLength,
       cellRange,
     );
@@ -444,12 +417,8 @@ export abstract class FrozenFacet extends BaseFacet {
     } = this.panelBBox;
 
     const cellRange = this.getCellRange();
-    const {
-      rowCount: frozenRowCount,
-      colCount: frozenColCount,
-      trailingColCount: frozenTrailingColCount,
-      trailingRowCount: frozenTrailingRowCount,
-    } = this.getRealFrozenOptions();
+    const { rowCount, colCount, trailingColCount, trailingRowCount } =
+      this.getFrozenOptions();
 
     // 在分页条件下需要额外处理 Y 轴滚动值
     const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
@@ -488,7 +457,7 @@ export abstract class FrozenFacet extends BaseFacet {
       opacity: splitLine?.horizontalBorderColorOpacity,
     };
 
-    if (frozenColCount > 0) {
+    if (colCount > 0) {
       const x =
         panelBBoxStartX + this.frozenGroupAreas[FrozenGroupArea.Col].width;
 
@@ -517,7 +486,7 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    if (frozenTrailingColCount > 0) {
+    if (trailingColCount > 0) {
       const x =
         viewportWidth -
         this.frozenGroupAreas[FrozenGroupArea.TrailingCol].width +
@@ -548,7 +517,7 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    if (frozenRowCount > 0) {
+    if (rowCount > 0) {
       const y =
         panelBBoxStartY + this.frozenGroupAreas[FrozenGroupArea.Row].height;
       const width = panelBBoxStartX + viewportWidth;
@@ -576,7 +545,7 @@ export abstract class FrozenFacet extends BaseFacet {
       }
     }
 
-    if (frozenTrailingRowCount > 0) {
+    if (trailingRowCount > 0) {
       const y =
         this.panelBBox.maxY -
         this.frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
@@ -613,7 +582,7 @@ export abstract class FrozenFacet extends BaseFacet {
   }
 
   protected override getCenterFrameScrollX(scrollX: number): number {
-    if (this.getRealFrozenOptions().colCount > 0) {
+    if (this.getFrozenOptions().colCount > 0) {
       return 0;
     }
 
@@ -624,7 +593,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const cellRange = this.getCellRange();
 
     const result = calculateFrozenCornerCells(
-      this.getRealFrozenOptions(),
+      this.getFrozenOptions(),
       this.getColLeafNodes().length,
       cellRange,
     );

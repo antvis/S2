@@ -271,7 +271,7 @@ export class BaseBrushSelection
 
     const { colCount, trailingColCount } = (
       facet as FrozenFacet
-    ).getRealFrozenOptions();
+    ).getFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 
@@ -302,7 +302,7 @@ export class BaseBrushSelection
     const cellRange = facet.getCellRange();
     const { rowCount, trailingRowCount } = (
       facet as FrozenFacet
-    ).getRealFrozenOptions();
+    ).getFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 

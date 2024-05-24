@@ -451,7 +451,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         return {};
       });
     (s2.facet as TableFacet).panelScrollGroupIndexes = [1, 8, 1, 8];
-    (s2.facet as TableFacet).getRealFrozenOptions = jest.fn().mockReturnValue({
+    (s2.facet as TableFacet).getFrozenOptions = jest.fn().mockReturnValue({
       colCount: 1,
       rowCount: 1,
       trailingColCount: 1,
@@ -503,7 +503,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         range: [] as number[],
       },
     };
-    (s2.facet as TableFacet).getRealFrozenOptions = jest.fn().mockReturnValue({
+    (s2.facet as TableFacet).getFrozenOptions = jest.fn().mockReturnValue({
       colCount: 1,
       rowCount: 1,
       trailingColCount: 1,

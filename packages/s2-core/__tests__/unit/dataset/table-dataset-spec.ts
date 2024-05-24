@@ -35,7 +35,7 @@ describe('Table Mode Dataset Test', () => {
 
     s2.facet = {
       // @ts-ignore
-      getRealFrozenOptions: jest.fn().mockReturnValue({
+      getFrozenOptions: jest.fn().mockReturnValue({
         colCount: 0,
         trailingColCount: 0,
         rowCount: 0,

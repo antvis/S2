@@ -94,7 +94,7 @@ describe('Interaction Keyboard Move Tests', () => {
           range: [] as number[],
         },
       },
-      getRealFrozenOptions: jest.fn().mockReturnValue({
+      getFrozenOptions: jest.fn().mockReturnValue({
         colCount: 0,
         trailingColCount: 0,
         rowCount: 0,

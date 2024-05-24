@@ -17,7 +17,6 @@ import {
   type HiddenColumnsInfo,
   type S2DataConfig,
   type S2Options,
-  getFrozenLeafNodesCount,
 } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
@@ -683,26 +682,6 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     expect(
       topLevelNodes.slice(0, colCount).map((node) => node.x),
     ).toStrictEqual([0]);
-  });
-
-  test('should get correct cell layout with frozenTrailingCol', () => {
-    const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
-    const topLevelNodes = facet
-      .getColNodes()
-      .filter((node) => node.parent!.id === ROOT_NODE_ID);
-    const { trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      0,
-      frozenTrailingColCount!,
-    );
-
-    expect(
-      facet
-        .getColLeafNodes()
-        .slice(-trailingColCount)
-        .reverse()
-        .map((node) => Math.floor(node.x)),
-    ).toEqual([399]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
