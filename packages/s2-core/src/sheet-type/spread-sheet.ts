@@ -14,6 +14,7 @@ import {
   isEmpty,
   isFunction,
   isString,
+  last,
   memoize,
   some,
   values,
@@ -240,6 +241,11 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
+  private getTargetCell(target: CellEventTarget) {
+    // 刷选等场景, 以最后一个发生交互的单元格为准
+    return this.getCell(target) || last(this.interaction.getInteractedCells());
+  }
+
   /**
    * 展示 Tooltip 提示
    * @alias s2.tooltip.show()
@@ -258,7 +264,7 @@ export abstract class SpreadSheet extends EE {
     Menu = BaseTooltipOperatorMenuOptions,
   >(showOptions: TooltipShowOptions<T, Menu>): Promise<void> {
     const { content, event } = showOptions;
-    const cell = this.getCell(event?.target);
+    const cell = this.getTargetCell(event?.target);
     const displayContent = isFunction(content)
       ? content(cell!, showOptions)
       : content;
@@ -285,7 +291,7 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    const targetCell = this.getCell(event?.target);
+    const targetCell = this.getTargetCell(event?.target);
     const tooltipData =
       options?.data ??
       getTooltipData({

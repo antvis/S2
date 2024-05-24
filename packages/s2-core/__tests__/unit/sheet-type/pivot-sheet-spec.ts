@@ -12,6 +12,7 @@ import type {
 } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
+import { createMockCellInfo } from '../../util/helpers';
 import { customMerge, setupDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -1369,5 +1370,16 @@ describe('PivotSheet Tests', () => {
     s2.destroy();
     // eslint-disable-next-line no-underscore-dangle
     expect(canvas.__s2_instance__).toBe(undefined);
+  });
+
+  test('should get last interacted cell if event target is empty', () => {
+    const cellA = createMockCellInfo('A');
+    const cellB = createMockCellInfo('B');
+
+    s2.interaction.setInteractedCells(cellA);
+    s2.interaction.setInteractedCells(cellB);
+
+    // @ts-ignore
+    expect(s2.getTargetCell(null)).toEqual(cellB);
   });
 });
