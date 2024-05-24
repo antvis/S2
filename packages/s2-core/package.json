@@ -53,7 +53,7 @@
     "watch": "rimraf esm && pnpm build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
     "sync-event": "node ./scripts/sync-event.mjs",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --detectOpenHandles",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",

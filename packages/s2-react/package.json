@@ -49,7 +49,7 @@
     "watch": "rimraf esm && pnpm build:esm -w",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --detectOpenHandles",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
