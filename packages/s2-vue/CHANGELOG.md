@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.13...@antv/s2-vue-v2.0.0-next.14) (2024-05-24)
+
+
+### Performance Improvements
+
+* 优化开启多行文本时的布局性能 ([#2734](https://github.com/antvis/S2/issues/2734)) ([388157c](https://github.com/antvis/S2/commit/388157c0ecb82c45f8a0277b649e891366dc2f1c))
+
 # [@antv/s2-vue-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.12...@antv/s2-vue-v2.0.0-next.13) (2024-04-30)
 
 
