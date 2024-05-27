@@ -1,6 +1,6 @@
 import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
-import { RowCell } from '../../cell';
+import { RowCell, SeriesNumberCell } from '../../cell';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
 import {
@@ -42,12 +42,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       }),
     );
 
+    const { spreadsheet } = this.getHeaderConfig();
+
     this.extraFrozenNodes = getExtraFrozenRowNodes(
-      this.headerConfig.spreadsheet.facet as FrozenFacet,
+      spreadsheet.facet as FrozenFacet,
     );
   }
 
-  public getCellInstance(node: Node): RowCell {
+  public getCellInstance(node: Node): RowCell | SeriesNumberCell {
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;
@@ -60,7 +62,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   // row'cell only show when visible
-  protected isRowCellInRect(node: Node): boolean {
+  protected isCellInRect(node: Node): boolean {
     const {
       width,
       viewportHeight,
@@ -82,7 +84,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY + frozenGroupAreas[FrozenGroupArea.Row].height <
         node.y + node.height &&
       // left
-      width - position.x + scrollX > node.x &&
+      width + scrollX - position.x > node.x &&
       // right
       scrollX - position.x < node.x + node.width
     );
@@ -101,7 +103,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected layout() {
-    const { nodes, spreadsheet } = this.getHeaderConfig();
+    const { nodes } = this.getHeaderConfig();
 
     const appendNode = (node: Node) => {
       const group = this.getCellGroup(node);
@@ -111,13 +113,13 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       node.belongsCell = cell;
 
       group.appendChild(cell);
-      spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);
-      spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+
+      this.emitRenderEvent(cell);
     };
 
     // row'cell only show when visible
     each(nodes, (node) => {
-      if (this.isRowCellInRect(node) && node.height !== 0) {
+      if (this.isCellInRect(node) && node.height !== 0) {
         appendNode(node);
       }
     });
@@ -127,6 +129,13 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         appendNode(node);
       }
     });
+  }
+
+  protected emitRenderEvent(cell: RowCell | SeriesNumberCell) {
+    const { spreadsheet } = this.getHeaderConfig();
+
+    spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell as RowCell);
+    spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
   }
 
   protected offset() {

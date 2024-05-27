@@ -1,9 +1,11 @@
 import type { PointLike } from '@antv/g-lite';
+import { isNumber } from 'lodash';
 import { FrozenGroupArea, ROOT_NODE_ID } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
 import type { FrozenFacet } from '../frozen-facet';
 import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
+import type { AreaBBox } from '../../common/interface/frozen';
 import { Frame } from './frame';
 
 export const getSeriesNumberNodes = (
@@ -30,13 +32,14 @@ export const getSeriesNumberNodes = (
       ? node.getTotalHeightForTreeHierarchy()
       : node.height;
     sNode.isLeaf = true;
+    sNode.relatedNode = node;
     sNode.spreadsheet = spreadsheet;
 
     return sNode;
   });
 };
 
-function getAllParents(nodes: Node[]) {
+const getAllParents = (nodes: Node[]) => {
   const parents = nodes.reduce((pre, leaf) => {
     let parent = leaf.parent;
 
@@ -53,7 +56,35 @@ function getAllParents(nodes: Node[]) {
   }, [] as Node[]);
 
   return parents;
-}
+};
+
+const clipFrozenRowHeadNode = (
+  node: Node,
+  { y = 0, height = 0 }: Pick<AreaBBox, 'y' | 'height'>,
+) => {
+  if (node.y < y) {
+    node.height -= y - node.y;
+    node.y = y;
+  }
+
+  if (node.y + node.height > y + height) {
+    node.height -= node.y + node.height - y - height;
+  }
+};
+
+const clipFrozenTrailingRowHeadNode = (
+  node: Node,
+  { y = 0, height = 0 }: Pick<AreaBBox, 'y' | 'height'>,
+) => {
+  if (node.y + node.height > y + height) {
+    node.height -= node.y + node.height - y - height;
+  }
+
+  if (node.y < y) {
+    node.height -= y - node.y;
+    node.y = y;
+  }
+};
 
 export const getExtraFrozenRowNodes = (facet: FrozenFacet) => {
   const extraNodes: Node[] = [];
@@ -62,8 +93,6 @@ export const getExtraFrozenRowNodes = (facet: FrozenFacet) => {
   const { rowCount, trailingRowCount } = facet.getFrozenOptions();
 
   if (rowCount) {
-    const { y, height } = facet.frozenGroupAreas[FrozenGroupArea.Row];
-
     const frozenLeafNodes = facet.getRowLeafNodesByRange(
       start,
       start + rowCount - 1,
@@ -83,22 +112,16 @@ export const getExtraFrozenRowNodes = (facet: FrozenFacet) => {
 
       newParent.isFrozenHead = true;
 
-      if (newParent.y < y) {
-        newParent.height -= y - newParent.y;
-        newParent.y = y;
-      }
-
-      if (newParent.y + newParent.height > y + height) {
-        newParent.height -= newParent.y + newParent.height - y - height;
-      }
+      clipFrozenRowHeadNode(
+        newParent,
+        facet.frozenGroupAreas[FrozenGroupArea.Row],
+      );
 
       extraNodes.push(newParent);
     });
   }
 
   if (trailingRowCount) {
-    const { y, height } = facet.frozenGroupAreas[FrozenGroupArea.TrailingRow];
-
     const frozenLeafNodes = facet.getRowLeafNodesByRange(
       end - trailingRowCount + 1,
       end,
@@ -118,16 +141,90 @@ export const getExtraFrozenRowNodes = (facet: FrozenFacet) => {
 
       newParent.isFrozenTrailing = true;
 
-      if (newParent.y + newParent.height > y + height) {
-        newParent.height -= newParent.y + newParent.height - y - height;
-      }
-
-      if (newParent.y < y) {
-        newParent.height -= y - newParent.y;
-        newParent.y = y;
-      }
+      clipFrozenTrailingRowHeadNode(
+        newParent,
+        facet.frozenGroupAreas[FrozenGroupArea.TrailingRow],
+      );
 
       extraNodes.push(newParent);
+    });
+  }
+
+  return extraNodes;
+};
+
+export const getExtraFrozenSeriesNodes = (
+  facet: FrozenFacet,
+  nodes: Node[],
+) => {
+  const extraNodes: Node[] = [];
+
+  const { start, end } = facet.getCellRange();
+  const { rowCount, trailingRowCount } = facet.getFrozenOptions();
+
+  const includeChildInRowIndexRange = (node: Node, range: [number, number]) => {
+    const rowIdx = node.rowIndex;
+
+    if (isNumber(rowIdx) && rowIdx >= range[0] && rowIdx <= range[1]) {
+      return true;
+    }
+
+    const children = node.children ?? [];
+
+    for (let i = 0; i < children.length; i++) {
+      if (includeChildInRowIndexRange(children[i], range)) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  if (rowCount) {
+    const range: [number, number] = [start, start + rowCount - 1];
+
+    nodes.forEach((node) => {
+      if (
+        node.relatedNode &&
+        !includeChildInRowIndexRange(node.relatedNode, range)
+      ) {
+        return;
+      }
+
+      const newNode = node.clone();
+
+      newNode.isFrozenHead = true;
+
+      clipFrozenRowHeadNode(
+        newNode,
+        facet.frozenGroupAreas[FrozenGroupArea.Row],
+      );
+
+      extraNodes.push(newNode);
+    });
+  }
+
+  if (trailingRowCount) {
+    const range: [number, number] = [end - trailingRowCount + 1, end];
+
+    nodes.forEach((node) => {
+      if (
+        node.relatedNode &&
+        !includeChildInRowIndexRange(node.relatedNode, range)
+      ) {
+        return;
+      }
+
+      const newNode = node.clone();
+
+      newNode.isFrozenTrailing = true;
+
+      clipFrozenTrailingRowHeadNode(
+        newNode,
+        facet.frozenGroupAreas[FrozenGroupArea.TrailingRow],
+      );
+
+      extraNodes.push(newNode);
     });
   }
 

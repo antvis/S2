@@ -115,6 +115,11 @@ export class Node {
   // series number width
   public seriesNumberWidth: number;
 
+  /**
+   * 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   */
+  public relatedNode: Node;
+
   // spreadsheet instance
   public spreadsheet: SpreadSheet;
 

@@ -5,6 +5,8 @@ import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { getHorizontalTextIconPosition } from '../utils/cell/cell';
 import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { normalizeTextAlign } from '../utils/normalize';
+import type { FrozenFacet } from '../facet';
+import { FrozenGroupArea } from '../common';
 import { HeaderCell } from './header-cell';
 
 export class SeriesNumberCell extends HeaderCell {
@@ -65,14 +67,36 @@ export class SeriesNumberCell extends HeaderCell {
     return width;
   }
 
+  protected handleViewport() {
+    if (this.meta.isFrozen) {
+      return {
+        start: 0,
+        size: Number.POSITIVE_INFINITY,
+      };
+    }
+
+    const { scrollY, viewportHeight } = this.getHeaderConfig();
+
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
+    const frozenTrailingRowGroupHeight =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
+
+    const viewport: AreaRange = {
+      start: scrollY! + frozenRowGroupHeight,
+      size:
+        viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
+    };
+
+    return viewport;
+  }
+
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.headerConfig;
     const textStyle = this.getTextStyle();
     const { cell } = this.getStyle()!;
-    const viewport: AreaRange = {
-      start: scrollY!,
-      size: viewportHeight,
-    };
+    const viewport: AreaRange = this.handleViewport();
 
     const textArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
