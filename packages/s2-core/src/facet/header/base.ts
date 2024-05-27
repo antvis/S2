@@ -33,7 +33,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   // protected offset: number;
   protected headerConfig: T;
 
-  protected constructor(config: T) {
+  constructor(config: T) {
     super();
     this.headerConfig = config;
     this.initGroups();
