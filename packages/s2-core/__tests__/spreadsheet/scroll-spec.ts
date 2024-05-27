@@ -58,6 +58,13 @@ describe('Scroll Tests', () => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
+    jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementationOnce((callback) => {
+        callback(0);
+
+        return 0;
+      });
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     await s2.render();

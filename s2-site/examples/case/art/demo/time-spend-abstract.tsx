@@ -81,6 +81,7 @@ class CustomDataCell extends DataCell {
     const img = new Image();
 
     img.src = url;
+    img.crossOrigin = 'anonymous';
 
     img.onload = () => {
       this.renderImage(img);
