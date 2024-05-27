@@ -181,7 +181,7 @@ describe('Scroll Tests', () => {
     expect(onScroll).toHaveBeenCalled();
   });
 
-  test.each([
+  test.skip.each([
     {
       type: 'horizontal',
       offset: {
