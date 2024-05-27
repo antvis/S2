@@ -15,19 +15,10 @@ import {
 import { CustomRect, type SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet/frozen-facet';
 import type { CellMeta } from '../common';
-import { BaseCell } from './base-cell';
 
 export class TableDataCell extends DataCell {
   protected getLinkFieldStyle() {
     return this.theme.rowCell!.text!.linkTextFill!;
-  }
-
-  public override drawBorders() {
-    if (!this.meta.isFrozenCorner) {
-      return;
-    }
-
-    BaseCell.prototype.drawBorders.call(this);
   }
 
   protected shouldDrawResizeArea() {

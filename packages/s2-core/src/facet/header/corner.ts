@@ -1,4 +1,4 @@
-import { Rect, type PointLike } from '@antv/g';
+import { Rect, type PointLike, Group } from '@antv/g';
 import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import type { S2CellType } from '../../common/interface';
@@ -9,6 +9,8 @@ import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { S2Event } from '../../common';
 import {
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  KEY_GROUP_CORNER_SCROLL,
   getDefaultCornerText,
   getDefaultSeriesNumberText,
 } from './../../common/constant/basic';
@@ -19,8 +21,13 @@ import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
  * Corner Header for SpreadSheet
  */
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
-  constructor(config: CornerHeaderConfig) {
-    super(config);
+  protected initGroups(): void {
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_CORNER_SCROLL,
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
+      }),
+    );
   }
 
   protected getCellInstance(node: Node): CornerCell {
@@ -236,15 +243,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     this.render(type);
   }
 
-  public destroy(): void {
-    super.destroy();
-  }
-
   protected layout() {
-    this.renderCells();
-  }
-
-  protected renderCells() {
     const { nodes, spreadsheet } = this.getHeaderConfig();
     const cornerHeader = spreadsheet.options?.cornerHeader;
 
@@ -261,7 +260,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     nodes.forEach((node) => {
       const cell = this.getCellInstance(node);
 
-      this.appendChild(cell);
+      this.scrollGroup.appendChild(cell);
       spreadsheet.emit(S2Event.CORNER_CELL_RENDER, cell);
       spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
     });
@@ -270,13 +269,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   protected offset() {
     const { scrollX = 0 } = this.getHeaderConfig();
 
-    translateGroupX(this, -scrollX);
+    translateGroupX(this.scrollGroup, -scrollX);
   }
 
   protected clip(): void {
     const { width, height } = this.getHeaderConfig();
 
-    this.style.clipPath = new Rect({
+    this.scrollGroup.style.clipPath = new Rect({
       style: {
         x: 0,
         y: 0,
@@ -284,9 +283,5 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
       },
     });
-  }
-
-  public getNodes(): Node[] {
-    return this.headerConfig.nodes || [];
   }
 }

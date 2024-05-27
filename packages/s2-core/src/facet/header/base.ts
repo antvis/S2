@@ -6,9 +6,19 @@ import type { BaseHeaderConfig } from './interface';
 /**
  * New Base Header for all headers(cornerHeader, rowHeader, colHeader)
  * NOTE: Do not use this.cfg(which lays in group) to get header config,
- * use {@see headerConfig} instead
+ * use @see headerConfig instead
  */
 export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
+  protected scrollGroup: Group;
+
+  protected frozenGroup: Group;
+
+  protected frozenTrailingGroup: Group;
+
+  protected extraFrozenNodes: Node[];
+
+  protected abstract initGroups(): void;
+
   // header all cells layout
   protected abstract layout(): void;
 
@@ -26,21 +36,11 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected constructor(config: T) {
     super();
     this.headerConfig = config;
+    this.initGroups();
   }
 
   public getHeaderConfig() {
     return this.headerConfig || ({} as T);
-  }
-
-  /**
-   * 清空热区，为重绘做准备，防止热区重复渲染
-   * @param type 当前重绘的header类型
-   */
-  protected clearResizeAreaGroup(type: string) {
-    const foregroundGroup = this.parentNode as Group;
-    const resizerGroup = foregroundGroup?.getElementById<Group>(type);
-
-    resizerGroup?.removeChildren();
   }
 
   // start render header
@@ -79,8 +79,21 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     this.render(type);
   }
 
+  /**
+   * 清空热区，为重绘做准备，防止热区重复渲染
+   * @param type 当前重绘的header类型
+   */
+  protected clearResizeAreaGroup(type: string) {
+    const foregroundGroup = this.parentNode as Group;
+    const resizerGroup = foregroundGroup?.getElementById<Group>(type);
+
+    resizerGroup?.removeChildren();
+  }
+
   public clear() {
-    super.removeChildren();
+    this.scrollGroup?.removeChildren();
+    this.frozenGroup?.removeChildren();
+    this.frozenTrailingGroup?.removeChildren();
   }
 
   /**
@@ -99,4 +112,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   }) =>
     cellPosition + cellSize >= viewportPosition &&
     viewportPosition + viewportSize >= cellPosition;
+
+  public getNodes(): Node[] {
+    const { nodes } = this.getHeaderConfig();
+
+    return nodes || [];
+  }
 }

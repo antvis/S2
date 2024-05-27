@@ -21,23 +21,7 @@ import { getExtraFrozenRowNodes, getFrozenTrailingRowOffset } from './util';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
-  public scrollGroup: Group;
-
-  public frozenGroup: Group;
-
-  public frozenTrailingGroup: Group;
-
-  private extraFrozenNodes: Node[];
-
-  constructor(config: RowHeaderConfig) {
-    super(config);
-    this.initGroups();
-    this.extraFrozenNodes = getExtraFrozenRowNodes(
-      this.headerConfig.spreadsheet,
-    );
-  }
-
-  private initGroups() {
+  protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_ROW_SCROLL,
@@ -56,6 +40,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         name: KEY_GROUP_ROW_HEADER_FROZEN_TRAILING,
         style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
       }),
+    );
+
+    this.extraFrozenNodes = getExtraFrozenRowNodes(
+      this.headerConfig.spreadsheet.facet as FrozenFacet,
     );
   }
 
@@ -154,11 +142,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const paginationScrollY = spreadsheet.facet.getPaginationScrollY();
 
-    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupAreas;
+    const facet = spreadsheet.facet as FrozenFacet;
 
     const trailingRowOffset = getFrozenTrailingRowOffset(
-      frozenGroupAreas,
+      facet,
       viewportHeight,
       paginationScrollY,
     );
@@ -214,10 +201,5 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         height: frozenTrailingRowGroupHeight,
       },
     });
-  }
-
-  public clear() {
-    this.scrollGroup?.removeChildren();
-    this.frozenGroup?.removeChildren();
   }
 }

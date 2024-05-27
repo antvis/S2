@@ -989,11 +989,9 @@ export class PivotFacet extends FrozenFacet {
 
   protected getFrozenOptions() {
     if (!this.validFrozenOptions) {
-      const cellRange = this.getCellRange();
-
       this.validFrozenOptions = getValidFrozenOptionsForPivot(
+        super.getFrozenOptions(),
         this.spreadsheet.options,
-        cellRange.end - cellRange.start + 1,
       );
     }
 

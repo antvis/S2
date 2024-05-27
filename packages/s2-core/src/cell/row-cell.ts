@@ -416,22 +416,26 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected handleViewport() {
+    if (this.meta.isFrozen) {
+      return {
+        start: 0,
+        size: Number.POSITIVE_INFINITY,
+      };
+    }
+
     const { scrollY, viewportHeight } = this.getHeaderConfig();
 
     const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
       .frozenGroupAreas;
-    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
 
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
     const frozenTrailingRowGroupHeight =
       frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
-    const isFrozen = this.meta.isFrozen;
-
     const viewport: AreaRange = {
-      start: isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
-      size: isFrozen
-        ? Number.POSITIVE_INFINITY
-        : viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
+      start: scrollY! + frozenRowGroupHeight,
+      size:
+        viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
     };
 
     return viewport;

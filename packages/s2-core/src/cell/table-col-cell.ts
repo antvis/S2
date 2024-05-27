@@ -5,7 +5,6 @@ import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
-import type { AreaRange } from '../common/interface/scroll';
 import type { SimpleBBox } from '../engine';
 import type { BaseHeaderConfig } from '../facet/header';
 import { formattedFieldValue } from '../utils/cell/header-cell';
@@ -143,16 +142,5 @@ export class TableColCell extends ColCell {
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
     });
-  }
-
-  protected handleViewport(): AreaRange {
-    const viewport = super.handleViewport();
-
-    if (this.getMeta().isFrozen) {
-      viewport.start = 0;
-      viewport.size = Number.POSITIVE_INFINITY;
-    }
-
-    return viewport;
   }
 }

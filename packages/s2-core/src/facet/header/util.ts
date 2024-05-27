@@ -1,9 +1,10 @@
+import type { PointLike } from '@antv/g-lite';
 import { FrozenGroupArea, ROOT_NODE_ID } from '../../common';
-import type { FrozenGroupAreas } from '../../common/interface/frozen';
 import type { SpreadSheet } from '../../sheet-type';
 import type { FrozenFacet } from '../frozen-facet';
 import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
+import { Frame } from './frame';
 
 export const getSeriesNumberNodes = (
   rowsHierarchy: Hierarchy,
@@ -54,10 +55,8 @@ function getAllParents(nodes: Node[]) {
   return parents;
 }
 
-export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
+export const getExtraFrozenRowNodes = (facet: FrozenFacet) => {
   const extraNodes: Node[] = [];
-
-  const facet = spreadsheet.facet as FrozenFacet;
 
   const { start, end } = facet.getCellRange();
   const { rowCount, trailingRowCount } = facet.getFrozenOptions();
@@ -135,20 +134,20 @@ export const getExtraFrozenRowNodes = (spreadsheet: SpreadSheet) => {
   return extraNodes;
 };
 
-export const getExtraFrozenColNodes = (spreadsheet: SpreadSheet) => {
+export const getExtraFrozenColNodes = (facet: FrozenFacet) => {
   const extraNodes: Node[] = [];
-
-  const facet = spreadsheet.facet as FrozenFacet;
 
   const { colCount, trailingColCount } = facet.getFrozenOptions();
 
-  function getFrozenNodes(range: [number, number], key: string) {
-    const frozenLeafNodes = facet.getColLeafNodesByRange(range[0], range[1])!;
+  if (colCount) {
+    const { x, width } = facet.frozenGroupAreas[FrozenGroupArea.Col];
+
+    const frozenLeafNodes = facet.getColLeafNodesByRange(0, colCount - 1)!;
 
     frozenLeafNodes.forEach((leafNode) => {
       const newLeafNode = leafNode.clone();
 
-      newLeafNode[key] = true;
+      newLeafNode.isFrozenHead = true;
       extraNodes.push(newLeafNode);
     });
 
@@ -157,31 +156,80 @@ export const getExtraFrozenColNodes = (spreadsheet: SpreadSheet) => {
     parents.forEach((parent) => {
       const newParent = parent.clone();
 
-      newParent[key] = true;
+      newParent.isFrozenHead = true;
+
+      if (newParent.x < x) {
+        newParent.width -= x - newParent.x;
+        newParent.x = x;
+      }
+
+      if (newParent.x + newParent.width > x + width) {
+        newParent.width -= newParent.x + newParent.width - x - width;
+      }
 
       extraNodes.push(newParent);
     });
   }
 
-  if (colCount) {
-    getFrozenNodes([0, colCount - 1], 'isFrozenHead');
-  }
-
   if (trailingColCount) {
-    const total = facet.getColLeafNodes().length;
+    const { x, width } = facet.frozenGroupAreas[FrozenGroupArea.TrailingCol];
 
-    getFrozenNodes([total - trailingColCount, total - 1], 'isFrozenTrailing');
+    const total = facet.getColLeafNodes().length;
+    const frozenLeafNodes = facet.getColLeafNodesByRange(
+      total - trailingColCount,
+      total - 1,
+    )!;
+
+    frozenLeafNodes.forEach((leafNode) => {
+      const newLeafNode = leafNode.clone();
+
+      newLeafNode.isFrozenTrailing = true;
+      extraNodes.push(newLeafNode);
+    });
+
+    const parents = getAllParents(frozenLeafNodes);
+
+    parents.forEach((parent) => {
+      const newParent = parent.clone();
+
+      newParent.isFrozenTrailing = true;
+
+      if (newParent.x + newParent.width > x + width) {
+        newParent.width -= newParent.x + newParent.width - x - width;
+      }
+
+      if (newParent.x < x) {
+        newParent.width -= x - newParent.x;
+        newParent.x = x;
+      }
+
+      extraNodes.push(newParent);
+    });
   }
 
   return extraNodes;
 };
 
+export const getFrozenColOffset = (
+  facet: FrozenFacet,
+  cornerWidth: number = 0,
+  scrollX: number = 0,
+) => {
+  const isFrozenRowHeader = facet.spreadsheet.isFrozenRowHeader();
+
+  if (isFrozenRowHeader) {
+    return 0;
+  }
+
+  return scrollX <= cornerWidth ? scrollX : cornerWidth;
+};
+
 export const getFrozenTrailingColOffset = (
-  frozenGroupAreas: FrozenGroupAreas,
+  facet: FrozenFacet,
   viewportWidth: number,
 ) => {
-  const trailingCol = frozenGroupAreas[FrozenGroupArea.TrailingCol];
-  const trailingColWidth = trailingCol.x! + trailingCol.width!;
+  const trailingCol = facet.frozenGroupAreas[FrozenGroupArea.TrailingCol];
+  const trailingColWidth = trailingCol.x + trailingCol.width;
   const trailingColOffset =
     viewportWidth > trailingColWidth ? 0 : trailingColWidth - viewportWidth;
 
@@ -189,17 +237,47 @@ export const getFrozenTrailingColOffset = (
 };
 
 export const getFrozenTrailingRowOffset = (
-  frozenGroupAreas: FrozenGroupAreas,
+  facet: FrozenFacet,
   viewportHeight: number,
   paginationScrollY: number,
 ) => {
-  const trailingRow = frozenGroupAreas[FrozenGroupArea.TrailingRow];
+  const trailingRow = facet.frozenGroupAreas[FrozenGroupArea.TrailingRow];
   const trailingRowHeight =
-    trailingRow.y! + trailingRow.height! - paginationScrollY;
+    trailingRow.y + trailingRow.height - paginationScrollY;
   const trailingRowOffset =
     viewportHeight > trailingRowHeight
       ? paginationScrollY
       : paginationScrollY + trailingRowHeight - viewportHeight;
 
   return trailingRowOffset;
+};
+
+export const getScrollGroupClip = (facet: FrozenFacet, position: PointLike) => {
+  const isFrozenRowHeader = facet.spreadsheet.isFrozenRowHeader();
+
+  const frozenGroupAreas = facet.frozenGroupAreas;
+
+  const frozenColGroupWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
+  const frozenTrailingColGroupWidth =
+    frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
+
+  let x;
+
+  if (isFrozenRowHeader) {
+    x = position.x + frozenColGroupWidth;
+  } else if (frozenColGroupWidth) {
+    x = Frame.getVerticalBorderWidth(facet.spreadsheet) + frozenColGroupWidth;
+  } else {
+    x = 0;
+  }
+
+  const viewportWidth = facet.panelBBox.viewportWidth;
+
+  return {
+    x,
+    width:
+      (isFrozenRowHeader ? viewportWidth : position.x + viewportWidth) -
+      frozenColGroupWidth -
+      frozenTrailingColGroupWidth,
+  };
 };

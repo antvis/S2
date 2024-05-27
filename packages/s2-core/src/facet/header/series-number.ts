@@ -1,4 +1,4 @@
-import { Rect } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
@@ -6,14 +6,41 @@ import type { PanelBBox } from '../bbox/panel-bbox';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { S2Event } from '../../common';
+import {
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  KEY_GROUP_ROW_INDEX_FROZEN,
+  KEY_GROUP_ROW_INDEX_FROZEN_TRAILING,
+  KEY_GROUP_ROW_INDEX_SCROLL,
+  S2Event,
+} from '../../common';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  constructor(config: BaseHeaderConfig) {
-    super(config);
+  protected initGroups(): void {
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_SCROLL,
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
+      }),
+    );
+
+    this.frozenGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_FROZEN,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
+    this.frozenTrailingGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_FROZEN_TRAILING,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
+
+    this.extraFrozenNodes = [];
   }
 
   protected getCellInstance(node: Node) {
@@ -68,7 +95,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const { width, viewportHeight, position, spreadsheet } =
       this.getHeaderConfig();
 
-    this.style.clipPath = new Rect({
+    this.scrollGroup.style.clipPath = new Rect({
       style: {
         x: spreadsheet.facet.cornerBBox.x,
         y: position.y,
@@ -102,7 +129,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       const cell = this.getCellInstance(node);
 
       node.belongsCell = cell;
-      this.appendChild(cell);
+      this.scrollGroup.appendChild(cell);
       spreadsheet.emit(S2Event.SERIES_NUMBER_CELL_RENDER, cell);
       spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
     });
@@ -111,12 +138,10 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   protected offset() {
     const { scrollY = 0, scrollX = 0, position } = this.getHeaderConfig();
 
-    translateGroup(this, position.x - scrollX, position.y - scrollY);
-  }
-
-  public getNodes(): Node[] {
-    const { nodes } = this.getHeaderConfig();
-
-    return nodes || [];
+    translateGroup(
+      this.scrollGroup,
+      position.x - scrollX,
+      position.y - scrollY,
+    );
   }
 }

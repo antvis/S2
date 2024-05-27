@@ -36,8 +36,10 @@ import {
   translateGroup,
 } from './utils';
 import {
+  getFrozenColOffset,
   getFrozenTrailingColOffset,
   getFrozenTrailingRowOffset,
+  getScrollGroupClip,
 } from './header/util';
 
 /**
@@ -347,20 +349,19 @@ export abstract class FrozenFacet extends BaseFacet {
 
     const { x, y, viewportWidth, viewportHeight } = this.panelBBox;
 
-    const trailingColOffset = getFrozenTrailingColOffset(
-      this.frozenGroupAreas,
-      viewportWidth,
-    );
+    const colOffset = getFrozenColOffset(this, this.cornerBBox.width, scrollX);
+
+    const trailingColOffset = getFrozenTrailingColOffset(this, viewportWidth);
 
     const trailingRowOffset = getFrozenTrailingRowOffset(
-      this.frozenGroupAreas,
+      this,
       viewportHeight,
       paginationScrollY,
     );
 
     translateGroup(
       this.frozenGroups[FrozenGroupType.TopLeft],
-      x,
+      x - colOffset,
       y - paginationScrollY,
     );
 
@@ -372,7 +373,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
     translateGroup(
       this.frozenGroups[FrozenGroupType.BottomLeft],
-      x,
+      x - colOffset,
       y - trailingRowOffset,
     );
 
@@ -395,7 +396,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
     translateGroup(
       this.frozenGroups[FrozenGroupType.Col],
-      x,
+      x - colOffset,
       y - scrollY - paginationScrollY,
     );
     translateGroup(
@@ -458,8 +459,12 @@ export abstract class FrozenFacet extends BaseFacet {
     };
 
     if (colCount > 0) {
+      const cornerWidth = this.cornerBBox.width;
+      const colOffset = getFrozenColOffset(this, cornerWidth, scrollX);
       const x =
-        panelBBoxStartX + this.frozenGroupAreas[FrozenGroupArea.Col].width;
+        panelBBoxStartX +
+        this.frozenGroupAreas[FrozenGroupArea.Col].width -
+        colOffset;
 
       const height = viewportHeight + panelBBoxStartY;
 
@@ -471,7 +476,7 @@ export abstract class FrozenFacet extends BaseFacet {
         y2: height,
       });
 
-      if (splitLine?.showShadow && scrollX > 0) {
+      if (splitLine?.showShadow && scrollX > 0 && colOffset >= cornerWidth) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
@@ -583,7 +588,7 @@ export abstract class FrozenFacet extends BaseFacet {
 
   protected override getCenterFrameScrollX(scrollX: number): number {
     if (this.getFrozenOptions().colCount > 0) {
-      return 0;
+      return getFrozenColOffset(this, this.cornerBBox.width, scrollX);
     }
 
     return super.getCenterFrameScrollX(scrollX);
@@ -641,26 +646,22 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   protected clip() {
-    const { frozenGroupAreas: frozenGroupPositions, spreadsheet } = this;
+    const { scrollX } = this.getScrollOffset();
 
-    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
+    const { x: panelScrollGroupClipX, width: panelScrollGroupClipWidth } =
+      getScrollGroupClip(this, this.panelBBox);
 
-    const frozenColGroupWidth = frozenGroupPositions[FrozenGroupArea.Col].width;
+    const frozenColGroupWidth =
+      this.frozenGroupAreas[FrozenGroupArea.Col].width;
     const frozenTrailingColWidth =
-      frozenGroupPositions[FrozenGroupArea.TrailingCol].width;
+      this.frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
     const frozenRowGroupHeight =
-      frozenGroupPositions[FrozenGroupArea.Row].height;
+      this.frozenGroupAreas[FrozenGroupArea.Row].height;
     const frozenTrailingRowHeight =
-      frozenGroupPositions[FrozenGroupArea.TrailingRow].height;
+      this.frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
-    const panelScrollGroupClipX =
-      (isFrozenRowHeader ? this.panelBBox.x : 0) + frozenColGroupWidth;
     const panelScrollGroupClipY = this.panelBBox.y + frozenRowGroupHeight;
-    const panelScrollGroupClipWidth =
-      this.panelBBox.viewportWidth -
-      frozenColGroupWidth -
-      frozenTrailingColWidth +
-      (isFrozenRowHeader ? 0 : this.panelBBox.x);
+
     const panelScrollGroupClipHeight =
       this.panelBBox.viewportHeight -
       frozenRowGroupHeight -
@@ -678,7 +679,9 @@ export abstract class FrozenFacet extends BaseFacet {
     /* frozen groups clip */
     this.frozenGroups[FrozenGroupType.Col].style.clipPath = new Rect({
       style: {
-        x: this.panelBBox.x,
+        x:
+          this.panelBBox.x -
+          getFrozenColOffset(this, this.cornerBBox.width, scrollX),
         y: panelScrollGroupClipY,
         width: frozenColGroupWidth,
         height: panelScrollGroupClipHeight,
