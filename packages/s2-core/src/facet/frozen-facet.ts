@@ -476,7 +476,11 @@ export abstract class FrozenFacet extends BaseFacet {
         y2: height,
       });
 
-      if (splitLine?.showShadow && scrollX > 0 && colOffset >= cornerWidth) {
+      if (
+        splitLine?.showShadow &&
+        scrollX > 0 &&
+        (this.spreadsheet.isFrozenRowHeader() || colOffset >= cornerWidth)
+      ) {
         splitLineGroup.appendChild(
           new Rect({
             style: {

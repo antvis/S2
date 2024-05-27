@@ -19,6 +19,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
   safeJsonParse,
+  DEFAULT_FROZEN_COUNTS,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -599,57 +600,42 @@ function MainLayout() {
                                   />
                                 </Tooltip>
 
-                                <Tooltip title="透视表、明细表有效">
-                                  <Switch
-                                    checkedChildren="冻结行头开"
-                                    unCheckedChildren="冻结行头关"
-                                    defaultChecked={
-                                      !!mergedOptions.frozen?.trailingRowCount
+                                <Switch
+                                  checkedChildren="冻结行头开"
+                                  unCheckedChildren="冻结行头关"
+                                  defaultChecked={
+                                    !!mergedOptions.frozen?.trailingRowCount
+                                  }
+                                  onChange={(checked) => {
+                                    if (checked) {
+                                      updateOptions({
+                                        frozen: PivotSheetFrozenOptions,
+                                      });
+                                    } else {
+                                      updateOptions({
+                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
+                                      });
                                     }
-                                    onChange={(checked) => {
-                                      if (checked) {
-                                        updateOptions({
-                                          frozen: PivotSheetFrozenOptions,
-                                        });
-                                      } else {
-                                        updateOptions({
-                                          frozen: {
-                                            rowCount: 0,
-                                            colCount: 0,
-                                            trailingColCount: 0,
-                                            trailingRowCount: 0,
-                                          },
-                                        });
-                                      }
-                                    }}
-                                  />
-                                </Tooltip>
-                                <Tooltip title="明细表有效">
-                                  <Switch
-                                    checkedChildren="冻结列头开"
-                                    unCheckedChildren="冻结列头关"
-                                    defaultChecked={
-                                      !!mergedOptions.frozen?.trailingColCount
+                                  }}
+                                />
+                                <Switch
+                                  checkedChildren="冻结列头开"
+                                  unCheckedChildren="冻结列头关"
+                                  defaultChecked={
+                                    !!mergedOptions.frozen?.trailingColCount
+                                  }
+                                  onChange={(checked) => {
+                                    if (checked) {
+                                      updateOptions({
+                                        frozen: TableSheetFrozenOptions,
+                                      });
+                                    } else {
+                                      updateOptions({
+                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
+                                      });
                                     }
-                                    onChange={(checked) => {
-                                      if (checked) {
-                                        updateOptions({
-                                          frozen: TableSheetFrozenOptions,
-                                        });
-                                      } else {
-                                        updateOptions({
-                                          frozen: {
-                                            rowCount: 0,
-                                            colCount: 0,
-                                            trailingColCount: 0,
-                                            trailingRowCount: 0,
-                                          },
-                                        });
-                                      }
-                                    }}
-                                    disabled={sheetType === 'pivot'}
-                                  />
-                                </Tooltip>
+                                  }}
+                                />
                                 <Switch
                                   checkedChildren="显示序号"
                                   unCheckedChildren="不显示序号"

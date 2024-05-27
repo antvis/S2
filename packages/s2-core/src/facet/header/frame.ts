@@ -4,6 +4,7 @@ import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 import { floor } from '../../utils/math';
+import type { FrozenFacet } from '../frozen-facet';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;
@@ -71,9 +72,14 @@ export class Frame extends Group {
   }
 
   public onChangeShadowVisibility(scrollX: number, maxScrollX: number) {
-    this.cfg.showViewportLeftShadow = scrollX > 0;
+    const { colCount, trailingColCount } = (
+      this.cfg.spreadsheet.facet as FrozenFacet
+    ).getFrozenOptions();
+
+    this.cfg.showViewportLeftShadow = colCount === 0 && scrollX > 0;
     // baseFacet#renderHScrollBar render condition
-    this.cfg.showViewportRightShadow = floor(scrollX) < floor(maxScrollX);
+    this.cfg.showViewportRightShadow =
+      trailingColCount === 0 && floor(scrollX) < floor(maxScrollX);
 
     this.render();
   }
