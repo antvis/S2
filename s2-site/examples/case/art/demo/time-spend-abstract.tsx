@@ -41,33 +41,50 @@ const paletteLegendMap = [
   },
 ];
 
+const ImageCache = new Map<string, HTMLImageElement>();
+
 /**
  * 自定义 DataCell, 给单元格添加图表
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
-  drawTextShape() {
+  drawTextShape() {}
+
+  renderImage(img: HTMLImageElement) {
+    const { x, y, width, height } = this.meta;
+
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          x: x + (width - img?.width) / 2,
+          y: y + (height - img?.height) / 2,
+          width: img?.width ?? width,
+          height: img?.height ?? height,
+          src: img,
+        },
+      }),
+    );
+  }
+
+  drawBackgroundShape() {
     const { fieldValue } = this.meta;
     const url =
       paletteLegendMap.find((legend) => legend.text === fieldValue)?.src ??
       'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
+
+    if (ImageCache.get(url)) {
+      this.renderImage(ImageCache.get(url));
+
+      return;
+    }
+
     const img = new Image();
 
     img.src = url;
-    const { x, y, width, height } = this.meta;
 
     img.onload = () => {
-      this.textShape = this.appendChild(
-        new GImage({
-          style: {
-            x: x + (width - img?.width) / 2,
-            y: y + (height - img?.height) / 2,
-            width: img?.width ?? width,
-            height: img?.height ?? height,
-            src: img,
-          },
-        }),
-      );
+      this.renderImage(img);
+      ImageCache.set(url, img);
     };
   }
 }

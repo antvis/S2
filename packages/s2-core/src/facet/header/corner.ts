@@ -1,13 +1,12 @@
 import { Rect, type PointLike } from '@antv/g';
 import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import type { S2CellType } from '../../common/interface';
+import { S2Event } from '../../common';
 import { CornerNodeType } from '../../common/interface/node';
 import type { CornerBBox } from '../bbox/corner-bbox';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { S2Event } from '../../common';
 import {
   getDefaultCornerText,
   getDefaultSeriesNumberText,
@@ -249,11 +248,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerHeader = spreadsheet.options?.cornerHeader;
 
     if (cornerHeader) {
-      cornerHeader(
-        this as unknown as S2CellType,
-        spreadsheet,
-        this.headerConfig,
-      );
+      cornerHeader(this, spreadsheet, this.headerConfig);
 
       return;
     }

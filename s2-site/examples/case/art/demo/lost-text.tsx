@@ -1,17 +1,15 @@
 /* eslint-disable max-classes-per-file */
-import React from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { Tag } from 'antd';
 import {
   BaseEvent,
   CellType,
-  getTheme,
   InterceptType,
   S2Event,
-  CornerCell,
   S2Theme,
+  getTheme,
 } from '@antv/s2';
-import { Rect } from '@antv/g';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { Tag } from 'antd';
+import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
 
 const Theme: S2Theme = {

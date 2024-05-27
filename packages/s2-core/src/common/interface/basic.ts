@@ -11,7 +11,7 @@ import type {
 import type { FrameConfig } from '../../common/interface/frame';
 import type { Query } from '../../data-set';
 import type { CellData } from '../../data-set/cell-data';
-import type { BaseHeaderConfig, Frame } from '../../facet/header';
+import type { BaseHeaderConfig, CornerHeader, Frame } from '../../facet/header';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { CellType } from '../constant';
@@ -390,7 +390,7 @@ export type MergedCellCallback = (
 export type FrameCallback = (cfg: FrameConfig) => Frame;
 
 export type CornerHeaderCallback = (
-  parent: S2CellType,
+  cornerHeader: CornerHeader,
   spreadsheet: SpreadSheet,
   ...restOptions: unknown[]
 ) => void;
