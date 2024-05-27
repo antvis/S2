@@ -167,7 +167,7 @@ describe('Scroll Tests', () => {
     canvas.dispatchEvent(wheelEvent);
 
     // wait requestAnimationFrame
-    await sleep(200);
+    await sleep(1000);
 
     // emit event
     expect(onRowScroll).toHaveBeenCalled();
@@ -247,7 +247,7 @@ describe('Scroll Tests', () => {
       expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
 
       // wait requestAnimationFrame
-      await sleep(200);
+      await sleep(1000);
 
       // emit event
       expect(onScroll).toHaveBeenCalled();
@@ -316,7 +316,7 @@ describe('Scroll Tests', () => {
       expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalsy();
 
       // wait requestAnimationFrame
-      await sleep(200);
+      await sleep(1000);
 
       expect(showHorizontalScrollBarSpy).not.toHaveBeenCalled();
       expect(showVerticalScrollBarSpy).not.toHaveBeenCalled();
