@@ -1,4 +1,5 @@
 import type { LineStyleProps, TextStyleProps } from '@antv/g';
+import type { Omit } from 'lodash';
 import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
@@ -69,9 +70,29 @@ export interface Padding {
   left?: number;
 }
 
-export interface Background {
+export interface BackgroundTheme {
   opacity?: number;
   color?: string;
+}
+
+export interface EmptyTheme {
+  /** 空状态图标 */
+  icon?: Omit<IconTheme, 'size'> & {
+    width?: number;
+    height?: number;
+  };
+
+  /** 空状态文案 */
+  description?: Pick<
+    TextStyleProps,
+    | 'fontFamily'
+    | 'fontSize'
+    | 'fontWeight'
+    | 'fill'
+    | 'opacity'
+    | 'fontStyle'
+    | 'fontVariant'
+  >;
 }
 
 export interface InteractionStateTheme {
@@ -321,7 +342,10 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
 
   /** 画布背景底色 */
-  background?: Background;
+  background?: BackgroundTheme;
+
+  /** 空数据占位符 */
+  empty?: EmptyTheme;
 }
 
 export type ThemeName = keyof typeof PALETTE_MAP;

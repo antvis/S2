@@ -96,7 +96,7 @@ describe('GuiIcon Tests', () => {
     });
 
     const spy = jest.spyOn(icon, 'getImage');
-    const oldVal = icon.iconImageShape.style.img;
+    const oldVal = icon.iconImageShape.style.src;
 
     expect(oldVal).toBeDefined();
     icon.setImageAttrs({ fill: 'red' });
@@ -111,7 +111,7 @@ describe('GuiIcon Tests', () => {
       customSVGIcons: [
         {
           name: 'Filter',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
         },
       ],
       headerActionIcons: [

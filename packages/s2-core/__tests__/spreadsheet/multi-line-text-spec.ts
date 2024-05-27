@@ -4,8 +4,9 @@ import { range } from 'lodash';
 import {
   PivotSheet,
   TableSheet,
-  type SpreadSheet,
   EXTRA_FIELD,
+  type SpreadSheet,
+  type TableFacet,
 } from '../../src';
 import type {
   CellTextWordWrapStyle,
@@ -146,7 +147,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should default render one line text', () => {
@@ -385,7 +386,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       updateStyle(3);
       await s2.render(false);
 
-      expectColHierarchyHeight(165, 112, 53);
+      expectColHierarchyHeight(149, 96, 53);
     });
 
     test('should render correctly layout if only enable grand totals', async () => {
@@ -441,7 +442,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       matchCellStyleSnapshot();
 
       // 省份 4行文本, 叶子节点 (城市) 3行文本, 省份应该和城市高度一致, 才能展示所有文本 (maxLines: 4)
-      expectRowHierarchyHeight(568, 0, 72);
+      expectRowHierarchyHeight(384, 0, 72);
       expectColHierarchyHeight(212, 144, 68);
     });
 
@@ -472,8 +473,78 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       await s2.render();
 
       matchCellStyleSnapshot();
-      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(760);
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(524);
     });
+
+    // https://github.com/antvis/S2/issues/2678
+    test('should get correctly row cell height priority if actual text not wrap', async () => {
+      updateStyle(3);
+
+      s2.setOptions({
+        style: {
+          rowCell: {
+            heightByField: {
+              'root[&]浙江省[&]宁波市': 20,
+              'root[&]浙江省[&]舟山市': 60,
+              'root[&]浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省浙江省[&]杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市杭州市': 20,
+              'root[&]四川省[&]成都市': 100,
+            },
+          },
+        },
+      });
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should get correctly col cell height priority if actual text not wrap', async () => {
+      updateStyle(3);
+
+      // 清空多行文本
+      s2.setDataCfg({ meta: [], data: s2.dataCfg.data.slice(3) });
+      s2.setOptions({
+        style: {
+          colCell: {
+            heightByField: {
+              type: 20,
+              sub_type: 20,
+              [EXTRA_FIELD]: 20,
+            },
+          },
+        },
+      });
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+    });
+
+    test('should use actual text height for large max line', async () => {
+      // 设置 20 行文本, 应该以实际的文本自适应高度
+      updateStyle(20);
+
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect(s2.facet.getLayoutResult().rowsHierarchy.height).toEqual(328);
+    });
+
+    test.each(range(1, 11))(
+      'should always render default cell height when set %s line, but actual text not wrap',
+      async (maxLines) => {
+        updateStyle(maxLines);
+
+        s2.changeSheetSize(800, 600);
+        s2.setDataCfg(SimpleDataCfg);
+        await s2.render();
+
+        // 不管设置了多少行的文本, 如果实际文本未换行, 高度不应该自适应, 以默认高度为准.
+        expectColHierarchyHeight(60, 30, 30, 2);
+        expectRowHierarchyHeight(60, 0, 30, 2);
+      },
+    );
   });
 
   describe('TableSheet', () => {
@@ -495,7 +566,7 @@ describe('SpreadSheet Multi Line Text Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should default render one line text', () => {
@@ -634,6 +705,44 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       expect(
         rowDataCells.every((cell) => cell.getMeta().height === 76),
       ).toBeTruthy();
+    });
+
+    test('should calc correctly data cell height if actual text lines is difference and partial outside the canvas', async () => {
+      updateStyle(4);
+      s2.setOptions({
+        style: {
+          rowCell: {
+            // 让第二行部分超出屏幕
+            heightByField: {
+              0: 300,
+            },
+          },
+        },
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
+    });
+
+    test('should calc correctly data cell height if actual text lines is difference and outside the canvas', async () => {
+      updateStyle(4);
+      s2.setOptions({
+        style: {
+          rowCell: {
+            // 让第二行超出屏幕
+            heightByField: {
+              0: 360,
+            },
+          },
+        },
+      });
+
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect((s2.facet as unknown as TableFacet).rowOffsets).toMatchSnapshot();
     });
 
     test('should not force adaptive adjust row height if custom cell style less than actual text height by rowCell.heightByField', async () => {
@@ -855,12 +964,32 @@ describe('SpreadSheet Multi Line Text Tests', () => {
       ).toBeTruthy();
     });
 
-    test.skip.each(range(1, 6))(
+    test('should use actual text height for large max line', async () => {
+      updateStyle(20);
+
+      s2.changeSheetSize(800, 600);
+      await s2.render();
+
+      matchCellStyleSnapshot();
+      expect(s2.facet.getLayoutResult().colsHierarchy.height).toEqual(56);
+    });
+
+    test.each(range(1, 11))(
       'should always render default cell height when set %s line, but actual text not wrap',
       async (maxLines) => {
         updateStyle(maxLines);
 
-        s2.setDataCfg(SimpleDataCfg);
+        s2.setDataCfg(
+          {
+            ...SimpleDataCfg,
+            fields: {
+              rows: [],
+              columns: ['province', 'city', 'type', 'price', 'cost'],
+              values: [],
+            },
+          },
+          true,
+        );
         await s2.render();
 
         expectColHierarchyHeight(30, 0, 30, 1);

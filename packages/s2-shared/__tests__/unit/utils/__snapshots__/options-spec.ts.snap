@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Options Tests should get custom options 1`] = `
+Object {
+  "autoAdjustBoundary": "body",
+  "enable": false,
+  "operation": Object {
+    "hiddenColumns": true,
+    "menu": Object {
+      "items": Array [
+        Object {
+          "key": "custom",
+          "label": "custom",
+        },
+      ],
+    },
+    "sort": false,
+  },
+}
+`;
+
 exports[`Options Tests should get safety options 1`] = `
 Object {
   "conditions": Object {},
@@ -59,7 +78,12 @@ Object {
     "selectedCellHighlight": false,
     "selectedCellsSpotlight": false,
   },
-  "placeholder": "-",
+  "placeholder": Object {
+    "cell": "-",
+    "empty": Object {
+      "icon": "Empty",
+    },
+  },
   "seriesNumber": Object {
     "enable": false,
   },

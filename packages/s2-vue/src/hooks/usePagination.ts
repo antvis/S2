@@ -5,7 +5,7 @@ import {
   type SpreadSheet,
 } from '@antv/s2';
 import { computed, ref, watch, type Ref } from 'vue';
-import { isEmpty } from 'lodash';
+import { isEmpty, omit } from 'lodash';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
 export const DEFAULT_PAGE_NUMBER = 1;
@@ -15,12 +15,12 @@ export const usePagination = (
   s2Ref: Ref<SpreadSheet | undefined>,
   props: BaseSheetProps,
 ) => {
-  const current = ref(
-    props.options?.pagination?.current ?? DEFAULT_PAGE_NUMBER,
-  );
-  const pageSize = ref(
-    props.options?.pagination?.pageSize ?? DEFAULT_PAGE_SIZE,
-  );
+  const {
+    options: { pagination: paginationCfg },
+    showPagination,
+  } = props;
+  const current = ref(paginationCfg?.current ?? DEFAULT_PAGE_NUMBER);
+  const pageSize = ref(paginationCfg?.pageSize ?? DEFAULT_PAGE_SIZE);
   const total = ref(0);
 
   const change = (nextCurrent: number) => {
@@ -31,9 +31,9 @@ export const usePagination = (
     pageSize.value = nextPageSize;
   };
 
-  const visible = computed(
-    () => props.showPagination && !isEmpty(props.options?.pagination),
-  );
+  const visible = computed(() => {
+    return showPagination && !isEmpty(paginationCfg);
+  });
 
   // sync state.pagination -> s2.pagination
   watch([current, pageSize], () => {
@@ -41,7 +41,7 @@ export const usePagination = (
       return;
     }
 
-    const nextPagination = isEmpty(props.options?.pagination)
+    const nextPagination = isEmpty(paginationCfg)
       ? (null as unknown as Pagination)
       : {
           current: current.value,
@@ -54,10 +54,10 @@ export const usePagination = (
 
   // sync props.pagination -> state.pagination
   watch(
-    [() => props.options?.pagination, s2Ref],
+    [() => paginationCfg, s2Ref],
     () => {
-      current.value = props.options?.pagination?.current ?? DEFAULT_PAGE_NUMBER;
-      pageSize.value = props.options?.pagination?.pageSize ?? DEFAULT_PAGE_SIZE;
+      current.value = paginationCfg?.current ?? DEFAULT_PAGE_NUMBER;
+      pageSize.value = paginationCfg?.pageSize ?? DEFAULT_PAGE_SIZE;
       total.value = s2Ref.value?.facet?.viewCellHeights.getTotalLength() ?? 0;
     },
     {
@@ -74,7 +74,7 @@ export const usePagination = (
     const totalUpdateCallback: EmitterType[S2Event.LAYOUT_PAGINATION] = (
       data,
     ) => {
-      if (isEmpty(props.options?.pagination)) {
+      if (isEmpty(paginationCfg)) {
         return;
       }
 
@@ -89,6 +89,7 @@ export const usePagination = (
   });
 
   return {
+    customOptions: omit(paginationCfg, ['current', 'pageSize', 'total']),
     visible,
     current,
     pageSize,

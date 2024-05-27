@@ -19,7 +19,7 @@ class CustomColCell extends ColCell {
         new GImage({
           style: {
             ...this.getBBoxByType(),
-            img,
+            src: img,
           },
         }),
       );

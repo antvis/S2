@@ -12,6 +12,7 @@ import type {
 } from '../../../src';
 import { PivotDataSet } from '../../../src/data-set';
 import { PivotFacet } from '../../../src/facet';
+import { createMockCellInfo } from '../../util/helpers';
 import { customMerge, setupDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -48,7 +49,7 @@ describe('PivotSheet Tests', () => {
 
   const customSVGIcon: CustomSVGIcon = {
     name: 'test',
-    svg: '===',
+    src: '===',
   };
 
   const s2Options: S2Options = {
@@ -441,7 +442,7 @@ describe('PivotSheet Tests', () => {
   test('should register icons', () => {
     s2.registerIcons();
 
-    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.svg);
+    expect(getIcon(customSVGIcon.name)).toEqual(customSVGIcon.src);
   });
 
   test('should set data config', () => {
@@ -1005,7 +1006,6 @@ describe('PivotSheet Tests', () => {
 
       const options: TooltipOptions = {
         onlyShowOperator: true,
-        forceRender: true,
         operator: {
           menu: {
             items: [
@@ -1014,7 +1014,7 @@ describe('PivotSheet Tests', () => {
               { key: 'none', label: groupNoneText },
             ],
             onClick: expect.anything(),
-            defaultSelectedKeys: [],
+            selectedKeys: [],
           },
         },
       };
@@ -1033,14 +1033,6 @@ describe('PivotSheet Tests', () => {
       .spyOn(s2, 'render')
       .mockImplementation(async () => {});
 
-    const showTooltipWithInfoSpy = jest
-      .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation((_, __, options) => {
-        return {
-          forceRender: options?.forceRender,
-        } as unknown as void;
-      });
-
     const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });
 
     s2.handleGroupSort(
@@ -1049,8 +1041,6 @@ describe('PivotSheet Tests', () => {
       } as GEvent,
       nodeMeta,
     );
-
-    expect(showTooltipWithInfoSpy).toHaveReturnedWith({ forceRender: true });
 
     s2.groupSortByMethod('asc', nodeMeta);
 
@@ -1369,5 +1359,27 @@ describe('PivotSheet Tests', () => {
 
     expect(sheet.facet).toBeInstanceOf(PivotFacet);
     expect(mockRender).toHaveBeenCalledTimes(1);
+  });
+
+  test('get sheetInstance from canvas', () => {
+    const canvas = s2.getCanvasElement();
+
+    // eslint-disable-next-line no-underscore-dangle
+    expect(canvas.__s2_instance__).toEqual(s2);
+
+    s2.destroy();
+    // eslint-disable-next-line no-underscore-dangle
+    expect(canvas.__s2_instance__).toBe(undefined);
+  });
+
+  test('should get last interacted cell if event target is empty', () => {
+    const cellA = createMockCellInfo('A');
+    const cellB = createMockCellInfo('B');
+
+    s2.interaction.setInteractedCells(cellA);
+    s2.interaction.setInteractedCells(cellB);
+
+    // @ts-ignore
+    expect(s2.getTargetCell(null)).toEqual(cellB);
   });
 });

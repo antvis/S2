@@ -1,4 +1,3 @@
-// 不本地直接引用svg，避免下游无依赖
 export {
   ArrowDown,
   ArrowUp,
@@ -20,4 +19,5 @@ export {
   Trend,
   DrillDownIcon,
   EyeOutlined,
+  Empty,
 } from './svgs';

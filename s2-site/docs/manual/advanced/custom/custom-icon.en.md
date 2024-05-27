@@ -27,7 +27,7 @@ const s2Options = {
   customSVGIcons: [
     {
       name: 'Filter',
-      svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
     },
   ],
 }
@@ -40,11 +40,11 @@ const s2Options = {
   customSVGIcons: [
     {
       name: 'Plus',
-      svg: 'https://gw.alipayobjects.com/zos/antfincdn/kXgP1pnClS/plus.svg',
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/kXgP1pnClS/plus.svg',
     },
     {
       name: 'Minus',
-      svg: 'https://gw.alipayobjects.com/zos/antfincdn/2aWYZ7%26rQF/minus-circle.svg',
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/2aWYZ7%26rQF/minus-circle.svg',
     },
   ],
 }
@@ -71,7 +71,7 @@ const s2Options = {
   customSVGIcons: [
     {
       name: 'Filter',
-      svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+      src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
     },
   ],
   conditions: {

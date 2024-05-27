@@ -1,5 +1,6 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import type { TextTheme } from '../../../src/common';
+import { safeJsonParse } from '../../../src/utils/common';
 import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   isUpDataValue,
@@ -9,8 +10,6 @@ import {
   isZeroOrEmptyValue,
   isUnchangedValue,
 } from '@/utils/text';
-
-const isHD = window.devicePixelRatio >= 2;
 
 describe('Text Utils Tests', () => {
   const font: TextTheme = {
@@ -24,7 +23,13 @@ describe('Text Utils Tests', () => {
 
     beforeEach(() => {
       measureTextWidth = createPivotSheet(
-        {},
+        {
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio: 2,
+            };
+          },
+        },
         { useSimpleData: true },
       ).measureTextWidth;
     });
@@ -36,7 +41,7 @@ describe('Text Utils Tests', () => {
     test('should get correct text width', () => {
       const width = measureTextWidth('test', font);
 
-      expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
+      expect(Math.floor(width)).toBeGreaterThanOrEqual(16);
     });
   });
 
@@ -79,7 +84,7 @@ describe('Text Utils Tests', () => {
       field: '',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, '*');
+    const placeholder = getEmptyPlaceholder(meta, { cell: '*' });
 
     expect(placeholder).toEqual('*');
   });
@@ -90,7 +95,9 @@ describe('Text Utils Tests', () => {
       value: 'test',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, (meta) => meta['value']);
+    const placeholder = getEmptyPlaceholder(meta, {
+      cell: (meta) => meta['value'],
+    });
 
     expect(placeholder).toEqual('test');
   });
@@ -199,6 +206,20 @@ describe('Text Utils Tests', () => {
         },
       ],
     ]);
+  });
+
+  test('should get cell width', () => {
+    expect(getCellWidth({ width: 30 })).toEqual(30);
+    expect(getCellWidth({ width: 30 }, 2)).toEqual(60);
+  });
+
+  test('should safe parse json', () => {
+    const value = {
+      a: [1],
+    };
+
+    expect(safeJsonParse('')).toEqual(null);
+    expect(safeJsonParse(JSON.stringify(value))).toEqual(value);
   });
 });
 

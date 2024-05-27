@@ -8,6 +8,7 @@ import {
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
+import { getDataCellId } from '../../utils';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
@@ -85,7 +86,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         metas.push({
           colIndex,
           rowIndex,
-          id: `${rowId}-${colId}`,
+          id: getDataCellId(rowId, colId),
           type: CellType.DATA_CELL,
           rowId,
           colId,
@@ -135,7 +136,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         meta.colIndex,
       )!;
 
-      return this.spreadsheet.options.dataCell!(viewMeta);
+      return this.spreadsheet.options.dataCell!(viewMeta, this.spreadsheet);
     });
   }
 

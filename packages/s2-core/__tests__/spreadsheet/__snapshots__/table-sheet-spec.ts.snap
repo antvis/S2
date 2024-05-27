@@ -1,0 +1,414 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 367.5,
+  "y": 292.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 375.5,
+  "y": 357.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col height 1`] = `
+Object {
+  "height": 272,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 599,
+  "x": 0,
+  "y": 202,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col height 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 267.5,
+  "y": 317.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col height 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 275.5,
+  "y": 382.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 1`] = `
+Object {
+  "height": 442,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 510,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 223,
+  "y": 232.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom col width 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 231,
+  "y": 297.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Trend",
+  "width": 64,
+  "x": 367.5,
+  "y": 292.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 375.5,
+  "y": 357.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description style 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description style 2`] = `
+Object {
+  "fill": "green",
+  "height": 100,
+  "margin": Object {
+    "bottom": 80,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 100,
+  "x": 349.5,
+  "y": 263,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder by custom icon and description style 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 255,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 20,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 359.5,
+  "y": 443,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 367.5,
+  "y": 292.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder for en_US lang 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "No Data",
+  "x": 377.4892578125,
+  "y": 357.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder if contains horizontal scrollbar 1`] = `
+Object {
+  "height": 562,
+  "stroke": CSSRGB {
+    "alpha": 1,
+    "b": 253,
+    "colorSpace": "rgb",
+    "g": 233,
+    "isNone": false,
+    "r": 224,
+  },
+  "strokeOpacity": 1,
+  "strokeWidth": 1,
+  "width": 799,
+  "x": 0,
+  "y": 32,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder if contains horizontal scrollbar 2`] = `
+Object {
+  "fill": "",
+  "height": 41,
+  "margin": Object {
+    "bottom": 24,
+    "left": 0,
+    "right": 0,
+    "top": 0,
+  },
+  "name": "Empty",
+  "width": 64,
+  "x": 367.5,
+  "y": 292.5,
+}
+`;
+
+exports[`TableSheet normal spec Empty Placeholder should render empty placeholder if contains horizontal scrollbar 3`] = `
+Object {
+  "fill": CSSRGB {
+    "alpha": 1,
+    "b": 0,
+    "colorSpace": "rgb",
+    "g": 0,
+    "isNone": false,
+    "r": 0,
+  },
+  "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
+  "fontSize": 12,
+  "fontStyle": "normal",
+  "fontVariant": "normal",
+  "fontWeight": "normal",
+  "lineWidth": 1,
+  "opacity": 1,
+  "text": "暂无数据",
+  "x": 375.5,
+  "y": 357.5,
+}
+`;

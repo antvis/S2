@@ -67,9 +67,9 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ### 基础包 <Badge>@antv/s2</Badge>
 
-#### 底层渲染引擎升级为 `AntV/G 5.0`
+#### 底层渲染引擎升级为 `AntV/G 6.0`
 
-表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
+表格绘制引擎升级到 [`G 6.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
 
 ```diff
 - s2.render()
@@ -212,10 +212,19 @@ const s2Options = {
 +  sheetInstance: s2,
 +  split: '\t',
 +  formatOptions: false,
++  async: true,
 });
 ```
 
-3. 复制默认开启。
+3. `copyToClipboard` 第二个参数含义 从 `sync` 变更为 `async`.
+
+```diff
+- const data = copyToClipboard(data: string, sync: boolean)
++ const data = copyToClipboard(data: string, async: boolean)
+```
+
+4. 复制默认开启。
+5. 复制导出默认异步。
 
 具体请查看 [复制与导出](/manual/advanced/interaction/copy) 相关文档。
 
@@ -284,7 +293,23 @@ const s2Options = {
 
 具体请查看 [自定义 Icon](/manual/advanced/custom/custom-icon) 相关文档。
 
-#### 树状结构配置调整
+#### customSVGIcons 配置调整
+
+`svg` 调整为 `src`, 保持 API 统一。
+
+```diff | pure
+const s2Options = {
+  customSVGIcons: [
+    {
+      name: 'CustomIcon',
+-     svg: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
++     src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
+    },
+  ]
+}
+```
+
+#### 树状结构配置和回调事件调整
 
 1. 行头折叠展开配置调整
 
@@ -356,6 +381,19 @@ const s2DataConfig = {
 ```
 
 具体请查看 [自定义行列头分组](/manual/advanced/custom/custom-header) 相关文档。
+
+4. 行头单元格折叠展开事件划分到 `RowCell`
+
+移除 `LAYOUT_AFTER_COLLAPSE_ROWS`
+
+```diff
+- S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL
++ S2Event.ROW_CELL_ALL_COLLAPSED
+
+- S2Event.LAYOUT_COLLAPSE_ROWS
+- S2Event.LAYOUT_AFTER_COLLAPSE_ROWS
++ S2Event.ROW_CELL_COLLAPSED
+```
 
 #### 树状结构 icon 折叠展开状态同步
 
@@ -447,7 +485,7 @@ const s2Options = {
 
 #### Facet 变更
 
-1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取。
+1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取，现在包含 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`。
 
 ```diff
 - s2.facet.layoutResult
@@ -507,12 +545,14 @@ const s2Options = {
 -     calcTotals: {}.
 -     reverseLayout: true,
 -     label: '总计'
+-     subLabel: '小计'
 -     totalsGroupDimensions: [],
 -     reverseSubLayout: true,
 
 +     calcGrandTotals: {}.
 +     reverseGrandTotalsLayout: true,
-+     grandTotalsLabel: '总计'
++     grandTotalsLabel: '总计',
++     subTotalsLabel: '小计',
 +     grandTotalsGroupDimensions: [],
 +     reverseSubTotalsLayout: true
     };
@@ -624,6 +664,48 @@ s2.interaction.getState()
 + stateName: "dataCellBrushSelected"
 ```
 
+##### 配置预处理 API 变更
+
+```diff
+- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
++ import { setupOptions, setupDataConfig } from '@antv/s2'
+```
+
+#### 空数据占位符配置变更
+
+除了支持配置单元格的空数据占位符，现在支持配置明细表的 [空数据状态](/examples/custom/custom-cell/#empty-placeholder)，类似于 [Ant Design 的 Empty 组件](https://ant-design.antgroup.com/components/empty-cn) 的空状态效果，配置独立为 `cell` 和 `empty` 两个配置项，以区分两种状态。
+
+```diff
+const s2Options = {
+- placeholder: "-",
++ placeholder: {
++   cell: '-'
++ }
+}
+```
+
+```diff
+const s2Options = {
++ placeholder: {
++   empty: {
++     icon: 'Empty',
++     description: '暂无数据'
++   }
++ }
+}
+```
+
+具体请查看 [自定义空数据占位符](/examples/custom/custom-cell/#empty-placeholder) 和 [自定义单元格空数据占位符](/examples/custom/custom-cell/#data-cell-placeholder) 示例。
+
+### 内部常量重命名
+
+```diff
+- import { ROOT_ID, ID_SEPARATOR } from '@antv/s2'
++ import { ROOT_NODE_ID, NODE_ID_SEPARATOR } from '@antv/s2'
+```
+
+如有消费请注意修改，具体请查看 [源代码定义](https://github.com/antvis/S2/tree/next/packages/s2-core/src/common/constant).
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
@@ -649,6 +731,15 @@ const header = {
 ```
 
 具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
+
+#### 导出组件配置调整
+
+`syncCopy` 变更为 `async`
+
+```diff
+- <Export syncCopy={true} />
++ <Export async={false} />
+```
 
 #### Tooltip 菜单项配置调整
 
@@ -689,13 +780,34 @@ const header = {
 <SheetComponent options={s2Options} />
 ```
 
-具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
-
-#### 配置预处理 API 变更
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
 
 ```diff
-- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
-+ import { setupOptions, setupDataConfig } from '@antv/s2'
+s2.showTooltip({
+  options: {
+    operator: {
+      menu: {
+-       defaultSelectedKeys: ['key-1'],
++       selectedKeys: ['key-1'],
+      },
+    },
+  },
+});
+```
+
+具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
+
+#### 行头单元格折叠展开事件划分到 `RowCell`
+
+`onCollapseRowsAll`, `onLayoutAfterCollapseRows` 更名为 `onRowCellAllCollapsed`, `onRowCellCollapsed`
+
+```diff
+- <SheetComponent options={s2Options} onCollapseRowsAll={} />
++ <SheetComponent options={s2Options} onRowCellAllCollapsed={} />
+
+- <SheetComponent options={s2Options} onLayoutAfterCollapseRows={} />
++ <SheetComponent options={s2Options} onRowCellCollapsed={} />
+
 ```
 
 ## ✍️ API 调整

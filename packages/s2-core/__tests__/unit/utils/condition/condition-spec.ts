@@ -1,4 +1,9 @@
-import { getIconPosition, getIntervalScale } from '@/utils/condition/condition';
+import type { Condition, RawData } from '../../../../src/common/interface';
+import {
+  findFieldCondition,
+  getIconPosition,
+  getIntervalScale,
+} from '@/utils/condition/condition';
 
 describe('getIconLayoutPosition Test', () => {
   test('should return right by default', () => {
@@ -22,6 +27,39 @@ describe('getIconLayoutPosition Test', () => {
         },
       }),
     ).toEqual('left');
+  });
+});
+
+describe('getFieldCondition Test', () => {
+  test('should find the condition where fill is green', () => {
+    const conditions: Condition[] = [
+      {
+        field: 'value',
+        mapping: () => ({ fill: 'red' }),
+      },
+      { field: 'price', mapping: () => ({ fill: 'blue' }) },
+      { field: 'price', mapping: () => ({ fill: 'green' }) },
+    ];
+
+    expect(
+      findFieldCondition(conditions, 'price')!.mapping('', {} as RawData)!.fill,
+    ).toBe('green');
+  });
+
+  test('should not find the condition where fill is orange', () => {
+    const conditions: Condition[] = [
+      {
+        field: 'value',
+        mapping: () => ({ fill: 'red' }),
+      },
+      { field: 'price', mapping: () => ({ fill: 'blue' }) },
+      { field: /price/, mapping: () => ({ fill: 'orange' }) },
+      { field: 'p', mapping: () => ({ fill: 'pink' }) },
+    ];
+
+    expect(
+      findFieldCondition(conditions, 'price')!.mapping('', {} as RawData)!.fill,
+    ).toBe('orange');
   });
 });
 

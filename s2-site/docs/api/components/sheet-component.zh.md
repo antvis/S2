@@ -92,7 +92,7 @@ tag: Updated
 | onCopied | 复制事件 | (data: CopyableList) => void |  |  |
 | onActionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | onActionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
 | onSelected | 单元格选中事件 | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
@@ -216,7 +216,7 @@ type SheetComponentOptions = S2Options<
 | copied | 复制事件 | (data: CopyableList) => void |  |  |
 | actionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | actionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
 | selected | 单元格选中事件 | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |

@@ -75,7 +75,7 @@ export abstract class HeaderCell<
   }
 
   public isShallowRender() {
-    return this.headerConfig.shallowRender!;
+    return super.isShallowRender() || this.headerConfig.shallowRender!;
   }
 
   protected shouldInit() {
@@ -203,7 +203,10 @@ export abstract class HeaderCell<
       width: icon?.size,
       height: icon?.size,
       // 优先级: 单个 icon 颜色配置 > 全部 icon 颜色配置 > 主题 icon 颜色配置 > 文本默认颜色
-      fill: options?.fill || icon?.fill || defaultTextFill,
+      fill:
+        options.fill === null
+          ? undefined
+          : options?.fill || icon?.fill || defaultTextFill,
       cursor: 'pointer',
     };
   }
@@ -329,7 +332,7 @@ export abstract class HeaderCell<
 
   protected isSortCell() {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
-    const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
+    const isValueInCols = this.spreadsheet?.isValueInCols?.();
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
 
     if (isValueInCols) {

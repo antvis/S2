@@ -48,8 +48,14 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
 export const getHeaderMeasureFieldNames = (
   fields: string[],
   spreadsheet: SpreadSheet,
+  formatHeader: boolean = true,
 ): string[] => {
   return map(fields, (field) => {
+    // https://github.com/antvis/S2/issues/2688
+    if (!formatHeader) {
+      return field;
+    }
+
     return spreadsheet.dataSet.getFieldName(field);
   });
 };

@@ -51,7 +51,7 @@ export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
     'drillDownDataCache',
     [],
   ) as PartDrillDownDataCache[];
-  const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
+  const cache = drillDownDataCache?.find(({ rowId }) => rowId === meta.id);
 
   return {
     drillDownDataCache,
@@ -100,7 +100,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
  * @param meta 节点
  * @returns
  */
-const defaultPartDrillDownDisplayCondition = (meta: Node) => {
+export const defaultPartDrillDownDisplayCondition = (meta: Node) => {
   const s2 = meta.spreadsheet;
   const { fields } = s2.dataCfg;
   const iconLevel = size(fields.rows) - 1;

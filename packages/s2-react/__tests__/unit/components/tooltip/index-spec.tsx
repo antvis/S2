@@ -28,7 +28,7 @@ describe('Tooltip Component Tests', () => {
               menu: {
                 items:
                   getTooltipOperatorSortMenus() as TooltipOperatorMenuItems,
-                defaultSelectedKeys: [key],
+                selectedKeys: [key],
               },
             },
           }}
@@ -68,7 +68,7 @@ describe('Tooltip Common Components Tests', () => {
         menu={{
           items: menus,
           onClick: mockMenuClick,
-          defaultSelectedKeys: [menus[0].key],
+          selectedKeys: [menus[0].key],
         }}
         key={'tooltipOperator'}
         cell={mockCell as unknown as S2CellType}

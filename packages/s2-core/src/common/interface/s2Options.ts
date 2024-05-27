@@ -1,5 +1,10 @@
 import type { CanvasConfig } from '@antv/g';
-import type { CornerCell, RowCell, SeriesNumberCell } from '../../cell';
+import type {
+  ColCell,
+  CornerCell,
+  RowCell,
+  SeriesNumberCell,
+} from '../../cell';
 import type {
   CellCallback,
   CornerHeaderCallback,
@@ -28,7 +33,7 @@ import type {
 import type { SpreadSheet } from '../../sheet-type';
 import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
-import type { InteractionOptions, S2CellType } from './interaction';
+import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';
 import type {
   BaseTooltipOperatorMenuOptions,
@@ -126,14 +131,38 @@ export interface S2BasicOptions<
   hd?: boolean;
 
   /**
-   * 空值单元格占位符
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
+   * 占位符
    */
-  placeholder?:
-    | ((meta: Record<string, any>) => string | undefined | null)
-    | string
-    | undefined
-    | null;
+  placeholder?: {
+    /**
+     * 空值单元格占位符
+     * @default '-'
+     * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#data-cell-placeholder
+     */
+    cell?:
+      | ((meta: Record<string, any>) => string | undefined | null)
+      | string
+      | null;
+
+    /**
+     * 空数据占位符 (明细表有效)
+     * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#empty-placeholder
+     */
+    empty?: {
+      /**
+       * 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon
+       * @default "Empty"
+       * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+       */
+      icon?: string;
+
+      /**
+       * 自定义描述内容
+       * @default "暂无数据"
+       */
+      description?: string;
+    };
+  };
 
   /**
    * 设备类型: pc / mobile
@@ -191,7 +220,7 @@ export interface S2BasicOptions<
    * 自定义列头单元格
    * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#col-cell
    */
-  colCell?: CellCallback<ColHeaderConfig, S2CellType>;
+  colCell?: CellCallback<ColHeaderConfig, ColCell>;
 
   /**
    * 自定义合并单元格

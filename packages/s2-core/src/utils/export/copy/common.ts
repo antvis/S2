@@ -1,7 +1,7 @@
 import { escape, map, max } from 'lodash';
 import type { Node } from '../../../facet/layout/node';
 import type { DataItem } from '../../../common';
-import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
+import { LINE_SEPARATOR, TAB_SEPARATOR, ROOT_NODE_ID } from '../../../common';
 import {
   type CopyableHTML,
   type CopyablePlain,
@@ -18,11 +18,13 @@ import type { BaseDataSet } from './../../../data-set/base-data-set';
 // 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
   dataMatrix: DataItem[][],
-  separator = NewTab,
+  separator = TAB_SEPARATOR,
 ): CopyablePlain => {
   return {
     type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(separator)).join(NewLine),
+    content: map(dataMatrix, (line) => line.join(separator)).join(
+      LINE_SEPARATOR,
+    ),
   };
 };
 
@@ -183,10 +185,10 @@ export function unifyConfig({
   },
   config: {
     formatOptions = false,
-    separator = NewTab,
+    separator = TAB_SEPARATOR,
     selectedCells = [],
     customTransformer,
-    isAsyncExport = false,
+    async = false,
   },
   isExport,
 }: SheetCopyConstructorParams): CopyAndExportUnifyConfig {
@@ -207,15 +209,9 @@ export function unifyConfig({
     transformers,
     formatData,
     formatHeader,
-    isAsyncExport,
+    async,
   };
 }
-
-const getNodeFormatLabel = (node: Node) => {
-  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
-
-  return formatter?.(node.value) ?? node.value;
-};
 
 /**
  * 获取到当前节点所有数据
@@ -230,7 +226,10 @@ export const getNodeFormatData = (leafNode: Node) => {
       return;
     }
 
-    const formatterLabel = getNodeFormatLabel(node);
+    const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
+      node.field,
+    );
+    const formatterLabel = formatter?.(node.value) ?? node.value;
 
     line.unshift(formatterLabel);
     if (node?.parent) {

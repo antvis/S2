@@ -2,7 +2,8 @@ import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
 
 /**
- * 需要注意的是一旦使用该插件，“脏矩形渲染”便无法使用，这意味着任何图形的任何样式属性改变，都会导致画布的全量重绘, 性能会严重下降。
+ * 需要注意的是一旦使用该插件，“脏矩形渲染” 便无法使用，这意味着任何图形的任何样式属性改变，都会导致画布的全量重绘, 性能会严重下降。
+ * 请确保 AntV/G 版本大于 5.0
  */
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',

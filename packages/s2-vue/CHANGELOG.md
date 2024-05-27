@@ -1,3 +1,22 @@
+# [@antv/s2-vue-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.13...@antv/s2-vue-v2.0.0-next.14) (2024-05-24)
+
+
+### Performance Improvements
+
+* 优化开启多行文本时的布局性能 ([#2734](https://github.com/antvis/S2/issues/2734)) ([388157c](https://github.com/antvis/S2/commit/388157c0ecb82c45f8a0277b649e891366dc2f1c))
+
+# [@antv/s2-vue-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.12...@antv/s2-vue-v2.0.0-next.13) (2024-04-30)
+
+
+### Bug Fixes
+
+* 修复分页配置无法透传 ([#2666](https://github.com/antvis/S2/issues/2666)) ([323f14d](https://github.com/antvis/S2/commit/323f14d7d77d71852dba3d5982623b7ab8709609))
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ed21dcb](https://github.com/antvis/S2/commit/ed21dcb82ea4cb434587a4ffa4819f2a619ca1aa))
+
 # [@antv/s2-vue-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.11...@antv/s2-vue-v2.0.0-next.12) (2024-03-29)
 
 

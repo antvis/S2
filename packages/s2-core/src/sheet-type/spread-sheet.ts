@@ -3,12 +3,10 @@ import {
   Canvas,
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
-  runtime,
   type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
-  delay,
   forEach,
   forIn,
   get,
@@ -16,6 +14,7 @@ import {
   isEmpty,
   isFunction,
   isString,
+  last,
   memoize,
   some,
   values,
@@ -34,7 +33,6 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   BaseTooltipOperatorMenuOptions,
   CellEventTarget,
-  CustomSVGIcon,
   EmitterType,
   Fields,
   InteractionOptions,
@@ -63,23 +61,15 @@ import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { RootInteraction } from '../interaction/root';
+import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
-import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { getTheme } from '../theme';
-
-/**
- * 关闭 CSS 解析的开关，可以提升首屏性能,
- * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
- * 而是要用 circle.style.r = 20;
- */
-runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -154,6 +144,7 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setOverscrollBehavior();
+    this.mountSheetInstance();
   }
 
   public isCustomHeaderFields(
@@ -250,6 +241,11 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
+  private getTargetCell(target: CellEventTarget) {
+    // 刷选等场景, 以最后一个发生交互的单元格为准
+    return this.getCell(target) || last(this.interaction.getInteractedCells());
+  }
+
   /**
    * 展示 Tooltip 提示
    * @alias s2.tooltip.show()
@@ -268,7 +264,7 @@ export abstract class SpreadSheet extends EE {
     Menu = BaseTooltipOperatorMenuOptions,
   >(showOptions: TooltipShowOptions<T, Menu>): Promise<void> {
     const { content, event } = showOptions;
-    const cell = this.getCell(event?.target);
+    const cell = this.getTargetCell(event?.target);
     const displayContent = isFunction(content)
       ? content(cell!, showOptions)
       : content;
@@ -280,14 +276,7 @@ export abstract class SpreadSheet extends EE {
         onMounted: resolve,
       };
 
-      if (isMobile()) {
-        // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
-        delay(() => {
-          this.tooltip.show?.(options);
-        }, 50);
-      } else {
-        this.tooltip.show?.(options);
-      }
+      this.tooltip?.show?.(options);
     });
   }
 
@@ -302,7 +291,7 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    const targetCell = this.getCell(event?.target);
+    const targetCell = this.getTargetCell(event?.target);
     const tooltipData =
       options?.data ??
       getTooltipData({
@@ -328,11 +317,11 @@ export abstract class SpreadSheet extends EE {
   }
 
   public hideTooltip() {
-    this.tooltip.hide?.();
+    this.tooltip?.hide?.();
   }
 
   public destroyTooltip() {
-    this.tooltip.destroy?.();
+    this.tooltip?.destroy?.();
   }
 
   public registerIcons() {
@@ -342,8 +331,8 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      registerIcon(customSVGIcon.name, customSVGIcon.svg);
+    forEach(customSVGIcons, (customSVGIcon) => {
+      registerIcon(customSVGIcon.name, customSVGIcon.src);
     });
   }
 
@@ -484,6 +473,24 @@ export abstract class SpreadSheet extends EE {
     await this.doRender(renderOptions);
   }
 
+  private mountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      canvas.__s2_instance__ = this;
+    }
+  }
+
+  private unmountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      delete canvas.__s2_instance__;
+    }
+  }
+
   /**
    * 卸载表格
    * @example s2.destroy()
@@ -502,8 +509,8 @@ export abstract class SpreadSheet extends EE {
     this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.unmountSheetInstance();
     this.container?.destroy();
-
     removeOffscreenCanvas();
   }
 
@@ -610,10 +617,16 @@ export abstract class SpreadSheet extends EE {
   /**
    * 获取 <canvas/> HTML 元素
    */
-  public getCanvasElement(): HTMLCanvasElement {
+  public getCanvasElement(): HTMLCanvasElement & {
+    // eslint-disable-next-line camelcase
+    __s2_instance__: SpreadSheet;
+  } {
     return this.getCanvas()
       .getContextService()
-      .getDomElement() as HTMLCanvasElement;
+      .getDomElement() as HTMLCanvasElement & {
+      // eslint-disable-next-line camelcase
+      __s2_instance__: SpreadSheet;
+    };
   }
 
   public getLayoutWidthType(): LayoutWidthType {
@@ -881,14 +894,14 @@ export abstract class SpreadSheet extends EE {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
+    const selectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const menuItems: TooltipOperatorMenuItems = this.isTableMode()
       ? getTooltipOperatorTableSortMenus()
       : getTooltipOperatorSortMenus();
 
     const operator: TooltipOperatorOptions = {
       menu: {
-        defaultSelectedKeys,
+        selectedKeys,
         items: menuItems,
         onClick: ({ key: sortMethod }) => {
           this.groupSortByMethod(sortMethod as SortMethod, meta);
@@ -900,8 +913,6 @@ export abstract class SpreadSheet extends EE {
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyShowOperator: true,
-      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-      forceRender: true,
     });
   }
 }

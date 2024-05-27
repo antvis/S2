@@ -43,11 +43,16 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
        * 详情请查看: https://s2.antv.antgroup.com/manual/basic/sort/group
        */
       tooltip: {
+        enable: true,
         operation: {
           // 开启组内排序
           sort: true,
         },
       },
+    };
+
+    const onRangeSort = (sortParams) => {
+      console.log('sortParams:', sortParams);
     };
 
     reactDOMClient
@@ -58,6 +63,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
           adaptive={false}
           dataCfg={s2DataConfig}
           options={s2Options}
+          onRangeSort={onRangeSort}
         />,
       );
   });

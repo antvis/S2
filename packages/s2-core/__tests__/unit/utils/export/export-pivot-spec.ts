@@ -1,8 +1,21 @@
-import { NewLine, NewTab, PivotSheet, asyncGetAllPlainData } from '@antv/s2';
+/* eslint-disable jest/expect-expect */
 import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import {
+  customColGridSimpleFields,
+  customRowGridSimpleFields,
+} from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
+import { expectMatchSnapshot } from '../../../util/helpers';
+import {
+  CSV_SEPARATOR,
+  LINE_SEPARATOR,
+  TAB_SEPARATOR,
+} from '../../../../src/common/constant';
+import { asyncGetAllPlainData, PivotSheet } from '../../../../src';
+import { generateRawData } from '../../../util';
 import { CopyMIMEType } from '@/common/interface/export';
 
 describe('PivotSheet Export Test', () => {
@@ -26,38 +39,28 @@ describe('PivotSheet Export Test', () => {
         meta: [],
         fields: {
           valueInCols: true,
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
       }),
       assembleOptions({ hierarchyType: 'grid' }),
     );
 
-    function testData(data: string) {
-      const rows = data.split(NewLine);
-
-      expect(rows).toHaveLength(14);
-      expect(rows[0].split(NewTab)[1]).toEqual('province');
-      expect(rows[1].split(NewTab)[1]).toEqual('city');
-      rows.forEach((row) => {
-        expect(row.split(NewTab)).toHaveLength(34);
-      });
-    }
-
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
     });
 
-    testData(data);
+    expect(data).toMatchSnapshot();
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
-      isAsyncExport: true,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+      async: true,
     });
 
-    testData(asyncData);
+    expect(asyncData).toMatchSnapshot();
   });
 
   it('should export correct data in tree mode', async () => {
@@ -67,7 +70,6 @@ describe('PivotSheet Export Test', () => {
         meta: [],
         fields: {
           valueInCols: true,
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
       }),
       assembleOptions({
@@ -75,37 +77,30 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    function testCase(data: string): void {
-      const rows = data.split(NewLine);
-
-      expect(rows).toHaveLength(16);
-      expect(rows[0].split(NewTab)[1]).toEqual('province');
-      expect(rows[1].split(NewTab)[1]).toEqual('city');
-      rows.forEach((e) => {
-        expect(e.split(NewTab)).toHaveLength(34);
-      });
-    }
-
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
     });
 
-    testCase(data);
+    expect(data).toMatchSnapshot();
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
-      isAsyncExport: true,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+      async: true,
     });
 
-    testCase(asyncData);
+    expect(asyncData).toMatchSnapshot();
   });
 
   /*
    * 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
    * https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
    */
-  it('should export correct data in tree mode and collapseAll is true -get', async () => {
+  it('should export correct data in tree mode and collapseAll is true', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -124,33 +119,11 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-      formatOptions: true,
-    });
-    const rows = data.split(NewLine);
-
-    expect(rows).toMatchInlineSnapshot(`
-      Array [
-        "类别	家具	家具	办公用品	办公用品",
-        "子类别	桌子	沙发	笔	纸张",
-        "省份	数量	数量	数量	数量",
-        "浙江省	18375	14043	4826	5854",
-        "四川省	7818	9473	7495	10984",
-      ]
-    `);
-    expect(rows).toHaveLength(5);
-    expect(rows[0].split(NewTab).length).toEqual(5);
-    expect(rows[1].split(NewTab)[0]).toEqual('子类别');
-    expect(rows[1].split(NewTab)[1]).toEqual('桌子');
-    expect(rows[2].split(NewTab)[0]).toEqual('省份');
-    expect(rows[2].split(NewTab)[1]).toEqual('数量');
+    await expectMatchSnapshot(s2);
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
-  it('should export correct data in tree mode and collapseAll is false -get', async () => {
+  it('should export correct data in tree mode and collapseAll is false', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -164,46 +137,16 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-      formatOptions: true,
-    });
-    const rows = data.split(NewLine);
-
-    expect(rows).toMatchInlineSnapshot(`
-      Array [
-        "	类别	家具	家具	办公用品	办公用品",
-        "	子类别	桌子	沙发	笔	纸张",
-        "省份	城市	数量	数量	数量	数量",
-        "浙江省		18375	14043	4826	5854",
-        "浙江省	杭州市	7789	5343	945	1343",
-        "浙江省	绍兴市	2367	632	1304	1354",
-        "浙江省	宁波市	3877	7234	1145	1523",
-        "浙江省	舟山市	4342	834	1432	1634",
-        "四川省		7818	9473	7495	10984",
-        "四川省	成都市	1723	2451	2335	4004",
-        "四川省	绵阳市	1822	2244	245	3077",
-        "四川省	南充市	1943	2333	2457	3551",
-        "四川省	乐山市	2330	2445	2458	352",
-      ]
-    `);
-    expect(rows).toHaveLength(13);
-    expect(rows[0].split(NewTab).length).toEqual(6);
-    expect(rows[1].split(NewTab)[1]).toEqual('子类别');
-    expect(rows[2].split(NewTab)[1]).toEqual('城市');
-    expect(rows[2].split(NewTab)[2]).toEqual('数量');
+    await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data in grid mode with valueInCols is false - get', async () => {
+  it('should export correct data in grid mode with valueInCols is false', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
         meta: [],
         fields: {
           valueInCols: false,
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
       }),
       assembleOptions({
@@ -211,27 +154,15 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-    });
-
-    const rows = data.split(NewLine);
-
-    expect(rows).toHaveLength(13);
-    rows.forEach((e) => {
-      expect(e.split(NewTab)).toHaveLength(35);
-    });
+    await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data in grid mode with totals in col - get', async () => {
+  it('should export correct data in grid mode with totals in col', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
         fields: {
           valueInCols: true,
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
       }),
       assembleOptions({
@@ -251,27 +182,15 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-    });
-
-    const rows = data.split(NewLine);
-
-    expect(rows).toHaveLength(17);
-    rows.forEach((e) => {
-      expect(e.split(NewTab)).toHaveLength(53);
-    });
+    await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data in grid mode with totals in row - get', async () => {
+  it('should export correct data in grid mode with totals in row', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
         fields: {
           valueInCols: false,
-          columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
       }),
       assembleOptions({
@@ -291,20 +210,10 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-    });
-    const rows = data.split(NewLine);
-
-    expect(rows).toHaveLength(16);
-    rows.forEach((e) => {
-      expect(e.split(NewTab)).toHaveLength(54);
-    });
+    await expectMatchSnapshot(s2);
   });
 
-  it('should export correct data when isFormat: {formatHeader: true}', async () => {
+  it('should export correct data when by {formatHeader: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -318,12 +227,6 @@ describe('PivotSheet Export Test', () => {
             formatter: (value) => `${value}-type`,
           },
         ],
-        fields: {
-          valueInCols: true,
-          columns: ['province', 'city'],
-          rows: ['type', 'sub_type'],
-          values: ['number'],
-        },
       }),
       assembleOptions({
         interaction: {
@@ -332,23 +235,12 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-      formatOptions: { formatHeader: true },
+    await expectMatchSnapshot(s2, {
+      formatHeader: true,
     });
-
-    const rows = data.split('\n');
-
-    expect(rows).toHaveLength(7);
-    expect(rows[0].split(NewTab)[1]).toEqual('province');
-    expect(rows[0].split(NewTab)[2]).toEqual('浙江省-province');
-    expect(rows[1].split(NewTab)[1]).toEqual('city');
-    expect(rows[3].split(NewTab)[0]).toEqual('家具-type');
   });
 
-  it('should export correct data when isFormat: {formatData: true}', async () => {
+  it('should export correct data when by {formatData: true}', async () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -357,36 +249,66 @@ describe('PivotSheet Export Test', () => {
             field: 'number',
             formatter: (value) => `${value}%`,
           },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'type',
+            name: '子类别',
+          },
+          {
+            field: 'province',
+            name: '省份',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
         ],
       }),
       assembleOptions({
         interaction: {
-          copy: { enable: true, withFormat: true },
+          copy: { enable: true, withHeader: true, withFormat: true },
         },
       }),
     );
 
-    await s2.render();
-
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-      formatOptions: { formatData: true },
+    await expectMatchSnapshot(s2, {
+      formatData: true,
     });
+  });
 
-    expect(data).toMatchInlineSnapshot(`
-      "	type	家具	家具	办公用品	办公用品
-      	sub_type	桌子	沙发	笔	纸张
-      province	city	number	number	number	number
-      浙江省	杭州市	7789%	5343%	945%	1343%
-      浙江省	绍兴市	2367%	632%	1304%	1354%
-      浙江省	宁波市	3877%	7234%	1145%	1523%
-      浙江省	舟山市	4342%	834%	1432%	1634%
-      四川省	成都市	1723%	2451%	2335%	4004%
-      四川省	绵阳市	1822%	2244%	245%	3077%
-      四川省	南充市	1943%	2333%	2457%	3551%
-      四川省	乐山市	2330%	2445%	2458%	352%"
-    `);
+  it('should export correct data when by {formatHeader: false, formatData: false}', async () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter: (value) => `${value}%`,
+          },
+          {
+            field: 'type',
+            name: '类别',
+          },
+          {
+            field: 'city',
+            name: '城市',
+          },
+        ],
+      }),
+      assembleOptions({
+        interaction: {
+          copy: { enable: true, withHeader: true, withFormat: true },
+        },
+      }),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: false,
+      formatData: false,
+    });
   });
 
   it('should export correct data when data is incomplete', async () => {
@@ -417,27 +339,15 @@ describe('PivotSheet Export Test', () => {
       assembleOptions({ hierarchyType: 'tree' }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
+    await expectMatchSnapshot(s2, {
+      formatData: true,
     });
-
-    expect(data).toMatchSnapshot();
   });
 
   it('should export correct data when series number', async () => {
     const s2 = new PivotSheet(
       getContainer(),
-      assembleDataCfg({
-        meta: [],
-        fields: {
-          valueInCols: true,
-          columns: ['province', 'city'],
-          rows: ['type', 'sub_type'],
-          values: ['number'],
-        },
-      }),
+      assembleDataCfg(),
       assembleOptions({
         hierarchyType: 'grid',
         seriesNumber: {
@@ -452,26 +362,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-    });
-
-    expect(data).toMatchInlineSnapshot(`
-      "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
-      	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
-      type	sub_type	number	number	number	number	number	number	number	number
-      家具	桌子	7789	2367	3877	4342	1723	1822	1943	2330
-      家具	沙发	5343	632	7234	834	2451	2244	2333	2445
-      办公用品	笔	945	1304	1145	1432	2335	245	2457	2458
-      办公用品	纸张	1343	1354	1523	1634	4004	3077	3551	352"
-    `);
-
-    const rows = data.split(NewLine);
-
-    expect(rows[0].split(NewTab)[1]).toEqual('province');
-    expect(rows[1].split(NewTab)[1]).toEqual('city');
+    await expectMatchSnapshot(s2);
   });
 
   it('should export correct data with formatter', async () => {
@@ -479,12 +370,6 @@ describe('PivotSheet Export Test', () => {
       getContainer(),
       assembleDataCfg({
         meta: [{ field: 'number', name: '数值' }],
-        fields: {
-          valueInCols: true,
-          columns: ['province', 'city'],
-          rows: ['type', 'sub_type'],
-          values: ['number'],
-        },
       }),
       assembleOptions({
         hierarchyType: 'grid',
@@ -492,18 +377,7 @@ describe('PivotSheet Export Test', () => {
       }),
     );
 
-    await s2.render();
-    const data = await asyncGetAllPlainData({
-      sheetInstance: s2,
-      split: NewTab,
-    });
-
-    expect(data).toMatchSnapshot();
-
-    const rows = data.split(NewLine);
-
-    expect(rows[0].split(NewTab)[1]).toEqual('province');
-    expect(rows[1].split(NewTab)[1]).toEqual('city');
+    await expectMatchSnapshot(s2);
   });
 
   it('should support custom export matrix transformer', async () => {
@@ -519,7 +393,7 @@ describe('PivotSheet Export Test', () => {
 
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: NewTab,
+      split: TAB_SEPARATOR,
       customTransformer: () => {
         return {
           [CopyMIMEType.PLAIN]: () => {
@@ -536,24 +410,95 @@ describe('PivotSheet Export Test', () => {
   it('should export correct data When the split separator is configured', async () => {
     const data = await asyncGetAllPlainData({
       sheetInstance: pivotSheet,
-      split: ',',
+      split: CSV_SEPARATOR,
       formatOptions: {
         formatHeader: true,
       },
     });
 
-    expect(data).toMatchInlineSnapshot(`
-      ",类别,家具,家具,办公用品,办公用品
-      ,子类别,桌子,沙发,笔,纸张
-      省份,城市,数量,数量,数量,数量
-      浙江省,杭州市,7789,5343,945,1343
-      浙江省,绍兴市,2367,632,1304,1354
-      浙江省,宁波市,3877,7234,1145,1523
-      浙江省,舟山市,4342,834,1432,1634
-      四川省,成都市,1723,2451,2335,4004
-      四川省,绵阳市,1822,2244,245,3077
-      四川省,南充市,1943,2333,2457,3551
-      四川省,乐山市,2330,2445,2458,352"
-    `);
+    expect(data).toMatchSnapshot();
+  });
+
+  it('should export correct data with formatter for custom row headers', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: customRowGridSimpleFields,
+      },
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(sheet);
+  });
+
+  it('should export correct data with formatter for custom column headers', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: customColGridSimpleFields,
+      },
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(sheet);
+  });
+
+  // https://github.com/antvis/S2/issues/2681
+  it.each([{ async: false }, { async: true }])(
+    'should export correctly data for single row data by %o',
+    async (options) => {
+      const sheet = createPivotSheet({ width: 600, height: 400 });
+
+      sheet.setDataCfg({
+        data: sheet.dataCfg.data.slice(0, 1),
+      });
+
+      await sheet.render();
+      const data = await asyncGetAllPlainData({
+        sheetInstance: sheet,
+        split: TAB_SEPARATOR,
+        ...options,
+      });
+
+      expect(data.split(LINE_SEPARATOR)).toMatchSnapshot();
+    },
+  );
+
+  // https://github.com/antvis/S2/issues/2718
+  it('should export the correct amount of data and have no duplicate data', async () => {
+    const typeCount = 100;
+    const subTypeCount = 100;
+
+    const bigData = generateRawData(
+      { province: 10, city: 1 },
+      { type: typeCount, subType: subTypeCount },
+    );
+
+    const sheet = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        data: bigData,
+        fields: {
+          rows: ['type', 'subType'],
+          columns: ['province', 'city'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({}),
+    );
+
+    await sheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: sheet,
+      split: CSV_SEPARATOR,
+      formatOptions: true,
+    });
+
+    // row header count + data count
+    const count = typeCount * subTypeCount + 3;
+
+    expect(data.split(LINE_SEPARATOR)).toHaveLength(count);
   });
 });

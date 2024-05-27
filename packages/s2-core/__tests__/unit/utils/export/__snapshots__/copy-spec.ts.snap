@@ -138,14 +138,14 @@ exports[`Pivot Table Core Data Process should copy format total data in grid mod
 exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 1`] = `
 "		家具-类
 		桌子-子类
-		number
+		数量
 浙江省-省	杭州市-市	7789元"
 `;
 
 exports[`Pivot Table Core Data Process should copy normal data with format header in grid mode 2`] = `
 "		家具-类
 		桌子-子类
-		number
+		数量
 浙江省-省	小计-市	18375元"
 `;
 
@@ -363,7 +363,9 @@ exports[`Tree Table Core Data Process should copy all data in tree mode 1`] = `
 `;
 
 exports[`Tree Table Core Data Process should copy all data in tree mode for custom row cell 1`] = `
-"			
+"家具	家具	家具	总计
+桌子	椅子	小计	
+			
 			
 13	11		
 2	8		

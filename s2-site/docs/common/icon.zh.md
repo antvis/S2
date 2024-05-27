@@ -5,6 +5,10 @@ order: 3
 
 `S2` 目前内置 icon 列表：
 
+:::warning{title="注意"}
+图标颜色默认和文本颜色一致，遵循 [主题配置](/manual/basic/theme)
+:::
+
 | icon 名称     | icon 图标    | 功能描述   | icon 名称        | icon 图标     | 功能描述           |
 | ------------- | --------------------- | ---------- | ---------------- | ----------- | ------------------ |
 | CellDown      | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632471683806-41687600-9f55-49f7-8210-25c438b8152e.png" height=30> | 同环比下降 | ExpandColIcon    | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632472462583-40f32d2a-0a26-4e4f-8ebf-39603c3b8939.png" height=30> | 展开列头     |

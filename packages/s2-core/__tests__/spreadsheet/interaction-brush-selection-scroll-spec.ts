@@ -56,7 +56,9 @@ const options: S2Options = {
   seriesNumber: {
     enable: true,
   },
-  placeholder: '',
+  placeholder: {
+    cell: '',
+  },
   style: {
     layoutWidthType: LayoutWidthType.Compact,
     dataCell: {
@@ -129,7 +131,7 @@ const expectScrollBrush = async (
   s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, dataCellBrushSelectionFn);
 
   // g5.0 异步渲染，第一时刻底层 base-brush 可能无法通过 elementsFromPointSync 取到元素
-  await sleep(50);
+  await sleep(500);
 
   s2.emit(mouseDownEventType, {
     target: targetCell,
@@ -275,9 +277,11 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     );
 
     await s2.render();
-    await sleep(20); // wait for anthor loop;
+    await sleep(20); // wait for another loop;
 
     const rowCell = s2.facet.getRowCells()[0];
+
+    s2.getCell = jest.fn(() => rowCell);
 
     s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
       target: rowCell,

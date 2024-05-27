@@ -61,6 +61,7 @@ s2.setTheme({
 | splitLine         | 单元格分割线样式                       | [SplitLine](#splitline)                         |        |      |
 | prepareSelectMask | 刷选遮罩样式                           | [InteractionStateTheme](#interactionstatetheme) |        |      |
 | background        | 背景样式                               | [Background](#background)                       |        |      |
+| empty        | 空数据占位符样式 （明细表有效）                               | [Empty](#empty)                       |        |      |
 | [key: string]     | 额外属性字段，用于用户自定义主题时传参 | `unknown`                                       |        |      |
 
 #### DefaultCellTheme
@@ -217,6 +218,15 @@ s2.setTheme({
 | ------- | ------ | -------- | ------ | ---- |
 | color   | 颜色   | `string` | -      |      |
 | opacity | 透明度 | `number` | 1      |      |
+
+#### Empty
+
+功能描述：空数据占位符配置。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89-schema) 和 [示例](/examples/theme/custom/#custom-schema)
+
+| 参数    | 说明   | 类型     | 默认值 | 必选 |
+| ------- | ------ | -------- | ------ | ---- |
+| icon   | 图标   | [Omit<IconTheme, 'size'>](#icontheme) & { width: number, height: number } | `{ fill: '', width: 64, height: 41, margin: { top: 0, right: 0, bottom: 24, left: 0, } }`   |      |
+| text | 文本 | [TextTheme](#texttheme)  |  `{ fontSize: 12, fontWeight: 'normal', opacity: 1 }`     |      |
 
 #### MiniChartTheme
 

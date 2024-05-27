@@ -18,6 +18,7 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
+  safeJsonParse,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -236,7 +237,7 @@ function MainLayout() {
       }
 
       return (
-        s2Ref.current?.facet.getInitColLeafNodes().map(({ id }) => id) || []
+        s2Ref.current?.facet?.getInitColLeafNodes().map(({ id }) => id) || []
       );
     },
     [dataCfg.fields?.columns],
@@ -257,7 +258,7 @@ function MainLayout() {
     }
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetType, getColumnOptions]);
+  }, [sheetType]);
 
   React.useEffect(() => {
     console.log('env:', process.env);
@@ -329,11 +330,11 @@ function MainLayout() {
       customSVGIcons: !options.showDefaultHeaderActionIcon && [
         {
           name: 'Filter',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
         },
         {
           name: 'FilterAsc',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
         },
       ],
       headerActionIcons: !options.showDefaultHeaderActionIcon && [
@@ -411,7 +412,11 @@ function MainLayout() {
                 children: (
                   <>
                     <Collapse
-                      defaultActiveKey={['filter', 'resize']}
+                      defaultActiveKey={
+                        safeJsonParse(
+                          localStorage.getItem('debugCollapseKey')!,
+                        ) || ['filter', 'resize']
+                      }
                       items={[
                         {
                           key: 'filter',
@@ -1595,6 +1600,10 @@ function MainLayout() {
                           onRowCellAllCollapsed={logHandler(
                             'onRowCellAllCollapsed',
                           )}
+                          onContextMenu={logHandler('onContextMenu')}
+                          onDataCellContextMenu={logHandler(
+                            'onDataCellContextMenu',
+                          )}
                         />
                       </React.StrictMode>
                     )}
@@ -1636,7 +1645,7 @@ function MainLayout() {
               },
               {
                 key: 'plugins',
-                label: 'G 5.0 插件系统',
+                label: 'AntV/G 插件系统',
                 children: <PluginsSheet />,
               },
               {

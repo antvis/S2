@@ -49,15 +49,17 @@ export class SeriesNumberCell extends HeaderCell {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { value } = this.meta;
+    const { value, field } = this.meta;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(field);
+    const formattedValue = formatter?.(value, undefined, this.meta) ?? value;
 
     return {
       value,
-      formattedValue: value,
+      formattedValue,
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width;

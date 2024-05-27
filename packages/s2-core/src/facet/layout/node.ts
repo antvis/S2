@@ -135,6 +135,8 @@ export class Node {
 
   public isFrozen?: boolean;
 
+  public shallowRender?: boolean;
+
   public extra?: {
     description?: string;
     isCustomNode?: boolean;

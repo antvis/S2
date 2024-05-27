@@ -16,7 +16,7 @@ tag: Updated
 
 ## 使用 `@antv/s2`
 
-`@antv/s2` 提供组内排序的能力，可以自行实现 [Tooltip 排序菜单](/manual/basic/tooltip) 后，然后调用相关 [API](/api/basic-class/spreadsheet).
+`@antv/s2` 提供组内排序的能力（对于明细表来说即**全局排序**)，可以自行实现 [Tooltip 排序菜单](/manual/basic/tooltip) 后，然后调用相关 [API](/api/basic-class/spreadsheet).
 
 ```ts
 const meta = cell.getMeta()
@@ -26,7 +26,21 @@ s2.groupSortByMethod('asc', meta)
 
 // 降序
 s2.groupSortByMethod('desc', meta)
+
+// 不排序
+s2.groupSortByMethod('none', meta)
 ```
+
+监听排序事件
+
+```ts | pure
+s2.on(S2Event.RANGE_SORT, (sortParams) => {
+  console.log('sortParams:', sortParams)
+});
+
+```
+
+<Playground path="analysis/sort/demo/group-sort-base.ts" rid='group-sort-base' height="200"></playground>
 
 ## 使用 `@antv/s2-react`
 
@@ -48,6 +62,17 @@ const s2Options = {
     },
   },
 };
+```
+
+监听排序事件
+
+```tsx | pure
+function onRangeSort(sortParams) {
+  console.log('sortParams:', sortParams);
+}
+
+<SheetComponents onRangeSort={onRangeSort} />
+
 ```
 
 <Playground path="analysis/sort/demo/group-sort.tsx" rid='group-sort' height="200"></playground>

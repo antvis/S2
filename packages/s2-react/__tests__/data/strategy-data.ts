@@ -387,7 +387,9 @@ export const StrategySheetDataConfig: S2DataConfig = {
 export const StrategyOptions: SheetComponentOptions = {
   height: 800,
   cornerText: '指标',
-  placeholder: (v) => (v?.['fieldValue'] ? '-' : ''),
+  placeholder: {
+    cell: (v) => (v?.['fieldValue'] ? '-' : ''),
+  },
   interaction: {
     selectedCellsSpotlight: true,
     resize: {

@@ -417,6 +417,10 @@ describe('Pivot Dataset Test', () => {
     });
 
     test('clearDrillDownData function with totalData', () => {
+      jest
+        .spyOn(dataSet.spreadsheet, 'isHierarchyTreeType')
+        .mockImplementationOnce(() => true);
+
       dataSet.transformDrillDownData(
         'district',
         [...drillDownData, ...drillDownTotalData],
@@ -462,6 +466,13 @@ describe('Pivot Dataset Test', () => {
         },
       });
       dataSet.setDataCfg(dataConfig);
+    });
+
+    test('should return correct field', () => {
+      expect(dataSet.getField('price')).toStrictEqual('price');
+      expect(dataSet.getField({ field: 'price', title: '价格' })).toStrictEqual(
+        'price',
+      );
     });
 
     test('should return correct field name', () => {

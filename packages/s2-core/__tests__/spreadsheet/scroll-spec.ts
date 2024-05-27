@@ -1,7 +1,8 @@
+/* eslint-disable jest/expect-expect */
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { get } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -467,8 +468,8 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     await s2.render(false);
 
-    expect(s2.facet.hScrollBar.getBBox().y).toBe(225);
-    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(225);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(219);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(219);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     await s2.render(false);
@@ -941,4 +942,30 @@ describe('Scroll Tests', () => {
       isMatchElementSpy.mockClear();
     },
   );
+
+  test('should not trigger scroll event when first rendered', () => {
+    const expectScroll = getScrollExpect();
+
+    expectScroll();
+  });
+
+  test('should not trigger scroll event when options changed', () => {
+    const expectScroll = getScrollExpect();
+
+    s2.setOptions({
+      hierarchyType: 'tree',
+    });
+    s2.render();
+
+    expectScroll();
+  });
+
+  test('should not trigger scroll event when data config changed', () => {
+    const expectScroll = getScrollExpect();
+
+    s2.setDataCfg(cloneDeep(mockDataConfig));
+    s2.render();
+
+    expectScroll();
+  });
 });

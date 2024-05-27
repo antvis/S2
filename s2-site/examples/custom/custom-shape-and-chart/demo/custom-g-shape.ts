@@ -1,12 +1,14 @@
 /* eslint-disable max-classes-per-file */
 import { Image as GImage, Polygon, Polyline, Rect } from '@antv/g';
 import {
+  ColCell,
   CornerCell,
   DataCell,
   PivotSheet,
   RowCell,
   S2DataConfig,
   S2Options,
+  renderIcon,
 } from '@antv/s2';
 
 /**
@@ -26,13 +28,50 @@ class CustomCornerCell extends CornerCell {
         new GImage({
           style: {
             ...this.getBBoxByType(),
-            img,
+            src: img,
           },
         }),
       );
 
       this.drawTextShape();
     };
+  }
+}
+
+/**
+ * 自定义图标 https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+ * 更多 G 的图形请查阅相关文档: https://g.antv.antgroup.com/api/basic/concept
+ * 明细表需要继承 TableColCell https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
+ */
+class CustomColCell extends ColCell {
+  initCell() {
+    super.initCell();
+
+    const { x, y, width, height } = this.meta;
+
+    // 左上角绘制
+    renderIcon(this, {
+      name: 'Plus',
+      x,
+      y,
+      width: 14,
+      height: 14,
+    });
+
+    // 右下角绘制
+    const icon = renderIcon(this, {
+      name: 'Trend',
+      x: x + width - 10,
+      y: y + height - 10,
+      width: 10,
+      height: 10,
+      cursor: 'pointer',
+    });
+
+    // 绑定事件
+    icon.addEventListener('click', (event) => {
+      console.log('clicked:', event);
+    });
   }
 }
 
@@ -130,6 +169,9 @@ fetch(
       },
       rowCell: (node, spreadsheet, headerConfig) => {
         return new CustomRowCell(node, spreadsheet, headerConfig);
+      },
+      colCell: (node, spreadsheet, headerConfig) => {
+        return new CustomColCell(node, spreadsheet, headerConfig);
       },
       dataCell: (viewMeta) => {
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);

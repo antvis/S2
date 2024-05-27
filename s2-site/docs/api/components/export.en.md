@@ -28,7 +28,7 @@ tag: Updated
 | successText          | Successful operation copy                                                               | `string`                                                        |          |          |
 | errorText            | Operation failure copy                                                                  | `string`                                                        |          |          |
 | fileName             | Customize the download file name                                                        | `string`                                                        | `sheet`  |          |
-| syncCopy             | Copy data synchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
+| async             | Copy data asynchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
 | drop down            | Dropdown menu configuration, transparently passed to the `Dropdown` component of `antd` | [DropdownProps](https://ant.design/components/dropdown-cn/#API) |          |          |
 
 <embed src="@/docs/common/copy-export.en.md"></embed>

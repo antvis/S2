@@ -20,6 +20,9 @@ import {
   type Node,
   Hierarchy,
   EventController,
+  FormatOptions,
+  asyncGetAllPlainData,
+  TAB_SEPARATOR,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -109,6 +112,7 @@ export const createFakeSpreadSheet = (config?: {
     },
     getField: jest.fn(),
     displayFormattedValueMap: new Map(),
+    moreThanOneValue: jest.fn(),
   } as unknown as any;
 
   const layoutResult: LayoutResult = {
@@ -166,6 +170,7 @@ export const createFakeSpreadSheet = (config?: {
     getFieldDescription: jest.fn(),
     getCustomFieldDescription: jest.fn(),
     getCellMultiData: jest.fn(() => []),
+    moreThanOneValue: jest.fn(),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();
@@ -264,6 +269,8 @@ export const createMockCellInfo = (
     update: jest.fn(),
     getActualText: jest.fn(),
     getFieldValue: jest.fn(),
+    getBBoxByType: jest.fn(() => {}),
+    getStyle: jest.fn(() => {}),
     hideInteractionShape: jest.fn(),
     updateByState: jest.fn(),
     isTextOverflowing: jest.fn(),
@@ -365,3 +372,47 @@ export const getClientPointOnCanvas = (
     clientY: point.y,
   };
 };
+
+export const expectMatchSnapshot = async (
+  s2: SpreadSheet,
+  formatOptions: FormatOptions = true,
+) => {
+  await s2.render();
+  const data = await asyncGetAllPlainData({
+    sheetInstance: s2,
+    split: TAB_SEPARATOR,
+    formatOptions,
+  });
+
+  expect(data).toMatchSnapshot();
+};
+
+export function generateRawData(
+  dimensions: [string, number][],
+  values: string[],
+) {
+  const res: Record<string, any>[] = [];
+
+  function generateItem(index: number, prev: Record<string, any> = {}) {
+    const [name, count] = dimensions[index];
+
+    for (let i = 1; i <= count; i++) {
+      const current = { ...prev, [name]: `${name}-${i}` };
+
+      if (index === dimensions.length - 1) {
+        values.forEach((v) => {
+          res.push({
+            ...current,
+            [v]: Math.random() * 10000,
+          });
+        });
+      } else {
+        generateItem(index + 1, current);
+      }
+    }
+  }
+
+  generateItem(0);
+
+  return res;
+}

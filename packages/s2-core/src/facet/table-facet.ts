@@ -1,4 +1,4 @@
-import { Group } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import {
   isBoolean,
   isEmpty,
@@ -9,9 +9,11 @@ import {
   maxBy,
   set,
 } from 'lodash';
-import { TableDataCell, TableSeriesNumberCell } from '../cell';
+import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
+import { i18n } from '../common';
 import {
-  DEFAULT_STYLE,
+  EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
+  KEY_GROUP_EMPTY_PLACEHOLDER,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
@@ -20,6 +22,7 @@ import {
 } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  CellCallbackParams,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -32,15 +35,17 @@ import type {
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { renderIcon, renderText } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
+import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
-import { ColHeader, Frame } from './header';
+import { Frame } from './header';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
@@ -49,10 +54,34 @@ import { Node } from './layout/node';
 import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
 
 export class TableFacet extends FrozenFacet {
+  public emptyPlaceholderGroup: Group;
+
+  private lastRowOffset: number;
+
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+  }
+
+  protected override getRowCellInstance(node: ViewMeta) {
+    const { dataCell } = this.spreadsheet.options;
+
+    return (
+      dataCell?.(node, this.spreadsheet) ||
+      new TableDataCell(node, this.spreadsheet)
+    );
+  }
+
+  protected override getColCellInstance(...args: CellCallbackParams) {
+    const { colCell } = this.spreadsheet.options;
+
+    return colCell?.(...args) || new TableColCell(...args);
+  }
+
+  protected initGroups() {
+    super.initGroups();
+    this.initEmptyPlaceholderGroup();
   }
 
   public init() {
@@ -60,36 +89,102 @@ export class TableFacet extends FrozenFacet {
     this.initRowOffsets();
   }
 
-  private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
-    const { rowCell: rowCellStyle, dataCell: dataCellStyle } =
-      this.spreadsheet.options.style!;
-    const node = { id: String(viewMeta?.rowIndex) } as Node;
+  public render() {
+    super.render();
+    this.renderEmptyPlaceholder();
+  }
 
-    // 优先级: 行头拖拽 > 行头自定义高度 > 多行文本自适应高度 > 通用单元格高度
-    const rowHeight =
-      this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCellStyle?.height) ??
-      dataCellStyle?.height;
+  public clearAllGroup() {
+    super.clearAllGroup();
+    this.emptyPlaceholderGroup.removeChildren();
+  }
 
-    if (
-      isNumber(rowHeight) &&
-      rowHeight !== DEFAULT_STYLE.rowCell?.height &&
-      rowHeight !== DEFAULT_STYLE.dataCell?.height
-    ) {
-      return rowHeight;
+  private initEmptyPlaceholderGroup() {
+    this.emptyPlaceholderGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_EMPTY_PLACEHOLDER,
+        style: { zIndex: EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
+
+  private renderEmptyPlaceholder() {
+    if (!this.spreadsheet.dataSet?.isEmpty()) {
+      return;
     }
 
-    const dataCell = new TableDataCell(viewMeta, this.spreadsheet, {
-      shallowRender: true,
+    const { empty } = this.spreadsheet.options.placeholder!;
+    const { icon, description } = this.spreadsheet.theme.empty;
+    const {
+      horizontalBorderWidth,
+      horizontalBorderColor,
+      horizontalBorderColorOpacity,
+    } = this.spreadsheet.theme.dataCell.cell!;
+    const { maxY, viewportWidth, height } = this.panelBBox;
+    const iconX = viewportWidth / 2 - icon.width / 2;
+    const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
+    const text = empty?.description ?? i18n('暂无数据');
+    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descX = viewportWidth / 2 - descWidth / 2;
+    const descY = iconY + icon.height + icon.margin.bottom;
+
+    // 边框
+    const border = new Rect({
+      style: {
+        x: 0,
+        y: maxY,
+        width: viewportWidth,
+        height,
+        stroke: horizontalBorderColor,
+        strokeWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
     });
+
+    this.emptyPlaceholderGroup.appendChild(border);
+
+    // 空状态 Icon
+    renderIcon(this.emptyPlaceholderGroup, {
+      ...icon,
+      name: empty?.icon!,
+      x: iconX,
+      y: iconY,
+      width: icon.width,
+      height: icon.height,
+    });
+
+    // 空状态描述文本
+    renderText({
+      group: this.emptyPlaceholderGroup,
+      style: {
+        ...description,
+        text,
+        x: descX,
+        y: descY,
+      },
+    });
+  }
+
+  private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
+    const node = { id: String(viewMeta?.rowIndex) } as Node;
+    const rowHeight = this.getRowCellHeight(node);
+
+    if (this.isCustomRowCellHeight(node)) {
+      return rowHeight || 0;
+    }
+
     const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
 
-    return this.getCellAdaptiveHeight(dataCell, defaultHeight);
+    return this.getNodeAdaptiveHeight(
+      viewMeta,
+      this.textWrapTempRowCell,
+      defaultHeight,
+    );
   }
 
   private getCellHeightByRowIndex(rowIndex: number) {
     if (this.rowOffsets) {
-      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node) ?? 0;
     }
 
     return this.getDefaultCellHeight();
@@ -117,15 +212,13 @@ export class TableFacet extends FrozenFacet {
     );
 
     // getCellHeightByRowIndex 会优先读取 heightByField, 保持逻辑统一
-    this.spreadsheet.setOptions({
-      style: {
-        rowCell: {
-          heightByField: {
-            [rowIndex]: maxDataCellHeight || this.getDefaultCellHeight(),
-          },
-        },
-      },
-    });
+    const height = maxDataCellHeight || this.getDefaultCellHeight();
+
+    set(
+      this.spreadsheet.options,
+      `style.rowCell.heightByField.${rowIndex}`,
+      height,
+    );
   }
 
   protected initRowOffsets() {
@@ -135,16 +228,17 @@ export class TableFacet extends FrozenFacet {
     if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
+      this.textWrapNodeHeightCache.clear();
       this.rowOffsets = [0];
-      let lastOffset = 0;
+      this.lastRowOffset = 0;
 
       data.forEach((_, rowIndex) => {
         this.presetRowCellHeightIfNeeded(rowIndex);
         const currentHeight = this.getCellHeightByRowIndex(rowIndex);
-        const currentOffset = lastOffset + currentHeight;
+        const currentOffset = this.lastRowOffset + currentHeight;
 
         this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
+        this.lastRowOffset = currentOffset;
       });
     }
   }
@@ -237,8 +331,7 @@ export class TableFacet extends FrozenFacet {
     const { colsHierarchy } = this.getLayoutResult();
     const height = floor(colsHierarchy.height);
 
-    this.cornerBBox = new CornerBBox(this);
-
+    this.cornerBBox = new CornerBBox(this as unknown as BaseFacet);
     this.cornerBBox.height = height;
     this.cornerBBox.maxY = height;
   }
@@ -362,34 +455,33 @@ export class TableFacet extends FrozenFacet {
     return getTotalHeight() + colsHierarchy.height;
   }
 
-  private calculateColNodesCoordinate(
+  private calculateColLeafNodesWidth(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
-    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
-
     let preLeafNode = Node.blankNode();
     let currentCollIndex = 0;
 
-    const allNodes = colsHierarchy.getNodes();
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
 
-    for (let i = 0; i < allNodes.length; i++) {
-      const currentNode = allNodes[i];
+    colsHierarchy.getLeaves().forEach((currentNode) => {
+      currentNode.colIndex = currentCollIndex;
+      currentCollIndex += 1;
+      currentNode.x = preLeafNode.x + preLeafNode.width;
+      currentNode.width = this.getColLeafNodesWidth(
+        currentNode,
+        adaptiveColWidth,
+      );
+      layoutCoordinate(this.spreadsheet, null, currentNode);
+      colsHierarchy.width += currentNode.width;
+      preLeafNode = currentNode;
+    });
+  }
 
-      if (currentNode.isLeaf) {
-        currentNode.colIndex = currentCollIndex;
-        currentCollIndex += 1;
-        currentNode.x = preLeafNode.x + preLeafNode.width;
-        currentNode.width = this.calculateColLeafNodesWidth(
-          currentNode,
-          adaptiveColWidth,
-        );
-        layoutCoordinate(this.spreadsheet, null, currentNode);
-        colsHierarchy.width += currentNode.width;
-        preLeafNode = currentNode;
-      }
+  private calculateColNodesHeight(colsHierarchy: Hierarchy) {
+    const colNodes = colsHierarchy.getNodes();
 
+    colNodes.forEach((currentNode) => {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
@@ -397,16 +489,39 @@ export class TableFacet extends FrozenFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
-    }
+      currentNode.height = this.getColNodeHeight(
+        currentNode,
+        colsHierarchy,
+        false,
+      );
+    });
+  }
 
+  private calculateColNodesCoordinate(
+    colLeafNodes: Node[],
+    colsHierarchy: Hierarchy,
+  ) {
+    this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+    this.calculateColNodesHeight(colsHierarchy);
+    this.calculateColNodeWidthAndX(colLeafNodes);
+    this.calculateFrozenColNodeX(colsHierarchy);
+    this.updateCustomFieldsSampleNodes(colsHierarchy);
+    this.adjustCustomColLeafNodesHeight({
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    });
+  }
+
+  private calculateFrozenColNodeX(colsHierarchy: Hierarchy) {
     const topLevelNodes = colsHierarchy.getNodes(0);
     const { trailingColCount = 0 } = getValidFrozenOptions(
       this.spreadsheet.options.frozen!,
       topLevelNodes.length,
     );
 
-    preLeafNode = Node.blankNode();
+    const colNodes = colsHierarchy.getNodes();
+    let preLeafNode = Node.blankNode();
 
     const width =
       this.getCanvasSize().width -
@@ -415,7 +530,7 @@ export class TableFacet extends FrozenFacet {
     if (trailingColCount > 0) {
       const { trailingColCount: realFrozenTrailingColCount } =
         getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
-      const leafNodes = allNodes.filter((node) => node.isLeaf);
+      const leafNodes = colNodes.filter((node) => node.isLeaf);
 
       for (let i = 1; i <= realFrozenTrailingColCount; i++) {
         const currentNode = leafNodes[leafNodes.length - i];
@@ -429,21 +544,14 @@ export class TableFacet extends FrozenFacet {
         preLeafNode = currentNode;
       }
     }
-
-    this.updateCustomFieldsSampleNodes(colsHierarchy);
-    this.adjustColLeafNodesHeight({
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    });
-    this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
 
   /**
    * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
-  private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
     while (leafNodes.length) {
@@ -463,7 +571,7 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(
+  private getColLeafNodesWidth(
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
@@ -634,7 +742,7 @@ export class TableFacet extends FrozenFacet {
     return null;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 
@@ -656,6 +764,20 @@ export class TableFacet extends FrozenFacet {
 
   protected getSeriesNumberHeader() {
     return null;
+  }
+
+  protected getScrollbarPosition() {
+    const { height } = this.getCanvasSize();
+    const position = super.getScrollbarPosition();
+    // 滚动条有两种模式, 一种是根据实际内容撑开, 一种是根据 Canvas 高度撑开, 现在有空数据占位符, 对于这种, 滚动条需要撑满
+    const maxY = this.spreadsheet.dataSet.isEmpty()
+      ? height - this.scrollBarSize
+      : position.maxY;
+
+    return {
+      ...position,
+      maxY,
+    };
   }
 
   /**

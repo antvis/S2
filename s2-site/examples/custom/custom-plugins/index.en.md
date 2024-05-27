@@ -1,4 +1,4 @@
 ---
-title: Custom AntV/G 5.0 Plugins & Options
+title: Custom AntV/G Plugins & Options
 order: 10
 ---

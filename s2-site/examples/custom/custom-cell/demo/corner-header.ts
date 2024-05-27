@@ -37,7 +37,7 @@ class CustomCornerHeader extends Group {
             y: 0,
             width: get(this.node, 'headerConfig.width'),
             height: get(this.node, 'headerConfig.height'),
-            img,
+            src: img,
           },
         }),
       );

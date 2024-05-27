@@ -40,7 +40,7 @@ describe('SpreadSheet Custom Facet Tests', () => {
   test('should render custom pivot facet', async () => {
     // @ts-ignore
     class CustomPivotFacet extends PivotFacet {
-      calculateColLeafNodesWidth() {
+      getColLeafNodesWidth() {
         return 200;
       }
     }
@@ -59,7 +59,7 @@ describe('SpreadSheet Custom Facet Tests', () => {
   test('should render custom table facet', async () => {
     // @ts-ignore
     class CustomTableFacet extends TableFacet {
-      calculateColLeafNodesWidth() {
+      getColLeafNodesWidth() {
         return 200;
       }
     }

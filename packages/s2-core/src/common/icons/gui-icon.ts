@@ -16,7 +16,7 @@ const ImageCache: Record<string, HTMLImageElement> = {};
 
 export interface GuiIconCfg extends Omit<ImageStyleProps, 'fill'> {
   readonly name: string;
-  readonly fill?: string;
+  readonly fill?: string | null;
 }
 
 /**
@@ -45,7 +45,7 @@ export class GuiIcon extends Group {
   public getImage(
     name: string,
     cacheKey: string,
-    fill?: string,
+    fill?: string | null,
   ): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject): void => {
       let svg = getIcon(name);
@@ -123,7 +123,7 @@ export class GuiIcon extends Group {
     this.setImageAttrs({ name, fill });
   }
 
-  public setImageAttrs(attrs: Partial<{ name: string; fill: string }>) {
+  public setImageAttrs(attrs: Partial<{ name: string; fill: string | null }>) {
     let { name, fill } = attrs;
     const { iconImageShape: image } = this;
 
@@ -136,7 +136,7 @@ export class GuiIcon extends Group {
 
     if (img) {
       // already in cache
-      image.attr('img', img);
+      image.attr('src', img);
       this.appendChild(image);
     } else {
       this.getImage(name, cacheKey, fill)
@@ -148,7 +148,7 @@ export class GuiIcon extends Group {
             return;
           }
 
-          image.attr('img', value);
+          image.attr('src', value);
           this.appendChild(image);
         })
         .catch((event: string | Event) => {

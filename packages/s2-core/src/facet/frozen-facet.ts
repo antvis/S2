@@ -303,7 +303,10 @@ export abstract class FrozenFacet extends BaseFacet {
 
     if (viewMeta) {
       viewMeta.isFrozenCorner = true;
-      const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
+      const cell = this.spreadsheet.options.dataCell?.(
+        viewMeta,
+        this.spreadsheet,
+      )!;
 
       group.appendChild(cell);
     }
@@ -588,7 +591,7 @@ export abstract class FrozenFacet extends BaseFacet {
     }
   };
 
-  public render(): void {
+  public render() {
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
@@ -681,7 +684,7 @@ export abstract class FrozenFacet extends BaseFacet {
   };
 
   protected getDefaultCellHeight(): number {
-    return this.getRowCellHeight(null as unknown as Node);
+    return this.getRowCellHeight(null as unknown as Node) ?? 0;
   }
 
   protected getShadowFill = (angle: number) => {

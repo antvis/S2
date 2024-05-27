@@ -1,12 +1,12 @@
 import { isEqual, forEach } from 'lodash';
 import type { DataCell } from '../../cell';
-import type { SpreadSheet } from '../../sheet-type';
 import {
   InteractionStateName,
   CellType,
-  EMPTY_PLACEHOLDER,
+  DATA_CELL_ID_SEPARATOR,
 } from '../../common/constant';
 import type { CellMeta, S2CellType } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  * @description  Determine if the current cell belongs to Cells
@@ -19,8 +19,9 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   return cells.some((cell) => isEqual(cell.id, currentId));
 };
 
-export const getDataCellId = (rowIndex: string, colIndex: string) =>
-  `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
+export const getDataCellId = (rowId: string, colId: string) => {
+  return `${rowId}${DATA_CELL_ID_SEPARATOR}${colId}`;
+};
 
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
   const { currentRow, currentCol, rowHeader, colHeader } =
