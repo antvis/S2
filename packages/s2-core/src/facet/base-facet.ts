@@ -176,7 +176,6 @@ export abstract class BaseFacet {
   public gridInfo: GridInfo;
 
   // 标记当前滑动的方向
-  private vScrollStatus: boolean;
 
   private hScrollStatus: boolean;
 
@@ -1254,13 +1253,10 @@ export abstract class BaseFacet {
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
-    const {
-      scrollX: currentScrollX,
-      scrollY: currentScrollY,
-      rowHeaderScrollX,
-    } = this.getScrollOffset();
+    const { scrollX: currentScrollX, rowHeaderScrollX } =
+      this.getScrollOffset();
 
-    if (this.hScrollStatus !== deltaX > 0) {
+    if (this.hScrollStatus !== undefined && this.hScrollStatus !== deltaX > 0) {
       this.cancelScrollFrame();
       this.hScrollStatus = deltaX > 0;
 
@@ -1278,15 +1274,6 @@ export abstract class BaseFacet {
       return;
     }
 
-    if (this.vScrollStatus !== deltaY > 0) {
-      this.cancelScrollFrame();
-      this.vScrollStatus = deltaY > 0;
-      this.vScrollBar?.emitScrollChange(currentScrollY);
-
-      return;
-    }
-
-    this.vScrollStatus = deltaY > 0;
     this.hScrollStatus = deltaX > 0;
     const { shiftKey } = event;
 
