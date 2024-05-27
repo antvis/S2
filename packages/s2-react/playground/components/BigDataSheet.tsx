@@ -1,4 +1,4 @@
-import { SpreadSheet } from '@antv/s2';
+import { SpreadSheet, type S2DataConfig } from '@antv/s2';
 import React from 'react';
 
 import {
@@ -9,7 +9,7 @@ import {
 import { usePlaygroundContext } from '../context/playground.context';
 
 const s2Options: SheetComponentOptions = {
-  width: 600,
+  width: 1600,
   height: 480,
   interaction: {
     scrollSpeedRatio: {
@@ -46,7 +46,7 @@ export function generateRawData(
   return res;
 }
 
-const s2DataConfig = {
+const s2DataConfig: S2DataConfig = {
   fields: {
     rows: ['type', 'subType'],
     columns: ['province', 'city'],
@@ -54,7 +54,7 @@ const s2DataConfig = {
   },
   data: generateRawData(
     { province: 10, city: 100 },
-    { type: 10, sub_type: 100 },
+    { type: 10, subType: 100 },
   ),
 };
 

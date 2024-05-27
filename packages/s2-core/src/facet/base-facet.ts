@@ -180,9 +180,6 @@ export abstract class BaseFacet {
 
   public gridInfo: GridInfo;
 
-  // 标记当前滑动的方向
-  private hScrollStatus: boolean;
-
   protected textWrapNodeHeightCache: Map<string, number>;
 
   protected textWrapTempRowCell: RowCell | DataCell;
@@ -1341,25 +1338,6 @@ export abstract class BaseFacet {
     const { scrollX: currentScrollX, rowHeaderScrollX } =
       this.getScrollOffset();
 
-    if (this.hScrollStatus !== undefined && this.hScrollStatus !== deltaX > 0) {
-      this.cancelScrollFrame();
-      this.hScrollStatus = deltaX > 0;
-
-      this.updateHorizontalRowScrollOffset({
-        offsetX,
-        offsetY,
-        offset: rowHeaderScrollX,
-      });
-      this.updateHorizontalScrollOffset({
-        offsetX,
-        offsetY,
-        offset: currentScrollX,
-      });
-
-      return;
-    }
-
-    this.hScrollStatus = deltaX > 0;
     const { shiftKey } = event;
 
     // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
@@ -1392,6 +1370,34 @@ export abstract class BaseFacet {
 
       return;
     }
+
+    if (
+      this.scrollDirection !== undefined &&
+      this.scrollDirection !==
+        (deltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT)
+    ) {
+      this.cancelScrollFrame();
+      this.scrollDirection =
+        deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
+
+      this.updateHorizontalRowScrollOffset({
+        offsetX,
+        offsetY,
+        offset: rowHeaderScrollX,
+      });
+      this.updateHorizontalScrollOffset({
+        offsetX,
+        offsetY,
+        offset: currentScrollX,
+      });
+
+      return;
+    }
+
+    this.scrollDirection =
+      deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
 
     this.stopScrollChaining(event);
 
