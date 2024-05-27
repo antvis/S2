@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import {
+  EMPTY_PLACEHOLDER,
   ResizeType,
   customMerge,
   type CustomHeaderField,
@@ -8,14 +9,10 @@ import {
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
   type ThemeCfg,
-  EMPTY_PLACEHOLDER,
-  DataCell,
-  RowCell,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
 import type { SliderSingleProps } from 'antd';
-import { Image as GImage } from '@antv/g';
 import {
   data,
   fields,
@@ -316,61 +313,7 @@ export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
   },
 };
 
-class CustomDataCell extends DataCell {
-  drawTextShape() {
-    const url =
-      'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
-
-    // const img = new Image();
-
-    // img.src = url;
-    const { x, y, width, height } = this.meta;
-    const imgWidth = 20;
-    const imgHeight = 40;
-
-    this.backgroundShape = this.appendChild(
-      new GImage({
-        style: {
-          x: x + (width - imgWidth) / 2,
-          y: y + (height - imgHeight) / 2,
-          width: imgWidth ?? width,
-          height: imgHeight ?? height,
-          src: url,
-        },
-      }),
-    );
-  }
-}
-
-class CustomRowCell extends RowCell {
-  drawTextShape() {
-    const { x, y, width, height } = this.meta;
-    const url =
-      'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
-    const imgWidth = 20;
-    const imgHeight = 20;
-
-    this.backgroundShape = this.appendChild(
-      new GImage({
-        style: {
-          x: x + (width - imgWidth) / 2,
-          y: y + (height - imgHeight) / 2,
-          width: imgWidth ?? width,
-          height: imgHeight ?? height,
-          src: url,
-        },
-      }),
-    );
-  }
-}
-
 export const s2Options: SheetComponentOptions = {
-  dataCell: (viewMeta) => {
-    return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
-  },
-  rowCell: (node, s2, headConfig) => {
-    return new CustomRowCell(node, s2, headConfig);
-  },
   debug: true,
   width: 800,
   height: 600,
@@ -450,11 +393,7 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {
-    dataCell: {
-      height: 100,
-    },
-  },
+  style: {},
 };
 
 export const sliderOptions: SliderSingleProps = {
