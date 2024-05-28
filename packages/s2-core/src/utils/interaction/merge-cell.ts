@@ -305,7 +305,7 @@ export const getMergedCellInstance: MergedCellCallback = (
   cells,
   meta,
 ) => {
-  if (spreadsheet.options.mergedCell) {
+  if (spreadsheet.options?.mergedCell) {
     return spreadsheet.options.mergedCell(spreadsheet, cells, meta);
   }
 
@@ -327,7 +327,7 @@ export const mergeCell = (
 
   if (mergeCellInfo?.length <= 1) {
     // eslint-disable-next-line no-console
-    console.error('then merged cells must be more than one');
+    console.error('[mergeCell]: The merged cells must be more than one!');
 
     return;
   }
@@ -388,19 +388,19 @@ export const removeUnmergedCellsInfo = (
 
 /**
  * unmerge MergedCell
- * @param removedCells
+ * @param removedCell
  * @param sheet
  */
-export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
-  if (!removedCells || removedCells.cellType !== CellType.MERGED_CELL) {
+export const unmergeCell = (sheet: SpreadSheet, removedCell: MergedCell) => {
+  if (!removedCell || removedCell.cellType !== CellType.MERGED_CELL) {
     // eslint-disable-next-line no-console
-    console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
+    console.error(`[unmergeCell]: The ${removedCell} is not a MergedCell`);
 
     return;
   }
 
   const newMergedCellsInfo = removeUnmergedCellsInfo(
-    removedCells,
+    removedCell,
     sheet.options?.mergedCellsInfo || [],
   );
 
@@ -408,7 +408,7 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
     sheet.setOptions({
       mergedCellsInfo: newMergedCellsInfo,
     });
-    removedCells.remove();
+    removedCell.remove();
   }
 };
 
@@ -435,7 +435,7 @@ export const mergeTempMergedCell = (
  * @param oldMergedCells
  * @constructor
  */
-export const MergedCellConvertTempMergedCells = (
+export const mergedCellConvertTempMergedCells = (
   oldMergedCells: MergedCell[],
 ) =>
   map(oldMergedCells, (mergedCell) => {
@@ -493,7 +493,7 @@ export const updateMergedCells = (
   const oldMergedCells = mergedCellsGroup.children as MergedCell[];
 
   const oldTempMergedCells: TempMergedCell[] =
-    MergedCellConvertTempMergedCells(oldMergedCells);
+    mergedCellConvertTempMergedCells(oldMergedCells);
 
   // compare oldTempMergedCells and allTempMergedCells, find remove MergedCells and add MergedCells
   const removeTempMergedCells = differenceTempMergedCells(

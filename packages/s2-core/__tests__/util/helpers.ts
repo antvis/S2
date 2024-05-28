@@ -183,6 +183,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
   s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
+  s2.facet.getColNodes = jest.fn().mockReturnValue([]);
   s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as HTMLCanvasElement;
