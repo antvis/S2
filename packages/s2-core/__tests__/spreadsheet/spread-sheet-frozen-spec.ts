@@ -1,25 +1,43 @@
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import { getContainer } from 'tests/util/helpers';
-import { map } from 'lodash';
+import { map, merge } from 'lodash';
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { customRowGridFields } from 'tests/data/custom-grid-fields';
-import { type FrozenFacet, PivotSheet, type S2DataConfig } from '../../src';
+import {
+  type FrozenFacet,
+  PivotSheet,
+  type S2DataConfig,
+  type S2Options,
+} from '../../src';
 import { pickMap } from '../util/fp';
 
-function expectFrozenGroup(s2: PivotSheet) {
+function expectFrozenGroup(
+  s2: PivotSheet,
+  headerName: 'rowHeader' | 'columnHeader' | 'seriesNumberHeader' = 'rowHeader',
+) {
   const pickCoordinate = pickMap(['id', 'x', 'y', 'width', 'height']);
 
   const actualHead = pickCoordinate(
-    map(s2.facet.rowHeader?.frozenGroup.children, 'meta'),
+    map(s2.facet[headerName]?.frozenGroup.children, 'meta'),
   );
 
   expect(actualHead).toMatchSnapshot();
 
   const actualTrailing = pickCoordinate(
-    map(s2.facet.rowHeader?.frozenTrailingGroup.children, 'meta'),
+    map(s2.facet[headerName]?.frozenTrailingGroup.children, 'meta'),
   );
 
   expect(actualTrailing).toMatchSnapshot();
+}
+
+function getFrozenGroupPosition(
+  s2: PivotSheet,
+  headerName: 'rowHeader' | 'columnHeader' = 'rowHeader',
+) {
+  return [
+    s2.facet[headerName]?.frozenGroup.getPosition().map(Math.floor),
+    s2.facet[headerName]?.frozenTrailingGroup.getPosition().map(Math.floor),
+  ];
 }
 
 describe('Spread Sheet Frozen Tests', () => {
@@ -126,6 +144,27 @@ describe('Spread Sheet Frozen Tests', () => {
       expectFrozenGroup(s2);
       s2.destroy();
     });
+
+    test('should render correct series frozen areas', async () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        width: 300,
+        height: 300,
+        hierarchyType: 'grid',
+        seriesNumber: {
+          enable: true,
+        },
+        frozen: {
+          rowCount: 2,
+          trailingRowCount: 1,
+        },
+      });
+
+      await s2.render();
+
+      expectFrozenGroup(s2, 'seriesNumberHeader');
+
+      s2.destroy();
+    });
   });
 
   describe('tree mode', () => {
@@ -219,6 +258,27 @@ describe('Spread Sheet Frozen Tests', () => {
         },
       });
       expectFrozenGroup(s2);
+      s2.destroy();
+    });
+
+    test('should render correct series frozen areas', async () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        width: 300,
+        height: 300,
+        hierarchyType: 'tree',
+        seriesNumber: {
+          enable: true,
+        },
+        frozen: {
+          rowCount: 2,
+          trailingRowCount: 1,
+        },
+      });
+
+      await s2.render();
+
+      expectFrozenGroup(s2, 'seriesNumberHeader');
+
       s2.destroy();
     });
   });
@@ -339,6 +399,130 @@ describe('Spread Sheet Frozen Tests', () => {
       });
 
       expectFrozenGroup(s2);
+      s2.destroy();
+    });
+
+    test('should render correct series frozen areas', async () => {
+      const s2 = new PivotSheet(container, pivotSheetCustomRowGridDataCfg, {
+        width: 300,
+        height: 300,
+        hierarchyType: 'tree',
+        seriesNumber: {
+          enable: true,
+        },
+        frozen: {
+          rowCount: 2,
+          trailingRowCount: 1,
+        },
+      });
+
+      await s2.render();
+
+      expectFrozenGroup(s2, 'seriesNumberHeader');
+
+      s2.destroy();
+    });
+  });
+
+  describe('pivot col header frozen', () => {
+    const baseOptions: S2Options = {
+      width: 600,
+      height: 400,
+      frozen: {
+        colCount: 1,
+        trailingColCount: 1,
+      },
+      style: {
+        colCell: {
+          width: 100,
+          widthByField: {
+            'root[&]家具[&]沙发[&]number': 400,
+            'root[&]办公用品[&]笔[&]number': 400,
+          },
+        },
+      },
+    };
+
+    test('should render correct frozen areas for row header frozen', async () => {
+      const s2 = new PivotSheet(container, mockDataConfig, baseOptions);
+
+      await s2.render();
+
+      expect((s2.facet as FrozenFacet).frozenGroupAreas).toMatchObject({
+        frozenCol: {
+          width: 100,
+          x: 0,
+          range: [0, 0],
+        },
+        frozenTrailingCol: {
+          width: 100,
+          x: 900,
+          range: [3, 3],
+        },
+      });
+
+      expectFrozenGroup(s2, 'columnHeader');
+
+      const prev = getFrozenGroupPosition(s2, 'columnHeader');
+
+      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+
+      // 移动后，frozen col 和 trailing col 的位置都不变
+      expect(getFrozenGroupPosition(s2, 'columnHeader')).toEqual(prev);
+
+      s2.destroy();
+    });
+
+    test('should render correct frozen areas for row header is not frozen', async () => {
+      const s2 = new PivotSheet(
+        container,
+        mockDataConfig,
+        merge({}, baseOptions, {
+          frozen: {
+            rowHeader: false,
+          },
+        }),
+      );
+
+      await s2.render();
+
+      expect((s2.facet as FrozenFacet).frozenGroupAreas).toMatchObject({
+        frozenCol: {
+          width: 100,
+          x: 0,
+          range: [0, 0],
+        },
+        frozenTrailingCol: {
+          width: 100,
+          x: 900,
+          range: [3, 3],
+        },
+      });
+
+      expectFrozenGroup(s2, 'columnHeader');
+      let prev = getFrozenGroupPosition(s2, 'columnHeader');
+
+      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      // 移动后，frozen col 会改变 而 trailing col 的位置不变
+      let current = getFrozenGroupPosition(s2, 'columnHeader');
+
+      expect(current[0]?.[0]).toEqual(prev[0]?.[0]! - 100);
+      expect(current[1]).toEqual(prev[1]);
+
+      // 移动超过角头宽度
+      // 移动后，frozen col 和 trailing col 的位置都不变
+      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+
+      prev = getFrozenGroupPosition(s2, 'columnHeader');
+      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+      current = getFrozenGroupPosition(s2, 'columnHeader');
+
+      expect(current).toEqual(prev);
+      expect(current).toEqual([
+        [2, 0, 0],
+        [-400, 0, 0],
+      ]);
+
       s2.destroy();
     });
   });

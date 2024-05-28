@@ -156,6 +156,30 @@ Array [
 ]
 `;
 
+exports[`Spread Sheet Frozen Tests custom tree mode should render correct series frozen areas 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "1",
+    "width": 80,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests custom tree mode should render correct series frozen areas 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "3",
+    "width": 80,
+    "x": 0,
+    "y": 420,
+  },
+]
+`;
+
 exports[`Spread Sheet Frozen Tests grid mode should render correct frozen areas when has no vertical scroll area 1`] = `
 Array [
   Object {
@@ -291,6 +315,190 @@ Array [
 ]
 `;
 
+exports[`Spread Sheet Frozen Tests grid mode should render correct series frozen areas 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "1",
+    "width": 80,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests grid mode should render correct series frozen areas 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "2",
+    "width": 80,
+    "x": 0,
+    "y": 210,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for custom grid mode 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 100,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子",
+    "width": 100,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具",
+    "width": 100,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for custom grid mode 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 100,
+    "x": 900,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张",
+    "width": 100,
+    "x": 900,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品",
+    "width": 100,
+    "x": 900,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for row header frozen 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 100,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子",
+    "width": 100,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具",
+    "width": 100,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for row header frozen 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 100,
+    "x": 900,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张",
+    "width": 100,
+    "x": 900,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品",
+    "width": 100,
+    "x": 900,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for row header is not frozen 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 100,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子",
+    "width": 100,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具",
+    "width": 100,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct frozen areas for row header is not frozen 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 100,
+    "x": 900,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张",
+    "width": 100,
+    "x": 900,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品",
+    "width": 100,
+    "x": 900,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct series frozen areas 1`] = `Array []`;
+
+exports[`Spread Sheet Frozen Tests pivot col header frozen should render correct series frozen areas 2`] = `Array []`;
+
 exports[`Spread Sheet Frozen Tests tree mode should render correct frozen areas when has no vertical scroll area 1`] = `
 Array [
   Object {
@@ -422,6 +630,30 @@ Array [
     "width": 120,
     "x": 0,
     "y": 210,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests tree mode should render correct series frozen areas 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "1",
+    "width": 80,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Spread Sheet Frozen Tests tree mode should render correct series frozen areas 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "2",
+    "width": 80,
+    "x": 0,
+    "y": 270,
   },
 ]
 `;
