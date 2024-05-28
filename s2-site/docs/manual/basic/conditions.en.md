@@ -137,7 +137,7 @@ color:<Playground data-mdast="html" path="analysis/conditions/demo/gradient-inte
 ### Turn on text intelligent inversion
 
 By displaying the return value of the `mapping` function in the specified `background` field tag
-the `intelligentReverseTextColor` attribute value is `true` . When the marker background color is darker, the text color
+the `intelligentReverseTextColor` attribute value is `true` . When the mark background color is dark and the text color and background color combination does not meet the Level [AA](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html) standards of the WCAG2.0 guidelines, the text color
 will change to white. When the marker background color is bright, the text color defaults to black.
 Priority: `intelligentReverseTextColor` of `background condition` < `fill` of `text condition`
 
