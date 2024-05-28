@@ -403,7 +403,7 @@ const s2DataConfig = {
 
 透视表和明细表的行列冻结配置统一收拢到 `frozen`。
 
-在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代，且可使用 `trailingRowCount` 实现行尾冻结。
+在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代。在明细表多级列头冻结时,在 `1.x` 中是以最最顶层节点为准，而在 `2.x` 是以叶子节点的数量为准。
 
 ```diff
 const s2Options = {

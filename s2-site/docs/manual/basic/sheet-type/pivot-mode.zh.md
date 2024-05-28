@@ -201,17 +201,28 @@ const s2Options = {
 }
 ```
 
-### 冻结行头单元格
+### 冻结行、列头单元格
 
 :::info{title="注意"}
 
-和 [明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93) 不同，透视表由于带有分组的特性，布局比较复杂，考虑到交互合理性，目前暂时只提供行头单元格的冻结能力：
+和 [明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93) 不同，透视表由于带有分组的特性，布局比较复杂，目前有以下限制：
 
-- 开启序号列场景暂不支持（ s2 提供了[自定义序号列布局](/examples/custom/custom-cell/#series-number-cell) 的能力，所以序号列和行头单元格的对应关系并不能一一对应）。
+- 开启序号列场景，且进行了[自定义序号列布局](/examples/custom/custom-cell/#series-number-cell) 时，暂不支持行头单元格冻结，因为此时，我们无法得知用户序号列和行头单元格的对应关系
 
 :::
 
-`s2Options` 中配置 `frozen.rowCount`  开启行头冻结能力，配置 `frozen.trailingRowCount`  开启行尾冻结能力。
+行列冻结通过在 `s2Options` 中传入这些属性控制：
+
+```ts
+const s2Options = {
+  frozen: {
+    rowCount: number; // 冻结行的叶子节点数量，从顶部开始计数
+    trailingRowCount: number; // 冻结行的叶子节点数量，从底部开始计数
+    colCount: number; // 冻结列的叶子节点数量，从左侧开始计数
+    trailingColCount: number; // 冻结列的叶子节点数量，从右侧开始计数
+  }
+}
+```
 
 #### 树状模式
 
@@ -229,8 +240,6 @@ const s2Options = {
 <br/>
 
 #### 平铺模式
-
-平铺模式下， rowCount、trailingRowCount 数量是以叶子节点计数。
 
 ```ts
 const s2Options = {
