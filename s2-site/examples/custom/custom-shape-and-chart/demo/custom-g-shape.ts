@@ -12,36 +12,30 @@ import {
 } from '@antv/s2';
 
 /**
- * 自定义图片 https://g.antv.antgroup.com/api/basic/image
+ * 自定义图片: https://g.antv.antgroup.com/api/basic/image
  * 更多 G 的图形请查阅相关文档: https://g.antv.antgroup.com/api/basic/concept
- * 明细表需要继承 TableCornerCell https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-corner-cell.ts
+ * 明细表需要继承 TableCornerCell: https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
   drawBackgroundShape() {
-    const img = new Image();
-
-    img.src =
+    const url =
       'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
 
-    img.onload = () => {
-      this.backgroundShape = this.appendChild(
-        new GImage({
-          style: {
-            ...this.getBBoxByType(),
-            src: img,
-          },
-        }),
-      );
-
-      this.drawTextShape();
-    };
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          src: url,
+        },
+      }),
+    );
   }
 }
 
 /**
- * 自定义图标 https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+ * 自定义图标: https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
  * 更多 G 的图形请查阅相关文档: https://g.antv.antgroup.com/api/basic/concept
- * 明细表需要继承 TableColCell https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
+ * 明细表需要继承 TableColCell: https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends ColCell {
   initCell() {
@@ -76,7 +70,7 @@ class CustomColCell extends ColCell {
 }
 
 /**
- * 自定义 Polygon 多边形 https://g.antv.antgroup.com/api/basic/polygon
+ * 自定义 Polygon 多边形: https://g.antv.antgroup.com/api/basic/polygon
  */
 class CustomDataCell extends DataCell {
   drawBackgroundShape() {
@@ -103,7 +97,7 @@ class CustomDataCell extends DataCell {
 }
 
 /**
- * 自定义 Polyline 折线 https://g.antv.antgroup.com/api/basic/polyline
+ * 自定义 Polyline 折线: https://g.antv.antgroup.com/api/basic/polyline
  */
 class CustomRowCell extends RowCell {
   drawBackgroundShape() {

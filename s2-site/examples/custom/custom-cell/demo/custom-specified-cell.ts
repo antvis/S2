@@ -7,7 +7,13 @@ import {
   S2DataConfig,
   CornerCell,
   RowCell,
+  renderIcon,
 } from '@antv/s2';
+import { Image as GImage } from '@antv/g';
+
+const ImageCache = new Map<string, HTMLImageElement>();
+const url =
+  'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zGyiSa2A8ZMAAAAAAAAAAAAAARQnAQ';
 
 /**
  * 自定义 DataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
@@ -15,6 +21,82 @@ import {
  * 明细表需要继承 TableDataCell  https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-data-cell.ts
  */
 class CustomDataCell extends DataCell {
+  initCell() {
+    super.initCell();
+
+    this.drawIcon();
+  }
+
+  drawIcon() {
+    const size = 14;
+    const { x, y, width, height, fieldValue } = this.meta;
+
+    if (fieldValue === 2335) {
+      renderIcon(this, {
+        name: 'Plus',
+        x: x + width - size - 12,
+        y: y + height / 2 - size / 2,
+        width: size,
+        height: size,
+      });
+    }
+  }
+
+  drawBackgroundShape() {
+    const { fieldValue } = this.meta;
+
+    if (fieldValue === 352) {
+      // 方式 1: 如果图片大小是固定的, 则直接传入 url 即可, G 的 Image 内部会增加缓存
+      // this.renderImage()
+      // return
+
+      // 方式 2. 如果图片大小是动态的, 则需要实例化 HTML 的 Image, 用于获取宽高, 同时需要增加图片缓存, 避免滚动时重复加载资源
+      if (ImageCache.get(url)) {
+        this.renderImageFromCache(ImageCache.get(url));
+
+        return;
+      }
+
+      const img = new Image();
+
+      img.src = url;
+      img.crossOrigin = 'anonymous';
+
+      img.onload = () => {
+        this.renderImageFromCache(img);
+        ImageCache.set(url, img);
+      };
+    }
+  }
+
+  renderImageFromCache(img: HTMLImageElement) {
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          width: img.width,
+          height: img.height,
+          src: img,
+        },
+      }),
+    );
+
+    this.drawTextShape();
+  }
+
+  renderImage() {
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          src: url,
+        },
+      }),
+    );
+
+    this.drawTextShape();
+  }
+
   getStyle(name) {
     // 重写单元格样式
     const defaultCellStyle = super.getStyle(name);
