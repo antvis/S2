@@ -79,7 +79,7 @@ export const getTextAndFollowingIconPosition = (
   iconCount = 1,
 ) => {
   const { x, width } = contentBox;
-  const { textAlign, textBaseline } = textCfg;
+  const { textAlign, textBaseline } = textCfg || {};
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
   const iconSpace =

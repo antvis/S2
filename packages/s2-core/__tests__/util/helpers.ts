@@ -97,7 +97,9 @@ export const createFakeSpreadSheet = () => {
   s2.showTooltipWithInfo = jest.fn();
   s2.isTableMode = jest.fn();
   s2.isPivotMode = jest.fn();
+  s2.measureTextWidth = jest.fn();
   s2.getRowNodes = jest.fn().mockReturnValue([]);
+  s2.getColumnNodes = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () => s2.container.get('el');
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
