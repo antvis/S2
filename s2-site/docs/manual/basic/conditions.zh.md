@@ -149,7 +149,7 @@ const s2Options = {
 ### 开启文字智能反色
 
 通过显示指定 `background` 字段标记中的 `mapping` 函数返回值  `intelligentReverseTextColor` 属性值为 `true`。
-当标记背景颜色较暗时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
+当标记背景颜色较暗且文本颜色与背景颜色组合不符合 WCAG2.0 指南的 [AA](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html) 级标准时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
 优先级： `background condition` 的 `intelligentReverseTextColor` < `text condition` 的 `fill`
 
 <Playground path="analysis/conditions/demo/intelligent-background.ts" rid='condition-intelligent-background'></playground>
