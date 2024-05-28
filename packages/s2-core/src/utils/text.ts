@@ -395,7 +395,7 @@ const getCurrentTextStyle = ({
   textStyle: TextTheme;
   textCondition?: Condition;
 }) => {
-  let fill = textStyle.fill;
+  let fill = textStyle?.fill;
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
       rowIndex,
