@@ -25,6 +25,17 @@ const BASIC_COLOR_COUNT = 15;
 export const shouldReverseFontColor = (color: string) =>
   tinycolor(color).getLuminance() <= 0.5;
 
+/**
+ * @param backgroundColor
+ * @param fontColor
+ */
+export const isReadableText = (backgroundColor: string, fontColor: string) => {
+  return tinycolor.isReadable(backgroundColor, fontColor, {
+    level: 'AA',
+    size: 'small',
+  });
+};
+
 const FONT_COLOR_RELATIONS: Array<{
   fontColorIndex: number;
   bgColorIndex: number;
