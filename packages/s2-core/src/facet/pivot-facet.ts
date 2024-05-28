@@ -1003,7 +1003,7 @@ export class PivotFacet extends FrozenFacet {
     ) as unknown[] as SeriesNumberCell[];
   }
 
-  protected getFrozenOptions() {
+  public getFrozenOptions() {
     if (!this.validFrozenOptions) {
       this.validFrozenOptions = getValidFrozenOptionsForPivot(
         super.getFrozenOptions(),

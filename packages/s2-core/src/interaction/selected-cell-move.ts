@@ -263,8 +263,8 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
     const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
 
-    let offsetX: number;
-    let offsetY: number;
+    let offsetX: number | null = null;
+    let offsetY: number | null = null;
 
     // offsetX
     if (colIndex <= indexes[0]) {
