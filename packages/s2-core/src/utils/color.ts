@@ -29,12 +29,8 @@ export const shouldReverseFontColor = (color: string) => {
 /**
  * @param backgroundColor
  * @param fontColor
- * @returns 是否满足对比度要求
  */
-export const isMeetContrastRequirement = (
-  backgroundColor: string,
-  fontColor: string,
-) => {
+export const isReadableText = (backgroundColor: string, fontColor: string) => {
   return tinycolor.isReadable(backgroundColor, fontColor, {
     level: 'AA',
     size: 'small',

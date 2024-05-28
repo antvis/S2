@@ -1,8 +1,4 @@
-import {
-  getPalette,
-  shouldReverseFontColor,
-  isMeetContrastRequirement,
-} from '@/utils';
+import { getPalette, shouldReverseFontColor, isReadableText } from '@/utils';
 import { generatePalette, generateStandardColors } from '@/utils/color';
 
 const expectThemeColor = '#F1535F';
@@ -120,7 +116,7 @@ describe('Theme Color Tests', () => {
     const fontColors = ['#000000', '#1D2129'];
 
     fontColors.forEach((fontColor) => {
-      expect(isMeetContrastRequirement(backgroundColor, fontColor)).toBeFalsy();
+      expect(isReadableText(backgroundColor, fontColor)).toBeFalsy();
     });
   });
 
@@ -130,9 +126,7 @@ describe('Theme Color Tests', () => {
     const fontColors = ['#000000', '#1D2129'];
 
     fontColors.forEach((fontColor) => {
-      expect(
-        isMeetContrastRequirement(backgroundColor, fontColor),
-      ).toBeTruthy();
+      expect(isReadableText(backgroundColor, fontColor)).toBeTruthy();
     });
   });
 });

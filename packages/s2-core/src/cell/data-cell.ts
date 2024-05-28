@@ -37,10 +37,7 @@ import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import {
-  shouldReverseFontColor,
-  isMeetContrastRequirement,
-} from '../utils/color';
+import { shouldReverseFontColor, isReadableText } from '../utils/color';
 import { LayoutWidthTypes } from '../common/constant/options';
 import { getDataCellIconStyle } from '../utils/layout';
 
@@ -228,7 +225,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (
       shouldReverseFontColor(backgroundColor) &&
       (textFill === DEFAULT_FONT_COLOR ||
-        !isMeetContrastRequirement(backgroundColor, textFill)) &&
+        !isReadableText(backgroundColor, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
