@@ -192,8 +192,8 @@ class CustomDataCell extends DataCell {
 }
 
 const s2Options = {
-  dataCell: (viewMeta) => {
-    return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+  dataCell: (viewMeta, spreadsheet) => {
+    return new CustomDataCell(viewMeta, spreadsheet);
   },
 };
 ```
@@ -348,7 +348,7 @@ class ChartSheetDataCell extends DataCell {
 }
 
 const s2 = new PivotSheet(container, s2DataConfig, {
-  dataCell: (viewMeta) => new ChartSheetDataCell(viewMeta, viewMeta.spreadsheet)
+  dataCell: (viewMeta, spreadsheet) => new ChartSheetDataCell(viewMeta, spreadsheet)
 });
 
 await s2.render();

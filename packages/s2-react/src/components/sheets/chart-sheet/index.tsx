@@ -14,8 +14,8 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
 
     const s2Options = React.useMemo<SheetComponentOptions>(() => {
       const options: SheetComponentOptions = {
-        dataCell: (viewMeta) =>
-          new ChartSheetDataCell(viewMeta, viewMeta.spreadsheet),
+        dataCell: (viewMeta, spreadsheet) =>
+          new ChartSheetDataCell(viewMeta, spreadsheet),
         showDefaultHeaderActionIcon: false,
         interaction: {
           hoverFocus: false,

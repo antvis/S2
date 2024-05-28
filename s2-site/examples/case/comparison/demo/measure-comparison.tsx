@@ -199,11 +199,10 @@ class CustomDataCell extends DataCell {
 
   // 自定义icon显示
   getIconStyle() {
-    const tagName = Object.keys(this.customConditions).find(
-      (item) =>
-        this.meta.colId?.includes(
-          `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
-        ),
+    const tagName = Object.keys(this.customConditions).find((item) =>
+      this.meta.colId?.includes(
+        `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
+      ),
     );
 
     if (tagName) {
@@ -218,11 +217,10 @@ class CustomDataCell extends DataCell {
 
   drawTextShape() {
     const { fieldValue } = this.meta;
-    const tagName = Object.keys(this.textConfig).find(
-      (item) =>
-        this.meta.colId?.includes(
-          `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
-        ),
+    const tagName = Object.keys(this.textConfig).find((item) =>
+      this.meta.colId?.includes(
+        `root${NODE_ID_SEPARATOR}${item}${NODE_ID_SEPARATOR}`,
+      ),
     );
 
     if (!tagName) {
@@ -511,8 +509,8 @@ fetch(
       return parseFloat(fieldValue) > 0
         ? 'CellUp'
         : fieldValue < 0
-        ? 'CellDown'
-        : '';
+          ? 'CellDown'
+          : '';
     };
 
     const conditionsIcon = [
@@ -548,8 +546,8 @@ fetch(
           parseFloat(value) > 0
             ? UP_COLOR
             : parseFloat(value) < 0
-            ? DOWN_COLOR
-            : textStyle?.fill,
+              ? DOWN_COLOR
+              : textStyle?.fill,
       };
     };
 
@@ -585,8 +583,8 @@ fetch(
           lineConfigStyle,
         );
       },
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta.spreadsheet, {
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet, {
           lineConfig,
           lineConfigStyle,
           conditions: {

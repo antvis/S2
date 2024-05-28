@@ -575,8 +575,8 @@ describe('<StrategySheet/> Tests', () => {
     }
 
     const s2Options: SheetComponentOptions = {
-      dataCell: (viewMeta) =>
-        new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new CustomDataCell(viewMeta, spreadsheet),
     };
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);

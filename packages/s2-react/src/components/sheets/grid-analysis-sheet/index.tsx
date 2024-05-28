@@ -11,8 +11,8 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
 
     const s2Options = React.useMemo<SheetComponentOptions>(() => {
       const options: SheetComponentOptions = {
-        dataCell: (viewMeta) =>
-          new GridAnalysisSheetDataCell(viewMeta, viewMeta.spreadsheet),
+        dataCell: (viewMeta, spreadsheet) =>
+          new GridAnalysisSheetDataCell(viewMeta, spreadsheet),
         showDefaultHeaderActionIcon: false,
         style: {
           colCell: {

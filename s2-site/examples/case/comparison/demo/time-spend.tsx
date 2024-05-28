@@ -258,8 +258,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       width: 1150,
       height: 420,
       showDefaultHeaderActionIcon: false,
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
       frame: (cfg) => {
         return new CustomFrame(cfg);

@@ -697,7 +697,7 @@ const s2Options = {
 
 具体请查看 [自定义空数据占位符](/examples/custom/custom-cell/#empty-placeholder) 和 [自定义单元格空数据占位符](/examples/custom/custom-cell/#data-cell-placeholder) 示例。
 
-### 内部常量重命名
+#### 内部常量重命名
 
 ```diff
 - import { ROOT_ID, ID_SEPARATOR } from '@antv/s2'
@@ -705,6 +705,22 @@ const s2Options = {
 ```
 
 如有消费请注意修改，具体请查看 [源代码定义](https://github.com/antvis/S2/tree/next/packages/s2-core/src/common/constant).
+
+#### 自定义数值单元格参数变更
+
+增加第二个参数 `spreadsheet`, 和其他单元格保持一致。
+
+```diff
+const s2Options = {
+   width: 600,
+-  dataCell: (viewMeta) => {
+-    return new CustomDataCell(viewMeta, viewMeta.spreadsheet);
+-  }
++  dataCell: (viewMeta, spreadsheet) => {
++    return new CustomDataCell(viewMeta, spreadsheet);
++  }
+}
+```
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
