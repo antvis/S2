@@ -301,10 +301,10 @@ describe('Merge Cells Test', () => {
     const addMergeCell = jest.fn();
 
     mockInstance.interaction.getActiveCells = () => [];
-    mockInstance.panelScrollGroup = {
+    mockInstance.facet.panelScrollGroup = {
       addMergeCell,
     };
-    mockInstance.facet.layoutResult.getCellMeta = jest
+    mockInstance.facet.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
     Object.defineProperty(mockInstance.facet.cfg, 'dataCell', {

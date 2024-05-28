@@ -1,3 +1,4 @@
+import { SERIES_NUMBER_FIELD } from '../../../../src';
 import { Node } from '@/facet/layout/node';
 
 describe('Node Test', () => {
@@ -37,7 +38,7 @@ describe('Node Test', () => {
   });
 
   test('#getAllBranch()', () => {
-    expect(Node.getAllBranch(node)).toHaveLength(1);
+    expect(Node.getBranchNodes(node)).toHaveLength(1);
   });
 
   test('#rootNode()', () => {
@@ -52,67 +53,10 @@ describe('Node Test', () => {
     expect(node.getTotalHeightForTreeHierarchy()).toEqual(0);
   });
 
-  test('#toJSON()', () => {
-    expect(node.toJSON()).toMatchInlineSnapshot(`
-      Object {
-        "belongsCell": undefined,
-        "children": Array [
-          Object {
-            "belongsCell": undefined,
-            "children": Array [],
-            "colIndex": -1,
-            "extra": undefined,
-            "field": undefined,
-            "height": 0,
-            "id": "child",
-            "inCollapseNode": undefined,
-            "isCollapsed": undefined,
-            "isGrandTotals": undefined,
-            "isLeaf": true,
-            "isPivotMode": undefined,
-            "isSubTotals": undefined,
-            "isTotalMeasure": undefined,
-            "isTotalRoot": undefined,
-            "isTotals": undefined,
-            "key": "child",
-            "label": "child",
-            "level": undefined,
-            "padding": 0,
-            "query": undefined,
-            "rowIndex": undefined,
-            "seriesNumberWidth": undefined,
-            "value": "child",
-            "width": 0,
-            "x": 0,
-            "y": 0,
-          },
-        ],
-        "colIndex": -1,
-        "extra": undefined,
-        "field": "country",
-        "height": 0,
-        "id": "root[&]country",
-        "inCollapseNode": undefined,
-        "isCollapsed": undefined,
-        "isGrandTotals": undefined,
-        "isLeaf": undefined,
-        "isPivotMode": undefined,
-        "isSubTotals": undefined,
-        "isTotalMeasure": undefined,
-        "isTotalRoot": undefined,
-        "isTotals": undefined,
-        "key": "",
-        "label": "",
-        "level": undefined,
-        "padding": 0,
-        "query": undefined,
-        "rowIndex": undefined,
-        "seriesNumberWidth": undefined,
-        "value": "",
-        "width": 0,
-        "x": 0,
-        "y": 0,
-      }
-    `);
+  test('#isSeriesNumberNode()', () => {
+    expect(node.isSeriesNumberNode()).toBeFalsy();
+
+    node.field = SERIES_NUMBER_FIELD;
+    expect(node.isSeriesNumberNode()).toBeTruthy();
   });
 });

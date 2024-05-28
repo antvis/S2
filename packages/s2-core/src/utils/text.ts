@@ -338,10 +338,10 @@ export const drawCustomContent = (
 
       const maxTextWidth =
         contentBoxes[i][j].width -
-        iconStyle.size -
+        iconStyle?.size -
         (iconCfg?.position === 'left'
-          ? iconStyle.margin.right
-          : iconStyle.margin.left);
+          ? iconStyle?.margin?.right
+          : iconStyle?.margin?.left);
 
       const groupedIcons: GroupedIcons = {
         left: [],

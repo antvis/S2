@@ -2,20 +2,15 @@ import { createFakeSpreadSheet } from 'tests/util/helpers';
 import {
   layoutArrange,
   layoutCoordinate,
-  layoutDataPosition,
   layoutHierarchy,
 } from '@/facet/layout/layout-hooks';
-import { Hierarchy, Node, type LayoutResult } from '@/index';
+import { Hierarchy, Node } from '@/index';
 
 describe('layout-hooks test', () => {
   const s2 = createFakeSpreadSheet({
     width: 600,
     height: 480,
   });
-
-  const facetCfg = {
-    spreadsheet: s2,
-  };
 
   const node = new Node({
     id: '',
@@ -28,12 +23,12 @@ describe('layout-hooks test', () => {
   test('#layoutArrange()', () => {
     const layoutArrangeFn = jest.fn(() => ['b']);
 
-    expect(layoutArrange(['a'], facetCfg, node, '')).toEqual(['a']);
+    expect(layoutArrange(s2, ['a'], node, '')).toEqual(['a']);
 
     expect(
       layoutArrange(
+        { options: { layoutArrange: layoutArrangeFn } },
         ['a'],
-        { ...facetCfg, layoutArrange: layoutArrangeFn },
         node,
         '',
       ),
@@ -58,11 +53,11 @@ describe('layout-hooks test', () => {
     expect(
       layoutHierarchy(
         {
-          ...facetCfg,
-          spreadsheet: {
-            facet: {
-              getHiddenColumnsInfo: () => colNode,
-            },
+          options: {
+            layoutHierarchy: layoutHierarchyFn,
+          },
+          facet: {
+            getHiddenColumnsInfo: () => colNode,
           },
           columns: [colNode.id],
         },
@@ -75,13 +70,12 @@ describe('layout-hooks test', () => {
     expect(
       layoutHierarchy(
         {
-          ...facetCfg,
-          spreadsheet: {
-            facet: {
-              getHiddenColumnsInfo: () => {},
-            },
+          options: {
+            layoutHierarchy: layoutHierarchyFn,
           },
-          layoutHierarchy: layoutHierarchyFn,
+          facet: {
+            getHiddenColumnsInfo: () => {},
+          },
           columns: [],
         },
         node,
@@ -105,7 +99,7 @@ describe('layout-hooks test', () => {
     });
 
     layoutCoordinate(
-      { ...facetCfg, layoutCoordinate: layoutCoordinateFn },
+      { options: { layoutCoordinate: layoutCoordinateFn } },
       rowNode,
       colNode,
     );
@@ -113,34 +107,11 @@ describe('layout-hooks test', () => {
     expect(layoutCoordinateFn).toHaveBeenCalledTimes(0);
 
     layoutCoordinate(
-      { ...facetCfg, layoutCoordinate: layoutCoordinateFn },
+      { options: { layoutCoordinate: layoutCoordinateFn } },
       { ...rowNode, isLeaf: true },
       { ...colNode, isLeaf: true },
     );
 
     expect(layoutCoordinateFn).toHaveBeenCalledTimes(1);
-  });
-
-  test('#layoutDataPosition()', () => {
-    const colNode = new Node({
-      id: 'colNode',
-      key: 'colNode',
-      value: 'colNode',
-    });
-    const getCellMeta = () => ({
-      colNodes: [colNode],
-    });
-    const layoutDataPositionFn = jest.fn(() => getCellMeta);
-
-    expect(
-      layoutDataPosition(
-        { ...facetCfg, layoutDataPosition: layoutDataPositionFn },
-        {} as LayoutResult,
-      ),
-    ).toEqual({
-      getCellMeta,
-    });
-
-    expect(layoutDataPositionFn).toHaveBeenCalledTimes(1);
   });
 });

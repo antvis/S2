@@ -6,7 +6,7 @@ import {
 import type { TextTheme } from '../../../src/common';
 import { safeJsonParse } from '../../../src/utils/common';
 import {
-  drawObjectText,
+  drawCustomContent,
   getCellWidth,
   getContentAreaForMultiData,
   getEmptyPlaceholder,
@@ -297,7 +297,7 @@ describe('isUnchangedValue', () => {
   });
 
   test('should draw custom content', () => {
-    const addTextShape = jest.fn();
+    const renderTextShape = jest.fn();
     const s2 = createFakeSpreadSheet({
       style: {
         cellCfg: {},
@@ -305,7 +305,9 @@ describe('isUnchangedValue', () => {
     });
     const cell = createMockCellInfo('test').mockCell;
 
-    cell.getContentArea = () => ({
+    cell.updateTextPosition = () => {};
+    cell.getActualTextWidth = () => 0;
+    cell.getBBoxByType = () => ({
       width: 200,
       height: 200,
     });
@@ -313,19 +315,19 @@ describe('isUnchangedValue', () => {
       spreadsheet: s2,
     });
     cell.getStyle = () => ({});
-    cell.addTextShape = addTextShape;
+    cell.renderTextShape = renderTextShape;
 
     const errorSpy = jest
       .spyOn(console, 'error')
       .mockImplementationOnce(() => {});
 
     function render() {
-      drawObjectText(cell, { values: ['test'] });
+      drawCustomContent(cell, { values: ['test'] });
     }
 
     expect(render).not.toThrow();
     expect(errorSpy).not.toHaveBeenCalled();
-    expect(addTextShape).toHaveBeenCalledTimes(4);
+    expect(renderTextShape).toHaveBeenCalledTimes(4);
   });
 
   test('should draw custom mini chart', () => {
@@ -336,7 +338,7 @@ describe('isUnchangedValue', () => {
     });
     const cell = createMockCellInfo('test').mockCell;
 
-    cell.getContentArea = () => ({
+    cell.getBBoxByType = () => ({
       width: 200,
       height: 200,
     });
@@ -346,7 +348,7 @@ describe('isUnchangedValue', () => {
     cell.getStyle = () => ({});
 
     function render() {
-      drawObjectText(cell, { values: { data: 'test' } });
+      drawCustomContent(cell, { values: { data: 'test' } });
     }
 
     expect(render).not.toThrow();
