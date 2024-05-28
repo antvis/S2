@@ -1,3 +1,15 @@
+# [@antv/s2-v2.0.0-next.22](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.21...@antv/s2-v2.0.0-next.22) (2024-05-24)
+
+
+### Bug Fixes
+
+* 修复自定义 tooltip 时, 刷选时无法获取到单元格信息 ([#2738](https://github.com/antvis/S2/issues/2738)) ([782a2fc](https://github.com/antvis/S2/commit/782a2fcd78fa6009c1335fbdfe0392dd894c94ad))
+
+
+### Performance Improvements
+
+* 优化开启多行文本时的布局性能 ([#2734](https://github.com/antvis/S2/issues/2734)) ([388157c](https://github.com/antvis/S2/commit/388157c0ecb82c45f8a0277b649e891366dc2f1c))
+
 # [@antv/s2-v2.0.0-next.21](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.20...@antv/s2-v2.0.0-next.21) (2024-05-17)
 
 

@@ -10,7 +10,7 @@
     "build": "run-s clean build:dts",
     "clean": "rimraf temp",
     "build:dts": "tsc -p tsconfig.declaration.json",
-    "test": "jest",
+    "test": "jest --passWithNoTests --detectOpenHandles",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3"
   },

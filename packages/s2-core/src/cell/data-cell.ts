@@ -81,6 +81,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellType.DATA_CELL;
   }
 
+  public isShallowRender() {
+    return super.isShallowRender() || this.meta.shallowRender || false;
+  }
+
   public isMultiData() {
     const fieldValue = this.getFieldValue();
 
@@ -258,7 +262,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public setMeta(viewMeta: Partial<ViewMeta>) {
     super.setMeta(viewMeta as ViewMeta);
-    this.initCell();
+    if (!this.isShallowRender()) {
+      this.initCell();
+    }
   }
 
   public drawTextShape() {
@@ -378,7 +384,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width - this.getActionAndConditionIconWidth();

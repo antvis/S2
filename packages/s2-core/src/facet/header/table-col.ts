@@ -1,4 +1,4 @@
-import { TableColCell, TableCornerCell } from '../../cell';
+import { ColCell, TableColCell, TableCornerCell } from '../../cell';
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
@@ -21,7 +21,8 @@ export class TableColHeader extends ColHeader {
     ];
 
     if (node.field === SERIES_NUMBER_FIELD) {
-      return seriesNumberCell?.(...args) || new TableCornerCell(...args);
+      return (seriesNumberCell?.(...args) ||
+        new TableCornerCell(...args)) as ColCell;
     }
 
     return colCell?.(...args) || new TableColCell(...args);

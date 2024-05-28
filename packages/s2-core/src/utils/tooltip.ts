@@ -20,6 +20,7 @@ import {
   isNil,
   isNumber,
   isObject,
+  last,
   map,
   mapKeys,
   noop,
@@ -716,7 +717,7 @@ export const getTooltipOptions = (
   const cellType = spreadsheet.getCellType?.(event?.target);
 
   // 如果没有 cellType, 说明是刷选丢失 event target 的场景, 此时从产生过交互状态的单元格里取, 避免刷选读取不到争取 tooltip 配置的问题
-  const sampleCell = interaction.getInteractedCells()[0];
+  const sampleCell = last(interaction.getInteractedCells());
 
   return getTooltipOptionsByCellType(
     options.tooltip!,

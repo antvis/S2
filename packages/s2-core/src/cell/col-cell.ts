@@ -84,7 +84,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     return super.getFormattedFieldValue();
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width - this.getActionAndConditionIconWidth();

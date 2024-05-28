@@ -56,7 +56,7 @@ export class SeriesNumberCell extends RowCell {
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width;

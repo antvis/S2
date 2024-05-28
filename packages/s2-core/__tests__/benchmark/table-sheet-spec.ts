@@ -1,10 +1,14 @@
 /* eslint-disable no-console */
-import { type S2DataConfig, TableSheet } from '../../src';
+import { S2DataConfig, TableSheet, type S2Options } from '../../src';
 import { generateRawData, getContainer } from '../util/helpers';
 
-async function measureTableSheetRender(s2DataCfg: S2DataConfig, title: string) {
+async function measureTableSheetRender(
+  title: string,
+  s2DataCfg: S2DataConfig,
+  s2Options?: S2Options,
+) {
   performance.mark('startTask');
-  const s2 = new TableSheet(getContainer(), s2DataCfg, null);
+  const s2 = new TableSheet(getContainer(), s2DataCfg, s2Options || null);
 
   await s2.render();
   performance.mark('endTask');
@@ -36,7 +40,7 @@ describe('table sheet benchmark', () => {
       ),
     };
 
-    await measureTableSheetRender(s2DataCfg, '🚀 1000 items');
+    await measureTableSheetRender('🚀 1000 items', s2DataCfg);
   });
 
   test('should render 10000 items', async () => {
@@ -53,7 +57,7 @@ describe('table sheet benchmark', () => {
       ),
     };
 
-    await measureTableSheetRender(s2DataCfg, '🚀 10000 items');
+    await measureTableSheetRender('🚀 10000 items', s2DataCfg);
   });
 
   test('should render 10_0000 items', async () => {
@@ -70,7 +74,7 @@ describe('table sheet benchmark', () => {
       ),
     };
 
-    await measureTableSheetRender(s2DataCfg, '🚀 10_0000 items');
+    await measureTableSheetRender('🚀 10_0000 items', s2DataCfg);
   });
 
   test('should render 100_0000 items', async () => {
@@ -87,6 +91,53 @@ describe('table sheet benchmark', () => {
       ),
     };
 
-    await measureTableSheetRender(s2DataCfg, '🚀 100_0000 items');
+    await measureTableSheetRender('🚀 100_0000 items', s2DataCfg);
+  });
+
+  describe('multi line text', () => {
+    const s2Options: S2Options = {
+      style: {
+        colCell: {
+          maxLines: 3,
+        },
+        dataCell: {
+          maxLines: 3,
+        },
+      },
+    };
+
+    test('should render 10_0000 items', async () => {
+      const s2DataCfg: S2DataConfig = {
+        ...baseDataCfg,
+        data: generateRawData(
+          [
+            ['province', 100],
+            ['city', 10],
+            ['type', 10],
+            ['subType', 10],
+          ],
+          ['number'],
+        ),
+      };
+
+      await measureTableSheetRender('🚀 10_0000 items', s2DataCfg, s2Options);
+    });
+
+    test('should render 100_0000 items', async () => {
+      const s2DataCfg: S2DataConfig = {
+        ...baseDataCfg,
+        data: generateRawData(
+          [
+            ['province', 100],
+            ['city', 10],
+            ['type', 100],
+            ['subType', 10],
+          ],
+          ['number'],
+        ),
+      };
+
+      await measureTableSheetRender('🚀 100_0000 items', s2DataCfg, s2Options);
+    });
   });
 });

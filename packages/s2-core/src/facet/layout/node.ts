@@ -144,6 +144,8 @@ export class Node {
   /* 是否是冻结结尾的 node , 比如 frozenTrailingRow frozenTrailingCol */
   public isFrozenTrailing?: boolean;
 
+  public shallowRender?: boolean;
+
   public extra?: {
     description?: string;
     isCustomNode?: boolean;

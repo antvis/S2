@@ -1,5 +1,10 @@
 import type { CanvasConfig } from '@antv/g';
-import type { CornerCell, RowCell, SeriesNumberCell } from '../../cell';
+import type {
+  ColCell,
+  CornerCell,
+  RowCell,
+  SeriesNumberCell,
+} from '../../cell';
 import type {
   CellCallback,
   CornerHeaderCallback,
@@ -28,7 +33,7 @@ import type {
 import type { SpreadSheet } from '../../sheet-type';
 import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
-import type { InteractionOptions, S2CellType } from './interaction';
+import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';
 import type {
   BaseTooltipOperatorMenuOptions,
@@ -215,7 +220,7 @@ export interface S2BasicOptions<
    * 自定义列头单元格
    * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#col-cell
    */
-  colCell?: CellCallback<ColHeaderConfig, S2CellType>;
+  colCell?: CellCallback<ColHeaderConfig, ColCell>;
 
   /**
    * 自定义合并单元格
