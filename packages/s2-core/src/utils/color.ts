@@ -22,8 +22,23 @@ const BASIC_COLOR_COUNT = 15;
  * 智能反色使用
  * @param color
  */
-export const shouldReverseFontColor = (color: string) => {
+export const isTheColorCloseToDark = (color: string) => {
   return tinycolor(color).getLuminance() <= 0.5;
+};
+
+/**
+ * @param backgroundColor
+ * @param fontColor
+ * @returns 是否需要反色
+ */
+export const shouldReverseFontColor = (
+  backgroundColor: string,
+  fontColor: string,
+) => {
+  return !tinycolor.isReadable(backgroundColor, fontColor, {
+    level: 'AA',
+    size: 'small',
+  });
 };
 
 const FONT_COLOR_RELATIONS: Array<{
@@ -99,7 +114,7 @@ export const generatePalette = (
 
   // 根据背景明暗设置字体颜色
   FONT_COLOR_RELATIONS.forEach(({ fontColorIndex, bgColorIndex }) => {
-    basicColors[fontColorIndex] = shouldReverseFontColor(
+    basicColors[fontColorIndex] = isTheColorCloseToDark(
       basicColors[bgColorIndex],
     )
       ? REVERSE_FONT_COLOR

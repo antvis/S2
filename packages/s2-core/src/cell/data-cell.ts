@@ -37,7 +37,7 @@ import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import { shouldReverseFontColor } from '../utils/color';
+import { isTheColorCloseToDark, shouldReverseFontColor } from '../utils/color';
 import { LayoutWidthTypes } from '../common/constant/options';
 import { getDataCellIconStyle } from '../utils/layout';
 
@@ -221,10 +221,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
-    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    // 当背景亮度过低时，且背景色与文字颜色对比度过低时，开启反色
     if (
-      shouldReverseFontColor(backgroundColor) &&
-      textStyle.fill === DEFAULT_FONT_COLOR &&
+      isTheColorCloseToDark(backgroundColor) &&
+      (textFill === DEFAULT_FONT_COLOR ||
+        shouldReverseFontColor(backgroundColor, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
@@ -323,8 +324,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.meta.rowIndex,
     );
     let backgroundColor = backgroundColorByCross.backgroundColor;
-    const backgroundColorOpacity =
-      backgroundColorByCross.backgroundColorOpacity;
+    let backgroundColorOpacity = backgroundColorByCross.backgroundColorOpacity;
 
     if (this.shouldHideRowSubtotalData()) {
       return { backgroundColor, backgroundColorOpacity };
@@ -338,6 +338,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (attrs) {
         backgroundColor = attrs.fill;
         intelligentReverseTextColor = attrs.intelligentReverseTextColor;
+        backgroundColorOpacity = 1;
       }
     }
     return {

@@ -1,4 +1,8 @@
-import { getPalette, shouldReverseFontColor } from '@/utils';
+import {
+  getPalette,
+  isTheColorCloseToDark,
+  shouldReverseFontColor,
+} from '@/utils';
 import { generatePalette, generateStandardColors } from '@/utils/color';
 
 const expectThemeColor = '#F1535F';
@@ -92,7 +96,7 @@ describe('Theme Color Tests', () => {
     ];
 
     backgroundColors.forEach((color) => {
-      expect(shouldReverseFontColor(color)).toBeTruthy();
+      expect(isTheColorCloseToDark(color)).toBeTruthy();
     });
   });
 
@@ -106,7 +110,27 @@ describe('Theme Color Tests', () => {
       '#f0f2f4',
     ];
     backgroundColors.forEach((color) => {
-      expect(shouldReverseFontColor(color)).toBeFalsy();
+      expect(isTheColorCloseToDark(color)).toBeFalsy();
+    });
+  });
+
+  test('should use reverse font color when the background color dark and the contrast between the background color and the font color is too low', () => {
+    const backgroundColor = '#000000';
+
+    const fontColors = ['#000000', '#1D2129'];
+
+    fontColors.forEach((fontColor) => {
+      expect(shouldReverseFontColor(backgroundColor, fontColor)).toBeTruthy();
+    });
+  });
+
+  test('should use default font color when the background color light and the contrast between the background color and the font color is too high', () => {
+    const backgroundColor = '#ffffff';
+
+    const fontColors = ['#000000', '#1D2129'];
+
+    fontColors.forEach((fontColor) => {
+      expect(shouldReverseFontColor(backgroundColor, fontColor)).toBeFalsy();
     });
   });
 });
