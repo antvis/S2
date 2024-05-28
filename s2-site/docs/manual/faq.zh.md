@@ -341,6 +341,76 @@ const s2Options = {
 }
 ```
 
+### 自定义单元格后绘制图片，滚动表格时图片重复加载并造成闪烁？
+
+1. G 的 [Image 图形](https://g.antv.antgroup.com/api/basic/image#src) 支持传入图片地址字符串，内部会缓存起来，无需创建 [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image), 适用于固定的宽高等场景。
+
+```ts | pure
+import { Image as GImage } from '@antv/g';
+
+class CustomColCell extends ColCell {
+  drawBackgroundShape() {
+    new GImage({
+      style: {
+        x: 200,
+        y: 100,
+        width: 200,
+        height: 200,
+        src: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+      },
+    })
+  }
+}
+```
+
+2. 如果图片宽高未知，则可以创建 [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) 后再添加 G 的 [Image 图形](https://g.antv.antgroup.com/api/basic/image#src), 此时需要手动增加缓存，避免图片重复加载
+
+```ts | pure
+const ImageCache = new Map<string, HTMLImageElement>();
+
+class CustomColCell extends ColCell {
+  drawBackgroundShape() {
+    const url = 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png'
+
+    const imgCache = ImageCache.get(url)
+    if (imgCache) {
+      this.appendChild(
+        new GImage({
+          style: {
+            x: 200,
+            y: 100,
+            width: imgCache.width,
+            height: imgCache.height,
+            src: imgCache
+          },
+        })
+      )
+      return;
+    }
+
+    const img = new Image();
+    img.src = url
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      // 图片加载成功后创建
+      this.appendChild(
+        new GImage({
+          style: {
+            x: 200,
+            y: 100,
+            width: img.width,
+            height: img.height,
+            src: img
+          },
+        })
+      )
+    };
+  }
+}
+```
+
+请查看 [自定义特定单元格](/examples/custom/custom-cell#custom-specified-cell) 示例。
+
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
 <embed src="@/docs/common/packages.zh.md"></embed>

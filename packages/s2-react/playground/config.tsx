@@ -1,5 +1,7 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import {
+  EMPTY_PLACEHOLDER,
   ResizeType,
   customMerge,
   type CustomHeaderField,
@@ -7,7 +9,6 @@ import {
   type S2DataConfig,
   type S2TableSheetFrozenOptions,
   type ThemeCfg,
-  EMPTY_PLACEHOLDER,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
@@ -375,8 +376,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.SELECTED,
-      colResizeType: ResizeType.SELECTED,
+      rowResizeType: ResizeType.ALL,
+      colResizeType: ResizeType.ALL,
     },
   },
   // totals: {

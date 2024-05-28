@@ -132,15 +132,15 @@ export class GuiIcon extends Group {
     fill = fill || this.cfg.fill;
 
     const cacheKey = `${name}-${fill}`;
-    const img = ImageCache[cacheKey];
+    const imgCache = ImageCache[cacheKey];
 
-    if (img) {
+    if (imgCache) {
       // already in cache
-      image.attr('src', img);
+      image.attr('src', imgCache);
       this.appendChild(image);
     } else {
       this.getImage(name, cacheKey, fill)
-        .then((value: HTMLImageElement) => {
+        .then((img: HTMLImageElement) => {
           // 异步加载完成后，当前 Cell 可能已经销毁了
           if (this.destroyed) {
             DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
@@ -148,7 +148,7 @@ export class GuiIcon extends Group {
             return;
           }
 
-          image.attr('src', value);
+          image.attr('src', img);
           this.appendChild(image);
         })
         .catch((event: string | Event) => {
