@@ -143,6 +143,7 @@ describe('Pivot Mode Facet Test', () => {
   s2.isCustomHeaderFields = jest.fn();
   s2.isCustomColumnFields = jest.fn();
   s2.isCustomRowFields = jest.fn();
+  s2.isFrozenRowHeader = jest.fn();
   s2.options = assembleOptions({
     dataCell: (viewMeta) => new DataCell(viewMeta, s2),
   });
@@ -285,7 +286,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(cornerHeader).toBeInstanceOf(CornerHeader);
-      expect(cornerHeader.children).toHaveLength(2);
+      expect(cornerHeader.scrollGroup.children).toHaveLength(2);
       expect(cornerHeader.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(columnHeader).toBeInstanceOf(ColHeader);
@@ -310,14 +311,16 @@ describe('Pivot Mode Facet Test', () => {
       s2.dataSet = new MockPivotDataSet(s2);
       const seriesNumberFacet = new PivotFacet(s2);
 
+      s2.facet = seriesNumberFacet;
+
       seriesNumberFacet.render();
       const { cornerHeader } = seriesNumberFacet;
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.children).toHaveLength(3);
+      expect(cornerHeader.scrollGroup.children).toHaveLength(3);
 
       expect(
-        (cornerHeader.children as CornerCell[]).every(
+        (cornerHeader.scrollGroup.children as CornerCell[]).every(
           (cell) => cell.getMeta().spreadsheet,
         ),
       ).toBeTrue();

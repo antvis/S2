@@ -2179,10 +2179,12 @@ export abstract class BaseFacet {
    * 获取角头单元格 (不含可视区域)
    */
   public getCornerCells(): CornerCell[] {
-    return filter(
-      this.getCornerHeader().children,
-      (element: CornerCell) => element instanceof CornerCell,
-    ) as unknown[] as CornerCell[];
+    const headerChildren = (this.getCornerHeader()?.children ||
+      []) as CornerCell[];
+
+    return getAllChildCells(headerChildren, CornerCell).filter(
+      (cell: S2CellType) => cell.cellType === CellType.CORNER_CELL,
+    );
   }
 
   /**

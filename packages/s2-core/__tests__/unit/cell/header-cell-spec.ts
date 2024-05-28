@@ -153,6 +153,7 @@ describe('header cell formatter test', () => {
     });
 
     test('should render row header action icons', () => {
+      s2.options.headerActionIcons = rowHeaderActionIcons;
       s2.facet = {
         // @ts-ignore
         frozenGroupAreas: {
@@ -178,7 +179,7 @@ describe('header cell formatter test', () => {
           },
         },
       };
-      s2.options.headerActionIcons = rowHeaderActionIcons;
+
       const rowCell = new RowCell(rowNode, s2);
 
       // @ts-ignore
@@ -191,6 +192,31 @@ describe('header cell formatter test', () => {
 
     test('should render col header action icons', () => {
       s2.options.headerActionIcons = colHeaderActionIcons;
+      s2.facet = {
+        // @ts-ignore
+        frozenGroupAreas: {
+          [FrozenGroupArea.Col]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.TrailingCol]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.Row]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.TrailingRow]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+        },
+      };
 
       const colCell = new ColCell(colNode, s2);
 
@@ -204,6 +230,31 @@ describe('header cell formatter test', () => {
 
     test('should render col header sort icons', () => {
       s2.options.showDefaultHeaderActionIcon = true;
+      s2.facet = {
+        // @ts-ignore
+        frozenGroupAreas: {
+          [FrozenGroupArea.Col]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.TrailingCol]: {
+            width: 0,
+            x: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.Row]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+          [FrozenGroupArea.TrailingRow]: {
+            height: 0,
+            y: 0,
+            range: [] as number[],
+          },
+        },
+      };
       jest.spyOn(s2, 'isValueInCols').mockImplementationOnce(() => true);
       const showSortIconSpy = jest
         .spyOn(ColCell.prototype, 'showSortIcon')

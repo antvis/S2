@@ -39,6 +39,7 @@ import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
+import { getAllChildCells } from '../utils/get-all-child-cells';
 import { FrozenFacet } from './frozen-facet';
 import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -997,10 +998,10 @@ export class PivotFacet extends FrozenFacet {
    * @description 对于透视表, 序号属于 RowCell
    */
   public getSeriesNumberCells(): SeriesNumberCell[] {
-    return filter(
-      this.getSeriesNumberHeader()?.children,
-      (element: SeriesNumberCell) => element instanceof SeriesNumberCell,
-    ) as unknown[] as SeriesNumberCell[];
+    const headerChildren = (this.getSeriesNumberHeader()?.children ||
+      []) as SeriesNumberCell[];
+
+    return getAllChildCells(headerChildren, SeriesNumberCell);
   }
 
   public getFrozenOptions() {
