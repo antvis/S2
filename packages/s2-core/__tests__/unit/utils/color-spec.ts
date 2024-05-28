@@ -1,7 +1,7 @@
 import {
   getPalette,
-  isTheColorCloseToDark,
   shouldReverseFontColor,
+  isMeetContrastRequirement,
 } from '@/utils';
 import { generatePalette, generateStandardColors } from '@/utils/color';
 
@@ -96,7 +96,7 @@ describe('Theme Color Tests', () => {
     ];
 
     backgroundColors.forEach((color) => {
-      expect(isTheColorCloseToDark(color)).toBeTruthy();
+      expect(shouldReverseFontColor(color)).toBeTruthy();
     });
   });
 
@@ -110,7 +110,7 @@ describe('Theme Color Tests', () => {
       '#f0f2f4',
     ];
     backgroundColors.forEach((color) => {
-      expect(isTheColorCloseToDark(color)).toBeFalsy();
+      expect(shouldReverseFontColor(color)).toBeFalsy();
     });
   });
 
@@ -120,7 +120,7 @@ describe('Theme Color Tests', () => {
     const fontColors = ['#000000', '#1D2129'];
 
     fontColors.forEach((fontColor) => {
-      expect(shouldReverseFontColor(backgroundColor, fontColor)).toBeTruthy();
+      expect(isMeetContrastRequirement(backgroundColor, fontColor)).toBeFalsy();
     });
   });
 
@@ -130,7 +130,9 @@ describe('Theme Color Tests', () => {
     const fontColors = ['#000000', '#1D2129'];
 
     fontColors.forEach((fontColor) => {
-      expect(shouldReverseFontColor(backgroundColor, fontColor)).toBeFalsy();
+      expect(
+        isMeetContrastRequirement(backgroundColor, fontColor),
+      ).toBeTruthy();
     });
   });
 });

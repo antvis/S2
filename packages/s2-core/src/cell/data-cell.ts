@@ -37,7 +37,10 @@ import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import { isTheColorCloseToDark, shouldReverseFontColor } from '../utils/color';
+import {
+  shouldReverseFontColor,
+  isMeetContrastRequirement,
+} from '../utils/color';
 import { LayoutWidthTypes } from '../common/constant/options';
 import { getDataCellIconStyle } from '../utils/layout';
 
@@ -223,9 +226,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // 当背景亮度过低时，且背景色与文字颜色对比度过低时，开启反色
     if (
-      isTheColorCloseToDark(backgroundColor) &&
+      shouldReverseFontColor(backgroundColor) &&
       (textFill === DEFAULT_FONT_COLOR ||
-        shouldReverseFontColor(backgroundColor, textFill)) &&
+        !isMeetContrastRequirement(backgroundColor, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
