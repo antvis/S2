@@ -1,12 +1,12 @@
 {
   "private": false,
-  "name": "@antv/s2-react",
-  "version": "2.0.0-next.21",
+  "name": "@antv/s2-react-components",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
-  "description": "use S2 with react",
+  "description": "React Components for s2-react",
   "license": "MIT",
   "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
@@ -33,7 +33,12 @@
     "s2-react",
     "spreadsheet",
     "pivot table",
-    "table"
+    "table",
+    "react-components",
+    "react-config-components",
+    "s2-react-components",
+    "s2-react-config-components",
+    "s2-react-analysis-components"
   ],
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
@@ -48,7 +53,7 @@
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "watch": "rimraf esm && pnpm build:esm -w",
     "dts:build": "tsc -p tsconfig.declaration.json",
-    "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
+    "dts:extract": "cross-env LIB=s2-react-components node ../../scripts/dts.js",
     "test": "jest --passWithNoTests --detectOpenHandles",
     "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
@@ -59,16 +64,13 @@
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.7.0",
-    "@antv/s2": "^2.0.0-next.1",
     "antd": "^5.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
   "dependencies": {
-    "ahooks": "^3.8.0",
     "classnames": "^2.5.1",
-    "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.1"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.3.7",
@@ -79,6 +81,7 @@
     "@antv/g2": "^5.1.20",
     "@antv/s2": "workspace:*",
     "@antv/s2-shared": "workspace:*",
+    "@antv/s2-react": "workspace:*",
     "@testing-library/react": "^15.0.7",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/d3-dsv": "^3.0.7",
@@ -110,5 +113,8 @@
   },
   "tnpm": {
     "mode": "pnpm"
+  },
+  "release": {
+    "skip": true
   }
 }

@@ -72,7 +72,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@testing-library/dom": "^9.3.3",
+    "@testing-library/dom": "^10.1.0",
     "@types/d3-dsv": "^3.0.7",
     "@types/d3-ease": "^3.0.2",
     "@types/d3-interpolate": "^3.0.4",

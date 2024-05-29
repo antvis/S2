@@ -74,17 +74,10 @@ import {
 } from './config';
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
+import { onSheetMounted } from './utils';
 import './index.less';
 
 type TableSheetColumnType = 'single' | 'multiple';
-
-const onSheetMounted = (s2: SpreadSheet) => {
-  console.log('onSheetMounted: ', s2);
-  // @ts-ignore
-  window.s2 = s2;
-  // @ts-ignore
-  window.__g_instances__ = [s2.container];
-};
 
 const CustomTooltip = () => (
   <div>

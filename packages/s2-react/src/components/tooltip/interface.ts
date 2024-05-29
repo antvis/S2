@@ -6,15 +6,17 @@ import type {
   TooltipOperatorOptions as S2TooltipOperatorOptions,
 } from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
-import { type MenuProps } from 'antd';
-import type { ItemType } from 'antd/lib/menu/hooks/useItems';
+import { type GetProp, type MenuProps } from 'antd';
 
 export interface TooltipOperatorMenuInfo {
   key: string;
   domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;
 }
 
-export type TooltipOperatorMenuItem = Omit<ItemType, 'icon' | 'label'> &
+export type TooltipOperatorMenuItem = Omit<
+  GetProp<MenuProps, 'items'>[number],
+  'icon' | 'label'
+> &
   S2TooltipOperatorMenuItem<React.ReactNode, React.ReactNode>;
 
 export type TooltipOperatorMenuItems = TooltipOperatorMenuItem[];

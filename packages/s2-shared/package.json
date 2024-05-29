@@ -20,5 +20,8 @@
   },
   "tnpm": {
     "mode": "pnpm"
+  },
+  "release": {
+    "skip": true
   }
 }
