@@ -19,16 +19,14 @@ const OUT_DIR_NAME_MAP = {
 };
 
 const outDir = OUT_DIR_NAME_MAP[format];
-const isUMD = format === 'umd';
-const isESM = format === 'es';
+
+const isUmdFormat = format === 'umd';
 
 const output = {
   format,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
-  preserveModules: isESM,
-  preserveModulesRoot: isESM ? 'src' : undefined,
 };
 
 const plugins = [
@@ -58,13 +56,13 @@ const plugins = [
   }),
   postcss({
     exclude: ['**/styles/theme/*.less'],
-    minimize: isUMD,
+    minimize: isUmdFormat,
     use: {
       sass: null,
       stylus: null,
       less: { javascriptEnabled: true },
     },
-    extract: `style${isUMD ? '.min' : ''}.css`,
+    extract: `style${isUmdFormat ? '.min' : ''}.css`,
   }),
   /** 主题变量 less 不需要 extract&inject */
   postcss({
@@ -83,7 +81,7 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-if (isUMD) {
+if (isUmdFormat) {
   output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {
