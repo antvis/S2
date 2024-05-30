@@ -79,7 +79,6 @@
   "size-limit": [
     {
       "path": "./dist/index.min.js",
-      "import": "{ createComponent }",
       "limit": "20 kB"
     },
     {
