@@ -7,7 +7,7 @@ import { meta } from '../../__tests__/data/mock-dataset.json';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src';
 import { usePlaygroundContext } from '../context/playground.context';
 
@@ -48,7 +48,7 @@ export const CustomTreeOptions: SheetComponentOptions = {
   // cornerText: '指标',
 };
 
-type CustomTreeProps = Partial<SheetComponentsProps>;
+type CustomTreeProps = Partial<SheetComponentProps>;
 
 export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
   (props, ref) => {

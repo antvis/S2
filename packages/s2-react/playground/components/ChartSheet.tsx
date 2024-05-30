@@ -7,7 +7,7 @@ import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { usePlaygroundContext } from '../context/playground.context';
 
@@ -35,7 +35,7 @@ const theme: ThemeCfg['theme'] = {
   dataCell: {},
 };
 
-const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
+const onDataCellRender: SheetComponentProps['onDataCellRender'] = (cell) => {
   // 普通数值单元格正常展示
   if (!cell.isChartData()) {
     return;
@@ -52,7 +52,7 @@ const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
 
 export const ChartSheet = React.forwardRef<
   SpreadSheet,
-  Partial<SheetComponentsProps>
+  Partial<SheetComponentProps>
 >((props, ref) => {
   const context = usePlaygroundContext();
 

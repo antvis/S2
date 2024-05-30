@@ -14,13 +14,13 @@ import {
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { usePlaygroundContext } from '../context/playground.context';
 
 export const StrategySheet = React.forwardRef<
   SpreadSheet,
-  Partial<SheetComponentsProps>
+  Partial<SheetComponentProps>
 >((props, ref) => {
   const context = usePlaygroundContext();
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(

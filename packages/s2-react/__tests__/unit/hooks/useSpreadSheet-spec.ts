@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import type { SheetComponentProps } from '@/components';
+import { useSpreadSheet } from '@/hooks';
 import {
   PivotSheet,
   S2Event,
@@ -6,14 +7,13 @@ import {
   type S2DataConfig,
   type S2Options,
 } from '@antv/s2';
-import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { cloneDeep } from 'lodash';
 import { waitFor } from '@testing-library/react';
-import { useSpreadSheet } from '@/hooks';
-import type { SheetComponentsProps } from '@/components';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { cloneDeep } from 'lodash';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 200,
   height: 200,
   hd: false,
@@ -22,7 +22,7 @@ const s2Options: SheetComponentsProps['options'] = {
 describe('useSpreadSheet tests', () => {
   const getConfig = (
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
-  ): SheetComponentsProps => {
+  ): SheetComponentProps => {
     return {
       spreadsheet: () =>
         new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options),

@@ -6,11 +6,11 @@ import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
-import type { SheetComponentsProps } from '../../sheets/interface';
+import type { SheetComponentProps } from '../../sheets/interface';
 
 import './index.less';
 
-export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
+export const BaseSheet: React.FC<SheetComponentProps> = React.memo((props) => {
   const { dataCfg, options = {}, header } = props;
   const { s2Ref, loading, containerRef, pagination, wrapperRef } =
     useSpreadSheet(props);

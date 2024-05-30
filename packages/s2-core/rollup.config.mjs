@@ -3,11 +3,11 @@ import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
@@ -19,14 +19,16 @@ const OUT_DIR_NAME_MAP = {
 };
 
 const outDir = OUT_DIR_NAME_MAP[format];
-
-const isUmdFormat = format === 'umd';
+const isUMD = format === 'umd';
+const isESM = format === 'es';
 
 const output = {
   format,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
+  preserveModules: isESM,
+  preserveModulesRoot: isESM ? 'src' : undefined,
 };
 
 const plugins = [
@@ -56,13 +58,13 @@ const plugins = [
   }),
   postcss({
     exclude: ['**/styles/theme/*.less'],
-    minimize: isUmdFormat,
+    minimize: isUMD,
     use: {
       sass: null,
       stylus: null,
       less: { javascriptEnabled: true },
     },
-    extract: `style${isUmdFormat ? '.min' : ''}.css`,
+    extract: `style${isUMD ? '.min' : ''}.css`,
   }),
   /** 主题变量 less 不需要 extract&inject */
   postcss({
@@ -81,7 +83,7 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-if (isUmdFormat) {
+if (isUMD) {
   output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {

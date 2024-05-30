@@ -3,6 +3,8 @@
  * https://github.com/antvis/S2/issues/594
  * Wrong ref when sheet type changed
  */
+import { SheetComponent } from '@/components/sheets';
+import type { SheetComponentProps } from '@/components/sheets/interface';
 import { S2Event, SpreadSheet, TableSheet } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { waitFor } from '@testing-library/react';
@@ -10,8 +12,6 @@ import React, { type MutableRefObject } from 'react';
 import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { renderComponent } from 'tests/util/helpers';
-import type { SheetComponentsProps } from '@/components/sheets/interface';
-import { SheetComponent } from '@/components/sheets';
 
 let s2: SpreadSheet | null;
 
@@ -20,7 +20,7 @@ let mockRef = {
 } as unknown as MutableRefObject<SpreadSheet | null>;
 
 function MainLayout(
-  props: Partial<SheetComponentsProps> & { toggleSheetType?: boolean },
+  props: Partial<SheetComponentProps> & { toggleSheetType?: boolean },
 ) {
   const s2Ref = React.useRef<SpreadSheet>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);

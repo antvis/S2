@@ -61,7 +61,7 @@ module.exports = {
     'import/order': [
       2,
       {
-        warnOnUnassignedImports: false
+        warnOnUnassignedImports: false,
       },
     ],
     'import/no-default-export': 0,
@@ -233,6 +233,7 @@ module.exports = {
       rules: {
         'max-lines-per-function': 0,
         'line-comment-position': 0,
+        'import/order': 0,
       },
     },
   ],

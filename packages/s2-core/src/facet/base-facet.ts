@@ -103,6 +103,7 @@ import {
   type BaseHeaderConfig,
   type RowHeaderConfig,
 } from './header';
+import type { TableColHeader } from './header/table-col';
 import type { Hierarchy } from './layout/hierarchy';
 import type { ViewCellHeights } from './layout/interface';
 import { Node } from './layout/node';
@@ -113,7 +114,6 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import type { TableColHeader } from './header/table-col';
 
 export abstract class BaseFacet {
   // spreadsheet instance

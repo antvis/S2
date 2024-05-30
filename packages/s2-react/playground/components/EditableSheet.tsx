@@ -3,7 +3,7 @@ import React from 'react';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { tableSheetDataCfg } from '../config';
 import { usePlaygroundContext } from '../context/playground.context';
@@ -18,7 +18,7 @@ export const options: SheetComponentOptions = {
 
 export const EditableSheet = React.forwardRef<
   SpreadSheet,
-  Partial<SheetComponentsProps>
+  Partial<SheetComponentProps>
 >((props, ref) => {
   const context = usePlaygroundContext();
 

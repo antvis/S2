@@ -4,7 +4,7 @@ import { mockGridAnalysisDataCfg } from '../../__tests__/data/grid-analysis-data
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { usePlaygroundContext } from '../context/playground.context';
 
@@ -51,7 +51,7 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
 
 export const GridAnalysisSheet = React.forwardRef<
   SpreadSheet,
-  Partial<SheetComponentsProps>
+  Partial<SheetComponentProps>
 >((props, ref) => {
   const context = usePlaygroundContext();
 

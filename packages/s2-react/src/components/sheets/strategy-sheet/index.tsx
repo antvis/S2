@@ -1,11 +1,16 @@
-import { type ViewMeta } from '@antv/s2';
+import {
+  Node,
+  SpreadSheet,
+  customMerge,
+  type ColHeaderConfig,
+  type ViewMeta,
+} from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
-import { customMerge, Node, SpreadSheet, type ColHeaderConfig } from '@antv/s2';
-import { BaseSheet } from '../base-sheet';
-import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
-import type { HeaderBaseProps } from '../../header';
 import { strategyCopy } from '../../export/strategy-copy';
+import type { HeaderBaseProps } from '../../header';
+import { BaseSheet } from '../base-sheet';
+import type { SheetComponentOptions, SheetComponentProps } from '../interface';
 import { StrategySheetColCell, StrategySheetDataCell } from './custom-cell';
 import { StrategySheetDataSet } from './custom-data-set';
 import {
@@ -22,7 +27,7 @@ import {
  * 4. 支持 KPI 进度 (子弹图)
  * 5. 行头, 数值单元格不支持多选
  */
-export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
+export const StrategySheet: React.FC<SheetComponentProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
 

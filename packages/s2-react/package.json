@@ -1,32 +1,8 @@
 {
-  "private": false,
   "name": "@antv/s2-react",
   "version": "2.0.0-next.21",
-  "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
-  "module": "esm/index.js",
-  "types": "esm/index.d.ts",
+  "private": false,
   "description": "use S2 with react",
-  "license": "MIT",
-  "homepage": "https://s2.antv.antgroup.com",
-  "author": "https://github.com/orgs/antvis/people",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/S2.git"
-  },
-  "bugs": {
-    "url": "https://github.com/antvis/S2/issues"
-  },
-  "files": [
-    "esm",
-    "lib",
-    "dist",
-    "README.md"
-  ],
   "keywords": [
     "antv",
     "s2",
@@ -35,34 +11,51 @@
     "pivot table",
     "table"
   ],
+  "homepage": "https://s2.antv.antgroup.com",
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "license": "MIT",
+  "author": "https://github.com/orgs/antvis/people",
+  "main": "lib/index.js",
+  "unpkg": "dist/index.min.js",
+  "module": "esm/index.js",
+  "types": "esm/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "esm",
+    "lib",
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "start": "cross-env PLAYGROUND=true vite",
-    "clean": "rimraf lib esm dist temp",
     "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
-    "build:esm": "cross-env FORMAT=es vite build",
-    "build:cjs": "cross-env FORMAT=cjs vite build",
-    "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
+    "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
+    "build:esm": "cross-env FORMAT=es vite build",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
-    "watch": "rimraf esm && pnpm build:esm -w",
+    "build:umd": "cross-env FORMAT=umd vite build",
+    "clean": "rimraf lib esm dist temp",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
+    "start": "cross-env PLAYGROUND=true vite",
     "test": "jest --passWithNoTests --detectOpenHandles",
-    "test:coverage": "pnpm test -- --coverage",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:coverage": "pnpm test -- --coverage",
     "test:live": "node ./scripts/test-live.mjs",
     "test:watch": "pnpm test -- --watch",
-    "tsc": "tsc --noEmit"
-  },
-  "peerDependencies": {
-    "@ant-design/icons": ">=4.7.0",
-    "@antv/s2": "^2.0.0-next.1",
-    "antd": "^5.0.0",
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "tsc": "tsc --noEmit",
+    "watch": "rimraf esm && pnpm build:esm -w"
   },
   "dependencies": {
     "ahooks": "^3.8.0",
@@ -88,11 +81,20 @@
     "@types/react-dom": "18.2.17",
     "antd": "^5.17.4",
     "d3-dsv": "^1.1.1",
-    "rc-pagination": "^4.1.0",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "vite-plugin-svgr": "^2.2.2"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": ">=4.7.0",
+    "@antv/s2": "^2.0.0-next.1",
+    "antd": "^5.0.0",
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "size-limit": [
     {
@@ -105,9 +107,6 @@
       "limit": "5 kB"
     }
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "tnpm": {
     "mode": "pnpm"
   }

@@ -5,19 +5,19 @@ import { ConfigProvider } from '../config-provider';
 import { ChartSheet } from './chart-sheet';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
-import type { SheetComponentsProps } from './interface';
+import type { SheetComponentProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
 
-const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
+const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
   (props, ref) => {
     const { sheetType, themeCfg } = props;
 
     const [s2Instance, setS2Instance] = React.useState<SpreadSheet | null>(
       null,
     );
-    const sheetProps = React.useMemo<SheetComponentsProps>(() => {
+    const sheetProps = React.useMemo<SheetComponentProps>(() => {
       return {
         ...props,
         onMounted: (instance) => {
@@ -58,7 +58,7 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
   },
 );
 
-export const SheetComponent: React.ForwardRefExoticComponent<SheetComponentsProps> =
-  React.memo(Sheet) as React.ForwardRefExoticComponent<SheetComponentsProps>;
+export const SheetComponent: React.ForwardRefExoticComponent<SheetComponentProps> =
+  React.memo(Sheet) as React.ForwardRefExoticComponent<SheetComponentProps>;
 
 SheetComponent.displayName = 'SheetComponent';

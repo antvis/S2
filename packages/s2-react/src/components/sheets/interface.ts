@@ -17,7 +17,7 @@ export type SheetComponentOptions = S2Options<
   TooltipOperatorMenuOptions
 >;
 
-export type SheetComponentsProps = BaseSheetComponentProps<
+export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderBaseProps,
   SheetComponentOptions

@@ -1,10 +1,10 @@
-import React from 'react';
 import { waitFor } from '@testing-library/react';
-import { SheetComponent, type SheetComponentsProps } from '../../src';
+import React from 'react';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
 import { getContainer, renderComponent } from '../util/helpers';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 600,
   height: 600,
   hierarchyType: 'grid',

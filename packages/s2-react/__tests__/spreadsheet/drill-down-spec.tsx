@@ -3,11 +3,11 @@ import { waitFor } from '@testing-library/react';
 import { get, noop } from 'lodash';
 import React from 'react';
 import type { Root } from 'react-dom/client';
-import { SheetComponent, type SheetComponentsProps } from '../../src';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import * as mockDataConfig from '../data/simple-data.json';
 import { getContainer, renderComponent } from '../util/helpers';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 600,
   height: 300,
   hierarchyType: 'tree',
@@ -16,7 +16,7 @@ const s2Options: SheetComponentsProps['options'] = {
 /** 下钻展示数量 */
 const EXPECT_DRILL_ITEMS_NUM = 3;
 
-const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
+const partDrillDownParams: SheetComponentProps['partDrillDown'] = {
   drillConfig: {
     dataSet: [
       {

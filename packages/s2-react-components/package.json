@@ -88,7 +88,6 @@
     "@types/react-dom": "^18.3.0",
     "antd": "^5.17.4",
     "d3-dsv": "^1.1.1",
-    "rc-pagination": "^4.1.0",
     "react": "^18.3.1",
     "react-color": "^2.19.3",
     "react-dom": "^18.3.1",

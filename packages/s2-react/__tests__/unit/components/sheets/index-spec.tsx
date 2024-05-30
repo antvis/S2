@@ -7,7 +7,7 @@ import {
 import type { SheetType } from '@antv/s2-shared';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { SheetComponent, type SheetComponentsProps } from '../../../../src';
+import { SheetComponent, type SheetComponentProps } from '../../../../src';
 import { getContainer, renderComponent } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
@@ -30,7 +30,7 @@ describe('<SheetComponent/> Tests', () => {
       'editable',
     ];
 
-    const commonSheetProps: SheetComponentsProps = {
+    const commonSheetProps: SheetComponentProps = {
       // CI 环境和 本地 DPR 不一致
       options: {
         width: 200,
@@ -118,7 +118,7 @@ describe('<SheetComponent/> Tests', () => {
 
       function Component({
         sheetType,
-      }: Pick<SheetComponentsProps, 'sheetType'>) {
+      }: Pick<SheetComponentProps, 'sheetType'>) {
         const onMounted = jest.fn((instance) => {
           spreadSheet = instance;
         });

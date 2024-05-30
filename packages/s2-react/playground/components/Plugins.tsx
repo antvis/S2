@@ -7,7 +7,7 @@ import React from 'react';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { pivotSheetDataCfg } from '../config';
 
@@ -42,7 +42,7 @@ export const options: SheetComponentOptions = {
 
 export const PluginsSheet = React.forwardRef<
   SpreadSheet,
-  Partial<SheetComponentsProps>
+  Partial<SheetComponentProps>
 >((props, ref) => (
   <SheetComponent
     {...props}

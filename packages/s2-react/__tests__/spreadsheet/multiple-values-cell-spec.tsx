@@ -10,19 +10,19 @@ import { Radio, Switch } from 'antd';
 
 import { cloneDeep, merge } from 'lodash';
 import React from 'react';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
 import { renderComponent } from '../util/helpers';
-import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let sheet: SpreadSheet;
 const onMounted = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: SheetComponentsProps['options'],
+  options: SheetComponentProps['options'],
 ) => {
   sheet = new PivotSheet(dom, dataCfg, options as S2Options);
   (window as any).sheet = sheet;
@@ -77,7 +77,7 @@ const getDataCfg = (): S2DataConfig => {
   };
 };
 
-const getOptions = (): SheetComponentsProps['options'] => {
+const getOptions = (): SheetComponentProps['options'] => {
   return {
     width: 800,
     height: 600,
@@ -145,7 +145,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
   };
 };
 
-function MainLayout(props: SheetComponentsProps) {
+function MainLayout(props: SheetComponentProps) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
 
