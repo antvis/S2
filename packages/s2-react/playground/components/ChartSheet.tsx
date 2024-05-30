@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { renderToMountedElement, stdlib } from '@antv/g2';
 import type { DisplayObject } from '@antv/g';
-import { SpreadSheet, type ThemeCfg } from '@antv/s2';
+import { renderToMountedElement, stdlib } from '@antv/g2';
+import { type SpreadSheet, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
 import {
@@ -50,9 +50,10 @@ const onDataCellRender: SheetComponentsProps['onDataCellRender'] = (cell) => {
   });
 };
 
-export const ChartSheet: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => {
+export const ChartSheet = React.forwardRef<
+  SpreadSheet,
+  Partial<SheetComponentsProps>
+>((props, ref) => {
   const context = usePlaygroundContext();
 
   return (

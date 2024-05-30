@@ -1,16 +1,20 @@
-import React from 'react';
 import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
+import React from 'react';
 import type { SheetComponentOptions } from '../sheets/interface';
+// eslint-disable-next-line import/order
+import { Switcher } from './';
 import {
   generateSheetConfig,
   generateSwitcherFields,
   generateSwitcherFieldsCfgFromResult,
   getSheetType,
 } from './headerUtil';
-import type { SwitcherResult } from './interface';
-import { Switcher, type SwitcherProps as DefaultSwitcherProps } from './';
 import './index.less';
+import type {
+  SwitcherProps as DefaultSwitcherProps,
+  SwitcherResult,
+} from './interface';
 
 type SwitcherBasicCfg = Pick<
   DefaultSwitcherProps,

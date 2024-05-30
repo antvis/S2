@@ -1,13 +1,13 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import { EMPTY_PLACEHOLDER, ResizeType, type S2DataConfig } from '@antv/s2';
+import type { SheetComponentOptions } from '@antv/s2-react';
 import {
   data,
   fields,
   meta,
   totalData,
 } from '@antv/s2/__tests__/data/mock-dataset.json';
-import type { SheetComponentOptions } from '@antv/s2-react';
 
 export const s2DataConfig: S2DataConfig = {
   data,
@@ -17,7 +17,7 @@ export const s2DataConfig: S2DataConfig = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: true,
+  debug: false,
   width: 800,
   height: 600,
   hierarchyType: 'grid',

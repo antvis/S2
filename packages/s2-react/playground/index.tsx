@@ -10,6 +10,7 @@ import {
   getDefaultSeriesNumberText,
   getLang,
   getPalette,
+  safeJsonParse,
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellHighlightOptions,
@@ -18,7 +19,6 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  safeJsonParse,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -74,8 +74,8 @@ import {
 } from './config';
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
-import { onSheetMounted } from './utils';
 import './index.less';
+import { onSheetMounted } from './utils';
 
 type TableSheetColumnType = 'single' | 'multiple';
 

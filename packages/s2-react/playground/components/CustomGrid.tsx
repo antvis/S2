@@ -7,14 +7,14 @@ import {
 import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import { Radio, Space, Switch } from 'antd';
 import React from 'react';
+import { meta } from '../../__tests__/data/mock-dataset.json';
 import {
   SheetComponent,
   type SheetComponentOptions,
   type SheetComponentsProps,
 } from '../../src';
-import { meta } from '../../__tests__/data/mock-dataset.json';
-import { onSheetMounted } from '../utils';
 import { usePlaygroundContext } from '../context/playground.context';
+import { onSheetMounted } from '../utils';
 import { ResizeConfig } from './ResizeConfig';
 
 export const customRowGridOptions: SheetComponentOptions = {

@@ -1,7 +1,6 @@
 s2-site
 node_modules
 .cache
-package.json
 .history
 esm
 lib

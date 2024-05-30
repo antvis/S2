@@ -8,19 +8,20 @@ import { Switch } from 'antd';
 import { get, isNil } from 'lodash';
 import React from 'react';
 import {
+  StrategyOptions,
+  StrategySheetDataConfig,
+} from '../../__tests__/data/strategy-data';
+import {
   SheetComponent,
   type SheetComponentOptions,
   type SheetComponentsProps,
 } from '../../src/components';
-import {
-  StrategyOptions,
-  StrategySheetDataConfig,
-} from '../../__tests__/data/strategy-data';
 import { usePlaygroundContext } from '../context/playground.context';
 
-export const StrategySheet: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => {
+export const StrategySheet = React.forwardRef<
+  SpreadSheet,
+  Partial<SheetComponentsProps>
+>((props, ref) => {
   const context = usePlaygroundContext();
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
@@ -86,6 +87,8 @@ export const StrategySheet: React.FC<
 
   return (
     <SheetComponent
+      {...props}
+      {...context}
       ref={ref}
       sheetType="strategy"
       dataCfg={strategyDataCfg}
@@ -129,8 +132,6 @@ export const StrategySheet: React.FC<
           </>
         ),
       }}
-      {...props}
-      {...context}
     />
   );
 });

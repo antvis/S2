@@ -1,12 +1,11 @@
-import { isUpDataValue, SpreadSheet } from '@antv/s2';
+import { LayoutWidthType, SpreadSheet, isUpDataValue } from '@antv/s2';
 import React from 'react';
-import { LayoutWidthType } from '@antv/s2';
+import { mockGridAnalysisDataCfg } from '../../__tests__/data/grid-analysis-data';
 import {
   SheetComponent,
   type SheetComponentOptions,
   type SheetComponentsProps,
 } from '../../src/components';
-import { mockGridAnalysisDataCfg } from '../../__tests__/data/grid-analysis-data';
 import { usePlaygroundContext } from '../context/playground.context';
 
 export const mockGridAnalysisOptions: SheetComponentOptions = {
@@ -50,19 +49,20 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
   },
 };
 
-export const GridAnalysisSheet: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => {
+export const GridAnalysisSheet = React.forwardRef<
+  SpreadSheet,
+  Partial<SheetComponentsProps>
+>((props, ref) => {
   const context = usePlaygroundContext();
 
   return (
     <SheetComponent
+      {...props}
+      {...context}
       sheetType="gridAnalysis"
       dataCfg={mockGridAnalysisDataCfg}
       options={mockGridAnalysisOptions}
       ref={ref}
-      {...props}
-      {...context}
     />
   );
 });

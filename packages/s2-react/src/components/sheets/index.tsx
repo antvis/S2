@@ -2,13 +2,13 @@ import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
 import { SpreadSheetContext } from '../../context/SpreadSheetContext';
 import { ConfigProvider } from '../config-provider';
+import { ChartSheet } from './chart-sheet';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
-import { ChartSheet } from './chart-sheet';
 
 const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
   (props, ref) => {
@@ -58,8 +58,7 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
   },
 );
 
-export const SheetComponent: React.ForwardRefExoticComponent<
-  SheetComponentsProps & React.RefAttributes<SpreadSheet>
-> = React.memo(Sheet);
+export const SheetComponent: React.ForwardRefExoticComponent<SheetComponentsProps> =
+  React.memo(Sheet) as React.ForwardRefExoticComponent<SheetComponentsProps>;
 
 SheetComponent.displayName = 'SheetComponent';

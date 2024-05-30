@@ -7,12 +7,12 @@ import {
 } from '@antv/s2';
 import {
   Checkbox,
+  Divider,
   Radio,
   Space,
   Switch,
   Tooltip,
   type RadioChangeEvent,
-  Divider,
 } from 'antd';
 import React from 'react';
 import type { SheetComponentOptions } from '../../src/components';
@@ -111,7 +111,9 @@ export const ResizeConfig: React.FC<{
       },
     };
 
-    setOptions((prev) => customMerge(prev, updatedOptions));
+    setOptions((prev) =>
+      customMerge<SheetComponentOptions>(prev, updatedOptions),
+    );
 
     props.onMaxLinesChange?.(maxLines);
   };

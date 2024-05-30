@@ -4,8 +4,8 @@ import cls from 'classnames';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import type {
-  TooltipOperatorMenuItem,
   TooltipOperatorMenuInfo,
+  TooltipOperatorMenuItem,
   TooltipOperatorProps,
 } from '../interface';
 import { TooltipIcon } from './icon';
@@ -19,7 +19,7 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
       cell,
       menu: {
         className,
-        items: menus,
+        items: menus = [],
         onClick,
         selectedKeys,
         ...otherMenuProps
@@ -80,8 +80,3 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
   });
 
 TooltipOperator.displayName = 'TooltipOperator';
-TooltipOperator.defaultProps = {
-  menu: {
-    items: [],
-  },
-};

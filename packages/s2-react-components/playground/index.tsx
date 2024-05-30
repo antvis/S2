@@ -2,13 +2,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import { getLang } from '@antv/s2';
-import { Switcher } from '@antv/s2-react';
-import { version as AntdVersion, Space, Tag } from 'antd';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 import { SheetComponent } from '@antv/s2-react';
 import reactPkg from '@antv/s2-react/package.json';
 import corePkg from '@antv/s2/package.json';
+import { version as AntdVersion, Space, Tag } from 'antd';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import pkg from '../package.json';
 import { s2DataConfig, s2Options } from './config';
 

@@ -6,5 +6,5 @@
     "emitDeclarationOnly": true,
     "paths": {}
   },
-  "include": ["src"]
+  "exclude": ["playground", "__tests__/"]
 }

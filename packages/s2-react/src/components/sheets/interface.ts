@@ -1,4 +1,4 @@
-import type { Pagination, S2Options } from '@antv/s2';
+import type { Pagination, S2Options, SpreadSheet } from '@antv/s2';
 import type {
   PartDrillDown as BasePartDrillDown,
   BaseSheetComponentProps,
@@ -21,4 +21,11 @@ export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
   HeaderBaseProps,
   SheetComponentOptions
-> & { children?: React.ReactNode };
+> & {
+  children?: React.ReactNode;
+  ref?:
+    | React.MutableRefObject<SpreadSheet | undefined>
+    | React.ForwardedRef<SpreadSheet>
+    | undefined
+    | null;
+};

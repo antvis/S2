@@ -16,6 +16,11 @@
     "sheet",
     "spreadsheet"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "bootstrap": "pnpm install",
@@ -72,7 +77,8 @@
     "site:build": "NODE_OPTIONS='--max-old-space-size=4096' pnpm --filter @antv/s2-site build",
     "site:preview": "pnpm --filter @antv/s2-site preview",
     "site:deploy": "pnpm --filter @antv/s2-site deploy",
-    "share:test": "pnpm --filter @antv/s2-shared test"
+    "share:test": "pnpm --filter @antv/s2-shared test",
+    "format": "prettier . --write"
   },
   "commitlint": {
     "extends": [
@@ -111,6 +117,9 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@size-limit/esbuild": "^11.1.4",
+    "@size-limit/esbuild-why": "^11.1.4",
+    "@size-limit/file": "^11.1.4",
     "@swc/core": "^1.5.7",
     "@swc/jest": "^0.2.36",
     "@types/jest": "^27.5.2",
@@ -160,6 +169,8 @@
     "postcss": "^8.4.38",
     "postcss-less": "^6.0.0",
     "prettier": "3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.5.0",
     "rimraf": "^5.0.7",
     "rollup": "^4.18.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -169,9 +180,6 @@
     "semantic-release": "^19.0.5",
     "semantic-release-monorepo": "^7.0.8",
     "size-limit": "^11.1.4",
-    "@size-limit/esbuild": "^11.1.4",
-    "@size-limit/esbuild-why": "^11.1.4",
-    "@size-limit/file": "^11.1.4",
     "stylelint": "^16.6.1",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-standard": "^36.0.0",
@@ -180,11 +188,6 @@
     "vite": "^5.2.12",
     "vite-plugin-imp": "^2.4.0",
     "vue-jest": "^5.0.0-alpha.10"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/S2.git"
   },
   "tnpm": {
     "mode": "pnpm"
