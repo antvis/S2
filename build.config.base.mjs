@@ -76,7 +76,12 @@ export const getBaseConfig = () => {
       plugins: [
         peerDepsExternal(),
         !isDevMode && viteCommonjs(),
-        isAnalysisMode && visualizer({ gzipSize: true }),
+        isAnalysisMode &&
+          visualizer({
+            open: true,
+            gzipSize: true,
+            brotliSize: true,
+          }),
         ...plugins,
       ].filter(Boolean),
 
