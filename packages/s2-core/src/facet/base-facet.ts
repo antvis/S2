@@ -1374,13 +1374,15 @@ export abstract class BaseFacet {
     if (
       this.scrollDirection !== undefined &&
       this.scrollDirection !==
-        (deltaX > 0
+        (optimizedDeltaX > 0
           ? ScrollDirection.SCROLL_LEFT
           : ScrollDirection.SCROLL_RIGHT)
     ) {
       this.cancelScrollFrame();
       this.scrollDirection =
-        deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
+        optimizedDeltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT;
 
       this.updateHorizontalRowScrollOffset({
         offsetX,
