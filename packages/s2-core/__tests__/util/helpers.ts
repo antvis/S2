@@ -23,6 +23,7 @@ import {
   FormatOptions,
   asyncGetAllPlainData,
   TAB_SEPARATOR,
+  getDefaultSeriesNumberText,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -197,6 +198,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.enableFrozenHeaders = jest.fn();
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
+  s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,

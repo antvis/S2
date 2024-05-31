@@ -7,10 +7,7 @@ import type { CornerBBox } from '../bbox/corner-bbox';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import {
-  getDefaultCornerText,
-  getDefaultSeriesNumberText,
-} from './../../common/constant/basic';
+import { getDefaultCornerText } from './../../common/constant/basic';
 import { BaseHeader } from './base';
 import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
 
@@ -131,9 +128,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       const sNode: Node = new Node({
         id: '',
         field: '',
-        value: getDefaultSeriesNumberText(
-          spreadsheet.options.seriesNumber?.text,
-        ),
+        value: spreadsheet.getSeriesNumberText(),
       });
 
       sNode.x = position?.x;

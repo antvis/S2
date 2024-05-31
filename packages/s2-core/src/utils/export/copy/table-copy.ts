@@ -1,7 +1,6 @@
 import { map, zip } from 'lodash';
 import {
   SERIES_NUMBER_FIELD,
-  getDefaultSeriesNumberText,
   type CellMeta,
   type RawData,
 } from '../../../common';
@@ -164,13 +163,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
   private getColMatrix(): string[][] {
     return zip(
-      ...this.columnNodes.map((node) => {
-        const matrix = this.getHeaderNodeMatrix(node);
-
-        return this.isSeriesNumberField(node.field)
-          ? [getDefaultSeriesNumberText()]
-          : matrix;
-      }),
+      ...this.columnNodes.map((node) => this.getHeaderNodeMatrix(node)),
     ) as string[][];
   }
 

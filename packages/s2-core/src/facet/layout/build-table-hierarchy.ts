@@ -1,4 +1,3 @@
-import { getDefaultSeriesNumberText } from '../../common';
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
 import type { HeaderParams } from './interface';
@@ -6,9 +5,9 @@ import type { HeaderParams } from './interface';
 export const buildTableHierarchy = (params: HeaderParams) => {
   const { spreadsheet, rootNode, fields, hierarchy } = params;
   const { columns = [] } = spreadsheet.dataSet.fields;
-  const { enable, text } = spreadsheet.options.seriesNumber ?? {};
+  const { enable } = spreadsheet.options.seriesNumber ?? {};
 
-  const seriesNumberNodeValue = getDefaultSeriesNumberText(text);
+  const seriesNumberNodeValue = spreadsheet.getSeriesNumberText();
   const fieldValues = columns.map((field) => {
     return field === SERIES_NUMBER_FIELD
       ? seriesNumberNodeValue
