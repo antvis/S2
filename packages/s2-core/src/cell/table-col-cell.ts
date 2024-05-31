@@ -45,7 +45,11 @@ export class TableColCell extends ColCell {
         return isTopLevelNode(node);
       },
     );
-    const { colIndex } = getNodeRoot(this.meta);
+    // const { colIndex } = getNodeRoot(this.meta);
+    const rootNode = getNodeRoot(this.meta);
+    const colIndex = colNodes.findIndex(
+      (colNode) => colNode.id === rootNode.id,
+    );
 
     return (
       isFrozenCol(colIndex, frozenColCount) ||
