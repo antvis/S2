@@ -1371,6 +1371,14 @@ export abstract class BaseFacet {
       return;
     }
 
+    this.stopScrollChaining(event);
+
+    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+
+    if (!this.cancelScrollFrame()) {
+      return;
+    }
+
     if (
       this.scrollDirection !== undefined &&
       this.scrollDirection !==
@@ -1378,7 +1386,6 @@ export abstract class BaseFacet {
           ? ScrollDirection.SCROLL_LEFT
           : ScrollDirection.SCROLL_RIGHT)
     ) {
-      this.cancelScrollFrame();
       this.scrollDirection =
         optimizedDeltaX > 0
           ? ScrollDirection.SCROLL_LEFT
@@ -1400,15 +1407,6 @@ export abstract class BaseFacet {
 
     this.scrollDirection =
       deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
-
-    this.stopScrollChaining(event);
-
-    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-
-    if (!this.cancelScrollFrame()) {
-      return;
-    }
-
     this.scrollFrameId = requestAnimationFrame(() => {
       const {
         scrollX: currentScrollX,
