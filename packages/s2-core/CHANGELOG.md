@@ -1,3 +1,10 @@
+# [@antv/s2-v1.55.6](https://github.com/antvis/S2/compare/@antv/s2-v1.55.5...@antv/s2-v1.55.6) (2024-05-31)
+
+
+### Bug Fixes
+
+* 修复字段标记背景色透明度优先级低于主题背景色透明度的问题 ([#2744](https://github.com/antvis/S2/issues/2744)) ([63806ab](https://github.com/antvis/S2/commit/63806ab6074ad6c19f40bf78c53b599d31c15011))
+
 # [@antv/s2-v1.55.5](https://github.com/antvis/S2/compare/@antv/s2-v1.55.4...@antv/s2-v1.55.5) (2024-05-23)
 
 
