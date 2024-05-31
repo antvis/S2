@@ -61,11 +61,7 @@ describe('Table Mode Dataset Test', () => {
     MockTableSheet.mockClear();
 
     s2 = new MockTableSheet();
-    s2.options = {
-      seriesNumber: {
-        text: '序号',
-      },
-    };
+    s2.getSeriesNumberText = () => '序号';
     dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);

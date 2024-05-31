@@ -31,8 +31,8 @@ describe('TableSheet Tests', () => {
   });
 
   afterEach(() => {
-    // container?.remove();
-    // s2?.destroy();
+    container?.remove();
+    s2?.destroy();
   });
 
   describe('TableSheet Sort Tests', () => {
@@ -212,6 +212,31 @@ describe('TableSheet Tests', () => {
       },
     );
   });
+
+  test.each([
+    {
+      enable: true,
+      result: '序号',
+    },
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
 
   test('should get normal header fields status', () => {
     expect(s2.isCustomHeaderFields()).toBeFalsy();

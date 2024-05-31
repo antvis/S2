@@ -49,11 +49,7 @@ describe('Pivot Dataset Test', () => {
 
     mockSheet.store = new Store();
     mockSheet.interaction = new MockRootInteraction(mockSheet);
-    mockSheet.options = {
-      seriesNumber: {
-        text: '序号',
-      },
-    };
+    mockSheet.getSeriesNumberText = () => '序号';
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });

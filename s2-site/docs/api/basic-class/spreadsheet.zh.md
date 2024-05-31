@@ -66,6 +66,7 @@ s2.isPivotMode()
 | measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 | measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 | groupSortByMethod | 组内排序（透视表有效）  | (sortMethod: `'asc' \| 'desc'`, meta: [Node](/docs/api/basic-class/node)) => void  |    |
+| getSeriesNumberText | 获取序号文本（根据 `s2Options.series.text` 配置，默认 "序号")  | () => string  |    |
 
 ### S2MountContainer
 

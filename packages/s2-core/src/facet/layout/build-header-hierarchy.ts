@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
 import {
   EXTRA_FIELD,
-  getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
   type CustomTreeNode,
 } from '../../common';
@@ -109,12 +108,12 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
 
 const handleTableHierarchy = (params: HeaderParams) => {
   const { isCustomTreeFields, spreadsheet } = params;
-  const { enable, text } = spreadsheet.options.seriesNumber ?? {};
+  const { enable } = spreadsheet.options.seriesNumber ?? {};
 
   if (isCustomTreeFields) {
     const seriesNumberField: CustomTreeNode = {
       field: SERIES_NUMBER_FIELD,
-      title: getDefaultSeriesNumberText(text),
+      title: spreadsheet.getSeriesNumberText(),
     };
 
     const fields = enable
