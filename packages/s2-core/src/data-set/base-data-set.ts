@@ -113,14 +113,16 @@ export abstract class BaseDataSet {
    */
   public getFieldName(field: CustomHeaderField, defaultValue?: string): string {
     if (field === SERIES_NUMBER_FIELD) {
-      return this.spreadsheet.getSeriesNumberText();
+      return this.spreadsheet?.getSeriesNumberText();
     }
 
     const realField = this.getField(field);
     // 兼容自定义行列头场景
-    const headerNode = this.spreadsheet.facet?.getHeaderNodes().find((node) => {
-      return node.field === realField && node?.extra?.isCustomNode;
-    });
+    const headerNode = this.spreadsheet?.facet
+      ?.getHeaderNodes()
+      .find((node) => {
+        return node.field === realField && node?.extra?.isCustomNode;
+      });
     const realDefaultValue =
       headerNode?.value ||
       (isString(field) ? field : field?.title) ||
