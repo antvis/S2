@@ -35,8 +35,8 @@ const s2Options: S2Options = {
       height: 400,
     },
   },
-  dataCell: (viewMeta) =>
-    new ChartSheetDataCell(viewMeta, viewMeta.spreadsheet),
+  dataCell: (viewMeta, spreadsheet) =>
+    new ChartSheetDataCell(viewMeta, spreadsheet),
 };
 
 const s2DataConfig: S2DataConfig = {

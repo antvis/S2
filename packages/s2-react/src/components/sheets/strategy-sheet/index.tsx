@@ -1,4 +1,3 @@
-import { type ViewMeta } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
 import { customMerge, Node, SpreadSheet, type ColHeaderConfig } from '@antv/s2';
@@ -37,8 +36,8 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
 
         return {
           hierarchyType: 'tree',
-          dataCell: (viewMeta: ViewMeta) =>
-            new StrategySheetDataCell(viewMeta, viewMeta.spreadsheet),
+          dataCell: (viewMeta, spreadsheet) =>
+            new StrategySheetDataCell(viewMeta, spreadsheet),
           colCell: (
             node: Node,
             spreadsheet: SpreadSheet,
