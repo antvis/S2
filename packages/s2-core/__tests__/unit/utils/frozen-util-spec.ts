@@ -1,14 +1,14 @@
-import type { S2TableSheetFrozenOptions } from '@/common/interface/s2Options';
-import { getValidFrozenOptions } from '@/utils/layout/frozen';
-import {
-  getFrozenDataCellType,
-  calculateFrozenCornerCells,
-  splitInViewIndexesWithFrozen,
-  getCellRange,
-} from '@/facet/utils';
 import { FrozenCellType } from '@/common/constant/frozen';
-import type { Indexes } from '@/utils/indexes';
+import type { S2TableSheetFrozenOptions } from '@/common/interface/s2Options';
 import type { ViewCellHeights } from '@/facet/layout/interface';
+import {
+  calculateFrozenCornerCells,
+  getCellRange,
+  getFrozenDataCellType,
+  splitInViewIndexesWithFrozen,
+} from '@/facet/utils';
+import type { Indexes } from '@/utils/indexes';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
 
 describe('Frozen util test', () => {
   describe('getCellRange', () => {

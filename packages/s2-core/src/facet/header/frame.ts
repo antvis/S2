@@ -1,9 +1,9 @@
 import { Group, Rect } from '@antv/g';
-import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
-import { translateGroup } from '../utils';
 import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 import { floor } from '../../utils/math';
+import { renderLine } from '.././../utils/g-renders';
+import { translateGroup } from '../utils';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;

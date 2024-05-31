@@ -1,7 +1,7 @@
-import { getContainer } from 'tests/util/helpers';
-import { noop } from 'lodash';
-import { PivotSheet } from '@/sheet-type';
 import { S2Event, type S2DataConfig, type S2Options } from '@/common';
+import { PivotSheet } from '@/sheet-type';
+import { noop } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 400,

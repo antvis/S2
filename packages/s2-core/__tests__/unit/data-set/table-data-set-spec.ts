@@ -1,10 +1,10 @@
 /**
  * table mode data-set test.
  */
-import { assembleDataCfg } from 'tests/util';
 import type { S2DataConfig } from '@/common/interface';
-import { SpreadSheet, TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
+import { assembleDataCfg } from 'tests/util';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');

@@ -1,33 +1,8 @@
 /* eslint-disable max-lines-per-function */
-import fs from 'fs';
-import path from 'path';
-import { dsvFormat } from 'd3-dsv';
-import EE from '@antv/event-emitter';
-import {
-  Canvas,
-  FederatedMouseEvent,
-  FederatedPointerEvent,
-  type CanvasConfig,
-  Group,
-} from '@antv/g';
-import { omit } from 'lodash';
-import * as simpleDataConfig from 'tests/data/simple-data.json';
-import * as dataConfig from 'tests/data/mock-dataset.json';
-import { Renderer } from '@antv/g-canvas';
-import {
-  getTheme,
-  type BaseDataSet,
-  type Node,
-  Hierarchy,
-  EventController,
-  FormatOptions,
-  asyncGetAllPlainData,
-  TAB_SEPARATOR,
-} from '../../src';
-
-import { assembleOptions, assembleDataCfg } from '.';
-import { RootInteraction } from '@/interaction/root';
-import { Store } from '@/common/store';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
 import type {
   InternalFullyTheme,
   LayoutResult,
@@ -36,12 +11,39 @@ import type {
   S2Options,
   ViewMeta,
 } from '@/common/interface';
+import { Store } from '@/common/store';
+import type { BaseFacet } from '@/facet';
+import type { PanelBBox } from '@/facet/bbox/panel-bbox';
+import { RootInteraction } from '@/interaction/root';
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
-import type { BaseFacet } from '@/facet';
-import type { PanelBBox } from '@/facet/bbox/panel-bbox';
+import EE from '@antv/event-emitter';
+import {
+  Canvas,
+  FederatedMouseEvent,
+  FederatedPointerEvent,
+  Group,
+  type CanvasConfig,
+} from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import { dsvFormat } from 'd3-dsv';
+import fs from 'fs';
+import { omit } from 'lodash';
+import path from 'path';
+import * as dataConfig from 'tests/data/mock-dataset.json';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
+import { assembleDataCfg, assembleOptions } from '.';
+import {
+  EventController,
+  FormatOptions,
+  Hierarchy,
+  TAB_SEPARATOR,
+  asyncGetAllPlainData,
+  getTheme,
+  type BaseDataSet,
+  type Node,
+} from '../../src';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';

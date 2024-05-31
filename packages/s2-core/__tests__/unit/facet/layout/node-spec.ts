@@ -1,5 +1,5 @@
-import { SERIES_NUMBER_FIELD } from '../../../../src';
 import { Node } from '@/facet/layout/node';
+import { SERIES_NUMBER_FIELD } from '../../../../src';
 
 describe('Node Test', () => {
   const root = new Node({

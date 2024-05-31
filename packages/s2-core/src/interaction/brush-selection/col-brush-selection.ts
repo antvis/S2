@@ -6,11 +6,10 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { ViewMeta } from '../../common/interface';
+import type { OnUpdateCells, ViewMeta } from '../../common/interface';
+import type { BBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
-import type { OnUpdateCells } from '../../common/interface';
-import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
 export class ColCellBrushSelection extends BaseBrushSelection {

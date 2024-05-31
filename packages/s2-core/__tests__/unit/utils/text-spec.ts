@@ -1,10 +1,4 @@
-import {
-  createFakeSpreadSheet,
-  createMockCellInfo,
-  createPivotSheet,
-} from 'tests/util/helpers';
-import type { TextTheme } from '../../../src/common';
-import { safeJsonParse } from '../../../src/utils/common';
+import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   drawCustomContent,
   getCellWidth,
@@ -14,7 +8,13 @@ import {
   isUpDataValue,
   isZeroOrEmptyValue,
 } from '@/utils/text';
-import { ELLIPSIS_SYMBOL } from '@/common';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  createPivotSheet,
+} from 'tests/util/helpers';
+import type { TextTheme } from '../../../src/common';
+import { safeJsonParse } from '../../../src/utils/common';
 
 jest.mock('@/utils/g-mini-charts');
 

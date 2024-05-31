@@ -1,11 +1,11 @@
-import * as dataCfg from 'tests/data/simple-table-data.json';
-import { getContainer } from 'tests/util/helpers';
-import { TableDataSet } from '../../../src/data-set';
-import { TableFacet } from '../../../src/facet';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
 import type { GEvent, TooltipOptions } from '@/index';
 import { TableSheet } from '@/sheet-type';
+import * as dataCfg from 'tests/data/simple-table-data.json';
+import { getContainer } from 'tests/util/helpers';
+import { TableDataSet } from '../../../src/data-set';
+import { TableFacet } from '../../../src/facet';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;

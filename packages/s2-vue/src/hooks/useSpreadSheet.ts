@@ -8,11 +8,11 @@ import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { getSheetComponentOptions } from '../utils/options';
-import { usePagination } from './usePagination';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
-import { useSheetUpdate } from './useSheetUpdate';
+import { usePagination } from './usePagination';
 import { useResize } from './useResize';
+import { useSheetUpdate } from './useSheetUpdate';
 
 export function useSpreadSheet(
   props: BaseSheetProps,

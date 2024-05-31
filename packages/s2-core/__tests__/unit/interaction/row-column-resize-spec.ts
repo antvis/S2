@@ -1,36 +1,36 @@
-import {
-  Group,
-  DisplayObject,
-  type RectStyleProps,
-  type ParsedRectStyleProps,
-  Path,
-  FederatedPointerEvent,
-} from '@antv/g';
-import { get, pick } from 'lodash';
-import { createMockCellInfo } from '../../util/helpers';
+import { CustomRect } from '@/engine';
 import type { BBox } from '@/engine/interface';
-import { RootInteraction } from '@/interaction/root';
+import type { BaseFacet } from '@/facet/base-facet';
 import {
+  Node,
   PivotSheet,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-  type ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+  ResizeType,
   RowColumnResize,
   S2Event,
-  type S2Options,
   SpreadSheet,
-  type ThemeCfg,
-  Node,
-  type ViewMeta,
-  type S2DataConfig,
+  type ResizeInfo,
   type ResizeParams,
-  ResizeType,
+  type S2DataConfig,
+  type S2Options,
+  type ThemeCfg,
+  type ViewMeta,
 } from '@/index';
-import type { BaseFacet } from '@/facet/base-facet';
-import { CustomRect } from '@/engine';
+import { RootInteraction } from '@/interaction/root';
+import {
+  DisplayObject,
+  FederatedPointerEvent,
+  Group,
+  Path,
+  type ParsedRectStyleProps,
+  type RectStyleProps,
+} from '@antv/g';
+import { get, pick } from 'lodash';
+import { createMockCellInfo } from '../../util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');

@@ -11,6 +11,7 @@ import {
   last,
   set,
 } from 'lodash';
+import type { RawData } from '../../common';
 import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
@@ -34,7 +35,6 @@ import type {
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
-import type { RawData } from '../../common';
 
 export function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);

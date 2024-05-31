@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { Rect } from '@antv/g';
-import { find, get, keys } from 'lodash';
-import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { DataCell } from '@/cell';
-import type { TextAlign } from '@/common';
-import {
+import type {
   CellType,
   GuiIcon,
   S2Event,
+  TextAlign,
   type Formatter,
   type OriginalEvent,
   type S2CellType,
@@ -21,6 +18,9 @@ import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
 import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import type { Rect } from '@antv/g';
+import { find, get, keys } from 'lodash';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;

@@ -1,6 +1,6 @@
-import React from 'react';
-import cls from 'classnames';
 import { S2_PREFIX_CLS } from '@antv/s2';
+import cls from 'classnames';
+import React from 'react';
 
 interface ReactElementProps {
   content: React.ReactNode;

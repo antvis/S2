@@ -1,17 +1,19 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable prefer-named-capture-group */
-import path from 'path';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
-import svgr from 'vite-plugin-svgr';
 import {
   defineConfig,
+  type Alias,
   type LibraryFormats,
   type PluginOption,
-  type Alias,
 } from 'vite';
+import svgr from 'vite-plugin-svgr';
 
 const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',

@@ -9,6 +9,7 @@ import {
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
+import type { FrozenFacet } from '../frozen-facet';
 import type { Node } from '../layout/node';
 import {
   getFrozenLeafNodesCount,
@@ -17,7 +18,6 @@ import {
   isFrozenTrailingCol,
   translateGroupX,
 } from '../utils';
-import type { FrozenFacet } from '../frozen-facet';
 import { ColHeader } from './col';
 import type { ColHeaderConfig } from './interface';
 

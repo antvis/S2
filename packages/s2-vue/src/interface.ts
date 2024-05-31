@@ -1,12 +1,12 @@
+import type { Pagination, S2Options, TooltipContentType } from '@antv/s2';
 import type {
-  BaseSheetComponentProps,
   BaseDrillDownComponentProps,
+  BaseSheetComponentProps,
   PartDrillDown,
 } from '@antv/s2-shared';
-import type { PropType } from 'vue';
-import type { PaginationProps } from 'ant-design-vue';
 import type { UnionToIntersection } from '@vue/shared';
-import type { TooltipContentType, S2Options, Pagination } from '@antv/s2';
+import type { PaginationProps } from 'ant-design-vue';
+import type { PropType } from 'vue';
 
 /*
  * 这个是vue中的类型，但是vue没有export

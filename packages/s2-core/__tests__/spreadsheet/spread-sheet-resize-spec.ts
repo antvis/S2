@@ -1,12 +1,12 @@
+import type { Group } from '@antv/g';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import type { Group } from '@antv/g';
 import {
-  type S2Options,
-  PivotSheet,
-  KEY_GROUP_ROW_RESIZE_AREA,
-  KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_COL_RESIZE_AREA,
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  PivotSheet,
+  type S2Options,
 } from '../../src';
 
 async function renderSheet(options?: S2Options) {

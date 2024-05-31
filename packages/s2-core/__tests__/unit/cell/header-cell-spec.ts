@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
 import type { Formatter, HeaderActionIcon } from '@/common';
 import { PivotDataSet, TableDataSet } from '@/data-set';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
 import { TableFacet } from '@/facet';
 import { Node } from '@/facet/layout/node';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;

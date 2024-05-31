@@ -1,8 +1,8 @@
 import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
 import { NODE_ID_SEPARATOR, S2Event } from '../common/constant';
-import { getLeafColumnsWithKey } from '../facet/utils';
 import type { HiddenColumnsInfo } from '../common/interface/store';
 import type { Node } from '../facet/layout/node';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 
 export const getHiddenColumnFieldKey = (field: string) => {

@@ -1,5 +1,5 @@
-import { Frame } from '../facet/header/frame';
 import { DataCell } from '../cell/data-cell';
+import type { CellMeta } from '../common';
 import {
   CellType,
   FrozenGroupType,
@@ -8,6 +8,9 @@ import {
   ResizeAreaEffect,
   ResizeDirectionType,
 } from '../common/constant';
+import { CustomRect, type SimpleBBox } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
+import { Frame } from '../facet/header/frame';
 import {
   isFrozenRow as isFrozenRowUtil,
   isFrozenTrailingRow as isFrozenTrailingRowUtil,
@@ -17,9 +20,6 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { CustomRect, type SimpleBBox } from '../engine';
-import type { FrozenFacet } from '../facet/frozen-facet';
-import type { CellMeta } from '../common';
 import { BaseCell } from './base-cell';
 
 export class TableDataCell extends DataCell {

@@ -4,10 +4,10 @@
  * https://github.com/antvis/S2/issues/1624
  */
 
-import * as mockDataConfig from '../data/simple-data.json';
-import { getContainer, sleep } from '../util/helpers';
 import { S2Event, type S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
+import * as mockDataConfig from '../data/simple-data.json';
+import { getContainer, sleep } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

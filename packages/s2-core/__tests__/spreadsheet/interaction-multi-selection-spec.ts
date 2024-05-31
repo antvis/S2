@@ -1,3 +1,5 @@
+import type { HierarchyType, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import {
   createMockCellInfo,
@@ -5,15 +7,13 @@ import {
   getContainer,
   sleep,
 } from 'tests/util/helpers';
+import { CellType, InteractionStateName } from '../../src';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import { CellType, InteractionStateName } from '../../src';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { HierarchyType, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

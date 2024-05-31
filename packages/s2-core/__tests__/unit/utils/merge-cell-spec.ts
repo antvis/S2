@@ -1,4 +1,3 @@
-import type { Group } from '@antv/g';
 import type { DataCell, MergedCell } from '@/cell';
 import type {
   MergedCellInfo,
@@ -28,6 +27,7 @@ import {
   unmergeCell,
   updateMergedCells,
 } from '@/utils';
+import type { Group } from '@antv/g';
 
 jest.mock('@/sheet-type');
 

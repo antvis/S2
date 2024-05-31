@@ -1,5 +1,5 @@
 import { get, pick } from 'lodash';
-import { type SpreadSheet, type S2Options, OriginEventType } from '../../src';
+import { OriginEventType, type S2Options, type SpreadSheet } from '../../src';
 import { createFederatedMouseEvent, createPivotSheet } from '../util/helpers';
 
 const s2Options: S2Options = {

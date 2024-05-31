@@ -1,6 +1,6 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
 import { get } from 'lodash';
-import { type CellMeta, CellType, type ViewMeta } from '../common';
+import { CellType, type CellMeta, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';

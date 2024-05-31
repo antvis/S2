@@ -1,7 +1,7 @@
-import { createPivotSheet } from 'tests/util/helpers';
-import { RowCell } from '../../../src/cell/row-cell';
 import type { TextAlign } from '@/common';
 import type { SpreadSheet } from '@/sheet-type';
+import { createPivotSheet } from 'tests/util/helpers';
+import { RowCell } from '../../../src/cell/row-cell';
 
 describe('Row Cell Tests', () => {
   describe('Link Shape Tests', () => {

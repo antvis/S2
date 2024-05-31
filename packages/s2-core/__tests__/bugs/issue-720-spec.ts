@@ -4,11 +4,11 @@
  * Sync row scroll offset when corner cell resized
  *
  */
-import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
 import { S2Event } from '@/common/constant';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 200,

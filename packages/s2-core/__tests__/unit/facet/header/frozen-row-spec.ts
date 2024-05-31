@@ -1,9 +1,9 @@
-import { createPivotSheet } from 'tests/util/helpers';
+import { RowCell } from '@/cell';
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common';
 import { get } from 'lodash';
+import { createPivotSheet } from 'tests/util/helpers';
 import type { HierarchyType, RowHeader } from '../../../../src';
 import type { FrozenFacet } from '../../../../src/facet/frozen-facet';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common';
-import { RowCell } from '@/cell';
 
 const s2 = createPivotSheet(
   {

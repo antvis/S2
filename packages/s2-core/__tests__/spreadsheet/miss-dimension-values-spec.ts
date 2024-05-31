@@ -1,4 +1,3 @@
-import { getContainer } from 'tests/util/helpers';
 import {
   EMPTY_FIELD_VALUE,
   LayoutWidthType,
@@ -7,6 +6,7 @@ import {
   type S2Options,
 } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   debug: true,

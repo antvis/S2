@@ -1,2 +1,2 @@
-export { generateId, resolveId } from './generate-id';
 export * from './frozen';
+export { generateId, resolveId } from './generate-id';

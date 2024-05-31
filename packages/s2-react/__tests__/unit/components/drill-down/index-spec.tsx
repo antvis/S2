@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { DrillDown } from '@/components/drill-down';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
 
 describe('DrillDown Component Tests', () => {
   test('should render component', () => {

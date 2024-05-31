@@ -1,6 +1,6 @@
 import { get, merge } from 'lodash';
-import { ZH_CN as BASE_ZH_CN } from './zh_CN';
 import { EN_US as BASE_EN_US } from './en_US';
+import { ZH_CN as BASE_ZH_CN } from './zh_CN';
 
 const DEFAULT_LANG: LangType = 'zh_CN';
 

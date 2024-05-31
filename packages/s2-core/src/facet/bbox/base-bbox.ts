@@ -1,5 +1,5 @@
-import type { BBox } from '../../engine';
 import type { LayoutResult } from '../../common/interface';
+import type { BBox } from '../../engine';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseFacet } from '../base-facet';
 

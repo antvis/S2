@@ -2,8 +2,8 @@ import type {
   S2CellType,
   TooltipOperatorMenuItem as S2TooltipOperatorMenuItem,
   TooltipOperatorMenuOptions as S2TooltipOperatorMenuOptions,
-  TooltipShowOptions,
   TooltipOperatorOptions as S2TooltipOperatorOptions,
+  TooltipShowOptions,
 } from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
 import { type GetProp, type MenuProps } from 'antd';

@@ -1,6 +1,18 @@
 /* eslint-disable jest/expect-expect */
+import { CopyMIMEType } from '@/common/interface/export';
+import { TableSheet } from '@/sheet-type';
+import { asyncGetAllPlainData } from '@/utils';
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
+import {
+  CSV_SEPARATOR,
+  FormatOptions,
+  LINE_SEPARATOR,
+  S2DataConfig,
+  S2Options,
+  TAB_SEPARATOR,
+} from '../../../../src';
+import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import {
   assembleDataCfg,
   assembleOptions,
@@ -11,18 +23,6 @@ import {
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
-import {
-  CSV_SEPARATOR,
-  FormatOptions,
-  S2DataConfig,
-  S2Options,
-  LINE_SEPARATOR,
-  TAB_SEPARATOR,
-} from '../../../../src';
-import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
-import { CopyMIMEType } from '@/common/interface/export';
-import { TableSheet } from '@/sheet-type';
-import { asyncGetAllPlainData } from '@/utils';
 
 describe('TableSheet Export Test', () => {
   const expectColumnsFormatterMatchSnapshot = async (

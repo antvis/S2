@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
-import { getContainer } from 'tests/util/helpers';
+import { EXTRA_FIELD, S2DataConfig, S2Options, TOTAL_VALUE } from '@/common';
 import { PivotSheet } from '@/sheet-type';
-import { S2DataConfig, S2Options, TOTAL_VALUE, EXTRA_FIELD } from '@/common';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 400,

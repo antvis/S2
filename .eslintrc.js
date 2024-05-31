@@ -57,7 +57,7 @@ module.exports = {
     ],
     'import/no-duplicates': [2, { considerQueryString: true }],
     'import/no-deprecated': 1,
-    'import/no-cycle': 2,
+    'import/no-cycle': 1,
     'import/order': [
       2,
       {

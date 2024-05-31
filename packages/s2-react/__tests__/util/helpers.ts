@@ -1,9 +1,11 @@
+/* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
-import fs from 'fs';
-import path from 'path';
+// eslint-disable-next-line prettier/prettier
 import { PivotSheet, SpreadSheet, type ViewMeta } from '@antv/s2';
 import { dsvFormat } from 'd3-dsv';
+import fs from 'fs';
 import { omit } from 'lodash';
+import path from 'path';
 import { createRoot, type Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 

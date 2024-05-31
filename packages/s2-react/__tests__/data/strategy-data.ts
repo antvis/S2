@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
-import type { RawData } from '@antv/s2';
-import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
+import {
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type RawData,
+  type S2DataConfig,
+} from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 

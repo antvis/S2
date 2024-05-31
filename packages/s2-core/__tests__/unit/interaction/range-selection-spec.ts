@@ -1,16 +1,16 @@
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { PivotFacet } from '../../../src/facet';
-import type { GEvent } from '@/index';
-import type { S2CellType } from '@/common/interface/interaction';
-import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '@/common/constant';
+import type { S2CellType } from '@/common/interface/interaction';
+import type { GEvent } from '@/index';
 import { RangeSelection } from '@/interaction/range-selection';
+import type { SpreadSheet } from '@/sheet-type';
 import { getCellMeta } from '@/utils';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import type { PivotFacet } from '../../../src/facet';
 
 jest.mock('@/utils/tooltip');
 jest.mock('@/interaction/event-controller');

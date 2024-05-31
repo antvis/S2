@@ -1,10 +1,10 @@
 /* eslint-disable jest/expect-expect */
-import { getContainer } from 'tests/util/helpers';
 import { range } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 import {
+  EXTRA_FIELD,
   PivotSheet,
   TableSheet,
-  EXTRA_FIELD,
   type SpreadSheet,
   type TableFacet,
 } from '../../src';

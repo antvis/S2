@@ -1,7 +1,5 @@
 import type { Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
-import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
-import { normalizeTextAlign } from '../utils/normalize';
 import {
   CellType,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
@@ -25,14 +23,18 @@ import {
   getVerticalIconPosition,
   getVerticalTextPosition,
 } from '../utils/cell/cell';
+import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
 import { renderIcon, renderLine } from '../utils/g-renders';
-import { isLastColumnAfterHidden } from '../utils/hide-columns';
+import {
+  isEqualDisplaySiblingNodeId,
+  isLastColumnAfterHidden,
+} from '../utils/hide-columns';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
+import { normalizeTextAlign } from '../utils/normalize';
 import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell<ColHeaderConfig> {

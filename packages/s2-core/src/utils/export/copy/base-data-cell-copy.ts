@@ -4,9 +4,9 @@ import {
   type DataItem,
 } from '../../../common';
 import type {
+  CopyAndExportUnifyConfig,
   CopyableHTML,
   CopyablePlain,
-  CopyAndExportUnifyConfig,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
 import { CopyMIMEType } from '../../../common/interface/export';

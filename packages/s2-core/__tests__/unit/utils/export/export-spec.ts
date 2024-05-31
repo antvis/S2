@@ -1,4 +1,5 @@
 /* eslint-disable jest/expect-expect */
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options, SpreadSheet } from '../../../../src';
 import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
@@ -8,7 +9,6 @@ import {
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
-import { PivotSheet, TableSheet } from '@/sheet-type';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', async () => {

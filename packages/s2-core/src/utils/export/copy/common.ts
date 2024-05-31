@@ -1,18 +1,18 @@
 import { escape, map, max } from 'lodash';
-import type { Node } from '../../../facet/layout/node';
 import type { DataItem } from '../../../common';
-import { LINE_SEPARATOR, TAB_SEPARATOR, ROOT_NODE_ID } from '../../../common';
+import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
+  CopyMIMEType,
+  type CopyAndExportUnifyConfig,
   type CopyableHTML,
   type CopyablePlain,
-  type CopyAndExportUnifyConfig,
   type FormatOptions,
+  type MatrixHTMLTransformer,
+  type MatrixPlainTransformer,
   type SheetCopyConstructorParams,
   type Transformer,
-  type MatrixPlainTransformer,
-  type MatrixHTMLTransformer,
-  CopyMIMEType,
 } from '../../../common/interface/export';
+import type { Node } from '../../../facet/layout/node';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain

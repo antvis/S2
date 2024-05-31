@@ -1,14 +1,14 @@
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import { pick } from 'lodash';
-import { CanvasEvent, type CanvasContext } from '@antv/g';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import {
   DEFAULT_OPTIONS,
   S2Event,
   type S2Options,
   type TextTheme,
 } from '@/common';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
+import { CanvasEvent, type CanvasContext } from '@antv/g';
+import { pick } from 'lodash';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 200,

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { Group } from '@antv/g';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
+import { Group } from '@antv/g';
 
 class MockDataCell extends Group {}
 class MockTableRowCell extends Group {}

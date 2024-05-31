@@ -1,8 +1,8 @@
 /* eslint-disable jest/expect-expect */
 import { Group } from '@antv/g';
+import { customMerge } from '../../../../src';
 import { ScrollBar, ScrollType } from '../../../../src/ui/scrollbar';
 import type { ScrollBarCfg } from '../../../../src/ui/scrollbar/interface';
-import { customMerge } from '../../../../src';
 import { sleep } from '../../../util/helpers';
 
 describe('Scrollbar Tests', () => {

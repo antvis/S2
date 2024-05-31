@@ -1,3 +1,5 @@
+import type { Node } from '@/facet/layout/node';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 import {
@@ -9,8 +11,6 @@ import {
 import { customRowGridFields } from '../data/custom-grid-fields';
 import { CustomGridData } from '../data/data-custom-grid';
 import { S2Event } from './../../src/common/constant/events/basic';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Collapse/Expand Tests', () => {
   let container: HTMLElement;

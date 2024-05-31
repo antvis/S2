@@ -1,6 +1,6 @@
 import { includes } from 'lodash';
-import type { WhetherLeafParams } from '../../facet/layout/interface';
 import { EXTRA_FIELD } from '../../common';
+import type { WhetherLeafParams } from '../../facet/layout/interface';
 
 export const whetherLeafByLevel = (params: WhetherLeafParams) => {
   const { spreadsheet, level, fields } = params;

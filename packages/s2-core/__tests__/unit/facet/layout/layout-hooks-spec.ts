@@ -1,10 +1,10 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
 import {
   layoutArrange,
   layoutCoordinate,
   layoutHierarchy,
 } from '@/facet/layout/layout-hooks';
 import { Hierarchy, Node } from '@/index';
+import { createFakeSpreadSheet } from 'tests/util/helpers';
 
 describe('layout-hooks test', () => {
   const s2 = createFakeSpreadSheet({

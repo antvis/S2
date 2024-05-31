@@ -4,10 +4,10 @@
  * https://github.com/antvis/S2/issues/2707
  */
 
+import type { S2Options, SpreadSheet } from '@/index';
 import { EMPTY_PLACEHOLDER } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2707.json';
 import { createTableSheet } from '../util/helpers';
-import type { S2Options, SpreadSheet } from '@/index';
 
 const s2Options: S2Options = {
   width: 800,

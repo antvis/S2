@@ -1,16 +1,5 @@
 /* eslint-disable jest/expect-expect */
 /* eslint-disable jest/no-conditional-expect */
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { cloneDeep, get } from 'lodash';
-import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
-import type { CellScrollPosition } from './../../src/common/interface/scroll';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type {
-  CellMeta,
-  InteractionOptions,
-  S2Options,
-} from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,
@@ -19,6 +8,17 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '@/common/constant';
+import type {
+  CellMeta,
+  InteractionOptions,
+  S2Options,
+} from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { cloneDeep, get } from 'lodash';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
+import type { CellScrollPosition } from './../../src/common/interface/scroll';
 
 const s2Options: S2Options = {
   width: 200,

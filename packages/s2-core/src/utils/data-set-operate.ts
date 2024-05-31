@@ -1,4 +1,4 @@
-import { isArray, flattenDeep } from 'lodash';
+import { flattenDeep, isArray } from 'lodash';
 import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   TOTAL_VALUE,

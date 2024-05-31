@@ -5,10 +5,10 @@
  * https://github.com/antvis/S2/issues/2049
  */
 
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/mock-dataset.json';
-import type { S2DataConfig, S2Options, SpreadSheet } from '../../src';
 import { PivotSheet } from '@/sheet-type';
+import type { S2DataConfig, S2Options, SpreadSheet } from '../../src';
+import * as mockDataConfig from '../data/mock-dataset.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

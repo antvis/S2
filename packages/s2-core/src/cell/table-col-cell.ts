@@ -8,6 +8,7 @@ import {
 import type { FormatResult } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import type { SimpleBBox } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import type { BaseHeaderConfig } from '../facet/header';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
@@ -16,7 +17,6 @@ import {
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
-import type { FrozenFacet } from '../facet/frozen-facet';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {

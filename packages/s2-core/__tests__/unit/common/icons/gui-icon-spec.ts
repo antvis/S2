@@ -1,9 +1,9 @@
-import { Group } from '@antv/g';
-import { registerIcon } from '../../../../src/common/icons';
-import { sleep, createPivotSheet } from '../../../util/helpers';
-import { CustomImage } from '@/engine/CustomImage';
 import { GuiIcon } from '@/common/icons/gui-icon';
 import { ArrowDown } from '@/common/icons/svg/svgs';
+import { CustomImage } from '@/engine/CustomImage';
+import { Group } from '@antv/g';
+import { registerIcon } from '../../../../src/common/icons';
+import { createPivotSheet, sleep } from '../../../util/helpers';
 
 describe('GuiIcon Tests', () => {
   test('should get gui icon static type', () => {

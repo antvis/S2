@@ -4,8 +4,8 @@ import {
   type Pagination,
   type SpreadSheet,
 } from '@antv/s2';
-import { computed, ref, watch, type Ref } from 'vue';
 import { isEmpty, omit } from 'lodash';
+import { computed, ref, watch, type Ref } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
 export const DEFAULT_PAGE_NUMBER = 1;

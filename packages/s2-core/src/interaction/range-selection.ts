@@ -1,5 +1,5 @@
-import { inRange, isEmpty, isNil, range } from 'lodash';
 import type { FederatedPointerEvent } from '@antv/g';
+import { inRange, isEmpty, isNil, range } from 'lodash';
 import { DataCell } from '../cell';
 import {
   CellType,

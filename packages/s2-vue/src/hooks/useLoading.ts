@@ -1,5 +1,5 @@
 import { S2Event, type SpreadSheet } from '@antv/s2';
-import { ref, type ShallowRef, watch } from 'vue';
+import { ref, watch, type ShallowRef } from 'vue';
 
 export const useLoading = (
   s2Ref: ShallowRef<SpreadSheet | undefined>,

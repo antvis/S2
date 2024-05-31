@@ -1,12 +1,12 @@
 import {
-  type S2DataConfig,
-  type SpreadSheet,
-  type LayoutHierarchyReturnType,
-  generateId,
-  type ViewMeta,
-  type S2Options,
-  PivotSheet,
   Node,
+  PivotSheet,
+  generateId,
+  type LayoutHierarchyReturnType,
+  type S2DataConfig,
+  type S2Options,
+  type SpreadSheet,
+  type ViewMeta,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
 

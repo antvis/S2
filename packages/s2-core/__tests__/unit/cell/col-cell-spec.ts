@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { set } from 'lodash';
-import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
-import type { ColHeaderConfig } from '../../../src/facet/header';
-import { getContainer } from './../../util/helpers';
 import { ColCell } from '@/cell';
 import { EXTRA_FIELD, type Formatter, type TextAlign } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { set } from 'lodash';
+import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
+import type { ColHeaderConfig } from '../../../src/facet/header';
+import { getContainer } from './../../util/helpers';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;

@@ -1,10 +1,10 @@
 import {
   ColCell,
-  type ColHeaderConfig,
-  drawCustomContent,
   Node,
-  safeJsonParse,
   SpreadSheet,
+  drawCustomContent,
+  safeJsonParse,
+  type ColHeaderConfig,
   type MultiData,
 } from '@antv/s2';
 import { isArray } from 'lodash';

@@ -1,12 +1,12 @@
 import { Rect } from '@antv/g';
 import { each } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
+import { S2Event } from '../../common';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { S2Event } from '../../common';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
