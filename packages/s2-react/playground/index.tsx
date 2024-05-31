@@ -58,6 +58,8 @@ import { LinkGroup } from './components/LinkGroup';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
+import { BigDataSheet } from './components/BigDataSheet';
+
 import {
   TableSheetFrozenOptions,
   defaultOptions,
@@ -1650,6 +1652,11 @@ function MainLayout() {
                 key: 'chart',
                 label: '绘制 G2 图表',
                 children: <ChartSheet />,
+              },
+              {
+                key: 'bigData',
+                label: '100w 数据',
+                children: <BigDataSheet />,
               },
             ]}
           />
