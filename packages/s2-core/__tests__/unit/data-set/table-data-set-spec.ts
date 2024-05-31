@@ -1,13 +1,11 @@
-/**
- * table mode data-set test.
- */
 import { assembleDataCfg } from 'tests/util';
-import type { S2DataConfig } from '@/common/interface';
+import { type S2DataConfig, SERIES_NUMBER_FIELD } from '@/common';
 import { SpreadSheet, TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
+
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
@@ -63,6 +61,11 @@ describe('Table Mode Dataset Test', () => {
     MockTableSheet.mockClear();
 
     s2 = new MockTableSheet();
+    s2.options = {
+      seriesNumber: {
+        text: '序号',
+      },
+    };
     dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);
@@ -77,7 +80,7 @@ describe('Table Mode Dataset Test', () => {
       ${'city'}     | ${'城市'}   | ${'城市描述'}   | ${mockCityFormatter}
       ${'type'}     | ${'类型'}   | ${'类型描述'}   | ${mockTypeFormatter}
       ${'sub_type'} | ${'子类型'} | ${'子类型描述'} | ${mockSubTypeFormatter}
-      ${'number'}   | ${'数量'}   | ${'数量描述'}   | ${mockProvinceFormatter}
+      ${'number'}   | ${'数量'}   | ${'数量描述'}   | ${mockNumberFormatter}
     `(
       'should return correct filed meta when field=$field',
       ({ field, name, description }) => {
@@ -86,6 +89,10 @@ describe('Table Mode Dataset Test', () => {
         expect(dataSet.getFieldFormatter(field)(null)).toStrictEqual(field);
       },
     );
+
+    test('should get series number field name', () => {
+      expect(dataSet.getFieldName(SERIES_NUMBER_FIELD)).toStrictEqual('序号');
+    });
   });
 
   describe('test base dataset structure', () => {

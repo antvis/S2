@@ -8,13 +8,17 @@ import {
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
 import { data } from 'tests/data/mock-dataset.json';
-
 import type {
   ViewMeta,
   SortMethod,
   CustomHeaderField,
 } from '@/common/interface';
-import { EXTRA_FIELD, ORIGIN_FIELD, TOTAL_VALUE } from '@/common/constant';
+import {
+  EXTRA_FIELD,
+  ORIGIN_FIELD,
+  TOTAL_VALUE,
+  SERIES_NUMBER_FIELD,
+} from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -45,6 +49,11 @@ describe('Pivot Dataset Test', () => {
 
     mockSheet.store = new Store();
     mockSheet.interaction = new MockRootInteraction(mockSheet);
+    mockSheet.options = {
+      seriesNumber: {
+        text: '序号',
+      },
+    };
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });
@@ -483,6 +492,7 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName('not-found-field')).toEqual(
         'not-found-field',
       );
+      expect(dataSet.getFieldName(SERIES_NUMBER_FIELD)).toStrictEqual('序号');
       // 异常情况
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

@@ -466,4 +466,55 @@ describe('TableSheet Export Test', () => {
     // The first line is the header, so the number of lines should be the same as the number of data plus one
     expect(data.split(LINE_SEPARATOR)).toHaveLength(bigData.length + 1);
   });
+
+  it('should export correctly data for default series number text by { formatHeader: false }', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        seriesNumber: { enable: true },
+      }),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: TAB_SEPARATOR,
+      formatOptions: {
+        formatHeader: false,
+      },
+    });
+
+    expect(data).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2755
+  it('should export correctly data for custom series number text by { formatHeader: true }', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        seriesNumber: { enable: true, text: '测试' },
+      }),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: TAB_SEPARATOR,
+      formatOptions: {
+        formatHeader: true,
+      },
+    });
+
+    expect(data).toMatchSnapshot();
+  });
 });
