@@ -697,7 +697,7 @@ const s2Options = {
 
 具体请查看 [自定义空数据占位符](/examples/custom/custom-cell/#empty-placeholder) 和 [自定义单元格空数据占位符](/examples/custom/custom-cell/#data-cell-placeholder) 示例。
 
-### 内部常量重命名
+#### 内部常量重命名
 
 ```diff
 - import { ROOT_ID, ID_SEPARATOR } from '@antv/s2'
@@ -710,7 +710,48 @@ const s2Options = {
 
 #### 支持 React 18 和 Ant Design 5.0
 
-`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@v5`.
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@5.x`.
+
+#### Ant Design 多版本共存
+
+对于项目使用的是 `antd@4.x`, 或者所依赖的其他库依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
+
+```json
+// $ npm install --save antd-v5@npm:antd@5
+{
+  "antd": "4.x",
+  "antd-v5": "npm:antd@5"
+}
+```
+
+通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
+
+:::warning{title="注意"}
+其他打包工具 （如 `Vite`) 或者基于 `webpack` 封装的库或框架（如 `father`, `umi`) 同理，请自行搜索，这里不再赘述。
+需要注意的是：这种方式为临时过渡解决方案，从长远来看，**[Ant Design v4 版本已于 2023 年年底停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn)，建议尽快升级至 `antd@5.x`.**
+:::
+
+自定义 webpack 插件参考：
+
+```ts
+class AntdV5AliasPlugin {
+  apply(compiler) {
+    compiler.hooks.normalModuleFactory.tap("AntdV5AliasPlugin", (nmf) => {
+      nmf.hooks.beforeResolve.tapAsync("AntdV5AliasPlugin", (resolveData, callback) => {
+        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react')) {
+          // 匹配："antd" 和 "antd/es/locale/xxx"
+          if (/antd(\/*)?/.test(resolveData.request)) {
+            // 替换为："antd-v5" 和 "antd-v5/es/locale/xxx"
+            resolveData.request = resolveData.request.replace(/antd(\/*)?/,'antd-v5$1')
+          }
+        }
+
+        callback();
+      });
+    });
+  }
+}
+```
 
 #### 表头组件配置调整
 
