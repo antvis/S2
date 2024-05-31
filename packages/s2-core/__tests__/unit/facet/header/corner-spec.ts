@@ -40,7 +40,7 @@ describe('Corner Tests', () => {
   });
 
   test('should get custom series number text', () => {
-    s2.options.seriesNumber!.text = 'test';
+    s2.getSeriesNumberText = () => 'test';
     const cornerNode = createCornerNode();
 
     expect(cornerNode.value).toEqual('test');

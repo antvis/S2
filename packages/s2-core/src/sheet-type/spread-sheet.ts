@@ -924,6 +924,6 @@ export abstract class SpreadSheet extends EE {
       return '';
     }
 
-    return getDefaultSeriesNumberText(text);
+    return text ?? getDefaultSeriesNumberText();
   }
 }

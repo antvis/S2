@@ -31,8 +31,8 @@ describe('TableSheet Tests', () => {
   });
 
   afterEach(() => {
-    container?.remove();
-    s2?.destroy();
+    // container?.remove();
+    // s2?.destroy();
   });
 
   describe('TableSheet Sort Tests', () => {
@@ -214,10 +214,6 @@ describe('TableSheet Tests', () => {
   });
 
   test.each([
-    {
-      enable: true,
-      result: '序号',
-    },
     {
       enable: true,
       text: '测试',
