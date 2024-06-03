@@ -1,5 +1,7 @@
 import {
   DataCell,
+  FrozenFacet,
+  FrozenGroupArea,
   InteractionStateName,
   S2Event,
   S2_PREFIX_CLS,
@@ -52,11 +54,12 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
   /** 判断当前位置是否在表格可视区域内 */
   const judgePointInView = (point: Point) => {
     const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-    const { frozenRow } = (spreadsheet.facet as any).frozenGroupInfo;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
     const viewMinX = rect.x;
     const viewMaxX = rect.x + rect.width;
     // 减去列头高度
-    const viewMinY = rect.y + frozenRow.height;
+    const viewMinY = rect.y + frozenGroupAreas[FrozenGroupArea.Row].height;
     const viewMaxY = rect.y + rect.height;
 
     return (
