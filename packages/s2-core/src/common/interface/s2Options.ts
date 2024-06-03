@@ -374,7 +374,7 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成数据集
    */
-  reBuildDataSet?: boolean;
+  rebuildDataSet?: boolean;
 
   /**
    * 是否重新生成列头隐藏信息

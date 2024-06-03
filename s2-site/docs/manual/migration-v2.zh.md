@@ -403,7 +403,7 @@ const s2DataConfig = {
 
 透视表和明细表的行列冻结配置统一收拢到 `frozen`。
 
-在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代。在明细表多级列头冻结时,在 `1.x` 中是以最最顶层节点为准，而在 `2.x` 是以叶子节点的数量为准。
+在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代。在明细表多级列头冻结时，在 `1.x` 中是以最最顶层节点为准，而在 `2.x` 是以叶子节点的数量为准。
 
 ```diff
 const s2Options = {
@@ -532,6 +532,15 @@ render 函数的参数从 `boolean` 扩展为 `boolean | object`, 当为 `boolea
 + s2.render({
 +   reloadData: false,
 +   reBuildHiddenColumnsDetail: false,
++ });
+```
+
+`reBuildDataSet` 重命名为 `rebuildDataSet`:
+
+```diff
++ s2.render({
+-   reBuildDataSet: false,
++   rebuildDataSet: false,
 + });
 ```
 
@@ -866,6 +875,13 @@ s2.showTooltip({
 - <SheetComponent options={s2Options} onLayoutAfterCollapseRows={} />
 + <SheetComponent options={s2Options} onRowCellCollapsed={} />
 
+```
+
+#### SheetComponentsProps 类型调整
+
+```diff
+- interface SheetComponentsProps {}
++ interface SheetComponentProps {}
 ```
 
 ## ✍️ API 调整

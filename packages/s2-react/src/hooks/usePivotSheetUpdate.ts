@@ -39,7 +39,7 @@ export const usePivotSheetUpdate = (partDrillDown: PartDrillDown) => {
 
     return {
       reloadData: shouldReloadData || renderOptions.reloadData,
-      reBuildDataSet: renderOptions.reBuildDataSet,
+      rebuildDataSet: renderOptions.rebuildDataSet,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, callbackDeps);

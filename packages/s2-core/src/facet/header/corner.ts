@@ -231,7 +231,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   /**
-   *  Make cornerHeader scroll with hScrollBar
+   * Make cornerHeader scroll with hScrollBar
    * @param scrollX
    */
   public onCorScroll(scrollX: number, type: string): void {

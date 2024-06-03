@@ -33,7 +33,7 @@ s2.isPivotMode()
 | isFrozenRowHeader | 是否是冻结行头状态                                                                                                              | `() => boolean` |    |
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
-| clearDrillDownData | 清除下钻数据                                                                                                                 | `(rowNodeId?: string) => void` |    |
+| clearDrillDownData | 清除下钻数据  | (rowNodeId?: `string`) => `Promise<void>` |    |
 | showTooltip | 显示 tooltip   （别名 `tooltip.show`)                                                                                                         | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
 | showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: `CanvasEvent \| MouseEvent`, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
 | hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`)                                                                                                           | `() => void` |    |
@@ -65,7 +65,7 @@ s2.isPivotMode()
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |
 | measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 | measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
-| groupSortByMethod | 组内排序（透视表有效）  | (sortMethod: `'asc' \| 'desc'`, meta: [Node](/docs/api/basic-class/node)) => void  |    |
+| groupSortByMethod | 组内排序（透视表有效）  | (sortMethod: `'asc' \| 'desc'`, meta: [Node](/docs/api/basic-class/node)) => `Promise<void> \| void`  |    |
 | getSeriesNumberText | 获取序号文本（根据 `s2Options.series.text` 配置，默认 "序号")  | () => string  |    |
 
 ### S2MountContainer
