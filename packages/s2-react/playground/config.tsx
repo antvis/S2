@@ -7,7 +7,7 @@ import {
   type CustomHeaderField,
   type CustomTreeNode,
   type S2DataConfig,
-  type S2TableSheetFrozenOptions,
+  type S2BaseFrozenOptions,
   type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
@@ -253,12 +253,12 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   ],
 };
 
-export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
+export const TableSheetFrozenOptions: S2BaseFrozenOptions = {
   colCount: 1,
   trailingColCount: 1,
 };
 
-export const PivotSheetFrozenOptions: S2TableSheetFrozenOptions = {
+export const PivotSheetFrozenOptions: S2BaseFrozenOptions = {
   rowCount: 1,
   trailingRowCount: 1,
 };

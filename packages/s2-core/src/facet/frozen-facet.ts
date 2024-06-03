@@ -25,7 +25,7 @@ import type {
   FrozenGroupAreas,
   FrozenGroups,
 } from '../common/interface/frozen';
-import type { S2TableSheetFrozenOptions } from '../common';
+import type { S2BaseFrozenOptions } from '../common';
 import { BaseFacet } from './base-facet';
 import { Node } from './layout/node';
 import {
@@ -73,7 +73,7 @@ export abstract class FrozenFacet extends BaseFacet {
     },
   } satisfies FrozenGroupAreas;
 
-  protected validFrozenOptions: Required<S2TableSheetFrozenOptions>;
+  protected validFrozenOptions: Required<S2BaseFrozenOptions>;
 
   public panelScrollGroupIndexes: Indexes = [0, 0, 0, 0];
 

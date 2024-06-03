@@ -1,5 +1,5 @@
 import { FrozenGroupType } from '../../../src';
-import type { S2TableSheetFrozenOptions } from '@/common/interface/s2Options';
+import type { S2BaseFrozenOptions } from '@/common/interface/s2Options';
 import { getValidFrozenOptions } from '@/utils/layout/frozen';
 import {
   getFrozenGroupTypeByCell,
@@ -44,7 +44,7 @@ describe('Frozen util test', () => {
         start: 0,
         end: 499,
       };
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 2,
         rowCount: 2,
         trailingColCount: 2,
@@ -151,7 +151,7 @@ describe('Frozen util test', () => {
 
   describe('calculateFrozenCornerCells', () => {
     it('should return correct frozen corner cell', () => {
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 1,
         rowCount: 2,
         trailingColCount: 1,
@@ -206,7 +206,7 @@ describe('Frozen util test', () => {
         start: 0,
         end: 999,
       };
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 1,
         rowCount: 2,
         trailingColCount: 1,

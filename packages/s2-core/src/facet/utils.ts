@@ -7,7 +7,7 @@ import type {
   CustomHeaderFields,
   Fields,
   Pagination,
-  S2TableSheetFrozenOptions,
+  S2BaseFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
@@ -154,7 +154,7 @@ export const getFrozenGroupTypeByCell = (
     colIndex: number;
     rowIndex: number;
   },
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -192,7 +192,7 @@ export const getFrozenGroupTypeByCell = (
  * @description calculate all cells in frozen group's intersection region
  */
 export const calculateFrozenCornerCells = (
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -265,7 +265,7 @@ export const calculateFrozenCornerCells = (
  */
 export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;

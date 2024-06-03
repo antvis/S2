@@ -8,10 +8,7 @@ import {
   ScrollbarPositionType,
 } from '../constant/interaction';
 import type { CellTextWordWrapStyle, S2Style } from '../interface';
-import type {
-  S2Options,
-  S2TableSheetFrozenOptions,
-} from '../interface/s2Options';
+import type { S2Options, S2BaseFrozenOptions } from '../interface/s2Options';
 import { DeviceType } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
 
@@ -62,7 +59,7 @@ export const DEFAULT_STYLE: S2Style = {
   },
 } as const;
 
-export const DEFAULT_FROZEN_COUNTS: Required<S2TableSheetFrozenOptions> = {
+export const DEFAULT_FROZEN_COUNTS: Required<S2BaseFrozenOptions> = {
   rowCount: 0,
   colCount: 0,
   trailingRowCount: 0,
