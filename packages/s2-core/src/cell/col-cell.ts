@@ -4,6 +4,7 @@ import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolli
 import { normalizeTextAlign } from '../utils/normalize';
 import {
   CellType,
+  FrozenGroupArea,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
@@ -32,6 +33,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import type { FrozenFacet } from '../facet';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
@@ -105,30 +107,47 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
    * @returns viewport
    */
   protected handleViewport(): AreaRange {
-    /**
-     *  p(x, y)
-     *  +----------------------+            x
-     *  |                    +--------------->
-     *  | viewport           | |ColCell  |
-     *  |                    |-|---------+
-     *  +--------------------|-+
-     *                       |
-     *                     y |
-     *                       v
-     *
-     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
-     *
-     */
-    const { width, cornerWidth = 0, scrollX = 0 } = this.getHeaderConfig();
+    if (this.meta.isFrozen) {
+      return {
+        start: 0,
+        size: Number.POSITIVE_INFINITY,
+      };
+    }
 
-    const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
+    const {
+      viewportWidth,
+      cornerWidth = 0,
+      scrollX = 0,
+      position,
+    } = this.getHeaderConfig();
 
-    const viewport: AreaRange = {
-      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
-      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenColGroupWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
+    const frozenTrailingColGroupWidth =
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
+
+    if (this.spreadsheet.isFrozenRowHeader()) {
+      return {
+        start: scrollX + frozenColGroupWidth,
+        size: viewportWidth - frozenColGroupWidth - frozenTrailingColGroupWidth,
+      };
+    }
+
+    const scrollXUntilColStickToLeft = frozenColGroupWidth
+      ? cornerWidth
+      : position.x;
+
+    return {
+      start:
+        frozenColGroupWidth + Math.max(0, scrollX - scrollXUntilColStickToLeft),
+      size:
+        viewportWidth -
+        frozenColGroupWidth -
+        frozenTrailingColGroupWidth +
+        Math.min(scrollX, scrollXUntilColStickToLeft),
     };
-
-    return viewport;
   }
 
   protected getTextPosition(): PointLike {

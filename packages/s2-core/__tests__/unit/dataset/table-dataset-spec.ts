@@ -32,6 +32,17 @@ describe('Table Mode Dataset Test', () => {
     s2.options = {
       frozen: {},
     };
+
+    s2.facet = {
+      // @ts-ignore
+      getFrozenOptions: jest.fn().mockReturnValue({
+        colCount: 0,
+        trailingColCount: 0,
+        rowCount: 0,
+        trailingRowCount: 0,
+      }),
+    };
+
     dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);

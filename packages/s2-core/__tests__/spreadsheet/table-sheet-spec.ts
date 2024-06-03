@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import type { SpreadSheet, TableFacet } from '../../esm';
-import { setLang } from '../../src';
+import type { TableColHeader } from '../../src/facet/header/table-col';
+import { SpreadSheet, TableFacet, setLang } from '../../src';
 import {
   DeviceType,
   ResizeType,
@@ -180,7 +180,8 @@ describe('TableSheet normal spec', () => {
     );
     await sleep(500);
 
-    const firstColCell = s2.facet.getColNodes()[1].belongsCell! as any;
+    const firstColCell = (s2.facet.columnHeader as TableColHeader).frozenGroup
+      .children[1] as any;
 
     expect(firstColCell.shouldAddVerticalResizeArea()).toBeTruthy();
     expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 81, y: 0 });
@@ -215,7 +216,7 @@ describe('TableSheet normal spec', () => {
 
     await s2.render();
 
-    await sleep(100);
+    await sleep(1000);
 
     let columnNodes = s2.facet.getColNodes();
 

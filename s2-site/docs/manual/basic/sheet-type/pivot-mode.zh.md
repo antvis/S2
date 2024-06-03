@@ -173,9 +173,9 @@ const s2Options = {
 
 支持 [小计/总计](/manual/basic/totals) 的透视能力。
 
-### 冻结行头
+### 冻结行头区域
 
-当行头固定时，行头会有一个独立的可滚动区域，如果关闭冻结行头，则滚动区域为整个表格。
+当行头区域固定时，行头会有一个独立的可滚动区域，如果关闭冻结行头，则滚动区域为整个表格。
 
 <Playground path='layout/frozen/demo/pivot-frozen-row-header.ts' rid='pivot-frozen-row-header' height='300'></playground>
 
@@ -201,18 +201,43 @@ const s2Options = {
 }
 ```
 
-### 冻结首行
+### 冻结行、列头单元格
 
 :::info{title="注意"}
 
-目前仅提供**冻结首行**能力，和 [明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93) 不同，透视表由于带有分组的特性，布局比较复杂，考虑到交互合理性，目前有如下限制：
+和 [明细表行列冻结](https://s2.antv.antgroup.com/manual/basic/sheet-type/table-mode#%E8%A1%8C%E5%88%97%E5%86%BB%E7%BB%93) 不同，透视表由于带有分组的特性，布局比较复杂，目前有以下限制：
 
-- 首行不存在子节点（适用于总计置于顶部，只有单个维值，树状模式等场景）。
-- 分页场景暂不支持。
-
-`s2Options` 中配置 `frozen.firstRow` 开启首行冻结能力
+- 开启序号列场景，且进行了[自定义序号列布局](/examples/custom/custom-cell/#series-number-cell) 时，暂不支持行头单元格冻结，因为此时，我们无法得知用户序号列和行头单元格的对应关系
 
 :::
+
+行列冻结通过在 `s2Options` 中传入这些属性控制：
+
+```ts
+const s2Options = {
+  frozen: {
+    rowCount: number; // 冻结行的叶子节点数量，从顶部开始计数
+    trailingRowCount: number; // 冻结行的叶子节点数量，从底部开始计数
+    colCount: number; // 冻结列的叶子节点数量，从左侧开始计数
+    trailingColCount: number; // 冻结列的叶子节点数量，从右侧开始计数
+  }
+}
+```
+
+#### 树状模式
+
+```ts
+const s2Options = {
+  hierarchyType: 'tree',
+  frozen: {
+    rowCount: 1,
+  },
+}
+```
+
+<Playground path='layout/frozen/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
+
+<br/>
 
 #### 平铺模式
 
@@ -220,9 +245,8 @@ const s2Options = {
 const s2Options = {
   hierarchyType: 'grid',
   frozen: {
-    firstRow: true,
+    rowCount: 1,
   },
-  // 需要开启行总计 & 总计行置于顶部
   totals: {
     row: {
       showGrandTotals: true,
@@ -233,21 +257,6 @@ const s2Options = {
 ```
 
 <Playground path='layout/frozen/demo/frozen-pivot-grid.ts' rid='container-grid' height='300'></playground>
-
-<br/>
-
-#### 树状模式
-
-```ts
-const s2Options = {
-  hierarchyType: 'tree',
-  frozen: {
-    firstRow: true,
-  },
-}
-```
-
-<Playground path='layout/frozen/demo/frozen-pivot-tree.ts' rid='container-tree' height='300'></playground>
 
 <br/>
 

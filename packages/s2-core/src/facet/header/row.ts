@@ -1,34 +1,27 @@
 import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
-import { RowCell } from '../../cell';
+import { RowCell, SeriesNumberCell } from '../../cell';
 import type { Node } from '../layout/node';
-import { getFrozenRowCfgPivot, translateGroup } from '../utils';
+import { translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
-  FrozenGroupType,
+  FrozenGroupArea,
   KEY_GROUP_ROW_HEADER_FROZEN,
+  KEY_GROUP_ROW_HEADER_FROZEN_TRAILING,
   KEY_GROUP_ROW_SCROLL,
   S2Event,
 } from '../../common';
 import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
+import { getExtraFrozenRowNodes, getFrozenTrailingRowOffset } from './util';
 
 /**
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
-  public scrollGroup: Group;
-
-  public frozenRowGroup: Group;
-
-  constructor(config: RowHeaderConfig) {
-    super(config);
-    this.initGroups();
-  }
-
-  private initGroups() {
+  protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_ROW_SCROLL,
@@ -36,15 +29,27 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       }),
     );
 
-    this.frozenRowGroup = this.appendChild(
+    this.frozenGroup = this.appendChild(
       new Group({
         name: KEY_GROUP_ROW_HEADER_FROZEN,
         style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
       }),
     );
+    this.frozenTrailingGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_HEADER_FROZEN_TRAILING,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
+
+    const { spreadsheet } = this.getHeaderConfig();
+
+    this.extraFrozenNodes = getExtraFrozenRowNodes(
+      spreadsheet.facet as FrozenFacet,
+    );
   }
 
-  public getCellInstance(node: Node): RowCell {
+  public getCellInstance(node: Node): RowCell | SeriesNumberCell {
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;
@@ -57,97 +62,138 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   // row'cell only show when visible
-  protected isRowCellInRect(node: Node): boolean {
+  protected isCellInRect(node: Node): boolean {
     const {
       width,
       viewportHeight,
       position,
       scrollY = 0,
       scrollX = 0,
+      spreadsheet,
     } = this.getHeaderConfig();
-
-    if (this.isFrozenRow(node)) {
-      return true;
-    }
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
 
     return (
       // bottom
-      viewportHeight + scrollY > node.y &&
+      viewportHeight +
+        scrollY -
+        frozenGroupAreas[FrozenGroupArea.TrailingRow].height >
+        node.y &&
       // top
-      scrollY < node.y + node.height &&
+      scrollY + frozenGroupAreas[FrozenGroupArea.Row].height <
+        node.y + node.height &&
       // left
-      width - position.x + scrollX > node.x &&
+      width + scrollX - position.x > node.x &&
       // right
       scrollX - position.x < node.x + node.width
     );
   }
 
-  public isFrozenRow(node: Node): boolean {
-    const { spreadsheet } = this.headerConfig;
-    const { facet } = spreadsheet;
-    const { rowCount = 0 } = getFrozenRowCfgPivot(
-      spreadsheet.options,
-      facet.getRowNodes(),
-    );
-
-    return rowCount > 0 && node.rowIndex >= 0 && node.rowIndex < rowCount;
-  }
-
   protected getCellGroup(item: Node): Group {
-    if (this.isFrozenRow(item)) {
-      return this.frozenRowGroup;
+    if (item.isFrozenHead) {
+      return this.frozenGroup;
+    }
+
+    if (item.isFrozenTrailing) {
+      return this.frozenTrailingGroup;
     }
 
     return this.scrollGroup;
   }
 
   protected layout() {
-    const { nodes, spreadsheet } = this.getHeaderConfig();
+    const { nodes } = this.getHeaderConfig();
+
+    const appendNode = (node: Node) => {
+      const group = this.getCellGroup(node);
+
+      const cell = this.getCellInstance(node);
+
+      node.belongsCell = cell;
+
+      group.appendChild(cell);
+
+      this.emitRenderEvent(cell);
+    };
 
     // row'cell only show when visible
     each(nodes, (node) => {
-      if (this.isRowCellInRect(node) && node.height !== 0) {
-        const group = this.getCellGroup(node);
+      if (this.isCellInRect(node) && node.height !== 0) {
+        appendNode(node);
+      }
+    });
 
-        node.isFrozen = group !== this.scrollGroup;
-
-        const cell = this.getCellInstance(node);
-
-        node.belongsCell = cell;
-
-        group.appendChild(cell);
-        spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell);
-        spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+    each(this.extraFrozenNodes, (node) => {
+      if (node.height !== 0) {
+        appendNode(node);
       }
     });
   }
 
+  protected emitRenderEvent(cell: RowCell | SeriesNumberCell) {
+    const { spreadsheet } = this.getHeaderConfig();
+
+    spreadsheet.emit(S2Event.ROW_CELL_RENDER, cell as RowCell);
+    spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+  }
+
   protected offset() {
-    const { scrollX = 0, scrollY = 0, position } = this.getHeaderConfig();
+    const {
+      scrollX = 0,
+      scrollY = 0,
+      position,
+      spreadsheet,
+      viewportHeight,
+    } = this.getHeaderConfig();
 
     const translateX = position.x - scrollX;
 
+    const paginationScrollY = spreadsheet.facet.getPaginationScrollY();
+
+    const facet = spreadsheet.facet as FrozenFacet;
+
+    const trailingRowOffset = getFrozenTrailingRowOffset(
+      facet,
+      viewportHeight,
+      paginationScrollY,
+    );
+
     translateGroup(this.scrollGroup, translateX, position.y - scrollY);
-    translateGroup(this.frozenRowGroup, translateX, position.y);
+    translateGroup(
+      this.frozenGroup,
+      translateX,
+      position.y - paginationScrollY,
+    );
+    translateGroup(
+      this.frozenTrailingGroup,
+      translateX,
+      position.y - trailingRowOffset,
+    );
   }
 
   protected clip(): void {
     const { width, viewportHeight, position, spreadsheet } =
       this.getHeaderConfig();
 
-    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
+    const frozenTrailingRowGroupHeight =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
         x: spreadsheet.facet.cornerBBox.x,
         y: position.y + frozenRowGroupHeight,
         width,
-        height: viewportHeight,
+        height:
+          viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
       },
     });
 
-    this.frozenRowGroup.style.clipPath = new Rect({
+    this.frozenGroup.style.clipPath = new Rect({
       style: {
         x: spreadsheet.facet.cornerBBox.x,
         y: position.y,
@@ -155,10 +201,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         height: frozenRowGroupHeight,
       },
     });
-  }
 
-  public clear() {
-    this.scrollGroup?.removeChildren();
-    this.frozenRowGroup?.removeChildren();
+    this.frozenTrailingGroup.style.clipPath = new Rect({
+      style: {
+        x: spreadsheet.facet.cornerBBox.x,
+        y: position.y + viewportHeight - frozenTrailingRowGroupHeight,
+        width,
+        height: frozenTrailingRowGroupHeight,
+      },
+    });
   }
 }

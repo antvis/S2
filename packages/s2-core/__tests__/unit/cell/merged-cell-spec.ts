@@ -58,7 +58,7 @@ describe('Merged Cell Tests', () => {
           rowLeafNodes: [],
         },
         getRowLeafNodeByIndex: () => {},
-      } as PivotFacet;
+      } as unknown as PivotFacet;
 
       mergedCell = new MergedCell(s2, cells, meta);
     });
