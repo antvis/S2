@@ -22,7 +22,7 @@ import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { find, size } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroupType } from '../../../src';
+import { FrozenGroupType, getDefaultSeriesNumberText } from '../../../src';
 import { createFakeSpreadSheet } from '../../util/helpers';
 import { getMockPivotMeta } from './util';
 
@@ -55,7 +55,8 @@ jest.mock('@/sheet-type', () => {
       return {
         dataCfg: assembleDataCfg(),
         options: assembleOptions({
-          dataCell: (viewMeta) => new DataCell(viewMeta, viewMeta.spreadsheet),
+          dataCell: (viewMeta, spreadsheet) =>
+            new DataCell(viewMeta, spreadsheet),
         }),
         container,
         theme: getTheme({}),
@@ -105,6 +106,7 @@ jest.mock('@/sheet-type', () => {
         enableFrozenHeaders() {
           return true;
         },
+        getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
   };

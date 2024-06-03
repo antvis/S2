@@ -1,12 +1,12 @@
-import React from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import {
   Node,
   S2DataConfig,
   TooltipOptions,
-  type SortParams,
   type SortMethod,
+  type SortParams,
 } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import React from 'react';
 
 const SortMethodType = {
   asc: 'asc',
@@ -51,7 +51,7 @@ const s2Options: SheetComponentOptions = {
 };
 
 const useDataCfg = () => {
-  const [res, setRes] = await ReactuseState({ meta: [], data: [] });
+  const [res, setRes] = React.useState({ meta: [], data: [] });
   const [dataCfg, setDataCfg] = React.useState<SortParams>(s2DataConfig);
 
   React.useEffect(() => {

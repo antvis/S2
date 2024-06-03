@@ -6,6 +6,7 @@ import type { ColCell, RowCell } from '../../cell';
 import {
   CellType,
   NODE_ID_SEPARATOR,
+  SERIES_NUMBER_FIELD,
   type CellMeta,
   type DataItem,
 } from '../../common';
@@ -55,6 +56,11 @@ export const getHeaderMeasureFieldNames = (
   formatHeader: boolean = true,
 ): string[] => {
   return map(fields, (field) => {
+    // https://github.com/antvis/S2/issues/2755
+    if (field === SERIES_NUMBER_FIELD) {
+      return spreadsheet.getSeriesNumberText();
+    }
+
     // https://github.com/antvis/S2/issues/2688
     if (!formatHeader) {
       return field;

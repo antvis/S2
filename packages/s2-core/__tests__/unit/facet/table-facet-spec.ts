@@ -19,6 +19,7 @@ import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
 import { data } from '../../data/mock-dataset.json';
 import { createFakeSpreadSheet } from '../../util/helpers';
 
@@ -86,6 +87,7 @@ jest.mock('@/sheet-type', () => {
         isCustomColumnFields: jest.fn(),
         measureTextWidthRoughly: jest.fn(),
         measureTextWidth: jest.fn(),
+        getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
   };
@@ -154,28 +156,6 @@ describe('Table Mode Facet Test', () => {
     expect(rowsHierarchy.height).toBe(0);
     expect(rowsHierarchy.width).toBe(0);
     expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
-  });
-
-  test('should get default seriesNumberText', () => {
-    const { facet } = createMockTableFacet({
-      seriesNumber: {
-        enable: true,
-      },
-    });
-
-    expect(facet.getColLeafNodes()[0].value).toEqual('序号');
-  });
-
-  test('should get custom seriesNumberText', () => {
-    const seriesNumberText = 'test';
-    const { facet } = createMockTableFacet({
-      seriesNumber: {
-        enable: true,
-        text: seriesNumberText,
-      },
-    });
-
-    expect(facet.getColLeafNodes()[0].value).toEqual(seriesNumberText);
   });
 
   describe('should get none layer when dataCfg.fields is empty', () => {

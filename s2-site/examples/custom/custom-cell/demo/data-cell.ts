@@ -46,8 +46,8 @@ fetch(
         // 关闭 hover 十字高亮, 为了视觉效果，可不设置
         hoverHighlight: false,
       },
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
     };
 

@@ -49,6 +49,7 @@ import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { ConfigProvider } from '../src/components/config-provider';
+import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
@@ -58,6 +59,7 @@ import { LinkGroup } from './components/LinkGroup';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
+
 import {
   TableSheetFrozenOptions,
   defaultOptions,
@@ -1643,6 +1645,11 @@ function MainLayout() {
                 key: 'chart',
                 label: '绘制 G2 图表',
                 children: <ChartSheet />,
+              },
+              {
+                key: 'bigData',
+                label: '100w 数据',
+                children: <BigDataSheet />,
               },
             ]}
           />

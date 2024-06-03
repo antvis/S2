@@ -71,7 +71,7 @@ const s2Options = {
 ## DataCellCallback
 
 ```js
-DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
+DataCellCallback = (viewMeta: ViewMeta, spreadsheet: SpreadSheet) => G.Group;
 ```
 
 功能描述：自定义数值单元格。[查看示例](/examples/custom/custom-cell#data-cell)

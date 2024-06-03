@@ -173,8 +173,8 @@ fetch(
           },
         ],
       },
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
     };
 

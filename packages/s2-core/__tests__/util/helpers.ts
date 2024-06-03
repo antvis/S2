@@ -40,6 +40,7 @@ import {
   Hierarchy,
   TAB_SEPARATOR,
   asyncGetAllPlainData,
+  getDefaultSeriesNumberText,
   getTheme,
   type BaseDataSet,
   type Node,
@@ -199,6 +200,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.enableFrozenHeaders = jest.fn();
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
+  s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,

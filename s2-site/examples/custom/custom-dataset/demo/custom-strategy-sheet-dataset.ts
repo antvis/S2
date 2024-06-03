@@ -125,8 +125,8 @@ fetch(
       height: 480,
       hierarchyType: 'tree',
       dataSet: (spreadsheet) => new CustomDataSet(spreadsheet),
-      dataCell: (viewMeta) =>
-        new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new CustomDataCell(viewMeta, spreadsheet),
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
