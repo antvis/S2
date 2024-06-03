@@ -1,8 +1,10 @@
-import { assembleDataCfg } from 'tests/util';
+/* eslint-disable import/order */
+// eslint-disable-next-line prettier/prettier
 import {
   getExistValues,
   transformIndexesData,
 } from '@/utils/dataset/pivot-data-set';
+import { assembleDataCfg } from '../../util';
 
 /**
  * 获取 Mock 数据

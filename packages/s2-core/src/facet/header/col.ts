@@ -10,9 +10,9 @@ import {
   KEY_GROUP_COL_SCROLL,
   S2Event,
 } from '../../common/constant';
+import type { FrozenFacet } from '../frozen-facet';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import type { FrozenFacet } from '../frozen-facet';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
 import {

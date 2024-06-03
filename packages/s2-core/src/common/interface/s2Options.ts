@@ -8,8 +8,10 @@ import type {
 import type {
   CellCallback,
   CornerHeaderCallback,
+  CustomSVGIcon,
   DataCellCallback,
   FrameCallback,
+  HeaderActionIcon,
   MergedCellCallback,
   MergedCellInfo,
   Pagination,
@@ -31,7 +33,6 @@ import type {
   RowHeaderConfig,
 } from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';

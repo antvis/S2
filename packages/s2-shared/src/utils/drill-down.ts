@@ -1,12 +1,13 @@
-import type {
-  GEvent,
-  Node,
-  PartDrillDownDataCache,
-  PivotDataSet,
-  S2Options,
-  SpreadSheet,
+import {
+  S2Event,
+  type GEvent,
+  type HeaderActionIcon,
+  type Node,
+  type PartDrillDownDataCache,
+  type PivotDataSet,
+  type S2Options,
+  type SpreadSheet,
 } from '@antv/s2';
-import { S2Event, type HeaderActionIcon } from '@antv/s2';
 import { clone, filter, isEmpty, size } from 'lodash';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 

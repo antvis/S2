@@ -31,8 +31,8 @@ import type {
   ResizePosition,
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
-import { floor } from '../utils/math';
 import { Node } from '../facet/layout/node';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {

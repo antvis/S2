@@ -5,8 +5,7 @@ import type {
 import { assembleMatrix, getMaxRowLen, getNodeFormatData } from './copy/common';
 import { getHeaderList } from './method';
 
-export type { CopyableList, FormatOptions };
-export { assembleMatrix, getMaxRowLen, getNodeFormatData };
-export { getHeaderList };
-export * from './utils';
 export * from './copy';
+export * from './utils';
+export { assembleMatrix, getHeaderList, getMaxRowLen, getNodeFormatData };
+export type { CopyableList, FormatOptions };

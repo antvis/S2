@@ -4,10 +4,10 @@
  * https://github.com/antvis/S2/issues/1201
  * fillOpacity
  */
+import { PivotSheet } from '@/sheet-type';
 import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-292.json';
 import { getContainer } from '../util/helpers';
-import { PivotSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 800,

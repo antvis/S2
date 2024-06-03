@@ -12,10 +12,10 @@ import {
   EXTRA_FIELD,
   VALUE_FIELD,
   type CellMeta,
+  type CustomHeaderField,
   type DataItem,
   type MiniChartData,
   type MultiData,
-  type CustomHeaderField,
 } from '../../../common';
 import type {
   CopyAllDataParams,

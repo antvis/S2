@@ -1,23 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import { Canvas, CanvasEvent } from '@antv/g';
-import { cloneDeep, last } from 'lodash';
-import dataCfg from 'tests/data/simple-data.json';
-import { waitForRender } from 'tests/util';
-import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import type {
-  BaseEvent,
-  BaseTooltipOperatorMenuOptions,
-  HeaderCell,
-  TooltipOptions,
-} from '../../../src';
-import { PivotDataSet } from '../../../src/data-set';
-import { PivotFacet } from '../../../src/facet';
-import { createMockCellInfo } from '../../util/helpers';
-import { customMerge, setupDataConfig } from '@/utils';
-import { BaseTooltip } from '@/ui/tooltip';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { GEvent } from '@/index';
-import { Node } from '@/facet/layout/node';
 import {
   CellType,
   InterceptType,
@@ -34,6 +15,25 @@ import {
   type S2Options,
   type TooltipShowOptions,
 } from '@/common';
+import { Node } from '@/facet/layout/node';
+import type { GEvent } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { BaseTooltip } from '@/ui/tooltip';
+import { customMerge, setupDataConfig } from '@/utils';
+import { Canvas, CanvasEvent } from '@antv/g';
+import { cloneDeep, last } from 'lodash';
+import dataCfg from 'tests/data/simple-data.json';
+import { waitForRender } from 'tests/util';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
+import type {
+  BaseEvent,
+  BaseTooltipOperatorMenuOptions,
+  HeaderCell,
+  TooltipOptions,
+} from '../../../src';
+import { PivotDataSet } from '../../../src/data-set';
+import { PivotFacet } from '../../../src/facet';
+import { createMockCellInfo } from '../../util/helpers';
 
 jest.mock('@/utils/hide-columns');
 

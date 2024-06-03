@@ -1,3 +1,6 @@
+import { SheetComponent } from '@/components/sheets';
+import type { SheetComponentOptions } from '@/components/sheets/interface';
+import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 import { StarOutlined } from '@ant-design/icons';
 import { BaseTooltip, GEvent, S2Event, SpreadSheet } from '@antv/s2';
 import React from 'react';
@@ -6,9 +9,6 @@ import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, renderComponent, sleep } from 'tests/util/helpers';
 import type { TooltipOperatorMenuOptions } from '../../src/components/tooltip/interface';
-import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
-import type { SheetComponentOptions } from '@/components/sheets/interface';
-import { SheetComponent } from '@/components/sheets';
 
 const s2Options: SheetComponentOptions = {
   width: 200,

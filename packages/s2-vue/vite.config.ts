@@ -1,11 +1,13 @@
+/* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
-import path from 'path';
-import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
+// eslint-disable-next-line prettier/prettier
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import path from 'path';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
 import svgLoader from 'vite-svg-loader';
 
 const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {

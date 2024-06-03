@@ -1,11 +1,10 @@
-import { Group } from '@antv/g';
-import { range } from 'lodash';
-import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
 import type { TableFacet } from '@/facet';
 import {
   CellType,
   DataCellBrushSelection,
+  EventController,
+  FrozenGroupArea,
   InteractionBrushSelectionStage,
   Node,
   PivotSheet,
@@ -19,10 +18,11 @@ import {
   type S2DataConfig,
   type S2Options,
   type ViewMeta,
-  EventController,
-  FrozenGroupArea,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
+import { Group } from '@antv/g';
+import { range } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');

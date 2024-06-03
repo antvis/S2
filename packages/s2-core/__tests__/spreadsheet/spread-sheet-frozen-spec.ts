@@ -1,11 +1,11 @@
+import { map, merge } from 'lodash';
+import { customRowGridFields } from 'tests/data/custom-grid-fields';
+import { CustomGridData } from 'tests/data/data-custom-grid';
 import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import { getContainer } from 'tests/util/helpers';
-import { map, merge } from 'lodash';
-import { CustomGridData } from 'tests/data/data-custom-grid';
-import { customRowGridFields } from 'tests/data/custom-grid-fields';
 import {
-  type FrozenFacet,
   PivotSheet,
+  type FrozenFacet,
   type S2DataConfig,
   type S2Options,
 } from '../../src';

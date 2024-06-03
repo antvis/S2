@@ -8,7 +8,7 @@ import {
   ScrollbarPositionType,
 } from '../constant/interaction';
 import type { CellTextWordWrapStyle, S2Style } from '../interface';
-import type { S2Options, S2BaseFrozenOptions } from '../interface/s2Options';
+import type { S2BaseFrozenOptions, S2Options } from '../interface/s2Options';
 import { DeviceType } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
 

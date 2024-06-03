@@ -1,13 +1,6 @@
 /**
  * pivot mode pivot test.
  */
-import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
-import { Renderer } from '@antv/g-canvas';
-import { find, size } from 'lodash';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getDefaultSeriesNumberText } from '../../../src';
-import { createFakeSpreadSheet } from '../../util/helpers';
-import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
 import {
   DEFAULT_OPTIONS,
@@ -25,6 +18,13 @@ import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { RootInteraction } from '@/interaction/root';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import { find, size } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
+import { createFakeSpreadSheet } from '../../util/helpers';
+import { getMockPivotMeta } from './util';
 
 jest.mock('@/interaction/root');
 

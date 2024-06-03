@@ -1,22 +1,22 @@
+import { S2Event } from '@/common/constant';
+import type { Node } from '@/facet/layout/node';
+import type { RootInteraction } from '@/interaction/root';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import {
+  getColumns,
+  getHiddenColumnDisplaySiblingNode,
+  getHiddenColumnNodes,
+  getHiddenColumnsThunkGroup,
+  getValidDisplaySiblingNode,
+  getValidDisplaySiblingNodeId,
+  hideColumns,
+  hideColumnsByThunkGroup,
+  isEqualDisplaySiblingNodeId,
+  isLastColumnAfterHidden,
+} from '@/utils/hide-columns';
 import { getContainer } from 'tests/util/helpers';
 import type { PivotFacet } from '../../../src/facet';
 import type { HiddenColumnsInfo } from './../../../src/common/interface/store';
-import type { RootInteraction } from '@/interaction/root';
-import type { Node } from '@/facet/layout/node';
-import {
-  getHiddenColumnNodes,
-  getHiddenColumnDisplaySiblingNode,
-  getHiddenColumnsThunkGroup,
-  isLastColumnAfterHidden,
-  hideColumns,
-  hideColumnsByThunkGroup,
-  getValidDisplaySiblingNode,
-  getValidDisplaySiblingNodeId,
-  isEqualDisplaySiblingNodeId,
-  getColumns,
-} from '@/utils/hide-columns';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant';
 
 describe('Hide Columns Tests', () => {
   let sheet: SpreadSheet;

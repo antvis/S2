@@ -1,3 +1,8 @@
+import { InterceptType, S2Event } from '@/common/constant';
+import type { HierarchyType, S2Options } from '@/common/interface';
+import type { GEvent } from '@/index';
+import { CornerCellClick } from '@/interaction';
+import type { SpreadSheet } from '@/sheet-type';
 import {
   createFakeSpreadSheet,
   createMockCellInfo,
@@ -8,11 +13,6 @@ import {
   InteractionStateName,
   type Node,
 } from '../../../../../src';
-import { InterceptType, S2Event } from '@/common/constant';
-import type { HierarchyType, S2Options } from '@/common/interface';
-import type { GEvent } from '@/index';
-import { CornerCellClick } from '@/interaction';
-import type { SpreadSheet } from '@/sheet-type';
 
 jest.mock('@/interaction/event-controller');
 

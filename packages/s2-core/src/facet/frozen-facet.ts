@@ -1,16 +1,21 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { last } from 'lodash';
 import type { DataCell } from '../cell';
+import type { S2BaseFrozenOptions } from '../common';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroupType,
   FrozenGroupArea,
+  FrozenGroupAreaTypeMap,
+  FrozenGroupType,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   SPLIT_LINE_WIDTH,
-  FrozenGroupAreaTypeMap,
 } from '../common/constant';
+import type {
+  FrozenGroupAreas,
+  FrozenGroups,
+} from '../common/interface/frozen';
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
 import { getValidFrozenOptions, renderLine } from '../utils';
@@ -21,12 +26,13 @@ import {
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { floor } from '../utils/math';
-import type {
-  FrozenGroupAreas,
-  FrozenGroups,
-} from '../common/interface/frozen';
-import type { S2BaseFrozenOptions } from '../common';
 import { BaseFacet } from './base-facet';
+import {
+  getFrozenColOffset,
+  getFrozenTrailingColOffset,
+  getFrozenTrailingRowOffset,
+  getScrollGroupClip,
+} from './header/util';
 import { Node } from './layout/node';
 import {
   calculateFrozenCornerCells,
@@ -35,12 +41,6 @@ import {
   splitInViewIndexesWithFrozen,
   translateGroup,
 } from './utils';
-import {
-  getFrozenColOffset,
-  getFrozenTrailingColOffset,
-  getFrozenTrailingRowOffset,
-  getScrollGroupClip,
-} from './header/util';
 
 /**
  * Defines the row freeze  abstract standard interface

@@ -1,7 +1,7 @@
 import {
   Rect,
-  type DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
+  type DisplayObject,
   type PointLike,
 } from '@antv/g';
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';

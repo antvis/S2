@@ -1,9 +1,5 @@
 import { Group } from '@antv/g';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
-import type { SpreadSheet } from '../../sheet-type/index';
-import type { PanelBBox } from '../bbox/panel-bbox';
-import type { Hierarchy } from '../layout/hierarchy';
-import type { Node } from '../layout/node';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
@@ -12,9 +8,13 @@ import {
   KEY_GROUP_ROW_INDEX_SCROLL,
   S2Event,
 } from '../../common';
+import type { SpreadSheet } from '../../sheet-type/index';
+import type { PanelBBox } from '../bbox/panel-bbox';
 import type { FrozenFacet } from '../frozen-facet';
-import { getExtraFrozenSeriesNodes, getSeriesNumberNodes } from './util';
+import type { Hierarchy } from '../layout/hierarchy';
+import type { Node } from '../layout/node';
 import { RowHeader } from './row';
+import { getExtraFrozenSeriesNodes, getSeriesNumberNodes } from './util';
 
 export class SeriesNumberHeader extends RowHeader {
   /**

@@ -1,13 +1,13 @@
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { BaseFacet } from '../../../src/facet';
-import type { InternalFullyTheme, OffsetConfig } from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
 import {
   FrozenGroupArea,
   InteractionKeyboardKey,
   S2Event,
 } from '@/common/constant';
+import type { InternalFullyTheme, OffsetConfig } from '@/common/interface';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
+import type { SpreadSheet } from '@/sheet-type';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import type { BaseFacet } from '../../../src/facet';
 
 jest.mock('@/interaction/event-controller');
 

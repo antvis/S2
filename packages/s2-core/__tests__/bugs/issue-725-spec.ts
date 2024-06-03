@@ -5,11 +5,11 @@
  * Wrong group sort
  */
 
-import * as mockDataConfig from 'tests/data/data-issue-725.json';
-import { assembleDataCfg } from '../util';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotDataSet } from '@/data-set';
 import { PivotSheet } from '@/sheet-type';
+import * as mockDataConfig from 'tests/data/data-issue-725.json';
+import { assembleDataCfg } from '../util';
 
 jest.mock('@/sheet-type');
 

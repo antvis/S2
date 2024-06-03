@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+  DEFAULT_FROZEN_COUNTS,
   DEFAULT_STYLE,
   Node,
   SpreadSheet,
@@ -10,6 +11,7 @@ import {
   getDefaultSeriesNumberText,
   getLang,
   getPalette,
+  safeJsonParse,
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellHighlightOptions,
@@ -18,8 +20,6 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  safeJsonParse,
-  DEFAULT_FROZEN_COUNTS,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -50,6 +50,7 @@ import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { ConfigProvider } from '../src/components/config-provider';
+import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
@@ -59,7 +60,6 @@ import { LinkGroup } from './components/LinkGroup';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
-import { BigDataSheet } from './components/BigDataSheet';
 
 import {
   PivotSheetFrozenOptions,
@@ -79,16 +79,9 @@ import {
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
 import './index.less';
+import { onSheetMounted } from './utils';
 
 type TableSheetColumnType = 'single' | 'multiple';
-
-const onSheetMounted = (s2: SpreadSheet) => {
-  console.log('onSheetMounted: ', s2);
-  // @ts-ignore
-  window.s2 = s2;
-  // @ts-ignore
-  window.__g_instances__ = [s2.container];
-};
 
 const CustomTooltip = () => (
   <div>

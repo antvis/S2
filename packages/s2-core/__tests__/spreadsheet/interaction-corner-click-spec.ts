@@ -1,3 +1,7 @@
+import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
+import { CornerNodeType, type S2Options } from '@/common/interface';
+import type { GEvent, HierarchyType, S2DataConfig } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   createMockCellInfo,
   createPivotSheet,
@@ -8,10 +12,6 @@ import {
   customRowGridSimpleFields,
 } from '../data/custom-grid-simple-fields';
 import { CustomGridData } from '../data/data-custom-grid';
-import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
-import { CornerNodeType, type S2Options } from '@/common/interface';
-import type { GEvent, HierarchyType, S2DataConfig } from '@/index';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 600,

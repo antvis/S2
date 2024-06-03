@@ -1,8 +1,6 @@
 import { Group, Rect } from '@antv/g';
 import { each } from 'lodash';
 import { RowCell, SeriesNumberCell } from '../../cell';
-import type { Node } from '../layout/node';
-import { translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
@@ -13,6 +11,8 @@ import {
   S2Event,
 } from '../../common';
 import type { FrozenFacet } from '../frozen-facet';
+import type { Node } from '../layout/node';
+import { translateGroup } from '../utils';
 import { BaseHeader } from './base';
 import type { RowHeaderConfig } from './interface';
 import { getExtraFrozenRowNodes, getFrozenTrailingRowOffset } from './util';

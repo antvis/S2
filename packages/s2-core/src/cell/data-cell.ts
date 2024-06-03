@@ -24,6 +24,9 @@ import type {
   Condition,
   ConditionMappingResult,
   FormatResult,
+  HeaderActionNameOptions,
+  IconCondition,
+  InteractionStateTheme,
   MiniChartData,
   MultiData,
   TextTheme,
@@ -31,13 +34,7 @@ import type {
   ViewMetaData,
   ViewMetaIndexType,
 } from '../common/interface';
-import {
-  CellBorderPosition,
-  CellClipBox,
-  type HeaderActionNameOptions,
-  type IconCondition,
-  type InteractionStateTheme,
-} from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import { CellData } from '../data-set/cell-data';
 import {
   getHorizontalTextIconPosition,

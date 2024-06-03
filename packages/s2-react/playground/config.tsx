@@ -6,8 +6,8 @@ import {
   customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
-  type S2DataConfig,
   type S2BaseFrozenOptions,
+  type S2DataConfig,
   type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';

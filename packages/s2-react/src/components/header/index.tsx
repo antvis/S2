@@ -1,11 +1,11 @@
-import React from 'react';
+import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { App, Space } from 'antd';
 import cx from 'classnames';
-import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
-import { Export, type ExportBaseProps } from '../export';
+import React from 'react';
 import { AdvancedSort, type AdvancedSortBaseProps } from '../advanced-sort';
-import { type SwitcherProps, SwitcherHeader } from '../switcher/header';
+import { Export, type ExportBaseProps } from '../export';
 import type { SheetComponentOptions } from '../sheets/interface';
+import { SwitcherHeader, type SwitcherProps } from '../switcher/header';
 import './index.less';
 
 export interface HeaderBaseProps {
@@ -25,58 +25,52 @@ export interface HeaderProps extends HeaderBaseProps {
   sheet: SpreadSheet;
 }
 
-export const Header: React.FC<HeaderProps> = React.memo(
-  ({
+export const Header: React.FC<HeaderProps> = React.memo((props) => {
+  const {
     className,
     style,
     title,
     description,
-    export: exportProps,
-    advancedSort,
-    switcher,
+    export: exportProps = { open: false },
+    advancedSort = { open: false },
+    switcher = { open: false },
     sheet,
     extra,
     dataCfg,
     options,
     ...restProps
-  }) => {
-    const PRE_CLASS = `${S2_PREFIX_CLS}-header`;
+  } = props;
+  const PRE_CLASS = `${S2_PREFIX_CLS}-header`;
 
-    const renderExtra = () => (
-      <Space align="center">
-        {extra}
-        {switcher?.open && (
-          <SwitcherHeader
-            sheet={sheet}
-            dataCfg={dataCfg!}
-            options={options!}
-            {...switcher}
-          />
-        )}
-        {advancedSort?.open && <AdvancedSort sheet={sheet} {...advancedSort} />}
-        {exportProps?.open && <Export sheet={sheet} {...exportProps} />}
-      </Space>
-    );
+  const renderExtra = () => (
+    <Space align="center">
+      {extra}
+      {switcher?.open && (
+        <SwitcherHeader
+          sheet={sheet}
+          dataCfg={dataCfg!}
+          options={options!}
+          {...switcher}
+        />
+      )}
+      {advancedSort?.open && <AdvancedSort sheet={sheet} {...advancedSort} />}
+      {exportProps?.open && <Export sheet={sheet} {...exportProps} />}
+    </Space>
+  );
 
-    return (
-      <App>
-        <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>
-          <div className={`${PRE_CLASS}-heading`}>
-            <div className={`${PRE_CLASS}-heading-left`}>
-              <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
-            </div>
-            <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
+  return (
+    <App>
+      <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>
+        <div className={`${PRE_CLASS}-heading`}>
+          <div className={`${PRE_CLASS}-heading-left`}>
+            <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
           </div>
-          <div className={`${PRE_CLASS}-content`}>{description}</div>
+          <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
         </div>
-      </App>
-    );
-  },
-);
+        <div className={`${PRE_CLASS}-content`}>{description}</div>
+      </div>
+    </App>
+  );
+});
 
 Header.displayName = 'Header';
-Header.defaultProps = {
-  export: { open: false },
-  advancedSort: { open: false },
-  switcher: { open: false },
-};

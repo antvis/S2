@@ -1,10 +1,9 @@
 import { SpreadSheet, type S2DataConfig } from '@antv/s2';
 import React from 'react';
-
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src';
 import { usePlaygroundContext } from '../context/playground.context';
 
@@ -58,8 +57,7 @@ const s2DataConfig: S2DataConfig = {
   ),
 };
 
-type CustomGridProps = Partial<SheetComponentsProps>;
-const sheetType = 'pivot';
+type CustomGridProps = Partial<SheetComponentProps>;
 
 export const BigDataSheet = React.forwardRef<SpreadSheet, CustomGridProps>(
   (props, ref) => {
@@ -69,7 +67,7 @@ export const BigDataSheet = React.forwardRef<SpreadSheet, CustomGridProps>(
       <SheetComponent
         {...props}
         {...context}
-        sheetType={sheetType}
+        sheetType="pivot"
         dataCfg={s2DataConfig}
         options={s2Options}
         ref={ref}

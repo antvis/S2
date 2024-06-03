@@ -9,16 +9,16 @@ import {
   isEqual,
   map,
 } from 'lodash';
+import type { DataCell } from '../../cell';
 import { MergedCell } from '../../cell/merged-cell';
 import { CellType } from '../../common/constant';
 import type {
+  MergedCellCallback,
   MergedCellInfo,
   TempMergedCell,
   ViewMeta,
-  MergedCellCallback,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { DataCell } from '../../cell';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,

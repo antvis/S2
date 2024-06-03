@@ -1,14 +1,14 @@
-import { FrozenGroupType } from '../../../src';
 import type { S2BaseFrozenOptions } from '@/common/interface/s2Options';
-import { getValidFrozenOptions } from '@/utils/layout/frozen';
+import type { ViewCellHeights } from '@/facet/layout/interface';
 import {
-  getFrozenGroupTypeByCell,
   calculateFrozenCornerCells,
-  splitInViewIndexesWithFrozen,
   getCellRange,
+  getFrozenGroupTypeByCell,
+  splitInViewIndexesWithFrozen,
 } from '@/facet/utils';
 import type { Indexes } from '@/utils/indexes';
-import type { ViewCellHeights } from '@/facet/layout/interface';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
+import { FrozenGroupType } from '../../../src';
 
 describe('Frozen util test', () => {
   describe('getCellRange', () => {

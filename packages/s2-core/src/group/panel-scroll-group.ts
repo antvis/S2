@@ -1,8 +1,8 @@
 import { Group } from '@antv/g';
+import { S2Event } from '../common';
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import { updateMergedCells } from '../utils/interaction/merge-cell';
-import { S2Event } from '../common';
 import type { MergedCell } from './../cell/merged-cell';
 import {
   KEY_GROUP_MERGED_CELLS,

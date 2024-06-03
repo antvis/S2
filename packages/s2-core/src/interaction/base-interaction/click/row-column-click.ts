@@ -1,10 +1,11 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { difference, findLast } from 'lodash';
+import { SeriesNumberCell } from '../../../cell';
 import {
   CellType,
-  getTooltipOperatorHiddenColumnsMenu,
   InterceptType,
   S2Event,
+  getTooltipOperatorHiddenColumnsMenu,
 } from '../../../common/constant';
 import type {
   TooltipBaseOperatorMenuItem,
@@ -29,7 +30,6 @@ import {
   getTooltipVisibleOperator,
   mergeCellInfo,
 } from '../../../utils/tooltip';
-import { SeriesNumberCell } from '../../../cell';
 import type { ViewMeta } from './../../../common/interface/basic';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {

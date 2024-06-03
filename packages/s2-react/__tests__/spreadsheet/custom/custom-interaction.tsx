@@ -1,13 +1,13 @@
-import { isEmpty } from 'lodash';
 import {
-  SpreadSheet,
-  type S2CellType,
-  S2Event,
   BaseEvent,
-  InteractionStateName,
-  getCellMeta,
   GEvent,
+  InteractionStateName,
+  S2Event,
+  SpreadSheet,
+  getCellMeta,
+  type S2CellType,
 } from '@antv/s2';
+import { isEmpty } from 'lodash';
 
 export class CustomHover extends BaseEvent {
   public bindEvents() {

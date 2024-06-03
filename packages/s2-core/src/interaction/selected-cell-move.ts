@@ -1,15 +1,15 @@
 import type { FederatedPointerEvent as Event } from '@antv/g';
 import {
-  type CellMeta,
   CellType,
-  type ViewMeta,
   FrozenGroupArea,
+  type CellMeta,
+  type ViewMeta,
 } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
+import type { FrozenFacet } from '../facet';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
-import type { FrozenFacet } from '../facet';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [

@@ -1,11 +1,11 @@
 import type { PointLike } from '@antv/g-lite';
 import { isNumber } from 'lodash';
 import { FrozenGroupArea, ROOT_NODE_ID } from '../../common';
+import type { AreaBBox } from '../../common/interface/frozen';
 import type { SpreadSheet } from '../../sheet-type';
 import type { FrozenFacet } from '../frozen-facet';
 import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
-import type { AreaBBox } from '../../common/interface/frozen';
 import { Frame } from './frame';
 
 export const getSeriesNumberNodes = (

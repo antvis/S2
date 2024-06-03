@@ -3,11 +3,11 @@
  * https://github.com/antvis/S2/issues/2322
  * 明细表: 多列筛选后清空其中一列筛选，导致其他筛选也清空
  */
-import { getContainer, sleep } from 'tests/util/helpers';
-import dataCfg from '../data/data-issue-2322.json';
 import { S2Event } from '@/common';
 import type { S2Options } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
+import { getContainer, sleep } from 'tests/util/helpers';
+import dataCfg from '../data/data-issue-2322.json';
 
 const s2Options: S2Options = {
   width: 800,

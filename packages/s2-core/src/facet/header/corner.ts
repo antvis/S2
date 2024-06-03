@@ -1,4 +1,4 @@
-import { Rect, type PointLike, Group } from '@antv/g';
+import { Group, Rect, type PointLike } from '@antv/g';
 import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { S2Event } from '../../common';

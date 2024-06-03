@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+// eslint-disable-next-line prettier/prettier
 import {
   compact,
   find,
@@ -34,8 +36,8 @@ import {
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
-import type { GetCellDataParams, Query } from './interface';
 import type { GetCellMultiDataParams } from './index';
+import type { GetCellDataParams, Query } from './interface';
 
 export abstract class BaseDataSet {
   /**

@@ -4,8 +4,8 @@
  * https://github.com/antvis/S2/issues/2582
  */
 
-import { createPivotSheet } from '../util/helpers';
 import type { S2Options, SpreadSheet } from '@/index';
+import { createPivotSheet } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 400,

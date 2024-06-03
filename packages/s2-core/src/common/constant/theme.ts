@@ -1,7 +1,7 @@
 import { paletteColorful } from '../../theme/palette/colorful';
+import { paletteDark } from '../../theme/palette/dark';
 import { paletteDefault } from '../../theme/palette/default';
 import { paletteGray } from '../../theme/palette/gray';
-import { paletteDark } from '../../theme/palette/dark';
 import type { ThemeName } from '../interface';
 
 // Map of the theme

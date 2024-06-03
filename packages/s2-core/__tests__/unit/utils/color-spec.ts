@@ -1,4 +1,4 @@
-import { getPalette, shouldReverseFontColor, isReadableText } from '@/utils';
+import { getPalette, isReadableText, shouldReverseFontColor } from '@/utils';
 import { generatePalette, generateStandardColors } from '@/utils/color';
 
 const expectThemeColor = '#F1535F';

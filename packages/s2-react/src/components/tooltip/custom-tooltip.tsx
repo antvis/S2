@@ -1,3 +1,6 @@
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
 import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import { startsWith } from 'lodash';
 import React from 'react';
@@ -5,11 +8,11 @@ import React from 'react';
 import { render, unmountComponentAtNode, version } from 'react-dom';
 import { createRoot, type Root } from 'react-dom/client';
 import { ConfigProvider } from '../config-provider';
+import { TooltipComponent } from './index';
 import type {
   TooltipOperatorMenuOptions,
   TooltipRenderProps,
 } from './interface';
-import { TooltipComponent } from './index';
 
 /**
  * 自定义 Tooltip 组件, 兼容 React 18 参考如下

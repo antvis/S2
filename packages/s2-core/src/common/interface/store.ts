@@ -1,19 +1,19 @@
 import type { Group } from '@antv/g';
-import type { BBox } from '../../engine';
+import type { GuiIcon } from '../../common/icons';
 import type {
   InteractionOptions,
   InteractionStateInfo,
+  PartDrillDownFieldInLevel,
   S2CellType,
   SortMethod,
   SortParam,
   ViewMeta,
-} from '../interface';
+} from '../../common/interface';
+import type { BBox } from '../../engine';
 import type { Node } from '../../facet/layout/node';
-import type { PartDrillDownFieldInLevel } from '../../common/interface';
-import type { GuiIcon } from '../../common/icons';
 import type { DataPath } from './../../data-set/interface';
-import type { S2DataConfig } from './s2DataConfig';
 import type { ValueRanges } from './condition';
+import type { S2DataConfig } from './s2DataConfig';
 
 export interface HiddenColumnsInfo {
   /**

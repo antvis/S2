@@ -1,10 +1,10 @@
 import {
+  GEvent,
+  PivotDataSet,
+  S2Event,
   Store,
   type Node,
   type SpreadSheet,
-  GEvent,
-  S2Event,
-  PivotDataSet,
 } from '@antv/s2';
 import type { PartDrillDown } from '../../../src/interface';
 import {

@@ -1,10 +1,9 @@
-import { Group } from '@antv/g';
-import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
 import type { BBox } from '@/engine';
 import {
   BaseBrushSelection,
   DataCellBrushSelection,
+  EventController,
   InteractionBrushSelectionStage,
   InterceptType,
   PivotSheet,
@@ -13,9 +12,10 @@ import {
   type OriginalEvent,
   type S2DataConfig,
   type ViewMeta,
-  EventController,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
+import { Group } from '@antv/g';
+import { getContainer } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');

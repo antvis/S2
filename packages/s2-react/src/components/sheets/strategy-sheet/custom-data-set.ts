@@ -1,11 +1,11 @@
 import {
   CustomTreePivotDataSet,
-  type S2DataConfig,
-  EXTRA_FIELD,
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
-  type RawData,
-  type Meta,
+  EXTRA_FIELD,
   i18n,
+  type Meta,
+  type RawData,
+  type S2DataConfig,
 } from '@antv/s2';
 import { isEmpty, isObject, keys, size } from 'lodash';
 

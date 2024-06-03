@@ -9,6 +9,7 @@ import {
   type S2Options,
 } from '@antv/s2';
 import React from 'react';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import {
   data10,
   data6,
@@ -20,14 +21,13 @@ import {
   totalData9,
 } from '../data/data-accuracy';
 import { renderComponent } from '../util/helpers';
-import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let spreadsheet: SpreadSheet;
 
 const setSpreadSheet = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: SheetComponentsProps['options'],
+  options: SheetComponentProps['options'],
   index: number,
 ) => {
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
@@ -99,9 +99,9 @@ const getDataCfg = (index: number) =>
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  }) as SheetComponentsProps['dataCfg'];
+  }) as SheetComponentProps['dataCfg'];
 
-const getOptions = (): SheetComponentsProps['options'] => {
+const getOptions = (): SheetComponentProps['options'] => {
   return {
     width: 800,
     height: 600,
@@ -165,7 +165,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 1)}
         />,
       )}

@@ -2,30 +2,30 @@
  * drill-down.ts 文件已迁移至 shared 文件，但因 spec 中需要的相关方法和数据很多都是在 react 共用的。所以暂不迁移
  */
 import {
-  PivotDataSet,
-  RootInteraction,
-  type S2Options,
-  Store,
   Node,
-  SpreadSheet,
+  PivotDataSet,
   PivotSheet,
+  RootInteraction,
+  SpreadSheet,
+  Store,
+  type S2Options,
 } from '@antv/s2';
 import {
   buildDrillDownOptions,
-  type DrillDownParams,
   getDrillDownCache,
   handleActionIconClick,
   handleDrillDown,
+  type DrillDownParams,
   type PartDrillDown,
   type PartDrillDownInfo,
 } from '@antv/s2-shared';
-import { sleep, getContainer } from '../../util/helpers';
 import { data as originData } from '../../data/mock-dataset.json';
 import {
-  data as drillDownData,
   HZDrillDownData,
   SXDrillDownData,
+  data as drillDownData,
 } from '../../data/mock-drill-down-dataset.json';
+import { getContainer, sleep } from '../../util/helpers';
 
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;

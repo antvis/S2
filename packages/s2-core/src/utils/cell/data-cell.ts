@@ -1,9 +1,9 @@
-import { isEqual, forEach } from 'lodash';
+import { forEach, isEqual } from 'lodash';
 import type { DataCell } from '../../cell';
 import {
-  InteractionStateName,
   CellType,
   DATA_CELL_ID_SEPARATOR,
+  InteractionStateName,
 } from '../../common/constant';
 import type { CellMeta, S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';

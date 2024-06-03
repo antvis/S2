@@ -1,13 +1,11 @@
-import { PivotSheet, TableSheet } from '@antv/s2';
-import { getMockSheetInstance } from 'tests/util/helpers';
-import {
-  generateSwitcherFieldsCfgFromResult,
-  getSheetType,
-} from '@/components/switcher/headerUtil';
 import {
   generateSheetConfig,
   generateSwitcherFields,
+  generateSwitcherFieldsCfgFromResult,
+  getSheetType,
 } from '@/components/switcher/headerUtil';
+import { PivotSheet, TableSheet } from '@antv/s2';
+import { getMockSheetInstance } from 'tests/util/helpers';
 
 describe('headerUtil test', () => {
   test('should return correct sheetType', () => {

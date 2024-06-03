@@ -3,10 +3,10 @@
  * https://github.com/antvis/S2/issues/2528
  */
 
+import type { S2DataConfig, S2Options, SpreadSheet } from '@/index';
+import { TableSheet } from '@/sheet-type';
 import * as mockDataConfig from '../data/simple-table-data.json';
 import { getContainer } from '../util/helpers';
-import type { SpreadSheet, S2DataConfig, S2Options } from '@/index';
-import { TableSheet } from '@/sheet-type';
 
 const s2DataConfig: S2DataConfig = {
   ...mockDataConfig,

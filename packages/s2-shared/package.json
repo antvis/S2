@@ -1,18 +1,21 @@
 {
-  "private": true,
   "name": "@antv/s2-shared",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "types": "temp/index.d.ts",
+  "private": true,
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
+  "main": "src/index.ts",
+  "types": "temp/index.d.ts",
   "scripts": {
     "build": "run-s clean build:dts",
-    "clean": "rimraf temp",
     "build:dts": "tsc -p tsconfig.declaration.json",
+    "clean": "rimraf temp",
     "test": "jest --passWithNoTests --detectOpenHandles",
-    "test:coverage": "pnpm test -- --coverage",
-    "test:ci-coverage": "pnpm test:coverage --maxWorkers=3"
+    "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:coverage": "pnpm test -- --coverage"
+  },
+  "release": {
+    "skip": true
   },
   "devDependencies": {
     "@antv/s2": "workspace:*",

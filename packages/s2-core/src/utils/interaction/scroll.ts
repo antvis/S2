@@ -1,8 +1,8 @@
 import { isNil } from 'lodash';
+import { FrozenGroupArea } from '../../common';
 import { ScrollDirection } from '../../common/constant/interaction';
 import type { TableFacet } from '../../facet';
 import type { SpreadSheet } from '../../sheet-type';
-import { FrozenGroupArea } from '../../common';
 
 // 获取滚动指定列到视口内的滚动 x 轴 Offset。滚动到视口边缘位置，左侧和右侧视滚动方向而定。
 export const getScrollOffsetForCol = (

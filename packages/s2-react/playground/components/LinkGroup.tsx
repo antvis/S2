@@ -1,13 +1,13 @@
 import {
+  BgColorsOutlined,
   CloudUploadOutlined,
   FileSearchOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
   GithubOutlined,
+  MoreOutlined,
   PullRequestOutlined,
   YuqueOutlined,
-  FullscreenOutlined,
-  BgColorsOutlined,
-  MoreOutlined,
-  FullscreenExitOutlined,
 } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 import React from 'react';

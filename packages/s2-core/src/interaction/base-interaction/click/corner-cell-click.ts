@@ -2,20 +2,20 @@ import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty } from 'lodash';
 import {
   CellType,
+  CornerNodeType,
   type CellMeta,
   type Data,
-  CornerNodeType,
 } from '../../../common';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '../../../common/constant';
+import type { Node } from '../../../facet/layout/node';
 import {
   BaseEvent,
   type BaseEventImplement,
 } from '../../../interaction/base-event';
-import type { Node } from '../../../facet/layout/node';
 
 export class CornerCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

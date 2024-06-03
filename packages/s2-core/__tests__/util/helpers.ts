@@ -1,53 +1,50 @@
 /* eslint-disable max-lines-per-function */
-import fs from 'fs';
-import path from 'path';
-import { dsvFormat } from 'd3-dsv';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
+import type { BaseTooltip } from '@/ui/tooltip';
+import { customMerge } from '@/utils/merge';
 import EE from '@antv/event-emitter';
 import {
   Canvas,
   FederatedMouseEvent,
   FederatedPointerEvent,
-  type CanvasConfig,
   Group,
+  type CanvasConfig,
 } from '@antv/g';
-import { omit } from 'lodash';
-import * as simpleDataConfig from 'tests/data/simple-data.json';
-import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import {
-  getTheme,
-  type BaseDataSet,
-  type Node,
-  Hierarchy,
-  type FormatOptions,
-  asyncGetAllPlainData,
-  TAB_SEPARATOR,
-  EventController,
-  getDefaultSeriesNumberText,
-} from '../../src';
-
-import { assembleOptions, assembleDataCfg } from '.';
-import { RootInteraction } from '@/interaction/root';
-import { Store } from '@/common/store';
-import type {
-  InternalFullyTheme,
-  LayoutResult,
-  S2CellType,
-  S2DataConfig,
-  S2Options,
-  ViewMeta,
-} from '@/common/interface';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import type { BaseTooltip } from '@/ui/tooltip';
-import { customMerge } from '@/utils/merge';
+import { dsvFormat } from 'd3-dsv';
+import fs from 'fs';
+import { omit } from 'lodash';
+import path from 'path';
+import * as dataConfig from 'tests/data/mock-dataset.json';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
+import { assembleDataCfg, assembleOptions } from '.';
 import {
   DEFAULT_FROZEN_COUNTS,
-  DEFAULT_OPTIONS,
+  EventController,
   FrozenGroupArea,
-  FrozenGroupType,
-} from '@/common/constant';
-import type { BaseFacet } from '@/facet';
-import type { PanelBBox } from '@/facet/bbox/panel-bbox';
+  Hierarchy,
+  RootInteraction,
+  Store,
+  TAB_SEPARATOR,
+  asyncGetAllPlainData,
+  getDefaultSeriesNumberText,
+  getTheme,
+  type BaseDataSet,
+  type BaseFacet,
+  type FormatOptions,
+  type InternalFullyTheme,
+  type LayoutResult,
+  type Node,
+  type S2CellType,
+  type S2DataConfig,
+  type S2Options,
+  type ViewMeta,
+} from '../../src';
+import type { PanelBBox } from '../../src/facet/bbox/panel-bbox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';

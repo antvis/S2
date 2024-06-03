@@ -3,10 +3,10 @@
  * https://github.com/antvis/S2/issues/1520
  * 数据为0时，图标标记中的图标不显示
  */
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-1520.json';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { GuiIcon, type S2Options } from '@/common';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import * as mockDataConfig from '../data/data-issue-1520.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

@@ -1,7 +1,7 @@
+import type { S2DataConfig, S2Options } from '@/common';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import { CornerNodeType, PivotSheet } from '../../src';
-import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,

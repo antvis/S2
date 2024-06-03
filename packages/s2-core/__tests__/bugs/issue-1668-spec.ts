@@ -2,12 +2,12 @@
  * @description spec for issue #1668
  * https://github.com/antvis/S2/issues/1668
  */
-import type { Group } from '@antv/g';
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-1668.json';
-import { type S2Options, KEY_GROUP_COL_RESIZE_AREA } from '@/index';
-import { PivotSheet } from '@/sheet-type';
 import type { CustomRect } from '@/engine';
+import { KEY_GROUP_COL_RESIZE_AREA, type S2Options } from '@/index';
+import { PivotSheet } from '@/sheet-type';
+import type { Group } from '@antv/g';
+import * as mockDataConfig from '../data/data-issue-1668.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

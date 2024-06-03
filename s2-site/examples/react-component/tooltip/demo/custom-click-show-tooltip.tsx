@@ -1,11 +1,11 @@
-import React from 'react';
 import { SpreadSheet } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import React from 'react';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -28,7 +28,7 @@ fetch(
     const App = () => {
       const s2Ref = React.useRef<SpreadSheet>();
 
-      const onColCellClick: SheetComponentsProps['onColCellClick'] = ({
+      const onColCellClick: SheetComponentProps['onColCellClick'] = ({
         viewMeta,
         event,
       }) => {

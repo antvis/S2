@@ -1,21 +1,21 @@
-import { keys, set } from 'lodash';
-import { flattenIndexesData } from '../../../src/utils/dataset/pivot-data-set';
+import { Aggregation } from '@/common/interface';
 import {
-  QueryDataType,
-  type FlattingIndexesData,
+  getAggregationAndCalcFuncByQuery,
+  getListBySorted,
+} from '@/utils/data-set-operate';
+import { keys, set } from 'lodash';
+import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
+  QueryDataType,
   TOTAL_VALUE,
+  type FlattingIndexesData,
 } from '../../../src';
 import {
   customFlattenDeep,
   filterOutDetail,
   sortByItems,
 } from '../../../src/utils/data-set-operate';
-import { Aggregation } from '@/common/interface';
-import {
-  getAggregationAndCalcFuncByQuery,
-  getListBySorted,
-} from '@/utils/data-set-operate';
+import { flattenIndexesData } from '../../../src/utils/dataset/pivot-data-set';
 
 describe('Data Set Operate Test', () => {
   const data: FlattingIndexesData = [];

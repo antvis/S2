@@ -1,13 +1,6 @@
 /**
  * table mode pivot test.
  */
-import { Canvas, Group, type CanvasConfig } from '@antv/g';
-import { Renderer } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { pick } from 'lodash';
-import { data } from '../../data/mock-dataset.json';
-import { createFakeSpreadSheet } from '../../util/helpers';
-import { getDefaultSeriesNumberText } from '../../../src';
 import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
@@ -21,6 +14,13 @@ import {
 } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+import { Canvas, Group, type CanvasConfig } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import { pick } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
+import { data } from '../../data/mock-dataset.json';
+import { createFakeSpreadSheet } from '../../util/helpers';
 
 const actualDataSet = jest.requireActual(
   '@/data-set/base-data-set',

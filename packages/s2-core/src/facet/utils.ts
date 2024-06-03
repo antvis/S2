@@ -10,8 +10,8 @@ import type {
   S2BaseFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
-import type { Indexes } from '../utils/indexes';
 import type { SimpleBBox } from '../engine';
+import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
 

@@ -1,5 +1,5 @@
-import type { Node } from '../../facet/layout/node';
 import type { ViewMeta } from '../../common/interface/basic';
+import type { Node } from '../../facet/layout/node';
 
 export const checkIsLinkField = (
   linkFields: string[] | ((meta: Node | ViewMeta) => boolean),

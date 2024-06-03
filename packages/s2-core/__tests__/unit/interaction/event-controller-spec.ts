@@ -1,21 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import {
-  Canvas,
-  FederatedEvent,
-  Image,
-  CustomEvent,
-  type CanvasConfig,
-} from '@antv/g';
-import {
-  createFakeSpreadSheet,
-  createFederatedMouseEvent,
-  createFederatedPointerEvent,
-  getClientPointOnCanvas,
-  sleep,
-} from 'tests/util/helpers';
-import { Renderer } from '@antv/g-canvas';
 import { GuiIcon } from '@/common';
-import type { EmitterType } from '@/common/interface/emitter';
 import {
   CellType,
   InteractionKeyboardKey,
@@ -24,12 +8,28 @@ import {
   OriginEventType,
   S2Event,
 } from '@/common/constant';
-import { EventController } from '@/interaction/event-controller';
-import type { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 import type { CellMeta, S2Options } from '@/common/interface';
-import type { BaseFacet } from '@/facet';
+import type { EmitterType } from '@/common/interface/emitter';
 import type { BBox } from '@/engine';
+import type { BaseFacet } from '@/facet';
+import { EventController } from '@/interaction/event-controller';
+import { RootInteraction } from '@/interaction/root';
+import type { SpreadSheet } from '@/sheet-type';
+import {
+  Canvas,
+  CustomEvent,
+  FederatedEvent,
+  Image,
+  type CanvasConfig,
+} from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import {
+  createFakeSpreadSheet,
+  createFederatedMouseEvent,
+  createFederatedPointerEvent,
+  getClientPointOnCanvas,
+  sleep,
+} from 'tests/util/helpers';
 
 const MOCK_COPY_DATA = 'data';
 

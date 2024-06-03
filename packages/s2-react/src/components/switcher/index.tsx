@@ -1,28 +1,16 @@
-import { Button, Popover, type PopoverProps } from 'antd';
-import React, {
-  type FC,
-  type ReactNode,
-  useState,
-  isValidElement,
-} from 'react';
 import { i18n } from '@antv/s2';
+import { Button, Popover } from 'antd';
 import cls from 'classnames';
+import React from 'react';
 import { SwitcherIcon } from '../icons';
-import { SwitcherContent, type SwitcherContentProps } from './content';
-import { getSwitcherClassName } from './util';
+import { SwitcherContent } from './content';
 import './index.less';
+import type { SwitcherProps } from './interface';
+import { getSwitcherClassName } from './util';
 
-export interface SwitcherProps
-  extends Omit<SwitcherContentProps, 'onToggleVisible'> {
-  title?: ReactNode;
-  // ref: https://ant.design/components/popover-cn/#API
-  popover?: PopoverProps;
-  disabled?: boolean;
-}
-
-export const Switcher: FC<SwitcherProps> = React.memo(
+export const Switcher: React.FC<SwitcherProps> = React.memo(
   ({ title, popover, disabled, ...otherProps }) => {
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = React.useState(false);
     const onToggleVisible = () => {
       setVisible((prev) => !prev);
     };
@@ -43,7 +31,7 @@ export const Switcher: FC<SwitcherProps> = React.memo(
           popover?.overlayClassName,
         )}
       >
-        {isValidElement(title) ? (
+        {React.isValidElement(title) ? (
           title
         ) : (
           <Button

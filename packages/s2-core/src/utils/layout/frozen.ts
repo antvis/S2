@@ -1,5 +1,5 @@
 import { DEFAULT_FROZEN_COUNTS } from '../../common';
-import type { S2Options, S2BaseFrozenOptions } from '../../common/interface';
+import type { S2BaseFrozenOptions, S2Options } from '../../common/interface';
 
 export const getValidFrozenOptions = (
   defaultFrozenOptions: S2BaseFrozenOptions = {},

@@ -1,5 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable max-classes-per-file */
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentProps,
+} from '@/components';
 import { renderToMountedElement, stdlib } from '@antv/g2';
 import { DataCell, SpreadSheet, customMerge } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
@@ -7,11 +12,6 @@ import React from 'react';
 import type { Root } from 'react-dom/client';
 import { ChartDataConfig } from '../../../../data/data-g2-chart';
 import { renderComponent } from '../../../../util/helpers';
-import {
-  SheetComponent,
-  type SheetComponentOptions,
-  type SheetComponentsProps,
-} from '@/components';
 
 describe('<ChartSheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -23,7 +23,7 @@ describe('<ChartSheet/> Tests', () => {
 
   const renderChartSheet = (
     options: SheetComponentOptions | null,
-    props?: Partial<SheetComponentsProps>,
+    props?: Partial<SheetComponentProps>,
   ) => {
     unmount = renderComponent(
       <SheetComponent

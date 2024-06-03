@@ -1,5 +1,5 @@
-import { sleep } from './../../util/helpers';
 import { getOffscreenCanvas, removeOffscreenCanvas } from '@/utils';
+import { sleep } from './../../util/helpers';
 
 describe('Canvas Utils Tests', () => {
   const ID = 's2-offscreen-canvas';

@@ -1,11 +1,11 @@
 import {
+  GEvent,
   S2Event,
   SpreadSheet,
   TableDataCell,
   customMerge,
   type DataItem,
   type ViewMeta,
-  GEvent,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, pick } from 'lodash';

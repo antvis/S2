@@ -4,10 +4,10 @@
  * Column should not be formatted
  *
  */
-import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { TableSheet, SpreadSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common/interface';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   // 让被测试的单元格在首屏显示出来

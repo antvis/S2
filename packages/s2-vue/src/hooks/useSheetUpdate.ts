@@ -1,5 +1,5 @@
 import type { S2Options, SpreadSheet } from '@antv/s2';
-import { reactive, watch, type ShallowRef, isProxy } from 'vue';
+import { isProxy, reactive, watch, type ShallowRef } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
 /**

@@ -1,4 +1,5 @@
 import { DataCell } from '../cell/data-cell';
+import type { CellMeta } from '../common';
 import {
   CellType,
   FrozenGroupArea,
@@ -6,15 +7,14 @@ import {
   ResizeAreaEffect,
   ResizeDirectionType,
 } from '../common/constant';
+import { CustomRect, type SimpleBBox } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import { isFrozenRow, isFrozenTrailingRow } from '../facet/utils';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { CustomRect, type SimpleBBox } from '../engine';
-import type { FrozenFacet } from '../facet/frozen-facet';
-import type { CellMeta } from '../common';
 
 export class TableDataCell extends DataCell {
   protected getLinkFieldStyle() {

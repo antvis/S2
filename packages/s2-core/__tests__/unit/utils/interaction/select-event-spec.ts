@@ -1,5 +1,3 @@
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { TableSeriesNumberCell } from '../../../../src/cell';
 import type { ViewMeta } from '@/common';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
@@ -15,6 +13,8 @@ import {
   isMultiSelectionKey,
   selectCells,
 } from '@/utils/interaction/select-event';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import { TableSeriesNumberCell } from '../../../../src/cell';
 
 jest.mock('@/cell', () => {
   return {

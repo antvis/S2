@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js';
-import { CellData } from '../data-set/cell-data';
 import { Aggregation, type ViewMetaData } from '../common/interface';
+import { CellData } from '../data-set/cell-data';
 
 export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {

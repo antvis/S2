@@ -15,6 +15,7 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import { CustomRect } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import type { RowHeaderConfig } from '../facet/header';
 import {
   getHorizontalTextIconPosition,
@@ -25,12 +26,11 @@ import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height'
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
-import type { FrozenFacet } from '../facet/frozen-facet';
 import type { SimpleBBox } from './../engine/interface';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { normalizeTextAlign } from './../utils/normalize';
 import { HeaderCell } from './header-cell';
 

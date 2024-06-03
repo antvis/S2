@@ -1,15 +1,14 @@
-import type { S2DataConfig, SpreadSheet } from '@antv/s2';
-import React from 'react';
+import type { HierarchyType, S2DataConfig, SpreadSheet } from '@antv/s2';
 import { Switch } from 'antd';
-import type { HierarchyType } from '@antv/s2';
-import {
-  SheetComponent,
-  type SheetComponentOptions,
-  type SheetComponentsProps,
-} from '../../src';
+import React from 'react';
 import { customTreeFields } from '../../__tests__/data/custom-tree-fields';
 import { customTreeData } from '../../__tests__/data/data-custom-trees';
 import { meta } from '../../__tests__/data/mock-dataset.json';
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentProps,
+} from '../../src';
 import { usePlaygroundContext } from '../context/playground.context';
 
 export const CustomTreeDataCfg: S2DataConfig = {
@@ -49,7 +48,7 @@ export const CustomTreeOptions: SheetComponentOptions = {
   // cornerText: '指标',
 };
 
-type CustomTreeProps = Partial<SheetComponentsProps>;
+type CustomTreeProps = Partial<SheetComponentProps>;
 
 export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
   (props, ref) => {
@@ -61,6 +60,8 @@ export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
 
     return (
       <SheetComponent
+        {...props}
+        {...context}
         dataCfg={CustomTreeDataCfg}
         options={{ ...CustomTreeOptions, hierarchyType }}
         ref={ref}
@@ -81,8 +82,6 @@ export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
             />
           ),
         }}
-        {...props}
-        {...context}
       />
     );
   },

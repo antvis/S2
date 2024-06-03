@@ -1,7 +1,3 @@
-import type { Canvas } from '@antv/g';
-import { get } from 'lodash';
-import { createMockCellInfo, sleep } from 'tests/util/helpers';
-import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
@@ -32,6 +28,10 @@ import {
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
+import type { Canvas } from '@antv/g';
+import { get } from 'lodash';
+import { createMockCellInfo, sleep } from 'tests/util/helpers';
+import type { PivotFacet } from '../../../src/facet';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');

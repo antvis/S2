@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { createPivotSheet } from 'tests/util/helpers';
-import { CornerCell } from './../../../src/cell/corner-cell';
 import type { Node } from '@/facet/layout/node';
 import type { SpreadSheet } from '@/sheet-type';
+import { createPivotSheet } from 'tests/util/helpers';
+import { CornerCell } from './../../../src/cell/corner-cell';
 
 describe('Corner Cell Tests', () => {
   let s2: SpreadSheet;

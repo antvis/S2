@@ -4,11 +4,11 @@
  * #asyncGetAllPlainData error in tree mode
  *
  */
+import { PivotSheet } from '@/sheet-type';
+import { asyncGetAllPlainData } from '@/utils';
 import * as mockDataConfig from 'tests/data/data-issue-565.json';
 import { getContainer } from 'tests/util/helpers';
 import { TAB_SEPARATOR, type S2Options } from '../../src';
-import { PivotSheet } from '@/sheet-type';
-import { asyncGetAllPlainData } from '@/utils';
 
 const s2Options: S2Options = {
   width: 800,

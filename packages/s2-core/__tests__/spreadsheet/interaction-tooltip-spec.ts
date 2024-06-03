@@ -1,9 +1,9 @@
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { createMockCellInfo, getContainer } from 'tests/util/helpers';
+import { S2Event } from '@/common/constant';
+import type { S2Options } from '@/common/interface';
 import type { GEvent } from '@/index';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface';
-import { S2Event } from '@/common/constant';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 600,

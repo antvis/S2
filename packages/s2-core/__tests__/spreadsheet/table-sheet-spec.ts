@@ -1,16 +1,16 @@
 /* eslint-disable jest/expect-expect */
-import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import type { TableColHeader } from '../../src/facet/header/table-col';
-import { SpreadSheet, TableFacet, setLang } from '../../src';
 import {
   DeviceType,
+  LayoutWidthType,
   ResizeType,
   TableSheet,
   type RawData,
   type S2DataConfig,
   type S2Options,
-  LayoutWidthType,
 } from '@/index';
+import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import { SpreadSheet, TableFacet, setLang } from '../../src';
+import type { TableColHeader } from '../../src/facet/header/table-col';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',

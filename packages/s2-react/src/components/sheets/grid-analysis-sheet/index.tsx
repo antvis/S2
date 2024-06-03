@@ -1,11 +1,11 @@
 import { customMerge, type ThemeCfg } from '@antv/s2';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
+import type { SheetComponentOptions, SheetComponentProps } from '../interface';
 import { GridAnalysisSheetDataCell } from './custom-cell';
 import { GridAnalysisTheme } from './theme';
 
-export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
+export const GridAnalysisSheet: React.FC<SheetComponentProps> = React.memo(
   (props) => {
     const { options: defaultOptions, themeCfg, ...restProps } = props;
 

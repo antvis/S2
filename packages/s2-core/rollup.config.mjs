@@ -3,11 +3,11 @@ import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;

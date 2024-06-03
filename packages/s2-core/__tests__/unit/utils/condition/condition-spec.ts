@@ -1,9 +1,9 @@
-import type { RawData, TextCondition } from '../../../../src/common/interface';
 import {
   findFieldCondition,
   getIconPosition,
   getIntervalScale,
 } from '@/utils/condition/condition';
+import type { RawData, TextCondition } from '../../../../src/common/interface';
 
 describe('getIconLayoutPosition Test', () => {
   test('should return right by default', () => {

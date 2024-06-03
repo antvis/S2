@@ -1,7 +1,7 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
-import { RowTextClick } from '@/interaction/base-interaction/click';
 import type { RawData, S2DataConfig, S2Options } from '@/common/interface';
+import { RowTextClick } from '@/interaction/base-interaction/click';
 import type { SpreadSheet } from '@/sheet-type';
+import { createFakeSpreadSheet } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/row-column-click');

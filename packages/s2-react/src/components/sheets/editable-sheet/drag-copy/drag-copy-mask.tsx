@@ -1,14 +1,14 @@
-import React, { memo, useState, useEffect } from 'react';
 import {
-  S2Event,
   DataCell,
   InteractionStateName,
+  S2Event,
   S2_PREFIX_CLS,
   type Point,
 } from '@antv/s2';
-import { throttle, pick, get } from 'lodash';
-import './drag-copy-mask.less';
+import { get, pick, throttle } from 'lodash';
+import React, { memo, useEffect, useState } from 'react';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
+import './drag-copy-mask.less';
 
 type DragCopyProps = {
   onCopyFinished?: () => void;

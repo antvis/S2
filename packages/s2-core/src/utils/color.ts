@@ -1,10 +1,10 @@
 import { toUpper } from 'lodash';
 import tinycolor from 'tinycolor2';
-import type { Palette, PaletteMeta } from '../common/interface/theme';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import type { Palette, PaletteMeta } from '../common/interface/theme';
 
 const WHITE_COLOR = '#FFFFFF';
 const BLACK_COLOR = '#000000';

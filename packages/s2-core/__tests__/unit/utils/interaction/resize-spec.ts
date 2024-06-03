@@ -1,14 +1,14 @@
-import { Group } from '@antv/g';
-import type { ResizeArea, ResizeInfo } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import {
-  getResizeAreaAttrs,
-  getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
 import {
   ResizeAreaEffect,
   ResizeDirectionType,
 } from '@/common/constant/resize';
+import type { ResizeArea, ResizeInfo } from '@/common/interface';
+import { SpreadSheet } from '@/sheet-type';
+import {
+  getOrCreateResizeAreaGroupById,
+  getResizeAreaAttrs,
+} from '@/utils/interaction/resize';
+import { Group } from '@antv/g';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');

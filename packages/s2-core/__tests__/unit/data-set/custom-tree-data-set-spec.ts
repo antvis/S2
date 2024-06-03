@@ -1,13 +1,13 @@
 /**
  * custom-tree mode base data-set test.
  */
+import { EXTRA_FIELD, ORIGIN_FIELD } from '@/common/constant';
+import type { S2DataConfig } from '@/common/interface';
+import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
+import { PivotSheet } from '@/sheet-type';
 import { get } from 'lodash';
 import { customTreeNodes } from 'tests/data/custom-tree-nodes';
 import { CustomTreeData } from 'tests/data/data-custom-tree';
-import type { S2DataConfig } from '@/common/interface';
-import { EXTRA_FIELD, ORIGIN_FIELD } from '@/common/constant';
-import { PivotSheet } from '@/sheet-type';
-import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 
 jest.mock('@/sheet-type');
 

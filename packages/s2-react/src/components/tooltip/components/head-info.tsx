@@ -1,10 +1,10 @@
-import React from 'react';
 import {
-  type TooltipDetailListItem,
-  type TooltipHeadInfo,
   TOOLTIP_PREFIX_CLS,
   i18n,
+  type TooltipDetailListItem,
+  type TooltipHeadInfo,
 } from '@antv/s2';
+import React from 'react';
 
 export const TooltipHead: React.FC<TooltipHeadInfo> = React.memo((props) => {
   const { rows = [], cols = [] } = props;
