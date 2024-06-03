@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
-import type { Formatter, FrozenGroupArea, HeaderActionIcon } from '@/common';
+import {
+  FrozenGroupArea,
+  type Formatter,
+  type HeaderActionIcon,
+} from '@/common';
 import { PivotDataSet, TableDataSet } from '@/data-set';
 import { TableFacet } from '@/facet';
 import { Node } from '@/facet/layout/node';

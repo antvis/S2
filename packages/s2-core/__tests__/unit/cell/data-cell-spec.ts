@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { DataCell } from '@/cell';
-import type {
+import {
   CellType,
   GuiIcon,
   S2Event,

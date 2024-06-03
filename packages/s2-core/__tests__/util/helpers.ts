@@ -23,16 +23,28 @@ import * as dataConfig from 'tests/data/mock-dataset.json';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import { assembleDataCfg, assembleOptions } from '.';
 import {
+  DEFAULT_FROZEN_COUNTS,
   EventController,
+  FrozenGroupArea,
   Hierarchy,
+  RootInteraction,
+  Store,
   TAB_SEPARATOR,
   asyncGetAllPlainData,
   getDefaultSeriesNumberText,
   getTheme,
   type BaseDataSet,
+  type BaseFacet,
   type FormatOptions,
+  type InternalFullyTheme,
+  type LayoutResult,
   type Node,
+  type S2CellType,
+  type S2DataConfig,
+  type S2Options,
+  type ViewMeta,
 } from '../../src';
+import type { PanelBBox } from '../../src/facet/bbox/panel-bbox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
