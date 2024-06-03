@@ -479,6 +479,27 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.seriesNumber?.enable).toBeTruthy();
   });
 
+  test.each([
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
+
   test('should init new tooltip', () => {
     const tooltipDestroySpy = jest
       .spyOn(s2.tooltip, 'destroy')

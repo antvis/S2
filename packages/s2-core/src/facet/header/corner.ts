@@ -11,7 +11,6 @@ import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_CORNER_SCROLL,
   getDefaultCornerText,
-  getDefaultSeriesNumberText,
 } from './../../common/constant/basic';
 import { BaseHeader } from './base';
 import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
@@ -138,9 +137,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       const sNode: Node = new Node({
         id: '',
         field: '',
-        value: getDefaultSeriesNumberText(
-          spreadsheet.options.seriesNumber?.text,
-        ),
+        value: spreadsheet.getSeriesNumberText(),
       });
 
       sNode.x = position?.x;

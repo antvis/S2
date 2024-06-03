@@ -23,6 +23,7 @@ import {
   asyncGetAllPlainData,
   TAB_SEPARATOR,
   EventController,
+  getDefaultSeriesNumberText,
 } from '../../src';
 
 import { assembleOptions, assembleDataCfg } from '.';
@@ -218,8 +219,6 @@ export const createFakeSpreadSheet = (config?: {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
-  s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
-  s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
     s2.container.getContextService().getDomElement() as any;
   s2.getCanvasConfig = () => s2.container.getConfig();
@@ -234,6 +233,7 @@ export const createFakeSpreadSheet = (config?: {
   s2.getLayoutWidthType = jest.fn();
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
+  s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,

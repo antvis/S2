@@ -5,6 +5,7 @@ import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { find, size } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
 import { createFakeSpreadSheet } from '../../util/helpers';
 import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
@@ -54,7 +55,8 @@ jest.mock('@/sheet-type', () => {
       return {
         dataCfg: assembleDataCfg(),
         options: assembleOptions({
-          dataCell: (viewMeta) => new DataCell(viewMeta, viewMeta.spreadsheet),
+          dataCell: (viewMeta, spreadsheet) =>
+            new DataCell(viewMeta, spreadsheet),
         }),
         container,
         theme: getTheme({}),
@@ -96,6 +98,7 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+        getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
   };

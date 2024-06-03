@@ -24,6 +24,7 @@ import {
   InterceptType,
   LayoutWidthType,
   S2Event,
+  getDefaultSeriesNumberText,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
@@ -912,5 +913,15 @@ export abstract class SpreadSheet extends EE {
       operator,
       onlyShowOperator: true,
     });
+  }
+
+  public getSeriesNumberText() {
+    const { text, enable } = this.options.seriesNumber ?? {};
+
+    if (!enable) {
+      return '';
+    }
+
+    return text ?? getDefaultSeriesNumberText();
   }
 }

@@ -12,7 +12,7 @@ import {
   min,
 } from 'lodash';
 import type { CellMeta, CustomHeaderField, ViewMeta } from '../common';
-import { CellType } from '../common';
+import { CellType, SERIES_NUMBER_FIELD } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -112,6 +112,10 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldName(field: CustomHeaderField, defaultValue?: string): string {
+    if (field === SERIES_NUMBER_FIELD) {
+      return this.spreadsheet?.getSeriesNumberText();
+    }
+
     const realField = this.getField(field);
     // 兼容自定义行列头场景
     const headerNode = this.spreadsheet?.facet

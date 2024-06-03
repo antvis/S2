@@ -84,8 +84,7 @@ export enum MiniChartType {
   Bullet = 'bullet',
 }
 
-export const getDefaultSeriesNumberText = (defaultText?: string) =>
-  defaultText ?? i18n('序号');
+export const getDefaultSeriesNumberText = () => i18n('序号');
 
 export const getDefaultCornerText = () => i18n('指标');
 

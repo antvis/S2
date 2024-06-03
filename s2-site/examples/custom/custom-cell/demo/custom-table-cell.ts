@@ -1,5 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import { TableColCell, TableDataCell, TableSheet } from '@antv/s2';
+import {
+  TableColCell,
+  TableDataCell,
+  TableSheet,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
 
 /**
  * 自定义 TableDataCell，通过复写基类方法, 给特定单元格设置背景色, 文字大小, 颜色等...
@@ -115,14 +121,15 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'sub_type', 'number'],
       },
       meta: res.meta,
       data: res.data,
     };
-    const s2Options = {
+
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       seriesNumber: {
@@ -131,8 +138,8 @@ fetch(
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
       },
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
     };
 

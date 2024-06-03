@@ -213,6 +213,27 @@ describe('TableSheet Tests', () => {
     );
   });
 
+  test.each([
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
+
   test('should get normal header fields status', () => {
     expect(s2.isCustomHeaderFields()).toBeFalsy();
     expect(s2.isCustomRowFields()).toBeFalsy();

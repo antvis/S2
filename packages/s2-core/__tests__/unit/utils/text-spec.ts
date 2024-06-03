@@ -1,15 +1,22 @@
-import { createPivotSheet } from 'tests/util/helpers';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  createPivotSheet,
+} from 'tests/util/helpers';
 import type { TextTheme } from '../../../src/common';
 import { safeJsonParse } from '../../../src/utils/common';
-import { ELLIPSIS_SYMBOL } from '@/common';
 import {
-  isUpDataValue,
+  drawCustomContent,
   getCellWidth,
-  getEmptyPlaceholder,
   getContentAreaForMultiData,
-  isZeroOrEmptyValue,
+  getEmptyPlaceholder,
   isUnchangedValue,
+  isUpDataValue,
+  isZeroOrEmptyValue,
 } from '@/utils/text';
+import { ELLIPSIS_SYMBOL } from '@/common';
+
+jest.mock('@/utils/g-mini-charts');
 
 describe('Text Utils Tests', () => {
   const font: TextTheme = {
@@ -287,5 +294,63 @@ describe('isUnchangedValue', () => {
 
   test('should return false for negative values', () => {
     expect(isUnchangedValue(-123, 123)).toBeFalsy();
+  });
+
+  test('should draw custom content', () => {
+    const renderTextShape = jest.fn();
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.updateTextPosition = () => {};
+    cell.getActualTextWidth = () => 0;
+    cell.getBBoxByType = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+    cell.renderTextShape = renderTextShape;
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    function render() {
+      drawCustomContent(cell, { values: ['test'] });
+    }
+
+    expect(render).not.toThrow();
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(renderTextShape).toHaveBeenCalledTimes(4);
+  });
+
+  test('should draw custom mini chart', () => {
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.getBBoxByType = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+
+    function render() {
+      drawCustomContent(cell, { values: { data: 'test' } });
+    }
+
+    expect(render).not.toThrow();
   });
 });

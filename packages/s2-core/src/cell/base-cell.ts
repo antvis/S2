@@ -65,7 +65,7 @@ import {
   getIconTotalWidth,
   type GroupedIcons,
 } from '../utils/cell/header-cell';
-import { shouldReverseFontColor } from '../utils/color';
+import { isReadableText, shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
 import {
   renderIcon,
@@ -727,7 +727,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
       shouldReverseFontColor(backgroundColor as string) &&
-      textFill === DEFAULT_FONT_COLOR &&
+      (textFill === DEFAULT_FONT_COLOR ||
+        !isReadableText(backgroundColor!, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
@@ -746,6 +747,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       if (attrs) {
         return {
           backgroundColor: attrs.fill,
+          backgroundColorOpacity: 1,
           intelligentReverseTextColor:
             attrs.intelligentReverseTextColor || false,
         };

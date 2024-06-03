@@ -252,8 +252,8 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       // 自定义角头文本
       cornerText: '指标',
       // 覆盖默认数值单元格, 额外绘制衍生指标和子弹图
-      dataCell: (viewMeta) =>
-        new KpiStrategyDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new KpiStrategyDataCell(viewMeta, spreadsheet),
     };
 
     // 覆盖默认主题, 让单元格文字靠左显示

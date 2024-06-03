@@ -1327,6 +1327,9 @@ export abstract class BaseFacet {
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
+    const { scrollX: currentScrollX, rowHeaderScrollX } =
+      this.getScrollOffset();
+
     const { shiftKey } = event;
 
     // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
@@ -1368,6 +1371,34 @@ export abstract class BaseFacet {
       return;
     }
 
+    if (
+      this.scrollDirection !== undefined &&
+      this.scrollDirection !==
+        (optimizedDeltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT)
+    ) {
+      this.scrollDirection =
+        optimizedDeltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT;
+
+      this.updateHorizontalRowScrollOffset({
+        offsetX,
+        offsetY,
+        offset: rowHeaderScrollX,
+      });
+      this.updateHorizontalScrollOffset({
+        offsetX,
+        offsetY,
+        offset: currentScrollX,
+      });
+
+      return;
+    }
+
+    this.scrollDirection =
+      deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
     this.scrollFrameId = requestAnimationFrame(() => {
       const {
         scrollX: currentScrollX,
