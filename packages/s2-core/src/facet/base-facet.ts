@@ -82,7 +82,6 @@ import type {
   CellScrollPosition,
   ScrollOffset,
 } from '../common/interface/scroll';
-import type { FrozenGroup } from '../group/frozen-group';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -132,18 +131,6 @@ export abstract class BaseFacet {
   public panelGroup: Group;
 
   public panelScrollGroup: PanelScrollGroup;
-
-  public frozenRowGroup: FrozenGroup;
-
-  public frozenColGroup: FrozenGroup;
-
-  public frozenTrailingRowGroup: FrozenGroup;
-
-  public frozenTrailingColGroup: FrozenGroup;
-
-  public frozenTopGroup: FrozenGroup;
-
-  public frozenBottomGroup: FrozenGroup;
 
   // render header/corner/scrollbar/resize
   public foregroundGroup: Group;
@@ -786,6 +773,11 @@ export abstract class BaseFacet {
     this.viewCellWidths = widths;
     this.viewCellHeights = this.getViewCellHeights();
   };
+
+  /**
+   * 提供给明细表做 rowOffsets 计算的 hook
+   */
+  protected abstract calculateRowOffsets(): void;
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
     this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
@@ -1557,6 +1549,7 @@ export abstract class BaseFacet {
 
     // all cell's width&height
     this.calculateCellWidthHeight();
+    this.calculateRowOffsets();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
     this.bindEvents();
@@ -1984,6 +1977,16 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取在索引范围内的列头叶子节点
+   * @example facet.getColLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的列头叶子节点
+   */
+  public getColLeafNodesByRange(minIndex: number, maxIndex: number) {
+    return this.getColLeafNodes().filter(
+      (node) => node.colIndex >= minIndex && node.colIndex <= maxIndex,
+    );
+  }
+
+  /**
    * 根据列头索引获取指定列头叶子节点
    * @example facet.getColLeafNodes(colIndex)
    */
@@ -2071,6 +2074,16 @@ export abstract class BaseFacet {
    */
   public getRowLeafNodeByIndex(rowIndex: number): Node | undefined {
     return this.getRowLeafNodes().find((node) => node.rowIndex === rowIndex);
+  }
+
+  /**
+   * 获取在索引范围内的行头叶子节点
+   * @example facet.getRowLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的行头叶子节点
+   */
+  public getRowLeafNodesByRange(minIndex: number, maxIndex: number) {
+    return this.getRowLeafNodes().filter(
+      (node) => node.rowIndex >= minIndex && node.rowIndex <= maxIndex,
+    );
   }
 
   /**
@@ -2197,10 +2210,12 @@ export abstract class BaseFacet {
    * 获取角头单元格 (不含可视区域)
    */
   public getCornerCells(): CornerCell[] {
-    return filter(
-      this.getCornerHeader().children,
-      (element: CornerCell) => element instanceof CornerCell,
-    ) as unknown[] as CornerCell[];
+    const headerChildren = (this.getCornerHeader()?.children ||
+      []) as CornerCell[];
+
+    return getAllChildCells(headerChildren, CornerCell).filter(
+      (cell: S2CellType) => cell.cellType === CellType.CORNER_CELL,
+    );
   }
 
   /**

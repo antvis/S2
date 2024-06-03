@@ -5,7 +5,6 @@ import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
   Node,
   customMerge,
@@ -75,9 +74,6 @@ jest.mock('@/sheet-type', () => {
           clearHoverTimer: jest.fn(),
           getState: jest.fn(),
           getCells: jest.fn(() => []),
-        },
-        enableFrozenHeaders() {
-          return false;
         },
         isFrozenRowHeader() {
           return false;
@@ -358,10 +354,10 @@ describe('Table Mode Facet With Frozen Test', () => {
     },
   });
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -415,7 +411,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {
@@ -652,9 +648,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     },
   );
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -668,26 +664,6 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     ).toStrictEqual([0]);
   });
 
-  test('should get correct cell layout with frozenTrailingCol', () => {
-    const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
-    const topLevelNodes = facet
-      .getColNodes()
-      .filter((node) => node.parent!.id === ROOT_NODE_ID);
-    const { trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      0,
-      frozenTrailingColCount!,
-    );
-
-    expect(
-      facet
-        .getColLeafNodes()
-        .slice(-trailingColCount)
-        .reverse()
-        .map((node) => Math.floor(node.x)),
-    ).toEqual([399]);
-  });
-
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
     const displayData = s2.dataSet.getDisplayDataSet();
@@ -697,7 +673,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {

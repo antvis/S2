@@ -1,14 +1,11 @@
 import { isEmpty } from 'lodash';
+import type { FrozenGroupArea } from '../common';
 
 export type Indexes = [number, number, number, number];
 
 export type PanelIndexes = {
   center: Indexes;
-  frozenRow?: Indexes;
-  frozenCol?: Indexes;
-  frozenTrailingRow?: Indexes;
-  frozenTrailingCol?: Indexes;
-};
+} & Partial<Record<FrozenGroupArea, Indexes>>;
 
 export interface Diff {
   add: [number, number][];

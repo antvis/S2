@@ -14,7 +14,6 @@ import { i18n } from '../common';
 import {
   EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_EMPTY_PLACEHOLDER,
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
   S2Event,
@@ -40,7 +39,6 @@ import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
 import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
@@ -51,7 +49,6 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
 
 export class TableFacet extends FrozenFacet {
   public emptyPlaceholderGroup: Group;
@@ -82,11 +79,6 @@ export class TableFacet extends FrozenFacet {
   protected initGroups() {
     super.initGroups();
     this.initEmptyPlaceholderGroup();
-  }
-
-  public init() {
-    super.init();
-    this.initRowOffsets();
   }
 
   public render() {
@@ -221,7 +213,7 @@ export class TableFacet extends FrozenFacet {
     );
   }
 
-  protected initRowOffsets() {
+  protected calculateRowOffsets() {
     const { style } = this.spreadsheet.options;
     const heightByField = style?.rowCell?.heightByField;
 
@@ -374,24 +366,11 @@ export class TableFacet extends FrozenFacet {
       return null;
     }
 
-    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
-    const cellRange = this.getCellRange();
-    const { trailingRowCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      colLeafNodes.length,
-      cellRange.end - cellRange.start + 1,
-    );
-
     let data: ViewMetaData | SimpleData | undefined;
 
     const x = colNode.x;
-    let y = this.viewCellHeights.getCellOffsetY(rowIndex);
-
-    if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
-      y =
-        this.panelBBox.height -
-        this.getTotalHeightForRange(rowIndex, cellRange.end);
-    }
+    const y = this.viewCellHeights.getCellOffsetY(rowIndex);
+    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
     if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
@@ -505,45 +484,11 @@ export class TableFacet extends FrozenFacet {
     this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
     this.calculateColNodesHeight(colsHierarchy);
     this.calculateColNodeWidthAndX(colLeafNodes);
-    this.calculateFrozenColNodeX(colsHierarchy);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
     this.adjustCustomColLeafNodesHeight({
       leafNodes: colLeafNodes,
       hierarchy: colsHierarchy,
     });
-  }
-
-  private calculateFrozenColNodeX(colsHierarchy: Hierarchy) {
-    const topLevelNodes = colsHierarchy.getNodes(0);
-    const { trailingColCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      topLevelNodes.length,
-    );
-
-    const colNodes = colsHierarchy.getNodes();
-    let preLeafNode = Node.blankNode();
-
-    const width =
-      this.getCanvasSize().width -
-      Frame.getVerticalBorderWidth(this.spreadsheet);
-
-    if (trailingColCount > 0) {
-      const { trailingColCount: realFrozenTrailingColCount } =
-        getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
-      const leafNodes = colNodes.filter((node) => node.isLeaf);
-
-      for (let i = 1; i <= realFrozenTrailingColCount; i++) {
-        const currentNode = leafNodes[leafNodes.length - i];
-
-        if (i === 1) {
-          currentNode.x = width - currentNode.width;
-        } else {
-          currentNode.x = preLeafNode.x - currentNode.width;
-        }
-
-        preLeafNode = currentNode;
-      }
-    }
   }
 
   /**
@@ -702,7 +647,7 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  protected updateRowResizeArea() {
+  protected renderRowResizeArea() {
     const { resize } = this.spreadsheet.options.interaction!;
 
     const shouldDrawResize = isBoolean(resize)
@@ -716,16 +661,9 @@ export class TableFacet extends FrozenFacet {
     const rowResizeGroup = this.foregroundGroup.getElementById<Group>(
       KEY_GROUP_ROW_RESIZE_AREA,
     );
-    const rowResizeFrozenGroup = this.foregroundGroup.getElementById<Group>(
-      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-    );
 
     if (rowResizeGroup) {
       rowResizeGroup.removeChildren();
-    }
-
-    if (rowResizeFrozenGroup) {
-      rowResizeFrozenGroup.removeChildren();
     }
 
     const cells = getAllChildCells<TableDataCell>(

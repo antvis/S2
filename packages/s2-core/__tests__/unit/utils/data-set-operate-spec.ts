@@ -77,7 +77,7 @@ describe('Data Set Operate Test', () => {
     it('should get correct list by empty sorted list', () => {
       expect(getListBySorted(list, [])).toEqual(['浙江省', '四川省']);
       expect(getListBySorted(list, ['', ''])).toEqual(['浙江省', '四川省']);
-      expect(getListBySorted(list, [null, undefined])).toEqual([
+      expect(getListBySorted(list, [null as any, undefined as any])).toEqual([
         '浙江省',
         '四川省',
       ]);

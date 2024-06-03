@@ -4,7 +4,7 @@
  * https://github.com/antvis/S2/issues/2684
  */
 
-import type { S2Options, SpreadSheet } from '@/index';
+import type { CellMeta, S2Options, SpreadSheet } from '@/index';
 import { isEmpty } from 'lodash';
 import { InteractionStateName } from '../../src';
 import { getSelectedData } from '../../src/utils/export/copy';
@@ -48,7 +48,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
         : String(rowLeafNodes[meta.rowIndex].id);
 
       return { ...meta, colId, rowId };
-    });
+    }) as unknown as CellMeta[];
 
     s2.interaction.changeState({
       cells,

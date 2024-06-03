@@ -1,21 +1,16 @@
 import { find } from 'lodash';
 import { ColCell } from '../cell/col-cell';
 import {
-  FrozenGroupType,
+  FrozenGroupArea,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
-import type { AreaRange } from '../common/interface/scroll';
 import type { SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet/frozen-facet';
 import type { BaseHeaderConfig } from '../facet/header';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
-import {
-  getOrCreateResizeAreaGroupById,
-  shouldAddResizeArea,
-} from '../utils/interaction/resize';
+import { shouldAddResizeArea } from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
 
 export class TableColCell extends ColCell {
@@ -62,10 +57,11 @@ export class TableColCell extends ColCell {
       height,
     };
 
-    const frozenGroupInfo = (spreadsheet.facet as FrozenFacet).frozenGroupInfo;
-    const colWidth = frozenGroupInfo[FrozenGroupType.FROZEN_COL].width;
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const colWidth = frozenGroupAreas[FrozenGroupArea.Col].width;
     const trailingColWidth =
-      frozenGroupInfo[FrozenGroupType.FROZEN_TRAILING_COL].width;
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].width;
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: colWidth,
@@ -82,30 +78,37 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX = 0, position } = this.getHeaderConfig();
+    const {
+      scrollX = 0,
+      position,
+      spreadsheet,
+      viewportWidth,
+    } = this.getHeaderConfig();
 
-    if (this.getMeta().isFrozen) {
-      return {
-        x: position?.x + x,
-        y: position?.y + y,
-      };
+    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenColGroup = frozenGroupAreas[FrozenGroupArea.Col];
+    const frozenTrailingColGroup =
+      frozenGroupAreas[FrozenGroupArea.TrailingCol];
+    let offsetX = position?.x;
+
+    if (this.getMeta().isFrozenHead) {
+      offsetX += x - frozenColGroup.x;
+    } else if (this.getMeta().isFrozenTrailing) {
+      offsetX +=
+        x -
+        frozenTrailingColGroup.x +
+        viewportWidth -
+        frozenTrailingColGroup.width;
+    } else {
+      offsetX += x - scrollX;
     }
 
     return {
-      x: position?.x + x - scrollX,
+      x: offsetX,
       y: position?.y + y,
     };
-  }
-
-  protected getColResizeArea() {
-    if (!this.getMeta().isFrozen) {
-      return super.getColResizeArea();
-    }
-
-    return getOrCreateResizeAreaGroupById(
-      this.spreadsheet,
-      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
   }
 
   protected isSortCell() {
@@ -139,15 +142,5 @@ export class TableColCell extends ColCell {
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
     });
-  }
-
-  protected handleViewport(): AreaRange {
-    const viewport = super.handleViewport();
-
-    if (this.getMeta().isFrozen) {
-      viewport.start = 0;
-    }
-
-    return viewport;
   }
 }

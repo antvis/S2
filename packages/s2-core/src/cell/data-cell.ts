@@ -477,10 +477,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  /**
-   * 预留给明细表使用，透视表数据格不需要绘制 border， 已经交由 grid 处理
-   */
-  public override drawBorders(): void {}
+  public override drawBorders(): void {
+    if (!this.meta.isFrozenCorner) {
+      return;
+    }
+
+    BaseCell.prototype.drawBorders.call(this);
+  }
 
   /**
    * Find current field related condition

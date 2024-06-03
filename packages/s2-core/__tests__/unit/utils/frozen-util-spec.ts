@@ -1,14 +1,14 @@
-import { FrozenCellType } from '@/common/constant/frozen';
-import type { S2TableSheetFrozenOptions } from '@/common/interface/s2Options';
+import type { S2BaseFrozenOptions } from '@/common/interface/s2Options';
 import type { ViewCellHeights } from '@/facet/layout/interface';
 import {
   calculateFrozenCornerCells,
   getCellRange,
-  getFrozenDataCellType,
+  getFrozenGroupTypeByCell,
   splitInViewIndexesWithFrozen,
 } from '@/facet/utils';
 import type { Indexes } from '@/utils/indexes';
 import { getValidFrozenOptions } from '@/utils/layout/frozen';
+import { FrozenGroupType } from '../../../src';
 
 describe('Frozen util test', () => {
   describe('getCellRange', () => {
@@ -37,21 +37,21 @@ describe('Frozen util test', () => {
     });
   });
 
-  describe('getFrozenDataCellType', () => {
+  describe('getFrozenGroupTypeByCell', () => {
     it('should return correct data cell type', () => {
       const colLength = 10;
       const cellRange = {
         start: 0,
         end: 499,
       };
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 2,
         rowCount: 2,
         trailingColCount: 2,
         trailingRowCount: 2,
       };
 
-      const colType = getFrozenDataCellType(
+      const colType = getFrozenGroupTypeByCell(
         {
           rowIndex: 100,
           colIndex: 1,
@@ -61,9 +61,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(colType).toBe(FrozenCellType.COL);
+      expect(colType).toBe(FrozenGroupType.Col);
 
-      const rowType = getFrozenDataCellType(
+      const rowType = getFrozenGroupTypeByCell(
         {
           rowIndex: 1,
           colIndex: 5,
@@ -73,9 +73,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(rowType).toBe(FrozenCellType.ROW);
+      expect(rowType).toBe(FrozenGroupType.Row);
 
-      const trailingColType = getFrozenDataCellType(
+      const trailingColType = getFrozenGroupTypeByCell(
         {
           rowIndex: 100,
           colIndex: 9,
@@ -85,9 +85,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(trailingColType).toBe(FrozenCellType.TRAILING_COL);
+      expect(trailingColType).toBe(FrozenGroupType.TrailingCol);
 
-      const trailingRowType = getFrozenDataCellType(
+      const trailingRowType = getFrozenGroupTypeByCell(
         {
           rowIndex: 499,
           colIndex: 5,
@@ -97,9 +97,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(trailingRowType).toBe(FrozenCellType.TRAILING_ROW);
+      expect(trailingRowType).toBe(FrozenGroupType.TrailingRow);
 
-      const scrollTypeNearTopLeft = getFrozenDataCellType(
+      const scrollTypeNearTopLeft = getFrozenGroupTypeByCell(
         {
           rowIndex: 2,
           colIndex: 2,
@@ -109,9 +109,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(scrollTypeNearTopLeft).toBe(FrozenCellType.SCROLL);
+      expect(scrollTypeNearTopLeft).toBe(FrozenGroupType.Scroll);
 
-      const scrollTypeNearTopRight = getFrozenDataCellType(
+      const scrollTypeNearTopRight = getFrozenGroupTypeByCell(
         {
           rowIndex: 2,
           colIndex: 7,
@@ -121,9 +121,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(scrollTypeNearTopRight).toBe(FrozenCellType.SCROLL);
+      expect(scrollTypeNearTopRight).toBe(FrozenGroupType.Scroll);
 
-      const scrollTypeNearBottomRight = getFrozenDataCellType(
+      const scrollTypeNearBottomRight = getFrozenGroupTypeByCell(
         {
           rowIndex: 497,
           colIndex: 7,
@@ -133,9 +133,9 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(scrollTypeNearBottomRight).toBe(FrozenCellType.SCROLL);
+      expect(scrollTypeNearBottomRight).toBe(FrozenGroupType.Scroll);
 
-      const scrollTypeNearBottomLeft = getFrozenDataCellType(
+      const scrollTypeNearBottomLeft = getFrozenGroupTypeByCell(
         {
           rowIndex: 497,
           colIndex: 2,
@@ -145,13 +145,13 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(scrollTypeNearBottomLeft).toBe(FrozenCellType.SCROLL);
+      expect(scrollTypeNearBottomLeft).toBe(FrozenGroupType.Scroll);
     });
   });
 
   describe('calculateFrozenCornerCells', () => {
     it('should return correct frozen corner cell', () => {
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 1,
         rowCount: 2,
         trailingColCount: 1,
@@ -166,17 +166,15 @@ describe('Frozen util test', () => {
       expect(
         calculateFrozenCornerCells(frozenOptions, colLength, cellRange),
       ).toStrictEqual({
-        bottom: [
-          {
-            x: 0,
-            y: 999,
-          },
+        frozenBottomLeftGroup: [{ x: 0, y: 999 }],
+        frozenBottomRightGroup: [
           {
             x: 3,
             y: 999,
           },
         ],
-        top: [
+
+        frozenTopLeftGroup: [
           {
             x: 0,
             y: 0,
@@ -185,6 +183,8 @@ describe('Frozen util test', () => {
             x: 0,
             y: 1,
           },
+        ],
+        frozenTopRightGroup: [
           {
             x: 3,
             y: 0,
@@ -206,7 +206,7 @@ describe('Frozen util test', () => {
         start: 0,
         end: 999,
       };
-      const frozenOptions: S2TableSheetFrozenOptions = {
+      const frozenOptions: S2BaseFrozenOptions = {
         colCount: 1,
         rowCount: 2,
         trailingColCount: 1,

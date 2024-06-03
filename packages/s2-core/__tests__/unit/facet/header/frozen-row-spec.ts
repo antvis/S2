@@ -1,5 +1,5 @@
 import { RowCell } from '@/cell';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common';
+import { DEFAULT_OPTIONS, FrozenGroupArea } from '@/common';
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
 import type { HierarchyType, RowHeader } from '../../../../src';
@@ -9,7 +9,7 @@ const s2 = createPivotSheet(
   {
     ...DEFAULT_OPTIONS,
     frozen: {
-      firstRow: true,
+      rowCount: 1,
     },
     totals: { row: { showGrandTotals: true, reverseGrandTotalsLayout: true } },
     seriesNumber: {
@@ -29,11 +29,11 @@ describe('Pivot Frozen Row Header Test', () => {
       const rowHeader = s2.facet.rowHeader as RowHeader;
 
       expect(rowHeader).toBeTruthy();
-      expect(rowHeader.frozenRowGroup).toBeTruthy();
+      expect(rowHeader.frozenGroup).toBeTruthy();
       expect(rowHeader.scrollGroup).toBeTruthy();
 
-      expect(rowHeader.frozenRowGroup.children).toHaveLength(1);
-      const frozenRowCell = rowHeader.frozenRowGroup.children[0];
+      expect(rowHeader.frozenGroup.children).toHaveLength(1);
+      const frozenRowCell = rowHeader.frozenGroup.children[0];
 
       expect(frozenRowCell instanceof RowCell).toBeTrue();
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
@@ -45,8 +45,7 @@ describe('Pivot Frozen Row Header Test', () => {
       expect(get(frozenRowCell, 'meta.height')).toEqual(30);
 
       expect(
-        (s2.facet as FrozenFacet).frozenGroupInfo[FrozenGroupType.FROZEN_ROW]
-          .height,
+        (s2.facet as FrozenFacet).frozenGroupAreas[FrozenGroupArea.Row].height,
       ).toBe(30);
     },
   );

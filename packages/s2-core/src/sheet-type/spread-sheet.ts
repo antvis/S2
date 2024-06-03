@@ -104,8 +104,6 @@ export abstract class SpreadSheet extends EE {
 
   public abstract getDataSet(): BaseDataSet;
 
-  public abstract enableFrozenHeaders(): boolean;
-
   public abstract isPivotMode(): boolean;
 
   public abstract isCustomRowFields(): boolean;

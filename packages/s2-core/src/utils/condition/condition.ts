@@ -56,8 +56,8 @@ export const getIntervalScale = (minValue = 0, maxValue = 0) => {
   };
 };
 
-export const findFieldCondition = (
-  conditions: Condition[],
+export const findFieldCondition = <T>(
+  conditions: Condition<T>[],
   valueField: string,
 ) => {
   return findLast(conditions, (item) => {

@@ -70,7 +70,7 @@ Array [
 ]
 `;
 
-exports[`Table Mode Facet With Column Grouping Frozen Test should get correct frozenInfo 1`] = `
+exports[`Table Mode Facet With Column Grouping Frozen Test should get correct frozen group positions 1`] = `
 Object {
   "frozenCol": Object {
     "range": Array [
@@ -94,7 +94,7 @@ Object {
       2,
     ],
     "width": 199.66,
-    "x": 399.34000000000003,
+    "x": 399.32,
   },
   "frozenTrailingRow": Object {
     "height": 60,
@@ -102,12 +102,12 @@ Object {
       30,
       31,
     ],
-    "y": 502,
+    "y": 900,
   },
 }
 `;
 
-exports[`Table Mode Facet With Frozen Test should get correct frozenInfo 1`] = `
+exports[`Table Mode Facet With Frozen Test should get correct frozen group positions 1`] = `
 Object {
   "frozenCol": Object {
     "range": Array [
@@ -139,7 +139,7 @@ Object {
       30,
       31,
     ],
-    "y": 502,
+    "y": 900,
   },
 }
 `;

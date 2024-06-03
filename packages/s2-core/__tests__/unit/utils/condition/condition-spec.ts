@@ -3,7 +3,7 @@ import {
   getIconPosition,
   getIntervalScale,
 } from '@/utils/condition/condition';
-import type { Condition, RawData } from '../../../../src/common/interface';
+import type { RawData, TextCondition } from '../../../../src/common/interface';
 
 describe('getIconLayoutPosition Test', () => {
   test('should return right by default', () => {
@@ -32,7 +32,7 @@ describe('getIconLayoutPosition Test', () => {
 
 describe('getFieldCondition Test', () => {
   test('should find the condition where fill is green', () => {
-    const conditions: Condition[] = [
+    const conditions: TextCondition[] = [
       {
         field: 'value',
         mapping: () => ({ fill: 'red' }),
@@ -47,7 +47,7 @@ describe('getFieldCondition Test', () => {
   });
 
   test('should not find the condition where fill is orange', () => {
-    const conditions: Condition[] = [
+    const conditions: TextCondition[] = [
       {
         field: 'value',
         mapping: () => ({ fill: 'red' }),

@@ -53,11 +53,11 @@ $ npm install @antv/s2-react@next antd @ant-design/icons --save
 $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 ```
 
-| Package  | Version | Size   | Download     |
-| - | - | - | - |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core) |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue) | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| Package                                                                    | Version                                                       | Size                                                                                                                        | Download                                                      |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
 ## ⭐ 新增功能
 
@@ -401,24 +401,25 @@ const s2DataConfig = {
 
 #### 行列冻结配置
 
-透视表和明细表的行列冻结配置统一收拢到 `frozen`.
+透视表和明细表的行列冻结配置统一收拢到 `frozen`。
+
+在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代。在明细表多级列头冻结时,在 `1.x` 中是以最最顶层节点为准，而在 `2.x` 是以叶子节点的数量为准。
 
 ```diff
 const s2Options = {
 -  frozenRowHeader: true,
 -  frozenFirstRow: true,
--  frozenRowCount: true;
--  frozenColCount: true;
--  frozenTrailingRowCount: true;
--  frozenTrailingColCount: true;
+-  frozenRowCount: 1;
+-  frozenColCount: 1;
+-  frozenTrailingRowCount: 1;
+-  frozenTrailingColCount: 1;
 
 +  frozen: {
 +    rowHeader: true,
-+    firstRow: true,
-+    rowCount: true;
-+    colCount: true;
-+    trailingRowCount: true;
-+    trailingColCount: true;
++    rowCount: 1;
++    colCount: 1;
++    trailingRowCount: 1;
++    trailingColCount: 1;
 +  }
 }
 ```

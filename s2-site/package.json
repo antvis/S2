@@ -1,30 +1,30 @@
 {
   "name": "@antv/s2-site",
+  "version": "0.1.0",
   "private": true,
   "description": "S2 sites deployed on gh-pages",
-  "version": "0.1.0",
   "keywords": [
     "antv",
     "s2",
     "spreadsheet",
     "site"
   ],
-  "license": "MIT",
   "homepage": "https://s2.antv.antgroup.com",
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/S2"
   },
-  "bugs": {
-    "url": "https://github.com/antvis/S2/issues"
-  },
+  "license": "MIT",
   "scripts": {
-    "start": "dumi dev",
-    "develop": "dumi dev",
     "build": "dumi build",
     "clean": "rimraf .dumi",
+    "deploy": "dumi build &&  cp ./CNAME ./dist/CNAME && gh-pages -d dist",
+    "develop": "dumi dev",
     "preview": "dumi preview",
-    "deploy": "dumi build &&  cp ./CNAME ./dist/CNAME && gh-pages -d dist"
+    "start": "dumi dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",

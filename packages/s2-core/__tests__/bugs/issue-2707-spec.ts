@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * 明细表数据含有空值导致排序失效
  * @description spec for issue 2707
@@ -29,6 +30,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
@@ -38,6 +40,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
@@ -59,6 +62,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 });

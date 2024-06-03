@@ -6,8 +6,8 @@ import {
   customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
+  type S2BaseFrozenOptions,
   type S2DataConfig,
-  type S2TableSheetFrozenOptions,
   type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
@@ -53,6 +53,14 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
     children: [
       { field: 'price', title: '价格', description: '价格描述' },
       { field: 'number', title: '数量' },
+    ],
+  },
+  {
+    field: 'money1',
+    title: '金额1',
+    children: [
+      { field: 'price1', title: '价格1', description: '价格描述' },
+      { field: 'number1', title: '数量1' },
     ],
   },
 ];
@@ -245,9 +253,14 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   ],
 };
 
-export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
+export const TableSheetFrozenOptions: S2BaseFrozenOptions = {
   colCount: 1,
   trailingColCount: 1,
+};
+
+export const PivotSheetFrozenOptions: S2BaseFrozenOptions = {
+  rowCount: 1,
+  trailingRowCount: 1,
 };
 
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
@@ -328,6 +341,7 @@ export const s2Options: SheetComponentOptions = {
   seriesNumber: {
     enable: false,
   },
+
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
