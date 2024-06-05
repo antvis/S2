@@ -1,10 +1,11 @@
 /* eslint-disable max-classes-per-file */
+// organize-imports-ignore
+import React from 'react';
 import { Circle, Line } from '@antv/g';
 import { DataCell, Frame, ResizeType, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
-import React from 'react';
 
 const paletteLegendMap = [
   {

@@ -1,12 +1,15 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
+import React from 'react';
+import { type Root } from 'react-dom/client';
 import { BaseTooltip } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
   TooltipOperatorMenuOptions,
 } from '@antv/s2-react';
-import insertCSS from 'insert-css';
-import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 const MyCustomTooltipContent = () => (
   <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>
@@ -20,7 +23,7 @@ class CustomTooltip extends BaseTooltip<
     super(spreadsheet);
   }
 
-  root: ReactDOM.Root;
+  root: Root;
 
   renderContent() {
     this.root ??= reactDOMClient.createRoot(this.container!);
@@ -43,6 +46,8 @@ class CustomTooltip extends BaseTooltip<
     // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
     Promise.resolve().then(() => {
       this.root?.unmount();
+      // Fiber 节点卸载后不能再重新渲染, 需要重新创建
+      this.root = null;
     });
   }
 }

@@ -1,9 +1,10 @@
+// organize-imports-ignore
 import React from 'react';
-import insertCSS from 'insert-css';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Image as GImage } from '@antv/g';
 import { DataCell, ThemeCfg } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 const paletteLegendMap = [
   {

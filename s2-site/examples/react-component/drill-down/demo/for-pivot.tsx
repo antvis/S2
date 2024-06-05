@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react';
 import { ORIGIN_FIELD, S2DataConfig } from '@antv/s2';
 import {
   SheetComponent,

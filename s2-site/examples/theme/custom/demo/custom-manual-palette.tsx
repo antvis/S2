@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { debounce, isObjectLike } from 'lodash';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+/* eslint-disable no-console */
+// organize-imports-ignore
+import React from 'react';
 import { S2DataConfig, getPalette } from '@antv/s2';
-import { SketchPicker } from 'react-color';
-import { Row, Space, Input, Button, message, Popover, Table } from 'antd';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { Button, Input, Popover, Row, Space, Table, message } from 'antd';
 import copy from 'copy-to-clipboard';
+import { debounce, isObjectLike } from 'lodash';
+import { SketchPicker } from 'react-color';
 
 import '@antv/s2-react/dist/style.min.css';
 
@@ -59,9 +61,9 @@ const savePalette = debounce((palette) => {
 }, 1000);
 
 function useDataCfg() {
-  const [dataCfg, setDataCfg] = useState<S2DataConfig>(null);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch(
       'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
     )
@@ -148,10 +150,10 @@ function ColorTable({ palette, onChange }) {
 
 function App() {
   const dataCfg = useDataCfg();
-  const [palette, setPalette] = useState(getInitPalette());
-  const [config, setConfig] = useState('');
+  const [palette, setPalette] = React.useState(getInitPalette());
+  const [config, setConfig] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     savePalette(palette);
   }, [palette]);
 
