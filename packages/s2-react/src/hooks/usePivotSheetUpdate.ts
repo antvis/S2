@@ -17,7 +17,9 @@ const DRILL_DOWN_ATTR_TO_DIFF = [
  * @param partDrillDown 下钻参数
  * @returns update callback
  */
-export const usePivotSheetUpdate = (partDrillDown: PartDrillDown) => {
+export const usePivotSheetUpdate = (
+  partDrillDown: PartDrillDown,
+): SheetUpdateCallback => {
   const prePartDrillDownRef = React.useRef(partDrillDown);
 
   /** 属性值发生变化时，才更新 callback，触发底表 render */

@@ -365,6 +365,9 @@ export interface S2Options<
   frozen?: S2PivotSheetFrozenOptions & S2BaseFrozenOptions;
 }
 
+/**
+ * 自定义渲染模式
+ */
 export interface S2RenderOptions {
   /**
    * 是否重新加载数据

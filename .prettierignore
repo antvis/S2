@@ -21,6 +21,7 @@ CNAME
 LICENSE
 s2-site/.cache
 s2-site/public
+s2-site/*.tsx
 .history
 esm
 dist

@@ -71,10 +71,14 @@ export const useSheetUpdate = (
 
     hooks?.before?.();
 
-    await s2Ref.value?.render({
+    const renderOptions = props?.onUpdate?.({
       reloadData: flag.reloadData,
       rebuildDataSet: flag.rebuildDataset,
     });
+
+    await s2Ref.value?.render(renderOptions);
+
+    props?.onUpdateAfterRender?.(renderOptions);
 
     hooks?.after?.();
     flag.rerender = false;

@@ -31,7 +31,8 @@ export function useSpreadSheet(props: SheetComponentProps) {
     options,
     themeCfg,
     sheetType,
-    onSheetUpdate = identity,
+    onUpdate = identity,
+    onUpdateAfterRender,
   } = props;
 
   /** 保存重渲 effect 的 deps */
@@ -138,24 +139,22 @@ export function useSpreadSheet(props: SheetComponentProps) {
       }
 
       /**
-       * onSheetUpdate 交出控制权
+       * onUpdate 交出控制权
        * 由传入方决定最终的 render 模式
        */
-      const renderOptions = onSheetUpdate({
+      const renderOptions = onUpdate?.({
         reloadData,
         rebuildDataSet,
       });
 
-      await s2Ref.current?.render({
-        reloadData: renderOptions!.reloadData,
-        rebuildDataSet: renderOptions!.rebuildDataSet,
-      });
+      await s2Ref.current?.render(renderOptions!);
 
       setLoading(false);
+      onUpdateAfterRender?.(renderOptions!);
     };
 
     render();
-  }, [dataCfg, options, themeCfg, onSheetUpdate]);
+  }, [dataCfg, options, themeCfg, onUpdate]);
 
   useResize({
     s2: s2Ref.current!,

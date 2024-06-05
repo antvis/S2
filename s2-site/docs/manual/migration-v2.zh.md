@@ -877,6 +877,16 @@ s2.showTooltip({
 
 ```
 
+#### `onSheetUpdate` 更名为 `onUpdate`, 并新增 `onUpdateAfterRender`
+
+- `onUpdate`: 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发。
+- `onUpdateAfterRender`: 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发。
+
+```diff
+- <SheetComponent onSheetUpdate={} />
++ <SheetComponent onUpdate={} onUpdateAfterRender={} />
+```
+
 #### SheetComponentsProps 类型调整
 
 ```diff
