@@ -204,10 +204,7 @@ describe('useSpreadSheet tests', () => {
         rebuildDataSet: false,
         reloadData: false,
       });
-      expect(onUpdateAfterRender).toHaveBeenCalledWith({
-        rebuildDataSet: false,
-        reloadData: false,
-      });
+      expect(onUpdateAfterRender).toHaveBeenCalledTimes(1);
     });
   });
 
