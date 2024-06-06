@@ -279,10 +279,19 @@ export default defineConfig({
         },
       },
     ],
+    // https://github.com/antvis/dumi-theme-antv/blob/v3/src/slots/CodeEditor/Toolbar.tsx#L116-L120
     playground: {
       extraLib: '',
       devDependencies: {
         typescript: 'latest',
+        react: '18.3.1',
+        'react-dom': '18.3.1',
+      },
+      dependencies: {
+        antd: 'latest',
+        '@ant-design/icons': '^5.3.7',
+        '@antv/s2': '^2.0.0-next',
+        '@antv/s2-react': '^2.0.0-next',
       },
       htmlCodeTemplate: `<!DOCTYPE html>
         <html>

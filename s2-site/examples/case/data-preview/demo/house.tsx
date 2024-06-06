@@ -1,9 +1,11 @@
-import { S2DataConfig, NODE_ID_SEPARATOR } from '@antv/s2';
+/* eslint-disable no-console */
+// organize-imports-ignore
+import React from 'react';
+import { NODE_ID_SEPARATOR, S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { InputNumber, Select, Space } from 'antd';
 import insertCSS from 'insert-css';
 import { every, filter, isNil, last, map, omit } from 'lodash';
-import React, { useState } from 'react';
 
 const defaultHouseInfo = {
   name: ['15#', '16#', '21#', '22#'],
@@ -71,6 +73,7 @@ const defaultSortParams: S2DataConfig['sortParams'] = [
     },
   },
 ];
+
 const dataConfig: S2DataConfig = {
   data: [],
   describe: '如何使用 S2 买房',
@@ -161,7 +164,7 @@ const RangeSelect = (props) => {
   const { data, dataName, onChange } = props;
   const min = Math.min(...data);
   const max = Math.max(...data);
-  const [info, setInfo] = useState({ min, max });
+  const [info, setInfo] = React.useState({ min, max });
   const handleChange = (value, key) => {
     const tempInfo = Object.assign({}, info);
 
@@ -196,7 +199,7 @@ const RangeSelect = (props) => {
 
 const SelectList = (props) => {
   const { filterData } = props;
-  const [filterInfo, setFilterInfo] = useState({});
+  const [filterInfo, setFilterInfo] = React.useState({});
 
   const onChange = ({ key, value }) => {
     let tempHouseInfo = Object.assign({}, filterInfo);
@@ -230,7 +233,7 @@ const SelectList = (props) => {
 };
 
 const Sheet = ({ data }) => {
-  const [dataSource, setDataSource] = useState(data);
+  const [dataSource, setDataSource] = React.useState(data);
 
   const filterData = (filterInfo) => {
     const result = filter(data, (item) => {
@@ -283,12 +286,12 @@ fetch(
 // If you want to copy the code directly, please remember to install the npm package 'insert-css
 insertCSS(`
   .select-item {
-      margin: 5px 16px 0 0;
+    margin: 5px 16px 0 0;
   }
   .select-list {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
   }
   .select-label {
     display: inline-block;

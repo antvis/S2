@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+// organize-imports-ignore
+import React from 'react';
 import {
   BaseEvent,
   CellType,
@@ -8,9 +10,8 @@ import {
   getTheme,
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { Tag } from 'antd';
-import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
+import { Tag } from 'antd';
 
 const Theme: S2Theme = {
   rowCell: {

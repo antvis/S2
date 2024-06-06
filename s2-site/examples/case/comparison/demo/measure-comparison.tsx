@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+// organize-imports-ignore
+import React from 'react';
 import { Line, Rect } from '@antv/g';
 import {
   ColCell,
@@ -11,7 +13,6 @@ import {
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import React from 'react';
 
 // 上涨颜色
 const UP_COLOR = '#F46649';

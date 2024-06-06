@@ -1,7 +1,8 @@
+// organize-imports-ignore
+import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import React from 'react';
 
 // 临时处理老数据格式
 function process(children) {

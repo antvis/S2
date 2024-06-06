@@ -1,8 +1,9 @@
+// organize-imports-ignore
+import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import { compact } from 'lodash';
-import React from 'react';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -18,7 +19,7 @@ const colors = [
 
 function getRange(data) {
   const values = data.map((d) => d.value);
-  const compactValue = compact(values);
+  const compactValue = compact<number>(values);
 
   return {
     min: Math.min(...compactValue),
@@ -64,7 +65,7 @@ function getDataConfig(rawData: S2DataConfig['data']): S2DataConfig {
 
 function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   return {
-    width: 800, 
+    width: 800,
     height: 200,
     interaction: {
       selectedCellsSpotlight: false,
@@ -87,7 +88,9 @@ function getOptions(rawData: S2DataConfig['data']): SheetComponentOptions {
   };
 }
 
-fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/performance.json')
+fetch(
+  'https://render.alipay.com/p/yuyan/180020010001215413/s2/performance.json',
+)
   .then((res) => res.json())
   .then((data) => {
     reactDOMClient.createRoot(document.getElementById('container')).render(

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// organize-imports-ignore
+import React from 'react';
 import { getPalette, generatePalette, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { ChromePicker } from 'react-color';
@@ -17,8 +18,8 @@ fetch(
     };
 
     function App() {
-      const [themeColor, setThemeColor] = useState('#EA1720');
-      const [themeCfg, setThemeCfg] = useState<ThemeCfg>({
+      const [themeColor, setThemeColor] = React.useState('#EA1720');
+      const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
         name: 'colorful',
       });
 
@@ -38,7 +39,7 @@ fetch(
         });
       };
 
-      useEffect(() => {
+      React.useEffect(() => {
         updatePalette(themeColor);
       }, []);
 
