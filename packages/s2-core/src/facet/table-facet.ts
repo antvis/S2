@@ -235,7 +235,7 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
-  private onSortHandler = (sortParams: SortParams) => {
+  private onSortHandler = async (sortParams: SortParams) => {
     const s2 = this.spreadsheet;
     let params = sortParams;
 
@@ -274,7 +274,8 @@ export class TableFacet extends FrozenFacet {
 
     set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
     s2.setDataCfg(s2.dataCfg);
-    s2.render(true);
+    await s2.render(true);
+
     s2.emit(
       S2Event.RANGE_SORTED,
       (s2.dataSet as TableDataSet).getDisplayDataSet(),

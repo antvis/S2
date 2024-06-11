@@ -17,7 +17,7 @@ type DragCopyProps = {
 };
 
 export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
-  const spreadsheet = useSpreadSheetInstance();
+  const s2 = useSpreadSheetInstance();
 
   const [startCell, setStartCell] = useState<DataCell>();
   const [maskPosition, setMaskPosition] = useState({ right: 0, bottom: 0 });
@@ -31,8 +31,8 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
       'height',
       'fieldValue',
     ]);
-    const scrollOffset = spreadsheet.facet.getScrollOffset();
-    const sampleColNode = spreadsheet.facet.getColNodes()[0];
+    const scrollOffset = s2.facet.getScrollOffset();
+    const sampleColNode = s2.facet.getColNodes()[0];
     const sampleColNodeHeight = sampleColNode?.height || 0;
     // 点位偏移
     const pointX = point.x;
@@ -53,9 +53,8 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
 
   /** 判断当前位置是否在表格可视区域内 */
   const judgePointInView = (point: Point) => {
-    const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-    const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupAreas;
+    const rect = s2.getCanvasElement().getBoundingClientRect();
+    const frozenGroupAreas = (s2.facet as FrozenFacet).frozenGroupAreas;
     const viewMinX = rect.x;
     const viewMaxX = rect.x + rect.width;
     // 减去列头高度
@@ -71,8 +70,8 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
   };
 
   const getCurrentHoverCell = (event: MouseEvent) => {
-    const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-    const allCells = spreadsheet.facet.getDataCells();
+    const rect = s2.getCanvasElement().getBoundingClientRect();
+    const allCells = s2.facet.getDataCells();
 
     return allCells.find((dataCell) =>
       isInCell({ y: event.y - rect.y, x: event.x - rect.x }, dataCell),
@@ -86,7 +85,7 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
     const maxX = Math.max(startCellMeta.colIndex, endCellMeta.colIndex);
     const maxY = Math.max(startCellMeta.rowIndex, endCellMeta.rowIndex);
     const minY = Math.min(startCellMeta.rowIndex, endCellMeta.rowIndex);
-    const allCells = spreadsheet.facet.getDataCells();
+    const allCells = s2.facet.getDataCells();
 
     return allCells.filter((item) => {
       const itemMeta = item.getMeta();
@@ -126,14 +125,14 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
     const selectedRange = getSelectedCellRange(startCell, targetCell!);
 
     // 更改选中状态
-    spreadsheet.interaction.changeState({
+    s2.interaction.changeState({
       cells: selectedRange.map((v) => v.getMeta() as any),
       stateName: InteractionStateName.PREPARE_SELECT,
       force: true,
     });
   }, 10);
 
-  const dragMouseUp = (event: MouseEvent) => {
+  const dragMouseUp = async (event: MouseEvent) => {
     if (!startCell) {
       return;
     }
@@ -142,7 +141,7 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
       getCurrentHoverCell(event) ||
       getCurrentHoverCell(lastHoverPoint as MouseEvent);
 
-    const displayData = spreadsheet.dataSet.getDisplayDataSet();
+    const displayData = s2.dataSet.getDisplayDataSet();
 
     const selectedRange = getSelectedCellRange(startCell, targetCell!);
     const { fieldValue } = startCell.getMeta();
@@ -160,23 +159,24 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
     });
 
     // 更改选中状态
-    spreadsheet.interaction.changeState({
+    s2.interaction.changeState({
       cells: changedCells.map((v) => v.getMeta() as any),
       stateName: InteractionStateName.PREPARE_SELECT,
       force: true,
     });
-    spreadsheet.render(true);
+    await s2.render(true);
+
     setMaskPosition({ right: 0, bottom: 0 });
-    spreadsheet.off(S2Event.GLOBAL_MOUSE_MOVE, dragMove);
-    spreadsheet.off(S2Event.GLOBAL_MOUSE_UP, dragMouseUp);
+    s2.off(S2Event.GLOBAL_MOUSE_MOVE, dragMove);
+    s2.off(S2Event.GLOBAL_MOUSE_UP, dragMouseUp);
     setStartCell(undefined);
     onCopyFinished?.();
   };
 
   useEffect(() => {
     if (startCell) {
-      spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, dragMove);
-      spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, dragMouseUp);
+      s2.on(S2Event.GLOBAL_MOUSE_MOVE, dragMove);
+      s2.on(S2Event.GLOBAL_MOUSE_UP, dragMouseUp);
     }
   }, [startCell]);
 
@@ -190,7 +190,7 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
       top: string;
       left: string;
     };
-    const allCells = spreadsheet.facet.getDataCells();
+    const allCells = s2.facet.getDataCells();
     const targetCell = allCells.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),
     );
@@ -202,14 +202,14 @@ export const DragCopyMask = memo(({ onCopyFinished }: DragCopyProps) => {
   useEffect(() => {
     const pointElement = document.getElementById('spreadsheet-drag-copy-point');
 
-    if (pointElement && spreadsheet) {
+    if (pointElement && s2) {
       pointElement.addEventListener('mousedown', dragMouseDown);
     }
 
     return () => {
       pointElement?.removeEventListener('mousedown', dragMouseDown);
     };
-  }, [spreadsheet]);
+  }, [s2]);
 
   return (
     <div

@@ -46,15 +46,19 @@ export const usePagination = (
 
   // sync state.pagination -> s2.pagination
   useUpdateEffect(() => {
-    if (!s2 || isEmpty(paginationCfg)) {
-      return;
-    }
+    const render = async () => {
+      if (!s2 || isEmpty(paginationCfg)) {
+        return;
+      }
 
-    s2.updatePagination({
-      current: pagination.current,
-      pageSize: pagination.pageSize,
-    });
-    s2.render(false);
+      s2.updatePagination({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+      });
+      await s2.render(false);
+    };
+
+    render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination.current, pagination.pageSize, s2]);
 

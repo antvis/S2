@@ -55,19 +55,19 @@ describe('usePivotSheetUpdate tests', () => {
     // 执行第一次，reload 为 true
     let callbackResult = result.current({
       reloadData: false,
-      reBuildDataSet: false,
+      rebuildDataSet: false,
     });
 
-    expect(callbackResult).toEqual({ reloadData: true, reBuildDataSet: false });
+    expect(callbackResult).toEqual({ reloadData: true, rebuildDataSet: false });
 
     // 执行第二次，reload 为 false
     callbackResult = result.current({
       reloadData: false,
-      reBuildDataSet: false,
+      rebuildDataSet: false,
     });
     expect(callbackResult).toEqual({
       reloadData: false,
-      reBuildDataSet: false,
+      rebuildDataSet: false,
     });
   });
 });

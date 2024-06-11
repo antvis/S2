@@ -214,7 +214,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     await hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
-  private handleExpandIconClick(node: Node) {
+  private async handleExpandIconClick(node: Node) {
     const lastHiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],
@@ -249,6 +249,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
     this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     this.spreadsheet.interaction.reset();
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   }
 }

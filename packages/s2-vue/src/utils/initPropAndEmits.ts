@@ -34,6 +34,10 @@ export const initBaseSheetProps = () => {
     },
     spreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
     onMounted: Function as PropType<SheetComponentProps['onMounted']>,
+    onUpdate: Function as PropType<SheetComponentProps['onUpdate']>,
+    onUpdateAfterRender: Function as PropType<
+      SheetComponentProps['onUpdateAfterRender']
+    >,
   };
 };
 

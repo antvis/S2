@@ -49,7 +49,8 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  public clearDrillDownData(): void {}
+  // eslint-disable-next-line no-empty-function
+  public async clearDrillDownData() {}
 
   /**
    * Check if the value is in the columns
@@ -81,7 +82,7 @@ export class TableSheet extends SpreadSheet {
     this.off(S2Event.RANGE_FILTER);
   }
 
-  public groupSortByMethod = (sortMethod: SortMethod, meta: Node) => {
+  public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { field } = meta;
 
     const sortParam: SortParam = {
@@ -91,5 +92,5 @@ export class TableSheet extends SpreadSheet {
 
     this.updateSortMethodMap(meta.id, sortMethod);
     this.emit(S2Event.RANGE_SORT, [sortParam]);
-  };
+  }
 }

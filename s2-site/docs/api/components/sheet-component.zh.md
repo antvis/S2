@@ -75,7 +75,9 @@ tag: Updated
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
-| onMounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| onMounted | 组件层表格挂载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| onUpdate | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| onUpdateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
 | onDestroy | 表格销毁事件 | () => void; |  |  |
 | onLayoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -200,6 +202,8 @@ type SheetComponentOptions = S2Options<
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
 | afterRender | render 完成的事件 | () => void; |  |  |
 | mounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| update | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| updateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
 | destroy | 表格销毁事件 | () => void; |  |  |
 | layoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -306,5 +310,15 @@ type SheetComponentOptions = S2Options<
 | meta | resize 热区对应单元格节点信息 | [Node](/docs/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |
 | resizedHeight | 拖拽后的高度 | `number` |  |  |
+
+### S2RenderOptions
+
+功能描述：自定义渲染模式
+
+| 参数 | 说明 | 类型 | 默认值 | 必选 |
+| -- | -- | -- | -- | --- |
+| reloadData | 是否重新加载数据 | `boolean` |  |  |
+| rebuildDataSet | 是否重新生成数据集 | `boolean` |  |  |
+| reBuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>

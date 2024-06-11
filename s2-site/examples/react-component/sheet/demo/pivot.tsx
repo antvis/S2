@@ -1,5 +1,6 @@
 // organize-imports-ignore
 import React from 'react';
+import type { S2RenderOptions, SpreadSheet } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -13,7 +14,29 @@ fetch(
       height: 480,
     };
 
+    const onMounted = (spreadsheet: SpreadSheet) => {
+      console.log('onMounted:', spreadsheet);
+    };
+
+    const onUpdate = (renderOptions: S2RenderOptions) => {
+      console.log('onUpdate:', renderOptions);
+
+      return renderOptions;
+    };
+
+    const onUpdateAfterRender = (renderOptions: S2RenderOptions) => {
+      console.log('onUpdateAfterRender:', renderOptions);
+    };
+
     reactDOMClient
       .createRoot(document.getElementById('container'))
-      .render(<SheetComponent dataCfg={dataCfg} options={s2Options} />);
+      .render(
+        <SheetComponent
+          dataCfg={dataCfg}
+          options={s2Options}
+          onMounted={onMounted}
+          onUpdate={onUpdate}
+          onUpdateAfterRender={onUpdateAfterRender}
+        />,
+      );
   });
