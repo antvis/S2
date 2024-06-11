@@ -25,9 +25,10 @@ import { cloneDeep, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import type {
+import {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
+  CornerCell,
   HeaderCell,
   TooltipOptions,
 } from '../../../src';
@@ -843,7 +844,7 @@ describe('PivotSheet Tests', () => {
     );
 
     await pivotSheet.render();
-    const extraField = last(pivotSheet.facet.getCornerCells());
+    const extraField = last<CornerCell>(pivotSheet.facet.getCornerCells());
 
     expect(extraField?.getActualText()).toEqual('数值');
   });
@@ -867,16 +868,19 @@ describe('PivotSheet Tests', () => {
 
     await pivotSheet.render();
 
-    const extraField = last(pivotSheet.facet.getCornerCells());
+    const extraField = last<CornerCell>(pivotSheet.facet.getCornerCells());
 
     expect(extraField?.getActualText()).toEqual(cornerExtraFieldText);
   });
 
   describe('Tree Collapse Tests', () => {
-    test('should collapse rows with tree mode', () => {
+    test('should collapse rows with tree mode', async () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
+
+      await s2.render(false);
+
       const renderSpy = jest
         .spyOn(s2, 'render')
         .mockImplementation(async () => {});
@@ -900,6 +904,8 @@ describe('PivotSheet Tests', () => {
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
+
+      await sleep(500);
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
       expect(s2.options.style?.rowCell?.collapseFields).toEqual(
@@ -1187,7 +1193,7 @@ describe('PivotSheet Tests', () => {
 
     // g5.0 destroy
     expect(destroyFn).toHaveBeenCalled();
-    expect(document.body.contains(s2.getCanvasElement())).toBeFalse();
+    expect(document.body.contains(s2.getCanvasElement())).toBeFalsy();
   });
 
   describe('Test Layout by dataCfg fields', () => {

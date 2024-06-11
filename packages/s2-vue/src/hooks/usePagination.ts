@@ -36,7 +36,7 @@ export const usePagination = (
   });
 
   // sync state.pagination -> s2.pagination
-  watch([current, pageSize], () => {
+  watch([current, pageSize], async () => {
     if (!s2Ref.value) {
       return;
     }
@@ -49,7 +49,7 @@ export const usePagination = (
         };
 
     s2Ref.value.updatePagination(nextPagination);
-    s2Ref.value.render(false);
+    await s2Ref.value.render(false);
   });
 
   // sync props.pagination -> state.pagination

@@ -1,8 +1,9 @@
-import { S2DataConfig } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import insertCSS from 'insert-css';
+// organize-imports-ignore
 import React from 'react';
+import { LayoutWidthType, S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 const PALETTE_COLORS = [
   {
@@ -120,7 +121,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
         hoverHighlight: false,
       },
       style: {
-        layoutWidthType: 'colAdaptive',
+        layoutWidthType: LayoutWidthType.ColAdaptive,
         colCell: {
           hideValue: true,
         },

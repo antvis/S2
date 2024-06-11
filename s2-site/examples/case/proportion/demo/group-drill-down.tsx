@@ -1,8 +1,9 @@
-import { isUpDataValue } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import insertCSS from 'insert-css';
+// organize-imports-ignore
 import React from 'react';
+import { LayoutWidthType, isUpDataValue } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -20,7 +21,7 @@ fetch(
           enable: false,
         },
         style: {
-          layoutWidthType: 'colAdaptive',
+          layoutWidthType: LayoutWidthType.ColAdaptive,
           dataCell: {
             width: 400,
             height: 100,
@@ -167,7 +168,7 @@ insertCSS(`
     text-align: center;
   }
   .antv-s2-breadcrumb {
-  position: absolute;
+    position: absolute;
     left: 130px;
     top: 11px;
   }

@@ -1,7 +1,8 @@
-import { S2DataConfig } from '@antv/s2';
+// organize-imports-ignore
+import React from 'react';
+import { S2DataConfig, type S2RenderOptions, type SpreadSheet } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import React from 'react';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -40,6 +41,20 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data: res,
     };
 
+    const onMounted = (spreadsheet: SpreadSheet) => {
+      console.log('onMounted:', spreadsheet);
+    };
+
+    const onUpdate = (renderOptions: S2RenderOptions) => {
+      console.log('onUpdate:', renderOptions);
+
+      return renderOptions;
+    };
+
+    const onUpdateAfterRender = (renderOptions: S2RenderOptions) => {
+      console.log('onUpdateAfterRender:', renderOptions);
+    };
+
     reactDOMClient
       .createRoot(document.getElementById('container'))
       .render(
@@ -47,6 +62,9 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           dataCfg={s2DataConfig}
           options={s2Options}
           sheetType="table"
+          onMounted={onMounted}
+          onUpdate={onUpdate}
+          onUpdateAfterRender={onUpdateAfterRender}
         />,
       );
   });

@@ -192,7 +192,7 @@ export const handleDrillDown = (params: DrillDownParams) => {
     return;
   }
 
-  fetchData(meta, drillFields).then((info) => {
+  fetchData(meta, drillFields).then(async (info) => {
     const { drillData, drillField } = info;
 
     (spreadsheet.dataSet as PivotDataSet).transformDrillDownData(
@@ -217,6 +217,6 @@ export const handleDrillDown = (params: DrillDownParams) => {
 
     // 重置当前交互
     spreadsheet.interaction.reset();
-    spreadsheet.render(false);
+    await spreadsheet.render(false);
   });
 };

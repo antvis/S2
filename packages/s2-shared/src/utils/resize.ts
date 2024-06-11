@@ -35,14 +35,14 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     return;
   }
 
-  const render = (width?: number, height?: number) => {
+  const render = async (width?: number, height?: number) => {
     s2?.changeSheetSize(width, height);
-    s2?.render(false);
+    await s2?.render(false);
   };
 
   const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
 
-  const onResize = () => {
+  const onResize = async () => {
     // 解决父容器有缩放, 获取宽高不对的问题: https://github.com/antvis/S2/pull/1425
     const { clientWidth: containerWidth, clientHeight: containerHeight } =
       container;
@@ -60,7 +60,7 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     }
 
     if (isFirstRender) {
-      render(width, height);
+      await render(width, height);
       isFirstRender = false;
 
       return;

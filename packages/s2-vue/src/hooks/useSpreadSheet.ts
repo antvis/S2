@@ -52,21 +52,30 @@ export function useSpreadSheet(
     return new PivotSheet(container, rawDataCfg, s2Options);
   };
 
-  const buildSpreadSheet = () => {
+  const buildSpreadSheet = async () => {
     setLoading(true);
     s2Ref.value = renderSpreadSheet(containerRef.value!);
     s2Ref.value.setThemeCfg(toRaw(themeCfg));
-    s2Ref.value.render();
+    await s2Ref.value.render();
+
     setLoading(false);
     onS2Mounted?.(s2Ref.value);
   };
 
   onMounted(buildSpreadSheet);
   useEvents(s2Ref, emit);
-  useSheetUpdate(s2Ref, props);
+  useSheetUpdate(s2Ref, props, {
+    before() {
+      setLoading(true);
+    },
+    after() {
+      setLoading(false);
+    },
+  });
   useResize(s2Ref, props, { wrapperRef, containerRef });
 
   onBeforeUnmount(() => {
+    setLoading(false);
     s2Ref.value?.destroy();
   });
 

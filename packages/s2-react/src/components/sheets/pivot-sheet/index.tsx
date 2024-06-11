@@ -107,11 +107,9 @@ export const PivotSheet: React.FC<SheetComponentProps> = React.memo((props) => {
   /**
    * 控制交叉表 render
    */
-  const onSheetUpdate = usePivotSheetUpdate(partDrillDown!);
+  const onUpdate = usePivotSheetUpdate(partDrillDown!);
 
-  return (
-    <BaseSheet {...restProps} options={options} onSheetUpdate={onSheetUpdate} />
-  );
+  return <BaseSheet {...restProps} options={options} onUpdate={onUpdate} />;
 });
 
 PivotSheet.displayName = 'PivotSheet';
