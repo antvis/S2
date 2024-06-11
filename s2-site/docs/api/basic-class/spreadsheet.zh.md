@@ -43,7 +43,7 @@ s2.isPivotMode()
 | setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
 | resetDataCfg | 重置表格数据                                                                                                                 | () => void | |
 | resetOptions | 重置表格配置                                                                                                                 | () => void |   |
-| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean \| { reloadData?: boolean, reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => Promise<void>` |    |
+| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`rebuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean \| { reloadData?: boolean, rebuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => Promise<void>` |    |
 | destroy | 销毁表格                                                                                                                   | `() => void` |    |
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名）                                                                                            | (themeCfg: [ThemeCfg](/docs/api/general/S2Theme/#themecfg)) => void |    |
 | setTheme | 更新主题 （只包含主题 scheme)                                                                                                    | (theme: [S2Theme](/docs/api/general/S2Theme/#s2theme)) => void |    |
