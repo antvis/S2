@@ -67,7 +67,9 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tinycolor2": "^1.6.0",
+    "tinygradient": "^1.1.5"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.3.7",
@@ -86,6 +88,7 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.3.0",
+    "@types/tinycolor2": "^1.4.6",
     "antd": "^5.17.4",
     "d3-dsv": "^1.1.1",
     "react": "^18.3.1",
@@ -95,6 +98,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.7.0",
+    "@antv/s2": "^2.0.0-next.1",
     "antd": "^5.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"

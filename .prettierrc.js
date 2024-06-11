@@ -7,6 +7,11 @@ module.exports = {
   printWidth: 80,
   arrowParens: 'always',
   proseWrap: 'never',
+  // quoteProps: 'consistent',
+  htmlWhitespaceSensitivity: 'css',
+  embeddedLanguageFormatting: 'auto',
+  singleAttributePerLine: false,
+  bracketSpacing: true,
   overrides: [
     { files: '.eslintrc', options: { parser: 'json' } },
     { files: '.prettierrc', options: { parser: 'json' } },

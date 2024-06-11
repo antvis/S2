@@ -1,8 +1,7 @@
 import { S2DataConfig, isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { isNil } from 'lodash';
-import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
+import { isNil } from 'lodash';
 
 // 临时处理老数据格式
 function process(children) {

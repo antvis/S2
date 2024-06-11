@@ -10,7 +10,7 @@ import { injectCssText } from './inject-css-text';
 export const getPalette = (type?: ThemeName): Palette => {
   const themeName = type || 'default';
 
-  return PALETTE_MAP[themeName];
+  return PALETTE_MAP[themeName] || PALETTE_MAP['default'];
 };
 
 /**
