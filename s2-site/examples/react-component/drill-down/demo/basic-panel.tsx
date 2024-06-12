@@ -1,10 +1,11 @@
+// organize-imports-ignore
 import React from 'react';
-import { DrillDown } from '@antv/s2-react';
+import { DrillDown, type DataSet } from '@antv/s2-react';
 
 const disabledFields = ['name'];
 const clearButtonText = '清除';
 
-const dataSet = [
+const dataSet: DataSet[] = [
   {
     name: '性别',
     value: 'sex',

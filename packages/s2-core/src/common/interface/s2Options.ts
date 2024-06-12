@@ -365,6 +365,9 @@ export interface S2Options<
   frozen?: S2PivotSheetFrozenOptions & S2BaseFrozenOptions;
 }
 
+/**
+ * 自定义渲染模式
+ */
 export interface S2RenderOptions {
   /**
    * 是否重新加载数据
@@ -374,7 +377,7 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成数据集
    */
-  reBuildDataSet?: boolean;
+  rebuildDataSet?: boolean;
 
   /**
    * 是否重新生成列头隐藏信息

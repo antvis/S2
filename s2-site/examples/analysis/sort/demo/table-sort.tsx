@@ -1,10 +1,11 @@
+// organize-imports-ignore
+import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { Button } from 'antd';
 import insertCSS from 'insert-css';
 import { orderBy } from 'lodash';
-import React from 'react';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())

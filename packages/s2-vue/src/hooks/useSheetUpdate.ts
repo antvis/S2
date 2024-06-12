@@ -11,6 +11,7 @@ import type { BaseSheetProps } from '../utils/initPropAndEmits';
 export const useSheetUpdate = (
   s2Ref: ShallowRef<SpreadSheet | undefined>,
   props: BaseSheetProps,
+  hooks?: { before?: () => void; after: () => void },
 ) => {
   const updateFlag = reactive({
     rerender: false,
@@ -63,15 +64,23 @@ export const useSheetUpdate = (
     },
   );
 
-  watch(updateFlag, (flag) => {
+  watch(updateFlag, async (flag) => {
     if (!flag.rerender) {
       return;
     }
 
-    s2Ref.value?.render({
+    hooks?.before?.();
+
+    const renderOptions = props?.onUpdate?.({
       reloadData: flag.reloadData,
-      reBuildDataSet: flag.rebuildDataset,
+      rebuildDataSet: flag.rebuildDataset,
     });
+
+    await s2Ref.value?.render(renderOptions);
+
+    props?.onUpdateAfterRender?.(renderOptions);
+
+    hooks?.after?.();
     flag.rerender = false;
     flag.reloadData = false;
     flag.rebuildDataset = false;

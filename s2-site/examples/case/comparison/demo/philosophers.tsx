@@ -1,9 +1,10 @@
+// organize-imports-ignore
 import React from 'react';
-import { max, min, replace } from 'lodash';
-import insertCSS from 'insert-css';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
+import { max, min, replace } from 'lodash';
 
 const PALETTE_COLORS = [
   '#B8E1FF',

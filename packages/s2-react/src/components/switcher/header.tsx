@@ -61,7 +61,7 @@ export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({
     );
   }, [sheet, dataCfg, options?.interaction?.hiddenColumnFields]);
 
-  const onSubmit = (result: SwitcherResult) => {
+  const onSubmit = async (result: SwitcherResult) => {
     const { fields: currentFields, hiddenColumnFields } = generateSheetConfig(
       sheet,
       result,
@@ -75,7 +75,7 @@ export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({
       sheet.setOptions({ interaction: { hiddenColumnFields } });
     }
 
-    sheet.render();
+    await sheet.render();
 
     setFields(
       generateSwitcherFieldsCfgFromResult(

@@ -1,7 +1,8 @@
+// organize-imports-ignore
 import React from 'react';
+import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCSS from 'insert-css';
-import { S2DataConfig } from '@antv/s2';
 
 import '@antv/s2-react/dist/style.min.css';
 

@@ -578,7 +578,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private renderResizedResult() {
+  private async renderResizedResult() {
     const resizeInfo = this.getResizeInfo();
     const {
       style,
@@ -607,7 +607,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     this.spreadsheet.store.set('resized', true);
-    this.render();
+    await this.render();
   }
 
   private getResizeInfo(): ResizeInfo {
@@ -638,10 +638,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private render() {
+  private async render() {
     this.resizeStartPosition = {};
     this.resizeTarget = null;
     this.resizeReferenceGroup = null;
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   }
 }
