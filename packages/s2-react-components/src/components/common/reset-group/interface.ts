@@ -1,6 +1,6 @@
 export interface ResetGroupProps {
   title?: React.ReactNode;
-  defaultActive?: boolean;
+  defaultCollapsed?: boolean;
   onResetClick?: () => void;
   children?: React.ReactNode;
 }

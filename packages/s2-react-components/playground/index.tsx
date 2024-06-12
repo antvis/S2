@@ -68,6 +68,7 @@ function MainLayout() {
                 <ThemePanel
                   title="主题配置"
                   disableCustomPrimaryColorPicker={false}
+                  defaultCollapsed={false}
                   onChange={(options, theme) => {
                     setThemeCfg({
                       name: options.themeType as ThemeName,

@@ -9,12 +9,12 @@ const ACTIVE_KEY = 'RESET_GROUP';
 const PRE_CLASS = `${S2_PREFIX_CLS}-reset-group`;
 
 export const ResetGroup: React.FC<ResetGroupProps> = React.memo((props) => {
-  const { title, defaultActive = true, onResetClick, children } = props;
+  const { title, defaultCollapsed = false, onResetClick, children } = props;
 
   return (
     <Collapse
       bordered={false}
-      defaultActiveKey={defaultActive ? ACTIVE_KEY : ''}
+      defaultActiveKey={!defaultCollapsed ? ACTIVE_KEY : ''}
       className={PRE_CLASS}
       expandIcon={({ isActive }) => (
         <CaretRightOutlined rotate={isActive ? 90 : 0} />

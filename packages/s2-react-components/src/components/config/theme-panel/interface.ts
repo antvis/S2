@@ -30,6 +30,12 @@ export interface ThemePanelProps {
   disableCustomPrimaryColorPicker?: boolean;
 
   /**
+   * 默认是否折叠
+   * @default false
+   */
+  defaultCollapsed?: boolean;
+
+  /**
    * 默认配置
    */
   defaultOptions?: Partial<ThemePanelOptions>;

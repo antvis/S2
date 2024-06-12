@@ -35,6 +35,7 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
     maxHistoryColorCount,
     disableCustomPrimaryColorPicker = false,
     defaultOptions: defaultThemePanelOptions,
+    defaultCollapsed = false,
     children,
     onChange,
     onReset,
@@ -189,7 +190,11 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
   }, [disableCustomPrimaryColorPicker]);
 
   return (
-    <ResetGroup title={title} onResetClick={onResetClick}>
+    <ResetGroup
+      title={title}
+      onResetClick={onResetClick}
+      defaultCollapsed={defaultCollapsed}
+    >
       {children}
       <RadioGroup
         label={i18n('类型')}

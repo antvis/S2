@@ -7,12 +7,12 @@ import type { ResetButtonProps } from './interface';
 const PRE_CLASS = `${S2_PREFIX_CLS}-reset-btn`;
 
 export const ResetButton: React.FC<ResetButtonProps> = React.memo((props) => {
-  const { onClick } = props;
+  const { title = i18n('重置'), onClick } = props;
 
   return (
     <span className={PRE_CLASS} onClick={onClick}>
       <ReloadOutlined className={`${PRE_CLASS}-icon`} />
-      <span className={`${PRE_CLASS}-text`}>{i18n('重置')}</span>
+      <span className={`${PRE_CLASS}-text`}>{title}</span>
     </span>
   );
 });
