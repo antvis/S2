@@ -2,13 +2,7 @@ import { S2_PREFIX_CLS } from '@antv/s2';
 import cls from 'classnames';
 import React from 'react';
 import './index.less';
-
-interface ColorBoxProps {
-  className?: string;
-  /** 色值 */
-  color?: string;
-  onClick?: () => void;
-}
+import type { ColorBoxProps } from './interface';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-color-box`;
 

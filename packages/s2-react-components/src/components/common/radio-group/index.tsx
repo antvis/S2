@@ -1,14 +1,9 @@
 import { S2_PREFIX_CLS } from '@antv/s2';
-import { Radio, type RadioGroupProps as AntdRadioGroupProps } from 'antd';
+import { Radio } from 'antd';
 import cls from 'classnames';
 import React from 'react';
 import './index.less';
-
-interface RadioGroupProps extends AntdRadioGroupProps {
-  label: React.ReactNode;
-  onlyIcon?: boolean;
-  extra?: React.ReactNode;
-}
+import type { RadioGroupProps } from './interface';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-radio-group`;
 

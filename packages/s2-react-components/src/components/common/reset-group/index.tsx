@@ -3,24 +3,13 @@ import { S2_PREFIX_CLS } from '@antv/s2';
 import { Collapse } from 'antd';
 import React from 'react';
 import { ResetButton } from '../reset-button';
-
-interface ResetGroupProps {
-  title?: string;
-  defaultActive?: boolean;
-  onReset?: () => void;
-  children?: React.ReactNode;
-}
+import type { ResetGroupProps } from './interface';
 
 const ACTIVE_KEY = 'RESET_GROUP';
 const PRE_CLASS = `${S2_PREFIX_CLS}-reset-group`;
 
 export const ResetGroup: React.FC<ResetGroupProps> = React.memo((props) => {
-  const {
-    title,
-    defaultActive = true,
-    onReset: onResetClick,
-    children,
-  } = props;
+  const { title, defaultActive = true, onResetClick, children } = props;
 
   return (
     <Collapse

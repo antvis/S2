@@ -2,10 +2,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 import React from 'react';
 import './index.less';
-
-interface ResetButtonProps {
-  onClick?: (e: React.MouseEvent) => void;
-}
+import type { ResetButtonProps } from './interface';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-reset-btn`;
 

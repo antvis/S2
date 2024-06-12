@@ -1,6 +1,4 @@
-import { BgColorsOutlined } from '@ant-design/icons';
-import { S2_PREFIX_CLS, i18n, type S2Theme } from '@antv/s2';
-import type { SheetComponentOptions } from '@antv/s2-react/src';
+import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 import {
   Popover,
   Tooltip,
@@ -26,49 +24,58 @@ import {
   ZebraThemeIcon,
 } from './icons';
 import './index.less';
+import type { ThemePanelOptions, ThemePanelProps } from './interface';
 import { generateColorTheme } from './utils';
-
-export interface ThemePanelOptions {
-  hierarchyType: SheetComponentOptions['hierarchyType'];
-  themeType: SheetThemeType;
-  colorType: SheetThemeColorType;
-}
-
-export interface ThemePanelProps {
-  children?: React.ReactNode;
-  maxCustomColorCount?: number;
-  onChange?: (options: ThemePanelOptions, theme: S2Theme) => void;
-}
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-theme-panel`;
 
 export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
-  const { maxCustomColorCount, children, onChange } = props;
+  const {
+    title = i18n('主题风格'),
+    maxHistoryColorCount,
+    disableCustomPrimaryColorPicker = false,
+    defaultOptions: defaultThemePanelOptions,
+    children,
+    onChange,
+    onReset,
+  } = props;
   const [options, setOptions] = React.useState<ThemePanelOptions>({
     hierarchyType: 'grid',
     themeType: SheetThemeType.DEFAULT,
     colorType: SheetThemeColorType.PRIMARY,
+    ...defaultThemePanelOptions,
   });
+  const defaultOptions = React.useRef<ThemePanelOptions>(options);
   const [customColor, setCustomColor] = React.useState<string>(
     DEFAULT_THEME_COLOR_LIST[0],
   );
 
-  /** 重置主题区块设置 */
-  const onReset = () => {};
+  const onResetClick = () => {
+    const theme = generateColorTheme({
+      themeType: defaultOptions.current.themeType,
+      colorType: defaultOptions.current.colorType,
+      customColor,
+    });
+
+    setOptions(defaultOptions.current);
+    onReset?.(defaultOptions.current, options, theme!);
+  };
 
   const renderCustomColorSelectPanel = () => {
     return (
       <ColorPickerPanel
-        maxCustomColorCount={maxCustomColorCount}
-        color={customColor}
+        maxHistoryColorCount={maxHistoryColorCount}
+        primaryColor={customColor}
         onChange={setCustomColor}
       />
     );
   };
 
   const renderCustomColorSection = () => {
-    if (options.colorType !== SheetThemeColorType.CUSTOM) {
-      // 仅自定义颜色才渲染本组件
+    if (
+      options.colorType !== SheetThemeColorType.CUSTOM ||
+      disableCustomPrimaryColorPicker
+    ) {
       return null;
     }
 
@@ -100,9 +107,9 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
       setOptions(newOptions);
     };
 
-  const renderIcon = (title: React.ReactNode, Component: React.ReactNode) => {
+  const renderIcon = (label: React.ReactNode, Component: React.ReactNode) => {
     return (
-      <Tooltip title={title}>
+      <Tooltip title={label}>
         <>{Component}</>
       </Tooltip>
     );
@@ -116,6 +123,7 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
     });
 
     onChange?.(options, theme!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options, customColor]);
 
   const hierarchyTypeOptions: RadioGroupProps['options'] = [
@@ -132,11 +140,6 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
   });
 
   const themeTypeOptions: RadioGroupProps['options'] = [
-    {
-      label: i18n('默认'),
-      value: SheetThemeType.DEFAULT,
-      component: BgColorsOutlined,
-    },
     {
       label: i18n('多彩风'),
       value: SheetThemeType.COLORFUL,
@@ -165,8 +168,28 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
     value,
   }));
 
+  const colorTypeOptions = React.useMemo<RadioGroupProps['options']>(() => {
+    const defaultOptions: RadioGroupProps['options'] = [
+      { label: i18n('深色主题'), value: SheetThemeColorType.PRIMARY },
+      { label: i18n('浅色主题'), value: SheetThemeColorType.SECONDARY },
+      { label: i18n('灰色'), value: SheetThemeColorType.GRAY },
+    ];
+
+    if (disableCustomPrimaryColorPicker) {
+      return defaultOptions;
+    }
+
+    return [
+      ...defaultOptions,
+      {
+        label: i18n('自定义'),
+        value: SheetThemeColorType.CUSTOM,
+      },
+    ];
+  }, [disableCustomPrimaryColorPicker]);
+
   return (
-    <ResetGroup title={i18n('主题风格')} onReset={onReset}>
+    <ResetGroup title={title} onResetClick={onResetClick}>
       {children}
       <RadioGroup
         label={i18n('类型')}
@@ -189,15 +212,7 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
         optionType="button"
         value={options.colorType}
         onChange={onOptionsChange('colorType')}
-        options={[
-          { label: i18n('深色主题'), value: SheetThemeColorType.PRIMARY },
-          { label: i18n('浅色主题'), value: SheetThemeColorType.SECONDARY },
-          { label: i18n('灰色'), value: SheetThemeColorType.GRAY },
-          {
-            label: i18n('自定义'),
-            value: SheetThemeColorType.CUSTOM,
-          },
-        ]}
+        options={colorTypeOptions}
         extra={renderCustomColorSection()}
       />
     </ResetGroup>

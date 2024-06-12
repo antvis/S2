@@ -8,28 +8,29 @@ import { ResetButton } from '../../../common/reset-button';
 import { ColorBox } from '../color-box';
 import { useHistoryColorList } from '../hooks/useHistoryColorList';
 import './index.less';
-
-interface ColorPickerPanelProps {
-  color?: string;
-  maxCustomColorCount?: number;
-  onChange?: (color: string) => void;
-}
+import type { ColorPickerPanelProps } from './interface';
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-color-picker-panel`;
 
+/**
+ * 自定义颜色选择面板
+ */
 export const ColorPickerPanel: React.FC<ColorPickerPanelProps> = React.memo(
   (props) => {
-    const { color, maxCustomColorCount, onChange } = props;
-    const historyColorList = useHistoryColorList(color!, maxCustomColorCount);
-    const [pickerColor, setPickerColor] = React.useState(
-      color ?? DEFAULT_THEME_COLOR_LIST[0],
+    const { primaryColor, maxHistoryColorCount, onChange } = props;
+    const historyColorList = useHistoryColorList(
+      primaryColor!,
+      maxHistoryColorCount,
+    );
+    const [customPickerColor, setCustomPickerColor] = React.useState(
+      primaryColor ?? DEFAULT_THEME_COLOR_LIST[0],
     );
 
     React.useEffect(() => {
-      if (color) {
-        setPickerColor(color);
+      if (primaryColor) {
+        setCustomPickerColor(primaryColor);
       }
-    }, [color]);
+    }, [primaryColor]);
 
     return (
       <div className={PRE_CLASS}>
@@ -50,13 +51,13 @@ export const ColorPickerPanel: React.FC<ColorPickerPanelProps> = React.memo(
             {i18n('推荐主题色')}
           </div>
           <div className={`${PRE_CLASS}-section-color-list`}>
-            {DEFAULT_THEME_COLOR_LIST.map((clr) => {
+            {DEFAULT_THEME_COLOR_LIST.map((color) => {
               return (
                 <ColorBox
-                  color={clr}
-                  key={clr}
+                  color={color}
+                  key={color}
                   onClick={() => {
-                    onChange?.(clr);
+                    onChange?.(color);
                   }}
                 />
               );
@@ -68,13 +69,13 @@ export const ColorPickerPanel: React.FC<ColorPickerPanelProps> = React.memo(
         <div className={`${PRE_CLASS}-section`}>
           <div className={`${PRE_CLASS}-section-title`}>{i18n('最近使用')}</div>
           <div className={`${PRE_CLASS}-section-color-list`}>
-            {historyColorList.map((clr) => {
+            {historyColorList.map((color) => {
               return (
                 <ColorBox
-                  color={clr}
-                  key={clr}
+                  color={color}
+                  key={color}
                   onClick={() => {
-                    onChange?.(clr);
+                    onChange?.(color);
                   }}
                 />
               );
@@ -101,11 +102,11 @@ export const ColorPickerPanel: React.FC<ColorPickerPanelProps> = React.memo(
               className={`${PRE_CLASS}-sketch-picker`}
               width="100%"
               presetColors={[]}
-              color={pickerColor}
+              color={customPickerColor}
               disableAlpha
-              onChange={(res) => setPickerColor(res.hex)}
-              onChangeComplete={(res) => {
-                onChange?.(res.hex);
+              onChange={({ hex }) => setCustomPickerColor(hex)}
+              onChangeComplete={({ hex }) => {
+                onChange?.(hex);
               }}
             />
           </Collapse.Panel>

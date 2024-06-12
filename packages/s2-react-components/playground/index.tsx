@@ -66,6 +66,8 @@ function MainLayout() {
             extra: (
               <>
                 <ThemePanel
+                  title="主题配置"
+                  disableCustomPrimaryColorPicker={false}
                   onChange={(options, theme) => {
                     setThemeCfg({
                       name: options.themeType as ThemeName,
@@ -75,6 +77,10 @@ function MainLayout() {
                       hierarchyType: options.hierarchyType,
                     });
                     s2Ref.current?.render(false);
+                    console.log('onChange:', options, theme);
+                  }}
+                  onReset={(options, prevOptions, theme) => {
+                    console.log('onReset:', options, prevOptions, theme);
                   }}
                 />
               </>

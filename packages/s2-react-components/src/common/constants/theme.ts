@@ -125,6 +125,7 @@ export enum SheetThemeColorType {
  * 主题类型
  */
 export enum SheetThemeType {
+  /** 默认 (使用 S2 默认主题) */
   DEFAULT = 'default',
   /** 多彩 */
   COLORFUL = 'colorful',
