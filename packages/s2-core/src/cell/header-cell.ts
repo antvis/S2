@@ -208,6 +208,7 @@ export abstract class HeaderCell<
           ? undefined
           : options?.fill || icon?.fill || defaultTextFill,
       cursor: 'pointer',
+      visibility: options.defaultHide ? 'hidden' : 'visible',
     };
   }
 
@@ -217,7 +218,7 @@ export abstract class HeaderCell<
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, name, defaultHide, onClick, onHover, isSortIcon } = options;
+    const { x, y, name, onClick, onHover, isSortIcon } = options;
 
     const icon = new GuiIcon({
       ...this.getActionIconStyle(options),
@@ -225,9 +226,6 @@ export abstract class HeaderCell<
       x,
       y,
     });
-
-    // 默认隐藏，hover 可见
-    icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
 
     icon.addEventListener('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
@@ -426,7 +424,13 @@ export abstract class HeaderCell<
       forEach(this.actionIcons, (icon) => {
         // 仅存储当前不可见的 icon
         if (icon.parsedStyle.visibility !== 'visible') {
+          /**
+           * https://github.com/antvis/S2/issues/2772
+           * G 6.0 如果是多图层, 需要手动全部隐藏, 直接隐藏父容器 Group 还不行, 或者使用 icon.show()
+           * https://github.com/antvis/G/blob/277abff24936ef6f7c43407a16c5bc9260992511/packages/g-lite/src/display-objects/DisplayObject.ts#L853
+           */
           icon.setAttribute('visibility', 'visible');
+          icon.iconImageShape.setAttribute('visibility', 'visible');
           visibleActionIcons.push(icon);
         }
       });
