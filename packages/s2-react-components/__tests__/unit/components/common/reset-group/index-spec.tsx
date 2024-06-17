@@ -9,6 +9,20 @@ describe('Reset Group Component Tests', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
+  test('should render custom width', () => {
+    const { asFragment } = render(<ResetGroup width={400} />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  test('should render custom style and class name', () => {
+    const { asFragment } = render(
+      <ResetGroup style={{ padding: 10 }} className="test" />,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   test('should render custom title', () => {
     render(<ResetGroup title="恢复" />);
 

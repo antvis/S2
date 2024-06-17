@@ -109,11 +109,7 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
     };
 
   const renderIcon = (label: React.ReactNode, Component: React.ReactNode) => {
-    return (
-      <Tooltip title={label}>
-        <>{Component}</>
-      </Tooltip>
-    );
+    return <Tooltip title={label}>{Component}</Tooltip>;
   };
 
   React.useEffect(() => {
