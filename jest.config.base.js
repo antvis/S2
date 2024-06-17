@@ -16,6 +16,7 @@ module.exports = {
     '!**/constant/**',
     '!**/constant.ts',
     '!**/index.{ts,tsx,js,vue}',
+    '!**/icons.{ts,tsx,js,vue}',
   ],
   coveragePathIgnorePatterns: ['hd-adapter/index.ts', 'packages/s2-vue'],
   coverageReporters: ['text', 'clover', 'html'],
@@ -42,6 +43,11 @@ module.exports = {
     '^tests/(.*)': '<rootDir>/__tests__/$1',
     '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
     '^@antv/s2-shared$': path.join(__dirname, 'packages/s2-shared/src'),
+    '^@antv/s2-react$': path.join(__dirname, 'packages/s2-react/src'),
+    '^@antv/s2-react-components$': path.join(
+      __dirname,
+      'packages/s2-react-components/src',
+    ),
     '\\.svg$': '<rootDir>/__tests__/__mocks__/svg.ts',
     /* ignore module query: foo.less?a=1 -> foo.less */
     '(.+)\\.(.+)\\?(.*)$': '$1.$2',

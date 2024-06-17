@@ -1,12 +1,10 @@
-@preCls: antv-s2;
+@import '@antv/s2/src/styles/variables.less';
 
-.@{preCls} {
-  &-drag-copy-mask {
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    z-index: 9;
-    background-color: rgba(#c2d5fe, 0.5);
-    cursor: crosshair;
-  }
+.@{s2-cls-prefix}-drag-copy-mask {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  z-index: 9;
+  background-color: rgba(#c2d5fe, 0.5);
+  cursor: crosshair;
 }
