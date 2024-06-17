@@ -44,4 +44,22 @@ export const EN_US: Record<string, string> = {
   时间: 'Date',
   指标: 'Measure',
   目标值: 'Target Value',
+
+  // components
+  自定义颜色: 'Custom color',
+  平铺: 'Grid',
+  树状: 'Tree',
+  默认: 'Default',
+  多彩风: 'Colorful',
+  简约风: 'Normal',
+  极简风: 'Basic',
+  斑马纹风: 'Zebra',
+  主题风格: 'Thematic style',
+  类型: 'Theme type',
+  主题: 'Theme color',
+  主色系: 'Primary color',
+  深色主题: 'Dark theme',
+  浅色主题: 'Light theme',
+  灰色: 'Gray',
+  自定义: 'Custom',
 };
