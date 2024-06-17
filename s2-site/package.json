@@ -33,7 +33,7 @@
     "@antv/g-canvas": "^2.0.3",
     "@antv/g-plugin-a11y": "^1.0.4",
     "@antv/g-plugin-rough-canvas-renderer": "^2.0.4",
-    "@antv/g2": "^5.1.19",
+    "@antv/g2": "^5.1.21",
     "@antv/s2": "^2.0.0-next",
     "@antv/s2-react": "^2.0.0-next",
     "antd": "^5.17.0",
