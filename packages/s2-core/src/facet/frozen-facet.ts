@@ -260,10 +260,8 @@ export abstract class FrozenFacet extends BaseFacet {
       this.frozenGroups[frozenGroupType].appendChild(cell);
     }
 
-    setTimeout(() => {
-      this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
-      this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
-    }, 100);
+    this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
   };
 
   addFrozenCell = (colIndex: number, rowIndex: number, group: Group) => {

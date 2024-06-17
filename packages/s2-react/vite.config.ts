@@ -42,6 +42,10 @@ if (isDevMode) {
     find: /^(.*)\/theme\/(.*)\.less$/,
     replacement: '$1/theme/$2.less?inline',
   });
+  alias.push({
+    find: /^@antv\/s2$/,
+    replacement: path.join(__dirname, '../s2-core/src'),
+  });
 }
 
 // eslint-disable-next-line import/no-default-export

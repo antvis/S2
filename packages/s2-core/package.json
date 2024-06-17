@@ -108,7 +108,7 @@
       "limit": "5 kB"
     }
   ],
-  "src": "src",
+  "src": "src/index.ts",
   "tnpm": {
     "mode": "pnpm"
   }

@@ -134,8 +134,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = setupDataConfig(dataCfg);
-    this.options = setupOptions(options);
+    this.setupDataConfig(dataCfg);
+    this.setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -147,6 +147,14 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
     this.setOverscrollBehavior();
     this.mountSheetInstance();
+  }
+
+  protected setupDataConfig(dataCfg: S2DataConfig) {
+    this.dataCfg = setupDataConfig(dataCfg);
+  }
+
+  protected setupOptions(options: S2Options | null) {
+    this.options = setupOptions(options);
   }
 
   public isCustomHeaderFields(
