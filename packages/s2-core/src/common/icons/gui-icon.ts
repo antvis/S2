@@ -165,4 +165,16 @@ export class GuiIcon extends Group {
         });
     }
   }
+
+  /**
+   * https://github.com/antvis/S2/issues/2772
+   * G 6.0 如果是多图层, 需要手动全部隐藏, 直接隐藏父容器 Group 还不行, 或者使用 icon.show()
+   * https://github.com/antvis/G/blob/277abff24936ef6f7c43407a16c5bc9260992511/packages/g-lite/src/display-objects/DisplayObject.ts#L853
+   */
+  public toggleVisibility(visible: boolean) {
+    const status = visible ? 'visible' : 'hidden';
+
+    this.setAttribute('visibility', status);
+    this.iconImageShape.setAttribute('visibility', status);
+  }
 }
