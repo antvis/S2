@@ -1,4 +1,4 @@
-export interface BaseComponentProps<T extends Record<string, any>> {
+export interface BaseComponentProps<T> {
   /**
    * 标题
    * @default "文字对齐"

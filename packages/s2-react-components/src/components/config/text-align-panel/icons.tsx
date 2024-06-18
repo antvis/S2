@@ -1,13 +1,16 @@
 import React from 'react';
-
-type RadioIconProps = {
-  active: boolean;
-};
+import type { RadioIconProps } from '../../../common/interface/icon';
 
 export const LeftAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   if (active) {
     return (
-      <svg className="si" width="12px" height="10px" viewBox="0 0 12 10">
+      <svg
+        className="si"
+        width="12px"
+        height="10px"
+        viewBox="0 0 12 10"
+        fill="currentColor"
+      >
         <g
           id="设计输出"
           stroke="none"
@@ -40,7 +43,13 @@ export const LeftAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   }
 
   return (
-    <svg className="si" width="12px" height="10px" viewBox="0 0 12 10">
+    <svg
+      className="si"
+      width="12px"
+      height="10px"
+      viewBox="0 0 12 10"
+      fill="currentColor"
+    >
       <g
         id="设计输出"
         stroke="none"
@@ -76,7 +85,13 @@ export const LeftAlignIcon = React.memo<RadioIconProps>(({ active }) => {
 export const CenterAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   if (active) {
     return (
-      <svg className="si" width="12px" height="11px" viewBox="0 0 12 11">
+      <svg
+        className="si"
+        width="12px"
+        height="11px"
+        viewBox="0 0 12 11"
+        fill="currentColor"
+      >
         <g
           id="设计输出"
           stroke="none"
@@ -111,7 +126,13 @@ export const CenterAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   }
 
   return (
-    <svg className="si" width="12px" height="11px" viewBox="0 0 12 11">
+    <svg
+      className="si"
+      width="12px"
+      height="11px"
+      viewBox="0 0 12 11"
+      fill="currentColor"
+    >
       <g
         id="设计输出"
         stroke="none"
@@ -149,7 +170,13 @@ export const CenterAlignIcon = React.memo<RadioIconProps>(({ active }) => {
 export const RightAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   if (active) {
     return (
-      <svg className="si" width="12px" height="10px" viewBox="0 0 12 10">
+      <svg
+        className="si"
+        width="12px"
+        height="10px"
+        viewBox="0 0 12 10"
+        fill="currentColor"
+      >
         <g
           id="设计输出"
           stroke="none"
@@ -185,7 +212,13 @@ export const RightAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   }
 
   return (
-    <svg className="si" width="12px" height="10px" viewBox="0 0 12 10">
+    <svg
+      className="si"
+      width="12px"
+      height="10px"
+      viewBox="0 0 12 10"
+      fill="currentColor"
+    >
       <g
         id="设计输出"
         stroke="none"

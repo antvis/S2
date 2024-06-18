@@ -1,7 +1,7 @@
 import type { S2Theme } from '@antv/s2';
 import type { SheetComponentOptions } from '@antv/s2-react';
 import type { SheetThemeColorType, SheetThemeType } from '../../../common';
-import type { BaseComponentProps } from '../../../common/interface';
+import type { BaseComponentProps } from '../../../common/interface/components';
 
 export interface ThemePanelOptions {
   hierarchyType: SheetComponentOptions['hierarchyType'];
