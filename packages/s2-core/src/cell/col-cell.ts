@@ -19,7 +19,8 @@ import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
 import type { FrozenFacet } from '../facet';
-import { Frame, type ColHeaderConfig } from '../facet/header';
+import { Frame } from '../facet/header/frame';
+import { type ColHeaderConfig } from '../facet/header/interface';
 import {
   getHorizontalTextIconPosition,
   getVerticalIconPosition,
