@@ -288,7 +288,7 @@ export abstract class BaseFacet {
   }
 
   protected getCellCustomSize(node: Node | null, size: CellCustomSize) {
-    return isFunction(size) ? size?.(node) : size;
+    return isFunction(size) ? size(node) : size;
   }
 
   protected getRowCellDraggedWidth(node: Node): number | undefined {

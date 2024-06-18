@@ -225,7 +225,7 @@ export class PivotFacet extends FrozenFacet {
 
     colsHierarchy.getLeaves().forEach((currentNode) => {
       currentNode.colIndex = currentColIndex;
-      currentColIndex += 1;
+      currentColIndex++;
       currentNode.x = preLeafNode.x + preLeafNode.width;
       currentNode.width = this.getColLeafNodesWidth(
         currentNode,

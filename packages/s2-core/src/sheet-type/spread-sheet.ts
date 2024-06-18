@@ -71,6 +71,8 @@ import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import type { PivotSheet } from './pivot-sheet';
+import type { TableSheet } from './table-sheet';
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -104,15 +106,15 @@ export abstract class SpreadSheet extends EE {
 
   public abstract getDataSet(): BaseDataSet;
 
-  public abstract isPivotMode(): boolean;
+  public abstract isPivotMode(): this is PivotSheet;
+
+  public abstract isTableMode(): this is TableSheet;
 
   public abstract isCustomRowFields(): boolean;
 
   public abstract isHierarchyTreeType(): boolean;
 
   public abstract isFrozenRowHeader(): boolean;
-
-  public abstract isTableMode(): boolean;
 
   public abstract isValueInCols(): boolean;
 
