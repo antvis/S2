@@ -21,22 +21,6 @@ export class TableSheet extends SpreadSheet {
     return new TableDataSet(this);
   }
 
-  public enableFrozenHeaders(): boolean {
-    const {
-      rowCount: frozenRowCount = 0,
-      trailingRowCount: frozenTrailingRowCount = 0,
-      colCount: frozenColCount = 0,
-      trailingColCount: frozenTrailingColCount = 0,
-    } = this.options.frozen!;
-
-    return (
-      frozenRowCount > 0 ||
-      frozenTrailingRowCount > 0 ||
-      frozenColCount > 0 ||
-      frozenTrailingColCount > 0
-    );
-  }
-
   /**
    * Check if is pivot mode
    */
@@ -65,7 +49,8 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  public clearDrillDownData(): void {}
+  // eslint-disable-next-line no-empty-function
+  public async clearDrillDownData() {}
 
   /**
    * Check if the value is in the columns
@@ -97,7 +82,7 @@ export class TableSheet extends SpreadSheet {
     this.off(S2Event.RANGE_FILTER);
   }
 
-  public groupSortByMethod = (sortMethod: SortMethod, meta: Node) => {
+  public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { field } = meta;
 
     const sortParam: SortParam = {
@@ -107,5 +92,5 @@ export class TableSheet extends SpreadSheet {
 
     this.updateSortMethodMap(meta.id, sortMethod);
     this.emit(S2Event.RANGE_SORT, [sortParam]);
-  };
+  }
 }

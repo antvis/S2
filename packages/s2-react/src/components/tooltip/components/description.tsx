@@ -1,5 +1,5 @@
-import React from 'react';
 import { i18n, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import React from 'react';
 
 interface TooltipDescriptionProps {
   description: React.ReactNode;

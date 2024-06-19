@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -31,7 +33,7 @@ fetch(
     const App = () => {
       const s2Ref = React.useRef<SpreadSheet>();
 
-      const onColCellHover: SheetComponentsProps['onColCellHover'] = ({
+      const onColCellHover: SheetComponentProps['onColCellHover'] = ({
         event,
       }) => {
         // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
@@ -71,7 +73,7 @@ fetch(
         });
       };
 
-      const onRowCellHover: SheetComponentsProps['onRowCellHover'] = ({
+      const onRowCellHover: SheetComponentProps['onRowCellHover'] = ({
         event,
       }) => {
         s2Ref.current?.showTooltip({
@@ -83,7 +85,7 @@ fetch(
         });
       };
 
-      const onDataCellHover: SheetComponentsProps['onDataCellHover'] = ({
+      const onDataCellHover: SheetComponentProps['onDataCellHover'] = ({
         event,
       }) => {
         s2Ref.current?.showTooltip({

@@ -4,10 +4,10 @@
  * - 明细表不需要计算二维数组数据
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
+import { SpreadSheet, TableSheet } from '@/sheet-type';
+import { ROOT_NODE_ID } from '../../../src';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
-import { ROOT_NODE_ID } from '../../../src';
-import { SpreadSheet, TableSheet } from '@/sheet-type';
 
 describe('List Table Core Data Process', () => {
   let s2: SpreadSheet;

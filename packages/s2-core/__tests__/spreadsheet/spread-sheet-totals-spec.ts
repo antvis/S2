@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { merge } from 'lodash';
-import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
 import type { RawData, S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet } from '@/sheet-type';
+import { merge } from 'lodash';
+import { TOTALS_OPTIONS, assembleDataCfg, assembleOptions } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
 
 describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;

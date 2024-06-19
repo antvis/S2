@@ -1,27 +1,31 @@
 /**
  * pivot mode base data-set test.
  */
+import {
+  EXTRA_FIELD,
+  ORIGIN_FIELD,
+  SERIES_NUMBER_FIELD,
+  TOTAL_VALUE,
+} from '@/common/constant';
+import type {
+  CustomHeaderField,
+  S2DataConfig,
+  SortMethod,
+  ViewMeta,
+} from '@/common/interface';
+import { Store } from '@/common/store';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
+import { Node } from '@/facet/layout/node';
+import { RootInteraction } from '@/interaction/root';
+import { PivotSheet } from '@/sheet-type';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { get, keys } from 'lodash';
-import { assembleDataCfg } from 'tests/util';
+import { data } from 'tests/data/mock-dataset.json';
 import {
   data as drillDownData,
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
-import { data } from 'tests/data/mock-dataset.json';
-
-import type {
-  ViewMeta,
-  SortMethod,
-  CustomHeaderField,
-} from '@/common/interface';
-import { EXTRA_FIELD, ORIGIN_FIELD, TOTAL_VALUE } from '@/common/constant';
-import type { S2DataConfig } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { Store } from '@/common/store';
-import { Node } from '@/facet/layout/node';
-import { RootInteraction } from '@/interaction/root';
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
+import { assembleDataCfg } from 'tests/util';
 
 jest.mock('@/sheet-type');
 
@@ -45,6 +49,7 @@ describe('Pivot Dataset Test', () => {
 
     mockSheet.store = new Store();
     mockSheet.interaction = new MockRootInteraction(mockSheet);
+    mockSheet.getSeriesNumberText = () => '序号';
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });
@@ -483,6 +488,7 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName('not-found-field')).toEqual(
         'not-found-field',
       );
+      expect(dataSet.getFieldName(SERIES_NUMBER_FIELD)).toStrictEqual('序号');
       // 异常情况
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

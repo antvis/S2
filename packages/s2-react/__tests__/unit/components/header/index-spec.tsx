@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { getMockSheetInstance } from 'tests/util/helpers';
 import { Header } from '@/components/header';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { getMockSheetInstance } from 'tests/util/helpers';
 
 describe('Header Component Tests', () => {
   test('should render basic header without extra', () => {

@@ -1,14 +1,21 @@
 /* eslint-disable max-classes-per-file */
 import {
+  SheetComponent,
+  StrategySheetColCell,
+  StrategySheetDataCell,
+  type SheetComponentOptions,
+} from '@/components';
+import { strategyCopy } from '@/components/export/strategy-copy';
+import {
+  CSV_SEPARATOR,
   CellType,
   CornerNodeType,
   InteractionStateName,
   RowCell,
   SpreadSheet,
+  TAB_SEPARATOR,
   customMerge,
   getCellMeta,
-  CSV_SEPARATOR,
-  TAB_SEPARATOR,
   type GEvent,
   type S2DataConfig,
 } from '@antv/s2';
@@ -19,13 +26,6 @@ import {
   StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
 import { getContainer, renderComponent } from '../../../../util/helpers';
-import { strategyCopy } from '@/components/export/strategy-copy';
-import {
-  SheetComponent,
-  StrategySheetColCell,
-  StrategySheetDataCell,
-  type SheetComponentOptions,
-} from '@/components';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -575,8 +575,8 @@ describe('<StrategySheet/> Tests', () => {
     }
 
     const s2Options: SheetComponentOptions = {
-      dataCell: (viewMeta) =>
-        new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new CustomDataCell(viewMeta, spreadsheet),
     };
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);

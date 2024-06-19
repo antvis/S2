@@ -1,10 +1,10 @@
+/* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
-import path from 'path';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { defineConfig } from 'vite';
+import path from 'path';
+import { UserConfig, defineConfig } from 'vite';
 import svgLoader from 'vite-svg-loader';
-import type { UserConfig } from 'vite';
 import { getBaseConfig } from '../../build.config.base.mjs';
 
 const { getViteConfig, isDevMode } = getBaseConfig();

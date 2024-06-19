@@ -4,11 +4,11 @@
  * 内容未填充整个画布且存在滚动条（横向或者纵向）情况下，拖动滚动条会导致边框绘制到内容区之外
  *
  */
-import { getContainer } from 'tests/util/helpers';
-import type { Group } from '@antv/g';
-import dataCfg from '../data/simple-table-data.json';
-import { TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
+import { TableSheet } from '@/sheet-type';
+import type { Group } from '@antv/g';
+import { getContainer } from 'tests/util/helpers';
+import dataCfg from '../data/simple-table-data.json';
 
 const s2Options: S2Options = {
   width: 200,

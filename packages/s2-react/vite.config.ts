@@ -1,7 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/order */
 /* eslint-disable prefer-named-capture-group */
-import path from 'path';
+/* eslint-disable import/no-extraneous-dependencies */
 import react from '@vitejs/plugin-react';
+import path from 'path';
 import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';

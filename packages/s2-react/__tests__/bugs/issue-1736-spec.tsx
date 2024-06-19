@@ -3,11 +3,11 @@
  * https://github.com/antvis/S2/issues/1736
  * Export dropdown visible state error
  */
+import { Export } from '@/components/export';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { getMockSheetInstance, renderComponent } from 'tests/util/helpers';
-import { Export } from '@/components/export';
 
 describe('header export component render tests', () => {
   let unmount: Root['unmount'];

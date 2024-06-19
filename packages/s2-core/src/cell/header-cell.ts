@@ -226,9 +226,7 @@ export abstract class HeaderCell<
       y,
     });
 
-    // 默认隐藏，hover 可见
-    icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
-
+    icon.toggleVisibility(!defaultHide);
     icon.addEventListener('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
       onHover?.({
@@ -426,7 +424,7 @@ export abstract class HeaderCell<
       forEach(this.actionIcons, (icon) => {
         // 仅存储当前不可见的 icon
         if (icon.parsedStyle.visibility !== 'visible') {
-          icon.setAttribute('visibility', 'visible');
+          icon.toggleVisibility(true);
           visibleActionIcons.push(icon);
         }
       });

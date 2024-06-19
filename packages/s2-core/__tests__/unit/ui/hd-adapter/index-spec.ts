@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable jest/expect-expect */
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { createPivotSheet, sleep } from 'tests/util/helpers';
 import type { S2Options } from '../../../../src';
-import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');

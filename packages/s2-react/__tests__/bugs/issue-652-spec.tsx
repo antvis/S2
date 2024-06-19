@@ -4,20 +4,20 @@
  * Wrong table width and height when enable adaptive
  *
  */
+import { SheetComponent } from '@/components/sheets';
+import type { SheetComponentProps } from '@/components/sheets/interface';
 import type { SheetType } from '@antv/s2-shared';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { renderComponent } from '../util/helpers';
-import type { SheetComponentsProps } from '@/components/sheets/interface';
-import { SheetComponent } from '@/components/sheets';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 400,
   height: 400,
 };
 
-function MainLayout({ sheetType, adaptive }: Partial<SheetComponentsProps>) {
+function MainLayout({ sheetType, adaptive }: Partial<SheetComponentProps>) {
   return (
     <SheetComponent
       sheetType={sheetType}

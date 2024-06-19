@@ -1,7 +1,7 @@
 import {
-  getIndexRangeWithOffsets,
   getAdjustedRowScrollX,
   getAdjustedScrollOffset,
+  getIndexRangeWithOffsets,
 } from '@/utils/facet';
 
 describe('Facet util test', () => {

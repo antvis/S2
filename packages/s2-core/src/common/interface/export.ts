@@ -1,6 +1,7 @@
 import type { SpreadSheet } from '../../sheet-type';
-import type { DataItem, CellMeta } from '..';
-import { EXTRA_FIELD } from '..';
+import { EXTRA_FIELD } from '../constant';
+import type { CellMeta } from '../interface/interaction';
+import type { DataItem } from '../interface/s2DataConfig';
 
 export type MatrixPlainTransformer = (
   data: DataItem[][],

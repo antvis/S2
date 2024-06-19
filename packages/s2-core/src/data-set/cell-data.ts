@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-function */
+import { EXTRA_FIELD, ORIGIN_FIELD, VALUE_FIELD } from '../common/constant';
 import type { ViewMetaData } from '../common/interface/basic';
 import type { RawData } from '../common/interface/s2DataConfig';
-import { ORIGIN_FIELD, EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 
 export class CellData {
   constructor(

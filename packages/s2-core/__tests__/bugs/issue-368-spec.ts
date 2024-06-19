@@ -4,10 +4,10 @@
  * Wrong style when show the totals in multi-value mode
  *
  */
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-368.json';
 import { getContainer } from '../util/helpers';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 800,

@@ -4,12 +4,12 @@
  * https://github.com/antvis/S2/issues/2684
  */
 
+import type { CellMeta, S2Options, SpreadSheet } from '@/index';
 import { isEmpty } from 'lodash';
 import { InteractionStateName } from '../../src';
 import { getSelectedData } from '../../src/utils/export/copy';
 import * as mockDataConfig from '../data/data-issue-2684.json';
 import { createPivotSheet } from '../util/helpers';
-import type { S2Options, SpreadSheet } from '@/index';
 
 const s2Options: S2Options = {
   width: 600,
@@ -48,7 +48,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
         : String(rowLeafNodes[meta.rowIndex].id);
 
       return { ...meta, colId, rowId };
-    });
+    }) as unknown as CellMeta[];
 
     s2.interaction.changeState({
       cells,

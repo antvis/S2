@@ -6,7 +6,7 @@ exports[`Pagination Component Tests should render component 1`] = `
     class="antv-s2-pagination"
   >
     <ul
-      class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-11xg00t"
+      class="ant-pagination ant-pagination-mini css-dev-only-do-not-override-3rel02"
     >
       <li
         aria-disabled="true"
@@ -181,7 +181,7 @@ exports[`Pagination Component Tests should render component 1`] = `
       >
         <div
           aria-label="Page Size"
-          class="ant-select ant-select-sm ant-select-outlined ant-pagination-options-size-changer css-dev-only-do-not-override-11xg00t ant-select-single ant-select-show-arrow ant-select-show-search"
+          class="ant-select ant-select-sm ant-select-outlined ant-pagination-options-size-changer css-dev-only-do-not-override-3rel02 ant-select-single ant-select-show-arrow ant-select-show-search"
         >
           <div
             class="ant-select-selector"

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+// organize-imports-ignore
+import React from 'react';
 import {
   SheetComponent,
   SheetComponentOptions,
   Switcher,
 } from '@antv/s2-react';
-import insertCSS from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',
@@ -63,8 +65,8 @@ fetch(
     }
 
     const SwitcherDemo = () => {
-      const [fields, setFields] = useState(defaultFields);
-      const [switcherFields, setSwitcherFields] = useState(
+      const [fields, setFields] = React.useState(defaultFields);
+      const [switcherFields, setSwitcherFields] = React.useState(
         defaultSwitcherFields,
       );
 

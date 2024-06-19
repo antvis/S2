@@ -5,10 +5,10 @@
  *
  */
 
+import { PivotSheet, type S2Options } from '@/index';
 import { cloneDeep } from 'lodash';
-import { getContainer } from '../util/helpers';
 import { valueInCols } from '../data/data-issue-507.json';
-import { type S2Options, PivotSheet } from '@/index';
+import { getContainer } from '../util/helpers';
 
 const valueInRows = cloneDeep(valueInCols);
 

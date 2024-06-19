@@ -1,9 +1,4 @@
 import {
-  createFakeSpreadSheet,
-  createMockCellInfo,
-  sleep,
-} from 'tests/util/helpers';
-import {
   HOVER_FOCUS_DURATION,
   InteractionName,
   InteractionStateName,
@@ -14,6 +9,11 @@ import type { InteractionCellHighlightOptions } from '@/common/interface';
 import { CustomRect } from '@/engine';
 import type { GEvent } from '@/index';
 import type { SpreadSheet } from '@/sheet-type';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  sleep,
+} from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 

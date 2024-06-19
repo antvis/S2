@@ -1,32 +1,33 @@
+/* eslint-disable max-params */
 /* eslint-disable max-classes-per-file */
-import React, { useState, useEffect, useRef } from 'react';
-
-import insertCSS from 'insert-css';
+// organize-imports-ignore
+import React from 'react';
 import { Polygon } from '@antv/g';
 import {
-  TableColCell,
-  GuiIcon,
-  TableCornerCell,
-  S2Event,
-  InteractionStateName,
   CellType,
+  GuiIcon,
+  InteractionStateName,
   S2DataConfig,
+  S2Event,
+  TableColCell,
+  TableCornerCell,
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 import {
-  Input,
-  Divider,
-  Space,
   Button,
-  Modal,
-  Radio,
-  Form,
-  Popover,
   Checkbox,
+  Divider,
+  Form,
+  Input,
+  Modal,
+  Popover,
+  Radio,
+  Space,
   message,
 } from 'antd';
+import insertCSS from 'insert-css';
 import { get, uniq } from 'lodash';
-import '@antv/s2-react/dist/style.min.css';
 
 const { Search } = Input;
 
@@ -241,15 +242,16 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
 };
 
 const App = ({ data }) => {
-  const s2Ref = useRef(null);
+  const s2Ref = React.useRef(null);
   const [columns, setColumns] = React.useState(initColumns);
-  const [searchKey, setSearchKey] = useState('');
-  const [searchResult, setSearchResult] = useState([]);
-  const [colModalVisible, setColModalVisible] = useState(false);
-  const [searchResultActiveIndex, setSearchResultActiveIndex] = useState(-1);
+  const [searchKey, setSearchKey] = React.useState('');
+  const [searchResult, setSearchResult] = React.useState([]);
+  const [colModalVisible, setColModalVisible] = React.useState(false);
+  const [searchResultActiveIndex, setSearchResultActiveIndex] =
+    React.useState(-1);
   const [form] = Form.useForm();
-  const [interactedCol, setInteractedCol] = useState('');
-  const modalCallbackRef = useRef((e) => {});
+  const [interactedCol, setInteractedCol] = React.useState('');
+  const modalCallbackRef = React.useRef((e) => {});
 
   const onIconClick = ({ meta }) => {
     setInteractedCol(meta.value);
@@ -301,7 +303,7 @@ const App = ({ data }) => {
     showDefaultHeaderActionIcon: false,
   };
 
-  const [dataCfg, setDataCfg] = useState<S2DataConfig>({
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>({
     fields: {
       columns,
     },
@@ -310,7 +312,7 @@ const App = ({ data }) => {
     filterParams: [],
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     setDataCfg((cfg) => ({
       ...cfg,
       fields: { columns },

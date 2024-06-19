@@ -1,11 +1,6 @@
 /**
  * pivot mode base data-set test.
  */
-import { get, keys } from 'lodash';
-import * as mockData from 'tests/data/mock-dataset.json';
-import * as multiDataCfg from 'tests/data/simple-data.json';
-import type { Query } from '../../../src/data-set/interface';
-import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 import {
   EXTRA_FIELD,
   ORIGIN_FIELD,
@@ -22,6 +17,11 @@ import { Store } from '@/common/store';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
+import { get, keys } from 'lodash';
+import * as mockData from 'tests/data/mock-dataset.json';
+import * as multiDataCfg from 'tests/data/simple-data.json';
+import type { Query } from '../../../src/data-set/interface';
+import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');

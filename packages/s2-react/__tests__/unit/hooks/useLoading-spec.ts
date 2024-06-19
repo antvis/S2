@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, type S2Options, SpreadSheet } from '@antv/s2';
-import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
 import { useLoading } from '@/hooks';
+import { PivotSheet, S2Event, SpreadSheet, type S2Options } from '@antv/s2';
+import { act, renderHook } from '@testing-library/react-hooks';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 200,

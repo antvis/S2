@@ -1,17 +1,10 @@
 /**
  * table mode pivot test.
  */
-import { Canvas, Group, type CanvasConfig } from '@antv/g';
-import { Renderer } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { pick } from 'lodash';
-import { data } from '../../data/mock-dataset.json';
-import { createFakeSpreadSheet } from '../../util/helpers';
 import { LayoutWidthType, ROOT_NODE_ID } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { getFrozenLeafNodesCount } from '@/facet/utils';
 import {
   Node,
   customMerge,
@@ -21,6 +14,13 @@ import {
 } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+import { Canvas, Group, type CanvasConfig } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import { pick } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
+import { data } from '../../data/mock-dataset.json';
+import { createFakeSpreadSheet } from '../../util/helpers';
 
 const actualDataSet = jest.requireActual(
   '@/data-set/base-data-set',
@@ -75,9 +75,6 @@ jest.mock('@/sheet-type', () => {
           getState: jest.fn(),
           getCells: jest.fn(() => []),
         },
-        enableFrozenHeaders() {
-          return false;
-        },
         isFrozenRowHeader() {
           return false;
         },
@@ -86,6 +83,7 @@ jest.mock('@/sheet-type', () => {
         isCustomColumnFields: jest.fn(),
         measureTextWidthRoughly: jest.fn(),
         measureTextWidth: jest.fn(),
+        getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
   };
@@ -154,28 +152,6 @@ describe('Table Mode Facet Test', () => {
     expect(rowsHierarchy.height).toBe(0);
     expect(rowsHierarchy.width).toBe(0);
     expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
-  });
-
-  test('should get default seriesNumberText', () => {
-    const { facet } = createMockTableFacet({
-      seriesNumber: {
-        enable: true,
-      },
-    });
-
-    expect(facet.getColLeafNodes()[0].value).toEqual('序号');
-  });
-
-  test('should get custom seriesNumberText', () => {
-    const seriesNumberText = 'test';
-    const { facet } = createMockTableFacet({
-      seriesNumber: {
-        enable: true,
-        text: seriesNumberText,
-      },
-    });
-
-    expect(facet.getColLeafNodes()[0].value).toEqual(seriesNumberText);
   });
 
   describe('should get none layer when dataCfg.fields is empty', () => {
@@ -378,10 +354,10 @@ describe('Table Mode Facet With Frozen Test', () => {
     },
   });
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
 
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct xy indexes with frozen', () => {
@@ -435,7 +411,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {
@@ -672,9 +648,9 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     },
   );
 
-  test('should get correct frozenInfo', () => {
+  test('should get correct frozen group positions', () => {
     facet.calculateFrozenGroupInfo();
-    expect(facet.frozenGroupInfo).toMatchSnapshot();
+    expect(facet.frozenGroupAreas).toMatchSnapshot();
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -688,26 +664,6 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     ).toStrictEqual([0]);
   });
 
-  test('should get correct cell layout with frozenTrailingCol', () => {
-    const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
-    const topLevelNodes = facet
-      .getColNodes()
-      .filter((node) => node.parent!.id === ROOT_NODE_ID);
-    const { trailingColCount } = getFrozenLeafNodesCount(
-      topLevelNodes,
-      0,
-      frozenTrailingColCount!,
-    );
-
-    expect(
-      facet
-        .getColLeafNodes()
-        .slice(-trailingColCount)
-        .reverse()
-        .map((node) => Math.floor(node.x)),
-    ).toEqual([399]);
-  });
-
   test('should get correct cell layout with frozenTrailingRow', () => {
     const { trailingRowCount } = s2.options.frozen!;
     const displayData = s2.dataSet.getDisplayDataSet();
@@ -717,7 +673,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => facet.getCellMeta(displayData.length - 1 - idx, 1)!.y),
-    ).toEqual([532, 502]);
+    ).toEqual([930, 900]);
   });
 
   test('should get correct viewCellHeights result', () => {

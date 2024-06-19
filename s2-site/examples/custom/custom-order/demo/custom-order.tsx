@@ -1,12 +1,15 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import {
   Node,
   S2DataConfig,
   TooltipOptions,
-  type SortParams,
   type SortMethod,
+  type SortParams,
+  type TooltipOperatorMenuItem,
 } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 
 const SortMethodType = {
   asc: 'asc',
@@ -15,7 +18,7 @@ const SortMethodType = {
   custom: 'custom',
 };
 
-const MENUS = [
+const MENUS: TooltipOperatorMenuItem<React.ReactNode, React.ReactNode>[] = [
   { key: SortMethodType.none, label: '不排序' },
   { key: SortMethodType.asc, label: '升序', icon: 'GroupAsc' },
   { key: SortMethodType.desc, label: '降序', icon: 'GroupDesc' },
@@ -51,7 +54,7 @@ const s2Options: SheetComponentOptions = {
 };
 
 const useDataCfg = () => {
-  const [res, setRes] = await ReactuseState({ meta: [], data: [] });
+  const [res, setRes] = React.useState({ meta: [], data: [] });
   const [dataCfg, setDataCfg] = React.useState<SortParams>(s2DataConfig);
 
   React.useEffect(() => {

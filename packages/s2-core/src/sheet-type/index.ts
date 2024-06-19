@@ -2,7 +2,7 @@
 import type {} from '@antv/g-lite';
 
 import { PivotSheet } from './pivot-sheet';
-import { TableSheet } from './table-sheet';
 import { SpreadSheet } from './spread-sheet';
+import { TableSheet } from './table-sheet';
 
-export { PivotSheet, TableSheet, SpreadSheet };
+export { PivotSheet, SpreadSheet, TableSheet };

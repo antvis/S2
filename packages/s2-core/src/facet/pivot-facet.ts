@@ -1,4 +1,3 @@
-import { Group, Rect, type LineStyleProps } from '@antv/g';
 import {
   filter,
   forEach,
@@ -19,11 +18,7 @@ import {
 import { ColCell, RowCell, SeriesNumberCell } from '../cell';
 import {
   DEFAULT_TREE_ROW_CELL_WIDTH,
-  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-  FrozenGroupType,
-  KEY_GROUP_FROZEN_SPLIT_LINE,
   LAYOUT_SAMPLE_COUNT,
-  SPLIT_LINE_WIDTH,
   type IconTheme,
   type MultiData,
   type ViewMeta,
@@ -37,12 +32,12 @@ import type {
   SimpleData,
 } from '../common/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
-import { renderLine, safeJsonParse } from '../utils';
+import { getValidFrozenOptionsForPivot, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
-import { getRowsForGrid } from '../utils/grid';
+import { getAllChildCells } from '../utils/get-all-child-cells';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
@@ -51,7 +46,6 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenRowCfgPivot } from './utils';
 
 export class PivotFacet extends FrozenFacet {
   get rowCellTheme() {
@@ -205,6 +199,8 @@ export class PivotFacet extends FrozenFacet {
     // 7. 更新汇总节点坐标
     this.adjustColTotalNodesCoordinate(colsHierarchy);
   }
+
+  protected calculateRowOffsets(): void {}
 
   private adjustColTotalNodesCoordinate(colsHierarchy: Hierarchy) {
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
@@ -1002,101 +998,20 @@ export class PivotFacet extends FrozenFacet {
    * @description 对于透视表, 序号属于 RowCell
    */
   public getSeriesNumberCells(): SeriesNumberCell[] {
-    return filter(
-      this.getSeriesNumberHeader()?.children,
-      (element: SeriesNumberCell) => element instanceof SeriesNumberCell,
-    ) as unknown[] as SeriesNumberCell[];
+    const headerChildren = (this.getSeriesNumberHeader()?.children ||
+      []) as SeriesNumberCell[];
+
+    return getAllChildCells(headerChildren, SeriesNumberCell);
   }
 
-  protected updateFrozenGroupGrid(): void {
-    [FrozenGroupType.FROZEN_ROW].forEach((key) => {
-      if (!this.frozenGroupInfo[key].range) {
-        return;
-      }
-
-      let cols: number[] = [];
-      let rows: number[] = [];
-
-      if (key.toLowerCase().includes('row')) {
-        const [rowMin, rowMax] = this.frozenGroupInfo[key].range || [];
-
-        cols = this.gridInfo.cols;
-        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
-      }
-
-      this[`${key}Group`].updateGrid(
-        {
-          cols,
-          rows,
-        },
-        `${key}Group`,
+  public getFrozenOptions() {
+    if (!this.validFrozenOptions) {
+      this.validFrozenOptions = getValidFrozenOptionsForPivot(
+        super.getFrozenOptions(),
+        this.spreadsheet.options,
       );
-    });
-  }
-
-  protected getFrozenOptions() {
-    return getFrozenRowCfgPivot(
-      this.spreadsheet.options,
-      this.layoutResult.rowNodes,
-    );
-  }
-
-  public enableFrozenFirstRow(): boolean {
-    return !!this.getFrozenOptions().rowCount;
-  }
-
-  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
-    this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
-    if (this.enableFrozenFirstRow()) {
-      // 在分页条件下需要额外处理 Y 轴滚动值
-      const relativeScrollY = floor(scrollY - this.getPaginationScrollY());
-      const splitLineGroup = this.foregroundGroup.appendChild(
-        new Group({
-          id: KEY_GROUP_FROZEN_SPLIT_LINE,
-          style: {
-            zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
-          },
-        }),
-      );
-
-      const { splitLine } = this.spreadsheet.theme;
-
-      const horizontalBorderStyle: Partial<LineStyleProps> = {
-        lineWidth: SPLIT_LINE_WIDTH,
-        stroke: splitLine?.horizontalBorderColor,
-        opacity: splitLine?.horizontalBorderColorOpacity,
-      };
-
-      const cellRange = this.getCellRange();
-      const y =
-        this.panelBBox.y +
-        this.getTotalHeightForRange(cellRange.start, cellRange.start);
-      const width =
-        this.cornerBBox.width +
-        Frame.getVerticalBorderWidth(this.spreadsheet) +
-        this.panelBBox.viewportWidth;
-
-      renderLine(splitLineGroup, {
-        ...horizontalBorderStyle,
-        x1: 0,
-        x2: width,
-        y1: y,
-        y2: y,
-      });
-
-      if (splitLine!.showShadow && relativeScrollY > 0) {
-        splitLineGroup.appendChild(
-          new Rect({
-            style: {
-              x: 0,
-              y,
-              width,
-              height: splitLine?.shadowWidth!,
-              fill: this.getShadowFill(90),
-            },
-          }),
-        );
-      }
     }
-  };
+
+    return this.validFrozenOptions;
+  }
 }

@@ -22,8 +22,8 @@ import { renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell<CornerHeaderConfig> {

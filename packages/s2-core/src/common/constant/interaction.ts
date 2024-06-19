@@ -113,6 +113,8 @@ export enum ScrollbarPositionType {
 export enum ScrollDirection {
   SCROLL_UP = 'scrollUp',
   SCROLL_DOWN = 'scrollDown',
+  SCROLL_LEFT = 'scrollLeft',
+  SCROLL_RIGHT = 'scrollRight',
 }
 
 export enum ScrollDirectionRowIndexDiff {

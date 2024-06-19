@@ -9,12 +9,12 @@ import {
 } from '../common/constant';
 import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
+  afterSelectDataCells,
   getCellMeta,
-  isMultiSelectionKey,
   isMouseEventWithMeta,
+  isMultiSelectionKey,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
-import { afterSelectDataCells } from '../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection

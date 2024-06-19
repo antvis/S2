@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { CellType } from '../../../src/common/constant';
-import { createMockCellInfo } from '../../util/helpers';
 import { MergedCell } from '@/cell';
 import { GuiIcon, type ViewMeta } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
@@ -8,6 +6,8 @@ import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { renderText } from '@/utils/g-renders';
+import { CellType } from '../../../src/common/constant';
+import { createMockCellInfo } from '../../util/helpers';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -58,7 +58,7 @@ describe('Merged Cell Tests', () => {
           rowLeafNodes: [],
         },
         getRowLeafNodeByIndex: () => {},
-      } as PivotFacet;
+      } as unknown as PivotFacet;
 
       mergedCell = new MergedCell(s2, cells, meta);
     });

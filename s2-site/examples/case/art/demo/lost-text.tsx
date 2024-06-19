@@ -1,4 +1,7 @@
+// organize-imports-ignore
 /* eslint-disable max-classes-per-file */
+// organize-imports-ignore
+import React from 'react';
 import {
   BaseEvent,
   CellType,
@@ -8,9 +11,8 @@ import {
   getTheme,
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { Tag } from 'antd';
-import React from 'react';
 import '@antv/s2-react/dist/style.min.css';
+import { Tag } from 'antd';
 
 const Theme: S2Theme = {
   rowCell: {
@@ -47,7 +49,7 @@ class CustomInteraction extends BaseEvent {
 
   count = 0;
 
-  changeCell(cellType: CellType) {
+  async changeCell(cellType: CellType) {
     this.count++;
 
     const defaultTheme = getTheme(null)?.[cellType];
@@ -55,7 +57,8 @@ class CustomInteraction extends BaseEvent {
     this.spreadsheet.setTheme({
       [cellType]: defaultTheme,
     });
-    this.spreadsheet.render(false);
+
+    await this.spreadsheet.render(false);
 
     if (this.count >= 3) {
       clearInterval(this.timer);
@@ -63,10 +66,10 @@ class CustomInteraction extends BaseEvent {
     }
   }
 
-  resetCell() {
+  async resetCell() {
     this.count = 0;
     this.spreadsheet.setTheme(Theme);
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   }
 
   showSuccessTips() {
@@ -118,20 +121,20 @@ class CustomInteraction extends BaseEvent {
       2: CellType.DATA_CELL,
     };
 
-    this.spreadsheet.on(S2Event.CORNER_CELL_MOUSE_DOWN, () => {
+    this.spreadsheet.on(S2Event.CORNER_CELL_MOUSE_DOWN, async () => {
       clearInterval(this.timer);
-      this.resetCell();
+      await this.resetCell();
 
       this.timer = setInterval(() => {
         this.changeCell(countMap[this.count]);
       }, 1000);
     });
 
-    this.spreadsheet.on(S2Event.CORNER_CELL_MOUSE_UP, () => {
+    this.spreadsheet.on(S2Event.CORNER_CELL_MOUSE_UP, async () => {
       clearInterval(this.timer);
 
       if (this.count < 3) {
-        this.resetCell();
+        await this.resetCell();
       }
     });
   }

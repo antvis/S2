@@ -1,7 +1,7 @@
+import type { S2DataConfig, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { getContainer } from 'tests/util/helpers';
 import { pickMap } from '../util/fp';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

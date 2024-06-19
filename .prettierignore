@@ -16,16 +16,13 @@ yarn.lock
 yarn-error.log
 npm-debug.log
 lerna-debug.log
-package.json
 tsconfig.json
 CNAME
 LICENSE
 s2-site/.cache
 s2-site/public
+s2-site/*.tsx
 .history
 esm
 dist
 lib
-
-
-

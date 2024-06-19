@@ -7,14 +7,14 @@ import {
 import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import { Radio, Space, Switch } from 'antd';
 import React from 'react';
+import { meta } from '../../__tests__/data/mock-dataset.json';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src';
-import { meta } from '../../__tests__/data/mock-dataset.json';
-import { onSheetMounted } from '../utils';
 import { usePlaygroundContext } from '../context/playground.context';
+import { onSheetMounted } from '../utils';
 import { ResizeConfig } from './ResizeConfig';
 
 export const customRowGridOptions: SheetComponentOptions = {
@@ -81,7 +81,7 @@ enum CustomType {
   All = 'all',
 }
 
-type CustomGridProps = Partial<SheetComponentsProps>;
+type CustomGridProps = Partial<SheetComponentProps>;
 
 export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
   (props, ref) => {
@@ -103,7 +103,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
       ...context.themeCfg,
     });
     const [sheetType, setSheetType] =
-      React.useState<SheetComponentsProps['sheetType']>('pivot');
+      React.useState<SheetComponentProps['sheetType']>('pivot');
 
     const dataCfg =
       customType === CustomType.Row

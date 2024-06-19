@@ -8,8 +8,10 @@ import type {
 import type {
   CellCallback,
   CornerHeaderCallback,
+  CustomSVGIcon,
   DataCellCallback,
   FrameCallback,
+  HeaderActionIcon,
   MergedCellCallback,
   MergedCellInfo,
   Pagination,
@@ -31,7 +33,6 @@ import type {
   RowHeaderConfig,
 } from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';
@@ -291,38 +292,32 @@ export enum DeviceType {
   MOBILE = 'mobile',
 }
 
-export interface S2PivotSheetFrozenOptions {
+export interface S2PivotSheetFrozenOptions extends S2BaseFrozenOptions {
   /**
    * 是否冻结行头 (含角头区域, 透视表有效),
    * 当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头
    * 当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0
    */
   rowHeader?: boolean | number;
-
-  /**
-   * 是否冻结首行 (适用于总计置于顶部, 树状模式等场景)
-   */
-  firstRow?: boolean;
 }
 
-export interface S2TableSheetFrozenOptions {
+export interface S2BaseFrozenOptions {
   /**
-   * 行头冻结数量 (明细表有效)
+   * 行头冻结数量
    */
   rowCount?: number;
 
   /**
-   * 列头冻结数量 (明细表有效)
+   * 行尾冻结数量
+   */
+  trailingRowCount?: number;
+  /**
+   * 列头冻结数量
    */
   colCount?: number;
 
   /**
-   * 行尾冻结数量 (明细表有效)
-   */
-  trailingRowCount?: number;
-
-  /**
-   * 列尾冻结数量 (明细表有效)
+   * 列尾冻结数量
    */
   trailingColCount?: number;
 }
@@ -367,9 +362,12 @@ export interface S2Options<
   /**
    * 行列冻结
    */
-  frozen?: S2PivotSheetFrozenOptions & S2TableSheetFrozenOptions;
+  frozen?: S2PivotSheetFrozenOptions & S2BaseFrozenOptions;
 }
 
+/**
+ * 自定义渲染模式
+ */
 export interface S2RenderOptions {
   /**
    * 是否重新加载数据
@@ -379,7 +377,7 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成数据集
    */
-  reBuildDataSet?: boolean;
+  rebuildDataSet?: boolean;
 
   /**
    * 是否重新生成列头隐藏信息

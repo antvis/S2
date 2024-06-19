@@ -1,9 +1,9 @@
 import { CellData } from '@/data-set/cell-data';
 import {
-  isNotNumber,
-  getDataSumByField,
-  getDataExtremumByField,
   getDataAvgByField,
+  getDataExtremumByField,
+  getDataSumByField,
+  isNotNumber,
 } from '@/utils/number-calculate';
 
 describe('Number Calculate Test', () => {

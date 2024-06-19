@@ -1,22 +1,22 @@
 /* eslint-disable jest/expect-expect */
 import {
+  BaseBrushSelection,
+  DeviceType,
+  InteractionName,
+  LayoutWidthType,
+  S2Event,
+  SpreadSheet,
+  TableSheet,
+  type S2CellType,
+  type S2DataConfig,
+  type S2Options,
+} from '@/index';
+import {
   createPivotSheet,
   getContainer,
   getMockData,
   sleep,
 } from 'tests/util/helpers';
-import {
-  BaseBrushSelection,
-  DeviceType,
-  InteractionName,
-  type S2DataConfig,
-  S2Event,
-  type S2Options,
-  TableSheet,
-  SpreadSheet,
-  type S2CellType,
-  LayoutWidthType,
-} from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',

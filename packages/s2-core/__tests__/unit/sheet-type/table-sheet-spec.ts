@@ -1,11 +1,11 @@
-import * as dataCfg from 'tests/data/simple-table-data.json';
-import { getContainer } from 'tests/util/helpers';
-import { TableDataSet } from '../../../src/data-set';
-import { TableFacet } from '../../../src/facet';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
 import type { GEvent, TooltipOptions } from '@/index';
 import { TableSheet } from '@/sheet-type';
+import * as dataCfg from 'tests/data/simple-table-data.json';
+import { getContainer } from 'tests/util/helpers';
+import { TableDataSet } from '../../../src/data-set';
+import { TableFacet } from '../../../src/facet';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;
@@ -212,6 +212,27 @@ describe('TableSheet Tests', () => {
       },
     );
   });
+
+  test.each([
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
 
   test('should get normal header fields status', () => {
     expect(s2.isCustomHeaderFields()).toBeFalsy();

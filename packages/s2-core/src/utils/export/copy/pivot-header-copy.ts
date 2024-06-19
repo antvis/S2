@@ -1,12 +1,12 @@
 import { filter, isEmpty, map, max, repeat, zip } from 'lodash';
 import type { ColCell, RowCell } from '../../../cell';
+import { CellType, NODE_ID_SEPARATOR } from '../../../common';
 import type { CopyableList } from '../../../common/interface/export';
 import {
   getAllLevels,
   getHeaderList,
   getHeaderMeasureFieldNames,
 } from '../method';
-import { CellType, NODE_ID_SEPARATOR } from '../../../common';
 import { matrixHtmlTransformer, matrixPlainTextTransformer } from './common';
 
 /**

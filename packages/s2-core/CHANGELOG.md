@@ -1,3 +1,18 @@
+# [@antv/s2-v2.0.0-next.23](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.22...@antv/s2-v2.0.0-next.23) (2024-06-03)
+
+
+### Bug Fixes
+
+* wheel scroll error! ([#2643](https://github.com/antvis/S2/issues/2643)) ([43cf364](https://github.com/antvis/S2/commit/43cf364cabc22409f405a1e6297d2d7196f8050b))
+* 修复字段标记背景色透明度优先级低于主题背景色透明度的问题 ([#2744](https://github.com/antvis/S2/issues/2744)) ([6949f60](https://github.com/antvis/S2/commit/6949f6007f1d6c6ced4011803be9c24d326f084b))
+* 修复明细表导出时自定义序号文本不生效 close [#2755](https://github.com/antvis/S2/issues/2755) ([#2757](https://github.com/antvis/S2/issues/2757)) ([ebe68d8](https://github.com/antvis/S2/commit/ebe68d83986a1e9de87d0154382f3725818d5bfd))
+* 修复自定义 dataCell 错误的传参写法 ([#2748](https://github.com/antvis/S2/issues/2748)) ([c54ca82](https://github.com/antvis/S2/commit/c54ca826ab3fd8aa1e760f522abbc0190c724060))
+
+
+### Features
+
+* 增强行列冻结能力 ([#2706](https://github.com/antvis/S2/issues/2706)) ([e72d053](https://github.com/antvis/S2/commit/e72d05326c3db5d20aa88eec947549a78014b030)), closes [#2739](https://github.com/antvis/S2/issues/2739)
+
 # [@antv/s2-v2.0.0-next.22](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.21...@antv/s2-v2.0.0-next.22) (2024-05-24)
 
 

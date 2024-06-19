@@ -31,8 +31,8 @@ import type {
   ResizePosition,
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
-import { floor } from '../utils/math';
 import { Node } from '../facet/layout/node';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -187,6 +187,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
+      event?.preventDefault?.();
+
       const shape = event.target as Group;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
 
@@ -576,7 +578,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private renderResizedResult() {
+  private async renderResizedResult() {
     const resizeInfo = this.getResizeInfo();
     const {
       style,
@@ -605,7 +607,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     this.spreadsheet.store.set('resized', true);
-    this.render();
+    await this.render();
   }
 
   private getResizeInfo(): ResizeInfo {
@@ -636,10 +638,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private render() {
+  private async render() {
     this.resizeStartPosition = {};
     this.resizeTarget = null;
     this.resizeReferenceGroup = null;
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   }
 }

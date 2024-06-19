@@ -1,6 +1,6 @@
+import { S2Pagination } from '@/components/pagination';
 import { render } from '@testing-library/react';
 import React from 'react';
-import { S2Pagination } from '@/components/pagination';
 
 describe('Pagination Component Tests', () => {
   test('should not render pagination if config is empty', () => {

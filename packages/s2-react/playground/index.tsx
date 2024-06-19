@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
+  DEFAULT_FROZEN_COUNTS,
   DEFAULT_STYLE,
   Node,
   SpreadSheet,
@@ -10,6 +11,7 @@ import {
   getDefaultSeriesNumberText,
   getLang,
   getPalette,
+  safeJsonParse,
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellHighlightOptions,
@@ -18,7 +20,6 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  safeJsonParse,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -49,6 +50,7 @@ import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { ConfigProvider } from '../src/components/config-provider';
+import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
@@ -58,7 +60,9 @@ import { LinkGroup } from './components/LinkGroup';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
+
 import {
+  PivotSheetFrozenOptions,
   TableSheetFrozenOptions,
   defaultOptions,
   pivotSheetDataCfg,
@@ -75,16 +79,9 @@ import {
 import { PlaygroundContext } from './context/playground.context';
 import { partDrillDown } from './drill-down';
 import './index.less';
+import { onSheetMounted } from './utils';
 
 type TableSheetColumnType = 'single' | 'multiple';
-
-const onSheetMounted = (s2: SpreadSheet) => {
-  console.log('onSheetMounted: ', s2);
-  // @ts-ignore
-  window.s2 = s2;
-  // @ts-ignore
-  window.__g_instances__ = [s2.container];
-};
 
 const CustomTooltip = () => (
   <div>
@@ -580,34 +577,10 @@ function MainLayout() {
                                   }}
                                   disabled={sheetType === 'table'}
                                 />
-                                <Tooltip title="使用场景: 1. 开启总计, 且置于顶部, 2. 树状模式（关闭序号）">
-                                  <Switch
-                                    checkedChildren="冻结首行开"
-                                    unCheckedChildren="冻结首行关"
-                                    defaultChecked={
-                                      mergedOptions.frozen?.firstRow
-                                    }
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        frozen: {
-                                          firstRow: checked,
-                                        },
-                                      });
-                                    }}
-                                    disabled={
-                                      sheetType === 'table' ||
-                                      (mergedOptions.hierarchyType === 'grid' &&
-                                        (!mergedOptions?.totals?.row
-                                          ?.showGrandTotals ||
-                                          !mergedOptions?.totals?.row
-                                            ?.reverseGrandTotalsLayout))
-                                    }
-                                  />
-                                </Tooltip>
                                 <Tooltip title="透视表有效">
                                   <Switch
-                                    checkedChildren="冻结行头开"
-                                    unCheckedChildren="冻结行头关"
+                                    checkedChildren="冻结行头区域开"
+                                    unCheckedChildren="冻结行头区域关"
                                     defaultChecked={
                                       !!mergedOptions.frozen?.rowHeader
                                     }
@@ -621,32 +594,43 @@ function MainLayout() {
                                     disabled={sheetType === 'table'}
                                   />
                                 </Tooltip>
-                                <Tooltip title="明细表有效">
-                                  <Switch
-                                    checkedChildren="冻结列头开"
-                                    unCheckedChildren="冻结列头关"
-                                    defaultChecked={
-                                      !!mergedOptions.frozen?.trailingColCount
+
+                                <Switch
+                                  checkedChildren="冻结行头开"
+                                  unCheckedChildren="冻结行头关"
+                                  defaultChecked={
+                                    !!mergedOptions.frozen?.trailingRowCount
+                                  }
+                                  onChange={(checked) => {
+                                    if (checked) {
+                                      updateOptions({
+                                        frozen: PivotSheetFrozenOptions,
+                                      });
+                                    } else {
+                                      updateOptions({
+                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
+                                      });
                                     }
-                                    onChange={(checked) => {
-                                      if (checked) {
-                                        updateOptions({
-                                          frozen: TableSheetFrozenOptions,
-                                        });
-                                      } else {
-                                        updateOptions({
-                                          frozen: {
-                                            rowCount: 0,
-                                            colCount: 0,
-                                            trailingColCount: 0,
-                                            trailingRowCount: 0,
-                                          },
-                                        });
-                                      }
-                                    }}
-                                    disabled={sheetType === 'pivot'}
-                                  />
-                                </Tooltip>
+                                  }}
+                                />
+                                <Switch
+                                  checkedChildren="冻结列头开"
+                                  unCheckedChildren="冻结列头关"
+                                  defaultChecked={
+                                    !!mergedOptions.frozen?.trailingColCount
+                                  }
+                                  onChange={(checked) => {
+                                    if (checked) {
+                                      updateOptions({
+                                        frozen: TableSheetFrozenOptions,
+                                      });
+                                    } else {
+                                      updateOptions({
+                                        frozen: { ...DEFAULT_FROZEN_COUNTS },
+                                      });
+                                    }
+                                  }}
+                                />
                                 <Switch
                                   checkedChildren="显示序号"
                                   unCheckedChildren="不显示序号"
@@ -1650,6 +1634,11 @@ function MainLayout() {
                 key: 'chart',
                 label: '绘制 G2 图表',
                 children: <ChartSheet />,
+              },
+              {
+                key: 'bigData',
+                label: '100w 数据',
+                children: <BigDataSheet />,
               },
             ]}
           />

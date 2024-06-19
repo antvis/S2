@@ -1,16 +1,16 @@
+import { EXTRA_FIELD, type S2DataConfig } from '@/common';
+import type { S2Options } from '@/common/interface';
+import type { ViewMeta } from '@/common/interface/basic';
+import type { Node } from '@/facet/layout/node';
+import { PivotSheet, TableSheet, type SpreadSheet } from '@/sheet-type';
+import * as dataConfig from 'tests/data/mock-dataset.json';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
 import {
   createPivotSheet,
   createTableSheet,
   getContainer,
 } from 'tests/util/helpers';
-import * as dataConfig from 'tests/data/mock-dataset.json';
-import * as simpleDataConfig from 'tests/data/simple-data.json';
 import { customColSimpleColumns } from '../data/custom-table-col-fields';
-import { EXTRA_FIELD, type S2DataConfig } from '@/common';
-import type { ViewMeta } from '@/common/interface/basic';
-import type { Node } from '@/facet/layout/node';
-import type { S2Options } from '@/common/interface';
-import { TableSheet, type SpreadSheet, PivotSheet } from '@/sheet-type';
 
 describe('SpreadSheet Custom Cell Style Tests', () => {
   let s2: SpreadSheet;

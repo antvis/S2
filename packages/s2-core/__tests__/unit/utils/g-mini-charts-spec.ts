@@ -1,9 +1,3 @@
-import { forEach, last, map } from 'lodash';
-import { data } from 'tests/data/mock-dataset.json';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { createPivotSheet, getContainer } from 'tests/util/helpers';
-import type { IElement } from '@antv/g-lite';
-import type { RangeColors } from '../../../src/common/interface/theme';
 import type { DataCell } from '@/cell';
 import {
   CellType,
@@ -22,6 +16,12 @@ import {
   scale,
   transformRatioToPercent,
 } from '@/utils/g-mini-charts';
+import type { IElement } from '@antv/g-lite';
+import { forEach, last, map } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import type { RangeColors } from '../../../src/common/interface/theme';
 
 const getChartData = (type: MiniChartType) => {
   return {

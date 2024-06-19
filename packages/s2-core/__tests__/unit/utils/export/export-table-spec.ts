@@ -1,6 +1,18 @@
 /* eslint-disable jest/expect-expect */
+import { CopyMIMEType } from '@/common/interface/export';
+import { TableSheet } from '@/sheet-type';
+import { asyncGetAllPlainData } from '@/utils';
 import { slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
+import {
+  CSV_SEPARATOR,
+  FormatOptions,
+  LINE_SEPARATOR,
+  S2DataConfig,
+  S2Options,
+  TAB_SEPARATOR,
+} from '../../../../src';
+import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import {
   assembleDataCfg,
   assembleOptions,
@@ -11,18 +23,6 @@ import {
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
-import {
-  CSV_SEPARATOR,
-  FormatOptions,
-  S2DataConfig,
-  S2Options,
-  LINE_SEPARATOR,
-  TAB_SEPARATOR,
-} from '../../../../src';
-import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
-import { CopyMIMEType } from '@/common/interface/export';
-import { TableSheet } from '@/sheet-type';
-import { asyncGetAllPlainData } from '@/utils';
 
 describe('TableSheet Export Test', () => {
   const expectColumnsFormatterMatchSnapshot = async (
@@ -465,5 +465,56 @@ describe('TableSheet Export Test', () => {
 
     // The first line is the header, so the number of lines should be the same as the number of data plus one
     expect(data.split(LINE_SEPARATOR)).toHaveLength(bigData.length + 1);
+  });
+
+  it('should export correctly data for default series number text by { formatHeader: false }', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        seriesNumber: { enable: true },
+      }),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: TAB_SEPARATOR,
+      formatOptions: {
+        formatHeader: false,
+      },
+    });
+
+    expect(data).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2755
+  it('should export correctly data for custom series number text by { formatHeader: true }', async () => {
+    const tableSheet = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        seriesNumber: { enable: true, text: '测试' },
+      }),
+    );
+
+    await tableSheet.render();
+    const data = await asyncGetAllPlainData({
+      sheetInstance: tableSheet,
+      split: TAB_SEPARATOR,
+      formatOptions: {
+        formatHeader: true,
+      },
+    });
+
+    expect(data).toMatchSnapshot();
   });
 });

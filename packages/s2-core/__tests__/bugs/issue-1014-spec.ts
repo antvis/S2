@@ -4,11 +4,11 @@
  * Column should not be formatted
  *
  */
+import type { S2DataConfig, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { get } from 'lodash';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2options: S2Options = {
   // 让被测试的单元格在首屏显示出来

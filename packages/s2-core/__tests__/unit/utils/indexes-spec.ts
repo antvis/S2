@@ -3,6 +3,7 @@ import {
   diffIndexes,
   diffPanelIndexes,
   isXYInRange,
+  type Indexes,
 } from '../../../src/utils/indexes';
 
 describe('indexes test', () => {
@@ -16,7 +17,7 @@ describe('indexes test', () => {
   });
 
   test('#allIndexes()', () => {
-    expect(allIndexes([])).toEqual([]);
+    expect(allIndexes([] as unknown as Indexes)).toEqual([]);
     expect(allIndexes([0, 1, 0, 1])).toEqual([
       [0, 0],
       [0, 1],
@@ -26,7 +27,9 @@ describe('indexes test', () => {
   });
 
   test('#diffIndexes()', () => {
-    expect(diffIndexes([], [])).toEqual({
+    expect(
+      diffIndexes([] as unknown as Indexes, [] as unknown as Indexes),
+    ).toEqual({
       add: [],
       remove: [],
     });
@@ -60,7 +63,12 @@ describe('indexes test', () => {
   });
 
   test('#diffPanelIndexes()', () => {
-    expect(diffPanelIndexes({ center: [] }, { center: [] })).toEqual({
+    expect(
+      diffPanelIndexes(
+        { center: [] as unknown as Indexes },
+        { center: [] as unknown as Indexes },
+      ),
+    ).toEqual({
       add: [],
       remove: [],
     });

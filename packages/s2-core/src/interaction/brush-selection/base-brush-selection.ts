@@ -1,13 +1,14 @@
 import {
   Rect,
-  type DisplayObject,
   type FederatedPointerEvent as CanvasEvent,
+  type DisplayObject,
   type PointLike,
 } from '@antv/g';
 import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+  FrozenGroupArea,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -28,7 +29,7 @@ import type {
   ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine/interface';
-import type { TableFacet } from '../../facet';
+import type { FrozenFacet, TableFacet } from '../../facet';
 import type { Node } from '../../facet/layout/node';
 import {
   isFrozenCol,
@@ -42,7 +43,6 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../../utils/interaction';
-import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
 
@@ -206,9 +206,9 @@ export class BaseBrushSelection
 
   public validateYIndex = (yIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenInfo = (facet as unknown as TableFacet).frozenGroupInfo;
+    const frozenGroupAreas = (facet as unknown as TableFacet).frozenGroupAreas;
     let min = 0;
-    const frozenRowRange = frozenInfo?.frozenRow?.range;
+    const frozenRowRange = frozenGroupAreas?.frozenRow?.range;
 
     if (frozenRowRange?.[1]) {
       min = frozenRowRange[1] + 1;
@@ -219,7 +219,7 @@ export class BaseBrushSelection
     }
 
     let max = facet.getCellRange().end;
-    const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
+    const frozenTrailingRowRange = frozenGroupAreas?.frozenTrailingRow?.range;
 
     if (frozenTrailingRowRange?.[0]) {
       max = frozenTrailingRowRange[0] - 1;
@@ -234,10 +234,10 @@ export class BaseBrushSelection
 
   public validateXIndex = (xIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenInfo = (facet as unknown as TableFacet).frozenGroupInfo;
+    const frozenGroupAreas = (facet as TableFacet).frozenGroupAreas;
 
     let min = 0;
-    const frozenColRange = frozenInfo?.frozenCol?.range;
+    const frozenColRange = frozenGroupAreas[FrozenGroupArea.Col].range;
 
     if (frozenColRange?.[1]) {
       min = frozenColRange[1] + 1;
@@ -248,7 +248,8 @@ export class BaseBrushSelection
     }
 
     let max = facet.getColLeafNodes().length - 1;
-    const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
+    const frozenTrailingColRange =
+      frozenGroupAreas[FrozenGroupArea.TrailingCol].range;
 
     if (frozenTrailingColRange?.[0]) {
       max = frozenTrailingColRange[0] - 1;
@@ -265,31 +266,29 @@ export class BaseBrushSelection
     colIndex: number,
     dir: ScrollDirection,
   ) => {
-    const { facet, dataSet, options } = this.spreadsheet;
-    const dataLength = dataSet.getDisplayDataSet().length;
+    const { facet } = this.spreadsheet;
     const colLength = facet.getColLeafNodes().length;
 
-    const {
-      trailingColCount: frozenTrailingColCount,
-      colCount: frozenColCount,
-    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
+    const { colCount, trailingColCount } = (
+      facet as FrozenFacet
+    ).getFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 
     if (
-      frozenTrailingColCount! > 0 &&
-      dir === ScrollDirection.SCROLL_DOWN &&
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount!, colLength)
+      colCount > 0 &&
+      dir === ScrollDirection.SCROLL_UP &&
+      isFrozenCol(colIndex, colCount)
     ) {
-      return panelIndexes[1];
+      return panelIndexes[0];
     }
 
     if (
-      frozenColCount! > 0 &&
-      dir === ScrollDirection.SCROLL_UP &&
-      isFrozenCol(colIndex, frozenColCount!)
+      trailingColCount > 0 &&
+      dir === ScrollDirection.SCROLL_DOWN &&
+      isFrozenTrailingCol(colIndex, trailingColCount, colLength)
     ) {
-      return panelIndexes[0];
+      return panelIndexes[1];
     }
 
     return colIndex;
@@ -299,31 +298,28 @@ export class BaseBrushSelection
     rowIndex: number,
     dir: ScrollDirection,
   ) => {
-    const { facet, dataSet, options } = this.spreadsheet;
-    const dataLength = dataSet.getDisplayDataSet().length;
-    const colLength = facet.getColLeafNodes().length;
+    const { facet } = this.spreadsheet;
     const cellRange = facet.getCellRange();
-    const {
-      trailingRowCount: frozenTrailingRowCount,
-      rowCount: frozenRowCount,
-    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
+    const { rowCount, trailingRowCount } = (
+      facet as FrozenFacet
+    ).getFrozenOptions();
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
 
     if (
-      frozenTrailingRowCount! > 0 &&
-      dir === ScrollDirection.SCROLL_DOWN &&
-      isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount!)
+      rowCount > 0 &&
+      dir === ScrollDirection.SCROLL_UP &&
+      isFrozenRow(rowIndex, cellRange.start, rowCount)
     ) {
-      return panelIndexes[3];
+      return panelIndexes[2];
     }
 
     if (
-      frozenRowCount! > 0 &&
-      dir === ScrollDirection.SCROLL_UP &&
-      isFrozenRow(rowIndex, cellRange.start, frozenRowCount!)
+      trailingRowCount > 0 &&
+      dir === ScrollDirection.SCROLL_DOWN &&
+      isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)
     ) {
-      return panelIndexes[2];
+      return panelIndexes[3];
     }
 
     return rowIndex;

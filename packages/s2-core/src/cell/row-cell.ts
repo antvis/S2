@@ -2,7 +2,7 @@ import type { PointLike } from '@antv/g';
 import { find, get, merge } from 'lodash';
 import {
   CellType,
-  FrozenGroupType,
+  FrozenGroupArea,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -15,6 +15,7 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import { CustomRect } from '../engine';
+import type { FrozenFacet } from '../facet/frozen-facet';
 import type { RowHeaderConfig } from '../facet/header';
 import {
   getHorizontalTextIconPosition,
@@ -25,12 +26,11 @@ import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height'
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
-import type { FrozenFacet } from '../facet/frozen-facet';
 import type { SimpleBBox } from './../engine/interface';
 import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { normalizeTextAlign } from './../utils/normalize';
 import { HeaderCell } from './header-cell';
 
@@ -244,7 +244,6 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       viewportHeight: headerHeight,
       scrollX = 0,
       scrollY = 0,
-      spreadsheet,
     } = this.getHeaderConfig();
 
     const resizeAreaBBox: SimpleBBox = {
@@ -254,30 +253,34 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
       height: resizeStyle.size!,
     };
 
-    const isFrozen = this.getMeta().isFrozen;
+    const isFrozen = this.meta.isFrozen;
 
-    const frozenRowGroupHeight = (spreadsheet.facet as FrozenFacet)
-      .frozenGroupInfo[FrozenGroupType.FROZEN_ROW]?.height;
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroup = frozenGroupAreas[FrozenGroupArea.Row];
+
+    const frozenTrailingRowGroup =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow];
 
     const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
-      y: frozenRowGroupHeight,
+      y: isFrozen ? 0 : frozenRowGroup.height,
       width: headerWidth,
-      height: headerHeight,
+      height: isFrozen
+        ? Number.POSITIVE_INFINITY
+        : headerHeight - frozenRowGroup.height - frozenTrailingRowGroup.height,
     };
 
     if (
-      !isFrozen &&
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,
-        scrollY,
+        scrollY: isFrozen ? 0 : scrollY,
       })
     ) {
       return;
     }
 
-    const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y - (isFrozen ? 0 : scrollY);
+    const { offsetX, offsetY } = this.getHorizontalResizeAreaOffset();
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - position.x - (x - scrollX)
@@ -307,6 +310,45 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
         attrs.appendInfo,
       ),
     );
+  }
+
+  protected getHorizontalResizeAreaOffset() {
+    const {
+      position,
+      viewportHeight: headerHeight,
+      scrollX = 0,
+      scrollY = 0,
+    } = this.getHeaderConfig();
+
+    const { x, y } = this.getBBoxByType();
+
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+    const frozenRowGroup = frozenGroupAreas[FrozenGroupArea.Row];
+
+    const frozenTrailingRowGroup =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow];
+
+    const offsetX = position.x + x - scrollX;
+
+    let offsetY: number = position.y;
+
+    if (this.meta.isFrozenHead) {
+      offsetY += y - frozenRowGroup.y;
+    } else if (this.meta.isFrozenTrailing) {
+      offsetY +=
+        headerHeight -
+        frozenTrailingRowGroup.height +
+        y -
+        frozenTrailingRowGroup.y;
+    } else {
+      offsetY += y - scrollY;
+    }
+
+    return {
+      offsetX,
+      offsetY,
+    };
   }
 
   protected getContentIndent() {
@@ -374,14 +416,26 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   }
 
   protected handleViewport() {
+    if (this.meta.isFrozen) {
+      return {
+        start: 0,
+        size: Number.POSITIVE_INFINITY,
+      };
+    }
+
     const { scrollY, viewportHeight } = this.getHeaderConfig();
 
-    const frozenRowGroupHeight = (this.spreadsheet.facet as FrozenFacet)
-      ?.frozenGroupInfo[FrozenGroupType.FROZEN_ROW].height;
+    const frozenGroupAreas = (this.spreadsheet.facet as FrozenFacet)
+      .frozenGroupAreas;
+
+    const frozenRowGroupHeight = frozenGroupAreas[FrozenGroupArea.Row].height;
+    const frozenTrailingRowGroupHeight =
+      frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
 
     const viewport: AreaRange = {
-      start: this.getMeta().isFrozen ? 0 : scrollY! + frozenRowGroupHeight,
-      size: viewportHeight - frozenRowGroupHeight,
+      start: scrollY! + frozenRowGroupHeight,
+      size:
+        viewportHeight - frozenRowGroupHeight - frozenTrailingRowGroupHeight,
     };
 
     return viewport;

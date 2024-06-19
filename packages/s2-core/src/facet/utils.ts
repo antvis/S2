@@ -1,19 +1,17 @@
 import type { Group } from '@antv/g';
 import { findIndex, isEmpty, isNil } from 'lodash';
 import type { FrozenCellIndex } from '../common/constant/frozen';
-import { FrozenCellType } from '../common/constant/frozen';
+import { FrozenGroupType } from '../common/constant/frozen';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
   CustomHeaderFields,
   Fields,
   Pagination,
-  S2Options,
-  S2PivotSheetFrozenOptions,
-  S2TableSheetFrozenOptions,
+  S2BaseFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
-import type { Indexes } from '../utils/indexes';
 import type { SimpleBBox } from '../engine';
+import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
 
@@ -151,12 +149,12 @@ export const translateGroupY = (group: Group, scrollY: number) => {
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * @description returns which group data cell belongs in frozen mode
  */
-export const getFrozenDataCellType = (
+export const getFrozenGroupTypeByCell = (
   meta: {
     colIndex: number;
     rowIndex: number;
   },
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -172,29 +170,29 @@ export const getFrozenDataCellType = (
   const { colIndex, rowIndex } = meta;
 
   if (isFrozenRow(rowIndex, cellRange.start, rowCount)) {
-    return FrozenCellType.ROW;
+    return FrozenGroupType.Row;
   }
 
   if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
-    return FrozenCellType.TRAILING_ROW;
+    return FrozenGroupType.TrailingRow;
   }
 
   if (isFrozenCol(colIndex, colCount)) {
-    return FrozenCellType.COL;
+    return FrozenGroupType.Col;
   }
 
   if (isFrozenTrailingCol(colIndex, trailingColCount, colLength)) {
-    return FrozenCellType.TRAILING_COL;
+    return FrozenGroupType.TrailingCol;
   }
 
-  return FrozenCellType.SCROLL;
+  return FrozenGroupType.Scroll;
 };
 
 /**
  * @description calculate all cells in frozen group's intersection region
  */
 export const calculateFrozenCornerCells = (
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -208,17 +206,17 @@ export const calculateFrozenCornerCells = (
     trailingRowCount: frozenTrailingRowCount = 0,
   } = frozenOptions;
 
-  const result: {
-    [key: string]: FrozenCellIndex[];
-  } = {
-    [FrozenCellType.TOP]: [],
-    [FrozenCellType.BOTTOM]: [],
+  const result = {
+    [FrozenGroupType.TopLeft]: [] as FrozenCellIndex[],
+    [FrozenGroupType.TopRight]: [] as FrozenCellIndex[],
+    [FrozenGroupType.BottomLeft]: [] as FrozenCellIndex[],
+    [FrozenGroupType.BottomRight]: [] as FrozenCellIndex[],
   };
 
-  // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and bottom left corner.
+  // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and Bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenCellType.TOP].push({
+      result[FrozenGroupType.TopLeft].push({
         x: i,
         y: j,
       });
@@ -228,7 +226,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenCellType.BOTTOM].push({
+        result[FrozenGroupType.BottomLeft].push({
           x: i,
           y: index,
         });
@@ -241,7 +239,7 @@ export const calculateFrozenCornerCells = (
     const colIndex = colLength - 1 - i;
 
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
-      result[FrozenCellType.TOP].push({
+      result[FrozenGroupType.TopRight].push({
         x: colIndex,
         y: j,
       });
@@ -251,7 +249,7 @@ export const calculateFrozenCornerCells = (
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
 
-        result[FrozenCellType.BOTTOM].push({
+        result[FrozenGroupType.BottomRight].push({
           x: colIndex,
           y: index,
         });
@@ -267,7 +265,7 @@ export const calculateFrozenCornerCells = (
  */
 export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
-  frozenOptions: S2TableSheetFrozenOptions,
+  frozenOptions: S2BaseFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -352,55 +350,6 @@ export const getCellRange = (
 };
 
 /**
- * 给定一个一层的 node 数组以及左右固定列的数量，计算出实际固定列（叶子节点）的数量
- * @param nodes
- * @param colCount
- * @param trailingColCount
- * @returns {colCount, trailingColCount}
- */
-export const getFrozenLeafNodesCount = (
-  nodes: Node[],
-  colCount: number,
-  trailingColCount: number,
-): { colCount: number; trailingColCount: number } => {
-  const getLeafNodesCount = (node: Node) => {
-    if (node.isLeaf) {
-      return 1;
-    }
-
-    if (node.children) {
-      return node.children.reduce((pCount, item) => {
-        pCount += getLeafNodesCount(item);
-
-        return pCount;
-      }, 0);
-    }
-
-    return 0;
-  };
-
-  if (colCount) {
-    colCount = nodes.slice(0, colCount).reduce((count, node) => {
-      count += getLeafNodesCount(node);
-
-      return count;
-    }, 0);
-  }
-
-  if (trailingColCount) {
-    trailingColCount = nodes
-      .slice(nodes.length - trailingColCount)
-      .reduce((count, node) => {
-        count += getLeafNodesCount(node);
-
-        return count;
-      }, 0);
-  }
-
-  return { colCount, trailingColCount };
-};
-
-/**
  * 明细表多级表头根据一个 node 返回其所属顶层节点
  * @param node
  * @returns {Node}
@@ -479,46 +428,4 @@ export const areAllFieldsEmpty = (fields: Fields) => {
   return (
     isEmpty(fields.rows) && isEmpty(fields.columns) && isEmpty(fields.values)
   );
-};
-
-/**
- * get frozen options pivot-sheet (business limit)
- * @param options
- * @returns
- */
-export const getFrozenRowCfgPivot = (
-  options: S2Options,
-  rowNodes: Node[],
-): S2PivotSheetFrozenOptions &
-  S2TableSheetFrozenOptions & {
-    rowHeight: number;
-  } => {
-  /**
-   * series number cell 可以自定义布局，和 row cell 不一定是 1 对 1 的关系
-   * seriesNumber 暂时禁用 首行冻结
-   * */
-  const { pagination, frozen, hierarchyType, seriesNumber } = options;
-
-  const enablePagination = pagination && pagination.pageSize;
-  let firstRow = false;
-  const headNode = rowNodes?.[0];
-
-  if (!enablePagination && !seriesNumber?.enable && frozen?.firstRow) {
-    const treeMode = hierarchyType === 'tree';
-
-    // tree mode
-    // first node no children: entire row
-    firstRow = treeMode || headNode?.children?.length === 0;
-  }
-
-  const effectiveFrozenFirstRow = firstRow && !!headNode;
-
-  return {
-    rowCount: effectiveFrozenFirstRow ? 1 : 0,
-    colCount: 0,
-    trailingColCount: 0,
-    trailingRowCount: 0,
-    firstRow,
-    rowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
-  };
 };

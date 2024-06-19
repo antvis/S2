@@ -2,10 +2,10 @@
  * @description spec for issue #2385
  * https://github.com/antvis/S2/issues/2385
  */
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { LayoutWidthType, type S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2385.json';
 import { getContainer } from '../util/helpers';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 
 const s2Options: S2Options = {
   width: 800,

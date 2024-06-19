@@ -4,9 +4,9 @@
  * https://github.com/antvis/S2/issues/1337
  * Row with only value field should not render total node
  */
-import { getContainer } from 'tests/util/helpers';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { PivotSheet } from '@/sheet-type';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
 
 describe('Totals Tests', () => {
   let spreadsheet: PivotSheet;

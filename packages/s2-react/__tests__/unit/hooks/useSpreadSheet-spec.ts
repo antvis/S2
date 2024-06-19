@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import type { SheetComponentProps } from '@/components';
+import { useSpreadSheet } from '@/hooks';
 import {
   PivotSheet,
   S2Event,
@@ -6,14 +7,12 @@ import {
   type S2DataConfig,
   type S2Options,
 } from '@antv/s2';
-import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { cloneDeep } from 'lodash';
 import { waitFor } from '@testing-library/react';
-import { useSpreadSheet } from '@/hooks';
-import type { SheetComponentsProps } from '@/components';
+import { act, renderHook } from '@testing-library/react-hooks';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 200,
   height: 200,
   hd: false,
@@ -22,7 +21,7 @@ const s2Options: SheetComponentsProps['options'] = {
 describe('useSpreadSheet tests', () => {
   const getConfig = (
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
-  ): SheetComponentsProps => {
+  ): SheetComponentProps => {
     return {
       spreadsheet: () =>
         new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options),
@@ -85,11 +84,15 @@ describe('useSpreadSheet tests', () => {
       valueInCols: true,
     };
 
-    const props = cloneDeep({
+    const props = {
       ...getConfig(defaultFields),
       sheetType: 'strategy' as const,
-    });
-    const { result } = renderHook(() => useSpreadSheet(props));
+    };
+
+    const { result, rerender } = renderHook(
+      (innerProps) => useSpreadSheet(innerProps),
+      { initialProps: props },
+    );
 
     await waitFor(() => {
       const s2 = result.current.s2Ref.current;
@@ -98,23 +101,23 @@ describe('useSpreadSheet tests', () => {
       expect(s2!.facet.getInitColLeafNodes()).toHaveLength(2);
     });
 
-    /*
-     * 很奇怪, rerender 之后始终拿到的两次 dataCfg 是一样的, 暂时先注释了
-     * act(() => {
-     *   const fields: S2DataConfig['fields'] = {
-     *     rows: ['province', 'city'],
-     *     columns: ['type'],
-     *     values: ['price'],
-     *     valueInCols: false,
-     *   };
-     */
+    act(() => {
+      const fields: S2DataConfig['fields'] = {
+        ...defaultFields,
+        columns: ['type'],
+      };
 
-    /*
-     *   rerender(getConfig(fields));
-     * });
-     */
+      rerender({
+        ...props,
+        ...getConfig(fields),
+      });
+    });
 
-    // expect(s2.store.get('initColLeafNodes')).toEqual([]);
+    await waitFor(() => {
+      const s2 = result.current.s2Ref.current;
+
+      expect(s2!.facet.getInitColLeafNodes()).toHaveLength(0);
+    });
   });
 
   test('should destroy sheet after unmount component', async () => {
@@ -167,6 +170,75 @@ describe('useSpreadSheet tests', () => {
 
       expect(s2).not.toEqual(null);
       expect(onMounted).toHaveBeenCalledWith(s2);
+    });
+  });
+
+  test('should call onUpdate and onUpdateAfterRender when sheet updated', async () => {
+    const onUpdate = jest.fn();
+    const onUpdateAfterRender = jest.fn();
+
+    const props = {
+      ...getConfig(),
+      sheetType: 'pivot' as const,
+      onUpdate,
+      onUpdateAfterRender,
+    };
+    const { rerender } = renderHook(
+      (innerProps) => useSpreadSheet(innerProps),
+      {
+        initialProps: props,
+      },
+    );
+
+    await waitFor(() => {
+      expect(onUpdate).toHaveBeenCalledTimes(0);
+      expect(onUpdateAfterRender).toHaveBeenCalledTimes(0);
+    });
+
+    act(() => {
+      rerender({ ...props, options: { width: 200 } });
+    });
+
+    await waitFor(() => {
+      expect(onUpdate).toHaveBeenCalledWith({
+        rebuildDataSet: false,
+        reloadData: false,
+      });
+      expect(onUpdateAfterRender).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  test('should use custom render mode by onUpdate', async () => {
+    const onUpdate = jest.fn((options) => ({ ...options, reloadData: true }));
+    const onUpdateAfterRender = jest.fn();
+
+    const props = {
+      ...getConfig(),
+      sheetType: 'pivot' as const,
+      onUpdate,
+      onUpdateAfterRender,
+    };
+    const { rerender } = renderHook(
+      (innerProps) => useSpreadSheet(innerProps),
+      {
+        initialProps: props,
+      },
+    );
+
+    act(() => {
+      rerender({ ...props, options: { width: 200 } });
+    });
+
+    await waitFor(() => {
+      expect(onUpdate).toHaveBeenCalledWith({
+        rebuildDataSet: false,
+        reloadData: false,
+      });
+      expect(onUpdateAfterRender).toHaveBeenCalledWith({
+        rebuildDataSet: false,
+        // 由于使用了自定义的 onUpdate，所以这里应该为 true
+        reloadData: true,
+      });
     });
   });
 });

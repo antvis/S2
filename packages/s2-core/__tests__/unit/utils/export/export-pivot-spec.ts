@@ -1,22 +1,22 @@
 /* eslint-disable jest/expect-expect */
+import { CopyMIMEType } from '@/common/interface/export';
 import { map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
-import {
-  customColGridSimpleFields,
-  customRowGridSimpleFields,
-} from '../../../data/custom-grid-simple-fields';
-import { CustomGridData } from '../../../data/data-custom-grid';
-import { expectMatchSnapshot } from '../../../util/helpers';
+import { PivotSheet, asyncGetAllPlainData } from '../../../../src';
 import {
   CSV_SEPARATOR,
   LINE_SEPARATOR,
   TAB_SEPARATOR,
 } from '../../../../src/common/constant';
-import { asyncGetAllPlainData, PivotSheet } from '../../../../src';
+import {
+  customColGridSimpleFields,
+  customRowGridSimpleFields,
+} from '../../../data/custom-grid-simple-fields';
+import { CustomGridData } from '../../../data/data-custom-grid';
 import { generateRawData } from '../../../util';
-import { CopyMIMEType } from '@/common/interface/export';
+import { expectMatchSnapshot } from '../../../util/helpers';
 
 describe('PivotSheet Export Test', () => {
   let pivotSheet: PivotSheet;

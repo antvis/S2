@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -28,7 +30,7 @@ fetch(
     const App = () => {
       const s2Ref = React.useRef<SpreadSheet>();
 
-      const onColCellClick: SheetComponentsProps['onColCellClick'] = ({
+      const onColCellClick: SheetComponentProps['onColCellClick'] = ({
         viewMeta,
         event,
       }) => {

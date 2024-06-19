@@ -6,8 +6,8 @@ import type {
   S2DataConfig,
   SimpleData,
 } from '../common/interface';
-import { isAscSort, isDescSort } from '../utils/sort-action';
 import { getEmptyPlaceholder } from '../utils';
+import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
 

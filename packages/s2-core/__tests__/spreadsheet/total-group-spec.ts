@@ -1,10 +1,10 @@
-import { getContainer } from 'tests/util/helpers';
+import { ORIGIN_FIELD, type S2Options } from '@/common';
+import { PivotSheet } from '@/sheet-type';
 import { map } from 'lodash';
-import { s2Options, dataCfg } from '../data/total-group-data';
+import { getContainer } from 'tests/util/helpers';
 import { CellData, S2DataConfig } from '../../src';
 import type { PivotFacet } from '../../src/facet';
-import { PivotSheet } from '@/sheet-type';
-import { type S2Options, ORIGIN_FIELD } from '@/common';
+import { dataCfg, s2Options } from '../data/total-group-data';
 
 describe('Total Group Dimension Test', () => {
   let container: HTMLDivElement;

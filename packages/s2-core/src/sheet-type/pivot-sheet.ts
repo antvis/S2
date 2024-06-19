@@ -33,10 +33,6 @@ export class PivotSheet extends SpreadSheet {
     return new PivotDataSet(this);
   }
 
-  public enableFrozenHeaders(): boolean {
-    return false;
-  }
-
   public getContentHeight() {
     return this.facet.getContentHeight();
   }
@@ -70,14 +66,14 @@ export class PivotSheet extends SpreadSheet {
     return this.dataSet?.fields?.valueInCols!;
   }
 
-  public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
+  public async clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
       const cleaned = this.dataSet.clearDrillDownData(rowNodeId);
 
       if (cleaned && !preventRender) {
         // 重置当前交互
         this.interaction.reset();
-        this.render(false);
+        await this.render(false);
       }
     }
   }
@@ -101,7 +97,7 @@ export class PivotSheet extends SpreadSheet {
     );
   }
 
-  protected handleRowCellCollapsed(data: RowCellCollapsedParams) {
+  protected async handleRowCellCollapsed(data: RowCellCollapsedParams) {
     const { isCollapsed, node } = data;
     const { collapseFields: defaultCollapsedFields } =
       this.options.style?.rowCell!;
@@ -118,7 +114,8 @@ export class PivotSheet extends SpreadSheet {
         },
       },
     });
-    this.render(false);
+
+    await this.render(false);
     this.emit(S2Event.ROW_CELL_COLLAPSED, {
       isCollapsed,
       collapseFields,
@@ -126,7 +123,7 @@ export class PivotSheet extends SpreadSheet {
     });
   }
 
-  protected handleRowCellToggleCollapseAll(isCollapsed: boolean) {
+  protected async handleRowCellToggleCollapseAll(isCollapsed: boolean) {
     const collapseAll = !isCollapsed;
 
     this.setOptions({
@@ -138,11 +135,12 @@ export class PivotSheet extends SpreadSheet {
         },
       },
     });
-    this.render(false);
+
+    await this.render(false);
     this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, collapseAll);
   }
 
-  public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
+  public async groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
     const { hideValue } = this.options.style!.colCell!;
     const sortField = this.isValueInCols() ? last(rows) : last(columns);
@@ -177,6 +175,6 @@ export class PivotSheet extends SpreadSheet {
       ...this.dataCfg,
       sortParams,
     });
-    this.render();
+    await this.render();
   }
 }

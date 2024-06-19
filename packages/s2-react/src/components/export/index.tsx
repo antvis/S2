@@ -1,13 +1,13 @@
 import {
-  TAB_SEPARATOR,
+  CSV_SEPARATOR,
   S2_PREFIX_CLS,
   SpreadSheet,
+  TAB_SEPARATOR,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
   i18n,
   type CopyAllDataParams,
-  CSV_SEPARATOR,
 } from '@antv/s2';
 import { Button, Dropdown, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
@@ -47,7 +47,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     successText = i18n('操作成功'),
     errorText = i18n('操作失败'),
     sheet,
-    fileName = '',
+    fileName = 'sheet',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     open,
     dropdown,
@@ -149,7 +149,3 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 });
 
 Export.displayName = 'Export';
-Export.defaultProps = {
-  async: true,
-  fileName: 'sheet',
-};

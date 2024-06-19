@@ -11,6 +11,11 @@ import {
 
 import React from 'react';
 import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentProps,
+} from '../../src';
+import {
   data1,
   data2,
   data4,
@@ -23,18 +28,13 @@ import {
   totalData6,
 } from '../data/data-accuracy';
 import { renderComponent } from '../util/helpers';
-import {
-  type SheetComponentsProps,
-  type SheetComponentOptions,
-  SheetComponent,
-} from '../../src';
 
 let spreadsheet: SpreadSheet;
 
 const setSpreadSheet = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: SheetComponentsProps['options'],
+  options: SheetComponentProps['options'],
   index: number,
 ) => {
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
@@ -110,7 +110,7 @@ const getDataCfg = (index: number) =>
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  }) as SheetComponentsProps['dataCfg'];
+  }) as SheetComponentProps['dataCfg'];
 
 const getOptions = (): SheetComponentOptions => {
   return {
@@ -177,7 +177,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 1)}
         />,
       )}
@@ -190,7 +190,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 2)}
         />,
       )}
@@ -203,7 +203,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 3)}
         />,
       )}
@@ -216,7 +216,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 4)}
         />,
       )}
@@ -229,7 +229,7 @@ function MainLayout() {
           spreadsheet={(
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: SheetComponentsProps['options'],
+            options: SheetComponentProps['options'],
           ) => setSpreadSheet(dom, dataCfg, options, 5)}
         />,
       )}

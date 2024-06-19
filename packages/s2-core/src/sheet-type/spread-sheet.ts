@@ -24,6 +24,7 @@ import {
   InterceptType,
   LayoutWidthType,
   S2Event,
+  getDefaultSeriesNumberText,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
@@ -103,8 +104,6 @@ export abstract class SpreadSheet extends EE {
 
   public abstract getDataSet(): BaseDataSet;
 
-  public abstract enableFrozenHeaders(): boolean;
-
   public abstract isPivotMode(): boolean;
 
   public abstract isCustomRowFields(): boolean;
@@ -122,9 +121,12 @@ export abstract class SpreadSheet extends EE {
   public abstract clearDrillDownData(
     rowNodeId?: string,
     preventRender?: boolean,
-  ): void;
+  ): Promise<void>;
 
-  public abstract groupSortByMethod(sortMethod: SortMethod, meta: Node): void;
+  public abstract groupSortByMethod(
+    sortMethod: SortMethod,
+    meta: Node,
+  ): Promise<void> | void;
 
   public constructor(
     dom: S2MountContainer,
@@ -241,9 +243,9 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
-  private getTargetCell(target: CellEventTarget) {
+  private getTargetCell(target: CellEventTarget): S2CellType {
     // 刷选等场景, 以最后一个发生交互的单元格为准
-    return this.getCell(target) || last(this.interaction.getInteractedCells());
+    return this.getCell(target) || last(this.interaction.getInteractedCells())!;
   }
 
   /**
@@ -420,13 +422,13 @@ export abstract class SpreadSheet extends EE {
 
     const {
       reloadData = true,
-      reBuildDataSet = false,
+      rebuildDataSet = false,
       reBuildHiddenColumnsDetail = true,
     } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
 
-    if (reBuildDataSet) {
+    if (rebuildDataSet) {
       this.dataSet = this.getDataSet();
     }
 
@@ -453,7 +455,7 @@ export abstract class SpreadSheet extends EE {
       s2.render(false)
       s2.render({
         reloadData: true;
-        reBuildDataSet: true;
+        rebuildDataSet: true;
         reBuildHiddenColumnsDetail: true;
       })
    */
@@ -903,8 +905,8 @@ export abstract class SpreadSheet extends EE {
       menu: {
         selectedKeys,
         items: menuItems,
-        onClick: ({ key: sortMethod }) => {
-          this.groupSortByMethod(sortMethod as SortMethod, meta);
+        onClick: async ({ key: sortMethod }) => {
+          await this.groupSortByMethod(sortMethod as SortMethod, meta);
           this.emit(S2Event.RANGE_SORTED, event);
         },
       },
@@ -914,5 +916,15 @@ export abstract class SpreadSheet extends EE {
       operator,
       onlyShowOperator: true,
     });
+  }
+
+  public getSeriesNumberText() {
+    const { text, enable } = this.options.seriesNumber ?? {};
+
+    if (!enable) {
+      return '';
+    }
+
+    return text ?? getDefaultSeriesNumberText();
   }
 }

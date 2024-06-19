@@ -1,3 +1,16 @@
+import { TableSeriesNumberCell } from '@/cell';
+import { LINE_SEPARATOR, S2Event, TAB_SEPARATOR } from '@/common/constant';
+import {
+  InteractionStateName,
+  SortMethodType,
+} from '@/common/constant/interaction';
+import type { Meta } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
+import { CopyMIMEType } from '@/common/interface/export';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
+import { getSelectedData } from '@/utils/export/copy';
+import { convertString } from '@/utils/export/method';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import {
@@ -10,19 +23,6 @@ import { getContainer } from 'tests/util/helpers';
 import type { S2CellType, S2DataConfig } from '../../../../src/common';
 import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
-import { TableSeriesNumberCell } from '@/cell';
-import { LINE_SEPARATOR, TAB_SEPARATOR, S2Event } from '@/common/constant';
-import {
-  InteractionStateName,
-  SortMethodType,
-} from '@/common/constant/interaction';
-import type { Meta } from '@/common/interface';
-import { Aggregation } from '@/common/interface';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import { getSelectedData } from '@/utils/export/copy';
-import { CopyMIMEType } from '@/common/interface/export';
-import { convertString } from '@/utils/export/method';
-import { getCellMeta } from '@/utils/interaction/select-event';
 
 const newLineTest = `### 问题摘要 ${LINE_SEPARATOR}- **会话地址**：`;
 
@@ -846,11 +846,11 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     const meta: Meta[] = [
-      { field: 'number', name: '数量', formatter: (v: string) => `${v}元` },
-      { field: 'province', formatter: (v: string) => `${v}-省` },
-      { field: 'city', name: '城市', formatter: (v: string) => `${v}-市` },
-      { field: 'type', formatter: (v: string) => `${v}-类` },
-      { field: 'sub_type', formatter: (v: string) => `${v}-子类` },
+      { field: 'number', name: '数量', formatter: (v: unknown) => `${v}元` },
+      { field: 'province', formatter: (v: unknown) => `${v}-省` },
+      { field: 'city', name: '城市', formatter: (v: unknown) => `${v}-市` },
+      { field: 'type', formatter: (v: unknown) => `${v}-类` },
+      { field: 'sub_type', formatter: (v: unknown) => `${v}-子类` },
     ];
 
     s2.setDataCfg(getDataCfg(meta));

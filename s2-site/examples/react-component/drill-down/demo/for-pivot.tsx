@@ -1,11 +1,12 @@
+// organize-imports-ignore
 import React from 'react';
+import { ORIGIN_FIELD, S2DataConfig } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { S2DataConfig, ORIGIN_FIELD } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -30,7 +31,7 @@ fetch(
 
     const sex = ['男', '女'];
 
-    const PartDrillDown: SheetComponentsProps['partDrillDown'] = {
+    const PartDrillDown: SheetComponentProps['partDrillDown'] = {
       drillConfig: {
         dataSet: [
           {
@@ -70,6 +71,7 @@ fetch(
               number: number0,
               [field]: sex[0],
             };
+
             drillDownData.push(dataItem0);
 
             const dataItem1 = {
@@ -79,6 +81,7 @@ fetch(
               number: number1,
               [field]: sex[1],
             };
+
             drillDownData.push(dataItem1);
           });
 

@@ -1,23 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import { Canvas, CanvasEvent } from '@antv/g';
-import { cloneDeep, last } from 'lodash';
-import dataCfg from 'tests/data/simple-data.json';
-import { waitForRender } from 'tests/util';
-import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import type {
-  BaseEvent,
-  BaseTooltipOperatorMenuOptions,
-  HeaderCell,
-  TooltipOptions,
-} from '../../../src';
-import { PivotDataSet } from '../../../src/data-set';
-import { PivotFacet } from '../../../src/facet';
-import { createMockCellInfo } from '../../util/helpers';
-import { customMerge, setupDataConfig } from '@/utils';
-import { BaseTooltip } from '@/ui/tooltip';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { GEvent } from '@/index';
-import { Node } from '@/facet/layout/node';
 import {
   CellType,
   InterceptType,
@@ -34,6 +15,26 @@ import {
   type S2Options,
   type TooltipShowOptions,
 } from '@/common';
+import { Node } from '@/facet/layout/node';
+import type { GEvent } from '@/index';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { BaseTooltip } from '@/ui/tooltip';
+import { customMerge, setupDataConfig } from '@/utils';
+import { Canvas, CanvasEvent } from '@antv/g';
+import { cloneDeep, last } from 'lodash';
+import dataCfg from 'tests/data/simple-data.json';
+import { waitForRender } from 'tests/util';
+import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
+import {
+  BaseEvent,
+  BaseTooltipOperatorMenuOptions,
+  CornerCell,
+  HeaderCell,
+  TooltipOptions,
+} from '../../../src';
+import { PivotDataSet } from '../../../src/data-set';
+import { PivotFacet } from '../../../src/facet';
+import { createMockCellInfo } from '../../util/helpers';
 
 jest.mock('@/utils/hide-columns');
 
@@ -479,6 +480,27 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.seriesNumber?.enable).toBeTruthy();
   });
 
+  test.each([
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
+
   test('should init new tooltip', () => {
     const tooltipDestroySpy = jest
       .spyOn(s2.tooltip, 'destroy')
@@ -657,10 +679,9 @@ describe('PivotSheet Tests', () => {
 
     // sheet group
     expect(s2.facet.backgroundGroup.children).toHaveLength(1);
-    expect(s2.facet.foregroundGroup.children).toHaveLength(9);
-
+    expect(s2.facet.foregroundGroup.children).toHaveLength(10);
     // panel scroll group
-    expect(s2.facet.panelGroup.children).toHaveLength(7);
+    expect(s2.facet.panelGroup.children).toHaveLength(9);
     expect(
       s2.facet.panelGroup.getElementsByName(KEY_GROUP_PANEL_SCROLL),
     ).toHaveLength(1);
@@ -823,7 +844,7 @@ describe('PivotSheet Tests', () => {
     );
 
     await pivotSheet.render();
-    const extraField = last(pivotSheet.facet.getCornerCells());
+    const extraField = last<CornerCell>(pivotSheet.facet.getCornerCells());
 
     expect(extraField?.getActualText()).toEqual('数值');
   });
@@ -847,16 +868,19 @@ describe('PivotSheet Tests', () => {
 
     await pivotSheet.render();
 
-    const extraField = last(pivotSheet.facet.getCornerCells());
+    const extraField = last<CornerCell>(pivotSheet.facet.getCornerCells());
 
     expect(extraField?.getActualText()).toEqual(cornerExtraFieldText);
   });
 
   describe('Tree Collapse Tests', () => {
-    test('should collapse rows with tree mode', () => {
+    test('should collapse rows with tree mode', async () => {
       s2.setOptions({
         hierarchyType: 'tree',
       });
+
+      await s2.render(false);
+
       const renderSpy = jest
         .spyOn(s2, 'render')
         .mockImplementation(async () => {});
@@ -880,6 +904,8 @@ describe('PivotSheet Tests', () => {
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
+
+      await sleep(500);
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
       expect(s2.options.style?.rowCell?.collapseFields).toEqual(
@@ -1167,7 +1193,7 @@ describe('PivotSheet Tests', () => {
 
     // g5.0 destroy
     expect(destroyFn).toHaveBeenCalled();
-    expect(document.body.contains(s2.getCanvasElement())).toBeFalse();
+    expect(document.body.contains(s2.getCanvasElement())).toBeFalsy();
   });
 
   describe('Test Layout by dataCfg fields', () => {

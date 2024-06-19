@@ -1,7 +1,9 @@
-import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
 import { Line, Rect } from '@antv/g';
+import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 // 进度条
@@ -252,8 +254,8 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       // 自定义角头文本
       cornerText: '指标',
       // 覆盖默认数值单元格, 额外绘制衍生指标和子弹图
-      dataCell: (viewMeta) =>
-        new KpiStrategyDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new KpiStrategyDataCell(viewMeta, spreadsheet),
     };
 
     // 覆盖默认主题, 让单元格文字靠左显示

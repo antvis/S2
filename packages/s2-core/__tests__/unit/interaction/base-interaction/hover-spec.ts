@@ -1,13 +1,3 @@
-import { omit } from 'lodash';
-import {
-  createFakeSpreadSheet,
-  createFederatedMouseEvent,
-  sleep,
-} from 'tests/util/helpers';
-import type { GEvent } from '@/index';
-import type { CellEventTarget, S2Options, ViewMeta } from '@/common/interface';
-import { HoverEvent } from '@/interaction/base-interaction/hover';
-import type { SpreadSheet } from '@/sheet-type';
 import {
   ELLIPSIS_SYMBOL,
   HOVER_FOCUS_DURATION,
@@ -15,6 +5,16 @@ import {
   OriginEventType,
   S2Event,
 } from '@/common/constant';
+import type { CellEventTarget, S2Options, ViewMeta } from '@/common/interface';
+import type { GEvent } from '@/index';
+import { HoverEvent } from '@/interaction/base-interaction/hover';
+import type { SpreadSheet } from '@/sheet-type';
+import { omit } from 'lodash';
+import {
+  createFakeSpreadSheet,
+  createFederatedMouseEvent,
+  sleep,
+} from 'tests/util/helpers';
 
 describe('Interaction Hover Tests', () => {
   let hoverEvent: HoverEvent;

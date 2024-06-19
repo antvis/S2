@@ -1,8 +1,8 @@
 import { size, sumBy } from 'lodash';
 import {
+  SpreadSheet,
   getTooltipData,
   mergeCellInfo,
-  SpreadSheet,
   type S2CellType,
   type TooltipSummaryOptions,
 } from '../../src';

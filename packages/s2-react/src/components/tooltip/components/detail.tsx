@@ -1,9 +1,9 @@
-import React from 'react';
 import {
+  TOOLTIP_PREFIX_CLS,
   type TooltipDetailListItem,
   type TooltipDetailProps,
-  TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
+import React from 'react';
 import { TooltipIcon } from './icon';
 
 export const TooltipDetail: React.FC<TooltipDetailProps> = React.memo(

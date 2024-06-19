@@ -1,3 +1,5 @@
+import type { Node } from '@/facet/layout/node';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
 import {
@@ -9,8 +11,6 @@ import {
 import { customRowGridFields } from '../data/custom-grid-fields';
 import { CustomGridData } from '../data/data-custom-grid';
 import { S2Event } from './../../src/common/constant/events/basic';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Collapse/Expand Tests', () => {
   let container: HTMLElement;
@@ -280,7 +280,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       expectCornerIconName(s2, 'Plus');
     });
 
-    test('should emit collapse event', () => {
+    test('should emit collapse event', async () => {
       const onCollapsed = jest.fn();
 
       s2.on(S2Event.ROW_CELL_COLLAPSED, onCollapsed);
@@ -301,19 +301,21 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
 
+      await sleep(500);
       expect(onCollapsed).toHaveBeenCalledWith(params);
       expectCornerIconName(s2, 'Minus');
     });
 
-    test('should emit collapse all event', () => {
+    test('should emit collapse all event', async () => {
       const onCollapsed = jest.fn();
 
       s2.on(S2Event.ROW_CELL_ALL_COLLAPSED, onCollapsed);
 
       s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, false);
 
+      await sleep(500);
       expect(onCollapsed).toHaveBeenCalledWith(true);
-      expectCornerIconName(s2, 'Minus');
+      expectCornerIconName(s2, 'Plus');
     });
 
     // https://github.com/antvis/S2/issues/2607

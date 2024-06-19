@@ -6,8 +6,8 @@ import cx from 'classnames';
 import { isEqual } from 'lodash';
 import React from 'react';
 import {
-  type BeforeCapture,
   DragDropContext,
+  type BeforeCapture,
   type DropResult,
 } from 'react-beautiful-dnd';
 import { FieldType, SWITCHER_FIELDS } from '../constant';
@@ -50,7 +50,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       allowExchangeHeader = true,
       onToggleVisible,
       onSubmit,
-      sheetType,
+      sheetType = 'pivot',
       ...defaultFields
     } = props;
 
@@ -197,6 +197,3 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
 );
 
 SwitcherContent.displayName = 'SwitcherContent';
-SwitcherContent.defaultProps = {
-  sheetType: 'pivot',
-};

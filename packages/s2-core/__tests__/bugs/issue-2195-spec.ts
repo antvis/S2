@@ -5,9 +5,9 @@
  * https://github.com/antvis/S2/issues/2195
  */
 
-import { getContainer } from '../util/helpers';
 import type { S2DataConfig, S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
+import { getContainer } from '../util/helpers';
 
 const modifiedMockDataConfig: S2DataConfig = {
   fields: {

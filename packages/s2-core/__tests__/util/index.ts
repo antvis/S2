@@ -1,4 +1,6 @@
-import { data, meta, totalData } from 'tests/data/mock-dataset.json';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
 import {
   DEFAULT_DATA_CONFIG,
   DEFAULT_OPTIONS,
@@ -8,6 +10,7 @@ import {
   type S2Options,
 } from '@/index';
 import { customMerge } from '@/utils';
+import { data, meta, totalData } from 'tests/data/mock-dataset.json';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) => {
   const s2Options: S2Options = {

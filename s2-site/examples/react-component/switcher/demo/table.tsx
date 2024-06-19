@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+// organize-imports-ignore
+import React from 'react';
 import {
   SheetComponent,
   SheetComponentOptions,
   Switcher,
 } from '@antv/s2-react';
-import insertCSS from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -53,9 +54,9 @@ fetch(
     }
 
     const SwitcherDemo = () => {
-      const [fields, setFields] = useState(defaultFields);
-      const [hiddenColumnFields, setHiddenColumnFields] = useState([]);
-      const [switcherFields, setSwitcherFields] = useState(
+      const [fields, setFields] = React.useState(defaultFields);
+      const [hiddenColumnFields, setHiddenColumnFields] = React.useState([]);
+      const [switcherFields, setSwitcherFields] = React.useState(
         defaultSwitcherFields,
       );
 

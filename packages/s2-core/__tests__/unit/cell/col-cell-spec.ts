@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { set } from 'lodash';
-import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
-import type { ColHeaderConfig } from '../../../src/facet/header';
-import { getContainer } from './../../util/helpers';
 import { ColCell } from '@/cell';
 import { EXTRA_FIELD, type Formatter, type TextAlign } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import type { Node } from '@/facet/layout/node';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { set } from 'lodash';
+import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
+import { FrozenGroupArea } from '../../../src/common';
+import type { ColHeaderConfig } from '../../../src/facet/header';
+import { getContainer } from './../../util/helpers';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -19,6 +20,31 @@ describe('Col Cell Tests', () => {
     s2 = new MockPivotSheet(getContainer());
     s2.isFrozenRowHeader = () => false;
     s2.dataSet = new MockPivotDataSet(s2);
+
+    s2.facet = {
+      frozenGroupAreas: {
+        [FrozenGroupArea.Col]: {
+          width: 0,
+          x: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.TrailingCol]: {
+          width: 0,
+          x: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.Row]: {
+          height: 0,
+          y: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.TrailingRow]: {
+          height: 0,
+          y: 0,
+          range: [] as number[],
+        },
+      },
+    };
   });
 
   describe('None-leaf Nodes Tests', () => {
@@ -32,8 +58,13 @@ describe('Col Cell Tests', () => {
 
     const headerConfig: Partial<ColHeaderConfig> = {
       width: 500, // col header width
+      viewportWidth: 500,
       cornerWidth: 100,
       scrollX: 30, // 模拟滚动了 30px
+      position: {
+        x: 100,
+        y: 0,
+      },
     };
 
     const actualTextWidth = 40; // 文字长度
@@ -81,6 +112,10 @@ describe('Col Cell Tests', () => {
 
     const headerConfig: Partial<ColHeaderConfig> = {
       spreadsheet: createFakeSpreadSheet(),
+      position: {
+        x: 0,
+        y: 0,
+      },
     };
 
     test('should get correct col cell formatter', () => {

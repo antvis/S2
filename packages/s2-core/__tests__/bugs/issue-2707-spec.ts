@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * 明细表数据含有空值导致排序失效
  * @description spec for issue 2707
  * https://github.com/antvis/S2/issues/2707
  */
 
+import type { S2Options, SpreadSheet } from '@/index';
 import { EMPTY_PLACEHOLDER } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2707.json';
 import { createTableSheet } from '../util/helpers';
-import type { S2Options, SpreadSheet } from '@/index';
 
 const s2Options: S2Options = {
   width: 800,
@@ -29,6 +30,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
@@ -38,6 +40,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 
@@ -59,6 +62,7 @@ describe('PivotSheet Special Dimension Values Copy Tests', () => {
     });
     await s2.render();
 
+    // @ts-ignore
     expect(s2.dataSet.displayData).toMatchSnapshot();
   });
 });

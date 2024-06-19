@@ -1,22 +1,22 @@
-import { getContainer } from 'tests/util/helpers';
-import { sortData } from 'tests/data/sort-advanced';
+import {
+  EXTRA_FIELD,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+  type S2DataConfig,
+  type S2Options,
+  type SortParam,
+} from '@/common';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
+import { CellData } from '@/data-set/cell-data';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   getSortByMeasureValues,
   sortAction,
   sortByCustom,
   sortByFunc,
 } from '@/utils/sort-action';
-import {
-  EXTRA_FIELD,
-  type S2Options,
-  type SortParam,
-  TOTAL_VALUE,
-  type S2DataConfig,
-  VALUE_FIELD,
-} from '@/common';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { PivotDataSet, type SortActionParams } from '@/data-set';
-import { CellData } from '@/data-set/cell-data';
+import { sortData } from 'tests/data/sort-advanced';
+import { getContainer } from 'tests/util/helpers';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {

@@ -7,8 +7,8 @@ import {
   type S2Options,
 } from '@antv/s2';
 import React from 'react';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import { renderComponent } from '../util/helpers';
-import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 const data: RawData[] = [];
 
@@ -26,7 +26,7 @@ for (let i = 0; i < 1000; i++) {
 const onMounted = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: SheetComponentsProps['options'],
+  options: SheetComponentProps['options'],
 ) => new PivotSheet(dom, dataCfg, options as S2Options);
 
 const getDataCfg = (): S2DataConfig => {
@@ -49,7 +49,7 @@ const getDataCfg = (): S2DataConfig => {
   };
 };
 
-const getOptions = (): SheetComponentsProps['options'] => {
+const getOptions = (): SheetComponentProps['options'] => {
   return {
     width: 800,
     height: 600,
@@ -94,7 +94,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
   };
 };
 
-function MainLayout(props: SheetComponentsProps) {
+function MainLayout(props: SheetComponentProps) {
   return (
     <SheetComponent
       dataCfg={props.dataCfg}

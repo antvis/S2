@@ -4,11 +4,11 @@
  * #asyncGetAllPlainData error in table mode
  *
  */
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-446.json';
-import { TAB_SEPARATOR, type S2Options } from '../../src';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
+import { TAB_SEPARATOR, type S2Options } from '../../src';
+import * as mockDataConfig from '../data/data-issue-446.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

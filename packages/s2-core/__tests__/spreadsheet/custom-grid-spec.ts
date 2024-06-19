@@ -1,3 +1,5 @@
+import type { S2DataConfig, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { Group } from '@antv/g';
 import { pick } from 'lodash';
 import { CustomGridData } from 'tests/data/data-custom-grid';
@@ -16,8 +18,6 @@ import {
   getTestTooltipData,
   mapCellNodeValues,
 } from '../util/interaction';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

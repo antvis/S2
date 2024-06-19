@@ -1,10 +1,10 @@
 import { Group, type RectStyleProps } from '@antv/g';
-import type { SimpleBBox } from '../../engine';
 import {
   FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
   ResizeDirectionType,
 } from '../../common/constant';
 import type { ResizeInfo } from '../../common/interface/resize';
+import type { SimpleBBox } from '../../engine';
 import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 
 export const getResizeAreaAttrs = (

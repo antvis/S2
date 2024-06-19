@@ -4,12 +4,12 @@
  * 当列小记项大于两个时出现列头列小计总计漂移问题
  *
  */
+import type { S2Options } from '@/common';
+import type { Node } from '@/facet/layout/node';
+import { PivotSheet } from '@/sheet-type';
 import { find } from 'lodash';
 import * as mockDataConfig from 'tests/data/data-issue-836.json';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '@/sheet-type';
-import type { Node } from '@/facet/layout/node';
-import type { S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 1200,

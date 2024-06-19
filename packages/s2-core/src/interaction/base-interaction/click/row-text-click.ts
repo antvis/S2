@@ -1,10 +1,9 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { InterceptType, S2Event } from '../../../common/constant';
-import type { RawData } from '../../../common/interface';
+import type { Data, RawData } from '../../../common/interface';
 import { CellData } from '../../../data-set/cell-data';
 import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import type { Data } from '../../../common/interface';
 
 /**
  * Row header click navigation interaction

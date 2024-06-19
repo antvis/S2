@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
-import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
 import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
+import { Plugin as PluginRoughCanvasRenderer } from '@antv/g-plugin-rough-canvas-renderer';
 import { SpreadSheet } from '@antv/s2';
 import React from 'react';
 import {
   SheetComponent,
   type SheetComponentOptions,
-  type SheetComponentsProps,
+  type SheetComponentProps,
 } from '../../src/components';
 import { pivotSheetDataCfg } from '../config';
 
@@ -40,9 +40,10 @@ export const options: SheetComponentOptions = {
   },
 };
 
-export const PluginsSheet: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => (
+export const PluginsSheet = React.forwardRef<
+  SpreadSheet,
+  Partial<SheetComponentProps>
+>((props, ref) => (
   <SheetComponent
     {...props}
     sheetType="pivot"

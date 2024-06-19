@@ -1,6 +1,6 @@
-import { getContainer } from 'tests/util/helpers';
 import { LayoutWidthType, type S2DataConfig, type S2Options } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   debug: true,

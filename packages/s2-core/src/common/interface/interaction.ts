@@ -22,8 +22,8 @@ import type {
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
-import type { Transformer } from './export';
 import type { ViewMeta } from './basic';
+import type { Transformer } from './export';
 import type { ResizeInteractionOptions } from './resize';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =

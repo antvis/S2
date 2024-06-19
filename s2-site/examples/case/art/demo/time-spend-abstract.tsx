@@ -1,9 +1,10 @@
+// organize-imports-ignore
 import React from 'react';
-import insertCSS from 'insert-css';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Image as GImage } from '@antv/g';
 import { DataCell, ThemeCfg } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 const paletteLegendMap = [
   {
@@ -174,8 +175,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       width: 1150,
       height: 720,
       showDefaultHeaderActionIcon: false,
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
       interaction: {
         hoverHighlight: false,

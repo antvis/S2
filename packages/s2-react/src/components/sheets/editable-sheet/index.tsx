@@ -1,10 +1,10 @@
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import type { SheetComponentsProps } from '../interface';
-import { DragCopyPoint } from './drag-copy';
+import type { SheetComponentProps } from '../interface';
 import { EditCell } from './custom-cell';
+import { DragCopyPoint } from './drag-copy';
 
-export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
+export const EditableSheet: React.FC<SheetComponentProps> = React.memo(
   (props) => {
     return (
       <BaseSheet {...props} sheetType={'table'}>
