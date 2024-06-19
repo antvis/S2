@@ -353,17 +353,20 @@ export interface S2PivotSheetOptions {
   cornerExtraFieldText?: string;
 }
 
-export interface S2Options<
-  T = TooltipContentType,
-  P = Pagination,
-  Menu = BaseTooltipOperatorMenuOptions,
-> extends S2BasicOptions<T, P, Menu>,
-    S2PivotSheetOptions {
+export interface S2FrozenOptions {
   /**
    * 行列冻结
    */
   frozen?: S2PivotSheetFrozenOptions & S2BaseFrozenOptions;
 }
+
+export interface S2Options<
+  T = TooltipContentType,
+  P = Pagination,
+  Menu = BaseTooltipOperatorMenuOptions,
+> extends S2BasicOptions<T, P, Menu>,
+    S2PivotSheetOptions,
+    S2FrozenOptions {}
 
 /**
  * 自定义渲染模式
