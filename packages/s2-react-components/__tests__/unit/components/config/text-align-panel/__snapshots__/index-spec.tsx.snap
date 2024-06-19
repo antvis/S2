@@ -199,6 +199,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
@@ -267,6 +268,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="11px"
                         viewBox="0 0 12 11"
                         width="12px"
@@ -340,6 +342,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
@@ -431,6 +434,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
@@ -498,6 +502,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="11px"
                         viewBox="0 0 12 11"
                         width="12px"
@@ -571,6 +576,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
@@ -661,6 +667,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
@@ -729,6 +736,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="11px"
                         viewBox="0 0 12 11"
                         width="12px"
@@ -803,6 +811,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                     >
                       <svg
                         class="si"
+                        fill="currentColor"
                         height="10px"
                         viewBox="0 0 12 10"
                         width="12px"
