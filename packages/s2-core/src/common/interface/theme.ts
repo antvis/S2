@@ -350,12 +350,17 @@ export interface S2Theme extends CellThemes {
 
 export type ThemeName = keyof typeof PALETTE_MAP;
 
+export type SimplePalette = Pick<
+  Palette,
+  'basicColors' | 'semanticColors' | 'others'
+>;
+
 export interface ThemeCfg {
   /** 主题 */
   theme?: S2Theme;
 
   /** 色板 */
-  palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
+  palette?: SimplePalette;
 
   /** 主题名 */
   name?: ThemeName;

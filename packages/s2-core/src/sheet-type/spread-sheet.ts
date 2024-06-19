@@ -46,6 +46,7 @@ import type {
   S2Options,
   S2RenderOptions,
   S2Theme,
+  SimplePalette,
   SortMethod,
   ThemeCfg,
   ThemeName,
@@ -207,7 +208,7 @@ export abstract class SpreadSheet extends EE {
     DebuggerUtil.getInstance().setDebug(this.options.debug!);
   }
 
-  private initTheme() {
+  protected initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
     this.setThemeCfg({
       name: 'default',
@@ -530,9 +531,19 @@ export abstract class SpreadSheet extends EE {
     this.themeName = name;
   }
 
-  public setThemeCfg(themeCfg: ThemeCfg = {}) {
+  public setThemeCfg(
+    themeCfg: ThemeCfg = {},
+    getCustomTheme?: (
+      palette: SimplePalette,
+      spreadsheet?: SpreadSheet,
+    ) => S2Theme,
+  ) {
     const theme = themeCfg?.theme || {};
-    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+    const newTheme = getTheme({
+      ...themeCfg,
+      spreadsheet: this,
+      getCustomTheme,
+    });
 
     this.theme = customMerge(newTheme, theme);
     this.setThemeName(themeCfg?.name!);
