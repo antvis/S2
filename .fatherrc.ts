@@ -24,23 +24,13 @@ export default (name: string) => {
       name,
       output: 'dist',
       externals: {
+        '@antv/s2': 'S2',
         antd: 'antd',
-        react: 'react',
+        react: 'React',
         'react-dom': 'ReactDOM',
+        vue: 'Vue',
+        'ant-design-vue': 'AntDesignVue',
       },
-      // chainWebpack(memo, { webpack }) {
-      //   memo
-      //     .plugin('NormalModuleReplacementPlugin')
-      //     .use(webpack.NormalModuleReplacementPlugin, [
-      //       /^(?<name>.*).less\?inline$/,
-      //       (resource) => {
-      //         resource.request = resource.request.replace('?inline', '');
-      //       },
-      //     ])
-      //     .end();
-
-      //   return memo;
-      // },
     },
   });
 };

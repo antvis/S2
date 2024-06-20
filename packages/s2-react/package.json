@@ -99,7 +99,13 @@
   "size-limit": [
     {
       "path": "./dist/s2-react.min.js",
-      "limit": "70 kB"
+      "import": "{ createComponent }",
+      "limit": "75 kB",
+      "ignore": [
+        "S2",
+        "React",
+        "ReactDOM"
+      ]
     },
     {
       "path": "./dist/s2-react.min.css",

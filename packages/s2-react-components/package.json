@@ -109,7 +109,13 @@
   "size-limit": [
     {
       "path": "./dist/s2-react-components.min.js",
-      "limit": "70 kB"
+      "import": "{ createComponent }",
+      "limit": "70 kB",
+      "ignore": [
+        "S2",
+        "React",
+        "ReactDOM"
+      ]
     }
   ],
   "tnpm": {
