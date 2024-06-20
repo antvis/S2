@@ -154,7 +154,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   protected getTextPosition(): PointLike {
-    const { isLeaf } = this.meta;
+    const { isLeaf, isLeafPlaceholder } = this.meta;
 
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
@@ -168,7 +168,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       textStyle.textBaseline!,
     );
 
-    if (isLeaf) {
+    if (isLeaf || isLeafPlaceholder) {
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBox,
         textWidth: this.getActualTextWidth(),

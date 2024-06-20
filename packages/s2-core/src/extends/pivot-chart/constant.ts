@@ -8,6 +8,11 @@ export const FIXED_DATA_CONFIG: Partial<S2DataConfig> = {
 
 export const FIXED_OPTIONS: S2Options = {
   hierarchyType: 'grid',
+  style: {
+    colCell: {
+      hideValue: false,
+    },
+  },
 };
 
 export enum AxisCellType {

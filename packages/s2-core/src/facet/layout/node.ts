@@ -55,6 +55,8 @@ export class Node {
   // check if node is leaf(the max level in tree)
   public isLeaf = false;
 
+  public isLeafPlaceholder = false;
+
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
