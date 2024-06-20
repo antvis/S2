@@ -108,8 +108,7 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
-      "import": "{ createComponent }",
+      "path": "./dist/s2-react-components.min.js",
       "limit": "70 kB"
     }
   ],

@@ -90,11 +90,11 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2.min.js",
       "limit": "200 kB"
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2.min.css",
       "limit": "5 kB"
     }
   ],

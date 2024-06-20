@@ -27,7 +27,7 @@ tag: Updated
 - 别忘了引入样式。
 
 ```ts
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 ```
 
 ## 使用
@@ -478,7 +478,7 @@ const s2Options = {
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 // 引入 `tooltip` 样式文件
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 export class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet: SpreadSheet) {
@@ -611,7 +611,7 @@ export default defineComponent({
 import { defineCustomElement, render, createVNode } from "vue";
 import { BaseTooltip, PivotSheet } from "@antv/s2";
 import TooltipContent from "./TooltipContent.vue";
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet) {

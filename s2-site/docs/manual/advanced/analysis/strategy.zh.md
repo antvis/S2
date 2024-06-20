@@ -79,7 +79,7 @@ const s2Options = {
 ```tsx
 import React from "react";
 import { SheetComponent } from "@antv/s2-react";
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const App = () => {
   return (

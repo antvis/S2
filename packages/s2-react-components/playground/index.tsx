@@ -17,7 +17,7 @@ import pkg from '../package.json';
 import { ThemePanel } from '../src';
 import { s2DataConfig, s2Options } from './config';
 
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import './index.less';
 
 function MainLayout() {

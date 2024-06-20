@@ -25,7 +25,7 @@ and the `Vue3` version [concrete implementation](https://github.com/antvis/S2/bl
 - Don't forget to import styles
 
 ```ts
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 ```
 
 ## use
@@ -396,7 +396,7 @@ You can also override the `renderContent` method to render any component you enc
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 // import `tooltip` style file
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 export class CustomTooltip extends BaseTooltip {
    constructor(spreadsheet: SpreadSheet) {
@@ -536,7 +536,7 @@ export default defineComponent({
 import { defineCustomElement, render, createVNode } from "vue";
 import { BaseTooltip, PivotSheet } from "@antv/s2";
 import TooltipContent from "./TooltipContent.vue";
-import "@antv/s2/dist/style.min.css";
+import "@antv/s2/dist/s2.min.css";
 
 class CustomTooltip extends BaseTooltip {
    constructor(spreadsheet) {

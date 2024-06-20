@@ -24,9 +24,9 @@ TODO:
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-react-components
-# npm install @antv/s2-react-components --save
-# yarn add @antv/s2-react-components
+$ pnpm add @antv/s2-react-components@next
+# npm install @antv/s2-react-components@next --save
+# yarn add @antv/s2-react-components@next
 ```
 
 ## 🔨 使用

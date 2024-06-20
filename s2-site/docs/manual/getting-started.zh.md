@@ -200,7 +200,7 @@ bootstrap();
 ```tsx
 import React from 'react';
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const App = () => {
   return (
@@ -235,7 +235,7 @@ pnpm add antd @ant-design/icons
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {
@@ -281,7 +281,7 @@ pnpm add ant-design-vue@3.x
 :::
 
 ```ts
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 ```
 
 ​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
