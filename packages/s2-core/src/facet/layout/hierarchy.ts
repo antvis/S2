@@ -1,4 +1,4 @@
-import type { Node } from './node';
+import { Node } from './node';
 
 /**
  * Row and Column hierarchy to handle all contained nodes
@@ -16,6 +16,8 @@ export class Hierarchy {
   // just a mark to get node from each level
   public maxLevel = -1;
 
+  public rootNode: Node;
+
   // each level's first node
   public sampleNodesForAllLevels: Node[] = [];
 
@@ -23,10 +25,14 @@ export class Hierarchy {
   public sampleNodeForLastLevel: Node | null = null;
 
   // all nodes in this hierarchy
-  private allNodesWithoutRoot: Node[] = [];
+  public allNodesWithoutRoot: Node[] = [];
 
   // all nodes in the lastLevel
-  private indexNode: Node[] = [];
+  public indexNode: Node[] = [];
+
+  constructor() {
+    this.rootNode = Node.rootNode();
+  }
 
   // get all leaf nodes
   public getLeaves(): Node[] {
