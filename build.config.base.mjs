@@ -33,9 +33,9 @@ export const getBaseConfig = () => {
       react: 'React',
       'react-dom': 'ReactDOM',
       '@antv/s2': 'S2',
+      '@antv/s2-react': 'S2React',
+      lodash: '_',
     },
-    preserveModules: isESM,
-    preserveModulesRoot: isESM ? 'src' : undefined,
   };
 
   const resolve = {

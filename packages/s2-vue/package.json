@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "https://github.com/orgs/antvis/people",
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2-vue.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -37,7 +37,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "father build && pnpm build:dts",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
