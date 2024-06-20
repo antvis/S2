@@ -27,16 +27,6 @@ import {
   processSelectedTableByHeader,
 } from './table-copy';
 
-export const getHeaderNodeFromMeta = (
-  meta: CellMeta,
-  spreadsheet: SpreadSheet,
-) => {
-  const { rowIndex, colIndex } = meta;
-  const { facet } = spreadsheet;
-
-  return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
-};
-
 /**
  * 返回选中数据单元格生成的二维数组（ CellMeta[][]）
  * @param { CellMeta[] } cells
@@ -221,4 +211,19 @@ export const asyncProcessAllSelected = (
   }
 
   return asyncProcessSelectedAllTable(params);
+};
+
+/**
+ * 异步获取文本数据
+ * @example
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
+ */
+export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
+  const result = await asyncProcessAllSelected(params);
+
+  return result[0].content;
 };

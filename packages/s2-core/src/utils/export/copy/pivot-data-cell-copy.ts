@@ -38,10 +38,10 @@ import {
   assembleMatrix,
   completeMatrix,
   getFormatter,
+  getHeaderNodeFromMeta,
   getMaxRowLen,
   getNodeFormatData,
 } from './common';
-import { getHeaderNodeFromMeta } from './core';
 
 export class PivotDataCellCopy extends BaseDataCellCopy {
   protected leafRowNodes: Node[] = [];

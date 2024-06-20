@@ -30,5 +30,6 @@ export const buildTableHierarchy = (params: HeaderParams) => {
     query: {},
     addMeasureInTotalQuery: false,
     addTotalMeasureInTotal: false,
+    handler: buildTableHierarchy as () => void,
   });
 };
