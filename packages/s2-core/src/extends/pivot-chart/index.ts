@@ -7,7 +7,7 @@ import {
   type S2Options,
 } from '@antv/s2';
 import { FIXED_DATA_CONFIG, FIXED_OPTIONS } from './constant';
-import { PivotChartFacet } from './pivot-chart-facet';
+import { PivotChartFacet } from './facet/pivot-chart-facet';
 import { getCustomTheme } from './utils/theme';
 
 export * from './interface';

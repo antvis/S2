@@ -6,6 +6,11 @@ import {
   type LayoutResult,
 } from '@antv/s2';
 import { forEach, includes, initial, last } from 'lodash';
+import { SUPPORT_CHART } from '../constant';
+
+export function isCartesianCoordinate(chartType: string) {
+  return includes(SUPPORT_CHART.cartesian, chartType);
+}
 
 function separateRowLeafNodes(
   rowsHierarchy: Hierarchy,

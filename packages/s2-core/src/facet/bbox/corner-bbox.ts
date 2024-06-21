@@ -5,8 +5,8 @@ import { BaseBBox } from './base-bbox';
 
 export class CornerBBox extends BaseBBox {
   calculateBBox() {
-    const width = this.getCornerBBoxWidth();
-    const height = this.getCornerBBoxHeight();
+    const width = this.getWidth();
+    const height = this.getHeight();
 
     this.width = width;
     this.height = height;
@@ -14,7 +14,7 @@ export class CornerBBox extends BaseBBox {
     this.maxY = height;
   }
 
-  private getCornerBBoxOriginalHeight() {
+  protected calculateOriginalHeight() {
     const { colsHierarchy } = this.layoutResult;
     const { colCell } = this.spreadsheet.options.style!;
 
@@ -24,34 +24,38 @@ export class CornerBBox extends BaseBBox {
      * 2. 配置了 rows, values, 此时存在一级列头 (即 EXTRA_FIELD 数值节点), 但是隐藏了数值 (hideMeasureColumn), 此时列头为空
      */
     if (!colsHierarchy.sampleNodeForLastLevel) {
-      return colCell?.height;
+      this.originalHeight =
+        this.spreadsheet.facet.getCellCustomSize(null, colCell?.height) ?? 0;
+    } else {
+      this.originalHeight = floor(colsHierarchy.height);
     }
-
-    return floor(colsHierarchy.height);
   }
 
-  private getCornerBBoxHeight() {
-    this.originalHeight = this.getCornerBBoxOriginalHeight() as number;
-
-    return this.originalHeight;
-  }
-
-  private getCornerBBoxWidth() {
+  protected calculateOriginWidth() {
     const { rowsHierarchy } = this.layoutResult;
 
     this.originalWidth = floor(
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
     );
+  }
 
+  protected getHeight() {
+    this.calculateOriginalHeight();
+
+    return this.originalHeight;
+  }
+
+  protected getWidth() {
+    this.calculateOriginWidth();
     // 在行头固定时，需对角头 BBox 进行裁剪
     if (this.spreadsheet.isFrozenRowHeader()) {
-      return this.adjustCornerBBoxWidth();
+      return this.adjustWidth();
     }
 
     return this.originalWidth;
   }
 
-  private adjustCornerBBoxWidth() {
+  protected adjustWidth() {
     const { colsHierarchy } = this.layoutResult;
     const { width: canvasWidth, frozen } = this.spreadsheet.options;
 

@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { type G2Spec } from '@antv/g2';
-import type { DefaultCellTheme, Node } from '@antv/s2';
+import type {
+  BaseHeaderConfig,
+  CellCallback,
+  DefaultCellTheme,
+  Node,
+} from '@antv/s2';
+import type { RowAxisCell } from './cell/row-axis-cell';
 import type { AxisCellType } from './constant';
 
-export interface RowAxisHeader {}
+export type Coordinate = 'cartesian' | 'polar';
+
+export interface RowAxisHeaderConfig extends BaseHeaderConfig {}
 
 export interface ColAxisHeader {}
 
@@ -19,6 +27,7 @@ declare module '@antv/s2' {
   }
   interface S2PivotSheetOptions {
     chartSpec?: G2Spec;
+    rowAxisCell?: CellCallback<RowAxisHeaderConfig, RowAxisCell>;
   }
 
   interface S2Style {}

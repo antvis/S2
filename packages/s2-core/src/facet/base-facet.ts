@@ -287,7 +287,7 @@ export abstract class BaseFacet {
     this.panelGroup.appendChild(this.panelScrollGroup);
   }
 
-  protected getCellCustomSize(node: Node | null, size: CellCustomSize) {
+  public getCellCustomSize(node: Node | null, size: CellCustomSize) {
     return isFunction(size) ? size(node) : size;
   }
 
