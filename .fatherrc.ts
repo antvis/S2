@@ -1,21 +1,23 @@
 import { defineConfig } from 'father';
+import path from 'path';
 
 export default (name: string) => {
+  const alias = {
+    '@antv/s2-shared': path.relative(process.cwd(), './src/shared'),
+  };
+
   return defineConfig({
     sourcemap: true,
-    // alias: {
-    //   lodash: 'lodash-es',
-    //   '@antv/s2': path.resolve(__dirname, './packages/s2-core'),
-    //   '@antv/s2-shared': path.resolve(__dirname, './packages/s2-shared'),
-    // },
     define: {
       'process.env.NODE_ENV': JSON.stringify('production'),
     },
     esm: {
       output: 'esm',
+      alias,
     },
     cjs: {
       output: 'lib',
+      alias,
     },
     umd: {
       name,
