@@ -1,17 +1,12 @@
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
-import {
-  Popover,
-  Tooltip,
-  type RadioChangeEvent,
-  type RadioGroupProps,
-} from 'antd';
+import { Popover, type RadioChangeEvent, type RadioGroupProps } from 'antd';
 import React from 'react';
 import {
   DEFAULT_THEME_COLOR_LIST,
   SheetThemeColorType,
   SheetThemeType,
 } from '../../../common';
-import { ResetGroup } from '../../common';
+import { ResetGroup, TooltipWrapper } from '../../common';
 import { RadioGroup } from '../../common/radio-group';
 import { ColorBox } from './color-box';
 import { ColorPickerPanel } from './color-picker-panel';
@@ -108,10 +103,6 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
       setOptions(newOptions);
     };
 
-  const renderIcon = (label: React.ReactNode, Component: React.ReactNode) => {
-    return <Tooltip title={label}>{Component}</Tooltip>;
-  };
-
   React.useEffect(() => {
     const theme = generateColorTheme({
       themeType: options.themeType,
@@ -128,9 +119,10 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
     { label: i18n('树状'), value: 'tree', component: HierarchyTreeTypeIcon },
   ].map(({ label, value, component: Component }) => {
     return {
-      label: renderIcon(
-        label,
-        <Component active={options.hierarchyType === value} />,
+      label: (
+        <TooltipWrapper title={label}>
+          <Component active={options.hierarchyType === value} />
+        </TooltipWrapper>
       ),
       value,
     };
@@ -158,9 +150,10 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
       component: ZebraThemeIcon,
     },
   ].map(({ label, value, component: Component }) => ({
-    label: renderIcon(
-      label,
-      <Component active={options.themeType === value} />,
+    label: (
+      <TooltipWrapper title={label}>
+        <Component active={options.themeType === value} />
+      </TooltipWrapper>
     ),
     value,
   }));
@@ -190,6 +183,7 @@ export const ThemePanel: React.FC<ThemePanelProps> = React.memo((props) => {
       title={title}
       onResetClick={onResetClick}
       defaultCollapsed={defaultCollapsed}
+      className={PRE_CLASS}
     >
       {children}
       <RadioGroup

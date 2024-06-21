@@ -62,4 +62,11 @@ export const EN_US: Record<string, string> = {
   浅色主题: 'Light theme',
   灰色: 'Gray',
   自定义: 'Custom',
+  文字对齐: 'Text align',
+  左对齐: 'Align left',
+  居中: 'Align center',
+  右对齐: 'Align right',
+  表头: 'Header',
+  '表身 (维度)': 'Body(dimension)',
+  '表身 (指标)': 'Body(measure)',
 };

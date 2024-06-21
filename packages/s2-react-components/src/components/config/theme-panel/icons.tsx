@@ -1,8 +1,5 @@
 import React from 'react';
-
-type RadioIconProps = {
-  active: boolean;
-};
+import type { RadioIconProps } from '../../../common/interface/icon';
 
 export const HierarchyGridTypeIcon = React.memo<RadioIconProps>(
   ({ active }) => {
