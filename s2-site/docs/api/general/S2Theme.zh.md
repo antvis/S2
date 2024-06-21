@@ -132,7 +132,7 @@ s2.setTheme({
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
 | textAlign    | 文本内容的对齐方式                                                             | `left \| center \| right` | -                                                                                                 |      |
 | textBaseline | 绘制文本时的基线                                                               | `top \| middle \| bottom` | -                                                                                                 |      |
-| fontFamily   | 字体，**如需每个字体宽度一样，请使用等宽字体**                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
+| fontFamily   | 字体，**如需每个字体宽度一样，请使用等宽字体** （**如果是 Mac 或 iOS 系统，请避免使用 `-apple-system` `BlinkMacSystemFont` 等系统字体，会导致浏览器卡死**)                                                                          | `string`                      | `Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
 | fontWeight   | `number` <br/> `string` （可选项：`normal` <br> `bold` <br> `bolder` <br> `lighter`) | `number \| string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
 | fontStyle   | 字体样式    | `normal \| italic \| oblique`        |  `normal` |
@@ -157,7 +157,6 @@ s2.setTheme({
 | verticalBorderColorOpacity   | 单元格垂直边线颜色透明度                | `number`                                        | 1      |      |
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
-| interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
 | interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | borderDash        | 单元格边线虚线 | `number \| string \| (string \| number)[]`                                        | `[]`      |      |
 
