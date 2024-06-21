@@ -5,7 +5,7 @@ export interface BaseChartData {
   /**
    * 类型
    */
-  type: MiniChartType;
+  type: `${MiniChartType}`;
 
   /**
    * 数据

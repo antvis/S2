@@ -32,7 +32,7 @@ interface EventListener {
 }
 
 interface S2EventHandler {
-  type: keyof EmitterType;
+  type: `${keyof EmitterType}`;
   handler: EmitterType[keyof EmitterType];
 }
 
@@ -652,7 +652,7 @@ export class EventController {
   }
 
   private addS2Event<K extends keyof EmitterType>(
-    eventType: K,
+    eventType: `${K}`,
     handler: EmitterType[K],
   ) {
     this.spreadsheet.on(eventType, handler);

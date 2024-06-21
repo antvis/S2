@@ -116,7 +116,7 @@ export interface S2Style {
   /**
    * 布局类型
    */
-  layoutWidthType?: LayoutWidthType;
+  layoutWidthType?: `${LayoutWidthType}`;
 
   /**
    * 数值单元格配置

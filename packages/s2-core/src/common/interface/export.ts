@@ -16,17 +16,17 @@ export enum CopyMIMEType {
 }
 
 export type CopyableItem = {
-  type: CopyMIMEType;
+  type: `${CopyMIMEType}`;
   content: string;
 };
 
 export type CopyablePlain = {
-  type: CopyMIMEType.PLAIN;
+  type: `${CopyMIMEType.PLAIN}`;
   content: string;
 };
 
 export type CopyableHTML = {
-  type: CopyMIMEType.HTML;
+  type: `${CopyMIMEType.HTML}`;
   content: string;
 };
 

@@ -52,7 +52,7 @@ export interface ResizeParams {
 
 export interface ResizeInfo {
   theme: ResizeArea;
-  type: ResizeDirectionType;
+  type: `${ResizeDirectionType}`;
   offsetX: number;
   offsetY: number;
   width: number;
@@ -88,10 +88,10 @@ export interface ResizeInteractionOptions {
   colCellVertical?: boolean;
 
   /** 行高调整时，影响当前行还是全部行 */
-  rowResizeType?: ResizeType;
+  rowResizeType?: `${ResizeType}`;
 
   /** 列高调整时，影响当前列还是全部列 */
-  colResizeType?: ResizeType;
+  colResizeType?: `${ResizeType}`;
 
   /** 是否允许调整, 返回 false 时拖拽的宽高无效 */
   disable?: (resizeInfo: ResizeInfo) => boolean;
