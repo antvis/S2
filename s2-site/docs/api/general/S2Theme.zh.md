@@ -70,10 +70,10 @@ s2.setTheme({
 
 | 参数              | 说明           | 类型                              | 默认值 | 必选 |
 | ----------------- | -------------- | --------------------------------- | ------ | ---- |
-| bolderText        | 加粗文本样式   | [TextTheme](#texttheme)           | -      |      |
-| text              | 文本样式       | [TextTheme](#texttheme)           | -      |      |
+| bolderText        | 加粗文本样式（如：总计，小计，行列头非叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E8%A1%8C%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)   | [TextTheme](#texttheme)           | -      |      |
+| text              | 文本样式（如：数值，行列头叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83%E6%A0%BC%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)      | [TextTheme](#texttheme)           | -      |      |
 | seriesText        | 序号文本样式   | [TextTheme](#texttheme)           | -      |      |
-| measureText       | 度量值文本样式 | [TextTheme](#texttheme)           | -      |      |
+| measureText       | 度量值文本样式（如：数值挂行/列头时，行列头所对应的虚拟数值单元格文本）[了解更多](/manual/advanced/custom/cell-align#%E5%88%97%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)  | [TextTheme](#texttheme)           | -      |      |
 | cell              | 单元格样式     | [CellTheme](#celltheme)           | -      |      |
 | icon              | 图标样式       | [IconTheme](#icontheme)           | -      |      |
 | seriesNumberWidth | 序号列宽       | `number`                          | 80     |      |

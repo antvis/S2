@@ -124,7 +124,7 @@ export enum Aggregation {
 
 export interface CalcTotals {
   /** 聚合方式 */
-  aggregation?: Aggregation;
+  aggregation?: `${Aggregation}`;
 
   /**
    * 自定义计算汇总
@@ -360,7 +360,10 @@ export interface HeaderActionIcon extends HeaderActionIconBaseOptions {
    * 所属的 cell 类型, 即当前 icon 展示在哪种类型单元格中
    * @example belongsCell: 'rowCell'
    */
-  belongsCell: Omit<CellType, 'dataCell' | 'mergedCell' | 'seriesNumberCell'>;
+  belongsCell: Omit<
+    `${CellType}`,
+    'dataCell' | 'mergedCell' | 'seriesNumberCell'
+  >;
 }
 
 export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {

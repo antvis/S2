@@ -22,7 +22,6 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
-  LayoutWidthType,
   S2Event,
   getDefaultSeriesNumberText,
   getTooltipOperatorSortMenus,
@@ -587,14 +586,14 @@ export abstract class SpreadSheet extends EE {
   }
 
   public override on<K extends keyof EmitterType>(
-    event: K,
+    event: `${K}`,
     listener: EmitterType[K],
   ): this {
     return super.on(event, listener);
   }
 
   public override emit<K extends keyof EmitterType>(
-    event: K,
+    event: `${K}`,
     ...args: Parameters<EmitterType[K]>
   ): void {
     super.emit(event, ...args);
@@ -631,7 +630,7 @@ export abstract class SpreadSheet extends EE {
     };
   }
 
-  public getLayoutWidthType(): LayoutWidthType {
+  public getLayoutWidthType() {
     return this.options.style?.layoutWidthType!;
   }
 

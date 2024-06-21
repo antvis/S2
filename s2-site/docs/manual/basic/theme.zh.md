@@ -155,7 +155,9 @@ await s2.render(false);
 
 #### 自定义单元格对齐方式
 
-[查看详情](/manual/advanced/custom/cell-align) 和 [完整 API](/api/general/s2theme#s2theme)
+单元格文本配置分为了 `text（普通文本）`, `bolderText（加粗文本）`, `seriesText（序号文本）`, `measureText（度量值文本）`, 分别对应不同场景。
+
+[查看详情](/manual/advanced/custom/cell-align) 或 [完整 API](/api/general/s2theme#s2theme)
 
 ```ts
 s2.setTheme({
@@ -166,6 +168,12 @@ s2.setTheme({
     bolderText: {
       textAlign: 'left',
     },
+    seriesText: {
+      textAlign: 'left',
+    },
+    measureText: {
+      textAlign: 'left',
+    }
   },
 });
 ```
