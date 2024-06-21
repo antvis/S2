@@ -340,7 +340,6 @@ export const s2Options: SheetComponentOptions = {
   seriesNumber: {
     enable: false,
   },
-
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,

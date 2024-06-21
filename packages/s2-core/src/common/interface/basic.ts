@@ -360,7 +360,7 @@ export interface HeaderActionIcon extends HeaderActionIconBaseOptions {
    * 所属的 cell 类型, 即当前 icon 展示在哪种类型单元格中
    * @example belongsCell: 'rowCell'
    */
-  belongsCell: Omit<
+  belongsCell: Exclude<
     `${CellType}`,
     'dataCell' | 'mergedCell' | 'seriesNumberCell'
   >;
