@@ -13,14 +13,20 @@ export const FrozenInputNumber: React.FC<FrozenInputNumberProps> = React.memo(
       value,
     );
 
-    const onDebounceChange = debounce((nextValue) => {
-      onChange?.(nextValue);
-    }, 500);
+    const onDebounceChange = React.useMemo(() => {
+      return debounce((nextValue) => {
+        onChange?.(nextValue);
+      }, 500);
+    }, []);
 
     React.useEffect(() => {
       if (value !== inputValue) {
         setInputValue(value);
       }
+
+      return () => {
+        onDebounceChange.cancel();
+      };
     }, [value]);
 
     return (
@@ -34,9 +40,9 @@ export const FrozenInputNumber: React.FC<FrozenInputNumberProps> = React.memo(
         disabled={disabled}
         {...attrs}
         value={inputValue}
-        onChange={(nextVal) => {
-          setInputValue(nextVal);
-          onDebounceChange(nextVal);
+        onChange={(nextValue) => {
+          setInputValue(nextValue);
+          onDebounceChange(nextValue);
         }}
       />
     );
