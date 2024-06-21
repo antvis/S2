@@ -15,7 +15,6 @@ type NodeProperties = {
     ? never
     : K]?: Node[K];
 };
-
 /**
  * Node for cornerHeader, colHeader, rowHeader
  */
@@ -119,6 +118,8 @@ export class Node {
     isCustomNode?: boolean;
     [key: string]: any;
   };
+
+  [key: string]: any;
 
   constructor(cfg: NodeProperties) {
     assign(this, cfg);
