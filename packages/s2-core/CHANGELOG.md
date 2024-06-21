@@ -1,3 +1,18 @@
+# [@antv/s2-v2.0.0-next.24](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.23...@antv/s2-v2.0.0-next.24) (2024-06-21)
+
+
+### Bug Fixes
+
+* 修复 headerActionIcons 下的 defaultHide 属性不生效 close [#2772](https://github.com/antvis/S2/issues/2772) ([#2774](https://github.com/antvis/S2/issues/2774)) ([d142efa](https://github.com/antvis/S2/commit/d142efacf3b35bbcc5f8ac3dc0a1dbe61eb167bd))
+
+
+### Features
+
+* **components:** 组件层更新时增加 loading 效果 close [#1790](https://github.com/antvis/S2/issues/1790) ([#2762](https://github.com/antvis/S2/issues/2762)) ([0ca8413](https://github.com/antvis/S2/commit/0ca841362bb4bbb3b81ca1046f5b4dcd7236b91e))
+* **frozen-panel:** 增加行列头冻结配置面板 ([#2782](https://github.com/antvis/S2/issues/2782)) ([d2fa5c9](https://github.com/antvis/S2/commit/d2fa5c958cee04a09d95ae481d62fd035728c7ae))
+* **theme-panel:** 新增主题风格配置组件 ([#2770](https://github.com/antvis/S2/issues/2770)) ([b559947](https://github.com/antvis/S2/commit/b559947ae2695dc3e4b581b10785ce34956d3702))
+* **type:** 使用 Template Literal Types 增强枚举类型的提示 ([#2783](https://github.com/antvis/S2/issues/2783)) ([6e571da](https://github.com/antvis/S2/commit/6e571da007c7a5185084f3a2c24c19d590d51319))
+
 # [@antv/s2-v2.0.0-next.23](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.22...@antv/s2-v2.0.0-next.23) (2024-06-03)
 
 
