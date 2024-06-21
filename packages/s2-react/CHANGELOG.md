@@ -1,3 +1,17 @@
+# [@antv/s2-react-v2.0.0-next.23](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.22...@antv/s2-react-v2.0.0-next.23) (2024-06-21)
+
+
+### Bug Fixes
+
+* 修复 react 层对 frozen 的处理 ([#2763](https://github.com/antvis/S2/issues/2763)) ([f05b5ae](https://github.com/antvis/S2/commit/f05b5ae7bd3e8e118827d93a27bd588c68861dcc))
+
+
+### Features
+
+* **components:** 组件层更新时增加 loading 效果 close [#1790](https://github.com/antvis/S2/issues/1790) ([#2762](https://github.com/antvis/S2/issues/2762)) ([0ca8413](https://github.com/antvis/S2/commit/0ca841362bb4bbb3b81ca1046f5b4dcd7236b91e))
+* **theme-panel:** 新增主题风格配置组件 ([#2770](https://github.com/antvis/S2/issues/2770)) ([b559947](https://github.com/antvis/S2/commit/b559947ae2695dc3e4b581b10785ce34956d3702))
+* **type:** 使用 Template Literal Types 增强枚举类型的提示 ([#2783](https://github.com/antvis/S2/issues/2783)) ([6e571da](https://github.com/antvis/S2/commit/6e571da007c7a5185084f3a2c24c19d590d51319))
+
 # [@antv/s2-react-v2.0.0-next.22](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.21...@antv/s2-react-v2.0.0-next.22) (2024-06-03)
 
 
