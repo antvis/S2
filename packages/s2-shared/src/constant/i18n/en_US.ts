@@ -69,4 +69,12 @@ export const EN_US: Record<string, string> = {
   表头: 'Header',
   '表身 (维度)': 'Body(dimension)',
   '表身 (指标)': 'Body(measure)',
+  冻结行列头: 'Frozen header',
+  行: 'Row',
+  列: 'Column',
+  冻结行: 'Frozen row',
+  冻结列: 'Frozen column',
+  冻结: 'Frozen',
+  冻结前: 'Freeze the first',
+  冻结后: 'Freeze the last',
 };
