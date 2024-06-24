@@ -7,6 +7,7 @@ import {
   type ThemeCfg,
   type ThemeName,
 } from '@antv/s2';
+// @ts-ignore
 import { SheetComponent } from '@antv/s2-react';
 import reactPkg from '@antv/s2-react/package.json';
 import corePkg from '@antv/s2/package.json';
@@ -31,69 +32,71 @@ function MainLayout() {
     <div className="playground">
       <React.StrictMode>
         <Space className="config">
-          <ThemePanel
-            title="主题配置"
-            disableCustomPrimaryColorPicker={false}
-            defaultCollapsed={false}
-            onChange={(options, theme) => {
-              setThemeCfg({
-                name: options.themeType as ThemeName,
-                theme,
-              });
-              s2Ref.current?.setOptions({
-                hierarchyType: options.hierarchyType,
-              });
-              s2Ref.current?.render(false);
-              console.log('onChange:', options, theme);
-            }}
-            onReset={(options, prevOptions, theme) => {
-              console.log('onReset:', options, prevOptions, theme);
-            }}
-          />
-          <TextAlignPanel
-            title="文字对齐"
-            defaultCollapsed={false}
-            onChange={(options, theme) => {
-              setThemeCfg({
-                theme,
-              });
-              s2Ref.current?.render(false);
-              console.log('onChange:', options, theme);
-            }}
-            onReset={(options, prevOptions, theme) => {
-              console.log('onReset:', options, prevOptions, theme);
-            }}
-          />
-          <FrozenPanel
-            title="冻结行列头"
-            defaultCollapsed={false}
-            inputNumberProps={{
-              size: 'small',
-              step: 1,
-            }}
-            defaultOptions={{
-              frozenRow: [1, 2],
-            }}
-            onChange={(options) => {
-              const [rowCount = 0, trailingRowCount = 0] = options.frozenRow;
-              const [colCount = 0, trailingColCount = 0] = options.frozenCol;
+          <>
+            <ThemePanel
+              title="主题配置"
+              disableCustomPrimaryColorPicker={false}
+              defaultCollapsed={false}
+              onChange={(options, theme) => {
+                setThemeCfg({
+                  name: options.themeType as ThemeName,
+                  theme,
+                });
+                s2Ref.current?.setOptions({
+                  hierarchyType: options.hierarchyType,
+                });
+                s2Ref.current?.render(false);
+                console.log('onChange:', options, theme);
+              }}
+              onReset={(options, prevOptions, theme) => {
+                console.log('onReset:', options, prevOptions, theme);
+              }}
+            />
+            <TextAlignPanel
+              title="文字对齐"
+              defaultCollapsed={false}
+              onChange={(options, theme) => {
+                setThemeCfg({
+                  theme,
+                });
+                s2Ref.current?.render(false);
+                console.log('onChange:', options, theme);
+              }}
+              onReset={(options, prevOptions, theme) => {
+                console.log('onReset:', options, prevOptions, theme);
+              }}
+            />
+            <FrozenPanel
+              title="冻结行列头"
+              defaultCollapsed={false}
+              inputNumberProps={{
+                size: 'small',
+                step: 1,
+              }}
+              defaultOptions={{
+                frozenRow: [1, 2],
+              }}
+              onChange={(options) => {
+                const [rowCount = 0, trailingRowCount = 0] = options.frozenRow;
+                const [colCount = 0, trailingColCount = 0] = options.frozenCol;
 
-              s2Ref.current?.setOptions({
-                frozen: {
-                  rowHeader: options.frozenRowHeader,
-                  rowCount,
-                  colCount,
-                  trailingRowCount,
-                  trailingColCount,
-                },
-              });
-              s2Ref.current?.render(false);
-              console.log('onChange:', options);
-            }}
-            onReset={(options, prevOptions) => {
-              console.log('onReset:', options, prevOptions);
-            }}
-          />
+                s2Ref.current?.setOptions({
+                  frozen: {
+                    rowHeader: options.frozenRowHeader,
+                    rowCount,
+                    colCount,
+                    trailingRowCount,
+                    trailingColCount,
+                  },
+                });
+                s2Ref.current?.render(false);
+                console.log('onChange:', options);
+              }}
+              onReset={(options, prevOptions) => {
+                console.log('onReset:', options, prevOptions);
+              }}
+            />
+          </>
         </Space>
         <SheetComponent
           ref={s2Ref}
