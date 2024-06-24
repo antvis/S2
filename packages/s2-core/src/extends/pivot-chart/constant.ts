@@ -1,10 +1,15 @@
 import type { S2DataConfig, S2Options } from '@antv/s2';
+import { ChartDataCell } from './cell/chart-data-cell';
 import type { Coordinate } from './interface';
 
 export const FIXED_DATA_CONFIG: Partial<S2DataConfig> = {
   fields: {
     customValueOrder: null,
   },
+};
+
+export const DEFAULT_OPTIONS: S2Options = {
+  dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
 };
 
 export const FIXED_OPTIONS: S2Options = {
@@ -41,4 +46,3 @@ export const KEY_GROUP_ROW_AXIS_HEADER_FROZEN_TRAILING =
 export const KEY_GROUP_COL_AXIS_SCROLL = 'colAxisScrollGroup';
 export const KEY_GROUP_COL_AXIS_FROZEN = 'colAxisFrozenGroup';
 export const KEY_GROUP_COL_AXIS_FROZEN_TRAILING = 'colAxisFrozenTrailingGroup';
-export const KEY_GROUP_COL_AXIS_RESIZE_AREA = 'colAxisResizeAreaGroup';

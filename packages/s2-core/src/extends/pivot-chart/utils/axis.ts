@@ -1,11 +1,10 @@
 import {
   Hierarchy,
-  Node,
   ROOT_NODE_ID,
   SpreadSheet,
   type LayoutResult,
 } from '@antv/s2';
-import { forEach, includes, initial, last } from 'lodash';
+import { forEach, head, includes, initial, isEmpty, last } from 'lodash';
 import { SUPPORT_CHART } from '../constant';
 
 export function isCartesianCoordinate(chartType: string) {
@@ -18,7 +17,7 @@ function separateRowLeafNodes(
   s2: SpreadSheet,
 ): Pick<
   LayoutResult,
-  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'rowAxisNodes'
+  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'rowAxisHierarchy'
 > | null {
   const maxLevel = rowsHierarchy.maxLevel;
 
@@ -29,22 +28,31 @@ function separateRowLeafNodes(
   const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelWidth = sampleNodeForLastLevel.width ?? 0;
 
-  const rowAxisNodes: Node[] = [];
+  const rowAxisHierarchy = new Hierarchy();
 
-  const lastRow = last(s2.dataSet.fields.rows) as string;
+  rowAxisHierarchy.maxLevel = 1;
+  rowAxisHierarchy.width = sampleNodeForLastLevelWidth;
+  rowAxisHierarchy.height = rowsHierarchy.height;
 
   // 只有一个维度层级时，会被全部收敛到坐标轴中
   if (maxLevel === 0) {
     const root = rowsHierarchy.rootNode.clone();
 
-    root.field = lastRow;
-
+    root.field = head(root.children)?.field || root.field;
     root.width = sampleNodeForLastLevelWidth;
-    rowAxisNodes.push(root);
+
+    rowAxisHierarchy.pushIndexNode(root);
+    rowAxisHierarchy.pushNode(root);
+    root.isLeaf = true;
+    root.rowIndex = rowsHierarchy.getIndexNodes().length - 1;
+
+    rowAxisHierarchy.sampleNodesForAllLevels.push(root);
+    rowAxisHierarchy.sampleNodeForLastLevel = root;
 
     rowsHierarchy.indexNode = [];
     rowsHierarchy.allNodesWithoutRoot = [];
     rowsHierarchy.rootNode.children = [];
+    rowsHierarchy.rootNode.relatedNode = root;
   } else {
     // 当存在多个维度时，需要考虑叶子节点被拆分出去后，行头区域可能存在空缺的情况，比如总计格子横跨多个维度
     const parents = new Set();
@@ -64,18 +72,21 @@ function separateRowLeafNodes(
 
       if (parent.id === ROOT_NODE_ID) {
         axisNode = leaf.clone();
+        axisNode.children = [axisNode];
 
         rowsHierarchy.pushIndexNode(leaf);
         leaf.rowIndex = rowsHierarchy.getIndexNodes().length - 1;
         leaf.width -= sampleNodeForLastLevelWidth;
+        leaf.relatedNode = axisNode;
       } else {
         axisNode = parent.clone();
 
         rowsHierarchy.pushIndexNode(parent);
-        parent.rowIndex = rowsHierarchy.getIndexNodes().length - 1;
         parent.isLeaf = true;
+        parent.rowIndex = rowsHierarchy.getIndexNodes().length - 1;
         parent.children = [];
         parent.width = sampleNodeForLastLevel.x - parent.x;
+        parent.relatedNode = axisNode;
       }
 
       rowsHierarchy.allNodesWithoutRoot =
@@ -83,11 +94,22 @@ function separateRowLeafNodes(
           (node) => !includes(axisNode.children, node),
         );
 
-      axisNode.field = lastRow;
+      axisNode.field = head(axisNode.children)?.field || axisNode.field;
       axisNode.x = 0;
       axisNode.width = sampleNodeForLastLevelWidth;
 
-      rowAxisNodes.push(axisNode);
+      rowAxisHierarchy.pushIndexNode(axisNode);
+      rowAxisHierarchy.pushNode(axisNode);
+
+      axisNode.isLeaf = true;
+      axisNode.rowIndex = rowAxisHierarchy.getIndexNodes().length - 1;
+      if (
+        !axisNode.isTotals &&
+        isEmpty(rowAxisHierarchy.sampleNodesForAllLevels)
+      ) {
+        rowAxisHierarchy.sampleNodesForAllLevels.push(axisNode);
+        rowAxisHierarchy.sampleNodeForLastLevel = axisNode;
+      }
     });
   }
 
@@ -102,7 +124,7 @@ function separateRowLeafNodes(
   rowsHierarchy.width -= sampleNodeForLastLevelWidth;
 
   return {
-    rowAxisNodes,
+    rowAxisHierarchy,
     rowsHierarchy,
     rowNodes: rowsHierarchy.getNodes(),
     rowLeafNodes: rowsHierarchy.getLeaves(),
@@ -114,7 +136,7 @@ function separateColLeafNodes(
   s2: SpreadSheet,
 ): Pick<
   LayoutResult,
-  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'colAxisNodes'
+  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'colAxisHierarchy'
 > | null {
   const maxLevel = colsHierarchy.maxLevel;
 
@@ -124,16 +146,30 @@ function separateColLeafNodes(
 
   const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelHeight = sampleNodeForLastLevel.height ?? 0;
+
+  const colAxisHierarchy = new Hierarchy();
+
+  colAxisHierarchy.maxLevel = 1;
+  colAxisHierarchy.height = sampleNodeForLastLevelHeight;
+  colAxisHierarchy.width = colsHierarchy.width;
+
   const lastCol = last(s2.dataSet.fields.columns) as string;
-  const colAxisNodes: Node[] = [];
 
   // 只有一个维度层级时，会被全部收敛到坐标轴中
   // 和行头不同的是，列头需要再给一个Node用于占位，否则会缺一块
   if (maxLevel === 0) {
     const root = colsHierarchy.rootNode.clone();
 
+    root.field = head(root.children)?.field || root.field;
     root.height = sampleNodeForLastLevelHeight;
-    colAxisNodes.push(root);
+
+    colAxisHierarchy.pushIndexNode(root);
+    colAxisHierarchy.pushNode(root);
+    root.isLeaf = true;
+    root.rowIndex = colsHierarchy.getIndexNodes().length - 1;
+
+    colAxisHierarchy.sampleNodesForAllLevels.push(root);
+    colAxisHierarchy.sampleNodeForLastLevel = root;
 
     const placeholderNode = sampleNodeForLastLevel.clone();
 
@@ -172,6 +208,7 @@ function separateColLeafNodes(
         colsHierarchy.pushIndexNode(leaf);
         leaf.colIndex = colsHierarchy.getIndexNodes().length - 1;
         leaf.height -= sampleNodeForLastLevelHeight;
+        leaf.relatedNode = axisNode;
       } else {
         axisNode = parent.clone();
 
@@ -180,6 +217,7 @@ function separateColLeafNodes(
         parent.isLeaf = true;
         parent.children = [];
         parent.height = sampleNodeForLastLevel.y - parent.y;
+        parent.relatedNode = axisNode;
       }
 
       colsHierarchy.allNodesWithoutRoot =
@@ -187,10 +225,22 @@ function separateColLeafNodes(
           (node) => !includes(axisNode.children, node),
         );
 
-      axisNode.field = lastCol;
+      axisNode.field = head(axisNode.children)?.field || axisNode.field;
       axisNode.y = 0;
       axisNode.height = sampleNodeForLastLevelHeight;
-      colAxisNodes.push(axisNode);
+
+      colAxisHierarchy.pushIndexNode(axisNode);
+      colAxisHierarchy.pushNode(axisNode);
+
+      axisNode.isLeaf = true;
+      axisNode.rowIndex = colAxisHierarchy.getIndexNodes().length - 1;
+      if (
+        !axisNode.isTotals &&
+        isEmpty(colAxisHierarchy.sampleNodesForAllLevels)
+      ) {
+        colAxisHierarchy.sampleNodesForAllLevels.push(axisNode);
+        colAxisHierarchy.sampleNodeForLastLevel = axisNode;
+      }
     });
 
     colsHierarchy.maxLevel--;
@@ -205,7 +255,7 @@ function separateColLeafNodes(
   }
 
   return {
-    colAxisNodes,
+    colAxisHierarchy,
     colsHierarchy,
     colNodes: colsHierarchy.getNodes(),
     colLeafNodes: colsHierarchy.getLeaves(),

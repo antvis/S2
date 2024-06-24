@@ -13,15 +13,15 @@ import {
 } from '@antv/s2';
 import { map } from 'lodash';
 import { AxisCellType } from '../constant';
-import type { RowAxisHeaderConfig } from '../interface';
+import type { ColAxisHeaderConfig } from '../interface';
 
-export class RowAxisCell extends HeaderCell<RowAxisHeaderConfig> {
+export class ColAxisCell extends HeaderCell<ColAxisHeaderConfig> {
   public get cellType() {
     return AxisCellType.ROW_AXIS_CELL as unknown as CellType;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
-    return [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT];
+    return [CellBorderPosition.TOP, CellBorderPosition.LEFT];
   }
 
   protected isBolderText(): boolean {

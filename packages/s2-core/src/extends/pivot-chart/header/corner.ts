@@ -5,7 +5,6 @@ import {
   CornerHeader as OriginCornerHeader,
   type BaseCornerOptions,
 } from '@antv/s2';
-import { head } from 'lodash';
 
 export class CornerHeader extends OriginCornerHeader {
   public static getCornerNodes(
@@ -20,9 +19,9 @@ export class CornerHeader extends OriginCornerHeader {
 
     const { seriesNumberWidth, layoutResult, spreadsheet } = options;
 
-    const { rowAxisNodes, rowsHierarchy, colsHierarchy } = layoutResult;
+    const { rowsHierarchy, rowAxisHierarchy, colsHierarchy } = layoutResult;
 
-    const rowAxisNode = head(rowAxisNodes);
+    const rowAxisNode = rowAxisHierarchy?.sampleNodeForLastLevel;
 
     if (rowAxisNode) {
       const leafNode = colsHierarchy?.sampleNodeForLastLevel;

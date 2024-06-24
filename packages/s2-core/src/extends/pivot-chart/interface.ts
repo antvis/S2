@@ -5,8 +5,10 @@ import type {
   BaseHeaderConfig,
   CellCallback,
   DefaultCellTheme,
+  Hierarchy,
   Node,
 } from '@antv/s2';
+import type { ColAxisCell } from './cell/col-axis-cell';
 import type { RowAxisCell } from './cell/row-axis-cell';
 import type { AxisCellType } from './constant';
 
@@ -14,20 +16,19 @@ export type Coordinate = 'cartesian' | 'polar';
 
 export interface RowAxisHeaderConfig extends BaseHeaderConfig {}
 
-export interface ColAxisHeader {}
-
-export interface CornerAxisHeader {}
+export interface ColAxisHeaderConfig extends BaseHeaderConfig {}
 
 // @ts-ignore
 declare module '@antv/s2' {
   interface LayoutResult {
-    rowAxisNodes?: Node[];
-    colAxisNodes?: Node[];
+    rowAxisHierarchy?: Hierarchy;
+    colAxisHierarchy?: Hierarchy;
     cornerAxisNodes?: Node[];
   }
   interface S2PivotSheetOptions {
     chartSpec?: G2Spec;
     rowAxisCell?: CellCallback<RowAxisHeaderConfig, RowAxisCell>;
+    colAxisCell?: CellCallback<ColAxisHeaderConfig, ColAxisCell>;
   }
 
   interface S2Style {}

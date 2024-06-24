@@ -81,7 +81,8 @@ export class Node {
   public seriesNumberWidth: number;
 
   /**
-   * 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   * 1. 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   * 2. 给 pivot chart sheet 用，关联当前格子和拆分到 chart axis 的格子
    */
   public relatedNode: Node;
 

@@ -110,7 +110,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, type: string) {
+  public onColScroll(scrollX: number, type?: string) {
     if (this.headerConfig.scrollX !== scrollX) {
       this.headerConfig.scrollX = scrollX;
       this.render(type);

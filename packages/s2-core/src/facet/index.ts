@@ -7,4 +7,5 @@ export * from './bbox/corner-bbox';
 export * from './bbox/panel-bbox';
 
 export * from './header';
+export * from './utils';
 export { BaseFacet, FrozenFacet, PivotFacet, TableFacet };

@@ -6,7 +6,7 @@ import {
   type S2DataConfig,
   type S2Options,
 } from '@antv/s2';
-import { FIXED_DATA_CONFIG, FIXED_OPTIONS } from './constant';
+import { DEFAULT_OPTIONS, FIXED_DATA_CONFIG, FIXED_OPTIONS } from './constant';
 import { PivotChartFacet } from './facet/pivot-chart-facet';
 import { getCustomTheme } from './utils/theme';
 
@@ -18,7 +18,7 @@ export class PivotChart extends PivotSheet {
   }
 
   protected override setupOptions(options: S2Options | null) {
-    this.options = setupOptions(options, FIXED_OPTIONS);
+    this.options = setupOptions(DEFAULT_OPTIONS, options, FIXED_OPTIONS);
   }
 
   protected override initTheme() {
