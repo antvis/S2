@@ -1,4 +1,5 @@
 import { PivotFacet, type LayoutResult } from '@antv/s2';
+import { CornerHeader } from '../header/corner';
 import { RowAxisHeader } from '../header/row-axis';
 import { separateRowColLeafNodes } from '../utils/axis';
 import { CornerBBox } from './corner-bbox';
@@ -28,6 +29,19 @@ export class PivotChartFacet extends PivotFacet {
     if (this.rowAxisHeader) {
       this.foregroundGroup.appendChild(this.rowAxisHeader);
     }
+  }
+
+  protected getCornerHeader(): CornerHeader {
+    return (
+      this.cornerHeader ||
+      CornerHeader.getCornerHeader({
+        panelBBox: this.panelBBox,
+        cornerBBox: this.cornerBBox,
+        seriesNumberWidth: this.getSeriesNumberWidth(),
+        layoutResult: this.layoutResult,
+        spreadsheet: this.spreadsheet,
+      })
+    );
   }
 
   protected getRowAxisHeader(): RowAxisHeader | null {

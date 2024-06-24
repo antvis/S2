@@ -31,9 +31,13 @@ function separateRowLeafNodes(
 
   const rowAxisNodes: Node[] = [];
 
+  const lastRow = last(s2.dataSet.fields.rows) as string;
+
   // 只有一个维度层级时，会被全部收敛到坐标轴中
   if (maxLevel === 0) {
     const root = rowsHierarchy.rootNode.clone();
+
+    root.field = lastRow;
 
     root.width = sampleNodeForLastLevelWidth;
     rowAxisNodes.push(root);
@@ -79,8 +83,10 @@ function separateRowLeafNodes(
           (node) => !includes(axisNode.children, node),
         );
 
+      axisNode.field = lastRow;
       axisNode.x = 0;
       axisNode.width = sampleNodeForLastLevelWidth;
+
       rowAxisNodes.push(axisNode);
     });
   }
@@ -118,7 +124,7 @@ function separateColLeafNodes(
 
   const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelHeight = sampleNodeForLastLevel.height ?? 0;
-
+  const lastCol = last(s2.dataSet.fields.columns) as string;
   const colAxisNodes: Node[] = [];
 
   // 只有一个维度层级时，会被全部收敛到坐标轴中
@@ -131,6 +137,7 @@ function separateColLeafNodes(
 
     const placeholderNode = sampleNodeForLastLevel.clone();
 
+    placeholderNode.field = lastCol;
     placeholderNode.x = 0;
     placeholderNode.width = colsHierarchy.width;
     placeholderNode.value = s2.dataSet.getFieldName(placeholderNode.field);
@@ -180,6 +187,7 @@ function separateColLeafNodes(
           (node) => !includes(axisNode.children, node),
         );
 
+      axisNode.field = lastCol;
       axisNode.y = 0;
       axisNode.height = sampleNodeForLastLevelHeight;
       colAxisNodes.push(axisNode);
