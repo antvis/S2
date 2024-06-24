@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.14...@antv/s2-vue-v2.0.0-next.15) (2024-06-21)
+
+
+### Features
+
+* **components:** 组件层更新时增加 loading 效果 close [#1790](https://github.com/antvis/S2/issues/1790) ([#2762](https://github.com/antvis/S2/issues/2762)) ([0ca8413](https://github.com/antvis/S2/commit/0ca841362bb4bbb3b81ca1046f5b4dcd7236b91e))
+
 # [@antv/s2-vue-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.13...@antv/s2-vue-v2.0.0-next.14) (2024-05-24)
 
 

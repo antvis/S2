@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 import {
   EMPTY_PLACEHOLDER,
-  ResizeType,
   customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
@@ -341,7 +340,6 @@ export const s2Options: SheetComponentOptions = {
   seriesNumber: {
     enable: false,
   },
-
   transformCanvasConfig() {
     return {
       supportsCSSTransform: true,
@@ -376,8 +374,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.ALL,
-      colResizeType: ResizeType.ALL,
+      rowResizeType: 'all',
+      colResizeType: 'all',
     },
   },
   // totals: {

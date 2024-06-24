@@ -1,6 +1,6 @@
 export const ArrowDown = `
 <svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
+<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
     <text id="↓" fill="none">
         <tspan x="-0.225097656" y="8.5">↓</tspan>
     </text>
@@ -8,7 +8,7 @@ export const ArrowDown = `
 </svg>`;
 
 export const ArrowUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
+<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
     <text id="↑" fill="none">
         <tspan x="-0.225097656" y="8.5">↑</tspan>
     </text>
