@@ -1,10 +1,5 @@
-import type { PointLike } from '@antv/g-lite';
-import {
-  corelib,
-  renderToMountedElement,
-  type BandScale,
-  type G2Spec,
-} from '@antv/g2';
+import { Group, type PointLike } from '@antv/g';
+import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
@@ -13,9 +8,12 @@ import {
 } from '@antv/s2';
 import { map } from 'lodash';
 import { AxisCellType } from '../constant';
-import type { RowAxisHeaderConfig } from '../interface';
+import type { AxisHeaderConfig } from '../interface';
+import { waitForCellMounted } from '../utils/schedule';
 
-export class RowAxisCell extends HeaderCell<RowAxisHeaderConfig> {
+export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
+  axisShape: Group;
+
   public get cellType() {
     return AxisCellType.ROW_AXIS_CELL as unknown as CellType;
   }
@@ -56,9 +54,8 @@ export class RowAxisCell extends HeaderCell<RowAxisHeaderConfig> {
     this.update();
   }
 
-  getLabelScale(): BandScale {
-    const { children } = this.meta;
-    const domain = map(children, (child) => {
+  getAxisXOptions() {
+    const domain = map(this.meta.children, (child) => {
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(child.field);
 
       return !child.isTotalRoot && formatter
@@ -67,40 +64,61 @@ export class RowAxisCell extends HeaderCell<RowAxisHeaderConfig> {
     });
 
     return {
-      type: 'band',
-      domain,
-      range: [0, 1],
+      type: 'axisX',
+      scale: {
+        x: {
+          type: 'band',
+          domain,
+          range: [0, 1],
+        },
+      },
     };
   }
 
-  drawAxisShape() {
-    // const { field, query } = this.meta;
+  getAxisYOptions() {
+    const { field, value } = this.meta;
 
-    const chartOptions: G2Spec = {
-      autoFit: true,
-      type: 'axisX',
+    const range = this.spreadsheet.dataSet.getValueRangeByField(value);
+
+    return {
+      type: 'axisY',
+      title: this.spreadsheet.dataSet.getFieldFormatter(field)?.(value),
       scale: {
-        x: this.getLabelScale(),
+        y: {
+          type: 'linear',
+          domain: [range.minValue, range.maxValue],
+          range: [1, 0],
+        },
       },
-      coordinate: { transform: [{ type: 'transpose' }] },
-      // title: this.spreadsheet.dataSet.getFieldName(field),
-      // padding: 0,
-      // margin: 0,
-      // tick: false,
-      // labelFormatter: (...v) => {
-      //   console.log(v);
-
-      //   return v[0];
-      // },
-      labelDirection: 'negative',
-      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
     };
+  }
+
+  getChartOptions(): G2Spec {
+    const chartOptions = {
+      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      ...(this.spreadsheet.isValueInCols()
+        ? this.getAxisXOptions()
+        : this.getAxisYOptions()),
+      coordinate: {
+        transform: this.spreadsheet.isValueInCols()
+          ? [{ type: 'transpose' }]
+          : undefined,
+      },
+    } as G2Spec;
+
+    return chartOptions;
+  }
+
+  drawAxisShape() {
+    const chartOptions = this.getChartOptions();
+
+    this.axisShape = this.appendChild(new Group({}));
 
     // delay 到实例被挂载到 parent 后，再渲染 chart
-    Promise.resolve().then(() => {
+    waitForCellMounted(() => {
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
-        group: this,
+        group: this.axisShape,
         library: corelib(),
       });
     });

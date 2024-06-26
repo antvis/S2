@@ -1,13 +1,14 @@
 import {
   CellData,
   EXTRA_FIELD,
+  ORIGIN_FIELD,
   PivotFacet,
   getDataCellId,
   type LayoutResult,
   type Node,
   type ViewMeta,
 } from '@antv/s2';
-import { last, merge, omit, reduce } from 'lodash';
+import { last, merge, reduce } from 'lodash';
 import { getHeaderTotalStatus } from '../../../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../../../utils/facet';
 import { ColAxisHeader } from '../header/col-axis';
@@ -32,9 +33,9 @@ export class PivotChartFacet extends PivotFacet {
     this.cornerBBox = new CornerBBox(this, true);
   }
 
-  protected override calculatePanelBBox = () => {
+  protected override calculatePanelBBox() {
     this.panelBBox = new PanelBBox(this, true);
-  };
+  }
 
   protected renderHeaders(): void {
     super.renderHeaders();
@@ -162,6 +163,11 @@ export class PivotChartFacet extends PivotFacet {
 
     const data: any = [];
 
+    const xField =
+      rowAxis.field === EXTRA_FIELD ? colAxis.field : rowAxis.field;
+    const yField =
+      rowAxis.field === EXTRA_FIELD ? rowAxis.value : colAxis.value;
+
     for (const rowChild of rowAxis.children) {
       for (const colChild of colAxis.children) {
         const rowQuery = rowChild.query;
@@ -180,21 +186,14 @@ export class PivotChartFacet extends PivotFacet {
           query: dataQuery,
           isTotals,
           totalStatus,
-        });
+        }) as CellData;
 
-        if (current) {
-          data.push(current);
-        } else {
-          data.push(
-            CellData.getCellData(
-              {
-                ...omit(dataQuery, [EXTRA_FIELD]),
-                [dataQuery[EXTRA_FIELD]]: undefined,
-              },
-              dataQuery[EXTRA_FIELD],
-            ),
-          );
-        }
+        const xValue =
+          rowChild.field === EXTRA_FIELD ? colChild.value : rowChild.value;
+
+        const origin = { [xField]: xValue, ...current?.[ORIGIN_FIELD] };
+
+        data.push(origin);
       }
     }
 
@@ -209,6 +208,10 @@ export class PivotChartFacet extends PivotFacet {
       colIndex,
       rowId: rowAxis.id,
       colId: colAxis.id,
+      fieldValue: data,
+      valueField: yField,
+      xField,
+      yField,
       id: getDataCellId(rowAxis.id, colAxis.id),
     };
 

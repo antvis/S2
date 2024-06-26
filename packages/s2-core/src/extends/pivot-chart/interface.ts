@@ -14,9 +14,7 @@ import type { AxisCellType } from './constant';
 
 export type Coordinate = 'cartesian' | 'polar';
 
-export interface RowAxisHeaderConfig extends BaseHeaderConfig {}
-
-export interface ColAxisHeaderConfig extends BaseHeaderConfig {}
+export interface AxisHeaderConfig extends BaseHeaderConfig {}
 
 // @ts-ignore
 declare module '@antv/s2' {
@@ -27,8 +25,8 @@ declare module '@antv/s2' {
   }
   interface S2PivotSheetOptions {
     chartSpec?: G2Spec;
-    rowAxisCell?: CellCallback<RowAxisHeaderConfig, RowAxisCell>;
-    colAxisCell?: CellCallback<ColAxisHeaderConfig, ColAxisCell>;
+    rowAxisCell?: CellCallback<AxisHeaderConfig, RowAxisCell>;
+    colAxisCell?: CellCallback<AxisHeaderConfig, ColAxisCell>;
   }
 
   interface S2Style {}
@@ -38,4 +36,9 @@ declare module '@antv/s2' {
   };
 
   interface S2Theme extends AxisCellThemes {}
+
+  interface ViewMeta {
+    xField?: string;
+    yField?: string;
+  }
 }

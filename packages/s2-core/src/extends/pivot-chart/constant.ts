@@ -1,3 +1,4 @@
+import type { G2Spec } from '@antv/g2';
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { ChartDataCell } from './cell/chart-data-cell';
 import type { Coordinate } from './interface';
@@ -19,6 +20,11 @@ export const FIXED_OPTIONS: S2Options = {
       hideValue: false,
     },
   },
+};
+
+export const DEFAULT_G2_SPEC: G2Spec = {
+  autoFit: true,
+  animate: false,
 };
 
 export enum AxisCellType {

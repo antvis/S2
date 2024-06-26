@@ -786,9 +786,9 @@ export abstract class BaseFacet {
     this.cornerBBox = new CornerBBox(this, true);
   }
 
-  protected calculatePanelBBox = () => {
+  protected calculatePanelBBox() {
     this.panelBBox = new PanelBBox(this, true);
-  };
+  }
 
   getRealWidth = (): number => last(this.viewCellWidths) || 0;
 
