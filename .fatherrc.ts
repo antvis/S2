@@ -3,23 +3,25 @@ import path from 'path';
 
 export default (name: string) => {
   const alias = {
-    '@antv/s2-shared': path.relative(process.cwd(), './src/shared'),
+    '@antv/s2-shared': path.resolve(process.cwd(), './src/shared'),
   };
 
   return defineConfig({
     sourcemap: true,
+    alias,
     define: {
       'process.env.NODE_ENV': JSON.stringify('production'),
     },
     esm: {
       output: 'esm',
-      alias,
     },
     cjs: {
       output: 'lib',
-      alias,
     },
     umd: {
+      alias: {
+        '@antv/s2': path.resolve(__dirname, 'packages/s2-core'),
+      },
       name,
       output: 'dist',
       externals: {

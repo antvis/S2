@@ -41,7 +41,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "father build && pnpm build:dts",
+    "build": "father build",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.mjs",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.mjs",
     "build:dts": "run-s dts:*",

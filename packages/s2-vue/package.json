@@ -37,7 +37,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm build:pre-bundle && father build && pnpm clean:pre-bundle",
+    "build": "pnpm clean && pnpm build:pre-bundle && father build && pnpm clean:pre-bundle && pnpm build:dts",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
