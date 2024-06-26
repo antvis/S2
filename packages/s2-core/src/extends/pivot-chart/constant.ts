@@ -18,6 +18,7 @@ export const FIXED_OPTIONS: S2Options = {
   style: {
     colCell: {
       hideValue: false,
+      // height: 60,
     },
   },
 };

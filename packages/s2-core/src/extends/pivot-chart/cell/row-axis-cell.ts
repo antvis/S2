@@ -83,6 +83,8 @@ export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
     return {
       type: 'axisY',
       title: this.spreadsheet.dataSet.getFieldFormatter(field)?.(value),
+      titleSpacing: 0,
+
       scale: {
         y: {
           type: 'linear',
@@ -90,11 +92,17 @@ export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
           range: [1, 0],
         },
       },
+      labelAutoRotate: false,
+      labelAlign: 'horizontal',
+      labelAutoWrap: true,
+      line: false,
+      grid: false,
     };
   }
 
   getChartOptions(): G2Spec {
     const chartOptions = {
+      autoFit: true,
       ...this.getBBoxByType(CellClipBox.PADDING_BOX),
       ...(this.spreadsheet.isValueInCols()
         ? this.getAxisXOptions()

@@ -23,6 +23,7 @@ export class ColAxisCell extends RowAxisCell {
           ? [{ type: 'transpose' }]
           : undefined,
       },
+      labelAutoRotate: false,
       labelAlign: 'horizontal',
     } as G2Spec;
 

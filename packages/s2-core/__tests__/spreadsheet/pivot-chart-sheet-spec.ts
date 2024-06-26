@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getContainer } from 'tests/util/helpers';
 import { Aggregation, type S2Options } from '../../src/common/interface';
 import { PivotChart } from '../../src/extends';
@@ -8,7 +9,7 @@ describe('Pivot Chart Tests', () => {
 
   const s2Options: S2Options = {
     width: 800,
-    height: 600,
+    height: 700,
   };
 
   beforeEach(() => {
@@ -36,6 +37,7 @@ describe('Pivot Chart Tests', () => {
       );
 
       await s2.render();
+      console.log('1 level', s2.facet.getLayoutResult());
     });
 
     test('should render pivot chart with 2 level rows', async () => {
@@ -46,9 +48,10 @@ describe('Pivot Chart Tests', () => {
           fields: {
             rows: ['province', 'city'],
             columns: ['type', 'sub_type'],
-            values: ['number'],
+            values: ['number', 'number1'],
             valueInCols: true,
           },
+          data: dataCfg.data.map((item) => ({ ...item, number1: item.number })),
         },
         {
           ...s2Options,
@@ -71,6 +74,7 @@ describe('Pivot Chart Tests', () => {
       );
 
       await s2.render();
+      console.log('2 level', s2.facet.getLayoutResult());
     });
 
     test('should render pivot chart with 3 level rows', async () => {
@@ -82,7 +86,7 @@ describe('Pivot Chart Tests', () => {
             rows: ['province', 'city', 'type'],
             columns: ['sub_type'],
             values: ['number'],
-            valueInCols: true,
+            valueInCols: false,
           },
         },
         {
@@ -104,10 +108,14 @@ describe('Pivot Chart Tests', () => {
               subTotalsGroupDimensions: ['type'],
             },
           },
+          chartSpec: {
+            x: {},
+          },
         },
       );
 
       await s2.render();
+      console.log('3 level', s2.facet.getLayoutResult());
     });
   });
   describe('different col levels', () => {
@@ -127,6 +135,7 @@ describe('Pivot Chart Tests', () => {
       );
 
       await s2.render();
+      console.log(s2);
     });
 
     test('should render pivot chart with 2 level cols', async () => {
@@ -199,7 +208,6 @@ describe('Pivot Chart Tests', () => {
       );
 
       await s2.render();
-      window.s2 = s2;
     });
   });
 });
