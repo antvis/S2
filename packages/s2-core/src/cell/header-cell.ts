@@ -120,8 +120,14 @@ export abstract class HeaderCell<
     // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
     if (this.showSortIcon()) {
       this.actionIconConfig = {
-        icons: [{ name: get(sortParam, 'type', 'none'), position: 'right' }],
-        belongsCell: this.cellType,
+        icons: [
+          {
+            name: sortParam?.type || 'none',
+            position: 'right',
+          },
+        ],
+        belongsCell: this
+          .cellType as InternalFullyHeaderActionIcon['belongsCell'],
         isSortIcon: true,
       };
     } else {
