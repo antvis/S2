@@ -56,9 +56,8 @@ function pushAxisNode(
 function shrinkHierarchy(
   hierarchy: Hierarchy,
   field: 'width' | 'height' = 'width',
+  size: number = 0,
 ) {
-  const size = hierarchy.sampleNodeForLastLevel?.[field] ?? 0;
-
   hierarchy.maxLevel--;
   hierarchy.sampleNodesForAllLevels = initial(
     hierarchy.sampleNodesForAllLevels,
@@ -70,16 +69,11 @@ function shrinkHierarchy(
   hierarchy[field] -= size;
 }
 
-function updateRowNode(
-  rowsHierarchy: Hierarchy,
-  rowNode: Node,
-  axisNode: Node,
-) {
+function updateRowNode(rowsHierarchy: Hierarchy, rowNode: Node) {
   const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel!;
 
   rowNode.isLeaf = true;
   rowNode.children = [];
-  rowNode.relatedNode = axisNode;
 
   rowNode.width = sampleNodeForLastLevel.x - rowNode.x;
 
@@ -104,8 +98,6 @@ function separateRowMeasureNodes(
 
   const parents = new Set();
 
-  rowsHierarchy.indexNode = [];
-
   forEach(rowsHierarchy.getLeaves(), (leaf: Node) => {
     const axisNode = leaf.clone();
 
@@ -122,8 +114,7 @@ function separateRowMeasureNodes(
     pushAxisNode(rowAxisHierarchy, axisNode);
 
     if (leaf.field === EXTRA_FIELD) {
-      rowsHierarchy.allNodesWithoutRoot =
-        rowsHierarchy.allNodesWithoutRoot.filter((node) => node !== leaf);
+      leaf.width = 0;
     }
 
     const parent = leaf.field === EXTRA_FIELD ? leaf.parent : leaf;
@@ -133,10 +124,10 @@ function separateRowMeasureNodes(
     }
 
     parents.add(parent);
-    updateRowNode(rowsHierarchy, parent, axisNode);
+    parent.width = sampleNodeForLastLevel.x - parent.x;
   });
 
-  shrinkHierarchy(rowsHierarchy);
+  shrinkHierarchy(rowsHierarchy, 'width', sampleNodeForLastLevelWidth);
 
   return {
     rowAxisHierarchy,
@@ -170,7 +161,6 @@ function separateRowDimensionNodes(
     pushAxisNode(rowAxisHierarchy, root);
 
     rowsHierarchy = new Hierarchy();
-    rowAxisHierarchy.rootNode.relatedNode = root;
 
     return {
       rowAxisHierarchy,
@@ -200,10 +190,10 @@ function separateRowDimensionNodes(
       axisNode = leaf.clone();
       axisNode.children = [axisNode];
 
-      updateRowNode(rowsHierarchy, leaf, axisNode);
+      updateRowNode(rowsHierarchy, leaf);
     } else {
       axisNode = parent.clone();
-      updateRowNode(rowsHierarchy, parent, axisNode);
+      updateRowNode(rowsHierarchy, parent);
 
       rowsHierarchy.allNodesWithoutRoot =
         rowsHierarchy.allNodesWithoutRoot.filter(
@@ -218,7 +208,7 @@ function separateRowDimensionNodes(
     pushAxisNode(rowAxisHierarchy, axisNode);
   });
 
-  shrinkHierarchy(rowsHierarchy);
+  shrinkHierarchy(rowsHierarchy, 'width', sampleNodeForLastLevelWidth);
 
   return {
     rowAxisHierarchy,
@@ -273,16 +263,11 @@ function createPlaceholderHierarchy(
   return hierarchy;
 }
 
-function updateColNode(
-  colsHierarchy: Hierarchy,
-  colNode: Node,
-  axisNode: Node,
-) {
+function updateColNode(colsHierarchy: Hierarchy, colNode: Node) {
   const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
 
   colNode.isLeaf = true;
   colNode.children = [];
-  colNode.relatedNode = axisNode;
   colNode.height = sampleNodeForLastLevel.y - colNode.y;
 
   colsHierarchy.pushIndexNode(colNode);
@@ -306,8 +291,6 @@ function separateColMeasureNodes(
 
   const parents = new Set();
 
-  colsHierarchy.indexNode = [];
-
   forEach(colsHierarchy.getLeaves(), (leaf: Node) => {
     const axisNode = leaf.clone();
 
@@ -324,8 +307,7 @@ function separateColMeasureNodes(
     pushAxisNode(colAxisHierarchy, axisNode, 'colIndex');
 
     if (leaf.field === EXTRA_FIELD) {
-      colsHierarchy.allNodesWithoutRoot =
-        colsHierarchy.allNodesWithoutRoot.filter((node) => node !== leaf);
+      leaf.height = 0;
     }
 
     const parent = leaf.field === EXTRA_FIELD ? leaf.parent : leaf;
@@ -335,7 +317,7 @@ function separateColMeasureNodes(
     }
 
     parents.add(parent);
-    updateColNode(colsHierarchy, parent, axisNode);
+    parent.height = sampleNodeForLastLevel.y - parent.y;
   });
 
   if (colsHierarchy.maxLevel === 0) {
@@ -346,7 +328,7 @@ function separateColMeasureNodes(
       s2,
     );
   } else {
-    shrinkHierarchy(colsHierarchy, 'height');
+    shrinkHierarchy(colsHierarchy, 'height', sampleNodeForLastLevelHeight);
   }
 
   return {
@@ -421,11 +403,11 @@ function separateColDimensionNodes(
       axisNode = leaf.clone();
       axisNode.children = [axisNode];
 
-      updateColNode(colsHierarchy, leaf, axisNode);
+      updateColNode(colsHierarchy, leaf);
     } else {
       axisNode = parent.clone();
 
-      updateColNode(colsHierarchy, parent, axisNode);
+      updateColNode(colsHierarchy, parent);
     }
 
     axisNode.field = head(axisNode.children)?.field || axisNode.field;
@@ -440,7 +422,7 @@ function separateColDimensionNodes(
       );
   });
 
-  shrinkHierarchy(colsHierarchy, 'height');
+  shrinkHierarchy(colsHierarchy, 'height', sampleNodeForLastLevelHeight);
 
   return {
     colAxisHierarchy,

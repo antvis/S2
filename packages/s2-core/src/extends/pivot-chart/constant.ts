@@ -1,5 +1,5 @@
 import type { G2Spec } from '@antv/g2';
-import type { S2DataConfig, S2Options } from '@antv/s2';
+import { LayoutWidthType, type S2DataConfig, type S2Options } from '@antv/s2';
 import { ChartDataCell } from './cell/chart-data-cell';
 import type { Coordinate } from './interface';
 
@@ -15,13 +15,30 @@ export const DEFAULT_OPTIONS: S2Options = {
 
 export const FIXED_OPTIONS: S2Options = {
   hierarchyType: 'grid',
+
   style: {
+    layoutWidthType: LayoutWidthType.ColAdaptive,
+
+    rowCell: {
+      wordWrap: false,
+      maxLines: 1,
+    },
     colCell: {
+      wordWrap: false,
+      maxLines: 1,
       hideValue: false,
-      // height: 60,
+    },
+    dataCell: {
+      wordWrap: false,
+      maxLines: 1,
     },
   },
 };
+
+export const DEFAULT_MEASURE_SIZE = 200;
+export const DEFAULT_ROW_AXIS_SIZE = 100;
+export const DEFAULT_COL_AXIS_SIZE = 50;
+export const DEFAULT_DIMENSION_SIZE = 30;
 
 export const DEFAULT_G2_SPEC: G2Spec = {
   autoFit: true,
