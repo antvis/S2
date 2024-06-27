@@ -41,7 +41,7 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { floor } from '../utils/math';
 import { getCellWidth } from '../utils/text';
 import { FrozenFacet } from './frozen-facet';
-import { Frame } from './header';
+import { CornerHeader, Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
@@ -768,7 +768,6 @@ export class PivotFacet extends FrozenFacet {
    */
   private getTreeRowHeaderWidth(): number {
     const { rowCell } = this.spreadsheet.options.style!;
-    const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
     const customRowCellWidth = this.getCellCustomSize(null, rowCell?.width!);
@@ -778,9 +777,7 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // 2. 然后是计算 (+ icon province/city/level)
-    const treeHeaderLabel = rows
-      .map((field) => this.spreadsheet.dataSet.getFieldName(field))
-      .join('/');
+    const treeHeaderLabel = CornerHeader.getTreeCornerText(this.spreadsheet);
 
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell!;

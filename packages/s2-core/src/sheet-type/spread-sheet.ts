@@ -155,7 +155,7 @@ export abstract class SpreadSheet extends EE {
     this.dataCfg = setupDataConfig(dataCfg);
   }
 
-  protected setupOptions(options: S2Options | null) {
+  protected setupOptions(options: S2Options | null | undefined) {
     this.options = setupOptions(options);
   }
 
@@ -386,7 +386,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = setupOptions(options);
+      this.setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }

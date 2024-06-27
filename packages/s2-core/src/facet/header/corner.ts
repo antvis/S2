@@ -3,6 +3,7 @@ import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { S2Event } from '../../common';
 import { CornerNodeType } from '../../common/interface/node';
+import type { SpreadSheet } from '../../sheet-type';
 import type { CornerBBox } from '../bbox/corner-bbox';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
@@ -89,8 +90,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     });
   }
 
-  public static getTreeCornerText(options: BaseCornerOptions) {
-    const { spreadsheet } = options;
+  public static getTreeCornerText(spreadsheet: SpreadSheet) {
     const { rows = [] } = spreadsheet.dataSet.fields;
 
     const { cornerText: defaultCornerText } = spreadsheet.options;
@@ -153,7 +153,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     if (spreadsheet.isHierarchyTreeType()) {
-      const cornerText = this.getTreeCornerText(options);
+      const cornerText = this.getTreeCornerText(spreadsheet);
       const cornerNode: Node = new Node({
         id: cornerText,
         field: '',
