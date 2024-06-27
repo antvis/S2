@@ -265,6 +265,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     const { y, height } = this.meta;
+    const { position } = this.getHeaderConfig();
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
@@ -282,6 +283,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       return;
     }
 
+    const offsetY = position.y + y;
     const resizeAreaWidth = this.getResizeAreaWidth();
 
     // 列高调整热区
@@ -290,7 +292,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       type: ResizeDirectionType.Vertical,
       effect: ResizeAreaEffect.Field,
       offsetX: 0,
-      offsetY: y,
+      offsetY,
       width: resizeAreaWidth,
       height,
       meta: this.meta,
@@ -303,7 +305,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
           style: {
             ...attrs.style,
             x: 0,
-            y: y + height - resizeStyle.size!,
+            y: offsetY + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },

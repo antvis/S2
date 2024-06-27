@@ -63,6 +63,7 @@ export const KEY_GROUP_ROW_AXIS_SCROLL = 'rowAxisScrollGroup';
 export const KEY_GROUP_ROW_AXIS_FROZEN = 'rowAxisHeaderFrozenGroup';
 export const KEY_GROUP_ROW_AXIS_HEADER_FROZEN_TRAILING =
   'rowAxisHeaderFrozenTrailingGroup';
+export const KEY_GROUP_ROW_AXIS_RESIZE_AREA = 'rowAxisHeaderResizeArea';
 
 /**
  * column axis
@@ -70,3 +71,6 @@ export const KEY_GROUP_ROW_AXIS_HEADER_FROZEN_TRAILING =
 export const KEY_GROUP_COL_AXIS_SCROLL = 'colAxisScrollGroup';
 export const KEY_GROUP_COL_AXIS_FROZEN = 'colAxisFrozenGroup';
 export const KEY_GROUP_COL_AXIS_FROZEN_TRAILING = 'colAxisFrozenTrailingGroup';
+export const KEY_GROUP_COL_AXIS_RESIZE_AREA = 'colAxisHeaderResizeArea';
+
+export const PLACEHOLDER_FIELD = '$$placeholder$$';

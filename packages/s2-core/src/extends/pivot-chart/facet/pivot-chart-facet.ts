@@ -1,20 +1,24 @@
 import {
   CellData,
   EXTRA_FIELD,
+  Node,
   ORIGIN_FIELD,
   PivotFacet,
   getDataCellId,
   type LayoutResult,
-  type Node,
   type ViewMeta,
 } from '@antv/s2';
-import { last, merge, reduce } from 'lodash';
+import { isNumber, last, merge, reduce } from 'lodash';
 import { getHeaderTotalStatus } from '../../../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../../../utils/facet';
+import {
+  KEY_GROUP_COL_AXIS_RESIZE_AREA,
+  KEY_GROUP_ROW_AXIS_RESIZE_AREA,
+} from '../constant';
 import { ColAxisHeader } from '../header/col-axis';
 import { CornerHeader } from '../header/corner';
 import { RowAxisHeader } from '../header/row-axis';
-import { separateRowColLeafNodes } from '../utils/axis';
+import { getAxisLeafNodes, separateRowColLeafNodes } from '../utils/axis';
 import { CornerBBox } from './corner-bbox';
 import { PanelBBox } from './panel-bbox';
 
@@ -29,6 +33,67 @@ export class PivotChartFacet extends PivotFacet {
     return separateRowColLeafNodes(layoutResult, this.spreadsheet);
   }
 
+  protected calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
+    super.calculateHeaderNodesCoordinate(layoutResult);
+    this.adjustAxisLeafCoordinate(layoutResult);
+  }
+
+  protected adjustAxisLeafCoordinate(layoutResult: LayoutResult) {
+    // 指标置于列头时，行头的最后一个维度会被分离出来，因此 resize 的 row node 节点是倒数第二个节点，不是 leaf 节点
+    // 正常的逻辑只会处理 leaf 节点，所以这里需要增加对该情况的处理，因为在 axis node 被分离出去后，该节点展示上就是叶子节点了
+    // 在分离 axis node 之前处理了，就不需要在分离后既需要处理 hierarchy 又需要处理 axisHierarchy
+    const { rowsHierarchy, colsHierarchy } = layoutResult;
+
+    if (this.spreadsheet.isValueInCols()) {
+      const axisNodes = getAxisLeafNodes(rowsHierarchy);
+
+      let preLeafNode: Node;
+
+      axisNodes.forEach((currentNode) => {
+        if (preLeafNode) {
+          currentNode.y = preLeafNode.y + preLeafNode.height;
+        }
+
+        const cellDraggedHeight = this.getRowCellDraggedHeight(currentNode);
+
+        if (isNumber(cellDraggedHeight)) {
+          const changeSize = cellDraggedHeight - currentNode.height;
+
+          currentNode.height = cellDraggedHeight;
+          rowsHierarchy.height += changeSize;
+        }
+
+        preLeafNode = currentNode;
+      });
+
+      this.calculateRowNodeHeightAndY(axisNodes);
+    } else {
+      // 另一种情况同理
+      const axisNodes = getAxisLeafNodes(colsHierarchy);
+
+      let preLeafNode: Node;
+
+      axisNodes.forEach((currentNode) => {
+        if (preLeafNode) {
+          currentNode.x = preLeafNode.x + preLeafNode.width;
+        }
+
+        const cellDraggedWidth = this.getColCellDraggedWidth(currentNode);
+
+        if (isNumber(cellDraggedWidth)) {
+          const changeSize = cellDraggedWidth - currentNode.width;
+
+          currentNode.width = cellDraggedWidth;
+          colsHierarchy.width += changeSize;
+        }
+
+        preLeafNode = currentNode;
+      });
+
+      this.calculateColNodeWidthAndX(axisNodes);
+    }
+  }
+
   protected override calculateCornerBBox(): void {
     this.cornerBBox = new CornerBBox(this, true);
   }
@@ -37,7 +102,7 @@ export class PivotChartFacet extends PivotFacet {
     this.panelBBox = new PanelBBox(this, true);
   }
 
-  protected renderHeaders(): void {
+  protected override renderHeaders(): void {
     super.renderHeaders();
     this.rowAxisHeader = this.getRowAxisHeader();
 
@@ -51,7 +116,7 @@ export class PivotChartFacet extends PivotFacet {
     }
   }
 
-  protected getCornerHeader(): CornerHeader {
+  protected override getCornerHeader(): CornerHeader {
     return (
       this.cornerHeader ||
       CornerHeader.getCornerHeader({
@@ -114,9 +179,10 @@ export class PivotChartFacet extends PivotFacet {
     this.rowAxisHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
+      KEY_GROUP_ROW_AXIS_RESIZE_AREA,
     );
 
-    this.colAxisHeader?.onColScroll(scrollX);
+    this.colAxisHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
   }
 
   public getViewCellHeights() {
@@ -147,7 +213,7 @@ export class PivotChartFacet extends PivotFacet {
   /**
    * 根据行列索引获取单元格元数据
    */
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public override getCellMeta(rowIndex = 0, colIndex = 0) {
     const { options, dataSet } = this.spreadsheet;
     const { rowAxisHierarchy, colAxisHierarchy } = this.getLayoutResult();
 

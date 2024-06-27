@@ -81,7 +81,7 @@ export class PivotFacet extends FrozenFacet {
     };
   }
 
-  private buildAllHeaderHierarchy() {
+  protected buildAllHeaderHierarchy() {
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: true,
@@ -165,7 +165,7 @@ export class PivotFacet extends FrozenFacet {
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
   }
 
-  private getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
+  protected getPreLevelSampleNode(colNode: Node, colsHierarchy: Hierarchy) {
     // 之前是采样每一级第一个节点, 现在 sampleNodesForAllLevels 是采样每一级高度最大的节点
     // 但是初始化布局时只有第一个节点有值, 所以这里需要适配下
     return colsHierarchy
@@ -173,12 +173,12 @@ export class PivotFacet extends FrozenFacet {
       .find((node) => !node.isTotals);
   }
 
-  private calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
     this.calculateRowNodesCoordinate(layoutResult);
     this.calculateColNodesCoordinate(layoutResult);
   }
 
-  private calculateColNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateColNodesCoordinate(layoutResult: LayoutResult) {
     const { colLeafNodes, colsHierarchy } = layoutResult;
 
     // 1. 计算叶子节点宽度
@@ -202,7 +202,7 @@ export class PivotFacet extends FrozenFacet {
 
   protected calculateRowOffsets(): void {}
 
-  private adjustColTotalNodesCoordinate(colsHierarchy: Hierarchy) {
+  protected adjustColTotalNodesCoordinate(colsHierarchy: Hierarchy) {
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate({
         hierarchy: colsHierarchy,
@@ -217,7 +217,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(layoutResult: LayoutResult) {
+  protected calculateColLeafNodesWidth(layoutResult: LayoutResult) {
     const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
       layoutResult;
     let preLeafNode = Node.blankNode();
@@ -238,7 +238,7 @@ export class PivotFacet extends FrozenFacet {
     });
   }
 
-  private calculateColNodesHeight(colsHierarchy: Hierarchy) {
+  protected calculateColNodesHeight(colsHierarchy: Hierarchy) {
     const colNodes = colsHierarchy.getNodes();
 
     colNodes.forEach((currentNode) => {
@@ -272,7 +272,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private getMultipleMap(
+  protected getMultipleMap(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
     isSubTotal?: boolean,
@@ -306,7 +306,7 @@ export class PivotFacet extends FrozenFacet {
   }
 
   // please read README-adjustTotalNodesCoordinate.md to understand this function
-  private adjustTotalNodesCoordinate(params: {
+  protected adjustTotalNodesCoordinate(params: {
     hierarchy: Hierarchy;
     isRowHeader?: boolean;
     isSubTotal?: boolean;
@@ -351,7 +351,7 @@ export class PivotFacet extends FrozenFacet {
    * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
-  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
+  protected calculateColNodeWidthAndX(colLeafNodes: Node[]) {
     let prevColParent: Node | null = null;
     let i = 0;
 
@@ -380,7 +380,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private getColLeafNodesWidth(
+  protected getColLeafNodesWidth(
     colNode: Node,
     colLeafNodes: Node[],
     rowLeafNodes: Node[],
@@ -419,7 +419,7 @@ export class PivotFacet extends FrozenFacet {
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
 
-  private getRowNodeHeight(rowNode: Node): number {
+  protected getRowNodeHeight(rowNode: Node): number {
     if (!rowNode) {
       return 0;
     }
@@ -448,7 +448,7 @@ export class PivotFacet extends FrozenFacet {
    * @param iconStyle 图标样式
    * @returns 宽度
    */
-  private getExpectedCellIconWidth(
+  protected getExpectedCellIconWidth(
     cellType: CellType,
     useDefaultIcon: boolean,
     iconStyle: IconTheme,
@@ -485,7 +485,7 @@ export class PivotFacet extends FrozenFacet {
       : 0;
   }
 
-  private calculateRowNodesAllLevelSampleNodes(layoutResult: LayoutResult) {
+  protected calculateRowNodesAllLevelSampleNodes(layoutResult: LayoutResult) {
     const { rowsHierarchy, colLeafNodes } = layoutResult;
     const isTree = this.spreadsheet.isHierarchyTreeType();
 
@@ -508,9 +508,11 @@ export class PivotFacet extends FrozenFacet {
         levelSample.x = preLevelSample?.x + preLevelSample?.width;
       });
     }
+
+    rowsHierarchy.rootNode.width = rowsHierarchy.width;
   }
 
-  private calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
+  protected calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
     const isTree = this.spreadsheet.isHierarchyTreeType();
     const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
 
@@ -566,7 +568,7 @@ export class PivotFacet extends FrozenFacet {
     });
   }
 
-  private calculateRowNodesCoordinate(layoutResult: LayoutResult) {
+  protected calculateRowNodesCoordinate(layoutResult: LayoutResult) {
     const { rowsHierarchy, rowLeafNodes } = layoutResult;
     const isTree = this.spreadsheet.isHierarchyTreeType();
 
@@ -589,7 +591,7 @@ export class PivotFacet extends FrozenFacet {
     }
   }
 
-  private adjustRowTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
+  protected adjustRowTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
     if (!isEmpty(this.spreadsheet.options.totals?.row)) {
       this.adjustTotalNodesCoordinate({
         hierarchy: rowsHierarchy,
@@ -608,7 +610,7 @@ export class PivotFacet extends FrozenFacet {
    * @description Auto calculate row no-leaf node's height and y coordinate
    * @param rowLeafNodes
    */
-  private calculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
+  protected calculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
     // 3、in grid type, all no-leaf node's height, y are auto calculated
     let prevRowParent: Node | null = null;
     let i = 0;
@@ -634,7 +636,7 @@ export class PivotFacet extends FrozenFacet {
    * @param node
    * @returns
    */
-  private getGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
+  protected getGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCell } = this.spreadsheet.options.style!;
 
     const cellDraggedWidth = this.getRowCellDraggedWidth(node);
@@ -662,7 +664,7 @@ export class PivotFacet extends FrozenFacet {
    *  计算树状模式等宽条件下的列宽
    * @returns number
    */
-  private getAdaptTreeColWidth(
+  protected getAdaptTreeColWidth(
     col: Node,
     colLeafNodes: Node[],
     rowLeafNodes: Node[],
@@ -687,7 +689,7 @@ export class PivotFacet extends FrozenFacet {
     );
   }
 
-  private getColLabelLength(col: Node, rowLeafNodes: Node[]) {
+  protected getColLabelLength(col: Node, rowLeafNodes: Node[]) {
     // 如果 label 字段形如 "["xx","xxx"]"，直接获取其长度
     const labels = safeJsonParse<string[]>(col?.value);
 
@@ -739,7 +741,10 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 计算平铺模式等宽条件下的列宽
    */
-  private getAdaptGridColWidth(colLeafNodes: Node[], rowHeaderWidth?: number) {
+  protected getAdaptGridColWidth(
+    colLeafNodes: Node[],
+    rowHeaderWidth?: number,
+  ) {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
     const { dataCell } = this.spreadsheet.options.style!;
     const rowHeaderColSize = rows.length;
@@ -766,7 +771,7 @@ export class PivotFacet extends FrozenFacet {
    * 计算树状结构行头宽度
    * @returns number
    */
-  private getTreeRowHeaderWidth(): number {
+  protected getTreeRowHeaderWidth(): number {
     const { rowCell } = this.spreadsheet.options.style!;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
@@ -815,7 +820,7 @@ export class PivotFacet extends FrozenFacet {
    * @param node 目标节点
    * @returns 宽度
    */
-  private getCompactGridRowNodeWidth(node: Node): number {
+  protected getCompactGridRowNodeWidth(node: Node): number {
     const {
       bolderText: rowTextStyle,
       icon: rowIconStyle,
@@ -874,7 +879,7 @@ export class PivotFacet extends FrozenFacet {
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
-  private getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
+  protected getCompactGridColNodeWidth(colNode: Node, rowLeafNodes: Node[]) {
     const {
       bolderText: colCellTextStyle,
       cell: colCellStyle,

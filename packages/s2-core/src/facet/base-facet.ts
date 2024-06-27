@@ -496,6 +496,7 @@ export abstract class BaseFacet {
 
       colsHierarchy.height += levelSampleNode.height;
     });
+    colsHierarchy.rootNode.height = colsHierarchy.height;
   }
 
   hideScrollBar = () => {

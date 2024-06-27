@@ -7,8 +7,17 @@ import {
   type LayoutResult,
   type Query,
 } from '@antv/s2';
-import { forEach, head, includes, initial, isEmpty, last } from 'lodash';
-import { SUPPORT_CHART } from '../constant';
+import {
+  forEach,
+  head,
+  includes,
+  initial,
+  isEmpty,
+  isNumber,
+  last,
+  uniq,
+} from 'lodash';
+import { PLACEHOLDER_FIELD, SUPPORT_CHART } from '../constant';
 
 export function isCartesianCoordinate(chartType: string) {
   return includes(SUPPORT_CHART.cartesian, chartType);
@@ -137,6 +146,20 @@ function separateRowMeasureNodes(
   };
 }
 
+export function getAxisLeafNodes(hierarchy: Hierarchy) {
+  const axisLeafNodes = hierarchy.getLeaves().reduce((acc, leaf) => {
+    const parent = leaf.parent;
+
+    if (parent) {
+      acc.push(parent);
+    }
+
+    return acc;
+  }, [] as Node[]);
+
+  return uniq(axisLeafNodes);
+}
+
 function separateRowDimensionNodes(
   rowsHierarchy: Hierarchy,
 ): Pick<
@@ -236,8 +259,14 @@ function createPlaceholderHierarchy(
   height: number,
   s2: SpreadSheet,
 ) {
+  const draggedHeight =
+    s2.options.style?.colCell?.heightByField?.[PLACEHOLDER_FIELD];
+
+  height = isNumber(draggedHeight) ? draggedHeight : height;
+
   const placeholderNode = new Node({
-    field,
+    id: ROOT_NODE_ID,
+    field: PLACEHOLDER_FIELD,
     value: s2.dataSet.getFieldName(field),
     x: 0,
     y: 0,

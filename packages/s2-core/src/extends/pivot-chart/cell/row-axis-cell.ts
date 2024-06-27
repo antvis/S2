@@ -1,17 +1,17 @@
-import { Group, type PointLike } from '@antv/g';
+import { Group } from '@antv/g';
 import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
   CellType,
-  HeaderCell,
+  RowCell,
+  getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
-import { map } from 'lodash';
-import { AxisCellType } from '../constant';
-import type { AxisHeaderConfig } from '../interface';
+import { AxisCellType, KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
+import { getAxisXOptions, getAxisYOptions } from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 
-export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
+export class RowAxisCell extends RowCell {
   axisShape: Group;
 
   public get cellType() {
@@ -26,87 +26,30 @@ export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
     return false;
   }
 
-  public getMaxTextWidth(): number {
-    return 0;
-  }
-
-  protected getTextPosition(): PointLike {
-    return {
-      x: 0,
-      y: 0,
-    };
-  }
-
   protected initCell(): void {
     this.drawBackgroundShape();
-    // 绘制交互背景
     this.drawInteractiveBgShape();
-    // 绘制交互边框
     this.drawInteractiveBorderShape();
-    // 绘制单元格文本
     this.drawAxisShape();
-    // 绘制字段和 action标记 -- icon 和 action
-    this.drawActionAndConditionIcons();
-    // 绘制单元格边框
     this.drawBorders();
-    // 绘制 resize 热区
-    // this.drawResizeAreaInLeaf();
-    this.update();
+    this.drawResizeAreaInLeaf();
   }
 
-  getAxisXOptions() {
-    const domain = map(this.meta.children, (child) => {
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(child.field);
-
-      return !child.isTotalRoot && formatter
-        ? formatter(child.value, undefined, child)
-        : child.value;
-    });
-
-    return {
-      type: 'axisX',
-      scale: {
-        x: {
-          type: 'band',
-          domain,
-          range: [0, 1],
-        },
-      },
-    };
-  }
-
-  getAxisYOptions() {
-    const { field, value } = this.meta;
-
-    const range = this.spreadsheet.dataSet.getValueRangeByField(value);
-
-    return {
-      type: 'axisY',
-      title: this.spreadsheet.dataSet.getFieldFormatter(field)?.(value),
-      titleSpacing: 0,
-
-      scale: {
-        y: {
-          type: 'linear',
-          domain: [range.minValue, range.maxValue],
-          range: [1, 0],
-        },
-      },
-      labelAutoRotate: false,
-      labelAlign: 'horizontal',
-      labelAutoWrap: true,
-      line: false,
-      grid: false,
-    };
+  protected getResizesArea() {
+    return getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_AXIS_RESIZE_AREA,
+    );
   }
 
   getChartOptions(): G2Spec {
     const chartOptions = {
       autoFit: true,
+      animate: false,
       ...this.getBBoxByType(CellClipBox.PADDING_BOX),
       ...(this.spreadsheet.isValueInCols()
-        ? this.getAxisXOptions()
-        : this.getAxisYOptions()),
+        ? getAxisXOptions(this.meta, this.spreadsheet)
+        : getAxisYOptions(this.meta, this.spreadsheet)),
       coordinate: {
         transform: this.spreadsheet.isValueInCols()
           ? [{ type: 'transpose' }]
@@ -124,6 +67,10 @@ export class RowAxisCell extends HeaderCell<AxisHeaderConfig> {
 
     // delay 到实例被挂载到 parent 后，再渲染 chart
     waitForCellMounted(() => {
+      if (this.destroyed) {
+        return;
+      }
+
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
         group: this.axisShape,

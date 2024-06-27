@@ -2,6 +2,7 @@ import {
   EXTRA_FIELD,
   PivotFacet,
   PivotSheet,
+  ResizeType,
   setupDataConfig,
   setupOptions,
   type S2DataConfig,
@@ -30,8 +31,9 @@ export class PivotChart extends PivotSheet {
   protected override setupOptions(options: S2Options | null) {
     this.options = setupOptions(
       DEFAULT_OPTIONS,
-      this.getRuntimeOptions(),
+      this.getRuntimeDefaultOptions(),
       options,
+      this.getRuntimeFixedOptions(),
       FIXED_OPTIONS,
     );
   }
@@ -53,13 +55,12 @@ export class PivotChart extends PivotSheet {
     );
   }
 
-  protected getRuntimeOptions(): S2Options {
+  protected getRuntimeDefaultOptions(): S2Options {
     const { columns = [], valueInCols = true } = this.dataCfg.fields ?? {};
 
     if (valueInCols) {
       return {
         style: {
-          rowCell: {},
           colCell: {
             heightByField: {
               [EXTRA_FIELD]: DEFAULT_COL_AXIS_SIZE,
@@ -90,6 +91,30 @@ export class PivotChart extends PivotSheet {
         dataCell: {
           width: DEFAULT_DIMENSION_SIZE,
           height: DEFAULT_MEASURE_SIZE,
+        },
+      },
+    };
+  }
+
+  protected getRuntimeFixedOptions(): S2Options {
+    const { valueInCols = true } = this.dataCfg.fields ?? {};
+
+    if (valueInCols) {
+      return {
+        interaction: {
+          resize: {
+            rowResizeType: ResizeType.CURRENT,
+            colResizeType: ResizeType.ALL,
+          },
+        },
+      };
+    }
+
+    return {
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.ALL,
+          colResizeType: ResizeType.CURRENT,
         },
       },
     };
