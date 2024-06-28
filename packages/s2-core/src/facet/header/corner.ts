@@ -7,7 +7,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import type { CornerBBox } from '../bbox/corner-bbox';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
-import { translateGroupX } from '../utils';
+import { translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_CORNER_SCROLL,
@@ -236,7 +236,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * Make cornerHeader scroll with hScrollBar
    * @param scrollX
    */
-  public onCorScroll(scrollX: number, type: string): void {
+  public onCorScroll(scrollX: number, type?: string): void {
     this.headerConfig.scrollX = scrollX;
     this.render(type);
   }
@@ -261,18 +261,18 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollX = 0 } = this.getHeaderConfig();
+    const { position, scrollX = 0 } = this.getHeaderConfig();
 
-    translateGroupX(this.scrollGroup, -scrollX);
+    translateGroup(this.scrollGroup, position.x - scrollX, position.y);
   }
 
   protected clip(): void {
-    const { width, height } = this.getHeaderConfig();
+    const { width, height, position } = this.getHeaderConfig();
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: 0,
-        y: 0,
+        x: position.x,
+        y: position.y,
         width,
         height,
       },

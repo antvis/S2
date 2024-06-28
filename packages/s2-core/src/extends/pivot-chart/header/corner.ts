@@ -19,9 +19,9 @@ export class CornerHeader extends OriginCornerHeader {
 
     const { seriesNumberWidth, layoutResult, spreadsheet } = options;
 
-    const { rowsHierarchy, rowAxisHierarchy, colsHierarchy } = layoutResult;
+    const { rowsHierarchy, axisRowsHierarchy, colsHierarchy } = layoutResult;
 
-    const rowAxisNode = rowAxisHierarchy?.sampleNodeForLastLevel;
+    const rowAxisNode = axisRowsHierarchy?.sampleNodeForLastLevel;
 
     if (rowAxisNode) {
       const leafNode = colsHierarchy?.sampleNodeForLastLevel;

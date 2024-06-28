@@ -6,6 +6,7 @@ import {
   PivotFacet,
   ROOT_NODE_ID,
   getDataCellId,
+  type FrameConfig,
   type LayoutResult,
   type ScrollChangeParams,
   type ViewMeta,
@@ -18,17 +19,21 @@ import {
   KEY_GROUP_COL_AXIS_RESIZE_AREA,
   KEY_GROUP_ROW_AXIS_RESIZE_AREA,
 } from '../constant';
-import { ColAxisHeader } from '../header/col-axis';
+import { AxisColHeader } from '../header/axis-col';
+import { AxisCornerHeader } from '../header/axis-corner';
+import { AxisRowHeader } from '../header/axis-row';
 import { CornerHeader } from '../header/corner';
-import { RowAxisHeader } from '../header/row-axis';
 import { getAxisLeafNodes, separateRowColLeafNodes } from '../utils/axis';
 import { CornerBBox } from './corner-bbox';
+import { Frame } from './frame';
 import { PanelBBox } from './panel-bbox';
 
 export class PivotChartFacet extends PivotFacet {
-  rowAxisHeader: RowAxisHeader | null;
+  axisRowHeader: AxisRowHeader | null;
 
-  colAxisHeader: ColAxisHeader | null;
+  axisColHeader: AxisColHeader | null;
+
+  axisCornerHeader: AxisCornerHeader | null;
 
   protected override doLayout(): LayoutResult {
     const layoutResult = super.doLayout();
@@ -36,7 +41,9 @@ export class PivotChartFacet extends PivotFacet {
     return separateRowColLeafNodes(layoutResult, this.spreadsheet);
   }
 
-  protected calculateHeaderNodesCoordinate(layoutResult: LayoutResult) {
+  protected override calculateHeaderNodesCoordinate(
+    layoutResult: LayoutResult,
+  ) {
     super.calculateHeaderNodesCoordinate(layoutResult);
     this.adjustAxisLeafCoordinate(layoutResult);
   }
@@ -109,17 +116,48 @@ export class PivotChartFacet extends PivotFacet {
     this.panelBBox = new PanelBBox(this, true);
   }
 
-  protected override renderHeaders(): void {
-    super.renderHeaders();
-    this.rowAxisHeader = this.getRowAxisHeader();
+  protected override getCenterFrame() {
+    if (!this.centerFrame) {
+      const { viewportWidth, viewportHeight } = this.panelBBox;
+      const cornerWidth = this.cornerBBox.width;
+      const cornerHeight = this.cornerBBox.height;
+      const frame = this.spreadsheet.options?.frame;
+      const frameCfg: FrameConfig = {
+        position: {
+          x: this.cornerBBox.x,
+          y: this.cornerBBox.y,
+        },
+        cornerWidth,
+        cornerHeight,
+        viewportWidth,
+        viewportHeight,
+        showViewportLeftShadow: false,
+        showViewportRightShadow: false,
+        spreadsheet: this.spreadsheet,
+      };
 
-    if (this.rowAxisHeader) {
-      this.foregroundGroup.appendChild(this.rowAxisHeader);
+      return frame ? frame(frameCfg) : new Frame(frameCfg);
     }
 
-    this.colAxisHeader = this.getColAxisHeader();
-    if (this.colAxisHeader) {
-      this.foregroundGroup.appendChild(this.colAxisHeader);
+    return this.centerFrame;
+  }
+
+  protected override renderHeaders(): void {
+    super.renderHeaders();
+    this.axisRowHeader = this.getAxisRowHeader();
+
+    if (this.axisRowHeader) {
+      this.foregroundGroup.appendChild(this.axisRowHeader);
+    }
+
+    this.axisColHeader = this.getAxisColHeader();
+    if (this.axisColHeader) {
+      this.foregroundGroup.appendChild(this.axisColHeader);
+    }
+
+    this.axisCornerHeader = this.getAxisCornerHeader();
+    if (this.axisCornerHeader) {
+      this.foregroundGroup.appendChild(this.axisCornerHeader);
     }
   }
 
@@ -136,44 +174,57 @@ export class PivotChartFacet extends PivotFacet {
     );
   }
 
-  protected getRowAxisHeader(): RowAxisHeader | null {
-    if (this.rowAxisHeader) {
-      return this.rowAxisHeader;
+  protected getAxisRowHeader(): AxisRowHeader | null {
+    if (this.axisRowHeader) {
+      return this.axisRowHeader;
     }
 
     const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
-    const { rowsHierarchy, rowAxisHierarchy } = this.layoutResult;
+    const { rowsHierarchy, axisRowsHierarchy } = this.layoutResult;
     const seriesNumberWidth = this.getSeriesNumberWidth();
 
-    return new RowAxisHeader({
+    return new AxisRowHeader({
       width: this.cornerBBox.width,
       height,
       viewportWidth,
       viewportHeight,
       position: { x: seriesNumberWidth + rowsHierarchy.width, y },
-      nodes: rowAxisHierarchy?.getNodes() ?? [],
+      nodes: axisRowsHierarchy?.getNodes() ?? [],
       spreadsheet: this.spreadsheet,
     });
   }
 
-  protected getColAxisHeader(): ColAxisHeader | null {
-    if (this.colAxisHeader) {
-      return this.colAxisHeader;
+  protected getAxisColHeader(): AxisColHeader | null {
+    if (this.axisColHeader) {
+      return this.axisColHeader;
     }
 
     const { x, width, viewportWidth, y, viewportHeight } = this.panelBBox;
-    const { colAxisHierarchy } = this.layoutResult;
+    const { axisColsHierarchy } = this.layoutResult;
 
-    return new ColAxisHeader({
+    return new AxisColHeader({
       width,
       cornerWidth: this.cornerBBox.width,
-      height: colAxisHierarchy?.height ?? 0,
+      height: axisColsHierarchy?.height ?? 0,
       viewportWidth,
       viewportHeight,
       position: { x, y: y + viewportHeight },
-      nodes: colAxisHierarchy?.getNodes() ?? [],
+      nodes: axisColsHierarchy?.getNodes() ?? [],
       spreadsheet: this.spreadsheet,
     });
+  }
+
+  protected getAxisCornerHeader(): AxisCornerHeader | null {
+    return (
+      this.axisCornerHeader ||
+      AxisCornerHeader.getCornerHeader({
+        panelBBox: this.panelBBox,
+        cornerBBox: this.cornerBBox,
+        seriesNumberWidth: this.getSeriesNumberWidth(),
+        layoutResult: this.layoutResult,
+        spreadsheet: this.spreadsheet,
+      })
+    );
   }
 
   protected override translateRelatedGroups(
@@ -183,17 +234,22 @@ export class PivotChartFacet extends PivotFacet {
   ): void {
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
 
-    this.rowAxisHeader?.onScrollXY(
+    this.axisRowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_AXIS_RESIZE_AREA,
     );
 
-    this.colAxisHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
+    this.axisColHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
+
+    this.axisCornerHeader?.onCorScroll(
+      this.getRealScrollX(scrollX, hRowScroll),
+    );
   }
 
   protected override renderRowScrollBar(rowHeaderScrollX: number) {
     super.renderRowScrollBar(rowHeaderScrollX);
+
     if (this.hRowScrollBar) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
 
@@ -205,17 +261,19 @@ export class PivotChartFacet extends PivotFacet {
 
           this.setScrollOffset({ rowHeaderScrollX: newRowHeaderScrollX });
 
-          this.rowAxisHeader?.onRowScrollX(
+          this.axisRowHeader?.onRowScrollX(
             newRowHeaderScrollX,
             KEY_GROUP_ROW_AXIS_RESIZE_AREA,
           );
+
+          this.axisCornerHeader?.onRowScrollX(newRowHeaderScrollX);
         },
       );
     }
   }
 
-  public getViewCellHeights() {
-    const rowLeafNodes = this.layoutResult.rowAxisHierarchy?.getLeaves() ?? [];
+  public override getViewCellHeights() {
+    const rowLeafNodes = this.layoutResult.axisRowsHierarchy?.getLeaves() ?? [];
 
     const heights = reduce(
       rowLeafNodes,
@@ -244,10 +302,10 @@ export class PivotChartFacet extends PivotFacet {
    */
   public override getCellMeta(rowIndex = 0, colIndex = 0) {
     const { options, dataSet } = this.spreadsheet;
-    const { rowAxisHierarchy, colAxisHierarchy } = this.getLayoutResult();
+    const { axisRowsHierarchy, axisColsHierarchy } = this.getLayoutResult();
 
-    const rowAxisLeafNodes = rowAxisHierarchy?.getLeaves() ?? [];
-    const colAxisLeafNodes = colAxisHierarchy?.getLeaves() ?? [];
+    const rowAxisLeafNodes = axisRowsHierarchy?.getLeaves() ?? [];
+    const colAxisLeafNodes = axisColsHierarchy?.getLeaves() ?? [];
 
     const rowAxis = rowAxisLeafNodes[rowIndex];
     const colAxis = colAxisLeafNodes[colIndex];
@@ -315,9 +373,9 @@ export class PivotChartFacet extends PivotFacet {
 
   protected getFrozenColSplitLineSize() {
     const { viewportHeight, y: panelBBoxStartY } = this.panelBBox;
-    const { colAxisHierarchy } = this.layoutResult;
+    const { axisColsHierarchy } = this.layoutResult;
     const height =
-      viewportHeight + panelBBoxStartY + (colAxisHierarchy?.height ?? 0);
+      viewportHeight + panelBBoxStartY + (axisColsHierarchy?.height ?? 0);
 
     return {
       y: 0,

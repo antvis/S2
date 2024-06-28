@@ -4,13 +4,14 @@ import { type G2Spec } from '@antv/g2';
 import type {
   CellCallback,
   ColHeaderConfig,
+  CornerHeaderConfig,
   DefaultCellTheme,
   Hierarchy,
-  Node,
   RowHeaderConfig,
 } from '@antv/s2';
-import type { ColAxisCell } from './cell/col-axis-cell';
-import type { RowAxisCell } from './cell/row-axis-cell';
+import type { AxisColCell } from './cell/axis-col-cell';
+import type { AxisCornerCell } from './cell/axis-cornor-cell';
+import type { AxisRowCell } from './cell/axis-row-cell';
 import type { AxisCellType } from './constant';
 
 export type Coordinate = 'cartesian' | 'polar';
@@ -18,20 +19,21 @@ export type Coordinate = 'cartesian' | 'polar';
 // @ts-ignore
 declare module '@antv/s2' {
   interface LayoutResult {
-    rowAxisHierarchy?: Hierarchy;
-    colAxisHierarchy?: Hierarchy;
-    cornerAxisNodes?: Node[];
+    axisRowsHierarchy?: Hierarchy;
+    axisColsHierarchy?: Hierarchy;
   }
+
   interface S2PivotSheetOptions {
     chartSpec?: G2Spec;
-    rowAxisCell?: CellCallback<RowHeaderConfig, RowAxisCell>;
-    colAxisCell?: CellCallback<ColHeaderConfig, ColAxisCell>;
+    axisRowCell?: CellCallback<RowHeaderConfig, AxisRowCell>;
+    axisColCell?: CellCallback<ColHeaderConfig, AxisColCell>;
+    axisCornerCell?: CellCallback<CornerHeaderConfig, AxisCornerCell>;
   }
 
   interface S2Style {}
 
   type AxisCellThemes = {
-    [K in AxisCellType]?: Pick<DefaultCellTheme, 'text' | 'cell'>;
+    [K in AxisCellType]?: Pick<DefaultCellTheme, 'text' | 'cell' | 'icon'>;
   };
 
   interface S2Theme extends AxisCellThemes {}

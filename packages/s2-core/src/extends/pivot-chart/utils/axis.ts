@@ -95,12 +95,12 @@ function separateRowMeasureNodes(
   s2: SpreadSheet,
 ): Pick<
   LayoutResult,
-  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'rowAxisHierarchy'
+  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'axisRowsHierarchy'
 > {
   const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelWidth = sampleNodeForLastLevel.width ?? 0;
 
-  const rowAxisHierarchy = createAxisHierarchy(
+  const axisRowsHierarchy = createAxisHierarchy(
     sampleNodeForLastLevelWidth,
     rowsHierarchy.height,
   );
@@ -120,7 +120,7 @@ function separateRowMeasureNodes(
     axisNode.width = sampleNodeForLastLevelWidth;
     axisNode.children = [axisNode];
 
-    pushAxisNode(rowAxisHierarchy, axisNode);
+    pushAxisNode(axisRowsHierarchy, axisNode);
 
     if (leaf.field === EXTRA_FIELD) {
       leaf.width = 0;
@@ -141,7 +141,7 @@ function separateRowMeasureNodes(
   shrinkHierarchy(rowsHierarchy, 'width', sampleNodeForLastLevelWidth);
 
   return {
-    rowAxisHierarchy,
+    axisRowsHierarchy,
     rowsHierarchy,
     rowNodes: rowsHierarchy.getNodes(),
     rowLeafNodes: rowsHierarchy.getLeaves(),
@@ -166,12 +166,12 @@ function separateRowDimensionNodes(
   rowsHierarchy: Hierarchy,
 ): Pick<
   LayoutResult,
-  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'rowAxisHierarchy'
+  'rowsHierarchy' | 'rowNodes' | 'rowLeafNodes' | 'axisRowsHierarchy'
 > {
   const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelWidth = sampleNodeForLastLevel.width ?? 0;
 
-  const rowAxisHierarchy = createAxisHierarchy(
+  const axisRowsHierarchy = createAxisHierarchy(
     sampleNodeForLastLevelWidth,
     rowsHierarchy.height,
   );
@@ -183,12 +183,12 @@ function separateRowDimensionNodes(
     root.field = sampleNodeForLastLevel.field;
     root.x = 0;
     root.width = sampleNodeForLastLevelWidth;
-    pushAxisNode(rowAxisHierarchy, root);
+    pushAxisNode(axisRowsHierarchy, root);
 
     rowsHierarchy = new Hierarchy();
 
     return {
-      rowAxisHierarchy,
+      axisRowsHierarchy,
       rowsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowLeafNodes: rowsHierarchy.getLeaves(),
@@ -230,13 +230,13 @@ function separateRowDimensionNodes(
 
     axisNode.x = 0;
     axisNode.width = sampleNodeForLastLevelWidth;
-    pushAxisNode(rowAxisHierarchy, axisNode);
+    pushAxisNode(axisRowsHierarchy, axisNode);
   });
 
   shrinkHierarchy(rowsHierarchy, 'width', sampleNodeForLastLevelWidth);
 
   return {
-    rowAxisHierarchy,
+    axisRowsHierarchy,
     rowsHierarchy,
     rowNodes: rowsHierarchy.getNodes(),
     rowLeafNodes: rowsHierarchy.getLeaves(),
@@ -310,12 +310,12 @@ function separateColMeasureNodes(
   s2: SpreadSheet,
 ): Pick<
   LayoutResult,
-  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'colAxisHierarchy'
+  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'axisColsHierarchy'
 > {
   const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelHeight = sampleNodeForLastLevel.height ?? 0;
 
-  const colAxisHierarchy = createAxisHierarchy(
+  const axisColsHierarchy = createAxisHierarchy(
     colsHierarchy.width,
     sampleNodeForLastLevelHeight,
   );
@@ -335,7 +335,7 @@ function separateColMeasureNodes(
     axisNode.y = 0;
     axisNode.height = sampleNodeForLastLevelHeight;
 
-    pushAxisNode(colAxisHierarchy, axisNode, 'colIndex');
+    pushAxisNode(axisColsHierarchy, axisNode, 'colIndex');
 
     if (leaf.field === EXTRA_FIELD) {
       leaf.height = 0;
@@ -356,7 +356,7 @@ function separateColMeasureNodes(
   if (colsHierarchy.maxLevel === 0) {
     colsHierarchy = createPlaceholderHierarchy(
       sampleNodeForLastLevel.field,
-      colAxisHierarchy.width,
+      axisColsHierarchy.width,
       sampleNodeForLastLevelHeight,
       s2,
     );
@@ -365,7 +365,7 @@ function separateColMeasureNodes(
   }
 
   return {
-    colAxisHierarchy,
+    axisColsHierarchy,
     colsHierarchy,
     colNodes: colsHierarchy.getNodes(),
     colLeafNodes: colsHierarchy.getLeaves(),
@@ -377,14 +377,14 @@ function separateColDimensionNodes(
   s2: SpreadSheet,
 ): Pick<
   LayoutResult,
-  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'colAxisHierarchy'
+  'colsHierarchy' | 'colNodes' | 'colLeafNodes' | 'axisColsHierarchy'
 > | null {
   const maxLevel = colsHierarchy.maxLevel;
 
   const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
   const sampleNodeForLastLevelHeight = sampleNodeForLastLevel.height ?? 0;
 
-  const colAxisHierarchy = createAxisHierarchy(
+  const axisColsHierarchy = createAxisHierarchy(
     colsHierarchy.width,
     sampleNodeForLastLevelHeight,
   );
@@ -399,17 +399,17 @@ function separateColDimensionNodes(
     root.y = 0;
     root.height = sampleNodeForLastLevelHeight;
 
-    pushAxisNode(colAxisHierarchy, root, 'colIndex');
+    pushAxisNode(axisColsHierarchy, root, 'colIndex');
 
     colsHierarchy = createPlaceholderHierarchy(
       sampleNodeForLastLevel.field,
-      colAxisHierarchy.width,
+      axisColsHierarchy.width,
       sampleNodeForLastLevelHeight,
       s2,
     );
 
     return {
-      colAxisHierarchy,
+      axisColsHierarchy,
       colsHierarchy,
       colNodes: colsHierarchy.getNodes(),
       colLeafNodes: colsHierarchy.getLeaves(),
@@ -447,7 +447,7 @@ function separateColDimensionNodes(
     axisNode.y = 0;
     axisNode.height = sampleNodeForLastLevelHeight;
 
-    pushAxisNode(colAxisHierarchy, axisNode, 'colIndex');
+    pushAxisNode(axisColsHierarchy, axisNode, 'colIndex');
 
     colsHierarchy.allNodesWithoutRoot =
       colsHierarchy.allNodesWithoutRoot.filter(
@@ -458,7 +458,7 @@ function separateColDimensionNodes(
   shrinkHierarchy(colsHierarchy, 'height', sampleNodeForLastLevelHeight);
 
   return {
-    colAxisHierarchy,
+    axisColsHierarchy,
     colsHierarchy,
     colNodes: colsHierarchy.getNodes(),
     colLeafNodes: colsHierarchy.getLeaves(),

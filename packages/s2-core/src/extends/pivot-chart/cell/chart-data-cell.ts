@@ -1,6 +1,6 @@
 import { Group } from '@antv/g';
 import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
-import { BaseCell, CellClipBox, DataCell, G2_THEME_TYPE } from '@antv/s2';
+import { CellClipBox, DataCell, G2_THEME_TYPE } from '@antv/s2';
 import { waitForCellMounted } from '../utils/schedule';
 
 export class ChartDataCell extends DataCell {
@@ -34,6 +34,12 @@ export class ChartDataCell extends DataCell {
           : undefined,
       },
       axis: false,
+      legend: false,
+      padding: 0,
+      marginTop: 0,
+      marginBottom: 0,
+      marginRight: 0,
+      marginLeft: 0,
       scale: {
         y: {
           domain: [range.minValue, range.maxValue],
@@ -51,15 +57,15 @@ export class ChartDataCell extends DataCell {
     this.chartShape = this.appendChild(new Group({}));
 
     waitForCellMounted(() => {
+      if (this.destroyed) {
+        return;
+      }
+
       // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2corelib
       renderToMountedElement(chartOptions, {
         group: this.chartShape,
         library: corelib(),
       });
     });
-  }
-
-  public override drawBorders(): void {
-    BaseCell.prototype.drawBorders.call(this);
   }
 }

@@ -46,9 +46,9 @@ export const DEFAULT_G2_SPEC: G2Spec = {
 };
 
 export enum AxisCellType {
-  ROW_AXIS_CELL = 'rowAxisCell',
-  COL_AXIS_CELL = 'colAxisCell',
-  CORNER_AXIS_CELL = 'cornerAxisCell',
+  AXIS_ROW_CELL = 'axisRowCell',
+  AXIS_COL_CELL = 'axisColCell',
+  AXIS_CORNER_CELL = 'axisCornerCell',
 }
 
 export const SUPPORT_CHART: { [key in Coordinate]: string[] } = {

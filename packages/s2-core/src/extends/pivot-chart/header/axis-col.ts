@@ -6,14 +6,14 @@ import {
   FrozenFacet,
   Node,
 } from '@antv/s2';
-import { ColAxisCell } from '../cell/col-axis-cell';
+import { AxisColCell } from '../cell/axis-col-cell';
 import {
   KEY_GROUP_COL_AXIS_FROZEN,
   KEY_GROUP_COL_AXIS_SCROLL,
 } from '../constant';
 import { getExtraFrozenColAxisNodes } from '../utils/frozen';
 
-export class ColAxisHeader extends ColHeader {
+export class AxisColHeader extends ColHeader {
   protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
@@ -47,11 +47,11 @@ export class ColAxisHeader extends ColHeader {
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;
-    const { colAxisCell } = spreadsheet.options;
+    const { axisColCell: colAxisCell } = spreadsheet.options;
 
     return (
       colAxisCell?.(node, spreadsheet, headerConfig) ||
-      new ColAxisCell(node, spreadsheet, headerConfig)
+      new AxisColCell(node, spreadsheet, headerConfig)
     );
   }
 }

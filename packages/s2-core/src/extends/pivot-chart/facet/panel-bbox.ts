@@ -5,8 +5,8 @@ export class PanelBBox extends OriginPanelBBox {
     const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
     const { height: canvasHeight } = this.spreadsheet.options;
 
-    const { colAxisHierarchy } = this.layoutResult;
-    const colAxisHeight = colAxisHierarchy?.height ?? 0;
+    const { axisColsHierarchy } = this.layoutResult;
+    const colAxisHeight = axisColsHierarchy?.height ?? 0;
 
     const panelHeight = Math.max(
       0,

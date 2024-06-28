@@ -502,7 +502,7 @@ export abstract class FrozenFacet extends BaseFacet {
         x1: x,
         x2: x,
         y1: y,
-        y2: height,
+        y2: y + height,
       });
 
       if (
@@ -552,7 +552,7 @@ export abstract class FrozenFacet extends BaseFacet {
         x1: x,
         x2: x,
         y1: y,
-        y2: height,
+        y2: y + height,
       });
 
       if (splitLine?.showShadow && floor(scrollX) < floor(maxScrollX)) {
@@ -598,7 +598,7 @@ export abstract class FrozenFacet extends BaseFacet {
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,
         x1: x,
-        x2: width,
+        x2: x + width,
         y1: y,
         y2: y,
       });
@@ -647,7 +647,7 @@ export abstract class FrozenFacet extends BaseFacet {
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,
         x1: x,
-        x2: width,
+        x2: x + width,
         y1: y,
         y2: y,
       });

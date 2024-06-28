@@ -6,14 +6,14 @@ import {
   Node,
   RowHeader,
 } from '@antv/s2';
-import { RowAxisCell } from '../cell/row-axis-cell';
+import { AxisRowCell } from '../cell/axis-row-cell';
 import {
   KEY_GROUP_ROW_AXIS_FROZEN,
   KEY_GROUP_ROW_AXIS_SCROLL,
 } from '../constant';
 import { getExtraFrozenRowAxisNodes } from '../utils/frozen';
 
-export class RowAxisHeader extends RowHeader {
+export class AxisRowHeader extends RowHeader {
   protected initGroups(): void {
     this.scrollGroup = this.appendChild(
       new Group({
@@ -47,11 +47,11 @@ export class RowAxisHeader extends RowHeader {
     const headerConfig = this.getHeaderConfig();
 
     const { spreadsheet } = headerConfig;
-    const { rowAxisCell } = spreadsheet.options;
+    const { axisRowCell: rowAxisCell } = spreadsheet.options;
 
     return (
       rowAxisCell?.(node, spreadsheet, headerConfig) ||
-      new RowAxisCell(node, spreadsheet, headerConfig)
+      new AxisRowCell(node, spreadsheet, headerConfig)
     );
   }
 }

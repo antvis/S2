@@ -4,22 +4,26 @@ import {
   CellBorderPosition,
   CellClipBox,
   CellType,
-  RowCell,
+  ColCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
-import { AxisCellType, KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
+import { AxisCellType, KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
 import { getAxisXOptions, getAxisYOptions } from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 
-export class RowAxisCell extends RowCell {
+export class AxisColCell extends ColCell {
   axisShape: Group;
 
   public get cellType() {
-    return AxisCellType.ROW_AXIS_CELL as unknown as CellType;
+    return AxisCellType.AXIS_ROW_CELL as unknown as CellType;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
-    return [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT];
+    return [
+      CellBorderPosition.TOP,
+      CellBorderPosition.BOTTOM,
+      CellBorderPosition.RIGHT,
+    ];
   }
 
   protected isBolderText(): boolean {
@@ -32,29 +36,34 @@ export class RowAxisCell extends RowCell {
     this.drawInteractiveBorderShape();
     this.drawAxisShape();
     this.drawBorders();
-    this.drawResizeAreaInLeaf();
+    this.drawResizeArea();
+    // this.update();
   }
 
-  protected getResizesArea() {
+  protected getColResizeArea() {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
-      KEY_GROUP_ROW_AXIS_RESIZE_AREA,
+      KEY_GROUP_COL_AXIS_RESIZE_AREA,
     );
+  }
+
+  protected isCrossColumnLeafNode() {
+    return false;
   }
 
   getChartOptions(): G2Spec {
     const chartOptions = {
-      autoFit: true,
-      animate: false,
       ...this.getBBoxByType(CellClipBox.PADDING_BOX),
       ...(this.spreadsheet.isValueInCols()
-        ? getAxisXOptions(this.meta, this.spreadsheet)
-        : getAxisYOptions(this.meta, this.spreadsheet)),
+        ? getAxisYOptions(this.meta, this.spreadsheet)
+        : getAxisXOptions(this.meta, this.spreadsheet)),
       coordinate: {
         transform: this.spreadsheet.isValueInCols()
           ? [{ type: 'transpose' }]
           : undefined,
       },
+      labelAutoRotate: false,
+      labelAlign: 'horizontal',
     } as G2Spec;
 
     return chartOptions;
