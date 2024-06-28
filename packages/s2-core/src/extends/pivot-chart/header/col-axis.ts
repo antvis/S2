@@ -5,15 +5,13 @@ import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   FrozenFacet,
   Node,
-  getFrozenColOffset,
-  getFrozenTrailingColOffset,
-  translateGroup,
 } from '@antv/s2';
 import { ColAxisCell } from '../cell/col-axis-cell';
 import {
   KEY_GROUP_COL_AXIS_FROZEN,
   KEY_GROUP_COL_AXIS_SCROLL,
 } from '../constant';
+import { getExtraFrozenColAxisNodes } from '../utils/frozen';
 
 export class ColAxisHeader extends ColHeader {
   protected initGroups(): void {
@@ -37,9 +35,12 @@ export class ColAxisHeader extends ColHeader {
       }),
     );
 
-    // const { spreadsheet } = this.getHeaderConfig();
+    const { spreadsheet, nodes } = this.getHeaderConfig();
 
-    this.extraFrozenNodes = [];
+    this.extraFrozenNodes = getExtraFrozenColAxisNodes(
+      spreadsheet.facet as FrozenFacet,
+      nodes,
+    );
   }
 
   public getCellInstance(node: Node): any {
@@ -51,37 +52,6 @@ export class ColAxisHeader extends ColHeader {
     return (
       colAxisCell?.(node, spreadsheet, headerConfig) ||
       new ColAxisCell(node, spreadsheet, headerConfig)
-    );
-  }
-
-  // row'cell only show when visible
-  protected isCellInRect(): boolean {
-    return true;
-  }
-
-  protected clip(): void {}
-
-  protected offset() {
-    const {
-      viewportWidth,
-      scrollX = 0,
-      position,
-      spreadsheet,
-      cornerWidth,
-    } = this.getHeaderConfig();
-
-    translateGroup(this.scrollGroup, position.x - scrollX, position.y);
-
-    const facet = spreadsheet.facet as FrozenFacet;
-    const colOffset = getFrozenColOffset(facet, cornerWidth, scrollX);
-
-    const trailingColOffset = getFrozenTrailingColOffset(facet, viewportWidth);
-
-    translateGroup(this.frozenGroup, position.x - colOffset, position.y);
-    translateGroup(
-      this.frozenTrailingGroup,
-      position.x - trailingColOffset,
-      position.y,
     );
   }
 }

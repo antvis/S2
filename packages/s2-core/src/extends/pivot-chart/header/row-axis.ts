@@ -2,6 +2,7 @@ import { Group } from '@antv/g';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  FrozenFacet,
   Node,
   RowHeader,
 } from '@antv/s2';
@@ -10,6 +11,7 @@ import {
   KEY_GROUP_ROW_AXIS_FROZEN,
   KEY_GROUP_ROW_AXIS_SCROLL,
 } from '../constant';
+import { getExtraFrozenRowAxisNodes } from '../utils/frozen';
 
 export class RowAxisHeader extends RowHeader {
   protected initGroups(): void {
@@ -33,9 +35,12 @@ export class RowAxisHeader extends RowHeader {
       }),
     );
 
-    // const { spreadsheet } = this.getHeaderConfig();
+    const { spreadsheet, nodes } = this.getHeaderConfig();
 
-    this.extraFrozenNodes = [];
+    this.extraFrozenNodes = getExtraFrozenRowAxisNodes(
+      spreadsheet.facet as FrozenFacet,
+      nodes,
+    );
   }
 
   public getCellInstance(node: Node): any {
@@ -48,10 +53,5 @@ export class RowAxisHeader extends RowHeader {
       rowAxisCell?.(node, spreadsheet, headerConfig) ||
       new RowAxisCell(node, spreadsheet, headerConfig)
     );
-  }
-
-  // row'cell only show when visible
-  protected isCellInRect(): boolean {
-    return true;
   }
 }

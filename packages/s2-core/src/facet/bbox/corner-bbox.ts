@@ -66,7 +66,7 @@ export class CornerBBox extends BaseBBox {
 
     const maxCornerBBoxWidth = canvasWidth! * ratio;
     const colsHierarchyWidth = colsHierarchy?.width;
-    const panelWidthWidthUnClippedCorner = canvasWidth! - this.originalWidth;
+    const panelWidthWithoutUnClippedCorner = canvasWidth! - this.originalWidth;
 
     /*
      * 不需要裁剪条件：
@@ -75,7 +75,7 @@ export class CornerBBox extends BaseBBox {
      */
     if (
       this.originalWidth <= maxCornerBBoxWidth ||
-      colsHierarchyWidth <= panelWidthWidthUnClippedCorner
+      colsHierarchyWidth <= panelWidthWithoutUnClippedCorner
     ) {
       return this.originalWidth;
     }
@@ -87,7 +87,7 @@ export class CornerBBox extends BaseBBox {
     if (colsHierarchyWidth <= maxPanelWidth) {
       clippedWidth =
         this.originalWidth -
-        (colsHierarchyWidth - panelWidthWidthUnClippedCorner);
+        (colsHierarchyWidth - panelWidthWithoutUnClippedCorner);
     } else {
       clippedWidth = maxCornerBBoxWidth;
     }

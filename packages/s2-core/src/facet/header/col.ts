@@ -12,7 +12,7 @@ import {
 } from '../../common/constant';
 import type { FrozenFacet } from '../frozen-facet';
 import type { Node } from '../layout/node';
-import { translateGroupX } from '../utils';
+import { translateGroup } from '../utils';
 import { BaseHeader } from './base';
 import type { ColHeaderConfig } from './interface';
 import {
@@ -207,14 +207,18 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       cornerWidth,
     } = this.getHeaderConfig();
 
-    translateGroupX(this.scrollGroup, position.x - scrollX);
+    translateGroup(this.scrollGroup, position.x - scrollX, position.y);
 
     const facet = spreadsheet.facet as FrozenFacet;
     const colOffset = getFrozenColOffset(facet, cornerWidth, scrollX);
 
     const trailingColOffset = getFrozenTrailingColOffset(facet, viewportWidth);
 
-    translateGroupX(this.frozenGroup, position.x - colOffset);
-    translateGroupX(this.frozenTrailingGroup, position.x - trailingColOffset);
+    translateGroup(this.frozenGroup, position.x - colOffset, position.y);
+    translateGroup(
+      this.frozenTrailingGroup,
+      position.x - trailingColOffset,
+      position.y,
+    );
   }
 }

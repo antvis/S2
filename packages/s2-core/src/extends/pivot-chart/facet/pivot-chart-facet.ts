@@ -7,9 +7,11 @@ import {
   ROOT_NODE_ID,
   getDataCellId,
   type LayoutResult,
+  type ScrollChangeParams,
   type ViewMeta,
 } from '@antv/s2';
-import { isNumber, last, merge, reduce } from 'lodash';
+import { floor, isNumber, last, merge, reduce } from 'lodash';
+import { ScrollType } from '../../../ui/scrollbar';
 import { getHeaderTotalStatus } from '../../../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../../../utils/facet';
 import {
@@ -190,6 +192,28 @@ export class PivotChartFacet extends PivotFacet {
     this.colAxisHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
   }
 
+  protected override renderRowScrollBar(rowHeaderScrollX: number) {
+    super.renderRowScrollBar(rowHeaderScrollX);
+    if (this.hRowScrollBar) {
+      const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
+
+      this.hRowScrollBar.addEventListener(
+        ScrollType.ScrollChange,
+        ({ offset }: ScrollChangeParams) => {
+          const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
+          const newRowHeaderScrollX = floor(newOffset);
+
+          this.setScrollOffset({ rowHeaderScrollX: newRowHeaderScrollX });
+
+          this.rowAxisHeader?.onRowScrollX(
+            newRowHeaderScrollX,
+            KEY_GROUP_ROW_AXIS_RESIZE_AREA,
+          );
+        },
+      );
+    }
+  }
+
   public getViewCellHeights() {
     const rowLeafNodes = this.layoutResult.rowAxisHierarchy?.getLeaves() ?? [];
 
@@ -287,5 +311,17 @@ export class PivotChartFacet extends PivotFacet {
     };
 
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
+  }
+
+  protected getFrozenColSplitLineSize() {
+    const { viewportHeight, y: panelBBoxStartY } = this.panelBBox;
+    const { colAxisHierarchy } = this.layoutResult;
+    const height =
+      viewportHeight + panelBBoxStartY + (colAxisHierarchy?.height ?? 0);
+
+    return {
+      y: 0,
+      height,
+    };
   }
 }

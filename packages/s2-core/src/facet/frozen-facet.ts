@@ -1,7 +1,7 @@
 import { Group, Rect, type LineStyleProps } from '@antv/g';
 import { last } from 'lodash';
 import type { DataCell } from '../cell';
-import type { S2BaseFrozenOptions } from '../common';
+import type { S2BaseFrozenOptions, SplitLine } from '../common';
 import {
   FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
   FrozenGroupArea,
@@ -411,28 +411,8 @@ export abstract class FrozenFacet extends BaseFacet {
 
   // eslint-disable-next-line max-lines-per-function
   protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
-    const {
-      viewportWidth,
-      viewportHeight,
-      x: panelBBoxStartX,
-      y: panelBBoxStartY,
-    } = this.panelBBox;
-
-    const cellRange = this.getCellRange();
-    const { rowCount, colCount, trailingColCount, trailingRowCount } =
-      this.getFrozenOptions();
-
     // 在分页条件下需要额外处理 Y 轴滚动值
     const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
-
-    // scroll boundary
-    const maxScrollX = Math.max(0, last(this.viewCellWidths)! - viewportWidth);
-    const maxScrollY = Math.max(
-      0,
-      this.viewCellHeights.getCellOffsetY(cellRange.end + 1) -
-        this.viewCellHeights.getCellOffsetY(cellRange.start) -
-        viewportHeight,
-    );
 
     // remove previous split line group
     this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
@@ -459,6 +439,54 @@ export abstract class FrozenFacet extends BaseFacet {
       opacity: splitLine?.horizontalBorderColorOpacity,
     };
 
+    this.renderFrozenColSplitLine(
+      splitLineGroup,
+      splitLine,
+      verticalBorderStyle,
+      scrollX,
+    );
+
+    this.renderFrozenTrailingColSplitLine(
+      splitLineGroup,
+      splitLine,
+      verticalBorderStyle,
+      scrollX,
+    );
+    this.renderFrozenRowSplitLine(
+      splitLineGroup,
+      splitLine,
+      horizontalBorderStyle,
+      relativeScrollY,
+    );
+
+    this.renderFrozenTrailingRowSplitLine(
+      splitLineGroup,
+      splitLine,
+      horizontalBorderStyle,
+      relativeScrollY,
+    );
+  };
+
+  protected getFrozenColSplitLineSize() {
+    const { viewportHeight, y: panelBBoxStartY } = this.panelBBox;
+
+    const height = viewportHeight + panelBBoxStartY;
+
+    return {
+      y: 0,
+      height,
+    };
+  }
+
+  protected renderFrozenColSplitLine(
+    splitLineGroup: Group,
+    splitLine: SplitLine,
+    verticalBorderStyle: Partial<LineStyleProps>,
+    scrollX: number,
+  ) {
+    const { colCount } = this.getFrozenOptions();
+    const { x: panelBBoxStartX } = this.panelBBox;
+
     if (colCount > 0) {
       const cornerWidth = this.cornerBBox.width;
       const colOffset = getFrozenColOffset(this, cornerWidth, scrollX);
@@ -467,13 +495,13 @@ export abstract class FrozenFacet extends BaseFacet {
         this.frozenGroupAreas[FrozenGroupArea.Col].width -
         colOffset;
 
-      const height = viewportHeight + panelBBoxStartY;
+      const { y, height } = this.getFrozenColSplitLineSize();
 
       renderLine(splitLineGroup, {
         ...verticalBorderStyle,
         x1: x,
         x2: x,
-        y1: 0,
+        y1: y,
         y2: height,
       });
 
@@ -486,7 +514,7 @@ export abstract class FrozenFacet extends BaseFacet {
           new Rect({
             style: {
               x,
-              y: 0,
+              y,
               width: splitLine?.shadowWidth!,
               height,
               fill: this.getShadowFill(0),
@@ -495,6 +523,16 @@ export abstract class FrozenFacet extends BaseFacet {
         );
       }
     }
+  }
+
+  protected renderFrozenTrailingColSplitLine(
+    splitLineGroup: Group,
+    splitLine: SplitLine,
+    verticalBorderStyle: Partial<LineStyleProps>,
+    scrollX: number,
+  ) {
+    const { trailingColCount } = this.getFrozenOptions();
+    const { viewportWidth, x: panelBBoxStartX } = this.panelBBox;
 
     if (trailingColCount > 0) {
       const x =
@@ -502,13 +540,18 @@ export abstract class FrozenFacet extends BaseFacet {
         this.frozenGroupAreas[FrozenGroupArea.TrailingCol].width +
         panelBBoxStartX;
 
-      const height = viewportHeight + panelBBoxStartY;
+      const { y, height } = this.getFrozenColSplitLineSize();
+
+      const maxScrollX = Math.max(
+        0,
+        last(this.viewCellWidths)! - viewportWidth,
+      );
 
       renderLine(splitLineGroup, {
         ...verticalBorderStyle,
         x1: x,
         x2: x,
-        y1: 0,
+        y1: y,
         y2: height,
       });
 
@@ -517,7 +560,7 @@ export abstract class FrozenFacet extends BaseFacet {
           new Rect({
             style: {
               x: x - splitLine.shadowWidth!,
-              y: 0,
+              y,
               width: splitLine.shadowWidth!,
               height,
               fill: this.getShadowFill(180),
@@ -526,25 +569,45 @@ export abstract class FrozenFacet extends BaseFacet {
         );
       }
     }
+  }
+
+  protected getFrozenRowSplitLineSize() {
+    const { viewportWidth, x: panelBBoxStartX } = this.panelBBox;
+    const width = panelBBoxStartX + viewportWidth;
+
+    return {
+      x: 0,
+      width,
+    };
+  }
+
+  protected renderFrozenRowSplitLine(
+    splitLineGroup: Group,
+    splitLine: SplitLine,
+    horizontalBorderStyle: Partial<LineStyleProps>,
+    scrollY: number,
+  ) {
+    const { rowCount } = this.getFrozenOptions();
+    const { y: panelBBoxStartY } = this.panelBBox;
 
     if (rowCount > 0) {
       const y =
         panelBBoxStartY + this.frozenGroupAreas[FrozenGroupArea.Row].height;
-      const width = panelBBoxStartX + viewportWidth;
+      const { x, width } = this.getFrozenRowSplitLineSize();
 
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,
-        x1: 0,
+        x1: x,
         x2: width,
         y1: y,
         y2: y,
       });
 
-      if (splitLine?.showShadow && relativeScrollY > 0) {
+      if (splitLine?.showShadow && scrollY > 0) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
-              x: 0,
+              x,
               y,
               width,
               height: splitLine?.shadowWidth!,
@@ -554,26 +617,46 @@ export abstract class FrozenFacet extends BaseFacet {
         );
       }
     }
+  }
+
+  protected renderFrozenTrailingRowSplitLine(
+    splitLineGroup: Group,
+    splitLine: SplitLine,
+    horizontalBorderStyle: Partial<LineStyleProps>,
+    scrollY: number,
+  ) {
+    const { trailingRowCount } = this.getFrozenOptions();
+    const { viewportHeight } = this.panelBBox;
 
     if (trailingRowCount > 0) {
       const y =
         this.panelBBox.maxY -
         this.frozenGroupAreas[FrozenGroupArea.TrailingRow].height;
-      const width = panelBBoxStartX + viewportWidth;
+
+      const { x, width } = this.getFrozenRowSplitLineSize();
+
+      const cellRange = this.getCellRange();
+      // scroll boundary
+      const maxScrollY = Math.max(
+        0,
+        this.viewCellHeights.getCellOffsetY(cellRange.end + 1) -
+          this.viewCellHeights.getCellOffsetY(cellRange.start) -
+          viewportHeight,
+      );
 
       renderLine(splitLineGroup, {
         ...horizontalBorderStyle,
-        x1: 0,
+        x1: x,
         x2: width,
         y1: y,
         y2: y,
       });
 
-      if (splitLine?.showShadow && relativeScrollY < floor(maxScrollY)) {
+      if (splitLine?.showShadow && scrollY < floor(maxScrollY)) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
-              x: 0,
+              x,
               y: y - splitLine.shadowWidth!,
               width,
               height: splitLine.shadowWidth!,
@@ -583,7 +666,7 @@ export abstract class FrozenFacet extends BaseFacet {
         );
       }
     }
-  };
+  }
 
   public render() {
     this.calculateFrozenGroupInfo();
