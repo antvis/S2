@@ -515,6 +515,10 @@ export class PivotFacet extends FrozenFacet {
   protected calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
     const isTree = this.spreadsheet.isHierarchyTreeType();
     const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
+    const { rowCell: rowCellStyle } = this.spreadsheet.options.style!;
+
+    const isEnableHeightAdaptive =
+      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
 
     let preLeafNode = Node.blankNode();
     const rowNodes = rowsHierarchy.getNodes();
@@ -536,9 +540,13 @@ export class PivotFacet extends FrozenFacet {
       if (isLeaf) {
         // 2.1. 普通树状结构, 叶子节点各占一行, 2.2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const currentBranchNodeHeights = Node.getBranchNodes(currentNode).map(
-          (rowNode) => this.getRowNodeHeight(rowNode),
-        );
+        // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
+
+        const currentBranchNodeHeights = isEnableHeightAdaptive
+          ? Node.getBranchNodes(currentNode).map((rowNode) =>
+              this.getRowNodeHeight(rowNode),
+            )
+          : [];
 
         const defaultHeight = this.getRowNodeHeight(currentNode);
         // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678

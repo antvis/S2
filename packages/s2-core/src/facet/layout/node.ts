@@ -113,6 +113,12 @@ export class Node {
 
   public shallowRender?: boolean;
 
+  /** 是否不绘制 col cell 水平 resize 热区 */
+  public hideColCellHorizontalResize?: boolean;
+
+  /** 是否不绘制 row cell 竖直 resize 热区 */
+  public hideRowCellVerticalResize?: boolean;
+
   public extra?: {
     description?: string;
     isCustomNode?: boolean;

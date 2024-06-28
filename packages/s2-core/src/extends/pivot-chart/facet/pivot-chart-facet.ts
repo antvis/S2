@@ -4,6 +4,7 @@ import {
   Node,
   ORIGIN_FIELD,
   PivotFacet,
+  ROOT_NODE_ID,
   getDataCellId,
   type LayoutResult,
   type ViewMeta,
@@ -63,7 +64,9 @@ export class PivotChartFacet extends PivotFacet {
           rowsHierarchy.height += changeSize;
         }
 
-        preLeafNode = currentNode;
+        if (currentNode.id !== ROOT_NODE_ID) {
+          preLeafNode = currentNode;
+        }
       });
 
       this.calculateRowNodeHeightAndY(axisNodes);
@@ -87,7 +90,9 @@ export class PivotChartFacet extends PivotFacet {
           colsHierarchy.width += changeSize;
         }
 
-        preLeafNode = currentNode;
+        if (currentNode.id !== ROOT_NODE_ID) {
+          preLeafNode = currentNode;
+        }
       });
 
       this.calculateColNodeWidthAndX(axisNodes);

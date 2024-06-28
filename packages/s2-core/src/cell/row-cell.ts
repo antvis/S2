@@ -229,6 +229,7 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideRowCellVerticalResize ||
       !this.shouldDrawResizeAreaByType('rowCellVertical', this)
     ) {
       return;

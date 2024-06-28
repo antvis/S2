@@ -124,6 +124,8 @@ function separateRowMeasureNodes(
 
     if (leaf.field === EXTRA_FIELD) {
       leaf.width = 0;
+    } else {
+      leaf.hideRowCellVerticalResize = true;
     }
 
     const parent = leaf.field === EXTRA_FIELD ? leaf.parent : leaf;
@@ -337,6 +339,8 @@ function separateColMeasureNodes(
 
     if (leaf.field === EXTRA_FIELD) {
       leaf.height = 0;
+    } else {
+      leaf.hideColCellHorizontalResize = true;
     }
 
     const parent = leaf.field === EXTRA_FIELD ? leaf.parent : leaf;

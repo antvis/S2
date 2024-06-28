@@ -369,6 +369,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   protected drawVerticalResizeArea() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideColCellHorizontalResize ||
       !this.shouldDrawResizeAreaByType('colCellHorizontal', this)
     ) {
       return;

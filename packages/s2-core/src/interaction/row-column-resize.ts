@@ -400,7 +400,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             rowCell: {
               height: !this.isEffectRowOf(ResizeType.ALL)
-                ? null
+                ? undefined
                 : displayHeight,
               heightByField: this.getCellStyleByField(displayHeight),
             },
