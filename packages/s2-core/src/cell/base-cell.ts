@@ -74,7 +74,7 @@ import {
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { checkIsLinkField } from '../utils/interaction/link-field';
+import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
 import {
   getDisplayText,
@@ -490,6 +490,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
 
     this.updateTextPosition();
+    this.drawLinkField(this.meta);
   }
 
   protected drawLinkFieldShape(
@@ -508,7 +509,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const position = this.getTextPosition();
       const actualTextWidth = this.getActualTextWidth();
 
-      // 默认居左，其他align方式需要调整
+      // 默认居左，其他 align 方式需要调整
       let startX = position.x;
 
       if (textStyle.textAlign === 'center') {
@@ -533,7 +534,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape.style.fill = linkFillColor;
     this.textShape.style.cursor = 'pointer';
     this.textShape.appendInfo = {
-      // 标记为行头(明细表行头其实就是 Data Cell)文本，方便做链接跳转直接识别
+      // 标记为字段标记文本，方便做链接跳转直接识别
       isLinkFieldText: true,
       cellData: this.meta,
     };
@@ -544,15 +545,18 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getTextStyle().linkTextFill!;
   }
 
-  protected drawLinkField(meta: Node | ViewMeta) {
+  protected drawLinkField(meta: T) {
     const { linkFields = [] } = this.spreadsheet.options.interaction!;
     const linkTextFill = this.getLinkFieldStyle();
-    const isLinkField = checkIsLinkField(linkFields, meta);
+    const isLinkField = isLinkFieldNode(
+      linkFields,
+      meta as unknown as Node | ViewMeta,
+    );
 
     this.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
-  // 根据当前state来更新cell的样式
+  // 根据当前 state 来更新 cell 的样式
   public updateByState(stateName: InteractionStateName, cell: S2CellType) {
     this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
