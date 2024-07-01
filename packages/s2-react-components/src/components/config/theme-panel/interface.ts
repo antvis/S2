@@ -1,10 +1,9 @@
-import type { S2Theme } from '@antv/s2';
-import type { SheetComponentOptions } from '@antv/s2-react';
+import type { S2Options, S2Theme } from '@antv/s2';
 import type { SheetThemeColorType, SheetThemeType } from '../../../common';
 import type { BaseComponentProps } from '../../../common/interface/components';
 
 export interface ThemePanelOptions {
-  hierarchyType: SheetComponentOptions['hierarchyType'];
+  hierarchyType: S2Options['hierarchyType'];
   themeType: (typeof SheetThemeType)[keyof typeof SheetThemeType];
   colorType: (typeof SheetThemeColorType)[keyof typeof SheetThemeColorType];
 }
