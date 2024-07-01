@@ -79,20 +79,7 @@ export const tableSheetDataCfg: S2DataConfig = {
 export const pivotSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta: [
-    {
-      field: ['province', 'city'],
-      name: '测试-1',
-    },
-    {
-      field: 'type',
-      name: '测试-2',
-    },
-    {
-      field: /^sub/,
-      name: '测试3',
-    },
-  ],
+  meta,
   fields,
 };
 
