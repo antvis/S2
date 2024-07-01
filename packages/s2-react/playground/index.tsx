@@ -1586,6 +1586,7 @@ function MainLayout() {
                           onDataCellContextMenu={logHandler(
                             'onDataCellContextMenu',
                           )}
+                          onDoubleClick={logHandler('onDoubleClick')}
                         />
                       </React.StrictMode>
                     )}
