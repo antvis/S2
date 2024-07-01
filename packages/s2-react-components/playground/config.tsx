@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
-import { type S2DataConfig, type S2Options } from '@antv/s2';
+import { type S2DataConfig } from '@antv/s2';
+import type { SheetComponentOptions } from '@antv/s2-react';
 import {
   data,
   fields,
@@ -15,7 +16,7 @@ export const s2DataConfig: S2DataConfig = {
   fields,
 };
 
-export const s2Options: S2Options = {
+export const s2Options: SheetComponentOptions = {
   debug: false,
   width: 800,
   height: 600,
