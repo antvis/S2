@@ -9,6 +9,9 @@ fetch(
     const s2DataConfig = {
       ...dataCfg,
       meta: [
+        // 支持批量设置或正则匹配
+        // field: ['province', 'city'],
+        // field: /type/,
         {
           field: 'province',
           name: '省份',
@@ -49,8 +52,8 @@ fetch(
       // seriesNumber: {
       //   enable: true,
       //   自定义序号列文本, 默认 "序号"
-      //   text: '自定义序号标题', 
-      //},
+      //   text: '自定义序号标题',
+      // },
       frozen: {
         // 默认冻结行头, 行头和数值区域都会展示滚动条
         // rowHeader: false,

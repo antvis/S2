@@ -82,7 +82,30 @@ tag: New
       },
     },
   ]
-};
+}
+```
+
+## 批量设置
+
+如果多个字段格式化一致，可以配置为数组以便于批量设置，或使用正则匹配。
+
+```ts
+ const s2DataConfig = {
+  meta: [
+    {
+      field: ['province', 'city'],
+      formatter: (value, record, meta) => {
+        return `${value}-test`
+      },
+    },
+    {
+      field: /type/,
+      formatter: (value, record, meta) => {
+        return `${value}-test`
+      },
+    }
+  ]
+}
 ```
 
 ## 复制导出时保留格式化信息

@@ -464,8 +464,18 @@ describe('Pivot Dataset Test', () => {
             name: '成本',
             description: '成本描述',
           },
+          {
+            field: ['test-a', 'test-b'],
+            name: 'test',
+          },
+          {
+            field: /c+$/,
+            name: 'test-regexp',
+          },
         ],
         fields: {
+          rows: ['test-a', 'test-b'],
+          columns: ['test-c'],
           values: ['price', 'cost'],
           valueInCols: false,
         },
@@ -484,6 +494,9 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName('price')).toStrictEqual('价格');
       expect(dataSet.getFieldName('cost')).toStrictEqual('成本');
       expect(dataSet.getFieldName('')).toEqual('');
+      expect(dataSet.getFieldName('test-a')).toStrictEqual('test');
+      expect(dataSet.getFieldName('test-b')).toStrictEqual('test');
+      expect(dataSet.getFieldName('test-c')).toStrictEqual('test-regexp');
       // 找不到名字返回字段本身
       expect(dataSet.getFieldName('not-found-field')).toEqual(
         'not-found-field',
@@ -594,6 +607,7 @@ describe('Pivot Dataset Test', () => {
       expect(newData.fields.columns).toEqual(['type', 'sub_type']);
       expect(newData.fields.values).toEqual(['number']);
     });
+
     test('should index of the cols of EXTRA_FIELD is 0 when customValueOrder is 0 and valueInCols is true', () => {
       const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
         fields: {
@@ -607,6 +621,7 @@ describe('Pivot Dataset Test', () => {
       expect(newData.fields.columns).toEqual([EXTRA_FIELD, 'type', 'sub_type']);
       expect(newData.fields.values).toEqual(['number']);
     });
+
     test('should customValueOrder is too big, order feature does not work', () => {
       const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
         fields: {
@@ -620,6 +635,7 @@ describe('Pivot Dataset Test', () => {
       expect(newData.fields.columns).toEqual(['type', 'sub_type', EXTRA_FIELD]);
       expect(newData.fields.values).toEqual(['number']);
     });
+
     test('should customValueOrder is not number, order feature does not work', () => {
       const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
         fields: {
