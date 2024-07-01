@@ -732,15 +732,15 @@ const s2Options = {
 }
 ```
 
-#### 链接跳转逻辑变更
+#### 链接跳转逻辑和参数变更
 
-1. 现在链接跳转支持对 **列头** 标记，且明细表同时对 `列头` 和 `数值` 生效。
-2. 回调参数 `key` 调整为 `field`.
+1. 现在链接跳转支持对 **列头** 标记，且明细表同时对 `列头` 和 `数值` 生效（可自定义规则）。
+2. 回调参数 `key` 调整为 `field`, `cellData` 调整为 `meta`.
 
 ```diff
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 -  const { key, cellData, record } = data;
-+  const { field, cellData, record } = data;
++  const { field, meta, record } = data;
 });
 ```
 

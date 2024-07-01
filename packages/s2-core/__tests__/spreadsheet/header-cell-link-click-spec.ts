@@ -81,7 +81,7 @@ describe('Header Cell Link Click Tests', () => {
       target: {
         appendInfo: {
           isLinkFieldText: true,
-          cellData: node,
+          meta: node,
         },
       },
     } as any);
@@ -103,7 +103,7 @@ describe('Header Cell Link Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
-      cellData: rowNode,
+      meta: rowNode,
       record: {
         province: '浙江',
         type: '笔',
@@ -122,7 +122,7 @@ describe('Header Cell Link Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenLastCalledWith({
       field: 'city',
-      cellData: rowNode,
+      meta: rowNode,
       record: {
         province: '浙江',
         city: '义乌1',
@@ -142,7 +142,7 @@ describe('Header Cell Link Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'province',
-      cellData: rowNode,
+      meta: rowNode,
       record: {
         province: '四川',
         type: '笔',
@@ -161,7 +161,7 @@ describe('Header Cell Link Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: 'type',
-      cellData: colNode,
+      meta: colNode,
       record: {
         province: '浙江',
         type: '笔',
@@ -192,7 +192,7 @@ describe('Header Cell Link Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: EXTRA_FIELD,
-      cellData: colNode,
+      meta: colNode,
       record: {
         province: '浙江',
         type: '笔',

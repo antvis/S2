@@ -6,9 +6,9 @@ import { getAppendInfo } from './common';
 /* formate the base Event data */
 export const getBaseCellData = (event: Event): TargetCellInfo => {
   const targetElement = event?.target as unknown as DisplayObject;
-  const currentCellData = getAppendInfo(targetElement)?.cellData;
+  const currentCellMeta = getAppendInfo(targetElement)?.meta;
   const target = targetElement?.parentNode as S2CellType;
-  const meta = (target?.getMeta?.() as Node) || currentCellData;
+  const meta = (target?.getMeta?.() as Node) || currentCellMeta;
 
   return {
     target,

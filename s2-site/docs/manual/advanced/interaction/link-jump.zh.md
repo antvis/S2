@@ -34,8 +34,8 @@ const s2Options = {
 import { S2Event } from '@antv/s2'
 
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-  const { field, cellData, record } = data;
-  ...
+  const { field, meta, record } = data;
+  // ...
 });
 ```
 
@@ -44,7 +44,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 支持将行头 `rows`, 列头 `columns`, 数值 `values` 标记为链接样式。
 
 ```ts | pure
-import { S2Event, EXTRA_FIELD } from '@antv/s2'
+import { S2Event } from '@antv/s2'
 
 const s2DataConfig = {
   fields: {
@@ -65,7 +65,7 @@ const s2Options = {
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-  const { field, cellData, record } = data;
+  const { field, meta, record } = data;
   const value = record?.[field];
 
   // 拼装自己的跳转地址
@@ -120,7 +120,7 @@ const s2Options = {
 const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-  const { field, cellData, record } = data;
+  const { field, meta, record } = data;
   const value = record?.[field];
 
   // 拼装自己的跳转地址

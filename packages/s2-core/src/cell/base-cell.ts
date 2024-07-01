@@ -536,7 +536,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape.appendInfo = {
       // 标记为字段标记文本，方便做链接跳转直接识别
       isLinkFieldText: true,
-      cellData: this.meta,
+      meta: this.meta,
     };
   }
 

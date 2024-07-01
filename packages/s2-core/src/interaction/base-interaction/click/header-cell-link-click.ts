@@ -23,13 +23,13 @@ export class HeaderCellLinkClick
       return;
     }
 
-    const { cellData } = this.getCellAppendInfo(event.target);
-    const field = cellData!.field;
-    const rowData = this.getCellData(cellData!);
+    const { meta } = this.getCellAppendInfo(event.target);
+    const field = meta!.field;
+    const rowData = this.getCellData(meta!);
 
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
       field,
-      cellData: cellData!,
+      meta: meta!,
       record: rowData as Data,
     });
   }

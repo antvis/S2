@@ -13,7 +13,12 @@ import {
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
 import type { SliderSingleProps } from 'antd';
-import { data, meta, totalData } from '../__tests__/data/mock-dataset.json';
+import {
+  data,
+  fields,
+  meta,
+  totalData,
+} from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 
 export const tableSheetSingleColumns: CustomHeaderField[] = [
@@ -73,47 +78,10 @@ export const tableSheetDataCfg: S2DataConfig = {
 };
 
 export const pivotSheetDataCfg: S2DataConfig = {
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type'],
-    values: ['price'],
-    valueInCols: true,
-  },
-  data: [
-    {
-      province: '浙江',
-      city: '义乌1',
-      type: '笔',
-      price: 1,
-      cost: 2,
-    },
-    {
-      province: '浙江',
-      city: '义乌2',
-      type: '笔',
-      price: 1,
-      cost: 6,
-    },
-    {
-      province: '浙江',
-      type: '笔',
-      price: 2,
-      cost: 2,
-    },
-    {
-      province: '四川',
-      city: '成都',
-      type: '笔',
-      price: 1,
-      cost: 2,
-    },
-    {
-      province: '四川',
-      type: '笔',
-      price: 1,
-      cost: 2,
-    },
-  ],
+  data,
+  totalData,
+  meta,
+  fields,
 };
 
 export const pivotSheetMultiLineTextDataCfg = PivotSheetMultiLineTextDataCfg;
@@ -389,7 +357,7 @@ export const s2Options: SheetComponentOptions = {
   },
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
-    linkFields: ['province', 'city', 'type', EXTRA_FIELD],
+    linkFields: ['province', 'city', 'type', 'number', EXTRA_FIELD],
     copy: {
       enable: true,
       withFormat: true,
