@@ -15,7 +15,6 @@ import type {
   BuildHeaderResult,
   HeaderParams,
 } from '../layout/interface';
-import { Node } from '../layout/node';
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
   const { rootNode, hierarchy, fields, spreadsheet, isRowHeader } = params;
@@ -168,7 +167,6 @@ export const buildHeaderHierarchy = (
   const { rows = [], columns = [] } = spreadsheet.dataSet.fields;
   const isValueInCols = spreadsheet.isValueInCols();
   const moreThanOneValue = spreadsheet.dataSet.moreThanOneValue();
-  const rootNode = Node.rootNode();
   const hierarchy = new Hierarchy();
   const fields = isRowHeader ? rows : columns;
   const isCustomTreeFields = spreadsheet.isCustomHeaderFields(
@@ -178,7 +176,7 @@ export const buildHeaderHierarchy = (
   const headerParams: HeaderParams = {
     isValueInCols,
     moreThanOneValue,
-    rootNode,
+    rootNode: hierarchy.rootNode,
     hierarchy,
     spreadsheet,
     fields,

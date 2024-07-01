@@ -27,8 +27,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const isTableMode = spreadsheet.isTableMode();
 
   for (const [index, fieldValue] of fieldValues.entries()) {
-    const isTotals = fieldValue instanceof TotalClass;
-    const isTotalMeasure = fieldValue instanceof TotalMeasure;
+    const isTotals = TotalClass.isTotalClassInstance(fieldValue);
+    const isTotalMeasure = TotalMeasure.isTotalMeasureInstance(fieldValue);
     let value: string;
     let nodeQuery: Record<string, unknown>;
     let isLeaf = false;
@@ -38,14 +38,12 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     let adjustedField = currentField;
 
     if (isTotals) {
-      const totalClass = fieldValue as TotalClass;
-
-      isGrandTotals = totalClass.isGrandTotals;
-      isSubTotals = totalClass.isSubTotals;
-      isTotalRoot = totalClass.isTotalRoot;
-      value = i18n((fieldValue as TotalClass).label);
+      isGrandTotals = fieldValue.isGrandTotals;
+      isSubTotals = fieldValue.isSubTotals;
+      isTotalRoot = fieldValue.isTotalRoot;
+      value = i18n(fieldValue.label);
       if (isTotalRoot) {
-        nodeQuery = query;
+        nodeQuery = { ...query };
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
         nodeQuery = { ...query, [currentField]: value };
@@ -58,7 +56,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
 
       isLeaf = whetherLeafByLevel({ spreadsheet, level, fields });
     } else if (isTotalMeasure) {
-      value = i18n((fieldValue as TotalMeasure).label);
+      value = i18n(fieldValue.label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
       nodeQuery = { ...query, [EXTRA_FIELD]: value };
       adjustedField = EXTRA_FIELD;

@@ -5,3 +5,4 @@ export { RowHeader } from './row';
 export { SeriesNumberHeader } from './series-number';
 
 export * from './interface';
+export * from './util';

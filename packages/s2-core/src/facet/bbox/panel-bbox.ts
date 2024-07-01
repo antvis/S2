@@ -4,8 +4,8 @@ import { BaseBBox } from './base-bbox';
 
 export class PanelBBox extends BaseBBox {
   calculateBBox() {
-    this.originalWidth = this.facet.getRealWidth();
-    this.originalHeight = this.facet.getRealHeight();
+    this.calculateOriginWidth();
+    this.calculateOriginalHeight();
 
     const { cornerBBox } = this.facet;
     const cornerPosition = {
@@ -21,22 +21,38 @@ export class PanelBBox extends BaseBBox {
     this.minX = this.x;
     this.minY = this.y;
 
-    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
-    const { width: canvasWidth, height: canvasHeight } =
-      this.spreadsheet.options;
-
-    const panelWidth = Math.max(0, canvasWidth! - this.x);
-    const panelHeight = Math.max(0, canvasHeight! - this.y - scrollBarSize!);
-
-    this.width = panelWidth;
-    this.height = panelHeight;
+    this.width = this.getPanelWidth();
+    this.height = this.getPanelHeight();
     this.viewportHeight = Math.abs(
-      floor(Math.min(panelHeight, this.originalHeight)),
+      floor(Math.min(this.height, this.originalHeight)),
     );
     this.viewportWidth = Math.abs(
-      floor(Math.min(panelWidth, this.originalWidth)),
+      floor(Math.min(this.width, this.originalWidth)),
     );
     this.maxX = this.x + this.viewportWidth;
     this.maxY = this.y + this.viewportHeight;
+  }
+
+  protected calculateOriginalHeight() {
+    this.originalHeight = this.facet.getRealHeight();
+  }
+
+  protected calculateOriginWidth() {
+    this.originalWidth = this.facet.getRealWidth();
+  }
+
+  protected getPanelWidth() {
+    const { width: canvasWidth } = this.spreadsheet.options;
+    const panelWidth = Math.max(0, canvasWidth! - this.x);
+
+    return panelWidth;
+  }
+
+  protected getPanelHeight() {
+    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
+    const { height: canvasHeight } = this.spreadsheet.options;
+    const panelHeight = Math.max(0, canvasHeight! - this.y - scrollBarSize!);
+
+    return panelHeight;
   }
 }

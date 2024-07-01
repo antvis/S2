@@ -66,9 +66,9 @@ export const setupDataConfig = (
 };
 
 export const setupOptions = (
-  options: Partial<S2Options> | null | undefined,
+  ...options: (Partial<S2Options> | null | undefined)[]
 ): S2Options => {
-  const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, options);
+  const mergedOptions = customMerge<S2Options>(DEFAULT_OPTIONS, ...options);
 
   if (
     mergedOptions.style?.layoutWidthType === LayoutWidthType.Compact &&

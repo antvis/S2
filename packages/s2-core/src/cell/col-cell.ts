@@ -154,7 +154,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   }
 
   protected getTextPosition(): PointLike {
-    const { isLeaf } = this.meta;
+    const { isLeaf, isLeafPlaceholder } = this.meta;
 
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
@@ -168,7 +168,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       textStyle.textBaseline!,
     );
 
-    if (isLeaf) {
+    if (isLeaf || isLeafPlaceholder) {
       const { textX, leftIconX, rightIconX } = getHorizontalTextIconPosition({
         bbox: contentBox,
         textWidth: this.getActualTextWidth(),
@@ -265,6 +265,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
     }
 
     const { y, height } = this.meta;
+    const { position } = this.getHeaderConfig();
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
@@ -282,6 +283,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       return;
     }
 
+    const offsetY = position.y + y;
     const resizeAreaWidth = this.getResizeAreaWidth();
 
     // 列高调整热区
@@ -290,7 +292,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
       type: ResizeDirectionType.Vertical,
       effect: ResizeAreaEffect.Field,
       offsetX: 0,
-      offsetY: y,
+      offsetY,
       width: resizeAreaWidth,
       height,
       meta: this.meta,
@@ -303,7 +305,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
           style: {
             ...attrs.style,
             x: 0,
-            y: y + height - resizeStyle.size!,
+            y: offsetY + height - resizeStyle.size!,
             width: resizeAreaWidth,
           },
         },
@@ -367,6 +369,7 @@ export class ColCell extends HeaderCell<ColHeaderConfig> {
   protected drawVerticalResizeArea() {
     if (
       !this.meta.isLeaf ||
+      this.meta.hideColCellHorizontalResize ||
       !this.shouldDrawResizeAreaByType('colCellHorizontal', this)
     ) {
       return;
