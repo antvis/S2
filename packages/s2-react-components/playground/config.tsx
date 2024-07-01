@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import { type S2DataConfig } from '@antv/s2';
+// @ts-ignore
 import type { SheetComponentOptions } from '@antv/s2-react';
 import {
   data,
