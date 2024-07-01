@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 import {
   EMPTY_PLACEHOLDER,
-  EXTRA_FIELD,
   customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
@@ -357,7 +356,7 @@ export const s2Options: SheetComponentOptions = {
   },
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
-    linkFields: ['province', 'city', 'type', 'number', EXTRA_FIELD],
+    linkFields: [],
     copy: {
       enable: true,
       withFormat: true,
