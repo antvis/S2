@@ -33,7 +33,7 @@ tag: Updated
 | 悬停         | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
 | 复制         | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                            |
 | 隐藏列头       | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`   | 隐藏/展开 列头                                                                                                              |
-| 链接跳转       | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | 行头/列头 链接跳转                                                                                                            |
+| 链接跳转       | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | 行头/列头/数值 链接跳转                                                                                                            |
 | 重置         | `S2Event.GLOBAL_RESET`                                        | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                                         |
 | 移动高亮单元格    | `S2Event.GLOBAL_SELECTED`                                     | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                                           |
 

@@ -1,5 +1,5 @@
 import type { RawData, S2DataConfig, S2Options } from '@/common/interface';
-import { RowTextClick } from '@/interaction/base-interaction/click';
+import { HeaderCellLinkClick } from '@/interaction/base-interaction/click';
 import type { SpreadSheet } from '@/sheet-type';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 
@@ -7,8 +7,8 @@ jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/interaction/range-selection');
 
-describe('Interaction Row Text Click Tests', () => {
-  let rowTextClick: RowTextClick;
+describe('Interaction Header Link Click Tests', () => {
+  let headerCellLinkClick: HeaderCellLinkClick;
   let s2: SpreadSheet;
 
   const data: RawData[] = [
@@ -26,7 +26,7 @@ describe('Interaction Row Text Click Tests', () => {
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
-    rowTextClick = new RowTextClick(s2 as unknown as SpreadSheet);
+    headerCellLinkClick = new HeaderCellLinkClick(s2 as unknown as SpreadSheet);
     s2.options = {
       hierarchyType: 'grid',
     } as S2Options;
@@ -37,6 +37,6 @@ describe('Interaction Row Text Click Tests', () => {
   });
 
   test('should bind events', () => {
-    expect(rowTextClick.bindEvents).toBeDefined();
+    expect(headerCellLinkClick.bindEvents).toBeDefined();
   });
 });

@@ -19,6 +19,7 @@ import type {
   S2CellType,
   S2Style,
   SortParams,
+  ViewMeta,
 } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
@@ -70,7 +71,7 @@ export interface EmitterType {
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
-    cellData: Node;
+    meta: Node | ViewMeta;
     field: string;
     record: Data;
   }) => void;

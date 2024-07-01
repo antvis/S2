@@ -209,7 +209,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       target: new CustomRect(
         { style: { x: 1, y: 1, width: 1, height: 1 } },
         {
-          cellData: mockCellData,
+          meta: mockCellData,
           isLinkFieldText: true,
         },
       ),

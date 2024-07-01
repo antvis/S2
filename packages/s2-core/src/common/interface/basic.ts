@@ -470,9 +470,10 @@ export interface OffsetConfig {
   };
 }
 
-export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
+export interface CellAppendInfo<T = Node>
+  extends Partial<Omit<ResizeInfo, 'meta'>> {
   isLinkFieldText?: boolean;
-  cellData?: T;
+  meta?: T;
 }
 
 export type S2MountContainer = string | Element;

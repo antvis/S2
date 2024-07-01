@@ -1,4 +1,4 @@
-import { S2Event, PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
+import { PivotSheet, S2DataConfig, S2Event, S2Options } from '@antv/s2';
 
 // 临时处理老数据格式
 function process(children) {
@@ -40,6 +40,7 @@ fetch(
       hierarchyType: 'tree',
       interaction: {
         linkFields: [
+          'type',
           'custom-node-1',
           'custom-node-2',
           'custom-node-3',
@@ -65,7 +66,7 @@ fetch(
       const a = document.createElement('a');
 
       a.target = '_blank';
-      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${field}=${value}`;
+      a.href = `https://s2.antv.antgroup.com/zh/docs/manual/introduction?${field}=${value}`;
       a.click();
       a.remove();
     });

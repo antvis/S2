@@ -131,7 +131,7 @@ describe('Interaction Data Cell Click Tests', () => {
           },
         },
         {
-          cellData: mockCellData,
+          meta: mockCellData,
           isLinkFieldText: true,
         },
       ),
@@ -139,7 +139,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       field: mockCellData.valueField,
-      cellData: mockCellData,
+      meta: mockCellData,
       record: mockCellData.data,
     });
     expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();

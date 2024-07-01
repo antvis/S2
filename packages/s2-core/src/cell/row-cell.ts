@@ -212,13 +212,6 @@ export class RowCell extends HeaderCell<RowHeaderConfig> {
     return (!isLeaf && level === 0) || isTotals;
   }
 
-  public drawTextShape() {
-    super.drawTextShape();
-    if (!this.isShallowRender()) {
-      this.drawLinkField(this.meta);
-    }
-  }
-
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
