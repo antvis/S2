@@ -1,5 +1,5 @@
-import { clamp, findLast } from 'lodash';
-import type { Condition, IconCondition } from '../../common/interface';
+import { clamp } from 'lodash';
+import type { IconCondition } from '../../common/interface';
 import { parseNumberWithPrecision } from '../formatter';
 
 export const getIconPosition = (condition: IconCondition) =>
@@ -54,15 +54,4 @@ export const getIntervalScale = (minValue = 0, maxValue = 0) => {
 
     return { zeroScale, scale };
   };
-};
-
-export const findFieldCondition = <T>(
-  conditions: Condition<T>[],
-  valueField: string,
-) => {
-  return findLast(conditions, (item) => {
-    return item.field instanceof RegExp
-      ? item.field.test(valueField)
-      : item.field === valueField;
-  });
 };
