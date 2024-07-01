@@ -70,7 +70,7 @@ The trend analysis table component uses various capabilities provided by S2 for 
 import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 ReactDOM.render(
   <SheetComponent

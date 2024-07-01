@@ -2,7 +2,7 @@
 import React from 'react';
 import { S2DataConfig, type S2RenderOptions, type SpreadSheet } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())

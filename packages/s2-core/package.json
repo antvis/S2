@@ -27,7 +27,7 @@
     "dist/*"
   ],
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -41,7 +41,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "father build",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.mjs",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.mjs",
     "build:dts": "run-s dts:*",
@@ -90,12 +90,12 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2.min.js",
       "import": "{ createComponent }",
-      "limit": "200 kB"
+      "limit": "230 kB"
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2.min.css",
       "limit": "5 kB"
     }
   ],

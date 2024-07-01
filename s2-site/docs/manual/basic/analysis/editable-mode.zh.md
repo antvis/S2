@@ -25,7 +25,7 @@ order: 3
 import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 // 1. 准备数据
 const data = [

@@ -192,7 +192,7 @@ run();
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const container = document.getElementById('container');
 
@@ -227,7 +227,7 @@ yarn add antd @ant-design/icons
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {
@@ -270,7 +270,7 @@ yarn add ant-design-vue
 ```
 
 ```ts
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 ```
 
 ​📊 Check out [the Vue3 version pivot table demo](https://codesandbox.io/s/s2-vue-hwg64q) .

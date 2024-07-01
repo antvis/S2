@@ -43,6 +43,7 @@ export interface HeaderNodesParams extends GridHeaderParams {
   fieldValues: FieldValue[];
   level: number;
   query: Record<string, any>;
+  handler: (params: HeaderNodesParams) => void;
 }
 
 export interface HeaderParams {

@@ -76,6 +76,7 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
     level: index,
     parentNode,
     query,
+    handler: buildTotalGridHierarchy,
   });
 };
 
@@ -131,6 +132,7 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     level: index,
     parentNode,
     query,
+    handler: buildNormalGridHierarchy,
   });
 };
 

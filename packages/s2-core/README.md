@@ -29,7 +29,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>
@@ -73,9 +73,9 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2
-# yarn add @antv/s2
-# npm install @antv/s2 --save
+$ pnpm add @antv/s2@next
+# yarn add @antv/s2@next
+# npm install @antv/s2@next --save
 ```
 
 ## 🔨 使用
