@@ -28,10 +28,10 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
-    "@antv/dumi-theme-antv": "^0.5.0",
+    "@antv/dumi-theme-antv": "^0.5.2",
     "@antv/g-canvas": "^0.5.14",
-    "@antv/s2": "^1.54.3",
-    "@antv/s2-react": "^1.46.1",
+    "@antv/s2": "^1.55.6",
+    "@antv/s2-react": "^1.47.0",
     "antd": "^4.24.15",
     "copy-to-clipboard": "^3.3.3",
     "dumi": "^2.2.17",
