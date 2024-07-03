@@ -3,7 +3,11 @@
 // eslint-disable-next-line prettier/prettier
 import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { forceClear, reactRender, reactUnmount } from '../../utils/reactRender';
+import {
+  forceClearContent,
+  reactRender,
+  reactUnmount,
+} from '../../utils/reactRender';
 import { ConfigProvider } from '../config-provider';
 import { TooltipComponent } from './index';
 import type {
@@ -70,7 +74,7 @@ export class CustomTooltip extends BaseTooltip<
   }
 
   forceClearContent() {
-    forceClear(this.container!);
+    forceClearContent(this.container!);
   }
 
   unmount() {

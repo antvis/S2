@@ -6,10 +6,10 @@ import { version } from 'react';
 import * as ReactDOM from 'react-dom';
 import type { Root } from 'react-dom/client';
 
-const REACT_ROOT_SYMBOL_ID = `__s2_react_root__`;
+export const S2_REACT_ROOT_SYMBOL_ID = `__s2_react_root__`;
 
 type ContainerType = (Element | DocumentFragment) & {
-  [REACT_ROOT_SYMBOL_ID]?: Root;
+  [S2_REACT_ROOT_SYMBOL_ID]?: Root;
 };
 
 type CreateRoot = (container: ContainerType) => Root;
@@ -64,13 +64,13 @@ function modernRender(
   container: ContainerType,
 ): Root {
   toggleWarning(true);
-  const root = container[REACT_ROOT_SYMBOL_ID] || createRoot(container);
+  const root = container[S2_REACT_ROOT_SYMBOL_ID] || createRoot(container);
 
   toggleWarning(false);
 
   root.render(node);
 
-  container[REACT_ROOT_SYMBOL_ID] = root;
+  container[S2_REACT_ROOT_SYMBOL_ID] = root;
 
   return root;
 }
@@ -99,9 +99,9 @@ export function reactRender(
 function modernUnmount(container: ContainerType) {
   // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
   return Promise.resolve().then(() => {
-    container?.[REACT_ROOT_SYMBOL_ID]?.unmount();
+    container?.[S2_REACT_ROOT_SYMBOL_ID]?.unmount();
 
-    delete container?.[REACT_ROOT_SYMBOL_ID];
+    delete container?.[S2_REACT_ROOT_SYMBOL_ID];
   });
 }
 
@@ -119,12 +119,10 @@ export function reactUnmount(container: ContainerType) {
   return legacyUnmount(container);
 }
 
-export function forceClear(container: ContainerType) {
+export function forceClearContent(container: ContainerType) {
   if (isLegacyReactVersion()) {
-    legacyUnmount(container);
-
-    return;
+    return legacyUnmount(container);
   }
 
-  modernRender(null, container);
+  return modernRender(null, container);
 }
