@@ -122,6 +122,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       operator,
       hideSummary: true,
       onlyShowCellText,
+      forceRender: true,
     });
   }
 

@@ -1,6 +1,7 @@
 import {
   GEvent,
   S2Event,
+  S2_PREFIX_CLS,
   SpreadSheet,
   TableDataCell,
   customMerge,
@@ -179,7 +180,7 @@ function EditCellComponent(
         <Input.TextArea
           required
           style={styleProps}
-          className={'s2-edit-cell'}
+          className={`${S2_PREFIX_CLS}-edit-cell`}
           value={inputVal as string}
           ref={inputRef}
           onChange={onChange}

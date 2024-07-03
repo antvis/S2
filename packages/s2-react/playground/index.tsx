@@ -45,11 +45,11 @@ import {
 import { debounce, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
-import { createRoot } from 'react-dom/client';
 import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { ConfigProvider } from '../src/components/config-provider';
+import { reactRender } from '../src/utils/reactRender';
 import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
 import { CustomGrid } from './components/CustomGrid';
@@ -1648,4 +1648,4 @@ function MainLayout() {
   );
 }
 
-createRoot(document.getElementById('root')!).render(<MainLayout />);
+reactRender(<MainLayout />, document.getElementById('root')!);
