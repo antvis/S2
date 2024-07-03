@@ -11,7 +11,16 @@ import {
   type ScrollChangeParams,
   type ViewMeta,
 } from '@antv/s2';
-import { floor, get, isNumber, last, merge, reduce, sum } from 'lodash';
+import {
+  floor,
+  get,
+  isEmpty,
+  isNumber,
+  last,
+  merge,
+  reduce,
+  sum,
+} from 'lodash';
 import { ScrollType } from '../../../ui/scrollbar';
 import { getHeaderTotalStatus } from '../../../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../../../utils/facet';
@@ -174,8 +183,50 @@ export class PivotChartFacet extends PivotFacet {
   }
 
   protected calculateAxisHierarchyCoordinate(layoutResult: LayoutResult) {
+    this.adjustTotalNodesCoordinateAfterSeparateAxisHierarchy(layoutResult);
     this.calculateAxisRowsHierarchyCoordinate(layoutResult);
     this.calculateAxisColsHierarchyCoordinate(layoutResult);
+  }
+
+  protected adjustTotalNodesCoordinateAfterSeparateAxisHierarchy(
+    layoutResult: LayoutResult,
+  ) {
+    // 最后一个维度分离出去后，再存在总计、小计分组时，会存在总计、小计格子出现空缺，因为 pivot-facet 层是按照未拆分的逻辑做的补全。
+    // 拆分后需要再处理一下，而且只需要针对维度拆分的部分做处理即可，指标拆分正常显示
+
+    const { rowsHierarchy, colsHierarchy } = layoutResult;
+
+    if (
+      !isEmpty(this.spreadsheet.options.totals?.row) &&
+      this.spreadsheet.isValueInCols()
+    ) {
+      const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel!;
+      const maxX = sampleNodeForLastLevel.x + sampleNodeForLastLevel.width;
+
+      rowsHierarchy.getLeaves().forEach((leaf) => {
+        const rightX = leaf.x + leaf.width;
+
+        if (maxX > rightX) {
+          leaf.width += maxX - rightX;
+        }
+      });
+    }
+
+    if (
+      !isEmpty(this.spreadsheet.options.totals?.col) &&
+      !this.spreadsheet.isValueInCols()
+    ) {
+      const sampleNodeForLastLevel = colsHierarchy.sampleNodeForLastLevel!;
+      const maxY = sampleNodeForLastLevel.y + sampleNodeForLastLevel.height;
+
+      colsHierarchy.getLeaves().forEach((leaf) => {
+        const bottomY = leaf.y + leaf.height;
+
+        if (maxY > bottomY) {
+          leaf.height += maxY - bottomY;
+        }
+      });
+    }
   }
 
   protected calculateAxisRowsHierarchyCoordinate(layoutResult: LayoutResult) {

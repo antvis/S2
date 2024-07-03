@@ -132,10 +132,8 @@ function separateMeasureNodes(
 
     leaf.relatedNode = axisNode;
 
-    if (leaf.field !== EXTRA_FIELD) {
-      leaf.hideColCellHorizontalResize = true;
-      leaf.hideRowCellVerticalResize = true;
-    }
+    leaf.hideColCellHorizontalResize = true;
+    leaf.hideRowCellVerticalResize = true;
 
     if (axisNode.field !== EXTRA_FIELD) {
       // 总计、小计单指标时不展示

@@ -293,7 +293,7 @@ export class PivotFacet extends FrozenFacet {
 
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields![level] as string;
-      // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
+      // 若不符合【分组维度包含此维度】或者【指标维度下多指标维度】，此表头单元格为空，将宽高合并到上级单元格
       const existValueField = currentField === EXTRA_FIELD && moreThanOneValue;
 
       if (!(dimensionGroup.includes(currentField) || existValueField)) {
