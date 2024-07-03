@@ -10,7 +10,7 @@ import type { Query } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
-type NodeProperties = {
+export type NodeProperties = {
   [K in keyof Node as Node[K] extends (...args: any[]) => any
     ? never
     : K]?: Node[K];
@@ -54,8 +54,6 @@ export class Node {
   // check if node is leaf(the max level in tree)
   public isLeaf = false;
 
-  public isLeafPlaceholder = false;
-
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
@@ -82,6 +80,7 @@ export class Node {
 
   /**
    * 1. 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   * 2. 给 pivot chart sheet 用，关联当前格子和拆分的 axis 的格子
    */
   public relatedNode: Node;
 

@@ -30,6 +30,8 @@ export class Hierarchy {
   // all nodes in the lastLevel
   public indexNode: Node[] = [];
 
+  public isPlaceholder = false;
+
   constructor() {
     this.rootNode = Node.rootNode();
   }

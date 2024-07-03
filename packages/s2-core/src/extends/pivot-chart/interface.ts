@@ -12,9 +12,10 @@ import type {
 import type { AxisColCell } from './cell/axis-col-cell';
 import type { AxisCornerCell } from './cell/axis-cornor-cell';
 import type { AxisRowCell } from './cell/axis-row-cell';
+import type { ChartDataCell } from './cell/chart-data-cell';
 import type { AxisCellType } from './constant';
 
-export type Coordinate = 'cartesian' | 'polar';
+export type ChartCoordinate = 'cartesian' | 'polar';
 
 // @ts-ignore
 declare module '@antv/s2' {
@@ -24,7 +25,8 @@ declare module '@antv/s2' {
   }
 
   interface S2PivotSheetOptions {
-    chartSpec?: G2Spec;
+    chartCoordinate?: ChartCoordinate;
+    chartSpec?: G2Spec | ((cell: ChartDataCell) => G2Spec);
     axisRowCell?: CellCallback<RowHeaderConfig, AxisRowCell>;
     axisColCell?: CellCallback<ColHeaderConfig, AxisColCell>;
     axisCornerCell?: CellCallback<CornerHeaderConfig, AxisCornerCell>;
@@ -33,7 +35,9 @@ declare module '@antv/s2' {
   interface S2Style {}
 
   type AxisCellThemes = {
-    [K in AxisCellType]?: Pick<DefaultCellTheme, 'text' | 'cell' | 'icon'>;
+    [K in AxisCellType]?: K extends AxisCellType.AXIS_CORNER_CELL
+      ? Pick<DefaultCellTheme, 'cell' | 'text' | 'icon'>
+      : Pick<DefaultCellTheme, 'cell'>;
   };
 
   interface S2Theme extends AxisCellThemes {}

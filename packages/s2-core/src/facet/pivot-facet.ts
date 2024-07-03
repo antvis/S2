@@ -416,7 +416,7 @@ export class PivotFacet extends FrozenFacet {
     }
 
     // 4.2 网格自定义
-    return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
+    return this.getAdaptGridColWidth(colLeafNodes, colNode, rowHeaderWidth);
   }
 
   protected getRowNodeHeight(rowNode: Node): number {
@@ -512,18 +512,35 @@ export class PivotFacet extends FrozenFacet {
     rowsHierarchy.rootNode.width = rowsHierarchy.width;
   }
 
+  protected getRowLeafNodeHeight(rowLeafNode: Node) {
+    const { rowCell: rowCellStyle } = this.spreadsheet.options.style!;
+    const isEnableHeightAdaptive =
+      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
+
+    const currentBranchNodeHeights = isEnableHeightAdaptive
+      ? Node.getBranchNodes(rowLeafNode).map((rowNode) =>
+          this.getRowNodeHeight(rowNode),
+        )
+      : [];
+
+    const defaultHeight = this.getRowNodeHeight(rowLeafNode);
+    // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678
+    // 自定义高度除外: https://github.com/antvis/S2/issues/2594
+    const nodeHeight = this.isCustomRowCellHeight(rowLeafNode)
+      ? defaultHeight
+      : max(currentBranchNodeHeights) ?? defaultHeight;
+
+    return nodeHeight;
+  }
+
   protected calculateRowNodesBBox(rowsHierarchy: Hierarchy) {
     const isTree = this.spreadsheet.isHierarchyTreeType();
     const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
-    const { rowCell: rowCellStyle } = this.spreadsheet.options.style!;
-
-    const isEnableHeightAdaptive =
-      rowCellStyle?.maxLines! > 1 && rowCellStyle?.wordWrap;
 
     let preLeafNode = Node.blankNode();
     const rowNodes = rowsHierarchy.getNodes();
 
-    rowNodes.forEach((currentNode, i) => {
+    rowNodes.forEach((currentNode) => {
       // 树状模式都按叶子处理节点
       const isLeaf = isTree || (!isTree && currentNode.isLeaf);
 
@@ -542,23 +559,9 @@ export class PivotFacet extends FrozenFacet {
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
         // 文本超过 1 行时再自适应单元格高度, 不然会频繁触发 GC, 导致性能降低: https://github.com/antvis/S2/issues/2693
 
-        const currentBranchNodeHeights = isEnableHeightAdaptive
-          ? Node.getBranchNodes(currentNode).map((rowNode) =>
-              this.getRowNodeHeight(rowNode),
-            )
-          : [];
-
-        const defaultHeight = this.getRowNodeHeight(currentNode);
-        // 父节点的高度是叶子节点的高度之和, 由于存在多行文本, 叶子节点的高度以当前路径下节点高度最大的为准: https://github.com/antvis/S2/issues/2678
-        // 自定义高度除外: https://github.com/antvis/S2/issues/2594
-        const nodeHeight = this.isCustomRowCellHeight(currentNode)
-          ? defaultHeight
-          : max(currentBranchNodeHeights) ?? defaultHeight;
-
         currentNode.rowIndex ??= rowIndex;
-        currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-        currentNode.height = nodeHeight;
+        currentNode.height = this.getRowLeafNodeHeight(currentNode);
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;
@@ -751,6 +754,8 @@ export class PivotFacet extends FrozenFacet {
    */
   protected getAdaptGridColWidth(
     colLeafNodes: Node[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    colNode?: Node,
     rowHeaderWidth?: number,
   ) {
     const { rows = [] } = this.spreadsheet.dataSet.fields;

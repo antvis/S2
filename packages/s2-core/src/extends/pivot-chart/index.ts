@@ -31,7 +31,7 @@ export class PivotChart extends PivotSheet {
   protected override setupOptions(options: S2Options | null) {
     this.options = setupOptions(
       DEFAULT_OPTIONS,
-      this.getRuntimeDefaultOptions(),
+      this.getRuntimeDefaultOptions(options),
       options,
       this.getRuntimeFixedOptions(),
       FIXED_OPTIONS,
@@ -55,12 +55,37 @@ export class PivotChart extends PivotSheet {
     );
   }
 
-  protected getRuntimeDefaultOptions(): S2Options {
-    const { columns = [], valueInCols = true } = this.dataCfg.fields ?? {};
+  protected getRuntimeDefaultOptions(options: S2Options | null): S2Options {
+    const {
+      rows = [],
+      columns = [],
+      valueInCols = true,
+    } = this.dataCfg.fields ?? {};
+
+    // return {};
+    /**
+     * 下面的逻辑准则：
+     *    如果是笛卡尔坐标系，希望 x 轴 dimension 的每个维度默认宽度大致相同，y 轴 measure 的宽度始终保持都相同
+     *      比如对于 rows: province-> city , value: number 来说
+     *         四川下面有 n 个城市，北京下面有 m 个城市，那么四川的宽度是 n * width, 北京的宽度是 m * width
+     *         而不管是四川，还是北京， y 轴展示的都是 number 的值，那么 y 轴的宽度保持相同，能快速通过图形的尺寸看出数据的相对大小。
+     *    如果是极坐标系， 希望 x 轴宽度相同，y 轴 measure 的宽度也都相同
+     *         比如对于 rows: province-> city , value: number 来说
+     *         四川下面有 n 个城市，北京下面有 m 个城市，那么四川的宽度是 width, 北京的宽度也是 width，不再以维度数量作为依据，能让数据的呈现效果更好
+     */
+
+    const isPolar = this.isPolarChart(options);
 
     if (valueInCols) {
+      const lastRow = last(rows) as string;
+
       return {
         style: {
+          rowCell: {
+            widthByField: {
+              [lastRow]: DEFAULT_ROW_AXIS_SIZE,
+            },
+          },
           colCell: {
             heightByField: {
               [EXTRA_FIELD]: DEFAULT_COL_AXIS_SIZE,
@@ -68,7 +93,7 @@ export class PivotChart extends PivotSheet {
           },
           dataCell: {
             width: DEFAULT_MEASURE_SIZE,
-            height: DEFAULT_DIMENSION_SIZE,
+            height: isPolar ? DEFAULT_MEASURE_SIZE : DEFAULT_DIMENSION_SIZE,
           },
         },
       };
@@ -89,7 +114,7 @@ export class PivotChart extends PivotSheet {
           },
         },
         dataCell: {
-          width: DEFAULT_DIMENSION_SIZE,
+          width: isPolar ? DEFAULT_DIMENSION_SIZE : DEFAULT_DIMENSION_SIZE,
           height: DEFAULT_MEASURE_SIZE,
         },
       },
@@ -118,5 +143,9 @@ export class PivotChart extends PivotSheet {
         },
       },
     };
+  }
+
+  isPolarChart(options: S2Options | null = this.options) {
+    return options?.chartCoordinate === 'polar';
   }
 }

@@ -1,7 +1,7 @@
 export { FederatedPointerEvent as GEvent } from '@antv/g';
 export { buildTableHierarchy } from './facet/layout/build-table-hierarchy';
 export { Hierarchy } from './facet/layout/hierarchy';
-export { Node } from './facet/layout/node';
+export { Node, type NodeProperties } from './facet/layout/node';
 export { getTheme } from './theme';
 
 export * from './cell';
