@@ -222,11 +222,27 @@ const s2DataConfig = {
 
 <br/>
 
-##### 2.2. 配置自定义方法
+##### 2.2. 配置自定义计算方法
 
-通过配置 `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number` 来实现。[查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#custom)
+通过配置 `calcFunc: (query: Record<string, any>, data: Record<string, any>[], spreadsheet: SpreadSheet) => number` 来实现。[查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#custom)
 
-<Playground path='analysis/totals/demo/custom.ts' rid='pivot-total-group' height='400'></playground>
+注意：`data` 为明细数据，如需获取包含汇总的数据
+
+```ts
+import { QueryDataType } from '@antv/s2';
+
+const calcFunc = (query, data, spreadsheet) => {
+  const allData = spreadsheet.dataSet.getMultiData(query, {
+    queryType: QueryDataType.All,
+  });
+
+  console.log('data（明细数据）:', data);
+  console.log('data（全部数据，含汇总）:', allData);
+};
+
+```
+
+<Playground path='analysis/totals/demo/custom.ts' rid='pivot-total-custom' height='400'></playground>
 
 <br/>
 
