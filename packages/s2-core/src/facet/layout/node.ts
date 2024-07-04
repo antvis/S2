@@ -201,11 +201,16 @@ export class Node {
    * get a branch's all nodes(c1~c4, b1, b2)
    * @param node
    */
-  public static getAllChildrenNodes(node: Node): Node[] {
+  public static getAllChildrenNodes(
+    node: Node,
+    push: (node: Node) => Node[] = (node) => [node],
+  ): Node[] {
     const all: Node[] = [];
 
     if (node.isLeaf) {
-      return [node];
+      all.push(...push(node));
+
+      return all;
     }
 
     // current root node children
@@ -213,7 +218,7 @@ export class Node {
     let current = nodes.shift();
 
     while (current) {
-      all.push(current);
+      all.push(...push(current));
       nodes.unshift(...current.children);
       current = nodes.shift();
     }

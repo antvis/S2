@@ -15,6 +15,8 @@ import {
   filter,
   find,
   get,
+  includes,
+  isArray,
   isEmpty,
   isFunction,
   isNil,
@@ -85,6 +87,7 @@ import type {
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
+import type { SelectedIds } from '../utils';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
@@ -2220,6 +2223,31 @@ export abstract class BaseFacet {
     );
   }
 
+  protected filterCells(
+    cells: S2CellType[],
+    filterIds?: string[] | SelectedIds,
+  ) {
+    if (isEmpty(filterIds)) {
+      return cells;
+    }
+
+    if (isArray(filterIds)) {
+      return cells.filter((cell) => {
+        return includes(filterIds, cell.getMeta().id);
+      });
+    }
+
+    return cells.filter((cell) => {
+      const ids = filterIds[cell.cellType];
+
+      if (!ids) {
+        return false;
+      }
+
+      return ids.includes(cell.getMeta().id);
+    });
+  }
+
   /**
    * 获取序号单元格 (不含可视区域)
    */
@@ -2232,7 +2260,9 @@ export abstract class BaseFacet {
    * @example 获取全部: facet.getHeaderCells()
    * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
-  public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+  public getHeaderCells(
+    cellIds?: string[] | SelectedIds,
+  ): S2CellType<ViewMeta>[] {
     const headerCells = concat<S2CellType>(
       this.getCornerCells(),
       this.getSeriesNumberCells(),
@@ -2240,11 +2270,7 @@ export abstract class BaseFacet {
       this.getColCells(),
     );
 
-    if (!cellIds) {
-      return headerCells;
-    }
-
-    return headerCells.filter((cell) => cellIds.includes(cell.getMeta().id));
+    return this.filterCells(headerCells, cellIds);
   }
 
   /**

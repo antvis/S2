@@ -1,6 +1,7 @@
 import type { G2Spec } from '@antv/g2';
 import { LayoutWidthType, type S2DataConfig, type S2Options } from '@antv/s2';
 import { ChartDataCell } from './cell/chart-data-cell';
+import { AxisRowColumnClick } from './interaction/axis-click';
 import { AxisHover } from './interaction/axis-hover';
 
 export const DEFAULT_G2_SPEC: G2Spec = {
@@ -28,6 +29,10 @@ export const DEFAULT_OPTIONS: S2Options = {
       {
         key: 'axisHover',
         interaction: AxisHover,
+      },
+      {
+        key: 'axisClick',
+        interaction: AxisRowColumnClick,
       },
     ],
   },

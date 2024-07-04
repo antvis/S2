@@ -33,7 +33,7 @@ import {
 import type { ViewMeta } from './../../../common/interface/basic';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
-  private isMultiSelection = false;
+  protected isMultiSelection = false;
 
   public bindEvents() {
     this.bindKeyboardDown();
@@ -49,7 +49,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
-  private bindKeyboardDown() {
+  protected bindKeyboardDown() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
@@ -60,7 +60,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     );
   }
 
-  private bindKeyboardUp() {
+  protected bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
         this.reset();
@@ -68,7 +68,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private bindMouseMove() {
+  protected bindMouseMove() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
       // 当快捷键被系统拦截后，按需补充调用一次 reset
       if (this.isMultiSelection && !isMouseEventWithMeta(event)) {
@@ -77,19 +77,19 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private bindRowCellClick() {
+  protected bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
       this.handleRowColClick(event);
     });
   }
 
-  private bindColCellClick() {
+  protected bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: CanvasEvent) => {
       this.handleRowColClick(event);
     });
   }
 
-  private handleRowColClick = (event: CanvasEvent) => {
+  protected handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
 
     if (this.isLinkFieldText(event.target)) {
@@ -116,7 +116,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     }
   };
 
-  private showTooltip(event: CanvasEvent) {
+  protected showTooltip(event: CanvasEvent) {
     const { operation, enable: showTooltip } = getTooltipOptions(
       this.spreadsheet,
       event,
@@ -139,7 +139,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getTooltipOperator(
+  protected getTooltipOperator(
     event: CanvasEvent,
     operation: TooltipOperation,
   ): TooltipOperatorOptions {
@@ -175,13 +175,13 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private bindTableColExpand() {
+  protected bindTableColExpand() {
     this.spreadsheet.on(S2Event.COL_CELL_EXPANDED, (node) => {
       this.handleExpandIconClick(node);
     });
   }
 
-  private getHideColumnField = (node: Node | ViewMeta) => {
+  protected getHideColumnField = (node: Node | ViewMeta) => {
     if ((node as Node).extra?.isCustomNode) {
       return node.id;
     }
@@ -214,7 +214,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     await hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
-  private async handleExpandIconClick(node: Node) {
+  protected async handleExpandIconClick(node: Node) {
     const lastHiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],

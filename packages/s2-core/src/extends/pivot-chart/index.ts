@@ -19,11 +19,17 @@ import {
   FIXED_OPTIONS,
 } from './constant';
 import { PivotChartFacet } from './facet/pivot-chart-facet';
+import { RootInteraction } from './interaction/root';
 import { getCustomTheme } from './utils/theme';
 
 export * from './interface';
 
 export class PivotChart extends PivotSheet {
+  protected override initInteraction() {
+    this.interaction?.destroy?.();
+    this.interaction = new RootInteraction(this);
+  }
+
   protected override setupDataConfig(dataCfg: S2DataConfig): void {
     this.dataCfg = setupDataConfig(dataCfg, FIXED_DATA_CONFIG);
   }

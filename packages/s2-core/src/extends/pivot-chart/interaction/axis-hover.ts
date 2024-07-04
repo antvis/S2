@@ -1,77 +1,41 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import {
+  DataCell,
   HoverEvent,
   InteractionStateName,
   S2Event,
-  updateAllHeaderCellState,
   type ViewMeta,
 } from '@antv/s2';
 import { isEmpty } from 'lodash';
 import { AxisCellType } from '../cell/cell-type';
-import type { PivotChartFacet } from '../facet/pivot-chart-facet';
+import { updateDataCellRelevantHeaderCells } from '../utils/handle-interaction';
 
 export class AxisHover extends HoverEvent {
+  public shouldSkipDataCellHoverEvent(event: CanvasEvent) {
+    const cell = this.spreadsheet.getCell(event.target);
+
+    if (isEmpty(cell)) {
+      return true;
+    }
+  }
+
   public bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target);
+    this.spreadsheet.on(
+      S2Event.DATA_CELL_HOVER_TRIGGERED_PRIVATE,
+      (cell: DataCell) => {
+        const { options } = this.spreadsheet;
+        const { interaction: interactionOptions } = options;
+        const meta = cell?.getMeta() as ViewMeta;
 
-      if (isEmpty(cell)) {
-        return;
-      }
-
-      const { options } = this.spreadsheet;
-      const { interaction: interactionOptions } = options;
-      const meta = cell?.getMeta() as ViewMeta;
-
-      if (interactionOptions?.hoverHighlight) {
-        this.updateDataCellRelevantHeaderCells(
-          InteractionStateName.HOVER,
-          meta,
-        );
-      }
-    });
-  }
-
-  public updateDataCellRelevantHeaderCells(
-    stateName: InteractionStateName,
-    meta: ViewMeta,
-  ) {
-    this.updateDataCellRelevantAxisRowCells(stateName, meta);
-    this.updateDataCellRelevantAxisColCells(stateName, meta);
-  }
-
-  updateDataCellRelevantAxisRowCells(
-    stateName: InteractionStateName,
-    meta: ViewMeta,
-  ) {
-    const { rowId } = meta;
-    const { facet, interaction } = this.spreadsheet;
-    const { rowHeader } = interaction.getHoverHighlight();
-
-    if (rowHeader && rowId) {
-      updateAllHeaderCellState(
-        rowId,
-        (facet as PivotChartFacet).getAxisRowCells(),
-        stateName,
-      );
-    }
-  }
-
-  updateDataCellRelevantAxisColCells(
-    stateName: InteractionStateName,
-    meta: ViewMeta,
-  ) {
-    const { colId } = meta;
-    const { facet, interaction } = this.spreadsheet;
-    const { colHeader } = interaction.getHoverHighlight();
-
-    if (colHeader && colId) {
-      updateAllHeaderCellState(
-        colId,
-        (facet as PivotChartFacet).getAxisColCells(),
-        stateName,
-      );
-    }
+        if (interactionOptions?.hoverHighlight) {
+          updateDataCellRelevantHeaderCells(
+            InteractionStateName.HOVER,
+            meta,
+            this.spreadsheet,
+          );
+        }
+      },
+    );
   }
 
   public bindHeaderCellHover() {

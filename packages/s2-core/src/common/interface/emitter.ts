@@ -86,6 +86,8 @@ export interface EmitterType {
   [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: (DataCell | CellMeta)[]) => void;
   [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
   [S2Event.DATA_CELL_RENDER]: (cell: DataCell) => void;
+  [S2Event.DATA_CELL_HOVER_TRIGGERED_PRIVATE]: (cell: DataCell) => void;
+  [S2Event.DATA_CELL_CLICK_TRIGGERED_PRIVATE]: (cell: DataCell) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;

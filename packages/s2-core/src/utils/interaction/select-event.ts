@@ -1,4 +1,4 @@
-import { reduce, uniqBy } from 'lodash';
+import { groupBy, map, mapValues, reduce, uniqBy } from 'lodash';
 import { HeaderCell, TableSeriesNumberCell } from '../../cell';
 import {
   CellType,
@@ -168,4 +168,10 @@ export const afterSelectDataCells: OnUpdateCells = (root, updateDataCells) => {
   }
 
   updateDataCells();
+};
+
+export type SelectedIds = { [type in CellType]?: string[] };
+
+export const groupSelectedCells = (selectedCells: CellMeta[]): SelectedIds => {
+  return mapValues(groupBy(selectedCells, 'type'), (cells) => map(cells, 'id'));
 };

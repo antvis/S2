@@ -231,7 +231,7 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
-  private initInteraction() {
+  protected initInteraction() {
     this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }

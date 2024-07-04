@@ -3,6 +3,7 @@ import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
+  CellType,
   ColCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
@@ -32,6 +33,7 @@ export class AxisColCell extends ColCell {
 
   protected getInteractedCells() {
     return this.spreadsheet.interaction?.getCells([
+      CellType.COL_CELL,
       AxisCellType.AXIS_COL_CELL as any,
     ]);
   }

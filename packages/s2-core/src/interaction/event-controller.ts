@@ -21,7 +21,6 @@ import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData } from '../utils/export/copy';
 import { keyEqualTo } from '../utils/export/method';
 import { getAppendInfo } from '../utils/interaction/common';
-import { isMobile } from '../utils/is-mobile';
 import { verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
@@ -74,7 +73,6 @@ export class EventController {
     this.clearAllEvents();
 
     // canvas events
-    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.TOUCH_START, (event) => {
       this.target = event.target;
@@ -82,6 +80,7 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
+    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasDoubleClick);
     /**
      * 如果监听 G Canvas, 右键对应的是 rightup/rightdown 事件, 如需禁用右键菜单 (preventDefault), 需要监听 DOM
      * https://g.antv.antgroup.com/api/event/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95
@@ -490,6 +489,29 @@ export class EventController {
           return;
         }
 
+        // 通用的 mouseup 事件
+        switch (cellType) {
+          case CellType.DATA_CELL:
+            this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
+            break;
+          case CellType.ROW_CELL:
+            this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
+            break;
+          case CellType.COL_CELL:
+            this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
+            break;
+          case CellType.CORNER_CELL:
+            this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
+            break;
+          case CellType.MERGED_CELL:
+            this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
+            break;
+          default:
+            break;
+        }
+
+        this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
+
         switch (cellType) {
           case CellType.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
@@ -510,44 +532,15 @@ export class EventController {
             break;
         }
       }
-
-      // 通用的 mouseup 事件
-      switch (cellType) {
-        case CellType.DATA_CELL:
-          this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
-          break;
-        case CellType.ROW_CELL:
-          this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
-          break;
-        case CellType.COL_CELL:
-          this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
-          break;
-        case CellType.CORNER_CELL:
-          this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
-          break;
-        case CellType.MERGED_CELL:
-          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
-  private onCanvasClick = (event: CanvasEvent) => {
-    this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
-    if (isMobile()) {
-      this.onCanvasMouseup(event);
-    }
-
-    // 双击的 detail 是 2
-    if (event.detail === 2) {
-      this.onCanvasDoubleClick(event);
     }
   };
 
   private onCanvasDoubleClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
+
+    if (event.detail !== 2) {
+      return;
+    }
 
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);

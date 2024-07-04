@@ -41,6 +41,7 @@ import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import {
   getCellMeta,
   getRowCellForSelectedCell,
+  groupSelectedCells,
 } from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
@@ -262,6 +263,11 @@ export class RootInteraction {
     });
   };
 
+  public shouldForbidHeaderCellSelected = (selectedCells: CellMeta[]) => {
+    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义
+    return unionBy(selectedCells, 'type').length > 1;
+  };
+
   public selectHeaderCell = (
     selectHeaderCellInfo: SelectHeaderCellInfo = {} as SelectHeaderCellInfo,
   ) => {
@@ -313,8 +319,7 @@ export class RootInteraction {
       return;
     }
 
-    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义.
-    if (unionBy(selectedCells, 'type').length > 1) {
+    if (this.shouldForbidHeaderCellSelected(selectedCells)) {
       return;
     }
 
@@ -329,7 +334,7 @@ export class RootInteraction {
       stateName: InteractionStateName.SELECTED,
     });
 
-    const selectedCellIds = selectedCells.map(({ id }) => id);
+    const selectedCellIds = groupSelectedCells(selectedCells);
 
     this.updateCells(this.spreadsheet.facet.getHeaderCells(selectedCellIds));
 

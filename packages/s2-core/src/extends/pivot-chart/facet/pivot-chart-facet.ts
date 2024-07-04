@@ -13,6 +13,7 @@ import {
   type LayoutResult,
   type S2CellType,
   type ScrollChangeParams,
+  type SelectedIds,
   type ViewMeta,
 } from '@antv/s2';
 import {
@@ -580,7 +581,9 @@ export class PivotChartFacet extends PivotFacet {
    * @example 获取全部: facet.getHeaderCells()
    * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
-  public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+  public getHeaderCells(
+    cellIds?: string[] | SelectedIds,
+  ): S2CellType<ViewMeta>[] {
     const headerCells = concat<S2CellType>(
       this.getCornerCells(),
       this.getSeriesNumberCells(),
@@ -591,11 +594,7 @@ export class PivotChartFacet extends PivotFacet {
       this.getAxisColCells(),
     );
 
-    if (!cellIds) {
-      return headerCells;
-    }
-
-    return headerCells.filter((cell) => cellIds.includes(cell.getMeta().id));
+    return this.filterCells(headerCells, cellIds);
   }
 
   public getAxisCornerNodes(): Node[] {
@@ -632,4 +631,19 @@ export class PivotChartFacet extends PivotFacet {
 
     return headerNodes.filter((node) => nodeIds.includes(node.id));
   }
+
+  /**
+   * 获取单元格的所有子节点 (含非可视区域)
+   * @example
+   * const rowCell = facet.getRowCells()[0]
+   * facet.getCellChildrenNodes(rowCell)
+   */
+  public getCellChildrenNodes = (cell: S2CellType): Node[] => {
+    const selectNode = cell?.getMeta?.() as Node;
+
+    return Node.getAllChildrenNodes(selectNode, (node) => {
+      // 行列头区域，也把对应的 axis 区域 node 返回
+      return node.relatedNode ? [node, node.relatedNode] : [node];
+    });
+  };
 }

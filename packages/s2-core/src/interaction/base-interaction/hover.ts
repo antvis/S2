@@ -1,5 +1,6 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isBoolean, isEmpty } from 'lodash';
+import { DataCell } from '../../cell';
 import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
@@ -31,7 +32,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    * @param event
    * @param meta
    */
-  private changeStateToHoverFocus(cell: S2CellType, event: CanvasEvent) {
+  private changeStateToHoverFocus(cell: DataCell, event: CanvasEvent) {
     if (!cell) {
       return;
     }
@@ -65,6 +66,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
           meta,
         );
       }
+
+      this.spreadsheet.emit(S2Event.DATA_CELL_HOVER_TRIGGERED_PRIVATE, cell);
 
       const data = this.getCellData(meta, onlyShowCellText);
 
@@ -167,20 +170,21 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
       // FIXME: 趋势分析表 hover 的时候拿到的 event target 是错误的
-      const cell = this.spreadsheet.getCell(event.target);
+      const cell = this.spreadsheet.getCell<DataCell>(event.target);
 
       if (isEmpty(cell)) {
         return;
       }
 
       const { interaction, options } = this.spreadsheet;
-      const { interaction: interactionOptions } = options;
-      const meta = cell?.getMeta() as ViewMeta;
 
       // 避免在同一单元格内鼠标移动造成的多次渲染
       if (interaction.isActiveCell(cell)) {
         return;
       }
+
+      const { interaction: interactionOptions } = options;
+      const meta = cell?.getMeta() as ViewMeta;
 
       interaction.changeState({
         cells: [getCellMeta(cell)],
@@ -197,6 +201,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (interactionOptions?.hoverFocus) {
         this.changeStateToHoverFocus(cell, event);
       }
+
+      this.spreadsheet.emit(S2Event.DATA_CELL_HOVER_TRIGGERED_PRIVATE, cell);
     });
   }
 

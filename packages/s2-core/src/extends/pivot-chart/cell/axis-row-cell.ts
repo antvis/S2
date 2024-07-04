@@ -3,6 +3,7 @@ import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
+  CellType,
   RowCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
@@ -28,6 +29,7 @@ export class AxisRowCell extends RowCell {
 
   protected getInteractedCells() {
     return this.spreadsheet.interaction?.getCells([
+      CellType.ROW_CELL,
       AxisCellType.AXIS_ROW_CELL as any,
     ]);
   }
