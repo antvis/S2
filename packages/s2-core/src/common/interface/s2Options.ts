@@ -168,7 +168,7 @@ export interface S2BasicOptions<
   /**
    * 设备类型: pc / mobile
    */
-  device?: DeviceType;
+  device?: `${DeviceType}`;
 
   /**
    * 自定义 AntV/G 渲染引擎配置参数 & 插件注册
