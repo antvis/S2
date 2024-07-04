@@ -91,7 +91,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    * @description handle the row or column header hover state
    * @param event
    */
-  private handleHeaderHover(event: CanvasEvent) {
+  protected handleHeaderHover(event: CanvasEvent) {
     const cell = this.spreadsheet.getCell(event.target) as S2CellType;
 
     if (isEmpty(cell)) {

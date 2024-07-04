@@ -230,6 +230,7 @@ function separateDimensionNodes(
   if (hierarchy.maxLevel === 0) {
     const root = hierarchy.rootNode.clone();
 
+    root.id = generateId(ROOT_NODE_ID, PLACEHOLDER_FIELD);
     root.field = sampleNodeForLastLevel.field;
     pushAxisIndexNode(axisHierarchy, root, key);
 

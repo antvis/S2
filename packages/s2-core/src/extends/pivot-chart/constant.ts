@@ -1,6 +1,7 @@
 import type { G2Spec } from '@antv/g2';
 import { LayoutWidthType, type S2DataConfig, type S2Options } from '@antv/s2';
 import { ChartDataCell } from './cell/chart-data-cell';
+import { AxisHover } from './interaction/axis-hover';
 
 export const DEFAULT_G2_SPEC: G2Spec = {
   type: 'interval',
@@ -22,6 +23,14 @@ export const DEFAULT_OPTIONS: S2Options = {
   chartCoordinate: 'cartesian',
   chartSpec: DEFAULT_G2_SPEC,
   dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
+  interaction: {
+    customInteractions: [
+      {
+        key: 'axisHover',
+        interaction: AxisHover,
+      },
+    ],
+  },
 };
 
 export const FIXED_OPTIONS: S2Options = {
@@ -46,12 +55,6 @@ export const DEFAULT_MEASURE_SIZE = 200;
 export const DEFAULT_ROW_AXIS_SIZE = 100;
 export const DEFAULT_COL_AXIS_SIZE = 50;
 export const DEFAULT_DIMENSION_SIZE = 50;
-
-export enum AxisCellType {
-  AXIS_ROW_CELL = 'axisRowCell',
-  AXIS_COL_CELL = 'axisColCell',
-  AXIS_CORNER_CELL = 'axisCornerCell',
-}
 
 /**
  * row axis

@@ -35,7 +35,7 @@ import type { SpreadSheet } from '../sheet-type';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
   getActiveHoverHeaderCells,
-  updateAllColHeaderCellState,
+  updateAllHeaderCellState,
 } from '../utils/interaction/hover-event';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import {
@@ -186,7 +186,9 @@ export class RootInteraction {
   }
 
   public isActiveCell(cell: S2CellType): boolean {
-    return !!this.getCells().find((meta) => cell.getMeta().id === meta.id);
+    return !!this.getCells().find(
+      (meta) => cell.getMeta().id === meta.id && cell.cellType === meta.type,
+    );
   }
 
   public isSelectedCell(cell: S2CellType): boolean {
@@ -726,7 +728,7 @@ export class RootInteraction {
         : interaction.getSelectedCellHighlight();
 
     if (colHeader && colId) {
-      updateAllColHeaderCellState(colId, facet.getColCells(), stateName);
+      updateAllHeaderCellState(colId, facet.getColCells(), stateName);
     }
   }
 }

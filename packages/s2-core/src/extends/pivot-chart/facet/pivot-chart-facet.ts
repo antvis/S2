@@ -4,26 +4,27 @@ import {
   Node,
   ORIGIN_FIELD,
   PivotFacet,
+  ScrollType,
+  getAllChildCells,
   getCellWidth,
   getDataCellId,
+  getHeaderTotalStatus,
   type FrameConfig,
   type LayoutResult,
+  type S2CellType,
   type ScrollChangeParams,
   type ViewMeta,
 } from '@antv/s2';
 import {
+  concat,
   floor,
   get,
   isEmpty,
   isNumber,
   last,
   merge,
-  reduce,
   sum,
 } from 'lodash';
-import { ScrollType } from '../../../ui/scrollbar';
-import { getHeaderTotalStatus } from '../../../utils/dataset/pivot-data-set';
-import { getIndexRangeWithOffsets } from '../../../utils/facet';
 import {
   KEY_GROUP_COL_AXIS_RESIZE_AREA,
   KEY_GROUP_ROW_AXIS_RESIZE_AREA,
@@ -33,6 +34,10 @@ import { AxisCornerHeader } from '../header/axis-corner';
 import { AxisRowHeader } from '../header/axis-row';
 import { CornerHeader } from '../header/corner';
 
+import { AxisColCell } from '../cell/axis-col-cell';
+import { AxisCornerCell } from '../cell/axis-cornor-cell';
+import { AxisRowCell } from '../cell/axis-row-cell';
+import { AxisCellType } from '../cell/cell-type';
 import type { PivotChart } from '../index';
 import { separateRowColLeafNodes } from '../utils/separate-axis';
 import { CornerBBox } from './corner-bbox';
@@ -454,31 +459,6 @@ export class PivotChartFacet extends PivotFacet {
     }
   }
 
-  public override getViewCellHeights() {
-    const rowLeafNodes = this.layoutResult.axisRowsHierarchy?.getLeaves() ?? [];
-
-    const heights = reduce(
-      rowLeafNodes,
-      (result: number[], node: Node) => {
-        const currentNodeHeight = last(result) || 0;
-
-        result.push(currentNodeHeight + node.height);
-
-        return result;
-      },
-      [0],
-    );
-
-    return {
-      getTotalHeight: () => last(heights) || 0,
-      getCellOffsetY: (index: number) => heights[index] || 0,
-      // 多了一个数据 [0]
-      getTotalLength: () => heights.length - 1,
-      getIndexRange: (minHeight: number, maxHeight: number) =>
-        getIndexRangeWithOffsets(heights, minHeight, maxHeight),
-    };
-  }
-
   /**
    * 根据行列索引获取单元格元数据
    */
@@ -563,5 +543,93 @@ export class PivotChartFacet extends PivotFacet {
       y: 0,
       height,
     };
+  }
+
+  public getAxisCornerCells(): AxisCornerCell[] {
+    const headerChildren = (this.getAxisCornerHeader()?.children ||
+      []) as AxisCornerCell[];
+
+    return getAllChildCells(headerChildren, AxisCornerCell).filter(
+      (cell: S2CellType) =>
+        cell.cellType === (AxisCellType.AXIS_CORNER_CELL as any),
+    );
+  }
+
+  public getAxisRowCells(): AxisRowCell[] {
+    const headerChildren = (this.getAxisRowHeader()?.children ||
+      []) as AxisRowCell[];
+
+    return getAllChildCells(headerChildren, AxisRowCell).filter(
+      (cell: S2CellType) =>
+        cell.cellType === (AxisCellType.AXIS_ROW_CELL as any),
+    );
+  }
+
+  public getAxisColCells(): AxisColCell[] {
+    const headerChildren = (this.getAxisColHeader()?.children ||
+      []) as AxisColCell[];
+
+    return getAllChildCells(headerChildren, AxisColCell).filter(
+      (cell: S2CellType) =>
+        cell.cellType === (AxisCellType.AXIS_COL_CELL as any),
+    );
+  }
+
+  /**
+   * 获取表头单元格 (序号,角头,行头,列头) (不含可视区域)
+   * @example 获取全部: facet.getHeaderCells()
+   * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
+   */
+  public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+    const headerCells = concat<S2CellType>(
+      this.getCornerCells(),
+      this.getSeriesNumberCells(),
+      this.getRowCells(),
+      this.getColCells(),
+      this.getAxisCornerCells(),
+      this.getAxisRowCells(),
+      this.getAxisColCells(),
+    );
+
+    if (!cellIds) {
+      return headerCells;
+    }
+
+    return headerCells.filter((cell) => cellIds.includes(cell.getMeta().id));
+  }
+
+  public getAxisCornerNodes(): Node[] {
+    return this.axisCornerHeader?.getNodes() || [];
+  }
+
+  public getAxisRowNodes(): Node[] {
+    return this.axisRowHeader?.getNodes() || [];
+  }
+
+  public getAxisColNodes(): Node[] {
+    return this.axisColHeader?.getNodes() || [];
+  }
+
+  /**
+   * 获取表头节点 (角头,序号,行头,列头) (含可视区域)
+   * @example 获取全部: facet.getHeaderNodes()
+   * @example 获取一组 facet.getHeaderNodes(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
+   */
+  public getHeaderNodes(nodeIds?: string[]): Node[] {
+    const headerNodes = concat<Node>(
+      this.getCornerNodes(),
+      this.getSeriesNumberNodes(),
+      this.getRowNodes(),
+      this.getColNodes(),
+      this.getAxisCornerNodes(),
+      this.getAxisRowNodes(),
+      this.getAxisColNodes(),
+    );
+
+    if (!nodeIds) {
+      return headerNodes;
+    }
+
+    return headerNodes.filter((node) => nodeIds.includes(node.id));
   }
 }

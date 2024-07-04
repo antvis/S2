@@ -3,19 +3,19 @@ import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
-  CellType,
   ColCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
-import { AxisCellType, KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
+import { KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
 import { getAxisXOptions, getAxisYOptions } from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
+import { AxisCellType } from './cell-type';
 
 export class AxisColCell extends ColCell {
   axisShape: Group;
 
   public get cellType() {
-    return AxisCellType.AXIS_ROW_CELL as unknown as CellType;
+    return AxisCellType.AXIS_COL_CELL as any;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -30,6 +30,12 @@ export class AxisColCell extends ColCell {
     return false;
   }
 
+  protected getInteractedCells() {
+    return this.spreadsheet.interaction?.getCells([
+      AxisCellType.AXIS_COL_CELL as any,
+    ]);
+  }
+
   protected initCell(): void {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
@@ -37,7 +43,7 @@ export class AxisColCell extends ColCell {
     this.drawAxisShape();
     this.drawBorders();
     this.drawResizeArea();
-    // this.update();
+    this.update();
   }
 
   protected getColResizeArea() {

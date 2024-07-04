@@ -12,8 +12,8 @@ import type {
 import type { AxisColCell } from './cell/axis-col-cell';
 import type { AxisCornerCell } from './cell/axis-cornor-cell';
 import type { AxisRowCell } from './cell/axis-row-cell';
+import type { AxisCellType } from './cell/cell-type';
 import type { ChartDataCell } from './cell/chart-data-cell';
-import type { AxisCellType } from './constant';
 
 export type ChartCoordinate = 'cartesian' | 'polar';
 
@@ -32,12 +32,8 @@ declare module '@antv/s2' {
     axisCornerCell?: CellCallback<CornerHeaderConfig, AxisCornerCell>;
   }
 
-  interface S2Style {}
-
   type AxisCellThemes = {
-    [K in AxisCellType]?: K extends AxisCellType.AXIS_CORNER_CELL
-      ? Pick<DefaultCellTheme, 'cell' | 'text' | 'icon'>
-      : Pick<DefaultCellTheme, 'cell'>;
+    [K in AxisCellType]?: DefaultCellTheme;
   };
 
   interface S2Theme extends AxisCellThemes {}

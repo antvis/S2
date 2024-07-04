@@ -6,7 +6,7 @@ import {
   type S2Theme,
   type SimplePalette,
 } from '@antv/s2';
-import { AxisCellType } from '../constant';
+import { AxisCellType } from '../cell/cell-type';
 
 export const getCustomTheme = (
   palette: SimplePalette,

@@ -1,14 +1,9 @@
-import {
-  CellBorderPosition,
-  CellClipBox,
-  CellType,
-  CornerCell,
-} from '@antv/s2';
-import { AxisCellType } from '../constant';
+import { CellBorderPosition, CellClipBox, CornerCell } from '@antv/s2';
+import { AxisCellType } from './cell-type';
 
 export class AxisCornerCell extends CornerCell {
   public get cellType() {
-    return AxisCellType.AXIS_CORNER_CELL as unknown as CellType;
+    return AxisCellType.AXIS_CORNER_CELL as any;
   }
 
   protected getBorderPositions(): CellBorderPosition[] {
@@ -33,9 +28,16 @@ export class AxisCornerCell extends CornerCell {
     return 0;
   }
 
+  protected getInteractedCells() {
+    return this.spreadsheet.interaction?.getCells([
+      AxisCellType.AXIS_CORNER_CELL as any,
+    ]);
+  }
+
   protected initCell(): void {
     this.drawBackgroundShape();
     this.drawTextShape();
     this.drawBorders();
+    this.update();
   }
 }

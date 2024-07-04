@@ -442,15 +442,19 @@ export abstract class HeaderCell<
     return this.leftIconPosition || this.rightIconPosition;
   }
 
-  public update() {
-    const { interaction } = this.spreadsheet;
-    const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells([
+  protected getInteractedCells() {
+    return this.spreadsheet.interaction?.getCells([
       CellType.CORNER_CELL,
       CellType.COL_CELL,
       CellType.ROW_CELL,
       CellType.SERIES_NUMBER_CELL,
     ]);
+  }
+
+  public update() {
+    const { interaction } = this.spreadsheet;
+    const stateInfo = interaction?.getState();
+    const cells = this.getInteractedCells();
 
     if (!first(cells)) {
       return;

@@ -10,5 +10,6 @@ export * from './data-set';
 export * from './facet';
 export * from './interaction';
 export * from './sheet-type';
+export * from './ui/scrollbar';
 export * from './ui/tooltip';
 export * from './utils';
