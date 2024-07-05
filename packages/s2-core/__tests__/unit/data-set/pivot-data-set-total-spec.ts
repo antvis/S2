@@ -4,6 +4,7 @@
 import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
+import { CalcTotals, SpreadSheet } from '../../../src';
 import {
   EXTRA_FIELD,
   QueryDataType,
@@ -402,18 +403,31 @@ describe('Pivot Dataset Total Test', () => {
     });
 
     describe('getCellData function when totals calculated by calcFunc', () => {
+      let s2: SpreadSheet | undefined;
+
       beforeEach(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
-        const calcFunc1 = (query, data) => {
+
+        const calcFunc1: CalcTotals['calcFunc'] = (
+          query,
+          data,
+          spreadsheet,
+        ) => {
+          s2 = spreadsheet;
           const sum = data.reduce((pre, next) => {
             return pre + next[next[EXTRA_FIELD]];
           }, 0);
           return sum * 2;
         };
-        const calcFunc2 = (query, data) => {
+        const calcFunc2: CalcTotals['calcFunc'] = (
+          query,
+          data,
+          spreadsheet,
+        ) => {
+          s2 = spreadsheet;
           const sum = data.reduce((pre, next) => {
             return pre + next[next[EXTRA_FIELD]];
           }, 0);
@@ -449,6 +463,10 @@ describe('Pivot Dataset Total Test', () => {
         });
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);
+      });
+
+      afterEach(() => {
+        s2 = undefined;
       });
 
       test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
@@ -504,6 +522,8 @@ describe('Pivot Dataset Total Test', () => {
             totalStatus,
           }),
         ).toContainEntries([[VALUE_FIELD, 32418]]);
+
+        expect(s2).toBeDefined();
       });
 
       test('should get correct total cell data when totals calculated by calcFunc', () => {
@@ -571,6 +591,8 @@ describe('Pivot Dataset Total Test', () => {
             isTotals: true,
           }),
         ).toContainEntries([[VALUE_FIELD, 78868]]);
+
+        expect(s2).toBeDefined();
       });
     });
 

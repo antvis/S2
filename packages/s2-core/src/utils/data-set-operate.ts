@@ -3,7 +3,7 @@ import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   TOTAL_VALUE,
 } from '../common/constant/field';
-import type { Totals, TotalsStatus } from '../common/interface';
+import type { CalcTotals, Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (
   list: string[],
@@ -68,11 +68,9 @@ export function getAggregationAndCalcFuncByQuery(
     calcTotals: colCalcTotals = {},
     calcSubTotals: colCalcSubTotals = {},
   } = col || {};
-  const getCalcTotals = (dimensionTotals, totalType) => {
-    if (
-      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
-      totalType
-    ) {
+
+  const getCalcTotals = (dimensionTotals: CalcTotals, isTotal: boolean) => {
+    if ((dimensionTotals.aggregation || dimensionTotals.calcFunc) && isTotal) {
       return {
         aggregation: dimensionTotals.aggregation,
         calcFunc: dimensionTotals.calcFunc,
