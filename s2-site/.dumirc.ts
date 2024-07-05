@@ -32,6 +32,11 @@ export default defineConfig({
     showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true, // 是否在 demo 页展示API文档
     es5: false, // 案例代码是否编译到 es5
+    versions: {
+      // 历史版本以及切换下拉菜单
+      '1.x': 'https://s2-v1.antv.antgroup.com',
+      '2.x': 'https://s2.antv.antgroup.com',
+    },
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
@@ -39,13 +44,13 @@ export default defineConfig({
       indexName: 's2-antv-antgroup',
       appId: 'LWCKDMVZ87',
     },
-    internalSite: {
-      url: 'https://s2.antv.antgroup.com',
-      name: {
-        zh: '国内镜像',
-        en: 'China Mirror',
-      },
-    },
+    // internalSite: {
+    //   url: 'https://s2.antv.antgroup.com',
+    //   name: {
+    //     zh: '国内镜像',
+    //     en: 'China Mirror',
+    //   },
+    // },
     navs: [
       {
         slug: 'docs/manual',
@@ -270,8 +275,17 @@ export default defineConfig({
         </html>`,
     },
     announcement: {
-      zh: '',
-      en: '',
+      title: {
+        zh: '🎉 S2 2.0 版本开始内测啦! v1 版本维护截止日期为 2024 年年底。',
+        en: '🎉 S2 Next version 2.0 is in beta! The maintenance deadline for the original 1.x version is the end of 2024.',
+      },
+      link: {
+        text: {
+          zh: '查看升级指南',
+          en: 'Upgrade Guide',
+        },
+        url: 'https://s2.antv.antgroup.com/manual/migration-v2',
+      },
     },
     /** 首页技术栈介绍 */
     detail: {
