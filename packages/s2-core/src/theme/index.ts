@@ -208,6 +208,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
       // 默认列头的数值字段和 dataCell 数值对齐
       textAlign: 'right',
       textBaseline: 'middle',
+      linkTextFill: basicColors[6],
     },
     bolderText: {
       fontFamily: FONT_FAMILY,
@@ -217,6 +218,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
       opacity: 1,
       textAlign: 'center',
       textBaseline: 'middle',
+      linkTextFill: basicColors[6],
     },
     text: {
       fontFamily: FONT_FAMILY,
@@ -226,6 +228,7 @@ export const getColCellTheme = (palette: SimplePalette): DefaultCellTheme => {
       opacity: 1,
       textAlign: 'center',
       textBaseline: 'middle',
+      linkTextFill: basicColors[6],
     },
     cell: {
       // ----------- background color -----------

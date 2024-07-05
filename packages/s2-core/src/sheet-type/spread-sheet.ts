@@ -765,15 +765,17 @@ export abstract class SpreadSheet extends EE {
       ...canvasConfig,
     });
 
-    this.updateContainerStyle();
+    this.setupContainerStyle();
   }
 
-  // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
-  protected updateContainerStyle() {
+  protected setupContainerStyle() {
     const canvas = this.getCanvasElement();
 
     if (canvas) {
+      // canvas 需要设置为块级元素, 不然和父元素有 5px 的高度差
       canvas.style.display = 'block';
+      // 避免双击 canvas 造成的外部文本选中
+      canvas.style.userSelect = 'none';
     }
   }
 

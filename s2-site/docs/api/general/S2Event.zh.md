@@ -144,7 +144,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
 | 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
 | 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |
-| 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击行列头被编辑为链接字段的文本时           |
+| 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击（行头/列头/数值）为链接字段的文本时           |
 | icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
 | icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
 | 滚动      | `S2Event.GLOBAL_SCROLL`            | 表格滚动 （含数值和行头单元格） |

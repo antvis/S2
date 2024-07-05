@@ -71,9 +71,13 @@ export enum CellClipBox {
 
 export interface Meta {
   /**
-   * 字段 id
+   * 字段名
+   * @example
+      1. 'city'
+      2. ['city', 'type']
+      3. /^city/
    */
-  field?: string;
+  field?: string | string[] | RegExp;
 
   /**
    * 字段名称
@@ -89,6 +93,7 @@ export interface Meta {
    * 格式化
    * 数值字段：一般用于格式化数字单位
    * 文本字段：一般用于做字段枚举值的别名
+   * @see https://s2.antv.antgroup.com/manual/basic/formatter
    */
   formatter?: Formatter;
 }
@@ -470,9 +475,10 @@ export interface OffsetConfig {
   };
 }
 
-export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
+export interface CellAppendInfo<T = Node>
+  extends Partial<Omit<ResizeInfo, 'meta'>> {
   isLinkFieldText?: boolean;
-  cellData?: T;
+  meta?: T;
 }
 
 export type S2MountContainer = string | Element;

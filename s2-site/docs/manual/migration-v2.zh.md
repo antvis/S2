@@ -9,7 +9,7 @@ tag: New
 ## 🏠 官网地址变化
 
 :::warning{title="注意"}
-原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请使用最新的文档，确保您看到的不是过时的文档。
+原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请访问最新的网址，以确保您看到的不是过时的文档。
 :::
 
 - 原 `v1` 官网迁移至 <https://s2-v1.antv.antgroup.com>.
@@ -132,10 +132,10 @@ const s2Options = {
 3. 行列宽高支持动态配置。
 
 ```diff
-export interface ColCfg {
-  width?: number | (cell) => number;
+export interface BaseCellStyle {
+  width?: number | (node) => number;
 - height?: number;
-+ height?: number | (cell) => number;
++ height?: number | (node) => number;
 - widthByFieldValue?: Record<string, number>;
 + widthByField?: Record<string, number>;
   heightByField?: Record<string, number>;
@@ -465,7 +465,7 @@ const s2Options = {
 
 #### 单元格宽高拖拽逻辑变更
 
-1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
+1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对 `当前 (current)`, `选中 (selected)`, 还是 `所有 (all)` 单元格生效。
 
 ```diff
 const s2Options = {
@@ -732,15 +732,33 @@ const s2Options = {
 }
 ```
 
+#### 链接跳转逻辑和参数变更
+
+1. 现在链接跳转支持对 **列头** 标记，且明细表同时对 `列头` 和 `数值` 生效（可自定义规则）。
+2. 回调参数 `key` 调整为 `field`, `cellData` 调整为 `meta`.
+
+```diff
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
+-  const { key, cellData, record } = data;
++  const { field, meta, record } = data;
+});
+```
+
+具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
 
-`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@5.x`.
+:::info{title="提示"}
+React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后续兼容视情况而定。
+:::
+
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件升级到了 `antd@5.x`.
 
 #### Ant Design 多版本共存
 
-对于项目使用的是 `antd@4.x`, 或者所依赖的其他库依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
+对于项目使用的是 `antd@4.x`, 或者所依赖的其他库间接依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
 
 ```json
 // $ npm install --save antd-v5@npm:antd@5

@@ -48,9 +48,9 @@ import { isMobile } from '../utils/is-mobile';
 import type { BaseEvent } from './base-event';
 import {
   DataCellClick,
+  HeaderCellLinkClick,
   MergedCellClick,
   RowColumnClick,
-  RowTextClick,
 } from './base-interaction/click';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import { HoverEvent } from './base-interaction/hover';
@@ -422,8 +422,8 @@ export class RootInteraction {
         interaction: RowColumnClick,
       },
       {
-        key: InteractionName.ROW_TEXT_CLICK,
-        interaction: RowTextClick,
+        key: InteractionName.HEADER_CELL_LINK_CLICK,
+        interaction: HeaderCellLinkClick,
       },
       {
         key: InteractionName.MERGED_CELLS_CLICK,

@@ -18,7 +18,11 @@ module.exports = {
     '!**/index.{ts,tsx,js,vue}',
     '!**/icons.{ts,tsx,js,vue}',
   ],
-  coveragePathIgnorePatterns: ['hd-adapter/index.ts', 'packages/s2-vue'],
+  coveragePathIgnorePatterns: [
+    'facet/mobile',
+    'hd-adapter/index.ts',
+    'packages/s2-vue',
+  ],
   coverageReporters: ['text', 'clover', 'html'],
   transformIgnorePatterns: [],
   testRegex: '/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js|vue)?$',

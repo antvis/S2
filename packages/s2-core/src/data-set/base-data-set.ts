@@ -5,6 +5,7 @@ import {
   find,
   get,
   identity,
+  isArray,
   isEmpty,
   isNil,
   isString,
@@ -105,7 +106,17 @@ export abstract class BaseDataSet {
     (field: CustomHeaderField, meta?: Meta[]): Meta | undefined => {
       const realField = this.getField(field);
 
-      return find(this.meta || meta, { field: realField });
+      return find(this.meta || meta, ({ field: currentField }) => {
+        if (currentField instanceof RegExp) {
+          return currentField.test(realField);
+        }
+
+        if (isArray(currentField)) {
+          return currentField.includes(realField);
+        }
+
+        return currentField === realField;
+      });
     },
   );
 
