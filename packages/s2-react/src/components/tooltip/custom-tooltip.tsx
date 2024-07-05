@@ -2,11 +2,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
 import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
-import { startsWith } from 'lodash';
 import React from 'react';
-// eslint-disable-next-line react/no-deprecated
-import { render, unmountComponentAtNode, version } from 'react-dom';
-import { createRoot, type Root } from 'react-dom/client';
+import {
+  forceClearContent,
+  reactRender,
+  reactUnmount,
+} from '../../utils/reactRender';
 import { ConfigProvider } from '../config-provider';
 import { TooltipComponent } from './index';
 import type {
@@ -22,10 +23,6 @@ export class CustomTooltip extends BaseTooltip<
   React.ReactNode,
   TooltipOperatorMenuOptions
 > {
-  root: Root | null;
-
-  isLegacyReactVersion = !startsWith(version, '18');
-
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
   }
@@ -61,14 +58,7 @@ export class CustomTooltip extends BaseTooltip<
       </ConfigProvider>
     );
 
-    if (this.isLegacyReactVersion) {
-      render(TooltipContent, this.container);
-
-      return;
-    }
-
-    this.root ??= createRoot(this.container!);
-    this.root.render(TooltipContent);
+    reactRender(TooltipContent, this.container!);
   }
 
   hide() {
@@ -84,27 +74,10 @@ export class CustomTooltip extends BaseTooltip<
   }
 
   forceClearContent() {
-    if (this.isLegacyReactVersion) {
-      this.unmount();
-
-      return;
-    }
-
-    this.root?.render(null);
+    forceClearContent(this.container!);
   }
 
   unmount() {
-    if (this.isLegacyReactVersion && this.container!) {
-      unmountComponentAtNode(this.container);
-
-      return;
-    }
-
-    // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
-    Promise.resolve().then(() => {
-      this.root?.unmount();
-      // Fiber 节点卸载后不能再重新渲染, 需要重新创建
-      this.root = null;
-    });
+    reactUnmount(this.container!);
   }
 }
