@@ -947,4 +947,8 @@ export abstract class SpreadSheet extends EE {
 
     return text ?? getDefaultSeriesNumberText();
   }
+
+  public enableAsyncExport(): Error | true {
+    return true;
+  }
 }

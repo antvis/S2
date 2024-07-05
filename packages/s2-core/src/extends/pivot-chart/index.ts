@@ -154,4 +154,8 @@ export class PivotChart extends PivotSheet {
   isPolarChart(options: S2Options | null = this.options) {
     return options?.chartCoordinate === 'polar';
   }
+
+  enableAsyncExport() {
+    return new Error("pivot chart doesn't support export all data");
+  }
 }

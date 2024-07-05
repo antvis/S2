@@ -1,5 +1,5 @@
 import type { G2Spec } from '@antv/g2';
-import { LayoutWidthType, type S2DataConfig, type S2Options } from '@antv/s2';
+import { type S2DataConfig, type S2Options } from '@antv/s2';
 import { ChartDataCell } from './cell/chart-data-cell';
 import { AxisRowColumnClick } from './interaction/axis-click';
 import { AxisHover } from './interaction/axis-hover';
@@ -20,6 +20,20 @@ export const DEFAULT_G2_AXIS_SPEC: G2Spec = {
   grid: false,
 };
 
+export const FIXED_OPTIONS: S2Options = {
+  hierarchyType: 'grid',
+  interaction: {
+    copy: {
+      enable: false,
+    },
+  },
+  style: {
+    colCell: {
+      hideValue: false,
+    },
+  },
+};
+
 export const DEFAULT_OPTIONS: S2Options = {
   chartCoordinate: 'cartesian',
   chartSpec: DEFAULT_G2_SPEC,
@@ -35,18 +49,6 @@ export const DEFAULT_OPTIONS: S2Options = {
         interaction: AxisRowColumnClick,
       },
     ],
-  },
-};
-
-export const FIXED_OPTIONS: S2Options = {
-  hierarchyType: 'grid',
-
-  style: {
-    layoutWidthType: LayoutWidthType.ColAdaptive,
-
-    colCell: {
-      hideValue: false,
-    },
   },
 };
 
