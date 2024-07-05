@@ -37,4 +37,4 @@ order: 3
 | 参数        | 说明       | 类型                                                                 | 必选  | 默认值 |
 | ----------- | ---------- | -------------------------------------------------------------------- | --- | ------ |
 | aggregation | 聚合方式   | `SUM \| MIN \| MAX \| AVG`            |       |        |
-| calcFunc    | 自定义方法 | `(query: Record<string, any>, arr: Record<string, any>[]) => number` |       |        |
+| calcFunc    | 自定义方法 | `(query: Record<string, any>, data: Record<string, any>[], spreadsheet: SpreadSheet) => number` |       |        |

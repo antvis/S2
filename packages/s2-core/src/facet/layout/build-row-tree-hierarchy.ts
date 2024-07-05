@@ -1,5 +1,5 @@
-import { isNumber } from 'lodash';
-import { i18n } from '../../common';
+import { isEmpty, isNumber } from 'lodash';
+import { TOTAL_VALUE, i18n } from '../../common';
 import type { SpreadSheet } from '../../sheet-type';
 import { filterOutDetail } from '../../utils/data-set-operate';
 import { generateId } from '../../utils/layout/generate-id';
@@ -126,13 +126,20 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       hierarchy.maxLevel = level;
     }
 
-    const emptyChildren = !pivotMetaValue?.children?.size;
+    /**
+     * 除了虚拟行小计节点外, 如果为空, 说明当前分组只有一条数据, 应该标记为叶子节点.
+     * https://github.com/antvis/S2/issues/2804
+     */
+    const children = [...(pivotMetaValue?.children?.keys() || [])].filter(
+      (child) => child !== TOTAL_VALUE,
+    );
+    const isEmptyChildren = isEmpty(children);
 
-    if (emptyChildren || isTotals) {
+    if (isEmptyChildren || isTotals) {
       node.isLeaf = true;
     }
 
-    if (!emptyChildren) {
+    if (!isEmptyChildren) {
       node.isTotals = true;
     }
 
@@ -143,11 +150,11 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       hierarchy,
     );
 
-    if (!emptyChildren && !isCollapsed && !isTotals && expandCurrentNode) {
+    if (!isEmptyChildren && !isCollapsed && !isTotals && expandCurrentNode) {
       buildRowTreeHierarchy({
         level: level + 1,
-        currentField: pivotMetaValue.childField!,
-        pivotMeta: pivotMetaValue.children,
+        currentField: pivotMetaValue!.childField!,
+        pivotMeta: pivotMetaValue!.children,
         parentNode: node,
         hierarchy,
         spreadsheet,
