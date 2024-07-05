@@ -190,12 +190,12 @@ exports[`PivotSheet Export Test should export correct data when data is incomple
 "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
 	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
 type	sub_type	number	number	number	number	number	number	number	number
-家具									
-家具	桌子		2367	3877	4342	1723	1822	1943	2330
-家具	沙发		632	7234	834	2451	2244	2333	2445
-办公用品									
-办公用品	笔								
-办公用品	纸张		1354	1523	1634	4004	3077	3551	352"
+家具		-	-	-	-	-	-	-	-
+家具	桌子	-	2367	3877	4342	1723	1822	1943	2330
+家具	沙发	-	632	7234	834	2451	2244	2333	2445
+办公用品		-	-	-	-	-	-	-	-
+办公用品	笔	-	-	-	-	-	-	-	-
+办公用品	纸张	-	1354	1523	1634	4004	3077	3551	352"
 `;
 
 exports[`PivotSheet Export Test should export correct data when series number 1`] = `
@@ -230,8 +230,8 @@ exports[`PivotSheet Export Test should export correct data with formatter for cu
 "	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2
 	自定义节点 a-2	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	
 type	sub_type	指标1	指标2		
-家具	桌子	13	2		
-家具	椅子	11	8		"
+家具	桌子	13	2	-	-
+家具	椅子	11	8	-	-"
 `;
 
 exports[`PivotSheet Export Test should export correct data with formatter for custom row headers 1`] = `
@@ -239,8 +239,8 @@ exports[`PivotSheet Export Test should export correct data with formatter for cu
 自定义节点 a-1	自定义节点 a-1-1	指标1	桌子	椅子
 自定义节点 a-1	自定义节点 a-1-1	指标1	13	11
 自定义节点 a-1	自定义节点 a-1-1	指标2	2	8
-自定义节点 a-1	自定义节点 a-1-2			
-自定义节点 a-2				"
+自定义节点 a-1	自定义节点 a-1-2		-	-
+自定义节点 a-2			-	-"
 `;
 
 exports[`PivotSheet Export Test should export correctly data for single row data by { async: false } 1`] = `
@@ -257,4 +257,15 @@ Array [
   "province	city	price	cost",
   "浙江	义乌	1	2",
 ]
+`;
+
+exports[`PivotSheet Export Test should export placeholder data 1`] = `
+"	province	null	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
+	city	null	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
+type	sub_type	number	number	number	number	number	number	number	number	number
+null	null	7789	占位符	占位符	占位符	占位符	占位符	占位符	占位符	占位符
+家具	桌子	占位符	7789	2367	3877	4342	1723	1822	1943	2330
+家具	沙发	占位符	5343	632	7234	834	2451	2244	2333	2445
+办公用品	笔	占位符	945	1304	1145	1432	2335	245	2457	2458
+办公用品	纸张	占位符	1343	1354	1523	1634	4004	3077	3551	352"
 `;

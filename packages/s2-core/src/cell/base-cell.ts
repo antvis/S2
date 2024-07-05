@@ -316,6 +316,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getFormattedFieldValue().formattedValue;
   }
 
+  /**
+   * 获取单元格原始的数值
+   */
+  public getFieldOriginalValue() {
+    return this.getFormattedFieldValue().value;
+  }
+
   protected shouldInit() {
     const { width, height } = this.meta;
 
@@ -431,11 +438,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
+  protected getDisplayText(text: string | number) {
+    return getDisplayText(text, this.getEmptyPlaceholder());
+  }
+
   public renderTextShape(
     style: TextStyleProps,
     options?: RenderTextShapeOptions,
   ): CustomText {
-    const text = getDisplayText(style.text, this.getEmptyPlaceholder());
+    const text = this.getDisplayText(style.text);
     const shallowRender = options?.shallowRender || this.isShallowRender();
 
     this.textShape = renderText({

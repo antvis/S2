@@ -384,6 +384,9 @@ export class TableFacet extends FrozenFacet {
       });
     }
 
+    const valueField = colNode.field;
+    const fieldValue = data as DataItem;
+
     const cellMeta: ViewMeta = {
       spreadsheet: this.spreadsheet,
       x,
@@ -398,8 +401,8 @@ export class TableFacet extends FrozenFacet {
       isTotals: false,
       colId: colNode.id,
       rowId: String(rowIndex),
-      valueField: colNode.field,
-      fieldValue: data as DataItem,
+      valueField,
+      fieldValue,
       id: getDataCellId(String(rowIndex), colNode.id),
     };
 

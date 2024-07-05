@@ -431,8 +431,10 @@ export interface ViewMeta {
   colIndex: number;
   // value field(unique field id) for conditions setting
   valueField: string;
-  // field's real display label value
+  // field's real original value
   fieldValue: DataItem;
+  // field's real formatted value
+  formattedFieldValue?: DataItem;
   // subTotals or grandTotals
   isTotals?: boolean;
   // cell's row query condition

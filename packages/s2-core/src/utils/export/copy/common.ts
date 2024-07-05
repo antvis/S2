@@ -13,6 +13,7 @@ import {
   type Transformer,
 } from '../../../common/interface/export';
 import type { Node } from '../../../facet/layout/node';
+import { getDisplayText, getEmptyPlaceholder } from '../../text';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
@@ -65,8 +66,18 @@ export function getFormatter(
   formatData = false,
   dataSet: BaseDataSet,
 ) {
+  const { spreadsheet } = dataSet;
+
   if (formatData) {
-    return dataSet.getFieldFormatter(field!);
+    return (value: DataItem) => {
+      const formattedValue = dataSet.getFieldFormatter(field!)(value);
+
+      // 如果格式化后的值是空，则兜底占位符, 保证导出结果和表格一致: https://github.com/antvis/S2/issues/2808
+      return getDisplayText(
+        formattedValue,
+        getEmptyPlaceholder(spreadsheet, spreadsheet.options.placeholder),
+      );
+    };
   }
 
   return (value: DataItem) => value;
