@@ -1,3 +1,11 @@
+# [@antv/s2-v1.55.7](https://github.com/antvis/S2/compare/@antv/s2-v1.55.6...@antv/s2-v1.55.7) (2024-07-05)
+
+
+### Bug Fixes
+
+* 修复树状模式当一组数据只有一条数据时, 叶子节点判断错误, 也渲染了展开/收起图标 close [#2804](https://github.com/antvis/S2/issues/2804) ([#2806](https://github.com/antvis/S2/issues/2806)) ([fa5bb9b](https://github.com/antvis/S2/commit/fa5bb9b4f5f7c661993670a86d9135781adb946e))
+* 自定义计算汇总 calcFunc 回调函数增加 s2 实例, 修复无法获取汇总数据的问题 close [#2795](https://github.com/antvis/S2/issues/2795) ([#2805](https://github.com/antvis/S2/issues/2805)) ([2c28e84](https://github.com/antvis/S2/commit/2c28e841752ab94829b3c38f41becc536a5e8328))
+
 # [@antv/s2-v1.55.6](https://github.com/antvis/S2/compare/@antv/s2-v1.55.5...@antv/s2-v1.55.6) (2024-05-31)
 
 
