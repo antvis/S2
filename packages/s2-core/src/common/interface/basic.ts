@@ -128,14 +128,20 @@ export enum Aggregation {
 }
 
 export interface CalcTotals {
-  /** 聚合方式 */
+  /**
+   * 聚合方式
+   */
   aggregation?: `${Aggregation}`;
 
   /**
    * 自定义计算汇总
    * @see https://s2.antv.antgroup.com/examples/analysis/totals/#custom
    */
-  calcFunc?: (query: Query, data: CellData[]) => number;
+  calcFunc?: (
+    query: Query,
+    data: CellData[],
+    spreadsheet: SpreadSheet,
+  ) => number;
 }
 
 export interface Total {

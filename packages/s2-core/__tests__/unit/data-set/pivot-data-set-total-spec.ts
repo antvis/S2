@@ -8,11 +8,7 @@ import {
   TOTAL_VALUE,
   VALUE_FIELD,
 } from '@/common/constant';
-import {
-  Aggregation,
-  type CalcTotals,
-  type S2DataConfig,
-} from '@/common/interface';
+import { Aggregation, type S2DataConfig } from '@/common/interface';
 import { Store } from '@/common/store';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
@@ -20,6 +16,7 @@ import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { get, keys } from 'lodash';
 import * as mockData from 'tests/data/mock-dataset.json';
 import * as multiDataCfg from 'tests/data/simple-data.json';
+import { CalcTotals, SpreadSheet } from '../../../src';
 import type { Query } from '../../../src/data-set/interface';
 import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 
@@ -425,6 +422,8 @@ describe('Pivot Dataset Total Test', () => {
     });
 
     describe('getCellData function when totals calculated by calcFunc', () => {
+      let s2: SpreadSheet | undefined;
+
       beforeEach(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
@@ -432,7 +431,8 @@ describe('Pivot Dataset Total Test', () => {
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
 
-        const calcFunc1: CalcTotals['calcFunc'] = (_, data) => {
+        const calcFunc1: CalcTotals['calcFunc'] = (_, data, spreadsheet) => {
+          s2 = spreadsheet;
           const sum = data.reduce(
             (pre, next) => pre + (next[VALUE_FIELD] as number),
             0,
@@ -441,7 +441,8 @@ describe('Pivot Dataset Total Test', () => {
           return sum * 2;
         };
 
-        const calcFunc2: CalcTotals['calcFunc'] = (_, data) => {
+        const calcFunc2: CalcTotals['calcFunc'] = (_, data, spreadsheet) => {
+          s2 = spreadsheet;
           const sum = data.reduce(
             (pre, next) => pre + (next[VALUE_FIELD] as number),
             0,
@@ -480,6 +481,10 @@ describe('Pivot Dataset Total Test', () => {
         });
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);
+      });
+
+      afterEach(() => {
+        s2 = undefined;
       });
 
       test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
@@ -535,6 +540,8 @@ describe('Pivot Dataset Total Test', () => {
             totalStatus,
           })?.[VALUE_FIELD],
         ).toEqual(32418);
+
+        expect(s2).toBeDefined();
       });
 
       test('should get correct total cell data when totals calculated by calcFunc', () => {
@@ -602,6 +609,8 @@ describe('Pivot Dataset Total Test', () => {
             isTotals: true,
           })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 78868]]);
+
+        expect(s2).toBeDefined();
       });
     });
 
