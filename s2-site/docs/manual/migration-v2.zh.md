@@ -732,6 +732,20 @@ const s2Options = {
 }
 ```
 
+#### 链接跳转逻辑和参数变更
+
+1. 现在链接跳转支持对 **列头** 标记，且明细表同时对 `列头` 和 `数值` 生效（可自定义规则）。
+2. 回调参数 `key` 调整为 `field`, `cellData` 调整为 `meta`.
+
+```diff
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
+-  const { key, cellData, record } = data;
++  const { field, meta, record } = data;
+});
+```
+
+具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
