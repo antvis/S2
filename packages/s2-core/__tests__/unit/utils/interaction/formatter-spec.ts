@@ -36,13 +36,13 @@ describe('#getBaseCellData()', () => {
   });
 
   test('should get correctly cell data by append info', () => {
-    const cellData = 'test';
+    const meta = 'test';
     const cell = createMockCellInfo('test-a').mockCell;
 
     // @ts-ignore
-    cell.appendInfo = { cellData };
+    cell.appendInfo = { meta };
     event.target = cell;
 
-    expect(getData(event).viewMeta).toEqual(cellData);
+    expect(getData(event).viewMeta).toEqual(meta);
   });
 });

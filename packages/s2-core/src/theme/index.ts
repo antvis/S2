@@ -332,6 +332,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         // 默认列头的数值字段和 dataCell 数值对齐
         textAlign: 'right',
@@ -342,6 +343,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -351,6 +353,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',

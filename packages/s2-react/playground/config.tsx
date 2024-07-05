@@ -367,6 +367,7 @@ export const s2Options: SheetComponentOptions = {
   },
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
+    linkFields: [],
     copy: {
       enable: true,
       withFormat: true,
