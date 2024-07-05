@@ -541,8 +541,8 @@ importers:
         specifier: ^5.3.7
         version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
       '@antv/dumi-theme-antv':
-        specifier: ^0.5.0
-        version: 0.5.1(@babel/core@7.24.7)(dumi@2.3.8)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^0.5.2
+        version: 0.5.2(@babel/core@7.24.7)(dumi@2.3.8)(react-dom@18.3.1)(react@18.3.1)
       '@antv/g':
         specifier: ^6.0.4
         version: 6.0.6
@@ -913,8 +913,8 @@ packages:
       '@antv/util': 2.0.17
       gl-matrix: 3.4.3
 
-  /@antv/dumi-theme-antv@0.5.1(@babel/core@7.24.7)(dumi@2.3.8)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-W+iNYI0M0HUuu3K8f8BbwIqOW5TTEVkfWlLsbLZlnyHIky8nVLdsVYaLBDoh4U5MNRPumf+xDl+HUXFVMNSnpg==}
+  /@antv/dumi-theme-antv@0.5.2(@babel/core@7.24.7)(dumi@2.3.8)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-jLsWW9ZaKZHEOmlZ+XAaznuFopBPujvEzGl7cSoPwtS5fXOBwqY94eyv5M33maWDPaq5MzelybVQ5In4uTT0Jw==}
     peerDependencies:
       dumi: ^2.0.0
       react: '>=16.9.0'
