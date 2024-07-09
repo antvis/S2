@@ -64,6 +64,7 @@ import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
+import { getDisplayText, getEmptyPlaceholder } from '../utils';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
@@ -927,5 +928,12 @@ export abstract class SpreadSheet extends EE {
     }
 
     return text ?? getDefaultSeriesNumberText();
+  }
+
+  public getDisplayText(value: string | number, meta?: Record<string, any>) {
+    return getDisplayText(
+      value,
+      getEmptyPlaceholder(meta || this, this.options.placeholder),
+    )!;
   }
 }

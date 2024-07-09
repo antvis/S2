@@ -21,7 +21,6 @@ export interface BaseNodeConfig {
    */
   field: string;
   value: string;
-  formattedValue?: string;
   level?: number;
   rowIndex?: number;
   colIndex?: number;
@@ -59,8 +58,6 @@ export class Node {
   public id: string;
 
   public value: string;
-
-  public formattedValue?: string;
 
   // field key
   public field: string;
@@ -162,7 +159,6 @@ export class Node {
       id,
       field,
       value,
-      formattedValue,
       parent,
       level,
       rowIndex,
@@ -186,7 +182,6 @@ export class Node {
     this.id = id;
     this.field = field;
     this.value = value;
-    this.formattedValue = formattedValue;
     this.parent = parent;
     this.level = level!;
     this.rowIndex = rowIndex!;

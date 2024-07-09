@@ -17,7 +17,6 @@ import {
   isEmpty,
   isEqual,
   isFunction,
-  isNil,
   isNumber,
   isObject,
   last,
@@ -42,6 +41,7 @@ import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
   Data,
+  SimpleData,
   Tooltip,
   TooltipDetailListItem,
   TooltipSummaryOptionsValue,
@@ -175,19 +175,11 @@ export const setTooltipContainerStyle = (
   container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
 };
 
-/* format */
-export const getFriendlyVal = (val: any): number | string => {
-  const isInvalidNumber = isNumber(val) && Number.isNaN(val);
-  const isEmptyString = val === '';
-
-  return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
-};
-
 export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
-  return (v: unknown, data?: ViewMetaData) =>
-    getFriendlyVal(formatter(v, data));
+  return (value: SimpleData, data?: ViewMetaData) =>
+    spreadsheet.getDisplayText(formatter(value, data)!);
 };
 
 export const getListItem = (

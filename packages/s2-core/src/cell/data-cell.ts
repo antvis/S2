@@ -377,7 +377,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     return {
       value: fieldValue,
-      formattedValue: formattedValue ?? this.getDisplayText(formattedValue),
+      formattedValue:
+        formattedValue ?? this.spreadsheet.getDisplayText(formattedValue!),
     };
   }
 

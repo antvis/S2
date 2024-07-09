@@ -40,16 +40,19 @@ import {
 import type { GroupedIcons } from './cell/header-cell';
 import { getIconPosition } from './condition/condition';
 import { renderMiniChart } from './g-mini-charts';
+import { resolveNillString } from './layout';
 
 export const getDisplayText = (
-  text: string | number | null | undefined,
+  text: SimpleData,
   placeholder?: string | undefined | null,
 ) => {
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  const isInvalidNumber = isNumber(text) && Number.isNaN(text);
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
-  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  const isEmptyString = text === '' || text === EMPTY_FIELD_VALUE;
+  const isEmptyText = isNil(text) || isInvalidNumber || isEmptyString;
 
-  return isEmptyText ? emptyPlaceholder : `${text}`;
+  return isEmptyText ? emptyPlaceholder : resolveNillString(text as string);
 };
 
 /**

@@ -83,12 +83,24 @@ export const pivotSheetDataCfg: S2DataConfig = {
     {
       field: 'type',
       name: '类别',
-      formatter: (v) => `${v}-@`,
+      formatter: (v) => {
+        if (!v) {
+          return v;
+        }
+
+        return `${v}-@`;
+      },
     },
     {
       field: 'number',
       name: '数量',
-      formatter: (v) => `${v}-x`,
+      formatter: (v) => {
+        if (!v) {
+          return v;
+        }
+
+        return `${v}-x`;
+      },
     },
   ],
   fields,

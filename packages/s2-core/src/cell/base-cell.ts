@@ -76,10 +76,6 @@ import {
 } from '../utils/g-renders';
 import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
-import {
-  getDisplayText,
-  getEmptyPlaceholder as getEmptyPlaceholderInner,
-} from '../utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -292,17 +288,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
-   * 获取单元格空值占位符
-   */
-  public getEmptyPlaceholder() {
-    const {
-      options: { placeholder },
-    } = this.spreadsheet;
-
-    return getEmptyPlaceholderInner(this, placeholder);
-  }
-
-  /**
    * 获取文本包围盒
    */
   public getTextLineBoundingRects() {
@@ -314,13 +299,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    */
   public getFieldValue() {
     return this.getFormattedFieldValue().formattedValue;
-  }
-
-  /**
-   * 获取单元格原始的数值
-   */
-  public getFieldOriginalValue() {
-    return this.getFormattedFieldValue().value;
   }
 
   protected shouldInit() {
@@ -438,15 +416,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
-  protected getDisplayText(text: string | number) {
-    return getDisplayText(text, this.getEmptyPlaceholder());
-  }
-
   public renderTextShape(
     style: TextStyleProps,
     options?: RenderTextShapeOptions,
   ): CustomText {
-    const text = this.getDisplayText(style.text);
+    const text = this.spreadsheet.getDisplayText(style.text, this);
     const shallowRender = options?.shallowRender || this.isShallowRender();
 
     this.textShape = renderText({
@@ -492,7 +466,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       ...textStyle,
       x: 0,
       y: 0,
-      text: this.getFieldValue(),
+      text: this.getFieldValue()!,
       wordWrapWidth: maxTextWidth,
     });
 

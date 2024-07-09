@@ -1,5 +1,5 @@
 import { escape, map, max } from 'lodash';
-import type { DataItem } from '../../../common';
+import type { DataItem, SimpleData } from '../../../common';
 import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
   CopyMIMEType,
@@ -13,7 +13,6 @@ import {
   type Transformer,
 } from '../../../common/interface/export';
 import type { Node } from '../../../facet/layout/node';
-import { getDisplayText, getEmptyPlaceholder } from '../../text';
 import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
@@ -73,10 +72,7 @@ export function getFormatter(
       const formattedValue = dataSet.getFieldFormatter(field!)(value);
 
       // 如果格式化后的值是空，则兜底占位符, 保证导出结果和表格一致: https://github.com/antvis/S2/issues/2808
-      return getDisplayText(
-        formattedValue,
-        getEmptyPlaceholder(spreadsheet, spreadsheet.options.placeholder),
-      );
+      return spreadsheet.getDisplayText(formattedValue!);
     };
   }
 
@@ -90,11 +86,11 @@ export const assembleMatrix = ({
   dataMatrix,
   cornerMatrix,
 }: {
-  colMatrix: string[][];
-  dataMatrix: string[][];
-  rowMatrix?: string[][];
-  cornerMatrix?: string[][];
-}): string[][] => {
+  colMatrix: SimpleData[][];
+  dataMatrix: SimpleData[][];
+  rowMatrix?: SimpleData[][];
+  cornerMatrix?: SimpleData[][];
+}): SimpleData[][] => {
   const rowWidth = rowMatrix?.[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
@@ -102,7 +98,7 @@ export const assembleMatrix = ({
   const matrixWidth = rowWidth + dataWidth;
   const matrixHeight = colHeight + dataHeight;
 
-  let matrix: (string | undefined)[][] = Array.from(
+  let matrix: SimpleData[][] = Array.from(
     Array(matrixHeight),
     () => new Array(matrixWidth),
   );
@@ -134,19 +130,19 @@ export const assembleMatrix = ({
     }),
   );
 
-  return matrix as string[][];
+  return matrix as SimpleData[][];
 };
 
-export function getMaxRowLen(matrix: string[][]): number {
+export function getMaxRowLen(matrix: SimpleData[][]): number {
   return max(map(matrix, (row) => row.length)) ?? 0;
 }
 
 /**
  * 补全 matrix 中的元素个数, 使得每一行的元素个数一致，以最大的行元素个数为准
- * @param {string[][]} matrix
- * @return {string[][]}
+ * @param {SimpleData[][]} matrix
+ * @return {SimpleData[][]}
  */
-export function completeMatrix(matrix: string[][]): string[][] {
+export function completeMatrix(matrix: SimpleData[][]): SimpleData[][] {
   const maxRowLen = getMaxRowLen(matrix);
 
   return map(matrix, (row) => {
@@ -240,7 +236,9 @@ export const getNodeFormatData = (leafNode: Node) => {
     const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
       node.field,
     );
-    const formatterLabel = formatter?.(node.value) ?? node.value;
+    const formatterLabel = node.spreadsheet?.getDisplayText(
+      formatter?.(node.value) ?? node.value,
+    )!;
 
     line.unshift(formatterLabel);
     if (node?.parent) {

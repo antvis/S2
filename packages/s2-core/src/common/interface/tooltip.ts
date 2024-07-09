@@ -1,6 +1,10 @@
 import type { FederatedPointerEvent as CanvasEvent, PointLike } from '@antv/g';
 import type * as CSS from 'csstype';
-import type { S2CellType, ViewMetaData } from '../../common/interface';
+import type {
+  S2CellType,
+  SimpleData,
+  ViewMetaData,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseTooltip } from '../../ui/tooltip';
 
@@ -70,7 +74,7 @@ export type TooltipPosition = PointLike;
 
 export type TooltipDetailListItem = {
   name: string;
-  value: string | number;
+  value: SimpleData;
   icon?: Element | string;
 };
 

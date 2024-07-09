@@ -506,6 +506,38 @@ describe('PivotSheet Export Test', () => {
     expect(data.split(LINE_SEPARATOR)).toHaveLength(count);
   });
 
+  it('should export empty dimension values data', async () => {
+    const data = clone<DataItem[]>(originData);
+
+    data.unshift({
+      number: 7789,
+      province: null,
+      city: null,
+      type: null,
+      sub_type: null,
+    });
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        data,
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: false,
+      formatData: false,
+    });
+  });
+
   // https://github.com/antvis/S2/issues/2808
   it('should export placeholder data', async () => {
     const data = clone<DataItem[]>(originData);
@@ -539,6 +571,7 @@ describe('PivotSheet Export Test', () => {
     );
 
     await expectMatchSnapshot(s2, {
+      formatHeader: true,
       formatData: true,
     });
   });

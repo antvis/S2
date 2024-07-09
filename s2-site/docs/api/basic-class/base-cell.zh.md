@@ -45,7 +45,6 @@ cell.getActualText()
 | getMultiLineActualTextHeight | 实际渲染的多行文本高度 （每一行文本高度的总和） | `() => number` |
 | isTextOverflowing | 文本是否溢出 （有省略号） | `() => boolean` |
 | isMultiLineText | 是否是多行文本 | `() => boolean` |
-| getEmptyPlaceholder | 获取单元格空值占位符 | `() => string` |
 | getTextLineBoundingRects | 获取文本包围盒 | `() => string` |
 | getFieldValue | 获取单元格展示的数值 | `() => string` |
 

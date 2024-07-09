@@ -16,6 +16,7 @@ import {
   type DataItem,
   type MiniChartData,
   type MultiData,
+  type SimpleData,
 } from '../../../common';
 import type {
   CopyAllDataParams,
@@ -260,7 +261,9 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     return formatter(value ?? '');
   };
 
-  protected getCustomRowCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+  protected getCustomRowCornerMatrix = (
+    rowMatrix?: SimpleData[][],
+  ): SimpleData[][] => {
     const maxRowLen = getMaxRowLen(rowMatrix ?? []);
     const cornerNodes = this.spreadsheet.facet.getCornerNodes();
     // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
@@ -297,7 +300,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       : this.spreadsheet.dataSet.getField(field);
   };
 
-  protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+  protected getCornerMatrix = (rowMatrix?: SimpleData[][]): SimpleData[][] => {
     if (this.spreadsheet.isCustomRowFields()) {
       return this.getCustomRowCornerMatrix(rowMatrix);
     }
@@ -331,14 +334,14 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     );
   };
 
-  protected getColMatrix(): string[][] {
+  protected getColMatrix(): SimpleData[][] {
     return zip(
       ...map(this.leafColNodes, (node) => this.getHeaderNodeMatrix(node)),
-    ) as string[][];
+    ) as SimpleData[][];
   }
 
-  protected getRowMatrix(): string[][] {
-    const rowMatrix: string[][] = map(this.leafRowNodes, (node) =>
+  protected getRowMatrix(): SimpleData[][] {
+    const rowMatrix: SimpleData[][] = map(this.leafRowNodes, (node) =>
       this.getHeaderNodeMatrix(node),
     );
 
@@ -367,7 +370,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
         return convertString(dataItem);
       }),
-    ) as string[][];
+    ) as SimpleData[][];
 
     // 不带表头复制
     if (!copy?.withHeader) {
@@ -386,7 +389,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   getPivotCopyData(): CopyableList {
     const { copy } = this.spreadsheet.options.interaction!;
-    const dataMatrix = this.getDataMatrixByHeaderNode() as string[][];
+    const dataMatrix = this.getDataMatrixByHeaderNode() as SimpleData[][];
 
     // 不带表头复制
     if (!copy?.withHeader) {
@@ -408,15 +411,16 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
     const cornerMatrix = this.getCornerMatrix(rowMatrix);
 
-    let dataMatrix: string[][] = [];
+    let dataMatrix: SimpleData[][] = [];
 
     // 把两类导出都封装成异步的，保证导出类型的一致
     if (this.config.async) {
-      dataMatrix = (await this.getDataMatrixByHeaderNodeRIC()) as string[][];
+      dataMatrix =
+        (await this.getDataMatrixByHeaderNodeRIC()) as SimpleData[][];
     } else {
       dataMatrix = (await Promise.resolve(
         this.getDataMatrixByHeaderNode(),
-      )) as string[][];
+      )) as SimpleData[][];
     }
 
     const resultMatrix = this.matrixTransformer(

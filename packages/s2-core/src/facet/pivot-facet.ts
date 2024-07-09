@@ -849,7 +849,7 @@ export class PivotFacet extends FrozenFacet {
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
-      this.spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
+      this.spreadsheet.measureTextWidth(maxLabel!, rowTextStyle) +
       rowIconWidth +
       rowCellStyle!.padding!.left! +
       rowCellStyle!.padding!.right! +

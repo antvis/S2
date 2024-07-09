@@ -35,6 +35,7 @@ import type {
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
+import { generateNillString } from '../layout/generate-id';
 
 export function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
@@ -71,7 +72,7 @@ export function transformDimensionsValues(
     if (!(dimension in record)) {
       res.push(placeholder);
     } else {
-      res.push(String(value));
+      res.push(generateNillString(value as string));
     }
 
     return res;
@@ -106,7 +107,7 @@ export function transformDimensionsValuesWithExtraFields(
           res.push(TOTAL_VALUE);
         }
       } else {
-        res.push(String(value));
+        res.push(generateNillString(value as string));
       }
 
       return res;
@@ -217,7 +218,9 @@ export function getDataPath(params: DataPathParams): DataPath {
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
         const currentDimensions = dimensionValues
           .slice(0, i + 1)
-          .map((it) => String(it));
+          .map((dimensionValue) =>
+            generateNillString(dimensionValue as string),
+          );
         const id = currentDimensions.join(NODE_ID_SEPARATOR);
 
         const isTotal = value === TOTAL_VALUE;

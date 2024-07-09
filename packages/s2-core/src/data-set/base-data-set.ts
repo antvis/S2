@@ -31,6 +31,7 @@ import type {
 import type { ValueRange } from '../common/interface/condition';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
+import { resolveNillString } from '../utils';
 import {
   getValueRangeState,
   setValueRangeState,
@@ -171,10 +172,10 @@ export abstract class BaseDataSet {
     }
 
     // 行/列头单元格, 取节点本身标题
-    return (
+    return resolveNillString(
       (meta as Node)?.value ||
-      this.getFieldName(meta?.field as CustomHeaderField)
-    );
+        this.getFieldName(meta?.field as CustomHeaderField),
+    )!;
   }
 
   /**
@@ -329,7 +330,10 @@ export abstract class BaseDataSet {
    * @param field
    * @param query
    */
-  public abstract getDimensionValues(field: string, query?: Query): string[];
+  public abstract getDimensionValues(
+    field: string,
+    query?: Query,
+  ): SimpleData[];
 
   /**
    * 获取单个的单元格数据
