@@ -4,20 +4,16 @@ import { ChartDataCell } from './cell/chart-data-cell';
 import { AxisRowColumnClick } from './interaction/axis-click';
 import { AxisHover } from './interaction/axis-hover';
 
-export const DEFAULT_G2_SPEC: G2Spec = {
-  type: 'interval',
+export const DEFAULT_G2_SPEC = {
   autoFit: true,
   animate: false,
-  axis: false,
-  legend: false,
 };
 
-export const DEFAULT_G2_AXIS_SPEC: G2Spec = {
-  autoFit: true,
-  animate: false,
-  line: false,
-  tick: false,
-  grid: false,
+export const DEFAULT_CHART_SPEC: G2Spec = {
+  ...DEFAULT_G2_SPEC,
+  type: 'interval',
+  axis: false,
+  legend: false,
 };
 
 export const FIXED_OPTIONS: S2Options = {
@@ -37,7 +33,7 @@ export const FIXED_OPTIONS: S2Options = {
 
 export const DEFAULT_OPTIONS: S2Options = {
   chartCoordinate: 'cartesian',
-  chartSpec: DEFAULT_G2_SPEC,
+  chartSpec: DEFAULT_CHART_SPEC,
   dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
   interaction: {
     customInteractions: [

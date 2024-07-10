@@ -120,7 +120,7 @@ export class PivotChart extends PivotSheet {
           },
         },
         dataCell: {
-          width: isPolar ? DEFAULT_DIMENSION_SIZE : DEFAULT_DIMENSION_SIZE,
+          width: isPolar ? DEFAULT_MEASURE_SIZE : DEFAULT_DIMENSION_SIZE,
           height: DEFAULT_MEASURE_SIZE,
         },
       },

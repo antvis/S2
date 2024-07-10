@@ -7,13 +7,20 @@ import {
   ColCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
+import type { PivotChart } from '..';
 import { KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
-import { getAxisXOptions, getAxisYOptions } from '../utils/chart-options';
+import {
+  getAxisStyle,
+  getAxisXOptions,
+  getAxisYOptions,
+} from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisColCell extends ColCell {
-  axisShape: Group;
+  protected spreadsheet: PivotChart;
+
+  protected axisShape: Group;
 
   public get cellType() {
     return AxisCellType.AXIS_COL_CELL as any;
@@ -42,7 +49,7 @@ export class AxisColCell extends ColCell {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawInteractiveBorderShape();
-    this.drawAxisShape();
+    this.drawTextShape();
     this.drawBorders();
     this.drawResizeArea();
     this.update();
@@ -59,19 +66,31 @@ export class AxisColCell extends ColCell {
     return false;
   }
 
+  public drawTextShape(): void {
+    if (this.spreadsheet.isPolarChart()) {
+      super.drawTextShape();
+
+      return;
+    }
+
+    this.drawAxisShape();
+  }
+
   getChartOptions(): G2Spec {
+    const style = this.getStyle();
+
     const chartOptions = {
-      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
       ...(this.spreadsheet.isValueInCols()
         ? getAxisYOptions(this.meta, this.spreadsheet)
         : getAxisXOptions(this.meta, this.spreadsheet)),
+
+      ...getAxisStyle(style),
       coordinate: {
         transform: this.spreadsheet.isValueInCols()
           ? [{ type: 'transpose' }]
           : undefined,
       },
-      labelAutoRotate: false,
-      labelAlign: 'horizontal',
     } as G2Spec;
 
     return chartOptions;

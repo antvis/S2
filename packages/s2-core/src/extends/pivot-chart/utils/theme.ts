@@ -6,6 +6,7 @@ import {
   type S2Theme,
   type SimplePalette,
 } from '@antv/s2';
+import { merge } from 'lodash';
 import { AxisCellType } from '../cell/cell-type';
 
 export const getCustomTheme = (
@@ -15,6 +16,10 @@ export const getCustomTheme = (
   return {
     [AxisCellType.AXIS_CORNER_CELL]: getCornerCellTheme(palette),
     [AxisCellType.AXIS_ROW_CELL]: getRowCellTheme(palette, spreadsheet),
-    [AxisCellType.AXIS_COL_CELL]: getColCellTheme(palette),
+    [AxisCellType.AXIS_COL_CELL]: merge(getColCellTheme(palette), {
+      measureText: {
+        textAlign: 'center',
+      },
+    }),
   };
 };

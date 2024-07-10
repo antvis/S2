@@ -7,13 +7,20 @@ import {
   RowCell,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
-import { KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
-import { getAxisXOptions, getAxisYOptions } from '../utils/chart-options';
+import { DEFAULT_G2_SPEC, KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
+import type { PivotChart } from '../index';
+import {
+  getAxisStyle,
+  getAxisXOptions,
+  getAxisYOptions,
+} from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisRowCell extends RowCell {
-  axisShape: Group;
+  protected spreadsheet: PivotChart;
+
+  protected axisShape: Group;
 
   public get cellType() {
     return AxisCellType.AXIS_ROW_CELL as any;
@@ -38,7 +45,7 @@ export class AxisRowCell extends RowCell {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawInteractiveBorderShape();
-    this.drawAxisShape();
+    this.drawTextShape();
     this.drawBorders();
     this.drawResizeAreaInLeaf();
     this.update();
@@ -51,14 +58,29 @@ export class AxisRowCell extends RowCell {
     );
   }
 
+  public drawTextShape(): void {
+    if (this.spreadsheet.isPolarChart()) {
+      super.drawTextShape();
+
+      return;
+    }
+
+    this.drawAxisShape();
+  }
+
   getChartOptions(): G2Spec {
+    const style = this.getStyle();
+
     const chartOptions = {
-      autoFit: true,
-      animate: false,
-      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+      ...DEFAULT_G2_SPEC,
+      ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
+
       ...(this.spreadsheet.isValueInCols()
         ? getAxisXOptions(this.meta, this.spreadsheet)
         : getAxisYOptions(this.meta, this.spreadsheet)),
+
+      ...getAxisStyle(style),
+
       coordinate: {
         transform: this.spreadsheet.isValueInCols()
           ? [{ type: 'transpose' }]
