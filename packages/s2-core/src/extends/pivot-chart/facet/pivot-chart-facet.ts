@@ -252,9 +252,6 @@ export class PivotChartFacet extends PivotFacet {
 
     const rowAxisWidth = this.getRowAxisWidth();
 
-    axisRowsHierarchy.width = isValueInCols && isPolar ? 0 : rowAxisWidth;
-    axisRowsHierarchy.height = rowsHierarchy.height;
-
     rowsHierarchy.getLeaves().forEach((leaf) => {
       const relatedNode = leaf.relatedNode;
 
@@ -266,6 +263,17 @@ export class PivotChartFacet extends PivotFacet {
       relatedNode.width = rowAxisWidth;
       relatedNode.height = leaf.height;
     });
+
+    if (isValueInCols && isPolar) {
+      axisRowsHierarchy.width = 0;
+      axisRowsHierarchy.getNodes().forEach((node) => {
+        node.width = 0;
+      });
+    } else {
+      axisRowsHierarchy.width = rowAxisWidth;
+    }
+
+    axisRowsHierarchy.height = rowsHierarchy.height;
   }
 
   protected calculateAxisColsHierarchyCoordinate(layoutResult: LayoutResult) {
@@ -280,9 +288,6 @@ export class PivotChartFacet extends PivotFacet {
 
     const colAxisHeight = this.getColAxisHeight();
 
-    axisColsHierarchy.width = colsHierarchy.width;
-    axisColsHierarchy.height = !isValueInCols && isPolar ? 0 : colAxisHeight;
-
     colsHierarchy.getLeaves().forEach((leaf) => {
       const relatedNode = leaf.relatedNode;
 
@@ -294,6 +299,17 @@ export class PivotChartFacet extends PivotFacet {
       relatedNode.width = leaf.width;
       relatedNode.height = colAxisHeight;
     });
+
+    axisColsHierarchy.width = colsHierarchy.width;
+
+    if (!isValueInCols && isPolar) {
+      axisColsHierarchy.height = 0;
+      axisColsHierarchy.getNodes().forEach((node) => {
+        node.height = 0;
+      });
+    } else {
+      axisColsHierarchy.height = colAxisHeight;
+    }
   }
 
   protected override calculateCornerBBox(): void {
@@ -507,7 +523,10 @@ export class PivotChartFacet extends PivotFacet {
         const xValue =
           rowChild.field === EXTRA_FIELD ? colChild.value : rowChild.value;
 
-        const origin = { [xField]: xValue, ...current?.[ORIGIN_FIELD] };
+        const origin = {
+          [xField]: xValue,
+          ...current?.[ORIGIN_FIELD],
+        };
 
         data.push(origin);
       }

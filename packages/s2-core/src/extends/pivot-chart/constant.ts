@@ -23,6 +23,7 @@ export const DEFAULT_G2_AXIS_SPEC: G2Spec = {
 export const FIXED_OPTIONS: S2Options = {
   hierarchyType: 'grid',
   interaction: {
+    selectedCellsSpotlight: false,
     copy: {
       enable: false,
     },
