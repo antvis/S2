@@ -79,30 +79,7 @@ export const tableSheetDataCfg: S2DataConfig = {
 export const pivotSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta: [
-    {
-      field: 'type',
-      name: '类别',
-      formatter: (v) => {
-        if (!v) {
-          return v;
-        }
-
-        return `${v}-@`;
-      },
-    },
-    {
-      field: 'number',
-      name: '数量',
-      formatter: (v) => {
-        if (!v) {
-          return v;
-        }
-
-        return `${v}-x`;
-      },
-    },
-  ],
+  meta,
   fields,
 };
 
@@ -114,28 +91,32 @@ export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
     data: [
       ...pivotSheetDataCfg.data,
       {
-        province: '浙江',
-        city: '杭州',
-        type: '笔',
-        price: '11111111',
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '笔',
+        type: '家具',
+        number: 11111111,
       },
       {
-        province: '浙江',
-        city: '杭州',
-        type: '纸张',
-        price: '2',
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '纸张',
+        type: '办公用品',
+        number: 2,
       },
       {
-        province: '浙江',
-        city: '舟山',
-        type: '笔',
-        price: '2',
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '笔',
+        type: '办公用品',
+        number: 2,
       },
       {
-        province: '浙江',
-        city: '舟山',
-        type: '纸张',
-        price: '133.333',
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '纸张',
+        type: '办公用品',
+        number: 133.333,
       },
     ],
   },

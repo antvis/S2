@@ -638,7 +638,7 @@ const s2Options = {
 + s2.dataSet.getField(field: CustomTreeNode | string)
 + s2.dataSet.getFieldMeta(field: CustomTreeNode | string)
 + s2.dataSet.getFieldName(field: CustomTreeNode | string)
-+ s2.dataSet.getFieldFormatter(field: CustomTreeNode | string, withPlaceholder?: boolean)
++ s2.dataSet.getFieldFormatter(field: CustomTreeNode | string)
 ```
 
 2. 获取单元格数据 API 的参数统一。

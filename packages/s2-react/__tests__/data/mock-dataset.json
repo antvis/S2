@@ -46,10 +46,10 @@
   "data": [
     {
       "number": 7789,
-      "province": null,
-      "city": null,
-      "type": null,
-      "sub_type": null
+      "province": "浙江省",
+      "city": "杭州市",
+      "type": "家具",
+      "sub_type": "桌子"
     },
     {
       "number": 2367,

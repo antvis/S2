@@ -5,7 +5,7 @@
  * https://github.com/antvis/S2/issues/2804
  */
 import { PivotSheet } from '@/sheet-type';
-import { S2Options } from '../../src';
+import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2804.json';
 import { getContainer } from '../util/helpers';
 
@@ -16,12 +16,12 @@ const s2Options: S2Options = {
 };
 
 describe('Tree Leaf Node Status Tests', () => {
-  test('should get correctly tree icon and leaf node status', () => {
+  test('should get correctly tree icon and leaf node status', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
 
-    s2.render();
+    await s2.render();
 
-    const [a1, a2] = s2.getRowNodes();
+    const [a1, a2] = s2.facet.getRowNodes();
 
     expect(a1.isLeaf).toBeTruthy();
     expect(a1.isTotals).toBeFalsy();

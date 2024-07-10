@@ -37,7 +37,7 @@ cell.getActualText()
 | addConditionIconShape | 添加 icon 图层 | `(shape: GuiIcon) => void` |
 | isShallowRender | 是否是浅渲染 | `( ) => boolean` |
 | getActualText | 获取实际渲染的文本 （含省略号） | `() => string` |
-| getOriginalText | 获取原始的文本 （不含省略号） | `() => string \| number` |
+| getOriginalText | 获取原始的文本（不含省略号） | `() => string \| number` |
 | getActualTextWidth | 实际渲染的文本宽度，如果是多行文本，取最大的一行宽度 | `() => number` |
 | getActualTextHeight | 实际渲染的文本宽度，如果是多行文本，取每一行文本高度的总和 | `() => number` |
 | getMultiLineActualTexts | 获取实际渲染的多行文本 （含省略号） | `() => string[]` |
@@ -45,6 +45,7 @@ cell.getActualText()
 | getMultiLineActualTextHeight | 实际渲染的多行文本高度 （每一行文本高度的总和） | `() => number` |
 | isTextOverflowing | 文本是否溢出 （有省略号） | `() => boolean` |
 | isMultiLineText | 是否是多行文本 | `() => boolean` |
+| getEmptyPlaceholder | 获取单元格空值占位符 | `() => string` |
 | getTextLineBoundingRects | 获取文本包围盒 | `() => string` |
 | getFieldValue | 获取单元格展示的数值 | `() => string` |
 
