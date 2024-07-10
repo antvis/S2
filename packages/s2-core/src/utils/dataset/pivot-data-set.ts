@@ -218,9 +218,7 @@ export function getDataPath(params: DataPathParams): DataPath {
       if (isFirstCreate && currentMeta && !currentMeta?.has(value)) {
         const currentDimensions = dimensionValues
           .slice(0, i + 1)
-          .map((dimensionValue) =>
-            generateNillString(dimensionValue as string),
-          );
+          .map((dimensionValue) => generateNillString(dimensionValue));
         const id = currentDimensions.join(NODE_ID_SEPARATOR);
 
         const isTotal = value === TOTAL_VALUE;

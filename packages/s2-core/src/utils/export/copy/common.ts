@@ -1,5 +1,5 @@
 import { escape, map, max } from 'lodash';
-import type { DataItem, SimpleData } from '../../../common';
+import type { DataItem, Formatter, SimpleData } from '../../../common';
 import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
   CopyMIMEType,
@@ -64,19 +64,12 @@ export function getFormatter(
   field: string,
   formatData = false,
   dataSet: BaseDataSet,
-) {
-  const { spreadsheet } = dataSet;
-
+): Formatter {
   if (formatData) {
-    return (value: DataItem) => {
-      const formattedValue = dataSet.getFieldFormatter(field!)(value);
-
-      // 如果格式化后的值是空，则兜底占位符, 保证导出结果和表格一致: https://github.com/antvis/S2/issues/2808
-      return spreadsheet.getDisplayText(formattedValue!);
-    };
+    return dataSet.getFieldFormatter(field!);
   }
 
-  return (value: DataItem) => value;
+  return ((value) => value) as Formatter;
 }
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
@@ -236,11 +229,9 @@ export const getNodeFormatData = (leafNode: Node) => {
     const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
       node.field,
     );
-    const formatterLabel = node.spreadsheet?.getDisplayText(
-      formatter?.(node.value) ?? node.value,
-    )!;
+    const value = formatter?.(node.value);
 
-    line.unshift(formatterLabel);
+    line.unshift(value as string);
     if (node?.parent) {
       return getNodeFormatterLabel(node.parent);
     }

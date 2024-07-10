@@ -49,6 +49,7 @@ import {
   type ResizeArea,
   type ResizeInteractionOptions,
   type S2CellType,
+  type SimpleData,
   type StateShapeLayer,
   type TextTheme,
 } from '../common/interface';
@@ -76,6 +77,10 @@ import {
 } from '../utils/g-renders';
 import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
+import {
+  getDisplayText,
+  getEmptyPlaceholder as getEmptyPlaceholderInner,
+} from '../utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -100,7 +105,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected actualText: string;
 
-  protected originalText: string;
+  protected originalText: SimpleData;
 
   protected conditions: Conditions;
 
@@ -265,7 +270,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /**
    * 获取原始的文本 (不含省略号)
    */
-  public getOriginalText(): string {
+  public getOriginalText(): SimpleData {
     return this.originalText;
   }
 
@@ -292,6 +297,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    */
   public getTextLineBoundingRects() {
     return this.textShape?.getLineBoundingRects() || [];
+  }
+
+  /**
+   * 获取单元格空值占位符
+   */
+  public getEmptyPlaceholder() {
+    const {
+      options: { placeholder },
+    } = this.spreadsheet;
+
+    return getEmptyPlaceholderInner(this, placeholder);
   }
 
   /**
@@ -420,7 +436,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     style: TextStyleProps,
     options?: RenderTextShapeOptions,
   ): CustomText {
-    const text = this.spreadsheet.getDisplayText(style.text, this);
+    const text = getDisplayText(style.text, this.getEmptyPlaceholder());
     const shallowRender = options?.shallowRender || this.isShallowRender();
 
     this.textShape = renderText({
@@ -428,7 +444,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textShape: shallowRender ? undefined : this.textShape,
       style: {
         ...style,
-        text,
+        // 文本必须为字符串
+        text: `${text}`,
       },
     });
 

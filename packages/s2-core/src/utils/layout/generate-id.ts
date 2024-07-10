@@ -11,7 +11,7 @@ import {
  * 维值转为字符串时, 如果是null/undefined, 则添加标记, 便于转回来.
  * null/undefined => "$$null$$/$$undefined$$"
  */
-export const generateNillString = (value: string) => {
+export const generateNillString = (value: SimpleData) => {
   if (isUndefined(value)) {
     return UNDEFINED_SYMBOL_ID;
   }
@@ -39,7 +39,7 @@ export const resolveNillString = (value: string) => {
   return value;
 };
 
-export const generateId = (...ids: string[]): string => {
+export const generateId = (...ids: SimpleData[]): string => {
   return ids.map(generateNillString).join(NODE_ID_SEPARATOR);
 };
 

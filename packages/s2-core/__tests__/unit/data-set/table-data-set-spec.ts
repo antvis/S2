@@ -82,7 +82,7 @@ describe('Table Mode Dataset Test', () => {
       ${'sub_type'} | ${'子类型'} | ${'子类型描述'} | ${mockSubTypeFormatter}
       ${'number'}   | ${'数量'}   | ${'数量描述'}   | ${mockNumberFormatter}
     `(
-      'should return correct filed meta when field=$field',
+      'should return correct filed meta by $field',
       ({ field, name, description }) => {
         expect(dataSet.getFieldName(field)).toStrictEqual(name);
         expect(dataSet.getFieldDescription(field)).toStrictEqual(description);

@@ -53,7 +53,7 @@ export const getDisplayText = (
   const isEmptyString = displayText === '' || displayText === EMPTY_FIELD_VALUE;
   const isEmptyText = isNil(displayText) || isInvalidNumber || isEmptyString;
 
-  return isEmptyText ? emptyPlaceholder : resolveNillString(`${displayText}`);
+  return isEmptyText ? emptyPlaceholder : resolveNillString(displayText);
 };
 
 /**

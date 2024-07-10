@@ -231,7 +231,6 @@ export const createFakeSpreadSheet = (config?: {
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
   s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
-  s2.getDisplayText = jest.fn((value) => value);
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,
