@@ -427,7 +427,7 @@ export class PivotDataSet extends BaseDataSet {
       let totalValue: number | null = null;
 
       if (calcFunc) {
-        totalValue = calcFunc(query, data);
+        totalValue = calcFunc(query, data, this.spreadsheet);
       } else if (calcAction) {
         totalValue = calcAction(data, VALUE_FIELD)!;
       }
