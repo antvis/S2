@@ -1,0 +1,751 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cell Nill Value Tests should get correctly empty placeholder cell value 1`] = `
+Array [
+  Object {
+    "actualText": "省份",
+    "id": "province",
+    "value": "省份",
+  },
+  Object {
+    "actualText": "城市",
+    "id": "city",
+    "value": "城市",
+  },
+  Object {
+    "actualText": "类别",
+    "id": "type",
+    "value": "类别",
+  },
+  Object {
+    "actualText": "子类别",
+    "id": "sub_type",
+    "value": "子类别",
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "浙江省",
+    "id": "root[&]浙江省",
+    "value": "浙江省",
+  },
+  Object {
+    "actualText": "杭州市",
+    "id": "root[&]浙江省[&]杭州市",
+    "value": "杭州市",
+  },
+  Object {
+    "actualText": "绍兴市",
+    "id": "root[&]浙江省[&]绍兴市",
+    "value": "绍兴市",
+  },
+  Object {
+    "actualText": "宁波市",
+    "id": "root[&]浙江省[&]宁波市",
+    "value": "宁波市",
+  },
+  Object {
+    "actualText": "舟山市",
+    "id": "root[&]浙江省[&]舟山市",
+    "value": "舟山市",
+  },
+  Object {
+    "actualText": "四川省",
+    "id": "root[&]四川省",
+    "value": "四川省",
+  },
+  Object {
+    "actualText": "成都市",
+    "id": "root[&]四川省[&]成都市",
+    "value": "成都市",
+  },
+  Object {
+    "actualText": "绵阳市",
+    "id": "root[&]四川省[&]绵阳市",
+    "value": "绵阳市",
+  },
+  Object {
+    "actualText": "南充市",
+    "id": "root[&]四川省[&]南充市",
+    "value": "南充市",
+  },
+  Object {
+    "actualText": "乐山市",
+    "id": "root[&]四川省[&]乐山市",
+    "value": "乐山市",
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]$$null$$[&]$$null$$[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "家具",
+    "id": "root[&]家具",
+    "value": "家具",
+  },
+  Object {
+    "actualText": "桌子",
+    "id": "root[&]家具[&]桌子",
+    "value": "桌子",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]家具[&]桌子[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "沙发",
+    "id": "root[&]家具[&]沙发",
+    "value": "沙发",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]家具[&]沙发[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "办公用品",
+    "id": "root[&]办公用品",
+    "value": "办公用品",
+  },
+  Object {
+    "actualText": "笔",
+    "id": "root[&]办公用品[&]笔",
+    "value": "笔",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]办公用品[&]笔[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "纸张",
+    "id": "root[&]办公用品[&]纸张",
+    "value": "纸张",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "7789",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]$$null$$[&]$$null$$[&]number",
+    "value": 7789,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]浙江省[&]杭州市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]浙江省[&]绍兴市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]浙江省[&]宁波市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]浙江省[&]舟山市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]四川省[&]成都市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]四川省[&]绵阳市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]四川省[&]南充市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]四川省[&]乐山市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]家具[&]桌子[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "7789",
+    "id": "root[&]浙江省[&]杭州市-root[&]家具[&]桌子[&]number",
+    "value": 7789,
+  },
+  Object {
+    "actualText": "2367",
+    "id": "root[&]浙江省[&]绍兴市-root[&]家具[&]桌子[&]number",
+    "value": 2367,
+  },
+  Object {
+    "actualText": "3877",
+    "id": "root[&]浙江省[&]宁波市-root[&]家具[&]桌子[&]number",
+    "value": 3877,
+  },
+  Object {
+    "actualText": "4342",
+    "id": "root[&]浙江省[&]舟山市-root[&]家具[&]桌子[&]number",
+    "value": 4342,
+  },
+  Object {
+    "actualText": "1723",
+    "id": "root[&]四川省[&]成都市-root[&]家具[&]桌子[&]number",
+    "value": 1723,
+  },
+  Object {
+    "actualText": "1822",
+    "id": "root[&]四川省[&]绵阳市-root[&]家具[&]桌子[&]number",
+    "value": 1822,
+  },
+  Object {
+    "actualText": "1943",
+    "id": "root[&]四川省[&]南充市-root[&]家具[&]桌子[&]number",
+    "value": 1943,
+  },
+  Object {
+    "actualText": "2330",
+    "id": "root[&]四川省[&]乐山市-root[&]家具[&]桌子[&]number",
+    "value": 2330,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]家具[&]沙发[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "5343",
+    "id": "root[&]浙江省[&]杭州市-root[&]家具[&]沙发[&]number",
+    "value": 5343,
+  },
+  Object {
+    "actualText": "632",
+    "id": "root[&]浙江省[&]绍兴市-root[&]家具[&]沙发[&]number",
+    "value": 632,
+  },
+  Object {
+    "actualText": "7234",
+    "id": "root[&]浙江省[&]宁波市-root[&]家具[&]沙发[&]number",
+    "value": 7234,
+  },
+  Object {
+    "actualText": "834",
+    "id": "root[&]浙江省[&]舟山市-root[&]家具[&]沙发[&]number",
+    "value": 834,
+  },
+  Object {
+    "actualText": "2451",
+    "id": "root[&]四川省[&]成都市-root[&]家具[&]沙发[&]number",
+    "value": 2451,
+  },
+  Object {
+    "actualText": "2244",
+    "id": "root[&]四川省[&]绵阳市-root[&]家具[&]沙发[&]number",
+    "value": 2244,
+  },
+  Object {
+    "actualText": "2333",
+    "id": "root[&]四川省[&]南充市-root[&]家具[&]沙发[&]number",
+    "value": 2333,
+  },
+  Object {
+    "actualText": "2445",
+    "id": "root[&]四川省[&]乐山市-root[&]家具[&]沙发[&]number",
+    "value": 2445,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]办公用品[&]笔[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "945",
+    "id": "root[&]浙江省[&]杭州市-root[&]办公用品[&]笔[&]number",
+    "value": 945,
+  },
+  Object {
+    "actualText": "1304",
+    "id": "root[&]浙江省[&]绍兴市-root[&]办公用品[&]笔[&]number",
+    "value": 1304,
+  },
+  Object {
+    "actualText": "1145",
+    "id": "root[&]浙江省[&]宁波市-root[&]办公用品[&]笔[&]number",
+    "value": 1145,
+  },
+  Object {
+    "actualText": "1432",
+    "id": "root[&]浙江省[&]舟山市-root[&]办公用品[&]笔[&]number",
+    "value": 1432,
+  },
+  Object {
+    "actualText": "2335",
+    "id": "root[&]四川省[&]成都市-root[&]办公用品[&]笔[&]number",
+    "value": 2335,
+  },
+  Object {
+    "actualText": "245",
+    "id": "root[&]四川省[&]绵阳市-root[&]办公用品[&]笔[&]number",
+    "value": 245,
+  },
+  Object {
+    "actualText": "2457",
+    "id": "root[&]四川省[&]南充市-root[&]办公用品[&]笔[&]number",
+    "value": 2457,
+  },
+  Object {
+    "actualText": "2458",
+    "id": "root[&]四川省[&]乐山市-root[&]办公用品[&]笔[&]number",
+    "value": 2458,
+  },
+  Object {
+    "actualText": "我是占位符",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]办公用品[&]纸张[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "1343",
+    "id": "root[&]浙江省[&]杭州市-root[&]办公用品[&]纸张[&]number",
+    "value": 1343,
+  },
+  Object {
+    "actualText": "1354",
+    "id": "root[&]浙江省[&]绍兴市-root[&]办公用品[&]纸张[&]number",
+    "value": 1354,
+  },
+  Object {
+    "actualText": "1523",
+    "id": "root[&]浙江省[&]宁波市-root[&]办公用品[&]纸张[&]number",
+    "value": 1523,
+  },
+  Object {
+    "actualText": "1634",
+    "id": "root[&]浙江省[&]舟山市-root[&]办公用品[&]纸张[&]number",
+    "value": 1634,
+  },
+  Object {
+    "actualText": "4004",
+    "id": "root[&]四川省[&]成都市-root[&]办公用品[&]纸张[&]number",
+    "value": 4004,
+  },
+  Object {
+    "actualText": "3077",
+    "id": "root[&]四川省[&]绵阳市-root[&]办公用品[&]纸张[&]number",
+    "value": 3077,
+  },
+  Object {
+    "actualText": "3551",
+    "id": "root[&]四川省[&]南充市-root[&]办公用品[&]纸张[&]number",
+    "value": 3551,
+  },
+  Object {
+    "actualText": "352",
+    "id": "root[&]四川省[&]乐山市-root[&]办公用品[&]纸张[&]number",
+    "value": 352,
+  },
+]
+`;
+
+exports[`Cell Nill Value Tests should get correctly nill cell value 1`] = `
+Array [
+  Object {
+    "actualText": "省份",
+    "id": "province",
+    "value": "省份",
+  },
+  Object {
+    "actualText": "城市",
+    "id": "city",
+    "value": "城市",
+  },
+  Object {
+    "actualText": "类别",
+    "id": "type",
+    "value": "类别",
+  },
+  Object {
+    "actualText": "子类别",
+    "id": "sub_type",
+    "value": "子类别",
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "浙江省",
+    "id": "root[&]浙江省",
+    "value": "浙江省",
+  },
+  Object {
+    "actualText": "杭州市",
+    "id": "root[&]浙江省[&]杭州市",
+    "value": "杭州市",
+  },
+  Object {
+    "actualText": "绍兴市",
+    "id": "root[&]浙江省[&]绍兴市",
+    "value": "绍兴市",
+  },
+  Object {
+    "actualText": "宁波市",
+    "id": "root[&]浙江省[&]宁波市",
+    "value": "宁波市",
+  },
+  Object {
+    "actualText": "舟山市",
+    "id": "root[&]浙江省[&]舟山市",
+    "value": "舟山市",
+  },
+  Object {
+    "actualText": "四川省",
+    "id": "root[&]四川省",
+    "value": "四川省",
+  },
+  Object {
+    "actualText": "成都市",
+    "id": "root[&]四川省[&]成都市",
+    "value": "成都市",
+  },
+  Object {
+    "actualText": "绵阳市",
+    "id": "root[&]四川省[&]绵阳市",
+    "value": "绵阳市",
+  },
+  Object {
+    "actualText": "南充市",
+    "id": "root[&]四川省[&]南充市",
+    "value": "南充市",
+  },
+  Object {
+    "actualText": "乐山市",
+    "id": "root[&]四川省[&]乐山市",
+    "value": "乐山市",
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$",
+    "value": undefined,
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]$$null$$[&]$$null$$[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "家具",
+    "id": "root[&]家具",
+    "value": "家具",
+  },
+  Object {
+    "actualText": "桌子",
+    "id": "root[&]家具[&]桌子",
+    "value": "桌子",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]家具[&]桌子[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "沙发",
+    "id": "root[&]家具[&]沙发",
+    "value": "沙发",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]家具[&]沙发[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "办公用品",
+    "id": "root[&]办公用品",
+    "value": "办公用品",
+  },
+  Object {
+    "actualText": "笔",
+    "id": "root[&]办公用品[&]笔",
+    "value": "笔",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]办公用品[&]笔[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "纸张",
+    "id": "root[&]办公用品[&]纸张",
+    "value": "纸张",
+  },
+  Object {
+    "actualText": "数量",
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "value": "number",
+  },
+  Object {
+    "actualText": "7789",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]$$null$$[&]$$null$$[&]number",
+    "value": 7789,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]浙江省[&]杭州市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]浙江省[&]绍兴市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]浙江省[&]宁波市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]浙江省[&]舟山市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]四川省[&]成都市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]四川省[&]绵阳市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]四川省[&]南充市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]四川省[&]乐山市-root[&]$$null$$[&]$$null$$[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]家具[&]桌子[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "7789",
+    "id": "root[&]浙江省[&]杭州市-root[&]家具[&]桌子[&]number",
+    "value": 7789,
+  },
+  Object {
+    "actualText": "2367",
+    "id": "root[&]浙江省[&]绍兴市-root[&]家具[&]桌子[&]number",
+    "value": 2367,
+  },
+  Object {
+    "actualText": "3877",
+    "id": "root[&]浙江省[&]宁波市-root[&]家具[&]桌子[&]number",
+    "value": 3877,
+  },
+  Object {
+    "actualText": "4342",
+    "id": "root[&]浙江省[&]舟山市-root[&]家具[&]桌子[&]number",
+    "value": 4342,
+  },
+  Object {
+    "actualText": "1723",
+    "id": "root[&]四川省[&]成都市-root[&]家具[&]桌子[&]number",
+    "value": 1723,
+  },
+  Object {
+    "actualText": "1822",
+    "id": "root[&]四川省[&]绵阳市-root[&]家具[&]桌子[&]number",
+    "value": 1822,
+  },
+  Object {
+    "actualText": "1943",
+    "id": "root[&]四川省[&]南充市-root[&]家具[&]桌子[&]number",
+    "value": 1943,
+  },
+  Object {
+    "actualText": "2330",
+    "id": "root[&]四川省[&]乐山市-root[&]家具[&]桌子[&]number",
+    "value": 2330,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]家具[&]沙发[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "5343",
+    "id": "root[&]浙江省[&]杭州市-root[&]家具[&]沙发[&]number",
+    "value": 5343,
+  },
+  Object {
+    "actualText": "632",
+    "id": "root[&]浙江省[&]绍兴市-root[&]家具[&]沙发[&]number",
+    "value": 632,
+  },
+  Object {
+    "actualText": "7234",
+    "id": "root[&]浙江省[&]宁波市-root[&]家具[&]沙发[&]number",
+    "value": 7234,
+  },
+  Object {
+    "actualText": "834",
+    "id": "root[&]浙江省[&]舟山市-root[&]家具[&]沙发[&]number",
+    "value": 834,
+  },
+  Object {
+    "actualText": "2451",
+    "id": "root[&]四川省[&]成都市-root[&]家具[&]沙发[&]number",
+    "value": 2451,
+  },
+  Object {
+    "actualText": "2244",
+    "id": "root[&]四川省[&]绵阳市-root[&]家具[&]沙发[&]number",
+    "value": 2244,
+  },
+  Object {
+    "actualText": "2333",
+    "id": "root[&]四川省[&]南充市-root[&]家具[&]沙发[&]number",
+    "value": 2333,
+  },
+  Object {
+    "actualText": "2445",
+    "id": "root[&]四川省[&]乐山市-root[&]家具[&]沙发[&]number",
+    "value": 2445,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]办公用品[&]笔[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "945",
+    "id": "root[&]浙江省[&]杭州市-root[&]办公用品[&]笔[&]number",
+    "value": 945,
+  },
+  Object {
+    "actualText": "1304",
+    "id": "root[&]浙江省[&]绍兴市-root[&]办公用品[&]笔[&]number",
+    "value": 1304,
+  },
+  Object {
+    "actualText": "1145",
+    "id": "root[&]浙江省[&]宁波市-root[&]办公用品[&]笔[&]number",
+    "value": 1145,
+  },
+  Object {
+    "actualText": "1432",
+    "id": "root[&]浙江省[&]舟山市-root[&]办公用品[&]笔[&]number",
+    "value": 1432,
+  },
+  Object {
+    "actualText": "2335",
+    "id": "root[&]四川省[&]成都市-root[&]办公用品[&]笔[&]number",
+    "value": 2335,
+  },
+  Object {
+    "actualText": "245",
+    "id": "root[&]四川省[&]绵阳市-root[&]办公用品[&]笔[&]number",
+    "value": 245,
+  },
+  Object {
+    "actualText": "2457",
+    "id": "root[&]四川省[&]南充市-root[&]办公用品[&]笔[&]number",
+    "value": 2457,
+  },
+  Object {
+    "actualText": "2458",
+    "id": "root[&]四川省[&]乐山市-root[&]办公用品[&]笔[&]number",
+    "value": 2458,
+  },
+  Object {
+    "actualText": "-",
+    "id": "root[&]$$null$$[&]$$null$$-root[&]办公用品[&]纸张[&]number",
+    "value": null,
+  },
+  Object {
+    "actualText": "1343",
+    "id": "root[&]浙江省[&]杭州市-root[&]办公用品[&]纸张[&]number",
+    "value": 1343,
+  },
+  Object {
+    "actualText": "1354",
+    "id": "root[&]浙江省[&]绍兴市-root[&]办公用品[&]纸张[&]number",
+    "value": 1354,
+  },
+  Object {
+    "actualText": "1523",
+    "id": "root[&]浙江省[&]宁波市-root[&]办公用品[&]纸张[&]number",
+    "value": 1523,
+  },
+  Object {
+    "actualText": "1634",
+    "id": "root[&]浙江省[&]舟山市-root[&]办公用品[&]纸张[&]number",
+    "value": 1634,
+  },
+  Object {
+    "actualText": "4004",
+    "id": "root[&]四川省[&]成都市-root[&]办公用品[&]纸张[&]number",
+    "value": 4004,
+  },
+  Object {
+    "actualText": "3077",
+    "id": "root[&]四川省[&]绵阳市-root[&]办公用品[&]纸张[&]number",
+    "value": 3077,
+  },
+  Object {
+    "actualText": "3551",
+    "id": "root[&]四川省[&]南充市-root[&]办公用品[&]纸张[&]number",
+    "value": 3551,
+  },
+  Object {
+    "actualText": "352",
+    "id": "root[&]四川省[&]乐山市-root[&]办公用品[&]纸张[&]number",
+    "value": 352,
+  },
+]
+`;

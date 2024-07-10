@@ -84,6 +84,7 @@ jest.mock('@/sheet-type', () => {
         measureTextWidthRoughly: jest.fn(),
         measureTextWidth: jest.fn(),
         getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
+        getDisplayText: jest.fn((value) => value),
       };
     }),
   };

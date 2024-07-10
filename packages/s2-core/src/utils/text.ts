@@ -46,13 +46,14 @@ export const getDisplayText = (
   text: SimpleData,
   placeholder?: string | undefined | null,
 ) => {
+  const displayText = resolveNillString(text as string);
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
-  const isInvalidNumber = isNumber(text) && Number.isNaN(text);
+  const isInvalidNumber = isNumber(displayText) && Number.isNaN(displayText);
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
-  const isEmptyString = text === '' || text === EMPTY_FIELD_VALUE;
-  const isEmptyText = isNil(text) || isInvalidNumber || isEmptyString;
+  const isEmptyString = displayText === '' || displayText === EMPTY_FIELD_VALUE;
+  const isEmptyText = isNil(displayText) || isInvalidNumber || isEmptyString;
 
-  return isEmptyText ? emptyPlaceholder : resolveNillString(text as string);
+  return isEmptyText ? emptyPlaceholder : resolveNillString(`${displayText}`);
 };
 
 /**

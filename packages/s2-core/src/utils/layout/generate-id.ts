@@ -36,7 +36,7 @@ export const resolveNillString = (value: string) => {
     return undefined;
   }
 
-  return String(value);
+  return value;
 };
 
 export const generateId = (...ids: string[]): string => {

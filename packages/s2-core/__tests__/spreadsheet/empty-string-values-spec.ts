@@ -81,7 +81,7 @@ describe('Empty String Values Tests', () => {
   test('should get correctly first dimension values', () => {
     const values = s2.dataSet.getDimensionValues('first');
 
-    expect(values).toEqual(['', 'null', '非空维度']);
+    expect(values).toEqual(['', null, '非空维度']);
   });
 
   test('should get correctly second dimension values', () => {
@@ -102,7 +102,7 @@ describe('Empty String Values Tests', () => {
 
     expect(values).toEqual(['维值1', '维值2']);
 
-    values = s2.dataSet.getDimensionValues('second', { first: 'null' });
+    values = s2.dataSet.getDimensionValues('second', { first: null });
     expect(values).toEqual(['维值3', '维值4']);
 
     values = s2.dataSet.getDimensionValues('second', { first: '非空维度' });
@@ -115,8 +115,8 @@ describe('Empty String Values Tests', () => {
     expect(nodes.map((node) => node.id)).toEqual([
       'root[&][&]维值1',
       'root[&][&]维值2',
-      'root[&]null[&]维值3',
-      'root[&]null[&]维值4',
+      'root[&]$$null$$[&]维值3',
+      'root[&]$$null$$[&]维值4',
       'root[&]非空维度[&]维值5',
       'root[&]非空维度[&]维值6',
     ]);

@@ -746,6 +746,20 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
 
+#### 行列维值为空时 ID 生成规则变更
+
+在 `1.x` 中由于会将维值转为字符串，如果维值为空 (null), 会转换成 `"null"`, 导致无法获取原始维值，`2.x` 版本中会对该情况增加特殊标识，便于识别 `null` 的情况，正确识别原始维值，以及空值占位符逻辑。
+
+```diff
+{
+-  id: 'root[&]null',
+-  value: 'null'
+
++  id: 'root[&]$$null$$',
++  value: null
+}
+```
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
