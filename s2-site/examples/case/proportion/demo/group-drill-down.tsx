@@ -1,7 +1,11 @@
 // organize-imports-ignore
 import React from 'react';
 import { LayoutWidthType, isUpDataValue } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  type SheetComponentProps,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 
@@ -122,7 +126,10 @@ fetch(
         );
       };
 
-      const onDataCellClick = ({ viewMeta, event }) => {
+      const onDataCellClick: SheetComponentProps['onDataCellClick'] = ({
+        viewMeta,
+        event,
+      }) => {
         if (!viewMeta) {
           return;
         }

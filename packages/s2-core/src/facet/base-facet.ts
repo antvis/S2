@@ -137,7 +137,7 @@ export abstract class BaseFacet {
 
   /**
    * 当前布局节点信息
-   * @description 内部消费, 外部调用请使用 facet.getLayoutResult()
+   * @private 内部消费, 外部调用请使用 facet.getLayoutResult()
    */
   protected layoutResult: LayoutResult;
 

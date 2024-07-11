@@ -170,22 +170,30 @@ describe('Table Mode Dataset Test', () => {
             rowIndex: 0,
           },
         }),
-      ).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "city": "杭州市",
-            "number": 7789,
-            "province": "浙江省",
-            "sub_type": "桌子",
-            "type": "家具",
-          },
-        ]
-      `);
+      ).toMatchSnapshot();
 
       expect(
         dataSet.getCellMultiData({
           query: {
             rowIndex: -1,
+          },
+        }),
+      ).toMatchSnapshot();
+    });
+
+    test('#getMultiData by colIndex query', () => {
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            colIndex: 0,
+          },
+        }),
+      ).toMatchSnapshot();
+
+      expect(
+        dataSet.getCellMultiData({
+          query: {
+            colIndex: -1,
           },
         }),
       ).toMatchSnapshot();

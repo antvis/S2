@@ -1,3 +1,4 @@
+import type { Node } from '@antv/s2';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import cls from 'classnames';
 import { isFunction } from 'lodash';
@@ -10,7 +11,7 @@ export const StrategySheetColCellTooltip: React.FC<CustomTooltipProps> = ({
   cell,
   label,
 }) => {
-  const meta = cell.getMeta();
+  const meta = cell.getMeta() as Node;
 
   // 趋势分析表叶子节点显示是指标标题, tooltip 中没必要再显示了
   if (meta.isLeaf && meta.level !== 0) {

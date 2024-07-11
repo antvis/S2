@@ -1,7 +1,11 @@
 // organize-imports-ignore
 import React from 'react';
 import { S2DataConfig } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  type SheetComponentProps,
+} from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
 import { max, min, replace } from 'lodash';
@@ -179,8 +183,11 @@ fetch(
 
     const App = () => {
       const s2Ref = React.useRef();
-      const onDataCellClick = ({ viewMeta, event }) => {
-        if (!viewMeta) {
+      const onDataCellClick: SheetComponentProps['onDataCellClick'] = ({
+        viewMeta,
+        event,
+      }) => {
+        if (!meta) {
           return;
         }
 

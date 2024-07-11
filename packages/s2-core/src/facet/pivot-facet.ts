@@ -157,6 +157,10 @@ export class PivotFacet extends FrozenFacet {
       fieldValue,
       rowQuery,
       colQuery,
+      query: {
+        ...rowQuery,
+        ...colQuery,
+      },
       rowId: row.id,
       colId: col.id,
       id: getDataCellId(row.id, col.id),

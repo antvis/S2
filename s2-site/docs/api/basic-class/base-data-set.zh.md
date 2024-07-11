@@ -39,7 +39,7 @@ s2.dataSet.getFieldName('type')
 ### SimpleData
 
 ```ts
-type SimpleData = string | number | null;
+type SimpleData = string | number | null | undefined;
 ```
 
 ### MultiData
@@ -222,3 +222,4 @@ interface FilterParam {
 ```
 
 <embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/docs/common/view-meta.zh.md"></embed>

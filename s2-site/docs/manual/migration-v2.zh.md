@@ -500,7 +500,7 @@ const s2Options = {
 + s2.facet.getCellMeta(rowIndex, colIndex)
 ```
 
-3. 布局结构 `layoutResult` 新增 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`
+3. 布局结构 `layoutResult` 新增 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`.
 
 ```diff
 export interface LayoutResult {
@@ -513,6 +513,47 @@ export interface LayoutResult {
 - getCellMeta: (rowIndex: number, colIndex: number) => ViewMeta
 + seriesNumberNodes?: Node[];
 + cornerNodes?: Node[];
+}
+```
+
+4. 透视表和明细表的数值单元格元数据格式统一，现在 `cellMeta` 中都包含 `query/rowQuery/colQuery`.
+
+透视表：
+
+```diff
+{
+  rowQuery: {
+    "province": "浙江省",
+    "city": "宁波市"
+  },
+  colQuery: {
+    "sub_type": "沙发",
+    "type": "家具",
+    "$$extra$$": "number"
+  },
++ query: {
++   "province": "浙江省",
++   "city": "宁波市",
++   "sub_type": "沙发",
++   "type": "家具",
++   "$$extra$$": "number"
++  }
+}
+
+明细表：
+
+```diff
+{
++  rowQuery: {
++    "rowIndex": 1,
++  },
++  colQuery: {
++    "colIndex": 2,
++  },
++  query: {
++    "rowIndex": 1,
++    "colIndex": 2
++  }
 }
 ```
 

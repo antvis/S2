@@ -478,7 +478,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public override drawBorders(): void {
-    if (!this.meta.isFrozenCorner) {
+    if (!this.meta['isFrozenCorner']) {
       return;
     }
 
