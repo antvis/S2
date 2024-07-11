@@ -481,8 +481,8 @@ to customize. [Example](/examples/react-component/tooltip#custom-hover-show-tool
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;
 
-const onRowCellHover = ({ event, meta }) => {
-   meta.spreadsheet.tooltip.show({
+const onRowCellHover = ({ event, viewMeta }) => {
+   viewMeta.spreadsheet.tooltip.show({
      position: {
        x: event.clientX,
        y: event.clientY,

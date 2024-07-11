@@ -299,8 +299,8 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   // 获取当前列数据
   const colData = s2.dataSet.getCellMultiData({ query: meta.colQuery })
 
-  console.log('当前行数据：', rowData)
   console.log('当前列数据：', colData)
+  console.log('当前行数据：', rowData)
   console.log('当前单元格数据：', meta.data)
   /**
     {
@@ -335,8 +335,8 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
     query: meta.colQuery
   })
 
-  console.log('当前行数据：', rowData) // { province: '吉林', city: '长春', type: '笔', price: 8 }
   console.log('当前列数据：', colData)
+  console.log('当前行数据：', rowData) // { province: '吉林', city: '长春', type: '笔', price: 8 }
   console.log('当前单元格数据：', meta.data) // { city: '长春' }
 })
 ```
@@ -349,9 +349,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.facet.getRowNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
+const rowCellNode = s2.facet.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.facet.getColNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&] 数量')
+const colCellNode = s2.facet.getColNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]数量')
 
 const data = s2.dataSet.getCellMultiData({
   query: {
