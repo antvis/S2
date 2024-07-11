@@ -39,6 +39,8 @@ export function getAxisStyle(cellStyle: InternalFullyCellTheme): AxisComponent {
     labelFontWeight: cellStyle.text.fontWeight,
     labelFill: cellStyle.text.fill,
     labelFillOpacity: cellStyle.text.opacity,
+    labelStroke: cellStyle.text.fill,
+    labelStrokeOpacity: cellStyle.text.fill,
 
     // tick
     tick: true,
