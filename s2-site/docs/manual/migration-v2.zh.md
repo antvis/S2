@@ -787,6 +787,13 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
 
+### 数值单元格获取数值范围区间方式变更
+
+```diff
+- dataCell.valueRangeByField
++ dataCell.getValueRange()
+```
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0

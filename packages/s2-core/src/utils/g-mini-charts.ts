@@ -262,10 +262,15 @@ export const drawInterval = (cell: DataCell) => {
       return;
     }
 
-    const valueRange = attrs.isCompare ? attrs : cell.valueRangeByField;
+    const defaultValueRange = cell.getValueRange();
+    const valueRange = attrs.isCompare ? attrs : defaultValueRange;
 
-    const minValue = parseNumberWithPrecision(valueRange.minValue!);
-    const maxValue = parseNumberWithPrecision(valueRange.maxValue!);
+    const minValue = parseNumberWithPrecision(
+      valueRange.minValue ?? defaultValueRange.minValue!,
+    );
+    const maxValue = parseNumberWithPrecision(
+      valueRange.maxValue ?? defaultValueRange.maxValue!,
+    );
 
     const fieldValue = isNil(attrs?.fieldValue)
       ? parseNumberWithPrecision(cell.getMeta().fieldValue as number)
