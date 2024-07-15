@@ -454,11 +454,11 @@ const s2Options = {
 ```diff
 const s2Options = {
 - showSeriesNumber: true,
-- seriesNumberText: '序号';
+- seriesNumberText: '序号'
 
 + seriesNumber: {
-+   enable: true;
-+   text: '序号';
++   enable: true,
++   text: '序号'
 + }
 }
 ```
