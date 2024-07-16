@@ -57,10 +57,10 @@ import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
 import { LinkGroup } from './components/LinkGroup';
+import { PivotChartSheet } from './components/PivotChartSheet';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
-
 import {
   PivotSheetFrozenOptions,
   TableSheetFrozenOptions,
@@ -1630,6 +1630,11 @@ function MainLayout() {
                 key: 'plugins',
                 label: 'AntV/G 插件系统',
                 children: <PluginsSheet />,
+              },
+              {
+                key: 'pivotChart',
+                label: '绘制透视组合图',
+                children: <PivotChartSheet />,
               },
               {
                 key: 'chart',

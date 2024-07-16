@@ -37,10 +37,10 @@ import { AxisRowHeader } from '../header/axis-row';
 import { CornerHeader } from '../header/corner';
 
 import { AxisColCell } from '../cell/axis-col-cell';
-import { AxisCornerCell } from '../cell/axis-cornor-cell';
+import { AxisCornerCell } from '../cell/axis-corner-cell';
 import { AxisRowCell } from '../cell/axis-row-cell';
 import { AxisCellType } from '../cell/cell-type';
-import type { PivotChartSheet } from '../index';
+import type { PivotChartSheet } from '../pivot-chart-sheet';
 import { separateRowColLeafNodes } from '../utils/separate-axis';
 import { CornerBBox } from './corner-bbox';
 import { Frame } from './frame';

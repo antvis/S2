@@ -12,10 +12,11 @@ import {
   RowCell,
   customMerge,
   getOrCreateResizeAreaGroupById,
+  waitForCellMounted,
 } from '@antv/s2';
 import { isFunction } from 'lodash';
 import { DEFAULT_G2_SPEC, KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
-import type { PivotChartSheet } from '../index';
+import type { PivotChartSheet } from '../pivot-chart-sheet';
 import {
   getAxisStyle,
   getAxisXOptions,
@@ -23,7 +24,6 @@ import {
   getCoordinate,
   getTheme,
 } from '../utils/chart-options';
-import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisRowCell extends RowCell {

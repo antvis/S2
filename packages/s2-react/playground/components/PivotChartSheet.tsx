@@ -2,7 +2,7 @@
 // import { renderToMountedElement, stdlib } from '@antv/g2';
 import { type SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { ChartDataConfig } from '../../__tests__/data/data-g2-chart';
+import dataCfg from '../../__tests__/data/mock-dataset.json';
 import {
   SheetComponent,
   type SheetComponentOptions,
@@ -13,24 +13,17 @@ import { usePlaygroundContext } from '../context/playground.context';
 const options: SheetComponentOptions = {
   height: 900,
   interaction: {
-    copy: { enable: true, withFormat: true },
     brushSelection: {
-      rowCell: true,
-      colCell: true,
+      rowCell: false,
+      colCell: false,
       dataCell: false,
     },
-    selectedCellMove: true,
-    selectedCellHighlight: true,
-    selectedCellsSpotlight: true,
-    hoverFocus: true,
-    hoverHighlight: false,
-    multiSelection: true,
-    overscrollBehavior: 'none',
+    hoverFocus: false,
   },
   style: {},
 };
 
-export const ChartSheet = React.forwardRef<
+export const PivotChartSheet = React.forwardRef<
   SpreadSheet,
   Partial<SheetComponentProps>
 >((props, ref) => {
@@ -40,15 +33,14 @@ export const ChartSheet = React.forwardRef<
     <SheetComponent
       {...props}
       {...context}
-      sheetType="chart"
-      dataCfg={ChartDataConfig}
+      sheetType="pivotChart"
+      dataCfg={dataCfg}
       options={options}
       ref={ref}
       adaptive={true}
       header={{
         title: 'S2 & G2',
-        description: '单元格内绘制 G2 图表',
-        export: { open: true },
+        description: '透视组合图',
       }}
     />
   );

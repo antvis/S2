@@ -7,7 +7,7 @@ import {
   PanelBBox,
   type BaseCornerOptions,
 } from '@antv/s2';
-import { AxisCornerCell } from '../cell/axis-cornor-cell';
+import { AxisCornerCell } from '../cell/axis-corner-cell';
 
 export class AxisCornerHeader extends OriginCornerHeader {
   /**

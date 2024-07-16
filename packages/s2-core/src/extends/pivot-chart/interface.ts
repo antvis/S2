@@ -10,10 +10,10 @@ import type {
   RowHeaderConfig,
 } from '@antv/s2';
 import type { AxisColCell } from './cell/axis-col-cell';
-import type { AxisCornerCell } from './cell/axis-cornor-cell';
+import type { AxisCornerCell } from './cell/axis-corner-cell';
 import type { AxisRowCell } from './cell/axis-row-cell';
 import type { AxisCellType } from './cell/cell-type';
-import type { ChartDataCell } from './cell/chart-data-cell';
+import type { PivotChartDataCell } from './cell/pivot-chart-data-cell';
 
 export type ChartCoordinate = 'cartesian' | 'polar';
 
@@ -23,7 +23,7 @@ export interface Chart {
    * 独立配置是因为要从 spec 里面判断是笛卡尔坐标还是极坐标，场景非常多，覆盖完全很困难
    */
   coordinate?: ChartCoordinate;
-  dataCellSpec?: G2Spec | ((cell: ChartDataCell) => G2Spec);
+  dataCellSpec?: G2Spec | ((cell: PivotChartDataCell) => G2Spec);
   axisRowCellSpec?: AxisComponent | ((cell: AxisRowCell) => AxisComponent);
   axisColCellSpec?: AxisComponent | ((cell: AxisColCell) => AxisComponent);
 }

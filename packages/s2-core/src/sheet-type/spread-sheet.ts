@@ -526,7 +526,7 @@ export abstract class SpreadSheet extends EE {
     removeOffscreenCanvas();
   }
 
-  private setThemeName(name: ThemeName) {
+  protected setThemeName(name: ThemeName) {
     this.themeName = name;
   }
 

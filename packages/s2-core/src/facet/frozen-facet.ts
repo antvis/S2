@@ -18,7 +18,11 @@ import type {
 } from '../common/interface/frozen';
 import type { SimpleBBox } from '../engine';
 import { FrozenGroup } from '../group/frozen-group';
-import { getValidFrozenOptions, renderLine } from '../utils';
+import {
+  getValidFrozenOptions,
+  renderLine,
+  waitForCellMounted,
+} from '../utils';
 import {
   getColsForGrid,
   getFrozenRowsForGrid,
@@ -260,8 +264,10 @@ export abstract class FrozenFacet extends BaseFacet {
       this.frozenGroups[frozenGroupType].appendChild(cell);
     }
 
-    this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
-    this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+    waitForCellMounted(() => {
+      this.spreadsheet.emit(S2Event.DATA_CELL_RENDER, cell);
+      this.spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
+    });
   };
 
   addFrozenCell = (colIndex: number, rowIndex: number, group: Group) => {

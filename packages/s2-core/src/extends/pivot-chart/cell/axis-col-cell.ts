@@ -7,10 +7,11 @@ import {
   ColCell,
   customMerge,
   getOrCreateResizeAreaGroupById,
+  waitForCellMounted,
 } from '@antv/s2';
 import { isFunction } from 'lodash';
-import type { PivotChartSheet } from '..';
 import { DEFAULT_G2_SPEC, KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
+import type { PivotChartSheet } from '../pivot-chart-sheet';
 import {
   getAxisStyle,
   getAxisXOptions,
@@ -18,7 +19,6 @@ import {
   getCoordinate,
   getTheme,
 } from '../utils/chart-options';
-import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisColCell extends ColCell {

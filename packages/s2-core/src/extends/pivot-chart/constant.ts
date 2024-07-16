@@ -1,6 +1,6 @@
 import type { G2Spec } from '@antv/g2';
 import { type S2DataConfig, type S2Options } from '@antv/s2';
-import { ChartDataCell } from './cell/chart-data-cell';
+import { PivotChartDataCell } from './cell/pivot-chart-data-cell';
 import { AxisRowColumnClick } from './interaction/axis-click';
 import { AxisHover } from './interaction/axis-hover';
 
@@ -8,7 +8,7 @@ export const DEFAULT_G2_SPEC = {
   autoFit: true,
   animate: false,
   // https://g2.antv.antgroup.com/manual/core/size
-  margin: 0,
+  margin: 1,
 };
 
 export const DEFAULT_CHART_SPEC: G2Spec = {
@@ -37,7 +37,8 @@ export const DEFAULT_OPTIONS: S2Options = {
   chart: {
     coordinate: 'cartesian',
   },
-  dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
+  dataCell: (viewMeta, spreadsheet) =>
+    new PivotChartDataCell(viewMeta, spreadsheet),
   interaction: {
     customInteractions: [
       {

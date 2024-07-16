@@ -6,6 +6,7 @@ import { ChartSheet } from './chart-sheet';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentProps } from './interface';
+import { PivotChartSheet } from './pivot-chart-sheet';
 import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
@@ -37,6 +38,8 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
           return <TableSheet {...sheetProps} />;
         case 'chart':
           return <ChartSheet {...sheetProps} />;
+        case 'pivotChart':
+          return <PivotChartSheet {...sheetProps} />;
         case 'gridAnalysis':
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':

@@ -8,8 +8,8 @@ import {
   type ViewMeta,
 } from '@antv/s2';
 import { map, unary } from 'lodash';
-import type { PivotChartSheet } from '..';
 import { X_FIELD_FORMATTER } from '../constant';
+import type { PivotChartSheet } from '../pivot-chart-sheet';
 
 export function getTheme(s2: SpreadSheet): Pick<G2Spec, 'theme'> {
   const themeName = s2.getThemeName();
