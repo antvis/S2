@@ -1,6 +1,5 @@
 import type { G2Spec } from '@antv/g2';
 import { type S2DataConfig, type S2Options } from '@antv/s2';
-import { PivotChartDataCell } from './cell/pivot-chart-data-cell';
 import { AxisRowColumnClick } from './interaction/axis-click';
 import { AxisHover } from './interaction/axis-hover';
 
@@ -37,8 +36,7 @@ export const DEFAULT_OPTIONS: S2Options = {
   chart: {
     coordinate: 'cartesian',
   },
-  dataCell: (viewMeta, spreadsheet) =>
-    new PivotChartDataCell(viewMeta, spreadsheet),
+
   interaction: {
     customInteractions: [
       {

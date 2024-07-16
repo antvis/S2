@@ -1,10 +1,5 @@
 import { Group } from '@antv/g';
-import {
-  corelib,
-  renderToMountedElement,
-  type AxisComponent,
-  type G2Spec,
-} from '@antv/g2';
+import { corelib, renderToMountedElement, type AxisComponent } from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
@@ -77,7 +72,7 @@ export class AxisRowCell extends RowCell {
     this.drawAxisShape();
   }
 
-  getChartOptions(): G2Spec {
+  getChartOptions(): AxisComponent {
     const style = this.getStyle();
 
     let customSpec = this.spreadsheet.options.chart?.axisRowCellSpec;

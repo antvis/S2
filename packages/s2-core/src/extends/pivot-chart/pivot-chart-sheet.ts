@@ -1,6 +1,5 @@
 import {
   EXTRA_FIELD,
-  PivotFacet,
   PivotSheet,
   ResizeType,
   setupDataConfig,
@@ -8,8 +7,10 @@ import {
   type S2DataConfig,
   type S2Options,
   type ThemeCfg,
+  type ViewMeta,
 } from '@antv/s2';
 import { last } from 'lodash';
+import { PivotChartDataCell } from './cell/pivot-chart-data-cell';
 import {
   DEFAULT_COL_AXIS_SIZE,
   DEFAULT_DIMENSION_SIZE,
@@ -51,11 +52,19 @@ export class PivotChartSheet extends PivotSheet {
   }
 
   protected override buildFacet(): void {
-    super.buildFacet(
-      this.isCustomRowFields() || this.isCustomColumnFields()
-        ? PivotFacet
-        : PivotChartFacet,
-    );
+    if (this.isCustomRowFields() || this.isCustomColumnFields()) {
+      super.buildFacet();
+
+      return;
+    }
+
+    const defaultCell = (viewMeta: ViewMeta) =>
+      new PivotChartDataCell(viewMeta, this);
+
+    this.options.dataCell ??= defaultCell;
+    this.facet?.destroy();
+    this.facet = this.options.facet?.(this) ?? new PivotChartFacet(this);
+    this.facet.render();
   }
 
   protected getRuntimeDefaultOptions(options: S2Options | null): S2Options {

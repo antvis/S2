@@ -51,7 +51,7 @@ export class PivotChartFacet extends PivotFacet {
 
   axisRowHeader: AxisRowHeader | null;
 
-  axisColHeader: AxisColHeader | null;
+  axisColumnHeader: AxisColHeader | null;
 
   axisCornerHeader: AxisCornerHeader | null;
 
@@ -355,9 +355,9 @@ export class PivotChartFacet extends PivotFacet {
       this.foregroundGroup.appendChild(this.axisRowHeader);
     }
 
-    this.axisColHeader = this.getAxisColHeader();
-    if (this.axisColHeader) {
-      this.foregroundGroup.appendChild(this.axisColHeader);
+    this.axisColumnHeader = this.getAxisColHeader();
+    if (this.axisColumnHeader) {
+      this.foregroundGroup.appendChild(this.axisColumnHeader);
     }
 
     this.axisCornerHeader = this.getAxisCornerHeader();
@@ -400,8 +400,8 @@ export class PivotChartFacet extends PivotFacet {
   }
 
   protected getAxisColHeader(): AxisColHeader | null {
-    if (this.axisColHeader) {
-      return this.axisColHeader;
+    if (this.axisColumnHeader) {
+      return this.axisColumnHeader;
     }
 
     const { x, width, viewportWidth, y, viewportHeight } = this.panelBBox;
@@ -445,7 +445,7 @@ export class PivotChartFacet extends PivotFacet {
       KEY_GROUP_ROW_AXIS_RESIZE_AREA,
     );
 
-    this.axisColHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
+    this.axisColumnHeader?.onColScroll(scrollX, KEY_GROUP_COL_AXIS_RESIZE_AREA);
 
     this.axisCornerHeader?.onCorScroll(
       this.getRealScrollX(scrollX, hRowScroll),
@@ -635,7 +635,7 @@ export class PivotChartFacet extends PivotFacet {
   }
 
   public getAxisColNodes(): Node[] {
-    return this.axisColHeader?.getNodes() || [];
+    return this.axisColumnHeader?.getNodes() || [];
   }
 
   /**

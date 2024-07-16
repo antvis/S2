@@ -94,6 +94,10 @@ export function getScaleY(
   value: string,
   s2: SpreadSheet,
 ): Pick<G2Spec, 'scale'> {
+  if ((s2 as PivotChartSheet).isPolarCoordinate?.()) {
+    return {};
+  }
+
   const range = s2.dataSet.getValueRangeByField(value);
 
   return {

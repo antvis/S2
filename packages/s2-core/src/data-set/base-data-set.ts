@@ -277,6 +277,15 @@ export abstract class BaseDataSet {
     return [] as unknown as Indexes;
   }
 
+  /**
+   * 获取 field 的取值范围
+   * ! 取值范围是以传入的 data 作为的值做计算
+   * ! 没有考虑总计、小计的情况，如果存在总计、小计，但是 data 里面并没有传，这里计算出来的范围就会不准确
+   * ! 表格会采用计算明细数据得出，而这些计算出来的总计、小计是和布局结构强相关
+   * ! 而要根据 totals 配置来覆盖所有情况，场景非常复杂
+   * @param field  values 中的具体数值字段
+   * @returns 对应 field 的取值范围
+   */
   public getValueRangeByField(field: string): ValueRange {
     const cacheRange = getValueRangeState(this.spreadsheet, field);
 

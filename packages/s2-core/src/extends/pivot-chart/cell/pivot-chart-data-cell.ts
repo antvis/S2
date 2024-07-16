@@ -8,6 +8,7 @@ import {
 } from '@antv/s2';
 import { isFunction } from 'lodash';
 import { DEFAULT_CHART_SPEC } from '../constant';
+import type { PivotChartSheet } from '../pivot-chart-sheet';
 import {
   getCoordinate,
   getScaleY,
@@ -28,7 +29,9 @@ export class PivotChartDataCell extends ChartDataCell {
     return {
       data,
       encode: {
-        x: xField,
+        x: (this.spreadsheet as PivotChartSheet).isPolarCoordinate()
+          ? null
+          : xField,
         y: yField,
         color: xField,
       },
