@@ -1,3 +1,16 @@
+import { TableSeriesNumberCell } from '@/cell';
+import { LINE_SEPARATOR, S2Event, TAB_SEPARATOR } from '@/common/constant';
+import {
+  InteractionStateName,
+  SortMethodType,
+} from '@/common/constant/interaction';
+import type { Meta } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
+import { CopyMIMEType } from '@/common/interface/export';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
+import { getSelectedData } from '@/utils/export/copy';
+import { convertString } from '@/utils/export/method';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { map } from 'lodash';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import {
@@ -10,21 +23,8 @@ import { getContainer } from 'tests/util/helpers';
 import type { S2CellType, S2DataConfig } from '../../../../src/common';
 import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
-import { TableSeriesNumberCell } from '@/cell';
-import { NewLine, NewTab, S2Event } from '@/common/constant';
-import {
-  InteractionStateName,
-  SortMethodType,
-} from '@/common/constant/interaction';
-import type { Meta } from '@/common/interface';
-import { Aggregation } from '@/common/interface';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import { getSelectedData } from '@/utils/export/copy';
-import { CopyMIMEType } from '@/common/interface/export';
-import { convertString } from '@/utils/export/method';
-import { getCellMeta } from '@/utils/interaction/select-event';
 
-const newLineTest = `### 问题摘要 ${NewLine}- **会话地址**：`;
+const newLineTest = `### 问题摘要 ${LINE_SEPARATOR}- **会话地址**：`;
 
 const testData = originalData.map((item, i) => {
   if (i === 0) {
@@ -123,7 +123,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(32);
+    expect(getCopyPlainContent(s2).split(LINE_SEPARATOR).length).toBe(32);
   });
 
   it('should copy row data', () => {
@@ -137,7 +137,7 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
       `"1	浙江省	舟山市	家具	桌子	4342"`,
     );
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
+    expect(getCopyPlainContent(s2).split(TAB_SEPARATOR).length).toBe(6);
   });
 
   it('should copy all data', () => {
@@ -146,10 +146,10 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchSnapshot();
-    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
-    expect(getCopyPlainContent(s2).split(NewLine)[2]).toMatchInlineSnapshot(
-      `"2	浙江省	绍兴市	家具	桌子	2367"`,
-    );
+    expect(getCopyPlainContent(s2).split(LINE_SEPARATOR).length).toBe(33);
+    expect(
+      getCopyPlainContent(s2).split(LINE_SEPARATOR)[2],
+    ).toMatchInlineSnapshot(`"2	浙江省	绍兴市	家具	桌子	2367"`);
   });
 
   it('should copy all data with header in table mode', async () => {
@@ -525,7 +525,7 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toEqual('浙江省');
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(1);
+    expect(getCopyPlainContent(s2).split(TAB_SEPARATOR).length).toBe(1);
   });
 
   it('should support custom copy matrix transformer', async () => {
@@ -759,7 +759,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell!)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(sheet).split(NewTab).length).toBe(4);
+    expect(getCopyPlainContent(sheet).split(TAB_SEPARATOR).length).toBe(4);
   });
 
   it('should copy all data in grid mode', () => {
@@ -767,9 +767,9 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getCopyPlainContent(s2).split('\n').length).toBe(COL_COUNT);
-    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
-      ROW_COUNT,
-    );
+    expect(
+      getCopyPlainContent(s2).split('\n')[1].split(TAB_SEPARATOR).length,
+    ).toBe(ROW_COUNT);
   });
 
   it('should copy format data in grid mode', async () => {
@@ -845,13 +845,13 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
 
-    const meta = [
-      { field: 'number', formatter: (v: string) => `${v}元` },
-      { field: 'province', formatter: (v: string) => `${v}-省` },
-      { field: 'city', formatter: (v: string) => `${v}-市` },
-      { field: 'type', formatter: (v: string) => `${v}-类` },
-      { field: 'sub_type', formatter: (v: string) => `${v}-子类` },
-    ] as Meta[];
+    const meta: Meta[] = [
+      { field: 'number', name: '数量', formatter: (v: unknown) => `${v}元` },
+      { field: 'province', formatter: (v: unknown) => `${v}-省` },
+      { field: 'city', name: '城市', formatter: (v: unknown) => `${v}-市` },
+      { field: 'type', formatter: (v: unknown) => `${v}-类` },
+      { field: 'sub_type', formatter: (v: unknown) => `${v}-子类` },
+    ];
 
     s2.setDataCfg(getDataCfg(meta));
 
@@ -903,9 +903,9 @@ describe('Pivot Table Core Data Process', () => {
       COL_COUNT + COL_HEADER_HEIGHT,
     );
     // 复制的数据宽度 = 行头宽度 + 数据宽度
-    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
-      5,
-    );
+    expect(
+      getCopyPlainContent(s2).split('\n')[0].split(TAB_SEPARATOR),
+    ).toHaveLength(5);
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/q3mBlV9Ii/1d68499a-b529-4594-93ce-8b04f8b4c4bc.png
@@ -931,9 +931,9 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2).split('\n')).toHaveLength(4);
-    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
-      9,
-    );
+    expect(
+      getCopyPlainContent(s2).split('\n')[0].split(TAB_SEPARATOR),
+    ).toHaveLength(9);
 
     // 选择某几行，province 维度
     s2.interaction.changeState({
@@ -942,9 +942,9 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2).split('\n')).toHaveLength(8);
-    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
-      9,
-    );
+    expect(
+      getCopyPlainContent(s2).split('\n')[0].split(TAB_SEPARATOR),
+    ).toHaveLength(9);
   });
 
   it('should copy row data with format header in grid mode', async () => {
@@ -1009,9 +1009,9 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toBe(
       COL_COUNT + COL_HEADER_HEIGHT,
     );
-    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
-      ROW_COUNT + ROW_HEADER_WIDTH,
-    );
+    expect(
+      getCopyPlainContent(s2).split('\n')[1].split(TAB_SEPARATOR).length,
+    ).toBe(ROW_COUNT + ROW_HEADER_WIDTH);
   });
 
   it('should copy correct data with data sorted in grid mode', async () => {

@@ -1,6 +1,7 @@
 import {
   PivotDataCellCopy,
   assembleMatrix,
+  getEmptyPlaceholder,
   getHeaderList,
   getNodeFormatData,
   safeJsonParse,
@@ -10,16 +11,7 @@ import {
   type SheetCopyConstructorParams,
   type ViewMeta,
 } from '@antv/s2';
-import {
-  flatten,
-  forEach,
-  get,
-  isArray,
-  isFunction,
-  isNil,
-  isObject,
-  map,
-} from 'lodash';
+import { flatten, forEach, get, isArray, isNil, isObject, map } from 'lodash';
 
 /**
  * Process the multi-measure with single-lines
@@ -53,10 +45,8 @@ class StrategyCopyData extends PivotDataCellCopy {
   private getPlaceholder = (viewMeta: ViewMeta, leafNode: Node) => {
     const label = getHeaderLabel(leafNode.value);
     const labelLength = isArray(label) ? label.length : 1;
-    const placeholder = this.spreadsheet.options.placeholder;
-    const placeholderStr = isFunction(placeholder)
-      ? placeholder(viewMeta)
-      : placeholder;
+    const { placeholder } = this.spreadsheet.options;
+    const placeholderStr = getEmptyPlaceholder(viewMeta, placeholder);
 
     return Array(labelLength).fill(placeholderStr);
   };
@@ -105,12 +95,13 @@ class StrategyCopyData extends PivotDataCellCopy {
   };
 
   protected getDataMatrixByHeaderNode = () => {
-    const { getCellMeta } = this.spreadsheet?.facet;
-
     return map(this.leafRowNodes, (rowNode) => {
       // 获取每行的数据，如果无法获取到数据则使用 placeholder 填充
       const rowVal = this.leafColNodes.map((colNode) => {
-        const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex)!;
+        const viewMeta = this.spreadsheet.facet.getCellMeta?.(
+          rowNode.rowIndex,
+          colNode.colIndex,
+        )!;
         const placeholder = this.getPlaceholder(viewMeta!, colNode);
 
         return this.processValueInRow(viewMeta, placeholder);
@@ -167,6 +158,8 @@ class StrategyCopyData extends PivotDataCellCopy {
         rowMatrix,
         cornerMatrix,
       }),
+      // https://github.com/antvis/S2/issues/2701
+      this.config.separator,
     );
   };
 }

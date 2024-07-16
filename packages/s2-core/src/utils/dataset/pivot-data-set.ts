@@ -4,15 +4,14 @@ import {
   flatMap,
   forEach,
   get,
-  indexOf,
   intersection,
   isArray,
   isEmpty,
   isNull,
   last,
   set,
-  sortBy,
 } from 'lodash';
+import type { RawData } from '../../common';
 import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
@@ -36,7 +35,6 @@ import type {
   TotalStatus,
 } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
-import type { RawData } from '../../common';
 
 export function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
@@ -442,9 +440,9 @@ export function generateExtraFieldMeta(
 
 export function getHeaderTotalStatus(row: Node, col: Node): TotalStatus {
   return {
-    isRowTotal: row.isGrandTotals!,
+    isRowGrandTotal: row.isGrandTotals!,
     isRowSubTotal: row.isSubTotals!,
-    isColTotal: col.isGrandTotals!,
+    isColGrandTotal: col.isGrandTotals!,
     isColSubTotal: col.isSubTotals!,
   };
 }
@@ -499,22 +497,32 @@ export function getSatisfiedPivotMetaValues(params: {
 
   function flattenMetaValue(list: PivotMetaValue[], field: string) {
     const allValues = flatMap(list, (metaValue) => {
-      const values = [...metaValue.children.values()];
+      const values: PivotMetaValue[] = [];
 
-      return values.filter(
-        (v) =>
+      for (const v of metaValue.children.values()) {
+        if (
           v.value !== EMPTY_EXTRA_FIELD_PLACEHOLDER &&
-          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE),
-      );
+          (queryType === QueryDataType.All ? true : v.value !== TOTAL_VALUE)
+        ) {
+          values.push(v);
+        }
+      }
+
+      return values;
     });
 
     if (list.length > 1) {
       // 从不同父维度中获取的子维度需要再排一次，比如province => city 按照字母倒序，那么在获取了所有 province 的 city 后需要再排一次
       const sortedDimensionValue = sortedDimensionValues[field] ?? [];
-
-      return sortBy(allValues, (item) =>
-        indexOf(sortedDimensionValue, item.id),
+      const indexMap = new Map(
+        sortedDimensionValue.map((id, index) => [id, index]),
       );
+
+      allValues.sort(
+        (a, b) => (indexMap.get(a.id) ?? 0) - (indexMap.get(b.id) ?? 0),
+      );
+
+      return allValues;
     }
 
     return allValues;

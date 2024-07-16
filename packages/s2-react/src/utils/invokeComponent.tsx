@@ -1,11 +1,11 @@
 import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { createRoot, type Root } from 'react-dom/client';
 import { SpreadSheetContext } from '../context/SpreadSheetContext';
+import { reactRender, reactUnmount } from './reactRender';
 
 export type InvokeComponentProps<P> = {
-  onCancel: any;
-  resolver: (val: boolean) => any;
+  onCancel: () => void;
+  resolver: (val: boolean) => void;
   params: P;
 };
 
@@ -24,20 +24,19 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
   const { id, s2, params, onCleanup, component: Component } = options;
 
   if (id) {
-    const domNode = document.querySelector(`#${id}`);
+    const container = document.querySelector(`#${id}`);
 
-    if (domNode) {
-      // const unmountResult = ReactDOM.unmountComponentAtNode(domNode);
+    if (container) {
+      const result = reactUnmount(container);
 
-      if (domNode.parentNode) {
-        domNode.parentNode.removeChild(domNode);
+      if (result && container.parentNode) {
+        container.parentNode.removeChild(container);
 
         return;
       }
     }
   }
 
-  let root: Root;
   const container = document.createElement('div');
 
   if (id) {
@@ -46,11 +45,12 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
 
   document.body.appendChild(container);
 
-  let resolveCb: (value: unknown) => void;
+  let resolveCb: (value: boolean) => void;
   let rejectCb: (reason?: unknown) => void;
 
   function destroy() {
-    root?.unmount();
+    reactUnmount(container);
+
     if (container.parentNode) {
       container.parentNode.removeChild(container);
 
@@ -60,33 +60,32 @@ export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
     }
   }
 
-  function close() {
+  function onClose() {
     destroy();
     rejectCb();
   }
 
-  const prom = new Promise((resolve, reject) => {
+  const handler = new Promise((resolve, reject) => {
     resolveCb = resolve;
     rejectCb = reject;
   }).then((val) => {
-    close();
+    onClose();
 
     return val;
   });
 
   function render() {
     setTimeout(() => {
-      root = createRoot(container!);
-
-      root.render(
+      reactRender(
         <SpreadSheetContext.Provider value={s2}>
-          <Component onCancel={close} resolver={resolveCb} params={params} />
+          <Component onCancel={onClose} resolver={resolveCb} params={params} />
         </SpreadSheetContext.Provider>,
+        container,
       );
     });
   }
 
   render();
 
-  return prom;
+  return handler;
 }

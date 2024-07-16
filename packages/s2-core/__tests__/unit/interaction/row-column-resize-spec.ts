@@ -1,36 +1,36 @@
-import {
-  Group,
-  DisplayObject,
-  type RectStyleProps,
-  type ParsedRectStyleProps,
-  Path,
-  FederatedPointerEvent,
-} from '@antv/g';
-import { get, pick } from 'lodash';
-import { createMockCellInfo } from '../../util/helpers';
+import { CustomRect } from '@/engine';
 import type { BBox } from '@/engine/interface';
-import { RootInteraction } from '@/interaction/root';
+import type { BaseFacet } from '@/facet/base-facet';
 import {
+  Node,
   PivotSheet,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-  type ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+  ResizeType,
   RowColumnResize,
   S2Event,
-  type S2Options,
   SpreadSheet,
-  type ThemeCfg,
-  Node,
-  type ViewMeta,
-  type S2DataConfig,
+  type ResizeInfo,
   type ResizeParams,
-  ResizeType,
+  type S2DataConfig,
+  type S2Options,
+  type ThemeCfg,
+  type ViewMeta,
 } from '@/index';
-import type { BaseFacet } from '@/facet/base-facet';
-import { CustomRect } from '@/engine';
+import { RootInteraction } from '@/interaction/root';
+import {
+  DisplayObject,
+  FederatedPointerEvent,
+  Group,
+  Path,
+  type ParsedRectStyleProps,
+  type RectStyleProps,
+} from '@antv/g';
+import { get, pick } from 'lodash';
+import { createMockCellInfo } from '../../util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');
@@ -251,11 +251,11 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetX: 10,
       clientX: 10,
     });
-    expect(getStartGuideLine().attr('path')).toStrictEqual([
+    expect(getStartGuideLine().attr('d')).toStrictEqual([
       ['M', 3.5, 2],
       ['L', 3.5, s2Options.height],
     ]);
-    expect(getEndGuideLine().attr('path')).toStrictEqual([
+    expect(getEndGuideLine().attr('d')).toStrictEqual([
       ['M', 5.5, 2],
       ['L', 5.5, s2Options.height],
     ]);
@@ -376,11 +376,11 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetY: 20,
       clientY: 20,
     });
-    expect(getStartGuideLine().attr('path')).toStrictEqual([
+    expect(getStartGuideLine().attr('d')).toStrictEqual([
       ['M', 2, 3.5],
       ['L', s2Options.width, 3.5],
     ]);
-    expect(getEndGuideLine().attr('path')).toStrictEqual([
+    expect(getEndGuideLine().attr('d')).toStrictEqual([
       ['M', 2, 2.5],
       ['L', s2Options.width, 2.5],
     ]);
@@ -842,5 +842,57 @@ describe('Interaction Row Column Resize Tests', () => {
     emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
 
     expect(s2.options.style!.rowCell).toMatchSnapshot();
+  });
+
+  test('should get multiple vertical filed resize style by field for selected resize type', () => {
+    // 模拟多选
+    jest
+      .spyOn(s2.interaction, 'getActiveRowCells')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-row-cell-1').mockCell,
+        createMockCellInfo('test-row-cell-2').mockCell,
+      ]);
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.rowCell).toMatchSnapshot();
+  });
+
+  test('should get multiple horizontal filed resize style by field for selected resize type', () => {
+    // 模拟多选
+    jest
+      .spyOn(s2.interaction, 'getActiveColCells')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-col-cell-1').mockCell,
+        createMockCellInfo('test-col-cell-2').mockCell,
+      ]);
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.SELECTED,
+          colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
   });
 });

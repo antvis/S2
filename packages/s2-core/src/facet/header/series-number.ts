@@ -1,32 +1,22 @@
-import { Rect } from '@antv/g';
-import { each } from 'lodash';
+import { Group } from '@antv/g';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
+import {
+  FRONT_GROUND_GROUP_FROZEN_Z_INDEX,
+  FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
+  KEY_GROUP_ROW_INDEX_FROZEN,
+  KEY_GROUP_ROW_INDEX_FROZEN_TRAILING,
+  KEY_GROUP_ROW_INDEX_SCROLL,
+  S2Event,
+} from '../../common';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panel-bbox';
+import type { FrozenFacet } from '../frozen-facet';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
-import { translateGroup } from '../utils';
-import { S2Event } from '../../common';
-import { BaseHeader } from './base';
-import type { BaseHeaderConfig } from './interface';
-import { getSeriesNumberNodes } from './util';
+import { RowHeader } from './row';
+import { getExtraFrozenSeriesNodes, getSeriesNumberNodes } from './util';
 
-export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  constructor(config: BaseHeaderConfig) {
-    super(config);
-  }
-
-  protected getCellInstance(node: Node) {
-    const headerConfig = this.getHeaderConfig();
-    const { spreadsheet } = headerConfig;
-    const { seriesNumberCell } = spreadsheet.options;
-
-    return (
-      seriesNumberCell?.(node, spreadsheet, headerConfig) ||
-      new SeriesNumberCell(node, spreadsheet, headerConfig)
-    );
-  }
-
+export class SeriesNumberHeader extends RowHeader {
   /**
    * Get seriesNumber header by config
    */
@@ -64,59 +54,50 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     });
   }
 
-  public clip(): void {
-    const { width, height, viewportHeight, position, spreadsheet } =
-      this.getHeaderConfig();
+  protected initGroups(): void {
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_SCROLL,
+        style: { zIndex: FRONT_GROUND_GROUP_SCROLL_Z_INDEX },
+      }),
+    );
 
-    this.style.clipPath = new Rect({
-      style: {
-        x: spreadsheet.facet.cornerBBox.x,
-        y: position.y,
-        width,
-        height: height + viewportHeight,
-      },
-    });
-  }
+    this.frozenGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_FROZEN,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
+    this.frozenTrailingGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_ROW_INDEX_FROZEN_TRAILING,
+        style: { zIndex: FRONT_GROUND_GROUP_FROZEN_Z_INDEX },
+      }),
+    );
 
-  public layout() {
-    const {
+    const { spreadsheet, nodes } = this.getHeaderConfig();
+
+    this.extraFrozenNodes = getExtraFrozenSeriesNodes(
+      spreadsheet.facet as FrozenFacet,
       nodes,
-      scrollY = 0,
-      viewportHeight,
-      spreadsheet,
-    } = this.getHeaderConfig();
-
-    each(nodes, (node) => {
-      const { y, height: cellHeight } = node;
-      const isHeaderCellInViewport = this.isHeaderCellInViewport({
-        cellPosition: y,
-        cellSize: cellHeight,
-        viewportPosition: scrollY,
-        viewportSize: viewportHeight,
-      });
-
-      if (!isHeaderCellInViewport) {
-        return;
-      }
-
-      const cell = this.getCellInstance(node);
-
-      node.belongsCell = cell;
-      this.appendChild(cell);
-      spreadsheet.emit(S2Event.SERIES_NUMBER_CELL_RENDER, cell);
-      spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
-    });
+    );
   }
 
-  protected offset() {
-    const { scrollY = 0, scrollX = 0, position } = this.getHeaderConfig();
+  getCellInstance(node: Node) {
+    const headerConfig = this.getHeaderConfig();
+    const { spreadsheet } = headerConfig;
+    const { seriesNumberCell } = spreadsheet.options;
 
-    translateGroup(this, position.x - scrollX, position.y - scrollY);
+    return (
+      seriesNumberCell?.(node, spreadsheet, headerConfig) ||
+      new SeriesNumberCell(node, spreadsheet, headerConfig)
+    );
   }
 
-  public getNodes(): Node[] {
-    const { nodes } = this.getHeaderConfig();
+  protected emitRenderEvent(cell: SeriesNumberCell): void {
+    const { spreadsheet } = this.getHeaderConfig();
 
-    return nodes || [];
+    spreadsheet.emit(S2Event.SERIES_NUMBER_CELL_RENDER, cell);
+    spreadsheet.emit(S2Event.LAYOUT_CELL_RENDER, cell);
   }
 }

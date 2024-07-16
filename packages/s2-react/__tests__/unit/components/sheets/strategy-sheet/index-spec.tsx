@@ -1,10 +1,19 @@
 /* eslint-disable max-classes-per-file */
 import {
+  SheetComponent,
+  StrategySheetColCell,
+  StrategySheetDataCell,
+  type SheetComponentOptions,
+} from '@/components';
+import { strategyCopy } from '@/components/export/strategy-copy';
+import {
+  CSV_SEPARATOR,
   CellType,
   CornerNodeType,
   InteractionStateName,
   RowCell,
   SpreadSheet,
+  TAB_SEPARATOR,
   customMerge,
   getCellMeta,
   type GEvent,
@@ -17,13 +26,6 @@ import {
   StrategySheetDataConfig,
 } from '../../../../data/strategy-data';
 import { getContainer, renderComponent } from '../../../../util/helpers';
-import { strategyCopy } from '@/components/export/strategy-copy';
-import {
-  SheetComponent,
-  StrategySheetColCell,
-  StrategySheetDataCell,
-  type SheetComponentOptions,
-} from '@/components';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -303,7 +305,7 @@ describe('<StrategySheet/> Tests', () => {
       await waitFor(() => {
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -322,6 +324,48 @@ describe('<StrategySheet/> Tests', () => {
       });
     });
 
+    test('should export correct data by {formatHeader: false, formatData: true}', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: TAB_SEPARATOR,
+          formatOptions: {
+            formatHeader: false,
+            formatData: true,
+          },
+        });
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data by {formatHeader: false, formatData: false}', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: TAB_SEPARATOR,
+          formatOptions: {
+            formatHeader: false,
+            formatData: false,
+          },
+        });
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
+    test('should export correct data by custom separator', async () => {
+      await waitFor(() => {
+        const result = strategyCopy({
+          sheetInstance: s2,
+          split: CSV_SEPARATOR,
+          formatOptions: true,
+        });
+
+        expect(result).toMatchSnapshot();
+      });
+    });
+
     test('should export correct data for default corner text', async () => {
       await waitFor(() => {
         s2.setOptions({
@@ -330,7 +374,7 @@ describe('<StrategySheet/> Tests', () => {
 
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -346,7 +390,7 @@ describe('<StrategySheet/> Tests', () => {
 
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -364,7 +408,7 @@ describe('<StrategySheet/> Tests', () => {
          */
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -393,7 +437,7 @@ describe('<StrategySheet/> Tests', () => {
          */
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
 
@@ -410,7 +454,7 @@ describe('<StrategySheet/> Tests', () => {
       await waitFor(() => {
         const result = strategyCopy({
           sheetInstance: s2,
-          split: '\t',
+          split: TAB_SEPARATOR,
           formatOptions: true,
         });
         const rows = result.split('\n');
@@ -531,8 +575,8 @@ describe('<StrategySheet/> Tests', () => {
     }
 
     const s2Options: SheetComponentOptions = {
-      dataCell: (viewMeta) =>
-        new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+      dataCell: (viewMeta, spreadsheet) =>
+        new CustomDataCell(viewMeta, spreadsheet),
     };
 
     renderStrategySheet(s2Options, StrategySheetDataConfig);

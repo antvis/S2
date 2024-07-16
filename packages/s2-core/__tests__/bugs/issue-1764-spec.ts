@@ -4,11 +4,11 @@
  * https://github.com/antvis/S2/issues/1780
  */
 
-import { FederatedMouseEvent } from '@antv/g';
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-1668.json';
 import type { S2Options } from '@/index';
 import { PivotSheet } from '@/sheet-type';
+import { FederatedMouseEvent } from '@antv/g';
+import * as mockDataConfig from '../data/data-issue-1668.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

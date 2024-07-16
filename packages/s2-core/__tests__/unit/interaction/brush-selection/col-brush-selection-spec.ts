@@ -1,8 +1,7 @@
-import { getContainer } from 'tests/util/helpers';
-import * as data from '../../../data/mock-dataset.json';
 import {
   ColCell,
   ColCellBrushSelection,
+  EventController,
   InteractionBrushSelectionStage,
   Node,
   PivotSheet,
@@ -11,8 +10,9 @@ import {
   SpreadSheet,
   type OriginalEvent,
   type S2DataConfig,
-  EventController,
 } from '@/index';
+import { getContainer } from 'tests/util/helpers';
+import * as data from '../../../data/mock-dataset.json';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');

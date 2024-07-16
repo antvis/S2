@@ -1,15 +1,15 @@
 /**
  * pivot mode data-set test when value in row.
  */
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import type { S2DataConfig } from '@/common/interface';
+import { Store } from '@/common/store';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
+import { PivotSheet } from '@/sheet-type';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { get, keys } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import type { S2DataConfig } from '@/common/interface';
-import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { Store } from '@/common/store';
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');

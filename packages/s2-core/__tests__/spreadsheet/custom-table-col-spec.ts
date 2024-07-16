@@ -1,6 +1,9 @@
+import type { S2DataConfig, S2Options } from '@/common/interface';
+import type { CustomRect } from '@/engine';
+import { SpreadSheet, TableSheet } from '@/sheet-type';
 import type { Group } from '@antv/g';
-import { getContainer } from 'tests/util/helpers';
 import { waitForRender } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
 import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
 import {
   customColMultipleColumns,
@@ -11,9 +14,6 @@ import {
   expectHighlightActiveNodes,
   mapCellNodeValues,
 } from '../util/interaction';
-import { SpreadSheet, TableSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common/interface';
-import type { CustomRect } from '@/engine';
 
 const s2Options: S2Options = {
   width: 600,

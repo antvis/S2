@@ -1,5 +1,5 @@
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { Node } from '@/facet/layout/node';
+import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 
 function generateChildren(height?: number | undefined) {
   const children: Node[] = [];

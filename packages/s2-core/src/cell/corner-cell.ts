@@ -1,5 +1,5 @@
 import type { PointLike } from '@antv/g';
-import { last } from 'lodash';
+import { last, values } from 'lodash';
 import {
   CellType,
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -22,8 +22,8 @@ import { renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell<CornerHeaderConfig> {
@@ -63,10 +63,16 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
       return;
     }
 
-    const { collapseAll } = this.spreadsheet.options.style?.rowCell!;
+    const { collapseFields = {} } = this.spreadsheet.options.style?.rowCell!;
     const { size = 0 } = this.getStyle()!.icon!;
     const { fill } = this.getTextStyle();
     const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const rootRowNodes = this.spreadsheet.facet.getRowNodes(0);
+    // 任意一级节点的 icon 展开/收起, 同步更新角头 icon 的状态
+    const isAllCollapsed =
+      values(collapseFields!).filter(Boolean).length === rootRowNodes.length ||
+      rootRowNodes.every((node) => node.isCollapsed);
+    const isCollapsed = isAllCollapsed;
 
     this.treeIcon = renderTreeIcon({
       group: this,
@@ -77,12 +83,12 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
         height: size,
         fill,
       },
-      isCollapsed: collapseAll,
+      isCollapsed,
       onClick: () => {
         this.spreadsheet.facet.resetScrollY();
         this.spreadsheet.emit(
           S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
-          collapseAll!,
+          isCollapsed,
         );
       },
     });
@@ -206,7 +212,7 @@ export class CornerCell extends HeaderCell<CornerHeaderConfig> {
     return this.showTreeIcon() ? size! + margin!.right! : 0;
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return (

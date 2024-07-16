@@ -18,25 +18,28 @@ import {
   isEmpty,
   isFunction,
   isNil,
+  isNumber,
   isUndefined,
   last,
   maxBy,
   reduce,
+  size,
   sumBy,
 } from 'lodash';
 import {
   ColCell,
   CornerCell,
   DataCell,
-  HeaderCell,
   MergedCell,
   RowCell,
   SeriesNumberCell,
+  TableColCell,
   TableSeriesNumberCell,
 } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
+  DEFAULT_STYLE,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -47,6 +50,7 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
+  NODE_ID_SEPARATOR,
   OriginEventType,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
@@ -62,14 +66,15 @@ import {
 } from '../common/debug';
 import type {
   AdjustLeafNodesParams,
+  CellCallbackParams,
   CellCustomSize,
   FrameConfig,
   GridInfo,
   HiddenColumnsInfo,
   LayoutResult,
-  ScrollOffsetConfig,
   S2CellType,
   ScrollChangeParams,
+  ScrollOffsetConfig,
   ViewMeta,
 } from '../common/interface';
 import type {
@@ -77,7 +82,6 @@ import type {
   CellScrollPosition,
   ScrollOffset,
 } from '../common/interface/scroll';
-import type { FrozenGroup } from '../group/frozen-group';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -95,8 +99,10 @@ import {
   Frame,
   RowHeader,
   SeriesNumberHeader,
+  type BaseHeaderConfig,
   type RowHeaderConfig,
 } from './header';
+import type { TableColHeader } from './header/table-col';
 import type { Hierarchy } from './layout/hierarchy';
 import type { ViewCellHeights } from './layout/interface';
 import { Node } from './layout/node';
@@ -126,18 +132,6 @@ export abstract class BaseFacet {
 
   public panelScrollGroup: PanelScrollGroup;
 
-  public frozenRowGroup: FrozenGroup;
-
-  public frozenColGroup: FrozenGroup;
-
-  public frozenTrailingRowGroup: FrozenGroup;
-
-  public frozenTrailingColGroup: FrozenGroup;
-
-  public frozenTopGroup: FrozenGroup;
-
-  public frozenBottomGroup: FrozenGroup;
-
   // render header/corner/scrollbar/resize
   public foregroundGroup: Group;
 
@@ -163,7 +157,7 @@ export abstract class BaseFacet {
 
   public rowHeader: RowHeader | null;
 
-  public columnHeader: ColHeader;
+  public columnHeader: ColHeader | TableColHeader;
 
   public cornerHeader: CornerHeader;
 
@@ -172,6 +166,24 @@ export abstract class BaseFacet {
   public centerFrame: Frame;
 
   public gridInfo: GridInfo;
+
+  protected textWrapNodeHeightCache: Map<string, number>;
+
+  protected textWrapTempRowCell: RowCell | DataCell;
+
+  protected textWrapTempColCell: ColCell | TableColCell;
+
+  protected abstract getRowCellInstance(
+    node: Node | ViewMeta,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): RowCell | DataCell;
+
+  protected abstract getColCellInstance(
+    node: Node,
+    spreadsheet: SpreadSheet,
+    config: Partial<BaseHeaderConfig>,
+  ): ColCell;
 
   protected abstract doLayout(): LayoutResult;
 
@@ -194,11 +206,6 @@ export abstract class BaseFacet {
     rowIndex: number,
     colIndex: number,
   ): ViewMeta | null;
-
-  protected abstract getColNodeHeight(
-    colNode: Node,
-    colsHierarchy: Hierarchy,
-  ): number;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
@@ -228,19 +235,27 @@ export abstract class BaseFacet {
     };
   };
 
+  protected initTextWrapTemp() {
+    const node = {} as Node;
+    const args: CellCallbackParams = [
+      node,
+      this.spreadsheet,
+      { shallowRender: true } as BaseHeaderConfig,
+    ];
+
+    this.textWrapTempRowCell = this.getRowCellInstance(...args);
+    this.textWrapTempColCell = this.getColCellInstance(...args);
+    this.textWrapNodeHeightCache = new Map();
+  }
+
   protected initGroups() {
-    const container = this.spreadsheet.container;
-
-    this.backgroundGroup = container.appendChild(
-      new Group({
-        name: KEY_GROUP_BACK_GROUND,
-        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
-      }),
-    );
-
+    this.initBackgroundGroup();
     this.initPanelGroups();
+    this.initForegroundGroup();
+  }
 
-    this.foregroundGroup = container.appendChild(
+  private initForegroundGroup() {
+    this.foregroundGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_FORE_GROUND,
         style: { zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX },
@@ -248,10 +263,17 @@ export abstract class BaseFacet {
     );
   }
 
-  protected initPanelGroups() {
-    const container = this.spreadsheet.container;
+  private initBackgroundGroup() {
+    this.backgroundGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_BACK_GROUND,
+        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
 
-    this.panelGroup = container.appendChild(
+  protected initPanelGroups() {
+    this.panelGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_PANEL_GROUND,
         style: { zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX },
@@ -286,16 +308,30 @@ export abstract class BaseFacet {
     );
   }
 
-  protected getRowCellHeight(node: Node): number {
-    const { rowCell, dataCell } = this.spreadsheet.options.style!;
+  protected isCustomRowCellHeight(node: Node) {
+    const { dataCell } = this.spreadsheet.options.style!;
+    const defaultDataCellHeight = DEFAULT_STYLE.dataCell?.height;
 
-    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return (
+      isNumber(this.getCustomRowCellHeight(node)) ||
+      dataCell?.height !== defaultDataCellHeight
+    );
+  }
+
+  protected getCustomRowCellHeight(node: Node) {
+    const { rowCell } = this.spreadsheet.options.style!;
+
     return (
       this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCell?.height) ??
-      dataCell?.height ??
-      0
+      this.getCellCustomSize(node, rowCell?.height)
     );
+  }
+
+  protected getRowCellHeight(node: Node): number | undefined {
+    const { dataCell } = this.spreadsheet.options.style!;
+
+    // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
+    return this.getCustomRowCellHeight(node) ?? dataCell?.height;
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
@@ -315,10 +351,49 @@ export abstract class BaseFacet {
     );
   }
 
+  protected getColNodeHeight(
+    colNode: Node,
+    colsHierarchy: Hierarchy,
+    useCache: boolean = true,
+  ) {
+    if (!colNode) {
+      return 0;
+    }
+
+    const { colCell: colCellStyle } = this.spreadsheet.options.style!;
+    // 优先级: 列头拖拽 > 列头自定义高度 > 多行文本自适应高度 > 通用单元格高度
+    const height =
+      this.getColCellDraggedHeight(colNode) ??
+      this.getCellCustomSize(colNode, colCellStyle?.height);
+
+    if (isNumber(height) && height !== DEFAULT_STYLE.colCell?.height) {
+      return height;
+    }
+
+    const isEnableHeightAdaptive =
+      colCellStyle?.maxLines! > 1 && colCellStyle?.wordWrap;
+    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
+
+    if (!isEnableHeightAdaptive) {
+      return defaultHeight;
+    }
+
+    return this.getNodeAdaptiveHeight(
+      colNode,
+      this.textWrapTempColCell,
+      defaultHeight,
+      useCache,
+    );
+  }
+
   protected getDefaultColNodeHeight(
     colNode: Node,
     colsHierarchy: Hierarchy,
   ): number {
+    if (!colNode) {
+      return 0;
+    }
+
     const { colCell } = this.spreadsheet.options.style!;
 
     // 当前层级高度最大的单元格
@@ -336,22 +411,47 @@ export abstract class BaseFacet {
     return Math.max(defaultHeight, sampleMaxHeight);
   }
 
-  protected getCellAdaptiveHeight(cell: HeaderCell, defaultHeight: number) {
-    if (!cell) {
+  protected getNodeAdaptiveHeight(
+    meta: Node | ViewMeta,
+    cell: S2CellType,
+    defaultHeight: number = 0,
+    useCache = true,
+  ) {
+    if (!meta) {
       return defaultHeight;
     }
 
-    const { padding } = cell.getStyle().cell;
+    // 共用一个单元格用于测量, 通过动态更新 meta 的方式, 避免数据量大时频繁实例化触发 GC
+    cell.setMeta({ ...meta, shallowRender: true } as Node & ViewMeta);
+
+    const fieldValue = String(cell.getFieldValue());
+
+    if (!fieldValue) {
+      return defaultHeight;
+    }
+
+    const maxTextWidth = Math.ceil(cell.getMaxTextWidth());
+    // 相同文本长度, 并且单元格宽度一致, 无需再计算换行高度, 使用缓存
+    const cacheKey = `${size(fieldValue)}${NODE_ID_SEPARATOR}${maxTextWidth}`;
+    const cacheHeight = this.textWrapNodeHeightCache.get(cacheKey);
+
+    if (cacheHeight && useCache) {
+      return cacheHeight || defaultHeight;
+    }
 
     cell.drawTextShape();
 
-    const { parsedStyle } = cell.getTextShape();
+    const { padding } = cell.getStyle().cell;
     const textHeight = cell.getActualTextHeight();
     const adaptiveHeight = textHeight + padding.top + padding.bottom;
+    const height =
+      cell.isMultiLineText() && textHeight >= defaultHeight
+        ? adaptiveHeight
+        : defaultHeight;
 
-    return parsedStyle?.maxLines! > 1 && textHeight >= defaultHeight
-      ? adaptiveHeight
-      : defaultHeight;
+    this.textWrapNodeHeightCache.set(cacheKey, height);
+
+    return height;
   }
 
   /**
@@ -504,7 +604,7 @@ export abstract class BaseFacet {
     this.renderHeaders();
     this.renderScrollBars();
     this.renderBackground();
-    this.dynamicRenderCell();
+    this.dynamicRenderCell(true);
   }
 
   /**
@@ -594,6 +694,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    this.textWrapNodeHeightCache.clear();
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
@@ -676,6 +777,11 @@ export abstract class BaseFacet {
     this.viewCellHeights = this.getViewCellHeights();
   };
 
+  /**
+   * 提供给明细表做 rowOffsets 计算的 hook
+   */
+  protected abstract calculateRowOffsets(): void;
+
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
     this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
 
@@ -708,7 +814,7 @@ export abstract class BaseFacet {
     return heights.getTotalHeight();
   };
 
-  clearAllGroup() {
+  public clearAllGroup() {
     const { children = [] } = this.panelGroup;
 
     for (let i = children.length - 1; i >= 0; i--) {
@@ -880,25 +986,25 @@ export abstract class BaseFacet {
         ScrollType.ScrollChange,
         ({ offset }: ScrollChangeParams) => {
           const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-          const rowHeaderScrollX = floor(newOffset);
+          const newRowHeaderScrollX = floor(newOffset);
 
-          this.setScrollOffset({ rowHeaderScrollX });
+          this.setScrollOffset({ rowHeaderScrollX: newRowHeaderScrollX });
 
           this.rowHeader?.onRowScrollX(
-            rowHeaderScrollX,
+            newRowHeaderScrollX,
             KEY_GROUP_ROW_RESIZE_AREA,
           );
           this.seriesNumberHeader?.onRowScrollX(
-            rowHeaderScrollX,
+            newRowHeaderScrollX,
             KEY_GROUP_ROW_INDEX_RESIZE_AREA,
           );
           this.cornerHeader.onRowScrollX(
-            rowHeaderScrollX,
+            newRowHeaderScrollX,
             KEY_GROUP_CORNER_RESIZE_AREA,
           );
 
           const scrollBarOffsetX = this.getScrollBarOffset(
-            rowHeaderScrollX,
+            newRowHeaderScrollX,
             this.hRowScrollBar,
           );
 
@@ -982,7 +1088,7 @@ export abstract class BaseFacet {
     }
   };
 
-  private getScrollbarPosition = () => {
+  protected getScrollbarPosition() {
     const { maxX, maxY } = this.panelBBox;
     const { width, height } = this.getCanvasSize();
     const isContentMode =
@@ -991,9 +1097,9 @@ export abstract class BaseFacet {
 
     return {
       maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
-      maxY: isContentMode ? maxY : height - this.scrollBarSize,
+      maxY: (isContentMode ? maxY : height) - this.scrollBarSize,
     };
-  };
+  }
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {
@@ -1224,6 +1330,9 @@ export abstract class BaseFacet {
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
+    const { scrollX: currentScrollX, rowHeaderScrollX } =
+      this.getScrollOffset();
+
     const { shiftKey } = event;
 
     // Windows 环境，按住 shift 时，固定为水平方向滚动，macOS 环境默认有该行为
@@ -1265,6 +1374,34 @@ export abstract class BaseFacet {
       return;
     }
 
+    if (
+      this.scrollDirection !== undefined &&
+      this.scrollDirection !==
+        (optimizedDeltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT)
+    ) {
+      this.scrollDirection =
+        optimizedDeltaX > 0
+          ? ScrollDirection.SCROLL_LEFT
+          : ScrollDirection.SCROLL_RIGHT;
+
+      this.updateHorizontalRowScrollOffset({
+        offsetX,
+        offsetY,
+        offset: rowHeaderScrollX,
+      });
+      this.updateHorizontalScrollOffset({
+        offsetX,
+        offsetY,
+        offset: currentScrollX,
+      });
+
+      return;
+    }
+
+    this.scrollDirection =
+      deltaX > 0 ? ScrollDirection.SCROLL_LEFT : ScrollDirection.SCROLL_RIGHT;
     this.scrollFrameId = requestAnimationFrame(() => {
       const {
         scrollX: currentScrollX,
@@ -1357,7 +1494,10 @@ export abstract class BaseFacet {
         const viewMeta = this.getCellMeta(j, i);
 
         if (viewMeta) {
-          const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
+          const cell = this.spreadsheet.options.dataCell?.(
+            viewMeta,
+            this.spreadsheet,
+          )!;
 
           if (!cell) {
             return;
@@ -1398,6 +1538,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initTextWrapTemp();
     this.initGroups();
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
@@ -1411,6 +1552,7 @@ export abstract class BaseFacet {
 
     // all cell's width&height
     this.calculateCellWidthHeight();
+    this.calculateRowOffsets();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
     this.bindEvents();
@@ -1513,7 +1655,7 @@ export abstract class BaseFacet {
     return this.rowHeader;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 
@@ -1719,7 +1861,7 @@ export abstract class BaseFacet {
    * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
    * -------------------------------------------------
    */
-  public adjustRowLeafNodesWidth(params: AdjustLeafNodesParams) {
+  public adjustCustomRowLeafNodesWidth(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomRowFields()) {
       return;
     }
@@ -1737,7 +1879,7 @@ export abstract class BaseFacet {
    * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
    * ----------------------------------------------------------------------
    */
-  public adjustColLeafNodesHeight(params: AdjustLeafNodesParams) {
+  public adjustCustomColLeafNodesHeight(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomColumnFields()) {
       return;
     }
@@ -1838,6 +1980,16 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取在索引范围内的列头叶子节点
+   * @example facet.getColLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的列头叶子节点
+   */
+  public getColLeafNodesByRange(minIndex: number, maxIndex: number) {
+    return this.getColLeafNodes().filter(
+      (node) => node.colIndex >= minIndex && node.colIndex <= maxIndex,
+    );
+  }
+
+  /**
    * 根据列头索引获取指定列头叶子节点
    * @example facet.getColLeafNodes(colIndex)
    */
@@ -1857,7 +2009,7 @@ export abstract class BaseFacet {
    * 获取列头叶子节点节点 (含非可视区域)
    */
   public getColLeafNodes(): Node[] {
-    return this.layoutResult.colLeafNodes || [];
+    return this.layoutResult?.colLeafNodes || [];
   }
 
   /**
@@ -1928,6 +2080,16 @@ export abstract class BaseFacet {
   }
 
   /**
+   * 获取在索引范围内的行头叶子节点
+   * @example facet.getRowLeafNodesByRange(0,10) 获取索引范围在 0（包括 0） 到 10（包括 10）的行头叶子节点
+   */
+  public getRowLeafNodesByRange(minIndex: number, maxIndex: number) {
+    return this.getRowLeafNodes().filter(
+      (node) => node.rowIndex >= minIndex && node.rowIndex <= maxIndex,
+    );
+  }
+
+  /**
    * 根据 field 获取行头节点
    * @example facet.getRowNodeByField('number')
    */
@@ -1940,7 +2102,7 @@ export abstract class BaseFacet {
    * @example 获取全部: facet.getRowLeafNodes()
    */
   public getRowLeafNodes(): Node[] {
-    return this.layoutResult.rowLeafNodes || [];
+    return this.layoutResult?.rowLeafNodes || [];
   }
 
   /**
@@ -2051,10 +2213,12 @@ export abstract class BaseFacet {
    * 获取角头单元格 (不含可视区域)
    */
   public getCornerCells(): CornerCell[] {
-    return filter(
-      this.getCornerHeader().children,
-      (element: CornerCell) => element instanceof CornerCell,
-    ) as unknown[] as CornerCell[];
+    const headerChildren = (this.getCornerHeader()?.children ||
+      []) as CornerCell[];
+
+    return getAllChildCells(headerChildren, CornerCell).filter(
+      (cell: S2CellType) => cell.cellType === CellType.CORNER_CELL,
+    );
   }
 
   /**

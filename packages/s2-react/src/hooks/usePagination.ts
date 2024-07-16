@@ -1,14 +1,23 @@
-import React from 'react';
-import { S2Event, SpreadSheet } from '@antv/s2';
+import { S2Event, SpreadSheet, type Pagination } from '@antv/s2';
 import type { LayoutPaginationParams } from '@antv/s2-shared';
-import { get, isEmpty } from 'lodash';
 import { useUpdateEffect } from 'ahooks';
-import type { SheetComponentsProps } from '../components';
+import type { PaginationProps as AntdPaginationProps } from 'antd';
+import { get, isEmpty } from 'lodash';
+import React from 'react';
+import type { SheetComponentProps } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
-export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
+export const usePagination = (
+  s2: SpreadSheet,
+  props: SheetComponentProps,
+): {
+  showPagination: boolean;
+  pagination: Pagination;
+  onShowSizeChange: AntdPaginationProps['onShowSizeChange'];
+  onChange: AntdPaginationProps['onChange'];
+} => {
   const { options, showPagination } = props;
 
   const paginationCfg = options?.pagination;
@@ -37,15 +46,19 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
 
   // sync state.pagination -> s2.pagination
   useUpdateEffect(() => {
-    if (!s2 || isEmpty(paginationCfg)) {
-      return;
-    }
+    const render = async () => {
+      if (!s2 || isEmpty(paginationCfg)) {
+        return;
+      }
 
-    s2.updatePagination({
-      current: pagination.current,
-      pageSize: pagination.pageSize,
-    });
-    s2.render(false);
+      s2.updatePagination({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+      });
+      await s2.render(false);
+    };
+
+    render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination.current, pagination.pageSize, s2]);
 

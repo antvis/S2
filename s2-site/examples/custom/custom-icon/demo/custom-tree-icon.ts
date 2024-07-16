@@ -24,11 +24,11 @@ fetch(
       customSVGIcons: [
         {
           name: 'Plus',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/kXgP1pnClS/plus.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/kXgP1pnClS/plus.svg',
         },
         {
           name: 'Minus',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/2aWYZ7%26rQF/minus-circle.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/2aWYZ7%26rQF/minus-circle.svg',
         },
       ],
     };

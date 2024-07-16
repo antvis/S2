@@ -3,28 +3,22 @@ import { Image as GImage } from '@antv/g';
 
 /**
  * 自定义 RowCell，给行头添加背景图
- * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
+ * 查看更多方法: https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/row-cell.ts
  */
 class CustomRowCell extends RowCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
   drawBackgroundShape() {
-    const img = new Image();
-
-    img.src =
+    const url =
       'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
 
-    img.onload = () => {
-      this.backgroundShape = this.appendChild(
-        new GImage({
-          style: {
-            ...this.getBBoxByType(),
-            img,
-          },
-        }),
-      );
-
-      this.drawTextShape();
-    };
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          src: url,
+        },
+      }),
+    );
   }
 }
 

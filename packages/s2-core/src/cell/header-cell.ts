@@ -75,7 +75,7 @@ export abstract class HeaderCell<
   }
 
   public isShallowRender() {
-    return this.headerConfig.shallowRender!;
+    return super.isShallowRender() || this.headerConfig.shallowRender!;
   }
 
   protected shouldInit() {
@@ -120,8 +120,14 @@ export abstract class HeaderCell<
     // 为什么有排序参数就不展示 actionIcon 了？背景不清楚，先照旧处理
     if (this.showSortIcon()) {
       this.actionIconConfig = {
-        icons: [{ name: get(sortParam, 'type', 'none'), position: 'right' }],
-        belongsCell: this.cellType,
+        icons: [
+          {
+            name: sortParam?.type || 'none',
+            position: 'right',
+          },
+        ],
+        belongsCell: this
+          .cellType as InternalFullyHeaderActionIcon['belongsCell'],
         isSortIcon: true,
       };
     } else {
@@ -203,7 +209,10 @@ export abstract class HeaderCell<
       width: icon?.size,
       height: icon?.size,
       // 优先级: 单个 icon 颜色配置 > 全部 icon 颜色配置 > 主题 icon 颜色配置 > 文本默认颜色
-      fill: options?.fill || icon?.fill || defaultTextFill,
+      fill:
+        options.fill === null
+          ? undefined
+          : options?.fill || icon?.fill || defaultTextFill,
       cursor: 'pointer',
     };
   }
@@ -223,9 +232,7 @@ export abstract class HeaderCell<
       y,
     });
 
-    // 默认隐藏，hover 可见
-    icon.setAttribute('visibility', defaultHide ? 'hidden' : 'visible');
-
+    icon.toggleVisibility(!defaultHide);
     icon.addEventListener('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
       onHover?.({
@@ -329,7 +336,7 @@ export abstract class HeaderCell<
 
   protected isSortCell() {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
-    const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
+    const isValueInCols = this.spreadsheet?.isValueInCols?.();
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
 
     if (isValueInCols) {
@@ -423,7 +430,7 @@ export abstract class HeaderCell<
       forEach(this.actionIcons, (icon) => {
         // 仅存储当前不可见的 icon
         if (icon.parsedStyle.visibility !== 'visible') {
-          icon.setAttribute('visibility', 'visible');
+          icon.toggleVisibility(true);
           visibleActionIcons.push(icon);
         }
       });

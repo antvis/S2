@@ -1,4 +1,5 @@
 import type { LineStyleProps, TextStyleProps } from '@antv/g';
+import type { Omit } from 'lodash';
 import type { CellType } from '../../common/constant/interaction';
 import type { InteractionStateName } from '../constant';
 import type { PALETTE_MAP } from '../constant/theme';
@@ -69,9 +70,29 @@ export interface Padding {
   left?: number;
 }
 
-export interface Background {
+export interface BackgroundTheme {
   opacity?: number;
   color?: string;
+}
+
+export interface EmptyTheme {
+  /** 空状态图标 */
+  icon?: Omit<IconTheme, 'size'> & {
+    width?: number;
+    height?: number;
+  };
+
+  /** 空状态文案 */
+  description?: Pick<
+    TextStyleProps,
+    | 'fontFamily'
+    | 'fontSize'
+    | 'fontWeight'
+    | 'fill'
+    | 'opacity'
+    | 'fontStyle'
+    | 'fontVariant'
+  >;
 }
 
 export interface InteractionStateTheme {
@@ -265,17 +286,24 @@ export interface SplitLine {
   /** 分割线虚线 */
   borderDash?: LineStyleProps['lineDash'];
 }
+
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
-  /** 粗体文本样式 */
+  /**
+   * 粗体文本样式 (如: 总计, 小计, 行列头非叶子节点文本)
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/cell-align#%E8%A1%8C%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F
+   */
   bolderText?: TextTheme;
 
-  /** 文本样式 */
+  /** 文本样式 (如: 数值, 行列头叶子节点文本) */
   text?: TextTheme;
 
-  /** 序号样式 */
+  /** 序号文本样式 */
   seriesText?: TextTheme;
 
-  /** 度量值文本样式 */
+  /**
+   * 度量值文本样式 (如: 数值挂行/列头时, 行列头所对应的虚拟数值单元格文本)
+   * @see https://s2.antv.antgroup.com/manual/advanced/custom/cell-align#%E5%88%97%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F
+   */
   measureText?: TextTheme;
 
   /** 单元格样式 */
@@ -321,7 +349,10 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
 
   /** 画布背景底色 */
-  background?: Background;
+  background?: BackgroundTheme;
+
+  /** 空数据占位符 */
+  empty?: EmptyTheme;
 }
 
 export type ThemeName = keyof typeof PALETTE_MAP;

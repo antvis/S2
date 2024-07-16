@@ -1,8 +1,9 @@
+// organize-imports-ignore
 import React from 'react';
-import { isNil } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { isNil } from 'lodash';
 
 // 临时处理老数据格式
 function process(children) {
@@ -24,7 +25,9 @@ fetch(
     const s2Options: SheetComponentOptions = {
       width: 1200,
       height: 600,
-      placeholder: '',
+      placeholder: {
+        cell: '',
+      },
       hierarchyType: 'tree',
       cornerText: '指标',
       style: {

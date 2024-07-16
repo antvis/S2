@@ -1,5 +1,5 @@
-import React from 'react';
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import React from 'react';
 import type { TooltipInfosProps } from '../interface';
 
 export const TooltipInfos: React.FC<TooltipInfosProps> = React.memo((props) => {

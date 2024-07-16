@@ -1,6 +1,7 @@
-import { createPivotSheet } from 'tests/util/helpers';
 import type { TextAlign } from '@/common';
 import type { SpreadSheet } from '@/sheet-type';
+import { createPivotSheet } from 'tests/util/helpers';
+import { RowCell } from '../../../src/cell/row-cell';
 
 describe('Row Cell Tests', () => {
   describe('Link Shape Tests', () => {
@@ -187,6 +188,24 @@ describe('Row Cell Tests', () => {
 
       expect(rowCell2.getActualText()).toEqual('杭州');
       expect(rowCell2.getBackgroundShape().style.fill).toEqual(defaultColor);
+    });
+  });
+
+  describe('Tree Icon Tests', () => {
+    test('should render tree icon', async () => {
+      const s2 = createPivotSheet({
+        width: 800,
+        height: 600,
+        hierarchyType: 'tree',
+      });
+
+      await s2.render();
+      const icons = s2.facet
+        .getRowNodes()
+        .map((rowNode) => (rowNode.belongsCell as RowCell).getTreeIcon())
+        .filter(Boolean);
+
+      expect(icons).toHaveLength(1);
     });
   });
 });

@@ -30,19 +30,7 @@ class HiddenInteraction extends BaseEvent {
   }
 }
 
-class ContextMenuInteraction extends BaseEvent {
-  bindEvents() {
-    // 禁止弹出右键菜单
-    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      event?.preventDefault?.();
-      console.log('右键', event);
-    });
-  }
-}
-
-fetch(
-  'https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json',
-)
+fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
   .then(async (data) => {
     const container = document.getElementById('container');
@@ -86,10 +74,6 @@ fetch(
           {
             key: 'HiddenInteraction',
             interaction: HiddenInteraction,
-          },
-          {
-            key: 'ContextMenuInteraction',
-            interaction: ContextMenuInteraction,
           },
         ],
       },

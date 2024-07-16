@@ -1,10 +1,10 @@
 import EE from '@antv/event-emitter';
-import { easeCubicIn as easeFunc } from 'd3-ease';
 import type {
   Canvas,
   FederatedPointerEvent,
   FederatedWheelEvent,
 } from '@antv/g';
+import { easeCubicIn as easeFunc } from 'd3-ease';
 import { OriginEventType } from '../../common';
 
 /** 获取执行时间戳 */

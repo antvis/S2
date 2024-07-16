@@ -1,24 +1,19 @@
-import {
-  BaseTooltip,
-  isMobile,
-  MOBILE_TOOLTIP_PREFIX_CLS,
-  SpreadSheet,
-} from '@antv/s2';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
+import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { LeftOutlined } from '@ant-design/icons';
-import { Drawer } from 'antd';
-import { startsWith } from 'lodash';
-// eslint-disable-next-line react/no-deprecated
-import { render, unmountComponentAtNode, version } from 'react-dom';
-import { createRoot, type Root } from 'react-dom/client';
-import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
+import {
+  forceClearContent,
+  reactRender,
+  reactUnmount,
+} from '../../utils/reactRender';
 import { ConfigProvider } from '../config-provider';
+import { TooltipComponent } from './index';
 import type {
   TooltipOperatorMenuOptions,
   TooltipRenderProps,
 } from './interface';
-import { TooltipComponent } from './index';
-import './style.less';
 
 /**
  * 自定义 Tooltip 组件, 兼容 React 18 参考如下
@@ -28,10 +23,6 @@ export class CustomTooltip extends BaseTooltip<
   React.ReactNode,
   TooltipOperatorMenuOptions
 > {
-  root: Root;
-
-  isLegacyReactVersion = !startsWith(version, '18');
-
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
   }
@@ -60,37 +51,14 @@ export class CustomTooltip extends BaseTooltip<
       this.forceClearContent();
     }
 
-    const Content = this.isMobileDevice() ? (
-      <Drawer
-        rootClassName={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
-        title={cell?.getActualText()}
-        open={this.visible}
-        closeIcon={<LeftOutlined />}
-        placement="right"
-        width={MOBILE_DRAWER_WIDTH}
-        onClose={() => {
-          this.hide();
-        }}
-      >
-        <TooltipComponent {...tooltipProps} content={content} />
-      </Drawer>
-    ) : (
-      <TooltipComponent {...tooltipProps} content={content} />
-    );
-
     const themeName = this.spreadsheet.getThemeName();
     const TooltipContent = (
-      <ConfigProvider themeName={themeName}>{Content}</ConfigProvider>
+      <ConfigProvider themeName={themeName}>
+        <TooltipComponent {...tooltipProps} content={content} />
+      </ConfigProvider>
     );
 
-    if (this.isLegacyReactVersion) {
-      render(TooltipContent, this.container);
-
-      return;
-    }
-
-    this.root ??= createRoot(this.container!);
-    this.root.render(TooltipContent);
+    reactRender(TooltipContent, this.container!);
   }
 
   hide() {
@@ -106,25 +74,10 @@ export class CustomTooltip extends BaseTooltip<
   }
 
   forceClearContent() {
-    if (this.isLegacyReactVersion) {
-      this.unmount();
-
-      return;
-    }
-
-    this.root?.render(null);
+    forceClearContent(this.container!);
   }
 
   unmount() {
-    if (this.isLegacyReactVersion && this.container!) {
-      unmountComponentAtNode(this.container);
-
-      return;
-    }
-
-    // https://github.com/facebook/react/issues/25675#issuecomment-1363957941
-    Promise.resolve().then(() => {
-      this.root?.unmount();
-    });
+    reactUnmount(this.container!);
   }
 }

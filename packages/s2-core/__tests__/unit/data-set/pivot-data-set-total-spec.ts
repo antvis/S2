@@ -1,11 +1,6 @@
 /**
  * pivot mode base data-set test.
  */
-import { get, keys } from 'lodash';
-import * as mockData from 'tests/data/mock-dataset.json';
-import * as multiDataCfg from 'tests/data/simple-data.json';
-import type { Query } from '../../../src/data-set/interface';
-import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 import {
   EXTRA_FIELD,
   ORIGIN_FIELD,
@@ -13,15 +8,17 @@ import {
   TOTAL_VALUE,
   VALUE_FIELD,
 } from '@/common/constant';
-import {
-  Aggregation,
-  type CalcTotals,
-  type S2DataConfig,
-} from '@/common/interface';
+import { Aggregation, type S2DataConfig } from '@/common/interface';
 import { Store } from '@/common/store';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
+import { get, keys } from 'lodash';
+import * as mockData from 'tests/data/mock-dataset.json';
+import * as multiDataCfg from 'tests/data/simple-data.json';
+import { CalcTotals, SpreadSheet } from '../../../src';
+import type { Query } from '../../../src/data-set/interface';
+import { TOTALS_OPTIONS, assembleDataCfg } from '../../util';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
@@ -425,6 +422,8 @@ describe('Pivot Dataset Total Test', () => {
     });
 
     describe('getCellData function when totals calculated by calcFunc', () => {
+      let s2: SpreadSheet | undefined;
+
       beforeEach(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
@@ -432,7 +431,8 @@ describe('Pivot Dataset Total Test', () => {
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
 
-        const calcFunc1: CalcTotals['calcFunc'] = (_, data) => {
+        const calcFunc1: CalcTotals['calcFunc'] = (_, data, spreadsheet) => {
+          s2 = spreadsheet;
           const sum = data.reduce(
             (pre, next) => pre + (next[VALUE_FIELD] as number),
             0,
@@ -441,7 +441,8 @@ describe('Pivot Dataset Total Test', () => {
           return sum * 2;
         };
 
-        const calcFunc2: CalcTotals['calcFunc'] = (_, data) => {
+        const calcFunc2: CalcTotals['calcFunc'] = (_, data, spreadsheet) => {
+          s2 = spreadsheet;
           const sum = data.reduce(
             (pre, next) => pre + (next[VALUE_FIELD] as number),
             0,
@@ -482,11 +483,15 @@ describe('Pivot Dataset Total Test', () => {
         dataSet.setDataCfg(dataCfg);
       });
 
+      afterEach(() => {
+        s2 = undefined;
+      });
+
       test('should get correct total cell data when totals calculated by calcFunc and Existential dimension grouping', () => {
         const totalStatus = {
-          isRowTotal: true,
-          isColTotal: true,
+          isRowGrandTotal: true,
           isRowSubTotal: true,
+          isColGrandTotal: true,
           isColSubTotal: true,
         };
 
@@ -535,6 +540,8 @@ describe('Pivot Dataset Total Test', () => {
             totalStatus,
           })?.[VALUE_FIELD],
         ).toEqual(32418);
+
+        expect(s2).toBeDefined();
       });
 
       test('should get correct total cell data when totals calculated by calcFunc', () => {
@@ -602,6 +609,8 @@ describe('Pivot Dataset Total Test', () => {
             isTotals: true,
           })?.[ORIGIN_FIELD],
         ).toContainEntries([['number', 78868]]);
+
+        expect(s2).toBeDefined();
       });
     });
 
@@ -713,53 +722,53 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct total status', () => {
       const {
-        isRowTotal: isRowTotal1,
+        isRowGrandTotal: isRowGrandTotal1,
         isRowSubTotal: isRowSubTotal1,
-        isColTotal: isColTotal1,
+        isColGrandTotal: isColGrandTotal1,
         isColSubTotal: isColSubTotal1,
       } = dataSet.getTotalStatus({
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal1).toBeTrue();
+      expect(isRowGrandTotal1).toBeTrue();
       expect(isRowSubTotal1).toBeFalse();
-      expect(isColTotal1).toBeTrue();
+      expect(isColGrandTotal1).toBeTrue();
       expect(isColSubTotal1).toBeFalse();
 
       const {
-        isRowTotal: isRowTotal2,
+        isRowGrandTotal: isRowGrandTotal2,
         isRowSubTotal: isRowSubTotal2,
-        isColTotal: isColTotal2,
+        isColGrandTotal: isColGrandTotal2,
         isColSubTotal: isColSubTotal2,
       } = dataSet.getTotalStatus({
         type: '家具',
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal2).toBeTrue();
+      expect(isRowGrandTotal2).toBeTrue();
       expect(isRowSubTotal2).toBeFalse();
-      expect(isColTotal2).toBeFalse();
+      expect(isColGrandTotal2).toBeFalse();
       expect(isColSubTotal2).toBeTrue();
 
       const {
-        isRowTotal: isRowTotal3,
+        isRowGrandTotal: isRowGrandTotal3,
         isRowSubTotal: isRowSubTotal3,
-        isColTotal: isColTotal3,
+        isColGrandTotal: isColGrandTotal3,
         isColSubTotal: isColSubTotal3,
       } = dataSet.getTotalStatus({
         province: '浙江',
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal3).toBeFalse();
+      expect(isRowGrandTotal3).toBeFalse();
       expect(isRowSubTotal3).toBeTrue();
-      expect(isColTotal3).toBeTrue();
+      expect(isColGrandTotal3).toBeTrue();
       expect(isColSubTotal3).toBeFalse();
 
       const {
-        isRowTotal: isRowTotal4,
+        isRowGrandTotal: isRowGrandTotal4,
         isRowSubTotal: isRowSubTotal4,
-        isColTotal: isColTotal4,
+        isColGrandTotal: isColGrandTotal4,
         isColSubTotal: isColSubTotal4,
       } = dataSet.getTotalStatus({
         province: '浙江',
@@ -767,9 +776,9 @@ describe('Pivot Dataset Total Test', () => {
         [EXTRA_FIELD]: 'number',
       });
 
-      expect(isRowTotal4).toBeFalse();
+      expect(isRowGrandTotal4).toBeFalse();
       expect(isRowSubTotal4).toBeTrue();
-      expect(isColTotal4).toBeFalse();
+      expect(isColGrandTotal4).toBeFalse();
       expect(isColSubTotal4).toBeTrue();
     });
   });

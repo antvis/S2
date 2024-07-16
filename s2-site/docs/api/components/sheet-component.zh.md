@@ -75,7 +75,9 @@ tag: Updated
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
-| onMounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| onMounted | 组件层表格挂载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| onUpdate | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| onUpdateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
 | onDestroy | 表格销毁事件 | () => void; |  |  |
 | onLayoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -92,12 +94,12 @@ tag: Updated
 | onCopied | 复制事件 | (data: CopyableList) => void |  |  |
 | onActionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | onActionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
 | onSelected | 单元格选中事件 | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
-| onLinkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 | onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
@@ -200,6 +202,8 @@ type SheetComponentOptions = S2Options<
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
 | afterRender | render 完成的事件 | () => void; |  |  |
 | mounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| update | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| updateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
 | destroy | 表格销毁事件 | () => void; |  |  |
 | layoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -216,12 +220,12 @@ type SheetComponentOptions = S2Options<
 | copied | 复制事件 | (data: CopyableList) => void |  |  |
 | actionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
 | actionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
 | selected | 单元格选中事件 | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
-| linkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: ColCell[]) => void; |  |  |
 | rowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
@@ -306,5 +310,15 @@ type SheetComponentOptions = S2Options<
 | meta | resize 热区对应单元格节点信息 | [Node](/docs/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |
 | resizedHeight | 拖拽后的高度 | `number` |  |  |
+
+### S2RenderOptions
+
+功能描述：自定义渲染模式
+
+| 参数 | 说明 | 类型 | 默认值 | 必选 |
+| -- | -- | -- | -- | --- |
+| reloadData | 是否重新加载数据 | `boolean` |  |  |
+| rebuildDataSet | 是否重新生成数据集 | `boolean` |  |  |
+| reBuildHiddenColumnsDetail | 是否重新生成列头隐藏信息 | `boolean` |  |  |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>

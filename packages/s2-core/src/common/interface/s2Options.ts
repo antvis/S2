@@ -1,10 +1,17 @@
 import type { CanvasConfig } from '@antv/g';
-import type { CornerCell, RowCell, SeriesNumberCell } from '../../cell';
+import type {
+  ColCell,
+  CornerCell,
+  RowCell,
+  SeriesNumberCell,
+} from '../../cell';
 import type {
   CellCallback,
   CornerHeaderCallback,
+  CustomSVGIcon,
   DataCellCallback,
   FrameCallback,
+  HeaderActionIcon,
   MergedCellCallback,
   MergedCellInfo,
   Pagination,
@@ -26,9 +33,8 @@ import type {
   RowHeaderConfig,
 } from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
-import type { InteractionOptions, S2CellType } from './interaction';
+import type { InteractionOptions } from './interaction';
 import type { S2Style } from './style';
 import type {
   BaseTooltipOperatorMenuOptions,
@@ -126,19 +132,43 @@ export interface S2BasicOptions<
   hd?: boolean;
 
   /**
-   * 空值单元格占位符
-   * @see https://s2.antv.antgroup.com/zh/examples/custom/custom-cell/#data-cell-placeholder
+   * 占位符
    */
-  placeholder?:
-    | ((meta: Record<string, any>) => string | undefined | null)
-    | string
-    | undefined
-    | null;
+  placeholder?: {
+    /**
+     * 空值单元格占位符
+     * @default '-'
+     * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#data-cell-placeholder
+     */
+    cell?:
+      | ((meta: Record<string, any>) => string | undefined | null)
+      | string
+      | null;
+
+    /**
+     * 空数据占位符 (明细表有效)
+     * @see https://s2.antv.antgroup.com/examples/custom/custom-cell/#empty-placeholder
+     */
+    empty?: {
+      /**
+       * 自定义 Icon, 支持 customSVGIcons 自定义注册和内置的 Icon
+       * @default "Empty"
+       * @see https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+       */
+      icon?: string;
+
+      /**
+       * 自定义描述内容
+       * @default "暂无数据"
+       */
+      description?: string;
+    };
+  };
 
   /**
    * 设备类型: pc / mobile
    */
-  device?: DeviceType;
+  device?: `${DeviceType}`;
 
   /**
    * 自定义 AntV/G 渲染引擎配置参数 & 插件注册
@@ -191,7 +221,7 @@ export interface S2BasicOptions<
    * 自定义列头单元格
    * @see https://s2.antv.antgroup.com/examples/custom/custom-cell#col-cell
    */
-  colCell?: CellCallback<ColHeaderConfig, S2CellType>;
+  colCell?: CellCallback<ColHeaderConfig, ColCell>;
 
   /**
    * 自定义合并单元格
@@ -262,38 +292,32 @@ export enum DeviceType {
   MOBILE = 'mobile',
 }
 
-export interface S2PivotSheetFrozenOptions {
+export interface S2PivotSheetFrozenOptions extends S2BaseFrozenOptions {
   /**
    * 是否冻结行头 (含角头区域, 透视表有效),
    * 当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头
    * 当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0
    */
   rowHeader?: boolean | number;
-
-  /**
-   * 是否冻结首行 (适用于总计置于顶部, 树状模式等场景)
-   */
-  firstRow?: boolean;
 }
 
-export interface S2TableSheetFrozenOptions {
+export interface S2BaseFrozenOptions {
   /**
-   * 行头冻结数量 (明细表有效)
+   * 行头冻结数量
    */
   rowCount?: number;
 
   /**
-   * 列头冻结数量 (明细表有效)
+   * 行尾冻结数量
+   */
+  trailingRowCount?: number;
+  /**
+   * 列头冻结数量
    */
   colCount?: number;
 
   /**
-   * 行尾冻结数量 (明细表有效)
-   */
-  trailingRowCount?: number;
-
-  /**
-   * 列尾冻结数量 (明细表有效)
+   * 列尾冻结数量
    */
   trailingColCount?: number;
 }
@@ -329,18 +353,24 @@ export interface S2PivotSheetOptions {
   cornerExtraFieldText?: string;
 }
 
+export interface S2FrozenOptions {
+  /**
+   * 行列冻结
+   */
+  frozen?: S2PivotSheetFrozenOptions & S2BaseFrozenOptions;
+}
+
 export interface S2Options<
   T = TooltipContentType,
   P = Pagination,
   Menu = BaseTooltipOperatorMenuOptions,
 > extends S2BasicOptions<T, P, Menu>,
-    S2PivotSheetOptions {
-  /**
-   * 行列冻结
-   */
-  frozen?: S2PivotSheetFrozenOptions & S2TableSheetFrozenOptions;
-}
+    S2PivotSheetOptions,
+    S2FrozenOptions {}
 
+/**
+ * 自定义渲染模式
+ */
 export interface S2RenderOptions {
   /**
    * 是否重新加载数据
@@ -350,7 +380,7 @@ export interface S2RenderOptions {
   /**
    * 是否重新生成数据集
    */
-  reBuildDataSet?: boolean;
+  rebuildDataSet?: boolean;
 
   /**
    * 是否重新生成列头隐藏信息

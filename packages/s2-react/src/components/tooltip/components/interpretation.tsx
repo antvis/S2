@@ -1,6 +1,6 @@
 import {
-  type TooltipInterpretationOptions,
   TOOLTIP_PREFIX_CLS,
+  type TooltipInterpretationOptions,
 } from '@antv/s2';
 import React from 'react';
 import { ReactElement } from '../../../common/react-element';

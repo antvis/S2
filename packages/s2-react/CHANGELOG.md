@@ -1,5 +1,150 @@
-# [@antv/s2-react-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.12...@antv/s2-react-v2.0.0-next.13) (2024-03-11)
+# [@antv/s2-react-v2.0.0-next.24](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.23...@antv/s2-react-v2.0.0-next.24) (2024-07-05)
 
+
+### Bug Fixes
+
+* 取消双击表格时浏览器默认的选中文本行为 close [#2798](https://github.com/antvis/S2/issues/2798) ([#2800](https://github.com/antvis/S2/issues/2800)) ([5df9326](https://github.com/antvis/S2/commit/5df9326790fd127268c64d288a4b28616e40794c))
+
+
+### Features
+
+* 支持同时在 React 16/17/18 下运行 ([#2802](https://github.com/antvis/S2/issues/2802)) ([84253cb](https://github.com/antvis/S2/commit/84253cb498d8d98d199c32b1fb8a6af4663bee3e))
+* 统一链接跳转字段绘制逻辑, 支持标记列头 close [#2430](https://github.com/antvis/S2/issues/2430) ([#2796](https://github.com/antvis/S2/issues/2796)) ([637f651](https://github.com/antvis/S2/commit/637f651bbaaf1fcb696afe12c03e5c7042f95fae))
+
+# [@antv/s2-react-v2.0.0-next.23](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.22...@antv/s2-react-v2.0.0-next.23) (2024-06-21)
+
+
+### Bug Fixes
+
+* 修复 react 层对 frozen 的处理 ([#2763](https://github.com/antvis/S2/issues/2763)) ([f05b5ae](https://github.com/antvis/S2/commit/f05b5ae7bd3e8e118827d93a27bd588c68861dcc))
+
+
+### Features
+
+* **components:** 组件层更新时增加 loading 效果 close [#1790](https://github.com/antvis/S2/issues/1790) ([#2762](https://github.com/antvis/S2/issues/2762)) ([0ca8413](https://github.com/antvis/S2/commit/0ca841362bb4bbb3b81ca1046f5b4dcd7236b91e))
+* **theme-panel:** 新增主题风格配置组件 ([#2770](https://github.com/antvis/S2/issues/2770)) ([b559947](https://github.com/antvis/S2/commit/b559947ae2695dc3e4b581b10785ce34956d3702))
+* **type:** 使用 Template Literal Types 增强枚举类型的提示 ([#2783](https://github.com/antvis/S2/issues/2783)) ([6e571da](https://github.com/antvis/S2/commit/6e571da007c7a5185084f3a2c24c19d590d51319))
+
+# [@antv/s2-react-v2.0.0-next.22](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.21...@antv/s2-react-v2.0.0-next.22) (2024-06-03)
+
+
+### Bug Fixes
+
+* wheel scroll error! ([#2643](https://github.com/antvis/S2/issues/2643)) ([43cf364](https://github.com/antvis/S2/commit/43cf364cabc22409f405a1e6297d2d7196f8050b))
+* 修复自定义 dataCell 错误的传参写法 ([#2748](https://github.com/antvis/S2/issues/2748)) ([c54ca82](https://github.com/antvis/S2/commit/c54ca826ab3fd8aa1e760f522abbc0190c724060))
+
+
+### Features
+
+* 增强行列冻结能力 ([#2706](https://github.com/antvis/S2/issues/2706)) ([e72d053](https://github.com/antvis/S2/commit/e72d05326c3db5d20aa88eec947549a78014b030)), closes [#2739](https://github.com/antvis/S2/issues/2739)
+
+# [@antv/s2-react-v2.0.0-next.21](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.20...@antv/s2-react-v2.0.0-next.21) (2024-05-24)
+
+
+### Performance Improvements
+
+* 优化开启多行文本时的布局性能 ([#2734](https://github.com/antvis/S2/issues/2734)) ([388157c](https://github.com/antvis/S2/commit/388157c0ecb82c45f8a0277b649e891366dc2f1c))
+
+# [@antv/s2-react-v2.0.0-next.20](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.19...@antv/s2-react-v2.0.0-next.20) (2024-05-17)
+
+
+### Features
+
+* 明细表新增空数据占位符能力 ([#2729](https://github.com/antvis/S2/issues/2729)) ([19dbda5](https://github.com/antvis/S2/commit/19dbda5e9719d6a8f6d05ce0a93386e80c31ffab))
+
+
+### BREAKING CHANGES
+
+* s2Options.placeholder 配置更改为 cell 和 empty
+
+* test: 增加单测
+
+* fix: 兼容滚动条的展示
+
+* test: 单测和文档补充
+
+* test: 修改滚动条位置单测断言
+
+* test: 更新 shared 包快照
+
+* fix: 修复英文环境下未展示英文文案
+
+* fix: 修复列头单元格宽度很小时占位符坐标错误的问题
+
+* fix: 修复趋势分析表导出占位符解析错误
+
+# [@antv/s2-react-v2.0.0-next.19](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.18...@antv/s2-react-v2.0.0-next.19) (2024-05-11)
+
+### Bug Fixes
+
+* 修复 React 18 环境下 Tooltip 卸载后无法再次渲染 & 排序菜单选中效果丢失的问题 ([#2698](https://github.com/antvis/S2/issues/2698)) ([0af329d](https://github.com/antvis/S2/commit/0af329da596733eee8013a7a1f04676a720767d3))
+* 修复导出 CSV 时分隔符错误导致的展示格式错误 close [#2701](https://github.com/antvis/S2/issues/2701) ([#2703](https://github.com/antvis/S2/issues/2703)) ([98c051a](https://github.com/antvis/S2/commit/98c051a58c1d8b7c7831343ba909238e514615ae))
+* 修复配置了多行文本但实际渲染的文本未换行时，单元格高度也会自适应调整的问题 ([#2705](https://github.com/antvis/S2/issues/2705)) ([5d19e62](https://github.com/antvis/S2/commit/5d19e623c8f726d4f417ea2cb55cc489ef09f1b2))
+
+### Features
+
+* **options:** customSVGIcons API 变更 ([#2700](https://github.com/antvis/S2/issues/2700)) ([fde8e8f](https://github.com/antvis/S2/commit/fde8e8f57d176057d052cbf0dd401211e2839a0e))
+* 更新 g 到最新版 ([#2631](https://github.com/antvis/S2/issues/2631)) ([7647605](https://github.com/antvis/S2/commit/7647605dcd60e1e34f2014aafb180ac931bf0725)), closes [#2629](https://github.com/antvis/S2/issues/2629)
+
+### BREAKING CHANGES
+
+* Export 组件 和 asyncGetAllPlainData, copyToClipboard
+的是否异步导出参数统一为 async
+
+* test: 修复循环依赖
+
+* fix: 修复格式化对角头未生效
+
+* fix: 修复趋势分析表导出 CSV 错误
+
+* test: 单测修复
+* **options:** svg 变更为 src
+
+* test: 单测修复
+
+* test: 单测修复
+
+# [@antv/s2-react-v2.0.0-next.18](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.17...@antv/s2-react-v2.0.0-next.18) (2024-04-30)
+
+### Bug Fixes
+
+* 修复表格右键事件无法触发 close [#2687](https://github.com/antvis/S2/issues/2687) ([#2690](https://github.com/antvis/S2/issues/2690)) ([8b4f3e3](https://github.com/antvis/S2/commit/8b4f3e3dab83e6ae38b1d3362049af8352a7a4a9))
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ed21dcb](https://github.com/antvis/S2/commit/ed21dcb82ea4cb434587a4ffa4819f2a619ca1aa))
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([41980c5](https://github.com/antvis/S2/commit/41980c5a092e24214d21f41cfa288d5350f99c16))
+
+# [@antv/s2-react-v2.0.0-next.17](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.16...@antv/s2-react-v2.0.0-next.17) (2024-04-26)
+
+### Bug Fixes
+
+* 修复明细表自定义多级列头导出格式错误 close [#2664](https://github.com/antvis/S2/issues/2664) ([#2674](https://github.com/antvis/S2/issues/2674)) ([ae9add9](https://github.com/antvis/S2/commit/ae9add9c722877aced481340f798408a09ad98fb))
+
+# [@antv/s2-react-v2.0.0-next.16](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.15...@antv/s2-react-v2.0.0-next.16) (2024-03-29)
+
+### Bug Fixes
+
+* 修复紧凑模式下数值单元格错误的展示了省略号 ([#2632](https://github.com/antvis/S2/issues/2632)) ([2822471](https://github.com/antvis/S2/commit/2822471e9f73ba7b19292dc88a93b96d38afa471))
+* 调整 peerDependencies 命中规则 ([#2633](https://github.com/antvis/S2/issues/2633)) ([73378c7](https://github.com/antvis/S2/commit/73378c70339c1d5536be33cdf3cece5404d1f5c9))
+
+# [@antv/s2-react-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.14...@antv/s2-react-v2.0.0-next.15) (2024-03-22)
+
+### Bug Fixes
+
+* **g:** 修复表格初次渲染时部分 icon 不展示 close [#2014](https://github.com/antvis/S2/issues/2014) ([#2606](https://github.com/antvis/S2/issues/2606)) ([3f9a176](https://github.com/antvis/S2/commit/3f9a176f75c46fa58e50d0fd70a652242f7b6df3))
+* 修复角头和行头折叠展开 icon 的状态未同步以及展开异常的问题 close [#2607](https://github.com/antvis/S2/issues/2607) ([#2620](https://github.com/antvis/S2/issues/2620)) ([99829a6](https://github.com/antvis/S2/commit/99829a667c69394c0554ece841d6f6eb5c3f9b9e))
+
+# [@antv/s2-react-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.13...@antv/s2-react-v2.0.0-next.14) (2024-03-15)
+
+### Bug Fixes
+
+* 修复文本行数不一致时自动换行高度自适应失效 close [#2594](https://github.com/antvis/S2/issues/2594) ([#2598](https://github.com/antvis/S2/issues/2598)) ([fae5496](https://github.com/antvis/S2/commit/fae5496e503205f319e7bdc79240d31dacd4e850))
+
+# [@antv/s2-react-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.12...@antv/s2-react-v2.0.0-next.13) (2024-03-11)
 
 ### Features
 
@@ -7,7 +152,6 @@
 * 增加角头和序号列的交互能力 ([#2571](https://github.com/antvis/S2/issues/2571)) ([fcb77cc](https://github.com/antvis/S2/commit/fcb77cce65ee56aeec189cf46d4226ef6a62a671))
 
 # [@antv/s2-react-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.11...@antv/s2-react-v2.0.0-next.12) (2024-03-04)
-
 
 ### Bug Fixes
 
@@ -17,9 +161,8 @@
 * 修复编辑表的输入框未回填格式化后的数据 close [#2528](https://github.com/antvis/S2/issues/2528) ([#2549](https://github.com/antvis/S2/issues/2549)) ([95d67ca](https://github.com/antvis/S2/commit/95d67ca02b774aed426a179a16aa27f0c172356e))
 * 修复自定义目录树同名节点展示异常 & 导出缺失角头 close [#2455](https://github.com/antvis/S2/issues/2455) ([#2551](https://github.com/antvis/S2/issues/2551)) ([6d315bf](https://github.com/antvis/S2/commit/6d315bff20e74f0ce5f1d286105eeba749ebabaf))
 * 修复行列头数值复制时未使用格式化的值 & 优化单测 ([989366f](https://github.com/antvis/S2/commit/989366fc740b7c1367c4cf246a6e3eb80e4f3338))
-* 修复表格排序后, 编辑单元格后数据更新错误 close [#2573](https://github.com/antvis/S2/issues/2573) ([#2544](https://github.com/antvis/S2/issues/2544)) ([c4ff49a](https://github.com/antvis/S2/commit/c4ff49a47c5ef6155a623edaf72e65ab3dccbc68))
+* 修复表格排序后，编辑单元格后数据更新错误 close [#2573](https://github.com/antvis/S2/issues/2573) ([#2544](https://github.com/antvis/S2/issues/2544)) ([c4ff49a](https://github.com/antvis/S2/commit/c4ff49a47c5ef6155a623edaf72e65ab3dccbc68))
 * 修复趋势分析表复制错误 ([2e24418](https://github.com/antvis/S2/commit/2e24418cabebdbe1cd306cdf931c0c8fa7bae050))
-
 
 ### Features
 
@@ -27,18 +170,15 @@
 
 # [@antv/s2-react-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.10...@antv/s2-react-v2.0.0-next.11) (2024-02-07)
 
-
 ### Bug Fixes
 
-* 修复表格排序后, 编辑单元格后数据更新错误 ([e841d3d](https://github.com/antvis/S2/commit/e841d3db020afb418f0b2f9223271c329390b192))
+* 修复表格排序后，编辑单元格后数据更新错误 ([e841d3d](https://github.com/antvis/S2/commit/e841d3db020afb418f0b2f9223271c329390b192))
 
 # [@antv/s2-react-v2.0.0-next.10](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.9...@antv/s2-react-v2.0.0-next.10) (2024-02-05)
-
 
 ### Features
 
 * 合并 master 到 next ([#2493](https://github.com/antvis/S2/issues/2493)) ([6da530d](https://github.com/antvis/S2/commit/6da530d0c5f53d283ddfaa4b3e510ca11c9bf83e)), closes [#2186](https://github.com/antvis/S2/issues/2186) [#2204](https://github.com/antvis/S2/issues/2204) [#2191](https://github.com/antvis/S2/issues/2191)
-
 
 ### Performance Improvements
 

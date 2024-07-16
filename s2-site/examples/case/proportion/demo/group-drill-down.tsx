@@ -1,8 +1,9 @@
-import { isUpDataValue } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import insertCSS from 'insert-css';
+// organize-imports-ignore
 import React from 'react';
+import { LayoutWidthType, isUpDataValue } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -10,6 +11,7 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const GridSheet = () => {
+      const s2Ref = React.useRef();
       const [s2DataConfig, setS2DataConfig] = React.useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = React.useState('');
       const s2Options: SheetComponentOptions = {
@@ -19,7 +21,7 @@ fetch(
           enable: false,
         },
         style: {
-          layoutWidthType: 'colAdaptive',
+          layoutWidthType: LayoutWidthType.ColAdaptive,
           dataCell: {
             width: 400,
             height: 100,
@@ -73,7 +75,7 @@ fetch(
         );
       };
 
-      const dataCellTooltip = (viewMeta) => {
+      const DataCellTooltip = (viewMeta) => {
         const { spreadsheet, fieldValue } = viewMeta;
 
         return (
@@ -120,21 +122,19 @@ fetch(
         );
       };
 
-      const onDataCellMouseUp = (value) => {
-        const viewMeta = value?.viewMeta;
-
+      const onDataCellClick = ({ viewMeta, event }) => {
         if (!viewMeta) {
           return;
         }
 
         const position = {
-          x: value.event.clientX,
-          y: value.event.clientY,
+          x: event.clientX,
+          y: event.clientY,
         };
 
-        viewMeta.spreadsheet.tooltip.show({
+        s2Ref.current?.showTooltip({
           position,
-          content: dataCellTooltip(viewMeta),
+          content: <DataCellTooltip {...viewMeta} />,
         });
       };
 
@@ -142,13 +142,14 @@ fetch(
         <SheetComponent
           dataCfg={s2DataConfig}
           options={s2Options}
+          ref={s2Ref}
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',
             advancedSort: { open: true },
             extra: <Breadcrumb />,
           }}
-          onDataCellMouseUp={onDataCellMouseUp}
+          onDataCellClick={onDataCellClick}
         />
       );
     };
@@ -167,7 +168,7 @@ insertCSS(`
     text-align: center;
   }
   .antv-s2-breadcrumb {
-  position: absolute;
+    position: absolute;
     left: 130px;
     top: 11px;
   }

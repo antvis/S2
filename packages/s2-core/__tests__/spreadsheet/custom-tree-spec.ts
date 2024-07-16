@@ -1,3 +1,5 @@
+import type { S2DataConfig, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { getContainer } from 'tests/util/helpers';
 import { CustomTreePivotDataSet } from '../../src';
 import type { HeaderCell } from '../../src/cell/header-cell';
@@ -10,8 +12,6 @@ import {
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,
@@ -83,6 +83,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should use custom tree pivot dataSet', () => {
     expect(s2.dataSet).toBeInstanceOf(CustomTreePivotDataSet);
+  });
+
+  test('should get correctly dataset fields', () => {
+    expect(s2.dataSet.fields).toMatchSnapshot();
   });
 
   test('should render custom layout row nodes', () => {

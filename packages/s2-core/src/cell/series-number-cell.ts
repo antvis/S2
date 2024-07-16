@@ -1,13 +1,10 @@
 import type { PointLike } from '@antv/g';
 import { CellType } from '../common/constant/interaction';
-import type { AreaRange, FormatResult } from '../common/interface';
+import type { FormatResult } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
-import { getHorizontalTextIconPosition } from '../utils/cell/cell';
-import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
-import { normalizeTextAlign } from '../utils/normalize';
-import { HeaderCell } from './header-cell';
+import { RowCell } from './row-cell';
 
-export class SeriesNumberCell extends HeaderCell {
+export class SeriesNumberCell extends RowCell {
   public get cellType() {
     return CellType.ROW_CELL;
   }
@@ -49,58 +46,20 @@ export class SeriesNumberCell extends HeaderCell {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { value } = this.meta;
+    const { value, field } = this.meta;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(field);
+    const formattedValue = formatter?.(value, undefined, this.meta) ?? value;
 
     return {
       value,
-      formattedValue: value,
+      formattedValue,
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width;
-  }
-
-  protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight } = this.headerConfig;
-    const textStyle = this.getTextStyle();
-    const { cell } = this.getStyle()!;
-    const viewport: AreaRange = {
-      start: scrollY!,
-      size: viewportHeight,
-    };
-
-    const textArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-
-    const { textStart } = adjustTextIconPositionWhileScrolling(
-      viewport,
-      {
-        start: textArea.y,
-        size: textArea.height,
-      },
-      {
-        align: normalizeTextAlign(textStyle.textBaseline!),
-        size: {
-          textSize: textStyle.fontSize!,
-        },
-        padding: {
-          start: cell?.padding?.top!,
-          end: cell?.padding?.bottom!,
-        },
-      },
-    );
-
-    const { textX } = getHorizontalTextIconPosition({
-      bbox: textArea,
-      textAlign: textStyle.textAlign!,
-      textWidth: this.getActualTextWidth(),
-      iconStyle: this.getIconStyle()!,
-      groupedIcons: this.groupedIcons,
-    });
-
-    return { x: textX, y: textStart };
   }
 
   protected isBolderText() {

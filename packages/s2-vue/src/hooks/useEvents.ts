@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { S2Event, type SpreadSheet, getBaseCellData, GEvent } from '@antv/s2';
+import { GEvent, S2Event, getBaseCellData, type SpreadSheet } from '@antv/s2';
 import { onMounted, type Ref } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from './../interface';
 

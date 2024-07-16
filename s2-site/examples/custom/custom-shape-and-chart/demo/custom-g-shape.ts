@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable max-classes-per-file */
 import { Image as GImage, Polygon, Polyline, Rect } from '@antv/g';
 import {
@@ -9,69 +10,69 @@ import {
   RowCell,
   S2DataConfig,
   S2Options,
+  renderIcon,
 } from '@antv/s2';
 
 /**
- * 自定义图片 https://g.antv.antgroup.com/api/basic/image
+ * 自定义图片: https://g.antv.antgroup.com/api/basic/image
  * 更多 G 的图形请查阅相关文档: https://g.antv.antgroup.com/api/basic/concept
- * 明细表需要继承 TableCornerCell https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-corner-cell.ts
+ * 明细表需要继承 TableCornerCell: https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-corner-cell.ts
  */
 class CustomCornerCell extends CornerCell {
   drawBackgroundShape() {
-    const img = new Image();
-
-    img.src =
+    const url =
       'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
 
-    img.onload = () => {
-      this.backgroundShape = this.appendChild(
-        new GImage({
-          style: {
-            ...this.getBBoxByType(),
-            img,
-          },
-        }),
-      );
-
-      this.drawTextShape();
-    };
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          src: url,
+        },
+      }),
+    );
   }
 }
 
 /**
- * 自定义绘制图标 https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+ * 自定义图标: https://s2.antv.antgroup.com/manual/advanced/custom/custom-icon
+ * 更多 G 的图形请查阅相关文档: https://g.antv.antgroup.com/api/basic/concept
+ * 明细表需要继承 TableColCell: https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/table-col-cell.ts
  */
 class CustomColCell extends ColCell {
-  // 在单元格初始化后绘制一个 icon
   initCell() {
     super.initCell();
 
-    // 根据 meta 判断是否需要增加 icon
-    if (this.meta.isLeaf) {
-      return;
-    }
+    const { x, y, width, height } = this.meta;
 
-    const size = 12;
-    const icon = new GuiIcon({
-      x: this.meta.x + this.meta.width - size,
-      y: this.meta.y,
+    // 左上角绘制
+    renderIcon(this, {
       name: 'Plus',
-      width: size,
-      height: size,
-      fill: 'red',
+      x,
+      y,
+      width: 14,
+      height: 14,
     });
 
-    icon.addEventListener('click', (e) => {
-      console.log('icon click:', e);
+    // 右下角绘制
+    const icon = renderIcon(this, {
+      name: 'Trend',
+      x: x + width - 10,
+      y: y + height - 10,
+      width: 10,
+      height: 10,
+      cursor: 'pointer',
     });
 
-    // 一个单元格对应一个 G 的 Group (this = Group), 所以可以直接使用 G 的 API 添加图形.
-    this.appendChild(icon);
+    // 绑定事件
+    icon.addEventListener('click', (event) => {
+      console.log('clicked:', event);
+    });
   }
 }
 
 /**
- * 自定义 Polygon 多边形 https://g.antv.antgroup.com/api/basic/polygon
+ * 自定义 Polygon 多边形: https://g.antv.antgroup.com/api/basic/polygon
  */
 class CustomDataCell extends DataCell {
   drawBackgroundShape() {
@@ -98,7 +99,7 @@ class CustomDataCell extends DataCell {
 }
 
 /**
- * 自定义 Polyline 折线 https://g.antv.antgroup.com/api/basic/polyline
+ * 自定义 Polyline 折线: https://g.antv.antgroup.com/api/basic/polyline
  */
 class CustomRowCell extends RowCell {
   initCell() {
@@ -175,8 +176,8 @@ fetch(
       colCell: (node, spreadsheet, headerConfig) => {
         return new CustomColCell(node, spreadsheet, headerConfig);
       },
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
     };
 

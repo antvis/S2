@@ -1,8 +1,11 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
+import { SpreadSheet } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -11,6 +14,10 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
+    const CustomColCellTooltip = () => <div>col cell tooltip</div>;
+    const CustomRowCellTooltip = () => <div>row cell tooltip</div>;
+    const CustomDataCellTooltip = () => <div>data cell tooltip</div>;
+
     const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
@@ -23,82 +30,88 @@ fetch(
       },
     };
 
-    const CustomColCellTooltip = () => <div>col cell tooltip</div>;
-    const CustomRowCellTooltip = () => <div>row cell tooltip</div>;
-    const CustomDataCellTooltip = () => <div>data cell tooltip</div>;
+    const App = () => {
+      const s2Ref = React.useRef<SpreadSheet>();
 
-    const onColCellHover: SheetComponentsProps['onColCellHover'] = ({
-      event,
-      viewMeta,
-    }) => {
-      // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
-      viewMeta.spreadsheet.showTooltip({
-        position: {
-          x: event.clientX,
-          y: event.clientY,
-        },
-        content: <CustomColCellTooltip />,
-        // 自定义操作项
-        options: {
-          operator: {
-            menu: {
-              items: [
-                {
-                  key: 'custom-a',
-                  label: '操作1',
-                  icon: 'Trend',
-                  onClick: (info, cell) => {
-                    console.log('操作1点击', info, cell);
-                  },
-                  children: [
-                    {
-                      key: 'custom-a-a',
-                      label: '操作 1-1',
-                      icon: 'Trend',
-                      onClick: (info, cell) => {
-                        console.log('操作 1-1 点击', info, cell);
-                      },
+      const onColCellHover: SheetComponentProps['onColCellHover'] = ({
+        event,
+      }) => {
+        // 查看更多配置项: https://s2.antv.antgroup.com/api/basic-class/base-tooltip#tooltipshowoptions
+        s2Ref.current?.showTooltip({
+          position: {
+            x: event.clientX,
+            y: event.clientY,
+          },
+          content: <CustomColCellTooltip />,
+          // 自定义操作项
+          options: {
+            operator: {
+              menu: {
+                items: [
+                  {
+                    key: 'custom-a',
+                    label: '操作1',
+                    icon: 'Trend',
+                    onClick: (info, cell) => {
+                      console.log('操作1点击', info, cell);
                     },
-                  ],
-                },
-              ],
+                    children: [
+                      {
+                        key: 'custom-a-a',
+                        label: '操作 1-1',
+                        icon: 'Trend',
+                        onClick: (info, cell) => {
+                          console.log('操作 1-1 点击', info, cell);
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
             },
           },
-        },
-      });
-    };
+        });
+      };
 
-    const onRowCellHover = ({ event, viewMeta }) => {
-      viewMeta.spreadsheet.tooltip.show({
-        position: {
-          x: event.clientX,
-          y: event.clientY,
-        },
-        content: <CustomRowCellTooltip />,
-      });
-    };
+      const onRowCellHover: SheetComponentProps['onRowCellHover'] = ({
+        event,
+      }) => {
+        s2Ref.current?.showTooltip({
+          position: {
+            x: event.clientX,
+            y: event.clientY,
+          },
+          content: <CustomRowCellTooltip />,
+        });
+      };
 
-    const onDataCellHover = ({ event, viewMeta }) => {
-      viewMeta.spreadsheet.tooltip.show({
-        position: {
-          x: event.clientX,
-          y: event.clientY,
-        },
-        content: <CustomDataCellTooltip />,
-      });
-    };
+      const onDataCellHover: SheetComponentProps['onDataCellHover'] = ({
+        event,
+      }) => {
+        s2Ref.current?.showTooltip({
+          position: {
+            x: event.clientX,
+            y: event.clientY,
+          },
+          content: <CustomDataCellTooltip />,
+        });
+      };
 
-    reactDOMClient
-      .createRoot(document.getElementById('container'))
-      .render(
+      return (
         <SheetComponent
           sheetType="pivot"
+          ref={s2Ref}
           adaptive={false}
           dataCfg={dataCfg}
           options={s2Options}
           onColCellHover={onColCellHover}
           onRowCellHover={onRowCellHover}
           onDataCellHover={onDataCellHover}
-        />,
+        />
       );
+    };
+
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App />);
   });

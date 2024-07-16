@@ -1,12 +1,11 @@
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { Menu } from 'antd';
-import type { ItemType } from 'antd/lib/menu/hooks/useItems';
+import { Menu, type GetProp, type MenuProps } from 'antd';
 import cls from 'classnames';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import type {
-  TooltipOperatorMenuItem,
   TooltipOperatorMenuInfo,
+  TooltipOperatorMenuItem,
   TooltipOperatorProps,
 } from '../interface';
 import { TooltipIcon } from './icon';
@@ -20,9 +19,9 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
       cell,
       menu: {
         className,
-        items: menus,
+        items: menus = [],
         onClick,
-        defaultSelectedKeys,
+        selectedKeys,
         ...otherMenuProps
       },
     } = props;
@@ -35,9 +34,11 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
       onClick?.(info, cell);
     };
 
-    const renderMenu = (menu: TooltipOperatorMenuItem): ItemType => {
+    const renderMenu = (
+      menu: TooltipOperatorMenuItem,
+    ): GetProp<MenuProps, 'items'>[number] => {
       const { key, label, children, onClick: onTitleClick } = menu;
-      const subMenus = map(children, renderMenu) as unknown as ItemType[];
+      const subMenus = map(children, renderMenu);
 
       return {
         key,
@@ -58,14 +59,14 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
     };
 
     const renderMenus = () => {
-      const items = map(menus, renderMenu) as unknown as ItemType[];
+      const items = map(menus, renderMenu);
 
       return (
         <Menu
           mode={onlyShowOperator ? 'vertical' : 'horizontal'}
           className={cls(`${TOOLTIP_PREFIX_CLS}-operator-menus`, className)}
           onClick={onMenuClick}
-          defaultSelectedKeys={defaultSelectedKeys}
+          selectedKeys={selectedKeys}
           items={items}
           selectable={onlyShowOperator}
           {...otherMenuProps}
@@ -79,8 +80,3 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
   });
 
 TooltipOperator.displayName = 'TooltipOperator';
-TooltipOperator.defaultProps = {
-  menu: {
-    items: [],
-  },
-};

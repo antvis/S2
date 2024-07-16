@@ -1,9 +1,10 @@
-import { isArray, flattenDeep } from 'lodash';
+import { flattenDeep, isArray } from 'lodash';
 import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   TOTAL_VALUE,
 } from '../common/constant/field';
-import type { CalcTotals, Totals, TotalsStatus } from '../common/interface';
+import type { CalcTotals, Totals } from '../common/interface';
+import type { TotalStatus } from '../data-set';
 
 export const getListBySorted = (
   list: string[],
@@ -40,6 +41,7 @@ export const filterOutDetail = (values: string[] = []) => {
     (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
   );
 };
+
 export const customFlattenDeep = (
   data: Record<any, any>[] | Record<any, any>,
 ) => {
@@ -59,10 +61,11 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
 };
 
 export function getAggregationAndCalcFuncByQuery(
-  totalsStatus: TotalsStatus,
+  totalsStatus: TotalStatus,
   totalsOptions?: Totals | null,
 ) {
-  const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
+  const { isRowGrandTotal, isRowSubTotal, isColGrandTotal, isColSubTotal } =
+    totalsStatus;
   const { row, col } = totalsOptions || {};
   const {
     calcGrandTotals: rowCalcTotals = {},
@@ -84,9 +87,9 @@ export function getAggregationAndCalcFuncByQuery(
 
   // 优先级: 列总计/小计 > 行总计/小计
   return (
-    getCalcTotals(colCalcTotals, isColTotal) ||
+    getCalcTotals(colCalcTotals, isColGrandTotal) ||
     getCalcTotals(colCalcSubTotals, isColSubTotal) ||
-    getCalcTotals(rowCalcTotals, isRowTotal) ||
+    getCalcTotals(rowCalcTotals, isRowGrandTotal) ||
     getCalcTotals(rowCalcSubTotals, isRowSubTotal)
   );
 }

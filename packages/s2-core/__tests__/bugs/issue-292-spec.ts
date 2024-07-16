@@ -4,10 +4,10 @@
  * discussions: https://github.com/antvis/S2/discussions/384
  * Wrong order of multi-values
  */
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-292.json';
-import type { S2Options } from '../../src';
 import { PivotSheet } from '@/sheet-type';
+import type { S2Options } from '../../src';
+import * as mockDataConfig from '../data/data-issue-292.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

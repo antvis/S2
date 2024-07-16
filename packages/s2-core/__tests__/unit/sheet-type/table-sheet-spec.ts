@@ -1,11 +1,11 @@
-import * as dataCfg from 'tests/data/simple-table-data.json';
-import { getContainer } from 'tests/util/helpers';
-import { TableDataSet } from '../../../src/data-set';
-import { TableFacet } from '../../../src/facet';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
 import type { GEvent, TooltipOptions } from '@/index';
 import { TableSheet } from '@/sheet-type';
+import * as dataCfg from 'tests/data/simple-table-data.json';
+import { getContainer } from 'tests/util/helpers';
+import { TableDataSet } from '../../../src/data-set';
+import { TableFacet } from '../../../src/facet';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;
@@ -64,7 +64,6 @@ describe('TableSheet Tests', () => {
         {
           operator: expect.anything(),
           onlyShowOperator: true,
-          forceRender: true,
         },
       );
 
@@ -191,7 +190,6 @@ describe('TableSheet Tests', () => {
 
         const options: TooltipOptions = {
           onlyShowOperator: true,
-          forceRender: true,
           operator: {
             menu: {
               items: [
@@ -200,7 +198,7 @@ describe('TableSheet Tests', () => {
                 { key: 'none', label: groupNoneText },
               ],
               onClick: expect.anything(),
-              defaultSelectedKeys: [],
+              selectedKeys: [],
             },
           },
         };
@@ -214,6 +212,27 @@ describe('TableSheet Tests', () => {
       },
     );
   });
+
+  test.each([
+    {
+      enable: true,
+      text: '测试',
+      result: '测试',
+    },
+    {
+      enable: false,
+      text: '测试',
+      result: '',
+    },
+  ])(
+    'should get correctly series number text by %o',
+    ({ result, ...options }) => {
+      s2.setOptions({
+        seriesNumber: options,
+      });
+      expect(s2.getSeriesNumberText()).toEqual(result);
+    },
+  );
 
   test('should get normal header fields status', () => {
     expect(s2.isCustomHeaderFields()).toBeFalsy();
@@ -265,5 +284,15 @@ describe('TableSheet Tests', () => {
 
   test('should get content height', () => {
     expect(s2.getContentHeight()).toEqual(120);
+  });
+
+  test('get sheetInstance from canvas', () => {
+    const canvas = s2.getCanvasElement();
+
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toEqual(s2);
+    s2.destroy();
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toBe(undefined);
   });
 });

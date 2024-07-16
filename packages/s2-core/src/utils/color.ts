@@ -1,10 +1,10 @@
 import { toUpper } from 'lodash';
 import tinycolor from 'tinycolor2';
-import type { Palette, PaletteMeta } from '../common/interface/theme';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import type { Palette, PaletteMeta } from '../common/interface/theme';
 
 const WHITE_COLOR = '#FFFFFF';
 const BLACK_COLOR = '#000000';
@@ -24,6 +24,17 @@ const BASIC_COLOR_COUNT = 15;
  */
 export const shouldReverseFontColor = (color: string) =>
   tinycolor(color).getLuminance() <= 0.5;
+
+/**
+ * @param backgroundColor
+ * @param fontColor
+ */
+export const isReadableText = (backgroundColor: string, fontColor: string) => {
+  return tinycolor.isReadable(backgroundColor, fontColor, {
+    level: 'AA',
+    size: 'small',
+  });
+};
 
 const FONT_COLOR_RELATIONS: Array<{
   fontColorIndex: number;

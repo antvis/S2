@@ -1,21 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import {
-  Canvas,
-  FederatedEvent,
-  Image,
-  CustomEvent,
-  type CanvasConfig,
-} from '@antv/g';
-import {
-  createFakeSpreadSheet,
-  createFederatedMouseEvent,
-  createFederatedPointerEvent,
-  getClientPointOnCanvas,
-  sleep,
-} from 'tests/util/helpers';
-import { Renderer } from '@antv/g-canvas';
-import { GEventType, GuiIcon } from '@/common';
-import type { EmitterType } from '@/common/interface/emitter';
+import { GuiIcon } from '@/common';
 import {
   CellType,
   InteractionKeyboardKey,
@@ -24,12 +8,28 @@ import {
   OriginEventType,
   S2Event,
 } from '@/common/constant';
-import { EventController } from '@/interaction/event-controller';
-import type { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 import type { CellMeta, S2Options } from '@/common/interface';
-import type { BaseFacet } from '@/facet';
+import type { EmitterType } from '@/common/interface/emitter';
 import type { BBox } from '@/engine';
+import type { BaseFacet } from '@/facet';
+import { EventController } from '@/interaction/event-controller';
+import { RootInteraction } from '@/interaction/root';
+import type { SpreadSheet } from '@/sheet-type';
+import {
+  Canvas,
+  CustomEvent,
+  FederatedEvent,
+  Image,
+  type CanvasConfig,
+} from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import {
+  createFakeSpreadSheet,
+  createFederatedMouseEvent,
+  createFederatedPointerEvent,
+  getClientPointOnCanvas,
+  sleep,
+} from 'tests/util/helpers';
 
 const MOCK_COPY_DATA = 'data';
 
@@ -79,10 +79,7 @@ describe('Interaction Event Controller Tests', () => {
   };
 
   const expectEvents =
-    (
-      eventType: OriginEventType | GEventType,
-      customEvent?: (evt: FederatedEvent) => void,
-    ) =>
+    (eventType: OriginEventType, customEvent?: (evt: FederatedEvent) => void) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellType }) => {
       const { eventNames, type } = options;
 
@@ -176,7 +173,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.POINTER_MOVE,
       OriginEventType.POINTER_UP,
       OriginEventType.MOUSE_OUT,
-      GEventType.RIGHT_MOUSE_UP,
+      OriginEventType.RIGHT_DOWN,
       OriginEventType.CLICK,
       OriginEventType.TOUCH_START,
     ];
@@ -388,7 +385,7 @@ describe('Interaction Event Controller Tests', () => {
     },
   ])(
     'should emit context menu event for %s',
-    expectEvents(GEventType.RIGHT_MOUSE_UP),
+    expectEvents(OriginEventType.RIGHT_DOWN),
   );
 
   test('should emit global context menu event', () => {
@@ -398,7 +395,7 @@ describe('Interaction Event Controller Tests', () => {
 
     const evt = createFederatedPointerEvent(
       spreadsheet,
-      GEventType.RIGHT_MOUSE_UP,
+      OriginEventType.RIGHT_DOWN,
     );
 
     evt.client.x = MOCK_CLIENT.x;
@@ -945,7 +942,7 @@ describe('Interaction Event Controller Tests', () => {
       const image = new Image({
         name: 'test',
         style: {
-          img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
         },
       });
 

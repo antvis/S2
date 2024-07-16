@@ -1,10 +1,13 @@
 import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
-import React, { type FC, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import type { DraggableProvided } from 'react-beautiful-dnd';
-import type { SwitcherField, SwitcherItem } from '../interface';
+import type {
+  DimensionCommonProps,
+  SwitcherField,
+  SwitcherItem,
+} from '../interface';
 import { getSwitcherClassName } from '../util';
-import type { DimensionCommonProps } from '.';
 
 const CLASS_NAME_PREFIX = 'item';
 
@@ -17,22 +20,23 @@ type SingleItemProps = Omit<SwitcherItem, 'children'> &
     dragHandleProps?: DraggableProvided['dragHandleProps'];
   };
 
-export const SingleItem: FC<SingleItemProps> = ({
-  dragHandleProps,
-  fieldType,
-  id,
-  displayName,
-  selectable,
-  checked,
-  parentId,
-  className,
-  disabled,
-  onVisibleItemChange,
-}) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [ellipsis, setEllipsis] = useState(false);
+export const SingleItem: React.FC<SingleItemProps> = (props) => {
+  const {
+    dragHandleProps,
+    fieldType,
+    id,
+    displayName,
+    selectable,
+    checked = true,
+    parentId,
+    className,
+    disabled = false,
+    onVisibleItemChange,
+  } = props;
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [ellipsis, setEllipsis] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     // 针对超长文字，添加 tooltip
     setEllipsis(ref.current?.offsetWidth! < ref.current?.scrollWidth!);
   }, []);
@@ -78,9 +82,4 @@ export const SingleItem: FC<SingleItemProps> = ({
       )}
     </div>
   );
-};
-
-SingleItem.defaultProps = {
-  checked: true,
-  disabled: false,
 };

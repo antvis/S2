@@ -226,3 +226,35 @@ s2.setTheme({
   },
 });
 ```
+
+### 获取拖拽后的单元格宽高信息
+
+单元格宽高调整后，可以通过监听 [S2Event.LAYOUT_RESIZE](/api/general/s2-event#%E5%AE%BD%E9%AB%98%E6%8B%96%E6%8B%BD%E8%B0%83%E6%95%B4) 事件来获取。
+
+```ts
+import { S2Event } from '@antv/s2'
+import { merge } from 'lodash';
+
+s2.on(S2Event.LAYOUT_RESIZE, (data) => {
+  console.log('data:', data);
+
+  // 持久化
+  const lastStyle = JSON.parse(localStorage.getItem('style')) || {};
+  const style = merge({}, lastStyle, data.style);
+
+  localStorage.setItem('style', JSON.stringify(style));
+});
+```
+
+如需持久化保存宽高信息，那么和 [自定义单元格宽高](/manual/advanced/custom/cell-size) 使用方式一致，更新相应的 `style` 即可。
+
+```ts
+const style = JSON.parse(localStorage.getItem('style')) || {}
+
+const s2Options = {
+  style
+}
+
+// 或
+s2.setOptions({ style })
+```

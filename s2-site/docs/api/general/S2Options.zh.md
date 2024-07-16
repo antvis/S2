@@ -82,7 +82,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 ## CellCallback
 
-```js
+```js | pure
 CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => G.Group;
 ```
 
@@ -96,7 +96,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 ## MergedCellCallback
 
-```js | ViewMeta
+```js | pure
 DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) => MergedCell;
 ```
 
@@ -106,7 +106,7 @@ DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) =>
 
 ## CornerHeaderCallback
 
-```js
+```js | pure
 CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => void;
 ```
 
@@ -225,7 +225,7 @@ export type Data = RawData & ExtraData;
 
 功能描述：自定义数据集。[查看示例](/examples/custom/custom-dataset/#custom-strategy-sheet-dataset)
 
-```js
+```js | pure
 DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 ```
 

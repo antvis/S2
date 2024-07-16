@@ -1,15 +1,15 @@
 import { find, groupBy, isEmpty, isEqual, merge } from 'lodash';
+import { CellType, EXTRA_FIELD } from '../../common/constant';
 import type {
   HeaderActionNameOptions,
   IconPosition,
   IconTheme,
   InternalFullyHeaderActionIcon,
 } from '../../common/interface';
-import { CellType, EXTRA_FIELD } from '../../common/constant';
 import type {
-  HeaderActionName,
   FormatResult,
   HeaderActionIcon,
+  HeaderActionName,
 } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 

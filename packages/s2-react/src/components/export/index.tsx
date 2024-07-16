@@ -1,7 +1,8 @@
 import {
-  NewTab,
+  CSV_SEPARATOR,
   S2_PREFIX_CLS,
   SpreadSheet,
+  TAB_SEPARATOR,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
@@ -24,7 +25,7 @@ export interface ExportBaseProps {
   successText?: string;
   errorText?: string;
   fileName?: string;
-  syncCopy?: boolean;
+  async?: boolean;
   // ref: https://ant.design/components/dropdown-cn/#API
   dropdown?: DropDownProps;
   customCopyMethod?: (params: CopyAllDataParams) => Promise<string> | string;
@@ -38,7 +39,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   const {
     className,
     icon,
-    syncCopy = false,
+    async = true,
     copyOriginalText = i18n('复制原始数据'),
     copyFormatText = i18n('复制格式化数据'),
     downloadOriginalText = i18n('下载原始数据'),
@@ -46,7 +47,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     successText = i18n('操作成功'),
     errorText = i18n('操作失败'),
     sheet,
-    fileName = '',
+    fileName = 'sheet',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     open,
     dropdown,
@@ -58,17 +59,24 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const copyData = async (isFormat: boolean) => {
+  const getPlainData = async (split: string, isFormat: boolean) => {
     const params: CopyAllDataParams = {
       sheetInstance: sheet,
-      split: NewTab,
+      split,
       formatOptions: isFormat,
+      async,
     };
 
     const data = await (customCopyMethod?.(params) ||
       asyncGetAllPlainData(params));
 
-    copyToClipboard(data, syncCopy)
+    return data;
+  };
+
+  const copyData = async (isFormat: boolean) => {
+    const data = await getPlainData(TAB_SEPARATOR, isFormat);
+
+    copyToClipboard(data, async)
       .then(() => {
         messageApi.success(successText);
       })
@@ -80,11 +88,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
   };
 
   const downloadData = async (isFormat: boolean) => {
-    const data = await asyncGetAllPlainData({
-      sheetInstance: sheet,
-      split: NewTab,
-      formatOptions: isFormat,
-    });
+    // 导出的是 csv 格式, 复制时需要以逗号分割 https://github.com/antvis/S2/issues/2701
+    const data = await getPlainData(CSV_SEPARATOR, isFormat);
 
     try {
       download(data, fileName);
@@ -144,7 +149,3 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 });
 
 Export.displayName = 'Export';
-Export.defaultProps = {
-  syncCopy: false,
-  fileName: 'sheet',
-};

@@ -1,4 +1,4 @@
-import { PivotSheet, ResizeType, S2Options } from '@antv/s2';
+import { PivotSheet, ResizeType, S2Event, S2Options } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -33,6 +33,10 @@ fetch(
     };
 
     const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    s2.on(S2Event.LAYOUT_RESIZE, (data) => {
+      console.log('data:', data);
+    });
 
     // 支持通过调整主题修改热区大小/颜色
     s2.setTheme({

@@ -1,18 +1,45 @@
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
-import { forEach, map } from 'lodash';
-import { data } from 'tests/data/mock-dataset.json';
-import type { RangeColors } from '../../../src/common/interface/theme';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellType, MiniChartType, type S2CellType } from '@/common';
-import {
-  getBulletRangeColor,
-  transformRatioToPercent,
-  scale,
-  drawInterval,
-} from '@/utils/g-mini-charts';
 import type { DataCell } from '@/cell';
+import {
+  CellType,
+  MiniChartType,
+  type S2CellType,
+  type S2Options,
+} from '@/common';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+import {
+  drawBar,
+  drawBullet,
+  drawInterval,
+  drawLine,
+  getBulletRangeColor,
+  scale,
+  transformRatioToPercent,
+} from '@/utils/g-mini-charts';
+import type { IElement } from '@antv/g-lite';
+import { forEach, last, map } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
+import type { RangeColors } from '../../../src/common/interface/theme';
+
+const getChartData = (type: MiniChartType) => {
+  return {
+    type,
+    data: [
+      { year: '2017', value: -368 },
+      { year: '2018', value: 368 },
+      { year: '2019', value: 368 },
+      { year: '2020', value: 368 },
+      { year: '2021', value: 368 },
+      { year: '2022', value: 368 },
+    ],
+    encode: {
+      x: 'year',
+      y: 'value',
+    },
+  };
+};
 
 describe('MiniCharts Utils Tests', () => {
   const padding = {
@@ -311,8 +338,57 @@ describe('MiniCharts Utils Tests', () => {
   });
 });
 
-describe('drawInterval Test', () => {
+describe('Render Chart Shape Tests', () => {
+  const s2Options: S2Options = {
+    width: 600,
+    height: 400,
+  };
+
   let s2: SpreadSheet;
+  let cell: DataCell;
+
+  beforeEach(async () => {
+    s2 = createPivotSheet(s2Options);
+    await s2.render();
+
+    cell = s2.facet.getDataCells()[0];
+  });
+
+  test('should render line shape', () => {
+    drawLine(getChartData(MiniChartType.Line), cell);
+
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'polyline'),
+    ).toHaveLength(1);
+  });
+
+  test('should render bar shape', () => {
+    drawBar(getChartData(MiniChartType.Bar), cell);
+
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'rect'),
+    ).toHaveLength(9);
+  });
+
+  test('should render bullet shape', () => {
+    drawBullet(
+      {
+        ...getChartData(MiniChartType.Bullet),
+        measure: 0.1,
+        target: 0.5,
+      },
+      cell,
+    );
+
+    const text = last(cell.getChildren()) as IElement;
+
+    expect(text.attr('text')).toEqual('10.00%');
+  });
+});
+
+describe('#drawInterval() Tests', () => {
+  let s2: SpreadSheet;
+
   const dataCfg = assembleDataCfg({
     meta: [],
     fields: {

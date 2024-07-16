@@ -1,22 +1,22 @@
+import type { SheetComponentProps } from '@/components';
+import { SheetComponent } from '@/components/sheets';
 import type { SpreadSheet } from '@antv/s2';
 import type { Adaptive } from '@antv/s2-shared';
+import { waitFor } from '@testing-library/react';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, renderComponent, sleep } from 'tests/util/helpers';
-import { waitFor } from '@testing-library/react';
-import { SheetComponent } from '@/components/sheets';
-import type { SheetComponentsProps } from '@/components';
 
 interface Props {
   containerWidth?: number;
   containerHeight?: number;
   adaptive?: Adaptive;
   containerId?: string;
-  options?: SheetComponentsProps['options'];
+  options?: SheetComponentProps['options'];
 }
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 200,
   height: 200,
   hd: false,

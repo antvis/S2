@@ -4,11 +4,11 @@
  * #asyncGetAllPlainData error in table mode
  *
  */
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-446.json';
-import type { S2Options } from '../../src';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
+import { TAB_SEPARATOR, type S2Options } from '../../src';
+import * as mockDataConfig from '../data/data-issue-446.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,
@@ -25,7 +25,7 @@ describe('export', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: '\t',
+      split: TAB_SEPARATOR,
       formatOptions: true,
     });
 
@@ -50,7 +50,7 @@ describe('export', () => {
     await s2.render();
     const data = await asyncGetAllPlainData({
       sheetInstance: s2,
-      split: '\t',
+      split: TAB_SEPARATOR,
     });
 
     expect(data.split('\n').length).toEqual(3);

@@ -31,8 +31,8 @@ import type {
   ResizePosition,
 } from '../common/interface/resize';
 import { CustomRect } from '../engine';
-import { floor } from '../utils/math';
 import { Node } from '../facet/layout/node';
+import { floor } from '../utils/math';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -61,7 +61,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { width, height } = this.spreadsheet.options;
     const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();
     const style: PathStyleProps = {
-      path: '',
+      d: '',
       lineDash: guideLineDash,
       stroke: guideLineColor,
       lineWidth: size,
@@ -159,11 +159,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const halfSize = size / 2;
 
     if (type === ResizeDirectionType.Horizontal) {
-      startResizeGuideLineShape.attr('path', [
+      startResizeGuideLineShape.attr('d', [
         ['M', offsetX + halfSize, offsetY],
         ['L', offsetX + halfSize, guideLineMaxHeight],
       ]);
-      endResizeGuideLineShape.attr('path', [
+      endResizeGuideLineShape.attr('d', [
         ['M', offsetX + width - halfSize, offsetY],
         ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
@@ -173,11 +173,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    startResizeGuideLineShape.attr('path', [
+    startResizeGuideLineShape.attr('d', [
       ['M', offsetX, offsetY + halfSize],
       ['L', guideLineMaxWidth, offsetY + halfSize],
     ]);
-    endResizeGuideLineShape.attr('path', [
+    endResizeGuideLineShape.attr('d', [
       ['M', offsetX, offsetY + height - halfSize],
       ['L', guideLineMaxWidth, offsetY + height - halfSize],
     ]);
@@ -187,6 +187,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
+      event?.preventDefault?.();
+
       const shape = event.target as Group;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
 
@@ -216,8 +218,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getResizeGuideLinePosition(): ResizeGuideLinePosition {
     const [startGuideLineShape, endGuideLineShape] = (this.resizeReferenceGroup
       ?.children || []) as [Path, Path];
-    const startGuideLinePath = startGuideLineShape?.attr('path') || [];
-    const endGuideLinePath = endGuideLineShape?.attr('path') || [];
+    const startGuideLinePath = startGuideLineShape?.attr('d') || [];
+    const endGuideLinePath = endGuideLineShape?.attr('d') || [];
 
     const [, startX = 0, startY = 0] = startGuideLinePath[0] || [];
     const [, endX = 0, endY = 0] = endGuideLinePath[0] || [];
@@ -292,10 +294,18 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     const resizeInfo = this.getResizeInfo();
 
+    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
+    const activeCells = isVertical
+      ? interaction.getActiveRowCells()
+      : interaction.getActiveColCells();
+    const isMultiSelected =
+      interaction.isSelectedState() && activeCells.length > 1;
+
     // 非多选: 正常设置即可
     if (
       !this.isEffectRowOf(ResizeType.SELECTED) ||
-      !this.isEffectColOf(ResizeType.SELECTED)
+      !this.isEffectColOf(ResizeType.SELECTED) ||
+      !isMultiSelected
     ) {
       return {
         [this.getResizeCellField(resizeInfo)]: resizeValue,
@@ -303,11 +313,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     // 多选: 将当前选中的行列单元格对应的叶子节点统一设置宽高
-    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
-    const activeCells = isVertical
-      ? interaction.getActiveRowCells()
-      : interaction.getActiveColCells();
-
     return activeCells.reduce<Record<string, number>>((result, cell) => {
       // 热区是绘制在叶子节点的, 如果选中的父节点, 那么叶子节点也算是多选, 需要给每一个叶子节点批量设置
       Node.getAllLeaveNodes(cell.getMeta() as Node).forEach((node) => {
@@ -482,7 +487,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const [, endGuideLineShape] = resizeShapes;
     const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
-      endGuideLineShape.attr('path'),
+      endGuideLineShape.attr('d'),
     );
 
     if (resizeInfo.type === ResizeDirectionType.Horizontal) {
@@ -500,7 +505,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     this.updateResizeGuideLineTheme(endGuideLineShape);
-    endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
+    endGuideLineShape.attr('d', [guideLineStart, guideLineEnd]);
   }
 
   private updateResizeGuideLineTheme(endGuideLineShape: DisplayObject) {
@@ -573,7 +578,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private renderResizedResult() {
+  private async renderResizedResult() {
     const resizeInfo = this.getResizeInfo();
     const {
       style,
@@ -602,7 +607,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     this.spreadsheet.store.set('resized', true);
-    this.render();
+    await this.render();
   }
 
   private getResizeInfo(): ResizeInfo {
@@ -633,10 +638,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private render() {
+  private async render() {
     this.resizeStartPosition = {};
     this.resizeTarget = null;
     this.resizeReferenceGroup = null;
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   }
 }

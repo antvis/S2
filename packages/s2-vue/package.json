@@ -1,32 +1,8 @@
 {
-  "private": false,
   "name": "@antv/s2-vue",
-  "version": "2.0.0-next.11",
-  "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
-  "module": "esm/index.js",
-  "types": "esm/index.d.ts",
+  "version": "2.0.0-next.15",
+  "private": false,
   "description": "use S2 with vue",
-  "license": "MIT",
-  "homepage": "https://s2.antv.antgroup.com",
-  "author": "https://github.com/orgs/antvis/people",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/S2.git"
-  },
-  "bugs": {
-    "url": "https://github.com/antvis/S2/issues"
-  },
-  "files": [
-    "esm",
-    "lib",
-    "dist",
-    "README.md"
-  ],
   "keywords": [
     "antv",
     "s2",
@@ -36,30 +12,49 @@
     "table",
     "crossTable"
   ],
+  "homepage": "https://s2.antv.antgroup.com",
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "license": "MIT",
+  "author": "https://github.com/orgs/antvis/people",
+  "main": "lib/index.js",
+  "unpkg": "dist/index.min.js",
+  "module": "esm/index.js",
+  "types": "esm/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "esm",
+    "lib",
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "start": "cross-env PLAYGROUND=true vite",
-    "clean": "rimraf lib esm dist temp",
     "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
-    "build:esm": "cross-env FORMAT=es vite build",
-    "build:cjs": "cross-env FORMAT=cjs vite build",
-    "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
+    "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
+    "build:esm": "cross-env FORMAT=es vite build",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
+    "build:umd": "cross-env FORMAT=umd vite build",
+    "clean": "rimraf lib esm dist temp",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
-    "test": "jest --passWithNoTests",
-    "test:coverage": "pnpm test -- --coverage",
+    "start": "cross-env PLAYGROUND=true vite",
+    "test": "jest --passWithNoTests --detectOpenHandles",
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:coverage": "pnpm test -- --coverage",
     "test:watch": "pnpm test -- --watch",
     "tsc": "vue-tsc --noEmit"
-  },
-  "peerDependencies": {
-    "@antv/s2": ">=1.0.0",
-    "ant-design-vue": ">=3.2.0",
-    "vue": ">=3.x"
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
@@ -76,6 +71,14 @@
     "vue": "^3.3.4",
     "vue-tsc": "^1.8.19"
   },
+  "peerDependencies": {
+    "@antv/s2": "^2.0.0-next.1",
+    "ant-design-vue": "^3.2.0",
+    "vue": ">=3.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "size-limit": [
     {
       "path": "./dist/index.min.js",
@@ -87,9 +90,6 @@
       "limit": "5 kB"
     }
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "tnpm": {
     "mode": "pnpm"
   }

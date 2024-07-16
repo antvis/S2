@@ -1,8 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { S2_PREFIX_CLS } from '@antv/s2';
+import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 import { Pagination as AntDPagination } from 'ant-design-vue';
-import { i18n } from '@antv/s2';
 import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_PAGE_SIZE,
@@ -25,6 +24,7 @@ export default defineComponent({
       type: Number,
       default: DEFAULT_PAGE_SIZE,
     },
+    customOptions: Object,
   },
   emits: ['change', 'showSizeChange'] as unknown as {
     change: (current: number) => void;
@@ -49,14 +49,15 @@ export default defineComponent({
 <template>
   <div :class="PRE_CLASS">
     <AntDPagination
+      size="small"
       :default-current="1"
+      :showSizeChanger="true"
+      :showQuickJumper="showQuickJumper"
+      v-bind="customOptions"
       :current="current"
       :total="total"
       :pageSize="pageSize"
-      :showSizeChanger="true"
       @showSizeChange="(_, size) => $emit('showSizeChange', size)"
-      size="small"
-      :showQuickJumper="showQuickJumper"
       @change="(current) => $emit('change', current)"
     />
     <span :class="`${PRE_CLASS}-count`">

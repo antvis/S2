@@ -14,17 +14,17 @@ cell.getActualText()
 | --- | --- | --- |
 | getMeta | 获取单元格元数据 | () => [`ViewMeta`](#viewmeta) |
 | setMeta | 设置单元格元数据 | (vieMeta: [`Partial<ViewMeta>`](#viewmeta)) => void |
-| getIconStyle | 获取单元格图标样式 | () => [IconTheme](/docs/api/general/S2Theme#icontheme) |
-| getStyle | 获取单元格样式 | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
-| getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [TextAndIconPosition](#textandiconposition) |
-| cellType | 单元格类型 | [CellType](#celltype) |
+| getIconStyle | 获取单元格图标样式 | () => [`IconTheme`](/docs/api/general/S2Theme#icontheme) |
+| getStyle | 获取单元格样式 | (name?: string) => [`DefaultCellTheme`](/docs/api/general/S2Theme#defaultcelltheme) |
+| getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [`TextAndIconPosition`](#textandiconposition) |
+| cellType | 单元格类型 | [`CellType`](#celltype) |
 | initCell | 初始化单元格 | `() => void` |
 | update | 更新单元格 | `() => void` |
 | getTextStyle | 获取文本样式 | `() => void` |
 | getCellTextWordWrapStyle | 获取文本换行配置 | `() => { wordWrap: boolean, maxLines: number, textOverflow: string \| boolean }` |
 | getFormattedFieldValue | 获取格式化后的字段值 | `() => { formattedValue: string, value: string }` |
 | getMaxTextWidth | 获取文本最大宽度 | `() => number` |
-| getTextPosition | 获取文本坐标 | [Point](#point) |
+| getTextPosition | 获取文本坐标 | [`Point`](#point) |
 | getContentArea | 获取内容区域 | `() => { x: number, y: number, width: number, height: number }` |
 | updateByState | 根据状态更新单元格样式 | `(stateName: InteractionStateName, cell: S2CellType) => void` |
 | hideInteractionShape | 隐藏单元格的交互图层 | `() => void` |

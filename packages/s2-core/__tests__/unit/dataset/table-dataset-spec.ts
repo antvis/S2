@@ -1,12 +1,12 @@
 /**
  * table mode data-set test.
  */
-import { first, last, orderBy, uniq } from 'lodash';
-import { data } from 'tests/data/mock-dataset.json';
-import { assembleDataCfg } from '../../util';
 import type { S2DataConfig, SortParam } from '@/common/interface';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableSheet } from '@/sheet-type';
+import { first, last, orderBy, uniq } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
+import { assembleDataCfg } from '../../util';
 
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
@@ -32,6 +32,17 @@ describe('Table Mode Dataset Test', () => {
     s2.options = {
       frozen: {},
     };
+
+    s2.facet = {
+      // @ts-ignore
+      getFrozenOptions: jest.fn().mockReturnValue({
+        colCount: 0,
+        trailingColCount: 0,
+        rowCount: 0,
+        trailingRowCount: 0,
+      }),
+    };
+
     dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);

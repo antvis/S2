@@ -8,7 +8,7 @@ import {
   type TargetCellInfo,
 } from '@antv/s2';
 import React from 'react';
-import type { SheetComponentsProps } from '../components';
+import type { SheetComponentProps } from '../components';
 
 export const useCellEvent = (
   eventName: S2Event,
@@ -51,7 +51,7 @@ export const useS2Event = (
   }, [s2, handler, eventName]);
 };
 
-export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
+export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
   // ============== Row Cell ====================
   useCellEvent(S2Event.ROW_CELL_HOVER, props.onRowCellHover, s2);
   useCellEvent(S2Event.ROW_CELL_CLICK, props.onRowCellClick, s2);

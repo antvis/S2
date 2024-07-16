@@ -1,6 +1,7 @@
 import type { SpreadSheet } from '../../sheet-type';
-import type { DataItem, CellMeta } from '..';
-import { EXTRA_FIELD } from '..';
+import { EXTRA_FIELD } from '../constant';
+import type { CellMeta } from '../interface/interaction';
+import type { DataItem } from '../interface/s2DataConfig';
 
 export type MatrixPlainTransformer = (
   data: DataItem[][],
@@ -15,17 +16,17 @@ export enum CopyMIMEType {
 }
 
 export type CopyableItem = {
-  type: CopyMIMEType;
+  type: `${CopyMIMEType}`;
   content: string;
 };
 
 export type CopyablePlain = {
-  type: CopyMIMEType.PLAIN;
+  type: `${CopyMIMEType.PLAIN}`;
   content: string;
 };
 
 export type CopyableHTML = {
-  type: CopyMIMEType.HTML;
+  type: `${CopyMIMEType.HTML}`;
   content: string;
 };
 
@@ -50,7 +51,7 @@ export interface CopyOrExportConfig {
   formatOptions?: FormatOptions;
   separator?: string;
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
-  isAsyncExport?: boolean;
+  async?: boolean;
 }
 
 export interface CopyAndExportUnifyConfig {
@@ -59,16 +60,37 @@ export interface CopyAndExportUnifyConfig {
   formatData: boolean;
   selectedCells: CellMeta[];
   transformers: Transformer;
-  isAsyncExport: boolean;
+  async: boolean;
 }
 
 export interface CopyAllDataParams {
+  /**
+   * 表格实例
+   */
   sheetInstance: SpreadSheet;
+
+  /**
+   * 数据分割符
+   * @example "\t"
+   */
   split?: string;
+
+  /**
+   * 格式化配置
+   * @example { formatHeader: true, formatData: true }
+   */
   formatOptions?: FormatOptions;
+
+  /**
+   * 导出时支持自定义 (transformer) 数据导出格式化方法
+   * @see https://s2.antv.antgroup.com/manual/advanced/interaction/copy
+   */
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
-  /** 是否开启异步导出 */
-  isAsyncExport?: boolean;
+
+  /**
+   * 是否开启异步复制/导出
+   */
+  async?: boolean;
 }
 
 export interface SheetCopyConstructorParams {

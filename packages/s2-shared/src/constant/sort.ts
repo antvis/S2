@@ -1,4 +1,4 @@
-import { i18n } from '@antv/s2';
+import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 
 export const getSortMethod = () => [
   {
@@ -27,4 +27,4 @@ export const getSortRuleOptions = () => [
   },
 ];
 
-export const ADVANCED_SORT_PRE_CLS = 'antv-s2-advanced-sort';
+export const ADVANCED_SORT_PRE_CLS = `${S2_PREFIX_CLS}-advanced-sort`;

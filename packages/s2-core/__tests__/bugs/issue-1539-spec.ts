@@ -4,11 +4,11 @@
  * 明细表，开启序号时，左侧边框丢失
  *
  */
-import { getContainer } from 'tests/util/helpers';
-import type { Line } from '@antv/g';
-import dataCfg from '../data/simple-table-data.json';
-import { TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
+import { TableSheet } from '@/sheet-type';
+import type { Line } from '@antv/g';
+import { getContainer } from 'tests/util/helpers';
+import dataCfg from '../data/simple-table-data.json';
 
 const s2Options: S2Options = {
   width: 600,

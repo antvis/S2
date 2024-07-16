@@ -7,13 +7,33 @@ import { default as autoCompletePrompt } from 'inquirer-autocomplete-prompt';
 
 inquirer.registerPrompt('autocomplete', autoCompletePrompt);
 
+function run(path) {
+  const command = `cross-env DEBUG_MODE=1 npx jest ${path} --passWithNoTests --detectOpenHandles`;
+  const jestSpinner = ora(`[测试运行中]: ${command}`).start();
+
+  try {
+    execSync(command);
+    jestSpinner.succeed('测试运行完成.');
+  } catch (error) {
+    jestSpinner.fail();
+  }
+}
+
 async function main() {
   const spinner = ora('读取测试文件中...').start();
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
 
-  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.tsx';
+  const customPath = process.argv[2];
+  const defaultPath =
+    customPath || '__tests__/spreadsheet/spread-sheet-spec.tsx';
 
   spinner.stop();
+
+  if (customPath) {
+    run(customPath);
+
+    return;
+  }
 
   const selectedPath = await inquirer.prompt([
     {
@@ -35,14 +55,7 @@ async function main() {
     },
   ]);
 
-  const jestSpinner = ora('测试运行中...').start();
-
-  try {
-    execSync(`DEBUG_MODE=1 npx jest ${selectedPath.path}`);
-    jestSpinner.succeed('测试运行完成.');
-  } catch (error) {
-    jestSpinner.fail();
-  }
+  run(selectedPath.path);
 }
 
 main();

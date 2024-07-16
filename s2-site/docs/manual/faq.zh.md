@@ -286,6 +286,131 @@ const s2Options = {
 }
 ```
 
+### 禁用右键菜单不生效？
+
+表格内部监听 `G` 的 `rightup/rightdown` 事件，而不是 `<canvas/>` DOM 的 `contextmenu` 事件，因此默认行为**并不是弹出右键系统菜单**，所以 `event.preventDefault()` 无效：
+
+```ts | pure
+// ❌ 无效写法
+s2.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
+  event.preventDefault();
+})
+
+// ✅ 正确写法
+s2.getCanvasElement().addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+});
+```
+
+[了解更多](https://g.antv.antgroup.com/api/event/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95)
+
+### 使用 `customSVGIcons` 注册自定义图标，在字段标记中使用，无法修改颜色？
+
+`在线链接` 不支持修改颜色，推荐使用 `本地文件` 或者 `字符串`.
+
+```diff | pure
++ import Icon from '/path/to/icon.svg'
+
+const s2Options = {
+  customSVGIcons: [
+    {
+      name: 'CustomIcon',
+      // 1. 字符串（支持自定义颜色）
++     src: `<?xml version="1.0" encoding="UTF-8"?><svg t="1634603945212" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="558" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200" fill="currentColor"><defs><style type="text/css"></style></defs><path d="M605.61 884.79h-24.26c-21.34 0-38.66 17.32-38.66 38.66 0 21.34 17.32 38.66 38.66 38.66h24.26c21.34 0 38.66-17.32 38.66-38.66 0-21.35-17.32-38.66-38.66-38.66z" fill="#040000" p-id="559"></path><path d="M950.47 419.76c-22.17-15.48-51.17-16.01-73.92-1.33L715.7 522.53 573.09 223.42c-10.95-22.98-33.55-37.43-58.97-37.75h-0.85c-25.09 0-47.67 13.84-59.05 36.29L302.25 521.82 154.9 419.61c-22-15.18-50.71-15.73-73.27-1.46-22.53 14.32-34.23 40.57-29.8 66.9l70.9 421.76c5.33 32.04 32.82 55.3 65.31 55.3h272.43c21.34 0 38.66-17.32 38.66-38.66 0-21.34-17.32-38.66-38.66-38.66H197.44l-64.99-386.62 136.17 94.46a66.14 66.14 0 0 0 54.01 9.79 66.097 66.097 0 0 0 42.81-34.28l147.54-291.11 138.35 290.2c8.21 17.19 23.41 30.03 41.76 35.19 18.37 5.24 38 2.21 53.99-8.1l148.62-96.17-87.74 386.65h-60.1c-21.34 0-38.66 17.32-38.66 38.66 0 21.34 17.32 38.66 38.66 38.66h68.96c31.16 0 57.71-21.22 64.58-51.57l95.72-421.86c5.97-26.39-4.47-53.42-26.65-68.93zM514.74 151.68c28.08 0 50.85-22.76 50.85-50.85s-22.77-50.85-50.85-50.85c-28.09 0-50.85 22.76-50.85 50.85s22.77 50.85 50.85 50.85zM973.15 277.37c-28.08 0-50.85 22.77-50.85 50.85 0 28.09 22.76 50.85 50.85 50.85 28.08 0 50.85-22.76 50.85-50.85 0-28.08-22.77-50.85-50.85-50.85zM101.69 328.22c0-28.08-22.76-50.85-50.85-50.85S0 300.14 0 328.22c0 28.09 22.76 50.85 50.85 50.85s50.84-22.77 50.84-50.85z" fill="#040000" p-id="560"></path></svg>`,
+
+      // 2. 本地文件（支持自定义颜色，本质上也是字符串）
++     src: Icon,
+
+      // 3. 在线链接（不支持自定义颜色）
+-     src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
+    },
+  ],
+  conditions: {
+    icon: [
+      {
+        field: 'number',
+        mapping(fieldValue, data) {
+          return {
+            icon: 'CustomIcon',
++           fill: '#30BF78',
+          };
+        },
+      }
+    ],
+  }
+}
+```
+
+### 自定义单元格后绘制图片，滚动表格时图片重复加载并造成闪烁？
+
+1. G 的 [Image 图形](https://g.antv.antgroup.com/api/basic/image#src) 支持传入图片地址字符串，内部会缓存起来，无需创建 [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image), 适用于固定的宽高等场景。
+
+```ts | pure
+import { Image as GImage } from '@antv/g';
+
+class CustomColCell extends ColCell {
+  drawBackgroundShape() {
+    new GImage({
+      style: {
+        x: 200,
+        y: 100,
+        width: 200,
+        height: 200,
+        src: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+      },
+    })
+  }
+}
+```
+
+2. 如果图片宽高未知，则可以创建 [HTMLImageElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) 后再添加 G 的 [Image 图形](https://g.antv.antgroup.com/api/basic/image#src), 此时需要手动增加缓存，避免图片重复加载
+
+```ts | pure
+const ImageCache = new Map<string, HTMLImageElement>();
+
+class CustomColCell extends ColCell {
+  drawBackgroundShape() {
+    const url = 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png'
+
+    const imgCache = ImageCache.get(url)
+    if (imgCache) {
+      this.appendChild(
+        new GImage({
+          style: {
+            x: 200,
+            y: 100,
+            width: imgCache.width,
+            height: imgCache.height,
+            src: imgCache
+          },
+        })
+      )
+      return;
+    }
+
+    const img = new Image();
+    img.src = url
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      // 图片加载成功后创建
+      this.appendChild(
+        new GImage({
+          style: {
+            x: 200,
+            y: 100,
+            width: img.width,
+            height: img.height,
+            src: img
+          },
+        })
+      )
+    };
+  }
+}
+```
+
+请查看 [自定义特定单元格](/examples/custom/custom-cell#custom-specified-cell) 示例。
+
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？如何获取新版本发布通知？
 
 <embed src="@/docs/common/packages.zh.md"></embed>
@@ -342,11 +467,5 @@ const s2Options = {
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
-
-### 有讨论群吗？
-
-交流群不提供任何答疑，有任何问题请直接提交 [Issue](https://github.com/antvis/S2/issues/new/choose) 或者 [Discussion](https://github.com/antvis/S2/discussions/new?category=q-a), 当然，也期待你的 [Pull request](https://github.com/antvis/S2/pulls).
-
-<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 2. 错误和警告

@@ -1,30 +1,33 @@
-import type { Group } from '@antv/g';
-import type { DataCellCallback } from '@/common/interface/basic';
-import { SpreadSheet } from '@/sheet-type';
-import { Store } from '@/common/store';
-import {
-  getActiveCellsInfo,
-  getRectangleEdges,
-  unique,
-  getNextEdge,
-  getPolygonPoints,
-  getInvisibleInfo,
-  getVisibleInfo,
-  getTempMergedCell,
-  removeUnmergedCellsInfo,
-  updateMergedCells,
-  mergeTempMergedCell,
-  MergedCellConvertTempMergedCells,
-  differenceTempMergedCells,
-} from '@/utils';
-import type { RootInteraction } from '@/interaction/root';
+import type { DataCell, MergedCell } from '@/cell';
 import type {
   MergedCellInfo,
   TempMergedCell,
   ViewMeta,
 } from '@/common/interface';
+import type { DataCellCallback } from '@/common/interface/basic';
+import { Store } from '@/common/store';
 import type { BaseFacet } from '@/facet';
-import type { DataCell, MergedCell } from '@/cell';
+import type { RootInteraction } from '@/interaction/root';
+import { SpreadSheet } from '@/sheet-type';
+import {
+  differenceTempMergedCells,
+  getActiveCellsInfo,
+  getInvisibleInfo,
+  getMergedCellInstance,
+  getNextEdge,
+  getPolygonPoints,
+  getRectangleEdges,
+  getTempMergedCell,
+  getVisibleInfo,
+  mergeCell,
+  mergeTempMergedCell,
+  mergedCellConvertTempMergedCells,
+  removeUnmergedCellsInfo,
+  unique,
+  unmergeCell,
+  updateMergedCells,
+} from '@/utils';
+import type { Group } from '@antv/g';
 
 jest.mock('@/sheet-type');
 
@@ -39,6 +42,9 @@ describe('Merge Cells Test', () => {
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();
+    mockInstance.options = {
+      conditions: [],
+    };
     mockInstance.interaction = {
       getPanelGroupAllDataCells() {
         return mockAllVisibleCells;
@@ -279,6 +285,63 @@ describe('Merge Cells Test', () => {
     expect(result).toEqual([[mockMergeCellInfo[0], mockMergeCellInfo[1]]]);
   });
 
+  test('#getMergedCellInstance()', () => {
+    const mergedCell = jest.fn(() => true);
+
+    mockInstance = {
+      options: {
+        mergedCell,
+      },
+    };
+
+    expect(getMergedCellInstance(mockInstance, [], null)).toEqual(true);
+  });
+
+  test('#mergeCell()', () => {
+    const addMergeCell = jest.fn();
+
+    mockInstance.interaction.getActiveCells = () => [];
+    mockInstance.facet.panelScrollGroup = {
+      addMergeCell,
+    };
+    mockInstance.facet.getCellMeta = jest
+      .fn()
+      .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
+    Object.defineProperty(mockInstance.facet.cfg, 'dataCell', {
+      value: jest.fn().mockImplementation((scalar) => {
+        return {
+          getMeta: jest.fn().mockReturnValue(scalar),
+        };
+      }),
+    });
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    mergeCell(mockInstance);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      '[mergeCell]: The merged cells must be more than one!',
+    );
+
+    mergeCell(mockInstance, mockMergeCellInfo);
+
+    expect(addMergeCell).toHaveBeenCalledTimes(1);
+  });
+
+  test('#unmergeCell()', () => {
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    unmergeCell(mockInstance);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      '[unmergeCell]: The undefined is not a MergedCell',
+    );
+  });
+
   describe('Update mergedCells', () => {
     test('should not update mergedCells when mergedCellsInfo is empty', () => {
       mockInstance.options = {
@@ -342,13 +405,13 @@ describe('Merge Cells Test', () => {
       ]);
     });
 
-    test('should convert TempMergedCell to MergedCell. (MergedCellConvertTempMergedCells)', () => {
+    test('should convert TempMergedCell to MergedCell. (mergedCellConvertTempMergedCells)', () => {
       const mockMergedCell = {
         cells: mockAllVisibleCells,
         getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[2]),
         isPartiallyVisible: true,
       } as unknown as MergedCell;
-      const result = MergedCellConvertTempMergedCells([mockMergedCell]);
+      const result = mergedCellConvertTempMergedCells([mockMergedCell]);
 
       expect(result).toEqual([
         {

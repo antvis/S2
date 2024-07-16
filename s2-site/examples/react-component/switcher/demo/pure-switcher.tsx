@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+// organize-imports-ignore
 import React from 'react';
 import { Switcher } from '@antv/s2-react';
 

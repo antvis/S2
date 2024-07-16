@@ -1,22 +1,22 @@
-import { omit } from 'lodash';
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { GEvent } from '@/index';
-import { RowColumnClick } from '@/interaction/base-interaction/click';
-import type {
-  HiddenColumnsInfo,
-  S2CellType,
-  S2Options,
-  ViewMeta,
-} from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '@/common/constant';
-import type { Node } from '@/facet/layout/node';
+import type {
+  HiddenColumnsInfo,
+  S2CellType,
+  S2Options,
+  ViewMeta,
+} from '@/common/interface';
 import { CustomRect } from '@/engine';
+import type { Node } from '@/facet/layout/node';
+import type { GEvent } from '@/index';
+import { RowColumnClick } from '@/interaction/base-interaction/click';
+import type { SpreadSheet } from '@/sheet-type';
+import { omit } from 'lodash';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 
@@ -209,7 +209,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       target: new CustomRect(
         { style: { x: 1, y: 1, width: 1, height: 1 } },
         {
-          cellData: mockCellData,
+          meta: mockCellData,
           isLinkFieldText: true,
         },
       ),

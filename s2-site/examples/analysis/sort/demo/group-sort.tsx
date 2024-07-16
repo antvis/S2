@@ -1,6 +1,7 @@
+// organize-imports-ignore
 import React from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
@@ -43,11 +44,16 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
        * 详情请查看: https://s2.antv.antgroup.com/manual/basic/sort/group
        */
       tooltip: {
+        enable: true,
         operation: {
           // 开启组内排序
           sort: true,
         },
       },
+    };
+
+    const onRangeSort = (sortParams) => {
+      console.log('sortParams:', sortParams);
     };
 
     reactDOMClient
@@ -58,6 +64,7 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
           adaptive={false}
           dataCfg={s2DataConfig}
           options={s2Options}
+          onRangeSort={onRangeSort}
         />,
       );
   });

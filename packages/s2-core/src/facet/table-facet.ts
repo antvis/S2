@@ -1,8 +1,19 @@
-import { Group } from '@antv/g';
-import { isBoolean, isNumber, keys, last, maxBy, set } from 'lodash';
-import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
+import { Group, Rect } from '@antv/g';
 import {
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+  isBoolean,
+  isEmpty,
+  isNumber,
+  keys,
+  last,
+  max,
+  maxBy,
+  set,
+} from 'lodash';
+import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
+import { i18n } from '../common';
+import {
+  EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
+  KEY_GROUP_EMPTY_PLACEHOLDER,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthType,
   S2Event,
@@ -10,6 +21,7 @@ import {
 } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  CellCallbackParams,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -22,55 +34,208 @@ import type {
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import type { SpreadSheet } from '../sheet-type';
+import { renderIcon, renderText } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { floor } from '../utils/math';
+import type { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/corner-bbox';
 import { FrozenFacet } from './frozen-facet';
-import { ColHeader, Frame } from './header';
+import { Frame } from './header';
+import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { getFrozenLeafNodesCount, isFrozenTrailingRow } from './utils';
-import { TableColHeader } from './header/table-col';
 
 export class TableFacet extends FrozenFacet {
+  public emptyPlaceholderGroup: Group;
+
+  private lastRowOffset: number;
+
   public constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
     this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
-  public init() {
-    this.initRowOffsets();
-    super.init();
+  protected override getRowCellInstance(node: ViewMeta) {
+    const { dataCell } = this.spreadsheet.options;
+
+    return (
+      dataCell?.(node, this.spreadsheet) ||
+      new TableDataCell(node, this.spreadsheet)
+    );
   }
 
-  protected initRowOffsets() {
-    const heightByField =
-      this.spreadsheet.options.style?.rowCell?.heightByField;
+  protected override getColCellInstance(...args: CellCallbackParams) {
+    const { colCell } = this.spreadsheet.options;
 
-    if (keys(heightByField!).length) {
+    return colCell?.(...args) || new TableColCell(...args);
+  }
+
+  protected initGroups() {
+    super.initGroups();
+    this.initEmptyPlaceholderGroup();
+  }
+
+  public render() {
+    super.render();
+    this.renderEmptyPlaceholder();
+  }
+
+  public clearAllGroup() {
+    super.clearAllGroup();
+    this.emptyPlaceholderGroup.removeChildren();
+  }
+
+  private initEmptyPlaceholderGroup() {
+    this.emptyPlaceholderGroup = this.spreadsheet.container.appendChild(
+      new Group({
+        name: KEY_GROUP_EMPTY_PLACEHOLDER,
+        style: { zIndex: EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+  }
+
+  private renderEmptyPlaceholder() {
+    if (!this.spreadsheet.dataSet?.isEmpty()) {
+      return;
+    }
+
+    const { empty } = this.spreadsheet.options.placeholder!;
+    const { icon, description } = this.spreadsheet.theme.empty;
+    const {
+      horizontalBorderWidth,
+      horizontalBorderColor,
+      horizontalBorderColorOpacity,
+    } = this.spreadsheet.theme.dataCell.cell!;
+    const { maxY, viewportWidth, height } = this.panelBBox;
+    const iconX = viewportWidth / 2 - icon.width / 2;
+    const iconY = height / 2 + maxY - icon.height / 2 + icon.margin.top;
+    const text = empty?.description ?? i18n('暂无数据');
+    const descWidth = this.spreadsheet.measureTextWidth(text, description);
+    const descX = viewportWidth / 2 - descWidth / 2;
+    const descY = iconY + icon.height + icon.margin.bottom;
+
+    // 边框
+    const border = new Rect({
+      style: {
+        x: 0,
+        y: maxY,
+        width: viewportWidth,
+        height,
+        stroke: horizontalBorderColor,
+        strokeWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    });
+
+    this.emptyPlaceholderGroup.appendChild(border);
+
+    // 空状态 Icon
+    renderIcon(this.emptyPlaceholderGroup, {
+      ...icon,
+      name: empty?.icon!,
+      x: iconX,
+      y: iconY,
+      width: icon.width,
+      height: icon.height,
+    });
+
+    // 空状态描述文本
+    renderText({
+      group: this.emptyPlaceholderGroup,
+      style: {
+        ...description,
+        text,
+        x: descX,
+        y: descY,
+      },
+    });
+  }
+
+  private getDataCellAdaptiveHeight(viewMeta: ViewMeta): number {
+    const node = { id: String(viewMeta?.rowIndex) } as Node;
+    const rowHeight = this.getRowCellHeight(node);
+
+    if (this.isCustomRowCellHeight(node)) {
+      return rowHeight || 0;
+    }
+
+    const defaultHeight = this.getCellHeightByRowIndex(viewMeta?.rowIndex);
+
+    return this.getNodeAdaptiveHeight(
+      viewMeta,
+      this.textWrapTempRowCell,
+      defaultHeight,
+    );
+  }
+
+  private getCellHeightByRowIndex(rowIndex: number) {
+    if (this.rowOffsets) {
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node) ?? 0;
+    }
+
+    return this.getDefaultCellHeight();
+  }
+
+  /**
+   * 开启换行后, 需要自适应调整高度, 明细表通过 rowCell.heightByField 调整, 同时还有一个 rowOffsets 控制行高, 所以要提前设置好, 保证渲染正确.
+   */
+  private presetRowCellHeightIfNeeded(rowIndex: number) {
+    const { style } = this.spreadsheet.options;
+    const colLeafNodes = this.getColLeafNodes();
+
+    // 不超过一行或者用户已经配置过当前行高则无需预设
+    if (isEmpty(colLeafNodes) || style?.dataCell?.maxLines! <= 1) {
+      return;
+    }
+
+    // 当前行高取整行 dataCell 高度最大的值
+    const maxDataCellHeight = max(
+      colLeafNodes.map((colNode) => {
+        const viewMeta = this.getCellMeta(rowIndex, colNode.colIndex);
+
+        return this.getDataCellAdaptiveHeight(viewMeta!);
+      }),
+    );
+
+    // getCellHeightByRowIndex 会优先读取 heightByField, 保持逻辑统一
+    const height = maxDataCellHeight || this.getDefaultCellHeight();
+
+    set(
+      this.spreadsheet.options,
+      `style.rowCell.heightByField.${rowIndex}`,
+      height,
+    );
+  }
+
+  protected calculateRowOffsets() {
+    const { style } = this.spreadsheet.options;
+    const heightByField = style?.rowCell?.heightByField;
+
+    if (keys(heightByField!).length || style?.dataCell?.maxLines! > 1) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
 
+      this.textWrapNodeHeightCache.clear();
       this.rowOffsets = [0];
-      let lastOffset = 0;
+      this.lastRowOffset = 0;
 
       data.forEach((_, rowIndex) => {
+        this.presetRowCellHeightIfNeeded(rowIndex);
         const currentHeight = this.getCellHeightByRowIndex(rowIndex);
-        const currentOffset = lastOffset + currentHeight;
+        const currentOffset = this.lastRowOffset + currentHeight;
 
         this.rowOffsets.push(currentOffset);
-        lastOffset = currentOffset;
+        this.lastRowOffset = currentOffset;
       });
     }
   }
 
-  private onSortHandler = (sortParams: SortParams) => {
+  private onSortHandler = async (sortParams: SortParams) => {
     const s2 = this.spreadsheet;
     let params = sortParams;
 
@@ -109,7 +274,8 @@ export class TableFacet extends FrozenFacet {
 
     set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
     s2.setDataCfg(s2.dataCfg);
-    s2.render(true);
+    await s2.render(true);
+
     s2.emit(
       S2Event.RANGE_SORTED,
       (s2.dataSet as TableDataSet).getDisplayDataSet(),
@@ -148,10 +314,6 @@ export class TableFacet extends FrozenFacet {
     );
   };
 
-  get dataCellTheme() {
-    return this.spreadsheet.theme.dataCell?.cell;
-  }
-
   public destroy(): void {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT, this.onSortHandler);
@@ -162,8 +324,7 @@ export class TableFacet extends FrozenFacet {
     const { colsHierarchy } = this.getLayoutResult();
     const height = floor(colsHierarchy.height);
 
-    this.cornerBBox = new CornerBBox(this);
-
+    this.cornerBBox = new CornerBBox(this as unknown as BaseFacet);
     this.cornerBBox.height = height;
     this.cornerBBox.maxY = height;
   }
@@ -197,33 +358,20 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  public getCellMeta = (rowIndex = 0, colIndex = 0) => {
+  public getCellMeta(rowIndex = 0, colIndex = 0) {
     const { options, dataSet } = this.spreadsheet;
-    const { colLeafNodes } = this.getLayoutResult();
+    const colLeafNodes = this.getColLeafNodes();
     const colNode = colLeafNodes[colIndex];
 
     if (!colNode) {
       return null;
     }
 
-    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
-    const cellRange = this.getCellRange();
-    const { trailingRowCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      colLeafNodes.length,
-      cellRange.end - cellRange.start + 1,
-    );
-
     let data: ViewMetaData | SimpleData | undefined;
 
     const x = colNode.x;
-    let y = this.viewCellHeights.getCellOffsetY(rowIndex);
-
-    if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
-      y =
-        this.panelBBox.height -
-        this.getTotalHeightForRange(rowIndex, cellRange.end);
-    }
+    const y = this.viewCellHeights.getCellOffsetY(rowIndex);
+    const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
     if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
@@ -256,7 +404,7 @@ export class TableFacet extends FrozenFacet {
     };
 
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;
-  };
+  }
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { dataCell } = this.spreadsheet.options.style!;
@@ -287,43 +435,33 @@ export class TableFacet extends FrozenFacet {
     return getTotalHeight() + colsHierarchy.height;
   }
 
-  protected getColNodeHeight(colNode: Node, colsHierarchy: Hierarchy) {
-    const colCell = new TableColCell(colNode, this.spreadsheet, {
-      shallowRender: true,
-    });
-    const defaultHeight = this.getDefaultColNodeHeight(colNode, colsHierarchy);
-
-    return this.getCellAdaptiveHeight(colCell, defaultHeight);
-  }
-
-  private calculateColNodesCoordinate(
+  private calculateColLeafNodesWidth(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
-    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
-
     let preLeafNode = Node.blankNode();
     let currentCollIndex = 0;
 
-    const allNodes = colsHierarchy.getNodes();
     const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
 
-    for (let i = 0; i < allNodes.length; i++) {
-      const currentNode = allNodes[i];
+    colsHierarchy.getLeaves().forEach((currentNode) => {
+      currentNode.colIndex = currentCollIndex;
+      currentCollIndex += 1;
+      currentNode.x = preLeafNode.x + preLeafNode.width;
+      currentNode.width = this.getColLeafNodesWidth(
+        currentNode,
+        adaptiveColWidth,
+      );
+      layoutCoordinate(this.spreadsheet, null, currentNode);
+      colsHierarchy.width += currentNode.width;
+      preLeafNode = currentNode;
+    });
+  }
 
-      if (currentNode.isLeaf) {
-        currentNode.colIndex = currentCollIndex;
-        currentCollIndex += 1;
-        currentNode.x = preLeafNode.x + preLeafNode.width;
-        currentNode.width = this.calculateColLeafNodesWidth(
-          currentNode,
-          adaptiveColWidth,
-        );
-        layoutCoordinate(this.spreadsheet, null, currentNode);
-        colsHierarchy.width += currentNode.width;
-        preLeafNode = currentNode;
-      }
+  private calculateColNodesHeight(colsHierarchy: Hierarchy) {
+    const colNodes = colsHierarchy.getNodes();
 
+    colNodes.forEach((currentNode) => {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
@@ -331,53 +469,35 @@ export class TableFacet extends FrozenFacet {
           currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode, colsHierarchy);
-    }
+      currentNode.height = this.getColNodeHeight(
+        currentNode,
+        colsHierarchy,
+        false,
+      );
+    });
+  }
 
-    const topLevelNodes = colsHierarchy.getNodes(0);
-    const { trailingColCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet.options.frozen!,
-      topLevelNodes.length,
-    );
-
-    preLeafNode = Node.blankNode();
-
-    const width =
-      this.getCanvasSize().width -
-      Frame.getVerticalBorderWidth(this.spreadsheet);
-
-    if (trailingColCount > 0) {
-      const { trailingColCount: realFrozenTrailingColCount } =
-        getFrozenLeafNodesCount(topLevelNodes, 0, trailingColCount);
-      const leafNodes = allNodes.filter((node) => node.isLeaf);
-
-      for (let i = 1; i <= realFrozenTrailingColCount; i++) {
-        const currentNode = leafNodes[leafNodes.length - i];
-
-        if (i === 1) {
-          currentNode.x = width - currentNode.width;
-        } else {
-          currentNode.x = preLeafNode.x - currentNode.width;
-        }
-
-        preLeafNode = currentNode;
-      }
-    }
-
+  private calculateColNodesCoordinate(
+    colLeafNodes: Node[],
+    colsHierarchy: Hierarchy,
+  ) {
+    this.calculateColLeafNodesWidth(colLeafNodes, colsHierarchy);
+    this.updateColsHierarchySampleMaxHeightNodes(colsHierarchy);
+    this.calculateColNodesHeight(colsHierarchy);
+    this.calculateColNodeWidthAndX(colLeafNodes);
     this.updateCustomFieldsSampleNodes(colsHierarchy);
-    this.adjustColLeafNodesHeight({
+    this.adjustCustomColLeafNodesHeight({
       leafNodes: colLeafNodes,
       hierarchy: colsHierarchy,
     });
-    this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
 
   /**
    * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
-  private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+  private calculateColNodeWidthAndX(colLeafNodes: Node[]) {
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
     while (leafNodes.length) {
@@ -397,7 +517,7 @@ export class TableFacet extends FrozenFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(
+  private getColLeafNodesWidth(
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
@@ -528,7 +648,7 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  protected updateRowResizeArea() {
+  protected renderRowResizeArea() {
     const { resize } = this.spreadsheet.options.interaction!;
 
     const shouldDrawResize = isBoolean(resize)
@@ -542,16 +662,9 @@ export class TableFacet extends FrozenFacet {
     const rowResizeGroup = this.foregroundGroup.getElementById<Group>(
       KEY_GROUP_ROW_RESIZE_AREA,
     );
-    const rowResizeFrozenGroup = this.foregroundGroup.getElementById<Group>(
-      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-    );
 
     if (rowResizeGroup) {
       rowResizeGroup.removeChildren();
-    }
-
-    if (rowResizeFrozenGroup) {
-      rowResizeFrozenGroup.removeChildren();
     }
 
     const cells = getAllChildCells<TableDataCell>(
@@ -568,7 +681,7 @@ export class TableFacet extends FrozenFacet {
     return null;
   }
 
-  protected getColHeader(): ColHeader {
+  protected getColHeader() {
     if (!this.columnHeader) {
       const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
 
@@ -590,6 +703,20 @@ export class TableFacet extends FrozenFacet {
 
   protected getSeriesNumberHeader() {
     return null;
+  }
+
+  protected getScrollbarPosition() {
+    const { height } = this.getCanvasSize();
+    const position = super.getScrollbarPosition();
+    // 滚动条有两种模式, 一种是根据实际内容撑开, 一种是根据 Canvas 高度撑开, 现在有空数据占位符, 对于这种, 滚动条需要撑满
+    const maxY = this.spreadsheet.dataSet.isEmpty()
+      ? height - this.scrollBarSize
+      : position.maxY;
+
+    return {
+      ...position,
+      maxY,
+    };
   }
 
   /**

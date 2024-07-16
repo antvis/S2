@@ -89,7 +89,7 @@ object **optional** , *default: null* Function description: tooltip operation ba
 | ------------------- | ----------------------------------------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | menus               | [TooltipOperatorMenu\[\]](#tooltipoperatormenu) |          |          | action item list                                                                                                                                                     |
 | onClick             | `({ item, key, keyPath, domEvent }) => void`    |          |          | Click event, transparently transmit [onClick](https://ant.design/components/menu-cn/#Menu) of `antd` `Menu` component                                                |
-| defaultSelectedKeys | `string[]`                                      |          |          | Initially selected menu item key array, transparently transmit the [defaultSelectedKeys](https://ant.design/components/menu-cn/#Menu) of the `antd` `Menu` component |
+| selectedKeys | `string[]`                                      |          |          | Initially selected menu item key array, transparently transmit the [selectedKeys](https://ant.design/components/menu-cn/#Menu) of the `antd` `Menu` component |
 
 ##### TooltipOperatorMenu
 

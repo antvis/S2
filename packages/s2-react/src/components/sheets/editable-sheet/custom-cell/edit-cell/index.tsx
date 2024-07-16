@@ -1,11 +1,12 @@
 import {
+  GEvent,
   S2Event,
+  S2_PREFIX_CLS,
   SpreadSheet,
   TableDataCell,
   customMerge,
   type DataItem,
   type ViewMeta,
-  GEvent,
 } from '@antv/s2';
 import { Input } from 'antd';
 import { isNil, pick } from 'lodash';
@@ -87,14 +88,14 @@ function EditCellComponent(
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const onSave = () => {
+  const onSave = async () => {
     const { rowIndex, valueField, id } = cell!.getMeta();
     const displayData = s2.dataSet.getDisplayDataSet();
 
     displayData[rowIndex][valueField] = inputVal;
     // 编辑后的值作为格式化后的结果, formatter 不再触发, 避免二次格式化
     s2.dataSet.displayFormattedValueMap?.set(id, inputVal);
-    s2.render();
+    await s2.render();
 
     const editedMeta = customMerge<ViewMeta>(cell!.getMeta(), {
       fieldValue: inputVal,
@@ -179,7 +180,7 @@ function EditCellComponent(
         <Input.TextArea
           required
           style={styleProps}
-          className={'s2-edit-cell'}
+          className={`${S2_PREFIX_CLS}-edit-cell`}
           value={inputVal as string}
           ref={inputRef}
           onChange={onChange}

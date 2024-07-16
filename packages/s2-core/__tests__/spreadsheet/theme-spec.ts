@@ -1,5 +1,4 @@
 /* eslint-disable jest/expect-expect */
-import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import {
   CellType,
   EXTRA_COLUMN_FIELD,
@@ -15,6 +14,7 @@ import type {
 } from '@/common/interface/theme';
 import type { Node } from '@/facet/layout/node';
 import type { PivotSheet } from '@/sheet-type';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
@@ -164,7 +164,7 @@ describe('SpreadSheet Theme Tests', () => {
         customSVGIcons: [
           {
             name: iconInfo.name,
-            svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+            src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
           },
         ],
         headerActionIcons: [

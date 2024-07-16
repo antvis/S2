@@ -1,14 +1,14 @@
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { GEvent } from '@/index';
-import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
-import type { CellMeta } from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '@/common/constant';
+import type { CellMeta } from '@/common/interface';
+import type { GEvent } from '@/index';
+import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
+import type { SpreadSheet } from '@/sheet-type';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/ui/hd-adapter');

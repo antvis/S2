@@ -1,6 +1,3 @@
-import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
-import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { BaseTooltip } from '@/ui/tooltip';
 import {
   TOOLTIP_CONTAINER_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
@@ -8,6 +5,9 @@ import {
   TOOLTIP_POSITION_OFFSET,
   type S2Options,
 } from '@/common';
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
+import { BaseTooltip } from '@/ui/tooltip';
+import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');

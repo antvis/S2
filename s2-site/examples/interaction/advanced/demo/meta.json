@@ -29,6 +29,15 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aygNlbA0fu/link-table.gif"
     },
     {
+      "filename": "custom-link-jump.ts",
+      "title": {
+        "zh": "链接跳转 - 自定义",
+        "en": "Custom link jump"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Qt3wR4cIdn0AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
       "filename": "custom-tree-link-jump.ts",
       "title": {
         "zh": "链接跳转 - 自定义目录树",

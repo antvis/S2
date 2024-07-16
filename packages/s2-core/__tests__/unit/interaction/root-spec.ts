@@ -1,7 +1,3 @@
-import type { Canvas } from '@antv/g';
-import { get } from 'lodash';
-import { createMockCellInfo, sleep } from 'tests/util/helpers';
-import type { PivotFacet } from '../../../src/facet';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
@@ -13,6 +9,7 @@ import {
   DataCellClick,
   DataCellMultiSelection,
   GuiIcon,
+  HeaderCellLinkClick,
   HoverEvent,
   InteractionName,
   InteractionStateName,
@@ -24,7 +21,6 @@ import {
   RowCellBrushSelection,
   RowColumnClick,
   RowColumnResize,
-  RowTextClick,
   SelectedCellMove,
   SpreadSheet,
   type S2Options,
@@ -32,6 +28,10 @@ import {
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
+import type { Canvas } from '@antv/g';
+import { get } from 'lodash';
+import { createMockCellInfo, sleep } from 'tests/util/helpers';
+import type { PivotFacet } from '../../../src/facet';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -589,7 +589,7 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.CORNER_CELL_CLICK}         | ${CornerCellClick}
     ${InteractionName.DATA_CELL_CLICK}           | ${DataCellClick}
     ${InteractionName.ROW_COLUMN_CLICK}          | ${RowColumnClick}
-    ${InteractionName.ROW_TEXT_CLICK}            | ${RowTextClick}
+    ${InteractionName.HEADER_CELL_LINK_CLICK}    | ${HeaderCellLinkClick}
     ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
     ${InteractionName.HOVER}                     | ${HoverEvent}
     ${InteractionName.DATA_CELL_BRUSH_SELECTION} | ${DataCellBrushSelection}

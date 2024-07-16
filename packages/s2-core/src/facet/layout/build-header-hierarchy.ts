@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
 import {
   EXTRA_FIELD,
-  getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
   type CustomTreeNode,
 } from '../../common';
@@ -19,7 +18,7 @@ import type {
 import { Node } from '../layout/node';
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
-  const { rootNode, hierarchy, fields, spreadsheet } = params;
+  const { rootNode, hierarchy, fields, spreadsheet, isRowHeader } = params;
 
   // 自定义行/列 需要去除额外添加的 EXTRA_FIELD 虚拟数值字段, 即不参与布局, 只用于定位数据
   const withoutExtraFieldsTree = filter(
@@ -34,6 +33,7 @@ const handleCustomTreeHierarchy = (params: HeaderParams) => {
     level: 0,
     parentNode: rootNode,
     hierarchy,
+    isRowHeader,
   });
 };
 
@@ -108,12 +108,12 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
 
 const handleTableHierarchy = (params: HeaderParams) => {
   const { isCustomTreeFields, spreadsheet } = params;
-  const { enable, text } = spreadsheet.options.seriesNumber ?? {};
+  const { enable } = spreadsheet.options.seriesNumber ?? {};
 
   if (isCustomTreeFields) {
     const seriesNumberField: CustomTreeNode = {
       field: SERIES_NUMBER_FIELD,
-      title: getDefaultSeriesNumberText(text),
+      title: spreadsheet.getSeriesNumberText(),
     };
 
     const fields = enable

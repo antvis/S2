@@ -1,3 +1,36 @@
+# [@antv/s2-vue-v2.0.0-next.15](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.14...@antv/s2-vue-v2.0.0-next.15) (2024-06-21)
+
+
+### Features
+
+* **components:** 组件层更新时增加 loading 效果 close [#1790](https://github.com/antvis/S2/issues/1790) ([#2762](https://github.com/antvis/S2/issues/2762)) ([0ca8413](https://github.com/antvis/S2/commit/0ca841362bb4bbb3b81ca1046f5b4dcd7236b91e))
+
+# [@antv/s2-vue-v2.0.0-next.14](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.13...@antv/s2-vue-v2.0.0-next.14) (2024-05-24)
+
+
+### Performance Improvements
+
+* 优化开启多行文本时的布局性能 ([#2734](https://github.com/antvis/S2/issues/2734)) ([388157c](https://github.com/antvis/S2/commit/388157c0ecb82c45f8a0277b649e891366dc2f1c))
+
+# [@antv/s2-vue-v2.0.0-next.13](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.12...@antv/s2-vue-v2.0.0-next.13) (2024-04-30)
+
+
+### Bug Fixes
+
+* 修复分页配置无法透传 ([#2666](https://github.com/antvis/S2/issues/2666)) ([323f14d](https://github.com/antvis/S2/commit/323f14d7d77d71852dba3d5982623b7ab8709609))
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ed21dcb](https://github.com/antvis/S2/commit/ed21dcb82ea4cb434587a4ffa4819f2a619ca1aa))
+
+# [@antv/s2-vue-v2.0.0-next.12](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.11...@antv/s2-vue-v2.0.0-next.12) (2024-03-29)
+
+
+### Bug Fixes
+
+* 调整 peerDependencies 命中规则 ([#2633](https://github.com/antvis/S2/issues/2633)) ([73378c7](https://github.com/antvis/S2/commit/73378c70339c1d5536be33cdf3cece5404d1f5c9))
+
 # [@antv/s2-vue-v2.0.0-next.11](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.10...@antv/s2-vue-v2.0.0-next.11) (2024-03-04)
 
 

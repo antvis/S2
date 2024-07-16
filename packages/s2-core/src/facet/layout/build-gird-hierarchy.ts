@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
+import { filterOutDetail } from '../../utils/data-set-operate';
 import { addTotals } from '../../utils/layout/add-totals';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
 import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node';
@@ -7,7 +8,6 @@ import { whetherLeafByLevel } from '../../utils/layout/whether-leaf-by-level';
 import type { FieldValue, GridHeaderParams } from '../layout/interface';
 import { layoutArrange } from '../layout/layout-hooks';
 import { TotalMeasure } from '../layout/total-measure';
-import { filterOutDetail } from '../../utils/data-set-operate';
 import { TotalClass } from './total-class';
 
 const buildTotalGridHierarchy = (params: GridHeaderParams) => {
@@ -27,9 +27,10 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
 
   let query: Record<string, unknown> = {};
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
-  const dimensionGroup = parentNode.isGrandTotals
-    ? totalsConfig.grandTotalsGroupDimensions
-    : totalsConfig.subTotalsGroupDimensions;
+  const defaultDimensionGroup = parentNode.isGrandTotals
+    ? totalsConfig.grandTotalsGroupDimensions || []
+    : totalsConfig.subTotalsGroupDimensions || [];
+  const dimensionGroup = !dataSet.isEmpty() ? defaultDimensionGroup : [];
 
   if (dimensionGroup?.includes(currentField)) {
     query = getDimsCondition(parentNode);

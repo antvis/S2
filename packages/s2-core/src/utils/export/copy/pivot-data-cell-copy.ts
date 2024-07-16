@@ -8,14 +8,14 @@ import {
   zip,
 } from 'lodash';
 import {
-  AsyncRenderThreshold,
+  CornerNodeType,
   EXTRA_FIELD,
   VALUE_FIELD,
   type CellMeta,
+  type CustomHeaderField,
   type DataItem,
   type MiniChartData,
   type MultiData,
-  CornerNodeType,
 } from '../../../common';
 import type {
   CopyAllDataParams,
@@ -29,8 +29,6 @@ import type { SpreadSheet } from '../../../sheet-type';
 import {
   convertString,
   getColNodeFieldFromNode,
-  getHeaderList,
-  getHeaderMeasureFieldNames,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
@@ -54,6 +52,15 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     super(params);
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
+  }
+
+  protected getHeaderNodeMatrix(node: Node) {
+    // 透视表的表头也是可以格式化的 (虚拟数值列 (EXTRA_FIELD)除外)
+    if (this.config.formatHeader) {
+      return getNodeFormatData(node);
+    }
+
+    return super.getHeaderNodeMatrix(node);
   }
 
   private getLeafRowNodes() {
@@ -144,15 +151,21 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       try {
         // 因为每次 requestIdleCallback 执行的时间不一样，所以需要记录下当前执行到的 this.leafRowNodes 和 this.leafColNodes
         const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-          let count = AsyncRenderThreshold;
-          const rowLen: number = this.leafRowNodes.length;
+          const rowLength: number = this.leafRowNodes.length;
+
+          // requestIdleCallback 浏览器空闲时会多次执行, 只有一行数据时执行一次即可, 避免生成重复数据
+          this.initIdleCallbackCount(rowLength);
 
           while (
-            deadline.timeRemaining() > 0 &&
-            rowIndex < rowLen - 1 &&
-            count > 0
+            (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+            rowIndex <= rowLength - 1 &&
+            this.idleCallbackCount > 0
           ) {
-            for (let j = rowIndex; j < rowLen && count > 0; j++) {
+            for (
+              let j = rowIndex;
+              j < rowLength && this.idleCallbackCount > 0;
+              j++
+            ) {
               const row: DataItem[] = [];
               const rowNode = this.leafRowNodes[j];
 
@@ -171,15 +184,18 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
                 row.push(dataItem);
               }
-              rowIndex = j;
+              rowIndex++;
               matrix.push(row);
-              count--;
+              this.idleCallbackCount--;
             }
           }
 
-          if (rowIndex === rowLen - 1) {
+          if (rowIndex === rowLength) {
             resolve(matrix);
           } else {
+            // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
+            this.initIdleCallbackCount(rowLength);
+
             requestIdleCallback(dataMatrixIdleCallback);
           }
         };
@@ -275,6 +291,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     });
   };
 
+  protected getFieldName = (field: CustomHeaderField) => {
+    return this.config.formatHeader
+      ? this.spreadsheet.dataSet.getFieldName(field)
+      : this.spreadsheet.dataSet.getField(field);
+  };
+
   protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
     if (this.spreadsheet.isCustomRowFields()) {
       return this.getCustomRowCornerMatrix(rowMatrix);
@@ -296,12 +318,12 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       map(customRows, (rowField, rowIndex) => {
         // 角头的最后一行，为行头
         if (colIndex === customColumns.length - 1) {
-          return this.spreadsheet.dataSet.getFieldName(rowField);
+          return this.getFieldName(rowField);
         }
 
         // 角头的最后一列，为列头
         if (rowIndex === maxRowLen - 1) {
-          return this.spreadsheet.dataSet.getFieldName(colField);
+          return this.getFieldName(colField);
         }
 
         return '';
@@ -311,22 +333,13 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
   protected getColMatrix(): string[][] {
     return zip(
-      ...map(this.leafColNodes, (node) =>
-        this.config.formatHeader
-          ? getNodeFormatData(node)
-          : getHeaderMeasureFieldNames(
-              getHeaderList(node.id),
-              node.spreadsheet,
-            ),
-      ),
+      ...map(this.leafColNodes, (node) => this.getHeaderNodeMatrix(node)),
     ) as string[][];
   }
 
   protected getRowMatrix(): string[][] {
     const rowMatrix: string[][] = map(this.leafRowNodes, (node) =>
-      this.config.formatHeader
-        ? getNodeFormatData(node)
-        : getHeaderMeasureFieldNames(getHeaderList(node.id), node.spreadsheet),
+      this.getHeaderNodeMatrix(node),
     );
 
     return completeMatrix(rowMatrix);
@@ -398,7 +411,7 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     let dataMatrix: string[][] = [];
 
     // 把两类导出都封装成异步的，保证导出类型的一致
-    if (this.config.isAsyncExport) {
+    if (this.config.async) {
       dataMatrix = (await this.getDataMatrixByHeaderNodeRIC()) as string[][];
     } else {
       dataMatrix = (await Promise.resolve(
@@ -464,7 +477,8 @@ export const processSelectedAllPivot = (
 export const asyncProcessSelectedAllPivot = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
-  const { sheetInstance, split, formatOptions, customTransformer } = params;
+  const { sheetInstance, split, formatOptions, customTransformer, async } =
+    params;
   const pivotDataCellCopy = new PivotDataCellCopy({
     spreadsheet: sheetInstance,
     isExport: true,
@@ -472,7 +486,7 @@ export const asyncProcessSelectedAllPivot = (
       separator: split,
       formatOptions,
       customTransformer,
-      isAsyncExport: true,
+      async: async ?? true,
     },
   });
 

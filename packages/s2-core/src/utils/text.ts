@@ -178,7 +178,8 @@ const getCurrentTextStyle = ({
 export const getEmptyPlaceholder = (
   meta: Record<string, any>,
   placeHolder: S2Options['placeholder'],
-) => (isFunction(placeHolder) ? placeHolder(meta) : placeHolder);
+) =>
+  isFunction(placeHolder?.cell) ? placeHolder?.cell(meta) : placeHolder?.cell;
 
 /**
  * @desc 获取多指标情况下每一个指标的内容包围盒
@@ -337,10 +338,10 @@ export const drawCustomContent = (
 
       const maxTextWidth =
         contentBoxes[i][j].width -
-        iconStyle.size -
+        iconStyle?.size -
         (iconCfg?.position === 'left'
-          ? iconStyle.margin.right
-          : iconStyle.margin.left);
+          ? iconStyle?.margin?.right
+          : iconStyle?.margin?.left);
 
       const groupedIcons: GroupedIcons = {
         left: [],

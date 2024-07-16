@@ -1,6 +1,13 @@
-import { S2DataConfig } from '@antv/s2';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+/* eslint-disable no-console */
+// organize-imports-ignore
+import console from 'console';
 import React from 'react';
+import { S2DataConfig } from '@antv/s2';
+import {
+  SheetComponent,
+  SheetComponentOptions,
+  type SheetComponentsProps,
+} from '@antv/s2-react';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -52,11 +59,17 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       },
     };
 
-    const onDataCellEditStart = (meta, cell) => {
+    const onDataCellEditStart: SheetComponentsProps['onDataCellEditStart'] = (
+      meta,
+      cell,
+    ) => {
       console.log('onDataCellEditStart:', meta, cell);
     };
 
-    const onDataCellEditEnd = (meta, cell) => {
+    const onDataCellEditEnd: SheetComponentsProps['onDataCellEditEnd'] = (
+      meta,
+      cell,
+    ) => {
       console.log('onDataCellEditEnd:', meta, cell);
     };
 

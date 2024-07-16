@@ -1,12 +1,17 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import {
+  EXTRA_FIELD,
+  SpreadSheet,
+  TOTAL_VALUE,
   i18n,
   type SortMethod,
   type SortParam,
-  SpreadSheet,
-  TOTAL_VALUE,
-  EXTRA_FIELD,
 } from '@antv/s2';
+import {
+  ADVANCED_SORT_PRE_CLS,
+  getSortMethod,
+  getSortRuleOptions,
+} from '@antv/s2-shared';
 import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
 import cx from 'classnames';
 import {
@@ -21,11 +26,6 @@ import {
   uniq,
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import {
-  ADVANCED_SORT_PRE_CLS,
-  getSortRuleOptions,
-  getSortMethod,
-} from '@antv/s2-shared';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
 import './index.less';

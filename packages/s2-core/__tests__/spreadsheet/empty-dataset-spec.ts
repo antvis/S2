@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import type { S2Options } from '@/common/interface/s2Options';
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import { getContainer } from 'tests/util/helpers';
 import type { S2DataConfig } from '../../src';
-import { PivotSheet, TableSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface/s2Options';
 
 const s2Options: S2Options = {
   width: 400,

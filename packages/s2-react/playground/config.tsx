@@ -1,11 +1,12 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import {
-  ResizeType,
+  EMPTY_PLACEHOLDER,
   customMerge,
   type CustomHeaderField,
   type CustomTreeNode,
+  type S2BaseFrozenOptions,
   type S2DataConfig,
-  type S2TableSheetFrozenOptions,
   type ThemeCfg,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
@@ -51,6 +52,14 @@ export const tableSheetMultipleColumns: CustomTreeNode[] = [
     children: [
       { field: 'price', title: '价格', description: '价格描述' },
       { field: 'number', title: '数量' },
+    ],
+  },
+  {
+    field: 'money1',
+    title: '金额1',
+    children: [
+      { field: 'price1', title: '价格1', description: '价格描述' },
+      { field: 'number1', title: '数量1' },
     ],
   },
 ];
@@ -243,9 +252,14 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   ],
 };
 
-export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
+export const TableSheetFrozenOptions: S2BaseFrozenOptions = {
   colCount: 1,
   trailingColCount: 1,
+};
+
+export const PivotSheetFrozenOptions: S2BaseFrozenOptions = {
+  rowCount: 1,
+  trailingRowCount: 1,
 };
 
 export const S2TooltipOptions: SheetComponentOptions['tooltip'] = {
@@ -316,8 +330,15 @@ export const s2Options: SheetComponentOptions = {
   width: 800,
   height: 600,
   hierarchyType: 'grid',
+  placeholder: {
+    cell: EMPTY_PLACEHOLDER,
+    empty: {
+      icon: 'Empty',
+      description: '暂无数据',
+    },
+  },
   seriesNumber: {
-    enable: true,
+    enable: false,
   },
   transformCanvasConfig() {
     return {
@@ -335,6 +356,7 @@ export const s2Options: SheetComponentOptions = {
   },
   cornerText: '测试测试测试测试测试测试测试测试测试测试',
   interaction: {
+    linkFields: [],
     copy: {
       enable: true,
       withFormat: true,
@@ -354,8 +376,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: ResizeType.SELECTED,
-      colResizeType: ResizeType.SELECTED,
+      rowResizeType: 'all',
+      colResizeType: 'all',
     },
   },
   // totals: {

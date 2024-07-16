@@ -175,7 +175,7 @@ const s2DataConfig = {
 
 自定义 `DataCell`, 然后使用 `drawCustomContent` 接管绘制逻辑
 
-```ts
+```ts | pure
 import { DataCell, drawCustomContent } from '@antv/s2';
 
 class CustomDataCell extends DataCell {
@@ -192,8 +192,8 @@ class CustomDataCell extends DataCell {
 }
 
 const s2Options = {
-  dataCell: (viewMeta) => {
-    return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+  dataCell: (viewMeta, spreadsheet) => {
+    return new CustomDataCell(viewMeta, spreadsheet);
   },
 };
 ```
@@ -348,7 +348,7 @@ class ChartSheetDataCell extends DataCell {
 }
 
 const s2 = new PivotSheet(container, s2DataConfig, {
-  dataCell: (viewMeta) => new ChartSheetDataCell(viewMeta, viewMeta.spreadsheet)
+  dataCell: (viewMeta, spreadsheet) => new ChartSheetDataCell(viewMeta, spreadsheet)
 });
 
 await s2.render();
@@ -428,7 +428,7 @@ S2 的每一个单元格对应 [`AntV/G`](https://g.antv.antgroup.com/) 的一�
 
 #### 3.1 自定义单元格，重写绘制逻辑，添加任意图形
 
-```ts
+```ts | pure
 import { Image as GImage } from '@antv/g';
 import { CornerCell } from '@antv/s2';
 
@@ -441,23 +441,18 @@ class CustomCornerCell extends CornerCell {
   }
 
   drawBackgroundShape() {
-    const img = new Image();
+    const url = 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
 
-    img.src =
-      'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          ...this.getBBoxByType(),
+          src: url,
+        },
+      }),
+    );
 
-    img.onload = () => {
-      this.backgroundShape = this.appendChild(
-        new GImage({
-          style: {
-            ...this.getBBoxByType(),
-            img,
-          },
-        }),
-      );
-
-      this.drawTextShape();
-    };
+    this.drawTextShape();
   }
 }
 
@@ -472,7 +467,7 @@ const s2Options = {
 
 通过 `s2.getCanvas()` 获取 `G` 的 `Canvas` 实例。
 
-```ts
+```ts | pure
 import { Rect } from '@antv/g';
 
 await s2.render();
@@ -499,7 +494,7 @@ s2.getCanvas().appendChild(
 
 #### 3.3 手动获取指定单元格实例 (Group) 后绘制任意图形
 
-```ts
+```ts | pure
 import { Rect } from '@antv/g';
 
 await s2.render();

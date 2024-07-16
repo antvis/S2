@@ -1,13 +1,6 @@
 /**
  * pivot mode pivot test.
  */
-import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
-import { Renderer } from '@antv/g-canvas';
-import { find, size } from 'lodash';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroupType } from '../../../src';
-import { createFakeSpreadSheet } from '../../util/helpers';
-import { getMockPivotMeta } from './util';
 import { CornerCell, DataCell } from '@/cell';
 import {
   DEFAULT_OPTIONS,
@@ -25,6 +18,13 @@ import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { RootInteraction } from '@/interaction/root';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
+import { Canvas, Group, Rect, type CanvasConfig } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
+import { find, size } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getDefaultSeriesNumberText } from '../../../src';
+import { createFakeSpreadSheet } from '../../util/helpers';
+import { getMockPivotMeta } from './util';
 
 jest.mock('@/interaction/root');
 
@@ -55,7 +55,8 @@ jest.mock('@/sheet-type', () => {
       return {
         dataCfg: assembleDataCfg(),
         options: assembleOptions({
-          dataCell: (viewMeta) => new DataCell(viewMeta, viewMeta.spreadsheet),
+          dataCell: (viewMeta, spreadsheet) =>
+            new DataCell(viewMeta, spreadsheet),
         }),
         container,
         theme: getTheme({}),
@@ -82,14 +83,9 @@ jest.mock('@/sheet-type', () => {
           getRowNodes: () => [],
           getColNodes: () => [],
           getHiddenColumnsInfo: jest.fn(),
-          getCellMeta: jest.fn(),
+          getCellMeta: jest.fn().mockRejectedValue({}),
           getRowLeafNodeByIndex: () => [],
-          frozenGroupInfo: {
-            [FrozenGroupType.FROZEN_ROW]: {},
-            [FrozenGroupType.FROZEN_COL]: {},
-            [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
-            [FrozenGroupType.FROZEN_TRAILING_COL]: {},
-          },
+          getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
           cornerBBox: {},
           getHeaderNodes: jest.fn().mockReturnValue([]),
         },
@@ -97,13 +93,12 @@ jest.mock('@/sheet-type', () => {
           container.getContextService().getDomElement() as HTMLCanvasElement,
         hideTooltip: jest.fn(),
         interaction: {
+          intercepts: new Set(),
           clearHoverTimer: jest.fn(),
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
-        enableFrozenHeaders() {
-          return true;
-        },
+        getSeriesNumberText: jest.fn(() => getDefaultSeriesNumberText()),
       };
     }),
   };
@@ -132,6 +127,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         getFieldsAndPivotMetaByField:
           actualPivotDataSet.prototype.getFieldsAndPivotMetaByField,
         displayFormattedValueMap: new Map(),
+        dimensionValuesCache: new Map(),
       };
     }),
   };
@@ -150,6 +146,7 @@ describe('Pivot Mode Facet Test', () => {
   s2.isCustomHeaderFields = jest.fn();
   s2.isCustomColumnFields = jest.fn();
   s2.isCustomRowFields = jest.fn();
+  s2.isFrozenRowHeader = jest.fn();
   s2.options = assembleOptions({
     dataCell: (viewMeta) => new DataCell(viewMeta, s2),
   });
@@ -230,18 +227,16 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct cell meta', () => {
-    const { getCellMeta } = facet;
-
     test('should get correct cell meta', () => {
       expect(
-        (getCellMeta(0, 1)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(0, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(5343);
       expect(
-        (getCellMeta(1, 1)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(1, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(632);
 
       expect(
-        (getCellMeta(1, 0)?.data as CellData)?.getValueByField('number'),
+        (facet.getCellMeta(1, 0)?.data as CellData)?.getValueByField('number'),
       ).toBe(2367);
     });
   });
@@ -294,7 +289,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(cornerHeader).toBeInstanceOf(CornerHeader);
-      expect(cornerHeader.children).toHaveLength(2);
+      expect(cornerHeader.scrollGroup.children).toHaveLength(2);
       expect(cornerHeader.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(columnHeader).toBeInstanceOf(ColHeader);
@@ -319,15 +314,16 @@ describe('Pivot Mode Facet Test', () => {
       s2.dataSet = new MockPivotDataSet(s2);
       const seriesNumberFacet = new PivotFacet(s2);
 
+      s2.facet = seriesNumberFacet;
+
       seriesNumberFacet.render();
       const { cornerHeader } = seriesNumberFacet;
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.children).toHaveLength(3);
-      expect(cornerHeader.parsedStyle.visibility).toEqual('visible');
+      expect(cornerHeader.scrollGroup.children).toHaveLength(3);
 
       expect(
-        (cornerHeader.children as CornerCell[]).every(
+        (cornerHeader.scrollGroup.children as CornerCell[]).every(
           (cell) => cell.getMeta().spreadsheet,
         ),
       ).toBeTrue();

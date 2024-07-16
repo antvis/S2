@@ -5,7 +5,7 @@ export interface BaseChartData {
   /**
    * 类型
    */
-  type: MiniChartType;
+  type: `${MiniChartType}`;
 
   /**
    * 数据
@@ -112,22 +112,31 @@ export interface CustomTreeNode {
 export interface S2DataConfig {
   /**
    * 原始明细数据
+   * @see https://assets.antv.antgroup.com/s2/basic.json
    */
   data: RawData[];
+
   /**
    * 维度字段
    */
   fields: Fields;
+
   /**
    * 字段元数据
+   * @see https://s2.antv.antgroup.com/manual/basic/formatter
    */
   meta?: Meta[];
+
   /**
    * 排序配置
+   * @see https://s2.antv.antgroup.com/manual/basic/sort/basic
    */
   sortParams?: SortParams;
+
   /**
    * 筛选配置
+   * @see https://s2.antv.antgroup.com/api/general/s2-data-config#filterparam
+   * @example https://s2.antv.antgroup.com/examples/case/data-preview/#index
    */
   filterParams?: FilterParam[];
   [key: string]: unknown;

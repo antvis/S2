@@ -1,3 +1,36 @@
+import type { CellMeta } from '@/common/interface/interaction';
+import { CellData } from '@/data-set/cell-data';
+import type { BBox } from '@/engine';
+import type { BaseFacet } from '@/facet/base-facet';
+import {
+  CellType,
+  Node,
+  PivotSheet,
+  SpreadSheet,
+  TOOLTIP_CONTAINER_HIDE_CLS,
+  TOOLTIP_CONTAINER_SHOW_CLS,
+  TOOLTIP_POSITION_OFFSET,
+  getCellMeta,
+  getTooltipVisibleOperator,
+  type S2CellType,
+  type S2DataConfig,
+  type S2Options,
+  type Tooltip,
+  type TooltipData,
+  type TooltipOperatorMenuItems,
+  type TooltipSummaryOptions,
+  type Total,
+  type Totals,
+} from '@/index';
+import {
+  getAutoAdjustPosition,
+  getCustomFieldsSummaries,
+  getTooltipData,
+  getTooltipOptions,
+  setTooltipContainerStyle,
+} from '@/utils/tooltip';
+import { omit } from 'lodash';
+import * as dataConfig from 'tests/data/mock-dataset.json';
 import {
   createFakeSpreadSheet,
   createMockCellInfo,
@@ -5,41 +38,8 @@ import {
   createTableSheet,
   getContainer,
 } from 'tests/util/helpers';
-import { omit } from 'lodash';
-import * as dataConfig from 'tests/data/mock-dataset.json';
 import { customRowGridSimpleFields } from '../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../data/data-custom-grid';
-import { CellData } from '@/data-set/cell-data';
-import type { CellMeta } from '@/common/interface/interaction';
-import {
-  getAutoAdjustPosition,
-  setTooltipContainerStyle,
-  getTooltipOptions,
-  getTooltipData,
-  getCustomFieldsSummaries,
-} from '@/utils/tooltip';
-import {
-  CellType,
-  getCellMeta,
-  getTooltipVisibleOperator,
-  Node,
-  type S2CellType,
-  SpreadSheet,
-  type Tooltip,
-  type TooltipData,
-  TOOLTIP_POSITION_OFFSET,
-  type Total,
-  type Totals,
-  TOOLTIP_CONTAINER_SHOW_CLS,
-  TOOLTIP_CONTAINER_HIDE_CLS,
-  type TooltipSummaryOptions,
-  PivotSheet,
-  type S2DataConfig,
-  type S2Options,
-  type TooltipOperatorMenuItems,
-} from '@/index';
-import type { BaseFacet } from '@/facet/base-facet';
-import type { BBox } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 

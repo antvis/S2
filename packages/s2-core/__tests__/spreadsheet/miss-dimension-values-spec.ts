@@ -1,4 +1,3 @@
-import { getContainer } from 'tests/util/helpers';
 import {
   EMPTY_FIELD_VALUE,
   LayoutWidthType,
@@ -7,6 +6,7 @@ import {
   type S2Options,
 } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   debug: true,
@@ -202,10 +202,12 @@ describe('Miss Dimension Values Tests', () => {
   });
 
   test('should get correctly empty dimension values and use custom placeholder text', async () => {
-    const placeholder = '*';
+    const cellPlaceholder = '*';
 
     s2.setOptions({
-      placeholder,
+      placeholder: {
+        cell: cellPlaceholder,
+      },
     });
 
     await s2.render(false);
@@ -213,7 +215,7 @@ describe('Miss Dimension Values Tests', () => {
     const emptyDimensionValueNode = s2.facet.getRowNodes()[0].children[0];
 
     expect(emptyDimensionValueNode.belongsCell!.getActualText()).toEqual(
-      placeholder,
+      cellPlaceholder,
     );
   });
 

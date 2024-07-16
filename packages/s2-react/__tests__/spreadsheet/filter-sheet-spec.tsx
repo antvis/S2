@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
+import { SheetComponent, type SheetComponentOptions } from '@/components';
 import { DeviceType, S2Event, SpreadSheet, type S2DataConfig } from '@antv/s2';
+import { waitFor } from '@testing-library/react';
 import { Button, Space } from 'antd';
 import React from 'react';
-import { waitFor } from '@testing-library/react';
 import type { Root } from 'react-dom/client';
 import {
   getContainer,
@@ -10,7 +11,6 @@ import {
   renderComponent,
   sleep,
 } from '../util/helpers';
-import { SheetComponent, type SheetComponentOptions } from '@/components';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 

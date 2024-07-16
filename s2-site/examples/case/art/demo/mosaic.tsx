@@ -1,6 +1,7 @@
+// organize-imports-ignore
 import React from 'react';
+import { LayoutWidthType, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { ThemeCfg } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 // 了解更多: https://observablehq.com/@pearmini/mosaic-antv-s2
@@ -28,7 +29,7 @@ fetch(
         hoverFocus: false,
       },
       style: {
-        layoutWidthType: 'compact',
+        layoutWidthType: LayoutWidthType.Compact,
         colCell: {
           // 隐藏列头
           height: 0,

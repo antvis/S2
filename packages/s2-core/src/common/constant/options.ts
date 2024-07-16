@@ -8,7 +8,7 @@ import {
   ScrollbarPositionType,
 } from '../constant/interaction';
 import type { CellTextWordWrapStyle, S2Style } from '../interface';
-import type { S2Options } from '../interface/s2Options';
+import type { S2BaseFrozenOptions, S2Options } from '../interface/s2Options';
 import { DeviceType } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
 
@@ -59,6 +59,13 @@ export const DEFAULT_STYLE: S2Style = {
   },
 } as const;
 
+export const DEFAULT_FROZEN_COUNTS: Required<S2BaseFrozenOptions> = {
+  rowCount: 0,
+  colCount: 0,
+  trailingRowCount: 0,
+  trailingColCount: 0,
+};
+
 export const DEFAULT_OPTIONS: S2Options = {
   width: 600,
   height: 480,
@@ -88,7 +95,9 @@ export const DEFAULT_OPTIONS: S2Options = {
     hiddenColumnFields: [],
     selectedCellsSpotlight: false,
     hoverHighlight: true,
-    hoverFocus: { duration: HOVER_FOCUS_DURATION },
+    hoverFocus: {
+      duration: HOVER_FOCUS_DURATION,
+    },
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,
@@ -125,13 +134,15 @@ export const DEFAULT_OPTIONS: S2Options = {
   style: DEFAULT_STYLE,
   frozen: {
     rowHeader: true,
-    rowCount: 0,
-    colCount: 0,
-    trailingRowCount: 0,
-    trailingColCount: 0,
+    ...DEFAULT_FROZEN_COUNTS,
   },
   hd: true,
   cornerText: '',
   cornerExtraFieldText: '',
-  placeholder: EMPTY_PLACEHOLDER,
+  placeholder: {
+    cell: EMPTY_PLACEHOLDER,
+    empty: {
+      icon: 'Empty',
+    },
+  },
 };

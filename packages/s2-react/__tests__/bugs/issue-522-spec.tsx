@@ -8,14 +8,14 @@
 import type { Node, SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
+import { SheetComponent, type SheetComponentProps } from '../../src';
 import dataCfg from '../data/data-issue-522.json';
 import { renderComponent } from '../util/helpers';
-import { type SheetComponentsProps, SheetComponent } from '../../src';
 
 let sheetInstance: SpreadSheet;
 
 function MainLayout() {
-  const options: SheetComponentsProps['options'] = {
+  const options: SheetComponentProps['options'] = {
     width: 1180,
     height: 525,
     totals: {

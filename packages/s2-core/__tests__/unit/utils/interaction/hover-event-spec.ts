@@ -1,10 +1,10 @@
+import { ColCell } from '@/cell';
 import type { Node } from '@/facet/layout/node';
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import {
   getActiveHoverHeaderCells,
   updateAllColHeaderCellState,
 } from '@/utils/interaction/hover-event';
-import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { ColCell } from '@/cell';
 
 import { InteractionStateName } from '@/common';
 

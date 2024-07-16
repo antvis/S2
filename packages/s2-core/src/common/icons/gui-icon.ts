@@ -16,7 +16,7 @@ const ImageCache: Record<string, HTMLImageElement> = {};
 
 export interface GuiIconCfg extends Omit<ImageStyleProps, 'fill'> {
   readonly name: string;
-  readonly fill?: string;
+  readonly fill?: string | null;
 }
 
 /**
@@ -45,7 +45,7 @@ export class GuiIcon extends Group {
   public getImage(
     name: string,
     cacheKey: string,
-    fill?: string,
+    fill?: string | null,
   ): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject): void => {
       let svg = getIcon(name);
@@ -123,7 +123,7 @@ export class GuiIcon extends Group {
     this.setImageAttrs({ name, fill });
   }
 
-  public setImageAttrs(attrs: Partial<{ name: string; fill: string }>) {
+  public setImageAttrs(attrs: Partial<{ name: string; fill: string | null }>) {
     let { name, fill } = attrs;
     const { iconImageShape: image } = this;
 
@@ -132,15 +132,15 @@ export class GuiIcon extends Group {
     fill = fill || this.cfg.fill;
 
     const cacheKey = `${name}-${fill}`;
-    const img = ImageCache[cacheKey];
+    const imgCache = ImageCache[cacheKey];
 
-    if (img) {
+    if (imgCache) {
       // already in cache
-      image.attr('img', img);
+      image.attr('src', imgCache);
       this.appendChild(image);
     } else {
       this.getImage(name, cacheKey, fill)
-        .then((value: HTMLImageElement) => {
+        .then((img: HTMLImageElement) => {
           // 异步加载完成后，当前 Cell 可能已经销毁了
           if (this.destroyed) {
             DebuggerUtil.getInstance().logger(`GuiIcon ${name} destroyed.`);
@@ -148,7 +148,7 @@ export class GuiIcon extends Group {
             return;
           }
 
-          image.attr('img', value);
+          image.attr('src', img);
           this.appendChild(image);
         })
         .catch((event: string | Event) => {
@@ -164,5 +164,17 @@ export class GuiIcon extends Group {
           console.error(`GuiIcon ${name} load failed:`, event);
         });
     }
+  }
+
+  /**
+   * https://github.com/antvis/S2/issues/2772
+   * G 6.0 如果是多图层, 需要手动全部隐藏, 直接隐藏父容器 Group 还不行, 或者使用 icon.show()
+   * https://github.com/antvis/G/blob/277abff24936ef6f7c43407a16c5bc9260992511/packages/g-lite/src/display-objects/DisplayObject.ts#L853
+   */
+  public toggleVisibility(visible: boolean) {
+    const status = visible ? 'visible' : 'hidden';
+
+    this.setAttribute('visibility', status);
+    this.iconImageShape.setAttribute('visibility', status);
   }
 }

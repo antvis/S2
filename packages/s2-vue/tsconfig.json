@@ -7,5 +7,5 @@
     "noImplicitAny": false,
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
-  "include": ["src", "./typings.d.ts"]
+  "include": ["src", "./typings.d.ts", "../../global.d.ts"]
 }

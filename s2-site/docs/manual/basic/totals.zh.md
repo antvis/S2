@@ -101,8 +101,8 @@ order: 5
 | subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     | ✓    |
 | reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
 | reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| label               | 总计别名                 | `string`     |        |      |
-| subLabel            | 小计别名                 | `string`     |        |      |
+| grandTotalsLabel               | 总计别名                 | `string`     |   `总计`     |      |
+| subTotalsLabel            | 小计别名                 | `string`     |   `小计`     |      |
 | calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
@@ -115,7 +115,7 @@ const s2Options = {
       reverseGrandTotalsLayout: true,
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
-      totalsGroupDimensions: ['city'],
+      grandTotalsGroupDimensions: ['city'],
       subTotalsGroupDimensions: ['type', 'sub_type'],
     },
     col: {
@@ -230,7 +230,7 @@ const s2Options = {
 
 <br/>
 
-##### 2.2. 配置自定义方法
+##### 2.2. 配置自定义计算方法
 
 ```ts
 const s2Options = {
@@ -242,10 +242,10 @@ const s2Options = {
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['province'],
       calcGrandTotals: {
-        calcFunc: (query, data) => {},
+        calcFunc: (query, data, spreadsheet) => {},
       },
       calcSubTotals: {
-        calcFunc: (query, data) => {},
+        calcFunc: (query, data, spreadsheet) => {},
       },
     },
     col: {
@@ -255,15 +255,37 @@ const s2Options = {
       reverseSubTotalsLayout: true,
       subTotalsDimensions: ['type'],
       calcGrandTotals: {
-        calcFunc: (query, data) => {},
+        calcFunc: (query, data, spreadsheet) => {},
       },
       calcSubTotals: {
-        calcFunc: (query, data) => {},
+        calcFunc: (query, data, spreadsheet) => {},
       },
     },
   },
 };
 ```
+
+通过配置 `calcFunc: (query: Record<string, any>, data: Record<string, any>[], spreadsheet: SpreadSheet) => number` 来实现。[查看示例](https://s2.antv.antgroup.com/zh/examples/analysis/totals/#custom)
+
+注意：`data` 为明细数据，如需获取包含汇总的数据
+
+```ts
+import { QueryDataType } from '@antv/s2';
+
+const calcFunc = (query, data, spreadsheet) => {
+  const allData = spreadsheet.dataSet.getMultiData(query, {
+    queryType: QueryDataType.All,
+  });
+
+  console.log('data（明细数据）:', data);
+  console.log('data（全部数据，含汇总）:', allData);
+};
+
+```
+
+<Playground path='analysis/totals/demo/custom.ts' rid='pivot-total-custom' height='400'></playground>
+
+<br/>
 
 ### 优先级
 

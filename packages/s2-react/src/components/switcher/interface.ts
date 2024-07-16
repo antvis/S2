@@ -1,4 +1,7 @@
+import { type PopoverProps } from 'antd';
+import React from 'react';
 import { FieldType } from './constant';
+import type { SwitcherContentProps } from './content';
 
 type SwitcherItemWithoutChildren = Omit<SwitcherItem, 'children'>;
 
@@ -37,4 +40,24 @@ export interface SwitcherResult {
   [FieldType.Rows]: SwitcherResultItem;
   [FieldType.Cols]: SwitcherResultItem;
   [FieldType.Values]: SwitcherResultItem;
+}
+
+export interface SwitcherProps
+  extends Omit<SwitcherContentProps, 'onToggleVisible'> {
+  title?: React.ReactNode;
+  // ref: https://ant.design/components/popover-cn/#API
+  popover?: PopoverProps;
+  disabled?: boolean;
+}
+
+export interface DimensionCommonProps
+  extends Pick<SwitcherField, 'selectable' | 'expandable'> {
+  fieldType: FieldType;
+  draggingItemId?: string | null;
+  onVisibleItemChange: (
+    fieldType: FieldType,
+    checked: boolean,
+    id: string,
+    parentId?: string,
+  ) => void;
 }

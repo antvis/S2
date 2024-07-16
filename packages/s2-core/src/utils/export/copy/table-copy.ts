@@ -1,27 +1,25 @@
-import { map } from 'lodash';
-import type { SpreadSheet } from '../../../sheet-type';
+import { map, zip } from 'lodash';
 import {
+  SERIES_NUMBER_FIELD,
   type CellMeta,
   type RawData,
-  getDefaultSeriesNumberText,
-  SERIES_NUMBER_FIELD,
-  AsyncRenderThreshold,
 } from '../../../common';
-import type { Node } from '../../../facet/layout/node';
 import type {
-  CopyableList,
   CopyAllDataParams,
+  CopyableList,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
+import type { Node } from '../../../facet/layout/node';
+import type { SpreadSheet } from '../../../sheet-type';
 import {
   convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
+import { BaseDataCellCopy } from './base-data-cell-copy';
 import { assembleMatrix, getFormatter } from './common';
 import { getHeaderNodeFromMeta } from './core';
-import { BaseDataCellCopy } from './base-data-cell-copy';
 
 class TableDataCellCopy extends BaseDataCellCopy {
   private displayData: RawData[];
@@ -35,15 +33,20 @@ class TableDataCellCopy extends BaseDataCellCopy {
     this.columnNodes = this.getSelectedColNodes();
   }
 
+  protected getHeaderNodeMatrix(node: Node) {
+    // 明细表的表头配置即作为列头, 也作为数值, 所以列头不应该被格式化
+    return super.getHeaderNodeMatrix(node);
+  }
+
   private getSelectedColNodes(): Node[] {
     const selectedCols = getSelectedCols(this.config.selectedCells);
-    const allColNodes = this.spreadsheet.facet.getColNodes();
+    const colLeafNodes = this.spreadsheet.facet.getColLeafNodes();
 
     if (selectedCols.length === 0) {
-      return allColNodes;
+      return colLeafNodes;
     }
 
-    return map(selectedCols, (meta) => allColNodes[meta.colIndex]);
+    return map(selectedCols, (meta) => colLeafNodes[meta.colIndex]);
   }
 
   private getSelectedDisplayData(): RawData[] {
@@ -88,15 +91,23 @@ class TableDataCellCopy extends BaseDataCellCopy {
     return new Promise((resolve, reject) => {
       try {
         const dataMatrixIdleCallback = (deadline: IdleDeadline) => {
-          let count = AsyncRenderThreshold;
           const rowLength = this.displayData.length;
 
+          // requestIdleCallback 浏览器空闲时会多次执行, 只有一行数据时执行一次即可, 避免生成重复数据
+          this.initIdleCallbackCount(rowLength);
+
           while (
-            deadline.timeRemaining() > 0 &&
-            count > 0 &&
-            rowIndex < rowLength - 1
+            (deadline.timeRemaining() > 0 ||
+              deadline.didTimeout ||
+              process.env['NODE_ENV'] === 'test') &&
+            rowIndex <= rowLength - 1 &&
+            this.idleCallbackCount > 0
           ) {
-            for (let j = rowIndex; j < rowLength && count > 0; j++) {
+            for (
+              let j = rowIndex;
+              j < rowLength && this.idleCallbackCount > 0;
+              j++
+            ) {
               const rowData = this.displayData[j];
               const row: string[] = [];
 
@@ -120,15 +131,19 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
                 row.push(dataItem as string);
               }
-              rowIndex = j;
+              // 生成一行数据后，rowIndex + 1，下次 requestIdleCallback 时从下一行开始
+              rowIndex++;
               result.push(row);
-              count--;
+              this.idleCallbackCount--;
             }
           }
 
-          if (rowIndex === rowLength - 1) {
+          if (rowIndex === rowLength) {
             resolve(result);
           } else {
+            // 重置 idleCallbackCount，避免下次 requestIdleCallback 时 idleCallbackCount 为 0
+            this.initIdleCallbackCount(rowLength);
+
             requestIdleCallback(dataMatrixIdleCallback);
           }
         };
@@ -146,21 +161,10 @@ class TableDataCellCopy extends BaseDataCellCopy {
     return SERIES_NUMBER_FIELD === field && seriesNumber?.enable;
   }
 
-  private getColMatrix(): string[] {
-    const { formatHeader } = this.config;
-
-    // 明细表的表头，没有格式化
-    return this.columnNodes.map((node) => {
-      const field: string = node.field;
-
-      if (!formatHeader) {
-        return field;
-      }
-
-      return this.isSeriesNumberField(field)
-        ? getDefaultSeriesNumberText()
-        : this.spreadsheet.dataSet.getFieldName(field);
-    }) as string[];
+  private getColMatrix(): string[][] {
+    return zip(
+      ...this.columnNodes.map((node) => this.getHeaderNodeMatrix(node)),
+    ) as string[][];
   }
 
   private getValueFromMeta = (meta: CellMeta) => {
@@ -198,7 +202,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix }),
+      assembleMatrix({ colMatrix, dataMatrix }),
       this.config.separator,
     );
   }
@@ -218,13 +222,13 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      assembleMatrix({ colMatrix, dataMatrix: matrix }),
       this.config.separator,
     );
   }
 
   async asyncProcessSelectedTable(allSelected = false): Promise<CopyableList> {
-    const matrix = this.config.isAsyncExport
+    const matrix = this.config.async
       ? await this.getDataMatrixRIC()
       : await Promise.resolve(this.getDataMatrix());
 
@@ -235,7 +239,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const colMatrix = this.getColMatrix();
 
     return this.matrixTransformer(
-      assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix }),
+      assembleMatrix({ colMatrix, dataMatrix: matrix }),
       this.config.separator,
     );
   }
@@ -265,13 +269,8 @@ export const processSelectedTableByHeader = (
 export const asyncProcessSelectedAllTable = (
   params: CopyAllDataParams,
 ): Promise<CopyableList> => {
-  const {
-    sheetInstance,
-    split,
-    formatOptions,
-    customTransformer,
-    isAsyncExport,
-  } = params;
+  const { sheetInstance, split, formatOptions, customTransformer, async } =
+    params;
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet: sheetInstance,
     config: {
@@ -279,7 +278,7 @@ export const asyncProcessSelectedAllTable = (
       separator: split,
       formatOptions,
       customTransformer,
-      isAsyncExport: true ?? isAsyncExport,
+      async: async ?? true,
     },
     isExport: true,
   });

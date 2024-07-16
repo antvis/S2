@@ -1,20 +1,17 @@
-import { getSafetyDataConfig, S2_PREFIX_CLS } from '@antv/s2';
+import { S2_PREFIX_CLS, setupDataConfig } from '@antv/s2';
+import { injectThemeVars } from '@antv/s2-shared';
 import { Spin } from 'antd';
 import React from 'react';
-import { injectThemeVars } from '@antv/s2-shared';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
-import type {
-  SheetComponentOptions,
-  SheetComponentsProps,
-} from '../../sheets/interface';
+import type { SheetComponentProps } from '../../sheets/interface';
 
 import './index.less';
 
-export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
-  const { dataCfg, options, header } = props;
+export const BaseSheet: React.FC<SheetComponentProps> = React.memo((props) => {
+  const { dataCfg, options = {}, header } = props;
   const { s2Ref, loading, containerRef, pagination, wrapperRef } =
     useSpreadSheet(props);
 
@@ -32,7 +29,7 @@ export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
             style={{
               width: options?.width,
             }}
-            dataCfg={getSafetyDataConfig(dataCfg)}
+            dataCfg={setupDataConfig(dataCfg)}
             options={getSheetComponentOptions(options!)}
           />
         )}
@@ -51,8 +48,3 @@ export const BaseSheet: React.FC<SheetComponentsProps> = React.memo((props) => {
 });
 
 BaseSheet.displayName = 'BaseSheet';
-BaseSheet.defaultProps = {
-  options: {} as SheetComponentOptions,
-  adaptive: false,
-  showPagination: false,
-};

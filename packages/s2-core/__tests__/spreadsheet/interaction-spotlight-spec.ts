@@ -1,8 +1,8 @@
-import { createPivotSheet } from 'tests/util/helpers';
+import { InteractionStateName } from '@/common';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import { getCellMeta } from '@/utils';
-import { InteractionStateName } from '@/common';
+import { createPivotSheet } from 'tests/util/helpers';
 
 const s2Options: S2Options = {
   width: 600,

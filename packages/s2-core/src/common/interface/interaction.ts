@@ -45,6 +45,8 @@ export interface CellMeta {
   rowIndex: number;
   type: CellType;
   rowQuery?: Record<string, any>;
+  rowId?: string;
+  colId?: string;
   [key: string]: unknown;
 }
 
@@ -274,7 +276,7 @@ export interface InteractionOptions {
    * 滚动条位置 (可用于表格内容未撑满 Canvas 的场景)
    * @example scrollbarPosition: 'content'
    */
-  scrollbarPosition?: ScrollbarPositionType;
+  scrollbarPosition?: `${ScrollbarPositionType}`;
 
   /**
    * 透传 listener 属性的可选参数对象

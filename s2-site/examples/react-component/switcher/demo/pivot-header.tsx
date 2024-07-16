@@ -1,7 +1,8 @@
+// organize-imports-ignore
+import React from 'react';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
-import React from 'react';
 
 fetch(
   'https://render.alipay.com/p/yuyan/180020010001215413/s2/total-group.json',

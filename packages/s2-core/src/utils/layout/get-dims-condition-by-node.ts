@@ -1,5 +1,5 @@
-import type { Query } from '../../data-set';
 import { EMPTY_FIELD_VALUE } from '../../common/constant';
+import type { Query } from '../../data-set';
 import type { Node } from '../../facet/layout/node';
 
 export function getDimsCondition(parent: Node, force?: boolean) {

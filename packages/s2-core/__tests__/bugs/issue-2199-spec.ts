@@ -3,10 +3,10 @@
  * https://github.com/antvis/S2/issues/2199
  * 明细表: 当有冻结列 + 列分组的情况下, 会出现列头文本不居中现象
  */
+import type { S2Options } from '@/common/interface';
+import { TableSheet } from '@/sheet-type';
 import { getContainer, sleep } from 'tests/util/helpers';
 import dataCfg from '../data/data-issue-2199.json';
-import { TableSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 300,

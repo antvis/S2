@@ -3,10 +3,10 @@
  * https://github.com/antvis/S2/issues/2359
  * 明细表: 自定义列头误用 dataCell 样式
  */
+import type { S2CellType, S2Options } from '@/common/interface';
 import { pick } from 'lodash';
 import { createTableSheet } from 'tests/util/helpers';
 import { TableColCell, drawCustomContent } from '../../src';
-import type { S2CellType, S2Options } from '@/common/interface';
 
 class TestColCell extends TableColCell {
   drawTextShape() {

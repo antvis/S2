@@ -1,5 +1,5 @@
 import type { FederatedPointerEvent as Event, PointLike } from '@antv/g';
-import type { DataCell, MergedCell } from '../../cell';
+import type { DataCell, MergedCell, TableDataCell } from '../../cell';
 import type {
   CustomTreeNode,
   Data,
@@ -11,7 +11,7 @@ import type {
 import type { FrameConfig } from '../../common/interface/frame';
 import type { Query } from '../../data-set';
 import type { CellData } from '../../data-set/cell-data';
-import type { BaseHeaderConfig, Frame } from '../../facet/header';
+import type { BaseHeaderConfig, CornerHeader, Frame } from '../../facet/header';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { CellType } from '../constant';
@@ -37,7 +37,7 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
+export type SortMethod = 'ASC' | 'DESC' | 'NONE' | 'asc' | 'desc' | 'none';
 
 export enum CellBorderPosition {
   TOP = 'TOP',
@@ -71,9 +71,13 @@ export enum CellClipBox {
 
 export interface Meta {
   /**
-   * 字段 id
+   * 字段名
+   * @example
+      1. 'city'
+      2. ['city', 'type']
+      3. /^city/
    */
-  field?: string;
+  field?: string | string[] | RegExp;
 
   /**
    * 字段名称
@@ -89,6 +93,7 @@ export interface Meta {
    * 格式化
    * 数值字段：一般用于格式化数字单位
    * 文本字段：一般用于做字段枚举值的别名
+   * @see https://s2.antv.antgroup.com/manual/basic/formatter
    */
   formatter?: Formatter;
 }
@@ -115,13 +120,6 @@ export interface Fields extends BaseFields {
   customValueOrder?: number;
 }
 
-export interface TotalsStatus {
-  isRowTotal: boolean;
-  isRowSubTotal: boolean;
-  isColTotal: boolean;
-  isColSubTotal: boolean;
-}
-
 export enum Aggregation {
   SUM = 'SUM',
   MIN = 'MIN',
@@ -130,14 +128,20 @@ export enum Aggregation {
 }
 
 export interface CalcTotals {
-  /** 聚合方式 */
-  aggregation?: Aggregation;
+  /**
+   * 聚合方式
+   */
+  aggregation?: `${Aggregation}`;
 
   /**
    * 自定义计算汇总
    * @see https://s2.antv.antgroup.com/examples/analysis/totals/#custom
    */
-  calcFunc?: (query: Query, data: CellData[]) => number;
+  calcFunc?: (
+    query: Query,
+    data: CellData[],
+    spreadsheet: SpreadSheet,
+  ) => number;
 }
 
 export interface Total {
@@ -270,14 +274,14 @@ export interface CustomSVGIcon {
 
    import Icon from 'path/to/xxx.svg'
 
-   => { name: 'iconA', svg: Icon }
-   => { name: 'iconB', svg: '<svg>...</svg>' }
+   => { name: 'iconA', src: Icon }
+   => { name: 'iconB', src: '<svg>...</svg>' }
 
-   * @example 3. 线上支持的图片地址
+   * @example 3. 线上支持的图片地址 (不支持改颜色)
     带后缀: https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg
     无后缀: https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*5nsESLuvc_EAAAAAAAAAAAAADmJ7AQ/original
    */
-  svg: string;
+  src: string;
 }
 
 export interface HeaderIconClickParams {
@@ -293,7 +297,7 @@ export interface HeaderIconHoverParams extends HeaderIconClickParams {
 }
 
 export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
-  fill?: string;
+  fill?: string | null;
   name: string;
   x: number;
   y: number;
@@ -303,9 +307,9 @@ export interface HeaderActionIconOptions extends HeaderActionIconBaseOptions {
 export type HeaderActionNameOptions = HeaderActionIconBaseOptions & {
   /**
    * icon 颜色配置
-   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色
+   * @description 优先级: 单个 icon > 主题 icon 配置 > 文本颜色，null 则使用图标原有颜色
    */
-  fill?: string;
+  fill?: string | null;
 
   /**
    * icon 名称
@@ -367,7 +371,10 @@ export interface HeaderActionIcon extends HeaderActionIconBaseOptions {
    * 所属的 cell 类型, 即当前 icon 展示在哪种类型单元格中
    * @example belongsCell: 'rowCell'
    */
-  belongsCell: Omit<CellType, 'dataCell' | 'mergedCell' | 'seriesNumberCell'>;
+  belongsCell: Exclude<
+    `${CellType}`,
+    'dataCell' | 'mergedCell' | 'seriesNumberCell'
+  >;
 }
 
 export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
@@ -375,13 +382,18 @@ export interface InternalFullyHeaderActionIcon extends HeaderActionIcon {
   isSortIcon?: boolean;
 }
 
-export type CellCallback<T extends BaseHeaderConfig, K extends S2CellType> = (
-  node: Node,
-  spreadsheet: SpreadSheet,
-  headerConfig: T,
-) => K;
+export type CellCallbackParams<T extends BaseHeaderConfig = BaseHeaderConfig> =
+  [node: Node, spreadsheet: SpreadSheet, headerConfig: T];
 
-export type DataCellCallback = (viewMeta: ViewMeta) => DataCell;
+export type CellCallback<
+  T extends Partial<BaseHeaderConfig>,
+  K extends S2CellType,
+> = (node: Node, spreadsheet: SpreadSheet, headerConfig: T) => K;
+
+export type DataCellCallback = (
+  viewMeta: ViewMeta,
+  spreadsheet: SpreadSheet,
+) => DataCell | TableDataCell;
 
 export type MergedCellCallback = (
   spreadsheet: SpreadSheet,
@@ -392,7 +404,7 @@ export type MergedCellCallback = (
 export type FrameCallback = (cfg: FrameConfig) => Frame;
 
 export type CornerHeaderCallback = (
-  parent: S2CellType,
+  cornerHeader: CornerHeader,
   spreadsheet: SpreadSheet,
   ...restOptions: unknown[]
 ) => void;
@@ -447,15 +459,17 @@ export interface ViewMeta {
   value?: string | number;
   query?: Query;
   isLeaf?: boolean;
+  shallowRender?: boolean;
 
   [key: string]: unknown;
 }
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
-export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
+export interface CellAppendInfo<T = Node>
+  extends Partial<Omit<ResizeInfo, 'meta'>> {
   isLinkFieldText?: boolean;
-  cellData?: T;
+  meta?: T;
 }
 
 export type S2MountContainer = string | Element;

@@ -1,4 +1,4 @@
-import { head, isEmpty, isEqual } from 'lodash';
+import { head, isEmpty } from 'lodash';
 import { SERIES_NUMBER_FIELD } from '../../common';
 import { ROOT_NODE_ID } from '../../common/constant/node';
 import type {
@@ -115,6 +115,11 @@ export class Node {
   // series number width
   public seriesNumberWidth: number;
 
+  /**
+   * 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分
+   */
+  public relatedNode: Node;
+
   // spreadsheet instance
   public spreadsheet: SpreadSheet;
 
@@ -133,7 +138,13 @@ export class Node {
 
   public isTotalRoot?: boolean;
 
-  public isFrozen?: boolean;
+  /* 是否是冻结开头的 node , 比如 frozenRow frozenCol */
+  public isFrozenHead?: boolean;
+
+  /* 是否是冻结结尾的 node , 比如 frozenTrailingRow frozenTrailingCol */
+  public isFrozenTrailing?: boolean;
+
+  public shallowRender?: boolean;
 
   public extra?: {
     description?: string;
@@ -283,7 +294,6 @@ export class Node {
   }
 
   /**
-   * Get all children branch in this node branch, eg:
    *        c1
    *    b1〈
    *        c2
@@ -291,34 +301,23 @@ export class Node {
    *        c3
    *    b2〈
    *        c4
-   * get all branch [[b1,c1],[b1,c2],[b2,c3],[b2,c4]]
-   * @param parent
+   * c1 => (a, b1, c1)
+   * @param node
    */
-  public static getAllBranch(parent: Node): Node[][] {
-    const all: Node[][] = [];
-    const leaves = this.getAllLeaveNodes(parent);
-    let current = leaves.shift();
-    let tempBranch = [];
+  public static getBranchNodes(node: Node): Node[] {
+    if (node && !node.isTotals) {
+      let parent = node.parent;
+      const pathNodes = [node];
 
-    while (current) {
-      tempBranch.unshift(current);
-      let pa = current.parent;
-
-      while (pa) {
-        if (!isEqual(pa, parent)) {
-          tempBranch.unshift(pa);
-        } else {
-          break;
-        }
-
-        pa = pa.parent;
+      while (parent && parent.id !== ROOT_NODE_ID) {
+        pathNodes.push(parent);
+        parent = parent.parent;
       }
-      all.push(tempBranch);
-      current = leaves.shift();
-      tempBranch = [];
+
+      return pathNodes.reverse();
     }
 
-    return all;
+    return [];
   }
 
   public static blankNode(): Node {
@@ -365,5 +364,13 @@ export class Node {
 
   public isSeriesNumberNode() {
     return this.field === SERIES_NUMBER_FIELD;
+  }
+
+  public clone() {
+    return Object.create(this) as Node;
+  }
+
+  public get isFrozen() {
+    return this.isFrozenHead || this.isFrozenTrailing;
   }
 }

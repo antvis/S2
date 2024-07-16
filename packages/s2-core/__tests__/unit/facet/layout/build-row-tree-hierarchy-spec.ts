@@ -1,8 +1,8 @@
+import type { S2DataConfig, S2Options } from '@/common';
+import { EXTRA_FIELD } from '@/common';
+import { PivotSheet } from '@/sheet-type';
 import { sortData } from 'tests/data/sort-advanced';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '@/sheet-type';
-import { EXTRA_FIELD } from '@/common';
-import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,

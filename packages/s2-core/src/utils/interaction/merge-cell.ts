@@ -9,16 +9,16 @@ import {
   isEqual,
   map,
 } from 'lodash';
+import type { DataCell } from '../../cell';
 import { MergedCell } from '../../cell/merged-cell';
 import { CellType } from '../../common/constant';
 import type {
+  MergedCellCallback,
   MergedCellInfo,
   TempMergedCell,
   ViewMeta,
-  MergedCellCallback,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { DataCell } from '../../cell';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
@@ -118,12 +118,12 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
   const bottomRightCornerCell: DataCell[] = [];
 
   cells.forEach((cell) => {
-    const [row, col] = cell.position;
+    const [row, col] = cell.position || [];
 
     if (
       !find(
         cells,
-        (temp) => temp.position[0] === row + 1 && temp.position[1] === col,
+        (temp) => temp.position?.[0] === row + 1 && temp.position?.[1] === col,
       )
     ) {
       bottom.push(cell);
@@ -132,7 +132,7 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
     if (
       !find(
         cells,
-        (temp) => temp.position[1] === col + 1 && temp.position[0] === row,
+        (temp) => temp.position?.[1] === col + 1 && temp.position?.[0] === row,
       )
     ) {
       right.push(cell);
@@ -141,10 +141,10 @@ export const getRightAndBottomCells = (cells: DataCell[]) => {
 
   // 在绘制了 right border 后，如果它上面的 cell 也是 merge cell 中的，且无需绘制 right 时，需要单独为其位置 bottomRight corner 的 border，反正连线会断
   right.forEach((cell) => {
-    const [row, col] = cell.position;
+    const [row, col] = cell.position || [];
     const top = find(
       cells,
-      (temp) => temp.position[0] === row - 1 && temp.position[1] === col,
+      (temp) => temp.position?.[0] === row - 1 && temp.position?.[1] === col,
     );
 
     if (top && !includes(right, top)) {
@@ -178,7 +178,7 @@ export const getInvisibleInfo = (
     );
 
     if (meta) {
-      const cell = sheet?.options?.dataCell?.(meta);
+      const cell = sheet?.options?.dataCell?.(meta, meta.spreadsheet);
 
       viewMeta = cellInfo?.showText ? meta : viewMeta;
       cells.push(cell!);
@@ -305,7 +305,7 @@ export const getMergedCellInstance: MergedCellCallback = (
   cells,
   meta,
 ) => {
-  if (spreadsheet.options.mergedCell) {
+  if (spreadsheet.options?.mergedCell) {
     return spreadsheet.options.mergedCell(spreadsheet, cells, meta);
   }
 
@@ -327,7 +327,7 @@ export const mergeCell = (
 
   if (mergeCellInfo?.length <= 1) {
     // eslint-disable-next-line no-console
-    console.error('then merged cells must be more than one');
+    console.error('[mergeCell]: The merged cells must be more than one!');
 
     return;
   }
@@ -394,7 +394,7 @@ export const removeUnmergedCellsInfo = (
 export const unmergeCell = (sheet: SpreadSheet, removedCell: MergedCell) => {
   if (!removedCell || removedCell.cellType !== CellType.MERGED_CELL) {
     // eslint-disable-next-line no-console
-    console.error(`unmergeCell: the ${removedCell} is not a MergedCell`);
+    console.error(`[unmergeCell]: The ${removedCell} is not a MergedCell`);
 
     return;
   }
@@ -435,7 +435,7 @@ export const mergeTempMergedCell = (
  * @param oldMergedCells
  * @constructor
  */
-export const MergedCellConvertTempMergedCells = (
+export const mergedCellConvertTempMergedCells = (
   oldMergedCells: MergedCell[],
 ) =>
   map(oldMergedCells, (mergedCell) => {
@@ -493,7 +493,7 @@ export const updateMergedCells = (
   const oldMergedCells = mergedCellsGroup.children as MergedCell[];
 
   const oldTempMergedCells: TempMergedCell[] =
-    MergedCellConvertTempMergedCells(oldMergedCells);
+    mergedCellConvertTempMergedCells(oldMergedCells);
 
   // compare oldTempMergedCells and allTempMergedCells, find remove MergedCells and add MergedCells
   const removeTempMergedCells = differenceTempMergedCells(

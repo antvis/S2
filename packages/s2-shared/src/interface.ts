@@ -95,8 +95,6 @@ export interface BaseSheetComponentProps<
   showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
   header?: Header;
-  /** 底表 render callback */
-  onSheetUpdate?: SheetUpdateCallback;
 
   // ============== Row Cell ====================
   onRowCellHover?: (data: TargetCellInfo) => void;
@@ -124,7 +122,6 @@ export interface BaseSheetComponentProps<
     currentHiddenColumnsInfo: HiddenColumnsInfo;
     hiddenColumnsDetail: HiddenColumnsInfo[];
   }) => void;
-
   onColCellRender?: (cell: ColCell) => void;
 
   // ============== Data Cell ====================
@@ -182,6 +179,8 @@ export interface BaseSheetComponentProps<
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
   onMounted?: (spreadsheet: SpreadSheet) => void;
+  onUpdate?: (renderOptions: S2RenderOptions) => S2RenderOptions;
+  onUpdateAfterRender?: (renderOptions: S2RenderOptions) => void;
   onDestroy?: () => void;
 
   // ============== Resize ====================

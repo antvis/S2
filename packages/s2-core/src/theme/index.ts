@@ -368,6 +368,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         // 默认列头的数值字段和 dataCell 数值对齐
         textAlign: 'right',
@@ -378,6 +379,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -387,6 +389,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -517,6 +520,26 @@ export const getTheme = (
     background: {
       color: basicColors[8],
       opacity: 1,
+    },
+    empty: {
+      icon: {
+        fill: '',
+        width: 64,
+        height: 41,
+        margin: {
+          top: 0,
+          right: 0,
+          bottom: 24,
+          left: 0,
+        },
+      },
+      description: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[14],
+        opacity: 1,
+      },
     },
   };
 };

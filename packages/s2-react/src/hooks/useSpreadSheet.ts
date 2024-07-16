@@ -1,19 +1,16 @@
-import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
-import type {
-  SheetComponentOptions,
-  SheetComponentsProps,
-} from '../components';
+import type { SheetComponentOptions, SheetComponentProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
 import { useResize } from './useResize';
 
-export function useSpreadSheet(props: SheetComponentsProps) {
+export function useSpreadSheet(props: SheetComponentProps) {
   const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -34,7 +31,8 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     options,
     themeCfg,
     sheetType,
-    onSheetUpdate = identity,
+    onUpdate = identity,
+    onUpdateAfterRender,
   } = props;
 
   /** 保存重渲 effect 的 deps */
@@ -93,62 +91,70 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     shouldInit.current = false;
 
     return () => {
+      setLoading(false);
       s2Ref.current?.destroy?.();
     };
   }, []);
 
   // 重渲 effect：dataCfg, options or theme changed
   useUpdateEffect(() => {
-    const [prevDataCfg, prevOptions, prevThemeCfg] = updatePrevDepsRef.current;
+    const render = async () => {
+      setLoading(true);
 
-    updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
+      const [prevDataCfg, prevOptions, prevThemeCfg] =
+        updatePrevDepsRef.current;
 
-    let reloadData = false;
-    let reBuildDataSet = false;
+      updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
 
-    if (!Object.is(prevDataCfg, dataCfg)) {
-      // 列头变化需要重新计算初始叶子节点
-      if (
-        prevDataCfg?.fields?.columns?.length !==
-        dataCfg?.fields?.columns?.length
-      ) {
-        s2Ref.current?.facet.clearInitColLeafNodes();
-      }
+      let reloadData = false;
+      let rebuildDataSet = false;
 
-      reloadData = true;
-      s2Ref.current?.setDataCfg(dataCfg);
-    }
+      if (!Object.is(prevDataCfg, dataCfg)) {
+        // 列头变化需要重新计算初始叶子节点
+        if (
+          prevDataCfg?.fields?.columns?.length !==
+          dataCfg?.fields?.columns?.length
+        ) {
+          s2Ref.current?.facet.clearInitColLeafNodes();
+        }
 
-    if (!Object.is(prevOptions, options)) {
-      if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
-        // 自定义树目录需要重新构建 CustomTreePivotDataSet
-        reBuildDataSet = true;
         reloadData = true;
         s2Ref.current?.setDataCfg(dataCfg);
       }
 
-      s2Ref.current?.setOptions(options as S2Options);
-      s2Ref.current?.changeSheetSize(options!.width, options!.height);
-    }
+      if (!Object.is(prevOptions, options)) {
+        if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
+          // 自定义树目录需要重新构建 CustomTreePivotDataSet
+          rebuildDataSet = true;
+          reloadData = true;
+          s2Ref.current?.setDataCfg(dataCfg);
+        }
 
-    if (!Object.is(prevThemeCfg, themeCfg)) {
-      s2Ref.current?.setThemeCfg(themeCfg);
-    }
+        s2Ref.current?.setOptions(options as S2Options);
+        s2Ref.current?.changeSheetSize(options!.width, options!.height);
+      }
 
-    /**
-     * onSheetUpdate 交出控制权
-     * 由传入方决定最终的 render 模式
-     */
-    const renderOptions = onSheetUpdate({
-      reloadData,
-      reBuildDataSet,
-    });
+      if (!Object.is(prevThemeCfg, themeCfg)) {
+        s2Ref.current?.setThemeCfg(themeCfg);
+      }
 
-    s2Ref.current?.render({
-      reloadData: renderOptions!.reloadData,
-      reBuildDataSet: renderOptions!.reBuildDataSet,
-    });
-  }, [dataCfg, options, themeCfg, onSheetUpdate]);
+      /**
+       * onUpdate 交出控制权
+       * 由传入方决定最终的 render 模式
+       */
+      const renderOptions = onUpdate?.({
+        reloadData,
+        rebuildDataSet,
+      });
+
+      await s2Ref.current?.render(renderOptions!);
+
+      setLoading(false);
+      onUpdateAfterRender?.(renderOptions!);
+    };
+
+    render();
+  }, [dataCfg, options, themeCfg, onUpdate]);
 
   useResize({
     s2: s2Ref.current!,

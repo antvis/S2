@@ -40,3 +40,4 @@ node.isTotals // false
 | padding | 间距 | `number` |
 | children | 子节点 | [Node[]](/docs/api/basic-class/node)  |
 | extra | 节点额外信息 | `Record<string, any>` |
+| relatedNode | 给序号列单元格用，标识该序号单元格对应了行头节点，有了关联关系后，就可以在行头冻结时做区分 | [Node[]](/docs/api/basic-class/node)  |

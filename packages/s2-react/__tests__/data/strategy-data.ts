@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
-import type { RawData } from '@antv/s2';
-import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
+import {
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type RawData,
+  type S2DataConfig,
+} from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 
@@ -387,7 +391,9 @@ export const StrategySheetDataConfig: S2DataConfig = {
 export const StrategyOptions: SheetComponentOptions = {
   height: 800,
   cornerText: '指标',
-  placeholder: (v) => (v?.['fieldValue'] ? '-' : ''),
+  placeholder: {
+    cell: (v) => (v?.['fieldValue'] ? '-' : ''),
+  },
   interaction: {
     selectedCellsSpotlight: true,
     resize: {

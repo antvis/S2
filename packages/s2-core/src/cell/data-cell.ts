@@ -24,6 +24,9 @@ import type {
   Condition,
   ConditionMappingResult,
   FormatResult,
+  HeaderActionNameOptions,
+  IconCondition,
+  InteractionStateTheme,
   MiniChartData,
   MultiData,
   TextTheme,
@@ -31,13 +34,7 @@ import type {
   ViewMetaData,
   ViewMetaIndexType,
 } from '../common/interface';
-import {
-  CellBorderPosition,
-  CellClipBox,
-  type HeaderActionNameOptions,
-  type IconCondition,
-  type InteractionStateTheme,
-} from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import { CellData } from '../data-set/cell-data';
 import {
   getHorizontalTextIconPosition,
@@ -79,6 +76,10 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public get cellType() {
     return CellType.DATA_CELL;
+  }
+
+  public isShallowRender() {
+    return super.isShallowRender() || this.meta.shallowRender || false;
   }
 
   public isMultiData() {
@@ -259,7 +260,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public setMeta(viewMeta: Partial<ViewMeta>) {
     super.setMeta(viewMeta as ViewMeta);
-    this.initCell();
+    if (!this.isShallowRender()) {
+      this.initCell();
+    }
   }
 
   public drawTextShape() {
@@ -379,7 +382,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  protected getMaxTextWidth(): number {
+  public getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     return width - this.getActionAndConditionIconWidth();
@@ -475,10 +478,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  /**
-   * 预留给明细表使用，透视表数据格不需要绘制 border， 已经交由 grid 处理
-   */
-  public override drawBorders(): void {}
+  public override drawBorders(): void {
+    if (!this.meta.isFrozenCorner) {
+      return;
+    }
+
+    BaseCell.prototype.drawBorders.call(this);
+  }
 
   /**
    * Find current field related condition

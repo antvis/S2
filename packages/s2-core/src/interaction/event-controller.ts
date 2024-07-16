@@ -9,7 +9,6 @@ import { each, get, hasIn, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
   CellType,
-  GEventType,
   InteractionKeyboardKey,
   InterceptType,
   OriginEventType,
@@ -33,7 +32,7 @@ interface EventListener {
 }
 
 interface S2EventHandler {
-  type: keyof EmitterType;
+  type: `${keyof EmitterType}`;
   handler: EmitterType[keyof EmitterType];
 }
 
@@ -83,7 +82,11 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
-    this.addCanvasEvent(GEventType.RIGHT_MOUSE_UP, this.onCanvasContextMenu);
+    /**
+     * 如果监听 G Canvas, 右键对应的是 rightup/rightdown 事件, 如需禁用右键菜单 (preventDefault), 需要监听 DOM
+     * https://g.antv.antgroup.com/api/event/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95
+     */
+    this.addCanvasEvent(OriginEventType.RIGHT_DOWN, this.onCanvasContextMenu);
 
     // spreadsheet events
     this.addS2Event(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
@@ -291,7 +294,7 @@ export class EventController {
     return false;
   }
 
-  private isResizeArea(event: CanvasEvent) {
+  private isResizeArea(event: CanvasEvent | MouseEvent) {
     const appendInfo = getAppendInfo(event.target as DisplayObject);
 
     return appendInfo?.isResizeArea;
@@ -649,7 +652,7 @@ export class EventController {
   }
 
   private addS2Event<K extends keyof EmitterType>(
-    eventType: K,
+    eventType: `${K}`,
     handler: EmitterType[K],
   ) {
     this.spreadsheet.on(eventType, handler);

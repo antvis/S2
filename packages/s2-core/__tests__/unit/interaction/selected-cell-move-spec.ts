@@ -1,12 +1,16 @@
-import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { BaseFacet } from '../../../src/facet';
+import {
+  FrozenGroupArea,
+  InteractionKeyboardKey,
+  S2Event,
+} from '@/common/constant';
 import type {
   InternalFullyTheme,
   ScrollOffsetConfig,
 } from '@/common/interface';
-import type { SpreadSheet } from '@/sheet-type';
-import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
+import type { SpreadSheet } from '@/sheet-type';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
+import type { BaseFacet } from '../../../src/facet';
 
 jest.mock('@/interaction/event-controller');
 
@@ -61,6 +65,7 @@ describe('Interaction Keyboard Move Tests', () => {
         viewportHeight: 200,
         viewportWidth: 200,
       },
+      panelScrollGroupIndexes: [0, 1, 0, 1],
       viewCellWidths: [],
       viewCellHeights: {
         getCellOffsetY: () => 0,
@@ -70,6 +75,35 @@ describe('Interaction Keyboard Move Tests', () => {
       cornerBBox: {
         width: 80,
       },
+      frozenGroupAreas: {
+        [FrozenGroupArea.Col]: {
+          width: 0,
+          x: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.TrailingCol]: {
+          width: 0,
+          x: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.Row]: {
+          height: 0,
+          y: 0,
+          range: [] as number[],
+        },
+        [FrozenGroupArea.TrailingRow]: {
+          height: 0,
+          y: 0,
+          range: [] as number[],
+        },
+      },
+      getFrozenOptions: jest.fn().mockReturnValue({
+        colCount: 0,
+        trailingColCount: 0,
+        rowCount: 0,
+        trailingRowCount: 0,
+      }),
+      getCellRange: jest.fn().mockReturnValue({ start: 0, end: 1 }),
     } as unknown as BaseFacet;
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
@@ -359,7 +393,7 @@ describe('Interaction Keyboard Move Tests', () => {
 
     expect(s2.facet.getScrollOffset()).toEqual({
       scrollX: 0,
-      scrollY: 1,
+      scrollY: 0,
     });
   });
 });

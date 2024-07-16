@@ -100,7 +100,7 @@ exports[`Tooltip Common Components Tests render custom react component icon 1`] 
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu-overflow ant-menu ant-menu-root ant-menu-horizontal ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu-overflow ant-menu ant-menu-root ant-menu-horizontal ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -209,7 +209,7 @@ exports[`Tooltip Common Components Tests render hide icon: TooltipOperator 1`] =
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu-overflow ant-menu ant-menu-root ant-menu-horizontal ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu-overflow ant-menu ant-menu-root ant-menu-horizontal ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -309,7 +309,7 @@ exports[`Tooltip Common Components Tests render sort tooltip: TooltipOperator 1`
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -470,7 +470,7 @@ exports[`Tooltip Component Tests should render sort menu and select { key: 'asc'
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -631,7 +631,7 @@ exports[`Tooltip Component Tests should render sort menu and select { key: 'desc
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -792,7 +792,7 @@ exports[`Tooltip Component Tests should render sort menu and select { key: 'none
     class="antv-s2-tooltip-operator"
   >
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-p7e5j5"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-tooltip-operator-menus css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"

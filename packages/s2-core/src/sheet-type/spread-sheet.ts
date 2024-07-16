@@ -3,12 +3,10 @@ import {
   Canvas,
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
-  runtime,
   type CanvasConfig,
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
-  delay,
   forEach,
   forIn,
   get,
@@ -16,6 +14,7 @@ import {
   isEmpty,
   isFunction,
   isString,
+  last,
   memoize,
   some,
   values,
@@ -23,8 +22,8 @@ import {
 import { BaseCell } from '../cell';
 import {
   InterceptType,
-  LayoutWidthType,
   S2Event,
+  getDefaultSeriesNumberText,
   getTooltipOperatorSortMenus,
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
@@ -34,7 +33,6 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   BaseTooltipOperatorMenuOptions,
   CellEventTarget,
-  CustomSVGIcon,
   EmitterType,
   Fields,
   InteractionOptions,
@@ -68,21 +66,9 @@ import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
-import { isMobile } from '../utils/is-mobile';
-import {
-  customMerge,
-  getSafetyDataConfig,
-  getSafetyOptions,
-} from '../utils/merge';
+import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-
-/**
- * 关闭 CSS 解析的开关，可以提升首屏性能,
- * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
- * 而是要用 circle.style.r = 20;
- */
-runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -112,27 +98,9 @@ export abstract class SpreadSheet extends EE {
    */
   private destroyed = false;
 
-  // @ts-ignore
-  private untypedOn = this.on;
-
-  // @ts-ignore
-  private untypedEmit = this.emit;
-
-  public on = <K extends keyof EmitterType>(
-    event: K,
-    listener: EmitterType[K],
-  ): this => this.untypedOn(event, listener);
-
-  public emit = <K extends keyof EmitterType>(
-    event: K,
-    ...args: Parameters<EmitterType[K]>
-  ): boolean => this.untypedEmit(event, ...args);
-
   protected abstract bindEvents(): void;
 
   public abstract getDataSet(): BaseDataSet;
-
-  public abstract enableFrozenHeaders(): boolean;
 
   public abstract isPivotMode(): boolean;
 
@@ -151,9 +119,12 @@ export abstract class SpreadSheet extends EE {
   public abstract clearDrillDownData(
     rowNodeId?: string,
     preventRender?: boolean,
-  ): void;
+  ): Promise<void>;
 
-  public abstract groupSortByMethod(sortMethod: SortMethod, meta: Node): void;
+  public abstract groupSortByMethod(
+    sortMethod: SortMethod,
+    meta: Node,
+  ): Promise<void> | void;
 
   public constructor(
     dom: S2MountContainer,
@@ -161,8 +132,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = getSafetyDataConfig(dataCfg);
-    this.options = getSafetyOptions(options);
+    this.dataCfg = setupDataConfig(dataCfg);
+    this.options = setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -173,6 +144,7 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setOverscrollBehavior();
+    this.mountSheetInstance();
   }
 
   public isCustomHeaderFields(
@@ -269,6 +241,11 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.render?.(this) || new BaseTooltip(this);
   }
 
+  private getTargetCell(target: CellEventTarget): S2CellType {
+    // 刷选等场景, 以最后一个发生交互的单元格为准
+    return this.getCell(target) || last(this.interaction.getInteractedCells())!;
+  }
+
   /**
    * 展示 Tooltip 提示
    * @alias s2.tooltip.show()
@@ -287,7 +264,7 @@ export abstract class SpreadSheet extends EE {
     Menu = BaseTooltipOperatorMenuOptions,
   >(showOptions: TooltipShowOptions<T, Menu>): Promise<void> {
     const { content, event } = showOptions;
-    const cell = this.getCell(event?.target);
+    const cell = this.getTargetCell(event?.target);
     const displayContent = isFunction(content)
       ? content(cell!, showOptions)
       : content;
@@ -299,14 +276,7 @@ export abstract class SpreadSheet extends EE {
         onMounted: resolve,
       };
 
-      if (isMobile()) {
-        // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
-        delay(() => {
-          this.tooltip.show?.(options);
-        }, 50);
-      } else {
-        this.tooltip.show?.(options);
-      }
+      this.tooltip?.show?.(options);
     });
   }
 
@@ -321,7 +291,7 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    const targetCell = this.getCell(event?.target);
+    const targetCell = this.getTargetCell(event?.target);
     const tooltipData =
       options?.data ??
       getTooltipData({
@@ -347,11 +317,11 @@ export abstract class SpreadSheet extends EE {
   }
 
   public hideTooltip() {
-    this.tooltip.hide?.();
+    this.tooltip?.hide?.();
   }
 
   public destroyTooltip() {
-    this.tooltip.destroy?.();
+    this.tooltip?.destroy?.();
   }
 
   public registerIcons() {
@@ -361,8 +331,8 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      registerIcon(customSVGIcon.name, customSVGIcon.svg);
+    forEach(customSVGIcons, (customSVGIcon) => {
+      registerIcon(customSVGIcon.name, customSVGIcon.src);
     });
   }
 
@@ -381,9 +351,9 @@ export abstract class SpreadSheet extends EE {
   ) {
     this.store.set('originalDataCfg', dataCfg);
     if (reset) {
-      this.dataCfg = getSafetyDataConfig(dataCfg);
+      this.dataCfg = setupDataConfig(dataCfg);
     } else {
-      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+      this.dataCfg = setupDataConfig(this.dataCfg, dataCfg);
     }
 
     // clear value ranger after each updated data cfg
@@ -404,7 +374,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = getSafetyOptions(options);
+      this.options = setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
@@ -450,13 +420,13 @@ export abstract class SpreadSheet extends EE {
 
     const {
       reloadData = true,
-      reBuildDataSet = false,
+      rebuildDataSet = false,
       reBuildHiddenColumnsDetail = true,
     } = options || {};
 
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
 
-    if (reBuildDataSet) {
+    if (rebuildDataSet) {
       this.dataSet = this.getDataSet();
     }
 
@@ -483,7 +453,7 @@ export abstract class SpreadSheet extends EE {
       s2.render(false)
       s2.render({
         reloadData: true;
-        reBuildDataSet: true;
+        rebuildDataSet: true;
         reBuildHiddenColumnsDetail: true;
       })
    */
@@ -501,6 +471,24 @@ export abstract class SpreadSheet extends EE {
 
     await this.container.ready;
     await this.doRender(renderOptions);
+  }
+
+  private mountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      canvas.__s2_instance__ = this;
+    }
+  }
+
+  private unmountSheetInstance() {
+    const canvas = this.getCanvasElement();
+
+    if (canvas) {
+      // eslint-disable-next-line no-underscore-dangle
+      delete canvas.__s2_instance__;
+    }
   }
 
   /**
@@ -521,8 +509,8 @@ export abstract class SpreadSheet extends EE {
     this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.unmountSheetInstance();
     this.container?.destroy();
-
     removeOffscreenCanvas();
   }
 
@@ -596,6 +584,20 @@ export abstract class SpreadSheet extends EE {
     this.container.resize(width, height);
   }
 
+  public override on<K extends keyof EmitterType>(
+    event: `${K}`,
+    listener: EmitterType[K],
+  ): this {
+    return super.on(event, listener);
+  }
+
+  public override emit<K extends keyof EmitterType>(
+    event: `${K}`,
+    ...args: Parameters<EmitterType[K]>
+  ): void {
+    super.emit(event, ...args);
+  }
+
   /**
    * 获取 G Canvas 实例
    * @see https://g.antv.antgroup.com/api/renderer/canvas
@@ -615,13 +617,19 @@ export abstract class SpreadSheet extends EE {
   /**
    * 获取 <canvas/> HTML 元素
    */
-  public getCanvasElement(): HTMLCanvasElement {
+  public getCanvasElement(): HTMLCanvasElement & {
+    // eslint-disable-next-line camelcase
+    __s2_instance__: SpreadSheet;
+  } {
     return this.getCanvas()
       .getContextService()
-      .getDomElement() as HTMLCanvasElement;
+      .getDomElement() as HTMLCanvasElement & {
+      // eslint-disable-next-line camelcase
+      __s2_instance__: SpreadSheet;
+    };
   }
 
-  public getLayoutWidthType(): LayoutWidthType {
+  public getLayoutWidthType() {
     return this.options.style?.layoutWidthType!;
   }
 
@@ -707,15 +715,17 @@ export abstract class SpreadSheet extends EE {
       ...canvasConfig,
     });
 
-    this.updateContainerStyle();
+    this.setupContainerStyle();
   }
 
-  // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
-  protected updateContainerStyle() {
+  protected setupContainerStyle() {
     const canvas = this.getCanvasElement();
 
     if (canvas) {
+      // canvas 需要设置为块级元素, 不然和父元素有 5px 的高度差
       canvas.style.display = 'block';
+      // 避免双击 canvas 造成的外部文本选中
+      canvas.style.userSelect = 'none';
     }
   }
 
@@ -858,17 +868,17 @@ export abstract class SpreadSheet extends EE {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
+    const selectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const menuItems: TooltipOperatorMenuItems = this.isTableMode()
       ? getTooltipOperatorTableSortMenus()
       : getTooltipOperatorSortMenus();
 
     const operator: TooltipOperatorOptions = {
       menu: {
-        defaultSelectedKeys,
+        selectedKeys,
         items: menuItems,
-        onClick: ({ key: sortMethod }) => {
-          this.groupSortByMethod(sortMethod as SortMethod, meta);
+        onClick: async ({ key: sortMethod }) => {
+          await this.groupSortByMethod(sortMethod as SortMethod, meta);
           this.emit(S2Event.RANGE_SORTED, event);
         },
       },
@@ -877,8 +887,16 @@ export abstract class SpreadSheet extends EE {
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyShowOperator: true,
-      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-      forceRender: true,
     });
+  }
+
+  public getSeriesNumberText() {
+    const { text, enable } = this.options.seriesNumber ?? {};
+
+    if (!enable) {
+      return '';
+    }
+
+    return text ?? getDefaultSeriesNumberText();
   }
 }

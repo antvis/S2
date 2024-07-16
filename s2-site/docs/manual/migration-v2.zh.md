@@ -9,7 +9,7 @@ tag: New
 ## 🏠 官网地址变化
 
 :::warning{title="注意"}
-原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请使用最新的文档，确保您看到的不是过时的文档。
+原官网 <https://s2.antv.vision> 和 <https://antv-s2.gitee.io> 不再维护和使用，请访问最新的网址，以确保您看到的不是过时的文档。
 :::
 
 - 原 `v1` 官网迁移至 <https://s2-v1.antv.antgroup.com>.
@@ -53,11 +53,11 @@ $ npm install @antv/s2-react@next antd @ant-design/icons --save
 $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 ```
 
-| Package  | Version | Size   | Download     |
-| - | - | - | - |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core) |  ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)  | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg)| ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue) | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| Package                                                                    | Version                                                       | Size                                                                                                                        | Download                                                      |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
 ## ⭐ 新增功能
 
@@ -67,9 +67,9 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ### 基础包 <Badge>@antv/s2</Badge>
 
-#### 底层渲染引擎升级为 `AntV/G 5.0`
+#### 底层渲染引擎升级为 `AntV/G 6.0`
 
-表格绘制引擎升级到 [`G 5.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
+表格绘制引擎升级到 [`G 6.0`](https://g.antv.antgroup.com/) 大版本，和 [`AntV` 其他技术栈](https://antv.antgroup.com/) 保持同步，渲染方式升级为**异步**。
 
 ```diff
 - s2.render()
@@ -123,7 +123,7 @@ const s2Options = {
 
 +   rowCell: {},
 +   colCell: {},
-+   cellCell: {},
++   dataCell: {},
   }
 }
 ```
@@ -132,10 +132,10 @@ const s2Options = {
 3. 行列宽高支持动态配置。
 
 ```diff
-export interface ColCfg {
-  width?: CellCustomWidth;
+export interface BaseCellStyle {
+  width?: number | (node) => number;
 - height?: number;
-+ height?: number | (cell) => number;
++ height?: number | (node) => number;
 - widthByFieldValue?: Record<string, number>;
 + widthByField?: Record<string, number>;
   heightByField?: Record<string, number>;
@@ -212,10 +212,19 @@ const s2Options = {
 +  sheetInstance: s2,
 +  split: '\t',
 +  formatOptions: false,
++  async: true,
 });
 ```
 
-3. 复制默认开启。
+3. `copyToClipboard` 第二个参数含义 从 `sync` 变更为 `async`.
+
+```diff
+- const data = copyToClipboard(data: string, sync: boolean)
++ const data = copyToClipboard(data: string, async: boolean)
+```
+
+4. 复制默认开启。
+5. 复制导出默认异步。
 
 具体请查看 [复制与导出](/manual/advanced/interaction/copy) 相关文档。
 
@@ -284,7 +293,23 @@ const s2Options = {
 
 具体请查看 [自定义 Icon](/manual/advanced/custom/custom-icon) 相关文档。
 
-#### 树状结构配置调整
+#### customSVGIcons 配置调整
+
+`svg` 调整为 `src`, 保持 API 统一。
+
+```diff | pure
+const s2Options = {
+  customSVGIcons: [
+    {
+      name: 'CustomIcon',
+-     svg: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
++     src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
+    },
+  ]
+}
+```
+
+#### 树状结构配置和回调事件调整
 
 1. 行头折叠展开配置调整
 
@@ -357,26 +382,44 @@ const s2DataConfig = {
 
 具体请查看 [自定义行列头分组](/manual/advanced/custom/custom-header) 相关文档。
 
-#### 行列冻结配置调整
+4. 行头单元格折叠展开事件划分到 `RowCell`
 
-透视表和明细表的行列冻结配置统一收拢到 `frozen`.
+移除 `LAYOUT_AFTER_COLLAPSE_ROWS`
+
+```diff
+- S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL
++ S2Event.ROW_CELL_ALL_COLLAPSED
+
+- S2Event.LAYOUT_COLLAPSE_ROWS
+- S2Event.LAYOUT_AFTER_COLLAPSE_ROWS
++ S2Event.ROW_CELL_COLLAPSED
+```
+
+#### 树状结构 icon 折叠展开状态同步
+
+现在行头节点的 icon 展开/收起，会同步更新角头 icon（全部展开/收起）的状态。
+
+#### 行列冻结配置
+
+透视表和明细表的行列冻结配置统一收拢到 `frozen`。
+
+在透视表中，`frozenFirstRow` 使用 `rowCount: 1` 替代。在明细表多级列头冻结时，在 `1.x` 中是以最最顶层节点为准，而在 `2.x` 是以叶子节点的数量为准。
 
 ```diff
 const s2Options = {
 -  frozenRowHeader: true,
 -  frozenFirstRow: true,
--  frozenRowCount: true;
--  frozenColCount: true;
--  frozenTrailingRowCount: true;
--  frozenTrailingColCount: true;
+-  frozenRowCount: 1;
+-  frozenColCount: 1;
+-  frozenTrailingRowCount: 1;
+-  frozenTrailingColCount: 1;
 
 +  frozen: {
 +    rowHeader: true,
-+    firstRow: true,
-+    rowCount: true;
-+    colCount: true;
-+    trailingRowCount: true;
-+    trailingColCount: true;
++    rowCount: 1;
++    colCount: 1;
++    trailingRowCount: 1;
++    trailingColCount: 1;
 +  }
 }
 ```
@@ -448,7 +491,7 @@ const s2Options = {
 
 #### 单元格宽高拖拽逻辑变更
 
-1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对当前还是所有单元格生效。
+1. 在 `1.x` 中，宽高调整对**所有单元格**生效，`2.x` 新增 `rowResizeType/colResizeType` 选择对 `当前 (current)`, `选中 (selected)`, 还是 `所有 (all)` 单元格生效。
 
 ```diff
 const s2Options = {
@@ -469,7 +512,7 @@ const s2Options = {
 
 #### Facet 变更
 
-1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取。
+1. 静态属性 `layoutResult` 废弃，使用 `s2.facet.getLayoutResult()` 动态获取，现在包含 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`。
 
 ```diff
 - s2.facet.layoutResult
@@ -518,6 +561,15 @@ render 函数的参数从 `boolean` 扩展为 `boolean | object`, 当为 `boolea
 + });
 ```
 
+`reBuildDataSet` 重命名为 `rebuildDataSet`:
+
+```diff
++ s2.render({
+-   reBuildDataSet: false,
++   rebuildDataSet: false,
++ });
+```
+
 #### 小计总计配置参数变更
 
 总计配置统一增加 `grandTotals` 和 `subTotals` 前缀，避免歧义。
@@ -529,12 +581,14 @@ const s2Options = {
 -     calcTotals: {}.
 -     reverseLayout: true,
 -     label: '总计'
+-     subLabel: '小计'
 -     totalsGroupDimensions: [],
 -     reverseSubLayout: true,
 
 +     calcGrandTotals: {}.
 +     reverseGrandTotalsLayout: true,
-+     grandTotalsLabel: '总计'
++     grandTotalsLabel: '总计',
++     subTotalsLabel: '小计',
 +     grandTotalsGroupDimensions: [],
 +     reverseSubTotalsLayout: true
     };
@@ -671,11 +725,128 @@ s2.interaction.getState()
 
 具体请查看 [滚动](/manual/advanced/interaction/scroll) 相关文档。
 
+##### 配置预处理 API 变更
+
+```diff
+- import { getSafetyOptions, getSafetyDataConfig } from '@antv/s2'
++ import { setupOptions, setupDataConfig } from '@antv/s2'
+```
+
+#### 空数据占位符配置变更
+
+除了支持配置单元格的空数据占位符，现在支持配置明细表的 [空数据状态](/examples/custom/custom-cell/#empty-placeholder)，类似于 [Ant Design 的 Empty 组件](https://ant-design.antgroup.com/components/empty-cn) 的空状态效果，配置独立为 `cell` 和 `empty` 两个配置项，以区分两种状态。
+
+```diff
+const s2Options = {
+- placeholder: "-",
++ placeholder: {
++   cell: '-'
++ }
+}
+```
+
+```diff
+const s2Options = {
++ placeholder: {
++   empty: {
++     icon: 'Empty',
++     description: '暂无数据'
++   }
++ }
+}
+```
+
+具体请查看 [自定义空数据占位符](/examples/custom/custom-cell/#empty-placeholder) 和 [自定义单元格空数据占位符](/examples/custom/custom-cell/#data-cell-placeholder) 示例。
+
+#### 内部常量重命名
+
+```diff
+- import { ROOT_ID, ID_SEPARATOR } from '@antv/s2'
++ import { ROOT_NODE_ID, NODE_ID_SEPARATOR } from '@antv/s2'
+```
+
+如有消费请注意修改，具体请查看 [源代码定义](https://github.com/antvis/S2/tree/next/packages/s2-core/src/common/constant).
+
+#### 自定义数值单元格参数变更
+
+增加第二个参数 `spreadsheet`, 和其他单元格保持一致。
+
+```diff
+const s2Options = {
+   width: 600,
+-  dataCell: (viewMeta) => {
+-    return new CustomDataCell(viewMeta, viewMeta.spreadsheet);
+-  }
++  dataCell: (viewMeta, spreadsheet) => {
++    return new CustomDataCell(viewMeta, spreadsheet);
++  }
+}
+```
+
+#### 链接跳转逻辑和参数变更
+
+1. 现在链接跳转支持对 **列头** 标记，且明细表同时对 `列头` 和 `数值` 生效（可自定义规则）。
+2. 回调参数 `key` 调整为 `field`, `cellData` 调整为 `meta`.
+
+```diff
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
+-  const { key, cellData, record } = data;
++  const { field, meta, record } = data;
+});
+```
+
+具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0
 
-`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 分析组件升级到了 `antd@v5`.
+:::info{title="提示"}
+React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后续兼容视情况而定。
+:::
+
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件升级到了 `antd@5.x`.
+
+#### Ant Design 多版本共存
+
+对于项目使用的是 `antd@4.x`, 或者所依赖的其他库间接依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
+
+```json
+// $ npm install --save antd-v5@npm:antd@5
+{
+  "antd": "4.x",
+  "antd-v5": "npm:antd@5"
+}
+```
+
+通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
+
+:::warning{title="注意"}
+其他打包工具 （如 `Vite`) 或者基于 `webpack` 封装的库或框架（如 `father`, `umi`) 同理，请自行搜索，这里不再赘述。
+需要注意的是：这种方式为临时过渡解决方案，从长远来看，**[Ant Design v4 版本已于 2023 年年底停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn)，建议尽快升级至 `antd@5.x`.**
+:::
+
+自定义 webpack 插件参考：
+
+```ts
+class AntdV5AliasPlugin {
+  apply(compiler) {
+    compiler.hooks.normalModuleFactory.tap("AntdV5AliasPlugin", (nmf) => {
+      nmf.hooks.beforeResolve.tapAsync("AntdV5AliasPlugin", (resolveData, callback) => {
+        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react')) {
+          // 匹配："antd" 和 "antd/es/locale/xxx"
+          if (/antd(\/*)?/.test(resolveData.request)) {
+            // 替换为："antd-v5" 和 "antd-v5/es/locale/xxx"
+            resolveData.request = resolveData.request.replace(/antd(\/*)?/,'antd-v5$1')
+          }
+        }
+
+        callback();
+      });
+    });
+  }
+}
+```
 
 #### 表头组件配置调整
 
@@ -696,6 +867,15 @@ const header = {
 ```
 
 具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
+
+#### 导出组件配置调整
+
+`syncCopy` 变更为 `async`
+
+```diff
+- <Export syncCopy={true} />
++ <Export async={false} />
+```
 
 #### Tooltip 菜单项配置调整
 
@@ -736,7 +916,52 @@ const header = {
 <SheetComponent options={s2Options} />
 ```
 
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
+
+```diff
+s2.showTooltip({
+  options: {
+    operator: {
+      menu: {
+-       defaultSelectedKeys: ['key-1'],
++       selectedKeys: ['key-1'],
+      },
+    },
+  },
+});
+```
+
 具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
+
+#### 行头单元格折叠展开事件划分到 `RowCell`
+
+`onCollapseRowsAll`, `onLayoutAfterCollapseRows` 更名为 `onRowCellAllCollapsed`, `onRowCellCollapsed`
+
+```diff
+- <SheetComponent options={s2Options} onCollapseRowsAll={} />
++ <SheetComponent options={s2Options} onRowCellAllCollapsed={} />
+
+- <SheetComponent options={s2Options} onLayoutAfterCollapseRows={} />
++ <SheetComponent options={s2Options} onRowCellCollapsed={} />
+
+```
+
+#### `onSheetUpdate` 更名为 `onUpdate`, 并新增 `onUpdateAfterRender`
+
+- `onUpdate`: 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发。
+- `onUpdateAfterRender`: 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发。
+
+```diff
+- <SheetComponent onSheetUpdate={} />
++ <SheetComponent onUpdate={} onUpdateAfterRender={} />
+```
+
+#### SheetComponentsProps 类型调整
+
+```diff
+- interface SheetComponentsProps {}
++ interface SheetComponentProps {}
+```
 
 ## ✍️ API 调整
 

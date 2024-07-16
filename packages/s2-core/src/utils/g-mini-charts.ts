@@ -67,7 +67,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
       ? (xEnd - xStart - (measures.length - 1) * intervalPadding) /
           measures.length +
         intervalPadding
-      : (xEnd - xStart) / (measures.length - 1) ?? 0;
+      : (xEnd - xStart) / (measures.length - 1) || 0;
 
   const box: number[][] = [];
   const points = map(

@@ -1,9 +1,9 @@
-import { Group } from '@antv/g';
-import { registerIcon } from '../../../../src/common/icons';
-import { sleep, createPivotSheet } from '../../../util/helpers';
-import { CustomImage } from '@/engine/CustomImage';
 import { GuiIcon } from '@/common/icons/gui-icon';
 import { ArrowDown } from '@/common/icons/svg/svgs';
+import { CustomImage } from '@/engine/CustomImage';
+import { Group } from '@antv/g';
+import { registerIcon } from '../../../../src/common/icons';
+import { createPivotSheet, sleep } from '../../../util/helpers';
 
 describe('GuiIcon Tests', () => {
   test('should get gui icon static type', () => {
@@ -96,7 +96,7 @@ describe('GuiIcon Tests', () => {
     });
 
     const spy = jest.spyOn(icon, 'getImage');
-    const oldVal = icon.iconImageShape.style.img;
+    const oldVal = icon.iconImageShape.style.src;
 
     expect(oldVal).toBeDefined();
     icon.setImageAttrs({ fill: 'red' });
@@ -111,7 +111,7 @@ describe('GuiIcon Tests', () => {
       customSVGIcons: [
         {
           name: 'Filter',
-          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+          src: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
         },
       ],
       headerActionIcons: [

@@ -6,7 +6,7 @@ order: 2
 ## DataCellCallback
 
 ```js
-DataCellCallback = (viewMeta: ViewMeta) => DataCell;
+DataCellCallback = (viewMeta: ViewMeta, spreadsheet: SpreadSheet) => DataCell | TableDataCell;
 ```
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)

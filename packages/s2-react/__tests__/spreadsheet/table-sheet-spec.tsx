@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+import type { SwitcherFields } from '@/components/switcher/interface';
 import '@/components/tooltip/index.less';
 import {
   DeviceType,
@@ -16,14 +17,13 @@ import { Space, Switch, message } from 'antd';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import { act } from 'react-dom/test-utils';
-import { getMockData, renderComponent } from '../util/helpers';
 import {
-  type SheetComponentsProps,
-  type SheetComponentOptions,
-  Switcher,
   SheetComponent,
+  Switcher,
+  type SheetComponentOptions,
+  type SheetComponentProps,
 } from '../../src';
-import type { SwitcherFields } from '@/components/switcher/interface';
+import { getMockData, renderComponent } from '../util/helpers';
 
 let s2: TableSheet;
 
@@ -34,7 +34,7 @@ const onMounted =
   (
     dom: S2MountContainer,
     dataCfg: S2DataConfig,
-    options: SheetComponentsProps['options'],
+    options: SheetComponentProps['options'],
   ) => {
     s2 = new TableSheet(dom, dataCfg, options as S2Options);
     ref.current = s2;
@@ -128,7 +128,9 @@ function MainLayout({ callback }: Props) {
     seriesNumber: {
       enable: true,
     },
-    placeholder: '',
+    placeholder: {
+      cell: '',
+    },
     style: {
       dataCell: {
         height: 32,

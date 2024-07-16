@@ -45,10 +45,15 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
 
 exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test data label',
-  component: [Function: StrategySheetDataCellTooltip] {
-    [length]: 1,
-    [name]: 'StrategySheetDataCellTooltip',
-    defaultProps: { showOriginalValue: false }
+  component: {
+    '$$typeof': Symbol(react.memo),
+    type: [Function] {
+      [length]: 1,
+      [name]: '',
+      displayName: 'StrategySheetDataCellTooltip'
+    },
+    compare: null,
+    [displayName]: [Getter/Setter]
   }
 } 1`] = `
 <span

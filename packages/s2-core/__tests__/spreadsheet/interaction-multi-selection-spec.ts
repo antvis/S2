@@ -1,4 +1,6 @@
 /* eslint-disable jest/expect-expect */
+import type { HierarchyType, S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import {
   createMockCellInfo,
@@ -13,8 +15,6 @@ import {
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type { HierarchyType, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

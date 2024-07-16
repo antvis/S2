@@ -1,13 +1,14 @@
+// organize-imports-ignore
 import React from 'react';
-import insertCSS from 'insert-css';
-import { Button } from 'antd';
+import { S2DataConfig, SortParams } from '@antv/s2';
 import {
   SheetComponent,
   SheetComponentOptions,
-  SheetComponentsProps,
+  SheetComponentProps,
 } from '@antv/s2-react';
-import { S2DataConfig, SortParams } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
+import { Button } from 'antd';
+import insertCSS from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -35,7 +36,7 @@ fetch(
     const SheetHeader = () => {
       const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(s2DataConfig);
       const [sortParams, setSortParams] = React.useState<SortParams>([]);
-      const header: SheetComponentsProps['header'] = {
+      const header: SheetComponentProps['header'] = {
         title: '表头标题',
         description: '表头描述',
         export: { open: true },

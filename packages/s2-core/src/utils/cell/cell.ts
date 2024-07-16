@@ -1,14 +1,14 @@
 import type { LineStyleProps } from '@antv/g';
 import { isEmpty } from 'lodash';
-import type { SimpleBBox } from '../../engine';
 import {
+  CellBorderPosition,
   CellClipBox,
   type CellTheme,
   type IconTheme,
   type TextAlign,
   type TextBaseline,
 } from '../../common/interface';
-import { CellBorderPosition } from '../../common/interface';
+import type { SimpleBBox } from '../../engine';
 import { getIconTotalWidth, type GroupedIcons } from './header-cell';
 
 /**
@@ -189,7 +189,7 @@ export const getBorderPositionAndStyle = (
   bbox: SimpleBBox,
   style: CellTheme,
 ) => {
-  const { x, y, width, height } = bbox;
+  const { x, y, width, height } = bbox || {};
   const {
     horizontalBorderWidth = 0,
     horizontalBorderColorOpacity,
@@ -198,7 +198,7 @@ export const getBorderPositionAndStyle = (
     verticalBorderColor,
     verticalBorderColorOpacity,
     borderDash,
-  } = style;
+  } = style || {};
 
   // 如果是空数组 G 底层绘制会报错
   const lineDash: LineStyleProps['lineDash'] = isEmpty(borderDash)

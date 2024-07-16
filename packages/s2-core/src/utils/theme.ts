@@ -5,16 +5,13 @@ import { injectCssText } from './inject-css-text';
 
 /**
  * 获取当前的主题色板
- * @param type 主题名
  */
-export const getPalette = (type?: ThemeName): Palette => {
-  const themeName = type || 'default';
-
-  return PALETTE_MAP[themeName];
+export const getPalette = (themeName?: ThemeName): Palette => {
+  return PALETTE_MAP[themeName!] || PALETTE_MAP['default'];
 };
 
 /**
- * 根据主题注入组件的 css 变量
+ * 根据主题注入组件的 CSS 变量
  */
 export const injectThemeVars = (themeName?: ThemeName) => {
   // 目前仅 dark 主题需要定制

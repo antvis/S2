@@ -15,5 +15,6 @@ export const EN_US = {
   升序: 'ASC',
   降序: 'DESC',
   不排序: 'No order',
+  暂无数据: 'No Data',
   '，': ', ',
 };

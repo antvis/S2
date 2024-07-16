@@ -6,6 +6,7 @@ import type {
   S2DataConfig,
   SimpleData,
 } from '../common/interface';
+import { getEmptyPlaceholder } from '../utils';
 import { isAscSort, isDescSort } from '../utils/sort-action';
 import { BaseDataSet } from './base-data-set';
 import type { GetCellDataParams, GetCellMultiDataParams } from './interface';
@@ -135,11 +136,23 @@ export class TableDataSet extends BaseDataSet {
           return idxB - idxA;
         });
       } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
-        const func = isFunction(sortBy) ? sortBy : null;
+        const placeholder = getEmptyPlaceholder(
+          this.spreadsheet,
+          this.spreadsheet.options?.placeholder,
+        );
+        const customSortBy = isFunction(sortBy) ? sortBy : null;
+        const customSort = (record: RawData) => {
+          // 空值占位符按最小值处理 https://github.com/antvis/S2/issues/2707
+          if (record[sortFieldId] === placeholder) {
+            return Number.MIN_VALUE;
+          }
+
+          return record[sortFieldId];
+        };
 
         sortedData = orderBy(
           data,
-          [func || sortFieldId],
+          [customSortBy || customSort],
           [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ) as RawData[];
       }

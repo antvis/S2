@@ -4,10 +4,10 @@
  * measure not show  the data type of the row header is number
  */
 
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-868.json';
-import type { S2Options } from '../../src';
 import { PivotSheet } from '@/sheet-type';
+import type { S2Options } from '../../src';
+import * as mockDataConfig from '../data/data-issue-868.json';
+import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 800,

@@ -65,7 +65,7 @@ import {
   getIconTotalWidth,
   type GroupedIcons,
 } from '../utils/cell/header-cell';
-import { shouldReverseFontColor } from '../utils/color';
+import { isReadableText, shouldReverseFontColor } from '../utils/color';
 import { getIconPosition } from '../utils/condition/condition';
 import {
   renderIcon,
@@ -74,7 +74,7 @@ import {
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { checkIsLinkField } from '../utils/interaction/link-field';
+import { isLinkFieldNode } from '../utils/interaction/link-field';
 import { isMobile } from '../utils/is-mobile';
 import {
   getDisplayText,
@@ -144,7 +144,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getFormattedFieldValue(): FormatResult;
 
-  protected abstract getMaxTextWidth(): number;
+  public abstract getMaxTextWidth(): number;
 
   protected abstract getTextPosition(): PointLike;
 
@@ -245,6 +245,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 获取实际渲染的多行文本 (含省略号)
    */
   public getMultiLineActualTexts(): string[] {
+    // G6.0 优化延迟了包围盒计算的逻辑，先调用一下 getGeometryBounds 触发包围盒计算（内部有 cache 的不用担心多次调用）
+    this.textShape?.getGeometryBounds();
+
     return this.textShape?.parsedStyle.metrics?.lines || [];
   }
 
@@ -281,7 +284,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * 是否是多行文本
    */
   public isMultiLineText() {
-    return this.getTextLineBoundingRects().length > 1;
+    const { parsedStyle } = this.getTextShape();
+
+    return (
+      parsedStyle?.maxLines! > 1 && this.getTextLineBoundingRects().length > 1
+    );
   }
 
   /**
@@ -463,8 +470,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public drawTextShape() {
-    // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号 https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
-    const maxTextWidth = Math.max(this.getMaxTextWidth(), 0);
+    // 额外添加一像素余量，防止出现省略号 (文本和省略后的宽度一致): https://github.com/antvis/S2/issues/2726
+    const EXTRA_PIXEL = 1;
+    // G 遵循浏览器的规范, 空间不足以展示省略号时, 会裁剪文字, 而不是展示省略号: https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow#ellipsis
+    const maxTextWidth = Math.max(this.getMaxTextWidth(), 0) + EXTRA_PIXEL;
     const textStyle = this.getTextStyle();
 
     // 在坐标计算 (getTextPosition) 之前, 预渲染一次, 提前生成 textShape, 获得文字宽度, 用于计算 icon 绘制坐标
@@ -481,6 +490,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
 
     this.updateTextPosition();
+    this.drawLinkField(this.meta);
   }
 
   protected drawLinkFieldShape(
@@ -499,7 +509,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const position = this.getTextPosition();
       const actualTextWidth = this.getActualTextWidth();
 
-      // 默认居左，其他align方式需要调整
+      // 默认居左，其他 align 方式需要调整
       let startX = position.x;
 
       if (textStyle.textAlign === 'center') {
@@ -524,9 +534,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.textShape.style.fill = linkFillColor;
     this.textShape.style.cursor = 'pointer';
     this.textShape.appendInfo = {
-      // 标记为行头(明细表行头其实就是 Data Cell)文本，方便做链接跳转直接识别
+      // 标记为字段标记文本，方便做链接跳转直接识别
       isLinkFieldText: true,
-      cellData: this.meta,
+      meta: this.meta,
     };
   }
 
@@ -535,15 +545,18 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getTextStyle().linkTextFill!;
   }
 
-  protected drawLinkField(meta: Node | ViewMeta) {
+  protected drawLinkField(meta: T) {
     const { linkFields = [] } = this.spreadsheet.options.interaction!;
     const linkTextFill = this.getLinkFieldStyle();
-    const isLinkField = checkIsLinkField(linkFields, meta);
+    const isLinkField = isLinkFieldNode(
+      linkFields,
+      meta as unknown as Node | ViewMeta,
+    );
 
     this.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
-  // 根据当前state来更新cell的样式
+  // 根据当前 state 来更新 cell 的样式
   public updateByState(stateName: InteractionStateName, cell: S2CellType) {
     this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
@@ -720,7 +733,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
       shouldReverseFontColor(backgroundColor as string) &&
-      textFill === DEFAULT_FONT_COLOR &&
+      (textFill === DEFAULT_FONT_COLOR ||
+        !isReadableText(backgroundColor!, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
@@ -739,6 +753,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       if (attrs) {
         return {
           backgroundColor: attrs.fill,
+          backgroundColorOpacity: 1,
           intelligentReverseTextColor:
             attrs.intelligentReverseTextColor || false,
         };

@@ -1,8 +1,11 @@
+/* eslint-disable import/order */
+// eslint-disable-next-line prettier/prettier
 import {
   compact,
   find,
   get,
   identity,
+  isArray,
   isEmpty,
   isNil,
   isString,
@@ -12,7 +15,7 @@ import {
   min,
 } from 'lodash';
 import type { CellMeta, CustomHeaderField, ViewMeta } from '../common';
-import { CellType } from '../common';
+import { CellType, SERIES_NUMBER_FIELD } from '../common';
 import type {
   Fields,
   FilterParam,
@@ -34,8 +37,8 @@ import {
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
-import type { GetCellDataParams, Query } from './interface';
 import type { GetCellMultiDataParams } from './index';
+import type { GetCellDataParams, Query } from './interface';
 
 export abstract class BaseDataSet {
   /**
@@ -90,7 +93,7 @@ export abstract class BaseDataSet {
   /**
    * 获取字段
    */
-  private getField = (field: CustomHeaderField): string => {
+  public getField = (field: CustomHeaderField): string => {
     const realField = isString(field) ? field : field?.field;
 
     return realField || (field as string);
@@ -103,7 +106,17 @@ export abstract class BaseDataSet {
     (field: CustomHeaderField, meta?: Meta[]): Meta | undefined => {
       const realField = this.getField(field);
 
-      return find(this.meta || meta, { field: realField });
+      return find(this.meta || meta, ({ field: currentField }) => {
+        if (currentField instanceof RegExp) {
+          return currentField.test(realField);
+        }
+
+        if (isArray(currentField)) {
+          return currentField.includes(realField);
+        }
+
+        return currentField === realField;
+      });
     },
   );
 
@@ -112,6 +125,10 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldName(field: CustomHeaderField, defaultValue?: string): string {
+    if (field === SERIES_NUMBER_FIELD) {
+      return this.spreadsheet?.getSeriesNumberText();
+    }
+
     const realField = this.getField(field);
     // 兼容自定义行列头场景
     const headerNode = this.spreadsheet?.facet

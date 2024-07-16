@@ -1,44 +1,50 @@
 /* eslint-disable max-lines-per-function */
-import fs from 'fs';
-import path from 'path';
-import { dsvFormat } from 'd3-dsv';
+/* eslint-disable import/order */
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line prettier/prettier
+import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
+import type { BaseTooltip } from '@/ui/tooltip';
+import { customMerge } from '@/utils/merge';
 import EE from '@antv/event-emitter';
 import {
   Canvas,
   FederatedMouseEvent,
   FederatedPointerEvent,
-  type CanvasConfig,
   Group,
+  type CanvasConfig,
 } from '@antv/g';
-import { omit } from 'lodash';
-import * as simpleDataConfig from 'tests/data/simple-data.json';
-import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
+import { dsvFormat } from 'd3-dsv';
+import fs from 'fs';
+import { omit } from 'lodash';
+import path from 'path';
+import * as dataConfig from 'tests/data/mock-dataset.json';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
+import { assembleDataCfg, assembleOptions } from '.';
 import {
+  DEFAULT_FROZEN_COUNTS,
+  EventController,
+  FrozenGroupArea,
+  Hierarchy,
+  RootInteraction,
+  Store,
+  TAB_SEPARATOR,
+  asyncGetAllPlainData,
+  getDefaultSeriesNumberText,
   getTheme,
   type BaseDataSet,
+  type BaseFacet,
+  type FormatOptions,
+  type InternalFullyTheme,
+  type LayoutResult,
   type Node,
-  Hierarchy,
-  EventController,
+  type S2CellType,
+  type S2DataConfig,
+  type S2Options,
+  type ViewMeta,
 } from '../../src';
-
-import { assembleOptions, assembleDataCfg } from '.';
-import { RootInteraction } from '@/interaction/root';
-import { Store } from '@/common/store';
-import type {
-  InternalFullyTheme,
-  LayoutResult,
-  S2CellType,
-  S2DataConfig,
-  S2Options,
-  ViewMeta,
-} from '@/common/interface';
-import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
-import type { BaseTooltip } from '@/ui/tooltip';
-import { customMerge } from '@/utils/merge';
-import { DEFAULT_OPTIONS, FrozenGroupType } from '@/common/constant';
-import type { BaseFacet } from '@/facet';
-import type { PanelBBox } from '@/facet/bbox/panel-bbox';
+import type { PanelBBox } from '../../src/facet/bbox/panel-bbox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -109,6 +115,7 @@ export const createFakeSpreadSheet = (config?: {
     },
     getField: jest.fn(),
     displayFormattedValueMap: new Map(),
+    moreThanOneValue: jest.fn(),
   } as unknown as any;
 
   const layoutResult: LayoutResult = {
@@ -144,18 +151,49 @@ export const createFakeSpreadSheet = (config?: {
     getColLeafNodes: () => [],
     getInitColLeafNodes: () => [],
     getHeaderCells: () => [],
+    getPaginationScrollY: jest.fn().mockReturnValue(0),
     getHiddenColumnsInfo: jest.fn(),
     getCellAdaptiveHeight: jest.fn(),
     getRowLeafNodeByIndex: jest.fn(),
     getColLeafNodeByIndex: jest.fn(),
-    frozenGroupInfo: {
-      [FrozenGroupType.FROZEN_ROW]: {},
-      [FrozenGroupType.FROZEN_COL]: {},
-      [FrozenGroupType.FROZEN_TRAILING_ROW]: {},
-      [FrozenGroupType.FROZEN_TRAILING_COL]: {},
+    frozenGroupAreas: {
+      [FrozenGroupArea.Col]: {
+        width: 0,
+        x: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupArea.TrailingCol]: {
+        width: 0,
+        x: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupArea.Row]: {
+        height: 0,
+        y: 0,
+        range: [] as number[],
+      },
+      [FrozenGroupArea.TrailingRow]: {
+        height: 0,
+        y: 0,
+        range: [] as number[],
+      },
     },
+    frozenGroups: {
+      [FrozenGroupType.Row]: {},
+      [FrozenGroupType.TrailingRow]: {},
+      [FrozenGroupType.Col]: {},
+      [FrozenGroupType.TrailingCol]: {},
+      [FrozenGroupType.TopLeft]: {},
+      [FrozenGroupType.TopRight]: {},
+      [FrozenGroupType.BottomLeft]: {},
+      [FrozenGroupType.BottomRight]: {},
+    },
+    getCellRange: jest.fn().mockReturnValue({ start: 0, end: 100 }),
     cornerBBox: {},
     destroy: jest.fn(),
+    getFrozenOptions: jest.fn().mockReturnValue({
+      ...DEFAULT_FROZEN_COUNTS,
+    }),
   } as unknown as BaseFacet;
   s2.container.render = jest.fn();
   s2.store = new Store();
@@ -166,6 +204,7 @@ export const createFakeSpreadSheet = (config?: {
     getFieldDescription: jest.fn(),
     getCustomFieldDescription: jest.fn(),
     getCellMultiData: jest.fn(() => []),
+    moreThanOneValue: jest.fn(),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();
@@ -177,10 +216,8 @@ export const createFakeSpreadSheet = (config?: {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
-  s2.facet.getRowNodes = jest.fn().mockReturnValue([]);
-  s2.facet.getCells = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () =>
-    s2.container.getContextService().getDomElement() as HTMLCanvasElement;
+    s2.container.getContextService().getDomElement() as any;
   s2.getCanvasConfig = () => s2.container.getConfig();
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
@@ -191,9 +228,9 @@ export const createFakeSpreadSheet = (config?: {
   s2.isCustomRowFields = jest.fn();
   s2.getTotalsConfig = jest.fn();
   s2.getLayoutWidthType = jest.fn();
-  s2.enableFrozenHeaders = jest.fn();
   s2.measureTextWidth = jest.fn();
   s2.isFrozenRowHeader = jest.fn();
+  s2.getSeriesNumberText = jest.fn(() => getDefaultSeriesNumberText());
   s2.theme = getTheme({
     name: 'default',
     spreadsheet: s2,
@@ -202,6 +239,7 @@ export const createFakeSpreadSheet = (config?: {
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 
   s2.interaction = interaction;
+  s2.interaction.intercepts = new Set();
   s2.interaction.eventController = new EventController(s2);
 
   return s2;
@@ -264,6 +302,8 @@ export const createMockCellInfo = (
     update: jest.fn(),
     getActualText: jest.fn(),
     getFieldValue: jest.fn(),
+    getBBoxByType: jest.fn(() => {}),
+    getStyle: jest.fn(() => {}),
     hideInteractionShape: jest.fn(),
     updateByState: jest.fn(),
     isTextOverflowing: jest.fn(),
@@ -365,3 +405,47 @@ export const getClientPointOnCanvas = (
     clientY: point.y,
   };
 };
+
+export const expectMatchSnapshot = async (
+  s2: SpreadSheet,
+  formatOptions: FormatOptions = true,
+) => {
+  await s2.render();
+  const data = await asyncGetAllPlainData({
+    sheetInstance: s2,
+    split: TAB_SEPARATOR,
+    formatOptions,
+  });
+
+  expect(data).toMatchSnapshot();
+};
+
+export function generateRawData(
+  dimensions: [string, number][],
+  values: string[],
+) {
+  const res: Record<string, any>[] = [];
+
+  function generateItem(index: number, prev: Record<string, any> = {}) {
+    const [name, count] = dimensions[index];
+
+    for (let i = 1; i <= count; i++) {
+      const current = { ...prev, [name]: `${name}-${i}` };
+
+      if (index === dimensions.length - 1) {
+        values.forEach((v) => {
+          res.push({
+            ...current,
+            [v]: Math.random() * 10000,
+          });
+        });
+      } else {
+        generateItem(index + 1, current);
+      }
+    }
+  }
+
+  generateItem(0);
+
+  return res;
+}

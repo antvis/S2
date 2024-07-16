@@ -11,12 +11,23 @@ fetch(
       width: 600,
       height: 300,
       frozen: {
-        firstRow: true,
+        rowCount: 1,
+        trailingRowCount: 1,
+        colCount: 1,
+        trailingColCount: 1,
       },
       totals: {
         row: {
           showGrandTotals: true,
           reverseGrandTotalsLayout: true,
+        },
+      },
+      style: {
+        colCell: {
+          widthByField: {
+            'root[&]家具[&]沙发[&]number': 200,
+            'root[&]办公用品[&]笔[&]number': 200,
+          },
         },
       },
     };

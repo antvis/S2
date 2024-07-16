@@ -1,10 +1,10 @@
+import type { SpreadSheet, ThemeCfg } from '@antv/s2';
 import { noop } from 'lodash';
 import React from 'react';
-import type { SpreadSheet, ThemeCfg } from '@antv/s2';
-import type { SheetComponentsProps } from '../../src';
+import type { SheetComponentProps } from '../../src';
 
 export const PlaygroundContext = React.createContext<
-  Partial<SheetComponentsProps> & {
+  Partial<SheetComponentProps> & {
     ref?: React.MutableRefObject<SpreadSheet | null>;
     setThemeCfg: (theme: ThemeCfg) => void;
     logHandler: (

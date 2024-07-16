@@ -61,6 +61,7 @@ s2.setTheme({
 | splitLine         | 单元格分割线样式                       | [SplitLine](#splitline)                         |        |      |
 | prepareSelectMask | 刷选遮罩样式                           | [InteractionStateTheme](#interactionstatetheme) |        |      |
 | background        | 背景样式                               | [Background](#background)                       |        |      |
+| empty        | 空数据占位符样式 （明细表有效）                               | [Empty](#empty)                       |        |      |
 | [key: string]     | 额外属性字段，用于用户自定义主题时传参 | `unknown`                                       |        |      |
 
 #### DefaultCellTheme
@@ -69,10 +70,10 @@ s2.setTheme({
 
 | 参数              | 说明           | 类型                              | 默认值 | 必选 |
 | ----------------- | -------------- | --------------------------------- | ------ | ---- |
-| bolderText        | 加粗文本样式   | [TextTheme](#texttheme)           | -      |      |
-| text              | 文本样式       | [TextTheme](#texttheme)           | -      |      |
+| bolderText        | 加粗文本样式（如：总计，小计，行列头非叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E8%A1%8C%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)   | [TextTheme](#texttheme)           | -      |      |
+| text              | 文本样式（如：数值，行列头叶子节点文本）[了解更多](/manual/advanced/custom/cell-align#%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83%E6%A0%BC%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)      | [TextTheme](#texttheme)           | -      |      |
 | seriesText        | 序号文本样式   | [TextTheme](#texttheme)           | -      |      |
-| measureText       | 度量值文本样式 | [TextTheme](#texttheme)           | -      |      |
+| measureText       | 度量值文本样式（如：数值挂行/列头时，行列头所对应的虚拟数值单元格文本）[了解更多](/manual/advanced/custom/cell-align#%E5%88%97%E5%A4%B4%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F)  | [TextTheme](#texttheme)           | -      |      |
 | cell              | 单元格样式     | [CellTheme](#celltheme)           | -      |      |
 | icon              | 图标样式       | [IconTheme](#icontheme)           | -      |      |
 | seriesNumberWidth | 序号列宽       | `number`                          | 80     |      |
@@ -131,7 +132,7 @@ s2.setTheme({
 | ------------ | ------------------------------------------------------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
 | textAlign    | 文本内容的对齐方式                                                             | `left \| center \| right` | -                                                                                                 |      |
 | textBaseline | 绘制文本时的基线                                                               | `top \| middle \| bottom` | -                                                                                                 |      |
-| fontFamily   | 字体，**如需每个字体宽度一样，请使用等宽字体**                                                                           | `string`                      | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |      |
+| fontFamily   | 字体，**如需每个字体宽度一样，请使用等宽字体** （**如果是 Mac 或 iOS 系统，请避免使用 `-apple-system` `BlinkMacSystemFont` 等系统字体，会导致浏览器卡死**)                                                                          | `string`                      | `Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif` |      |
 | fontSize     | 字体大小                                                                       | `number`                      | -                                                                                                 |      |
 | fontWeight   | `number` <br/> `string` （可选项：`normal` <br> `bold` <br> `bolder` <br> `lighter`) | `number \| string`          | 粗体文本：Mobile：`520` PC: `bold` <br> 普通文本：`normal`                                        |      |
 | fontStyle   | 字体样式    | `normal \| italic \| oblique`        |  `normal` |
@@ -156,7 +157,6 @@ s2.setTheme({
 | verticalBorderColorOpacity   | 单元格垂直边线颜色透明度                | `number`                                        | 1      |      |
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
-| interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
 | interactionState             | 单元格交互态  ([查看默认配置](https://github.com/antvis/S2/blob/next/packages/s2-core/src/theme/index.ts#L66-L107)) ([示例](/examples/interaction/basic#state-theme))                       |  Record<[InteractionStateName](#interactionstatename), [InteractionStateTheme](#interactionstatetheme)> | -      |      |
 | borderDash        | 单元格边线虚线 | `number \| string \| (string \| number)[]`                                        | `[]`      |      |
 
@@ -217,6 +217,15 @@ s2.setTheme({
 | ------- | ------ | -------- | ------ | ---- |
 | color   | 颜色   | `string` | -      |      |
 | opacity | 透明度 | `number` | 1      |      |
+
+#### Empty
+
+功能描述：空数据占位符配置。查看 [文档](/manual/basic/theme#%E8%87%AA%E5%AE%9A%E4%B9%89-schema) 和 [示例](/examples/theme/custom/#custom-schema)
+
+| 参数    | 说明   | 类型     | 默认值 | 必选 |
+| ------- | ------ | -------- | ------ | ---- |
+| icon   | 图标   | [Omit<IconTheme, 'size'>](#icontheme) & { width: number, height: number } | `{ fill: '', width: 64, height: 41, margin: { top: 0, right: 0, bottom: 24, left: 0, } }`   |      |
+| text | 文本 | [TextTheme](#texttheme)  |  `{ fontSize: 12, fontWeight: 'normal', opacity: 1 }`     |      |
 
 #### MiniChartTheme
 

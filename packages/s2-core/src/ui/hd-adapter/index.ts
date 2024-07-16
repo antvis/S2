@@ -1,5 +1,4 @@
 import { debounce } from 'lodash';
-import { MIN_DEVICE_PIXEL_RATIO } from '../../common/constant/options';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
 
@@ -87,46 +86,42 @@ export class HdAdapter {
    * DPR 改变也会触发 visualViewport 的 resize 事件, 预期是只监听双指缩放, 所以这里规避掉
    * @see https://github.com/antvis/S2/issues/2072
    */
-  private renderByZoomScaleWithoutResizeEffect = (event: Event) => {
+  private renderByZoomScaleWithoutResizeEffect = async (event: Event) => {
     this.isDevicePixelRatioChange = false;
-    this.renderByZoomScale(event);
+    await this.renderByZoomScale(event);
   };
 
-  private renderByDevicePixelRatioChanged = () => {
+  private renderByDevicePixelRatioChanged = async () => {
     this.isDevicePixelRatioChange = true;
-    this.renderByDevicePixelRatio();
+    await this.renderByDevicePixelRatio();
   };
 
-  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
+  private renderByDevicePixelRatio = async (
+    ratio = window.devicePixelRatio,
+  ) => {
     const {
       container,
       options: { width, height },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
-    const lastRatio = container.getConfig().devicePixelRatio;
+    const lastRatio = container.getConfig().devicePixelRatio ?? 1;
 
     if (lastRatio === ratio || !canvas) {
       return;
     }
 
-    /*
-     * 缩放时, 以向上取整后的缩放比为准
-     * 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
-     */
-    const pixelRatio = Math.max(ratio, lastRatio!, MIN_DEVICE_PIXEL_RATIO);
-
     // https://github.com/antvis/G/issues/1143
-    container.getConfig().devicePixelRatio = pixelRatio;
+    container.getConfig().devicePixelRatio = ratio;
     container.resize(width!, height!);
 
-    this.spreadsheet.render(false);
+    await this.spreadsheet.render(false);
   };
 
-  private renderByZoomScale = debounce((event: Event) => {
+  private renderByZoomScale = debounce(async (event: Event) => {
     const ratio = Math.ceil((event.target as VisualViewport)?.scale);
 
     if (ratio >= 1 && !this.isDevicePixelRatioChange) {
-      this.renderByDevicePixelRatio(ratio);
+      await this.renderByDevicePixelRatio(ratio);
     }
   }, 350);
 }

@@ -67,7 +67,7 @@ S2 基于 `AntV/G` 渲染引擎绘制，如果想像 DOM 一样调试的话，�
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*RTYXTpb3WuIAAAAAAAAAAAAADmJ7AQ/original" />
 
-1. 开始调试
+2. 开始调试
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*sP9eQaWxDpcAAAAAAAAAAAAADmJ7AQ/original" />
 
@@ -77,9 +77,16 @@ S2 基于 `AntV/G` 渲染引擎绘制，如果想像 DOM 一样调试的话，�
 
 1. 选择单测
 
-命令行运行 `pnpm core:start` 或者 `pnpm react:start`
+命令行运行 `pnpm core:start` 或者 `pnpm react:start`, 可以选择测试来运行
 
 <img alt="preview" height="600" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*g52KT5CybhYAAAAAAAAAAAAADmJ7AQ/original" />
+
+也可以指定具体的测试文件名，跳过选择的步骤直接运行。
+
+```bash
+pnpm core:start packages/s2-core/__tests__/spreadsheet/scroll-spec.ts
+pnpm react:start packages/s2-react/__tests__/spreadsheet/spread-sheet-spec.tsx
+```
 
 2. 查看结果
 

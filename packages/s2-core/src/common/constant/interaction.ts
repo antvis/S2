@@ -3,7 +3,7 @@ export enum InteractionName {
   DATA_CELL_CLICK = 'dataCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
   ROW_COLUMN_CLICK = 'rowColumnClick',
-  ROW_TEXT_CLICK = 'rowTextClick',
+  HEADER_CELL_LINK_CLICK = 'headerCellLinkClick',
   HOVER = 'hover',
   DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
   ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
@@ -113,6 +113,8 @@ export enum ScrollbarPositionType {
 export enum ScrollDirection {
   SCROLL_UP = 'scrollUp',
   SCROLL_DOWN = 'scrollDown',
+  SCROLL_LEFT = 'scrollLeft',
+  SCROLL_RIGHT = 'scrollRight',
 }
 
 export enum ScrollDirectionRowIndexDiff {

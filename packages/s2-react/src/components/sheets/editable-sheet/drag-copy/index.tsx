@@ -1,9 +1,15 @@
-import type { ScrollOffset } from '@antv/s2';
-import { DataCell, GEvent, S2Event, S2_PREFIX_CLS } from '@antv/s2';
+import type { FrozenFacet, ScrollOffset } from '@antv/s2';
+import {
+  DataCell,
+  FrozenGroupArea,
+  GEvent,
+  S2Event,
+  S2_PREFIX_CLS,
+} from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 import React from 'react';
-import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetInstance } from '../../../../context/SpreadSheetContext';
+import { useS2Event } from '../../../../hooks';
 import { DragCopyMask } from './drag-copy-mask';
 import './drag-copy-point.less';
 
@@ -24,8 +30,8 @@ export const DragCopyPoint = React.memo(() => {
   const handleScroll = () => {
     if (spreadsheet) {
       const newScroll = spreadsheet.facet.getScrollOffset();
-      const { frozenCol, frozenRow } = (spreadsheet.facet as any)
-        .frozenGroupInfo;
+      const frozenGroupAreas = (spreadsheet.facet as FrozenFacet)
+        .frozenGroupAreas;
       const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
       const cellMeta = cell?.getMeta();
 
@@ -46,10 +52,15 @@ export const DragCopyPoint = React.memo(() => {
           let overflow = true;
 
           if (
-            frozenCol.width >= pointX - newScroll.scrollX - hWidth * 2 ||
-            frozenRow.height >= pointY - newScroll.scrollY - vWidth * 2 ||
+            frozenGroupAreas[FrozenGroupArea.Col].width >=
+              pointX - newScroll.scrollX - hWidth * 2 ||
+            frozenGroupAreas[FrozenGroupArea.Row].height >=
+              pointY - newScroll.scrollY - vWidth * 2 ||
             rect.width <= pointX - newScroll.scrollX - hWidth * 2 ||
-            rect.height <= pointY - newScroll.scrollY + frozenRow.height
+            rect.height <=
+              pointY -
+                newScroll.scrollY +
+                frozenGroupAreas[FrozenGroupArea.Row].height
           ) {
             overflow = true;
           } else {

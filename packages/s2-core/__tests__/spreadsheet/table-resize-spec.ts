@@ -1,8 +1,8 @@
-import type { Group } from '@antv/g';
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/simple-table-data.json';
-import { TableSheet } from '@/sheet-type';
 import { KEY_GROUP_ROW_RESIZE_AREA } from '@/common/constant';
+import { TableSheet } from '@/sheet-type';
+import type { Group } from '@antv/g';
+import * as mockDataConfig from '../data/simple-table-data.json';
+import { getContainer } from '../util/helpers';
 
 describe('Table Sheet Resize Test', () => {
   test('should draw resize area in series cell when show series', async () => {

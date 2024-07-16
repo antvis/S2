@@ -1,3 +1,4 @@
+import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 import {
   GEvent,
   PivotSheet,
@@ -9,10 +10,9 @@ import {
 import { act, renderHook } from '@testing-library/react-hooks';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
-import type { SheetComponentsProps } from '../../../src/components';
-import { useCellEvent, useEvents, useS2Event } from '@/hooks';
+import type { SheetComponentProps } from '../../../src/components';
 
-const s2Options: SheetComponentsProps['options'] = {
+const s2Options: SheetComponentProps['options'] = {
   width: 200,
   height: 200,
   hd: false,
@@ -353,7 +353,7 @@ describe('useEvents tests', () => {
   });
 
   test('useEvents should be defined', () => {
-    const mockBaseSheetProps: SheetComponentsProps = {
+    const mockBaseSheetProps: SheetComponentProps = {
       dataCfg: undefined as unknown as S2DataConfig,
       options: undefined,
       spreadsheet: () => s2,
@@ -366,11 +366,11 @@ describe('useEvents tests', () => {
   test.each(
     cellEventCases.concat(S2EventCases as any) as Array<{
       event: S2Event;
-      name: keyof SheetComponentsProps;
+      name: keyof SheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;
     }>,
   )('eventHook should be called with %s', ({ event, name, eventHook }) => {
-    const props: SheetComponentsProps = {
+    const props: SheetComponentProps = {
       dataCfg: mockDataConfig,
       options: s2Options,
       [name]: jest.fn(),

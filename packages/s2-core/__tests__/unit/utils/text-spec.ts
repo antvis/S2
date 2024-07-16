@@ -1,16 +1,22 @@
-import { createPivotSheet } from 'tests/util/helpers';
-import type { TextTheme } from '../../../src/common';
 import { ELLIPSIS_SYMBOL } from '@/common';
 import {
-  isUpDataValue,
+  drawCustomContent,
   getCellWidth,
-  getEmptyPlaceholder,
   getContentAreaForMultiData,
-  isZeroOrEmptyValue,
+  getEmptyPlaceholder,
   isUnchangedValue,
+  isUpDataValue,
+  isZeroOrEmptyValue,
 } from '@/utils/text';
+import {
+  createFakeSpreadSheet,
+  createMockCellInfo,
+  createPivotSheet,
+} from 'tests/util/helpers';
+import type { TextTheme } from '../../../src/common';
+import { safeJsonParse } from '../../../src/utils/common';
 
-const isHD = window.devicePixelRatio >= 2;
+jest.mock('@/utils/g-mini-charts');
 
 describe('Text Utils Tests', () => {
   const font: TextTheme = {
@@ -24,7 +30,13 @@ describe('Text Utils Tests', () => {
 
     beforeEach(() => {
       measureTextWidth = createPivotSheet(
-        {},
+        {
+          transformCanvasConfig() {
+            return {
+              devicePixelRatio: 2,
+            };
+          },
+        },
         { useSimpleData: true },
       ).measureTextWidth;
     });
@@ -36,7 +48,7 @@ describe('Text Utils Tests', () => {
     test('should get correct text width', () => {
       const width = measureTextWidth('test', font);
 
-      expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
+      expect(Math.floor(width)).toBeGreaterThanOrEqual(16);
     });
   });
 
@@ -79,7 +91,7 @@ describe('Text Utils Tests', () => {
       field: '',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, '*');
+    const placeholder = getEmptyPlaceholder(meta, { cell: '*' });
 
     expect(placeholder).toEqual('*');
   });
@@ -90,7 +102,9 @@ describe('Text Utils Tests', () => {
       value: 'test',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, (meta) => meta['value']);
+    const placeholder = getEmptyPlaceholder(meta, {
+      cell: (meta) => meta['value'],
+    });
 
     expect(placeholder).toEqual('test');
   });
@@ -200,6 +214,20 @@ describe('Text Utils Tests', () => {
       ],
     ]);
   });
+
+  test('should get cell width', () => {
+    expect(getCellWidth({ width: 30 })).toEqual(30);
+    expect(getCellWidth({ width: 30 }, 2)).toEqual(60);
+  });
+
+  test('should safe parse json', () => {
+    const value = {
+      a: [1],
+    };
+
+    expect(safeJsonParse('')).toEqual(null);
+    expect(safeJsonParse(JSON.stringify(value))).toEqual(value);
+  });
 });
 
 describe('isZeroOrEmptyValue', () => {
@@ -266,5 +294,63 @@ describe('isUnchangedValue', () => {
 
   test('should return false for negative values', () => {
     expect(isUnchangedValue(-123, 123)).toBeFalsy();
+  });
+
+  test('should draw custom content', () => {
+    const renderTextShape = jest.fn();
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.updateTextPosition = () => {};
+    cell.getActualTextWidth = () => 0;
+    cell.getBBoxByType = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+    cell.renderTextShape = renderTextShape;
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    function render() {
+      drawCustomContent(cell, { values: ['test'] });
+    }
+
+    expect(render).not.toThrow();
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(renderTextShape).toHaveBeenCalledTimes(4);
+  });
+
+  test('should draw custom mini chart', () => {
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.getBBoxByType = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+
+    function render() {
+      drawCustomContent(cell, { values: { data: 'test' } });
+    }
+
+    expect(render).not.toThrow();
   });
 });

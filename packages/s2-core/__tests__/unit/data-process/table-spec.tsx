@@ -4,10 +4,10 @@
  * - 明细表不需要计算二维数组数据
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
+import { SpreadSheet, TableSheet } from '@/sheet-type';
+import { ROOT_NODE_ID } from '../../../src';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
-import { ROOT_NODE_ID } from '../../../src';
-import { SpreadSheet, TableSheet } from '@/sheet-type';
 
 describe('List Table Core Data Process', () => {
   let s2: SpreadSheet;
@@ -54,20 +54,18 @@ describe('List Table Core Data Process', () => {
 
   describe('2、Calculate overlapped data cell info', () => {
     test('should get correct data value', () => {
-      const { getCellMeta } = s2.facet;
-
       // 第一行
-      expect(getCellMeta(0, 0)!.data).toEqual({ province: '浙江省' });
-      expect(getCellMeta(0, 1)!.data).toEqual({ city: '杭州市' });
-      expect(getCellMeta(0, 2)!.data).toEqual({ type: '家具' });
-      expect(getCellMeta(0, 3)!.data).toEqual({ sub_type: '桌子' });
-      expect(getCellMeta(0, 4)!.data).toEqual({ number: 7789 });
+      expect(s2.facet.getCellMeta(0, 0)!.data).toEqual({ province: '浙江省' });
+      expect(s2.facet.getCellMeta(0, 1)!.data).toEqual({ city: '杭州市' });
+      expect(s2.facet.getCellMeta(0, 2)!.data).toEqual({ type: '家具' });
+      expect(s2.facet.getCellMeta(0, 3)!.data).toEqual({ sub_type: '桌子' });
+      expect(s2.facet.getCellMeta(0, 4)!.data).toEqual({ number: 7789 });
       // 第三行
-      expect(getCellMeta(2, 0)!.data).toEqual({ province: '浙江省' });
-      expect(getCellMeta(2, 1)!.data).toEqual({ city: '宁波市' });
-      expect(getCellMeta(2, 2)!.data).toEqual({ type: '家具' });
-      expect(getCellMeta(2, 3)!.data).toEqual({ sub_type: '桌子' });
-      expect(getCellMeta(2, 4)!.data).toEqual({ number: 3877 });
+      expect(s2.facet.getCellMeta(2, 0)!.data).toEqual({ province: '浙江省' });
+      expect(s2.facet.getCellMeta(2, 1)!.data).toEqual({ city: '宁波市' });
+      expect(s2.facet.getCellMeta(2, 2)!.data).toEqual({ type: '家具' });
+      expect(s2.facet.getCellMeta(2, 3)!.data).toEqual({ sub_type: '桌子' });
+      expect(s2.facet.getCellMeta(2, 4)!.data).toEqual({ number: 3877 });
     });
   });
 });

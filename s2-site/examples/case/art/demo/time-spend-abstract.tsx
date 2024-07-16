@@ -1,74 +1,92 @@
+// organize-imports-ignore
 import React from 'react';
-
-import insertCSS from 'insert-css';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Image as GImage } from '@antv/g';
 import { DataCell, ThemeCfg } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import insertCSS from 'insert-css';
 
 const paletteLegendMap = [
   {
     text: '睡觉',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zGyiSa2A8ZMAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zGyiSa2A8ZMAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '工作',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RdyWRpg3hRAAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RdyWRpg3hRAAAAAAAAAAAAAAARQnAQ',
   },
 
   {
     text: '上学',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '吃饭',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XHHcSZxmR7gAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XHHcSZxmR7gAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '学习',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1p5iTYDCkKEAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '娱乐',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZRaUT55QCaoAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZRaUT55QCaoAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '运动',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*xpO5Sawk8YIAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*xpO5Sawk8YIAAAAAAAAAAAAAARQnAQ',
   },
   {
     text: '其他',
-    img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ',
+    src: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ',
   },
 ];
+
+const ImageCache = new Map<string, HTMLImageElement>();
 
 /**
  * 自定义 DataCell, 给单元格添加图表
  * 查看更多方法 https://github.com/antvis/S2/blob/next/packages/s2-core/src/cell/data-cell.ts
  */
 class CustomDataCell extends DataCell {
-  drawTextShape() {
+  drawTextShape() {}
+
+  renderImage(img: HTMLImageElement) {
+    const { x, y, width, height } = this.meta;
+
+    this.backgroundShape = this.appendChild(
+      new GImage({
+        style: {
+          x: x + (width - img?.width) / 2,
+          y: y + (height - img?.height) / 2,
+          width: img?.width ?? width,
+          height: img?.height ?? height,
+          src: img,
+        },
+      }),
+    );
+  }
+
+  drawBackgroundShape() {
     const { fieldValue } = this.meta;
     const url =
-      paletteLegendMap.find((v) => v.text === fieldValue)?.img ??
+      paletteLegendMap.find((legend) => legend.text === fieldValue)?.src ??
       'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*e5A3SKifw1EAAAAAAAAAAAAAARQnAQ';
+
+    if (ImageCache.get(url)) {
+      this.renderImage(ImageCache.get(url));
+
+      return;
+    }
+
     const img = new Image();
 
     img.src = url;
-    const { x, y, width, height } = this.meta;
+    img.crossOrigin = 'anonymous';
 
     img.onload = () => {
-      this.textShape = this.appendChild(
-        new GImage({
-          style: {
-            x: x + (width - img?.width) / 2,
-            y: y + (height - img?.height) / 2,
-            width: img?.width ?? width,
-            height: img?.height ?? height,
-            img: url,
-          },
-        }),
-      );
+      this.renderImage(img);
+      ImageCache.set(url, img);
     };
   }
 }
@@ -157,8 +175,8 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       width: 1150,
       height: 720,
       showDefaultHeaderActionIcon: false,
-      dataCell: (viewMeta) => {
-        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      dataCell: (viewMeta, spreadsheet) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
       },
       interaction: {
         hoverHighlight: false,
@@ -177,10 +195,10 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
 
     const PaletteLegend = () => (
       <div className="palette">
-        {paletteLegendMap.map((value, key) => (
+        {paletteLegendMap.map((legend, key) => (
           <div key={key} className="palette-group">
-            <img className="palette-img" src={value.img} />
-            <span className="palette-text">{value.text}</span>
+            <img className="palette-img" src={legend.src} />
+            <span className="palette-text">{legend.text}</span>
           </div>
         ))}
       </div>

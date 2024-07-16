@@ -7,14 +7,13 @@ import {
 } from '@antv/s2';
 import {
   Checkbox,
+  Divider,
   Radio,
   Space,
   Switch,
   Tooltip,
   type RadioChangeEvent,
-  Divider,
 } from 'antd';
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React from 'react';
 import type { SheetComponentOptions } from '../../src/components';
 
@@ -47,7 +46,7 @@ export const ResizeConfig: React.FC<{
     };
 
     setShowResizeArea(enable);
-    setThemeCfg((prev) => customMerge(prev, { theme }));
+    setThemeCfg((prev) => customMerge<ThemeCfg>(prev, { theme }));
   };
 
   const onSwitchRowResizeType =
@@ -70,10 +69,10 @@ export const ResizeConfig: React.FC<{
         },
       };
 
-      setOptions((prev) => customMerge(prev, options));
+      setOptions((prev) => customMerge<SheetComponentOptions>(prev, options));
     };
 
-  const onResizeActiveChange = (checkedAreas: CheckboxValueType[]) => {
+  const onResizeActiveChange = (checkedAreas: string[]) => {
     const resize = RESIZE_CONFIG.reduce((cfg, item) => {
       const type = item.value;
 
@@ -112,7 +111,9 @@ export const ResizeConfig: React.FC<{
       },
     };
 
-    setOptions((prev) => customMerge(prev, updatedOptions));
+    setOptions((prev) =>
+      customMerge<SheetComponentOptions>(prev, updatedOptions),
+    );
 
     props.onMaxLinesChange?.(maxLines);
   };

@@ -4,13 +4,6 @@
  * https://github.com/antvis/S2/issues/1781
  */
 
-import type { FederatedPointerEvent } from '@antv/g';
-import * as mockDataConfig from '../data/simple-table-data.json';
-import {
-  createFederatedMouseEvent,
-  getContainer,
-  sleep,
-} from '../util/helpers';
 import {
   OriginEventType,
   S2Event,
@@ -18,6 +11,13 @@ import {
   type S2Options,
 } from '@/index';
 import { TableSheet } from '@/sheet-type';
+import type { FederatedPointerEvent } from '@antv/g';
+import * as mockDataConfig from '../data/simple-table-data.json';
+import {
+  createFederatedMouseEvent,
+  getContainer,
+  sleep,
+} from '../util/helpers';
 
 const s2DataConfig: S2DataConfig = {
   ...mockDataConfig,
