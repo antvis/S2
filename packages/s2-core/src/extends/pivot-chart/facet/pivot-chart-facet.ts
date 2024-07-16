@@ -29,6 +29,7 @@ import {
 import {
   KEY_GROUP_COL_AXIS_RESIZE_AREA,
   KEY_GROUP_ROW_AXIS_RESIZE_AREA,
+  X_FIELD_FORMATTER,
 } from '../constant';
 import { AxisColHeader } from '../header/axis-col';
 import { AxisCornerHeader } from '../header/axis-corner';
@@ -39,14 +40,14 @@ import { AxisColCell } from '../cell/axis-col-cell';
 import { AxisCornerCell } from '../cell/axis-cornor-cell';
 import { AxisRowCell } from '../cell/axis-row-cell';
 import { AxisCellType } from '../cell/cell-type';
-import type { PivotChart } from '../index';
+import type { PivotChartSheet } from '../index';
 import { separateRowColLeafNodes } from '../utils/separate-axis';
 import { CornerBBox } from './corner-bbox';
 import { Frame } from './frame';
 import { PanelBBox } from './panel-bbox';
 
 export class PivotChartFacet extends PivotFacet {
-  spreadsheet: PivotChart;
+  spreadsheet: PivotChartSheet;
 
   axisRowHeader: AxisRowHeader | null;
 
@@ -84,7 +85,7 @@ export class PivotChartFacet extends PivotFacet {
 
   protected getColLeafNodeRelatedCount(colNode: Node) {
     const isValueInCols = this.spreadsheet.isValueInCols();
-    const isPolar = this.spreadsheet.isPolarChart();
+    const isPolar = this.spreadsheet.isPolarCoordinate();
 
     const size =
       !isValueInCols && !isPolar
@@ -96,7 +97,7 @@ export class PivotChartFacet extends PivotFacet {
 
   protected getRowLeafNodeRelatedCount(rowNode: Node) {
     const isValueInCols = this.spreadsheet.isValueInCols();
-    const isPolar = this.spreadsheet.isPolarChart();
+    const isPolar = this.spreadsheet.isPolarCoordinate();
 
     const size =
       isValueInCols && !isPolar
@@ -243,7 +244,7 @@ export class PivotChartFacet extends PivotFacet {
     }
 
     const isValueInCols = this.spreadsheet.isValueInCols();
-    const isPolar = this.spreadsheet.isPolarChart();
+    const isPolar = this.spreadsheet.isPolarCoordinate();
 
     rowsHierarchy.width =
       rowsHierarchy.isPlaceholder && isValueInCols && !isPolar
@@ -284,7 +285,7 @@ export class PivotChartFacet extends PivotFacet {
     }
 
     const isValueInCols = this.spreadsheet.isValueInCols();
-    const isPolar = this.spreadsheet.isPolarChart();
+    const isPolar = this.spreadsheet.isPolarCoordinate();
 
     const colAxisHeight = this.getColAxisHeight();
 
@@ -520,11 +521,20 @@ export class PivotChartFacet extends PivotFacet {
           totalStatus,
         }) as CellData;
 
-        const xValue =
-          rowChild.field === EXTRA_FIELD ? colChild.value : rowChild.value;
+        let xValue;
+        let xValueShouldFormatter = true;
+
+        if (rowChild.field === EXTRA_FIELD) {
+          xValue = colChild.value;
+          xValueShouldFormatter = !colChild.isTotalRoot;
+        } else {
+          xValue = rowChild.value;
+          xValueShouldFormatter = !rowChild.isTotalRoot;
+        }
 
         const origin = {
           [xField]: xValue,
+          [X_FIELD_FORMATTER]: xValueShouldFormatter,
           ...current?.[ORIGIN_FIELD],
         };
 

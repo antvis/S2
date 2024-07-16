@@ -7,6 +7,8 @@ import { AxisHover } from './interaction/axis-hover';
 export const DEFAULT_G2_SPEC = {
   autoFit: true,
   animate: false,
+  // https://g2.antv.antgroup.com/manual/core/size
+  margin: 0,
 };
 
 export const DEFAULT_CHART_SPEC: G2Spec = {
@@ -32,8 +34,9 @@ export const FIXED_OPTIONS: S2Options = {
 };
 
 export const DEFAULT_OPTIONS: S2Options = {
-  chartCoordinate: 'cartesian',
-  chartSpec: DEFAULT_CHART_SPEC,
+  chart: {
+    coordinate: 'cartesian',
+  },
   dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
   interaction: {
     customInteractions: [
@@ -78,3 +81,5 @@ export const KEY_GROUP_COL_AXIS_FROZEN_TRAILING = 'colAxisFrozenTrailingGroup';
 export const KEY_GROUP_COL_AXIS_RESIZE_AREA = 'colAxisHeaderResizeArea';
 
 export const PLACEHOLDER_FIELD = '$$placeholder$$';
+
+export const X_FIELD_FORMATTER = '$$should_formatter$$';

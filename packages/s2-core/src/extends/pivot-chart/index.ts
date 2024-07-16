@@ -24,7 +24,7 @@ import { getCustomTheme } from './utils/theme';
 
 export * from './interface';
 
-export class PivotChart extends PivotSheet {
+export class PivotChartSheet extends PivotSheet {
   protected override initInteraction() {
     this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
@@ -80,7 +80,7 @@ export class PivotChart extends PivotSheet {
      *         四川下面有 n 个城市，北京下面有 m 个城市，那么四川的宽度是 width, 北京的宽度也是 width，不再以维度数量作为依据，能让数据的呈现效果更好
      */
 
-    const isPolar = this.isPolarChart(options);
+    const isPolar = this.isPolarCoordinate(options);
 
     if (valueInCols) {
       const lastRow = last(rows) as string;
@@ -151,8 +151,8 @@ export class PivotChart extends PivotSheet {
     };
   }
 
-  isPolarChart(options: S2Options | null = this.options) {
-    return options?.chartCoordinate === 'polar';
+  isPolarCoordinate(options: S2Options | null = this.options) {
+    return options?.chart?.coordinate === 'polar';
   }
 
   enableAsyncExport() {

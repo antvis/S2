@@ -1,24 +1,33 @@
 import { Group } from '@antv/g';
-import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
+import {
+  corelib,
+  renderToMountedElement,
+  type AxisComponent,
+  type G2Spec,
+} from '@antv/g2';
 import {
   CellBorderPosition,
   CellClipBox,
   CellType,
   RowCell,
+  customMerge,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
+import { isFunction } from 'lodash';
 import { DEFAULT_G2_SPEC, KEY_GROUP_ROW_AXIS_RESIZE_AREA } from '../constant';
-import type { PivotChart } from '../index';
+import type { PivotChartSheet } from '../index';
 import {
   getAxisStyle,
   getAxisXOptions,
   getAxisYOptions,
+  getCoordinate,
+  getTheme,
 } from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisRowCell extends RowCell {
-  protected spreadsheet: PivotChart;
+  protected spreadsheet: PivotChartSheet;
 
   protected axisShape: Group;
 
@@ -59,7 +68,7 @@ export class AxisRowCell extends RowCell {
   }
 
   public drawTextShape(): void {
-    if (this.spreadsheet.isPolarChart()) {
+    if (this.spreadsheet.isPolarCoordinate()) {
       super.drawTextShape();
 
       return;
@@ -71,24 +80,27 @@ export class AxisRowCell extends RowCell {
   getChartOptions(): G2Spec {
     const style = this.getStyle();
 
-    const chartOptions = {
-      ...DEFAULT_G2_SPEC,
-      ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
+    let customSpec = this.spreadsheet.options.chart?.axisRowCellSpec;
 
-      ...(this.spreadsheet.isValueInCols()
-        ? getAxisXOptions(this.meta, this.spreadsheet)
-        : getAxisYOptions(this.meta, this.spreadsheet)),
+    if (isFunction(customSpec)) {
+      customSpec = customSpec(this);
+    }
 
-      ...getAxisStyle(style),
+    return customMerge(
+      {
+        ...DEFAULT_G2_SPEC,
+        ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
 
-      coordinate: {
-        transform: this.spreadsheet.isValueInCols()
-          ? [{ type: 'transpose' }]
-          : undefined,
-      },
-    } as G2Spec;
+        ...getCoordinate(this.spreadsheet),
+        ...(this.spreadsheet.isValueInCols()
+          ? getAxisXOptions(this.meta, this.spreadsheet)
+          : getAxisYOptions(this.meta, this.spreadsheet)),
 
-    return chartOptions;
+        ...getAxisStyle(style),
+        ...getTheme(this.spreadsheet),
+      } as AxisComponent,
+      customSpec,
+    );
   }
 
   drawAxisShape() {

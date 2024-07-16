@@ -7,7 +7,9 @@ import {
   type SpreadSheet,
   type ViewMeta,
 } from '@antv/s2';
-import { map } from 'lodash';
+import { map, unary } from 'lodash';
+import type { PivotChartSheet } from '..';
+import { X_FIELD_FORMATTER } from '../constant';
 
 export function getTheme(s2: SpreadSheet): Pick<G2Spec, 'theme'> {
   const themeName = s2.getThemeName();
@@ -21,8 +23,6 @@ export function getTheme(s2: SpreadSheet): Pick<G2Spec, 'theme'> {
 
 export function getAxisStyle(cellStyle: InternalFullyCellTheme): AxisComponent {
   return {
-    // https://g2.antv.antgroup.com/manual/core/size
-    margin: 0,
     // title
     titleSpacing: 0,
     titleFontSize: cellStyle.bolderText.fontSize,
@@ -57,9 +57,15 @@ export function getAxisStyle(cellStyle: InternalFullyCellTheme): AxisComponent {
   };
 }
 
-export function getScale(): Pick<G2Spec, 'scale'> {
+export function getCoordinate(s2: SpreadSheet): Pick<G2Spec, 'coordinate'> {
+  if ((s2 as PivotChartSheet).isPolarCoordinate?.()) {
+    return {};
+  }
+
   return {
-    scale: {},
+    coordinate: {
+      transform: s2.isValueInCols() ? [{ type: 'transpose' }] : undefined,
+    },
   };
 }
 
@@ -84,13 +90,13 @@ export function getAxisXOptions(meta: Node, s2: SpreadSheet): AxisComponent {
   };
 }
 
-export function getAxisYOptions(meta: Node, s2: SpreadSheet): AxisComponent {
-  const { field, value } = meta;
-
+export function getScaleY(
+  value: string,
+  s2: SpreadSheet,
+): Pick<G2Spec, 'scale'> {
   const range = s2.dataSet.getValueRangeByField(value);
 
   return {
-    type: 'axisY',
     scale: {
       y: {
         type: 'linear',
@@ -98,6 +104,18 @@ export function getAxisYOptions(meta: Node, s2: SpreadSheet): AxisComponent {
         range: [1, 0],
       },
     },
+  };
+}
+
+export function getAxisYOptions(meta: Node, s2: SpreadSheet): AxisComponent {
+  const { field, value } = meta;
+
+  const formatter = s2.dataSet.getFieldFormatter(value);
+
+  return {
+    type: 'axisY',
+    ...getScaleY(value, s2),
+    labelFormatter: unary(formatter),
     title: s2.dataSet.getFieldFormatter(field)?.(value),
   };
 }
@@ -112,7 +130,9 @@ export function getTooltip(
   return {
     tooltip: {
       title: (data: any) => {
-        return dataSet.getFieldFormatter(xField!)?.(data[xField!]);
+        return data[X_FIELD_FORMATTER]
+          ? dataSet.getFieldFormatter(xField!)?.(data[xField!])
+          : data[xField!];
       },
       items: [
         (data: any) => {

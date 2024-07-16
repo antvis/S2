@@ -1,7 +1,16 @@
 import { Group } from '@antv/g';
 import { corelib, renderToMountedElement, type G2Spec } from '@antv/g2';
-import { CellClipBox, DataCell, G2_THEME_TYPE } from '@antv/s2';
+import { CellClipBox, DataCell, customMerge, type CellMeta } from '@antv/s2';
+import { isFunction } from 'lodash';
+import { DEFAULT_CHART_SPEC } from '../constant';
+import {
+  getCoordinate,
+  getScaleY,
+  getTheme,
+  getTooltip,
+} from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
+import { AxisCellType } from './cell-type';
 
 export class ChartDataCell extends DataCell {
   chartShape: Group;
@@ -21,40 +30,32 @@ export class ChartDataCell extends DataCell {
 
   public getChartOptions(): G2Spec {
     const { yField } = this.meta;
-    const themeName = this.spreadsheet.getThemeName();
-    const range = this.spreadsheet.dataSet.getValueRangeByField(yField!);
 
-    return {
-      type: 'interval',
-      autoFit: true,
-      theme: { type: G2_THEME_TYPE[themeName] },
-      coordinate: {
-        transform: this.spreadsheet.isValueInCols()
-          ? [{ type: 'transpose' }]
-          : undefined,
-      },
-      axis: false,
-      legend: false,
-      padding: 0,
-      marginTop: 0,
-      marginBottom: 0,
-      marginRight: 0,
-      marginLeft: 0,
-      scale: {
-        y: {
-          domain: [range.minValue, range.maxValue],
-        },
-      },
-      animate: false,
-      ...this.getChartData(),
-      ...this.getBBoxByType(CellClipBox.PADDING_BOX),
-    } as G2Spec;
+    let customSpec = this.spreadsheet.options.chart?.dataCellSpec;
+
+    if (isFunction(customSpec)) {
+      customSpec = customSpec(this);
+    }
+
+    return customMerge(
+      {
+        ...DEFAULT_CHART_SPEC,
+        ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
+        ...getCoordinate(this.spreadsheet),
+        ...this.getChartData(),
+        ...getScaleY(yField!, this.spreadsheet),
+
+        ...getTooltip(this.meta, this.spreadsheet),
+        ...getTheme(this.spreadsheet),
+      } as G2Spec,
+      customSpec,
+    );
   }
 
   public drawTextShape(): void {
     const chartOptions = this.getChartOptions();
 
-    this.chartShape = this.appendChild(new Group({}));
+    this.chartShape = this.appendChild(new Group({ style: { zIndex: 1 } }));
 
     waitForCellMounted(() => {
       if (this.destroyed) {
@@ -67,5 +68,25 @@ export class ChartDataCell extends DataCell {
         library: corelib(),
       });
     });
+  }
+
+  protected handleSelect(cells: CellMeta[]) {
+    super.handleSelect(cells);
+
+    const currentCellType = cells?.[0]?.type as unknown as AxisCellType;
+
+    switch (currentCellType) {
+      // 列多选
+      case AxisCellType.AXIS_COL_CELL:
+        this.changeRowColSelectState('colIndex');
+        break;
+      // 行多选
+      case AxisCellType.AXIS_ROW_CELL:
+        this.changeRowColSelectState('rowIndex');
+        break;
+
+      default:
+        break;
+    }
   }
 }

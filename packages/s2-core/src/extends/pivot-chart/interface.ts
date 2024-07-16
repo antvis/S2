@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { type G2Spec } from '@antv/g2';
+import { type AxisComponent, type G2Spec } from '@antv/g2';
 import type {
   CellCallback,
   ColHeaderConfig,
@@ -17,6 +17,17 @@ import type { ChartDataCell } from './cell/chart-data-cell';
 
 export type ChartCoordinate = 'cartesian' | 'polar';
 
+export interface Chart {
+  /**
+   * 当前图表的坐标系类型，chartSheet 通过该类型判断是否需要在行列头区域绘制坐标系
+   * 独立配置是因为要从 spec 里面判断是笛卡尔坐标还是极坐标，场景非常多，覆盖完全很困难
+   */
+  coordinate?: ChartCoordinate;
+  dataCellSpec?: G2Spec | ((cell: ChartDataCell) => G2Spec);
+  axisRowCellSpec?: AxisComponent | ((cell: AxisRowCell) => AxisComponent);
+  axisColCellSpec?: AxisComponent | ((cell: AxisColCell) => AxisComponent);
+}
+
 // @ts-ignore
 declare module '@antv/s2' {
   interface LayoutResult {
@@ -25,8 +36,7 @@ declare module '@antv/s2' {
   }
 
   interface S2PivotSheetOptions {
-    chartCoordinate?: ChartCoordinate;
-    chartSpec?: G2Spec | ((cell: ChartDataCell) => G2Spec);
+    chart?: Chart;
     axisRowCell?: CellCallback<RowHeaderConfig, AxisRowCell>;
     axisColCell?: CellCallback<ColHeaderConfig, AxisColCell>;
     axisCornerCell?: CellCallback<CornerHeaderConfig, AxisCornerCell>;

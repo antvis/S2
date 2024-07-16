@@ -5,20 +5,24 @@ import {
   CellClipBox,
   CellType,
   ColCell,
+  customMerge,
   getOrCreateResizeAreaGroupById,
 } from '@antv/s2';
-import type { PivotChart } from '..';
-import { KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
+import { isFunction } from 'lodash';
+import type { PivotChartSheet } from '..';
+import { DEFAULT_G2_SPEC, KEY_GROUP_COL_AXIS_RESIZE_AREA } from '../constant';
 import {
   getAxisStyle,
   getAxisXOptions,
   getAxisYOptions,
+  getCoordinate,
+  getTheme,
 } from '../utils/chart-options';
 import { waitForCellMounted } from '../utils/schedule';
 import { AxisCellType } from './cell-type';
 
 export class AxisColCell extends ColCell {
-  protected spreadsheet: PivotChart;
+  protected spreadsheet: PivotChartSheet;
 
   protected axisShape: Group;
 
@@ -67,7 +71,7 @@ export class AxisColCell extends ColCell {
   }
 
   public drawTextShape(): void {
-    if (this.spreadsheet.isPolarChart()) {
+    if (this.spreadsheet.isPolarCoordinate()) {
       super.drawTextShape();
 
       return;
@@ -79,21 +83,27 @@ export class AxisColCell extends ColCell {
   getChartOptions(): G2Spec {
     const style = this.getStyle();
 
-    const chartOptions = {
-      ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      ...(this.spreadsheet.isValueInCols()
-        ? getAxisYOptions(this.meta, this.spreadsheet)
-        : getAxisXOptions(this.meta, this.spreadsheet)),
+    let customSpec = this.spreadsheet.options.chart?.axisColCellSpec;
 
-      ...getAxisStyle(style),
-      coordinate: {
-        transform: this.spreadsheet.isValueInCols()
-          ? [{ type: 'transpose' }]
-          : undefined,
-      },
-    } as G2Spec;
+    if (isFunction(customSpec)) {
+      customSpec = customSpec(this);
+    }
 
-    return chartOptions;
+    return customMerge(
+      {
+        ...DEFAULT_G2_SPEC,
+        ...this.getBBoxByType(CellClipBox.CONTENT_BOX),
+
+        ...getCoordinate(this.spreadsheet),
+        ...(this.spreadsheet.isValueInCols()
+          ? getAxisYOptions(this.meta, this.spreadsheet)
+          : getAxisXOptions(this.meta, this.spreadsheet)),
+
+        ...getAxisStyle(style),
+        ...getTheme(this.spreadsheet),
+      } as G2Spec,
+      customSpec,
+    );
   }
 
   drawAxisShape() {
