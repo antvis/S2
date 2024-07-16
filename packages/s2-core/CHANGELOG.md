@@ -1,3 +1,17 @@
+# [@antv/s2-v2.0.0-next.25](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.24...@antv/s2-v2.0.0-next.25) (2024-07-05)
+
+
+### Bug Fixes
+
+* 修复树状模式当一组数据只有一条数据时, 叶子节点判断错误, 也渲染了展开/收起图标 close [#2804](https://github.com/antvis/S2/issues/2804) ([#2806](https://github.com/antvis/S2/issues/2806)) ([76a7a59](https://github.com/antvis/S2/commit/76a7a59cf12c7b3df1ec2b8a43d04479ab25cb73))
+* 取消双击表格时浏览器默认的选中文本行为 close [#2798](https://github.com/antvis/S2/issues/2798) ([#2800](https://github.com/antvis/S2/issues/2800)) ([5df9326](https://github.com/antvis/S2/commit/5df9326790fd127268c64d288a4b28616e40794c))
+
+
+### Features
+
+* meta 支持配置数值和正则, 便于批量配置 close [#2647](https://github.com/antvis/S2/issues/2647) ([#2799](https://github.com/antvis/S2/issues/2799)) ([3d89940](https://github.com/antvis/S2/commit/3d899401d37406ce44fa5dd54524f8b33ed9560f))
+* 统一链接跳转字段绘制逻辑, 支持标记列头 close [#2430](https://github.com/antvis/S2/issues/2430) ([#2796](https://github.com/antvis/S2/issues/2796)) ([637f651](https://github.com/antvis/S2/commit/637f651bbaaf1fcb696afe12c03e5c7042f95fae))
+
 # [@antv/s2-v2.0.0-next.24](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.23...@antv/s2-v2.0.0-next.24) (2024-06-21)
 
 

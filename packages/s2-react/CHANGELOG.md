@@ -1,3 +1,16 @@
+# [@antv/s2-react-v2.0.0-next.24](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.23...@antv/s2-react-v2.0.0-next.24) (2024-07-05)
+
+
+### Bug Fixes
+
+* 取消双击表格时浏览器默认的选中文本行为 close [#2798](https://github.com/antvis/S2/issues/2798) ([#2800](https://github.com/antvis/S2/issues/2800)) ([5df9326](https://github.com/antvis/S2/commit/5df9326790fd127268c64d288a4b28616e40794c))
+
+
+### Features
+
+* 支持同时在 React 16/17/18 下运行 ([#2802](https://github.com/antvis/S2/issues/2802)) ([84253cb](https://github.com/antvis/S2/commit/84253cb498d8d98d199c32b1fb8a6af4663bee3e))
+* 统一链接跳转字段绘制逻辑, 支持标记列头 close [#2430](https://github.com/antvis/S2/issues/2430) ([#2796](https://github.com/antvis/S2/issues/2796)) ([637f651](https://github.com/antvis/S2/commit/637f651bbaaf1fcb696afe12c03e5c7042f95fae))
+
 # [@antv/s2-react-v2.0.0-next.23](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.22...@antv/s2-react-v2.0.0-next.23) (2024-06-21)
 
 
