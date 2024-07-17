@@ -47,7 +47,7 @@ import { Frame } from './frame';
 import { PanelBBox } from './panel-bbox';
 
 export class PivotChartFacet extends PivotFacet {
-  spreadsheet: PivotChartSheet;
+  declare spreadsheet: PivotChartSheet;
 
   axisRowHeader: AxisRowHeader | null;
 

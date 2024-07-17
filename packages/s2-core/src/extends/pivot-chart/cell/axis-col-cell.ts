@@ -22,7 +22,7 @@ import {
 import { AxisCellType } from './cell-type';
 
 export class AxisColCell extends ColCell {
-  protected spreadsheet: PivotChartSheet;
+  protected declare spreadsheet: PivotChartSheet;
 
   protected axisShape: Group;
 

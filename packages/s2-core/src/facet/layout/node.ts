@@ -61,7 +61,7 @@ export class Node {
   public isTotalMeasure: boolean;
 
   // node is collapsed
-  public isCollapsed: boolean;
+  public isCollapsed: boolean | null;
 
   // node's children
   public children: Node[] = [];
