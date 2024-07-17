@@ -1,9 +1,11 @@
 import { get, head, map, omit } from 'lodash';
 import { getContainer, sleep } from 'tests/util/helpers';
+import { asyncGetAllPlainData } from '../../src';
 import {
   EXTRA_FIELD,
   LayoutWidthType,
   OriginEventType,
+  TAB_SEPARATOR,
 } from '../../src/common';
 import { Aggregation, type S2Options } from '../../src/common/interface';
 import { PivotChartSheet } from '../../src/extends';
@@ -811,7 +813,7 @@ describe('Pivot Chart Tests', () => {
     });
   });
 
-  describe('resize', () => {
+  describe('interaction', () => {
     test('should render axis resize area', async () => {
       s2 = new PivotChartSheet(container, dataCfg, s2Options);
       await s2.render();
@@ -841,6 +843,26 @@ describe('Pivot Chart Tests', () => {
       expect(
         group.getElementById(KEY_GROUP_COL_AXIS_RESIZE_AREA),
       ).not.toBeNull();
+    });
+
+    test('should throw error when call asyncGetAllPlainData', async () => {
+      s2 = new PivotChartSheet(container, dataCfg, s2Options);
+      await s2.render();
+
+      expect.assertions(1);
+
+      try {
+        await asyncGetAllPlainData({
+          sheetInstance: s2,
+          split: TAB_SEPARATOR,
+          formatOptions: true,
+        });
+      } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(e.message).toEqual(
+          "pivot chart doesn't support export all data",
+        );
+      }
     });
   });
 
