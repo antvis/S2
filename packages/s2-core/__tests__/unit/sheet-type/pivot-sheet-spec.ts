@@ -25,7 +25,7 @@ import { cloneDeep, last } from 'lodash';
 import dataCfg from 'tests/data/simple-data.json';
 import { waitForRender } from 'tests/util';
 import { createPivotSheet, getContainer, sleep } from 'tests/util/helpers';
-import {
+import type {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
   CornerCell,

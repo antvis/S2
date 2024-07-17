@@ -1,9 +1,9 @@
 import {
-  SpreadSheet,
   setLang,
   type LangType,
   type Pagination,
   type S2DataConfig,
+  type SpreadSheet,
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';

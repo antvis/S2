@@ -479,6 +479,26 @@ export class EventController {
     if (cell) {
       const cellType = cell.cellType;
 
+      // 通用的 mouseup 事件
+      switch (cellType) {
+        case CellType.DATA_CELL:
+          this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
+          break;
+        case CellType.ROW_CELL:
+          this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
+          break;
+        case CellType.COL_CELL:
+          this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
+          break;
+        case CellType.CORNER_CELL:
+          this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
+          break;
+        case CellType.MERGED_CELL:
+          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
+          break;
+        default:
+          break;
+      }
       // target 相同，说明是一个 cell 内的 click 事件
       if (this.target === event.target) {
         // 屏蔽 actionIcons 的点击，字段标记增加的 icon 除外.
@@ -487,27 +507,6 @@ export class EventController {
           !this.isConditionIconShape(event.target, cell)
         ) {
           return;
-        }
-
-        // 通用的 mouseup 事件
-        switch (cellType) {
-          case CellType.DATA_CELL:
-            this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
-            break;
-          case CellType.ROW_CELL:
-            this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
-            break;
-          case CellType.COL_CELL:
-            this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
-            break;
-          case CellType.CORNER_CELL:
-            this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
-            break;
-          case CellType.MERGED_CELL:
-            this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
-            break;
-          default:
-            break;
         }
 
         this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);

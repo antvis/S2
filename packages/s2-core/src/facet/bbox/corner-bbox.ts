@@ -25,7 +25,7 @@ export class CornerBBox extends BaseBBox {
      */
     if (!colsHierarchy.sampleNodeForLastLevel) {
       this.originalHeight =
-        this.spreadsheet.facet.getCellCustomSize(null, colCell?.height) ?? 0;
+        this.facet.getCellCustomSize(null, colCell?.height) ?? 0;
     } else {
       this.originalHeight = floor(colsHierarchy.height);
     }

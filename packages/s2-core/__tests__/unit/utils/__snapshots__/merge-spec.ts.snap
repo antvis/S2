@@ -72,10 +72,8 @@ Object {
   "style": Object {
     "colCell": Object {
       "height": 30,
-      "heightByField": null,
       "maxLines": 1,
       "textOverflow": "ellipsis",
-      "widthByField": null,
       "wordWrap": true,
     },
     "cornerCell": Object {
@@ -92,11 +90,9 @@ Object {
     },
     "layoutWidthType": "adaptive",
     "rowCell": Object {
-      "heightByField": null,
       "maxLines": 1,
       "showTreeLeafNodeAlignDot": false,
       "textOverflow": "ellipsis",
-      "widthByField": null,
       "wordWrap": true,
     },
     "seriesNumberCell": Object {
@@ -125,10 +121,8 @@ exports[`merge test should setup correctly compact layout width type style 1`] =
 Object {
   "colCell": Object {
     "height": 30,
-    "heightByField": null,
     "maxLines": 1,
     "textOverflow": "ellipsis",
-    "widthByField": null,
     "wordWrap": true,
   },
   "cornerCell": Object {
@@ -145,11 +139,9 @@ Object {
   },
   "layoutWidthType": "compact",
   "rowCell": Object {
-    "heightByField": null,
     "maxLines": 1,
     "showTreeLeafNodeAlignDot": false,
     "textOverflow": "ellipsis",
-    "widthByField": null,
     "wordWrap": true,
   },
   "seriesNumberCell": Object {

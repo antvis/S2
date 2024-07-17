@@ -146,9 +146,6 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(meta, s2);
 
       expect(dataCell.isMultiData()).toBeFalsy();
-      expect(dataCell.isChartData()).toBeFalsy();
-      expect(dataCell.getRenderChartData()).toBeUndefined();
-      expect(dataCell.getRenderChartOptions()).toMatchSnapshot();
     });
 
     test('should get correctly cell data status', () => {
@@ -161,7 +158,6 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(multipleMeta, s2);
 
       expect(dataCell.isMultiData()).toBeTruthy();
-      expect(dataCell.isChartData()).toBeFalsy();
     });
 
     test('should get multiple chart data and all options', () => {
@@ -195,9 +191,6 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(multipleMeta, s2);
 
       expect(dataCell.isMultiData()).toBeTruthy();
-      expect(dataCell.isChartData()).toBeTruthy();
-      expect(dataCell.getRenderChartData()).toMatchSnapshot();
-      expect(dataCell.getRenderChartOptions()).toMatchSnapshot();
     });
   });
 

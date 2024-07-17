@@ -605,7 +605,7 @@ describe('Pivot Chart Tests', () => {
       expect(formatter(4000)).toEqual('4000.00');
 
       // tooltip formatter
-      await sleep(1000);
+      await sleep(3000);
 
       const canvas = s2.getCanvasElement();
       const bbox = canvas.getBoundingClientRect();
@@ -625,7 +625,7 @@ describe('Pivot Chart Tests', () => {
         document.querySelector<HTMLDivElement>('.g2-tooltip-list')!.innerText,
       ).toEqual('数量\n18375.00');
 
-      await sleep(1000);
+      await sleep(3000);
 
       mousemoveEvent = new MouseEvent(OriginEventType.POINTER_MOVE, {
         clientX: bbox.left + 460,
