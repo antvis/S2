@@ -3,7 +3,7 @@ import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import terser from '@rollup/plugin-terser';
+// import terser from '@rollup/plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript2';
@@ -82,15 +82,36 @@ if (enableAnalysis) {
 }
 
 if (isUmdFormat) {
-  output.file = 'dist/index.min.js';
-  plugins.push(terser());
+  // output.file = 'dist/[name].min.js';
+  output.dir = outDir;
+  output.globals = {
+    '@antv/s2': 'S2',
+  };
+
+  // plugins.push(terser());
 } else {
   output.dir = outDir;
 }
 
 // eslint-disable-next-line import/no-default-export
-export default {
-  input: 'src/index.ts',
-  output,
-  plugins,
-};
+export default [
+  {
+    input: {
+      index: 'src/index.ts',
+    },
+    output,
+    plugins,
+  },
+  {
+    input: {
+      extends: 'src/extends/index.ts',
+    },
+    output: {
+      ...output,
+      name: 'S2Extends',
+    },
+    plugins,
+
+    external: ['@antv/s2'],
+  },
+];
