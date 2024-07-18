@@ -1,5 +1,5 @@
 ---
-title: Render G2 Charts
+title: Render Chart In Cell
 order: 11
 tag: New
 ---

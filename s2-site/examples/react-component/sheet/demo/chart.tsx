@@ -1,5 +1,9 @@
-import { PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
-import { ChartDataCell } from '@antv/s2/extends';
+// organize-imports-ignore
+import React from 'react';
+import { S2DataConfig, S2Options } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
 const s2Options: S2Options = {
   width: 1000,
   height: 900,
@@ -16,7 +20,6 @@ const s2Options: S2Options = {
       height: 400,
     },
   },
-  dataCell: (viewMeta, spreadsheet) => new ChartDataCell(viewMeta, spreadsheet),
 };
 
 const s2DataConfig: S2DataConfig = {
@@ -191,12 +194,12 @@ const s2DataConfig: S2DataConfig = {
   ],
 };
 
-const container = document.getElementById('container');
-
-async function bootstrap() {
-  const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-
-  await s2.render();
-}
-
-bootstrap();
+reactDOMClient
+  .createRoot(document.getElementById('container'))
+  .render(
+    <SheetComponent
+      sheetType="chart"
+      dataCfg={s2DataConfig}
+      options={s2Options}
+    />,
+  );

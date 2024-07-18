@@ -8,7 +8,7 @@ tag: New
 阅读本章前，请确保已经对 S2 足够了解，并且熟悉 [`AntV/G`](https://g.antv.antgroup.com/) 渲染引擎的相关内容。
 :::
 
-如果纯文本的表格不够直观，S2 内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart), 同时也支持 [自定义单元格](/examples#custom-custom-cell) 的方式结合 [`AntV/G2`](https://g2.antv.antgroup.com/) 来实现一个组合图表，也可以绘制 `AntV/G` 的基础图形。
+如果纯文本的表格不够直观，S2 内置了 [简单的 mini 图绘制](/examples/custom/custom-cell/#mini-chart)，也可以绘制 `AntV/G` 的基础图形。
 
 ### 数据格式
 
@@ -243,190 +243,13 @@ S2 内置了一些基于 [`AntV/G`](https://g.antv.antgroup.com/) 简单的图�
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 
-### 2. 绘制 G2 图表
-
-如果上诉功能都无法满足使用，那么还可以使用专业的可视化图表库 [`AntV/G2`](https://g2.antv.antgroup.com/).
-
-:::info{title="提示"}
-`S2` 和 `G2` 底层都使用 [AntV/G](https://g.antv.antgroup.com/) 渲染引擎绘制，也就意味着可以**共享渲染引擎**, 实现在 `S2` 表格中绘制 `G2` 图表的梦幻联动，实现真 `图·表`.
-:::
-
-<Playground path='custom/custom-shape-and-chart/demo/custom-g2-chart.ts' rid='custom-g2-chart' height='400'></playground>
-
-<br/>
-
-#### 2.1 数据准备
-
-:::info{title="提示"}
-数据源类型为 [MultiData](https://s2.antv.antgroup.com/api/general/s2-data-config#multidata) 支持 `普通数值单元格` 和 `图表单元格` 共存。图表数据源为标准的 [G2 Spec](https://g2.antv.antgroup.com/examples/general/interval/#column).
-:::
-
-```ts
-const s2DataConfig = {
-  data: [
-    // 普通数据
-    {
-      number: 1343,
-      province: '浙江省',
-      city: '杭州市',
-      type: '办公用品',
-      sub_type: '纸张',
-    },
-    {
-      number: {
-        // G2 图表数据 (Spec) https://g2.antv.antgroup.com/examples/general/interval/#column
-        values: {
-          type: 'view',
-          autoFit: true,
-          padding: 0,
-          axis: false,
-          children: [
-            {
-              type: 'image',
-              style: {
-                src: 'https://gw.alipayobjects.com/zos/rmsportal/NeUTMwKtPcPxIFNTWZOZ.png',
-                x: '50%',
-                y: '50%',
-                width: '100%',
-                height: '100%',
-              },
-              tooltip: false,
-            },
-            {
-              type: 'heatmap',
-              data: {
-                type: 'fetch',
-                value: 'https://assets.antv.antgroup.com/g2/heatmap.json',
-              },
-              encode: { x: 'g', y: 'l', color: 'tmp' },
-              style: { opacity: 0 },
-              tooltip: false,
-            },
-          ],
-        },
-      },
-      province: '浙江省',
-      city: '舟山市',
-      type: '办公用品',
-      sub_type: '笔',
-    },
-  ],
-};
-```
-
-#### 2.2 安装 G2
-
-:::warning{title="该功能依赖 G2 的 `5.x` 版本，请确保使用了正确的版本 "}
-
-```bash
-pnpm add @antv/g2
-```
-
-使用 `G2` 提供的 `renderToMountedElement` 方法
-
-```ts
-import { renderToMountedElement } from '@antv/g2';
-```
-
-:::
-
-#### 2.3 在 `@antv/s2` 中使用
-
-##### 1. 自定义 `DataCell`, 如果是图表数据，则不渲染默认的文本
-
-```ts
-import { PivotSheet, DataCell } from '@antv/s2';
-
-class ChartSheetDataCell extends DataCell {
-  public drawTextShape(options) {
-    if (this.isMultiData()) {
-      return null;
-    }
-
-    super.drawTextShape(options);
-  }
-}
-
-const s2 = new PivotSheet(container, s2DataConfig, {
-  dataCell: (viewMeta, spreadsheet) => new ChartSheetDataCell(viewMeta, spreadsheet)
-});
-
-await s2.render();
-
-```
-
-##### 2. 监听数值单元格渲染完成后，使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
-
-:::warning{title="提示"}
-由于 `G2` 按需加载的特性，请根据你渲染的图表，自行选择适合的 [`library`](https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib)
-:::
-
-```ts
-import { renderToMountedElement, stdlib } from '@antv/g2';
-
-s2.on(S2Event.DATA_CELL_RENDER, (cell) => {
-  // 如果是普通数值单元格正常展示
-  if (!cell.isChartData()) {
-    return;
-  }
-
-  const chartOptions = cell.getRenderChartOptions();
-
-  renderToMountedElement(chartOptions, {
-    group: cell,
-    // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-    library: stdlib(),
-  });
-});
-```
-
-#### 2.4 在 `@antv/s2-react` 使用
-
-如果希望在 `React` 中使用，除了上诉的方式外，也可以直接使用 `<SheetComponent sheetType="chart" />`, 内部封装了 `自定义 DateCell` 的步骤
-
-```tsx
-import { SheetComponent } from '@antv/s2-react';
-import { renderToMountedElement, stdlib } from '@antv/g2';
-
-function App() {
-  const onDataCellRender = (cell) => {
-    // 如果是普通数值单元格正常展示
-    if (!cell.isChartData()) {
-      return;
-    }
-
-    const chartOptions = cell.getRenderChartOptions();
-
-    renderToMountedElement(chartOptions, {
-      group: cell,
-      // 根据实际需要渲染的图表，选择 library：https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-      library: stdlib(),
-    });
-  };
-
-  return (
-    <SheetComponent
-      sheetType="chart"
-      dataCfg={s2DataConfig}
-      onDataCellRender={onDataCellRender}
-    />
-  )
-}
-```
-
-#### 2.5 效果
-
-[查看示例](/examples/custom/custom-shape-and-chart/#custom-g2-chart)
-
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="800"/>
-
-### 3. 绘制 G 自定义图形
+### 2. 绘制 G 自定义图形
 
 S2 的每一个单元格对应 [`AntV/G`](https://g.antv.antgroup.com/) 的一个 [Group 图形分组](https://g.antv.antgroup.com/api/basic/group). 所以可以在单元格内添加任意 G 的图形，甚至是任意基于 G 的图表库，比如 [`AntV/G2`](https://g2.antv.antgroup.com/).
 
 <Playground path='custom/custom-shape-and-chart/demo/custom-g-shape.ts' rid='custom-g-shape' height='400'></playground>
 
-#### 3.1 自定义单元格，重写绘制逻辑，添加任意图形
+#### 2.1 自定义单元格，重写绘制逻辑，添加任意图形
 
 ```ts | pure
 import { Image as GImage } from '@antv/g';
@@ -456,7 +279,7 @@ const s2Options = {
 };
 ```
 
-#### 3.2 直接在表格 (Canvas) 上绘制任意图形
+#### 2.2 直接在表格 (Canvas) 上绘制任意图形
 
 通过 `s2.getCanvas()` 获取 `G` 的 `Canvas` 实例。
 
@@ -485,7 +308,7 @@ s2.getCanvas().appendChild(
 );
 ```
 
-#### 3.3 手动获取指定单元格实例 (Group) 后绘制任意图形
+#### 2.3 手动获取指定单元格实例 (Group) 后绘制任意图形
 
 ```ts | pure
 import { Rect } from '@antv/g';
@@ -513,7 +336,7 @@ targetCell?.appendChild(
 );
 ```
 
-#### 3.4 效果
+#### 2.4 效果
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TPuRQaXCSQEAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
 
