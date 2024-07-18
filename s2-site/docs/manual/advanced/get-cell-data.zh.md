@@ -184,6 +184,8 @@ s2.interaction.getCells();
 s2.interaction.getActiveCells();
 // 是否是选中状态
 s2.interaction.isSelectedState();
+// 是否是刷选状态
+s2.interaction.isBrushSelectedState();
 // 获取当前交互状态
 s2.interaction.getCurrentStateName();
 // 获取当前发生过交互的单元格

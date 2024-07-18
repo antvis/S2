@@ -114,7 +114,24 @@ s2.interaction.scrollTo({
 })
 
 // 滚动至顶部
-s2.interaction.scrollToTop(true)
+s2.interaction.scrollToTop({ animate: true })
+```
+
+## 不触发滚动事件
+
+在手动触发表格滚动时，如果不希望触发内部滚动事件，即 `S2Event.GLOBAL_SCROLL`,  可以通过 `skipScrollEvent: true` 禁用。
+
+```diff | pure
+s2.interaction.scrollTo({
+  offsetX: { value: 100, animate: true },
+  offsetY: { value: 100, animate: true },
++ skipScrollEvent: true
+})
+
+s2.interaction.scrollToTop({
+  animate: true,
++ skipScrollEvent: true
+})
 ```
 
 查看更多 [API](/api/basic-class/interaction)

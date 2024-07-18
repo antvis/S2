@@ -348,7 +348,7 @@ export abstract class HeaderCell<
 
   protected handleByStateName(
     cells: CellMeta[],
-    stateName: InteractionStateName,
+    stateName: `${InteractionStateName}`,
   ) {
     if (includeCell(cells, this)) {
       this.updateByState(stateName);
@@ -482,7 +482,7 @@ export abstract class HeaderCell<
     }
   }
 
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: `${InteractionStateName}`) {
     super.updateByState(stateName, this);
   }
 

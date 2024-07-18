@@ -194,6 +194,7 @@ export interface ViewCellHeights {
 
 ```ts
 export interface ScrollOffsetConfig {
+  skipScrollEvent?: boolean;
   rowHeaderOffsetX?: {
     value: number | undefined;
     animate?: boolean;

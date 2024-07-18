@@ -125,7 +125,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleByStateName(
     cells: CellMeta[],
-    stateName: InteractionStateName,
+    stateName: `${InteractionStateName}`,
   ) {
     if (includeCell(cells, this)) {
       this.updateByState(stateName);
@@ -518,7 +518,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return condition.mapping(value, rowDataInfo as RawData, this);
   }
 
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: `${InteractionStateName}`) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {

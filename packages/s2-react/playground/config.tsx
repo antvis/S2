@@ -367,7 +367,16 @@ export const s2Options: SheetComponentOptions = {
     selectedCellHighlight: false,
     selectedCellMove: true,
     rangeSelection: true,
-    autoResetSheetStyle: false,
+    autoResetSheetStyle: (event) => {
+      // 点击配置面板时不自动重置交互
+      if (event?.target instanceof HTMLElement) {
+        return !document
+          .querySelector('.ant-collapse')
+          ?.contains(event?.target);
+      }
+
+      return true;
+    },
     // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
@@ -407,7 +416,12 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {},
+  style: {
+    dataCell: {
+      width: 200,
+      height: 200,
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

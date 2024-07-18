@@ -428,6 +428,24 @@ const s2Options = {
 };
 ```
 
+也可以根据当前 `event` 动态判断是否重置，如：点击指定容器或按钮时不自动重置交互。
+
+```ts | pure
+const s2Options = {
+  interaction: {
+    autoResetSheetStyle: (event, spreadsheet) => {
+      if (event?.target instanceof HTMLElement) {
+        return !document
+          .querySelector('.container')
+          ?.contains(event?.target);
+      }
+
+      return true;
+    },
+  }
+};
+```
+
 [查看示例](/examples/interaction/basic/#auto-reset-sheet-style)
 
 ## 调整交互主题

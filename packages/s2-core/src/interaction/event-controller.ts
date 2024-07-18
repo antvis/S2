@@ -5,7 +5,7 @@ import {
   type Group,
   type PointLike,
 } from '@antv/g';
-import { each, get, hasIn, isEmpty, isNil } from 'lodash';
+import { each, get, hasIn, isEmpty, isFunction, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
   CellType,
@@ -66,8 +66,12 @@ export class EventController {
     return this.spreadsheet.container;
   }
 
-  public get isAutoResetSheetStyle() {
-    return this.spreadsheet.options.interaction?.autoResetSheetStyle;
+  public isAutoResetSheetStyle(event: Event | CanvasEvent) {
+    const { interaction } = this.spreadsheet.options;
+
+    return isFunction(interaction?.autoResetSheetStyle)
+      ? interaction?.autoResetSheetStyle?.(event, this.spreadsheet)
+      : interaction?.autoResetSheetStyle;
   }
 
   public bindEvents() {
@@ -157,7 +161,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
+    if (!this.isAutoResetSheetStyle(event) || !this.spreadsheet) {
       return;
     }
 
@@ -587,7 +591,7 @@ export class EventController {
 
   private onCanvasMouseout = (event: CanvasEvent) => {
     if (
-      !this.isAutoResetSheetStyle ||
+      !this.isAutoResetSheetStyle(event) ||
       this.isMouseOnTheCanvasContainer(event as Event)
     ) {
       return;

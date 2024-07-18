@@ -1226,7 +1226,7 @@ function MainLayout() {
                                     unCheckedChildren="自动重置交互样式关"
                                     defaultChecked={
                                       mergedOptions?.interaction
-                                        ?.autoResetSheetStyle
+                                        ?.autoResetSheetStyle as boolean
                                     }
                                     onChange={(checked) => {
                                       updateOptions({
@@ -1464,9 +1464,9 @@ function MainLayout() {
                                         )
                                       ) {
                                         console.log('滚动到底部');
-                                        s2Ref.current.interaction.scrollToTop(
-                                          false,
-                                        );
+                                        s2Ref.current.interaction.scrollToTop({
+                                          animate: false,
+                                        });
 
                                         return;
                                       }

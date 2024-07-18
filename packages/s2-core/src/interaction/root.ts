@@ -21,6 +21,7 @@ import type {
   BrushSelectionInfo,
   BrushSelectionOptions,
   CellMeta,
+  CellScrollToOptions,
   ChangeCellOptions,
   CustomInteraction,
   InteractionCellHighlightOptions,
@@ -199,11 +200,11 @@ export class RootInteraction {
    * 是否和当前状态名相同
    * @example s2.interaction.isEqualStateName(InteractionStateName.SELECTED)
    */
-  public isEqualStateName(stateName: InteractionStateName) {
+  public isEqualStateName(stateName: `${InteractionStateName}`) {
     return this.getCurrentStateName() === stateName;
   }
 
-  private isStateOf(stateName: InteractionStateName) {
+  private isStateOf(stateName: `${InteractionStateName}`) {
     const currentState = this.getState();
 
     return currentState?.stateName === stateName;
@@ -214,9 +215,22 @@ export class RootInteraction {
    * @example s2.interaction.isSelectedState()
    */
   public isSelectedState() {
+    return (
+      this.isBrushSelectedState() ||
+      [InteractionStateName.SELECTED, InteractionStateName.ALL_SELECTED].some(
+        (stateName) => {
+          return this.isStateOf(stateName);
+        },
+      )
+    );
+  }
+
+  /**
+   * 是否是刷选状态
+   * @example s2.interaction.isBrushSelectedState()
+   */
+  public isBrushSelectedState() {
     return [
-      InteractionStateName.SELECTED,
-      InteractionStateName.ALL_SELECTED,
       InteractionStateName.ROW_CELL_BRUSH_SELECTED,
       InteractionStateName.COL_CELL_BRUSH_SELECTED,
       InteractionStateName.DATA_CELL_BRUSH_SELECTED,
@@ -294,10 +308,6 @@ export class RootInteraction {
     ).filter(Boolean) as S2CellType[];
   }
 
-  /**
-   * 清除单元格交互样式
-   * @example s2.interaction.clearStyleIndependent()
-   */
   public getActiveDataCells(): S2CellType[] {
     return this.getActiveCells().filter(
       (cell) => cell.cellType === CellType.DATA_CELL,
@@ -316,6 +326,10 @@ export class RootInteraction {
     );
   }
 
+  /**
+   * 清除单元格交互样式
+   * @example s2.interaction.clearStyleIndependent()
+   */
   public clearStyleIndependent() {
     if (
       !this.isSelectedState() &&
@@ -332,7 +346,7 @@ export class RootInteraction {
 
   /**
    * 获取未选中的单元格 (不含非可视区域)
-   * @example s2.interaction.clearStyleIndependent()
+   * @example s2.interaction.getUnSelectedDataCells()
    */
   public getUnSelectedDataCells() {
     return this.spreadsheet.facet
@@ -340,11 +354,15 @@ export class RootInteraction {
       .filter((cell) => !this.isActiveCell(cell));
   }
 
-  private scrollToCellByMeta(meta: ViewMeta | Node, animate = true) {
+  private scrollToCellByMeta(
+    meta: ViewMeta | Node,
+    options: CellScrollToOptions = { animate: true },
+  ) {
     if (!meta) {
       return;
     }
 
+    const { skipScrollEvent, animate } = options;
     const { facet } = this.spreadsheet;
 
     if (!facet.hRowScrollBar && !facet.hScrollBar && !facet.vScrollBar) {
@@ -352,6 +370,7 @@ export class RootInteraction {
     }
 
     this.scrollTo({
+      skipScrollEvent,
       rowHeaderOffsetX: {
         value: meta.x,
         animate,
@@ -371,6 +390,7 @@ export class RootInteraction {
    * 滚动至指定位置
    * @example
       s2.interaction.scrollTo({
+        skipScrollEvent: false,
         offsetX: { value: 100, animate: true },
         offsetY: { value: 100, animate: true },
       })
@@ -379,7 +399,8 @@ export class RootInteraction {
     const { facet } = this.spreadsheet;
     const { scrollX, scrollY, rowHeaderScrollX } = facet.getScrollOffset();
 
-    const config: ScrollOffsetConfig = {
+    const defaultConfig: ScrollOffsetConfig = {
+      skipScrollEvent: false,
       offsetX: {
         value: scrollX,
         animate: true,
@@ -395,42 +416,42 @@ export class RootInteraction {
     };
 
     facet.updateScrollOffset(
-      customMerge<ScrollOffsetConfig>(config, offsetConfig),
+      customMerge<ScrollOffsetConfig>(defaultConfig, offsetConfig),
     );
   }
 
   /**
    * 滚动至指定单元格节点
-   * @example s2.interaction.scrollToNode(rowNode, false)
+   * @example s2.interaction.scrollToNode(rowNode, { animate: true, skipScrollEvent: true })
    */
-  public scrollToNode(meta: ViewMeta | Node, animate = true) {
-    this.scrollToCellByMeta(meta, animate);
+  public scrollToNode(meta: ViewMeta | Node, options?: CellScrollToOptions) {
+    this.scrollToCellByMeta(meta, options);
   }
 
   /**
    * 滚动至指定单元格
-   * @example s2.interaction.scrollToCell(dataCell, false)
+   * @example s2.interaction.scrollToNode(rowCell, { animate: true, skipScrollEvent: true })
    */
-  public scrollToCell(cell: S2CellType, animate = true) {
-    this.scrollToCellByMeta(cell.getMeta(), animate);
+  public scrollToCell(cell: S2CellType, options?: CellScrollToOptions) {
+    this.scrollToCellByMeta(cell.getMeta(), options);
   }
 
   /**
    * 滚动至指定单元格 id 对应的位置
-   * @example s2.interaction.scrollToCellById('root[&]四川省[&]成都市', false)
+   * @example s2.interaction.scrollToCellById('root[&]四川省[&]成都市', { animate: true, skipScrollEvent: true })
    */
-  public scrollToCellById(id: string, animate = true) {
+  public scrollToCellById(id: string, options?: CellScrollToOptions) {
     if (!id) {
       return;
     }
 
     // 兼容不在可视区域, 未实例化的行列头单元格
     const headerNodes = this.spreadsheet.facet.getHeaderNodes();
-    const viewMetas = this.spreadsheet.facet
+    const viewMetaList = this.spreadsheet.facet
       .getDataCells()
       .map((cell) => cell.getMeta());
 
-    const cellMeta = [...headerNodes, ...viewMetas].find(
+    const cellMeta = [...headerNodes, ...viewMetaList].find(
       (meta) => meta.id === id,
     );
 
@@ -438,57 +459,61 @@ export class RootInteraction {
       return;
     }
 
-    this.scrollToCellByMeta(cellMeta, animate);
+    this.scrollToCellByMeta(cellMeta, options);
   }
 
   /**
    * 滚动至顶部
-   * @example s2.interaction.scrollToTop(true)
+   * @example s2.interaction.scrollToTop({ animate: true, skipScrollEvent: true })
    */
-  public scrollToTop(animate = true) {
+  public scrollToTop(options?: CellScrollToOptions) {
     this.scrollTo({
+      skipScrollEvent: options?.skipScrollEvent,
       offsetY: {
         value: 0,
-        animate,
+        animate: options?.animate,
       },
     });
   }
 
   /**
    * 滚动至右边
-   * @example s2.interaction.scrollToRight(true)
+   * @example s2.interaction.scrollToRight({ animate: true, skipScrollEvent: true })
    */
-  public scrollToRight(animate = true) {
+  public scrollToRight(options?: CellScrollToOptions) {
     this.scrollTo({
+      skipScrollEvent: options?.skipScrollEvent,
       offsetX: {
         value: this.spreadsheet.facet.panelBBox.maxX,
-        animate,
+        animate: options?.animate,
       },
     });
   }
 
   /**
    * 滚动至底部
-   * @example s2.interaction.scrollToBottom(true)
+   * @example s2.interaction.scrollToBottom({ animate: true, skipScrollEvent: true })
    */
-  public scrollToBottom(animate = true) {
+  public scrollToBottom(options?: CellScrollToOptions) {
     this.scrollTo({
+      skipScrollEvent: options?.skipScrollEvent,
       offsetY: {
         value: this.spreadsheet.facet.panelBBox.maxY,
-        animate,
+        animate: options?.animate,
       },
     });
   }
 
   /**
    * 滚动至左边
-   * @example s2.interaction.scrollToLeft(true)
+   * @example s2.interaction.scrollToLeft({ animate: true, skipScrollEvent: true })
    */
-  public scrollToLeft(animate = true) {
+  public scrollToLeft(options?: CellScrollToOptions) {
     this.scrollTo({
+      skipScrollEvent: options?.skipScrollEvent,
       offsetX: {
         value: 0,
-        animate,
+        animate: options?.animate,
       },
     });
   }
@@ -498,7 +523,10 @@ export class RootInteraction {
    * @example s2.interaction.selectAll()
    */
   public selectAll() {
+    const cells = this.spreadsheet.facet.getCells().map(getCellMeta);
+
     this.changeState({
+      cells,
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
@@ -508,10 +536,11 @@ export class RootInteraction {
 
   /**
    * 高亮指定单元格 (可视范围内)
-   * @example s2.interaction.highlightCell(dataCell)
+   * @example s2.interaction.highlightCell(dataCell, options)
    */
-  public highlightCell(cell: S2CellType) {
+  public highlightCell(cell: S2CellType, options?: CellScrollToOptions) {
     this.changeCell({
+      ...options,
       cell,
       stateName: InteractionStateName.HOVER,
     });
@@ -519,10 +548,11 @@ export class RootInteraction {
 
   /**
    * 选中指定单元格 (可视范围内)
-   * @example s2.interaction.selectCell(dataCell)
+   * @example s2.interaction.selectCell(dataCell, options)
    */
-  public selectCell(cell: S2CellType) {
+  public selectCell(cell: S2CellType, options?: CellScrollToOptions) {
     this.changeCell({
+      ...options,
       cell,
       stateName: InteractionStateName.SELECTED,
     });
@@ -532,17 +562,21 @@ export class RootInteraction {
    * 改变指定单元格状态 (如: 选中/高亮/多选等) (可视范围内)
    * @example
      s2.interaction.changeCell({
-      cell: rowCell,
-      stateName: InteractionStateName.SELECTED,
-      isMultiSelection: false,
-      scrollIntoView: false,
-    });
+       cell: rowCell,
+       stateName: InteractionStateName.SELECTED,
+       isMultiSelection: false,
+       scrollIntoView: false,
+       animate: true,
+       skipScrollEvent: true,
+    })
    */
   public changeCell(options: ChangeCellOptions = {} as ChangeCellOptions) {
     const {
       cell,
       stateName = InteractionStateName.SELECTED,
       scrollIntoView = true,
+      animate = true,
+      skipScrollEvent = true,
     } = options;
 
     if (isEmpty(cell)) {
@@ -613,9 +647,12 @@ export class RootInteraction {
       this.highlightNodes(childrenNodes);
     }
 
-    // 如果不在可视范围, 自动滚动.
+    // 如果不在可视范围, 自动滚动
     if (scrollIntoView) {
-      this.scrollToCell(cell);
+      this.scrollToCell(cell, {
+        skipScrollEvent,
+        animate,
+      });
     }
 
     // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
@@ -632,7 +669,7 @@ export class RootInteraction {
   public highlightNodes = (nodes: Node[] = []) => {
     nodes.forEach((node) => {
       node?.belongsCell?.updateByState(
-        InteractionStateName.SELECTED,
+        InteractionStateName.HOVER,
         node.belongsCell,
       );
     });
@@ -877,7 +914,7 @@ export class RootInteraction {
    * 添加交互拦截
    * @example s2.interaction.addIntercepts([InterceptType.HOVER])
    */
-  public addIntercepts(interceptTypes: InterceptType[] = []) {
+  public addIntercepts(interceptTypes: `${InterceptType}`[] = []) {
     interceptTypes.forEach((interceptType) => {
       this.intercepts.add(interceptType);
     });
@@ -887,7 +924,7 @@ export class RootInteraction {
    * 是否有指定交互拦截
    * @example s2.interaction.hasIntercepts([InterceptType.HOVER])
    */
-  public hasIntercepts(interceptTypes: InterceptType[] = []) {
+  public hasIntercepts(interceptTypes: `${InterceptType}`[] = []) {
     return interceptTypes.some((interceptType) =>
       this.intercepts.has(interceptType),
     );
@@ -897,7 +934,7 @@ export class RootInteraction {
    * 移除交互拦截
    * @example s2.interaction.removeIntercepts([InterceptType.HOVER])
    */
-  public removeIntercepts(interceptTypes: InterceptType[] = []) {
+  public removeIntercepts(interceptTypes: `${InterceptType}`[] = []) {
     interceptTypes.forEach((interceptType) => {
       this.intercepts.delete(interceptType);
     });

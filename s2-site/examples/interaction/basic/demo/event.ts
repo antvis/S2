@@ -19,7 +19,7 @@ function addButtons(s2: SpreadSheet) {
     hideColumnsBtn,
     highlightHeaderBtn,
     resetBtn,
-  ] = Array.from({ length: 6 }).map(() => {
+  ] = Array.from({ length: 9 }).map(() => {
     const btn = document.createElement('button');
 
     btn.className = 'ant-btn ant-btn-default';
@@ -77,7 +77,18 @@ function addButtons(s2: SpreadSheet) {
 
     console.log('dataCell:', dataCell);
 
-    s2.interaction.selectCell(dataCell);
+    // 第二个参数可选
+    s2.interaction.selectCell(dataCell, {
+      /**
+       * 是否展示滚动动画
+       */
+      animate: true,
+
+      /**
+       * 是否触发滚动事件
+       */
+      skipScrollEvent: false,
+    });
   });
 
   highlightCellBtn.addEventListener('click', () => {
@@ -85,7 +96,18 @@ function addButtons(s2: SpreadSheet) {
 
     console.log('highlightCell:', cell);
 
-    s2.interaction.highlightCell(cell);
+    // 第二个参数可选
+    s2.interaction.highlightCell(cell, {
+      /**
+       * 是否展示滚动动画
+       */
+      animate: true,
+
+      /**
+       * 是否触发滚动事件
+       */
+      skipScrollEvent: false,
+    });
   });
 
   hideColumnsBtn.addEventListener('click', () => {
@@ -99,18 +121,18 @@ function addButtons(s2: SpreadSheet) {
     const dataCellViewMeta = s2.facet.getCellMeta(1, 1);
 
     s2.interaction.updateDataCellRelevantHeaderCells(
-      dataCellViewMeta,
       InteractionStateName.HOVER,
+      dataCellViewMeta,
     );
 
     // s2.interaction.updateDataCellRelevantRowCells(
-    //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
+    //   dataCellViewMeta,
     // );
 
     // s2.interaction.updateDataCellRelevantColCells(
-    //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
+    //   dataCellViewMeta,
     // );
   });
 
@@ -170,7 +192,15 @@ fetch(
         selectedCellsSpotlight: true,
         selectedCellMove: true,
         overscrollBehavior: 'none',
-        autoResetSheetStyle: false,
+        autoResetSheetStyle: (event, spreadsheet) => {
+          // 点击操作按钮时不自动重置交互
+          if (event?.target instanceof HTMLElement) {
+            return !event.target.classList.contains('ant-btn');
+          }
+
+          // 其他情况正常重置 (如: 点击空白处, 按下 ESC)
+          return true;
+        },
 
         /**
          * 透传底层 Event Listener 属性的可选参数对象

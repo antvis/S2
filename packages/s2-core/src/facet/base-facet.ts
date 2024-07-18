@@ -870,7 +870,7 @@ export abstract class BaseFacet {
           scrollX,
           scrollY,
         });
-        this.startScroll();
+        this.startScroll(offsetConfig?.skipScrollEvent);
 
         if (elapsed > duration) {
           this.timer.stop();
@@ -894,11 +894,10 @@ export abstract class BaseFacet {
     );
 
     this.setScrollOffset({ scrollX, scrollY, rowHeaderScrollX });
-    this.startScroll();
+    this.startScroll(offsetConfig?.skipScrollEvent);
   };
 
   /**
-   *
    * @param skipScrollEvent 不触发 S2Event.GLOBAL_SCROLL
    */
   startScroll = (skipScrollEvent = false) => {
@@ -1748,10 +1747,7 @@ export abstract class BaseFacet {
   }
 
   /**
-   *
-   * @param skipScrollEvent: 如true则不触发GLOBAL_SCROLL事件
-   * During scroll behavior, first call to this method fires immediately and then on interval.
-   * @protected
+   * @param skipScrollEvent: 不触发 GLOBAL_SCROLL 事件
    */
   protected dynamicRenderCell(skipScrollEvent?: boolean) {
     const {
@@ -1767,7 +1763,6 @@ export abstract class BaseFacet {
     this.realDataCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
-
     this.clip(scrollX, scrollY);
 
     if (!skipScrollEvent) {

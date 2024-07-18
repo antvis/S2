@@ -465,7 +465,7 @@ describe('Spread Sheet Frozen Tests', () => {
 
       const prev = getFrozenGroupPosition(s2, 'columnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 100, animate: false } });
 
       // 移动后，frozen col 和 trailing col 的位置都不变
       expect(getFrozenGroupPosition(s2, 'columnHeader')).toEqual(prev);
@@ -502,7 +502,7 @@ describe('Spread Sheet Frozen Tests', () => {
       expectFrozenGroup(s2, 'columnHeader');
       let prev = getFrozenGroupPosition(s2, 'columnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 100, animate: false } });
       // 移动后，frozen col 会改变 而 trailing col 的位置不变
       let current = getFrozenGroupPosition(s2, 'columnHeader');
 
@@ -511,10 +511,10 @@ describe('Spread Sheet Frozen Tests', () => {
 
       // 移动超过角头宽度
       // 移动后，frozen col 和 trailing col 的位置都不变
-      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 300, animate: false } });
 
       prev = getFrozenGroupPosition(s2, 'columnHeader');
-      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 300, animate: false } });
       current = getFrozenGroupPosition(s2, 'columnHeader');
 
       expect(current).toEqual(prev);

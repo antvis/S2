@@ -162,9 +162,11 @@ describe('RootInteraction Tests', () => {
 
   test('should set all selected interaction state correct', () => {
     rootInteraction.selectAll();
-    expect(rootInteraction.getState()).toEqual({
-      stateName: InteractionStateName.ALL_SELECTED,
-    });
+
+    expect(rootInteraction.getCurrentStateName()).toEqual(
+      InteractionStateName.ALL_SELECTED,
+    );
+    expect(rootInteraction.getState()).toMatchSnapshot();
   });
 
   test('should set header cell selected interaction state correct', () => {
@@ -173,6 +175,20 @@ describe('RootInteraction Tests', () => {
 
     expect(state.stateName).toEqual(InteractionStateName.SELECTED);
     expect(state.cells).toEqual([getCellMeta(mockCell)]);
+    expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+  });
+
+  test('should selected header cell', () => {
+    rootInteraction.selectCell(mockCell);
+
+    expect(rootInteraction.getState()).toMatchSnapshot();
+    expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+  });
+
+  test('should highlight header cell', () => {
+    rootInteraction.highlightCell(mockCell);
+
+    expect(rootInteraction.getState()).toMatchSnapshot();
     expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
   });
 
@@ -450,7 +466,7 @@ describe('RootInteraction Tests', () => {
 
       [mockNodeA, mockNodeB].forEach((node) => {
         expect(node.belongsCell?.updateByState).toHaveBeenCalledWith(
-          InteractionStateName.SELECTED,
+          InteractionStateName.HOVER,
           belongsCell,
         );
       });
