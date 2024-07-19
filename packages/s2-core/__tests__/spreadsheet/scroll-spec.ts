@@ -1078,4 +1078,45 @@ describe('Scroll Tests', () => {
 
     expectScroll();
   });
+
+  test('should skip scroll event after scroll end', async () => {
+    const onScroll = jest.fn();
+    const onRowScroll = jest.fn();
+
+    s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+    s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
+
+    await s2.render(false);
+
+    s2.interaction.scrollTo({
+      skipScrollEvent: true,
+      rowHeaderOffsetX: {
+        value: 999,
+      },
+      offsetX: {
+        value: 999,
+      },
+      offsetY: {
+        value: 999,
+      },
+    });
+
+    s2.interaction.scrollToLeft({
+      skipScrollEvent: true,
+    });
+    s2.interaction.scrollToTop({
+      skipScrollEvent: true,
+    });
+    s2.interaction.scrollToRight({
+      skipScrollEvent: true,
+    });
+    s2.interaction.scrollToBottom({
+      skipScrollEvent: true,
+    });
+
+    await sleep(500);
+
+    expect(onScroll).not.toHaveBeenCalled();
+    expect(onRowScroll).not.toHaveBeenCalled();
+  });
 });

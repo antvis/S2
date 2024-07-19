@@ -267,6 +267,7 @@ describe('Interaction Multi Selection Tests', () => {
     expectHighlightActiveNodes(s2, ['root[&]笔[&]price']);
     expect(s2.interaction.getCurrentStateName()).toEqual(stateName);
   });
+
   test.each(highlightCellConfig)(
     'should highlight relevancy header cell after selected data cell by %s mode',
     async ({ hierarchyType, stateName }) => {

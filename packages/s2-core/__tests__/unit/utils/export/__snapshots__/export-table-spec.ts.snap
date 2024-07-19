@@ -83,7 +83,7 @@ Array [
 ]
 `;
 
-exports[`Interaction Event Controller Tests should trigger click event if event target is condition icon image shape for event { cellType: 'mergedCell', event: 'merged-cells:click' } 1`] = `
+exports[`TableSheet Export Test should export correct data with formatter 1`] = `
 Array [
   "省份,城市,类别,子类别,数量",
   "浙江省,杭州市,家具,桌子,7789",
@@ -166,7 +166,7 @@ Array [
 ]
 `;
 
-exports[`Interaction Event Controller Tests should use offset point if enable supportsCSSTransform 1`] = `
+exports[`TableSheet Export Test should export correct data with formatter if contain repeat column name 1`] = `
 Array [
   "省份,子类别,类别,子类别,子类别",
   "浙江省,杭州市,家具,桌子,7789",
