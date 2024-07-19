@@ -700,6 +700,16 @@ s2.interaction.getState()
 + stateName: "dataCellBrushSelected"
 ```
 
+#### 全选 API 逻辑调整
+
+在 `1.x`, 全选本质上是高亮，只有样式更新，并不是真的选中，在 `2.x` 中切换为正确的语义，并且能获取到选中的单元格。
+
+```diff
+s2.interaction.selectAll()
+- s2.interaction.getActiveCells() // []
++ s2.interaction.getActiveCells() // [CellA, CellB]
+```
+
 #### 选中单元格 API 调整
 
 `selectHeaderCell` 变更为 `changeCell`, 支持所有类型单元格的选中。同时支持 `选中 (selectCell)` 和 `高亮 (highlightCell)` 等语法糖。
@@ -712,6 +722,15 @@ s2.interaction.getState()
 + s2.interaction.highlightCell(cell: S2CellType)
 ```
 
+同时支持 `animate （是否展示滚动动画` 和 `skipScrollEvent （是否触发滚动事件）` 配置。
+
+```ts | pure
+s2.interaction.selectCell(cell, {
+  animate: true,
+  skipScrollEvent: true
+})
+```
+
 具体请查看 [高亮/选中单元格](/manual/advanced/interaction/highlight-and-select-cell) 相关文档。
 
 #### 滚动 API 调整
@@ -721,6 +740,14 @@ s2.interaction.getState()
 ```diff
 - s2.updateScrollOffset(offsetConfig: ScrollOffsetConfig)
 + s2.interaction.scrollTo(offsetConfig: ScrollOffsetConfig)
+```
+
+同时支持 `skipScrollEvent（是否触发滚动事件）` 配置。
+
+```diff
+s2.interaction.scrollTo({
++  skipScrollEvent: false
+})
 ```
 
 具体请查看 [滚动](/manual/advanced/interaction/scroll) 相关文档。
