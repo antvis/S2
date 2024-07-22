@@ -454,7 +454,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // 明细表模式多级表头计算索引换一种策略
     if (this.spreadsheet.isTableMode() && nodes.length) {
-      const leafs = nodes[0].hierarchy.getLeaves();
+      const leafs = nodes[0]?.hierarchy?.getLeaves() || [];
 
       isEqualIndex = leafs.some((cell, i) => {
         if (nodes.some((node) => node === cell)) {
