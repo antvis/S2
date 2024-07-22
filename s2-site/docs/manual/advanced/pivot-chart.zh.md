@@ -96,6 +96,8 @@ const s2Options={
 
  <Playground path="custom/custom-shape-and-chart/demo/pivot-chart-polar.ts" rid='pivot-chart-polar' height='300'></playground>
 
+在笛卡尔坐标系布局中，行列头会增加特殊的 `axisRowHeader`，`axisColumnHeader`用于绘制坐标系，而在极坐标系布局中，只存在一个坐标轴，行列头根据数据是否置于列头只会存在`axisRowHeader`或者`axisColumnHeader`之一，且展示简单维度信息（文字），和普通行列头别无二致，不会显示坐标系标尺。
+
 [查看 api 文档](/api/pivot-chart)。
 
 ## 自定义
