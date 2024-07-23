@@ -262,6 +262,37 @@ describe('MiniCharts Utils Tests', () => {
         [45, 100],
       ],
       points: [
+        [8, 4],
+        [57, 4],
+        [106, 4],
+        [155, 4],
+      ],
+    });
+  });
+
+  test('should get right scale of bar when all values are equal 0', () => {
+    const chartData = {
+      type: MiniChartType.Bar,
+      data: [
+        { year: '2018', value: 0 },
+        { year: '2019', value: 0 },
+        { year: '2020', value: 0 },
+        { year: '2021', value: 0 },
+      ],
+      encode: {
+        x: 'year',
+        y: 'value',
+      },
+    };
+
+    expect(scale(chartData, cell as S2CellType)).toEqual({
+      box: [
+        [45, 0],
+        [45, 0],
+        [45, 0],
+        [45, 0],
+      ],
+      points: [
         [8, 104],
         [57, 104],
         [106, 104],
