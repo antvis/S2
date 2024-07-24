@@ -261,13 +261,13 @@ describe('Miss Dimension Values Tests', () => {
     `);
   });
 
-  test('should get correctly empty dimension values when copy original data', () => {
+  test('should replace empty dimension value placeholder when copy original data', () => {
     const data = copyData(s2, '\t', false);
 
     expect(data).toMatchSnapshot();
   });
 
-  test('should get correctly empty dimension values when copy formatted data', () => {
+  test('should replace empty dimension value placeholder when copy formatted data', () => {
     const data = copyData(s2, '\t', true);
 
     expect(data).toMatchSnapshot();

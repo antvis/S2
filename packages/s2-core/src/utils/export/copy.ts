@@ -28,7 +28,6 @@ import {
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
-import { replaceEmptyFieldValue } from '../../facet/utils';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import { customFlattenDeep } from '../data-set-operate';
@@ -152,7 +151,6 @@ export const convertString = (v: string) => {
  */
 const getHeaderMeasureFields = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
-  // .map((value) => (value === EMPTY_FIELD_VALUE ? '-' : value));
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }

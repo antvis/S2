@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Miss Dimension Values Tests should get correctly empty dimension values when copy formatted data 1`] = `
+exports[`Miss Dimension Values Tests should replace empty dimension value placeholder when copy formatted data 1`] = `
 "\\"一级维度\\"	\\"二级维度\\"	\\"三级维度\\"	\\"数值\\"
 \\"总计\\"	\\"-\\"	\\"-\\"	\\"1732771\\"
 \\"维值-1\\"	\\"维值-2\\"	\\"维度-3\\"	\\"12222\\"
@@ -19,7 +19,7 @@ exports[`Miss Dimension Values Tests should get correctly empty dimension values
 \\"测试-6\\"	\\"小计\\"		\\"123.416\\""
 `;
 
-exports[`Miss Dimension Values Tests should get correctly empty dimension values when copy original data 1`] = `
+exports[`Miss Dimension Values Tests should replace empty dimension value placeholder when copy original data 1`] = `
 "\\"一级维度\\"	\\"二级维度\\"	\\"三级维度\\"	\\"数值\\"
 \\"总计\\"	\\"-\\"	\\"-\\"	\\"1732771\\"
 \\"维值-1\\"	\\"维值-2\\"	\\"维度-3\\"	\\"12222\\"
