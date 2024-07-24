@@ -6,6 +6,7 @@ import {
   type S2Options,
 } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { copyData } from '@/';
 
 const s2Options: S2Options = {
   debug: true,
@@ -258,5 +259,17 @@ describe('Miss Dimension Values Tests', () => {
         "测试-8",
       ]
     `);
+  });
+
+  test('should get correctly empty dimension values when copy original data', () => {
+    const data = copyData(s2, '\t', false);
+
+    expect(data).toMatchSnapshot();
+  });
+
+  test('should get correctly empty dimension values when copy formatted data', () => {
+    const data = copyData(s2, '\t', true);
+
+    expect(data).toMatchSnapshot();
   });
 });

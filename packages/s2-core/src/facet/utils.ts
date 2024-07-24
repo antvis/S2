@@ -1,23 +1,22 @@
 import type { IGroup, SimpleBBox } from '@antv/g-canvas';
 import { findIndex, isEmpty, isNil } from 'lodash';
 
+import { EMPTY_FIELD_VALUE, EMPTY_PLACEHOLDER } from '../common';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
 import { FrozenCellType } from '../common/constant/frozen';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type {
   ColumnNode,
   Columns,
+  Fields,
   Pagination,
   S2Options,
-  S2PivotSheetOptions,
   S2TableSheetOptions,
   ScrollSpeedRatio,
-  SpreadSheetFacetCfg,
 } from '../common/interface';
-import type { Fields } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
-import type { Node } from './layout/node';
 import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -575,3 +574,6 @@ export const getFrozenRowCfgPivot = (
     frozenRowHeight: effectiveFrozenFirstRow ? headNode.height : 0,
   };
 };
+
+export const replaceEmptyFieldValue = (value: string) =>
+  value === EMPTY_FIELD_VALUE ? EMPTY_PLACEHOLDER : value;
