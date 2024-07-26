@@ -56,6 +56,9 @@ export const getDisplayText = (
   return isEmptyText ? emptyPlaceholder : resolveNillString(displayText);
 };
 
+export const replaceEmptyFieldValue = (value: string) =>
+  value === EMPTY_FIELD_VALUE ? EMPTY_PLACEHOLDER : value;
+
 /**
  * To decide whether the data is positive or negative.
  * Two cases needed to be considered since  the derived value could be number or string.
