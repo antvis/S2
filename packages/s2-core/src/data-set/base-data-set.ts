@@ -10,7 +10,6 @@ import {
   memoize,
   min,
 } from 'lodash';
-import type { Indexes } from '../utils/indexes';
 import type { CellMeta, Data, RowData, ViewMeta } from '../common';
 import type {
   Fields,
@@ -21,12 +20,14 @@ import type {
   SortParams,
 } from '../common/interface';
 import type { ValueRange } from '../common/interface/condition';
+import { replaceEmptyFieldValue } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
+import type { Indexes } from '../utils/indexes';
 import type { CellDataParams, DataType, MultiDataParams, Query } from './index';
 
 export abstract class BaseDataSet {
@@ -74,7 +75,8 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldName(field: string): string {
-    return get(this.getFieldMeta(field, this.meta), 'name', field);
+    const name = get(this.getFieldMeta(field, this.meta), 'name', field);
+    return replaceEmptyFieldValue(name);
   }
 
   /**
