@@ -16,8 +16,8 @@ import {
 import type { ColCell, HeaderCell, RowCell } from '../../cell';
 import {
   CellTypes,
-  DATA_CELL_ID_SEPARATOR,
   CopyType,
+  DATA_CELL_ID_SEPARATOR,
   EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
