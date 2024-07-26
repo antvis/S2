@@ -1,3 +1,4 @@
+import { asyncGetAllPlainData } from '@/';
 import {
   EMPTY_FIELD_VALUE,
   LayoutWidthType,
@@ -7,6 +8,7 @@ import {
 } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { getContainer } from 'tests/util/helpers';
+import { TAB_SEPARATOR } from '../../src';
 
 const s2Options: S2Options = {
   debug: true,
@@ -267,5 +269,25 @@ describe('Miss Dimension Values Tests', () => {
         "测试-8",
       ]
     `);
+  });
+
+  test('should replace empty dimension value placeholder when copy original data', async () => {
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: false,
+    });
+
+    expect(data).toMatchSnapshot();
+  });
+
+  test('should replace empty dimension value placeholder when copy formatted data', async () => {
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: TAB_SEPARATOR,
+      formatOptions: true,
+    });
+
+    expect(data).toMatchSnapshot();
   });
 });
