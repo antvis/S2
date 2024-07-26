@@ -1,3 +1,10 @@
+# [@antv/s2-v1.55.8](https://github.com/antvis/S2/compare/@antv/s2-v1.55.7...@antv/s2-v1.55.8) (2024-07-26)
+
+
+### Bug Fixes
+
+* 修复在维值缺失场景下导出数据占位符未解析的问题 ([#2829](https://github.com/antvis/S2/issues/2829)) ([077e823](https://github.com/antvis/S2/commit/077e82305806894df4d5dcd908f5e7dc913cd6fc))
+
 # [@antv/s2-v1.55.7](https://github.com/antvis/S2/compare/@antv/s2-v1.55.6...@antv/s2-v1.55.7) (2024-07-05)
 
 
