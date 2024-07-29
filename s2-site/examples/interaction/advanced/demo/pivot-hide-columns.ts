@@ -1,5 +1,5 @@
 import { PivotSheet, S2Event, S2Options } from '@antv/s2';
-import '@antv/s2/dist/style.min.css';
+import '@antv/s2/dist/s2.min.css';
 
 function hideSelectedColumns(s2) {
   // 兼容多选

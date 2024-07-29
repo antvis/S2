@@ -24,9 +24,9 @@
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-vue
-# yarn add @antv/s2-vue
-# npm install @antv/s2-vue --save
+$ pnpm add @antv/s2-vue@next
+# yarn add @antv/s2-vue@next
+# npm install @antv/s2-vue@next --save
 ```
 
 ## 🔨 使用
@@ -316,7 +316,7 @@ const rawOptions: S2Options = {
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
-import "@antv/s2-vue/dist/style.min.css";
+import "@antv/s2-vue/dist/s2-vue.min.css";
 
 export default defineComponent({
   setup() {

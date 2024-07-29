@@ -1,6 +1,6 @@
 import { PALETTE_MAP, STYLE_ELEMENT_ID } from '../common/constant';
 import type { Palette, ThemeName } from '../common/interface/theme';
-import DarkVars from '../styles/theme/dark.less?inline';
+import DarkVars from '../styles/theme/dark.less';
 import { injectCssText } from './inject-css-text';
 
 /**
@@ -15,5 +15,8 @@ export const getPalette = (themeName?: ThemeName): Palette => {
  */
 export const injectThemeVars = (themeName?: ThemeName) => {
   // 目前仅 dark 主题需要定制
-  injectCssText(STYLE_ELEMENT_ID, themeName === 'dark' ? DarkVars : '');
+  injectCssText(
+    STYLE_ELEMENT_ID,
+    themeName === 'dark' ? (DarkVars as string) : '',
+  );
 };

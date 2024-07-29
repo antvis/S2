@@ -35,7 +35,7 @@ const switcherFields = {
 ```tsx
 import React from "react";
 import { Switcher } from "@antv/s2-react";
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const onSubmit = (result) => {
   console.log("result:", result);

@@ -1,6 +1,5 @@
 import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
-import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
 import type { HeaderNodesParams } from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
@@ -22,6 +21,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
     spreadsheet,
+    handler,
   } = params;
 
   const isTableMode = spreadsheet.isTableMode();
@@ -144,7 +144,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy.pushIndexNode(node);
       node.rowIndex = hierarchy.getIndexNodes().length - 1;
     } else {
-      buildGridHierarchy({
+      handler?.({
         addTotalMeasureInTotal,
         addMeasureInTotalQuery,
         parentNode: node,
@@ -152,7 +152,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         fields,
         hierarchy,
         spreadsheet,
-      });
+      } as HeaderNodesParams);
     }
   }
 };

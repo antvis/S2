@@ -55,13 +55,35 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 | Package                                                                    | Version                                                       | Size                                                                                                                        | Download                                                      |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/s2.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/s2-react.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/s2-vue.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
 ## ⭐ 新增功能
 
 官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官方语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2).
+
+## 📦 构建产物调整
+
+- `ESModule/CommonJS`
+
+所有包的 `ESModule (esm)` 和 `CommonJS (lib)` 构建产物从 `Bundle` 调整为 `Bundless`, 其所依赖的子模块会被直接拷贝输出，不再做编译，以便于更好的支持代码 `tree shaking`, 减少包体积。
+
+- `UMD`
+
+所有包的 `UMD (dist)` 构建产物依然为 `Bundle` 单文件，**文件名**和**全局变量名**有所调整：
+
+| 包名  | 文件名（修改前） | 文件名（修改后） |
+| -------- | ------ | --------- |
+| `@antv/s2` | `dist/index.min.js` `dist/style.min.css` | `dist/s2.min.css` `dist/s2.min.css` |
+| `@antv/s2-react` | `dist/index.min.js` `dist/style.min.css` | `dist/s2-react.min.css` `dist/s2-react.min.css` |
+| `@antv/s2-vue` | `dist/index.min.js` `dist/style.min.css` | `dist/s2-vue.min.css` `dist/s2-vue.min.css` |
+
+| 包名  | 全局变量名（修改前） | 全局变量名（修改后） |
+| -------- | ------ | --------- |
+| `@antv/s2` | `S2` | `S2` |
+| `@antv/s2-react` | `S2-React` | `S2React` |
+| `@antv/s2-vue` | `S2-Vue` | `S2Vue` |
 
 ## 📣 不兼容的变化
 

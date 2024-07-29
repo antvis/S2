@@ -29,7 +29,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
+    <img src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="npm bundle size" />
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="GitHub discussions"/>

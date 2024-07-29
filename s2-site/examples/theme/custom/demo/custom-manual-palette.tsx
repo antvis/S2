@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard';
 import { debounce, isObjectLike } from 'lodash';
 import { SketchPicker } from 'react-color';
 
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const s2Options: SheetComponentOptions = {
   width: 500,
