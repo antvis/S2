@@ -14,12 +14,12 @@ tag: Updated
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` \| `pivot` |  |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` | `pivot` |  |
 | spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
-| adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
+| adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (current:number, pageSize: number) => void,<br>onChange?: (current:number, pageSize: number) => void <br>} | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
@@ -31,7 +31,7 @@ tag: Updated
 | onRowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onRowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| onRowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) }) => void; |  |  |
 | onRowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
 | onRowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -40,8 +40,8 @@ tag: Updated
 | onColCellMouseDown | 列头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellMouseUp | 列头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onColCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (collapseAll: `boolean` ) => void; |  |  |
-| onColCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
+| onColCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (expandedNode: [Node](/docs/api/basic-class/node)) => void; |  |  |
+| onColCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ( data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo); hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[]} ) => void; |  |  |
 | onDataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -72,7 +72,7 @@ tag: Updated
 | onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({ collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) }) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
 | onMounted | 组件层表格挂载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
@@ -97,10 +97,10 @@ tag: Updated
 | onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| onSelected | 单元格选中事件 | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
-| onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void |  |  |
 | onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息 | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 | onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 
@@ -137,10 +137,10 @@ type SheetComponentOptions = S2Options<
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot | table` | `pivot` |  |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot \| table` | `pivot` |  |
 | dataCfg | 透视表数据映射配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
-| adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
+| adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
 | themeCfg | 自定义表格主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
@@ -160,9 +160,9 @@ type SheetComponentOptions = S2Options<
 | rowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/docs/api/basic-class/node)}) => void |  |  |
+| rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: { id: `number`; isCollapsed: `boolean`; node: [Node](/docs/api/basic-class/node) }) => void |  |  |
 | rowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| rowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| rowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapseFields: `Record<string, boolean>`, node: [Node](/docs/api/basic-class/node) }) => void; |  |  |
 | rowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -170,15 +170,15 @@ type SheetComponentOptions = S2Options<
 | colCellMouseDown | 列头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellMouseUp | 列头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| colCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({collapseAll: boolean ) => void; |  |  |
-| colCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
+| colCellExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (expandedNode: [Node](/docs/api/basic-class/node)) => void |  |  |
+| colCellHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | (data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo); hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[] } ) => void; |  |  |
 | dataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -213,8 +213,8 @@ type SheetComponentOptions = S2Options<
 | layoutResizeColHeight | 列头单元格高度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeTreeWidth | 树状行头整体宽度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeMouseDown | resize 热区鼠标按下事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
-| layoutResizeMouseUp | resize 热区鼠标松开事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
-| layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| layoutResizeMouseUp | resize 热区鼠标松开事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | keyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | keyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
 | copied | 复制事件 | (data: CopyableList) => void |  |  |
@@ -223,7 +223,7 @@ type SheetComponentOptions = S2Options<
 | contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| selected | 单元格选中事件 | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| selected | 单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
