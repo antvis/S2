@@ -21,6 +21,7 @@ order: 6
 | valueField | `string` |  |    | 度量 id |
 | fieldValue | [DataItem](#dataitem) |  |    | 度量展示的真实值 |
 | isTotals | `boolean` |  |    |   是否为总计：true 为总计  false 为小计 |
+| query | `Record<string, any>`|   |  | 行列查询条件 |
 | rowQuery | `Record<string, any>`|   |  | 行查询条件 |
 | colQuery | `Record<string, any>` |    |  | 列查询条件 |
 | rowId | `string` |  |  |   单元格的行 id |

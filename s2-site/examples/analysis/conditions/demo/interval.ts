@@ -17,11 +17,16 @@ fetch(
         interval: [
           {
             field: 'number',
-            mapping(value) {
+            mapping(value, data, cell) {
+              const defaultValueRange = cell.getValueRange();
+
+              console.log('默认数据区间:', defaultValueRange);
+
               return {
                 fill: '#80BFFF',
                 // 自定义柱状图范围
                 isCompare: true,
+                // 自定义最大值和最小值
                 maxValue: 8000,
                 minValue: 300,
                 fieldValue: Number(value) > 7900 ? 10 : value,

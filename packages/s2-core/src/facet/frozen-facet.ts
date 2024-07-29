@@ -270,7 +270,7 @@ export abstract class FrozenFacet extends BaseFacet {
     const viewMeta = this.getCellMeta(rowIndex, colIndex);
 
     if (viewMeta) {
-      viewMeta.isFrozenCorner = true;
+      viewMeta['isFrozenCorner'] = true;
       const cell = this.spreadsheet.options.dataCell?.(
         viewMeta,
         this.spreadsheet,

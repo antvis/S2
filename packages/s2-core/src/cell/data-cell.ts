@@ -30,6 +30,7 @@ import type {
   MiniChartData,
   MultiData,
   TextTheme,
+  ValueRange,
   ViewMeta,
   ViewMetaData,
   ViewMetaIndexType,
@@ -119,7 +120,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT];
   }
 
-  public get valueRangeByField() {
+  public getValueRange(): ValueRange {
     return this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
   }
 
@@ -478,7 +479,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public override drawBorders(): void {
-    if (!this.meta.isFrozenCorner) {
+    if (!this.meta['isFrozenCorner']) {
       return;
     }
 

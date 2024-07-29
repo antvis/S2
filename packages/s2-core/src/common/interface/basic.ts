@@ -471,13 +471,7 @@ export interface ViewMeta {
   /** 列 id */
   colId?: string;
 
-  /** 字段名 */
-  field?: string;
-
-  /** 是否为冻结角头 */
-  isFrozenCorner?: boolean;
-
-  /** 行列查询条件 */
+  /** 查询条件 */
   query?: Query;
 
   /** 叶子节点 */

@@ -221,8 +221,8 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
           },
         ],
       },
-      colCell(viewMeta, spreadsheet, headerConfig) {
-        return new CustomColCell(viewMeta, spreadsheet, headerConfig);
+      colCell(node, spreadsheet, headerConfig) {
+        return new CustomColCell(node, spreadsheet, headerConfig);
       },
     };
 

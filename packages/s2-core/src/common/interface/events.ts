@@ -2,12 +2,13 @@
 
 import type { FederatedPointerEvent as GEvent, IEventTarget } from '@antv/g';
 import type { Node } from '../../facet/layout/node';
+import type { ViewMeta } from './basic';
 import type { S2CellType } from './interaction';
 
 export interface TargetCellInfo {
   target: S2CellType;
   event: GEvent;
-  viewMeta: Node;
+  viewMeta: ViewMeta | Node;
 }
 
 export type CellEventTarget =
