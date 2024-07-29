@@ -454,11 +454,11 @@ const s2Options = {
 ```diff
 const s2Options = {
 - showSeriesNumber: true,
-- seriesNumberText: '序号';
+- seriesNumberText: '序号'
 
 + seriesNumber: {
-+   enable: true;
-+   text: '序号';
++   enable: true,
++   text: '序号'
 + }
 }
 ```
@@ -500,7 +500,7 @@ const s2Options = {
 + s2.facet.getCellMeta(rowIndex, colIndex)
 ```
 
-3. 布局结构 `layoutResult` 新增 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`
+3. 布局结构 `layoutResult` 新增 `角头节点 (cornerNodes)` 和 `序号节点 (seriesNumberNodes)`.
 
 ```diff
 export interface LayoutResult {
@@ -513,6 +513,47 @@ export interface LayoutResult {
 - getCellMeta: (rowIndex: number, colIndex: number) => ViewMeta
 + seriesNumberNodes?: Node[];
 + cornerNodes?: Node[];
+}
+```
+
+4. 透视表和明细表的数值单元格元数据格式统一，现在 `cellMeta` 中都包含 `query/rowQuery/colQuery`.
+
+透视表：
+
+```diff
+{
+  rowQuery: {
+    "province": "浙江省",
+    "city": "宁波市"
+  },
+  colQuery: {
+    "sub_type": "沙发",
+    "type": "家具",
+    "$$extra$$": "number"
+  },
++ query: {
++   "province": "浙江省",
++   "city": "宁波市",
++   "sub_type": "沙发",
++   "type": "家具",
++   "$$extra$$": "number"
++  }
+}
+
+明细表：
+
+```diff
+{
++  rowQuery: {
++    "rowIndex": 1,
++  },
++  colQuery: {
++    "colIndex": 2,
++  },
++  query: {
++    "rowIndex": 1,
++    "colIndex": 2
++  }
 }
 ```
 
@@ -745,6 +786,13 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 ```
 
 具体请查看 [链接跳转](/manual/advanced/interaction/link-jump) 相关文档。
+
+### 数值单元格获取数值范围区间方式变更
+
+```diff
+- dataCell.valueRangeByField
++ dataCell.getValueRange()
+```
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
