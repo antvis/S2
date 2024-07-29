@@ -97,13 +97,26 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
             positionY = baseLinePositionY;
           }
         } else {
-          baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
+          // 有三种情况：全为正数 / 全为负数 / 全为零值
+          // baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
           measureRange = max([Math.abs(maxMeasure), Math.abs(minMeasure)])!;
-          barHeight =
-            measureRange === 0
-              ? heightRange
-              : (Math.abs(item?.y - 0) / measureRange) * heightRange;
-          positionY = baseLinePositionY;
+
+          if (measureRange === 0 && minMeasure === 0 && maxMeasure === 0) {
+            // 全为零值: 没有bar
+            barHeight = 0;
+          } else {
+            // 全为非零值: 有bar 高度相同
+            barHeight =
+              measureRange === 0
+                ? heightRange
+                : (Math.abs(item?.y - 0) / measureRange) * heightRange;
+          }
+
+          if (minMeasure < 0) {
+            positionY = yStart;
+          } else {
+            positionY = yEnd - barHeight;
+          }
         }
 
         const barWidth = intervalX - intervalPadding;
@@ -262,10 +275,15 @@ export const drawInterval = (cell: DataCell) => {
       return;
     }
 
-    const valueRange = attrs.isCompare ? attrs : cell.valueRangeByField;
+    const defaultValueRange = cell.getValueRange();
+    const valueRange = attrs.isCompare ? attrs : defaultValueRange;
 
-    const minValue = parseNumberWithPrecision(valueRange.minValue!);
-    const maxValue = parseNumberWithPrecision(valueRange.maxValue!);
+    const minValue = parseNumberWithPrecision(
+      valueRange.minValue ?? defaultValueRange.minValue!,
+    );
+    const maxValue = parseNumberWithPrecision(
+      valueRange.maxValue ?? defaultValueRange.maxValue!,
+    );
 
     const fieldValue = isNil(attrs?.fieldValue)
       ? parseNumberWithPrecision(cell.getMeta().fieldValue as number)

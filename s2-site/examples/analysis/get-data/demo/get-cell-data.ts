@@ -97,7 +97,7 @@ function logEvent(s2: SpreadSheet) {
     const colData = s2.dataSet.getCellMultiData({ query: meta.colQuery });
 
     console.log('当前行数据', rowData);
-    console.log('当前行数据', colData);
+    console.log('当前列数据', colData);
     console.log('当前单元格数据', meta.data);
     console.log('当前数值单元格信息:', cell, meta);
   });

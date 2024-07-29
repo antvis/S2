@@ -339,7 +339,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             rowCell: {
               widthByField: {
-                [resizeInfo.meta.field!]: displayWidth!,
+                [resizeInfo.meta.field as string]: displayWidth!,
               },
             },
           },
@@ -434,7 +434,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     return {
-      [resizeInfo.meta.field!]: displayHeight,
+      [resizeInfo.meta.field as string]: displayHeight,
     };
   }
 

@@ -453,10 +453,6 @@ export interface ViewMeta {
   // rowId of cell
   rowId?: string;
   colId?: string;
-  field?: string;
-  isFrozenCorner?: boolean;
-  label?: string;
-  value?: string | number;
   query?: Query;
   isLeaf?: boolean;
   shallowRender?: boolean;

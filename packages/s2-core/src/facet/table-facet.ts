@@ -384,6 +384,9 @@ export class TableFacet extends FrozenFacet {
       });
     }
 
+    const rowQuery: ViewMeta['rowQuery'] = { rowIndex };
+    const colQuery: ViewMeta['colQuery'] = { colIndex };
+
     const cellMeta: ViewMeta = {
       spreadsheet: this.spreadsheet,
       x,
@@ -401,6 +404,12 @@ export class TableFacet extends FrozenFacet {
       valueField: colNode.field,
       fieldValue: data as DataItem,
       id: getDataCellId(String(rowIndex), colNode.id),
+      rowQuery,
+      colQuery,
+      query: {
+        ...rowQuery,
+        ...colQuery,
+      },
     };
 
     return options.layoutCellMeta?.(cellMeta) ?? cellMeta;

@@ -301,9 +301,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   // 获取当前列数据
   const colData = s2.dataSet.getCellMultiData({ query: meta.colQuery })
 
-  console.log('当前行数据', rowData)
-  console.log('当前行数据', colData)
-  console.log('当前单元格数据', meta.data)
+  console.log('当前列数据：', colData)
+  console.log('当前行数据：', rowData)
+  console.log('当前单元格数据：', meta.data)
   /**
     {
     "number": 834,
@@ -326,15 +326,20 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   const cell = s2.getCell(event.target)
   // 获取当前单元格元数据
   const meta = cell.getMeta()
-  // 获取当前行数据
-  const rowData = s2.dataSet.getCellData({
-    query: {
-      rowIndex: meta.rowIndex
-    }
+  // 获取当前行数据 （明细表一行对应一条数据）
+  const rowData = s2.dataSet.getCellMultiData({
+    // 等价于 query: { rowIndex: meta.rowIndex }
+    query: meta.rowQuery
+  })[0]
+  // 获取当前列数据
+  const colData = s2.dataSet.getCellMultiData({
+    // 等价于 query: { colIndex: meta.colIndex }
+    query: meta.colQuery
   })
 
-  console.log('当前行数据', rowData) // { province: '吉林', city: '长春', type: '笔', price: 8 }
-  console.log('当前单元格数据', meta.data) // { city: '长春' }
+  console.log('当前列数据：', colData)
+  console.log('当前行数据：', rowData) // { province: '吉林', city: '长春', type: '笔', price: 8 }
+  console.log('当前单元格数据：', meta.data) // { city: '长春' }
 })
 ```
 
