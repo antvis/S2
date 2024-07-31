@@ -14,7 +14,7 @@ order: 0
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` | `pivot` |  |
-| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg: [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
@@ -69,10 +69,10 @@ order: 0
 | onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({ collapsedRows: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) }) => void |  |  |
 | onCollapseRowsAll | 树状模式下收起全部的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
 | onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
-| onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
+| onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ( data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo); hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[] } ) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
 | onMounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
@@ -95,7 +95,7 @@ order: 0
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| onSelected | 单元格选中事件 | (cells: ( [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
@@ -109,7 +109,7 @@ React 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 
 - tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素
 - 分页配置从 S2 的分页配置 变为了 `antd` 的分页配置，即支持对 `antd` 分页组件 的 api 透传
 
-```ts
+```ts | pure
 import type { Pagination, S2Options } from '@antv/s2';
 import type { PaginationProps as AntdPaginationProps } from 'antd';
 
@@ -170,7 +170,7 @@ type SheetComponentOptions = S2Options<
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellTrendIconClick | 数值趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
-| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -191,10 +191,10 @@ type SheetComponentOptions = S2Options<
 | layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | layoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | layoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
-| collapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
-| layoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
-| layoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
+| layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({ collapseFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) }) => void |  |  |
+| collapseRowsAll | 树状模式下收起全部的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
+| layoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
+| layoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ( data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
 | afterRender | render 完成的事件 | () => void; |  |  |
 | mounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
@@ -217,7 +217,7 @@ type SheetComponentOptions = S2Options<
 | contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| selected | 单元格选中事件 | ( cells: ([Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| selected | 单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 (cellData: @antv/s2 1.37.0 新增） | (data: { key: string; cellData: [Node](/docs/api/basic-class/node); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
@@ -230,7 +230,7 @@ Vue 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , �
 
 - 分页配置从 S2 的分页配置 变为了 `antd-vue` 的分页配置，即支持对 `antd-vue` 分页组件 的 api 透传
 
-```ts
+```ts | pure
 import type { Pagination, S2Options } from '@antv/s2';
 import type { PaginationProps } from 'ant-design-vue';
 

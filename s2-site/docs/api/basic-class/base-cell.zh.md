@@ -70,7 +70,7 @@ export enum CellTypes {
 
 ### S2CellType
 
-```ts
+```ts | pure
 import type { SimpleBBox } from '@antv/g-canvas';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =

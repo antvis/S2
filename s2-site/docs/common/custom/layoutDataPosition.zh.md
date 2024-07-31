@@ -5,7 +5,7 @@ order: 3
 
 ## LayoutDataPosition
 
-```js
+```js | pure
 LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
 ```
 
@@ -16,6 +16,6 @@ LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => Get
 | spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
 | getCellData | [GetCellMeta](#viewmeta) | ✓ |    | 获取单元格数据和位置等信息|
 
-```ts
+```ts | pure
 type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
 ```
