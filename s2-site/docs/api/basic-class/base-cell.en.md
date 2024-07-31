@@ -6,19 +6,19 @@ Function description: cell base class. [details](https://github.com/antvis/S2/bl
 
 | parameter              | illustrate                             | type                                                                    |
 | ---------------------- | -------------------------------------- | ----------------------------------------------------------------------- |
-| getMeta                | Get cell metadata                      | () => [ViewMeta](#viewmeta)                                             |
-| setMeta                | Set cell metadata                      | (vieMeta: [Partial<ViewMeta>](#viewmeta) ) => void                               |
-| getIconStyle           | Get cell icon style                    | () => [IconTheme](/docs/api/general/S2Theme#icontheme)               |
-| getStyle               | get cell style                         | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
-| getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number` ) => [TextAndIconPosition](#textandiconposition)   |
+| getMeta                | Get cell metadata                      | () => [`ViewMeta`](#viewmeta)                                             |
+| setMeta                | Set cell metadata                      | (vieMeta: [`Partial<ViewMeta>`](#viewmeta) ) => void                               |
+| getIconStyle           | Get cell icon style                    | () => [`IconTheme`](/docs/api/general/S2Theme#icontheme)               |
+| getStyle               | get cell style                         | () => [`DefaultCellTheme`](/docs/api/general/S2Theme#defaultcelltheme) |
+| getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number` ) => [`TextAndIconPosition`](#textandiconposition)   |
 | getActualText          | get the drawn text                     | `() => string`                                                          |
-| cellType               | cell type                              | [CellTypes](#celltypes)                                                 |
+| cellType               | cell type                              | [`CellTypes`](#celltypes)                                                 |
 | initCell               | Initialize cells                       | `() => void`                                                            |
 | update                 | update cell                            | `() => void`                                                            |
 | getTextStyle           | get text style                         | `() => void`                                                            |
 | getFormattedFieldValue | Get the formatted field value          | `() => { formattedValue: string, value: string }`                       |
 | getMaxTextWidth        | Get the maximum width of the text      | `() => number`                                                          |
-| getTextPosition        | get text coordinates                   | [point](#point)                                                         |
+| getTextPosition        | get text coordinates                   | [`Point`](#point)                                                         |
 | getContentArea         | get content area                       | `() => { x: number, y: number, width: number, height: number }`         |
 | updateByState          | Update cell styles based on state      | `(stateName: InteractionStateName, cell: S2CellType) => void`           |
 | hideInteractionShape   | Interactive layers for hidden cells    | `() => void`                                                            |
