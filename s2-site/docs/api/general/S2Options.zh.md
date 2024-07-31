@@ -72,7 +72,7 @@ const s2Options = {
 
 ## DataCellCallback
 
-```js
+```js | pure
 DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
@@ -96,7 +96,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 ## MergedCellCallback
 
-```js
+```js | pure
 DataCellCallback = (s2: Spreadsheet, cells: S2CellType[],viewMeta: ViewMeta) => MergedCell;
 ```
 
@@ -196,7 +196,7 @@ export type DataItem = SimpleDataItem | MultiData;
 
 ## DataSet
 
-```js
+```js | pure
 DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 ```
 
