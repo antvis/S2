@@ -1,5 +1,6 @@
 import type { ViewMeta } from '../../common/interface/basic';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
+import type { FieldValue } from '../../facet/layout/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 
@@ -10,7 +11,7 @@ export type LayoutArrange = (
   spreadsheet: SpreadSheet,
   parent: Node,
   field: string,
-  fieldValues: string[],
+  fieldValues: FieldValue[],
 ) => string[];
 
 /**

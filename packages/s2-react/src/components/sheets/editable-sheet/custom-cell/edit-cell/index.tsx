@@ -94,7 +94,7 @@ function EditCellComponent(
 
     displayData[rowIndex][valueField] = inputVal;
     // 编辑后的值作为格式化后的结果, formatter 不再触发, 避免二次格式化
-    s2.dataSet.displayFormattedValueMap?.set(id, inputVal);
+    s2.dataSet.displayFormattedValueMap?.set(id, inputVal as string);
     await s2.render();
 
     const editedMeta = customMerge<ViewMeta>(cell!.getMeta(), {

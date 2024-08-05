@@ -39,9 +39,11 @@ import type {
   PartDrillDownFieldInLevel,
   RawData,
   S2DataConfig,
+  SimpleData,
   ViewMeta,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
+import { resolveNillString } from '../utils';
 import { getAggregationAndCalcFuncByQuery } from '../utils/data-set-operate';
 import {
   deleteMetaById,
@@ -80,7 +82,7 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
-  private dimensionValuesCache: Map<string, string[]>;
+  private dimensionValuesCache: Map<string, SimpleData[]>;
 
   getExistValuesByDataItem(data: RawData, values: string[]) {
     return getExistValues(data, values);
@@ -361,7 +363,7 @@ export class PivotDataSet extends BaseDataSet {
     return {};
   }
 
-  public getDimensionValues(field: string, query: Query = {}): string[] {
+  public getDimensionValues(field: string, query: Query = {}): SimpleData[] {
     const { pivotMeta, dimensions } = this.getFieldsAndPivotMetaByField(field);
 
     if (!pivotMeta || !dimensions) {
@@ -381,7 +383,7 @@ export class PivotDataSet extends BaseDataSet {
       MULTI_VALUE,
     );
 
-    const values = getSatisfiedPivotMetaValues({
+    const metaValues = getSatisfiedPivotMetaValues({
       pivotMeta,
       dimensionValues,
       fields: dimensions,
@@ -390,7 +392,9 @@ export class PivotDataSet extends BaseDataSet {
       sortedDimensionValues: this.sortedDimensionValues,
     });
 
-    const result = uniq(values.map((v) => v.value));
+    const result = uniq(
+      metaValues.map((meta) => resolveNillString(meta.value)),
+    );
 
     if (isGetAllDimensionValues) {
       this.dimensionValuesCache.set(field, result);

@@ -44,6 +44,7 @@ import type {
   S2Options,
   S2RenderOptions,
   S2Theme,
+  SimpleData,
   SortMethod,
   ThemeCfg,
   ThemeName,
@@ -757,7 +758,7 @@ export abstract class SpreadSheet extends EE {
    * @returns 文本测量信息 TextMetrics
    */
   public measureText = memoize(
-    (text: number | string = '', font: unknown): TextMetrics | null => {
+    (text: SimpleData, font: unknown): TextMetrics | null => {
       if (!font) {
         return null;
       }
@@ -778,7 +779,7 @@ export abstract class SpreadSheet extends EE {
 
       return ctx.measureText(String(text));
     },
-    (text: any, font) => [text, ...values(font)].join(''),
+    (text: SimpleData, font) => [text, ...values(font)].join(''),
   );
 
   /**
@@ -787,10 +788,7 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本宽度
    */
-  public measureTextWidth = (
-    text: number | string = '',
-    font: unknown,
-  ): number => {
+  public measureTextWidth = (text: SimpleData, font: unknown): number => {
     const textMetrics = this.measureText(text, font);
 
     return textMetrics?.width || 0;
@@ -802,10 +800,7 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本高度
    */
-  public measureTextHeight = (
-    text: number | string = '',
-    font: unknown,
-  ): number => {
+  public measureTextHeight = (text: SimpleData, font: unknown): number => {
     const textMetrics = this.measureText(text, font);
 
     if (!textMetrics) {

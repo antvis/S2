@@ -68,14 +68,9 @@ export interface MultiData<T = SimpleData[][] | MiniChartData> {
   [key: string]: unknown;
 }
 
-export type SimpleData = string | number | null;
+export type SimpleData = string | number | null | undefined;
 
-export type DataItem =
-  | SimpleData
-  | MultiData
-  | Record<string, unknown>
-  | undefined
-  | null;
+export type DataItem = SimpleData | MultiData | Record<string, unknown>;
 
 export type RawData = Record<string, DataItem>;
 

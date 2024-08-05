@@ -169,7 +169,7 @@ export abstract class HeaderCell<
 
     const formattedValue =
       shouldFormat && formatter
-        ? formatter(value, undefined, this.meta)
+        ? formatter(value, undefined, this.meta)!
         : value;
 
     return {
