@@ -166,7 +166,7 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getDimensionValues(): string[] {
+  public getDimensionValues(): SimpleData[] {
     return [];
   }
 

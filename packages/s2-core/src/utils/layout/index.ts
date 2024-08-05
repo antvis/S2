@@ -1,2 +1,7 @@
 export * from './frozen';
-export { generateId, resolveId } from './generate-id';
+export {
+  generateId,
+  generateNillString,
+  resolveId,
+  resolveNillString,
+} from './generate-id';

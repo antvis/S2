@@ -1,12 +1,15 @@
 import { EMPTY_FIELD_VALUE, EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
-import type { HeaderNodesParams } from '../../facet/layout/interface';
+import type {
+  FieldValue,
+  HeaderNodesParams,
+} from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
-import { generateId } from '../../utils/layout/generate-id';
+import { generateId, resolveNillString } from '../../utils/layout/generate-id';
 import { whetherLeafByLevel } from './whether-leaf-by-level';
 
 // eslint-disable-next-line max-lines-per-function
@@ -26,7 +29,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
 
   const isTableMode = spreadsheet.isTableMode();
 
-  for (const [index, fieldValue] of fieldValues.entries()) {
+  for (const [index, originalFieldValue] of fieldValues.entries()) {
+    const fieldValue = resolveNillString(
+      originalFieldValue as string,
+    ) as FieldValue;
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
     let value: string;

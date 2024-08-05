@@ -3,6 +3,7 @@ import {
   drawCustomContent,
   getCellWidth,
   getContentAreaForMultiData,
+  getDisplayText,
   getEmptyPlaceholder,
   isUnchangedValue,
   isUpDataValue,
@@ -352,5 +353,35 @@ describe('isUnchangedValue', () => {
     }
 
     expect(render).not.toThrow();
+  });
+});
+
+describe('getDisplayText', () => {
+  test.each`
+    value        | result
+    ${'value'}   | ${'value'}
+    ${null}      | ${'-'}
+    ${undefined} | ${'-'}
+    ${0}         | ${0}
+    ${1}         | ${1}
+    ${-1}        | ${-1}
+    ${Infinity}  | ${Infinity}
+    ${NaN}       | ${'-'}
+  `('should get correct display text for $value', ({ value, result }) => {
+    expect(getDisplayText(value)).toEqual(result);
+  });
+
+  test.each`
+    value        | result
+    ${'value'}   | ${'value'}
+    ${null}      | ${'@'}
+    ${undefined} | ${'@'}
+    ${0}         | ${0}
+    ${1}         | ${1}
+    ${-1}        | ${-1}
+    ${Infinity}  | ${Infinity}
+    ${NaN}       | ${'@'}
+  `('should get correct empty placeholder for $value', ({ value, result }) => {
+    expect(getDisplayText(value, '@')).toEqual(result);
   });
 });

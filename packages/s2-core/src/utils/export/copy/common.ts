@@ -1,5 +1,5 @@
 import { escape, map, max } from 'lodash';
-import type { DataItem } from '../../../common';
+import type { DataItem, Formatter, SimpleData } from '../../../common';
 import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
   CopyMIMEType,
@@ -64,12 +64,12 @@ export function getFormatter(
   field: string,
   formatData = false,
   dataSet: BaseDataSet,
-) {
+): Formatter {
   if (formatData) {
     return dataSet.getFieldFormatter(field!);
   }
 
-  return (value: DataItem) => value;
+  return ((value) => value) as Formatter;
 }
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
@@ -79,11 +79,11 @@ export const assembleMatrix = ({
   dataMatrix,
   cornerMatrix,
 }: {
-  colMatrix: string[][];
-  dataMatrix: string[][];
-  rowMatrix?: string[][];
-  cornerMatrix?: string[][];
-}): string[][] => {
+  colMatrix: SimpleData[][];
+  dataMatrix: SimpleData[][];
+  rowMatrix?: SimpleData[][];
+  cornerMatrix?: SimpleData[][];
+}): SimpleData[][] => {
   const rowWidth = rowMatrix?.[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
@@ -91,7 +91,7 @@ export const assembleMatrix = ({
   const matrixWidth = rowWidth + dataWidth;
   const matrixHeight = colHeight + dataHeight;
 
-  let matrix: (string | undefined)[][] = Array.from(
+  let matrix: SimpleData[][] = Array.from(
     Array(matrixHeight),
     () => new Array(matrixWidth),
   );
@@ -123,19 +123,19 @@ export const assembleMatrix = ({
     }),
   );
 
-  return matrix as string[][];
+  return matrix as SimpleData[][];
 };
 
-export function getMaxRowLen(matrix: string[][]): number {
+export function getMaxRowLen(matrix: SimpleData[][]): number {
   return max(map(matrix, (row) => row.length)) ?? 0;
 }
 
 /**
  * 补全 matrix 中的元素个数, 使得每一行的元素个数一致，以最大的行元素个数为准
- * @param {string[][]} matrix
- * @return {string[][]}
+ * @param {SimpleData[][]} matrix
+ * @return {SimpleData[][]}
  */
-export function completeMatrix(matrix: string[][]): string[][] {
+export function completeMatrix(matrix: SimpleData[][]): SimpleData[][] {
   const maxRowLen = getMaxRowLen(matrix);
 
   return map(matrix, (row) => {
@@ -229,9 +229,9 @@ export const getNodeFormatData = (leafNode: Node) => {
     const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(
       node.field,
     );
-    const formatterLabel = formatter?.(node.value) ?? node.value;
+    const value = formatter?.(node.value);
 
-    line.unshift(formatterLabel);
+    line.unshift(value as string);
     if (node?.parent) {
       return getNodeFormatterLabel(node.parent);
     }

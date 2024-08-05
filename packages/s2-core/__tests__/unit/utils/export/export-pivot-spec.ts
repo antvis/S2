@@ -1,10 +1,14 @@
 /* eslint-disable jest/expect-expect */
 import { CopyMIMEType } from '@/common/interface/export';
-import { map, omit } from 'lodash';
+import { clone, map, omit } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
-import { PivotSheet, asyncGetAllPlainData } from '../../../../src';
+import {
+  PivotSheet,
+  asyncGetAllPlainData,
+  type DataItem,
+} from '../../../../src';
 import {
   CSV_SEPARATOR,
   LINE_SEPARATOR,
@@ -500,5 +504,75 @@ describe('PivotSheet Export Test', () => {
     const count = typeCount * subTypeCount + 3;
 
     expect(data.split(LINE_SEPARATOR)).toHaveLength(count);
+  });
+
+  it('should export empty dimension values data', async () => {
+    const data = clone<DataItem[]>(originData);
+
+    data.unshift({
+      number: 7789,
+      province: null,
+      city: null,
+      type: null,
+      sub_type: null,
+    });
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        data,
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: false,
+      formatData: false,
+    });
+  });
+
+  // https://github.com/antvis/S2/issues/2808
+  it('should export placeholder data', async () => {
+    const data = clone<DataItem[]>(originData);
+
+    data.unshift({
+      number: 7789,
+      province: null,
+      city: null,
+      type: null,
+      sub_type: null,
+    });
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        data,
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        placeholder: {
+          cell: '占位符',
+        },
+      }),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatHeader: true,
+      formatData: true,
+    });
   });
 });

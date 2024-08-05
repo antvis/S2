@@ -2,7 +2,7 @@
 import { CopyMIMEType } from '@/common/interface/export';
 import { TableSheet } from '@/sheet-type';
 import { asyncGetAllPlainData } from '@/utils';
-import { slice } from 'lodash';
+import { clone, slice } from 'lodash';
 import { data as originData } from 'tests/data/mock-dataset.json';
 import {
   CSV_SEPARATOR,
@@ -11,6 +11,7 @@ import {
   S2DataConfig,
   S2Options,
   TAB_SEPARATOR,
+  type DataItem,
 } from '../../../../src';
 import { customColSimpleColumns } from '../../../data/custom-table-col-fields';
 import {
@@ -516,5 +517,38 @@ describe('TableSheet Export Test', () => {
     });
 
     expect(data).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2808
+  it('should export placeholder data', async () => {
+    const data = clone<DataItem[]>(originData);
+
+    data.unshift({
+      number: 7789,
+      province: null,
+      city: null,
+      type: null,
+      sub_type: null,
+    });
+
+    const s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        data,
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        placeholder: {
+          cell: '占位符',
+        },
+      }),
+    );
+
+    await expectMatchSnapshot(s2, {
+      formatData: true,
+    });
   });
 });

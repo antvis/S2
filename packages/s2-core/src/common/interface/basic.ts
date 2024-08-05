@@ -27,13 +27,13 @@ export type { GetCellMeta, LayoutResult } from './facet';
  * 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
  */
 export type Formatter = (
-  v: unknown,
-  data?: SimpleData | ViewMetaData | ViewMetaData[],
+  value: DataItem,
+  data?: DataItem | ViewMetaData | ViewMetaData[],
   meta?: Node | ViewMeta,
-) => string;
+) => SimpleData;
 
 export interface FormatResult {
-  formattedValue: string;
+  formattedValue: SimpleData;
   value: DataItem;
 }
 
@@ -423,40 +423,64 @@ export type TempMergedCell = {
 export type ViewMetaData = Data | CellData;
 
 export interface ViewMeta {
+  /** 表格实例 */
   spreadsheet: SpreadSheet;
-  // cell's unique id
+
+  /** 数据唯一标识 */
   id: string;
-  // cell's coordination-x
+
+  /** x 坐标 */
   x: number;
-  // cell's coordination-y
+
+  /** y 坐标 */
   y: number;
-  // cell's width
+
+  /** 单元格宽度 */
   width: number;
-  // cell's height
+
+  /** 单元格高度 */
   height: number;
-  // cell origin data raws(multiple data)
+
+  /** 单元格数据 */
   data: ViewMetaData | SimpleData | undefined;
-  // cell' row index (in rowLeafNodes)
+
+  /** 行索引 */
   rowIndex: number;
-  // cell' col index (in colLeafNodes)
+
+  /** 列索引 */
   colIndex: number;
-  // value field(unique field id) for conditions setting
+
+  /** 数值字段, 对应 s2DataConfig.fields */
   valueField: string;
-  // field's real display label value
+
+  /** 数值 */
   fieldValue: DataItem;
-  // subTotals or grandTotals
+
+  /** 是否是汇总字段 */
   isTotals?: boolean;
-  // cell's row query condition
+
+  /** 行查询条件 */
   rowQuery?: Query;
-  // cell's col query condition
+
+  /** 列查询条件 */
   colQuery?: Query;
-  // rowId of cell
+
+  /** 行 id */
   rowId?: string;
+
+  /** 列 id */
   colId?: string;
+
+  /** 查询条件 */
   query?: Query;
+
+  /** 叶子节点 */
   isLeaf?: boolean;
+
+  /** 是否是浅渲染 */
   shallowRender?: boolean;
 
+  /** 其他字段 */
   [key: string]: unknown;
 }
 

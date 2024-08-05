@@ -17,7 +17,6 @@ import {
   isEmpty,
   isEqual,
   isFunction,
-  isNil,
   isNumber,
   isObject,
   last,
@@ -175,21 +174,6 @@ export const setTooltipContainerStyle = (
   container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
 };
 
-/* format */
-export const getFriendlyVal = (val: any): number | string => {
-  const isInvalidNumber = isNumber(val) && Number.isNaN(val);
-  const isEmptyString = val === '';
-
-  return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
-};
-
-export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
-  const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
-
-  return (v: unknown, data?: ViewMetaData) =>
-    getFriendlyVal(formatter(v, data));
-};
-
 export const getListItem = (
   spreadsheet: SpreadSheet,
   {
@@ -210,7 +194,7 @@ export const getListItem = (
     spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
     spreadsheet?.dataSet?.getFieldName(field);
 
-  const formatter = getFieldFormatter(spreadsheet, field);
+  const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
   // 非数值类型的 data 不展示 (趋势分析表/迷你图/G2 图表)，上层通过自定义 tooltip 的方式去自行定制
   const dataValue = CellData.getFieldValue(data, field);
@@ -540,12 +524,12 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       value = emptyPlaceholder;
       originVal = emptyPlaceholder;
     } else {
-      const currentFormatter = getFieldFormatter(spreadsheet, field);
+      const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
 
       originVal = dataSum;
       value =
-        currentFormatter?.(dataSum, selected) ??
+        formatter?.(dataSum, selected) ??
         parseFloat(dataSum.toPrecision(PRECISION));
     }
 
@@ -594,8 +578,8 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       'valueField',
     ) as string;
 
-    const currentFormatter = getFieldFormatter(spreadsheet, valueField);
-    const formattedValue = currentFormatter(value) as string;
+    const formatter = spreadsheet?.dataSet?.getFieldFormatter(valueField);
+    const formattedValue = formatter?.(value) as string;
     const cellText = options.enableFormat
       ? spreadsheet.dataSet.getFieldName(value) || formattedValue
       : spreadsheet.dataSet.getFieldName(valueField);

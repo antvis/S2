@@ -37,6 +37,7 @@ import {
 } from '../utils/condition/state-controller';
 import { generateExtraFieldMeta } from '../utils/dataset/pivot-data-set';
 import type { Indexes } from '../utils/indexes';
+import { getDisplayText, getEmptyPlaceholder } from '../utils/text';
 import type { GetCellMultiDataParams } from './index';
 import type { GetCellDataParams, Query } from './interface';
 
@@ -211,13 +212,27 @@ export abstract class BaseDataSet {
   };
 
   /**
-   * 获得字段格式方法
+   * 获得字段格式化方法
    * @param field
    */
   public getFieldFormatter(field: CustomHeaderField): Formatter {
     const realField = this.getField(field);
 
-    return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
+    const formatter = get(
+      this.getFieldMeta(realField, this.meta),
+      'formatter',
+      identity,
+    );
+
+    // 如果格式化后的值是空，则兜底占位符, 保证导出结果和表格一致: https://github.com/antvis/S2/issues/2808
+    return (value, data, meta) => {
+      const placeholder = getEmptyPlaceholder(
+        meta as Record<string, any>,
+        this.spreadsheet?.options?.placeholder,
+      );
+
+      return getDisplayText(formatter?.(value, data, meta), placeholder);
+    };
   }
 
   /**
@@ -329,7 +344,10 @@ export abstract class BaseDataSet {
    * @param field
    * @param query
    */
-  public abstract getDimensionValues(field: string, query?: Query): string[];
+  public abstract getDimensionValues(
+    field: string,
+    query?: Query,
+  ): SimpleData[];
 
   /**
    * 获取单个的单元格数据

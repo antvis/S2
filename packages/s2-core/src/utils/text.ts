@@ -40,16 +40,20 @@ import {
 import type { GroupedIcons } from './cell/header-cell';
 import { getIconPosition } from './condition/condition';
 import { renderMiniChart } from './g-mini-charts';
+import { resolveNillString } from './layout';
 
 export const getDisplayText = (
-  text: string | number | null | undefined,
+  text: SimpleData,
   placeholder?: string | undefined | null,
 ) => {
+  const displayText = resolveNillString(text as string);
   const emptyPlaceholder = placeholder ?? EMPTY_PLACEHOLDER;
+  const isInvalidNumber = isNumber(displayText) && Number.isNaN(displayText);
   // 对应维度缺少维度数据时, 会使用 EMPTY_FIELD_VALUE 填充, 实际渲染时统一转成 "-"
-  const isEmptyText = isNil(text) || text === '' || text === EMPTY_FIELD_VALUE;
+  const isEmptyString = displayText === '' || displayText === EMPTY_FIELD_VALUE;
+  const isEmptyText = isNil(displayText) || isInvalidNumber || isEmptyString;
 
-  return isEmptyText ? emptyPlaceholder : `${text}`;
+  return isEmptyText ? emptyPlaceholder : resolveNillString(displayText);
 };
 
 export const replaceEmptyFieldValue = (value: string) =>
@@ -192,7 +196,7 @@ export const getEmptyPlaceholder = (
  * |  text icon  |  text icon  |  text icon  |
  * --------------------------------------------
  * @param box SimpleBBox 整体绘制内容包围盒
- * @param textValues  SimpleDataItem[][] 指标集合
+ * @param textValues SimpleDataItem[][] 指标集合
  * @param widthPercent number[] 每行指标的宽度百分比
  */
 export const getContentAreaForMultiData = (

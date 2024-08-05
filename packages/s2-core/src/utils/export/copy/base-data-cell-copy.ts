@@ -2,6 +2,7 @@ import {
   AsyncRenderThreshold,
   TAB_SEPARATOR,
   type DataItem,
+  type SimpleData,
 } from '../../../common';
 import type {
   CopyAndExportUnifyConfig,
@@ -45,7 +46,7 @@ export abstract class BaseDataCellCopy {
   }
 
   private matrixPlainTextTransformer(
-    dataMatrix: string[][],
+    dataMatrix: SimpleData[][],
     separator: string,
   ): CopyablePlain {
     return this.config.transformers[CopyMIMEType.PLAIN](
@@ -61,7 +62,7 @@ export abstract class BaseDataCellCopy {
   };
 
   protected matrixTransformer(
-    dataMatrix: string[][],
+    dataMatrix: SimpleData[][],
     separator = TAB_SEPARATOR,
   ): [CopyablePlain, CopyableHTML] {
     return [

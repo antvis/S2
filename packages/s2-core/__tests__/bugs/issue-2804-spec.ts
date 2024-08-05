@@ -5,7 +5,7 @@
  * https://github.com/antvis/S2/issues/2804
  */
 import { PivotSheet } from '@/sheet-type';
-import { S2Options } from '../../src';
+import type { S2Options } from '../../src';
 import * as mockDataConfig from '../data/data-issue-2804.json';
 import { getContainer } from '../util/helpers';
 
