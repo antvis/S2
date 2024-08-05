@@ -56,16 +56,18 @@ describe('Header Brush Selection Tests', () => {
       const offsetKey = isRow ? 'offsetY' : 'offsetX';
 
       // 将圈选的单元格滑出可视范围
-      s2.facet.updateScrollOffset({
-        [offsetKey]: { value: 300 },
+      s2.interaction.scrollTo({
+        [offsetKey]: { value: 300, animate: false },
       });
 
-      await sleep(500);
+      await sleep(200);
 
       // 还原
-      s2.facet.updateScrollOffset({
-        [offsetKey]: { value: 0 },
+      s2.interaction.scrollTo({
+        [offsetKey]: { value: 0, animate: false },
       });
+
+      await sleep(200);
 
       expect(s2.interaction.getActiveCells()).toHaveLength(1);
       expect(s2.interaction.getCurrentStateName()).toEqual(stateName);

@@ -21,7 +21,7 @@ describe('Tree Leaf Node Status Tests', () => {
 
     await s2.render();
 
-    const [a1, a2] = s2.facet.getRowNodes();
+    const [a1, a2] = await s2.facet.getRowNodes();
 
     expect(a1.isLeaf).toBeTruthy();
     expect(a1.isTotals).toBeFalsy();

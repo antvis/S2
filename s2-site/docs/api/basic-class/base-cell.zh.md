@@ -84,10 +84,8 @@ export enum CellType {
 
 ### S2CellType
 
-```ts
-import type { SimpleBBox } from '@antv/g-canvas';
-
-export type S2CellType<T extends SimpleBBox = ViewMeta> =
+```ts | pure
+export type S2CellType =
   | DataCell
   | HeaderCell
   | ColCell
@@ -95,5 +93,5 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | MergedCell
   | SeriesNumberCell
-  | BaseCell<T>;
+  | BaseCell;
 ```

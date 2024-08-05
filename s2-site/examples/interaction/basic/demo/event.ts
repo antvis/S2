@@ -1,21 +1,25 @@
 /* eslint-disable no-console */
 import {
-  PivotSheet,
-  S2Options,
-  S2Event,
-  SpreadSheet,
   InteractionStateName,
+  PivotSheet,
+  S2Event,
+  S2Options,
+  SpreadSheet,
 } from '@antv/s2';
+import { random } from 'lodash';
 
 function addButtons(s2: SpreadSheet) {
   const [
     selectAllBtn,
-    selectHeaderCellBtn,
+    selectCornerCellBtn,
+    selectRowCellBtn,
+    selectColCellBtn,
     selectDataCellBtn,
+    highlightCellBtn,
     hideColumnsBtn,
     highlightHeaderBtn,
     resetBtn,
-  ] = Array.from({ length: 6 }).map(() => {
+  ] = Array.from({ length: 9 }).map(() => {
     const btn = document.createElement('button');
 
     btn.className = 'ant-btn ant-btn-default';
@@ -24,8 +28,11 @@ function addButtons(s2: SpreadSheet) {
   });
 
   selectAllBtn.innerHTML = '选中全部';
-  selectHeaderCellBtn.innerHTML = '选中指定行列头单元格';
+  selectCornerCellBtn.innerHTML = '选中指定角头单元格';
+  selectRowCellBtn.innerHTML = '选中指定行头单元格';
+  selectColCellBtn.innerHTML = '选中指定列头单元格';
   selectDataCellBtn.innerHTML = '选中指定数值单元格';
+  highlightCellBtn.innerHTML = '高亮指定单元格';
   hideColumnsBtn.innerHTML = '隐藏指定列头';
   highlightHeaderBtn.innerHTML = '高亮数值和对应的行列头单元格';
   resetBtn.innerHTML = '重置';
@@ -35,49 +42,78 @@ function addButtons(s2: SpreadSheet) {
     s2.interaction.selectAll();
   });
 
-  selectHeaderCellBtn.addEventListener('click', () => {
-    const rowNode = s2.facet.getRowNodeById('root[&]浙江省[&]杭州市');
+  selectCornerCellBtn.addEventListener('click', () => {
+    const cornerCell =
+      s2.facet.getCornerCells()[
+        random(0, s2.facet.getCornerCells().length - 1)
+      ];
 
-    console.log(
-      '🚀 ~ selectHeaderCellBtn.addEventListener ~ rowNode:',
-      rowNode,
-    );
+    console.log('cornerCell: ', cornerCell);
 
-    s2.interaction.selectHeaderCell({
-      cell: rowNode?.belongsCell,
-    });
+    s2.interaction.selectCell(cornerCell);
+  });
+
+  selectRowCellBtn.addEventListener('click', () => {
+    const rowCell =
+      s2.facet.getRowCells()[random(0, s2.facet.getRowCells().length - 1)];
+
+    console.log('rowCell: ', rowCell);
+
+    s2.interaction.selectCell(rowCell);
+  });
+
+  selectColCellBtn.addEventListener('click', () => {
+    const colCell =
+      s2.facet.getColCells()[random(0, s2.facet.getColCells().length - 1)];
+
+    console.log('colCell: ', colCell);
+
+    s2.interaction.selectCell(colCell);
   });
 
   selectDataCellBtn.addEventListener('click', () => {
-    const dataCells = s2.facet
-      .getDataCells()
-      .slice(0, 4)
-      .map((cell) => {
-        const meta = cell.getMeta();
+    const dataCell =
+      s2.facet.getDataCells()[random(0, s2.facet.getDataCells().length - 1)];
 
-        return {
-          id: meta.id,
-          rowIndex: meta.rowIndex,
-          colIndex: meta.colIndex,
-          type: cell.cellType,
-        };
-      });
+    console.log('dataCell:', dataCell);
 
-    console.log(
-      '🚀 ~ selectDataCellBtn.addEventListener ~ dataCells:',
-      dataCells,
-    );
+    // 第二个参数可选
+    s2.interaction.selectCell(dataCell, {
+      /**
+       * 是否展示滚动动画
+       */
+      animate: true,
 
-    s2.interaction.setState({
-      stateName: InteractionStateName.SELECTED,
-      cells: dataCells,
+      /**
+       * 是否触发滚动事件
+       */
+      skipScrollEvent: false,
+    });
+  });
+
+  highlightCellBtn.addEventListener('click', () => {
+    const cell = s2.facet.getCells()[random(0, s2.facet.getCells().length - 1)];
+
+    console.log('highlightCell:', cell);
+
+    // 第二个参数可选
+    s2.interaction.highlightCell(cell, {
+      /**
+       * 是否展示滚动动画
+       */
+      animate: true,
+
+      /**
+       * 是否触发滚动事件
+       */
+      skipScrollEvent: false,
     });
   });
 
   hideColumnsBtn.addEventListener('click', () => {
     s2.interaction.hideColumns([
-      'root[&]家具[&]桌子[&]数量',
-      'root[&]办公用品[&]笔[&]数量',
+      'root[&]家具[&]桌子[&]number',
+      'root[&]办公用品[&]笔[&]number',
     ]);
   });
 
@@ -85,18 +121,18 @@ function addButtons(s2: SpreadSheet) {
     const dataCellViewMeta = s2.facet.getCellMeta(1, 1);
 
     s2.interaction.updateDataCellRelevantHeaderCells(
-      dataCellViewMeta,
       InteractionStateName.HOVER,
+      dataCellViewMeta,
     );
 
     // s2.interaction.updateDataCellRelevantRowCells(
-    //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
+    //   dataCellViewMeta,
     // );
 
     // s2.interaction.updateDataCellRelevantColCells(
-    //   dataCellViewMeta,
     //   InteractionStateName.HOVER,
+    //   dataCellViewMeta,
     // );
   });
 
@@ -107,7 +143,7 @@ function addButtons(s2: SpreadSheet) {
     console.log('当前未选中的单元格:', s2.interaction.getUnSelectedDataCells());
 
     s2.interaction.reset();
-    s2.interaction.resetState();
+    // s2.interaction.resetState();
     s2.interaction.hideColumns([]);
   });
 
@@ -117,8 +153,11 @@ function addButtons(s2: SpreadSheet) {
     canvas.style.marginTop = '10px';
 
     canvas.before(selectAllBtn);
-    canvas.before(selectHeaderCellBtn);
+    canvas.before(selectCornerCellBtn);
+    canvas.before(selectRowCellBtn);
+    canvas.before(selectColCellBtn);
     canvas.before(selectDataCellBtn);
+    canvas.before(highlightCellBtn);
     canvas.before(hideColumnsBtn);
     canvas.before(highlightHeaderBtn);
     canvas.before(resetBtn);
@@ -137,7 +176,7 @@ fetch(
       height: 480,
       style: {
         rowCell: {
-          width: 200,
+          width: 80,
         },
         dataCell: {
           width: 100,
@@ -149,10 +188,19 @@ fetch(
         hoverHighlight: true,
         brushSelection: true,
         multiSelection: true,
-        selectedCellHighlight: true,
+        selectedCellHighlight: false,
         selectedCellsSpotlight: true,
         selectedCellMove: true,
         overscrollBehavior: 'none',
+        autoResetSheetStyle: (event, spreadsheet) => {
+          // 点击操作按钮时不自动重置交互
+          if (event?.target instanceof HTMLElement) {
+            return !event.target.classList.contains('ant-btn');
+          }
+
+          // 其他情况正常重置 (如: 点击空白处, 按下 ESC)
+          return true;
+        },
 
         /**
          * 透传底层 Event Listener 属性的可选参数对象

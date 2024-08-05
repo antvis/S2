@@ -1,5 +1,6 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty } from 'lodash';
+import type { CornerCell } from '../../../cell';
 import {
   CellType,
   CornerNodeType,
@@ -24,7 +25,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
 
   private bindCornerCellClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (event) => {
-      const cornerCell = this.spreadsheet.getCell(event.target);
+      const cornerCell = this.spreadsheet.getCell<CornerCell>(event.target);
 
       if (!cornerCell) {
         return;
@@ -116,6 +117,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     const sample = nodes[0]?.belongsCell;
     const cells = this.getCellMetas(nodes, sample?.cellType!);
+    const cornerCell = this.spreadsheet.getCell<CornerCell>(event.target)!;
 
     if (sample && interaction.isSelectedCell(sample)) {
       interaction.reset();
@@ -137,6 +139,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.SELECTED,
     });
     interaction.highlightNodes(nodes);
+    cornerCell?.updateByState(InteractionStateName.SELECTED);
 
     this.showTooltip(event);
     this.spreadsheet.emit(

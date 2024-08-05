@@ -559,7 +559,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // 根据当前 state 来更新 cell 的样式
-  public updateByState(stateName: InteractionStateName, cell: S2CellType) {
+  public updateByState(stateName: `${InteractionStateName}`, cell: S2CellType) {
     this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
       this.theme,
@@ -580,7 +580,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
             (this[shapeName] as DisplayObject);
 
         // 兼容多列文本 (MultiData)
-        const shapes = !isArray(shapeGroup) ? [shapeGroup] : shapeGroup;
+        const shapes = (
+          !isArray(shapeGroup) ? [shapeGroup] : shapeGroup
+        ) as DisplayObject[];
 
         // stateShape 默认 visible 为 false
         if (isStateShape) {

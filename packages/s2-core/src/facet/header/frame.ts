@@ -1,6 +1,6 @@
-import { Group, Rect } from '@antv/g';
+import { Group, Line, Rect } from '@antv/g';
 import type { FrameConfig } from '../../common/interface';
-import type { SpreadSheet } from '../../sheet-type/spread-sheet';
+import type { SpreadSheet } from '../../sheet-type';
 import { floor } from '../../utils/math';
 import { renderLine } from '.././../utils/g-renders';
 import type { FrozenFacet } from '../frozen-facet';
@@ -8,6 +8,10 @@ import { translateGroup } from '../utils';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;
+
+  public cornerRightBorder: Line;
+
+  public cornerBottomBorder: Line;
 
   constructor(cfg: FrameConfig) {
     super();
@@ -101,14 +105,14 @@ export class Frame extends Group {
       const y2 =
         position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
 
-      renderLine(this, {
+      this.cornerRightBorder = renderLine(this, {
         x1: x,
         y1: position.y,
         x2: x,
         y2,
         stroke: verticalBorderColor,
         lineWidth: frameVerticalWidth,
-        opacity: verticalBorderColorOpacity,
+        strokeOpacity: verticalBorderColorOpacity,
       });
 
       return;
@@ -129,7 +133,7 @@ export class Frame extends Group {
       y2: position.y + cornerHeight,
       stroke: headerVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      opacity: headerVerticalBorderColorOpacity,
+      strokeOpacity: headerVerticalBorderColorOpacity,
     });
 
     const {
@@ -144,7 +148,7 @@ export class Frame extends Group {
       y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
       stroke: cellVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      opacity: cellVerticalBorderColorOpacity,
+      strokeOpacity: cellVerticalBorderColorOpacity,
     });
   }
 
@@ -172,7 +176,7 @@ export class Frame extends Group {
       (spreadsheet.isFrozenRowHeader() ? 0 : scrollX);
     const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
-    renderLine(this, {
+    this.cornerBottomBorder = renderLine(this, {
       x1,
       y1: y,
       x2,

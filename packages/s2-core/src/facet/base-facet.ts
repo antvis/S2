@@ -72,9 +72,9 @@ import type {
   GridInfo,
   HiddenColumnsInfo,
   LayoutResult,
-  OffsetConfig,
   S2CellType,
   ScrollChangeParams,
+  ScrollOffsetConfig,
   ViewMeta,
 } from '../common/interface';
 import type {
@@ -643,7 +643,10 @@ export abstract class BaseFacet {
     return rowsHierarchy.height + colsHierarchy.height;
   }
 
-  public updateScrollOffset(offsetConfig: OffsetConfig) {
+  /**
+   * @alias s2.interaction.scrollTo(offsetConfig)
+   */
+  public updateScrollOffset(offsetConfig: ScrollOffsetConfig) {
     if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
       if (offsetConfig.rowHeaderOffsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
@@ -829,7 +832,7 @@ export abstract class BaseFacet {
   }
 
   scrollWithAnimation = (
-    offsetConfig: OffsetConfig = {},
+    offsetConfig: ScrollOffsetConfig = {},
     duration = 200,
     cb?: () => void,
   ) => {
@@ -867,7 +870,7 @@ export abstract class BaseFacet {
           scrollX,
           scrollY,
         });
-        this.startScroll();
+        this.startScroll(offsetConfig?.skipScrollEvent);
 
         if (elapsed > duration) {
           this.timer.stop();
@@ -881,7 +884,7 @@ export abstract class BaseFacet {
     });
   };
 
-  scrollImmediately = (offsetConfig: OffsetConfig = {}) => {
+  scrollImmediately = (offsetConfig: ScrollOffsetConfig = {}) => {
     const { scrollX, scrollY, rowHeaderScrollX } = this.getAdjustedScrollOffset(
       {
         scrollX: offsetConfig.offsetX?.value || 0,
@@ -891,11 +894,10 @@ export abstract class BaseFacet {
     );
 
     this.setScrollOffset({ scrollX, scrollY, rowHeaderScrollX });
-    this.startScroll();
+    this.startScroll(offsetConfig?.skipScrollEvent);
   };
 
   /**
-   *
    * @param skipScrollEvent 不触发 S2Event.GLOBAL_SCROLL
    */
   startScroll = (skipScrollEvent = false) => {
@@ -1745,10 +1747,7 @@ export abstract class BaseFacet {
   }
 
   /**
-   *
-   * @param skipScrollEvent: 如true则不触发GLOBAL_SCROLL事件
-   * During scroll behavior, first call to this method fires immediately and then on interval.
-   * @protected
+   * @param skipScrollEvent: 不触发 GLOBAL_SCROLL 事件
    */
   protected dynamicRenderCell(skipScrollEvent?: boolean) {
     const {
@@ -1764,7 +1763,6 @@ export abstract class BaseFacet {
     this.realDataCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
-
     this.clip(scrollX, scrollY);
 
     if (!skipScrollEvent) {

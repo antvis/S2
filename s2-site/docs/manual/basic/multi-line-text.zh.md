@@ -5,7 +5,7 @@ tag: New
 ---
 
 :::warning{title="注意"}
-请确保已经阅读了 [基础教程](/manual/basic/base-concept) 和 [主题配置](/manual/basic/theme) 等章节，并对 [AntV/G](https://g.antv.antgroup.com/) 渲染引擎有所了解。
+阅读本章前，请确保已经阅读了 [基础教程](/manual/basic/base-concept) 和 [主题配置](/manual/basic/theme) 等章节，并对 [AntV/G](https://g.antv.antgroup.com/) 渲染引擎有所了解。
 :::
 
 在基于 `DOM` 的 表格中，我们可以写一些简单的 [CSS 属性](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow), 就可以实现文本的`自动换行`, `溢出隐藏`等特性，因为浏览器已经帮我们计算好了，而在 `Canvas` 中，`文本是否溢出`, `文字换行坐标计算`, `多行文本高度自适应` 等特性都需要自行实现。

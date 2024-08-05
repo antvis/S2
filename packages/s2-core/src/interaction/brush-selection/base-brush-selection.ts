@@ -23,9 +23,9 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
-  OffsetConfig,
   OnUpdateCells,
   S2CellType,
+  ScrollOffsetConfig,
   ViewMeta,
 } from '../../common/interface';
 import type { BBox } from '../../engine/interface';
@@ -416,11 +416,11 @@ export class BaseBrushSelection
 
     const config = this.autoScrollConfig;
     const scrollOffset = this.spreadsheet.facet.getScrollOffset();
-    const key: keyof OffsetConfig = isRowHeader
+    const key: keyof ScrollOffsetConfig = isRowHeader
       ? 'rowHeaderOffsetX'
       : 'offsetX';
 
-    const offsetCfg: OffsetConfig = {
+    const offsetCfg: ScrollOffsetConfig = {
       rowHeaderOffsetX: {
         value: scrollOffset.rowHeaderScrollX,
         animate: true,

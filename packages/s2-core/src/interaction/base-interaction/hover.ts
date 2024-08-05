@@ -25,12 +25,6 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.bindHeaderCellHover();
   }
 
-  /**
-   * @description change the data cell state from hover to hover focus
-   * @param cell
-   * @param event
-   * @param meta
-   */
   private changeStateToHoverFocus(cell: S2CellType, event: CanvasEvent) {
     if (!cell) {
       return;
@@ -98,7 +92,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    const { interaction } = this.spreadsheet;
+    const { interaction, facet } = this.spreadsheet;
 
     interaction.clearHoverTimer();
 
@@ -114,6 +108,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
     cell.update();
     this.showEllipsisTooltip(event, cell);
+    // 由于绘制的顺序问题, 交互背景图层展示后, 会遮挡边框, 需要让边框展示在前面.
+    facet.centerFrame?.toFront();
   }
 
   private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType | null) {

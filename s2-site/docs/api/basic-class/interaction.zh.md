@@ -26,14 +26,16 @@ s2.interaction.reset()
 | setInteractedCells | 设置当前发生改变的单元格                                     | (cell: [S2CellType](#s2celltype)) => void |
 | getInteractedCells | 获取当前发生改变的单元格                                     | () => [S2CellType](#s2celltype)[] |
 | getCurrentStateName | 获取当前状态名                                          | `() => void` |
-| isEqualStateName | 是否是相同的状态名                                        | (name: [InteractionStateName](#interactionstatename)) => void |
-| isSelectedState | 是否是选中状态                                          | `() => void` |
-| isHoverState | 是否是悬停状态                                          | `() => void` |
-| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后）       | `() => void` |
-| isSelectedCell | 是否是选中的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
-| isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => void |
+| isEqualStateName | 是否是相同的状态名                                        | (name: [InteractionStateName](#interactionstatename)) => boolean |
+| isSelectedState | 是否是选中状态                                          | `() => boolean` |
+| isBrushSelectedState | 是否是刷选状态                                          | `() => boolean` |
+| isHoverState | 是否是悬停状态                                          | `() => boolean` |
+| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后）       | `() => boolean` |
+| isSelectedCell | 是否是选中的单元格                                        | (cell: [S2CellType](#s2celltype)) => boolean |
+| isActiveCell | 是否是激活的单元格                                        | (cell: [S2CellType](#s2celltype)) => boolean |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视范围内的单元格      | () => Partial<[ViewMeta](#viewmeta)>[] |
 | getActiveCells | 获取当前在可视区域的单元格实例                                  | `() => S2CellType[]` |
+| clearStyleIndependent | 清除单元格交互样式                                          | `() => void` |
 | getActiveDataCells | 获取当前在可视区域的数值单元格实例                                  | `() => S2CellType[]` |
 | getActiveRowCells | 获取当前在可视区域的行头单元格实例                                  | `() => S2CellType[]` |
 | getActiveColCells | 获取当前在可视区域的列头单元格实例                                  | `() => S2CellType[]` |
@@ -41,21 +43,104 @@ s2.interaction.reset()
 | getUnSelectedDataCells | 获取可视区域内选中的数值单元格                                  | `() => DataCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
-| selectHeaderCell | 选中指定行列头单元格                                       | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
 | hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格                                            | (cellsInfo?: [MergedCellInfo](#mergedcellinfo)[], hideData?: boolean) => void |
-| unmergeCells | 取消合并单元格                                          | `(removedCells: MergedCell[]) => void` |
-| updatePanelGroupAllDataCells | 更新所有数值单元格                                        | `() => void` |
+| unmergeCell | 取消合并单元格                                          | `(removedCell: MergedCell) => void` |
+| updateAllDataCells | 更新所有数值单元格                                        | `() => void` |
 | updateCells | 更新指定单元格                                          | (cells: [S2CellType](#s2celltype)[]) => void |
 | addIntercepts | 新增交互拦截                                           | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/docs/api/basic-class/node)[]) => void |
+| scrollTo | 滚动至指定位置   | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |    |
+| scrollToNode | 滚动至指定单元格节点   | (node: [Node](/docs/api/basic-class/node), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToCell | 滚动至指定单元格   | (cell: [S2CellType](#s2celltype), options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToCellById | 滚动至指定单元格 id 对应的位置，如果不在可视化范围内，则会自动滚动   | (id: string, options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToTop | 滚动至顶部  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToRight | 滚动至右边  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToBottom | 滚动至底部  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| scrollToLeft | 滚动至左边  | (options?: [CellScrollToOptions](#cellscrolltooptions)) => void |    |
+| highlightCell | 高亮指定单元格（可视范围内）| (cell: [S2CellType](#s2celltype)) => void |    |
+| selectCell | 选中指定单元格（可视范围内）| (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |    |
+| changeCell | 改变指定单元格状态（可视范围内）（如：选中/高亮/多选等）  | (cell: [S2CellType](#s2celltype), options: [ChangeCellOptions](#changecelloptions)) => void |    |
 | updateDataCellRelevantHeaderCells | 高亮数值单元格和所对应行列单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 | updateDataCellRelevantRowCells | 高亮数值单元格和所对应行头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 | updateDataCellRelevantColCells | 高亮数值单元格和所对应列头单元格  | (stateName: [InteractionStateName](#interactionstatename), meta: [ViewMeta](#viewmeta)) => void |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
+
+### CellScrollToOptions
+
+```ts
+export interface CellScrollToOptions {
+  /**
+   * 是否展示滚动动画
+   */
+  animate?: boolean;
+
+  /**
+   * 是否触发滚动事件
+   */
+  skipScrollEvent?: boolean;
+}
+```
+
+### ChangeCellOptions
+
+```ts
+
+export interface ChangeCellOptions {
+  /**
+   * 目标单元格
+   */
+  cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
+  isMultiSelection?: boolean;
+
+  /**
+   * 状态名 （默认 `selected`)
+   */
+  stateName?: InteractionStateName;
+
+  /**
+   * 如果单元格不在可视范围，是否自动滚动
+   */
+  scrollIntoView?: boolean;
+}
+```
+
+### ScrollOffsetConfig
+
+```ts
+export interface ScrollOffsetConfig {
+  skipScrollEvent?: boolean;
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+  offsetY?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+}
+```
+
+### ScrollOffset
+
+```ts
+export interface ScrollOffset {
+  scrollX?: number;
+  scrollY?: number;
+  rowHeaderScrollX?: number;
+}
+```
 
 ### InteractionConstructor
 
@@ -112,12 +197,29 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | BaseCell<T>;
 ```
 
-### SelectHeaderCellInfo
+### ChangeCellOptions
 
 ```ts
-interface SelectHeaderCellInfo {
-  cell: S2CellType<ViewMeta>; // 目标单元格
-  isMultiSelection?: boolean; // 是否是多选
+interface ChangeCellOptions {
+  /**
+   * 目标单元格
+   */
+  cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
+  isMultiSelection?: boolean;
+
+  /**
+   * 状态名
+   */
+  stateName?: InteractionStateName;
+
+  /**
+   * 如果单元格不在可视范围，是否自动滚动
+   */
+  scrollIntoView?: boolean;
 }
 ```
 
@@ -197,8 +299,8 @@ interface InteractionStateInfo {
 | domEventListeners | 当前已注册的交互            | [EventHandler](#eventhandler)[] |
 | isCanvasEffect | 是否是图表内部引起的事件            | boolean |
 | canvasMousemoveEvent | 表格鼠标移动事件            | CanvasEvent |
-| isMatchElement | 是否是表格内部的元素            | (event: MouseEvent) => void |
-| isMatchPoint | 是否是表格内部的坐标            | (event: MouseEvent) => void |
+| isMatchElement | 是否是表格内部的元素            | (event: MouseEvent) => boolean |
+| isMatchPoint | 是否是表格内部的坐标            | (event: MouseEvent) => boolean |
 | bindEvents | 绑定交互事件            | `() => void`) |
 | clear | 清空交互事件            | `() => void`) |
 | getViewportPoint | 获取表格内的鼠标坐标 （兼容 `supportsCSSTransform`)  | `(event: MouseEvent \| PointerEvent \| WheelEvent) => PointLike` |

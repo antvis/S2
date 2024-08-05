@@ -667,7 +667,7 @@ describe('PivotSheet Tests', () => {
       .spyOn(s2.facet, 'updateScrollOffset')
       .mockImplementation(() => {});
 
-    s2.updateScrollOffset({});
+    s2.interaction.scrollTo({});
 
     expect(updateScrollOffsetSpy).toHaveReturnedTimes(1);
   });

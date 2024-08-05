@@ -37,7 +37,6 @@ import type {
   Fields,
   InteractionOptions,
   InternalFullyTheme,
-  OffsetConfig,
   Pagination,
   S2CellType,
   S2DataConfig,
@@ -633,34 +632,6 @@ export abstract class SpreadSheet extends EE {
 
   public getLayoutWidthType() {
     return this.options.style?.layoutWidthType!;
-  }
-
-  /**
-   * Update scroll's offset, the value can be undefined,
-   * indicate not update current value
-   * @param offsetConfig
-   * default offsetX(horizontal scroll need animation)
-   * but offsetY(vertical scroll don't need animation)
-   */
-  public updateScrollOffset(offsetConfig: OffsetConfig) {
-    const config: OffsetConfig = {
-      offsetX: {
-        value: undefined,
-        animate: false,
-      },
-      offsetY: {
-        value: undefined,
-        animate: false,
-      },
-      rowHeaderOffsetX: {
-        value: undefined,
-        animate: false,
-      },
-    };
-
-    this.facet.updateScrollOffset(
-      customMerge(config, offsetConfig) as OffsetConfig,
-    );
   }
 
   protected isCellType(cell?: CellEventTarget) {

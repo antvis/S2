@@ -230,6 +230,7 @@ fetch(
         enable: true,
       },
       interaction: {
+        autoResetSheetStyle: false,
         selectedCellsSpotlight: true,
         hoverHighlight: true,
         copy: { enable: true },

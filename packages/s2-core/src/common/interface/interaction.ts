@@ -1,3 +1,4 @@
+import type { FederatedPointerEvent } from '@antv/g';
 import type {
   BaseCell,
   ColCell,
@@ -25,6 +26,7 @@ import type {
 import type { ViewMeta } from './basic';
 import type { Transformer } from './export';
 import type { ResizeInteractionOptions } from './resize';
+import type { CellScrollToOptions } from './scroll';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -59,7 +61,7 @@ export interface InteractionStateInfo {
   /**
    * 交互状态名
    */
-  stateName?: InteractionStateName;
+  stateName?: `${InteractionStateName}`;
 
   /**
    * 单元格元数据 (包含不在可视范围内的)
@@ -87,9 +89,27 @@ export interface InteractionStateInfo {
   onUpdateCells?: OnUpdateCells;
 }
 
-export interface SelectHeaderCellInfo {
+export interface ChangeCellOptions extends CellScrollToOptions {
+  /**
+   * 目标单元格
+   */
   cell: S2CellType<ViewMeta>;
+
+  /**
+   * 是否是多选
+   */
   isMultiSelection?: boolean;
+
+  /**
+   * 状态名 (默认 `selected`)
+   */
+  stateName?: `${InteractionStateName}`;
+
+  /**
+   * 如果单元格不在可视范围, 是否自动滚动
+   * @default true
+   */
+  scrollIntoView?: boolean;
 }
 
 export type InteractionConstructor = new (
@@ -206,10 +226,16 @@ export interface InteractionOptions {
   };
 
   /**
-   * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态)
+   * 自动重置表格样式 (按下 ESC 键, 点击空白区域时, 关闭 tooltip/交互状态), 支持根据 event 动态判断
    * @see https://s2.antv.antgroup.com/examples/interaction/basic/#auto-reset-sheet-style
+   * @example autoResetSheetStyle: (event, spreadsheet) => event.target instanceof HTMLDivElement
    */
-  autoResetSheetStyle?: boolean;
+  autoResetSheetStyle?:
+    | boolean
+    | ((
+        event: Event | FederatedPointerEvent,
+        spreadsheet: SpreadSheet,
+      ) => boolean);
 
   /**
    * 隐藏列头配置, 支持维度 (S2DataConfig.fields) 和具体维值 (id)
@@ -296,12 +322,50 @@ export interface InteractionOptions {
 }
 
 export interface InteractionCellHighlightOptions {
-  /** 高亮行头 */
+  /**
+   * 高亮行头
+   */
   rowHeader?: boolean;
-  /** 高亮列头 */
+
+  /**
+   * 高亮列头
+   */
   colHeader?: boolean;
-  /** 高亮选中单元格所在行 */
+
+  /**
+   * 高亮选中单元格所在行
+   */
   currentRow?: boolean;
-  /** 高亮选中单元格所在列 */
+
+  /**
+   * 高亮选中单元格所在列
+   */
   currentCol?: boolean;
+}
+
+export interface ScrollOffsetConfig
+  extends Pick<CellScrollToOptions, 'skipScrollEvent'> {
+  /**
+   * 行头水平偏移量
+   */
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+
+  /**
+   * 水平偏移量
+   */
+  offsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
+
+  /**
+   * 垂直偏移量
+   */
+  offsetY?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
 }
