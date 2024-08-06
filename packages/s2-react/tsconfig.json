@@ -5,6 +5,7 @@
     "jsx": "react",
     "paths": {
       "@antv/s2":["s2-core/src/index.ts"],
+      "@antv/s2/*":["s2-core/src/*"],
       "@antv/s2-shared":["s2-shared/src/index.ts"],
       "@/*":["s2-react/src/*"],
       "tests/*":["s2-react/__tests__/*"]

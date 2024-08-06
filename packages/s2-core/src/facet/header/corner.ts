@@ -3,10 +3,11 @@ import { includes } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { S2Event } from '../../common';
 import { CornerNodeType } from '../../common/interface/node';
+import type { SpreadSheet } from '../../sheet-type';
 import type { CornerBBox } from '../bbox/corner-bbox';
 import type { PanelBBox } from '../bbox/panel-bbox';
 import { Node } from '../layout/node';
-import { translateGroupX } from '../utils';
+import { translateGroup } from '../utils';
 import {
   FRONT_GROUND_GROUP_SCROLL_Z_INDEX,
   KEY_GROUP_CORNER_SCROLL,
@@ -89,8 +90,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     });
   }
 
-  public static getTreeCornerText(options: BaseCornerOptions) {
-    const { spreadsheet } = options;
+  public static getTreeCornerText(spreadsheet: SpreadSheet) {
     const { rows = [] } = spreadsheet.dataSet.fields;
 
     const { cornerText: defaultCornerText } = spreadsheet.options;
@@ -153,7 +153,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     if (spreadsheet.isHierarchyTreeType()) {
-      const cornerText = this.getTreeCornerText(options);
+      const cornerText = this.getTreeCornerText(spreadsheet);
       const cornerNode: Node = new Node({
         id: cornerText,
         field: '',
@@ -191,7 +191,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNode.x = rowNode.x + seriesNumberWidth;
         cornerNode.y = leafNode?.y ?? 0;
         cornerNode.width = rowNode.width;
-        cornerNode.height = leafNode?.height! ?? (colCell?.height as number);
+        cornerNode.height =
+          leafNode?.height! ??
+          spreadsheet.facet.getCellCustomSize(null, colCell?.height);
         cornerNode.isPivotMode = true;
         cornerNode.cornerType = CornerNodeType.Row;
         cornerNode.spreadsheet = spreadsheet;
@@ -234,7 +236,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * Make cornerHeader scroll with hScrollBar
    * @param scrollX
    */
-  public onCorScroll(scrollX: number, type: string): void {
+  public onCorScroll(scrollX: number, type?: string): void {
     this.headerConfig.scrollX = scrollX;
     this.render(type);
   }
@@ -259,18 +261,18 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollX = 0 } = this.getHeaderConfig();
+    const { position, scrollX = 0 } = this.getHeaderConfig();
 
-    translateGroupX(this.scrollGroup, -scrollX);
+    translateGroup(this.scrollGroup, position.x - scrollX, position.y);
   }
 
   protected clip(): void {
-    const { width, height } = this.getHeaderConfig();
+    const { width, height, position } = this.getHeaderConfig();
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: 0,
-        y: 0,
+        x: position.x,
+        y: position.y,
         width,
         height,
       },

@@ -72,10 +72,8 @@ Object {
   "style": Object {
     "colCell": Object {
       "height": 30,
-      "heightByField": null,
       "maxLines": 1,
       "textOverflow": "ellipsis",
-      "widthByField": null,
       "wordWrap": true,
     },
     "cornerCell": Object {
@@ -92,11 +90,9 @@ Object {
     },
     "layoutWidthType": "adaptive",
     "rowCell": Object {
-      "heightByField": null,
       "maxLines": 1,
       "showTreeLeafNodeAlignDot": false,
       "textOverflow": "ellipsis",
-      "widthByField": null,
       "wordWrap": true,
     },
     "seriesNumberCell": Object {

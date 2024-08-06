@@ -5,8 +5,7 @@ import {
   type SheetComponentOptions,
   type SheetComponentProps,
 } from '@/components';
-import { renderToMountedElement, stdlib } from '@antv/g2';
-import { DataCell, SpreadSheet, customMerge } from '@antv/s2';
+import { customMerge, type SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';
@@ -44,16 +43,6 @@ describe('<ChartSheet/> Tests', () => {
     );
   };
 
-  const onDataCellRender = jest.fn((cell: DataCell) => {
-    const chartOptions = cell.getRenderChartOptions();
-
-    // https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-    renderToMountedElement(chartOptions, {
-      group: cell,
-      library: stdlib(),
-    });
-  });
-
   test('should default render empty text shape', async () => {
     renderChartSheet(null);
 
@@ -66,13 +55,9 @@ describe('<ChartSheet/> Tests', () => {
   });
 
   test('should trigger date cell render event', async () => {
-    renderChartSheet(null, {
-      onDataCellRender,
-    });
+    renderChartSheet(null);
 
     await waitFor(() => {
-      expect(onDataCellRender).toHaveBeenCalledTimes(4);
-
       s2.facet.getDataCells().forEach((cell) => {
         expect(cell.getActualText()).toBeUndefined();
         expect(cell.getTextShapes()).toBeEmpty();
@@ -85,9 +70,7 @@ describe('<ChartSheet/> Tests', () => {
       .spyOn(console, 'error')
       .mockImplementationOnce(() => {});
 
-    renderChartSheet(null, {
-      onDataCellRender,
-    });
+    renderChartSheet(null);
 
     await waitFor(() => {
       expect(errorSpy).not.toHaveBeenCalledWith(

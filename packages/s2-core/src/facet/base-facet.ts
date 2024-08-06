@@ -15,6 +15,8 @@ import {
   filter,
   find,
   get,
+  includes,
+  isArray,
   isEmpty,
   isFunction,
   isNil,
@@ -85,6 +87,7 @@ import type {
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
+import type { SelectedIds } from '../utils';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
@@ -254,7 +257,7 @@ export abstract class BaseFacet {
     this.initForegroundGroup();
   }
 
-  private initForegroundGroup() {
+  protected initForegroundGroup() {
     this.foregroundGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_FORE_GROUND,
@@ -263,7 +266,7 @@ export abstract class BaseFacet {
     );
   }
 
-  private initBackgroundGroup() {
+  protected initBackgroundGroup() {
     this.backgroundGroup = this.spreadsheet.container.appendChild(
       new Group({
         name: KEY_GROUP_BACK_GROUND,
@@ -287,8 +290,8 @@ export abstract class BaseFacet {
     this.panelGroup.appendChild(this.panelScrollGroup);
   }
 
-  protected getCellCustomSize(node: Node | null, size: CellCustomSize) {
-    return isFunction(size) ? size?.(node) : size;
+  public getCellCustomSize(node: Node | null, customSize: CellCustomSize) {
+    return isFunction(customSize) ? customSize(node) : customSize;
   }
 
   protected getRowCellDraggedWidth(node: Node): number | undefined {
@@ -496,6 +499,7 @@ export abstract class BaseFacet {
 
       colsHierarchy.height += levelSampleNode.height;
     });
+    colsHierarchy.rootNode.height = colsHierarchy.height;
   }
 
   hideScrollBar = () => {
@@ -752,7 +756,7 @@ export abstract class BaseFacet {
     }
   };
 
-  private unbindEvents = () => {
+  protected unbindEvents = () => {
     const canvas = this.spreadsheet.getCanvasElement();
 
     canvas?.removeEventListener('wheel', this.onWheel);
@@ -789,9 +793,9 @@ export abstract class BaseFacet {
     this.cornerBBox = new CornerBBox(this, true);
   }
 
-  protected calculatePanelBBox = () => {
+  protected calculatePanelBBox() {
     this.panelBBox = new PanelBBox(this, true);
-  };
+  }
 
   getRealWidth = (): number => last(this.viewCellWidths) || 0;
 
@@ -917,7 +921,7 @@ export abstract class BaseFacet {
     this.dynamicRenderCell(skipScrollEvent);
   };
 
-  private getRendererHeight = () => {
+  protected getRendererHeight = () => {
     const { start, end } = this.getCellRange();
 
     return (
@@ -926,7 +930,7 @@ export abstract class BaseFacet {
     );
   };
 
-  private getAdjustedScrollOffset = ({
+  protected getAdjustedScrollOffset = ({
     scrollX,
     scrollY,
     rowHeaderScrollX,
@@ -949,7 +953,7 @@ export abstract class BaseFacet {
     };
   };
 
-  private renderRowScrollBar = (rowHeaderScrollX: number) => {
+  protected renderRowScrollBar(rowHeaderScrollX: number) {
     if (
       this.spreadsheet.isFrozenRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
@@ -1021,12 +1025,13 @@ export abstract class BaseFacet {
       );
       this.foregroundGroup.appendChild(this.hRowScrollBar);
     }
-  };
+  }
 
-  getValidScrollBarOffset = (offset: number, maxOffset: number) =>
-    clamp(offset, 0, maxOffset);
+  getValidScrollBarOffset(offset: number, maxOffset: number) {
+    return clamp(offset, 0, maxOffset);
+  }
 
-  renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
+  renderHScrollBar(width: number, realWidth: number, scrollX: number) {
     if (floor(width) < floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
       const { maxY } = this.getScrollbarPosition();
@@ -1085,7 +1090,7 @@ export abstract class BaseFacet {
 
       this.foregroundGroup.appendChild(this.hScrollBar);
     }
-  };
+  }
 
   protected getScrollbarPosition() {
     const { maxX, maxY } = this.panelBBox;
@@ -1100,7 +1105,7 @@ export abstract class BaseFacet {
     };
   }
 
-  renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
+  renderVScrollBar(height: number, realHeight: number, scrollY: number) {
     if (height < realHeight) {
       const { scrollBar } = this.spreadsheet.theme;
       const thumbLen = Math.max(
@@ -1142,7 +1147,7 @@ export abstract class BaseFacet {
 
       this.foregroundGroup.appendChild(this.vScrollBar);
     }
-  };
+  }
 
   // (滑动 offset / 最大 offset（滚动对象真正长度 - 轨道长）) = (滑块 offset / 最大滑动距离（轨道长 - 滑块长）)
   getScrollBarOffset = (offset: number, scrollbar: ScrollBar) => {
@@ -1304,7 +1309,7 @@ export abstract class BaseFacet {
    * 2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
    * 所以只要不为 `auto`, 或者表格内, 都需要阻止外部容器滚动
    */
-  private stopScrollChainingIfNeeded = (event: WheelEvent) => {
+  protected stopScrollChainingIfNeeded = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
 
     if (interaction?.overscrollBehavior !== 'auto') {
@@ -1313,7 +1318,7 @@ export abstract class BaseFacet {
     }
   };
 
-  private stopScrollChaining = (event: WheelEvent) => {
+  protected stopScrollChaining = (event: WheelEvent) => {
     if (event?.cancelable) {
       event?.preventDefault?.();
     }
@@ -1772,7 +1777,7 @@ export abstract class BaseFacet {
     this.onAfterScroll();
   }
 
-  private emitScrollEvent(position: CellScrollPosition) {
+  protected emitScrollEvent(position: CellScrollPosition) {
     this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
   }
 
@@ -2216,6 +2221,31 @@ export abstract class BaseFacet {
     );
   }
 
+  protected filterCells(
+    cells: S2CellType[],
+    filterIds?: string[] | SelectedIds,
+  ) {
+    if (isEmpty(filterIds)) {
+      return cells;
+    }
+
+    if (isArray(filterIds)) {
+      return cells.filter((cell) => {
+        return includes(filterIds, cell.getMeta().id);
+      });
+    }
+
+    return cells.filter((cell) => {
+      const ids = filterIds[cell.cellType];
+
+      if (!ids) {
+        return false;
+      }
+
+      return ids.includes(cell.getMeta().id);
+    });
+  }
+
   /**
    * 获取序号单元格 (不含可视区域)
    */
@@ -2228,7 +2258,9 @@ export abstract class BaseFacet {
    * @example 获取全部: facet.getHeaderCells()
    * @example 获取一组 facet.getHeaderCells(['root[&]浙江省[&]宁波市', 'root[&]浙江省[&]杭州市'])
    */
-  public getHeaderCells(cellIds?: string[]): S2CellType<ViewMeta>[] {
+  public getHeaderCells(
+    cellIds?: string[] | SelectedIds,
+  ): S2CellType<ViewMeta>[] {
     const headerCells = concat<S2CellType>(
       this.getCornerCells(),
       this.getSeriesNumberCells(),
@@ -2236,11 +2268,7 @@ export abstract class BaseFacet {
       this.getColCells(),
     );
 
-    if (!cellIds) {
-      return headerCells;
-    }
-
-    return headerCells.filter((cell) => cellIds.includes(cell.getMeta().id));
+    return this.filterCells(headerCells, cellIds);
   }
 
   /**

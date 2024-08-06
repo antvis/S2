@@ -10,7 +10,11 @@ import {
 } from '../common/constant';
 import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';
-import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
+import {
+  getCellMeta,
+  getRangeIndex,
+  groupSelectedCells,
+} from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
@@ -200,7 +204,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         this.spreadsheet.store.set('lastClickedCell', cell);
       }
 
-      const selectedCellIds = selectedCells.map(({ id }) => id);
+      const selectedCellIds = groupSelectedCells(selectedCells);
 
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
       interaction.updateCells(facet.getHeaderCells(selectedCellIds));

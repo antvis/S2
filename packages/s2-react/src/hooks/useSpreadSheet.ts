@@ -1,5 +1,6 @@
 import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import { PivotChartSheet } from '@antv/s2/extends';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
@@ -55,6 +56,10 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
       if (sheetType === 'table') {
         return new TableSheet(container, dataCfg, s2Options as S2Options);
+      }
+
+      if (sheetType === 'pivotChart') {
+        return new PivotChartSheet(container, dataCfg, s2Options as S2Options);
       }
 
       return new PivotSheet(container, dataCfg, s2Options as S2Options);

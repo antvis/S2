@@ -3,7 +3,7 @@ import type { Node } from '@/facet/layout/node';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import {
   getActiveHoverHeaderCells,
-  updateAllColHeaderCellState,
+  updateAllHeaderCellState,
 } from '@/utils/interaction/hover-event';
 
 import { InteractionStateName } from '@/common';
@@ -51,7 +51,7 @@ describe('Hover Event Utils Tests', () => {
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
 
-      updateAllColHeaderCellState(
+      updateAllHeaderCellState(
         'root[&]city',
         cells,
         InteractionStateName.HOVER,

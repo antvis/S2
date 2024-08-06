@@ -45,6 +45,7 @@ import type {
   S2RenderOptions,
   S2Theme,
   SimpleData,
+  SimplePalette,
   SortMethod,
   ThemeCfg,
   ThemeName,
@@ -70,6 +71,8 @@ import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import type { PivotSheet } from './pivot-sheet';
+import type { TableSheet } from './table-sheet';
 
 export abstract class SpreadSheet extends EE {
   public themeName: ThemeName;
@@ -103,15 +106,15 @@ export abstract class SpreadSheet extends EE {
 
   public abstract getDataSet(): BaseDataSet;
 
-  public abstract isPivotMode(): boolean;
+  public abstract isPivotMode(): this is PivotSheet;
+
+  public abstract isTableMode(): this is TableSheet;
 
   public abstract isCustomRowFields(): boolean;
 
   public abstract isHierarchyTreeType(): boolean;
 
   public abstract isFrozenRowHeader(): boolean;
-
-  public abstract isTableMode(): boolean;
 
   public abstract isValueInCols(): boolean;
 
@@ -133,8 +136,8 @@ export abstract class SpreadSheet extends EE {
     options: S2Options | null,
   ) {
     super();
-    this.dataCfg = setupDataConfig(dataCfg);
-    this.options = setupOptions(options);
+    this.setupDataConfig(dataCfg);
+    this.setupOptions(options);
     this.dataSet = this.getDataSet();
     this.setDebug();
     this.initTooltip();
@@ -146,6 +149,14 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
     this.setOverscrollBehavior();
     this.mountSheetInstance();
+  }
+
+  protected setupDataConfig(dataCfg: S2DataConfig) {
+    this.dataCfg = setupDataConfig(dataCfg);
+  }
+
+  protected setupOptions(options: S2Options | null | undefined) {
+    this.options = setupOptions(options);
   }
 
   public isCustomHeaderFields(
@@ -196,7 +207,7 @@ export abstract class SpreadSheet extends EE {
     DebuggerUtil.getInstance().setDebug(this.options.debug!);
   }
 
-  private initTheme() {
+  protected initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
     this.setThemeCfg({
       name: 'default',
@@ -220,7 +231,7 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
-  private initInteraction() {
+  protected initInteraction() {
     this.interaction?.destroy?.();
     this.interaction = new RootInteraction(this);
   }
@@ -375,7 +386,7 @@ export abstract class SpreadSheet extends EE {
     this.hideTooltip();
 
     if (reset) {
-      this.options = setupOptions(options);
+      this.setupOptions(options);
     } else {
       this.options = customMerge(this.options, options);
     }
@@ -515,13 +526,23 @@ export abstract class SpreadSheet extends EE {
     removeOffscreenCanvas();
   }
 
-  private setThemeName(name: ThemeName) {
+  protected setThemeName(name: ThemeName) {
     this.themeName = name;
   }
 
-  public setThemeCfg(themeCfg: ThemeCfg = {}) {
+  public setThemeCfg(
+    themeCfg: ThemeCfg = {},
+    getCustomTheme?: (
+      palette: SimplePalette,
+      spreadsheet?: SpreadSheet,
+    ) => S2Theme,
+  ) {
     const theme = themeCfg?.theme || {};
-    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+    const newTheme = getTheme({
+      ...themeCfg,
+      spreadsheet: this,
+      getCustomTheme,
+    });
 
     this.theme = customMerge(newTheme, theme);
     this.setThemeName(themeCfg?.name!);
@@ -893,5 +914,9 @@ export abstract class SpreadSheet extends EE {
     }
 
     return text ?? getDefaultSeriesNumberText();
+  }
+
+  public enableAsyncExport(): Error | true {
+    return true;
   }
 }

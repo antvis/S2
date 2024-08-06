@@ -1,5 +1,5 @@
 import { filter, forEach } from 'lodash';
-import type { ColCell, HeaderCell } from '../../cell';
+import type { HeaderCell } from '../../cell';
 import { InteractionStateName, NODE_ID_SEPARATOR } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
 
@@ -33,13 +33,13 @@ export const getActiveHoverHeaderCells = (
   return allHeaderCells;
 };
 
-export const updateAllColHeaderCellState = (
-  colId: string | undefined,
-  colHeaderCells: ColCell[],
+export const updateAllHeaderCellState = (
+  id: string | undefined,
+  headerCells: HeaderCell[],
   stateName: InteractionStateName,
 ) => {
-  if (colId) {
-    const allColHeaderCells = getActiveHoverHeaderCells(colId, colHeaderCells);
+  if (id) {
+    const allColHeaderCells = getActiveHoverHeaderCells(id, headerCells);
 
     forEach(allColHeaderCells, (cell) => {
       cell.updateByState(stateName);

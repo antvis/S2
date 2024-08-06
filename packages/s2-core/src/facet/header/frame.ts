@@ -88,7 +88,18 @@ export class Frame extends Group {
     this.render();
   }
 
-  private addCornerRightBorder() {
+  protected getCornerRightBorderSizeForPivotMode() {
+    const { cornerHeight, viewportHeight, position, spreadsheet } = this.cfg;
+
+    const { horizontalBorderWidth } = spreadsheet.theme?.splitLine!;
+
+    const y = position.y;
+    const height = cornerHeight + horizontalBorderWidth! + viewportHeight;
+
+    return { y, height };
+  }
+
+  protected addCornerRightBorder() {
     // 交叉表一条竖线拉通即可
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
@@ -102,12 +113,12 @@ export class Frame extends Group {
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     if (spreadsheet.isPivotMode()) {
-      const y2 =
-        position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
+      const { y, height } = this.getCornerRightBorderSizeForPivotMode();
+      const y2 = y + height;
 
       this.cornerRightBorder = renderLine(this, {
         x1: x,
-        y1: position.y,
+        y1: y,
         x2: x,
         y2,
         stroke: verticalBorderColor,
@@ -152,7 +163,7 @@ export class Frame extends Group {
     });
   }
 
-  private addCornerBottomBorder() {
+  protected addCornerBottomBorder() {
     const cfg = this.cfg;
     const {
       cornerWidth,
@@ -187,7 +198,7 @@ export class Frame extends Group {
     });
   }
 
-  private addSplitLineShadow() {
+  protected addSplitLineShadow() {
     const cfg = this.cfg;
     const { spreadsheet } = cfg;
     const splitLine = spreadsheet.theme?.splitLine;
@@ -205,7 +216,7 @@ export class Frame extends Group {
     this.addSplitLineRightShadow();
   }
 
-  private addSplitLineLeftShadow() {
+  protected addSplitLineLeftShadow() {
     if (!this.cfg.showViewportLeftShadow) {
       return;
     }
@@ -231,28 +242,21 @@ export class Frame extends Group {
     );
   }
 
-  private addSplitLineRightShadow() {
+  protected addSplitLineRightShadow() {
     if (!this.cfg.showViewportRightShadow) {
       return;
     }
 
-    const {
-      cornerWidth,
-      cornerHeight,
-      viewportHeight,
-      viewportWidth,
-      position,
-      spreadsheet,
-    } = this.cfg;
-    const { shadowColors, shadowWidth, horizontalBorderWidth } =
-      spreadsheet.theme?.splitLine!;
+    const { cornerWidth, viewportWidth, position, spreadsheet } = this.cfg;
+    const { shadowColors, shadowWidth } = spreadsheet.theme?.splitLine!;
     const x =
       position.x +
       cornerWidth +
       Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth -
       shadowWidth!;
-    const y = position.y;
+
+    const { y, height } = this.getCornerRightBorderSizeForPivotMode();
 
     this.appendChild(
       new Rect({
@@ -260,7 +264,7 @@ export class Frame extends Group {
           x,
           y,
           width: shadowWidth!,
-          height: cornerHeight + horizontalBorderWidth! + viewportHeight,
+          height,
           fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
         },
       }),

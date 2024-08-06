@@ -216,6 +216,14 @@ export const asyncProcessAllSelected = (
 ): Promise<CopyableList> => {
   const { sheetInstance } = params;
 
+  const check = sheetInstance.enableAsyncExport();
+
+  if (check instanceof Error) {
+    // eslint-disable-next-line no-console
+    console.warn(check);
+    throw check;
+  }
+
   if (sheetInstance.isPivotMode()) {
     return asyncProcessSelectedAllPivot(params);
   }
