@@ -9,9 +9,11 @@ import {
   SERIES_NUMBER_FIELD,
   type CellMeta,
   type DataItem,
+  type SimpleData,
 } from '../../common';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
+import { resolveNillString } from '../layout';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -54,7 +56,7 @@ export const getHeaderMeasureFieldNames = (
   fields: string[],
   spreadsheet: SpreadSheet,
   formatHeader: boolean = true,
-): string[] => {
+): SimpleData[] => {
   return map(fields, (field) => {
     // https://github.com/antvis/S2/issues/2755
     if (field === SERIES_NUMBER_FIELD) {
@@ -63,7 +65,7 @@ export const getHeaderMeasureFieldNames = (
 
     // https://github.com/antvis/S2/issues/2688
     if (!formatHeader) {
-      return field;
+      return resolveNillString(field);
     }
 
     return spreadsheet.dataSet.getFieldName(field);

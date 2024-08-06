@@ -41,7 +41,7 @@ function addScrollButton(s2) {
       if (s2.facet.isScrollToBottom(scrollY)) {
         console.log('滚动到底部');
 
-        s2.updateScrollOffset({
+        s2.interaction.scrollTo({
           offsetY: {
             value: 0,
             animate: false,
@@ -52,7 +52,7 @@ function addScrollButton(s2) {
       }
 
       console.log('开始滚动, 当前 scrollY:', scrollY);
-      s2.updateScrollOffset({
+      s2.interaction.scrollTo({
         offsetY: {
           value: scrollY + STEP,
           animate: true,

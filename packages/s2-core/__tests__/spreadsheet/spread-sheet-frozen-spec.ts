@@ -8,6 +8,7 @@ import {
   type FrozenFacet,
   type S2DataConfig,
   type S2Options,
+  type SpreadSheet,
 } from '../../src';
 import { pickMap } from '../util/fp';
 
@@ -42,6 +43,14 @@ function getFrozenGroupPosition(
 
 describe('Spread Sheet Frozen Tests', () => {
   let container: HTMLElement;
+
+  const scrollX = (s2: SpreadSheet, value: number) => {
+    s2.interaction.scrollTo({
+      offsetX: { value, animate: false },
+      offsetY: { value, animate: false },
+      rowHeaderOffsetX: { value, animate: false },
+    });
+  };
 
   beforeEach(() => {
     container = getContainer();
@@ -465,7 +474,7 @@ describe('Spread Sheet Frozen Tests', () => {
 
       const prev = getFrozenGroupPosition(s2, 'columnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      scrollX(s2, 100);
 
       // 移动后，frozen col 和 trailing col 的位置都不变
       expect(getFrozenGroupPosition(s2, 'columnHeader')).toEqual(prev);
@@ -502,7 +511,8 @@ describe('Spread Sheet Frozen Tests', () => {
       expectFrozenGroup(s2, 'columnHeader');
       let prev = getFrozenGroupPosition(s2, 'columnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      scrollX(s2, 100);
+
       // 移动后，frozen col 会改变 而 trailing col 的位置不变
       let current = getFrozenGroupPosition(s2, 'columnHeader');
 
@@ -511,10 +521,12 @@ describe('Spread Sheet Frozen Tests', () => {
 
       // 移动超过角头宽度
       // 移动后，frozen col 和 trailing col 的位置都不变
-      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+      scrollX(s2, 300);
 
       prev = getFrozenGroupPosition(s2, 'columnHeader');
-      s2.updateScrollOffset({ offsetX: { value: 300, animate: false } });
+
+      scrollX(s2, 300);
+
       current = getFrozenGroupPosition(s2, 'columnHeader');
 
       expect(current).toEqual(prev);

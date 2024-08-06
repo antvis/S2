@@ -5,7 +5,7 @@
  */
 import type { S2Options } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
-import { getContainer } from 'tests/util/helpers';
+import { getContainer, sleep } from 'tests/util/helpers';
 import dataCfg from '../data/data-issue-2199.json';
 
 const s2Options: S2Options = {
@@ -25,12 +25,14 @@ describe('ColCell Text Center Tests', () => {
 
     await s2.render();
 
-    s2.facet.updateScrollOffset({
+    s2.interaction.scrollTo({
       offsetX: {
         value: 500,
         animate: false,
       },
     });
+
+    await sleep(200);
 
     const node = s2.facet.getColNodes(0).slice(-1)?.[0];
     const cell = node?.belongsCell;

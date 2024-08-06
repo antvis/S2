@@ -61,15 +61,15 @@ exports[`List Table Core Data Process should copy all data with header in table 
 `;
 
 exports[`List Table Core Data Process should copy correct data when selected diagonal cells 1`] = `
-"浙江省	
-	
-	
-	
-	
-	
-	
-	
-	宁波市"
+"浙江省	-
+-	-
+-	-
+-	-
+-	-
+-	-
+-	-
+-	-
+-	宁波市"
 `;
 
 exports[`List Table Core Data Process should copy correctly data with header in table mode if contain repeat column 1`] = `
@@ -365,12 +365,12 @@ exports[`Tree Table Core Data Process should copy all data in tree mode 1`] = `
 exports[`Tree Table Core Data Process should copy all data in tree mode for custom row cell 1`] = `
 "家具	家具	家具	总计
 桌子	椅子	小计	
-			
-			
-13	11		
-2	8		
-			
-			"
+-	-	-	-
+-	-	-	-
+13	11	-	-
+2	8	-	-
+-	-	-	-
+-	-	-	-"
 `;
 
 exports[`Tree Table Core Data Process should copy all data in tree mode with format 1`] = `

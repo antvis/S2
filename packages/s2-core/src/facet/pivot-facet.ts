@@ -868,7 +868,7 @@ export class PivotFacet extends FrozenFacet {
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
-      this.spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
+      this.spreadsheet.measureTextWidth(maxLabel!, rowTextStyle) +
       rowIconWidth +
       rowCellStyle!.padding!.left! +
       rowCellStyle!.padding!.right! +
@@ -946,14 +946,14 @@ export class PivotFacet extends FrozenFacet {
             this.spreadsheet.dataSet.getFieldFormatter(cellData[EXTRA_FIELD])?.(
               valueData,
             ) ?? valueData;
-          const cellLabel = `${formattedValue}`;
+          const cellLabel = formattedValue;
           const cellLabelWidth = this.spreadsheet.measureTextWidth(
-            cellLabel,
+            cellLabel as string,
             dataCellTextStyle,
           );
 
           if (cellLabelWidth > maxDataLabelWidth) {
-            maxDataLabel = cellLabel;
+            maxDataLabel = cellLabel as string;
             maxDataLabelWidth = cellLabelWidth;
           }
         }

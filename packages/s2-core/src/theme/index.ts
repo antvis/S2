@@ -15,7 +15,7 @@ export const getCornerCellTheme = (
   palette: SimplePalette,
   spreadsheet?: SpreadSheet,
 ): DefaultCellTheme => {
-  const { basicColors } = palette;
+  const { basicColors, others: otherColors } = palette;
 
   const isTable = spreadsheet?.isTableMode();
   const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
@@ -59,6 +59,41 @@ export const getCornerCellTheme = (
         right: 8,
         bottom: 4,
         left: 8,
+      },
+      /* ---------- interaction state ----------- */
+      interactionState: {
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: basicColors[4],
+          backgroundOpacity: 0.6,
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: basicColors[4],
+          backgroundOpacity: 0.6,
+        },
+        // -------------- unselected -------------------
+        unselected: {
+          backgroundOpacity: 0.3,
+          textOpacity: 0.3,
+          opacity: 0.3,
+        },
+        // -------------- prepare select --------------
+        prepareSelect: {
+          borderColor: basicColors[14],
+          borderOpacity: 1,
+          borderWidth: 1,
+        },
+        // -------------- searchResult -------------------
+        searchResult: {
+          backgroundColor: otherColors?.results ?? basicColors[2],
+          backgroundOpacity: 1,
+        },
+        // -------------- highlight -------------------
+        highlight: {
+          backgroundColor: otherColors?.highlight ?? basicColors[6],
+          backgroundOpacity: 1,
+        },
       },
     },
     icon: {

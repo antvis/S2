@@ -18,3 +18,15 @@ export interface CellScrollOffset {
   offsetX: number;
   offsetY: number;
 }
+
+export interface CellScrollToOptions {
+  /**
+   * 是否展示滚动动画
+   */
+  animate?: boolean;
+
+  /**
+   * 是否触发滚动事件
+   */
+  skipScrollEvent?: boolean;
+}

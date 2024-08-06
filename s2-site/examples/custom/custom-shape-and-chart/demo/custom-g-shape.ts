@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable max-classes-per-file */
 import { Image as GImage, Polygon, Polyline, Rect } from '@antv/g';
 import {
   ColCell,
   CornerCell,
   DataCell,
+  GuiIcon,
   PivotSheet,
   RowCell,
   S2DataConfig,
@@ -100,6 +102,13 @@ class CustomDataCell extends DataCell {
  * 自定义 Polyline 折线: https://g.antv.antgroup.com/api/basic/polyline
  */
 class CustomRowCell extends RowCell {
+  initCell() {
+    super.initCell();
+
+    // 绘制任意图形...
+    // this.appendChild(...)
+  }
+
   drawBackgroundShape() {
     if (this.meta.rowIndex > 0) {
       return super.drawBackgroundShape();
@@ -215,4 +224,22 @@ fetch(
         },
       }),
     );
+
+    // 4. 手动获取指定单元格实例 (Group) 后绘制任意图标
+    const size = 12;
+    const meta = targetCell.getMeta();
+    const icon = new GuiIcon({
+      x: meta.x + meta.width - size,
+      y: meta.y + meta.height - size,
+      name: 'Trend',
+      width: size,
+      height: size,
+      fill: 'red',
+    });
+
+    icon.addEventListener('click', (e) => {
+      console.log('trend icon click:', e);
+    });
+
+    targetCell.appendChild(icon);
   });

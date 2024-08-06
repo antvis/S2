@@ -91,28 +91,32 @@ export const pivotSheetDataCfgForCompactMode = customMerge<S2DataConfig>(
     data: [
       ...pivotSheetDataCfg.data,
       {
-        province: '浙江',
-        city: '杭州',
-        type: '笔',
-        price: '11111111',
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '笔',
+        type: '家具',
+        number: 11111111,
       },
       {
-        province: '浙江',
-        city: '杭州',
-        type: '纸张',
-        price: '2',
+        province: '浙江省',
+        city: '杭州市',
+        sub_type: '纸张',
+        type: '办公用品',
+        number: 2,
       },
       {
-        province: '浙江',
-        city: '舟山',
-        type: '笔',
-        price: '2',
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '笔',
+        type: '办公用品',
+        number: 2,
       },
       {
-        province: '浙江',
-        city: '舟山',
-        type: '纸张',
-        price: '133.333',
+        province: '浙江省',
+        city: '舟山市',
+        sub_type: '纸张',
+        type: '办公用品',
+        number: 133.333,
       },
     ],
   },
@@ -364,9 +368,19 @@ export const s2Options: SheetComponentOptions = {
     },
     hoverAfterScroll: true,
     hoverHighlight: true,
-    selectedCellHighlight: true,
+    selectedCellHighlight: false,
     selectedCellMove: true,
     rangeSelection: true,
+    autoResetSheetStyle: (event) => {
+      // 点击配置面板时不自动重置交互
+      if (event?.target instanceof HTMLElement) {
+        return !document
+          .querySelector('.ant-collapse')
+          ?.contains(event?.target);
+      }
+
+      return true;
+    },
     // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
     brushSelection: {
@@ -406,7 +420,12 @@ export const s2Options: SheetComponentOptions = {
   //   ],
   // ],
   tooltip: S2TooltipOptions,
-  style: {},
+  style: {
+    dataCell: {
+      width: 200,
+      height: 200,
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -184,6 +184,8 @@ s2.interaction.getCells();
 s2.interaction.getActiveCells();
 // 是否是选中状态
 s2.interaction.isSelectedState();
+// 是否是刷选状态
+s2.interaction.isBrushSelectedState();
 // 获取当前交互状态
 s2.interaction.getCurrentStateName();
 // 获取当前发生过交互的单元格
@@ -351,7 +353,7 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 // 找到 "舟山市" 对应的行头单元格节点
 const rowCellNode = s2.facet.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.facet.getColNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]数量')
+const colCellNode = s2.facet.getColNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
 const data = s2.dataSet.getCellMultiData({
   query: {

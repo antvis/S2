@@ -154,7 +154,7 @@ describe('SpreadSheet Tests', () => {
 
       expect(s2.facet.hScrollBar.current()).toEqual(0);
 
-      s2.updateScrollOffset({
+      s2.interaction.scrollTo({
         offsetX: { value: 30 },
       });
       await sleep(500);
@@ -181,7 +181,7 @@ describe('SpreadSheet Tests', () => {
 
       await s2.render();
 
-      s2.updateScrollOffset({
+      s2.interaction.scrollTo({
         offsetY: { value: 20 },
       });
 
@@ -218,7 +218,7 @@ describe('SpreadSheet Tests', () => {
         }
       `);
 
-      s2.updateScrollOffset({
+      s2.interaction.scrollTo({
         rowHeaderOffsetX: { value: 30 },
       });
 
@@ -248,7 +248,7 @@ describe('SpreadSheet Tests', () => {
 
       await s2.render();
 
-      s2.updateScrollOffset({
+      s2.interaction.scrollTo({
         offsetY: { value: 20 },
         offsetX: { value: 30 },
         rowHeaderOffsetX: { value: 40 },

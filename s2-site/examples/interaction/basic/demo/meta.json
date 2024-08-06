@@ -81,10 +81,11 @@
     {
       "filename": "auto-reset-sheet-style.ts",
       "title": {
-        "zh": "自动交互状态重置",
+        "zh": "自动重置交互状态",
         "en": "Disable auto reset sheet style"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lb0%26u6LtAu/reset.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lb0%26u6LtAu/reset.gif",
+      "new": true
     },
     {
       "filename": "hover-after-scroll.ts",

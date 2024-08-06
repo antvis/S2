@@ -18,7 +18,7 @@ import { Canvas, Group, type CanvasConfig } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getDefaultSeriesNumberText } from '../../../src';
+import { EMPTY_PLACEHOLDER, getDefaultSeriesNumberText } from '../../../src';
 import { data } from '../../data/mock-dataset.json';
 import { createFakeSpreadSheet } from '../../util/helpers';
 
@@ -88,6 +88,7 @@ jest.mock('@/sheet-type', () => {
     }),
   };
 });
+
 jest.mock('@/data-set/table-data-set', () => {
   return {
     TableDataSet: jest.fn().mockImplementation(() => {
@@ -255,7 +256,9 @@ describe('Table Mode Facet Test With Compact Layout', () => {
           return LABEL_WIDTH[2];
         case '沙发':
           return LABEL_WIDTH[3];
-        case 'undefined':
+        case undefined:
+        case null:
+        case EMPTY_PLACEHOLDER:
           return LABEL_WIDTH[4];
         default:
           return 0;
@@ -278,7 +281,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     );
 
     test('col hierarchy coordinate with compact layout', () => {
-      const COMPACT_WIDTH = [53, 53, 65, 41, 73];
+      const COMPACT_WIDTH = [73, 73, 73, 73, 73];
 
       let lastX = 0;
 
@@ -304,7 +307,9 @@ describe('Table Mode Facet Test With Compact Layout', () => {
           return LABEL_WIDTH[2];
         case '沙发':
           return LABEL_WIDTH[3];
-        case 'undefined': // serialnumber & price
+        case undefined:
+        case null:
+        case EMPTY_PLACEHOLDER:
           return LABEL_WIDTH[4];
         default:
           return 0;
@@ -329,7 +334,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
-      const COMPACT_WIDTH = [80, 53, 53, 65, 41, 73];
+      const COMPACT_WIDTH = [80, 73, 73, 73, 73, 73];
 
       let lastX = 0;
 

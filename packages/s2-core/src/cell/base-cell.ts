@@ -49,6 +49,7 @@ import {
   type ResizeArea,
   type ResizeInteractionOptions,
   type S2CellType,
+  type SimpleData,
   type StateShapeLayer,
   type TextTheme,
 } from '../common/interface';
@@ -104,7 +105,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected actualText: string;
 
-  protected originalText: string;
+  protected originalText: SimpleData;
 
   protected conditions: Conditions;
 
@@ -269,7 +270,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /**
    * 获取原始的文本 (不含省略号)
    */
-  public getOriginalText(): string {
+  public getOriginalText(): SimpleData {
     return this.originalText;
   }
 
@@ -292,6 +293,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   /**
+   * 获取文本包围盒
+   */
+  public getTextLineBoundingRects() {
+    return this.textShape?.getLineBoundingRects() || [];
+  }
+
+  /**
    * 获取单元格空值占位符
    */
   public getEmptyPlaceholder() {
@@ -300,13 +308,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     } = this.spreadsheet;
 
     return getEmptyPlaceholderInner(this, placeholder);
-  }
-
-  /**
-   * 获取文本包围盒
-   */
-  public getTextLineBoundingRects() {
-    return this.textShape?.getLineBoundingRects() || [];
   }
 
   /**
@@ -443,7 +444,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textShape: shallowRender ? undefined : this.textShape,
       style: {
         ...style,
-        text,
+        // 文本必须为字符串
+        text: `${text}`,
       },
     });
 
@@ -481,7 +483,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       ...textStyle,
       x: 0,
       y: 0,
-      text: this.getFieldValue(),
+      text: this.getFieldValue()!,
       wordWrapWidth: maxTextWidth,
     });
 
@@ -557,7 +559,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // 根据当前 state 来更新 cell 的样式
-  public updateByState(stateName: InteractionStateName, cell: S2CellType) {
+  public updateByState(stateName: `${InteractionStateName}`, cell: S2CellType) {
     this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
       this.theme,
@@ -578,7 +580,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
             (this[shapeName] as DisplayObject);
 
         // 兼容多列文本 (MultiData)
-        const shapes = !isArray(shapeGroup) ? [shapeGroup] : shapeGroup;
+        const shapes = (
+          !isArray(shapeGroup) ? [shapeGroup] : shapeGroup
+        ) as DisplayObject[];
 
         // stateShape 默认 visible 为 false
         if (isStateShape) {

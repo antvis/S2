@@ -3,7 +3,10 @@ import {
   InteractionKeyboardKey,
   S2Event,
 } from '@/common/constant';
-import type { InternalFullyTheme, OffsetConfig } from '@/common/interface';
+import type {
+  InternalFullyTheme,
+  ScrollOffsetConfig,
+} from '@/common/interface';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
 import type { SpreadSheet } from '@/sheet-type';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
@@ -48,7 +51,7 @@ describe('Interaction Keyboard Move Tests', () => {
         { x: 1, id: '1', colIndex: 1 },
       ],
       getTotalHeightForRange: () => 0,
-      scrollWithAnimation: (data: OffsetConfig) => {
+      scrollWithAnimation: (data: ScrollOffsetConfig) => {
         s2.store.set('scrollX', data?.offsetX?.value!);
         s2.store.set('scrollY', data?.offsetY?.value!);
       },

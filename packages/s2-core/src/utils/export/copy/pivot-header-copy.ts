@@ -1,6 +1,6 @@
 import { filter, isEmpty, map, max, repeat, zip } from 'lodash';
 import type { ColCell, RowCell } from '../../../cell';
-import { CellType, NODE_ID_SEPARATOR } from '../../../common';
+import { CellType, NODE_ID_SEPARATOR, type SimpleData } from '../../../common';
 import type { CopyableList } from '../../../common/interface/export';
 import {
   getAllLevels,
@@ -33,13 +33,13 @@ function getLastLevelCells(
  * @param lastLevelCells
  * @param maxLevel
  * @param allLevel
- * @returns {string[][]}
+ * @returns {SimpleData[][]}
  */
 function getHeaderCellMatrix(
   lastLevelCells: Array<RowCell | ColCell>,
   maxLevel: number,
   allLevel: Set<number>,
-): string[][] {
+): SimpleData[][] {
   return map(lastLevelCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
     const { id, value, isTotals, level, spreadsheet } = meta;

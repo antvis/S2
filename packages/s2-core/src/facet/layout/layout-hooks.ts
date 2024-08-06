@@ -2,16 +2,17 @@ import { each, isBoolean, isEmpty } from 'lodash';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
+import type { FieldValue } from './interface';
 
 /**
  * re-arrange field values by custom arrange hooks
  */
 export const layoutArrange = (
   spreadsheet: SpreadSheet,
-  fieldValues: string[],
+  fieldValues: FieldValue[],
   parent: Node,
   field: string,
-): string[] => {
+): FieldValue[] => {
   if (spreadsheet.options.layoutArrange) {
     return spreadsheet.options.layoutArrange(
       spreadsheet,

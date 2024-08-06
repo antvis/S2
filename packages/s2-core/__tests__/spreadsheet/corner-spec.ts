@@ -255,6 +255,7 @@ describe('PivotSheet Corner Tests', () => {
             ...node,
             cornerType: CornerNodeType.Row,
           }),
+          updateByState: jest.fn(),
         } as unknown as S2CellType;
       });
       const selected = jest.fn();
@@ -293,6 +294,7 @@ describe('PivotSheet Corner Tests', () => {
           ...node,
           cornerType: CornerNodeType.Row,
         }),
+        updateByState: jest.fn(),
       } as unknown as S2CellType;
     });
     const selected = jest.fn();
@@ -318,6 +320,7 @@ describe('PivotSheet Corner Tests', () => {
           ...node,
           cornerType: CornerNodeType.Row,
         }),
+        updateByState: jest.fn(),
       } as unknown as S2CellType;
     });
 

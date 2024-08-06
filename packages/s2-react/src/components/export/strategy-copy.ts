@@ -9,6 +9,7 @@ import {
   type CopyableList,
   type Node,
   type SheetCopyConstructorParams,
+  type SimpleData,
   type ViewMeta,
 } from '@antv/s2';
 import { flatten, forEach, get, isArray, isNil, isObject, map } from 'lodash';
@@ -53,7 +54,7 @@ class StrategyCopyData extends PivotDataCellCopy {
 
   /* Process the data when the value position is on the rows. */
   private processValueInRow = (viewMeta: ViewMeta, placeholder: string[]) => {
-    let tempCells: string[] = [];
+    let tempCellValues: SimpleData[] = [];
     const defaultResult = placeholder ?? [''];
 
     if (!viewMeta) {
@@ -63,12 +64,12 @@ class StrategyCopyData extends PivotDataCellCopy {
     const { fieldValue, valueField, data } = viewMeta;
 
     if (isObject(fieldValue)) {
-      tempCells = processObjectValueInRow(
+      tempCellValues = processObjectValueInRow(
         fieldValue,
         this.config.formatHeader,
-      ) as unknown as string[];
+      ) as unknown as SimpleData[];
 
-      return tempCells ?? placeholder;
+      return tempCellValues ?? placeholder;
     }
 
     // 如果本身格子的数据是 null， 但是一个格子又需要绘制多个指标时，需要使用placeholder填充
@@ -78,19 +79,19 @@ class StrategyCopyData extends PivotDataCellCopy {
 
     // The main measure.
     if (!this.config.formatHeader) {
-      tempCells.push((fieldValue as string) ?? '');
+      tempCellValues.push((fieldValue as SimpleData) ?? '');
     } else {
       const mainFormatter =
         this.spreadsheet.dataSet.getFieldFormatter(valueField);
-      const tempCell = mainFormatter(fieldValue, data) ?? '';
+      const tempCellValue = mainFormatter(fieldValue, data) ?? '';
 
-      tempCells.push(tempCell);
+      tempCellValues.push(tempCellValue);
     }
 
-    return tempCells ?? placeholder;
+    return tempCellValues ?? placeholder;
   };
 
-  protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+  protected getCornerMatrix = (rowMatrix?: SimpleData[][]): SimpleData[][] => {
     return this.getCustomRowCornerMatrix(rowMatrix);
   };
 

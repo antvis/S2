@@ -169,7 +169,7 @@ export abstract class HeaderCell<
 
     const formattedValue =
       shouldFormat && formatter
-        ? formatter(value, undefined, this.meta)
+        ? formatter(value, undefined, this.meta)!
         : value;
 
     return {
@@ -348,7 +348,7 @@ export abstract class HeaderCell<
 
   protected handleByStateName(
     cells: CellMeta[],
-    stateName: InteractionStateName,
+    stateName: `${InteractionStateName}`,
   ) {
     if (includeCell(cells, this)) {
       this.updateByState(stateName);
@@ -454,6 +454,13 @@ export abstract class HeaderCell<
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
+
+    if (stateInfo?.stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+
+      return;
+    }
+
     const cells = this.getInteractedCells();
 
     if (!first(cells)) {
@@ -479,7 +486,7 @@ export abstract class HeaderCell<
     }
   }
 
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: `${InteractionStateName}`) {
     super.updateByState(stateName, this);
   }
 

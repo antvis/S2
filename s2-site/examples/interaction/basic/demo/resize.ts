@@ -18,7 +18,7 @@ fetch(
           visible: (cell) => true,
           // 是否禁用拖拽
           disable: (resizeInfo) => {
-            return resizeInfo.meta.id === 'root[&]家具[&]桌子[&]数量';
+            return resizeInfo.meta.id === 'root[&]家具[&]桌子[&]number';
           },
           // 行高调整时，影响全部行 (可选 'all' | 'current' | 'selected')
           rowResizeType: ResizeType.ALL,

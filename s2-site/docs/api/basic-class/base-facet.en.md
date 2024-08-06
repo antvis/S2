@@ -41,9 +41,9 @@ s2.facet.getRealWidth()
 | getSeriesNumberWidth              | Get the serial number width                                                                       | () => number                                                                                                                |          |
 | getContentHeight                  | Get the height of the currently rendered area                                                     | () => number                                                                                                                |          |
 | getPaginationScrollY              | x                                                                                                 | () => number                                                                                                                |          |
-| updateScrollOffset                | scroll                                                                                            | (offsetConfig: [OffsetConfig](#offsetconfig) ) => void                                                                      |          |
-| scrollWithAnimation               | Scrolling (with easing animation)                                                                 | (offsetConfig: [OffsetConfig](#offsetconfig) , duration?: number, callback?: () => void) => void                            |          |
-| scroll Immediately                | scrolling (no animation)                                                                          | (offsetConfig: [OffsetConfig](#offsetconfig) ) => void                                                                      |          |
+| updateScrollOffset                | scroll                                                                                            | (offsetConfig: [ScrollOffsetConfig](#offsetconfig) ) => void                                                                      |          |
+| scrollWithAnimation               | Scrolling (with easing animation)                                                                 | (offsetConfig: [ScrollOffsetConfig](#offsetconfig) , duration?: number, callback?: () => void) => void                            |          |
+| scroll Immediately                | scrolling (no animation)                                                                          | (offsetConfig: [ScrollOffsetConfig](#offsetconfig) ) => void                                                                      |          |
 | destroy                           | uninstall                                                                                         | () => void                                                                                                                  |          |
 | getScrollOffset                   | Get the current scroll offset                                                                     | () => [ScrollOffset](#scrolloffset)                                                                                         |          |
 | setScrollOffset                   | Set the current scroll offset                                                                     | (scrollOffset: [ScrollOffset](#scrolloffset) ) => void                                                                      |          |
@@ -158,10 +158,10 @@ export interface ViewCellHeights {
 }
 ```
 
-### OffsetConfig
+### ScrollOffsetConfig
 
 ```ts
-export interface OffsetConfig {
+export interface ScrollOffsetConfig {
   offsetX?: {
     value: number | undefined;
     animate?: boolean;

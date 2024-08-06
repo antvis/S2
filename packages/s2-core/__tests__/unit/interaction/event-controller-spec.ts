@@ -766,6 +766,23 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
+  test('should disable reset if mouse outside the canvas and autoResetSheetStyle func set to false', () => {
+    spreadsheet.setOptions({
+      interaction: {
+        autoResetSheetStyle: () => false,
+      },
+    });
+
+    spreadsheet.container.dispatchEvent(
+      new CustomEvent(
+        OriginEventType.MOUSE_OUT,
+        getClientPointOnCanvas(spreadsheet.container, -10, -10),
+      ),
+    );
+
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
   test('should disable reset if mouse outside the canvas and action tooltip is active', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 

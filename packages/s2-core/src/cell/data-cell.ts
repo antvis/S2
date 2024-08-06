@@ -94,7 +94,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleByStateName(
     cells: CellMeta[],
-    stateName: InteractionStateName,
+    stateName: `${InteractionStateName}`,
   ) {
     if (includeCell(cells, this)) {
       this.updateByState(stateName);
@@ -195,14 +195,15 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    // 获取当前 interaction 记录的 Cells 元信息列表，不仅仅是数据单元格，也可能是行头或者列头。
-    const cells = this.spreadsheet.interaction.getCells();
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);
 
       return;
     }
+
+    // 获取当前 interaction 记录的 Cells 元信息列表，不仅仅是数据单元格，也可能是行头或者列头。
+    const cells = this.spreadsheet.interaction.getCells();
 
     if (isEmpty(cells) || !stateName) {
       return;
@@ -422,7 +423,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // 明细表模式多级表头计算索引换一种策略
     if (this.spreadsheet.isTableMode() && nodes.length) {
-      const leafs = nodes[0].hierarchy.getLeaves();
+      const leafs = nodes[0]?.hierarchy?.getLeaves() || [];
 
       isEqualIndex = leafs.some((cell, i) => {
         if (nodes.some((node) => node === cell)) {
@@ -486,7 +487,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return condition.mapping(value, rowDataInfo as RawData, this);
   }
 
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: `${InteractionStateName}`) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {

@@ -458,19 +458,23 @@ describe('Pivot Dataset Test', () => {
             field: 'price',
             name: '价格',
             description: '价格描述',
+            formatter: () => 'price-formatter-value',
           },
           {
             field: 'cost',
             name: '成本',
             description: '成本描述',
+            formatter: () => 'cost-formatter-value',
           },
           {
             field: ['test-a', 'test-b'],
             name: 'test',
+            formatter: () => 3,
           },
           {
             field: /c+$/,
             name: 'test-regexp',
+            formatter: () => 4,
           },
         ],
         fields: {
@@ -513,11 +517,13 @@ describe('Pivot Dataset Test', () => {
         description: '价格描述',
         field: 'price',
         name: '价格',
+        formatter: expect.any(Function),
       });
       expect(dataSet.getFieldMeta('cost')).toStrictEqual({
         field: 'cost',
         name: '成本',
         description: '成本描述',
+        formatter: expect.any(Function),
       });
       expect(dataSet.getFieldMeta('')).toBeUndefined();
       expect(dataSet.getFieldMeta('not-found-field')).toBeUndefined();
@@ -538,23 +544,32 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldDescription('')).toBeUndefined();
       expect(dataSet.getFieldDescription('xxxx')).toBeUndefined();
     });
+
+    test('should return correct field formatter', () => {
+      expect(dataSet.getFieldFormatter('price')()).toStrictEqual(
+        'price-formatter-value',
+      );
+      expect(dataSet.getFieldFormatter('cost')()).toStrictEqual(
+        'cost-formatter-value',
+      );
+      expect(dataSet.getFieldFormatter('')()).toEqual('-');
+      expect(dataSet.getFieldFormatter('xxxx')()).toEqual('-');
+    });
   });
 
   describe('row formatter test', () => {
     let dataConfig: S2DataConfig;
-    const mockPriceFormatter = jest.fn();
-    const mockCostFormatter = jest.fn();
 
     beforeEach(() => {
       dataConfig = assembleDataCfg({
         meta: [
           {
             field: 'price',
-            formatter: mockPriceFormatter,
+            formatter: () => 'price-formatter-value',
           },
           {
             field: 'cost',
-            formatter: mockCostFormatter,
+            formatter: () => 'cost-formatter-value',
           },
         ],
         fields: {
@@ -565,23 +580,18 @@ describe('Pivot Dataset Test', () => {
       dataSet.setDataCfg(dataConfig);
     });
 
-    afterEach(() => {
-      mockPriceFormatter.mockReset();
-      mockCostFormatter.mockReset();
-    });
-
     test('should return correct total measure formatter when values in rows', () => {
       const priceFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'price' },
       } as unknown as ViewMeta);
 
-      expect(priceFormatter).toEqual(mockPriceFormatter);
+      expect(priceFormatter()).toEqual('price-formatter-value');
 
       const costFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'cost' },
       } as unknown as ViewMeta);
 
-      expect(costFormatter).toEqual(mockCostFormatter);
+      expect(costFormatter()).toEqual('cost-formatter-value');
     });
 
     test('should return default total measure formatter when values in rows', () => {
@@ -589,7 +599,7 @@ describe('Pivot Dataset Test', () => {
         rowQuery: {},
       } as unknown as ViewMeta);
 
-      expect(defaultFormatter).toEqual(mockPriceFormatter);
+      expect(defaultFormatter()).toEqual('price-formatter-value');
     });
   });
 

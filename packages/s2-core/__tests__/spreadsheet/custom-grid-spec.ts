@@ -140,7 +140,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       const rowNode = s2.facet.getRowNodes()[0];
 
       // 选中 a-1
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: rowNode.belongsCell!,
       });
 
@@ -155,7 +155,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       ]);
 
       // 取消选中 a - 1
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: rowNode.belongsCell!,
       });
       expect(s2.interaction.getActiveCells()).toBeEmpty();
@@ -176,7 +176,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           .find((node) => node.field === field)!;
 
         // 选中
-        s2.interaction.selectHeaderCell({
+        s2.interaction.changeCell({
           cell: rowNode.belongsCell!,
         });
 
@@ -338,7 +338,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       const colNode = s2.facet.getColNodes()[0];
 
       // 选中 a-1
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: colNode.belongsCell!,
       });
 
@@ -353,7 +353,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       ]);
 
       // 取消选中 a - 1
-      s2.interaction.selectHeaderCell({
+      s2.interaction.changeCell({
         cell: colNode.belongsCell!,
       });
       expect(s2.interaction.getActiveCells()).toBeEmpty();
@@ -374,7 +374,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           .find((node) => node.field === field)!;
 
         // 选中
-        s2.interaction.selectHeaderCell({
+        s2.interaction.changeCell({
           cell: colNode.belongsCell!,
         });
 

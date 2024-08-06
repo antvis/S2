@@ -40,7 +40,7 @@ const buildTotalGridHierarchy = (params: GridHeaderParams) => {
       ...(dimValues || []).map(
         (value) =>
           new TotalClass({
-            label: value,
+            label: value as string,
             isSubTotals: parentNode.isSubTotals!,
             isGrandTotals: parentNode.isGrandTotals!,
             isTotalRoot: false,
@@ -97,12 +97,12 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
 
   const arrangedValues = layoutArrange(
     spreadsheet,
-    dimValues,
+    dimValues as FieldValue[],
     parentNode,
     currentField,
   );
 
-  fieldValues.push(...(arrangedValues || []));
+  fieldValues.push(...((arrangedValues as FieldValue[]) || []));
 
   // add skeleton for empty data
   if (isEmpty(fieldValues) && currentField) {

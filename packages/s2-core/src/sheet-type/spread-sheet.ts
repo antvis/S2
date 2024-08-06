@@ -37,7 +37,6 @@ import type {
   Fields,
   InteractionOptions,
   InternalFullyTheme,
-  OffsetConfig,
   Pagination,
   S2CellType,
   S2DataConfig,
@@ -45,6 +44,7 @@ import type {
   S2Options,
   S2RenderOptions,
   S2Theme,
+  SimpleData,
   SimplePalette,
   SortMethod,
   ThemeCfg,
@@ -655,34 +655,6 @@ export abstract class SpreadSheet extends EE {
     return this.options.style?.layoutWidthType!;
   }
 
-  /**
-   * Update scroll's offset, the value can be undefined,
-   * indicate not update current value
-   * @param offsetConfig
-   * default offsetX(horizontal scroll need animation)
-   * but offsetY(vertical scroll don't need animation)
-   */
-  public updateScrollOffset(offsetConfig: OffsetConfig) {
-    const config: OffsetConfig = {
-      offsetX: {
-        value: undefined,
-        animate: false,
-      },
-      offsetY: {
-        value: undefined,
-        animate: false,
-      },
-      rowHeaderOffsetX: {
-        value: undefined,
-        animate: false,
-      },
-    };
-
-    this.facet.updateScrollOffset(
-      customMerge(config, offsetConfig) as OffsetConfig,
-    );
-  }
-
   protected isCellType(cell?: CellEventTarget) {
     return cell instanceof BaseCell;
   }
@@ -807,7 +779,7 @@ export abstract class SpreadSheet extends EE {
    * @returns 文本测量信息 TextMetrics
    */
   public measureText = memoize(
-    (text: number | string = '', font: unknown): TextMetrics | null => {
+    (text: SimpleData, font: unknown): TextMetrics | null => {
       if (!font) {
         return null;
       }
@@ -828,7 +800,7 @@ export abstract class SpreadSheet extends EE {
 
       return ctx.measureText(String(text));
     },
-    (text: any, font) => [text, ...values(font)].join(''),
+    (text: SimpleData, font) => [text, ...values(font)].join(''),
   );
 
   /**
@@ -837,10 +809,7 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本宽度
    */
-  public measureTextWidth = (
-    text: number | string = '',
-    font: unknown,
-  ): number => {
+  public measureTextWidth = (text: SimpleData, font: unknown): number => {
     const textMetrics = this.measureText(text, font);
 
     return textMetrics?.width || 0;
@@ -852,10 +821,7 @@ export abstract class SpreadSheet extends EE {
    * @param font 文本 css 样式
    * @returns 文本高度
    */
-  public measureTextHeight = (
-    text: number | string = '',
-    font: unknown,
-  ): number => {
+  public measureTextHeight = (text: SimpleData, font: unknown): number => {
     const textMetrics = this.measureText(text, font);
 
     if (!textMetrics) {

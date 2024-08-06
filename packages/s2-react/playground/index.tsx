@@ -42,7 +42,7 @@ import {
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
-import { debounce, isEmpty } from 'lodash';
+import { debounce, isEmpty, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import reactPkg from '../package.json';
@@ -911,162 +911,6 @@ function MainLayout() {
                               </Space>
                               <Space className="filter-container">
                                 <span className="label">
-                                  滚动
-                                  <Divider type="vertical" />
-                                </span>
-                                <Popover
-                                  placement="bottomRight"
-                                  content={
-                                    <>
-                                      <div style={{ width: '600px' }}>
-                                        水平滚动速率 ：
-                                        <Slider
-                                          {...sliderOptions}
-                                          defaultValue={
-                                            mergedOptions.interaction!
-                                              .scrollSpeedRatio!.horizontal
-                                          }
-                                          onChange={onScrollSpeedRatioChange(
-                                            'horizontal',
-                                          )}
-                                        />
-                                        垂直滚动速率 ：
-                                        <Slider
-                                          {...sliderOptions}
-                                          defaultValue={
-                                            mergedOptions.interaction!
-                                              .scrollSpeedRatio!.vertical
-                                          }
-                                          onChange={onScrollSpeedRatioChange(
-                                            'vertical',
-                                          )}
-                                        />
-                                      </div>
-                                    </>
-                                  }
-                                >
-                                  <Button size="small">滚动速率调整</Button>
-                                </Popover>
-                                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
-                                  <Select
-                                    defaultValue={
-                                      mergedOptions.interaction!
-                                        .overscrollBehavior
-                                    }
-                                    onChange={onOverscrollBehaviorChange}
-                                    style={{ width: 150 }}
-                                    size="small"
-                                    allowClear
-                                  >
-                                    <Select.Option value="auto">
-                                      auto
-                                    </Select.Option>
-                                    <Select.Option value="contain">
-                                      contain
-                                    </Select.Option>
-                                    <Select.Option value="none">
-                                      none
-                                    </Select.Option>
-                                  </Select>
-                                </Tooltip>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    const rowNode = s2Ref.current?.facet
-                                      .getRowNodes()
-                                      .find(
-                                        ({ id }) =>
-                                          id === 'root[&]四川省[&]成都市',
-                                      );
-
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.updateScrollOffset({
-                                      offsetY: {
-                                        value: rowNode?.y,
-                                        animate: true,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  滚动至 [成都市]
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current!);
-                                    s2Ref.current?.updateScrollOffset({
-                                      offsetY: {
-                                        value: 0,
-                                        animate: true,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  滚动到顶部
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    clearInterval(scrollTimer.current);
-                                    s2Ref.current?.updateScrollOffset({
-                                      rowHeaderOffsetX: {
-                                        value: 100,
-                                        animate: true,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  滚动行头
-                                </Button>
-                                <Button
-                                  size="small"
-                                  danger
-                                  onClick={() => {
-                                    if (
-                                      scrollTimer.current ||
-                                      !s2Ref.current?.facet.vScrollBar
-                                    ) {
-                                      clearInterval(scrollTimer.current!);
-
-                                      return;
-                                    }
-
-                                    scrollTimer.current = setInterval(() => {
-                                      const { scrollY } =
-                                        s2Ref.current?.facet.getScrollOffset()!;
-
-                                      if (
-                                        s2Ref.current?.facet.isScrollToBottom(
-                                          scrollY,
-                                        )
-                                      ) {
-                                        console.log('滚动到底部');
-                                        s2Ref.current.updateScrollOffset({
-                                          offsetY: {
-                                            value: 0,
-                                            animate: false,
-                                          },
-                                        });
-
-                                        return;
-                                      }
-
-                                      s2Ref.current!.updateScrollOffset({
-                                        offsetY: {
-                                          value: scrollY + 50,
-                                          animate: true,
-                                        },
-                                      });
-                                    }, 500) as unknown as number;
-                                  }}
-                                >
-                                  {scrollTimer.current
-                                    ? '停止滚动'
-                                    : '循环滚动'}
-                                </Button>
-                              </Space>
-                              <Space className="filter-container">
-                                <span className="label">
                                   折叠 / 展开
                                   <Divider type="vertical" />
                                 </span>
@@ -1217,255 +1061,491 @@ function MainLayout() {
                           key: 'interaction',
                           label: '交互配置',
                           children: (
-                            <Space>
-                              <Tooltip title="选中单元格后高亮联动, selectedCellHighlight 为 boolean 值时代表全开或全关">
-                                <Select
-                                  style={{ width: 260 }}
-                                  placeholder="单元格选中高亮"
-                                  allowClear
-                                  mode="multiple"
-                                  onChange={(type) => {
-                                    let selectedCellHighlight:
-                                      | boolean
-                                      | InteractionCellHighlightOptions = false;
-
-                                    selectedCellHighlight = {
-                                      rowHeader: false,
-                                      colHeader: false,
-                                      currentCol: false,
-                                      currentRow: false,
-                                    };
-                                    type.forEach((i: number) => {
-                                      // @ts-ignore
-                                      selectedCellHighlight[i] = true;
-                                    });
-
-                                    updateOptions({
-                                      interaction: {
-                                        selectedCellHighlight,
-                                      },
-                                    });
-                                  }}
+                            <>
+                              <Space className="filter-container">
+                                <span className="label">
+                                  配置
+                                  <Divider type="vertical" />
+                                </span>
+                                <Tooltip title="高亮选中单元格">
+                                  <Switch
+                                    checkedChildren="选中聚光灯开"
+                                    unCheckedChildren="选中聚光灯关"
+                                    checked={
+                                      mergedOptions?.interaction
+                                        ?.selectedCellsSpotlight
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellsSpotlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="悬停后高亮当前行列单元格 (含序号)">
+                                  <Switch
+                                    checkedChildren="hover 十字器开"
+                                    unCheckedChildren="hover 十字器关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.hoverHighlight,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverHighlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="选中后高亮当前行列单元格 (含序号)">
+                                  <Switch
+                                    checkedChildren="选中后高亮当前行列单元格开"
+                                    unCheckedChildren="选中后高亮当前行列单元格关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.selectedCellHighlight,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellHighlight: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="在数值单元格悬停 800ms,显示 tooltip">
+                                  <Switch
+                                    checkedChildren="hover 聚焦开"
+                                    unCheckedChildren="hover 聚焦关"
+                                    checked={
+                                      mergedOptions?.interaction
+                                        ?.hoverFocus as boolean
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverFocus: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="开启后,可通过键盘方向键移动单元格, 如果有滚动条则自动滚动">
+                                  <Switch
+                                    checkedChildren="键盘方向键移动选中单元格开"
+                                    unCheckedChildren="键盘方向键移动选中单元关"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.selectedCellMove,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellMove: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="行头, 列头, 数值区域可单独配置">
+                                  <Switch
+                                    checkedChildren="刷选开启"
+                                    unCheckedChildren="刷选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.brushSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          brushSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="按住 Ctrl/Command + click">
+                                  <Switch
+                                    checkedChildren="多选开启"
+                                    unCheckedChildren="多选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.multiSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          multiSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="区间快捷多选 Shift + click">
+                                  <Switch
+                                    checkedChildren="区间快捷多选开启"
+                                    unCheckedChildren="区间快捷多选关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.rangeSelection,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          rangeSelection: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="滚动后手动触发一次 hover, 触发单元格高亮效果">
+                                  <Switch
+                                    checkedChildren="表格滚动后触发 hover 开启"
+                                    unCheckedChildren="表格滚动后触发 hover 关闭"
+                                    checked={Boolean(
+                                      mergedOptions?.interaction
+                                        ?.hoverAfterScroll,
+                                    )}
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hoverAfterScroll: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+                                  <Switch
+                                    checkedChildren="自动重置交互样式开"
+                                    unCheckedChildren="自动重置交互样式关"
+                                    defaultChecked={
+                                      mergedOptions?.interaction
+                                        ?.autoResetSheetStyle as boolean
+                                    }
+                                    onChange={(checked) => {
+                                      updateOptions({
+                                        interaction: {
+                                          autoResetSheetStyle: checked,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                </Tooltip>
+                                <Tooltip
+                                  title={
+                                    <>
+                                      <p>默认隐藏列 </p>
+                                      <p>明细表: 列头指定 field: number</p>
+                                      <p>
+                                        透视表: 列头指定id:
+                                        root[&]家具[&]沙发[&]number
+                                      </p>
+                                    </>
+                                  }
                                 >
-                                  <Select.Option value="rowHeader">
-                                    rowHeader: 高亮所在行头
-                                  </Select.Option>
-                                  <Select.Option value="colHeader">
-                                    colHeader: 高亮所在列头
-                                  </Select.Option>
-                                  <Select.Option value="currentRow">
-                                    currentRow: 高亮所在行
-                                  </Select.Option>
-                                  <Select.Option value="currentCol">
-                                    currentCol: 高亮所在列
-                                  </Select.Option>
-                                </Select>
-                              </Tooltip>
-                              <Tooltip title="高亮选中单元格">
-                                <Switch
-                                  checkedChildren="选中聚光灯开"
-                                  unCheckedChildren="选中聚光灯关"
-                                  checked={
-                                    mergedOptions?.interaction
-                                      ?.selectedCellsSpotlight
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        selectedCellsSpotlight: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="悬停后高亮当前行列单元格 (含序号)">
-                                <Switch
-                                  checkedChildren="hover 十字器开"
-                                  unCheckedChildren="hover 十字器关"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction?.hoverHighlight,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        hoverHighlight: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="选中后高亮当前行列单元格 (含序号)">
-                                <Switch
-                                  checkedChildren="选中后高亮当前行列单元格开"
-                                  unCheckedChildren="选中后高亮当前行列单元格关"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction
-                                      ?.selectedCellHighlight,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        selectedCellHighlight: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="在数值单元格悬停 800ms,显示 tooltip">
-                                <Switch
-                                  checkedChildren="hover 聚焦开"
-                                  unCheckedChildren="hover 聚焦关"
-                                  checked={
-                                    mergedOptions?.interaction
-                                      ?.hoverFocus as boolean
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        hoverFocus: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="开启后,可通过键盘方向键移动单元格, 如果有滚动条则自动滚动">
-                                <Switch
-                                  checkedChildren="键盘方向键移动选中单元格开"
-                                  unCheckedChildren="键盘方向键移动选中单元关"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction
-                                      ?.selectedCellMove,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        selectedCellMove: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="行头, 列头, 数值区域可单独配置">
-                                <Switch
-                                  checkedChildren="刷选开启"
-                                  unCheckedChildren="刷选关闭"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction?.brushSelection,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        brushSelection: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="按住 Ctrl/Command + click">
-                                <Switch
-                                  checkedChildren="多选开启"
-                                  unCheckedChildren="多选关闭"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction?.multiSelection,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        multiSelection: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="区间快捷多选 Shift + click">
-                                <Switch
-                                  checkedChildren="区间快捷多选开启"
-                                  unCheckedChildren="区间快捷多选关闭"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction?.rangeSelection,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        rangeSelection: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="滚动后手动触发一次 hover, 触发单元格高亮效果">
-                                <Switch
-                                  checkedChildren="表格滚动后触发 hover 开启"
-                                  unCheckedChildren="表格滚动后触发 hover 关闭"
-                                  checked={Boolean(
-                                    mergedOptions?.interaction
-                                      ?.hoverAfterScroll,
-                                  )}
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        hoverAfterScroll: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
-                                <Switch
-                                  checkedChildren="自动重置交互样式开"
-                                  unCheckedChildren="自动重置交互样式关"
-                                  defaultChecked={
-                                    mergedOptions?.interaction
-                                      ?.autoResetSheetStyle
-                                  }
-                                  onChange={(checked) => {
-                                    updateOptions({
-                                      interaction: {
-                                        autoResetSheetStyle: checked,
-                                      },
-                                    });
-                                  }}
-                                />
-                              </Tooltip>
-                              <Tooltip
-                                title={
-                                  <>
-                                    <p>默认隐藏列 </p>
-                                    <p>明细表: 列头指定 field: number</p>
-                                    <p>
-                                      透视表: 列头指定id:
-                                      root[&]家具[&]沙发[&]number
-                                    </p>
-                                  </>
-                                }
-                              >
-                                <Select
-                                  style={{ width: 300 }}
-                                  defaultValue={
-                                    mergedOptions?.interaction
-                                      ?.hiddenColumnFields
-                                  }
-                                  mode="multiple"
-                                  placeholder="默认隐藏列"
-                                  onChange={(fields) => {
-                                    updateOptions({
-                                      interaction: {
-                                        hiddenColumnFields: fields,
-                                      },
-                                    });
-                                  }}
-                                >
-                                  {columnOptions.map((column) => (
-                                    <Select.Option
-                                      value={column}
-                                      key={column as string}
-                                    >
-                                      {column as string}
+                                  <Select
+                                    style={{ width: 300 }}
+                                    defaultValue={
+                                      mergedOptions?.interaction
+                                        ?.hiddenColumnFields
+                                    }
+                                    mode="multiple"
+                                    placeholder="默认隐藏列"
+                                    onChange={(fields) => {
+                                      updateOptions({
+                                        interaction: {
+                                          hiddenColumnFields: fields,
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    {columnOptions.map((column) => (
+                                      <Select.Option
+                                        value={column}
+                                        key={column as string}
+                                      >
+                                        {column as string}
+                                      </Select.Option>
+                                    ))}
+                                  </Select>
+                                </Tooltip>
+                                <Tooltip title="选中单元格后高亮联动, selectedCellHighlight 为 boolean 值时代表全开或全关">
+                                  <Select
+                                    style={{ width: 260 }}
+                                    placeholder="单元格选中高亮"
+                                    allowClear
+                                    mode="multiple"
+                                    onChange={(type) => {
+                                      let selectedCellHighlight:
+                                        | boolean
+                                        | InteractionCellHighlightOptions =
+                                        false;
+
+                                      selectedCellHighlight = {
+                                        rowHeader: false,
+                                        colHeader: false,
+                                        currentCol: false,
+                                        currentRow: false,
+                                      };
+                                      type.forEach((i: number) => {
+                                        // @ts-ignore
+                                        selectedCellHighlight[i] = true;
+                                      });
+
+                                      updateOptions({
+                                        interaction: {
+                                          selectedCellHighlight,
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    <Select.Option value="rowHeader">
+                                      rowHeader: 高亮所在行头
                                     </Select.Option>
-                                  ))}
-                                </Select>
-                              </Tooltip>
-                            </Space>
+                                    <Select.Option value="colHeader">
+                                      colHeader: 高亮所在列头
+                                    </Select.Option>
+                                    <Select.Option value="currentRow">
+                                      currentRow: 高亮所在行
+                                    </Select.Option>
+                                    <Select.Option value="currentCol">
+                                      currentCol: 高亮所在列
+                                    </Select.Option>
+                                  </Select>
+                                </Tooltip>
+                              </Space>
+                              <Space className="filter-container">
+                                <span className="label">
+                                  滚动
+                                  <Divider type="vertical" />
+                                </span>
+                                <Popover
+                                  placement="bottomRight"
+                                  content={
+                                    <>
+                                      <div style={{ width: '600px' }}>
+                                        水平滚动速率 ：
+                                        <Slider
+                                          {...sliderOptions}
+                                          defaultValue={
+                                            mergedOptions.interaction!
+                                              .scrollSpeedRatio!.horizontal
+                                          }
+                                          onChange={onScrollSpeedRatioChange(
+                                            'horizontal',
+                                          )}
+                                        />
+                                        垂直滚动速率 ：
+                                        <Slider
+                                          {...sliderOptions}
+                                          defaultValue={
+                                            mergedOptions.interaction!
+                                              .scrollSpeedRatio!.vertical
+                                          }
+                                          onChange={onScrollSpeedRatioChange(
+                                            'vertical',
+                                          )}
+                                        />
+                                      </div>
+                                    </>
+                                  }
+                                >
+                                  <Button size="small">滚动速率调整</Button>
+                                </Popover>
+                                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
+                                  <Select
+                                    defaultValue={
+                                      mergedOptions.interaction!
+                                        .overscrollBehavior
+                                    }
+                                    onChange={onOverscrollBehaviorChange}
+                                    style={{ width: 150 }}
+                                    size="small"
+                                    allowClear
+                                  >
+                                    <Select.Option value="auto">
+                                      auto
+                                    </Select.Option>
+                                    <Select.Option value="contain">
+                                      contain
+                                    </Select.Option>
+                                    <Select.Option value="none">
+                                      none
+                                    </Select.Option>
+                                  </Select>
+                                </Tooltip>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current!);
+                                    s2Ref.current?.interaction.scrollToCellById(
+                                      'root[&]四川省[&]成都市',
+                                    );
+                                  }}
+                                >
+                                  滚动至 [成都市]
+                                </Button>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current!);
+                                    s2Ref.current?.interaction.scrollToTop();
+                                  }}
+                                >
+                                  滚动到顶部
+                                </Button>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current!);
+                                    s2Ref.current?.interaction.scrollToBottom();
+                                  }}
+                                >
+                                  滚动到底部
+                                </Button>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current!);
+                                    s2Ref.current?.interaction.scrollToLeft();
+                                  }}
+                                >
+                                  滚动到左边
+                                </Button>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current!);
+                                    s2Ref.current?.interaction.scrollToRight();
+                                  }}
+                                >
+                                  滚动到右边
+                                </Button>
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    clearInterval(scrollTimer.current);
+                                    s2Ref.current?.interaction.scrollTo({
+                                      rowHeaderOffsetX: {
+                                        value: 100,
+                                        animate: true,
+                                      },
+                                    });
+                                  }}
+                                >
+                                  滚动行头
+                                </Button>
+                                <Button
+                                  size="small"
+                                  danger
+                                  onClick={() => {
+                                    if (
+                                      scrollTimer.current ||
+                                      !s2Ref.current?.facet.vScrollBar
+                                    ) {
+                                      clearInterval(scrollTimer.current!);
+
+                                      return;
+                                    }
+
+                                    scrollTimer.current = setInterval(() => {
+                                      const { scrollY } =
+                                        s2Ref.current?.facet.getScrollOffset()!;
+
+                                      if (
+                                        s2Ref.current?.facet.isScrollToBottom(
+                                          scrollY,
+                                        )
+                                      ) {
+                                        console.log('滚动到底部');
+                                        s2Ref.current.interaction.scrollToTop({
+                                          animate: false,
+                                        });
+
+                                        return;
+                                      }
+
+                                      s2Ref.current!.interaction.scrollTo({
+                                        offsetY: {
+                                          value: scrollY + 50,
+                                          animate: true,
+                                        },
+                                      });
+                                    }, 500) as unknown as number;
+                                  }}
+                                >
+                                  {scrollTimer.current
+                                    ? '停止滚动'
+                                    : '循环滚动'}
+                                </Button>
+                              </Space>
+                              <Space className="filter-container">
+                                <span className="label">
+                                  高亮 / 选中
+                                  <Divider type="vertical" />
+                                </span>
+                                <Tooltip title="s2.interaction.selectAll()">
+                                  <Button
+                                    onClick={() => {
+                                      s2Ref.current?.interaction.selectAll();
+                                    }}
+                                  >
+                                    全选
+                                  </Button>
+                                </Tooltip>
+                                <Tooltip title="随机高亮: s2.interaction.highlightCell(cell)">
+                                  <Button
+                                    onClick={() => {
+                                      s2Ref.current?.interaction.highlightCell(
+                                        s2Ref.current.facet.getCells()[
+                                          random(
+                                            0,
+                                            s2Ref.current.facet.getCells()
+                                              .length - 1,
+                                          )
+                                        ],
+                                      );
+                                    }}
+                                  >
+                                    高亮单元格
+                                  </Button>
+                                </Tooltip>
+                                <Tooltip title="随机选中: s2.interaction.selectCell(cell)">
+                                  <Button
+                                    onClick={() => {
+                                      s2Ref.current?.interaction.selectCell(
+                                        s2Ref.current.facet.getCells()[
+                                          random(
+                                            0,
+                                            s2Ref.current.facet.getCells()
+                                              .length - 1,
+                                          )
+                                        ],
+                                      );
+                                    }}
+                                  >
+                                    选中单元格
+                                  </Button>
+                                </Tooltip>
+
+                                <Tooltip title="s2.interaction.reset()">
+                                  <Button
+                                    danger
+                                    onClick={() => {
+                                      s2Ref.current?.interaction.reset();
+                                    }}
+                                  >
+                                    重置
+                                  </Button>
+                                </Tooltip>
+                              </Space>
+                            </>
                           ),
                         },
                         {

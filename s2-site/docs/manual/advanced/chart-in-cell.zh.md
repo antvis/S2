@@ -256,6 +256,13 @@ import { Image as GImage } from '@antv/g';
 import { CornerCell } from '@antv/s2';
 
 class CustomCornerCell extends CornerCell {
+  initCell()
+    super.initCell()
+
+    // 绘制任意图形
+    this.appendChild(...)
+  }
+
   drawBackgroundShape() {
     const url = 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png';
 
@@ -336,8 +343,39 @@ targetCell?.appendChild(
 );
 ```
 
-#### 2.4 效果
+#### 2.4 手动获取指定单元格实例 (Group) 后绘制 icon
 
-<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TPuRQaXCSQEAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
+表格内的 `Icon` 也是一种特殊图形，可以通过 `GuiIcon` 生成图标实例，然后绘制。
+
+```ts
+import { GuiIcon } from '@antv/s2';
+
+await s2.render();
+
+const targetCell = s2.facet.getDataCells()[0];
+
+const size = 12;
+const meta = targetCell.getMeta();
+
+// 例：绘制在右下角
+const icon = new GuiIcon({
+  x: meta.x + meta.width - size,
+  y: meta.y + meta.height - size,
+  name: 'Trend',
+  width: size,
+  height: size,
+  fill: 'red',
+});
+
+icon.addEventListener('click', (e) => {
+  console.log('trend icon click:', e);
+});
+
+targetCell.appendChild(icon);
+```
+
+#### 2.5 效果
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*X2KJSI-po1sAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600"/>
 
 [查看示例](/examples/custom/custom-shape-and-chart/#custom-g-shape)

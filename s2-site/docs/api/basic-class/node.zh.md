@@ -11,7 +11,7 @@ node.isTotals // false
 
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| id | 节点 id | `string` |
+| id | 节点 id （如维值为空，会将 `null` 转换为 `$$null$$`, 便于内部识别原始维值） | `string` |
 | field | 节点 key | `string` |
 | value | 节点值 | `string` |
 | level | 节点等级 | `number` |
