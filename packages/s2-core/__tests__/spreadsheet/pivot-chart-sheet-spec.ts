@@ -773,11 +773,10 @@ describe('Pivot Chart Tests', () => {
 
       expectFrozenGroup(s2, 'columnHeader');
       expectFrozenGroup(s2, 'axisColumnHeader');
-
       let prevCol = getFrozenGroupPosition(s2, 'columnHeader');
       let prevAxisCol = getFrozenGroupPosition(s2, 'axisColumnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 100, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 100, animate: false } });
       // 移动后，frozen col 会改变 而 trailing col 的位置不变
       let currentCol = getFrozenGroupPosition(s2, 'columnHeader');
       let currentAxisCol = getFrozenGroupPosition(s2, 'axisColumnHeader');
@@ -790,11 +789,11 @@ describe('Pivot Chart Tests', () => {
 
       // 移动超过角头宽度
       // 移动后，frozen col 和 trailing col 的位置都不变
-      s2.updateScrollOffset({ offsetX: { value: 400, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 400, animate: false } });
       prevCol = getFrozenGroupPosition(s2, 'columnHeader');
       prevAxisCol = getFrozenGroupPosition(s2, 'axisColumnHeader');
 
-      s2.updateScrollOffset({ offsetX: { value: 400, animate: false } });
+      s2.interaction.scrollTo({ offsetX: { value: 400, animate: false } });
 
       currentCol = getFrozenGroupPosition(s2, 'columnHeader');
       currentAxisCol = getFrozenGroupPosition(s2, 'axisColumnHeader');

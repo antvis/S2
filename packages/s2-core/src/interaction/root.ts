@@ -411,15 +411,15 @@ export class RootInteraction {
       skipScrollEvent: false,
       offsetX: {
         value: scrollX,
-        animate: true,
+        animate: false,
       },
       offsetY: {
         value: scrollY,
-        animate: true,
+        animate: false,
       },
       rowHeaderOffsetX: {
         value: rowHeaderScrollX,
-        animate: true,
+        animate: false,
       },
     };
 
