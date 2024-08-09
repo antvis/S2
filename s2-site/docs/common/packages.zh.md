@@ -8,10 +8,36 @@ order: 5
 创建 `S2` 表格有三种方式，基础类版本 `@antv/s2` 和 基于 `@antv/s2` 封装的 `React` 和 `Vue3` 版本：
 
 - `@antv/s2`: 基于 `Canvas` 和 [AntV/G 6.0](https://g.antv.antgroup.com) 开发，提供基本的表格展示/交互等能力。
-- `@antv/s2-react`: 基于 `React 18`, `@antv/s2`, `antd` 封装，提供配套的 [分析组件](/manual/basic/analysis/switcher).
-- `@antv/s2-vue`: 基于 `Vue3`, `@antv/s2` , `ant-design-vue` 封装，提供配套的分析组件。
 
-**也就是说** `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等任意框架中使用。
+版本依赖：无
+
+- `@antv/s2-react`: 基于 `React 18`, `@antv/s2`, `antd@5.x` 封装，提供配套的 [分析组件](/manual/basic/analysis/switcher).
+
+版本依赖：
+
+```json
+"peerDependencies": {
+  "@ant-design/icons": ">=4.7.0",
+  "@antv/s2": "^2.0.0-next.1",
+  "antd": "^5.0.0",
+  "react": ">=16.9.0",
+  "react-dom": ">=16.9.0"
+}
+```
+
+- `@antv/s2-vue`: 基于 `Vue3`, `@antv/s2` , `ant-design-vue@3.x` 封装，提供配套的分析组件。
+
+版本依赖：
+
+```json
+"peerDependencies": {
+  "@antv/s2": "^2.0.0-next.1",
+  "ant-design-vue": "^3.2.0",
+  "vue": ">=3.x"
+}
+```
+
+**也就是说** `@antv/s2` 和**框架无关**，无任何**额外依赖**, 你可以在 `Vue`, `Angular` 等任意框架中使用。
 :::
 
 | 版本号  | 稳定版    | 测试版   | 预览版  | 先行版 | 包大小  | 下载量    |
