@@ -161,7 +161,7 @@ describe('TableSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1421
-    test.each(['zh_CN', 'en_US'])(
+    test.each(['zh_CN', 'en_US', 'ru'])(
       'should render group sort menu',
       (lang: LangType) => {
         setLang(lang);
@@ -180,9 +180,23 @@ describe('TableSheet Tests', () => {
         sheet.handleGroupSort(event, null);
 
         const isEnUS = lang === 'en_US';
-        const groupAscText = isEnUS ? 'ASC' : '升序';
-        const groupDescText = isEnUS ? 'DESC' : '降序';
-        const groupNoneText = isEnUS ? 'No order' : '不排序';
+        const isRu = lang === 'ru';
+
+        let groupAscText = '升序';
+        let groupDescText = '降序';
+        let groupNoneText = '不排序';
+
+        if (isEnUS) {
+          groupAscText = 'ASC';
+          groupDescText = 'DESC';
+          groupNoneText = 'No order';
+        }
+
+        if (isRu) {
+          groupAscText = 'По возрастанию';
+          groupDescText = 'По убыванию';
+          groupNoneText = 'Не отсортировано';
+        }
 
         expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
           expect.anything(),
