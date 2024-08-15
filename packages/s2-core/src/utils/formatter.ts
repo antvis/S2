@@ -1,12 +1,16 @@
 import { isNaN, toNumber } from 'lodash';
 import { PRECISION } from '../common/constant';
-import { getLang } from '../common/i18n';
+import { getLang, type LangType } from '../common/i18n';
 
-const FORMATTERS = {
+const FORMATTERS: { [K in LangType]: [string[], number[]] } = {
   en_US: ['KMBTP'.split(''), [1e3, 1e3, 1e3, 1e3, 1e3]],
+  ru_RU: [
+    ['тысяча', 'миллион', 'миллиард', 'триллион', 'квадриллион'],
+    [1e3, 1e3, 1e3, 1e3, 1e3],
+  ],
   zh_CN: [
     ['万', '亿'],
-    [10000, 1e4],
+    [1e4, 1e4],
   ],
 };
 
