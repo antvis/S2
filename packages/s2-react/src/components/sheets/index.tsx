@@ -1,9 +1,10 @@
 import type { SpreadSheet } from '@antv/s2';
-import React from 'react';
-import zhCN from 'antd/es/locale/zh_CN';
-import enUS from 'antd/es/locale/en_US';
 import { getLang } from '@antv/s2';
 import { ConfigProvider } from 'antd';
+import enUS from 'antd/es/locale/en_US';
+import ru from 'antd/es/locale/ru_RU';
+import zhCN from 'antd/es/locale/zh_CN';
+import React from 'react';
 import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
@@ -42,7 +43,9 @@ const Sheet = React.forwardRef(
       }
     }, [sheetType, sheetProps]);
 
-    const locale = getLang() === 'zh_CN' ? zhCN : enUS;
+    const lang = getLang();
+    // eslint-disable-next-line no-nested-ternary
+    const locale = lang === 'zh_CN' ? zhCN : lang === 'ru' ? ru : enUS;
 
     return (
       <React.StrictMode>
