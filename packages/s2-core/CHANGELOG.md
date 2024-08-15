@@ -1,3 +1,19 @@
+# [@antv/s2-v2.0.0-next.26](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.25...@antv/s2-v2.0.0-next.26) (2024-08-09)
+
+
+### Bug Fixes
+
+* 修改滚动动画默认值为 false ([23df3ca](https://github.com/antvis/S2/commit/23df3ca19680a197411a6667760f73229716bae5))
+* 处理自定义mini图显示柱状图时，全为正值&全为零值 展示异常问题 ([#2826](https://github.com/antvis/S2/issues/2826)) ([81def62](https://github.com/antvis/S2/commit/81def62ddc3e69ff2a2426b9c4824549ca728194))
+* 调整维值生成规则, 修复导出格式化数据时空数据占位符未生效 close [#2808](https://github.com/antvis/S2/issues/2808) ([#2810](https://github.com/antvis/S2/issues/2810)) ([ad14ff4](https://github.com/antvis/S2/commit/ad14ff48dbc2b6874c18bdd3ccf1678f5b79f130))
+
+
+### Features
+
+* **interaction:** 新增选中/高亮单元格 & 滚动 API ([#2586](https://github.com/antvis/S2/issues/2586)) ([ac4f5ab](https://github.com/antvis/S2/commit/ac4f5ab9d87bf9bf725b2ef872342a597823ebf6))
+* 更新 G 版本, 支持透传 dblClickSpeed ([ce11006](https://github.com/antvis/S2/commit/ce110069c855bc68fd89e014f8436d6e8bf92a49))
+* 统一透视表和明细表 meta 中的 query 参数 ([#2818](https://github.com/antvis/S2/issues/2818)) ([ffdde84](https://github.com/antvis/S2/commit/ffdde84fc6a0ecad21888b8d66cffd1356568662))
+
 # [@antv/s2-v2.0.0-next.25](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.24...@antv/s2-v2.0.0-next.25) (2024-07-05)
 
 

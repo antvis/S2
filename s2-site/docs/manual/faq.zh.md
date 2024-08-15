@@ -267,9 +267,9 @@ s2.setTheme({
 
 目前只有 React 版本 `@antv/s2-react` 支持编辑表格，其他版本暂不支持，需参考 [源码](https://github.com/antvis/S2/blob/2d85d5739f5a3a52e92df699a935df93aa2a6a73/packages/s2-react/src/components/sheets/editable-sheet/index.tsx#L10) 自行实现
 
-### 如何注册 `AntV/G` 渲染引擎的插件？
+### 如何注册 `AntV/G` 渲染引擎的插件/初始化参数？
 
-了解 `AntV/G` [插件系统](https://g.antv.antgroup.com/plugins/intro).
+了解 `AntV/G` [初始化参数](https://g.antv.antgroup.com/api/canvas/options) 和 [插件系统](https://g.antv.antgroup.com/plugins/intro).
 
 ```ts
 import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
@@ -279,8 +279,12 @@ const s2Options = {
     console.log('当前已注册插件：', renderer.getPlugins(), renderer.getConfig());
     renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
 
+    // 透传 G 的初始化参数：https://g.antv.antgroup.com/api/canvas/options
     return {
       supportsCSSTransform: true,
+      devicePixelRatio: 2,
+      dblClickSpeed: 500,
+      cursor: 'crosshair',
     };
   },
 }

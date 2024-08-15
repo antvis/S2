@@ -38,6 +38,7 @@ const s2Options = {
       // 是否支持在容器上应用 CSS Transform 的情况下确保交互事件坐标转换正确
       supportsCSSTransform: true,
       devicePixelRatio: 2,
+      dblClickSpeed: 500,
       cursor: 'crosshair',
     };
   }
