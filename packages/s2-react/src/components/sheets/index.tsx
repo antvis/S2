@@ -2,7 +2,7 @@ import type { SpreadSheet } from '@antv/s2';
 import { getLang } from '@antv/s2';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/es/locale/en_US';
-import ru from 'antd/es/locale/ru_RU';
+import ruRU from 'antd/es/locale/ru_RU';
 import zhCN from 'antd/es/locale/zh_CN';
 import React from 'react';
 import { EditableSheet } from './editable-sheet';
@@ -45,7 +45,7 @@ const Sheet = React.forwardRef(
 
     const lang = getLang();
     // eslint-disable-next-line no-nested-ternary
-    const locale = lang === 'zh_CN' ? zhCN : lang === 'ru' ? ru : enUS;
+    const locale = lang === 'zh_CN' ? zhCN : lang === 'ru_RU' ? ruRU : enUS;
 
     return (
       <React.StrictMode>

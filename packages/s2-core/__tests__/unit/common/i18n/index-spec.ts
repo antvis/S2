@@ -35,8 +35,8 @@ describe('I18n Test', () => {
     expect(i18n('，')).toEqual(', ');
   });
 
-  test('should show russian text when set lang to ru', () => {
-    setLang('ru');
+  test('should show russian text when set lang to ru_RU', () => {
+    setLang('ru_RU');
     expect(i18n('小计')).toEqual('Промежуточный итог');
     expect(i18n('总计')).toEqual('Общий итог');
     expect(i18n('总和')).toEqual('(СУММА)');

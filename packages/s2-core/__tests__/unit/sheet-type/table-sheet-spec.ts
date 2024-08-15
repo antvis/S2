@@ -1,9 +1,9 @@
-import { getContainer } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
-import { TableSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
+import { TableSheet } from '@/sheet-type';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;
@@ -161,7 +161,7 @@ describe('TableSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1421
-    test.each(['zh_CN', 'en_US', 'ru'])(
+    test.each(['zh_CN', 'en_US', 'ru_RU'])(
       'should render group sort menu',
       (lang: LangType) => {
         setLang(lang);
@@ -180,7 +180,7 @@ describe('TableSheet Tests', () => {
         sheet.handleGroupSort(event, null);
 
         const isEnUS = lang === 'en_US';
-        const isRu = lang === 'ru';
+        const isRu = lang === 'ru_RU';
 
         let groupAscText = '升序';
         let groupDescText = '降序';

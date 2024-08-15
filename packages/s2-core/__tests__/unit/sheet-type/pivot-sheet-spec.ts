@@ -1,28 +1,28 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
-import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep, get, last } from 'lodash';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
+import type { CornerCell } from '@/cell/corner-cell';
 import {
   CellTypes,
-  type CustomSVGIcon,
-  getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
+  S2Event,
+  TOOLTIP_CONTAINER_CLS,
+  getIcon,
+  setLang,
+  type CustomSVGIcon,
+  type LangType,
   type RowCellCollapseTreeRowsType,
   type S2DataConfig,
-  S2Event,
   type S2Options,
   type TooltipShowOptions,
-  TOOLTIP_CONTAINER_CLS,
-  setLang,
-  type LangType,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/utils/hide-columns');
 
@@ -888,7 +888,7 @@ describe('PivotSheet Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1421
-  test.each(['zh_CN', 'en_US', 'ru'])(
+  test.each(['zh_CN', 'en_US', 'ru_RU'])(
     'should render group sort menu',
     (lang: LangType) => {
       setLang(lang);
@@ -906,7 +906,7 @@ describe('PivotSheet Tests', () => {
       sheet.handleGroupSort(event, null);
 
       const isEnUS = lang === 'en_US';
-      const isRu = lang === 'ru';
+      const isRu = lang === 'ru_RU';
 
       let groupAscText = '组内升序';
       let groupDescText = '组内降序';

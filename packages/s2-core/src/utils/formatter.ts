@@ -4,7 +4,7 @@ import { getLang, type LangType } from '../common/i18n';
 
 const FORMATTERS: { [K in LangType]: [string[], number[]] } = {
   en_US: ['KMBTP'.split(''), [1e3, 1e3, 1e3, 1e3, 1e3]],
-  ru: [
+  ru_RU: [
     ['тысяча', 'миллион', 'миллиард', 'триллион', 'квадриллион'],
     [1e3, 1e3, 1e3, 1e3, 1e3],
   ],
