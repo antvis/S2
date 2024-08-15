@@ -1007,7 +1007,7 @@ describe('PivotSheet Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1421
-  test.each(['zh_CN', 'en_US'] as LangType[])(
+  test.each(['zh_CN', 'en_US', 'ru_RU'] as LangType[])(
     'should render group sort menu',
     async (lang) => {
       setLang(lang);
@@ -1026,9 +1026,23 @@ describe('PivotSheet Tests', () => {
       sheet.handleGroupSort(event, null as unknown as Node);
 
       const isEnUS = lang === 'en_US';
-      const groupAscText = isEnUS ? 'Group ASC' : '组内升序';
-      const groupDescText = isEnUS ? 'Group DESC' : '组内降序';
-      const groupNoneText = isEnUS ? 'No order' : '不排序';
+      const isRu = lang === 'ru_RU';
+
+      let groupAscText = '组内升序';
+      let groupDescText = '组内降序';
+      let groupNoneText = '不排序';
+
+      if (isEnUS) {
+        groupAscText = 'Group ASC';
+        groupDescText = 'Group DESC';
+        groupNoneText = 'No order';
+      }
+
+      if (isRu) {
+        groupAscText = 'Группировать по возрастанию';
+        groupDescText = 'Группировать по убыванию';
+        groupNoneText = 'Не отсортировано';
+      }
 
       const options: TooltipOptions = {
         onlyShowOperator: true,
