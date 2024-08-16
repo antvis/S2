@@ -82,13 +82,14 @@ export interface CopyAllDataParams {
   formatOptions?: FormatOptions;
 
   /**
-   * 导出时支持自定义 (transformer) 数据导出格式化方法
+   * 自定义数据转换器
    * @see https://s2.antv.antgroup.com/manual/advanced/interaction/copy
+   * @example https://s2.antv.antgroup.com/examples/interaction/basic#copy-export
    */
   customTransformer?: (transformer: Transformer) => Partial<Transformer>;
 
   /**
-   * 是否开启异步复制/导出
+   * 是否开启异步复制
    */
   async?: boolean;
 }
