@@ -30,7 +30,7 @@ s2.store.set('key', value) // 存储
 | lastRenderedColumnFields | 上一次渲染的列头配置 | `string[]` |
 | resized | 是否手动调整过宽高 | `boolean` |
 | visibleActionIcons | hover 显示的 icon 缓存 | `GuiIcon[]` |
-| lastClickedCell | 上一次点击的单元格 | `S2CellType<ViewMeta>` |
+| lastClickedCell | 上一次点击的单元格 | S2CellType<[`ViewMeta`](#viewmeta)> |
 | initOverscrollBehavior | 初始滚动链状态 | `'auto' \| 'none' \| 'contain'` |
 | sortMethodMap | 排序方式 | `Record<string, SortMethod>` |
 | [key: string] | 其他任意字段 | `unknown` |

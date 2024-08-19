@@ -5,8 +5,8 @@ import type { RawData } from '../common/interface/s2DataConfig';
 
 export class CellData {
   constructor(
-    private raw: RawData,
-    private extraField: string,
+    public readonly raw: RawData,
+    public readonly extraField: string,
   ) {}
 
   static getCellData(raw: RawData, extraField: string) {

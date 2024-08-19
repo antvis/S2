@@ -179,7 +179,7 @@ const s2DataConfig = {
 | sortByMeasure | 按照度量值（数值）排序 | `string` | - |  |
 | query | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` | `object` | - |  |
 | type | 组内排序用来显示 icon | `string` | - |  |
-| data | 当前排序数据列表 | `Array<string \| CellData>` | - |  |
+| data | 当前排序数据列表 | Array<`string` \| [`CellData`](/api/basic-class/cell-data)> | - |  |
 
 #### 维度值（行/列头）
 
