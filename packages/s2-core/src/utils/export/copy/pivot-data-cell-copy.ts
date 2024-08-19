@@ -305,16 +305,23 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       return this.getCustomRowCornerMatrix(rowMatrix);
     }
 
+    const { colsHierarchy } = this.spreadsheet.facet.getLayoutResult();
     const { fields } = this.spreadsheet.dataCfg;
     const { columns = [], rows = [] } = fields;
-    // 为了对齐数值
-    const customColumns = [...columns, ''];
+    // 为了对齐数值, 增加 "" 占位
+    // 自定义列头不需要占位, 但是为树状结构, 需要根据采样节点解析: https://github.com/antvis/S2/issues/2844)
+    const customColumns = this.spreadsheet.isCustomColumnFields()
+      ? colsHierarchy
+          .getNodes()
+          .slice(0, colsHierarchy.sampleNodesForAllLevels.length)
+          .map((node) => node.field)
+      : [...columns, ''];
     const maxRowLen = this.spreadsheet.isHierarchyTreeType()
       ? getMaxRowLen(rowMatrix ?? [])
       : rows.length;
     const customRows = slice(rows, 0, maxRowLen);
 
-    /*
+    /**
      * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
      */
     return map(customColumns, (colField, colIndex) =>
