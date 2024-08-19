@@ -108,7 +108,7 @@ export const customRowGridFields: S2DataConfig['fields'] = {
 };
 
 export const customColGridFields: S2DataConfig['fields'] = {
-  rows: ['type'],
+  rows: ['type', 'sub_type'],
   columns: customGridTreeNodes,
   values: ['measure-1', 'measure-2', 'measure-3', 'measure-4', 'measure-5'],
   valueInCols: true,
