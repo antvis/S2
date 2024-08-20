@@ -2,6 +2,7 @@ import { Group, Rect } from '@antv/g';
 import {
   isBoolean,
   isEmpty,
+  isNil,
   isNumber,
   keys,
   last,
@@ -358,12 +359,12 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public getCellMeta(rowIndex: number, colIndex: number) {
     const { options, dataSet } = this.spreadsheet;
     const colLeafNodes = this.getColLeafNodes();
     const colNode = colLeafNodes[colIndex];
 
-    if (!colNode) {
+    if (isNil(rowIndex) || !colNode) {
       return null;
     }
 
