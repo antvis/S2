@@ -251,13 +251,6 @@ type	sub_type	指标1	指标2
 家具	椅子	11	8	-	-"
 `;
 
-exports[`PivotSheet Export Test should export correctly corner text for custom columns and signle rows 1`] = `
-"自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2
-自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	
-type	指标1	指标2		
-家具	11	8	-	-"
-`;
-
 exports[`PivotSheet Export Test should export correctly corner text for custom columns and single rows 1`] = `
 "自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-1	自定义节点 a-2
 自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-1	自定义节点 a-1-2	
