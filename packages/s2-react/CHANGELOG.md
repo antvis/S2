@@ -1,3 +1,11 @@
+# [@antv/s2-react-v2.0.0-next.26](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.25...@antv/s2-react-v2.0.0-next.26) (2024-08-23)
+
+
+### Features
+
+* **i18n:** add support of the russian language ([#2853](https://github.com/antvis/S2/issues/2853)) ([3dcf491](https://github.com/antvis/S2/commit/3dcf4913f37d222fe6c57a780bc00cab8829953d))
+* 导出组件支持复制 HTML (text/html) 格式的数据 close [#2828](https://github.com/antvis/S2/issues/2828) ([#2865](https://github.com/antvis/S2/issues/2865)) ([444fbf5](https://github.com/antvis/S2/commit/444fbf55b25e4edff70e9c58efa023a0274a3b1f))
+
 # [@antv/s2-react-v2.0.0-next.25](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.24...@antv/s2-react-v2.0.0-next.25) (2024-08-09)
 
 
