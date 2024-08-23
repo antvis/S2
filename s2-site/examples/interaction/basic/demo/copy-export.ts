@@ -1,13 +1,17 @@
 /* eslint-disable no-console */
 import {
-  CopyMIMEType,
   PivotSheet,
   S2Event,
   S2Options,
   SpreadSheet,
+  asyncGetAllData,
+  asyncGetAllHtmlData,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
+  type CopyAllDataParams,
+  type Copyable,
+  type CopyableList,
 } from '@antv/s2';
 import { message } from 'antd';
 
@@ -15,26 +19,7 @@ const split = '\t';
 
 const fileName = 'test';
 
-const copyData = async (s2: SpreadSheet, isFormat: boolean) => {
-  const customTransformer = () => {
-    return {
-      [CopyMIMEType.HTML]: () => {
-        return {
-          type: CopyMIMEType.HTML,
-          content: `<td></td>`,
-        };
-      },
-    };
-  };
-
-  const data = await asyncGetAllPlainData({
-    sheetInstance: s2,
-    split,
-    formatOptions: isFormat,
-    // 自定义转换器: 如复制到语雀等富文本编辑器场景展示空表格
-    // customTransformer,
-  });
-
+const copy = (data: Copyable | string) => {
   copyToClipboard(data)
     .then(() => {
       console.log('data', data);
@@ -44,6 +29,52 @@ const copyData = async (s2: SpreadSheet, isFormat: boolean) => {
       console.log('copy failed: ', error);
       message.error('复制失败!');
     });
+};
+
+// 自定义数据转换器: 默认获取的是全量的数据, 可对 `text/plain` 和 `text/html` 进行改写
+
+const copyByCustomTransformer = async (s2: SpreadSheet) => {
+  const data = await asyncGetAllData({
+    sheetInstance: s2,
+    split,
+    formatOptions: true,
+    customTransformer: () => {
+      return {
+        'text/plain': (data) => {
+          console.log('text/plain', data);
+
+          return {
+            type: 'text/plain',
+            content: `我是td\t我是td\t我是td`,
+          };
+        },
+        'text/html': (data) => {
+          console.log('text/html', data);
+
+          return {
+            type: 'text/html',
+            content: `<meta charset="utf-8"><table><tbody><tr><td></td><td></td><td>家具</td></tr><tr><td></td><td></td><td>桌子</td></tr><tr><td></td><td></td><td>数量</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789</td></tr></tbody></table>`,
+          };
+        },
+      };
+    },
+  });
+
+  copy(data);
+};
+
+const copyData = async (
+  s2: SpreadSheet,
+  isFormat: boolean,
+  method: (params: CopyAllDataParams) => Promise<CopyableList | string>,
+) => {
+  const data = await method?.({
+    sheetInstance: s2,
+    split,
+    formatOptions: isFormat,
+  });
+
+  copy(data);
 };
 
 const downloadData = async (s2: SpreadSheet, isFormat: boolean) => {
@@ -66,22 +97,43 @@ const downloadData = async (s2: SpreadSheet, isFormat: boolean) => {
 };
 
 function addButtons(s2: SpreadSheet) {
-  const copyBtn = document.createElement('button');
+  const [
+    copyBtn,
+    copyPlainTextBtn,
+    copyHtmlTextBtn,
+    copyByCustomTransformerBtn,
+    exportBtn,
+  ] = Array.from({
+    length: 5,
+  }).map(() => {
+    const btn = document.createElement('button');
 
-  copyBtn.className = 'ant-btn ant-btn-default';
+    btn.className = 'ant-btn ant-btn-default';
+
+    return btn;
+  });
+
   copyBtn.innerHTML = '复制全量数据';
+  copyPlainTextBtn.innerHTML = '复制全量数据 (text/plain)';
+  copyHtmlTextBtn.innerHTML = '复制全量数据 (text/html)';
+  copyByCustomTransformerBtn.innerHTML = '复制全量数据 (自定义转换器)';
+  exportBtn.innerHTML = '导出全量数据 (text/plain)';
 
-  const exportBtn = document.createElement('button');
-
-  exportBtn.className = 'ant-btn ant-btn-default';
-  exportBtn.innerHTML = '导出全量数据';
+  copyBtn.addEventListener('click', () => {
+    copyData(s2, true, asyncGetAllData);
+  });
+  copyPlainTextBtn.addEventListener('click', () => {
+    copyData(s2, true, asyncGetAllPlainData);
+  });
+  copyHtmlTextBtn.addEventListener('click', () => {
+    copyData(s2, true, asyncGetAllHtmlData);
+  });
+  copyByCustomTransformerBtn.addEventListener('click', () => {
+    copyByCustomTransformer(s2);
+  });
 
   exportBtn.addEventListener('click', () => {
     downloadData(s2, true);
-  });
-
-  copyBtn.addEventListener('click', () => {
-    copyData(s2, true);
   });
 
   const canvas = document.querySelector('#container > canvas');
@@ -89,7 +141,10 @@ function addButtons(s2: SpreadSheet) {
   if (canvas) {
     canvas.style.marginTop = '10px';
     canvas.before(copyBtn);
-    copyBtn.after(exportBtn);
+    canvas.before(copyPlainTextBtn);
+    canvas.before(copyHtmlTextBtn);
+    canvas.before(copyByCustomTransformerBtn);
+    copyByCustomTransformerBtn.after(exportBtn);
   }
 }
 
@@ -126,7 +181,7 @@ fetch(
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.on(S2Event.GLOBAL_COPIED, (data) => {
-      console.log('局部复制数据', data);
+      console.log('局部复制数据:', data);
     });
 
     await s2.render();

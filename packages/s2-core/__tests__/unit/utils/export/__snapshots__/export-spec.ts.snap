@@ -45,6 +45,31 @@ province	city	number	number	number	number
 四川省	乐山市	-	-	-	-"
 `;
 
+exports[`PivotSheet Export Test should export correct HTML data 1`] = `"<meta charset=\\"utf-8\\"><table><tbody><tr><td></td><td>类别</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td></td><td>子类别</td><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>省份</td><td>城市</td><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789</td><td>5343</td><td>945</td><td>1343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>2367</td><td>632</td><td>1304</td><td>1354</td></tr><tr><td>浙江省</td><td>宁波市</td><td>3877</td><td>7234</td><td>1145</td><td>1523</td></tr><tr><td>浙江省</td><td>舟山市</td><td>4342</td><td>834</td><td>1432</td><td>1634</td></tr><tr><td>四川省</td><td>成都市</td><td>1723</td><td>2451</td><td>2335</td><td>4004</td></tr><tr><td>四川省</td><td>绵阳市</td><td>1822</td><td>2244</td><td>245</td><td>3077</td></tr><tr><td>四川省</td><td>南充市</td><td>1943</td><td>2333</td><td>2457</td><td>3551</td></tr><tr><td>四川省</td><td>乐山市</td><td>2330</td><td>2445</td><td>2458</td><td>352</td></tr></tbody></table>"`;
+
+exports[`PivotSheet Export Test should export correct all type data 1`] = `
+Array [
+  Object {
+    "content": "	类别	家具	家具	办公用品	办公用品
+	子类别	桌子	沙发	笔	纸张
+省份	城市	数量	数量	数量	数量
+浙江省	杭州市	7789	5343	945	1343
+浙江省	绍兴市	2367	632	1304	1354
+浙江省	宁波市	3877	7234	1145	1523
+浙江省	舟山市	4342	834	1432	1634
+四川省	成都市	1723	2451	2335	4004
+四川省	绵阳市	1822	2244	245	3077
+四川省	南充市	1943	2333	2457	3551
+四川省	乐山市	2330	2445	2458	352",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td></td><td>类别</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td></td><td>子类别</td><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>省份</td><td>城市</td><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789</td><td>5343</td><td>945</td><td>1343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>2367</td><td>632</td><td>1304</td><td>1354</td></tr><tr><td>浙江省</td><td>宁波市</td><td>3877</td><td>7234</td><td>1145</td><td>1523</td></tr><tr><td>浙江省</td><td>舟山市</td><td>4342</td><td>834</td><td>1432</td><td>1634</td></tr><tr><td>四川省</td><td>成都市</td><td>1723</td><td>2451</td><td>2335</td><td>4004</td></tr><tr><td>四川省</td><td>绵阳市</td><td>1822</td><td>2244</td><td>245</td><td>3077</td></tr><tr><td>四川省</td><td>南充市</td><td>1943</td><td>2333</td><td>2457</td><td>3551</td></tr><tr><td>四川省</td><td>乐山市</td><td>2330</td><td>2445</td><td>2458</td><td>352</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
+`;
+
 exports[`PivotSheet Export Test should export correct data by {formatHeader: true} 1`] = `
 "	类型	家具-type	家具-type	办公用品-type	办公用品-type
 	子类型	桌子-sub_type	沙发-sub_type	笔-sub_type	纸张-sub_type
@@ -327,6 +352,53 @@ exports[`TableSheet Export Test should called with cell view meta when export fo
 四川省	-	办公用品	-	-
 四川省	-	-	-	-
 -	-	-	-	-"
+`;
+
+exports[`TableSheet Export Test should export correct HTML data 1`] = `"<meta charset=\\"utf-8\\"><table><tbody><tr><td>类别</td><td>子类别</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr></tbody></table>"`;
+
+exports[`TableSheet Export Test should export correct all type data 1`] = `
+Array [
+  Object {
+    "content": "类别	子类别
+家具	桌子
+家具	桌子
+家具	桌子
+家具	桌子
+家具	沙发
+家具	沙发
+家具	沙发
+家具	沙发
+办公用品	笔
+办公用品	笔
+办公用品	笔
+办公用品	笔
+办公用品	纸张
+办公用品	纸张
+办公用品	纸张
+办公用品	纸张
+家具	桌子
+家具	桌子
+家具	桌子
+家具	桌子
+家具	沙发
+家具	沙发
+家具	沙发
+家具	沙发
+办公用品	笔
+办公用品	笔
+办公用品	笔
+办公用品	笔
+办公用品	纸张
+办公用品	纸张
+办公用品	纸张
+办公用品	纸张",
+    "type": "text/plain",
+  },
+  Object {
+    "content": "<meta charset=\\"utf-8\\"><table><tbody><tr><td>类别</td><td>子类别</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr></tbody></table>",
+    "type": "text/html",
+  },
+]
 `;
 
 exports[`TableSheet Export Test should export correct data with no series number 1`] = `

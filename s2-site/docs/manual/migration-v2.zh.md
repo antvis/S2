@@ -203,16 +203,16 @@ const s2Options = {
 }
 ```
 
-2. 废弃 `copyData`, 新增 `asyncGetAllPlainData`, 支持异步获取数据。
+2. 废弃 `copyData`, 新增 `asyncGetAllData/asyncGetAllPlainData/asyncGetAllHtmlData`, 支持异步获取数据。
 
 ```diff
 - const data = copyData(spreadsheet, '\t', false)
 
-+ const data = await asyncGetAllPlainData({
-+  sheetInstance: s2,
-+  split: '\t',
-+  formatOptions: false,
-+  async: true,
++ const data = await asyncGetAllData({
++   sheetInstance: s2,
++   split: '\t',
++   formatOptions: false,
++   async: true,
 });
 ```
 
@@ -220,7 +220,7 @@ const s2Options = {
 
 ```diff
 - const data = copyToClipboard(data: string, sync: boolean)
-+ const data = copyToClipboard(data: string, async: boolean)
++ const data = copyToClipboard(data: Copyable | string, async: boolean)
 ```
 
 4. 复制默认开启。
@@ -993,7 +993,9 @@ const header = {
 
 具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
 
-#### 导出组件配置调整
+#### 导出组件配置和行为调整
+
+1. 配置变更
 
 `syncCopy` 变更为 `async`
 
@@ -1001,6 +1003,8 @@ const header = {
 - <Export syncCopy={true} />
 + <Export async={false} />
 ```
+
+2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
 
 #### Tooltip 菜单项配置调整
 

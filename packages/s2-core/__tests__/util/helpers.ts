@@ -35,6 +35,8 @@ import {
   getTheme,
   type BaseDataSet,
   type BaseFacet,
+  type CopyAllDataParams,
+  type CopyableList,
   type FormatOptions,
   type InternalFullyTheme,
   type LayoutResult,
@@ -409,9 +411,10 @@ export const getClientPointOnCanvas = (
 export const expectMatchSnapshot = async (
   s2: SpreadSheet,
   formatOptions: FormatOptions = true,
+  customMethod?: (params: CopyAllDataParams) => Promise<CopyableList | string>,
 ) => {
   await s2.render();
-  const data = await asyncGetAllPlainData({
+  const data = await (customMethod || asyncGetAllPlainData)({
     sheetInstance: s2,
     split: TAB_SEPARATOR,
     formatOptions,

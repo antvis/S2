@@ -3,11 +3,13 @@ import {
   S2_PREFIX_CLS,
   SpreadSheet,
   TAB_SEPARATOR,
+  asyncGetAllData,
   asyncGetAllPlainData,
   copyToClipboard,
   download,
   i18n,
   type CopyAllDataParams,
+  type Copyable,
 } from '@antv/s2';
 import { Button, Dropdown, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
@@ -28,7 +30,9 @@ export interface ExportBaseProps {
   async?: boolean;
   // ref: https://ant.design/components/dropdown-cn/#API
   dropdown?: DropDownProps;
-  customCopyMethod?: (params: CopyAllDataParams) => Promise<string> | string;
+  customCopyMethod?: (
+    params: CopyAllDataParams,
+  ) => Promise<string> | string | Promise<Copyable> | Copyable;
 }
 
 export interface ExportProps extends ExportBaseProps {
@@ -59,7 +63,11 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const getPlainData = async (split: string, isFormat: boolean) => {
+  const getData = async (
+    split: string,
+    isFormat: boolean,
+    method: ExportBaseProps['customCopyMethod'],
+  ) => {
     const params: CopyAllDataParams = {
       sheetInstance: sheet,
       split,
@@ -67,16 +75,27 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
       async,
     };
 
-    const data = await (customCopyMethod?.(params) ||
-      asyncGetAllPlainData(params));
+    const data = await (customCopyMethod?.(params) || method?.(params));
 
     return data;
   };
 
-  const copyData = async (isFormat: boolean) => {
-    const data = await getPlainData(TAB_SEPARATOR, isFormat);
+  const getPlainData = async (split: string, isFormat: boolean) => {
+    const result = await getData(split, isFormat, asyncGetAllPlainData);
 
-    copyToClipboard(data, async)
+    return result as string;
+  };
+
+  const getAllData = async (split: string, isFormat: boolean) => {
+    const result = await getData(split, isFormat, asyncGetAllData);
+
+    return result;
+  };
+
+  const copyData = async (isFormat: boolean) => {
+    const data = await getAllData(TAB_SEPARATOR, isFormat);
+
+    copyToClipboard(data!, async)
       .then(() => {
         messageApi.success(successText);
       })
