@@ -33,12 +33,10 @@ import {
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import type { BaseDataSet } from './../../../data-set/base-data-set';
 import { BaseDataCellCopy } from './base-data-cell-copy';
 import {
   assembleMatrix,
   completeMatrix,
-  getFormatter,
   getMaxRowLen,
   getNodeFormatData,
 } from './common';
@@ -127,14 +125,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
 
     return map(this.leafRowNodes, (rowNode) =>
       this.leafColNodes.map((colNode) => {
-        // const
         return this.getDataCellValue({
           rowNode,
           colNode,
           config: {
             measureQuery,
-            isPivotMode: this.spreadsheet.isPivotMode,
-            dataSet: this.spreadsheet.dataSet,
           },
         });
       }),
@@ -177,8 +172,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
                   rowNode,
                   colNode,
                   config: {
-                    isPivotMode: this.spreadsheet.isPivotMode,
-                    dataSet: this.spreadsheet.dataSet,
                     measureQuery,
                   },
                 });
@@ -216,13 +209,11 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     rowNode: Node;
     colNode: Node;
     config: {
-      isPivotMode: () => boolean;
-      dataSet: BaseDataSet;
       measureQuery: MeasureQuery;
     };
   }): DataItem => {
-    const { isPivotMode, dataSet, measureQuery } = config;
-    const cellData = dataSet.getCellData({
+    const { measureQuery } = config;
+    const cellData = this.spreadsheet.dataSet.getCellData({
       query: {
         ...rowNode.query,
         ...colNode.query,
@@ -239,18 +230,18 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;
 
     let field: string | undefined =
-      getColNodeFieldFromNode(isPivotMode, formatNode) ?? '';
+      getColNodeFieldFromNode(this.spreadsheet.isPivotMode, formatNode) ?? '';
 
     // 主要解决只有一个度量时,总计小计对应的值无法格式化的问题
-    const values = this.spreadsheet.dataCfg.fields.values;
+    const { values } = this.spreadsheet.dataCfg.fields;
 
     field = values?.includes(field) ? field : values?.[0];
 
-    const formatter = getFormatter(
-      field ?? colNode.field,
-      this.config.formatData,
-      dataSet,
-    );
+    const formatter = this.getFormatter({
+      field: field ?? colNode.field,
+      rowIndex: rowNode.rowIndex,
+      colIndex: colNode.colIndex,
+    });
 
     const fieldValue = (cellData as CellData)?.[VALUE_FIELD];
     const isChartData = isPlainObject(
@@ -305,16 +296,23 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
       return this.getCustomRowCornerMatrix(rowMatrix);
     }
 
+    const { colsHierarchy } = this.spreadsheet.facet.getLayoutResult();
     const { fields } = this.spreadsheet.dataCfg;
     const { columns = [], rows = [] } = fields;
-    // 为了对齐数值
-    const customColumns = [...columns, ''];
+    // 为了对齐数值, 增加 "" 占位
+    // 自定义列头不需要占位, 但是为树状结构, 需要根据采样节点解析: https://github.com/antvis/S2/issues/2844)
+    const customColumns = this.spreadsheet.isCustomColumnFields()
+      ? colsHierarchy
+          .getNodes()
+          .slice(0, colsHierarchy.sampleNodesForAllLevels.length)
+          .map((node) => node.field)
+      : [...columns, ''];
     const maxRowLen = this.spreadsheet.isHierarchyTreeType()
       ? getMaxRowLen(rowMatrix ?? [])
       : rows.length;
     const customRows = slice(rows, 0, maxRowLen);
 
-    /*
+    /**
      * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
      */
     return map(customColumns, (colField, colIndex) =>
@@ -362,8 +360,6 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
           rowNode: rowNode!,
           colNode: colNode!,
           config: {
-            isPivotMode: this.spreadsheet.isPivotMode,
-            dataSet: this.spreadsheet.dataSet,
             measureQuery,
           },
         });

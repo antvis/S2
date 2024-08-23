@@ -332,7 +332,20 @@ import { renderToMountedElement } from '@antv/g2';
 
 #### 2.3 在 `@antv/s2` 中使用
 
-##### 1. 自定义 `DataCell`, 如果是图表数据，则不渲染默认的文本
+##### 1. 自定义 `DataCell/TableDataCell`, 如果是图表数据，则不渲染默认的文本
+
+:::info{title="提示"}
+如果是**明细表**, 需要继承 `TableDataCell`
+
+```diff
+- import { DataCell } from '@antv/s2';
++ import { TableDataCell } from '@antv/s2';
+
+- class ChartSheetDataCell extends DataCell {}
++ class ChartSheetDataCell extends TableDataCell {}
+```
+
+:::
 
 ```ts
 import { PivotSheet, DataCell } from '@antv/s2';
@@ -357,7 +370,7 @@ await s2.render();
 
 ##### 2. 监听数值单元格渲染完成后，使用 `G2` 提供的 `renderToMountedElement` 将图表挂载在 `S2` 单元格实例上
 
-:::warning{title="提示"}
+:::info{title="提示"}
 由于 `G2` 按需加载的特性，请根据你渲染的图表，自行选择适合的 [`library`](https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib)
 :::
 

@@ -575,4 +575,34 @@ describe('PivotSheet Export Test', () => {
       formatData: true,
     });
   });
+
+  it('should export correctly corner text for custom columns', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: customColGridSimpleFields,
+      },
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(sheet);
+  });
+
+  // https://github.com/antvis/S2/issues/2844
+  it('should export correctly corner text for custom columns and single rows', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      {
+        data: CustomGridData,
+        fields: {
+          ...customColGridSimpleFields,
+          rows: ['type'],
+        },
+      },
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(sheet);
+  });
 });

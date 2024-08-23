@@ -1,5 +1,5 @@
 import { escape, map, max } from 'lodash';
-import type { DataItem, Formatter, SimpleData } from '../../../common';
+import type { DataItem, SimpleData } from '../../../common';
 import { LINE_SEPARATOR, ROOT_NODE_ID, TAB_SEPARATOR } from '../../../common';
 import {
   CopyMIMEType,
@@ -13,7 +13,6 @@ import {
   type Transformer,
 } from '../../../common/interface/export';
 import type { Node } from '../../../facet/layout/node';
-import type { BaseDataSet } from './../../../data-set/base-data-set';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
@@ -59,18 +58,6 @@ export const Transformers: {
   [CopyMIMEType.PLAIN]: matrixPlainTextTransformer,
   [CopyMIMEType.HTML]: matrixHtmlTransformer,
 };
-
-export function getFormatter(
-  field: string,
-  formatData = false,
-  dataSet: BaseDataSet,
-): Formatter {
-  if (formatData) {
-    return dataSet.getFieldFormatter(field!);
-  }
-
-  return ((value) => value) as Formatter;
-}
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
 export const assembleMatrix = ({

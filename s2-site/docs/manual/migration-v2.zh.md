@@ -565,6 +565,7 @@ export interface LayoutResult {
 +   "$$extra$$": "number"
 +  }
 }
+```
 
 明细表：
 
@@ -652,7 +653,7 @@ const s2Options = {
 
 ```js
 {
-  fields:{
+  fields: {
     rows: ["province", "city"],
     columns: ["type", "subType"],
     values: ["number1", "number2"],
@@ -720,6 +721,40 @@ const s2Options = {
 ```
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
+
+#### 透视表数值单元格元数据数据结构变更
+
+`this.meta.data` 数据结构变更：
+
+```diff
+{
+-  "number": 7789,
+-  "province": "浙江省",
+-  "city": "杭州市",
+-  "type": "家具",
+-  "sub_type": "桌子",
+
++  "extraField": "number",
++    "raw": {
++    "number": 7789,
++    "province": "浙江省",
++    "city": "杭州市",
++    "type": "家具",
++    "sub_type": "桌子"
++ },
++  "$$extra$$": "number",
++  "$$value$$": 7789,
++  "$$origin$$": {
++    "number": 7789,
++    "province": "浙江省",
++    "city": "杭州市",
++    "type": "家具",
++    "sub_type": "桌子"
++  }
+}
+```
+
+具体请查看 [CellData](/api/basic-class/cell-data) 相关文档。
 
 #### 单元格刷选选中状态变更
 

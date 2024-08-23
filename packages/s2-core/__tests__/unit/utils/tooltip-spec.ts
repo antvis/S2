@@ -1103,6 +1103,43 @@ describe('Tooltip Utils Tests', () => {
         `);
       });
     });
+
+    // https://github.com/antvis/S2/issues/2843
+    test('should get empty cell name for custom chart shape', () => {
+      s2 = createFakeSpreadSheet();
+
+      s2.dataSet = {
+        getFieldFormatter: () => {},
+        getCustomFieldDescription: () => {},
+        getFieldName: () => {
+          return {
+            values: {
+              test: '1',
+            },
+          };
+        },
+      };
+
+      s2.facet = {
+        getRowLeafNodes: () => [],
+        getColLeafNodes: () => [],
+      } as unknown as BaseFacet;
+
+      const cell = createMockCellInfo('test-a');
+
+      const tooltipData = getTooltipData({
+        cellInfos: [],
+        options: {
+          enableFormat: true,
+          hideSummary: true,
+          onlyShowCellText: true,
+        },
+        targetCell: cell.mockCell,
+        spreadsheet: s2,
+      });
+
+      expect(tooltipData.name).toEqual('');
+    });
   });
 
   test('should set container style', () => {

@@ -31,6 +31,20 @@ exports[`PivotSheet Export Test Custom Tree Export Test should export correct da
 自定义节点 a-2			-	-"
 `;
 
+exports[`PivotSheet Export Test should called with cell view meta when export formatted data 1`] = `
+"	type	家具	家具	办公用品	办公用品
+	sub_type	桌子	沙发	笔	纸张
+province	city	number	number	number	number
+浙江省	杭州市	-	-	-	-
+浙江省	绍兴市	-	-	-	-
+浙江省	宁波市	-	-	-	-
+浙江省	舟山市	-	-	-	-
+四川省	成都市	-	-	-	-
+四川省	绵阳市	-	-	-	-
+四川省	南充市	-	-	-	-
+四川省	乐山市	-	-	-	-"
+`;
+
 exports[`PivotSheet Export Test should export correct HTML data 1`] = `"<meta charset=\\"utf-8\\"><table><tbody><tr><td></td><td>类别</td><td>家具</td><td>家具</td><td>办公用品</td><td>办公用品</td></tr><tr><td></td><td>子类别</td><td>桌子</td><td>沙发</td><td>笔</td><td>纸张</td></tr><tr><td>省份</td><td>城市</td><td>数量</td><td>数量</td><td>数量</td><td>数量</td></tr><tr><td>浙江省</td><td>杭州市</td><td>7789</td><td>5343</td><td>945</td><td>1343</td></tr><tr><td>浙江省</td><td>绍兴市</td><td>2367</td><td>632</td><td>1304</td><td>1354</td></tr><tr><td>浙江省</td><td>宁波市</td><td>3877</td><td>7234</td><td>1145</td><td>1523</td></tr><tr><td>浙江省</td><td>舟山市</td><td>4342</td><td>834</td><td>1432</td><td>1634</td></tr><tr><td>四川省</td><td>成都市</td><td>1723</td><td>2451</td><td>2335</td><td>4004</td></tr><tr><td>四川省</td><td>绵阳市</td><td>1822</td><td>2244</td><td>245</td><td>3077</td></tr><tr><td>四川省</td><td>南充市</td><td>1943</td><td>2333</td><td>2457</td><td>3551</td></tr><tr><td>四川省</td><td>乐山市</td><td>2330</td><td>2445</td><td>2458</td><td>352</td></tr></tbody></table>"`;
 
 exports[`PivotSheet Export Test should export correct all type data 1`] = `
@@ -257,6 +271,87 @@ province	city	数值	数值	数值	数值
 四川省	绵阳市	1822	2244	245	3077
 四川省	南充市	1943	2333	2457	3551
 四川省	乐山市	2330	2445	2458	352"
+`;
+
+exports[`TableSheet Export Test should called with cell view meta when export formatted data 1`] = `
+"province	city	type	sub_type	number
+浙江省	杭州市	家具	桌子	-
+浙江省	绍兴市	家具	桌子	-
+浙江省	宁波市	家具	桌子	-
+浙江省	舟山市	家具	桌子	-
+浙江省	杭州市	家具	沙发	-
+浙江省	绍兴市	家具	沙发	-
+浙江省	宁波市	家具	沙发	-
+浙江省	舟山市	家具	沙发	-
+浙江省	杭州市	办公用品	笔	-
+浙江省	绍兴市	办公用品	笔	-
+浙江省	宁波市	办公用品	笔	-
+浙江省	舟山市	办公用品	笔	-
+浙江省	杭州市	办公用品	纸张	-
+浙江省	绍兴市	办公用品	纸张	-
+浙江省	宁波市	办公用品	纸张	-
+浙江省	舟山市	办公用品	纸张	-
+四川省	成都市	家具	桌子	-
+四川省	绵阳市	家具	桌子	-
+四川省	南充市	家具	桌子	-
+四川省	乐山市	家具	桌子	-
+四川省	成都市	家具	沙发	-
+四川省	绵阳市	家具	沙发	-
+四川省	南充市	家具	沙发	-
+四川省	乐山市	家具	沙发	-
+四川省	成都市	办公用品	笔	-
+四川省	绵阳市	办公用品	笔	-
+四川省	南充市	办公用品	笔	-
+四川省	乐山市	办公用品	笔	-
+四川省	成都市	办公用品	纸张	-
+四川省	绵阳市	办公用品	纸张	-
+四川省	南充市	办公用品	纸张	-
+四川省	乐山市	办公用品	纸张	-
+-	-	家具	桌子	-
+-	-	家具	-	-
+-	-	家具	沙发	-
+-	-	办公用品	-	-
+-	-	办公用品	笔	-
+-	-	办公用品	纸张	-
+浙江省	-	家具	桌子	-
+浙江省	-	家具	沙发	-
+浙江省	-	办公用品	笔	-
+浙江省	-	办公用品	纸张	-
+四川省	-	家具	桌子	-
+四川省	-	家具	沙发	-
+四川省	-	办公用品	笔	-
+四川省	-	办公用品	纸张	-
+浙江省	杭州市	家具	-	-
+浙江省	杭州市	办公用品	-	-
+浙江省	杭州市	-	-	-
+浙江省	绍兴市	家具	-	-
+浙江省	绍兴市	办公用品	-	-
+浙江省	绍兴市	-	-	-
+浙江省	宁波市	家具	-	-
+浙江省	宁波市	办公用品	-	-
+浙江省	宁波市	-	-	-
+浙江省	舟山市	家具	-	-
+浙江省	舟山市	办公用品	-	-
+浙江省	舟山市	-	-	-
+四川省	成都市	家具	-	-
+四川省	成都市	办公用品	-	-
+四川省	成都市	-	-	-
+四川省	绵阳市	家具	-	-
+四川省	绵阳市	办公用品	-	-
+四川省	绵阳市	-	-	-
+四川省	南充市	家具	-	-
+四川省	南充市	办公用品	-	-
+四川省	南充市	-	-	-
+四川省	乐山市	家具	-	-
+四川省	乐山市	办公用品	-	-
+四川省	乐山市	-	-	-
+浙江省	-	家具	-	-
+浙江省	-	办公用品	-	-
+浙江省	-	-	-	-
+四川省	-	家具	-	-
+四川省	-	办公用品	-	-
+四川省	-	-	-	-
+-	-	-	-	-"
 `;
 
 exports[`TableSheet Export Test should export correct HTML data 1`] = `"<meta charset=\\"utf-8\\"><table><tbody><tr><td>类别</td><td>子类别</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>桌子</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>家具</td><td>沙发</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>笔</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr><tr><td>办公用品</td><td>纸张</td></tr></tbody></table>"`;
