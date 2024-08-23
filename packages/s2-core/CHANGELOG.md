@@ -1,3 +1,18 @@
+# [@antv/s2-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.26...@antv/s2-v2.0.0-next.27) (2024-08-23)
+
+
+### Bug Fixes
+
+* 修复在局部复制和导出场景时, 格式化函数获取不到单元格信息 close [#2866](https://github.com/antvis/S2/issues/2866) ([#2871](https://github.com/antvis/S2/issues/2871)) ([f0db754](https://github.com/antvis/S2/commit/f0db75405561e0c841ae2fe57fb490f08dad7d50))
+* 修复在明细表中绘制 G2 图表, 点击单元格报错 close [#2843](https://github.com/antvis/S2/issues/2843) ([#2864](https://github.com/antvis/S2/issues/2864)) ([8684fb2](https://github.com/antvis/S2/commit/8684fb286279c4d1e280e00baf197f154ac3a540))
+* 修复自定义列头导出数据时, 角头文本展示错误 close [#2844](https://github.com/antvis/S2/issues/2844) ([#2869](https://github.com/antvis/S2/issues/2869)) ([63dba54](https://github.com/antvis/S2/commit/63dba54b947b1c36a996004823841c98284c232a))
+
+
+### Features
+
+* **i18n:** add support of the russian language ([#2853](https://github.com/antvis/S2/issues/2853)) ([3dcf491](https://github.com/antvis/S2/commit/3dcf4913f37d222fe6c57a780bc00cab8829953d))
+* 导出组件支持复制 HTML (text/html) 格式的数据 close [#2828](https://github.com/antvis/S2/issues/2828) ([#2865](https://github.com/antvis/S2/issues/2865)) ([444fbf5](https://github.com/antvis/S2/commit/444fbf55b25e4edff70e9c58efa023a0274a3b1f))
+
 # [@antv/s2-v2.0.0-next.26](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.25...@antv/s2-v2.0.0-next.26) (2024-08-09)
 
 
