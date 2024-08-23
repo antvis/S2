@@ -95,23 +95,15 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
-    const {
-      data,
-      isTotals = false,
-      value,
-      fieldValue,
-      field,
-      valueField,
-    } = meta;
-    const currentCellMeta = data;
+    const { data, isTotals = false, fieldValue, valueField } = meta;
     const onlyShowCellText = this.spreadsheet.isTableMode();
     const cellData = onlyShowCellText
       ? ({
-          ...(currentCellMeta as ViewMetaData),
-          value: value || fieldValue,
-          valueField: field || valueField,
-        } as TooltipData)
-      : (currentCellMeta as TooltipData);
+          ...(data as ViewMetaData),
+          value: fieldValue,
+          valueField,
+        } as unknown as TooltipData)
+      : (data as TooltipData);
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },
     ];
