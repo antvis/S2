@@ -104,7 +104,7 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 根据行列索引获取单元格元数据
    */
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public getCellMeta(rowIndex: number = 0, colIndex: number = 0) {
     const { options, dataSet } = this.spreadsheet;
     const { rowLeafNodes, colLeafNodes } = this.getLayoutResult();
     const row = rowLeafNodes[rowIndex];

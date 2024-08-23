@@ -358,7 +358,7 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public getCellMeta(rowIndex: number = 0, colIndex: number = 0) {
     const { options, dataSet } = this.spreadsheet;
     const colLeafNodes = this.getColLeafNodes();
     const colNode = colLeafNodes[colIndex];

@@ -54,6 +54,27 @@ describe('TableSheet Export Test', () => {
 
     await expectMatchSnapshot(s2);
   });
+
+  it('should called with cell view meta when export formatted data', async () => {
+    const formatter = jest.fn();
+
+    const s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'number', formatter }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(s2);
+
+    const viewMeta = s2.facet.getCellMeta(76, 4);
+
+    expect(formatter).toHaveBeenLastCalledWith(78868, viewMeta.data, viewMeta);
+  });
 });
 
 describe('PivotSheet Export Test', () => {
@@ -388,6 +409,30 @@ describe('PivotSheet Export Test', () => {
       formatHeader: true,
       formatData: true,
     });
+  });
+
+  // https://github.com/antvis/S2/issues/2866
+  it('should called with cell view meta when export formatted data', async () => {
+    const formatter = jest.fn();
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter,
+          },
+        ],
+      }),
+      s2Options,
+    );
+
+    await expectMatchSnapshot(s2);
+
+    const viewMeta = s2.facet.getCellMeta(7, 3);
+
+    expect(formatter).toHaveBeenLastCalledWith(352, viewMeta.data, viewMeta);
   });
 
   describe('Custom Tree Export Test', () => {
