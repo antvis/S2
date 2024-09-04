@@ -177,8 +177,9 @@ export interface BaseSheetComponentProps<
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
   onMounted?: (spreadsheet: SpreadSheet) => void;
-  onUpdate?: (renderOptions: S2RenderOptions) => S2RenderOptions;
+  onUpdate?: (renderOptions: S2RenderOptions) => S2RenderOptions | void;
   onUpdateAfterRender?: (renderOptions: S2RenderOptions) => void;
+  onLoading?: (loading: boolean) => void;
   onDestroy?: () => void;
 
   // ============== Resize ====================

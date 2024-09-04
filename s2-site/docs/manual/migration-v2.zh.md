@@ -1085,6 +1085,24 @@ s2.showTooltip({
 + <SheetComponent onUpdate={} onUpdateAfterRender={} />
 ```
 
+#### 移除 Spin 组件，新增 `onLoading`
+
+在 `1.x` 的 `<SheetComponent/>` 中，内部会包裹 antd 的`<Spin />` 组件，`2.x` 移除 `antd` 的依赖后，可以自行组合使用。
+
+```tsx | pure
+import { Spin } from 'antd'
+
+function App() {
+  const [loading, setLoading] = React.useState(false)
+
+  return (
+    <Spin spinning={loading}>
+      <SheetComponent onLoading={setLoading} />
+    </Spin>
+  )
+}
+```
+
 #### SheetComponentsProps 类型调整
 
 ```diff

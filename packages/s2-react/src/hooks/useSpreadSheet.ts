@@ -1,4 +1,10 @@
-import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+/* eslint-disable max-lines-per-function */
+import type {
+  S2DataConfig,
+  S2Options,
+  S2RenderOptions,
+  ThemeCfg,
+} from '@antv/s2';
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
@@ -15,7 +21,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
   const s2Ref = React.useRef<SpreadSheet | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
-  const shouldInit = React.useRef(true);
+  const shouldInit = React.useRef<boolean>(true);
 
   const isDevMode = React.useMemo(() => {
     try {
@@ -33,6 +39,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
     sheetType,
     onUpdate = identity,
     onUpdateAfterRender,
+    onLoading,
   } = props;
 
   /** 保存重渲 effect 的 deps */
@@ -80,6 +87,11 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
     props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
+
+  // 适用于监听 loading 状态, 组件外部使用 <Spin /> 等场景
+  React.useEffect(() => {
+    onLoading?.(loading);
+  }, [loading]);
 
   React.useEffect(() => {
     // 兼容 React 18 StrictMode 开发环境下渲染两次
@@ -142,10 +154,12 @@ export function useSpreadSheet(props: SheetComponentProps) {
        * onUpdate 交出控制权
        * 由传入方决定最终的 render 模式
        */
-      const renderOptions = onUpdate?.({
+      const defaultRenderOptions: S2RenderOptions = {
         reloadData,
         rebuildDataSet,
-      });
+      };
+      const renderOptions =
+        onUpdate?.(defaultRenderOptions) || defaultRenderOptions;
 
       await s2Ref.current?.render(renderOptions!);
 
