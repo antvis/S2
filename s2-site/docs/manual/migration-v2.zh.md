@@ -924,6 +924,70 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
+#### 移除 AntD 组件库依赖
+
+`2.x` 版本中移除 `antd` 的依赖，推荐自行组合使用，不再受项目 `antd` 的版本限制。
+
+##### 表头组件移除
+
+`header` 属性移除。
+
+```diff
+<SheetComponent
+-  header={{
+-    title: "",
+-    description: "",
+-    switcher: { open: true },
+-    export: { open: true },
+-    advancedSort: { open: true },
+-  }}
+/>
+```
+
+##### 组件内部的 Spin 组件移除，新增 `onLoading`
+
+在 `1.x` 的 `<SheetComponent/>` 中，内部会包裹 antd 的 `<Spin />` 组件，`2.x` 移除后，不再有 `loading` 效果，可以自行在外层嵌套相关组件，组合使用。
+
+```tsx | pure
+import { Spin } from 'antd'
+
+function App() {
+  const [loading, setLoading] = React.useState(false)
+
+  return (
+    <Spin spinning={loading}>
+      <SheetComponent onLoading={setLoading} />
+    </Spin>
+  )
+}
+```
+
+##### 分页组件移除
+
+1. `showPagination` 属性移除。
+
+```diff
+- <SheetComponent showPagination/>
+```
+
+2. 推荐使用 `usePagination` hook, 封装了 S2 的内部分页更新逻辑，配合 antd 的 `<Pagination />` 组合使用。
+
+```tsx | pure
+import { usePagination } from 's2-react'
+import { Pagination } from 'antd';
+
+function App() {
+   const pagination = usePagination(s2);
+
+   return (
+      <>
+        <SheetComponent />
+        <Pagination {...pagination} />
+      </>
+   )
+}
+```
+
 #### 支持 React 18 和 Ant Design 5.0
 
 :::info{title="提示"}
@@ -1085,22 +1149,16 @@ s2.showTooltip({
 + <SheetComponent onUpdate={} onUpdateAfterRender={} />
 ```
 
-#### 移除 Spin 组件，新增 `onLoading`
+#### onUpdate 类型优化，不再强制要求返回渲染参数
 
-在 `1.x` 的 `<SheetComponent/>` 中，内部会包裹 antd 的`<Spin />` 组件，`2.x` 移除 `antd` 的依赖后，可以自行组合使用。
+`2.x` 版本中，`onUpdate` 如未指定渲染参数，则使用默认的 `renderOptions`.
 
-```tsx | pure
-import { Spin } from 'antd'
-
-function App() {
-  const [loading, setLoading] = React.useState(false)
-
-  return (
-    <Spin spinning={loading}>
-      <SheetComponent onLoading={setLoading} />
-    </Spin>
-  )
-}
+```diff
+<SheetComponent
+  onUpdate={(renderOptions) => {
+-   return renderOptions
+  }}
+/>
 ```
 
 #### SheetComponentsProps 类型调整
