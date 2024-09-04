@@ -5,12 +5,14 @@ import ruRU from 'antd/es/locale/ru_RU';
 import zhCN from 'antd/es/locale/zh_CN';
 import React from 'react';
 
-export interface ConfigProviderProps {
+interface PlaygroundSheetConfigProviderProps {
   children: React.ReactNode;
   themeName?: ThemeName;
 }
 
-export const ConfigProvider: React.FC<ConfigProviderProps> = (props) => {
+export const PlaygroundSheetConfigProvider: React.FC<
+  PlaygroundSheetConfigProviderProps
+> = (props) => {
   const { children, themeName } = props;
   const lang = getLang();
   // eslint-disable-next-line no-nested-ternary

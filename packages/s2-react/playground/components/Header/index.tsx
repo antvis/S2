@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ExportOutlined } from '@ant-design/icons';
-import { getLang, type SpreadSheet } from '@antv/s2';
+import { getLang } from '@antv/s2';
 import {
   AdvancedSort,
   Export,
@@ -13,11 +13,10 @@ import { version as AntdVersion, App, Button, Space, Tag } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import pkg from '../../../package.json';
+import { usePlaygroundContext } from '../../context/playground.context';
 import './index.less';
 
-export interface HeaderProps {
-  sheetInstance: SpreadSheet;
-}
+export interface HeaderProps {}
 
 const switcherFields: SwitcherProps = {
   rows: {
@@ -36,8 +35,9 @@ const switcherFields: SwitcherProps = {
   },
 };
 
-export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
-  const { sheetInstance } = props;
+export const PlaygroundSheetHeader: React.FC<HeaderProps> = React.memo(() => {
+  const context = usePlaygroundContext();
+  const sheetInstance = context.ref?.current!;
   const PRE_CLASS = `sheet-header`;
 
   const onSubmit: SwitcherProps['onSubmit'] = (result) => {
@@ -105,4 +105,4 @@ export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
   );
 });
 
-SheetHeader.displayName = 'SheetHeader';
+PlaygroundSheetHeader.displayName = 'PlaygroundSheetHeader';

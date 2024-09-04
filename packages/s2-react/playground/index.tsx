@@ -46,13 +46,14 @@ import { SheetComponent } from '../src';
 import { reactRender } from '../src/utils/reactRender';
 import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
-import { ConfigProvider } from './components/ConfigProvider';
+import { PlaygroundSheetConfigProvider } from './components/ConfigProvider';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
-import { SheetHeader } from './components/Header';
+import { PlaygroundSheetHeader } from './components/Header';
 import { LinkGroup } from './components/LinkGroup';
+import { PlaygroundSheetPagination } from './components/Pagination';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
@@ -378,7 +379,7 @@ function MainLayout() {
   );
 
   return (
-    <ConfigProvider themeName={themeCfg?.name}>
+    <PlaygroundSheetConfigProvider themeName={themeCfg?.name}>
       <PlaygroundContext.Provider
         value={{
           ref: s2Ref,
@@ -1565,7 +1566,7 @@ function MainLayout() {
                     />
                     {render && (
                       <React.StrictMode>
-                        <SheetHeader sheetInstance={s2Ref.current!} />
+                        <PlaygroundSheetHeader />
                         <SheetComponent
                           dataCfg={dataCfg as S2DataConfig}
                           options={mergedOptions}
@@ -1633,6 +1634,7 @@ function MainLayout() {
                           )}
                           onDoubleClick={logHandler('onDoubleClick')}
                         />
+                        {showPagination && <PlaygroundSheetPagination />}
                       </React.StrictMode>
                     )}
                   </>
@@ -1691,7 +1693,7 @@ function MainLayout() {
           />
         </div>
       </PlaygroundContext.Provider>
-    </ConfigProvider>
+    </PlaygroundSheetConfigProvider>
   );
 }
 

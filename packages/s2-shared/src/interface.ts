@@ -91,6 +91,9 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
+  /**
+   * @deprecated
+   */
   showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
 

@@ -13,7 +13,6 @@ import type { SheetComponentOptions, SheetComponentProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
-import { usePagination } from './usePagination';
 import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentProps) {
@@ -48,7 +47,6 @@ export function useSpreadSheet(props: SheetComponentProps) {
   >([dataCfg, options!, themeCfg!]);
 
   const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
-  const pagination = usePagination(s2Ref.current!, props);
 
   useEvents(props, s2Ref.current!);
 
@@ -183,6 +181,5 @@ export function useSpreadSheet(props: SheetComponentProps) {
     wrapperRef,
     loading,
     setLoading,
-    pagination,
   };
 }
