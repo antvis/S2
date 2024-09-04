@@ -1,8 +1,6 @@
 import { Node, SpreadSheet, customMerge, type ColHeaderConfig } from '@antv/s2';
-import { strategyCopy } from '@antv/s2-react-components/src/components/analysis/export/strategy-copy';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
-import type { HeaderBaseProps } from '../../header';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentProps } from '../interface';
 import { StrategySheetColCell, StrategySheetDataCell } from './custom-cell';
@@ -81,20 +79,12 @@ export const StrategySheet: React.FC<SheetComponentProps> = React.memo(
       [options, strategySheetOptions],
     );
 
-    const header: Partial<HeaderBaseProps> = {
-      export: {
-        // 趋势分析表使用定制的复制导出处理逻辑
-        customCopyMethod: strategyCopy,
-      },
-    };
-
     return (
       <BaseSheet
         options={s2Options}
         themeCfg={themeCfg}
         dataCfg={dataCfg}
         {...restProps}
-        header={customMerge(restProps?.header, header)}
       />
     );
   },

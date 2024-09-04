@@ -50,8 +50,5 @@ export const PluginsSheet = React.forwardRef<
     dataCfg={pivotSheetDataCfg}
     options={options}
     ref={ref}
-    header={{
-      title: '手绘风格 & Canvas 内部文本可被搜索',
-    }}
   />
 ));

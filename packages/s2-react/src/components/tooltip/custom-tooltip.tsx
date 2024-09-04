@@ -8,7 +8,6 @@ import {
   reactRender,
   reactUnmount,
 } from '../../utils/reactRender';
-import { ConfigProvider } from '../config-provider';
 import { TooltipComponent } from './index';
 import type {
   TooltipOperatorMenuOptions,
@@ -51,11 +50,8 @@ export class CustomTooltip extends BaseTooltip<
       this.forceClearContent();
     }
 
-    const themeName = this.spreadsheet.getThemeName();
     const TooltipContent = (
-      <ConfigProvider themeName={themeName}>
-        <TooltipComponent {...tooltipProps} content={content} />
-      </ConfigProvider>
+      <TooltipComponent {...tooltipProps} content={content} />
     );
 
     reactRender(TooltipContent, this.container!);

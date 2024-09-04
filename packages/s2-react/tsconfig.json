@@ -12,5 +12,5 @@
     }
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
-  "include": ["src", "./typings.d.ts", "playground", "../../global.d.ts", "../s2-react-components/src/components/analysis/export", "../s2-react-components/playground/Header"]
+  "include": ["src", "./typings.d.ts", "playground", "../../global.d.ts"]
 }

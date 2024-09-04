@@ -1,5 +1,6 @@
 import type { HierarchyType, S2DataConfig, SpreadSheet } from '@antv/s2';
-import { Switch } from 'antd';
+import { Export } from '@antv/s2-react-components';
+import { Space, Switch } from 'antd';
 import React from 'react';
 import { customTreeFields } from '../../__tests__/data/custom-tree-fields';
 import { customTreeData } from '../../__tests__/data/data-custom-trees';
@@ -59,30 +60,32 @@ export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
     const { logHandler } = context;
 
     return (
-      <SheetComponent
-        {...props}
-        {...context}
-        dataCfg={CustomTreeDataCfg}
-        options={{ ...CustomTreeOptions, hierarchyType }}
-        ref={ref}
-        onCopied={logHandler('onCopied')}
-        header={{
-          title: '自定义目录树',
-          export: {
-            open: true,
-          },
-          extra: (
-            <Switch
-              checked={hierarchyType === 'tree'}
-              checkedChildren="树状"
-              unCheckedChildren="平铺"
-              onChange={(checked) => {
-                setHierarchyType(checked ? 'tree' : 'grid');
-              }}
-            />
-          ),
-        }}
-      />
+      <>
+        <Space
+          style={{
+            display: 'flex',
+            marginBottom: 8,
+          }}
+        >
+          <Switch
+            checked={hierarchyType === 'tree'}
+            checkedChildren="树状"
+            unCheckedChildren="平铺"
+            onChange={(checked) => {
+              setHierarchyType(checked ? 'tree' : 'grid');
+            }}
+          />
+          <Export sheetInstance={context.ref!.current!} />
+        </Space>
+        <SheetComponent
+          {...props}
+          {...context}
+          dataCfg={CustomTreeDataCfg}
+          options={{ ...CustomTreeOptions, hierarchyType }}
+          ref={ref}
+          onCopied={logHandler('onCopied')}
+        />
+      </>
     );
   },
 );

@@ -67,11 +67,6 @@ export const ChartSheet = React.forwardRef<
       ref={ref}
       adaptive={true}
       onDataCellRender={onDataCellRender}
-      header={{
-        title: 'S2 & G2',
-        description: '单元格内绘制 G2 图表',
-        export: { open: true },
-      }}
     />
   );
 });

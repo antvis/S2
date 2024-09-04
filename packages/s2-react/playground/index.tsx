@@ -1654,6 +1654,7 @@ function MainLayout() {
                 children: (
                   <StrategySheet
                     onRowCellClick={logHandler('onRowCellClick')}
+                    ref={s2Ref}
                   />
                 ),
               },
