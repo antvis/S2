@@ -1,7 +1,7 @@
+import { MoreOutlined } from '@ant-design/icons';
 import {
   CSV_SEPARATOR,
   S2_PREFIX_CLS,
-  SpreadSheet,
   TAB_SEPARATOR,
   asyncGetAllData,
   asyncGetAllPlainData,
@@ -9,40 +9,16 @@ import {
   download,
   i18n,
   type CopyAllDataParams,
-  type Copyable,
 } from '@antv/s2';
-import { Button, Dropdown, message, type DropDownProps } from 'antd';
+import { Button, Dropdown, message } from 'antd';
 import cx from 'classnames';
 import React from 'react';
-import { DotIcon } from '../icons';
-
-export interface ExportBaseProps {
-  open?: boolean;
-  className?: string;
-  icon?: React.ReactNode;
-  copyOriginalText?: string;
-  copyFormatText?: string;
-  downloadOriginalText?: string;
-  downloadFormatText?: string;
-  successText?: string;
-  errorText?: string;
-  fileName?: string;
-  async?: boolean;
-  // ref: https://ant.design/components/dropdown-cn/#API
-  dropdown?: DropDownProps;
-  customCopyMethod?: (
-    params: CopyAllDataParams,
-  ) => Promise<string> | string | Promise<Copyable> | Copyable;
-}
-
-export interface ExportProps extends ExportBaseProps {
-  sheet: SpreadSheet;
-}
+import type { ExportBaseProps, ExportProps } from './interface';
 
 export const Export: React.FC<ExportProps> = React.memo((props) => {
   const {
     className,
-    icon,
+    children,
     async = true,
     copyOriginalText = i18n('复制原始数据'),
     copyFormatText = i18n('复制格式化数据'),
@@ -50,7 +26,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     downloadFormatText = i18n('下载格式化数据'),
     successText = i18n('操作成功'),
     errorText = i18n('操作失败'),
-    sheet,
+    sheetInstance,
     fileName = 'sheet',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     open,
@@ -69,7 +45,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     method: ExportBaseProps['customCopyMethod'],
   ) => {
     const params: CopyAllDataParams = {
-      sheetInstance: sheet,
+      sheetInstance,
       split,
       formatOptions: isFormat,
       async,
@@ -161,7 +137,11 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
         {...restProps}
         {...dropdown}
       >
-        <Button type="text">{icon || <DotIcon />}</Button>
+        {children || (
+          <Button type="text">
+            <MoreOutlined />
+          </Button>
+        )}
       </Dropdown>
     </>
   );

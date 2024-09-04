@@ -1,8 +1,8 @@
+import { SwapOutlined } from '@ant-design/icons';
 import { i18n } from '@antv/s2';
 import { Button, Popover } from 'antd';
 import cls from 'classnames';
 import React from 'react';
-import { SwitcherIcon } from '../icons';
 import { SwitcherContent } from './content';
 import './index.less';
 import type { SwitcherProps } from './interface';
@@ -38,7 +38,7 @@ export const Switcher: React.FC<SwitcherProps> = React.memo(
             className={getSwitcherClassName('entry-button')}
             size="small"
             disabled={disabled}
-            icon={<SwitcherIcon />}
+            icon={<SwapOutlined rotate={90} />}
           >
             {title || i18n('行列切换')}
           </Button>

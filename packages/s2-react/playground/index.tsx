@@ -9,7 +9,6 @@ import {
   customMerge,
   generatePalette,
   getDefaultSeriesNumberText,
-  getLang,
   getPalette,
   safeJsonParse,
   type CustomHeaderFields,
@@ -22,10 +21,8 @@ import {
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
-import corePkg from '@antv/s2/package.json';
 import { useUpdateEffect } from 'ahooks';
 import {
-  version as AntdVersion,
   Button,
   Collapse,
   DatePicker,
@@ -38,29 +35,27 @@ import {
   Space,
   Switch,
   Tabs,
-  Tag,
   Tooltip,
   type RadioChangeEvent,
 } from 'antd';
 import { debounce, isEmpty, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
-import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
-import { ConfigProvider } from '../src/components/config-provider';
 import { reactRender } from '../src/utils/reactRender';
 import { BigDataSheet } from './components/BigDataSheet';
 import { ChartSheet } from './components/ChartSheet';
+import { ConfigProvider } from './components/ConfigProvider';
 import { CustomGrid } from './components/CustomGrid';
 import { CustomTree } from './components/CustomTree';
 import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { SheetHeader } from './components/Header';
 import { LinkGroup } from './components/LinkGroup';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
-
 import {
   PivotSheetFrozenOptions,
   TableSheetFrozenOptions,
@@ -1570,6 +1565,7 @@ function MainLayout() {
                     />
                     {render && (
                       <React.StrictMode>
+                        <SheetHeader sheetInstance={s2Ref.current!} />
                         <SheetComponent
                           dataCfg={dataCfg as S2DataConfig}
                           options={mergedOptions}
@@ -1579,37 +1575,6 @@ function MainLayout() {
                           themeCfg={themeCfg}
                           partDrillDown={partDrillDown}
                           showPagination={showPagination}
-                          header={{
-                            title: (
-                              <a href="https://github.com/antvis/S2">
-                                {reactPkg.name} playground
-                              </a>
-                            ),
-                            description: (
-                              <Space>
-                                <span>
-                                  {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
-                                </span>
-                                <span>
-                                  {corePkg.name}: <Tag>{corePkg.version}</Tag>
-                                </span>
-                                <span>
-                                  antd: <Tag>{AntdVersion}</Tag>
-                                </span>
-                                <span>
-                                  react: <Tag>{React.version}</Tag>
-                                </span>
-                                <span>
-                                  lang: <Tag>{getLang()}</Tag>
-                                </span>
-                              </Space>
-                            ),
-                            switcher: { open: true },
-                            export: { open: true },
-                            advancedSort: {
-                              open: true,
-                            },
-                          }}
                           onAfterRender={logHandler('onAfterRender')}
                           onRangeSort={logHandler('onRangeSort')}
                           onRangeSorted={logHandler('onRangeSorted')}

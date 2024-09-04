@@ -60,8 +60,7 @@
   "dependencies": {
     "ahooks": "^3.8.0",
     "classnames": "^2.5.1",
-    "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.1"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.3.7",
@@ -71,15 +70,15 @@
     "@antv/g-plugin-rough-canvas-renderer": "^2.0.11",
     "@antv/g2": "^5.1.20",
     "@antv/s2": "workspace:*",
+    "@antv/s2-react-components": "workspace:*",
     "@antv/s2-shared": "workspace:*",
     "@testing-library/react": "^15.0.7",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/d3-dsv": "^3.0.7",
     "@types/react": "18.2.43",
-    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "18.3.0",
-    "antd": "^5.17.4",
+    "antd": "^5.20.4",
     "d3-dsv": "^1.1.1",
     "react": "^18.3.1",
     "react-color": "^2.19.3",

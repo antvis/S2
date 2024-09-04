@@ -77,7 +77,6 @@ type ShowPagination<OverrideShowPagination, Options> =
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
-  Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
   OverrideShowPagination = false,
 > {
@@ -94,7 +93,6 @@ export interface BaseSheetComponentProps<
   adaptive?: Adaptive;
   showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
-  header?: Header;
 
   // ============== Row Cell ====================
   onRowCellHover?: (data: TargetCellInfo) => void;

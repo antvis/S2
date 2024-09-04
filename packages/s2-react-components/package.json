@@ -62,12 +62,11 @@
     "tsc": "tsc --noEmit",
     "watch": "rimraf esm && pnpm build:esm -w"
   },
-  "release": {
-    "skip": true
-  },
   "dependencies": {
+    "ahooks": "^3.8.0",
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.1",
     "tinycolor2": "^1.6.0",
     "tinygradient": "^1.1.5"
   },

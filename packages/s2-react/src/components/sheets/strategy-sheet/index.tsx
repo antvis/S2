@@ -1,7 +1,7 @@
 import { Node, SpreadSheet, customMerge, type ColHeaderConfig } from '@antv/s2';
+import { strategyCopy } from '@antv/s2-react-components/src/components/analysis/export/strategy-copy';
 import { isEmpty, size } from 'lodash';
 import React from 'react';
-import { strategyCopy } from '../../export/strategy-copy';
 import type { HeaderBaseProps } from '../../header';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentOptions, SheetComponentProps } from '../interface';

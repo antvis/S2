@@ -5,11 +5,12 @@
     "jsx": "react",
     "paths": {
       "@antv/s2":["s2-core/src/index.ts"],
+      "@antv/s2-react-components":["s2-react-components/src/index.ts"],
       "@antv/s2-shared":["s2-shared/src/index.ts"],
       "@/*":["s2-react/src/*"],
       "tests/*":["s2-react/__tests__/*"]
     }
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
-  "include": ["src", "./typings.d.ts", "playground", "../../global.d.ts"]
+  "include": ["src", "./typings.d.ts", "playground", "../../global.d.ts", "../s2-react-components/src/components/analysis/export", "../s2-react-components/playground/Header"]
 }

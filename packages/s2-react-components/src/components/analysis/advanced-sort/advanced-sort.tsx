@@ -1,12 +1,5 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import {
-  EXTRA_FIELD,
-  SpreadSheet,
-  TOTAL_VALUE,
-  i18n,
-  type SortMethod,
-  type SortParam,
-} from '@antv/s2';
+import { DeleteOutlined, OrderedListOutlined } from '@ant-design/icons';
+import { EXTRA_FIELD, TOTAL_VALUE, i18n, type SortParam } from '@antv/s2';
 import {
   ADVANCED_SORT_PRE_CLS,
   getSortMethod,
@@ -26,54 +19,20 @@ import {
   uniq,
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
 import './index.less';
+import type {
+  AdvancedSortProps,
+  Dimension,
+  RuleItem,
+  RuleValue,
+} from './interface';
 
 const { Sider, Content } = Layout;
 
-export interface Dimension {
-  field: string;
-  name: string;
-  list: string[];
-}
-
-export interface RuleOption {
-  label: string;
-  value: 'sortMethod' | 'sortBy' | 'sortByMeasure';
-  children?: RuleOption[];
-}
-
-export interface RuleValue {
-  field: string;
-  name: string;
-  sortMethod?: SortMethod;
-  sortBy?: string[];
-  sortByMeasure?: string;
-}
-
-export interface AdvancedSortBaseProps {
-  open?: boolean;
-  className?: string;
-  icon?: React.ReactNode;
-  text?: React.ReactNode;
-  ruleText?: React.ReactNode;
-  dimensions?: Dimension[];
-  ruleOptions?: RuleOption[];
-  sortParams?: SortParam[];
-  onSortOpen?: () => void;
-  onSortConfirm?: (ruleValues: RuleValue[], sortParams: SortParam[]) => void;
-}
-
-export interface AdvancedSortProps extends AdvancedSortBaseProps {
-  sheet: SpreadSheet;
-}
-
-export type RuleItem = RuleValue & { rule: string[] };
-
 export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
   ({
-    sheet,
+    sheetInstance,
     className,
     icon,
     text,
@@ -175,7 +134,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
 
     const onFinish = () => {
       const ruleValue = form.getFieldsValue();
-      const { values = [] } = sheet.dataCfg.fields;
+      const { values = [] } = sheetInstance.dataCfg.fields;
       const ruleValues: RuleValue[] = [];
       const currentSortParams: SortParam[] = [];
 
@@ -230,7 +189,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
         return dimensions;
       }
 
-      const { fields = {} } = sheet.dataCfg || {};
+      const { fields = {} } = sheetInstance.dataCfg || {};
       const { rows = [], columns = [] } = fields;
 
       return map([...rows, ...columns], (item) => {
@@ -238,8 +197,8 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
 
         return {
           field: item,
-          name: sheet.dataSet.getFieldName(name),
-          list: sheet.dataSet.getDimensionValues(name),
+          name: sheetInstance.dataSet.getFieldName(name),
+          list: sheetInstance.dataSet.getDimensionValues(name),
         };
       }) as unknown as Dimension[];
     };
@@ -251,12 +210,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
 
       return map(SORT_RULE_OPTIONS, (item) => {
         if (item.value === 'sortByMeasure') {
-          const { values = [] } = sheet.dataCfg.fields || {};
+          const { values = [] } = sheetInstance.dataCfg.fields || {};
 
           // @ts-ignore
           item.children = map(values, (field) => {
             return {
-              label: sheet.dataSet.getFieldName(field),
+              label: sheetInstance.dataSet.getFieldName(field),
               value: field,
             };
           });
@@ -286,7 +245,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
 
         return {
           field: sortFieldId,
-          name: sheet.dataSet.getFieldName(sortFieldId),
+          name: sheetInstance.dataSet.getFieldName(sortFieldId),
           rule,
           sortMethod,
           sortBy: currentSortBy,
@@ -432,7 +391,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
       <div className={cx(ADVANCED_SORT_PRE_CLS, className)}>
         <Button
           onClick={sortClick}
-          icon={icon || <SortIcon />}
+          icon={icon || <OrderedListOutlined />}
           size="small"
           className={`${ADVANCED_SORT_PRE_CLS}-btn`}
         >

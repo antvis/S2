@@ -1,9 +1,7 @@
 import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
 import React from 'react';
-import type { SheetComponentOptions } from '../sheets/interface';
 // eslint-disable-next-line import/order
-import { Switcher } from './';
 import {
   generateSheetConfig,
   generateSwitcherFields,
@@ -15,6 +13,7 @@ import type {
   SwitcherProps as DefaultSwitcherProps,
   SwitcherResult,
 } from './interface';
+import { Switcher } from './switcher';
 
 type SwitcherBasicCfg = Pick<
   DefaultSwitcherProps,
@@ -33,16 +32,17 @@ export interface SwitcherProps extends SwitcherBasicCfg {
 
 export interface SwitcherHeaderProps extends SwitcherBasicCfg {
   sheet: SpreadSheet;
-  dataCfg: S2DataConfig;
-  options: SheetComponentOptions;
 }
 
+/**
+ * @deprecated 请直接使用 `<Switcher />` 组件
+ */
 export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({
   sheet,
-  dataCfg,
-  options,
   ...props
 }) => {
+  const dataCfg = sheet.dataCfg;
+  const options = sheet.options;
   const [fields, setFields] = React.useState(() =>
     generateSwitcherFields(
       sheet,

@@ -1,7 +1,11 @@
+import {
+  DownOutlined,
+  UpOutlined,
+  VerticalAlignTopOutlined,
+} from '@ant-design/icons';
 import { ADVANCED_SORT_PRE_CLS } from '@antv/s2-shared';
 import { Card } from 'antd';
 import React from 'react';
-import { HtmlIcon } from '../../common/icons';
 
 export interface CustomSortProps {
   splitOrders: string[];
@@ -48,7 +52,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
           upHandler(value);
         }}
       >
-        <HtmlIcon name="groupAsc" />
+        <VerticalAlignTopOutlined />
       </span>
       <span
         className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
@@ -56,7 +60,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
           downHandler(value);
         }}
       >
-        <HtmlIcon name="groupDesc" />
+        <DownOutlined />
       </span>
       <span
         className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
@@ -64,7 +68,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
           toTopHandler(value);
         }}
       >
-        <HtmlIcon name="globalAsc" />
+        <UpOutlined />
       </span>
     </>
   );
