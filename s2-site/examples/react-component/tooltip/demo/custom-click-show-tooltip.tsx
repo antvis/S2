@@ -8,6 +8,7 @@ import {
   SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { Menu } from 'antd';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -23,6 +24,13 @@ fetch(
         enable: true,
         rowCell: {
           enable: false,
+        },
+        operation: {
+          menu: {
+            render(props) {
+              return <Menu {...props} />;
+            },
+          },
         },
       },
     };

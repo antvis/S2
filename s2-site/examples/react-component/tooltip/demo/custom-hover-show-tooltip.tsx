@@ -8,6 +8,7 @@ import {
   SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { Menu } from 'antd';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
@@ -23,6 +24,13 @@ fetch(
       height: 480,
       tooltip: {
         enable: true,
+        operation: {
+          menu: {
+            render(props) {
+              return <Menu {...props} />;
+            },
+          },
+        },
       },
       interaction: {
         // 禁用默认的悬停聚焦效果, 防止出现默认的 tooltip (hover 在数值单元格 800ms 后, 会显示 tooltip)

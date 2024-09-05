@@ -924,13 +924,15 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
-#### 移除 AntD 组件库依赖
+#### 移除 Ant Design 组件库依赖
 
-`2.x` 版本中移除 `antd` 的依赖，推荐自行组合使用，不再受项目 `antd` 的版本限制。
+:::info
+`2.x` 版本中移除了 `antd` 的依赖，组件内部更轻量，不再受项目 `antd` 的版本限制，升级更平滑，推荐自行组合使用。
+:::
 
 ##### 表头组件移除
 
-`header` 属性移除。
+`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件，可以单独按需引入。
 
 ```diff
 <SheetComponent
@@ -944,9 +946,9 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 />
 ```
 
-##### 组件内部的 Spin 组件移除，新增 `onLoading`
+##### 组件内部的 Spin 组件移除
 
-在 `1.x` 的 `<SheetComponent/>` 中，内部会包裹 antd 的 `<Spin />` 组件，`2.x` 移除后，不再有 `loading` 效果，可以自行在外层嵌套相关组件，组合使用。
+`<SheetComponent />` 内部会包裹 antd 的 `<Spin />` 组件移除，不再有 `loading` 效果，新增 `onLoading`, 可以自行在外层嵌套相关组件，组合使用。
 
 ```tsx | pure
 import { Spin } from 'antd'
@@ -967,10 +969,12 @@ function App() {
 1. `showPagination` 属性移除。
 
 ```diff
-- <SheetComponent showPagination/>
+<SheetComponent
+-  showPagination
+/>
 ```
 
-2. 推荐使用 `usePagination` hook, 封装了 S2 的内部分页更新逻辑，配合 antd 的 `<Pagination />` 组合使用。
+2. 提供 `usePagination` hook, 封装了 S2 的内部分页更新逻辑，可以配合 antd 的 `<Pagination />` 组合使用。
 
 ```tsx | pure
 import { usePagination } from 's2-react'
@@ -987,6 +991,83 @@ function App() {
    )
 }
 ```
+
+##### Tooltip 操作项菜单组件移除
+
+1. 配置调整
+
+菜单项调整到 `menu` 下
+
+```diff
+const s2Options = {
+  tooltip: {
+    operation: {
+-     onClick: (info, cell) => {},
+-     menus: [
+-       {
+-         key: 'custom-a',
+-         text: '操作 1',
+-         icon: 'Trend',
+-         onClick: (info, cell) => {},
+-         children: [],
+-       }
+-     ],
+
++     menu: {
++       onClick: (info, cell) => {},
++       items: [
++         {
++           key: 'custom-a',
++           label: '操作 1',
++           icon: 'Trend',
++           onClick: (info, cell) => {},
++           children: [],
++         }
++       ],
++     },
+    },
+  },
+};
+
+<SheetComponent options={s2Options} />
+```
+
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`。
+
+```diff
+s2.showTooltip({
+  options: {
+    operator: {
+      menu: {
+-       defaultSelectedKeys: ['key-1'],
++       selectedKeys: ['key-1'],
+      },
+    },
+  },
+});
+```
+
+2. 内部操作项依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同。
+
+```tsx | pure
+import { Menu } from 'antd'
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menu: {
+        onClick: () => {},
+        items: [],
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      }
+    }
+  }
+}
+```
+
+具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
 #### 支持 React 18 和 Ant Design 5.0
 
@@ -1069,62 +1150,6 @@ const header = {
 ```
 
 2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
-
-#### Tooltip 菜单项配置调整
-
-菜单项调整到 `menu` 下，和 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api) 保持一致，同时支持透传 props.
-
-```diff
- const s2Options = {
-  tooltip: {
-    operation: {
-      onClick: (info, cell) => {},
--     menus: [
--       {
--         key: 'custom-a',
--         text: '操作 1',
--         icon: 'Trend',
--         onClick: (info, cell) => {},
--         children: [],
--       }
--     ],
-
-+     menu: {
-+       mode: 'vertical',
-+       onClick: (info, cell) => {},
-+       items: [
-+         {
-+           key: 'custom-a',
-+           label: '操作 1',
-+           icon: 'Trend',
-+           onClick: (info, cell) => {},
-+           children: [],
-+         }
-+       ],
-+     },
-    },
-  },
-};
-
-<SheetComponent options={s2Options} />
-```
-
-同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
-
-```diff
-s2.showTooltip({
-  options: {
-    operator: {
-      menu: {
--       defaultSelectedKeys: ['key-1'],
-+       selectedKeys: ['key-1'],
-      },
-    },
-  },
-});
-```
-
-具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
 
 #### 行头单元格折叠展开事件划分到 `RowCell`
 

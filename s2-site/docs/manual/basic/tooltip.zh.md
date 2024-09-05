@@ -74,7 +74,7 @@ const s2Options = {
 };
 ```
 
-### 操作配置项
+### 操作配置项 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
 通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/api/general/s2-options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项)。
 
@@ -278,17 +278,25 @@ s2.showTooltip({
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600" alt="row" />
 
-#### 自定义 Tooltip 操作项
+#### 自定义 Tooltip 操作项 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
 
 除了默认提供的操作项，还可以配置 `operation.menu` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到当前 `tooltip`
 对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
 
 :::info{title="注意"}
-如果使用的是 `@antv/s2-react`, 支持透传 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api)
+如果使用的是 `@antv/s2-react`, 需要通过 `render` 显示的指定操作项菜单组件，如：Ant Design [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api)
 
-```ts
-menu: {
-  mode: 'vertical'
+```tsx
+import { Menu } from 'antd';
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menu: {
+        render: (props) => <Menu {...props} />
+      }
+    }
+  }
 }
 ```
 
@@ -296,11 +304,17 @@ menu: {
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2R8ST6bBxAcAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="row" />
 
-```ts
+菜单配置如下：
+
+```tsx
+import { Menu } from 'antd';
+import { PlusCircleFilled } from '@ant-design/icons';
+
 const s2Options = {
   tooltip: {
     operation: {
       menu: {
+        render: (props) => <Menu {...props} />,
         onClick: (info, cell) => {
           console.log('菜单项点击：', info, cell);
         },
@@ -308,6 +322,7 @@ const s2Options = {
           {
             key: 'custom-a',
             label: '操作 1',
+            // 图标可以是内置的 icon
             icon: 'Trend',
             onClick: (info, cell) => {
               console.log('操作 1 点击');
@@ -316,7 +331,8 @@ const s2Options = {
             children: [{
               key: 'custom-a-a',
               label: '操作 1-1',
-              icon: 'Trend',
+              // 也可以是 ReactNode
+              icon: <PlusCircleFilled />,
               onClick: (info, cell) => {
                 console.log('操作 1-1 点击', info, cell);
               },
@@ -397,7 +413,7 @@ s2.showTooltip({
 
 <br/>
 
-如果使用的是 `@antv/s2-react`, 那么 `label` 和 `icon` 还支持任意 `ReactNode`, 菜单项透传 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api)
+如果使用的是 `@antv/s2-react`, 那么 `label` 和 `icon` 还支持任意 `ReactNode`
 
 ```tsx
 import { StarOutlined } from '@ant-design/icons';
@@ -406,9 +422,6 @@ const s2Options = {
   tooltip: {
     operation: {
       menu: {
-        // 可以使用 antd 的配置项 https://ant-design.antgroup.com/components/menu-cn#api
-        mode: "vertical",
-        subMenuOpenDelay: 0.2,
         items: [
           {
             key: 'custom-a',

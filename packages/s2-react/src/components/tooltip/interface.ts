@@ -6,18 +6,16 @@ import type {
   TooltipShowOptions,
 } from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
-import { type GetProp, type MenuProps } from 'antd';
 
 export interface TooltipOperatorMenuInfo {
   key: string;
   domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;
 }
 
-export type TooltipOperatorMenuItem = Omit<
-  GetProp<MenuProps, 'items'>[number],
-  'icon' | 'label'
-> &
-  S2TooltipOperatorMenuItem<React.ReactNode, React.ReactNode>;
+export type TooltipOperatorMenuItem = S2TooltipOperatorMenuItem<
+  React.ReactNode,
+  React.ReactNode
+>;
 
 export type TooltipOperatorMenuItems = TooltipOperatorMenuItem[];
 
@@ -28,11 +26,16 @@ export type TooltipOperatorMenuItems = TooltipOperatorMenuItem[];
 export type TooltipOperatorMenuOptions = S2TooltipOperatorMenuOptions<
   React.ReactNode,
   React.ReactNode
-> &
-  Omit<MenuProps, 'onClick' | 'items'> & {
-    items?: TooltipOperatorMenuItems;
-    onClick?: (info: TooltipOperatorMenuInfo, cell: S2CellType) => void;
-  };
+> & {
+  items?: TooltipOperatorMenuItems;
+  onClick?: (info: TooltipOperatorMenuInfo, cell: S2CellType) => void;
+
+  /**
+   * 指定菜单组件, 如: Ant Design Menu https://ant-design.antgroup.com/components/menu-cn#api
+   * @tips s2-react 层只提供单元格信息的注入和转换, 由上层业务自由渲染组件, 不依赖 antd , 从而达到解耦的目的.
+   */
+  render?: (props: Record<string, any>) => React.ReactNode;
+};
 
 export interface TooltipOperatorProps
   extends BaseTooltipOperatorProps<TooltipOperatorMenuOptions> {

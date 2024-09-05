@@ -1,6 +1,5 @@
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { Menu, type GetProp, type MenuProps } from 'antd';
-import cls from 'classnames';
+import { type GetProp, type MenuProps } from 'antd';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import type {
@@ -18,10 +17,10 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
       onlyShowOperator,
       cell,
       menu: {
-        className,
         items: menus = [],
         onClick,
         selectedKeys,
+        render,
         ...otherMenuProps
       },
     } = props;
@@ -61,17 +60,14 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
     const renderMenus = () => {
       const items = map(menus, renderMenu);
 
-      return (
-        <Menu
-          mode={onlyShowOperator ? 'vertical' : 'horizontal'}
-          className={cls(`${TOOLTIP_PREFIX_CLS}-operator-menus`, className)}
-          onClick={onMenuClick}
-          selectedKeys={selectedKeys}
-          items={items}
-          selectable={onlyShowOperator}
-          {...otherMenuProps}
-        />
-      );
+      return render?.({
+        mode: onlyShowOperator ? 'vertical' : 'horizontal',
+        selectable: onlyShowOperator,
+        onClick: onMenuClick,
+        items,
+        selectedKeys,
+        ...otherMenuProps,
+      });
     };
 
     return (

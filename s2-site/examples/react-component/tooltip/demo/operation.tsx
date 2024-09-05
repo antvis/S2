@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 // organize-imports-ignore
+import { PlusCircleFilled } from '@ant-design/icons';
 import React from 'react';
 import { CellType } from '@antv/s2';
+import { Menu } from 'antd';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -18,8 +20,10 @@ fetch(
           // 内置操作项
           hiddenColumns: true,
           menu: {
-            // 支持透传 Ant Design <Menu/> 组件 API: https://ant-design.antgroup.com/components/menu-cn#api
-            // mode: 'vertical',
+            // 需要指定 UI 组件, 如 Ant Design <Menu/> 组件: https://ant-design.antgroup.com/components/menu-cn#api
+            render(props) {
+              return <Menu {...props} />;
+            },
             onClick(info, cell) {
               console.log('菜单项点击:', info, cell);
             },
@@ -27,7 +31,9 @@ fetch(
               {
                 key: 'trend',
                 label: '趋势',
+                // 支持内置的 icon 和 ReactNode
                 icon: 'Trend',
+                // icon: <PlusCircleFilled />,
                 // 数值单元格展示
                 visible: (cell) => cell.cellType === CellType.DATA_CELL,
                 onClick: (info, cell) => {
