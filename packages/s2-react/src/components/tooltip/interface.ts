@@ -15,7 +15,9 @@ export interface TooltipOperatorMenuInfo {
 export type TooltipOperatorMenuItem = S2TooltipOperatorMenuItem<
   React.ReactNode,
   React.ReactNode
->;
+> & {
+  [key: string]: unknown;
+};
 
 export type TooltipOperatorMenuItems = TooltipOperatorMenuItem[];
 

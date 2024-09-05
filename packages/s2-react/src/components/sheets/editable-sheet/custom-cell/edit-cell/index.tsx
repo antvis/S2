@@ -8,7 +8,6 @@ import {
   type DataItem,
   type ViewMeta,
 } from '@antv/s2';
-import { Input } from 'antd';
 import { isNil, pick } from 'lodash';
 import React from 'react';
 import { useSpreadSheetInstance } from '../../../../../context/SpreadSheetContext';
@@ -85,7 +84,7 @@ function EditCellComponent(
 
   const [inputVal, setInputVal] = React.useState(() => cell!.getFieldValue());
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const onSave = async () => {
@@ -177,7 +176,7 @@ function EditCellComponent(
           onSave={onSave}
         />
       ) : (
-        <Input.TextArea
+        <textarea
           required
           style={styleProps}
           className={`${S2_PREFIX_CLS}-edit-cell`}
