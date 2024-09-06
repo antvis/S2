@@ -29,11 +29,13 @@ S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` �
 <details>
 <summary>点击查看 PartDrillDown 维度下钻配置</summary>
 
-```js
+```tsx
+import { DrillDown } from '@antv/s2-react-components';
 
 const sex = ['男', '女'];
 
 const PartDrillDown = {
+  render: (props) => <DrillDown {...props}/>,
   drillConfig: {
     // 个性化配置 （可选）
     title: '下钻',

@@ -59,6 +59,36 @@ const App = () => {
 
 [查看示例](/examples/react-component/export/#export)
 
+### 自定义入口
+
+`Export` 组件默认入口为 `三个点`，可以通过 `children` 的方式自定义。
+
+```tsx
+import { Button } from 'antd'
+import { ExportOutlined } from '@ant-design/icons';
+import { Export } from '@antv/s2-react-components'
+
+const App = () => {
+  return (
+    <Export>
+      <Button type="text" icon={<ExportOutlined />}>
+        导出数据
+      </Button>
+    </Export>
+  )
+}
+```
+
+## 在趋势分析表中使用
+
+由于 [趋势分析表](/manual/advanced/analysis/strategy) 数据结构的特殊性，和普通表格的导出有所不同，需要通过 `@antv/s2-react-components` 提供的 `StrategyExport` 组件， 使用方式和 `Export` 相同。
+
+```tsx
+import { StrategyExport } from '@antv/s2-react-components'
+
+<StrategyExport sheetInstance={s2Ref.current} />
+```
+
 ## 在非 React 应用中使用
 
 :::info{title="提示"}

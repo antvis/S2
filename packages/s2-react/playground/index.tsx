@@ -829,25 +829,6 @@ function MainLayout() {
                                   checked={showCustomTooltip}
                                   onChange={setShowCustomTooltip}
                                 />
-                                <Tooltip title="操作项菜单类型, 透传 https://ant-design.antgroup.com/components/menu-cn#api">
-                                  <Switch
-                                    checkedChildren="操作项-水平展示"
-                                    unCheckedChildren="操作项-垂直展示"
-                                    onChange={(checked) => {
-                                      updateOptions({
-                                        tooltip: {
-                                          operation: {
-                                            menu: {
-                                              mode: checked
-                                                ? 'horizontal'
-                                                : 'vertical',
-                                            },
-                                          },
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
                                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                                   <Select
                                     defaultValue={

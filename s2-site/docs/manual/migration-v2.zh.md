@@ -1078,6 +1078,20 @@ import { StrategyExport } from '@antv/s2-react-components';
 - <DrillDown title="下钻" clearText="清除" />
 ```
 
+2. 在表格组件中使用时，需要通过 `render` 属性传入 `DrillDown` 组件。
+
+```diff
++ import { DrillDown } from '@antv/s2-react-components';
+
+<SheetComponent
+  sheetType="pivot"
+  options={s2Options}
+  partDrillDown={{
++   render: (props) => <DrillDown {...props} />,
+  }}
+/>
+```
+
 具体请查看 [维度下钻](/manual/advanced/analysis/drill-down) 相关文档。
 
 ##### 编辑表输入框组件替换

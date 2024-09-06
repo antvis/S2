@@ -11,11 +11,13 @@ order: 2
 
 :::
 
-## React 下钻组件 <Badge>@antv/s2-react</Badge>
+## React 下钻组件 <Badge>@antv/s2-react</Badge> <Badge>@antv/s2-react-components</Badge>
 
 [​查看示例](/examples/react-component/drill-dwon#for-pivot)
 
 ```jsx
+import { DrillDown } from '@antv/s2-react-components';
+
 const s2Options = {
   width: 600,
   height: 480,
@@ -23,9 +25,12 @@ const s2Options = {
 };
 
 <SheetComponent
-  options={s2Options}
-  partDrillDown={PartDrillDown}
   sheetType="pivot"
+  options={s2Options}
+  partDrillDown={{
+    render: (props) => <DrillDown {...props} />,
+    ...PartDrillDown
+  }}
 />
 ```
 
