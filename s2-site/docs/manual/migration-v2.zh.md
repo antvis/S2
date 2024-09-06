@@ -932,7 +932,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ##### 表头组件移除
 
-`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件，可以单独按需引入。
+`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件迁移至 `@antv/s2-react-components` 中，可以单独按需引入。
 
 ```diff
 <SheetComponent
@@ -944,6 +944,22 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 -    advancedSort: { open: true },
 -  }}
 />
+```
+
+##### 组件内部的 ConfigProvider 移除
+
+`SheetComponent` 不再包裹 antd 的 `<ConfigProvider />` 全局配置组件，可以自行在外层嵌套 `<ConfigProvider />` 组件，避免不同 `antd` 版本的兼容性问题。
+
+```diff
+import { ConfigProvider } from 'antd'
+
+<SheetComponent>
+-  <ConfigProvider />
+</SheetComponent>
+
++ <ConfigProvider>
++  <SheetComponent />
++ </ConfigProvider>
 ```
 
 ##### 组件内部的 Spin 组件移除
@@ -979,42 +995,98 @@ import { usePagination } from 's2-react'
 import { Pagination } from 'antd';
 
 function App() {
-   const pagination = usePagination(s2);
+  const s2Ref = React.useRef()
+  const pagination = usePagination(s2Ref.current);
 
-   return (
-      <>
-        <SheetComponent />
-        <Pagination {...pagination} />
-      </>
-   )
+  return (
+    <>
+      <SheetComponent ref={s2Ref} />
+      <Pagination {...pagination} />
+    </>
+  )
 }
 ```
 
-##### 导出组件迁移
+##### 高级排序组件迁移
+
+```diff
+- import { AdvancedSort } from '@antv/s2-react';
++ import { AdvancedSort } from '@antv/s2-react-components';
+```
 
 1. 配置变更
 
-`syncCopy` 变更为 `async`
+`sheet` 变更为 `sheetInstance`
 
 ```diff
-- <Export syncCopy={true} />
-+ <Export async={false} />
+- <AdvancedSort sheet={s2} />
++ <AdvancedSort sheetInstance={s2} />
+```
+
+具体请查看 [高级排序](/manual/advanced/analysis/advanced) 相关文档。
+
+##### 行列切换组件迁移
+
+```diff
+- import { Switcher } from '@antv/s2-react';
++ import { Switcher } from '@antv/s2-react-components';
+```
+
+具体请查看 [维度切换](/manual/advanced/analysis/switcher) 相关文档。
+
+##### 导出组件迁移
+
+```diff
+- import { Export } from '@antv/s2-react';
++ import { Export } from '@antv/s2-react-components';
+```
+
+1. 配置变更
+
+```diff
+- <Export syncCopy={true} sheet={s2} />
++ <Export async={false} sheetInstance={s2} />
+```
+
+`icon` 属性移除，支持自定义 children.
+
+```diff
+- <Export icon={<MoreOutlined/> } />
++ <Export><Button type="text"><MoreOutlined /></Button></Export>
 ```
 
 2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
+3. 新增 `StrategyExport` 组件，适用于趋势分析表的数据复制和导出，使用方式和 `Export` 相同。
 
-##### 下钻组件迁移
+```ts
+import { StrategyExport } from '@antv/s2-react-components';
+```
+
+具体请查看 [导出](/manual/advanced/analysis/export) 相关文档。
+
+##### 维度下钻组件迁移
+
+```diff
+- import { DrillDown } from '@antv/s2-react';
++ import { DrillDown } from '@antv/s2-react-components';
+```
 
 1. 配置调整。
 
 ```diff
-<DrillDown
--  titleText="下钻"
--  clearButtonText="清除"
+- <DrillDown titleText="下钻" clearButtonText="清除" />
+- <DrillDown title="下钻" clearText="清除" />
+```
 
-+  title="下钻"
-+  clearText="清除"
-/>
+具体请查看 [维度下钻](/manual/advanced/analysis/drill-down) 相关文档。
+
+##### 编辑表输入框组件替换
+
+antd 的 `Input.TextArea` 组件替换为 原生的 `textarea`.
+
+```diff
++ <Input.TextArea />
+- <textarea />
 ```
 
 ##### Tooltip 操作项菜单组件移除
