@@ -62,11 +62,7 @@ copyToClipboard(data)
 组件层的复制，导出等功能，基于核心层 `@antv/s2` 透出的一系列工具方法封装，也可以根据实际业务，基于工具方法自行封装。
 :::
 
-开启表头，可以直接复制/下载数据，具体请查看 [分析组件-导出](/manual/advanced/analysis/export) 章节。
-
-```ts | pure
-<SheetComponent header={{ export: { open: true } }} />
-```
+具体请查看 [分析组件-导出](/manual/advanced/analysis/export) 章节。
 
 ##### 1.2.1 原始数据全量复制
 

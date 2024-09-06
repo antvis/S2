@@ -87,7 +87,6 @@ export type SheetComponentOptions = S2Options<
 >;
 export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
-  unknown,
   SheetComponentOptions
 >;
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;

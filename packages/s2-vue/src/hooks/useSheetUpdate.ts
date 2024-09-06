@@ -71,10 +71,12 @@ export const useSheetUpdate = (
 
     hooks?.before?.();
 
-    const renderOptions = props?.onUpdate?.({
+    const defaultRenderOptions = {
       reloadData: flag.reloadData,
       rebuildDataSet: flag.rebuildDataset,
-    });
+    };
+    const renderOptions =
+      props?.onUpdate?.(defaultRenderOptions) || defaultRenderOptions;
 
     await s2Ref.value?.render(renderOptions);
 

@@ -4,42 +4,46 @@ order: 2
 tag: Updated
 ---
 
-<Badge>@antv/s2-react</Badge>
+<Badge>@antv/s2-react-components</Badge>
 
-`@antv/s2-react` 基于 `@antv/s2` 的 [排序能力](/manual/basic/sort/basic)，结合 `antd` 封装了 `高级排序组件`，可按需使用。[查看示例](/examples/analysis/sort#advanced)
+结合 `antd` 和 `@antv/s2` 提供的基础 [排序能力](/manual/basic/sort/basic)，封装了 `高级排序组件`，可按需使用。[查看示例](/examples/analysis/sort#advanced)
 
 :::warning{title="注意"}
 组件内部不维护状态，可自行实现成受控模式。
 :::
 
-## 快速上手
+<Playground path='/analysis/sort/demo/advanced.tsx' rid='advanced-sort'></playground>
 
-使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSort` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
+## 使用
+
+结合 `@antv/s2-react` 的 `SheetComponent` 组件使用，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```tsx
 import React from 'react';
 import { SheetComponent } from '@antv/s2-react';
+import { AdvancedSort } from '@antv/s2-react-components';
 import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react-components/dist/style.min.css';
 
-export const AdvancedSortDemo = () => {
+export const App = () => {
+  const s2Ref = React.useRef()
   const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
 
   return (
-    <SheetComponent
-      sheetType="pivot"
-      adaptive={false}
-      dataCfg={dataCfg}
-      options={s2Options}
-      header={{
-        advancedSort: {
-          open: true,
-          sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
-          onSortConfirm: (ruleValues, sortParams) => {
-            setDataCfg({ ...dataCfg, sortParams });
-          },
-        },
-      }}
-    />
+    <>
+      <AdvancedSort
+        sheetInstance={s2Ref.current}
+        sortParams={[{ sortFieldId: 'province', sortMethod: 'DESC' }]}
+        onSortConfirm={(ruleValues, sortParams) => {
+          setDataCfg({ ...dataCfg, sortParams });
+        }}
+      />
+      <SheetComponent
+        ref={s2Ref}
+        sheetType="pivot"
+        dataCfg={dataCfg}
+      />
+    </>
   );
 };
 
@@ -47,33 +51,14 @@ export const AdvancedSortDemo = () => {
 
 ## 配置
 
-### 显示
-
-```tsx
-<SheetComponent
-  header={{
-    advancedSort: {
-      open: true,
-    },
-  }}
-/>
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
-
 ### 提交
 
 通过 `onSortConfirm` 函数透出所选规则数据 `ruleValues` 和处理成表可直接用的数据 `sortParams`
 
 ```tsx
-<SheetComponent
-  header={{
-    advancedSort: {
-      open: true,
-      onSortConfirm: (ruleValues, sortParams) => {
-        console.log(ruleValues, sortParams)
-      }
-    },
+<AdvancedSort
+  onSortConfirm={(ruleValues, sortParams) => {
+    setDataCfg({ ...dataCfg, sortParams });
   }}
 />
 
@@ -83,7 +68,7 @@ export const AdvancedSortDemo = () => {
 
 #### 文案显示
 
-`S2` 提供了对入口 `Button` 的显示定制以及规则文案定制
+对入口 `Button` 的显示定制以及规则文案定制
 
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
@@ -131,7 +116,3 @@ export const AdvancedSortDemo = () => {
 #### 打开排序弹窗
 
 可通过 `onSortOpen: () => void` 回调来支持自定义打开排序弹窗，一般用于提前获取弹框数据。
-
-## 示例
-
-<Playground path='/analysis/sort/demo/advanced.tsx' rid='advanced-sort'></playground>

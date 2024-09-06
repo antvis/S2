@@ -3,7 +3,7 @@ title: 维度切换
 order: 2
 ---
 
-<Badge>@antv/s2-react</Badge>
+<Badge>@antv/s2-react-components</Badge>
 
 S2 提供开箱即用的维度切换组件 `<Switcher/>`, 借助它，你可以非常方便的实现交互式行列切换，以及维度隐藏的功能。
 
@@ -34,8 +34,8 @@ const switcherFields = {
 
 ```tsx
 import React from "react";
-import { Switcher } from "@antv/s2-react";
-import '@antv/s2-react/dist/style.min.css';
+import { Switcher } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
 
 const onSubmit = (result) => {
   console.log("result:", result);

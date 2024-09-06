@@ -4,14 +4,20 @@ order: 3
 tag: Updated
 ---
 
-<Badge>@antv/s2</Badge> <Badge>@antv/s2-react</Badge>
+<Badge>@antv/s2</Badge> <Badge>@antv/s2-react-components</Badge>
 
-`@antv/s2` 提供了 [复制导出的基础能力](/manual/advanced/interaction/copy), `@antv/s2-react` 组件层基于 `@antv/s2` 和 `antd` 封装了开箱即用的导出功能。
+`@antv/s2` 提供了 [复制导出的基础能力](/manual/advanced/interaction/copy), `@antv/s2-react-components` 组件层基于 `@antv/s2` 和 `antd` 封装了开箱即用的导出功能。
+
+<Playground path='/react-component/export/demo/export.tsx' rid='export-component'></playground>
 
 ## 使用
 
-```tsx | {17-21}
+```tsx
+import React from 'react'
 import { SheetComponent } from '@antv/s2-react'
+import { Export } from '@antv/s2-react-components'
+import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react-components/dist/style.min.css';
 
 const S2Options = {
   interaction: {
@@ -23,16 +29,17 @@ const S2Options = {
 }
 
 const App = () => {
+  const s2Ref = React.useRef()
+
   return (
-    <SheetComponent
-      dataCfg={dataCfg}
-      options={S2Options}
-      header={{
-        export: {
-          open: true
-        }
-      }}
-    />
+    <>
+      <Export sheetInstance={s2Ref.current} />
+      <SheetComponent
+        dataCfg={dataCfg}
+        options={S2Options}
+        ref={s2Ref}
+      />
+    </>
   )
 }
 ```
@@ -55,7 +62,7 @@ const App = () => {
 ## 在非 React 应用中使用
 
 :::info{title="提示"}
-本质上，`@antv/s2-react` 的导出分析组件，只是基于 `@antv/s2` 提供的能力，封装了相应的 UI, 如果不希望依赖框架，或者希望在 `Vue` 等框架中使用，都是可以的。
+本质上，`@antv/s2-react` 的导出分析组件，只是基于 `@antv/s2` 提供的能力，封装了**相应的 UI**, 如果不希望依赖框架，或者希望在 `Vue` 等框架中使用，都是可以的。
 :::
 
 <embed src="@/docs/common/copy-export.zh.md"></embed>
