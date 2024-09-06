@@ -1,13 +1,19 @@
 /* eslint-disable no-console */
-import { ExportOutlined } from '@ant-design/icons';
+import { NodeExpandOutlined } from '@ant-design/icons';
 import { getLang, type SpreadSheet } from '@antv/s2';
 import reactPkg from '@antv/s2-react/package.json';
 import corePkg from '@antv/s2/package.json';
-import { version as AntdVersion, App, Button, Space, Tag } from 'antd';
+import { version as AntdVersion, App, Button, Popover, Space, Tag } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import pkg from '../../package.json';
-import { AdvancedSort, Export, Switcher, type SwitcherProps } from '../../src';
+import {
+  AdvancedSort,
+  DrillDown,
+  Export,
+  Switcher,
+  type SwitcherProps,
+} from '../../src';
 import './index.less';
 
 export interface HeaderProps {
@@ -48,11 +54,42 @@ export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
           console.log('AdvancedSort:', ruleValues, sortParams);
         }}
       />
-      <Export sheetInstance={sheetInstance}>
-        <Button type="text" icon={<ExportOutlined />}>
-          导出数据
+      <Popover
+        content={
+          <DrillDown
+            title="下钻"
+            clearText="还原"
+            searchText="搜索"
+            disabledFields={['name']}
+            dataSet={[
+              {
+                name: '性别',
+                value: 'sex',
+                type: 'text',
+              },
+              {
+                name: '姓名',
+                value: 'name',
+                type: 'text',
+              },
+              {
+                name: '城市',
+                value: 'city',
+                type: 'location',
+              },
+              {
+                name: '日期',
+                value: 'date',
+                type: 'date',
+              },
+            ]}
+          />
+        }
+      >
+        <Button type="text" icon={<NodeExpandOutlined />}>
+          下钻面板
         </Button>
-      </Export>
+      </Popover>
       <Export sheetInstance={sheetInstance} />
     </Space>
   );
@@ -62,7 +99,7 @@ export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
       <div
         className={cx(PRE_CLASS)}
         style={{
-          width: sheetInstance?.options.width,
+          width: 1000,
         }}
       >
         <div className={`${PRE_CLASS}-heading`}>

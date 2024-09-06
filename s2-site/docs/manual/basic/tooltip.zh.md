@@ -284,7 +284,7 @@ s2.showTooltip({
 对应的菜单项信息以及 [单元格信息](/docs/api/basic-class/base-cell).
 
 :::info{title="注意"}
-如果使用的是 `@antv/s2-react`, 需要通过 `render` 显示的指定操作项菜单组件，如：Ant Design [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api)
+在 `@antv/s2-react` 中，默认提供菜单配置 (props), 需要通过 `render` 显示的指定操作项菜单组件，如：Ant Design [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api), 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
 
 ```tsx
 import { Menu } from 'antd';

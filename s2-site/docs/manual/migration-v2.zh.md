@@ -65,7 +65,7 @@ $ npm install @antv/s2-vue@next ant-design-vue@3.x --save
 
 ## 📣 不兼容的变化
 
-### 基础包 <Badge>@antv/s2</Badge>
+### 基础包 (s2) <Badge>@antv/s2</Badge>
 
 #### 底层渲染引擎升级为 `AntV/G 6.0`
 
@@ -922,7 +922,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 + dataCell.getValueRange()
 ```
 
-### 组件层 <Badge>@antv/s2-react</Badge>
+### 组件层 (s2-react) <Badge>@antv/s2-react</Badge>
 
 #### 移除 Ant Design 组件库依赖
 
@@ -969,9 +969,7 @@ function App() {
 1. `showPagination` 属性移除。
 
 ```diff
-<SheetComponent
--  showPagination
-/>
+- <SheetComponent showPagination />
 ```
 
 2. 提供 `usePagination` hook, 封装了 S2 的内部分页更新逻辑，可以配合 antd 的 `<Pagination />` 组合使用。
@@ -990,6 +988,33 @@ function App() {
       </>
    )
 }
+```
+
+##### 导出组件迁移
+
+1. 配置变更
+
+`syncCopy` 变更为 `async`
+
+```diff
+- <Export syncCopy={true} />
++ <Export async={false} />
+```
+
+2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
+
+##### 下钻组件迁移
+
+1. 配置调整。
+
+```diff
+<DrillDown
+-  titleText="下钻"
+-  clearButtonText="清除"
+
++  title="下钻"
++  clearText="清除"
+/>
 ```
 
 ##### Tooltip 操作项菜单组件移除
@@ -1047,7 +1072,7 @@ s2.showTooltip({
 });
 ```
 
-2. 内部操作项依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同。
+2. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
 
 ```tsx | pure
 import { Menu } from 'antd'
@@ -1056,8 +1081,6 @@ const s2Options = {
   tooltip: {
     operation: {
       menu: {
-        onClick: () => {},
-        items: [],
         render: (props) => {
           return <Menu {...props} />;
         },
@@ -1067,7 +1090,7 @@ const s2Options = {
 }
 ```
 
-具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
+具体请查看 [Tooltip](/manual/basic/tooltip) 和 [组内排序](/manual/basic/sort/group) 相关文档。
 
 #### 支持 React 18 和 Ant Design 5.0
 
@@ -1118,39 +1141,6 @@ class AntdV5AliasPlugin {
 }
 ```
 
-#### 表头组件配置调整
-
-`exportCfg/advancedSortCfg/switcherCfg` 调整为 `export/advancedSort/switcher`.
-
-```diff
-const header = {
--  exportCfg: {},
--  advancedSortCfg: {},
--  switcherCfg: {},
-
-+  export: {},
-+  advancedSort: {},
-+  switcher: {},
-};
-
-<SheetComponent header={header} />
-```
-
-具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
-
-#### 导出组件配置和行为调整
-
-1. 配置变更
-
-`syncCopy` 变更为 `async`
-
-```diff
-- <Export syncCopy={true} />
-+ <Export async={false} />
-```
-
-2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
-
 #### 行头单元格折叠展开事件划分到 `RowCell`
 
 `onCollapseRowsAll`, `onLayoutAfterCollapseRows` 更名为 `onRowCellAllCollapsed`, `onRowCellCollapsed`
@@ -1192,6 +1182,10 @@ const header = {
 - interface SheetComponentsProps {}
 + interface SheetComponentProps {}
 ```
+
+### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
+
+`@antv/s2-vue` 停止维护，请基于 `@antv/s2` 封装，或自行 `fork` 二次开发。
 
 ## ✍️ API 调整
 

@@ -63,7 +63,7 @@ fetch(
                 },
               },
               {
-                key: 'custom-c',
+                key: 'custom-d',
                 label: '操作4',
                 icon: 'EyeOutlined',
                 visible: (cell) => {

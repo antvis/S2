@@ -1,13 +1,28 @@
 import type { Pagination, S2Options, SpreadSheet } from '@antv/s2';
 import type {
+  BaseDrillDownComponentProps,
+  BaseDrillDownDataSet,
   PartDrillDown as BasePartDrillDown,
   BaseSheetComponentProps,
 } from '@antv/s2-shared';
 import type { ReactNode } from 'react';
-import type { DrillDownProps } from '../drill-down';
 import type { TooltipOperatorMenuOptions } from '../tooltip/interface';
 
-export type PartDrillDown = BasePartDrillDown<DrillDownProps>;
+export interface DrillDownDataSet extends BaseDrillDownDataSet {
+  icon?: React.ReactNode;
+}
+
+export interface DrillDownProps
+  extends BaseDrillDownComponentProps<DrillDownDataSet, React.ReactNode> {
+  extra?: React.ReactNode;
+}
+
+export type PartDrillDown = BasePartDrillDown<DrillDownProps> & {
+  /**
+   * 指定下钻 UI 组件
+   */
+  render: (props: DrillDownProps) => React.ReactNode;
+};
 
 export type SheetComponentOptions = S2Options<
   ReactNode,

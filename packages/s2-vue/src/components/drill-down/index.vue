@@ -1,7 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import type { Ref } from 'vue';
-import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
+import type {
+  BaseDrillDownDataSet,
+  BaseDrillDownComponentProps,
+} from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';
@@ -40,13 +43,13 @@ export default defineComponent({
       className,
     } = props as BaseDrillDownComponentProps;
     const getOptions = () =>
-      dataSet.map((val: BaseDataSet) => {
+      dataSet.map((val: BaseDrillDownDataSet) => {
         val.disabled = !!(disabledFields && disabledFields.includes(val.value));
 
         return val;
       });
 
-    const options: Ref<BaseDataSet[]> = ref(getOptions());
+    const options: Ref<BaseDrillDownDataSet[]> = ref(getOptions());
     const selected = ref<Key[]>([]);
 
     const handleSearch = (e: ChangeEvent) => {
@@ -104,9 +107,9 @@ export default defineComponent({
 <template>
   <div :class="[DRILL_DOWN_PRE_CLASS, className]">
     <header :class="`${DRILL_DOWN_PRE_CLASS}-header`">
-      <div>{{ titleText }}</div>
+      <div>{{ title }}</div>
       <Button type="link" @click="handleClear">
-        {{ clearButtonText }}
+        {{ clearText }}
       </Button>
     </header>
     <Input

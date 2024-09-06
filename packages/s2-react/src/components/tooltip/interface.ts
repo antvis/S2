@@ -33,8 +33,8 @@ export type TooltipOperatorMenuOptions = S2TooltipOperatorMenuOptions<
   onClick?: (info: TooltipOperatorMenuInfo, cell: S2CellType) => void;
 
   /**
-   * 指定菜单组件, 如: Ant Design Menu https://ant-design.antgroup.com/components/menu-cn#api
-   * @tips s2-react 层只提供单元格信息的注入和转换, 由上层业务自由渲染组件, 不依赖 antd , 从而达到解耦的目的.
+   * 指定菜单 UI组件, 如: Ant Design Menu https://ant-design.antgroup.com/components/menu-cn#api
+   * @tips s2-react 层只提供单元格信息的注入和转换, 由上层业务指定渲染组件, 不依赖 antd , 从而达到解耦的目的.
    */
   render?: (props: Record<string, any>) => React.ReactNode;
 };

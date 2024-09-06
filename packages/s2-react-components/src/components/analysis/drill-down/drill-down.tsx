@@ -1,33 +1,20 @@
+import { SearchOutlined } from '@ant-design/icons';
 import { i18n } from '@antv/s2';
-import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
 import { Button, Empty, Input, Menu, type MenuProps } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import React, { useEffect, useState, type ReactNode } from 'react';
-import {
-  CalendarIcon,
-  LocationIcon,
-  SearchIcon,
-  TextIcon,
-} from '../icons/index';
+import React from 'react';
+import { CalendarIcon, LocationIcon, TextIcon } from '../../icons';
+import type { DrillDownDataSet, DrillDownProps } from './interface';
 
-import '@antv/s2-shared/src/styles/drill-down.less';
-
-export interface DrillDownDataSet extends BaseDataSet {
-  icon?: React.ReactNode;
-}
-
-export interface DrillDownProps
-  extends BaseDrillDownComponentProps<DrillDownDataSet> {
-  extra?: ReactNode;
-}
+import './index.less';
 
 export const DrillDown: React.FC<DrillDownProps> = React.memo(
   ({
     className,
-    titleText = i18n('选择下钻维度'),
-    clearButtonText = i18n('恢复默认'),
+    title = i18n('选择下钻维度'),
+    clearText = i18n('恢复默认'),
     searchText = i18n('搜索字段'),
     extra,
     drillFields,
@@ -44,13 +31,16 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
     };
 
     const getOptions = () =>
-      dataSet.map((val: DrillDownDataSet) => {
-        val.disabled = !!(disabledFields && disabledFields.includes(val.value));
+      dataSet.map((item: DrillDownDataSet) => {
+        item.disabled = !!(
+          disabledFields && disabledFields.includes(item.value)
+        );
 
-        return val;
+        return item;
       });
 
-    const [options, setOptions] = useState<DrillDownDataSet[]>(getOptions());
+    const [options, setOptions] =
+      React.useState<DrillDownDataSet[]>(getOptions());
 
     const handleSearch = (e: any) => {
       const { value } = e.target;
@@ -88,7 +78,7 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
       }
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
       setOptions(getOptions());
     }, [disabledFields]);
 
@@ -105,13 +95,13 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
     return (
       <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
         <header className={`${DRILL_DOWN_PRE_CLASS}-header`}>
-          <div>{titleText}</div>
+          <div className={`${DRILL_DOWN_PRE_CLASS}-header-title`}>{title}</div>
           <Button
             type="link"
             disabled={isEmpty(drillFields)}
             onClick={handleClear}
           >
-            {clearButtonText}
+            {clearText}
           </Button>
         </header>
         <Input
@@ -119,7 +109,7 @@ export const DrillDown: React.FC<DrillDownProps> = React.memo(
           placeholder={searchText}
           onChange={handleSearch}
           onPressEnter={handleSearch}
-          prefix={<SearchIcon />}
+          prefix={<SearchOutlined />}
           allowClear
         />
         <div className={`${DRILL_DOWN_PRE_CLASS}-extra`}>{extra}</div>

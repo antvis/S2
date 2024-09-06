@@ -3,15 +3,19 @@ import {
   buildDrillDownOptions,
   handleDrillDown,
   type ActionIconCallback,
+  type PartDrillDown,
 } from '@antv/s2-shared';
 import { useLatest } from 'ahooks';
 import { isEmpty, isObject } from 'lodash';
 import React from 'react';
 import { useSpreadSheetInstance } from '../../../context/SpreadSheetContext';
 import { usePivotSheetUpdate } from '../../../hooks';
-import { DrillDown } from '../../drill-down';
 import { BaseSheet } from '../base-sheet';
-import type { SheetComponentOptions, SheetComponentProps } from '../interface';
+import type {
+  DrillDownProps,
+  SheetComponentOptions,
+  SheetComponentProps,
+} from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentProps> = React.memo((props) => {
   const { options: pivotOptions, ...restProps } = props;
@@ -23,16 +27,16 @@ export const PivotSheet: React.FC<SheetComponentProps> = React.memo((props) => {
 
   const onDrillDownIconClick = useLatest<ActionIconCallback>(
     ({ sheetInstance, cacheDrillFields, disabledFields, event }) => {
-      const content = (
-        <DrillDown
-          {...partDrillDown?.drillConfig}
-          setDrillFields={setDrillFields}
-          drillFields={cacheDrillFields}
-          disabledFields={disabledFields}
-        />
-      );
+      const drillDownProps: DrillDownProps = {
+        ...partDrillDown?.drillConfig,
+        setDrillFields,
+        drillFields: cacheDrillFields,
+        disabledFields,
+      };
 
-      if (event) {
+      const content = partDrillDown?.render?.(drillDownProps);
+
+      if (event && content) {
         const { enable: showTooltip } = getTooltipOptions(
           sheetInstance,
           event,
@@ -58,7 +62,7 @@ export const PivotSheet: React.FC<SheetComponentProps> = React.memo((props) => {
     () =>
       buildDrillDownOptions<SheetComponentOptions>(
         pivotOptions!,
-        partDrillDown!,
+        partDrillDown as PartDrillDown,
         (params) => onDrillDownIconClick.current(params),
       ),
     [pivotOptions, partDrillDown, onDrillDownIconClick],

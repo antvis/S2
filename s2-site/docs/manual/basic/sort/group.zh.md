@@ -44,11 +44,18 @@ s2.on(S2Event.RANGE_SORT, (sortParams) => {
 
 ## 使用 `@antv/s2-react`
 
-`@antv/s2-react` 基于 `@antv/s2` 的 [基础排序能力](/manual/basic/sort/basic)，和 `antd` 提供了默认的组内排序功能，排序菜单通过 [Tooltip](/manual/basic/tooltip) 承载（开启 `tooltip` 即可），主要根据数值对 `行头/列头` 进行排序，[查看更多排序示例](/examples/analysis/sort/#group-sort)
+`@antv/s2-react` 基于 `@antv/s2` 的 [基础排序能力](/manual/basic/sort/basic)，搭配任意菜单组件 （如 `antd` 的 `Menu` 组件）, 提供了默认的组内排序功能，排序菜单通过 [Tooltip](/manual/basic/tooltip) 承载（开启 `tooltip` 即可），主要根据数值对 `行头/列头` 进行排序，[查看更多排序示例](/examples/analysis/sort/#group-sort)
 
 使用 `@antv/s2-react` 的组件 `SheetComponent` 默认在数值头显示 `icon` ，点击后选择，有 `升序、降序、不排序` 三种方式，可在 `options` 中配置显示，如下：
 
+:::info
+
+在 `2.x` 版本后，内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props), 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本进行调整。
+:::
+
 ```ts
+import { Menu } from 'antd'
+
 const s2Options = {
   width: 600,
   height: 600,
@@ -59,6 +66,11 @@ const s2Options = {
     operation: {
       // 开启组内排序 （默认开启）
       sort: true,
+      menu: {
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      }
     },
   },
 };

@@ -2,9 +2,6 @@
 import React from 'react';
 import { DrillDown, type DataSet } from '@antv/s2-react';
 
-const disabledFields = ['name'];
-const clearButtonText = '清除';
-
 const dataSet: DataSet[] = [
   {
     name: '性别',
@@ -32,8 +29,10 @@ reactDOMClient
   .createRoot(document.getElementById('container'))
   .render(
     <DrillDown
-      disabledFields={disabledFields}
-      clearButtonText={clearButtonText}
+      title="下钻"
+      searchText="搜索"
+      clearText="清除"
+      disabledFields={['name']}
       dataSet={dataSet}
     />,
   );

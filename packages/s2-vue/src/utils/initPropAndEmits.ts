@@ -1,6 +1,10 @@
 import type { S2DataConfig, ThemeCfg } from '@antv/s2';
 import { i18n } from '@antv/s2';
-import type { Adaptive, BaseDataSet, SheetType } from '@antv/s2-shared';
+import type {
+  Adaptive,
+  BaseDrillDownDataSet,
+  SheetType,
+} from '@antv/s2-shared';
 import type { ExtractPropTypes, PropType } from 'vue';
 import type {
   BaseDrillDownEmitKeys,
@@ -44,7 +48,7 @@ export const initBaseSheetProps = () => {
 export const initDrillDownProps = () => {
   return {
     className: String,
-    titleText: {
+    title: {
       type: String,
       default: i18n('选择下钻维度'),
     },
@@ -52,13 +56,13 @@ export const initDrillDownProps = () => {
       type: String,
       default: i18n('搜索字段'),
     },
-    clearButtonText: {
+    clearText: {
       type: String,
       default: i18n('恢复默认'),
     },
     extra: Node,
     dataSet: {
-      type: Array as PropType<BaseDataSet[]>,
+      type: Array as PropType<BaseDrillDownDataSet[]>,
       default: [],
     },
     drillFields: Array as PropType<string[]>,

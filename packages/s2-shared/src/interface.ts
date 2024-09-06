@@ -254,18 +254,21 @@ export interface TooltipOperatorProps<Menu = BaseTooltipOperatorMenuOptions>
 }
 
 // 下钻相关类型
-export interface BaseDataSet {
+export interface BaseDrillDownDataSet {
   name: string;
   value: string;
   type?: 'text' | 'location' | 'date';
   disabled?: boolean;
 }
 
-export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
+export interface BaseDrillDownComponentProps<
+  DataSet = BaseDrillDownDataSet,
+  Text = string,
+> {
   className?: string;
-  titleText?: string;
+  title?: Text;
   searchText?: string;
-  clearButtonText?: string;
+  clearText?: Text;
   dataSet?: DataSet[] | undefined;
   drillFields?: string[];
   disabledFields?: string[];

@@ -1,6 +1,7 @@
 // organize-imports-ignore
 import React from 'react';
 import { S2DataConfig } from '@antv/s2';
+import { Menu } from 'antd';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -48,6 +49,11 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
         operation: {
           // 开启组内排序
           sort: true,
+          menu: {
+            render: (props) => {
+              return <Menu {...props} />;
+            },
+          },
         },
       },
     };

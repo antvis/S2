@@ -93,9 +93,9 @@ const s2Options = {
 | --- |---------------------------------------| --- | --- | --- | ---  |
 | dataSet | 下钻数据源配置                               | [DataSet[]](#dataset) |  | ✓ |  |
 | className | 透传样式名                                 | `string` |  |  |  |
-| titleText | 标题                                    | `string` |  |  |  |
+| title | 标题                                    | `React.ReactNode` |  |  |  |
 | searchText | 搜索框文案                                 | `string` |  |  |  |
-| clearButtonText | 重置按钮文案                                | `string` |  |  |  |
+| clearText | 重置按钮文案                                | `React.ReactNode` |  |  |  |
 | disabledFields | 不允许下钻的维度                              | `string[]` |  |  |  |
 | getDrillFields | 内部获取当前下钻维度的回调                         | `Function` |  |  |  |
 | setDrillFields | 内部设置当前下钻维度的回调                         | `Function` |  |  |  |

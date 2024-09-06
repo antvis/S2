@@ -117,7 +117,7 @@ import { DrillDown } from '@antv/s2-react';
 
 <DrillDown
   disabledFields={disabledFields}
-  clearButtonText={clearButtonText}
+  clearText={clearText}
   dataSet={dataSet}
 />
 ```

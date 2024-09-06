@@ -1,8 +1,3 @@
-export {
-  DrillDown,
-  type DrillDownDataSet,
-  type DrillDownProps,
-} from './drill-down';
 export { BaseSheet } from './sheets/base-sheet';
 export { ChartSheet } from './sheets/chart-sheet';
 export { EditableSheet } from './sheets/editable-sheet';
