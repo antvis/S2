@@ -1,0 +1,29 @@
+---
+title: 简介
+order: 1
+tag: New
+---
+
+从 `2.0` 版本开始，`@antv/s2-react` 不再内置分析组件，和 `antd` 组件库解耦，通过组合的方式，使用更灵活。
+
+## 安装
+
+```bash
+npm install @antv/s2-react-components --save
+# yarn add @antv/s2-react-components
+```
+
+## 使用
+
+```tsx
+import React from 'react';
+import { AdvancedSort } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
+
+export const App = () => {
+  return (
+    <AdvancedSort />
+  );
+};
+
+```

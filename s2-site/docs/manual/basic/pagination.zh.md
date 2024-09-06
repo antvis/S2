@@ -1,6 +1,7 @@
 ---
 title: 分页
 order: 11
+tag: New
 ---
 
 <Badge>@antv/s2</Badge>
