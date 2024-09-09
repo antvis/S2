@@ -1058,7 +1058,28 @@ function App() {
 ```
 
 2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
-3. 新增 `StrategyExport` 组件，适用于趋势分析表的数据复制和导出，使用方式和 `Export` 相同。
+3. 新增 `onCopySuccess/onCopyError`, `onDownloadSuccess/onDownloadError` API, 移除 `successText/errorText`, 操作时默认不再显示 `message` 提示。
+
+```diff
+<Export
+-  successText="操作成功"
+-  errorText="操作成功"
++  onCopySuccess={(data) => {
++    console.log('copy success:', data);
++  }}
++  onCopyError={(error) => {
++    console.log('copy failed:', error);
++  }}
++  onDownloadSuccess={(data) => {
++    console.log('download success', data);
++  }}
++  onDownloadError={(error) => {
++    console.log('download failed:', error);
++  }}
+/>
+```
+
+1. 新增 `StrategyExport` 组件，适用于趋势分析表的数据复制和导出，使用方式和 `Export` 相同。
 
 ```ts
 import { StrategyExport } from '@antv/s2-react-components';

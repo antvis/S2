@@ -4,7 +4,14 @@ order: 4
 tag: Updated
 ---
 
-## React 高级排序组件 <Badge>@antv/s2-react</Badge>
+## React 高级排序组件 <Badge>@antv/s2-react-components</Badge>
+
+```tsx | pure
+import { AdvancedSort } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
+
+<AdvancedSort sheetInstance={s2} />
+```
 
 ### AdvancedSortProps
 
@@ -12,8 +19,7 @@ tag: Updated
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
 | -- | -- | -- | -- | -- |
-| sheet | 当前表实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |  |
-| open | 是否展示 | `boolean` | ✓ |  |
+| sheetInstance | 表格实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |  |
 | className | class 类名称 | `string` |  |  |
 | icon | 排序按钮图标 | `React.ReactNode` |  |  |
 | text | 排序按钮名称 | `string` |  |  |
@@ -30,7 +36,6 @@ tag: Updated
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
 | -- | -- | -- | -- | -- |
-| open | 是否展示 | `boolean` |  | false |
 | className | class 类名称 | `string` |  |  |
 | icon | 排序按钮图标 | `React.ReactNode` |  |  |
 | text | 排序按钮名称 | `ReactNode` |  |  |

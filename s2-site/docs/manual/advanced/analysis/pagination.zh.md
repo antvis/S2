@@ -8,7 +8,7 @@ tag: Updated
 
 <embed src="@/docs/common/pagination.zh.md"></embed>
 
-### 在 React 中使用
+### 在 React 中使用 <Badge>@antv/s2</Badge>
 
 :::info{title="提示"}
 `@antv/s2-react` 提供 `pagination` 属性，表格内部封装了 S2 的内部分页更新逻辑，可以结合任意分页组件使用，如 [Ant Design Pagination](https://ant.design/components/pagination-cn/) 组件。
@@ -44,7 +44,7 @@ function App() {
 
 <Playground path='react-component/pagination/demo/pivot.tsx' rid='container'></playground>
 
-### 在 Vue 中使用
+### 在 Vue 中使用 <Badge type="success">@antv/s2-vue</Badge>
 
 :::info{title="提示"}
 

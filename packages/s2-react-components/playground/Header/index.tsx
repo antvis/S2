@@ -3,7 +3,15 @@ import { NodeExpandOutlined } from '@ant-design/icons';
 import { getLang, type SpreadSheet } from '@antv/s2';
 import reactPkg from '@antv/s2-react/package.json';
 import corePkg from '@antv/s2/package.json';
-import { version as AntdVersion, App, Button, Popover, Space, Tag } from 'antd';
+import {
+  version as AntdVersion,
+  App,
+  Button,
+  Popover,
+  Space,
+  Tag,
+  message,
+} from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import pkg from '../../package.json';
@@ -90,7 +98,25 @@ export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
           下钻面板
         </Button>
       </Popover>
-      <Export sheetInstance={sheetInstance} />
+      <Export
+        sheetInstance={sheetInstance}
+        onCopySuccess={(data) => {
+          message.success('复制成功');
+          console.log('copy success:', data);
+        }}
+        onCopyError={(error) => {
+          message.error('复制失败');
+          console.log('copy failed:', error);
+        }}
+        onDownloadSuccess={(data) => {
+          message.success('下载成功');
+          console.log('download success', data);
+        }}
+        onDownloadError={(error) => {
+          message.error('下载失败');
+          console.log('download failed:', error);
+        }}
+      />
     </Space>
   );
 

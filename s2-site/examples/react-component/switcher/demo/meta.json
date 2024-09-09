@@ -13,14 +13,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/tiVXaKTKB/2021-11-16%25252022.18.52.gif"
     },
     {
-      "filename": "pivot-header.tsx",
-      "title": {
-        "zh": "维度切换头部组件",
-        "en": "Switcher header component"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aBR%26EXlQb/2021-12-02%25252015.19.58.gif"
-    },
-    {
       "filename": "pivot.tsx",
       "title": {
         "zh": "透视表维度切换",

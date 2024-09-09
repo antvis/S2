@@ -10,7 +10,7 @@ import {
   i18n,
   type CopyAllDataParams,
 } from '@antv/s2';
-import { Button, Dropdown, message } from 'antd';
+import { Button, Dropdown } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import type { ExportBaseProps, ExportProps } from './interface';
@@ -24,20 +24,18 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     copyFormatText = i18n('复制格式化数据'),
     downloadOriginalText = i18n('下载原始数据'),
     downloadFormatText = i18n('下载格式化数据'),
-    successText = i18n('操作成功'),
-    errorText = i18n('操作失败'),
     sheetInstance,
     fileName = 'sheet',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    open,
     dropdown,
     customCopyMethod,
+    onCopyError,
+    onCopySuccess,
+    onDownloadSuccess,
+    onDownloadError,
     ...restProps
   } = props;
 
   const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
-
-  const [messageApi, contextHolder] = message.useMessage();
 
   const getData = async (
     split: string,
@@ -73,12 +71,12 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
     copyToClipboard(data!, async)
       .then(() => {
-        messageApi.success(successText);
+        onCopySuccess?.(data);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error('copy failed: ', error);
-        messageApi.error(errorText);
+        onCopyError?.(error);
       });
   };
 
@@ -88,17 +86,16 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
     try {
       download(data, fileName);
-      messageApi.success(successText);
+      onDownloadSuccess?.(data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('download failed: ', error);
-      messageApi.error(errorText);
+      onDownloadError?.(error);
     }
   };
 
   return (
     <>
-      {contextHolder}
       <Dropdown
         menu={{
           items: [

@@ -4,7 +4,14 @@ order: 3
 tag: Updated
 ---
 
-## React 维度切换组件 <Badge>@antv/s2-react</Badge>
+## React 维度切换组件 <Badge>@antv/s2-react-components</Badge>
+
+```tsx | pure
+import { Switcher } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
+
+<Switcher />
+```
 
 ### Switcher 组件 Props
 

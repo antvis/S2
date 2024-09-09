@@ -1,11 +1,15 @@
 /* eslint-disable no-console */
 // organize-imports-ignore
 import React from 'react';
-import { Switcher } from '@antv/s2-react';
+import { Switcher } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
 
 const switcherFields = {
   rows: {
-    items: [{ id: 'province' }, { id: 'city' }],
+    items: [
+      { id: 'province', displayName: '省份 (province)' },
+      { id: 'city', displayName: '城市 (city)' },
+    ],
     allowEmpty: false,
   },
   columns: {

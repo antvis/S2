@@ -267,3 +267,7 @@ const s2Options = {
 ### API
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
+
+## 数据导出
+
+查看 [文档](/manual/advanced/analysis/export#%E5%9C%A8%E8%B6%8B%E5%8A%BF%E5%88%86%E6%9E%90%E8%A1%A8%E4%B8%AD%E4%BD%BF%E7%94%A8) 和 [示例](/examples/react-component/export#export-strategy)

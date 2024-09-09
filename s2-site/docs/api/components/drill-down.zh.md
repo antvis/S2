@@ -16,7 +16,7 @@ tag: Updated
 
 [​查看示例](/examples/react-component/drill-dwon#for-pivot)
 
-```jsx
+```tsx | pure
 import { DrillDown } from '@antv/s2-react-components';
 import '@antv/s2-react-components/dist/style.min.css';
 

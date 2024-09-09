@@ -70,7 +70,7 @@ import { Export } from '@antv/s2-react-components'
 
 const App = () => {
   return (
-    <Export>
+    <Export sheetInstance={s2Ref.current}>
       <Button type="text" icon={<ExportOutlined />}>
         导出数据
       </Button>
@@ -78,6 +78,21 @@ const App = () => {
   )
 }
 ```
+
+### API
+
+```tsx | pure
+<Export
+  onCopySuccess={(data) => {
+    console.log('copy success:', data);
+  }}
+  onDownloadSuccess={(data) => {
+    console.log('download success', data);
+  }}
+/>
+```
+
+查看 [分析组件 - 导出 API 文档](/api/components/export#copyalldataparams)
 
 ## 在趋势分析表中使用
 
@@ -89,10 +104,12 @@ import { StrategyExport } from '@antv/s2-react-components'
 <StrategyExport sheetInstance={s2Ref.current} />
 ```
 
+查看 [示例](/examples/react-component/export#export-strategy)
+
 ## 在非 React 应用中使用
 
 :::info{title="提示"}
-本质上，`@antv/s2-react` 的导出分析组件，只是基于 `@antv/s2` 提供的能力，封装了**相应的 UI**, 如果不希望依赖框架，或者希望在 `Vue` 等框架中使用，都是可以的。
+本质上，`@antv/s2-react-components` 的导出组件，只是基于 `@antv/s2` 提供的能力，封装了**相应的 UI**, 如果不希望依赖框架，或者希望在 `Vue` 等框架中使用，都是可以的。
 :::
 
 <embed src="@/docs/common/copy-export.zh.md"></embed>

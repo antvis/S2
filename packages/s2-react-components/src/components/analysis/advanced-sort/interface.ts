@@ -21,7 +21,6 @@ export interface RuleValue {
 }
 
 export interface AdvancedSortBaseProps {
-  open?: boolean;
   className?: string;
   icon?: React.ReactNode;
   text?: React.ReactNode;

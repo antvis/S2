@@ -8,6 +8,13 @@ tag: Updated
 
 基于 `@antv/s2` 封装的 `React` 版开箱即用的组件 `<SheetComponent />`
 
+```tsx | pure
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
+<SheetComponent sheetType="pivot" />
+```
+
 ### SpreadsheetProps
 
 功能描述： React SheetComponent 组件的 props 参数

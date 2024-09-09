@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 // organize-imports-ignore
 import React from 'react';
 import { S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { SheetComponent, type SheetComponentOptions } from '@antv/s2-react';
 import { Export } from '@antv/s2-react-components';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import '@antv/s2-react/dist/style.min.css';
 import '@antv/s2-react-components/dist/style.min.css';
 
@@ -22,12 +23,26 @@ function App({ dataCfg }) {
 
   return (
     <>
-      <div style={{ marginBottom: 12 }}>
+      <Space style={{ marginBottom: 12 }}>
         <Export sheetInstance={s2Ref.current}>
-          <Button type="text">自定义导出按钮</Button>
+          <Button>自定义导出按钮</Button>
         </Export>
-        <Export sheetInstance={s2Ref.current} />
-      </div>
+        <Export
+          sheetInstance={s2Ref.current}
+          onCopySuccess={(data) => {
+            console.log('copy success:', data);
+          }}
+          onCopyError={(error) => {
+            console.log('copy failed:', error);
+          }}
+          onDownloadSuccess={(data) => {
+            console.log('download success', data);
+          }}
+          onDownloadError={(error) => {
+            console.log('download failed:', error);
+          }}
+        />
+      </Space>
       <SheetComponent dataCfg={dataCfg} options={s2Options} ref={s2Ref} />
     </>
   );

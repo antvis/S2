@@ -3,14 +3,11 @@ import { type DropDownProps } from 'antd';
 import React from 'react';
 
 export interface ExportBaseProps {
-  open?: boolean;
   className?: string;
   copyOriginalText?: string;
   copyFormatText?: string;
   downloadOriginalText?: string;
   downloadFormatText?: string;
-  successText?: string;
-  errorText?: string;
   fileName?: string;
   async?: boolean;
   // ref: https://ant.design/components/dropdown-cn/#API
@@ -19,6 +16,10 @@ export interface ExportBaseProps {
     params: CopyAllDataParams,
   ) => Promise<string> | string | Promise<Copyable> | Copyable;
   children?: React.ReactNode;
+  onCopySuccess?: (data: Copyable | string | undefined) => void;
+  onCopyError?: (error: unknown) => void;
+  onDownloadSuccess?: (data: string) => void;
+  onDownloadError?: (error: unknown) => void;
 }
 
 export interface ExportProps extends ExportBaseProps {
