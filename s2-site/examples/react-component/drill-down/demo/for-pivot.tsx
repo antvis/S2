@@ -1,12 +1,14 @@
 // organize-imports-ignore
 import React from 'react';
 import { ORIGIN_FIELD, S2DataConfig } from '@antv/s2';
+import { DrillDown } from '@antv/s2-react-components';
 import {
   SheetComponent,
   SheetComponentOptions,
   SheetComponentProps,
 } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react-components/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -32,6 +34,8 @@ fetch(
     const sex = ['男', '女'];
 
     const PartDrillDown: SheetComponentProps['partDrillDown'] = {
+      // 指定下钻配置面板
+      render: (props) => <DrillDown {...props} />,
       drillConfig: {
         dataSet: [
           {

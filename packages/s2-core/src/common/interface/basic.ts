@@ -255,9 +255,9 @@ export type SortParams = SortParam[];
 
 export interface Pagination {
   /** 每页数量 */
-  pageSize: number;
+  pageSize?: number;
   /** 当前页 (从 1 开始) */
-  current: number;
+  current?: number;
   /** 数据总条数 */
   total?: number;
 }

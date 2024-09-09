@@ -19,6 +19,7 @@ fetch(
         operation: {
           // 内置操作项
           hiddenColumns: true,
+          // 自定义操作项
           menu: {
             // 需要指定 UI 组件, 如 Ant Design <Menu/> 组件: https://ant-design.antgroup.com/components/menu-cn#api
             render(props) {

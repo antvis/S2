@@ -21,7 +21,7 @@ fetch(
             meta.spreadsheet.showTooltip({
               position: {
                 x: event?.clientX || 0,
-                y: event?.clientX || 0,
+                y: event?.clientY || 0,
               },
               content: `<p>我是 Trend Icon 自定义内容</p>`,
             });

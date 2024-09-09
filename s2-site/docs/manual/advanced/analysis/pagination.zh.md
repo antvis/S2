@@ -11,14 +11,12 @@ tag: Updated
 ### 在 React 中使用
 
 :::info{title="提示"}
-
-`@antv/s2-react` 提供 `usePagination` hook, 可以结合任意分页组件使用，如 [Ant Design Pagination](https://ant.design/components/pagination-cn/) 组件。
-
+`@antv/s2-react` 提供 `pagination` 属性，表格内部封装了 S2 的内部分页更新逻辑，可以结合任意分页组件使用，如 [Ant Design Pagination](https://ant.design/components/pagination-cn/) 组件。
 :::
 
 ```tsx
 import React from 'react'
-import { SheetComponent, usePagination } from '@antv/s2-react'
+import { SheetComponent } from '@antv/s2-react'
 import { Pagination } from 'antd'
 
 const s2Options = {
@@ -29,20 +27,17 @@ const s2Options = {
 }
 
 function App() {
-  const s2Ref = React.useRef()
-  // 处理分页器和 S2 分页渲染的逻辑
-  const pagination = usePagination(s2Ref.current);
-
   return (
-    <>
-      <SheetComponent options={s2Options} ref={s2Ref} />
-      <Pagination
-        size="small"
-        defaultCurrent={1}
-        showSizeChanger
-        {...pagination}
-      />
-    </>
+    <SheetComponent options={s2Options}>
+      {({ pagination }) => (
+        // 结合任意分页器使用：如 antd 的 Pagination 组件
+        <Pagination
+          size="small"
+          showTotal={(total) => `共计 ${total} 条`}
+          {...pagination}
+        />
+      )}
+    </SheetComponent>
   )
 }
 ```

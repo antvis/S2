@@ -3,6 +3,7 @@ import type { LayoutPaginationParams } from '@antv/s2-shared';
 import { useUpdateEffect } from 'ahooks';
 import { isEmpty } from 'lodash';
 import React from 'react';
+import type { SheetComponentOptions } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
@@ -12,11 +13,11 @@ const DEFAULT_PAGE_NUMBER = 1;
  */
 export const usePagination = (
   s2: SpreadSheet,
+  options: SheetComponentOptions,
 ): Pagination & {
   onShowSizeChange: (current: number, pageSize: number) => void;
   onChange: (current: number, pageSize: number) => void;
 } => {
-  const options = s2?.options || {};
   const defaultPagination = options?.pagination;
   const [pagination, setPagination] = React.useState({
     total: s2?.facet?.viewCellHeights.getTotalLength() || 0,

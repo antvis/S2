@@ -1,6 +1,7 @@
 ---
 title: 维度下钻
 order: 2
+tag: Updated
 ---
 
 :::warning{title="注意"}
@@ -17,6 +18,7 @@ order: 2
 
 ```jsx
 import { DrillDown } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
 
 const s2Options = {
   width: 600,

@@ -28,6 +28,7 @@ import {
   DatePicker,
   Divider,
   Input,
+  Pagination,
   Popover,
   Radio,
   Select,
@@ -53,7 +54,6 @@ import { EditableSheet } from './components/EditableSheet';
 import { GridAnalysisSheet } from './components/GridAnalysisSheet';
 import { PlaygroundSheetHeader } from './components/Header';
 import { LinkGroup } from './components/LinkGroup';
-import { PlaygroundSheetPagination } from './components/Pagination';
 import { PluginsSheet } from './components/Plugins';
 import { ResizeConfig } from './components/ResizeConfig';
 import { StrategySheet } from './components/StrategySheet';
@@ -300,8 +300,8 @@ function MainLayout() {
   const mergedOptions: SheetComponentOptions = customMerge(
     {
       pagination: showPagination && {
-        pageSize: 10,
         current: 1,
+        pageSize: 4,
       },
       tooltip: {
         content: showCustomTooltip ? <CustomTooltip /> : null,
@@ -1556,7 +1556,6 @@ function MainLayout() {
                           ref={s2Ref}
                           themeCfg={themeCfg}
                           partDrillDown={partDrillDown}
-                          showPagination={showPagination}
                           onAfterRender={logHandler('onAfterRender')}
                           onRangeSort={logHandler('onRangeSort')}
                           onRangeSorted={logHandler('onRangeSorted')}
@@ -1614,8 +1613,17 @@ function MainLayout() {
                             'onDataCellContextMenu',
                           )}
                           onDoubleClick={logHandler('onDoubleClick')}
-                        />
-                        {showPagination && <PlaygroundSheetPagination />}
+                        >
+                          {({ pagination }) =>
+                            showPagination && (
+                              <Pagination
+                                size="small"
+                                showSizeChanger
+                                {...pagination}
+                              />
+                            )
+                          }
+                        </SheetComponent>
                       </React.StrictMode>
                     )}
                   </>

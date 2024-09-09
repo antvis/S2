@@ -1,6 +1,7 @@
 ---
 title: 维度切换组件
 order: 3
+tag: Updated
 ---
 
 ## React 维度切换组件 <Badge>@antv/s2-react</Badge>

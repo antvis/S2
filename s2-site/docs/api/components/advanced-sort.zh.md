@@ -1,6 +1,7 @@
 ---
 title: 高级排序
 order: 4
+tag: Updated
 ---
 
 ## React 高级排序组件 <Badge>@antv/s2-react</Badge>

@@ -1,6 +1,7 @@
 ---
 title: 维度下钻
 order: 13
+tag: Updated
 ---
 
 <Badge>@antv/s2-react</Badge> <Badge type="success">@antv/s2-vue</Badge>
@@ -31,6 +32,7 @@ S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` �
 
 ```tsx
 import { DrillDown } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
 
 const sex = ['男', '女'];
 
@@ -120,6 +122,7 @@ const App = () => {
 
 ```tsx | pure
 import { DrillDown } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
 
 function App() {
   return (

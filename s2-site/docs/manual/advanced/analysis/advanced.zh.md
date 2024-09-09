@@ -6,7 +6,7 @@ tag: Updated
 
 <Badge>@antv/s2-react-components</Badge>
 
-结合 `antd` 和 `@antv/s2` 提供的基础 [排序能力](/manual/basic/sort/basic)，封装了 `高级排序组件`，可按需使用。[查看示例](/examples/analysis/sort#advanced)
+结合 `antd` 和 `@antv/s2` 提供的基础 [排序能力](/manual/basic/sort/basic)，封装了 `高级排序组件`. [查看示例](/examples/analysis/sort#advanced)
 
 :::warning{title="注意"}
 组件内部不维护状态，可自行实现成受控模式。

@@ -988,21 +988,23 @@ function App() {
 - <SheetComponent showPagination />
 ```
 
-2. 提供 `usePagination` hook, 封装了 S2 的内部分页更新逻辑，可以配合 antd 的 `<Pagination />` 组合使用。
+1. 提供 `pagination` 属性，表格内部封装了 S2 的内部分页更新逻辑，可以配合任意分页组件使用，如 antd 的 `<Pagination />`。
 
 ```tsx | pure
-import { usePagination } from 's2-react'
 import { Pagination } from 'antd';
 
 function App() {
-  const s2Ref = React.useRef()
-  const pagination = usePagination(s2Ref.current);
-
   return (
-    <>
-      <SheetComponent ref={s2Ref} />
-      <Pagination {...pagination} />
-    </>
+    <SheetComponent options={s2Options}>
+      {({ pagination }) => (
+        // 结合任意分页器使用：如 antd 的 Pagination 组件
+        <Pagination
+          size="small"
+          showTotal={(total) => `共计 ${total} 条`}
+          {...pagination}
+        />
+      )}
+    </SheetComponent>
   )
 }
 ```
@@ -1075,21 +1077,25 @@ import { StrategyExport } from '@antv/s2-react-components';
 
 ```diff
 - <DrillDown titleText="下钻" clearButtonText="清除" />
-- <DrillDown title="下钻" clearText="清除" />
++ <DrillDown title="下钻" clearText="清除" />
 ```
 
-2. 在表格组件中使用时，需要通过 `render` 属性传入 `DrillDown` 组件。
+2. 在表格组件中使用时，需要通过 `render` 属性传入 `DrillDown` 配置面板。
 
 ```diff
 + import { DrillDown } from '@antv/s2-react-components';
 
-<SheetComponent
-  sheetType="pivot"
-  options={s2Options}
-  partDrillDown={{
-+   render: (props) => <DrillDown {...props} />,
-  }}
-/>
+function App() {
+  return (
+    <SheetComponent
+      sheetType="pivot"
+      options={s2Options}
+      partDrillDown={{
++       render: (props) => <DrillDown {...props} />,
+      }}
+    />
+  )
+}
 ```
 
 具体请查看 [维度下钻](/manual/advanced/analysis/drill-down) 相关文档。

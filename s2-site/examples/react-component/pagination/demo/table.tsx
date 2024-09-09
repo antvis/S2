@@ -1,38 +1,36 @@
 /* eslint-disable no-console */
 // organize-imports-ignore
-import React from 'react';
 import { S2DataConfig } from '@antv/s2';
-import { Pagination } from 'antd';
-import {
-  SheetComponent,
-  SheetComponentOptions,
-  usePagination,
-} from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { Pagination } from 'antd';
+import React from 'react';
 
 const s2Options: SheetComponentOptions = {
   width: 600,
   height: 480,
   pagination: {
+    current: 1,
     pageSize: 5,
-    current: 2,
   },
 };
 
 function App({ dataCfg }) {
-  const s2Ref = React.useRef();
-  // 处理分页器和 S2 分页渲染的逻辑
-  const pagination = usePagination(s2Ref.current);
-
   return (
     <>
-      <SheetComponent dataCfg={dataCfg} options={s2Options} sheetType="table" />
-      <Pagination
-        size="small"
-        defaultCurrent={1}
-        showSizeChanger
-        {...pagination}
-      />
+      <SheetComponent dataCfg={dataCfg} options={s2Options} sheetType="table">
+        {({ pagination }) => (
+          // 结合任意分页器使用: 如 antd 的 Pagination 组件
+          <Pagination
+            size="small"
+            defaultCurrent={1}
+            showSizeChanger
+            showQuickJumper
+            showTotal={(total) => `共计 ${total} 条`}
+            {...pagination}
+          />
+        )}
+      </SheetComponent>
     </>
   );
 }

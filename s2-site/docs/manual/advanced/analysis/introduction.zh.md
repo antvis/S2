@@ -4,7 +4,7 @@ order: 1
 tag: New
 ---
 
-从 `2.0` 版本开始，`@antv/s2-react` 不再内置分析组件，和 `antd` 组件库解耦，通过组合的方式，使用更灵活。
+从 `2.0` 版本开始，`@antv/s2-react` 和 `antd` 组件库解耦，其内置分析组件迁移至 `@antv/s2-react-components` 中，请根据实际场景按需使用。
 
 ## 安装
 

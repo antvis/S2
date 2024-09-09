@@ -6,6 +6,7 @@ import type {
   BaseSheetComponentProps,
 } from '@antv/s2-shared';
 import type { ReactNode } from 'react';
+import type { usePagination } from '../../hooks/usePagination';
 import type { TooltipOperatorMenuOptions } from '../tooltip/interface';
 
 export interface DrillDownDataSet extends BaseDrillDownDataSet {
@@ -30,11 +31,17 @@ export type SheetComponentOptions = S2Options<
   TooltipOperatorMenuOptions
 >;
 
+export type SheetComponentChildrenOptions = {
+  pagination: ReturnType<typeof usePagination>;
+};
+
 export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
   SheetComponentOptions
 > & {
-  children?: React.ReactNode;
+  children?:
+    | React.ReactNode
+    | ((options: SheetComponentChildrenOptions) => React.ReactNode);
   ref?:
     | React.MutableRefObject<SpreadSheet | undefined>
     | React.ForwardedRef<SpreadSheet>
