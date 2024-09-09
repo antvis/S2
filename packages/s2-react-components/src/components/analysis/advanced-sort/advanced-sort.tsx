@@ -63,10 +63,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
     };
 
     const sortClick = () => {
-      if (onSortOpen) {
-        onSortOpen();
-      }
-
+      onSortOpen?.();
       handleModal();
     };
 
@@ -167,10 +164,8 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = React.memo(
         ruleValues.push({ field: item, ...ruleValue[item] });
         currentSortParams.push(current);
       });
-      if (onSortConfirm) {
-        onSortConfirm(ruleValues, currentSortParams);
-      }
 
+      onSortConfirm?.(ruleValues, currentSortParams);
       handleModal();
     };
 

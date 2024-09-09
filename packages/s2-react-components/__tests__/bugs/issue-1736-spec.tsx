@@ -7,7 +7,10 @@ import { Export } from '@/components';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';
-import { getMockSheetInstance, renderComponent } from 'tests/util/helpers';
+import {
+  getMockSheetInstance,
+  renderComponent,
+} from '../../../s2-react/__tests__/util/helpers';
 
 describe('header export component render tests', () => {
   let unmount: Root['unmount'];
@@ -16,27 +19,12 @@ describe('header export component render tests', () => {
     unmount?.();
   });
 
-  test('should render export and dropdown keep invisible', async () => {
-    const sheet = getMockSheetInstance();
-
-    unmount = renderComponent(<Export sheet={sheet} open />);
-
-    await waitFor(() => {
-      // export 组件
-      expect(document.querySelector('.antv-s2-export')).toBeDefined();
-
-      // dropdown 不应该渲染
-      expect(document.querySelector('.ant-dropdown')).toBe(null);
-    });
-  });
-
   test('should render export dropdown menu', async () => {
     const sheet = getMockSheetInstance();
 
     unmount = renderComponent(
       <Export
         sheet={sheet}
-        open
         dropdown={{
           open: true,
         }}

@@ -1,16 +1,24 @@
-import { AdvancedSort } from '@/components';
+import { CustomSort } from '@/components';
 import { render } from '@testing-library/react';
 import React from 'react';
-import { getMockSheetInstance } from '../../../../util/helpers';
 
-describe('AdvancedSort Component Tests', () => {
+describe('CustomSort Component Tests', () => {
   test('should render component', () => {
-    const sheetInstance = getMockSheetInstance();
-    const { asFragment, container } = render(
-      <AdvancedSort className="test" sheetInstance={sheetInstance} />,
+    const { asFragment } = render(
+      <CustomSort
+        splitOrders={[
+          '杭州市',
+          '绍兴市',
+          '宁波市',
+          '舟山市',
+          '成都市',
+          '绵阳市',
+          '南充市',
+          '乐山市',
+        ]}
+      />,
     );
 
     expect(asFragment()).toMatchSnapshot();
-    expect(container.querySelector('.test')).toBeDefined();
   });
 });

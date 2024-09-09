@@ -63,6 +63,7 @@ export const SheetHeader: React.FC<HeaderProps> = React.memo((props) => {
         }}
       />
       <Popover
+        trigger="click"
         content={
           <DrillDown
             title="下钻"
