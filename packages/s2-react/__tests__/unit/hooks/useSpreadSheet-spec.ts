@@ -241,4 +241,20 @@ describe('useSpreadSheet tests', () => {
       });
     });
   });
+
+  test('should trigger onLoading', async () => {
+    const onLoading = jest.fn();
+    const props = {
+      ...getConfig(),
+      onLoading,
+    };
+
+    renderHook(() => useSpreadSheet({ ...props, sheetType: 'pivot' }));
+
+    expect(onLoading).toHaveBeenCalledWith(true);
+
+    await waitFor(() => {
+      expect(onLoading).toHaveBeenCalledWith(false);
+    });
+  });
 });

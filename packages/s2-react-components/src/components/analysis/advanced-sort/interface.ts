@@ -37,3 +37,8 @@ export interface AdvancedSortProps extends AdvancedSortBaseProps {
 }
 
 export type RuleItem = RuleValue & { rule: string[] };
+
+export interface CustomSortProps {
+  splitOrders: string[];
+  setSplitOrders: (param: string[]) => void;
+}

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 
-import type { SwitcherFields } from '@/components/switcher/interface';
 import '@/components/tooltip/index.less';
 import {
   DeviceType,
@@ -17,9 +16,9 @@ import { Space, Switch, message } from 'antd';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import { act } from 'react-dom/test-utils';
+import { Switcher, SwitcherFields } from '../../../s2-react-components/src';
 import {
   SheetComponent,
-  Switcher,
   type SheetComponentOptions,
   type SheetComponentProps,
 } from '../../src';

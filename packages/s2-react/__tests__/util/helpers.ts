@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line prettier/prettier
-import { PivotSheet, SpreadSheet, type ViewMeta } from '@antv/s2';
+import { SpreadSheet, type ViewMeta } from '@antv/s2';
 import { dsvFormat } from 'd3-dsv';
 import fs from 'fs';
 import { omit } from 'lodash';
@@ -38,12 +38,6 @@ export const sleep = async (timeout = 0) => {
     setTimeout(resolve, timeout);
   });
 };
-
-export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
-  const instance = Object.create(Sheet.prototype);
-
-  return instance as unknown as SpreadSheet;
-}
 
 export const createMockCellInfo = (
   cellId: string,

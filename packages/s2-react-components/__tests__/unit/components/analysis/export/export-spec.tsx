@@ -1,7 +1,7 @@
-import { Export } from '@/components/export';
+import { Export } from '@/components';
 import { render } from '@testing-library/react';
 import React from 'react';
-import { getMockSheetInstance } from '../../../util/helpers';
+import { getMockSheetInstance } from '../../../../../../s2-react/__tests__/util/helpers';
 
 describe('Export Component Tests', () => {
   test('should render component', () => {

@@ -1,4 +1,4 @@
-import { Switcher } from '@/components/switcher';
+import { Switcher } from '@/components';
 import { render } from '@testing-library/react';
 import React from 'react';
 

@@ -3,7 +3,7 @@
  * https://github.com/antvis/S2/issues/1736
  * Export dropdown visible state error
  */
-import { Export } from '@/components/export';
+import { Export } from '@/components';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import type { Root } from 'react-dom/client';

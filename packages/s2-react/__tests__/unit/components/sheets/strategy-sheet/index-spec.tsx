@@ -5,7 +5,6 @@ import {
   StrategySheetDataCell,
   type SheetComponentOptions,
 } from '@/components';
-import { strategyCopy } from '@/components/export/strategy-copy';
 import {
   CSV_SEPARATOR,
   CellType,
@@ -21,6 +20,7 @@ import {
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
+import { strategyCopy } from '../../../../../../s2-react-components/src';
 import {
   StrategyOptions,
   StrategySheetDataConfig,

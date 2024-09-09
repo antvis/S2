@@ -6,11 +6,7 @@ import {
 import { ADVANCED_SORT_PRE_CLS } from '@antv/s2-shared';
 import { Card } from 'antd';
 import React from 'react';
-
-export interface CustomSortProps {
-  splitOrders: string[];
-  setSplitOrders: (param: string[]) => void;
-}
+import type { CustomSortProps } from './interface';
 
 export const CustomSort: React.FC<CustomSortProps> = (props) => {
   const { splitOrders = [], setSplitOrders } = props;
