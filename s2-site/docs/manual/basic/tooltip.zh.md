@@ -607,15 +607,13 @@ const onRowCellHover = ({ event, viewMeta }) => {
   <p>当前值：{{ meta?.label ?? meta?.fieldValue}} </p>
 </template>
 
-< script
-lang = "ts"
-setup >
-import { defineComponent } from 'vue';
+<script lang="ts">
+  import { defineComponent } from 'vue';
 
-export default defineComponent({
-  name: 'TooltipContent',
-  props: [ 'meta' ]
-});
+  export default defineComponent({
+    name: 'TooltipContent',
+    props: [ 'meta' ]
+  });
 </script>
 
 ```

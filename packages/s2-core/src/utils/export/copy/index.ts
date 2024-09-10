@@ -2,5 +2,5 @@ import type { SheetCopyConstructorParams } from '../../../common/interface/expor
 import { getSelectedData } from './core';
 import { PivotDataCellCopy } from './pivot-data-cell-copy';
 
-export { PivotDataCellCopy, getSelectedData };
+export { getSelectedData, PivotDataCellCopy };
 export type { SheetCopyConstructorParams };

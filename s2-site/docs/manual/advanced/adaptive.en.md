@@ -186,7 +186,7 @@ It can also be configured to only enable adaptive width or height. The above con
 You can also customize the adaptive container:
 
 ```tsx
-<script setup>
+<script lang="ts">
 const adaptive = {
   width: true,
   height: true,

@@ -519,9 +519,7 @@ content </div>
 </p>
 </template>
 
-< script
-lang = "ts"
-setup >
+<script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
