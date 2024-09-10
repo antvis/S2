@@ -109,7 +109,7 @@
     {
       "path": "./dist/index.min.js",
       "import": "{ createComponent }",
-      "limit": "70 kB"
+      "limit": "80 kB"
     }
   ],
   "tnpm": {

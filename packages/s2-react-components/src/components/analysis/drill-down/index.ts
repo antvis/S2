@@ -1,3 +1,3 @@
 export { DrillDown } from './drill-down';
 
-export * from './interface';
+export type { DrillDownDataSet, DrillDownProps } from './interface';
