@@ -1,9 +1,9 @@
-import { DroppableType, FieldType } from '@/components/switcher/constant';
-import type {
-  SwitcherFields,
-  SwitcherItem,
-  SwitcherState,
-} from '@/components/switcher/interface';
+import type { SwitcherFields, SwitcherItem, SwitcherState } from '@/components';
+import type { SheetType } from '@antv/s2-shared';
+import {
+  DroppableType,
+  FieldType,
+} from '../../../../../src/components/analysis/switcher/constant';
 import {
   checkItem,
   generateSwitchResult,
@@ -13,8 +13,7 @@ import {
   getSwitcherState,
   moveItem,
   shouldCrossRows,
-} from '@/components/switcher/util';
-import type { SheetType } from '@antv/s2-shared';
+} from '../../../../../src/components/analysis/switcher/util';
 
 describe('switcher util test', () => {
   test('should return correct class name with prefix', () => {
@@ -36,7 +35,7 @@ describe('switcher util test', () => {
     },
   );
 
-  test('should return true  only if field type is values for pivot sheet', () => {
+  test('should return true only if field type is values for pivot sheet', () => {
     expect(shouldCrossRows('pivot', FieldType.Rows)).toBeFalse();
     expect(shouldCrossRows('pivot', FieldType.Cols)).toBeFalse();
     expect(shouldCrossRows('pivot', FieldType.Values)).toBeTrue();

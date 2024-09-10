@@ -1027,11 +1027,24 @@ function App() {
 
 具体请查看 [高级排序](/manual/advanced/analysis/advanced) 相关文档。
 
-##### 行列切换组件迁移
+##### 维度切换组件迁移
 
 ```diff
 - import { Switcher } from '@antv/s2-react';
 + import { Switcher } from '@antv/s2-react-components';
+```
+
+1. 配置变更
+
+新增 `icon` 配置，`title` 含义变更，现在不再用做自定义入口，使用 `children` 代替。
+
+```diff
+- <Switcher title={<Button>切换维度</Button>} />
+
++ <Switcher title="切换维度" icon={<SwapOutlined/>} />
++ <Switcher>
++   <Button>切换维度</Button>
++ </Switcher>
 ```
 
 具体请查看 [维度切换](/manual/advanced/analysis/switcher) 相关文档。

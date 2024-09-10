@@ -147,7 +147,18 @@ const field = {
 
 ### 定制化
 
-* 如果 `Switcher` 组件内置的触发按钮不满足你的需求，可通过 `title` 定制化触发按钮
+* 如果 `Switcher` 组件内置的触发按钮不满足你的需求，可通过 `title` 和 `icon` 定制化触发按钮，也可以自定义 `children`
+
+```tsx
+import { SwapOutlined } from '@ant-design/icons';
+
+<Switcher title="维度切换" icon={<SwapOutlined/> }/>
+
+<Switcher>
+  <Button size="small">自定义入口</Button>
+</Switcher>
+```
+
 * `Switcher` 组件也提供了 `resetText` 属性用于定义重置按钮的问题
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" alt="preview" />

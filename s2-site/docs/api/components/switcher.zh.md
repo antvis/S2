@@ -21,9 +21,11 @@ import '@antv/s2-react-components/dist/style.min.css';
 | columns | 列头配置描述 | [SwitcherField](#switcherfield) |  |  |
 | values | 指标配置描述 | [SwitcherField](#switcherfield) |  |  |
 | disabled | 是否禁用 | `boolean` | `false` |  |
-| title | 打开切换弹窗的触发节点 | `ReactNode` |  |  |
-| contentTitleText | 弹窗默认标题文字 | `string` | 行列切换 |  |
-| resetText | 重置按钮文字 | `string` | 恢复默认 |  |
+| title | 自定义标题 | `ReactNode` | `行列切换` |  |
+| icon | 自定义图标 | `ReactNode` | `<SwapOutlined />` |  |
+| children | 自定义打开切换弹窗的触发节点 | `ReactNode` | `<Button />` |  |
+| contentTitleText | 弹窗默认标题文字 | `string` | `行列切换` |  |
+| resetText | 重置按钮文字 | `string` | `恢复默认` |  |
 | innerContentClassName | 弹出框内容样式名 | `string` |  |  |
 | allowExchangeHeader| 是否允许指标在行列维度之间相互切换 | `boolean` |  |  `true`|
 | onSubmit | 关闭弹窗后，处理行列切换结果的回调函数 | `(result:` [SwitcherResult](#switcherresult)`) => void` |  |  |

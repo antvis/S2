@@ -45,9 +45,11 @@ export interface SwitcherResult {
 export interface SwitcherProps
   extends Omit<SwitcherContentProps, 'onToggleVisible'> {
   title?: React.ReactNode;
+  icon?: React.ReactNode;
   // ref: https://ant.design/components/popover-cn/#API
   popover?: PopoverProps;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
 export interface DimensionCommonProps

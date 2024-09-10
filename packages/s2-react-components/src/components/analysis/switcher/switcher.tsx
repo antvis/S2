@@ -9,7 +9,7 @@ import type { SwitcherProps } from './interface';
 import { getSwitcherClassName } from './util';
 
 export const Switcher: React.FC<SwitcherProps> = React.memo(
-  ({ title, popover, disabled, ...otherProps }) => {
+  ({ title, icon, popover, disabled, children, ...otherProps }) => {
     const [visible, setVisible] = React.useState(false);
     const onToggleVisible = () => {
       setVisible((prev) => !prev);
@@ -31,14 +31,12 @@ export const Switcher: React.FC<SwitcherProps> = React.memo(
           popover?.overlayClassName,
         )}
       >
-        {React.isValidElement(title) ? (
-          title
-        ) : (
+        {children || (
           <Button
             className={getSwitcherClassName('entry-button')}
             size="small"
             disabled={disabled}
-            icon={<SwapOutlined rotate={90} />}
+            icon={icon || <SwapOutlined rotate={90} />}
           >
             {title || i18n('行列切换')}
           </Button>
