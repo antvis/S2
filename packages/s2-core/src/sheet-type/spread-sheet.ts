@@ -67,6 +67,7 @@ import { BaseTooltip } from '../ui/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import { isMobile } from '../utils/is-mobile';
 import { customMerge, setupDataConfig, setupOptions } from '../utils/merge';
 import { injectThemeVars } from '../utils/theme';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
@@ -703,16 +704,22 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const { width, height, transformCanvasConfig } = this.options;
+    const { width, height, device, transformCanvasConfig } = this.options;
 
     const renderer = new Renderer() as unknown as CanvasConfig['renderer'];
     const canvasConfig = transformCanvasConfig?.(renderer, this);
+    /**
+     * https://github.com/antvis/S2/issues/2857
+     * 开启 supportsPointerEvents 后, G Canvas 会禁用 `touchAction`: https://github.com/antvis/G/blob/910c58e9bcba48cfa7bb0585064d27d3ae0bff4c/packages/g-plugin-dom-interaction/src/DOMInteractionPlugin.ts#L135
+     */
+    const supportsPointerEvents = !isMobile(device);
 
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       renderer,
+      supportsPointerEvents,
       ...canvasConfig,
     });
 
