@@ -477,7 +477,7 @@ export class TableFacet extends FrozenFacet {
         currentNode.y = 0;
       } else {
         currentNode.y =
-          currentNode?.parent?.y! + currentNode?.parent?.height! ?? 0;
+          currentNode?.parent?.y! + currentNode?.parent?.height! || 0;
       }
 
       currentNode.height = this.getColNodeHeight(

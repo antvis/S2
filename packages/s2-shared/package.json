@@ -1,7 +1,7 @@
 {
   "name": "@antv/s2-shared",
   "version": "1.0.0",
-  "private": false,
+  "private": true,
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
   "main": "src/index.ts",
@@ -17,9 +17,6 @@
   "devDependencies": {
     "@antv/s2": "workspace:*",
     "lodash": "^4.17.21"
-  },
-  "peerDependencies": {
-    "@antv/s2": "^2.0.0-next.1"
   },
   "tnpm": {
     "mode": "pnpm"
