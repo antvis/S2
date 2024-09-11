@@ -14,9 +14,9 @@ tag: Updated
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PuoGS7DQdV8AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="group-sort" />
 
-## 使用 `@antv/s2`
+## 在 `@antv/s2` 中使用
 
-`@antv/s2` 提供组内排序的能力（对于明细表来说即**全局排序**)，可以自行实现 [Tooltip 排序菜单](/manual/basic/tooltip) 后，然后调用相关 [API](/api/basic-class/spreadsheet).
+`@antv/s2` 提供组内排序的能力（对于明细表来说即**全局排序**)，可以自行实现 [Tooltip 排序菜单](/manual/basic/tooltip) 后 ([查看示例](/examples/custom/custom-order/#custom-order-base))，然后调用相关 [API](/api/basic-class/spreadsheet).
 
 ```ts
 const meta = cell.getMeta()
@@ -40,9 +40,15 @@ s2.on(S2Event.RANGE_SORT, (sortParams) => {
 
 ```
 
+- 示例 1: 点击列头自定义排序菜单
+
 <Playground path="analysis/sort/demo/group-sort-base.ts" rid='group-sort-base' height="200"></playground>
 
-## 使用 `@antv/s2-react`
+- 示例 2: 点击列头排序 icon 自定义排序菜单 ([了解更多](/manual/advanced/custom/custom-order))
+
+<Playground path="custom/custom-order/demo/custom-order-base.ts" rid='custom-order-base' height="200"></playground>
+
+## 在 `@antv/s2-react` 中使用
 
 `@antv/s2-react` 基于 `@antv/s2` 的 [基础排序能力](/manual/basic/sort/basic)，搭配任意菜单组件 （如 `antd` 的 `Menu` 组件）, 提供了默认的组内排序功能，排序菜单通过 [Tooltip](/manual/basic/tooltip) 承载（开启 `tooltip` 即可），主要根据数值对 `行头/列头` 进行排序，[查看更多排序示例](/examples/analysis/sort/#group-sort)
 
@@ -50,7 +56,7 @@ s2.on(S2Event.RANGE_SORT, (sortParams) => {
 
 :::info
 
-在 `2.x` 版本后，内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props), 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本进行调整。
+在 `2.0` 版本后，内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props), 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本进行调整。
 :::
 
 ```ts

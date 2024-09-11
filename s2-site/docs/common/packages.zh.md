@@ -7,25 +7,23 @@ order: 5
 
 创建 `S2` 表格有三种方式，基础类版本 `@antv/s2` 和 基于 `@antv/s2` 封装的 `React` 和 `Vue3` 版本：
 
-- `@antv/s2`: 基于 `Canvas` 和 [AntV/G 6.0](https://g.antv.antgroup.com) 开发，提供基本的表格展示/交互等能力。
+1. 基础版本 `@antv/s2`: 基于 `Canvas` 和 [AntV/G 6.0](https://g.antv.antgroup.com) 开发，提供基本的表格展示/交互等能力。
 
 版本依赖：无
 
-- `@antv/s2-react`: 基于 `React 18`, `@antv/s2`, `antd@5.x` 封装，提供配套的 [分析组件](/manual/basic/analysis/switcher).
+2. React 版本 `@antv/s2-react`: 基于 `React 18`, 和 `@antv/s2` 封装，兼容 `React 16/17` 版本，同时提供配套的 [分析组件 (`@antv/s2-react-components`)](/manual/advanced/analysis/introduction).
 
 版本依赖：
 
 ```json
 "peerDependencies": {
-  "@ant-design/icons": ">=4.7.0",
   "@antv/s2": "^2.0.0-next.1",
-  "antd": "^5.0.0",
   "react": ">=16.9.0",
   "react-dom": ">=16.9.0"
 }
 ```
 
-- `@antv/s2-vue`: 基于 `Vue3`, `@antv/s2` , `ant-design-vue@3.x` 封装，提供配套的分析组件。
+3. Vue 版本 `@antv/s2-vue`: 基于 `Vue3`, `@antv/s2` , `ant-design-vue@3.x` 封装。<Badge type="error">停止维护</Badge>
 
 版本依赖：
 

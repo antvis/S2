@@ -160,9 +160,13 @@ const s2Options = {
 };
 
 const App = () => {
+  // 编辑开始
+  const onDataCellEditStart = (meta, cell) => {
+    console.log('onDataCellEditStart:', meta);
+  };
   // 编辑完成
-  const onDataCellEditEnd = (meta) => {
-    console.log('onDataCellEditEnd', meta);
+  const onDataCellEditEnd = (meta, cell) => {
+    console.log('onDataCellEditEnd:', meta);
   };
 
   return (
@@ -170,6 +174,7 @@ const App = () => {
       sheetType="editable"
       dataCfg={s2DataCfg}
       options={s2Options}
+      onDataCellEditStart={onDataCellEditStart}
       onDataCellEditEnd={onDataCellEditEnd}
     />
   )

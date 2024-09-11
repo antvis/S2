@@ -9,7 +9,9 @@ import {
   type SortParams,
   type TooltipOperatorMenuItem,
 } from '@antv/s2';
+import { Menu } from 'antd';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const SortMethodType = {
   asc: 'asc',
@@ -47,9 +49,16 @@ const s2Options: SheetComponentOptions = {
       src: 'https://gw.alipayobjects.com/zos/bmw-prod/f44eb1f5-7cea-45df-875e-76e825a6e0ab.svg',
     },
   ],
-  // 开启 Tooltip, 显示排序菜单
+  // 开启 Tooltip, 自定义排序菜单
   tooltip: {
     enable: true,
+    operation: {
+      menu: {
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      },
+    },
   },
 };
 
@@ -81,7 +90,7 @@ const App = () => {
   const [sortParams, setSortParams] = React.useState<SortParams>([]);
 
   // 执行自定义排序回调
-  const handleSortCallback = (meta: Node, key: SortMethod) => {
+  const handleSort = (meta: Node, key: SortMethod) => {
     if (key === SortMethodType.custom) {
       const customSortParams: SortParams = [
         { sortFieldId: 'type', sortBy: ['办公用品', '家具'] },
@@ -99,7 +108,7 @@ const App = () => {
   // 设置自定义 `icon` 的展示条件
   const headerActionIcons: SheetComponentOptions['headerActionIcons'] = [
     {
-      // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
+      // 选择 icon,可以是 S2 自带的，也可以是自定义的 icon
       icons: ['customKingIcon'],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
@@ -113,7 +122,7 @@ const App = () => {
         const operator: TooltipOptions['operator'] = {
           menu: {
             onClick: ({ key }) => {
-              handleSortCallback(meta, key as SortMethod);
+              handleSort(meta, key as SortMethod);
               meta.spreadsheet.hideTooltip();
             },
             items: MENUS,
@@ -121,10 +130,17 @@ const App = () => {
         };
 
         // 自定义 tooltip 配置，展示 tooltip
-        meta.spreadsheet.showTooltipWithInfo(event, [], {
-          operator,
-          onlyShowCellText: true,
-          onlyShowOperator: true,
+        meta.spreadsheet.showTooltip({
+          event,
+          position: {
+            x: event?.clientX || 0,
+            y: event?.clientY || 0,
+          },
+          options: {
+            operator,
+            onlyShowCellText: true,
+            onlyShowOperator: true,
+          },
         });
       },
     },

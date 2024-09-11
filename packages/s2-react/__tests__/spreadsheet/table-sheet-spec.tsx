@@ -12,7 +12,7 @@ import {
   type S2Options,
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
-import { Space, Switch, message } from 'antd';
+import { Pagination, Space, Switch, message } from 'antd';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import { act } from 'react-dom/test-utils';
@@ -244,7 +244,12 @@ function MainLayout({ callback }: Props) {
         spreadsheet={onMounted(s2Ref)}
         onDataCellDoubleClick={logData}
         onContextMenu={logData}
-      />
+      >
+        {({ pagination }) => (
+          // 结合任意分页器使用：如 antd 的 Pagination 组件
+          <Pagination {...pagination} />
+        )}
+      </SheetComponent>
     </Space>
   );
 }

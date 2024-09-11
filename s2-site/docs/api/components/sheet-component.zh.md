@@ -27,7 +27,6 @@ import '@antv/s2-react/dist/style.min.css';
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
-| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (current:number, pageSize: number) => void,<br>onChange?: (current:number, pageSize: number) => void <br>} | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
@@ -116,21 +115,17 @@ import '@antv/s2-react/dist/style.min.css';
 
 :::warning{title="注意"}
 
-`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同
+`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
 
+- 类型由 `S2Options` 变更为 `SheetComponentOptions`.
 - tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素。
-- 分页配置从 S2 的分页配置 **变为了 `antd` 的分页配置**，即支持对 `antd` 分页组件 的 api 透传。
 
 :::
 
 ```ts
-import type { Pagination, S2Options } from '@antv/s2';
-import type { PaginationProps as AntdPaginationProps } from 'antd';
+import type { S2Options } from '@antv/s2';
 
-type SheetComponentOptions = S2Options<
-  React.ReactNode,
-  Pagination & AntdPaginationProps
->;
+type SheetComponentOptions = S2Options<React.ReactNode>
 ```
 
 <br/>
@@ -242,9 +237,10 @@ type SheetComponentOptions = S2Options<
 
 :::warning{title="注意"}
 
-`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有一点不同
+`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
 
-- 分页配置从 S2 的分页配置 **变为了 `antd-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
+- 类型由 `S2Options` 变更为 `SheetComponentOptions`.
+- 分页配置从 S2 的分页配置 **变为了 `antd-design-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
 
 :::
 

@@ -67,6 +67,7 @@ const App = () => {
 import { Button } from 'antd'
 import { ExportOutlined } from '@ant-design/icons';
 import { Export } from '@antv/s2-react-components'
+import '@antv/s2-react-components/dist/style.min.css';
 
 const App = () => {
   return (

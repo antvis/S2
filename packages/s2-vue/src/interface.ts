@@ -88,7 +88,15 @@ export type SheetComponentOptions = S2Options<
 export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
   SheetComponentOptions
->;
+> & {
+  showPagination?:
+    | boolean
+    | {
+        onShowSizeChange?: (pageSize: number) => void;
+        onChange?: (current: number) => void;
+      };
+};
+
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
 export type BaseSheetInitProps = GetInitProps<SheetComponentProps>;

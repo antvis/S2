@@ -59,26 +59,10 @@ export type LayoutPaginationParams = {
   total: number;
   current: number;
 };
-type _ShowPagination =
-  | boolean
-  | {
-      onShowSizeChange?: (pageSize: number) => void;
-      onChange?: (current: number) => void;
-    };
-
-type ShowPagination<OverrideShowPagination, Options> =
-  OverrideShowPagination extends true
-    ? Options extends {
-        pagination?: { onShowSizeChange?: unknown; onChange?: unknown };
-      }
-      ? boolean | Options['pagination']
-      : _ShowPagination
-    : _ShowPagination;
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
   Options = S2Options<TooltipContentType, Pagination>,
-  OverrideShowPagination = false,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
@@ -91,10 +75,6 @@ export interface BaseSheetComponentProps<
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
-  /**
-   * @deprecated
-   */
-  showPagination?: ShowPagination<OverrideShowPagination, Options>;
   themeCfg?: ThemeCfg;
 
   // ============== Row Cell ====================

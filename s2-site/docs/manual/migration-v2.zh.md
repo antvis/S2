@@ -1311,7 +1311,7 @@ class AntdV5AliasPlugin {
 
 ### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
 
-`@antv/s2-vue` 停止维护，请基于 `@antv/s2` 封装，或自行 `fork` 二次开发。
+`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
 
 ## ✍️ API 调整
 

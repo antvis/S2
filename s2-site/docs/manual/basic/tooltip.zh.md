@@ -13,22 +13,32 @@ tag: Updated
 ## 注意事项
 
 :::warning
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**.
+`基础版本 (@antv/s2)` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，和排序 API, **不渲染内容**.
 
-`React` 版本 和 `Vue3` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
-
-:::
+`React (@antv/s2-react)` 版本 和 `Vue3 (@antv/s2-vue)` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏操作项按钮` 等。
 
 查看 `React` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/next/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
 
 - 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便。
-- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节。
+- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节和以下示例。
+
+  - 1. [在 @antv/s2 中使用组内排序](/examples/analysis/sort/#group-sort-base)
+  - 2. [在 @antv/s2 中自定义 Tooltip 内容](/examples/react-component/tooltip/#custom-content-base)
+  - 3. [在 @antv/s2 中自定义排序](/examples/custom/custom-order/#custom-order-base)
+
 - 别忘了引入样式。
 
 ```ts
+// @antv/s2
 import "@antv/s2/dist/style.min.css";
+// @antv/s2-react
+import "@antv/s2-react/dist/style.min.css";
+// @antv/s2-vue
+import "@antv/s2-vue/dist/style.min.css";
 ```
+
+:::
 
 ## 使用
 

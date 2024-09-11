@@ -1,6 +1,7 @@
 ---
 title: 自定义排序操作
 order: 6
+tag: Updated
 ---
 
 :::warning{title="注意"}
@@ -64,13 +65,13 @@ const s2Options = {
 
 <img alt="preview" src="https://gw.alipayobjects.com/zos/antfincdn/s%26vVrM8Ap/14a3a4fa-6d07-4fb8-8201-012672bd0feb.png" height="600" />
 
-## 自定义 tooltip
+## 自定义 Tooltip
 
 相关章节：[headerActionIcons 配置说明](/api/general/S2Options#headeractionicon)
 
 ### 配置
 
-- 确认 `tooltip` 为打开状态
+- 排序菜单会在 Tooltip 中展示，确认 `tooltip` 为打开状态。
 
 ```jsx
 const s2Options = {
@@ -78,6 +79,32 @@ const s2Options = {
     enable: true,
   },
   ...
+}
+```
+
+- 指定排序菜单 UI
+
+:::warning{title="注意"}
+
+1. 如果使用的是 `@antv/s2`, 需要自行实现排序菜单的 UI, 否则 `tooltip` 不会展示。[查看示例](/examples/analysis/sort/#group-sort-base) 和 [Tooltip 注意事项](/manual/basic/tooltip#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+2. 如果使用的是 `@antv/s2-react`, 可以结合任意组件库使用。[查看示例](/examples/custom/custom-order#custom-order)
+
+:::
+
+```tsx
+import { Menu } from 'antd'
+
+const s2Options = {
+  tooltip: {
+    enable: true,
+    operation: {
+      menu: {
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      }
+    }
+  },
 }
 ```
 
@@ -183,4 +210,10 @@ const s2Options = {
 
 ### 预览
 
-<Playground path='custom/custom-order/demo/custom-order.tsx' rid='container' height='400'></Playground>
+#### 在 `@antv/s2` 中使用
+
+<Playground path='custom/custom-order/demo/custom-order-base.tsx' rid='custom-order-base' height='400'></Playground>
+
+#### 在 `@antv/s2-react` 中使用
+
+<Playground path='custom/custom-order/demo/custom-order.tsx' rid='custom-order' height='400'></Playground>

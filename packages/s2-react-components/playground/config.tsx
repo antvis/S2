@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import { type S2DataConfig } from '@antv/s2';
+import React from 'react';
 // @ts-ignore
 import type { SheetComponentOptions } from '@antv/s2-react';
 import {
@@ -9,6 +10,7 @@ import {
   meta,
   totalData,
 } from '@antv/s2/__tests__/data/mock-dataset.json';
+import { Menu } from 'antd';
 
 export const s2DataConfig: S2DataConfig = {
   data,
@@ -29,7 +31,14 @@ export const s2Options: SheetComponentOptions = {
     // 防止 mac 触控板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'none',
   },
-  tooltip: {},
+  tooltip: {
+    enable: true,
+    operation: {
+      menu: {
+        render: (props) => <Menu {...props} />,
+      },
+    },
+  },
   style: {
     colCell: {
       width: 120,

@@ -19,14 +19,24 @@ $ yarn add @antv/s2@next
 $ pnpm add @antv/s2@next
 ```
 
-### 使用 React 或 Vue3 版本
+### 使用 React 版本 <Badge>@antv/s2-react</Badge>
 
 ```bash
-# React
-$ pnpm add @antv/s2@next @antv/s2-react@next antd @ant-design/icons
+pnpm add @antv/s2@next @antv/s2-react@next antd @ant-design/icons
 
-# Vue3
-$ pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
+```
+
+### 使用 React 版本分析组件 <Badge>@antv/s2-react-components</Badge>
+
+```bash
+pnpm add @antv/s2@next @antv/s2-react-components@next antd @ant-design/icons
+
+```
+
+### 使用 Vue3 版本 <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
+
+```bash
+pnpm add @antv/s2@next @antv/s2-vue@next ant-design-vue@3.x
 
 ```
 
@@ -190,26 +200,24 @@ bootstrap();
 
 <Playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
 
-### `React` 版本
+### `React` 版本 <Badge>@antv/s2-react</Badge>
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](examples/gallery#category-表格组件)
-, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](examples/gallery#category-表格组件), 帮助开发者快速满足业务看数分析需求。
+还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip),
 
 #### 版本依赖
 
 ```json
 "peerDependencies": {
-  "@ant-design/icons": ">=4.7.0",
   "@antv/s2": "^2.0.0-next.1",
-  "antd": "^5.0.0",
   "react": ">=16.9.0",
   "react-dom": ">=16.9.0"
 }
 ```
 
-#### 表格组件使用
+#### 使用
 
-```tsx
+```tsx | pure
 import React from 'react';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
@@ -224,18 +232,45 @@ const App = () => {
 }
 ```
 
-:::warning{title='注意事项'}
-`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd@5.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
-
-```bash
-pnpm add antd @ant-design/icons
-```
-
-:::
-
 ​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 
-### `Vue3` 版本
+### `React` 版本分析组件 <Badge>@antv/s2-react-components</Badge>
+
+`S2` 提供了配套的 [分析组件](/manual/advanced/analysis/introduction), 可以和 `@antv/s2` 或 `@antv/s2-react` 组合使用。
+
+#### 版本依赖
+
+```json
+"peerDependencies": {
+  "@ant-design/icons": ">=4.7.0",
+  "@antv/s2": "^2.0.0-next.1",
+  "antd": ">=4.16.13",
+  "react": ">=16.9.0",
+  "react-dom": ">=16.9.0"
+}
+```
+
+#### 使用
+
+```tsx
+import React from 'react';
+import { AdvancedSort } from '@antv/s2-react-components';
+import '@antv/s2-react-components/dist/style.min.css';
+
+const App = () => {
+  return (
+    <AdvancedSort />
+  )
+}
+```
+
+​📊 前往 [进阶教程 - 分析组件](/manual/advanced/analysis/introduction) 了解更多。
+
+### `Vue3` 版本 <Badge type="success">@antv/s2-vue</Badge> <Badge type="error">停止维护</Badge>
+
+:::warning
+`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
+:::
 
 `S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。
 
@@ -249,7 +284,7 @@ pnpm add antd @ant-design/icons
 }
 ```
 
-#### 表格组件使用
+#### 使用
 
 ```ts
 // App.vue
@@ -294,7 +329,7 @@ createApp(App).mount('#app');
 
 :::warning{title='注意事项'}
 
-`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue@3.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
+`Vue3` 版本的 `分析组件` 如：`导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue@3.x` 组件库开发，如需使用，需要额外安装，并引入对应样式。
 
 ```bash
 pnpm add ant-design-vue@3.x

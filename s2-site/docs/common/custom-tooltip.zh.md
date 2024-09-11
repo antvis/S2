@@ -84,7 +84,7 @@ order: 5
 
 #### TooltipOperatorOptions
 
-功能描述： tooltip 操作栏配置 （如果是 `@antv/s2-react` 配置等同于 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api))
+功能描述：tooltip 操作栏配置
 
 | 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
 | ------- | -------------------------------------------- | ------ | ------ | ------------------------------------------------------------------------------------------ |
@@ -92,13 +92,13 @@ order: 5
 
 #### TooltipOperatorMenuOptions
 
-功能描述： tooltip 操作栏菜单配置 （如果是 `@antv/s2-react` 配置等同于 `antd` 的 `Menu` [组件配置项](https://ant-design.antgroup.com/components/menu-cn#api))
+功能描述： tooltip 操作栏菜单配置
 
 | 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
 | ------- | -------------------------------------------- | ------ | ------ | ------------------------------------------------------------------------------------------ |
 | items   | [TooltipOperatorMenuItem[]](#tooltipoperatormenuitem)  |     |        | 操作项列表  |
-| onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
-| selectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组，透传 `antd` `Menu` 组件的 [selectedKeys](https://ant.design/components/menu-cn/#Menu)  |
+| onClick | `(info: TooltipOperatorMenuInfo, cell: S2CellType) => void` |      |        | 点击事件 |
+| selectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组  |
 
 ##### TooltipOperatorMenuItem
 

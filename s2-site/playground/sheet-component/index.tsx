@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import {
+  generatePalette,
+  getPalette,
   type S2DataConfig,
   type ThemeCfg,
-  getPalette,
-  generatePalette,
 } from '@antv/s2';
-import type { SheetType, Adaptive } from '@antv/s2-shared';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import type { Adaptive, SheetType } from '@antv/s2-shared';
+import { Pagination } from 'antd';
 import { concat, isEmpty, merge } from 'lodash';
+import React, { useEffect } from 'react';
 import { sheetDataCfg, subTotalsDimensions } from './config';
 import './index.less';
 
@@ -225,8 +226,18 @@ export const CustomSheet: React.FC<Props> = (props) => {
         themeCfg={themeCfg}
         sheetType={sheetType}
         adaptive={adaptive}
-        showPagination={showPagination}
-      />
+      >
+        {({ pagination }) =>
+          showPagination && (
+            <Pagination
+              showQuickJumper
+              showSizeChanger
+              showTotal={(total) => `共计 ${total} 条`}
+              {...pagination}
+            />
+          )
+        }
+      </SheetComponent>
     </div>
   );
 };
