@@ -14,7 +14,7 @@ import {
   SECONDARY_THEME_COLOR_TYPE_RELATIONS,
   SheetThemeColorType,
   SheetThemeType,
-} from '../../../common';
+} from '../../common';
 
 type ColorThemeGenerateParams = {
   /** 表格主题类型 */

@@ -42,22 +42,9 @@ tag: New
 
 ## 📦 安装
 
-```bash
-# 基础版本
-$ npm install @antv/s2@next --save
+<embed src="@/docs/common/install.zh.md"></embed>
 
-# React 版本
-$ npm install @antv/s2-react@next antd @ant-design/icons --save
-
-# Vue3 版本
-$ npm install @antv/s2-vue@next ant-design-vue@3.x --save
-```
-
-| Package                                                                    | Version                                                       | Size                                                                                                                        | Download                                                      |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 ## ⭐ 新增功能
 
@@ -1218,15 +1205,17 @@ const s2Options = {
 
 具体请查看 [Tooltip](/manual/basic/tooltip) 和 [组内排序](/manual/basic/sort/group) 相关文档。
 
-#### 支持 React 18 和 Ant Design 5.0
+#### 支持 React 18
 
 :::info{title="提示"}
 React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后续兼容视情况而定。
 :::
 
-`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件升级到了 `antd@5.x`.
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`.
 
 #### Ant Design 多版本共存
+
+由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件 `@antv/s2-react-components` 默认基于 `antd@5.x` 开发，虽然使用的都是基础组件，但是是否完全兼容 `antv@4.x` 取决于两个版本的差异性。
 
 对于项目使用的是 `antd@4.x`, 或者所依赖的其他库间接依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
 
@@ -1238,7 +1227,7 @@ React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后�
 }
 ```
 
-通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
+通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react-components` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
 
 :::warning{title="注意"}
 其他打包工具 （如 `Vite`) 或者基于 `webpack` 封装的库或框架（如 `father`, `umi`) 同理，请自行搜索，这里不再赘述。
@@ -1252,7 +1241,7 @@ class AntdV5AliasPlugin {
   apply(compiler) {
     compiler.hooks.normalModuleFactory.tap("AntdV5AliasPlugin", (nmf) => {
       nmf.hooks.beforeResolve.tapAsync("AntdV5AliasPlugin", (resolveData, callback) => {
-        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react')) {
+        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react-components')) {
           // 匹配："antd" 和 "antd/es/locale/xxx"
           if (/antd(\/*)?/.test(resolveData.request)) {
             // 替换为："antd-v5" 和 "antd-v5/es/locale/xxx"

@@ -70,11 +70,7 @@ redirect_from:
 
 ## 📦 安装
 
-```bash
-$ npm install @antv/s2@next --save
-# yarn add @antv/s2@next
-# pnpm add @antv/s2@next
-```
+<embed src="@/docs/common/install.zh.md"></embed>
 
 ## 🔨 使用
 

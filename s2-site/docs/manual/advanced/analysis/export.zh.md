@@ -107,6 +107,17 @@ import { StrategyExport } from '@antv/s2-react-components'
 
 查看 [示例](/examples/react-component/export#export-strategy)
 
+`<StrategyExport />` 内部使用的是 `strategyCopy` 处理数据的复制导出，等价于下面的代码：
+
+```tsx
+import { strategyCopy } from '@antv/s2';
+import { Export } from '@antv/s2-react-components'
+
+<Export sheetInstance={s2Ref.current} customCopyMethod={strategyCopy} />
+```
+
+所以，当你有自定义导出组件的诉求时，你也可以通过 `strategyCopy` 自行封装。
+
 ## 在非 React 应用中使用
 
 :::info{title="提示"}

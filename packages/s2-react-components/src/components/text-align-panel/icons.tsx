@@ -1,5 +1,5 @@
 import React from 'react';
-import type { RadioIconProps } from '../../../common/interface/icon';
+import type { RadioIconProps } from '../../common/interface/icon';
 
 export const LeftAlignIcon = React.memo<RadioIconProps>(({ active }) => {
   if (active) {

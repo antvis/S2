@@ -5,9 +5,9 @@ import {
   DEFAULT_THEME_COLOR_LIST,
   SheetThemeColorType,
   SheetThemeType,
-} from '../../../common';
-import { ResetGroup, TooltipWrapper } from '../../common';
-import { RadioGroup } from '../../common/radio-group';
+} from '../../common';
+import { ResetGroup, TooltipWrapper } from '../common';
+import { RadioGroup } from '../common/radio-group/radio-group';
 import { ColorBox } from './color-box';
 import { ColorPickerPanel } from './color-picker-panel';
 import {

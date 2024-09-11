@@ -1,18 +1,17 @@
-import {
-  PivotDataCellCopy,
-  assembleMatrix,
-  getEmptyPlaceholder,
-  getHeaderList,
-  getNodeFormatData,
-  safeJsonParse,
-  type CopyAllDataParams,
-  type CopyableList,
-  type Node,
-  type SheetCopyConstructorParams,
-  type SimpleData,
-  type ViewMeta,
-} from '@antv/s2';
 import { flatten, forEach, get, isArray, isNil, isObject, map } from 'lodash';
+import type {
+  CopyAllDataParams,
+  CopyableList,
+  SheetCopyConstructorParams,
+  SimpleData,
+  ViewMeta,
+} from '../../../common';
+import type { Node } from '../../../facet/layout/node';
+import { safeJsonParse } from '../../common';
+import { getEmptyPlaceholder } from '../../text';
+import { getHeaderList } from '../method';
+import { assembleMatrix, getNodeFormatData } from './common';
+import { PivotDataCellCopy } from './pivot-data-cell-copy';
 
 /**
  * Process the multi-measure with single-lines

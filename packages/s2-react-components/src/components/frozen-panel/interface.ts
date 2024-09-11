@@ -1,4 +1,4 @@
-import type { BaseComponentProps } from '../../../common/interface/components';
+import type { BaseComponentProps } from '../../common/interface/components';
 import type { FrozenInputNumberProps } from './frozen-input-number/interface';
 
 export interface FrozenPanelOptions {

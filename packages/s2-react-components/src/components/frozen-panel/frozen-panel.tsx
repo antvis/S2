@@ -3,7 +3,7 @@ import { Checkbox } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { isEmpty } from 'lodash';
 import React from 'react';
-import { ResetGroup } from '../../common';
+import { ResetGroup } from '../common';
 import { FrozenInputNumber } from './frozen-input-number';
 import './index.less';
 import type { FrozenPanelOptions, FrozenPanelProps } from './interface';

@@ -1,9 +1,12 @@
 import { S2_PREFIX_CLS, i18n } from '@antv/s2';
 import { type RadioChangeEvent } from 'antd';
 import React from 'react';
-import { ResetGroup, TooltipWrapper } from '../../common';
-import { RadioGroup } from '../../common/radio-group';
-import type { RadioGroupProps } from '../../common/radio-group/interface';
+import {
+  RadioGroup,
+  ResetGroup,
+  TooltipWrapper,
+  type RadioGroupProps,
+} from '../common';
 import { CenterAlignIcon, LeftAlignIcon, RightAlignIcon } from './icons';
 import './index.less';
 import type { TextAlignPanelOptions, TextAlignPanelProps } from './interface';

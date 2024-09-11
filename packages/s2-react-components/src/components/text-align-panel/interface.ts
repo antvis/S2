@@ -1,5 +1,5 @@
 import type { S2Theme, TextAlign } from '@antv/s2';
-import type { BaseComponentProps } from '../../../common/interface/components';
+import type { BaseComponentProps } from '../../common/interface/components';
 
 export interface TextAlignPanelOptions {
   rowCellTextAlign?: TextAlign;

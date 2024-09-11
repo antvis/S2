@@ -5,7 +5,7 @@ import { Button, Empty, Input, Menu, type MenuProps } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 import React from 'react';
-import { CalendarIcon, LocationIcon, TextIcon } from '../../icons';
+import { CalendarIcon, LocationIcon, TextIcon } from '../common/icons';
 import type { DrillDownDataSet, DrillDownProps } from './interface';
 
 import './index.less';

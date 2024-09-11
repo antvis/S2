@@ -4,7 +4,7 @@ import React from 'react';
 import {
   HISTORY_COLOR_LIST_MAX_COUNT,
   HISTORY_COLOR_LIST_STORAGE_KEY,
-} from '../../../../common/constants';
+} from '../../../common/constants';
 
 /**
  * 记录历史颜色

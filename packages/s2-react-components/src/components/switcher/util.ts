@@ -2,7 +2,7 @@ import { getClassNameWithPrefix, i18n } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { filter, flatten, map, mapValues } from 'lodash';
 import type { DraggableLocation } from 'react-beautiful-dnd';
-import { ColIcon, RowIcon, ValueIcon } from '../../icons';
+import { ColIcon, RowIcon, ValueIcon } from '../common/icons';
 import { DroppableType, FieldType, SWITCHER_PREFIX_CLS } from './constant';
 import type {
   SwitcherFields,
