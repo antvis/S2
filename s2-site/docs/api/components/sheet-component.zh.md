@@ -34,6 +34,7 @@ import '@antv/s2-react/dist/style.min.css';
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellDoubleClick | 行头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onRowCellContextMenu | 行头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -43,6 +44,7 @@ import '@antv/s2-react/dist/style.min.css';
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onColCellContextMenu | 列头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellMouseDown | 列头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellMouseUp | 列头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -51,6 +53,7 @@ import '@antv/s2-react/dist/style.min.css';
 | onDataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onDataCellContextMenu | 数值单元格右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -61,17 +64,19 @@ import '@antv/s2-react/dist/style.min.css';
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onCornerCellContextMenu | 角头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellMouseUp | 角头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellMouseUp | 角头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellMouseMove | 角头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsHover | 合并单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsClick | 合并单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onMergedCellDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onMergedCellsDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| onMergedCellsContextMenu | 合并单元格右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
-| onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: CanvasEvent ) => void; |  |  |
+| onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) ) => void; |  |  |
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | onLayoutCellRender | 单个单元格布局渲染完成事件 | cell: [S2CellType](/docs/api/basic-class/base-cell) |  |  |
@@ -99,11 +104,11 @@ import '@antv/s2-react/dist/style.min.css';
 | onKeyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | onKeyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
 | onCopied | 复制事件 | (data: CopyableList) => void |  |  |
-| onActionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
-| onActionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
-| onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
+| onActionIconHover | 行头操作 icon 悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| onActionIconClick | 行头操作 icon 点击事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| onContextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| onMouseHover | 表格鼠标悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| onMouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | onSelected | 单元格选中事件 | (cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
@@ -160,6 +165,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellDoubleClick | 行头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| rowCellContextMenu | 行头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -170,6 +176,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| colCellContextMenu | 列头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellMouseDown | 列头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellMouseUp | 列头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellMouseMove | 列头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -178,6 +185,7 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | dataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellDoubleClick | 数值单元格双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| dataCellContextMenu | 数值单元格右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -186,17 +194,19 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| cornerCellContextMenu | 角头右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellMouseUp | 角头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellMouseUp | 角头鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellMouseMove | 角头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsHover | 合并单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsClick | 合并单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| mergedCellDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| mergedCellsDoubleClick | 合并单元格鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
+| mergedCellsContextMenu | 合并单元格右键菜单事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
-| rangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: CanvasEvent ) => void; |  |  |
+| rangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) ) => void; |  |  |
 | rangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | rangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
@@ -221,11 +231,11 @@ type SheetComponentOptions = S2Options<React.ReactNode>
 | keyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | keyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
 | copied | 复制事件 | (data: CopyableList) => void |  |  |
-| actionIconHover | 行头操作 icon 悬停事件 | (event: CanvasEvent) => void |  |  |
-| actionIconClick | 行头操作 icon 点击事件 | (event: CanvasEvent) => void |  |  |
-| contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
-| mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
+| actionIconHover | 行头操作 icon 悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| actionIconClick | 行头操作 icon 点击事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| contextMenu | 右键单元格单击事件 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88)) | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| mouseHover | 表格鼠标悬停事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
+| mouseUp | 表格鼠标松开事件 | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object)) => void |  |  |
 | selected | 单元格选中事件 | ( cells: [Cell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { field: string; meta: [Node](/docs/api/basic-class/node) \| [ViewMeta](#viewmeta); record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
@@ -256,6 +266,12 @@ type SheetComponentOptions = S2Options<
 
 ## 公共对象
 
+### FederatedPointerEvent
+
+> 别名：GEvent
+
+[https://g.antv.antgroup.com/api/event/event-object](事件对象)
+
 ### TargetCellInfo
 
 功能描述：交互回调函数的返回信息。
@@ -263,7 +279,7 @@ type SheetComponentOptions = S2Options<
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | target | 交互作用对象 | [S2CellType](/docs/api/basic-class/base-cell) |  |  |
-| event | 事件 | [Event](#) |  |  |
+| event | AntV/G Event 事件 | [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) |  |  |
 | viewMeta | 当前节点信息 | [Node](/docs/api/basic-class/node) |  |  |
 
 <embed src="@/docs/common/sort-param.zh.md"></embed>
