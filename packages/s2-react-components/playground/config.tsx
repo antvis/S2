@@ -1,8 +1,6 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-console */
 import { type S2DataConfig } from '@antv/s2';
-import React from 'react';
-// @ts-ignore
 import type { SheetComponentOptions } from '@antv/s2-react';
 import {
   data,
@@ -11,6 +9,7 @@ import {
   totalData,
 } from '@antv/s2/__tests__/data/mock-dataset.json';
 import { Menu } from 'antd';
+import React from 'react';
 
 export const s2DataConfig: S2DataConfig = {
   data,
