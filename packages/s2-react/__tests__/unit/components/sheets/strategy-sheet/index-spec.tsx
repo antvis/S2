@@ -15,12 +15,12 @@ import {
   TAB_SEPARATOR,
   customMerge,
   getCellMeta,
+  strategyCopy,
   type GEvent,
   type S2DataConfig,
 } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
-import { strategyCopy } from '../../../../../../s2-react-components/src';
 import {
   StrategyOptions,
   StrategySheetDataConfig,

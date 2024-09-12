@@ -3,7 +3,7 @@
 exports[`Reset Group Component Tests should render collapsed group 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-3rel02"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-qnu6hi"
   >
     <div
       class="ant-collapse-item antv-s2-reset-group-panel"
@@ -82,7 +82,7 @@ exports[`Reset Group Component Tests should render collapsed group 1`] = `
 exports[`Reset Group Component Tests should render correctly 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-3rel02"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-qnu6hi"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -169,7 +169,7 @@ exports[`Reset Group Component Tests should render correctly 1`] = `
 exports[`Reset Group Component Tests should render custom style and class name 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group test css-dev-only-do-not-override-3rel02"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group test css-dev-only-do-not-override-qnu6hi"
     style="padding: 10px;"
   >
     <div
@@ -257,7 +257,7 @@ exports[`Reset Group Component Tests should render custom style and class name 1
 exports[`Reset Group Component Tests should render custom width 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-3rel02"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group css-dev-only-do-not-override-qnu6hi"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
