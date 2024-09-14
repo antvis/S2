@@ -45,7 +45,7 @@ export function useSpreadSheet(
     if (onSpreadsheet) {
       return onSpreadsheet(container, rawDataCfg, s2Options);
     }
-    if (sheetType === 'table') {
+    if (sheetType === 'table' || sheetType === 'editable') {
       return new TableSheet(container, rawDataCfg, s2Options);
     }
     return new PivotSheet(container, rawDataCfg, s2Options);

@@ -69,6 +69,7 @@ export default defineComponent({
         @change="handlePageChange"
         @showSizeChange="handlePageSizeChange"
       />
+      <slot name="editCell" />
     </div>
   </Spin>
 </template>

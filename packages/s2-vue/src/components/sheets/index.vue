@@ -5,6 +5,7 @@ import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import PivotSheet from './pivot-sheet.vue';
 import TableSheet from './table-sheet.vue';
+import EditableSheet from './editable-sheet.vue';
 
 /**
  * 解决 TS2742 indirect type reference bug: https://github.com/quadristan/ts-indirect-type-reference-bug
@@ -24,6 +25,8 @@ export default defineComponent({
       switch (type) {
         case 'table':
           return TableSheet;
+        case 'editable':
+          return EditableSheet;
         default:
           return PivotSheet;
       }
@@ -34,6 +37,7 @@ export default defineComponent({
   components: {
     PivotSheet,
     TableSheet,
+    EditableSheet,
   },
 });
 </script>

@@ -572,7 +572,7 @@ const partDrillDown: PartDrillDown = {
 
 export default defineComponent({
   setup() {
-    const sheetType = ref<SheetType>('pivot');
+    const sheetType = ref<SheetType>('editable');
     const s2 = shallowRef();
     const dataCfgFlag = ref(1);
     //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
@@ -720,6 +720,15 @@ export default defineComponent({
       <label>
         <input type="radio" id="table" value="table" v-model="sheetType" />
         明细表
+      </label>
+      <label>
+        <input
+          type="radio"
+          id="editable"
+          value="editable"
+          v-model="sheetType"
+        />
+        编辑表
       </label>
     </div>
   </div>
