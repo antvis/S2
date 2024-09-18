@@ -1,7 +1,7 @@
 <script lang="ts">
-/*  eslint-disable no-console */
 import { defineComponent, computed, toRefs, watch, ref, reactive } from 'vue';
 import type { CSSProperties } from 'vue';
+import { Input } from 'ant-design-vue';
 import { pick } from 'lodash';
 import type { TargetCellInfo, S2Options, S2CellType } from '@antv/s2';
 import { useExpose } from '../../hooks/useExpose';
@@ -76,17 +76,19 @@ export default defineComponent({
     });
 
     const onDataCellDbClick = (cell: TargetCellInfo) => {
-      console.log(cell.target.getMeta());
       targetCell.value = cell.target;
       inputValue.value = cell.target.getActualText();
       setTimeout(() => {
         inputRef.value?.focus();
       }, 100);
     };
-    function onSave(e: FocusEvent) {
-      const target = e.target as HTMLInputElement;
+    function onSave() {
+      const target = inputRef.value;
       const cell = targetCell.value;
       const spreadsheet = s2Ref.value?.instance;
+      if (!spreadsheet || !cell || !target) {
+        return;
+      }
       const { rowIndex, valueField, id } = cell.getMeta();
       const inputVal = target.value;
       const displayData = spreadsheet.dataSet.getDisplayDataSet();
@@ -95,7 +97,6 @@ export default defineComponent({
       spreadsheet.dataSet.displayFormattedValueMap?.set(id, inputVal);
       spreadsheet.render();
 
-      console.log(target.value);
       targetCell.value = null;
     }
     return {
@@ -118,13 +119,12 @@ export default defineComponent({
   <BaseSheet
     @dataCellDoubleClick="onDataCellDbClick"
     @scroll="setInputStyle"
-    @layoutResize="setInputStyle"
     ref="s2Ref"
     v-bind="$props"
     :options="options"
   >
     <template #editCell>
-      <input
+      <Input
         @blur="onSave"
         :value="inputValue"
         ref="inputRef"
