@@ -27,3 +27,18 @@ Array [
   "root[&]四川省",
 ]
 `;
+
+exports[`SpreadSheet Collapse/Expand Tests should support expandDepth for custom tree 1`] = `
+Array [
+  "root[&]a-1",
+  "root[&]a-1[&]a-1-1",
+  "root[&]a-1[&]a-1-2",
+  "root[&]a-2",
+  "root[&]a-2[&]a-2-1",
+  "root[&]a-2[&]a-2-2",
+  "root[&]a-3",
+  "root[&]a-3[&]a-3-1",
+  "root[&]a-3[&]a-3-2",
+  "root[&]a-3[&]measure-5",
+]
+`;

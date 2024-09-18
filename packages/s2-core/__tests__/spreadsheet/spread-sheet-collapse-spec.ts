@@ -401,4 +401,28 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       expect(s2.facet.getRowNodes().map(({ id }) => id)).toMatchSnapshot();
     });
   });
+
+  test('should support expandDepth for custom tree', async () => {
+    const customRowDataCfg: S2DataConfig = {
+      data: CustomGridData,
+      fields: customRowGridFields,
+    };
+
+    s2 = createPivotSheet({
+      ...s2Options,
+      style: {
+        rowCell: {
+          expandDepth: 0,
+          // expandDepth > collapseAll
+          collapseAll: true,
+        },
+      },
+    });
+
+    s2.setDataCfg(customRowDataCfg);
+    await s2.render();
+
+    expectCornerIconName(s2, 'Minus');
+    expect(s2.facet.getRowNodes().map(({ id }) => id)).toMatchSnapshot();
+  });
 });
