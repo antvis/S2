@@ -307,6 +307,22 @@ describe('SpreadSheet Tests', () => {
         await expect(render()).resolves.toBe(undefined);
       },
     );
+
+    // https://github.com/antvis/S2/issues/2857
+    test('should enable touch action on mobile device', async () => {
+      const s2 = createPivotSheet({
+        ...s2Options,
+        device: 'mobile',
+      });
+
+      await s2.render();
+
+      const { supportsPointerEvents } = s2.container.getConfig();
+      const canvas = s2.getCanvasElement();
+
+      expect(supportsPointerEvents).toBeFalsy();
+      expect(canvas.style.touchAction).not.toEqual('none');
+    });
   });
 
   describe('Destroy Sheet Tests', () => {
