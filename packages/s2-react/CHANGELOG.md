@@ -1,3 +1,10 @@
+# [@antv/s2-react-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.26...@antv/s2-react-v2.0.0-next.27) (2024-09-18)
+
+
+### Bug Fixes
+
+* 修复 expandDepth 在自定义行头场景下不生效 ([#2895](https://github.com/antvis/S2/issues/2895)) ([d83a816](https://github.com/antvis/S2/commit/d83a81674e587eab129630c0d3bc4f87b6550471))
+
 # [@antv/s2-react-v2.0.0-next.26](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.25...@antv/s2-react-v2.0.0-next.26) (2024-08-23)
 
 
