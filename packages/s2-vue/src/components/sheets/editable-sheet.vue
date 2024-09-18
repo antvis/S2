@@ -119,6 +119,7 @@ export default defineComponent({
   <BaseSheet
     @dataCellDoubleClick="onDataCellDbClick"
     @scroll="setInputStyle"
+    @dataCellClick="onSave"
     ref="s2Ref"
     v-bind="$props"
     :options="options"
