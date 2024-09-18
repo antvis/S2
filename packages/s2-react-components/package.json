@@ -2,7 +2,7 @@
   "name": "@antv/s2-react-components",
   "version": "0.0.1",
   "private": false,
-  "description": "React Components for s2-react",
+  "description": "React components for S2",
   "keywords": [
     "antv",
     "s2",
@@ -61,9 +61,6 @@
     "test:watch": "pnpm test -- --watch",
     "tsc": "tsc --noEmit",
     "watch": "rimraf esm && pnpm build:esm -w"
-  },
-  "release": {
-    "skip": true
   },
   "dependencies": {
     "classnames": "^2.5.1",
