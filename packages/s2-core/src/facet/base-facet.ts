@@ -207,6 +207,10 @@ export abstract class BaseFacet {
     colIndex: number,
   ): ViewMeta | null;
 
+  public abstract getContentWidth(): number;
+
+  public abstract getContentHeight(): number;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> | null =
     null;
 
@@ -635,12 +639,6 @@ export abstract class BaseFacet {
       width,
       height,
     };
-  }
-
-  public getContentHeight(): number {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-
-    return rowsHierarchy.height + colsHierarchy.height;
   }
 
   /**

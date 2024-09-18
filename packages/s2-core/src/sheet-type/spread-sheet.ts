@@ -541,8 +541,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * Update pagination config which store in {@see options}
-   * @param pagination
+   * 更新分页配置
    */
   public updatePagination(pagination: Pagination) {
     this.options = customMerge(this.options, {
@@ -551,13 +550,6 @@ export abstract class SpreadSheet extends EE {
 
     // 清空滚动进度
     this.facet.resetScrollOffset();
-  }
-
-  /**
-   * 获取当前表格实际内容高度
-   */
-  public getContentHeight(): number {
-    return this.facet.getContentHeight();
   }
 
   /**
