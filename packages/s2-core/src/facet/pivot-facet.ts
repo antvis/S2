@@ -1018,4 +1018,16 @@ export class PivotFacet extends FrozenFacet {
 
     return this.validFrozenOptions;
   }
+
+  public getContentWidth(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+
+    return rowsHierarchy.width + colsHierarchy.width;
+  }
+
+  public getContentHeight(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+
+    return rowsHierarchy.height + colsHierarchy.height;
+  }
 }

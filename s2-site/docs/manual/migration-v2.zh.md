@@ -571,6 +571,14 @@ export interface LayoutResult {
 }
 ```
 
+5. 原 `s2.getContentHeight()` 废弃，移动到 `s2.facet.getContentHeight()` 中
+
+```diff
+- s2.getContentHeight()
++ s2.facet.getContentHeight()
++ s2.facet.getContentWidth()
+```
+
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
 
 #### 渲染参数变更

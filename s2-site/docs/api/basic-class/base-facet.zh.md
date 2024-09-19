@@ -39,7 +39,8 @@ s2.facet.getRealWidth()
 | showHorizontalScrollBar | 显示水平滚动条 | () => void |
 | render | 渲染 | () => void |
 | getSeriesNumberWidth | 获取序号宽度 | () => number |
-| getContentHeight | 获取当前渲染的区域高度 | () => number |
+| getContentWidth | 获取当前表格实际内容宽度 | () => number |
+| getContentHeight | 获取当前表格实际内容高度 | () => number |
 | getPaginationScrollY | x | () => number |
 | updateScrollOffset | 滚动 | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |
 | scrollWithAnimation | 滚动 （带缓动动画） | (offsetConfig: [ScrollOffsetConfig](#offsetconfig), duration?: number, callback?: () => void) => void |

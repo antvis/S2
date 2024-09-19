@@ -1,3 +1,24 @@
+# [@antv/s2-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.27...@antv/s2-v2.0.0-next.28) (2024-09-18)
+
+
+### Bug Fixes
+
+* 修复 expandDepth 在自定义行头场景下不生效 ([#2895](https://github.com/antvis/S2/issues/2895)) ([d83a816](https://github.com/antvis/S2/commit/d83a81674e587eab129630c0d3bc4f87b6550471))
+* 修复浏览器窗口多次放大后表格渲染模糊 close [#2884](https://github.com/antvis/S2/issues/2884) ([#2897](https://github.com/antvis/S2/issues/2897)) ([97e2905](https://github.com/antvis/S2/commit/97e2905d6b42a20728950cd51ddabd3bcdd14f1e))
+* 移动端关闭 supportsPointerEvents, 避免禁用 touchAction close [#2857](https://github.com/antvis/S2/issues/2857) ([#2891](https://github.com/antvis/S2/issues/2891)) ([14c55aa](https://github.com/antvis/S2/commit/14c55aa7aae2e1fab63e612f7ecdaa00e7e7b567))
+
+
+### Features
+
+* 新增 s2.facet.getContentWidth() API ([#2883](https://github.com/antvis/S2/issues/2883)) ([395db7e](https://github.com/antvis/S2/commit/395db7e313fd1de6e42ee5dd4d6c475c517609d4))
+
+
+### BREAKING CHANGES
+
+* 移除 s2.getContentHeight() API
+
+* docs: 补充迁移文档
+
 # [@antv/s2-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.26...@antv/s2-v2.0.0-next.27) (2024-08-23)
 
 

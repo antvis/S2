@@ -43,7 +43,8 @@ export const CustomTreeOptions: SheetComponentOptions = {
   },
   style: {
     rowCell: {
-      collapseAll: true,
+      // expandDepth: 0,
+      // collapseAll: true,
     },
   },
   // cornerText: '指标',
