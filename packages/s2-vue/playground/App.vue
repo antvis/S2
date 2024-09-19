@@ -1,6 +1,11 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import { CellType, RawData, type S2DataConfig, type S2Options } from '@antv/s2';
+import {
+  CellType,
+  type RawData,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
