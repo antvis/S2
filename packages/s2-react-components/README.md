@@ -24,9 +24,9 @@ S2 多维分析表格配置套的 React 分析/配置组件库。
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-react-components
-# npm install @antv/s2-react-components --save
-# yarn add @antv/s2-react-components
+$ pnpm add @antv/s2-react-components@next
+# npm install @antv/s2-react-components@next --save
+# yarn add @antv/s2-react-components@next
 ```
 
 ## 🔨 使用

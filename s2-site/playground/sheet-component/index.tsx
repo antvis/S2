@@ -5,7 +5,7 @@ import {
   type ThemeCfg,
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import { Pagination } from 'antd';
 import { concat, isEmpty, merge } from 'lodash';

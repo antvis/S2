@@ -22,8 +22,8 @@ tag: Updated
 import React from 'react';
 import { SheetComponent } from '@antv/s2-react';
 import { AdvancedSort } from '@antv/s2-react-components';
-import '@antv/s2-react/dist/style.min.css';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 export const App = () => {
   const s2Ref = React.useRef()

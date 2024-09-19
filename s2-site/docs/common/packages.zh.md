@@ -49,7 +49,7 @@ order: 5
 :::info{title='如何获取新版本发布通知？'}
 
 - 订阅：[https://github.com/antvis/S2/releases.atom](https://github.com/antvis/S2/releases.atom) 来获得新版本发布的通知。
-- 加入钉钉交流群，新版本发布后，会通过🤖 群机器人推送。
+- 加入钉钉交流群，新版本发布后，会通过 🤖 群机器人推送。
 - `Watch` [S2 代码仓库](https://github.com/antvis/S2), 选择 `Custom - Releases` 来获取消息推送。
 
 ![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*NKYFSKFV_scAAAAAAAAAAAAADmJ7AQ/original)

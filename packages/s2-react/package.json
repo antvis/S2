@@ -22,7 +22,7 @@
   "license": "MIT",
   "author": "https://github.com/orgs/antvis/people",
   "main": "lib/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/s2-react.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
@@ -36,15 +36,17 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build": "pnpm clean && pnpm build:pre-bundle && father build && pnpm clean:pre-bundle",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
     "build:esm": "cross-env FORMAT=es vite build",
+    "build:pre-bundle": "cp -r ../s2-shared/src ./src/shared",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:umd": "cross-env FORMAT=umd vite build",
-    "clean": "rimraf lib esm dist temp",
+    "clean": "rimraf lib esm dist temp src/shared",
+    "clean:pre-bundle": "rimraf src/shared",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
     "start": "cross-env PLAYGROUND=true vite",
@@ -95,12 +97,17 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2-react.min.js",
       "import": "{ createComponent }",
-      "limit": "25 kB"
+      "limit": "25 kB",
+      "ignore": [
+        "S2",
+        "React",
+        "ReactDOM"
+      ]
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2-react.min.css",
       "limit": "5 kB"
     }
   ],

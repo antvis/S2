@@ -2,7 +2,7 @@
 // organize-imports-ignore
 import React from 'react';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import insertCSS from 'insert-css';
 import { Menu } from 'antd';
 

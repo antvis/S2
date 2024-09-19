@@ -21,6 +21,7 @@
     "url": "https://github.com/antvis/S2.git"
   },
   "license": "MIT",
+  "files": [],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "bootstrap": "pnpm install",
@@ -55,6 +56,7 @@
     "build:umd": "pnpm -r --filter './packages/*' --stream build:umd",
     "build:size-limit": "pnpm -r --filter './packages/*' --stream build:size-limit",
     "build:size-limit-json": "pnpm -r --filter './packages/*' --stream build:size-limit-json",
+    "build:doctor": "father doctor",
     "release": "pnpm -r --filter !@antv/s2-shared --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
     "release:preview": "pnpm release --dry-run --no-ci",
     "release:bump-version": "node ./scripts/bump-version.js",
@@ -149,6 +151,7 @@
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-vue": "^9.17.0",
+    "father": "^4.4.4",
     "gh-pages": "^3.2.3",
     "glob": "^10.3.10",
     "husky": "^8.0.3",

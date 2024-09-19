@@ -2,7 +2,7 @@
 import React from 'react';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Pagination } from 'antd';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const s2Options: SheetComponentOptions = {
   width: 600,

@@ -5,8 +5,8 @@ import { S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { SheetComponent, type SheetComponentOptions } from '@antv/s2-react';
 import { Export } from '@antv/s2-react-components';
 import { Button, Space } from 'antd';
-import '@antv/s2-react/dist/style.min.css';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 const s2Options: SheetComponentOptions = {
   width: 600,

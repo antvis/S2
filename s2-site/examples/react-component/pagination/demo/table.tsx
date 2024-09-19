@@ -2,9 +2,9 @@
 // organize-imports-ignore
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
 import { Pagination } from 'antd';
 import React from 'react';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const s2Options: SheetComponentOptions = {
   width: 600,

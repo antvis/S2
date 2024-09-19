@@ -13,7 +13,7 @@ import { SheetHeader } from './Header';
 import { s2DataConfig, s2Options } from './config';
 import { onSheetMounted } from './utils';
 
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import './index.less';
 
 function MainLayout() {

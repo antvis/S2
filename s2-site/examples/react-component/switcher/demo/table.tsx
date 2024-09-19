@@ -2,9 +2,9 @@
 import React from 'react';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Switcher } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
-import '@antv/s2-react/dist/style.min.css';
 import insertCSS from 'insert-css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',

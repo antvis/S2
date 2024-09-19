@@ -23,11 +23,11 @@ if (window) {
 
   // 本地通过 monorepoRedirect link 时不需要引入样式, 发布时引入, 避免样式丢失
   // if (process.env.NODE_ENV === 'production') {
-  (window as any).s2CSS = require('@antv/s2/dist/style.min.css');
-  (window as any).s2ReactCSS = require('@antv/s2-react/dist/style.min.css');
+  (window as any).s2CSS = require('@antv/s2/dist/s2.min.css');
+  (window as any).s2ReactCSS = require('@antv/s2-react/dist/s2-react.min.css');
   (
     window as any
-  ).s2ReactComponentsCSS = require('@antv/s2-react-components/dist/style.min.css');
+  ).s2ReactComponentsCSS = require('@antv/s2-react-components/dist/s2-react-components.min.css');
   // }
 
   // 码云和老网站统一跳转 antgroup 新域名

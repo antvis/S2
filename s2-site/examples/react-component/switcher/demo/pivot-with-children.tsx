@@ -2,8 +2,8 @@
 import React from 'react';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import { Switcher } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import insertCSS from 'insert-css';
 
 fetch(
