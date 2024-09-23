@@ -1,4 +1,4 @@
-import { createResizeObserver, type ResizeEffectParams } from '@antv/s2-shared';
+import { createResizeObserver, type ResizeEffectParams } from '@antv/s2/shared';
 import React from 'react';
 
 export const useResize = (params: ResizeEffectParams) => {

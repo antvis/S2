@@ -1,4 +1,4 @@
-import { S2_PREFIX_CLS, i18n } from '@antv/s2';
+import { i18n, S2_PREFIX_CLS } from '../../common';
 
 export const getSortMethod = () => [
   {

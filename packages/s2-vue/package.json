@@ -37,17 +37,15 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm build:pre-bundle && father build && pnpm clean:pre-bundle && pnpm build:dts",
+    "build": "pnpm clean && father build && pnpm build:dts",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:dts": "run-s dts:*",
     "build:esm": "cross-env FORMAT=es vite build",
-    "build:pre-bundle": "cp -r ../s2-shared/src ./src/shared",
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:umd": "cross-env FORMAT=umd vite build",
-    "clean": "rimraf lib esm dist temp src/shared",
-    "clean:pre-bundle": "rimraf src/shared",
+    "clean": "rimraf lib esm dist temp",
     "dts:build": "vue-tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-vue node ../../scripts/dts.js",
     "start": "cross-env PLAYGROUND=true vite",
@@ -64,7 +62,6 @@
   },
   "devDependencies": {
     "@antv/s2": "workspace:*",
-    "@antv/s2-shared": "workspace:*",
     "@testing-library/vue": "^7.0.0",
     "@vue/shared": "^3.3.4",
     "@vue/tsconfig": "^0.4.0",

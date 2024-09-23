@@ -25,7 +25,4 @@ packages/s2-*/temp/
 packages/s2-*/coverage/
 packages/s2-*/stats.html
 
-# pre bundle
-packages/s2-*/src/shared
-
 .swc

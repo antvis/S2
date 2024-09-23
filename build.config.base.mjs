@@ -1,4 +1,7 @@
+/* eslint-disable max-lines-per-function */
+/* eslint-disable import/order */
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import path from 'path';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -50,10 +53,22 @@ export const getBaseConfig = () => {
 
   if (isDevMode) {
     // 防止开发模式下直接加载 s2-core 中的主题 less
-    resolve.alias.push({
-      find: /^(.*)\/theme\/(.*)\.less$/,
-      replacement: '$1/theme/$2.less?inline',
-    });
+    resolve.alias.push(
+      ...[
+        {
+          find: /^(.*)\/theme\/(.*)\.less$/,
+          replacement: '$1/theme/$2.less?inline',
+        },
+        {
+          find: /^@antv\/s2$/,
+          replacement: path.join(__dirname, './packages/s2-core/src'),
+        },
+        {
+          find: /^@antv\/s2\/shared$/,
+          replacement: path.join(__dirname, './packages/s2-core/src/shared'),
+        },
+      ],
+    );
   }
 
   const getViteConfig = (

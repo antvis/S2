@@ -1,5 +1,5 @@
 import type { Node } from '@antv/s2';
-import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2/shared';
 import cls from 'classnames';
 import { isFunction } from 'lodash';
 import React from 'react';

@@ -1,6 +1,6 @@
 import { ORIGIN_FIELD, type PivotDataSet, type RawData } from '@antv/s2';
 import { DrillDown } from '@antv/s2-react-components';
-import type { PartDrillDownInfo } from '@antv/s2-shared';
+import type { PartDrillDownInfo } from '@antv/s2/shared';
 import { forEach, random } from 'lodash';
 import React from 'react';
 import type { PartDrillDown } from '../src/components/sheets/interface';

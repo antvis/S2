@@ -364,9 +364,6 @@ importers:
       '@antv/s2-react-components':
         specifier: workspace:*
         version: link:../s2-react-components
-      '@antv/s2-shared':
-        specifier: workspace:*
-        version: link:../s2-shared
       '@testing-library/react':
         specifier: ^15.0.7
         version: 15.0.7(@types/react@18.2.43)(react-dom@18.3.1)(react@18.3.1)
@@ -449,9 +446,6 @@ importers:
       '@antv/s2-react':
         specifier: workspace:*
         version: link:../s2-react
-      '@antv/s2-shared':
-        specifier: workspace:*
-        version: link:../s2-shared
       '@testing-library/react':
         specifier: ^15.0.7
         version: 15.0.7(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -516,9 +510,6 @@ importers:
       '@antv/s2':
         specifier: workspace:*
         version: link:../s2-core
-      '@antv/s2-shared':
-        specifier: workspace:*
-        version: link:../s2-shared
       '@testing-library/vue':
         specifier: ^7.0.0
         version: 7.0.0(vue@3.4.27)

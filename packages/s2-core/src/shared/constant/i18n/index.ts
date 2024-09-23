@@ -1,4 +1,4 @@
-import type { LocaleType } from '@antv/s2';
+import type { LocaleType } from '../../../common/i18n';
 import { EN_US } from './en_US';
 import { RU } from './ru_RU';
 import { ZH_CN } from './zh_CN';

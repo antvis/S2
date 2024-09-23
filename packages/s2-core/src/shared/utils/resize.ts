@@ -1,5 +1,5 @@
-import { floor } from '@antv/s2';
 import { debounce, isBoolean } from 'lodash';
+import { floor } from '../../utils';
 import { RESIZE_RENDER_DELAY } from '../constant/resize';
 import type { Adaptive, ResizeEffectParams } from '../interface';
 

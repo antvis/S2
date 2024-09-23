@@ -1,16 +1,19 @@
+import { FederatedPointerEvent as GEvent } from '@antv/g';
+import type {
+  ColCell,
+  CornerCell,
+  DataCell,
+  MergedCell,
+  SeriesNumberCell,
+  TableDataCell,
+} from '../cell';
 import type {
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
-  ColCell,
   CopyableList,
-  CornerCell,
-  DataCell,
-  GEvent,
   HeaderActionIcon,
   HiddenColumnsInfo,
   LayoutResult,
-  MergedCell,
-  Node,
   Pagination,
   RawData,
   ResizeInfo,
@@ -21,17 +24,16 @@ import type {
   S2MountContainer,
   S2Options,
   S2RenderOptions,
-  SeriesNumberCell,
   SortParams,
-  SpreadSheet,
-  TableDataCell,
   TargetCellInfo,
   ThemeCfg,
   TooltipContentType,
   TooltipOperatorOptions,
   ViewMeta,
   ViewMetaData,
-} from '@antv/s2';
+} from '../common';
+import type { Node } from '../facet/layout/node';
+import type { SpreadSheet } from '../sheet-type';
 
 // 是否开启自适应宽高，并指定容器
 export type Adaptive =

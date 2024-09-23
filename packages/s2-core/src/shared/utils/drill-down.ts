@@ -1,14 +1,14 @@
+import { FederatedPointerEvent as GEvent } from '@antv/g';
+import { clone, filter, isEmpty, size } from 'lodash';
 import {
   S2Event,
-  type GEvent,
   type HeaderActionIcon,
-  type Node,
   type PartDrillDownDataCache,
-  type PivotDataSet,
   type S2Options,
-  type SpreadSheet,
-} from '@antv/s2';
-import { clone, filter, isEmpty, size } from 'lodash';
+} from '../../common';
+import type { PivotDataSet } from '../../data-set';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {

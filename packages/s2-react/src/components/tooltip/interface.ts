@@ -5,7 +5,7 @@ import type {
   TooltipOperatorOptions as S2TooltipOperatorOptions,
   TooltipShowOptions,
 } from '@antv/s2';
-import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
+import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2/shared';
 
 export interface TooltipOperatorMenuInfo {
   key: string;

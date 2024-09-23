@@ -1,4 +1,4 @@
-import { S2_PREFIX_CLS } from '@antv/s2';
+import { S2_PREFIX_CLS } from '../../common';
 
 /**
  * 注入主题 css 变量的节点名

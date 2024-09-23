@@ -10,8 +10,8 @@ import {
   type S2DataConfig,
   type ThemeCfg,
 } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
+import { getBaseSheetComponentOptions } from '@antv/s2/shared';
 import { Menu, type SliderSingleProps } from 'antd';
 import React from 'react';
 import {

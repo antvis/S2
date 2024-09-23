@@ -1,5 +1,4 @@
-import { S2_PREFIX_CLS } from '@antv/s2';
-import { injectThemeVars } from '@antv/s2-shared';
+import { S2_PREFIX_CLS, injectThemeVars } from '@antv/s2';
 import { isFunction } from 'lodash';
 import React from 'react';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
