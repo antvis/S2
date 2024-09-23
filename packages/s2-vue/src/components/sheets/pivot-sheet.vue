@@ -1,9 +1,13 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, createVNode } from 'vue';
+import type { S2Options } from '@antv/s2';
+import {
+  buildDrillDownOptions,
+  handleDrillDown,
+  type ActionIconCallbackParams,
+  type PartDrillDown,
+} from '@antv/s2/shared';
 import { isEmpty } from 'lodash';
-import { buildDrillDownOptions, handleDrillDown } from '@antv/s2-shared';
-import type { SpreadSheet, S2Options } from '@antv/s2';
-import type { PartDrillDown, ActionIconCallbackParams } from '@antv/s2-shared';
+import { computed, createVNode, defineComponent, ref, toRefs } from 'vue';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits } from '../../interface';
 import { initBaseSheetProps } from '../../utils/initPropAndEmits';
@@ -36,7 +40,7 @@ export default defineComponent({
           drillFields: fields,
           fetchData: partDrillDown.value?.['fetchData'],
           drillItemsNum: partDrillDown.value?.['drillItemsNum'],
-          spreadsheet: instance as SpreadSheet,
+          spreadsheet: instance,
         });
       }
     };
@@ -71,7 +75,7 @@ export default defineComponent({
     // 展示下钻icon
     const options = computed(() =>
       buildDrillDownOptions(
-        pivotOptions.value as S2Options,
+        pivotOptions.value as any,
         partDrillDown.value as PartDrillDown,
         (params) => onDrillDownIconClick(params),
       ),

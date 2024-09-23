@@ -1,19 +1,19 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import type { Ref } from 'vue';
-import type {
-  BaseDrillDownDataSet,
-  BaseDrillDownComponentProps,
-} from '@antv/s2-shared';
+import {
+  DRILL_DOWN_PRE_CLASS,
+  type BaseDrillDownDataSet,
+  type BaseDrillDownComponentProps,
+} from '@antv/s2/shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';
-import LocationIcon from '@antv/s2-shared/src/icons/location-icon.svg?component';
-import TextIcon from '@antv/s2-shared/src/icons/text-icon.svg?component';
-import CalendarIcon from '@antv/s2-shared/src/icons/calendar-icon.svg?component';
+import LocationIcon from '@antv/s2/esm/shared/icons/location-icon.svg?component';
+import TextIcon from '@antv/s2/esm/shared/icons/text-icon.svg?component';
+import CalendarIcon from '@antv/s2/esm/shared/icons/calendar-icon.svg?component';
 import type { Key } from 'ant-design-vue/lib/_util/type';
 import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
-import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -147,5 +147,5 @@ export default defineComponent({
 </template>
 
 <style lang="less" scoped>
-@import '@antv/s2-shared/src/styles/drill-down.less';
+@import '@antv/s2/esm/shared/styles/drill-down.less';
 </style>

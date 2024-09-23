@@ -8,7 +8,7 @@ import type {
 } from '../interface';
 import { TooltipIcon } from './icon';
 
-import '@antv/s2/shared/esm/styles/tooltip/operator.less';
+import '@antv/s2/esm/shared/styles/tooltip/operator.less';
 
 export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
   React.memo((props) => {

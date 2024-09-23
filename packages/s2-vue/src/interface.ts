@@ -3,7 +3,7 @@ import type {
   BaseDrillDownComponentProps,
   BaseSheetComponentProps,
   PartDrillDown,
-} from '@antv/s2-shared';
+} from '@antv/s2/shared';
 import type { UnionToIntersection } from '@vue/shared';
 import type { PaginationProps } from 'ant-design-vue';
 import type { PropType } from 'vue';

@@ -4,7 +4,7 @@ import {
   type TooltipBaseOperatorMenuItem,
   TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
-import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
+import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2/shared';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
 import type { MenuClickEventHandler } from 'ant-design-vue/lib/menu/src/interface';
@@ -83,5 +83,5 @@ export default defineComponent({
 </template>
 
 <style lang="less">
-@import '@antv/s2-shared/src/styles/tooltip/operator.less';
+@import '@antv/s2/esm/shared/styles/tooltip/operator.less';
 </style>

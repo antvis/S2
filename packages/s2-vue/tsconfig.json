@@ -4,9 +4,13 @@
     "target": "ESNext",
     "jsx": "preserve",
     "strict": false,
-    // father 对于 vue 打包有点问题, 还是使用单独打包 dts 的方式
-    "declaration": false,
+    "declaration": true,
     "noImplicitAny": false,
+    "paths": {
+      "@antv/s2": ["s2-core/src/index.ts"],
+      "@antv/s2/*": ["s2-core/src/*"],
+      "@antv/s2/shared": ["s2-core/src/shared/index.ts"]
+    },
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
   "include": ["src", "./typings.d.ts", "../../global.d.ts"]

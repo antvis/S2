@@ -4,7 +4,7 @@ import type {
   Adaptive,
   BaseDrillDownDataSet,
   SheetType,
-} from '@antv/s2-shared';
+} from '@antv/s2/shared';
 import type { ExtractPropTypes, PropType } from 'vue';
 import type {
   BaseDrillDownEmitKeys,

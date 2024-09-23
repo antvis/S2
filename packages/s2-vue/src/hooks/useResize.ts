@@ -1,5 +1,5 @@
 import type { SpreadSheet } from '@antv/s2';
-import { createResizeObserver } from '@antv/s2-shared';
+import { createResizeObserver } from '@antv/s2/shared';
 import { ref, watch, type Ref } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
