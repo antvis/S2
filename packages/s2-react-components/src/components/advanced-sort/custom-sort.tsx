@@ -3,7 +3,7 @@ import {
   UpOutlined,
   VerticalAlignTopOutlined,
 } from '@ant-design/icons';
-import { ADVANCED_SORT_PRE_CLS } from '@antv/s2-shared';
+import { ADVANCED_SORT_PRE_CLS } from '@antv/s2/shared';
 import { Card } from 'antd';
 import React from 'react';
 import type { CustomSortProps } from './interface';
