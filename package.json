@@ -57,7 +57,7 @@
     "build:size-limit": "pnpm -r --filter './packages/*' --stream build:size-limit",
     "build:size-limit-json": "pnpm -r --filter './packages/*' --stream build:size-limit-json",
     "build:doctor": "father doctor",
-    "release": "pnpm -r --filter !@antv/s2-shared --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
+    "release": "pnpm -r --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
     "release:preview": "pnpm release --dry-run --no-ci",
     "release:bump-version": "node ./scripts/bump-version.js",
     "test": "pnpm -r --filter './packages/*' --stream test",
@@ -79,7 +79,6 @@
     "site:build": "NODE_OPTIONS='--max-old-space-size=4096' pnpm --filter @antv/s2-site build",
     "site:preview": "pnpm --filter @antv/s2-site preview",
     "site:deploy": "pnpm --filter @antv/s2-site deploy",
-    "share:test": "pnpm --filter @antv/s2-shared test",
     "format": "prettier . --write"
   },
   "commitlint": {
