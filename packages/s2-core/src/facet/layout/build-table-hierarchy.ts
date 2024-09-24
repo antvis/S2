@@ -1,5 +1,6 @@
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
+import { buildGridHierarchy } from './build-gird-hierarchy';
 import type { HeaderParams } from './interface';
 
 export const buildTableHierarchy = (params: HeaderParams) => {
@@ -30,6 +31,6 @@ export const buildTableHierarchy = (params: HeaderParams) => {
     query: {},
     addMeasureInTotalQuery: false,
     addTotalMeasureInTotal: false,
-    handler: buildTableHierarchy as () => void,
+    handler: buildGridHierarchy,
   });
 };
