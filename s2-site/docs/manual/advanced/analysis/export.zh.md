@@ -16,8 +16,9 @@ tag: Updated
 import React from 'react'
 import { SheetComponent } from '@antv/s2-react'
 import { Export } from '@antv/s2-react-components'
-import '@antv/s2-react/dist/style.min.css';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
+
 
 const S2Options = {
   interaction: {
@@ -67,7 +68,7 @@ const App = () => {
 import { Button } from 'antd'
 import { ExportOutlined } from '@ant-design/icons';
 import { Export } from '@antv/s2-react-components'
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 const App = () => {
   return (

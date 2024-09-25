@@ -223,7 +223,7 @@ const App = () => {
 ```tsx
 import React from 'react';
 import { AdvancedSort } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 const App = () => {
   return (

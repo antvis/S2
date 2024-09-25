@@ -33,7 +33,8 @@ order: 5
 如果使用的是 `React` 版本 `@antv/s2-react` , 或者 `Vue3` 版本 `@antv/s2-vue` 还需额外引入样式文件
 
 ```html
-<link rel="stylesheet" href="./dist/style.min.css"/>
+<link rel="stylesheet" href="./dist/s2-react.min.css"/>
+<link rel="stylesheet" href="./dist/s2-vue.min.css"/>
 ```
 
 也可以直接使用 `CDN` （推荐）, 比如 [UNPKG](https://unpkg.com/@antv/s2@next) 或者 [![preview](https://data.jsdelivr.com/v1/package/npm/@antv/s2/badge)](https://www.jsdelivr.com/package/npm/@antv/s2)

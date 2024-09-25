@@ -32,7 +32,7 @@ S2 提供 `维度下钻` 的基础能力，`@antv/s2-react` 和 `@antv/s2-vue` �
 
 ```tsx
 import { DrillDown } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 const sex = ['男', '女'];
 
@@ -122,7 +122,7 @@ const App = () => {
 
 ```tsx | pure
 import { DrillDown } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 function App() {
   return (

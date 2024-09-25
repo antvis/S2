@@ -2,7 +2,7 @@
 import React from 'react';
 import { type DrillDownDataSet } from '@antv/s2-react';
 import { DrillDown } from '@antv/s2-react-components';
-import '@antv/s2-react-components/dist/style.min.css';
+import '@antv/s2-react-components/dist/s2-react-components.min.css';
 
 const dataSet: DrillDownDataSet[] = [
   {

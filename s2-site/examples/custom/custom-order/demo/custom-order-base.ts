@@ -4,13 +4,12 @@ import {
   PivotSheet,
   Node,
   S2DataConfig,
-  TooltipOptions,
   type S2Options,
   type SortMethod,
   type SortParams,
   type TooltipOperatorMenuItem,
 } from '@antv/s2';
-import '@antv/s2/dist/style.min.css';
+import '@antv/s2/dist/s2.min.css';
 
 const SortMethodType = {
   asc: 'asc',
@@ -73,6 +72,7 @@ fetch(
         // 使用 S2 提供的组内排序方式
         meta.spreadsheet.groupSortByMethod(key, meta);
       }
+
       meta.spreadsheet.hideTooltip();
     };
 
@@ -90,6 +90,7 @@ fetch(
         // icon 点击之后的执行函数
         onClick: (props) => {
           const { meta, event } = props;
+
           // 自定义 tooltip 配置，展示 tooltip
           meta.spreadsheet.showTooltip({
             event,

@@ -10,7 +10,7 @@ tag: Updated
 
 ```tsx | pure
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 <SheetComponent sheetType="pivot" />
 ```

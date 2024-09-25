@@ -11,7 +11,7 @@ import {
 } from '@antv/s2';
 import { Menu } from 'antd';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const SortMethodType = {
   asc: 'asc',

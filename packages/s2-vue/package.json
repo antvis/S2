@@ -80,7 +80,7 @@
   },
   "size-limit": [
     {
-      "path": "./dist/index.min.js",
+      "path": "./dist/s2-vue.min.js",
       "import": "{ createComponent }",
       "limit": "35 kB",
       "ignore": [
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "path": "./dist/style.min.css",
+      "path": "./dist/s2-vue.min.css",
       "limit": "5 kB"
     }
   ],
