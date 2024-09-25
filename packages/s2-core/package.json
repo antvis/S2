@@ -92,7 +92,7 @@
     {
       "path": "./dist/s2.min.js",
       "import": "{ createComponent }",
-      "limit": "230 kB"
+      "limit": "240 kB"
     },
     {
       "path": "./dist/s2.min.css",

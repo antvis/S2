@@ -80,17 +80,17 @@
   },
   "size-limit": [
     {
-      "path": "./dist/s2-vue.min.js",
+      "path": "./dist/index.min.js",
       "import": "{ createComponent }",
       "limit": "35 kB",
       "ignore": [
         "S2",
         "Vue",
-        "AntDesignVue"
+        "antd"
       ]
     },
     {
-      "path": "./dist/s2-vue.min.css",
+      "path": "./dist/style.min.css",
       "limit": "5 kB"
     }
   ],

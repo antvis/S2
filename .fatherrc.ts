@@ -26,10 +26,10 @@ export default (name: string) => {
       externals: {
         '@antv/s2': 'S2',
         antd: 'antd',
+        'ant-design-vue': 'antd',
         react: 'React',
         'react-dom': 'ReactDOM',
         vue: 'Vue',
-        'ant-design-vue': 'AntDesignVue',
       },
     },
   });

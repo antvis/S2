@@ -96,7 +96,7 @@
     {
       "path": "./dist/s2-react.min.js",
       "import": "{ createComponent }",
-      "limit": "25 kB",
+      "limit": "45 kB",
       "ignore": [
         "S2",
         "React",

@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable import/order */
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import { toLower } from 'lodash';
 import path from 'path';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -27,20 +28,6 @@ export const getBaseConfig = () => {
     ),
   };
 
-  const output = {
-    dir: outDir,
-    entryFileNames: `[name]${isUMD ? '.min' : ''}.js`,
-    assetFileNames: `[name]${isUMD ? '.min' : ''}.[ext]`,
-    globals: {
-      vue: 'Vue',
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      '@antv/s2': 'S2',
-      '@antv/s2-react': 'S2React',
-      lodash: '_',
-    },
-  };
-
   const resolve = {
     mainFields: ['src', 'module', 'main'],
     alias: [
@@ -63,10 +50,6 @@ export const getBaseConfig = () => {
           find: /^@antv\/s2$/,
           replacement: path.join(__dirname, './packages/s2-core/src'),
         },
-        {
-          find: /^@antv\/s2\/shared$/,
-          replacement: path.join(__dirname, './packages/s2-core/src/shared'),
-        },
       ],
     );
   }
@@ -74,6 +57,8 @@ export const getBaseConfig = () => {
   const getViteConfig = (
     { port, libName, plugins } = { port: 3001, plugins: [] },
   ) => {
+    const filename = isUMD ? `${toLower(libName)}.min` : '[name]';
+
     return {
       server: {
         port,
@@ -126,7 +111,19 @@ export const getBaseConfig = () => {
         },
         outDir,
         rollupOptions: {
-          output,
+          output: {
+            dir: outDir,
+            entryFileNames: `${filename}.js`,
+            assetFileNames: `${filename}.[ext]`,
+            globals: {
+              vue: 'Vue',
+              react: 'React',
+              'react-dom': 'ReactDOM',
+              '@antv/s2': 'S2',
+              '@antv/s2-react': 'S2React',
+              lodash: '_',
+            },
+          },
         },
       },
     };
@@ -140,7 +137,6 @@ export const getBaseConfig = () => {
     resolve,
     isAnalysisMode,
     outDir,
-    output,
     OUT_DIR_NAME_MAP,
     isDevMode,
     isUMD,
