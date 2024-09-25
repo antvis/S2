@@ -1,4 +1,5 @@
 import { defineConfig } from 'father';
+import path from 'path';
 
 export default (name: string) => {
   return defineConfig({
@@ -12,25 +13,24 @@ export default (name: string) => {
     cjs: {
       output: 'lib',
     },
-    // TODO: UMD 还有问题
-    // umd: {
-    //   alias: {
-    //     '@antv/s2': path.resolve(__dirname, 'packages/s2-core'),
-    //     '@antv/s2/shared': path.resolve(
-    //       __dirname,
-    //       'packages/s2-core/src/shared',
-    //     ),
-    //   },
-    //   name,
-    //   output: 'dist',
-    //   externals: {
-    //     '@antv/s2': 'S2',
-    //     antd: 'antd',
-    //     react: 'React',
-    //     'react-dom': 'ReactDOM',
-    //     vue: 'Vue',
-    //     'ant-design-vue': 'AntDesignVue',
-    //   },
-    // },
+    umd: {
+      alias: {
+        '@antv/s2': path.resolve(__dirname, 'packages/s2-core'),
+        '@antv/s2/esm/shared': path.resolve(
+          __dirname,
+          'packages/s2-core/src/shared',
+        ),
+      },
+      name,
+      output: 'dist',
+      externals: {
+        '@antv/s2': 'S2',
+        antd: 'antd',
+        react: 'React',
+        'react-dom': 'ReactDOM',
+        vue: 'Vue',
+        'ant-design-vue': 'AntDesignVue',
+      },
+    },
   });
 };

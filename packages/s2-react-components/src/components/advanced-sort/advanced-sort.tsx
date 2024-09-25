@@ -4,7 +4,7 @@ import {
   ADVANCED_SORT_PRE_CLS,
   getSortMethod,
   getSortRuleOptions,
-} from '@antv/s2/shared';
+} from '@antv/s2/esm/shared';
 import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
 import cx from 'classnames';
 import {

@@ -20,7 +20,7 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import type { Adaptive, SheetType } from '@antv/s2/shared';
+import type { Adaptive, SheetType } from '@antv/s2/esm/shared';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,

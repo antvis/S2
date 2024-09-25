@@ -26,19 +26,9 @@
     "*.css",
     "dist/*"
   ],
-  "exports": {
-    ".": {
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    },
-    "./shared": {
-      "import": "./esm/shared/index.js",
-      "require": "./lib/shared/index.js"
-    },
-    "./*": "./*"
-  },
   "main": "lib/index.js",
   "unpkg": "dist/s2.min.js",
+  "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "directories": {
     "lib": "lib",

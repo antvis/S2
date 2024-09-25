@@ -4,7 +4,7 @@ import {
   type TooltipBaseOperatorMenuItem,
   TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
-import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2/shared';
+import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2/esm/shared';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
 import type { MenuClickEventHandler } from 'ant-design-vue/lib/menu/src/interface';

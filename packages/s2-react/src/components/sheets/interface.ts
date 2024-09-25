@@ -4,7 +4,7 @@ import type {
   BaseDrillDownDataSet,
   PartDrillDown as BasePartDrillDown,
   BaseSheetComponentProps,
-} from '@antv/s2/shared';
+} from '@antv/s2/esm/shared';
 import type { ReactNode } from 'react';
 import type { usePagination } from '../../hooks/usePagination';
 import type { TooltipOperatorMenuOptions } from '../tooltip/interface';

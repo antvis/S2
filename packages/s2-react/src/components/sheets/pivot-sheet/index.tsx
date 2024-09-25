@@ -4,7 +4,7 @@ import {
   handleDrillDown,
   type ActionIconCallback,
   type PartDrillDown,
-} from '@antv/s2/shared';
+} from '@antv/s2/esm/shared';
 import { useLatest } from 'ahooks';
 import { isEmpty, isObject } from 'lodash';
 import React from 'react';

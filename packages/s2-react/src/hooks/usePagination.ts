@@ -1,5 +1,5 @@
 import { S2Event, SpreadSheet, type Pagination } from '@antv/s2';
-import type { LayoutPaginationParams } from '@antv/s2/shared';
+import type { LayoutPaginationParams } from '@antv/s2/esm/shared';
 import { useUpdateEffect } from 'ahooks';
 import { isEmpty } from 'lodash';
 import React from 'react';

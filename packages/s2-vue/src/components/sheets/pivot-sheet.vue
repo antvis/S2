@@ -5,7 +5,7 @@ import {
   handleDrillDown,
   type ActionIconCallbackParams,
   type PartDrillDown,
-} from '@antv/s2/shared';
+} from '@antv/s2/esm/shared';
 import { isEmpty } from 'lodash';
 import { computed, createVNode, defineComponent, ref, toRefs } from 'vue';
 import { useExpose } from '../../hooks/useExpose';

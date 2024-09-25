@@ -11,7 +11,7 @@ import {
   type ThemeCfg,
 } from '@antv/s2';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
-import { getBaseSheetComponentOptions } from '@antv/s2/shared';
+import { getBaseSheetComponentOptions } from '@antv/s2/esm/shared';
 import { Menu, type SliderSingleProps } from 'antd';
 import React from 'react';
 import {
