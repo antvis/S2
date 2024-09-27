@@ -1,5 +1,8 @@
-import { i18n, Node } from '@antv/s2';
-import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2/esm/shared';
+import {
+  i18n,
+  Node,
+  getStrategySheetTooltipClsName as tooltipCls,
+} from '@antv/s2';
 import cls from 'classnames';
 import { isFunction } from 'lodash';
 import React from 'react';

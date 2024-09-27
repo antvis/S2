@@ -488,6 +488,7 @@ export abstract class SpreadSheet extends EE {
     const canvas = this.getCanvasElement();
 
     if (canvas) {
+      // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle
       delete canvas.__s2_instance__;
     }

@@ -4,6 +4,7 @@ import { PlusCircleFilled } from '@ant-design/icons';
 import {
   EMPTY_PLACEHOLDER,
   customMerge,
+  getBaseSheetComponentOptions,
   type CustomHeaderField,
   type CustomTreeNode,
   type S2BaseFrozenOptions,
@@ -11,7 +12,6 @@ import {
   type ThemeCfg,
 } from '@antv/s2';
 import { PivotSheetMultiLineTextDataCfg } from '@antv/s2/__tests__/data/data-multi-line-text';
-import { getBaseSheetComponentOptions } from '@antv/s2/esm/shared';
 import { Menu, type SliderSingleProps } from 'antd';
 import React from 'react';
 import {

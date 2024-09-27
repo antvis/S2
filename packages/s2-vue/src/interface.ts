@@ -1,9 +1,11 @@
-import type { Pagination, S2Options, TooltipContentType } from '@antv/s2';
 import type {
   BaseDrillDownComponentProps,
   BaseSheetComponentProps,
+  Pagination,
   PartDrillDown,
-} from '@antv/s2/esm/shared';
+  S2Options,
+  TooltipContentType,
+} from '@antv/s2';
 import type { UnionToIntersection } from '@vue/shared';
 import type { PaginationProps } from 'ant-design-vue';
 import type { PropType } from 'vue';

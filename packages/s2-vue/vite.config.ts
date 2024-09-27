@@ -17,6 +17,7 @@ export default defineConfig({
 
   ...getViteConfig({
     port: 5050,
+    name: 's2-vue',
     libName: 'S2Vue',
     plugins: [
       vue(),

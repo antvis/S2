@@ -19,6 +19,7 @@ export default defineConfig({
 
   ...(getViteConfig({
     port: 3002,
+    name: 's2-react-components',
     libName: 'S2ReactComponents',
     plugins: [
       react({

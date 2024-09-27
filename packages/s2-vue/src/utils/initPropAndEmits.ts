@@ -1,10 +1,11 @@
-import type { S2DataConfig, ThemeCfg } from '@antv/s2';
-import { i18n } from '@antv/s2';
 import type {
   Adaptive,
   BaseDrillDownDataSet,
+  S2DataConfig,
   SheetType,
-} from '@antv/s2/esm/shared';
+  ThemeCfg,
+} from '@antv/s2';
+import { i18n } from '@antv/s2';
 import type { ExtractPropTypes, PropType } from 'vue';
 import type {
   BaseDrillDownEmitKeys,

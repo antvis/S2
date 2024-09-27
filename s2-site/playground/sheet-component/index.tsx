@@ -1,3 +1,4 @@
+import type { Adaptive, SheetType } from '@antv/s2';
 import {
   generatePalette,
   getPalette,
@@ -6,7 +7,6 @@ import {
 } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/s2-react.min.css';
-import type { Adaptive, SheetType } from '@antv/s2/esm/shared';
 import { Pagination } from 'antd';
 import { concat, isEmpty, merge } from 'lodash';
 import React, { useEffect } from 'react';

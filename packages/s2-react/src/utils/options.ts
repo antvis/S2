@@ -1,4 +1,4 @@
-import { getBaseSheetComponentOptions } from '@antv/s2/esm/shared';
+import { getBaseSheetComponentOptions } from '@antv/s2';
 import { RENDER_TOOLTIP_OPTIONS } from '../common';
 import type { SheetComponentOptions } from '../components';
 

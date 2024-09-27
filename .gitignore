@@ -24,5 +24,6 @@ packages/s2-*/dist/
 packages/s2-*/temp/
 packages/s2-*/coverage/
 packages/s2-*/stats.html
+packages/**/*.css
 
 .swc

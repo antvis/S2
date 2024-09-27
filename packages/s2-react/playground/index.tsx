@@ -11,16 +11,17 @@ import {
   getDefaultSeriesNumberText,
   getPalette,
   safeJsonParse,
+  type Adaptive,
   type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionCellHighlightOptions,
   type InteractionOptions,
   type S2DataConfig,
+  type SheetType,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import type { Adaptive, SheetType } from '@antv/s2/esm/shared';
 import { useUpdateEffect } from 'ahooks';
 import {
   Button,

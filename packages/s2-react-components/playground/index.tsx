@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import { type SpreadSheet, type ThemeCfg, type ThemeName } from '@antv/s2';
-// @ts-ignore
 import { SheetComponent } from '@antv/s2-react';
 import { ConfigProvider, Space } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';

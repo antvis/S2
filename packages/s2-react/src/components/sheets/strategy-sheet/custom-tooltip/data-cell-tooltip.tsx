@@ -3,11 +3,11 @@ import {
   i18n,
   isUnchangedValue,
   isUpDataValue,
+  getStrategySheetTooltipClsName as tooltipCls,
   type MultiData,
   type SimpleData,
   type ViewMeta,
 } from '@antv/s2';
-import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2/esm/shared';
 import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';

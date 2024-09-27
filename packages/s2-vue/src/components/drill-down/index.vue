@@ -5,7 +5,7 @@ import {
   DRILL_DOWN_PRE_CLASS,
   type BaseDrillDownDataSet,
   type BaseDrillDownComponentProps,
-} from '@antv/s2/esm/shared';
+} from '@antv/s2';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import { isEmpty } from 'lodash';

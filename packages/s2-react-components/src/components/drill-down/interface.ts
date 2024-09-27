@@ -1,7 +1,7 @@
 import type {
   BaseDrillDownComponentProps,
   BaseDrillDownDataSet,
-} from '@antv/s2/esm/shared';
+} from '@antv/s2';
 
 export interface DrillDownDataSet extends BaseDrillDownDataSet {
   icon?: React.ReactNode;

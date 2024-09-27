@@ -1,11 +1,11 @@
 <script lang="ts">
-import type { S2Options } from '@antv/s2';
 import {
+  type S2Options,
   buildDrillDownOptions,
   handleDrillDown,
   type ActionIconCallbackParams,
   type PartDrillDown,
-} from '@antv/s2/esm/shared';
+} from '@antv/s2';
 import { isEmpty } from 'lodash';
 import { computed, createVNode, defineComponent, ref, toRefs } from 'vue';
 import { useExpose } from '../../hooks/useExpose';

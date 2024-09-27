@@ -1,6 +1,6 @@
 import { ReloadOutlined } from '@ant-design/icons';
+import type { SheetType } from '@antv/s2';
 import { i18n } from '@antv/s2';
-import type { SheetType } from '@antv/s2/esm/shared';
 import { Button } from 'antd';
 import cx from 'classnames';
 import { isEqual } from 'lodash';

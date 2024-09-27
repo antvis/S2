@@ -55,9 +55,12 @@ export const getBaseConfig = () => {
   }
 
   const getViteConfig = (
-    { port, libName, plugins } = { port: 3001, plugins: [] },
+    { port, name, libName, plugins } = {
+      port: 3001,
+      plugins: [],
+    },
   ) => {
-    const filename = isUMD ? `${toLower(libName)}.min` : '[name]';
+    const filename = isUMD ? `${toLower(name || libName)}.min` : '[name]';
 
     return {
       server: {

@@ -106,7 +106,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
       setLoading(false);
       s2Ref.current?.destroy?.();
     };
-  }, []);
+  }, [isDevMode]);
 
   // 重渲 effect：dataCfg, options or theme changed
   useUpdateEffect(() => {

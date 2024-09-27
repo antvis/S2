@@ -1,11 +1,11 @@
 import type {
+  TooltipOperatorProps as BaseTooltipOperatorProps,
   S2CellType,
   TooltipOperatorMenuItem as S2TooltipOperatorMenuItem,
   TooltipOperatorMenuOptions as S2TooltipOperatorMenuOptions,
   TooltipOperatorOptions as S2TooltipOperatorOptions,
   TooltipShowOptions,
 } from '@antv/s2';
-import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2/esm/shared';
 
 export interface TooltipOperatorMenuInfo {
   key: string;

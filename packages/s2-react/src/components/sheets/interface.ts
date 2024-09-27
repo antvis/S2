@@ -1,10 +1,12 @@
-import type { Pagination, S2Options, SpreadSheet } from '@antv/s2';
 import type {
   BaseDrillDownComponentProps,
   BaseDrillDownDataSet,
   PartDrillDown as BasePartDrillDown,
   BaseSheetComponentProps,
-} from '@antv/s2/esm/shared';
+  Pagination,
+  S2Options,
+  SpreadSheet,
+} from '@antv/s2';
 import type { ReactNode } from 'react';
 import type { usePagination } from '../../hooks/usePagination';
 import type { TooltipOperatorMenuOptions } from '../tooltip/interface';

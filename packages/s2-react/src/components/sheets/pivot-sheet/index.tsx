@@ -1,10 +1,10 @@
-import { getTooltipOptions } from '@antv/s2';
 import {
   buildDrillDownOptions,
+  getTooltipOptions,
   handleDrillDown,
   type ActionIconCallback,
   type PartDrillDown,
-} from '@antv/s2/esm/shared';
+} from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { isEmpty, isObject } from 'lodash';
 import React from 'react';

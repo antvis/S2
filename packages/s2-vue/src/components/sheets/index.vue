@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { SheetType } from '@antv/s2/esm/shared';
+import type { SheetType } from '@antv/s2';
 import { computed, defineComponent } from 'vue';
 import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';

@@ -1,10 +1,13 @@
 import { DeleteOutlined, OrderedListOutlined } from '@ant-design/icons';
-import { EXTRA_FIELD, TOTAL_VALUE, i18n, type SortParam } from '@antv/s2';
 import {
   ADVANCED_SORT_PRE_CLS,
+  EXTRA_FIELD,
+  TOTAL_VALUE,
   getSortMethod,
   getSortRuleOptions,
-} from '@antv/s2/esm/shared';
+  i18n,
+  type SortParam,
+} from '@antv/s2';
 import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
 import cx from 'classnames';
 import {

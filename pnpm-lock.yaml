@@ -150,7 +150,7 @@ importers:
         specifier: ^9.17.0
         version: 9.26.0(eslint@8.57.0)
       father:
-        specifier: ^4.4.4
+        specifier: ^4.5.0
         version: 4.5.0(@babel/core@7.24.7)(@types/node@20.14.2)
       gh-pages:
         specifier: ^3.2.3
@@ -191,6 +191,9 @@ importers:
       lint-staged:
         specifier: ^15.2.5
         version: 15.2.5
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -488,15 +491,6 @@ importers:
       vite-plugin-svgr:
         specifier: ^2.2.2
         version: 2.4.0(rollup@4.18.0)(vite@5.2.12)
-
-  packages/s2-shared:
-    devDependencies:
-      '@antv/s2':
-        specifier: workspace:*
-        version: link:../s2-core
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
 
   packages/s2-vue:
     dependencies:
@@ -5955,13 +5949,13 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/babel-preset-umi@4.3.20:
-    resolution: {integrity: sha512-TM61xOQfcix3wa6guQbOtNS9hY38Pk0Vtdl0Ou7D63CwZuf1q/eQxFW3yUu++LLfZlHoOHbj1eUBEMvW77Tvlg==}
+  /@umijs/babel-preset-umi@4.3.24:
+    resolution: {integrity: sha512-Ac0nXe3VGjhYrMbh8LrDj5OrlD69YPUFlZqsLdlj02nnA/tAku2xG9q89qoQkQH/aH+v4G9GRWwZhYINkUVN+A==}
     dependencies:
       '@babel/runtime': 7.23.6
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.3.20
-      '@umijs/utils': 4.3.20
+      '@umijs/bundler-utils': 4.3.24
+      '@umijs/utils': 4.3.24
       core-js: 3.34.0
     transitivePeerDependencies:
       - supports-color
@@ -5981,12 +5975,12 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/bundler-esbuild@4.3.20:
-    resolution: {integrity: sha512-Ga1gH1qhlMSno4nQ3kXxfTy5CQlw3NhhKkG/rqIEW4QUFvz89iCb3I7ZfZmXfh9+zLishVdTPOOHv6ZMubdniA==}
+  /@umijs/bundler-esbuild@4.3.24:
+    resolution: {integrity: sha512-Cr6SJzuA5Z2wNDsvU2q7qdAEM0s/bcZTNUUuuavuxGcn3UxASlBlj+cRPkOCiD6Q1u7rosvtkpCzquWohgmnJA==}
     hasBin: true
     dependencies:
-      '@umijs/bundler-utils': 4.3.20
-      '@umijs/utils': 4.3.20
+      '@umijs/bundler-utils': 4.3.24
+      '@umijs/utils': 4.3.24
       enhanced-resolve: 5.9.3
       postcss: 8.4.38
       postcss-flexbugs-fixes: 5.0.2(postcss@8.4.38)
@@ -6025,10 +6019,10 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/bundler-utils@4.3.20:
-    resolution: {integrity: sha512-lb7xueV6mVHGkZVeYQTOS4I13F+biezhDHttCAWfSpH5ug42TCX8Ykdk/DOUk6XzLZGfu5gNmk3gfsz5HYuLkw==}
+  /@umijs/bundler-utils@4.3.24:
+    resolution: {integrity: sha512-5ByfQ/Il2Lrysu6Gf4as5jPJJyIk31K/X22/1Nfc2j+5MiXmzwDxIPEScAjkNIGg7IMoFwLwy+BEixJ0LmTmTQ==}
     dependencies:
-      '@umijs/utils': 4.3.20
+      '@umijs/utils': 4.3.24
       esbuild: 0.21.4
       regenerate: 1.4.2
       regenerate-unicode-properties: 10.1.1
@@ -6100,20 +6094,20 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /@umijs/bundler-webpack@4.3.20(typescript@5.3.3):
-    resolution: {integrity: sha512-M59qCe0A2wEBuBNqAJaCwEHr5lUlJHU8MS4AgQiVl9EYDRcFPJJX5b8XQWXPjW/XaeHVzr3mRPMlspfK7jGoiw==}
+  /@umijs/bundler-webpack@4.3.24(typescript@5.3.3):
+    resolution: {integrity: sha512-y+XwBjlS01IlyzOg6/Vq3NBj9eNToZwjQNVXs7T1fEnIvS4LDy8HNfOgdTomtZz//xmECLcRz4nd+TjOPWJDKA==}
     hasBin: true
     dependencies:
       '@svgr/core': 6.5.1
       '@svgr/plugin-jsx': 6.5.1(@svgr/core@6.5.1)
       '@svgr/plugin-svgo': 6.5.1(@svgr/core@6.5.1)
       '@types/hapi__joi': 17.1.9
-      '@umijs/babel-preset-umi': 4.3.20
-      '@umijs/bundler-utils': 4.3.20
+      '@umijs/babel-preset-umi': 4.3.24
+      '@umijs/bundler-utils': 4.3.24
       '@umijs/case-sensitive-paths-webpack-plugin': 1.0.1
-      '@umijs/mfsu': 4.3.20
+      '@umijs/mfsu': 4.3.24
       '@umijs/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.14.0)
-      '@umijs/utils': 4.3.20
+      '@umijs/utils': 4.3.24
       cors: 2.8.5
       css-loader: 6.7.1
       es5-imcompatible-versions: 0.1.90
@@ -6149,11 +6143,11 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/core@4.3.20:
-    resolution: {integrity: sha512-h5fsx/vVHwKDVbZulplo+VO1j86ZOWmFq1p1+4RuG1KyuXIdoJdEAQB+9WI5l8dvdE4G7ooToznoM4lZztU94g==}
+  /@umijs/core@4.3.24:
+    resolution: {integrity: sha512-muFUx2DbLkMWXIw/jMVUAcatya4FIq0QSkGXK7eVPSEbU1sUUN8hlSqFdXuIXVIU0Qv6Ytkh/+WBsonG3dHFQw==}
     dependencies:
-      '@umijs/bundler-utils': 4.3.20
-      '@umijs/utils': 4.3.20
+      '@umijs/bundler-utils': 4.3.24
+      '@umijs/utils': 4.3.24
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6372,12 +6366,12 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/mfsu@4.3.20:
-    resolution: {integrity: sha512-4yb2x/3JGVxbLwZ3Wi2jBxAJsxEaH9I8rXTrMScd9L6K6kr/kg0BA66MBSy/QBuHYdGgvNk7XufPFXsnU6aQXw==}
+  /@umijs/mfsu@4.3.24:
+    resolution: {integrity: sha512-FfQFd3awHH2o3dhheO5FqtS07MnuRUoKgMq0RFzK1LT+K+XOpaYRD4yJBFAnLu/nLNA4ZosxOKyU48HYMXV4Wg==}
     dependencies:
-      '@umijs/bundler-esbuild': 4.3.20
-      '@umijs/bundler-utils': 4.3.20
-      '@umijs/utils': 4.3.20
+      '@umijs/bundler-esbuild': 4.3.24
+      '@umijs/bundler-utils': 4.3.24
+      '@umijs/utils': 4.3.24
       enhanced-resolve: 5.9.3
       is-equal: 1.7.0
     transitivePeerDependencies:
@@ -6541,8 +6535,8 @@ packages:
       pino: 7.11.0
     dev: false
 
-  /@umijs/utils@4.3.20:
-    resolution: {integrity: sha512-VXEkQaAQWcm/rss0ggAqwDX9HujMWKRI+DK4GMvPgSzLLBBxqadViBZ248r2Gs5R7TkDVztgRwxT9U5DTc5krA==}
+  /@umijs/utils@4.3.24:
+    resolution: {integrity: sha512-EZ8Rl0GbVxoXKfsn0jQk10aC7pi59tHtbJ00/4uB2ybcSIptLTh8eeJ/qMoEsXGNEJLmEsbzHG53/8WP3XKoGA==}
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
@@ -10126,6 +10120,7 @@ packages:
 
   /detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
+    requiresBuild: true
 
   /devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -10570,6 +10565,7 @@ packages:
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
+    requiresBuild: true
 
   /encoding@0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
@@ -11990,12 +11986,12 @@ packages:
     hasBin: true
     dependencies:
       '@microsoft/api-extractor': 7.39.1(@types/node@20.14.2)
-      '@umijs/babel-preset-umi': 4.3.20
-      '@umijs/bundler-utils': 4.3.20
-      '@umijs/bundler-webpack': 4.3.20(typescript@5.3.3)
+      '@umijs/babel-preset-umi': 4.3.24
+      '@umijs/bundler-utils': 4.3.24
+      '@umijs/bundler-webpack': 4.3.24(typescript@5.3.3)
       '@umijs/case-sensitive-paths-webpack-plugin': 1.0.1
-      '@umijs/core': 4.3.20
-      '@umijs/utils': 4.3.20
+      '@umijs/core': 4.3.24
+      '@umijs/utils': 4.3.24
       '@vercel/ncc': 0.33.3
       babel-plugin-dynamic-import-node: 2.3.3
       babel-plugin-module-resolver: 4.1.0
@@ -13836,6 +13832,7 @@ packages:
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
 
@@ -17669,6 +17666,7 @@ packages:
     resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
     engines: {node: '>=4'}
     hasBin: true
+    requiresBuild: true
 
   /mime@2.6.0:
     resolution: {integrity: sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==}
@@ -25028,6 +25026,7 @@ packages:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
     dev: true
 
   /uglify-to-browserify@1.0.2:
@@ -25498,6 +25497,7 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+    requiresBuild: true
 
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}

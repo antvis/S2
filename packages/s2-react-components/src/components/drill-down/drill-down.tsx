@@ -1,6 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { i18n } from '@antv/s2';
-import { DRILL_DOWN_PRE_CLASS } from '@antv/s2/esm/shared';
+import { DRILL_DOWN_PRE_CLASS, i18n } from '@antv/s2';
 import { Button, Empty, Input, Menu, type MenuProps } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';

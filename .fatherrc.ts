@@ -7,12 +7,6 @@ export default (name: string) => {
     define: {
       'process.env.NODE_ENV': JSON.stringify('production'),
     },
-    esm: {
-      output: 'esm',
-    },
-    cjs: {
-      output: 'lib',
-    },
     umd: {
       alias: {
         '@antv/s2': path.resolve(__dirname, 'packages/s2-core'),
