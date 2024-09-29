@@ -1,8 +1,7 @@
 export { auto } from './formatter';
 
 export * from './canvas';
-export * from './cell/cell';
-export * from './cell/data-cell';
+export * from './cell';
 export * from './color';
 export * from './common';
 export * from './export';
