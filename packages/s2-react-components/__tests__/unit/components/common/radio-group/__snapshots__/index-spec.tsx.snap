@@ -12,7 +12,7 @@ exports[`Radio Group Component Tests should render correctly 1`] = `
       class="antv-s2-radio-group-content"
     >
       <div
-        class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+        class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-3rel02"
       />
     </span>
   </div>
@@ -33,7 +33,7 @@ exports[`Radio Group Component Tests should render custom options 1`] = `
       class="antv-s2-radio-group-content"
     >
       <div
-        class="ant-radio-group ant-radio-group-solid ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+        class="ant-radio-group ant-radio-group-solid ant-radio-group-small css-dev-only-do-not-override-3rel02"
       />
     </span>
   </div>
@@ -52,7 +52,7 @@ exports[`Radio Group Component Tests should render icon only 1`] = `
       class="antv-s2-radio-group-content"
     >
       <div
-        class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+        class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-3rel02"
       />
     </span>
   </div>

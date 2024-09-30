@@ -92,7 +92,7 @@ exports[`Theme Panel Color Picker Panel Component Tests should render correctly 
       />
     </div>
     <div
-      class="ant-collapse ant-collapse-icon-position-start antv-s2-color-picker-panel-collapse css-dev-only-do-not-override-qnu6hi"
+      class="ant-collapse ant-collapse-icon-position-start antv-s2-color-picker-panel-collapse css-dev-only-do-not-override-3rel02"
     >
       <div
         class="ant-collapse-item"

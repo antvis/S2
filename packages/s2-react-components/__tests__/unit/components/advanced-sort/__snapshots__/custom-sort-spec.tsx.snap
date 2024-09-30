@@ -3,7 +3,7 @@
 exports[`CustomSort Component Tests should render component 1`] = `
 <DocumentFragment>
   <div
-    class="ant-card ant-card-bordered antv-s2-advanced-sort-card-content css-dev-only-do-not-override-qnu6hi"
+    class="ant-card ant-card-bordered antv-s2-advanced-sort-card-content css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-card-body"

@@ -3,7 +3,7 @@
 exports[`Frozen Panel Component Tests should default collapse panel 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item antv-s2-reset-group-panel"
@@ -84,7 +84,7 @@ exports[`Frozen Panel Component Tests should default collapse panel 1`] = `
 exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -168,10 +168,10 @@ exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi ant-checkbox-checked"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02 ant-checkbox-checked"
               >
                 <input
                   checked=""
@@ -191,10 +191,10 @@ exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -213,7 +213,7 @@ exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -295,7 +295,7 @@ exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -383,7 +383,7 @@ exports[`Frozen Panel Component Tests should hidden frozen col 1`] = `
 exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -467,10 +467,10 @@ exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi ant-checkbox-checked"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02 ant-checkbox-checked"
               >
                 <input
                   checked=""
@@ -490,10 +490,10 @@ exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -512,7 +512,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -594,7 +594,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -682,7 +682,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row 1`] = `
 exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -766,10 +766,10 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -788,7 +788,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -870,7 +870,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -952,10 +952,10 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -974,7 +974,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1056,7 +1056,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1144,7 +1144,7 @@ exports[`Frozen Panel Component Tests should hidden frozen row header 1`] = `
 exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -1228,10 +1228,10 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi ant-checkbox-checked"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02 ant-checkbox-checked"
               >
                 <input
                   checked=""
@@ -1251,10 +1251,10 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -1273,7 +1273,7 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1355,7 +1355,7 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1437,10 +1437,10 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -1459,7 +1459,7 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1541,7 +1541,7 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1629,7 +1629,7 @@ exports[`Frozen Panel Component Tests should render correctly panel 1`] = `
 exports[`Frozen Panel Component Tests should set custom input number props 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-frozen-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -1713,10 +1713,10 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper ant-checkbox-wrapper-checked css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi ant-checkbox-checked"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02 ant-checkbox-checked"
               >
                 <input
                   checked=""
@@ -1736,10 +1736,10 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -1758,7 +1758,7 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1840,7 +1840,7 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -1922,10 +1922,10 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             class="antv-s2-frozen-panel-container"
           >
             <label
-              class="ant-checkbox-wrapper css-dev-only-do-not-override-qnu6hi"
+              class="ant-checkbox-wrapper css-dev-only-do-not-override-3rel02"
             >
               <span
-                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-qnu6hi"
+                class="ant-checkbox ant-wave-target css-dev-only-do-not-override-3rel02"
               >
                 <input
                   class="ant-checkbox-input"
@@ -1944,7 +1944,7 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             >
               冻结前
               <div
-                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"
@@ -2026,7 +2026,7 @@ exports[`Frozen Panel Component Tests should set custom input number props 1`] =
             >
               冻结后
               <div
-                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
+                class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number ant-input-number-disabled"
               >
                 <div
                   class="ant-input-number-handler-wrap"

@@ -43,6 +43,7 @@ module.exports = {
     '\\.svg$': 'jest-raw-loader',
   },
   moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__tests__/__mocks__/svg.ts',
     '^@/(.*)': '<rootDir>/src/$1',
     '^tests/(.*)': '<rootDir>/__tests__/$1',
     '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
@@ -52,7 +53,6 @@ module.exports = {
       __dirname,
       'packages/s2-react-components/src',
     ),
-    '\\.svg$': '<rootDir>/__tests__/__mocks__/svg.ts',
     /* ignore module query: foo.less?a=1 -> foo.less */
     '(.+)\\.(.+)\\?(.*)$': '$1.$2',
   },

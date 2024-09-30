@@ -3,7 +3,7 @@
 exports[`Frozen Input Number Component Tests should render correctly panel 1`] = `
 <DocumentFragment>
   <div
-    class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-qnu6hi ant-input-number-outlined antv-s2-frozen-input-number"
+    class="ant-input-number ant-input-number-sm css-dev-only-do-not-override-3rel02 ant-input-number-outlined antv-s2-frozen-input-number"
   >
     <div
       class="ant-input-number-handler-wrap"
@@ -83,7 +83,7 @@ exports[`Frozen Input Number Component Tests should render correctly panel 1`] =
 exports[`Frozen Input Number Component Tests should set custom input number props 1`] = `
 <DocumentFragment>
   <div
-    class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-qnu6hi ant-input-number-outlined test"
+    class="ant-input-number ant-input-number-lg css-dev-only-do-not-override-3rel02 ant-input-number-outlined test"
     style="color: red;"
   >
     <div

@@ -3,7 +3,7 @@
 exports[`Export Component Tests should render component for strategy export 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-text ant-dropdown-trigger antv-s2-export"
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-text ant-dropdown-trigger antv-s2-export"
     type="button"
   >
     <span
@@ -42,7 +42,7 @@ exports[`Export Component Tests should render custom children 1`] = `
 exports[`Export Component Tests should render default component 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-text ant-dropdown-trigger antv-s2-export test"
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-text ant-dropdown-trigger antv-s2-export test"
     type="button"
   >
     <span

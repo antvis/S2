@@ -3,7 +3,7 @@
 exports[`Text Align Panel Component Tests should default collapse panel 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-text-align-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-text-align-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item antv-s2-reset-group-panel"
@@ -84,7 +84,7 @@ exports[`Text Align Panel Component Tests should default collapse panel 1`] = `
 exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
 <DocumentFragment>
   <div
-    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-text-align-panel css-dev-only-do-not-override-qnu6hi"
+    class="ant-collapse ant-collapse-icon-position-start ant-collapse-borderless antv-s2-reset-group antv-s2-text-align-panel css-dev-only-do-not-override-3rel02"
   >
     <div
       class="ant-collapse-item ant-collapse-item-active antv-s2-reset-group-panel"
@@ -176,10 +176,10 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
               class="antv-s2-radio-group-content"
             >
               <div
-                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-3rel02"
               >
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -248,7 +248,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -322,7 +322,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -410,10 +410,10 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
               class="antv-s2-radio-group-content"
             >
               <div
-                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-3rel02"
               >
                 <label
-                  class="ant-radio-button-wrapper ant-radio-button-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper ant-radio-button-wrapper-checked css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button ant-radio-button-checked"
@@ -482,7 +482,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -556,7 +556,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -644,10 +644,10 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
               class="antv-s2-radio-group-content"
             >
               <div
-                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-qnu6hi"
+                class="ant-radio-group ant-radio-group-outline ant-radio-group-small css-dev-only-do-not-override-3rel02"
               >
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -716,7 +716,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button"
@@ -790,7 +790,7 @@ exports[`Text Align Panel Component Tests should render correctly panel 1`] = `
                   </span>
                 </label>
                 <label
-                  class="ant-radio-button-wrapper ant-radio-button-wrapper-checked css-dev-only-do-not-override-qnu6hi"
+                  class="ant-radio-button-wrapper ant-radio-button-wrapper-checked css-dev-only-do-not-override-3rel02"
                 >
                   <span
                     class="ant-radio-button ant-radio-button-checked"

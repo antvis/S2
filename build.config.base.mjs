@@ -30,6 +30,7 @@ export const getBaseConfig = () => {
 
   const resolve = {
     mainFields: ['src', 'module', 'main'],
+    alias: [],
   };
 
   if (isDevMode) {

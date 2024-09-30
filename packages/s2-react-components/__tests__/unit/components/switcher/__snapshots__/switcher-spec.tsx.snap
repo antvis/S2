@@ -3,7 +3,7 @@
 exports[`switcher component test should render component 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
     type="button"
   >
     <span
@@ -48,7 +48,7 @@ exports[`switcher component test should render custom children 1`] = `
 exports[`switcher component test should render custom icon 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
     type="button"
   >
     <span
@@ -87,7 +87,7 @@ exports[`switcher component test should render custom icon 1`] = `
 exports[`switcher component test should render custom popover props 1`] = `
 <DocumentFragment>
   <button
-    class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-default ant-btn-sm antv-s2-switcher-entry-button ant-popover-open custom-popover"
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default ant-btn-sm antv-s2-switcher-entry-button ant-popover-open custom-popover"
     type="button"
   >
     <span

@@ -14,7 +14,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
         选择下钻维度
       </div>
       <button
-        class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-link"
+        class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-link"
         disabled=""
         type="button"
       >
@@ -24,7 +24,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       </button>
     </header>
     <span
-      class="ant-input-affix-wrapper css-dev-only-do-not-override-qnu6hi ant-input-outlined antv-s2-drill-down-search"
+      class="ant-input-affix-wrapper css-dev-only-do-not-override-3rel02 ant-input-outlined antv-s2-drill-down-search"
     >
       <span
         class="ant-input-prefix"
@@ -50,7 +50,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
         </span>
       </span>
       <input
-        class="ant-input css-dev-only-do-not-override-qnu6hi"
+        class="ant-input css-dev-only-do-not-override-3rel02"
         placeholder="搜索字段"
         type="text"
         value=""
@@ -90,7 +90,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       class="antv-s2-drill-down-extra"
     />
     <div
-      class="css-dev-only-do-not-override-qnu6hi ant-empty antv-s2-drill-down-empty"
+      class="css-dev-only-do-not-override-3rel02 ant-empty antv-s2-drill-down-empty"
     >
       <div
         class="ant-empty-image"
@@ -102,9 +102,6 @@ exports[`DrillDown Component Tests should render component 1`] = `
           width="184"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <title>
-            empty image
-          </title>
           <g
             fill="none"
             fill-rule="evenodd"
@@ -166,7 +163,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       </div>
     </div>
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-qnu6hi"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -193,7 +190,7 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
         下钻
       </div>
       <button
-        class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-link"
+        class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-link"
         disabled=""
         type="button"
       >
@@ -203,7 +200,7 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
       </button>
     </header>
     <span
-      class="ant-input-affix-wrapper css-dev-only-do-not-override-qnu6hi ant-input-outlined antv-s2-drill-down-search"
+      class="ant-input-affix-wrapper css-dev-only-do-not-override-3rel02 ant-input-outlined antv-s2-drill-down-search"
     >
       <span
         class="ant-input-prefix"
@@ -229,7 +226,7 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
         </span>
       </span>
       <input
-        class="ant-input css-dev-only-do-not-override-qnu6hi"
+        class="ant-input css-dev-only-do-not-override-3rel02"
         placeholder="搜索"
         type="text"
         value=""
@@ -271,7 +268,7 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
       extra
     </div>
     <div
-      class="css-dev-only-do-not-override-qnu6hi ant-empty antv-s2-drill-down-empty"
+      class="css-dev-only-do-not-override-3rel02 ant-empty antv-s2-drill-down-empty"
     >
       <div
         class="ant-empty-image"
@@ -283,9 +280,6 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
           width="184"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <title>
-            empty image
-          </title>
           <g
             fill="none"
             fill-rule="evenodd"
@@ -347,7 +341,7 @@ exports[`DrillDown Component Tests should render custom config 1`] = `
       </div>
     </div>
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-qnu6hi"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"
@@ -374,7 +368,7 @@ exports[`DrillDown Component Tests should render custom dataset 1`] = `
         选择下钻维度
       </div>
       <button
-        class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-link"
+        class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-link"
         disabled=""
         type="button"
       >
@@ -384,7 +378,7 @@ exports[`DrillDown Component Tests should render custom dataset 1`] = `
       </button>
     </header>
     <span
-      class="ant-input-affix-wrapper css-dev-only-do-not-override-qnu6hi ant-input-outlined antv-s2-drill-down-search"
+      class="ant-input-affix-wrapper css-dev-only-do-not-override-3rel02 ant-input-outlined antv-s2-drill-down-search"
     >
       <span
         class="ant-input-prefix"
@@ -410,7 +404,7 @@ exports[`DrillDown Component Tests should render custom dataset 1`] = `
         </span>
       </span>
       <input
-        class="ant-input css-dev-only-do-not-override-qnu6hi"
+        class="ant-input css-dev-only-do-not-override-3rel02"
         placeholder="搜索字段"
         type="text"
         value=""
@@ -450,7 +444,7 @@ exports[`DrillDown Component Tests should render custom dataset 1`] = `
       class="antv-s2-drill-down-extra"
     />
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-qnu6hi"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu css-dev-only-do-not-override-3rel02"
       data-menu-list="true"
       role="menu"
       tabindex="0"

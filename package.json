@@ -33,6 +33,7 @@
     "core:start": "pnpm --filter @antv/s2 start",
     "core:watch": " pnpm --filter @antv/s2 watch",
     "core:build": "pnpm --filter @antv/s2 build",
+    "core:build-esm": "pnpm --filter @antv/s2 build:esm",
     "core:test": "pnpm --filter @antv/s2 test",
     "core:test-coverage": "pnpm --filter @antv/s2 test:coverage",
     "core:sync-event": "pnpm --filter @antv/s2 sync-event",

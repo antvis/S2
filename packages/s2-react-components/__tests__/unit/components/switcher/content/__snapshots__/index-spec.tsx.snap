@@ -17,7 +17,7 @@ exports[`switcher component content test should render switcher content 1`] = `
       class="antv-s2-switcher-content-footer"
     >
       <button
-        class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-text antv-s2-switcher-content-footer-reset-button"
+        class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-text antv-s2-switcher-content-footer-reset-button"
         disabled=""
         type="button"
       >
@@ -52,7 +52,7 @@ exports[`switcher component content test should render switcher content 1`] = `
         class="antv-s2-switcher-content-footer-actions"
       >
         <button
-          class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-default action-button"
+          class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-default action-button"
           type="button"
         >
           <span>
@@ -60,7 +60,7 @@ exports[`switcher component content test should render switcher content 1`] = `
           </span>
         </button>
         <button
-          class="ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-primary action-button"
+          class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-primary action-button"
           disabled=""
           type="button"
         >
