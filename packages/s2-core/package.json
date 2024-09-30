@@ -48,7 +48,7 @@
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:sync-assets": "rsync -av --include='*/' --include='*.less' --include='*.svg' --exclude='*' src/",
-    "build:umd": "father build",
+    "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.mjs",
     "clean": "rimraf lib esm dist temp",
     "start": "pnpm test:live",
     "sync-event": "node ./scripts/sync-event.mjs",

@@ -30,12 +30,6 @@ export const getBaseConfig = () => {
 
   const resolve = {
     mainFields: ['src', 'module', 'main'],
-    alias: [
-      {
-        find: 'lodash',
-        replacement: 'lodash-es',
-      },
-    ],
   };
 
   if (isDevMode) {
@@ -125,6 +119,8 @@ export const getBaseConfig = () => {
               '@antv/s2': 'S2',
               '@antv/s2-react': 'S2React',
               lodash: '_',
+              antd: 'antd',
+              'ant-design-vue': 'antd',
             },
           },
         },

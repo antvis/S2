@@ -43,7 +43,7 @@
     "build:size-limit": "size-limit",
     "build:size-limit-json": "pnpm build:size-limit -- --json",
     "build:sync-assets": "rsync -av --include='*/' --include='*.less' --include='*.svg' --exclude='*' src/",
-    "build:umd": "father build",
+    "build:umd": "cross-env FORMAT=umd vite build",
     "clean": "rimraf lib esm dist temp",
     "start": "cross-env PLAYGROUND=true vite",
     "test": "jest --passWithNoTests --detectOpenHandles",
