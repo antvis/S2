@@ -39,9 +39,6 @@ jobs:
       - name: Lint scripts, type, style and docs
         run: pnpm lint
 
-      - name: Build doctor
-        run: pnpm build:doctor
-
       - name: Build
         run: pnpm build
 
