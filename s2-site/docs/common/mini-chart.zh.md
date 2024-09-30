@@ -19,7 +19,7 @@ order: 6
 | --- | ---- | --- | ---- | ------ |
 | type  | mini 图类型 | `line \| bar` |    ✓   |    |
 | encode  | 编码方式，声明 x 位置通道或 y 位置通道绑定的对应的列数据| `{x: string; y: string}` |  ✓   |    |
-| data  | 原始数据  | [Data[]](#data) |    |   ✓   |
+| data  | 原始数据  | [Data[]](#data) |    ✓   |    |
 | [key: string]  | 其他透传字段，用于自定义单元格的定制化展示   | `unknown` |   |  |
 
 #### BulletValue
