@@ -303,8 +303,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     // 非多选: 正常设置即可
     if (
-      !this.isEffectRowOf(ResizeType.SELECTED) ||
-      !this.isEffectColOf(ResizeType.SELECTED) ||
+      (!this.isEffectRowOf(ResizeType.SELECTED) &&
+        !this.isEffectColOf(ResizeType.SELECTED)) ||
       !isMultiSelected
     ) {
       return {
@@ -360,7 +360,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
             colCell: {
-              width: !this.isEffectColOf(ResizeType.ALL) ? null : displayWidth,
+              width: !this.isEffectColOf(ResizeType.ALL)
+                ? undefined
+                : displayWidth,
               widthByField: this.getCellStyleByField(displayWidth),
             },
           },
@@ -398,7 +400,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             rowCell: {
               height: !this.isEffectRowOf(ResizeType.ALL)
-                ? null
+                ? undefined
                 : displayHeight,
               heightByField: this.getCellStyleByField(displayHeight),
             },
