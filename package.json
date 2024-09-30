@@ -56,7 +56,6 @@
     "build:umd": "pnpm -r --filter './packages/*' --stream build:umd",
     "build:size-limit": "pnpm -r --filter './packages/*' --stream build:size-limit",
     "build:size-limit-json": "pnpm -r --filter './packages/*' --stream build:size-limit-json",
-    "build:compressed-size": "pnpm -r --filter @antv/s2 build:esm && pnpm build:umd",
     "release": "pnpm -r --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
     "release:preview": "pnpm release --dry-run --no-ci",
     "release:bump-version": "node ./scripts/bump-version.js",

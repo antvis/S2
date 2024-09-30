@@ -31,5 +31,5 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/**/dist/**/*.{js,css}"
-        build-script: "build:compressed-size"
+        build-script: "build"
         clean-script: "clean"
