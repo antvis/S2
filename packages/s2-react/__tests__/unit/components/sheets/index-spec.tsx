@@ -2,9 +2,9 @@ import {
   PivotSheet,
   TableSheet,
   type S2DataConfig,
+  type SheetType,
   type SpreadSheet,
 } from '@antv/s2';
-import type { SheetType } from '@antv/s2-shared';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { SheetComponent, type SheetComponentProps } from '../../../../src';

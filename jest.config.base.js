@@ -46,7 +46,7 @@ module.exports = {
     '^@/(.*)': '<rootDir>/src/$1',
     '^tests/(.*)': '<rootDir>/__tests__/$1',
     '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
-    '^@antv/s2/shared$': path.join(__dirname, 'packages/s2-core/src/shared'),
+    '^@antv/s2/esm/(.*)$': path.join(__dirname, 'packages/s2-core/src/$1'),
     '^@antv/s2-react$': path.join(__dirname, 'packages/s2-react/src'),
     '^@antv/s2-react-components$': path.join(
       __dirname,

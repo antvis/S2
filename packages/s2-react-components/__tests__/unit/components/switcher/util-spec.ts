@@ -10,7 +10,7 @@ import {
   moveItem,
   shouldCrossRows,
 } from '@/components/switcher/util';
-import type { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2';
 
 describe('switcher util test', () => {
   test('should return correct class name with prefix', () => {

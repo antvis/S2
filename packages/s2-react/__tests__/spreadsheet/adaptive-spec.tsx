@@ -1,7 +1,6 @@
 import type { SheetComponentProps } from '@/components';
 import { SheetComponent } from '@/components/sheets';
-import type { SpreadSheet } from '@antv/s2';
-import type { Adaptive } from '@antv/s2-shared';
+import type { Adaptive, SpreadSheet } from '@antv/s2';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
