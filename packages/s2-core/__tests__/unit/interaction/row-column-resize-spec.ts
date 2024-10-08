@@ -176,10 +176,12 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.hideTooltip = jest.fn();
     s2.interaction.reset = jest.fn();
     s2.interaction.getActiveRowCells = () => [
-      createMockCellInfo('test-row-cell').mockCell,
+      createMockCellInfo('test-row-cell-a').mockCell,
+      createMockCellInfo('test-row-cell-b').mockCell,
     ];
     s2.interaction.getActiveColCells = () => [
-      createMockCellInfo('test-col-cell').mockCell,
+      createMockCellInfo('test-col-cell-a').mockCell,
+      createMockCellInfo('test-col-cell-b').mockCell,
     ];
   });
 
@@ -831,6 +833,10 @@ describe('Interaction Row Column Resize Tests', () => {
       },
     });
 
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
+
     emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
 
     expect(s2.options.style!.colCell).toMatchSnapshot();
@@ -846,6 +852,10 @@ describe('Interaction Row Column Resize Tests', () => {
         },
       },
     });
+
+    jest
+      .spyOn(s2.interaction, 'isSelectedState')
+      .mockImplementationOnce(() => true);
 
     emitResize(ResizeDirectionType.Vertical, ResizeAreaEffect.Cell);
 
@@ -889,6 +899,27 @@ describe('Interaction Row Column Resize Tests', () => {
         resize: {
           rowResizeType: ResizeType.SELECTED,
           colResizeType: ResizeType.SELECTED,
+        },
+      },
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Cell);
+
+    expect(s2.options.style!.colCell).toMatchSnapshot();
+  });
+
+  // https://github.com/antvis/S2/issues/2910
+  test('should not effect default resize style by field for selected resize type', () => {
+    s2.setOptions({
+      style: {
+        colCell: {
+          width: 50,
+        },
+      },
+      interaction: {
+        resize: {
+          rowResizeType: ResizeType.CURRENT,
+          colResizeType: ResizeType.CURRENT,
         },
       },
     });
