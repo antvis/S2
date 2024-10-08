@@ -1,4 +1,4 @@
-import { S2DataConfig, S2Event, S2Options, TableSheet } from '@antv/s2';
+import { Node, S2DataConfig, S2Event, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
@@ -39,11 +39,11 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       interaction: {
         linkFields: (meta) => {
           // 不标记列头
-          if (meta?.belongsCell?.cellType === 'colCell') {
+          if (meta instanceof Node) {
             return false;
           }
 
-          // 根据指标值动态标记
+          // 根据数值动态标记
           return meta?.fieldValue === '浙江' || meta?.fieldValue >= 10;
         },
       },
