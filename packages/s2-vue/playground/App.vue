@@ -1,6 +1,11 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import { CellType, RawData, type S2DataConfig, type S2Options } from '@antv/s2';
+import {
+  CellType,
+  type RawData,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
@@ -576,7 +581,7 @@ const partDrillDown: PartDrillDown = {
 
 export default defineComponent({
   setup() {
-    const sheetType = ref<SheetType>('pivot');
+    const sheetType = ref<SheetType>('editable');
     const s2 = shallowRef();
     const dataCfgFlag = ref(1);
 
@@ -740,6 +745,15 @@ export default defineComponent({
       <label>
         <input type="radio" id="table" value="table" v-model="sheetType" />
         明细表
+      </label>
+      <label>
+        <input
+          type="radio"
+          id="editable"
+          value="editable"
+          v-model="sheetType"
+        />
+        编辑表
       </label>
     </div>
   </div>
