@@ -162,7 +162,7 @@ const rawData = lodash.get(indexesData, path);
 ```ts
 const data = CellData.getCellData(rawData, query[EXTRA_FIELD]);
 
-console.log(data); //{ raw: rawData, extraField: "xxx" }
+console.log(data); // { raw: rawData, extraField: "xxx" }
 ```
 
 ### 获取多个数据
@@ -173,7 +173,7 @@ console.log(data); //{ raw: rawData, extraField: "xxx" }
 
 ```ts
 const dataList = getMultiData({
-    query: { province: '浙江省', $$extra$$: 'price' }
+  query: { province: '浙江省', $$extra$$: 'price' }
 });
 ```
 

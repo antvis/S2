@@ -19,6 +19,7 @@ import {
   isFunction,
   isNumber,
   isObject,
+  isString,
   last,
   map,
   mapKeys,
@@ -563,15 +564,14 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const firstCellInfo = (cellInfos[0] || {}) as unknown as ViewMetaData;
 
   if (!options?.hideSummary) {
-    // 计算多项的sum（默认为sum，可自定义）
+    // 计算多项的 sum（默认为 sum，可自定义）
     summaries = getSummaries({
       spreadsheet,
       options,
       targetCell,
     });
   } else if (options.onlyShowCellText) {
-    // 行列头hover & 明细表所有hover
-
+    // 行列头 hover & 明细表所有 hover
     const value = CellData.getFieldValue(firstCellInfo, 'value') as string;
     const valueField = CellData.getFieldValue(
       firstCellInfo,
@@ -584,7 +584,8 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       ? spreadsheet.dataSet.getFieldName(value) || formattedValue
       : spreadsheet.dataSet.getFieldName(valueField);
 
-    name = cellText || '';
+    // https://github.com/antvis/S2/issues/2843
+    name = isString(cellText) ? cellText : '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getTooltipDetailList(

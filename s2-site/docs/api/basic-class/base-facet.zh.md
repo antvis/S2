@@ -39,7 +39,8 @@ s2.facet.getRealWidth()
 | showHorizontalScrollBar | 显示水平滚动条 | () => void |
 | render | 渲染 | () => void |
 | getSeriesNumberWidth | 获取序号宽度 | () => number |
-| getContentHeight | 获取当前渲染的区域高度 | () => number |
+| getContentWidth | 获取当前表格实际内容宽度 | () => number |
+| getContentHeight | 获取当前表格实际内容高度 | () => number |
 | getPaginationScrollY | x | () => number |
 | updateScrollOffset | 滚动 | (offsetConfig: [ScrollOffsetConfig](#offsetconfig)) => void |
 | scrollWithAnimation | 滚动 （带缓动动画） | (offsetConfig: [ScrollOffsetConfig](#offsetconfig), duration?: number, callback?: () => void) => void |
@@ -116,6 +117,7 @@ s2.facet.getRealWidth()
 | getCells | 获取所有单元格 （角头，行头，列头，数值） （不含可视区域） | (ids: string[]) => [S2CellType](/docs/api/basic-class/base-cell)[]  |  |
 | getInitColLeafNodes | 获取初始化时的记录的列头叶子节点 | () => [Node](/docs/api/basic-class/node)[] |  |
 | clearInitColLeafNodes | 清楚初始化时的记录的列头叶子节点 | () => void |  |
+| getCellMeta | 根据行列索引获取数值单元格信息 | (rowIndex: `number`, colIndex: `number`) => [ViewMeta](#viewmeta) |  |
 
 ### CellScrollOffset
 

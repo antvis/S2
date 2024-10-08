@@ -303,8 +303,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     // 非多选: 正常设置即可
     if (
-      !this.isEffectRowOf(ResizeType.SELECTED) &&
-      !this.isEffectColOf(ResizeType.SELECTED) &&
+      (!this.isEffectRowOf(ResizeType.SELECTED) &&
+        !this.isEffectColOf(ResizeType.SELECTED)) ||
       !isMultiSelected
     ) {
       return {

@@ -29,7 +29,7 @@ export type { GetCellMeta, LayoutResult } from './facet';
 export type Formatter = (
   value: DataItem,
   data?: DataItem | ViewMetaData | ViewMetaData[],
-  meta?: Node | ViewMeta,
+  meta?: Node | ViewMeta | null | undefined,
 ) => SimpleData;
 
 export interface FormatResult {

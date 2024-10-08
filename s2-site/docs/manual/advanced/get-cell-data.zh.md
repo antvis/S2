@@ -306,14 +306,15 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   console.log('当前单元格数据：', meta.data)
   /**
     {
-    "number": 834,
-    "province": "浙江省",
-    "city": "舟山市",
-    "type": "家具",
-    "sub_type": "沙发",
-    "$$extra$$": "number",
-    "$$value$$": 834
-  }
+      "raw": {
+        "number": 632,
+        "province": "浙江省",
+        "city": "绍兴市",
+        "type": "家具",
+        "sub_type": "沙发"
+      },
+      "extraField": "number"
+    }
   */
 })
 ```
@@ -369,15 +370,16 @@ const cellMeta = s2.facet.getCellMeta(
 );
 
 /**
-  {
-    "number": 1634,
-    "province": "浙江省",
-    "city": "舟山市",
-    "type": "办公用品",
-    "sub_type": "纸张",
-    "$$extra$$": "number",
-    "$$value$$": 1634
-  }
+  [{
+    "raw": {
+      "number": 1634,
+      "province": "浙江省",
+      "city": "舟山市",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    },
+    "extraField": "number"
+  }]
 */
 ```
 

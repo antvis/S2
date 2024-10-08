@@ -2,6 +2,12 @@ import { debounce } from 'lodash';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
 
+/**
+ * 基于 Canvas 的高清适配方案
+ * 1. 双屏切换, devicePixelRatio 变化时
+ * 2. Mac 触控板缩放
+ * 3. 浏览器窗口缩放
+ */
 export class HdAdapter {
   private viewport = window as typeof window & {
     visualViewport: VisualViewport;
@@ -12,6 +18,8 @@ export class HdAdapter {
   private spreadsheet: SpreadSheet;
 
   private isDevicePixelRatioChange = false;
+
+  private zoomOffsetLeft: number | undefined;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -91,6 +99,9 @@ export class HdAdapter {
     await this.renderByZoomScale(event);
   };
 
+  /**
+   * 如果是浏览器窗口的放大缩小 (command +/-), 也会触发
+   */
   private renderByDevicePixelRatioChanged = async () => {
     this.isDevicePixelRatioChange = true;
     await this.renderByDevicePixelRatio();
@@ -104,24 +115,34 @@ export class HdAdapter {
       options: { width, height },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
+    const currentRatio = Math.ceil(ratio);
     const lastRatio = container.getConfig().devicePixelRatio ?? 1;
 
-    if (lastRatio === ratio || !canvas) {
+    if (lastRatio === currentRatio || !canvas) {
       return;
     }
 
     // https://github.com/antvis/G/issues/1143
-    container.getConfig().devicePixelRatio = ratio;
+    container.getConfig().devicePixelRatio = currentRatio;
     container.resize(width!, height!);
 
     await this.spreadsheet.render(false);
   };
 
   private renderByZoomScale = debounce(async (event: Event) => {
-    const ratio = Math.ceil((event.target as VisualViewport)?.scale);
+    const target = event.target as VisualViewport;
+    const ratio = Math.ceil(target?.scale);
 
-    if (ratio >= 1 && !this.isDevicePixelRatioChange) {
+    /**
+     * github.com/antvis/S2/issues/2884
+     * 如果是触控板双指缩放触发的 resize 事件, offsetLeft 可以获取到值
+     * 如果是浏览器窗口的放大缩小 (command +/-), offsetLeft 始终是 0
+     */
+    const isTouchPadZoom = this.zoomOffsetLeft !== target.offsetLeft;
+
+    if (ratio >= 1 && isTouchPadZoom && !this.isDevicePixelRatioChange) {
       await this.renderByDevicePixelRatio(ratio);
+      this.zoomOffsetLeft = target.offsetLeft;
     }
   }, 350);
 }

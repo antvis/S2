@@ -23,8 +23,8 @@ s2.dataSet.getFieldName('type')
 | getField                           | 获取字段                 | (field: [CustomHeaderField](#customheaderfield)) => [Meta](/docs/api/general/S2DataConfig#meta)                                                                         |                                             |
 | getFieldMeta    | 获取字段元数据信息                 | (field: [CustomHeaderField](#customheaderfield), meta?: [Meta[]](/docs/api/general/S2DataConfig#meta)) => [Meta](/docs/api/general/S2DataConfig#meta)    |
 | getFieldName                           | 获取字段名                         | (field: [CustomHeaderField](#customheaderfield), defaultValue?: string) => `string`  |                                             |
-| getCustomRowFieldName                           | 获取自定义单元格字段名称                         | (cell: S2CellType<ViewMeta \| Node>) => `string`    |                                             |
-| getCustomFieldDescription                           | 获取自定义单元格字段描述                         | (cell: S2CellType<ViewMeta \| Node>) => `string`   |                                             |
+| getCustomRowFieldName                           | 获取自定义单元格字段名称                         | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/api/basic-class/node)>) => `string`    |                                             |
+| getCustomFieldDescription                           | 获取自定义单元格字段描述                         | (cell: S2CellType<[`ViewMeta`](#viewmeta) \| [`Node`](/api/basic-class/node)>) => `string`   |                                             |
 | getFieldFormatter                      | 获取字段格式化函数                 | (field: [CustomHeaderField](#customheaderfield)) => [Formatter](#formatter)                                                                                                                                                               |                                             |
 | getFieldDescription                    | 获取字段描述                       | (field: [CustomHeaderField](#customheaderfield)) => [Formatter](#formatter)                                                                                                                                                                               |                                             |
 | setDataCfg                             | 设置数据配置                       | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2^1.34.0`版本使用 |
@@ -36,68 +36,6 @@ s2.dataSet.getFieldName('type')
 | isEmpty                                | 是否为空数据集                     | () => `boolean`                                                                                                                                                                              |                          |
 | displayFormattedValueMap                                |  单元格所对应格式化后的值（用于编辑表）                  | `Map<string, string>`                                                                                                                                                                             |                           |
 | getValueRangeByField   |  获取数值最大最小值区间      | `(field: string) => { minValue: number, maxValue: number }`     |   |
-
-### SimpleData
-
-```ts
-type SimpleData = string | number | null | undefined;
-```
-
-### MultiData
-
-```ts
-interface MultiData<T = SimpleData[][]> {
-  values: T;
-  originalValues?: T;
-  label?: string;
-  [key: string]: unknown;
-}
-```
-
-### DataItem
-
-```ts
-
-type DataItem =
-  | SimpleData
-  | MultiData
-  | Record<string, unknown>
-  | undefined
-  | null;
-```
-
-### RawData
-
-```ts
-type RawData = Record<string, DataItem>;
-```
-
-### DataType
-
-```ts
-type DataType = Record<string, unknown>;
-```
-
-### ExtraData
-
-```ts
-type ExtraData = {
-  [EXTRA_FIELD]: string;
-  [VALUE_FIELD]: string | DataItem;
-};
-```
-
-### Data
-
-```ts
-type Data = RawData & ExtraData;
-```
-
-### ViewMetaData
-
-```ts
-type ViewMetaData = Data | CellData;
-```
 
 ### Formatter
 

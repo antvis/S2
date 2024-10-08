@@ -108,7 +108,7 @@ const s2Options = {
 
 ## 折叠所有节点
 
-配置 `collapseAll` 即可，**优先级小于** `collapseFields`, 详见 [配置优先级](#配置优先级)
+配置 `collapseAll` 即可，**优先级小于** `collapseFields` 和 `expandDepth`, 详见 [配置优先级](#配置优先级)
 
 ```ts
 const s2Options = {
@@ -149,7 +149,7 @@ const s2Options = {
 
 ## 配置优先级
 
-S2 提供了三个 折叠/展开相关配置，已满足不同的使用场景，优先级如下：
+S2 提供了三个 折叠/展开相关配置，以满足不同的使用场景，优先级如下：
 
 `collapseFields` > `expandDepth` > `collapseAll`
 
@@ -160,12 +160,16 @@ const s2Options = {
   style: {
     rowCell: {
       collapseFields: null, // 无效
-      collapseAll: true, // 生效
       expandDepth: null, // 无效
+      collapseAll: true, // 生效
     },
   },
 }
 ```
+
+如果行头是 [自定义节点 (CustomTreeNode)](api/general/s2-data-config#customtreenode), 则优先级如下：
+
+`collapseFields` > `expandDepth` > `collapseAll` > `CustomTreeNode.collapsed`
 
 ## API 文档
 

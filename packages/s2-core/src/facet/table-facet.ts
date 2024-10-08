@@ -358,7 +358,7 @@ export class TableFacet extends FrozenFacet {
     };
   }
 
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public getCellMeta(rowIndex: number = 0, colIndex: number = 0) {
     const { options, dataSet } = this.spreadsheet;
     const colLeafNodes = this.getColLeafNodes();
     const colNode = colLeafNodes[colIndex];
@@ -437,13 +437,6 @@ export class TableFacet extends FrozenFacet {
     }
 
     return dataCell?.width ?? 0;
-  }
-
-  public getContentHeight(): number {
-    const { getTotalHeight } = this.getViewCellHeights();
-    const { colsHierarchy } = this.layoutResult;
-
-    return getTotalHeight() + colsHierarchy.height;
   }
 
   private calculateColLeafNodesWidth(
@@ -738,5 +731,18 @@ export class TableFacet extends FrozenFacet {
     return this.getDataCells().filter((cell) => {
       return cell.getMeta().valueField === SERIES_NUMBER_FIELD;
     }) as TableSeriesNumberCell[];
+  }
+
+  public getContentWidth(): number {
+    const { colsHierarchy } = this.layoutResult;
+
+    return colsHierarchy.width;
+  }
+
+  public getContentHeight(): number {
+    const { getTotalHeight } = this.getViewCellHeights();
+    const { colsHierarchy } = this.layoutResult;
+
+    return getTotalHeight() + colsHierarchy.height;
   }
 }

@@ -556,6 +556,33 @@ describe('List Table Core Data Process', () => {
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
   });
+
+  it('should called with cell view meta when brush select formatted data', async () => {
+    const formatter = jest.fn();
+
+    s2.setOptions({
+      interaction: {
+        copy: {
+          withFormat: true,
+        },
+      },
+    });
+    s2.setDataCfg({
+      meta: [{ field: 'number', formatter }],
+    });
+
+    await s2.render();
+
+    s2.interaction.changeState({
+      cells: s2.facet.getDataCells().map((cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const viewMeta = s2.facet.getCellMeta(18, 5);
+
+    getCopyPlainContent(s2);
+    expect(formatter).toHaveBeenLastCalledWith(1943, viewMeta.data, viewMeta);
+  });
 });
 
 describe('Pivot Table Core Data Process', () => {
@@ -1225,6 +1252,28 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`"custom data"`);
+  });
+
+  // https://github.com/antvis/S2/issues/2866
+  it('should called with cell view meta when brush select formatted data', async () => {
+    const formatter = jest.fn();
+
+    s2.setOptions({
+      interaction: {
+        copy: { enable: true, withHeader: true, withFormat: true },
+      },
+    });
+
+    const meta: Meta[] = [{ field: 'number', formatter }];
+
+    s2.setDataCfg(getDataCfg(meta));
+
+    await s2.render();
+
+    const viewMeta = s2.facet.getCellMeta(10, 4);
+
+    getCopyPlainContent(s2);
+    expect(formatter).toHaveBeenLastCalledWith(16838, viewMeta.data, viewMeta);
   });
 });
 

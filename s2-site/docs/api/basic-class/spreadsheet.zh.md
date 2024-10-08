@@ -34,12 +34,12 @@ s2.isPivotMode()
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
 | clearDrillDownData | 清除下钻数据  | (rowNodeId?: `string`) => `Promise<void>` |    |
-| showTooltip | 显示 tooltip   （别名 `tooltip.show`)                                                                                                         | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
-| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: `CanvasEvent \| MouseEvent`, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
-| hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`)                                                                                                           | `() => void` |    |
-| destroyTooltip | 销毁 tooltip     （别名 `tooltip.destroy`)                                                                                                      | `() => void` |    |
-| registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
-| setDataCfg | 更新表格数据                                                                                                                 | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
+| showTooltip | 显示 tooltip   （别名 `tooltip.show`   | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
+| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: [FederatedPointerEvent](https://g.antv.antgroup.com/api/event/event-object) \| MouseEvent, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
+| hideTooltip | 隐藏 tooltip （别名：`tooltip.hide`   | `() => void` |    |
+| destroyTooltip | 销毁 tooltip     （别名 `tooltip.destroy`   | `() => void` |    |
+| registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`   | `() => void` |    |
+| setDataCfg | 更新表格数据       | `<T extends boolean = false>(dataCfg: T extends true ?` [`S2DataConfig`](/docs/api/general/S2DataConfig) `: Partial<`[`S2DataConfig`](/docs/api/general/S2DataConfig)`>, reset?: T) => void` | `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
 | setOptions | 更新表格配置                                                                                                                 | (options: [S2Options](/docs/api/general/S2Options), reset?: boolean) => void |  `reset` 参数需在 `@antv/s2^1.34.0`版本使用  |
 | resetDataCfg | 重置表格数据                                                                                                                 | () => void | |
 | resetOptions | 重置表格配置                                                                                                                 | () => void |   |
@@ -50,7 +50,6 @@ s2.isPivotMode()
 | getTheme | 获取主题 （只包含主题 scheme)                                                                                                    | ( ) => [S2Theme](/docs/api/general/S2Theme/#s2theme) |    |
 | getThemeName | 获取主题名                                                                                                    | ( ) => `default \| colorful \| gray \| dark` |    |
 | updatePagination | 更新分页                                                                                                                   | (pagination: [Pagination](/docs/api/general/S2Options#pagination)) => void |    |
-| getContentHeight | 获取当前表格实际内容高度                                                                                                           | `() => number` |    |
 | changeSheetSize  | 修改表格画布大小，不用重新加载数据                                                                                                      | `(width?: number, height?: number) => void` |    |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|    |
 | getCell | 根据 event.target 获取当前 单元格                                                                                               | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/docs/api/basic-class/base-cell#s2celltype) |    |

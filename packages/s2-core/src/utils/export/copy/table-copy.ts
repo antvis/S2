@@ -18,7 +18,7 @@ import {
   getSelectedRows,
 } from '../method';
 import { BaseDataCellCopy } from './base-data-cell-copy';
-import { assembleMatrix, getFormatter } from './common';
+import { assembleMatrix } from './common';
 import { getHeaderNodeFromMeta } from './core';
 
 class TableDataCellCopy extends BaseDataCellCopy {
@@ -64,18 +64,18 @@ class TableDataCellCopy extends BaseDataCellCopy {
     const { seriesNumber } = this.spreadsheet.options;
 
     return this.displayData.map((row, i) =>
-      this.columnNodes.map((node) => {
+      this.columnNodes.map((node, j) => {
         const field = node?.field;
 
         if (SERIES_NUMBER_FIELD === field && seriesNumber?.enable) {
           return (i + 1).toString();
         }
 
-        const formatter = getFormatter(
+        const formatter = this.getFormatter({
           field,
-          this.config.formatData,
-          this.spreadsheet.dataSet,
-        );
+          rowIndex: i,
+          colIndex: j,
+        });
         const value = row?.[field];
 
         return formatter(value);
@@ -121,11 +121,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
                   continue;
                 }
 
-                const formatter = getFormatter(
+                const formatter = this.getFormatter({
                   field,
-                  this.config.formatData,
-                  this.spreadsheet.dataSet,
-                );
+                  rowIndex,
+                  colIndex: i,
+                });
                 const value = rowData[field];
                 const dataItem = formatter(value);
 
@@ -178,11 +178,11 @@ class TableDataCellCopy extends BaseDataCellCopy {
       ? meta.rowIndex + 1
       : this.displayData[meta.rowIndex]?.[field];
 
-    const formatter = getFormatter(
-      field!,
-      this.config.formatData,
-      this.spreadsheet.dataSet,
-    );
+    const formatter = this.getFormatter({
+      field,
+      rowIndex: meta.rowIndex,
+      colIndex: meta.colIndex,
+    });
 
     return formatter(value);
   };
@@ -192,7 +192,7 @@ class TableDataCellCopy extends BaseDataCellCopy {
 
     // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (it) => convertString(this.getValueFromMeta(it))),
+      map(cellsMeta, (meta) => convertString(this.getValueFromMeta(meta))),
     ) as string[][];
 
     if (!copy?.withHeader) {

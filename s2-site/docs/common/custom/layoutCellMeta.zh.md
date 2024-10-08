@@ -13,4 +13,4 @@ LayoutCellMeta = (viewMeta: ViewMeta) => ViewMeta | null;
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | --- | ---  | --- |
-| vieMeta | [ViewMeta](#viewmeta) |  |    | 单元格元信息 |
+| viewMeta | [ViewMeta](#viewmeta) |  |    | 单元格元信息 |

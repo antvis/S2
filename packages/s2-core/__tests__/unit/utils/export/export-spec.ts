@@ -1,11 +1,18 @@
 /* eslint-disable jest/expect-expect */
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options, SpreadSheet } from '../../../../src';
+import {
+  asyncGetAllData,
+  asyncGetAllHtmlData,
+  type S2DataConfig,
+  type S2Options,
+  type SpreadSheet,
+} from '../../../../src';
 import { customRowGridSimpleFields } from '../../../data/custom-grid-simple-fields';
 import { CustomGridData } from '../../../data/data-custom-grid';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import {
   createPivotSheet,
+  createTableSheet,
   expectMatchSnapshot,
   getContainer,
 } from '../../../util/helpers';
@@ -53,6 +60,40 @@ describe('TableSheet Export Test', () => {
     );
 
     await expectMatchSnapshot(s2);
+  });
+
+  // https://github.com/antvis/S2/issues/2828
+  it('should export correct HTML data', async () => {
+    const s2 = createTableSheet(assembleOptions(), { useSimpleData: false });
+
+    await expectMatchSnapshot(s2, true, asyncGetAllHtmlData);
+  });
+
+  it('should export correct all type data', async () => {
+    const s2 = createTableSheet(assembleOptions(), { useSimpleData: false });
+
+    await expectMatchSnapshot(s2, true, asyncGetAllData);
+  });
+
+  it('should called with cell view meta when export formatted data', async () => {
+    const formatter = jest.fn();
+
+    const s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'number', formatter }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions(),
+    );
+
+    await expectMatchSnapshot(s2);
+
+    const viewMeta = s2.facet.getCellMeta(76, 4);
+
+    expect(formatter).toHaveBeenLastCalledWith(78868, viewMeta.data, viewMeta);
   });
 });
 
@@ -388,6 +429,43 @@ describe('PivotSheet Export Test', () => {
       formatHeader: true,
       formatData: true,
     });
+  });
+
+  // https://github.com/antvis/S2/issues/2828
+  it('should export correct HTML data', async () => {
+    const s2 = createPivotSheet(s2Options, { useSimpleData: false });
+
+    await expectMatchSnapshot(s2, true, asyncGetAllHtmlData);
+  });
+
+  it('should export correct all type data', async () => {
+    const s2 = createPivotSheet(s2Options, { useSimpleData: false });
+
+    await expectMatchSnapshot(s2, true, asyncGetAllData);
+  });
+
+  // https://github.com/antvis/S2/issues/2866
+  it('should called with cell view meta when export formatted data', async () => {
+    const formatter = jest.fn();
+
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter,
+          },
+        ],
+      }),
+      s2Options,
+    );
+
+    await expectMatchSnapshot(s2);
+
+    const viewMeta = s2.facet.getCellMeta(7, 3);
+
+    expect(formatter).toHaveBeenLastCalledWith(352, viewMeta.data, viewMeta);
   });
 
   describe('Custom Tree Export Test', () => {

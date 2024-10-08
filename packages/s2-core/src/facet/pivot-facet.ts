@@ -104,7 +104,7 @@ export class PivotFacet extends FrozenFacet {
   /**
    * 根据行列索引获取单元格元数据
    */
-  public getCellMeta(rowIndex = 0, colIndex = 0) {
+  public getCellMeta(rowIndex: number = 0, colIndex: number = 0) {
     const { options, dataSet } = this.spreadsheet;
     const { rowLeafNodes, colLeafNodes } = this.getLayoutResult();
     const row = rowLeafNodes[rowIndex];
@@ -1032,5 +1032,17 @@ export class PivotFacet extends FrozenFacet {
     }
 
     return this.validFrozenOptions;
+  }
+
+  public getContentWidth(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+
+    return rowsHierarchy.width + colsHierarchy.width;
+  }
+
+  public getContentHeight(): number {
+    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
+
+    return rowsHierarchy.height + colsHierarchy.height;
   }
 }

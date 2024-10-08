@@ -629,7 +629,11 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get content height', () => {
-    expect(s2.getContentHeight()).toEqual(120);
+    expect(s2.facet.getContentHeight()).toEqual(120);
+  });
+
+  test('should get content width', () => {
+    expect(s2.facet.getContentWidth()).toEqual(384);
   });
 
   test('should get layout width type', () => {

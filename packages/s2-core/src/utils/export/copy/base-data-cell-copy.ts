@@ -2,6 +2,7 @@ import {
   AsyncRenderThreshold,
   TAB_SEPARATOR,
   type DataItem,
+  type Formatter,
   type SimpleData,
 } from '../../../common';
 import type {
@@ -69,5 +70,25 @@ export abstract class BaseDataCellCopy {
       this.matrixPlainTextTransformer(dataMatrix, separator),
       this.matrixHtmlTransformer(dataMatrix),
     ];
+  }
+
+  protected getFormatter(options: {
+    field: string;
+    rowIndex: number;
+    colIndex: number;
+  }): Formatter {
+    const { field, rowIndex, colIndex } = options;
+
+    if (this.config.formatData) {
+      const viewMeta = this.spreadsheet.facet.getCellMeta(rowIndex, colIndex);
+
+      return (value) => {
+        const formatter = this.spreadsheet.dataSet.getFieldFormatter(field!);
+
+        return formatter?.(value, viewMeta?.data, viewMeta);
+      };
+    }
+
+    return ((value) => value) as Formatter;
   }
 }

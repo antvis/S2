@@ -1,3 +1,39 @@
+# [@antv/s2-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.27...@antv/s2-v2.0.0-next.28) (2024-09-18)
+
+
+### Bug Fixes
+
+* 修复 expandDepth 在自定义行头场景下不生效 ([#2895](https://github.com/antvis/S2/issues/2895)) ([d83a816](https://github.com/antvis/S2/commit/d83a81674e587eab129630c0d3bc4f87b6550471))
+* 修复浏览器窗口多次放大后表格渲染模糊 close [#2884](https://github.com/antvis/S2/issues/2884) ([#2897](https://github.com/antvis/S2/issues/2897)) ([97e2905](https://github.com/antvis/S2/commit/97e2905d6b42a20728950cd51ddabd3bcdd14f1e))
+* 移动端关闭 supportsPointerEvents, 避免禁用 touchAction close [#2857](https://github.com/antvis/S2/issues/2857) ([#2891](https://github.com/antvis/S2/issues/2891)) ([14c55aa](https://github.com/antvis/S2/commit/14c55aa7aae2e1fab63e612f7ecdaa00e7e7b567))
+
+
+### Features
+
+* 新增 s2.facet.getContentWidth() API ([#2883](https://github.com/antvis/S2/issues/2883)) ([395db7e](https://github.com/antvis/S2/commit/395db7e313fd1de6e42ee5dd4d6c475c517609d4))
+
+
+### BREAKING CHANGES
+
+* 移除 s2.getContentHeight() API
+
+* docs: 补充迁移文档
+
+# [@antv/s2-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.26...@antv/s2-v2.0.0-next.27) (2024-08-23)
+
+
+### Bug Fixes
+
+* 修复在局部复制和导出场景时, 格式化函数获取不到单元格信息 close [#2866](https://github.com/antvis/S2/issues/2866) ([#2871](https://github.com/antvis/S2/issues/2871)) ([f0db754](https://github.com/antvis/S2/commit/f0db75405561e0c841ae2fe57fb490f08dad7d50))
+* 修复在明细表中绘制 G2 图表, 点击单元格报错 close [#2843](https://github.com/antvis/S2/issues/2843) ([#2864](https://github.com/antvis/S2/issues/2864)) ([8684fb2](https://github.com/antvis/S2/commit/8684fb286279c4d1e280e00baf197f154ac3a540))
+* 修复自定义列头导出数据时, 角头文本展示错误 close [#2844](https://github.com/antvis/S2/issues/2844) ([#2869](https://github.com/antvis/S2/issues/2869)) ([63dba54](https://github.com/antvis/S2/commit/63dba54b947b1c36a996004823841c98284c232a))
+
+
+### Features
+
+* **i18n:** add support of the russian language ([#2853](https://github.com/antvis/S2/issues/2853)) ([3dcf491](https://github.com/antvis/S2/commit/3dcf4913f37d222fe6c57a780bc00cab8829953d))
+* 导出组件支持复制 HTML (text/html) 格式的数据 close [#2828](https://github.com/antvis/S2/issues/2828) ([#2865](https://github.com/antvis/S2/issues/2865)) ([444fbf5](https://github.com/antvis/S2/commit/444fbf55b25e4edff70e9c58efa023a0274a3b1f))
+
 # [@antv/s2-v2.0.0-next.26](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.25...@antv/s2-v2.0.0-next.26) (2024-08-09)
 
 

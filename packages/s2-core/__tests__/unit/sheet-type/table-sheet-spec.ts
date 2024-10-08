@@ -297,7 +297,11 @@ describe('TableSheet Tests', () => {
   });
 
   test('should get content height', () => {
-    expect(s2.getContentHeight()).toEqual(120);
+    expect(s2.facet.getContentHeight()).toEqual(120);
+  });
+
+  test('should get content width', () => {
+    expect(s2.facet.getContentWidth()).toEqual(480);
   });
 
   test('get sheetInstance from canvas', () => {

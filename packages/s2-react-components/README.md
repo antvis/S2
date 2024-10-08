@@ -34,7 +34,7 @@ $ pnpm add @antv/s2-react-components
 ```tsx
 import React from 'React'
 import { ThemePanel, TextAlignPanel, FrozenPanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/s2-react-components.min.css'
+import '@antv/s2-components/dist/style.min.css'
 
 const App = () => {
   return (
@@ -84,7 +84,7 @@ const App = () => {
 ```tsx
 import React from 'React'
 import { ThemePanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/s2-react-components.min.css'
+import '@antv/s2-components/dist/style.min.css'
 
 const App = () => {
   const s2Ref = React.useRef<SpreadSheet>();

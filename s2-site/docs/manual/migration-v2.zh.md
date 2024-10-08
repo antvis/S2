@@ -203,16 +203,16 @@ const s2Options = {
 }
 ```
 
-2. 废弃 `copyData`, 新增 `asyncGetAllPlainData`, 支持异步获取数据。
+2. 废弃 `copyData`, 新增 `asyncGetAllData/asyncGetAllPlainData/asyncGetAllHtmlData`, 支持异步获取数据。
 
 ```diff
 - const data = copyData(spreadsheet, '\t', false)
 
-+ const data = await asyncGetAllPlainData({
-+  sheetInstance: s2,
-+  split: '\t',
-+  formatOptions: false,
-+  async: true,
++ const data = await asyncGetAllData({
++   sheetInstance: s2,
++   split: '\t',
++   formatOptions: false,
++   async: true,
 });
 ```
 
@@ -220,7 +220,7 @@ const s2Options = {
 
 ```diff
 - const data = copyToClipboard(data: string, sync: boolean)
-+ const data = copyToClipboard(data: string, async: boolean)
++ const data = copyToClipboard(data: Copyable | string, async: boolean)
 ```
 
 4. 复制默认开启。
@@ -565,6 +565,7 @@ export interface LayoutResult {
 +   "$$extra$$": "number"
 +  }
 }
+```
 
 明细表：
 
@@ -581,6 +582,14 @@ export interface LayoutResult {
 +    "colIndex": 2
 +  }
 }
+```
+
+5. 原 `s2.getContentHeight()` 废弃，移动到 `s2.facet.getContentHeight()` 中
+
+```diff
+- s2.getContentHeight()
++ s2.facet.getContentHeight()
++ s2.facet.getContentWidth()
 ```
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
@@ -652,7 +661,7 @@ const s2Options = {
 
 ```js
 {
-  fields:{
+  fields: {
     rows: ["province", "city"],
     columns: ["type", "subType"],
     values: ["number1", "number2"],
@@ -720,6 +729,40 @@ const s2Options = {
 ```
 
 具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
+
+#### 透视表数值单元格元数据数据结构变更
+
+`this.meta.data` 数据结构变更：
+
+```diff
+{
+-  "number": 7789,
+-  "province": "浙江省",
+-  "city": "杭州市",
+-  "type": "家具",
+-  "sub_type": "桌子",
+
++  "extraField": "number",
++    "raw": {
++    "number": 7789,
++    "province": "浙江省",
++    "city": "杭州市",
++    "type": "家具",
++    "sub_type": "桌子"
++ },
++  "$$extra$$": "number",
++  "$$value$$": 7789,
++  "$$origin$$": {
++    "number": 7789,
++    "province": "浙江省",
++    "city": "杭州市",
++    "type": "家具",
++    "sub_type": "桌子"
++  }
+}
+```
+
+具体请查看 [CellData](/api/basic-class/cell-data) 相关文档。
 
 #### 单元格刷选选中状态变更
 
@@ -880,7 +923,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ```
 
-### 数值单元格获取数值范围区间方式变更
+#### 数值单元格获取数值范围区间方式变更
 
 ```diff
 - dataCell.valueRangeByField
@@ -958,7 +1001,9 @@ const header = {
 
 具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
 
-#### 导出组件配置调整
+#### 导出组件配置和行为调整
+
+1. 配置变更
 
 `syncCopy` 变更为 `async`
 
@@ -966,6 +1011,8 @@ const header = {
 - <Export syncCopy={true} />
 + <Export async={false} />
 ```
+
+2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
 
 #### Tooltip 菜单项配置调整
 
