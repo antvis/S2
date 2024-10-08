@@ -1324,6 +1324,37 @@ export abstract class BaseFacet {
     }
   };
 
+  private getTouchAction = (): string[] => {
+    const { scrollX, scrollY } = this.getScrollOffset();
+    const touchActions = [];
+
+    if (this.hRowScrollBar && scrollX === 0) {
+      touchActions.push('pan-left');
+    }
+
+    if (!this.hRowScrollBar) {
+      touchActions.push('pan-x');
+    }
+
+    if (scrollX === this.hScrollBar?.scrollTargetMaxOffset) {
+      touchActions.push('pan-right');
+    }
+
+    if (this.vScrollBar && scrollY === 0) {
+      touchActions.push('pan-up');
+    }
+
+    if (!this.vScrollBar) {
+      touchActions.push('pan-y');
+    }
+
+    if (scrollY === this.vScrollBar?.scrollTargetMaxOffset) {
+      touchActions.push('pan-down');
+    }
+
+    return touchActions;
+  };
+
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
     let { deltaX, deltaY, offsetX, offsetY } = event;
@@ -1339,6 +1370,14 @@ export abstract class BaseFacet {
       deltaX = deltaY;
       offsetY -= deltaY;
       deltaY = 0;
+    }
+
+    if (isMobile()) {
+      const touchActions = this.getTouchAction();
+      const touchActionStr = touchActions.join(' ');
+      const canvas = this.spreadsheet.getCanvasElement();
+
+      canvas.style.touchAction = touchActionStr;
     }
 
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
