@@ -21,6 +21,44 @@
       },
       "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A9oWSbAfHu4AAAAAAAAAAAAADmJ7AQ/original",
       "new": true
+    },
+    {
+      "filename": "pivot-chart.ts",
+      "title": {
+        "zh": "透视组合图",
+        "en": "PivotChart"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*53HBSp-muMwAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+    {
+      "filename": "pivot-chart-polar.ts",
+      "title": {
+        "zh": "透视组合图 - 极坐标系",
+        "en": "PivotChart Polar"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*XEBxSZXyip4AAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+
+    {
+      "filename": "pivot-chart-spec.ts",
+      "title": {
+        "zh": "透视组合图 - 自定义 spec",
+        "en": "PivotChart Polar Custom Spec"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Y6uQRYoYSdcAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
+    },
+
+    {
+      "filename": "pivot-chart-cell.ts",
+      "title": {
+        "zh": "透视组合图 - 自定义 cell",
+        "en": "PivotChart Polar Custom Cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*V-TMTaDYzxcAAAAAAAAAAAAADmJ7AQ/original",
+      "new": true
     }
   ]
 }

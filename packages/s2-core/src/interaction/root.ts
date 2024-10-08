@@ -38,12 +38,13 @@ import { customMerge } from '../utils';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
   getActiveHoverHeaderCells,
-  updateAllColHeaderCellState,
+  updateAllHeaderCellState,
 } from '../utils/interaction/hover-event';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import {
   getCellMeta,
   getRowCellForSelectedCell,
+  groupSelectedCells,
 } from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
@@ -268,8 +269,15 @@ export class RootInteraction {
    * @example s2.interaction.isActiveCell(cell)
    */
   public isActiveCell(cell: S2CellType): boolean {
-    return !!this.getCells().find((meta) => cell.getMeta().id === meta.id);
+    return !!this.getCells().find(
+      (meta) => cell.getMeta().id === meta.id && cell.cellType === meta.type,
+    );
   }
+
+  public shouldForbidHeaderCellSelected = (selectedCells: CellMeta[]) => {
+    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义
+    return unionBy(selectedCells, 'type').length > 1;
+  };
 
   /**
    * 是否是选中的单元格
@@ -622,8 +630,7 @@ export class RootInteraction {
       return;
     }
 
-    // 禁止跨单元格选择, 这样计算出来的数据和交互没有任何意义.
-    if (unionBy(selectedCells, 'type').length > 1) {
+    if (this.shouldForbidHeaderCellSelected(selectedCells)) {
       return;
     }
 
@@ -638,7 +645,7 @@ export class RootInteraction {
       stateName,
     });
 
-    const selectedCellIds = selectedCells.map(({ id }) => id);
+    const selectedCellIds = groupSelectedCells(selectedCells);
 
     this.updateCells(this.spreadsheet.facet.getHeaderCells(selectedCellIds));
 
@@ -1091,7 +1098,7 @@ export class RootInteraction {
         : interaction.getSelectedCellHighlight();
 
     if (colHeader && colId) {
-      updateAllColHeaderCellState(colId, facet.getColCells(), stateName);
+      updateAllHeaderCellState(colId, facet.getColCells(), stateName);
     }
   }
 }

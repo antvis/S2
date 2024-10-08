@@ -16,6 +16,8 @@ export enum S2Event {
   // 内部用来通信的 event
   ROW_CELL_COLLAPSED__PRIVATE = 'row-cell:collapsed__private',
   ROW_CELL_ALL_COLLAPSED__PRIVATE = 'row-cell:all-collapsed__private',
+  DATA_CELL_HOVER_TRIGGERED_PRIVATE = 'data-cell:hover-trigger__private',
+  DATA_CELL_CLICK_TRIGGERED_PRIVATE = 'data-cell:click-trigger__private',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',

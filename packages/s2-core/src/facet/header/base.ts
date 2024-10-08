@@ -44,7 +44,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   }
 
   // start render header
-  public render(type: string): void {
+  public render(type?: string): void {
     // clear resize group
     this.clearResizeAreaGroup(type);
     // clear self first
@@ -63,7 +63,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param scrollY hScrollBar vertical offset
    * @param type
    */
-  public onScrollXY(scrollX: number, scrollY: number, type: string): void {
+  public onScrollXY(scrollX: number, scrollY: number, type?: string): void {
     this.headerConfig.scrollX = scrollX;
     this.headerConfig.scrollY = scrollY;
     this.render(type);
@@ -74,7 +74,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param rowHeaderScrollX  hRowScrollbar horizontal offset
    * @param type
    */
-  public onRowScrollX(rowHeaderScrollX: number, type: string): void {
+  public onRowScrollX(rowHeaderScrollX: number, type?: string): void {
     this.headerConfig.scrollX = rowHeaderScrollX;
     this.render(type);
   }
@@ -83,7 +83,11 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * 清空热区，为重绘做准备，防止热区重复渲染
    * @param type 当前重绘的header类型
    */
-  protected clearResizeAreaGroup(type: string) {
+  protected clearResizeAreaGroup(type?: string) {
+    if (!type) {
+      return;
+    }
+
     const foregroundGroup = this.parentNode as Group;
     const resizerGroup = foregroundGroup?.getElementById<Group>(type);
 

@@ -442,6 +442,15 @@ export abstract class HeaderCell<
     return this.leftIconPosition || this.rightIconPosition;
   }
 
+  protected getInteractedCells() {
+    return this.spreadsheet.interaction?.getCells([
+      CellType.CORNER_CELL,
+      CellType.COL_CELL,
+      CellType.ROW_CELL,
+      CellType.SERIES_NUMBER_CELL,
+    ]);
+  }
+
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
@@ -452,12 +461,7 @@ export abstract class HeaderCell<
       return;
     }
 
-    const cells = interaction?.getCells([
-      CellType.CORNER_CELL,
-      CellType.COL_CELL,
-      CellType.ROW_CELL,
-      CellType.SERIES_NUMBER_CELL,
-    ]);
+    const cells = this.getInteractedCells();
 
     if (!first(cells)) {
       return;

@@ -81,6 +81,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         InteractionStateName.SELECTED,
         meta,
       );
+      this.spreadsheet.emit(S2Event.DATA_CELL_CLICK_TRIGGERED_PRIVATE, cell);
     });
   }
 

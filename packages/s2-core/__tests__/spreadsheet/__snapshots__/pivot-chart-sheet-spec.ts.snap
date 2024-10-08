@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 1`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]总计",
+    "width": 200,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 2`] = `
+Array [
+  Object {
+    "height": 250,
+    "id": "root[&]四川省",
+    "width": 200,
+    "x": 0,
+    "y": 300,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 3`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]总计",
+    "width": 100,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 4`] = `
+Array [
+  Object {
+    "height": 250,
+    "id": "root[&]四川省",
+    "width": 100,
+    "x": 0,
+    "y": 300,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 5`] = `Array []`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 6`] = `Array []`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 7`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 200,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen 8`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 200,
+    "x": 600,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen but row header 1`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 300,
+    "x": 0,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具[&]桌子",
+    "width": 300,
+    "x": 0,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]家具",
+    "width": 300,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen but row header 2`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 300,
+    "x": 900,
+    "y": 60,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品[&]纸张",
+    "width": 300,
+    "x": 900,
+    "y": 30,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]办公用品",
+    "width": 300,
+    "x": 900,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen but row header 3`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]家具[&]桌子[&]number",
+    "width": 300,
+    "x": 0,
+    "y": 0,
+  },
+]
+`;
+
+exports[`Pivot Chart Tests frozen should render pivot chart with frozen but row header 4`] = `
+Array [
+  Object {
+    "height": 50,
+    "id": "root[&]办公用品[&]纸张[&]number",
+    "width": 300,
+    "x": 900,
+    "y": 0,
+  },
+]
+`;

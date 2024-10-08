@@ -46,6 +46,7 @@ export type SheetType =
   | 'pivot'
   | 'table'
   | 'chart'
+  | 'pivotChart'
   | 'gridAnalysis'
   | 'strategy'
   | 'editable';

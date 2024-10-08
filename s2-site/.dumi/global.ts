@@ -16,8 +16,12 @@ if (window) {
   (
     window as any
   ).gPluginRoughCanvasRenderer = require('@antv/g-plugin-rough-canvas-renderer');
+  
   (window as any).g2 = require('@antv/g2');
+  
   (window as any).s2 = require('@antv/s2');
+  (window as any)._extends = require('@antv/s2/extends');
+
   (window as any).s2React = require('@antv/s2-react');
 
   // 本地通过 monorepoRedirect link 时不需要引入样式, 发布时引入, 避免样式丢失

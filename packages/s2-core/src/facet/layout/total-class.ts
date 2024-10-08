@@ -29,4 +29,8 @@ export class TotalClass {
     this.isGrandTotals = isGrandTotals;
     this.isTotalRoot = isTotalRoot;
   }
+
+  static isTotalClassInstance(value: unknown): value is TotalClass {
+    return value instanceof TotalClass;
+  }
 }

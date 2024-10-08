@@ -41,9 +41,8 @@ export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
  * row
  */
 export const KEY_GROUP_ROW_SCROLL = 'rowScrollGroup';
-export const KEY_GROUP_ROW_HEADER_FROZEN = 'rowHeaderFrozenGroup';
-export const KEY_GROUP_ROW_HEADER_FROZEN_TRAILING =
-  'rowHeaderFrozenTrailingGroup';
+export const KEY_GROUP_ROW_FROZEN = 'rowHeaderFrozenGroup';
+export const KEY_GROUP_ROW_FROZEN_TRAILING = 'rowHeaderFrozenTrailingGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 
 /**

@@ -4,20 +4,17 @@ import { SERIES_NUMBER_FIELD } from '../../../../src';
 describe('Node Test', () => {
   const root = new Node({
     id: 'root',
-    key: 'root',
     value: 'root',
     children: [],
   });
   const child = new Node({
     id: 'child',
-    key: 'child',
     value: 'child',
     isLeaf: true,
     children: [],
   });
   const node = new Node({
     id: 'root[&]country',
-    key: '',
     value: '',
     field: 'country',
     parent: root,
@@ -46,7 +43,7 @@ describe('Node Test', () => {
   });
 
   test('#getHeadLeafChild()', () => {
-    expect(node.getHeadLeafChild().id).toEqual('child');
+    expect(node.getHeadLeafChild()?.id).toEqual('child');
   });
 
   test('#getTotalHeightForTreeHierarchy()', () => {
