@@ -930,6 +930,19 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 + dataCell.getValueRange()
 ```
 
+#### 分割线主题配置默认值变更
+
+分割线的 `颜色` 和 `透明度` 默认值移除，默认和所在区域对应的单元格保持一致。
+
+```diff
+splitLine: {
+-  horizontalBorderColor: basicColors[12],
+-  horizontalBorderColorOpacity: 0.2,
+-  verticalBorderColor: basicColors[12],
+-  verticalBorderColorOpacity: 0.25,
+}
+```
+
 ### 组件层 <Badge>@antv/s2-react</Badge>
 
 #### 支持 React 18 和 Ant Design 5.0

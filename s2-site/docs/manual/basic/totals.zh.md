@@ -96,11 +96,11 @@ order: 5
 
 | 参数                | 说明                     | 类型         | 默认值 | 必选 |
 | ------------------- | ------------------------ | ------------ | ------ | ---- |
-| showGrandTotals     | 是否显示总计             | `boolean`    | false  | ✓    |
-| showSubTotals       | 是否显示小计。当配置为对象时，always 控制是否在子维度不足 2 个时始终展示小计，默认不展示。  | `boolean \| { always: boolean }`    | false  | ✓    |
-| subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     | ✓    |
-| reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  | ✓    |
-| reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  | ✓    |
+| showGrandTotals     | 是否显示总计             | `boolean`    | false  |     |
+| showSubTotals       | 是否显示小计。配置为对象时，`always` 用于控制当子维度小于 2 个时是否始终展示小计，默认展示  | `boolean \| { always: boolean }`    | false  |     |
+| subTotalsDimensions | 小计的汇总维度           | `string[]`   | []     |     |
+| reverseGrandTotalsLayout       | 总计布局位置，默认下或右 | `boolean`    | false  |     |
+| reverseSubTotalsLayout    | 小计布局位置，默认下或右 | `boolean`    | false  |     |
 | grandTotalsLabel               | 总计别名                 | `string`     |   `总计`     |      |
 | subTotalsLabel            | 小计别名                 | `string`     |   `小计`     |      |
 | calcGrandTotals          | 计算总计                 | `CalcTotals` |        |      |

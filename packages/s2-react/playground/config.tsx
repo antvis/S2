@@ -442,7 +442,7 @@ export const sliderOptions: SliderSingleProps = {
 };
 
 export const s2ThemeConfig: ThemeCfg = {
-  name: 'default',
+  name: 'colorful',
   theme: {},
 };
 

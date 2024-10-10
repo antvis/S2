@@ -563,8 +563,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#3471F9",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -572,8 +570,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#5286FA",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -1142,8 +1138,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#7899ff",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -1151,8 +1145,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#7899ff",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -1721,8 +1713,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#326EF4",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -1730,8 +1720,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#326EF4",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -2300,8 +2288,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#BAC1CC",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -2309,8 +2295,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#BAC1CC",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -2879,8 +2863,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#326EF4",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -2888,8 +2870,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#326EF4",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
@@ -3458,8 +3438,6 @@ Object {
   },
   "splitLine": Object {
     "borderDash": Array [],
-    "horizontalBorderColor": "#326EF4",
-    "horizontalBorderColorOpacity": 0.2,
     "horizontalBorderWidth": 2,
     "shadowColors": Object {
       "left": "rgba(0,0,0,0.1)",
@@ -3467,8 +3445,6 @@ Object {
     },
     "shadowWidth": 8,
     "showShadow": true,
-    "verticalBorderColor": "#326EF4",
-    "verticalBorderColorOpacity": 0.25,
     "verticalBorderWidth": 2,
   },
 }
