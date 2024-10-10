@@ -101,39 +101,24 @@ export class Frame extends Group {
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
-    if (spreadsheet.isPivotMode()) {
-      const y2 =
-        position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
-
-      this.cornerRightBorder = renderLine(this, {
-        x1: x,
-        y1: position.y,
-        x2: x,
-        y2,
-        stroke: verticalBorderColor,
-        lineWidth: frameVerticalWidth,
-        strokeOpacity: verticalBorderColorOpacity,
-      });
-
-      return;
-    }
-
     // 明细表需要区分头部的边框和明细格子的边框
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
-    } = spreadsheet.options.seriesNumber?.enable
-      ? spreadsheet.theme.cornerCell!.cell!
-      : spreadsheet.theme.colCell!.cell!;
+    } =
+      spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
+        ? spreadsheet.theme.cornerCell!.cell!
+        : spreadsheet.theme.colCell!.cell!;
 
     renderLine(this, {
       x1: x,
       y1: position.y,
       x2: x,
       y2: position.y + cornerHeight,
-      stroke: headerVerticalBorderColor,
+      stroke: verticalBorderColor || headerVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      strokeOpacity: headerVerticalBorderColorOpacity,
+      strokeOpacity:
+        verticalBorderColorOpacity || headerVerticalBorderColorOpacity,
     });
 
     const {
@@ -146,9 +131,10 @@ export class Frame extends Group {
       y1: position.y + cornerHeight + horizontalBorderWidth!,
       x2: x,
       y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
-      stroke: cellVerticalBorderColor,
+      stroke: verticalBorderColor || cellVerticalBorderColor,
       lineWidth: frameVerticalWidth,
-      strokeOpacity: cellVerticalBorderColorOpacity,
+      strokeOpacity:
+        verticalBorderColorOpacity || cellVerticalBorderColorOpacity,
     });
   }
 
@@ -167,6 +153,15 @@ export class Frame extends Group {
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
     } = spreadsheet.theme?.splitLine!;
+
+    const {
+      horizontalBorderColor: headerHorizontalBorderColor,
+      horizontalBorderColorOpacity: headerHorizontalBorderColorOpacity,
+    } =
+      spreadsheet.options.seriesNumber?.enable || spreadsheet.isPivotMode()
+        ? spreadsheet.theme.cornerCell!.cell!
+        : spreadsheet.theme.colCell!.cell!;
+
     const x1 = position.x;
     const x2 =
       x1 +
@@ -181,9 +176,10 @@ export class Frame extends Group {
       y1: y,
       x2,
       y2: y,
-      stroke: horizontalBorderColor,
+      stroke: horizontalBorderColor || headerHorizontalBorderColor,
       lineWidth: horizontalBorderWidth,
-      opacity: horizontalBorderColorOpacity,
+      opacity:
+        horizontalBorderColorOpacity || headerHorizontalBorderColorOpacity,
     });
   }
 
