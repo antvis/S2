@@ -5,7 +5,6 @@ import {
   StrategySheetDataCell,
   type SheetComponentOptions,
 } from '@/components';
-import { strategyCopy } from '@/components/export/strategy-copy';
 import {
   CSV_SEPARATOR,
   CellType,
@@ -16,6 +15,7 @@ import {
   TAB_SEPARATOR,
   customMerge,
   getCellMeta,
+  strategyCopy,
   type GEvent,
   type S2DataConfig,
 } from '@antv/s2';

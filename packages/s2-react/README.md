@@ -24,9 +24,9 @@
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-react
-# npm install @antv/s2-react --save
-# yarn add @antv/s2-react
+$ pnpm add @antv/s2-react@next
+# npm install @antv/s2-react@next --save
+# yarn add @antv/s2-react@next
 ```
 
 ## 🔨 使用
@@ -143,7 +143,7 @@ const s2Options = {
 ```tsx
 import React from 'React'
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 const App = () => {
   return (

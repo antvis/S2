@@ -42,30 +42,39 @@ tag: New
 
 ## 📦 安装
 
-```bash
-# 基础版本
-$ npm install @antv/s2@next --save
+<embed src="@/docs/common/install.zh.md"></embed>
 
-# React 版本
-$ npm install @antv/s2-react@next antd @ant-design/icons --save
-
-# Vue3 版本
-$ npm install @antv/s2-vue@next ant-design-vue@3.x --save
-```
-
-| Package                                                                    | Version                                                       | Size                                                                                                                        | Download                                                      |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [@antv/s2](https://github.com/antvis/S2/tree/next/packages/s2-core)        | ![next](https://img.shields.io/npm/v/@antv/s2/next.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@next/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/next/packages/s2-react) | ![next](https://img.shields.io/npm/v/@antv/s2-react/next.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@next/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/next/packages/s2-vue)     | ![next](https://img.shields.io/npm/v/@antv/s2-vue/next.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@next/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 ## ⭐ 新增功能
 
 官网目录标记为 <Badge type="success">New</Badge> 和 <Badge>Updated</Badge> 则表示新增功能，也可以查看官方语雀博客 [S2 2.0 表格看数新纪元](https://www.yuque.com/antv/blog/1122_7_s2).
 
+## 📦 构建产物调整
+
+- `ESModule/CommonJS`
+
+所有包的 `ESModule (esm)` 和 `CommonJS (lib)` 构建产物从 `Bundle` 调整为 `Bundless`, 其所依赖的子模块会被直接拷贝输出，不再做编译，以便于更好的支持代码 `tree shaking`, 减少包体积。
+
+- `UMD`
+
+所有包的 `UMD (dist)` 构建产物依然为 `Bundle` 单文件，**文件名**和**全局变量名**有所调整：
+
+| 包名  | 文件名（修改前） | 文件名（修改后） |
+| -------- | ------ | --------- |
+| `@antv/s2` | `dist/index.min.js` `dist/style.min.css` | `dist/s2.min.css` `dist/s2.min.css` |
+| `@antv/s2-react` | `dist/index.min.js` `dist/style.min.css` | `dist/s2-react.min.css` `dist/s2-react.min.css` |
+| `@antv/s2-vue` | `dist/index.min.js` `dist/style.min.css` | `dist/s2-vue.min.css` `dist/s2-vue.min.css` |
+
+| 包名  | 全局变量名（修改前） | 全局变量名（修改后） |
+| -------- | ------ | --------- |
+| `@antv/s2` | `S2` | `S2` |
+| `@antv/s2-react` | `S2-React` | `S2React` |
+| `@antv/s2-vue` | `S2-Vue` | `S2Vue` |
+
 ## 📣 不兼容的变化
 
-### 基础包 <Badge>@antv/s2</Badge>
+### 基础包 (s2) <Badge>@antv/s2</Badge>
 
 #### 底层渲染引擎升级为 `AntV/G 6.0`
 
@@ -930,111 +939,250 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 + dataCell.getValueRange()
 ```
 
-### 组件层 <Badge>@antv/s2-react</Badge>
+### 组件层 (s2-react) <Badge>@antv/s2-react</Badge>
 
-#### 支持 React 18 和 Ant Design 5.0
+#### 移除 Ant Design 组件库依赖
 
-:::info{title="提示"}
-React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后续兼容视情况而定。
+:::info
+`2.x` 版本中移除了 `antd` 的依赖，组件内部更轻量，不再受项目 `antd` 的版本限制，升级更平滑，推荐自行组合使用。
 :::
 
-`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`, 由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件升级到了 `antd@5.x`.
+##### 表头组件移除
 
-#### Ant Design 多版本共存
-
-对于项目使用的是 `antd@4.x`, 或者所依赖的其他库间接依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
-
-```json
-// $ npm install --save antd-v5@npm:antd@5
-{
-  "antd": "4.x",
-  "antd-v5": "npm:antd@5"
-}
-```
-
-通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
-
-:::warning{title="注意"}
-其他打包工具 （如 `Vite`) 或者基于 `webpack` 封装的库或框架（如 `father`, `umi`) 同理，请自行搜索，这里不再赘述。
-需要注意的是：这种方式为临时过渡解决方案，从长远来看，**[Ant Design v4 版本已于 2023 年年底停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn)，建议尽快升级至 `antd@5.x`.**
-:::
-
-自定义 webpack 插件参考：
-
-```ts
-class AntdV5AliasPlugin {
-  apply(compiler) {
-    compiler.hooks.normalModuleFactory.tap("AntdV5AliasPlugin", (nmf) => {
-      nmf.hooks.beforeResolve.tapAsync("AntdV5AliasPlugin", (resolveData, callback) => {
-        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react')) {
-          // 匹配："antd" 和 "antd/es/locale/xxx"
-          if (/antd(\/*)?/.test(resolveData.request)) {
-            // 替换为："antd-v5" 和 "antd-v5/es/locale/xxx"
-            resolveData.request = resolveData.request.replace(/antd(\/*)?/,'antd-v5$1')
-          }
-        }
-
-        callback();
-      });
-    });
-  }
-}
-```
-
-#### 表头组件配置调整
-
-`exportCfg/advancedSortCfg/switcherCfg` 调整为 `export/advancedSort/switcher`.
+`header` 属性移除，相关配置 (`switcher`, `export`, `advancedSort`) 等对应的组件迁移至 `@antv/s2-react-components` 中，可以单独按需引入。
 
 ```diff
-const header = {
--  exportCfg: {},
--  advancedSortCfg: {},
--  switcherCfg: {},
-
-+  export: {},
-+  advancedSort: {},
-+  switcher: {},
-};
-
-<SheetComponent header={header} />
+<SheetComponent
+-  header={{
+-    title: "",
+-    description: "",
+-    switcher: { open: true },
+-    export: { open: true },
+-    advancedSort: { open: true },
+-  }}
+/>
 ```
 
-具体请查看 [表头](/manual/advanced/analysis/header) 相关文档。
+##### 组件内部的 ConfigProvider 移除
 
-#### 导出组件配置和行为调整
+`SheetComponent` 不再包裹 antd 的 `<ConfigProvider />` 全局配置组件，可以自行在外层嵌套 `<ConfigProvider />` 组件，避免不同 `antd` 版本的兼容性问题。
+
+```diff
+import { ConfigProvider } from 'antd'
+
+<SheetComponent>
+-  <ConfigProvider />
+</SheetComponent>
+
++ <ConfigProvider>
++  <SheetComponent />
++ </ConfigProvider>
+```
+
+##### 组件内部的 Spin 组件移除
+
+`<SheetComponent />` 内部会包裹 antd 的 `<Spin />` 组件移除，不再有 `loading` 效果，新增 `onLoading`, 可以自行在外层嵌套相关组件，组合使用。
+
+```tsx | pure
+import { Spin } from 'antd'
+
+function App() {
+  const [loading, setLoading] = React.useState(false)
+
+  return (
+    <Spin spinning={loading}>
+      <SheetComponent onLoading={setLoading} />
+    </Spin>
+  )
+}
+```
+
+##### 分页组件移除
+
+1. `showPagination` 属性移除。
+
+```diff
+- <SheetComponent showPagination />
+```
+
+1. 提供 `pagination` 属性，表格内部封装了 S2 的内部分页更新逻辑，可以配合任意分页组件使用，如 antd 的 `<Pagination />`。
+
+```tsx | pure
+import { Pagination } from 'antd';
+
+function App() {
+  return (
+    <SheetComponent options={s2Options}>
+      {({ pagination }) => (
+        // 结合任意分页器使用：如 antd 的 Pagination 组件
+        <Pagination
+          size="small"
+          showTotal={(total) => `共计 ${total} 条`}
+          {...pagination}
+        />
+      )}
+    </SheetComponent>
+  )
+}
+```
+
+##### 高级排序组件迁移
+
+```diff
+- import { AdvancedSort } from '@antv/s2-react';
++ import { AdvancedSort } from '@antv/s2-react-components';
+```
 
 1. 配置变更
 
-`syncCopy` 变更为 `async`
+`sheet` 变更为 `sheetInstance`
 
 ```diff
-- <Export syncCopy={true} />
-+ <Export async={false} />
+- <AdvancedSort sheet={s2} />
++ <AdvancedSort sheetInstance={s2} />
+```
+
+具体请查看 [高级排序](/manual/advanced/analysis/advanced) 相关文档。
+
+##### 维度切换组件迁移
+
+```diff
+- import { Switcher } from '@antv/s2-react';
++ import { Switcher } from '@antv/s2-react-components';
+```
+
+1. 配置变更
+
+新增 `icon` 配置，`title` 含义变更，现在不再用做自定义入口，使用 `children` 代替。
+
+```diff
+- <Switcher title={<Button>切换维度</Button>} />
+
++ <Switcher title="切换维度" icon={<SwapOutlined/>} />
++ <Switcher>
++   <Button>切换维度</Button>
++ </Switcher>
+```
+
+具体请查看 [维度切换](/manual/advanced/analysis/switcher) 相关文档。
+
+##### 导出组件迁移
+
+```diff
+- import { Export } from '@antv/s2-react';
++ import { Export } from '@antv/s2-react-components';
+```
+
+1. 配置变更
+
+```diff
+- <Export syncCopy={true} sheet={s2} />
++ <Export async={false} sheetInstance={s2} />
+```
+
+`icon` 属性移除，支持自定义 children.
+
+```diff
+- <Export icon={<MoreOutlined/> } />
++ <Export><Button type="text"><MoreOutlined /></Button></Export>
 ```
 
 2. `复制原始数据` 和 `复制格式化数据` 现在会同时将 `text/plain` 和 `text/html` 的数据写入到剪贴板。
-
-#### Tooltip 菜单项配置调整
-
-菜单项调整到 `menu` 下，和 Ant Design [Menu 组件 API](https://ant-design.antgroup.com/components/menu-cn#api) 保持一致，同时支持透传 props.
+3. 新增 `onCopySuccess/onCopyError`, `onDownloadSuccess/onDownloadError` API, 移除 `successText/errorText`, 操作时默认不再显示 `message` 提示。
 
 ```diff
- const s2Options = {
+<Export
+-  successText="操作成功"
+-  errorText="操作成功"
++  onCopySuccess={(data) => {
++    console.log('copy success:', data);
++  }}
++  onCopyError={(error) => {
++    console.log('copy failed:', error);
++  }}
++  onDownloadSuccess={(data) => {
++    console.log('download success', data);
++  }}
++  onDownloadError={(error) => {
++    console.log('download failed:', error);
++  }}
+/>
+```
+
+1. 新增 `StrategyExport` 组件，适用于趋势分析表的数据复制和导出，使用方式和 `Export` 相同。
+
+```ts
+import { StrategyExport } from '@antv/s2-react-components';
+```
+
+具体请查看 [导出](/manual/advanced/analysis/export) 相关文档。
+
+##### 维度下钻组件迁移
+
+```diff
+- import { DrillDown } from '@antv/s2-react';
++ import { DrillDown } from '@antv/s2-react-components';
+```
+
+1. 配置调整。
+
+```diff
+- <DrillDown titleText="下钻" clearButtonText="清除" />
++ <DrillDown title="下钻" clearText="清除" />
+```
+
+2. 在表格组件中使用时，需要通过 `render` 属性传入 `DrillDown` 配置面板。
+
+```diff
++ import { DrillDown } from '@antv/s2-react-components';
+
+function App() {
+  return (
+    <SheetComponent
+      sheetType="pivot"
+      options={s2Options}
+      partDrillDown={{
++       render: (props) => <DrillDown {...props} />,
+      }}
+    />
+  )
+}
+```
+
+具体请查看 [维度下钻](/manual/advanced/analysis/drill-down) 相关文档。
+
+##### 编辑表输入框组件替换
+
+antd 的 `Input.TextArea` 组件替换为 原生的 `textarea`.
+
+```diff
++ <Input.TextArea />
+- <textarea />
+```
+
+##### Tooltip 操作项菜单组件移除
+
+1. 配置和 API 参数调整
+
+菜单项调整到 `menu` 下
+
+```diff
+const s2Options = {
   tooltip: {
     operation: {
-      onClick: (info, cell) => {},
+-     onClick: (cell) => {},
 -     menus: [
 -       {
 -         key: 'custom-a',
 -         text: '操作 1',
 -         icon: 'Trend',
--         onClick: (info, cell) => {},
+-         onClick: (cell) => {},
+-         visible: (cell) => true,
 -         children: [],
 -       }
 -     ],
 
 +     menu: {
-+       mode: 'vertical',
 +       onClick: (info, cell) => {},
 +       items: [
 +         {
@@ -1042,6 +1190,7 @@ const header = {
 +           label: '操作 1',
 +           icon: 'Trend',
 +           onClick: (info, cell) => {},
++           visible: (info, cell) => true,
 +           children: [],
 +         }
 +       ],
@@ -1053,7 +1202,7 @@ const header = {
 <SheetComponent options={s2Options} />
 ```
 
-同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`, 对应 `<Menu/>` 的 `selectedKeys` 属性。
+同时，通过 API 方式调用时，`defaultSelectedKeys` 变更为 `selectedKeys`。
 
 ```diff
 s2.showTooltip({
@@ -1068,7 +1217,76 @@ s2.showTooltip({
 });
 ```
 
-具体请查看 [Tooltip](/manual/basic/tooltip) 相关文档。
+1. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
+
+```tsx | pure
+import { Menu } from 'antd'
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menu: {
+        render: (props) => {
+          return <Menu {...props} />;
+        },
+      }
+    }
+  }
+}
+```
+
+具体请查看 [Tooltip](/manual/basic/tooltip) 和 [组内排序](/manual/basic/sort/group) 相关文档。
+
+#### 支持 React 18
+
+:::info{title="提示"}
+React 19 已发布 [RC 版本](https://react.dev/blog/2024/04/25/react-19), 后续兼容视情况而定。
+:::
+
+`@antv/s2-react` 的 `2.x` 版本适配了 `React 18`, 并兼容 `React 16 和 17`.
+
+#### Ant Design 多版本共存
+
+由于 `antd@4.x` 已经 [停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn), 分析组件 `@antv/s2-react-components` 默认基于 `antd@5.x` 开发，虽然使用的都是基础组件，但是是否完全兼容 `antv@4.x` 取决于两个版本的差异性。
+
+对于项目使用的是 `antd@4.x`, 或者所依赖的其他库间接依赖 `antd@4.x`, 由于种种历史原因无法升级到 `antd@5.x` 的情况，可以通过 [多版本共存](https://ant-design.antgroup.com/docs/react/migration-v5-cn#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98) 的方式来临时过渡。
+
+```json
+// $ npm install --save antd-v5@npm:antd@5
+{
+  "antd": "4.x",
+  "antd-v5": "npm:antd@5"
+}
+```
+
+通过 webpack 内置插件 [`NormalModuleReplacementPlugin`](https://webpack.js.org/plugins/normal-module-replacement-plugin/) 或者 `自定义 webpack 插件` 的方式指定 `@antv/s2-react-components` 使用 `antd-v5`, 无需做任何修改，项目中其他依赖将继续使用 `antd@4.x`.
+
+:::warning{title="注意"}
+其他打包工具 （如 `Vite`) 或者基于 `webpack` 封装的库或框架（如 `father`, `umi`) 同理，请自行搜索，这里不再赘述。
+需要注意的是：这种方式为临时过渡解决方案，从长远来看，**[Ant Design v4 版本已于 2023 年年底停止维护](https://ant-design.antgroup.com/docs/blog/v4-ood-cn)，建议尽快升级至 `antd@5.x`.**
+:::
+
+自定义 webpack 插件参考：
+
+```ts
+class AntdV5AliasPlugin {
+  apply(compiler) {
+    compiler.hooks.normalModuleFactory.tap("AntdV5AliasPlugin", (nmf) => {
+      nmf.hooks.beforeResolve.tapAsync("AntdV5AliasPlugin", (resolveData, callback) => {
+        if (resolveData.contextInfo?.issuer?.includes('node_modules/@antv/s2-react-components')) {
+          // 匹配："antd" 和 "antd/es/locale/xxx"
+          if (/antd(\/*)?/.test(resolveData.request)) {
+            // 替换为："antd-v5" 和 "antd-v5/es/locale/xxx"
+            resolveData.request = resolveData.request.replace(/antd(\/*)?/,'antd-v5$1')
+          }
+        }
+
+        callback();
+      });
+    });
+  }
+}
+```
 
 #### 行头单元格折叠展开事件划分到 `RowCell`
 
@@ -1093,12 +1311,28 @@ s2.showTooltip({
 + <SheetComponent onUpdate={} onUpdateAfterRender={} />
 ```
 
+#### onUpdate 类型优化，不再强制要求返回渲染参数
+
+`2.x` 版本中，`onUpdate` 如未指定渲染参数，则使用默认的 `renderOptions`.
+
+```diff
+<SheetComponent
+  onUpdate={(renderOptions) => {
+-   return renderOptions
+  }}
+/>
+```
+
 #### SheetComponentsProps 类型调整
 
 ```diff
 - interface SheetComponentsProps {}
 + interface SheetComponentProps {}
 ```
+
+### 组件层 (s2-vue) <Badge type="success">@antv/s2-vue</Badge>
+
+`@antv/s2-vue` 现已停止维护，请基于 `@antv/s2` 自行封装，或 `fork` 仓库进行二次开发。
 
 ## ✍️ API 调整
 

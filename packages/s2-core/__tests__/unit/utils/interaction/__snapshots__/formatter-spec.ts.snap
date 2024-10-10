@@ -4,6 +4,7 @@ exports[`#getBaseCellData() should get correctly cell data 1`] = `
 Object {
   "target": Object {
     "cellType": undefined,
+    "children": Array [],
     "colId": "0",
     "colIndex": 0,
     "cornerType": "",
@@ -15,6 +16,7 @@ Object {
     "getStyle": [MockFunction],
     "hideInteractionShape": [MockFunction],
     "id": "test-a",
+    "isLeaf": false,
     "isTextOverflowing": [MockFunction],
     "level": 0,
     "parentNode": [Circular],
@@ -42,11 +44,13 @@ Object {
     "y": 0,
   },
   "viewMeta": Object {
+    "children": Array [],
     "colId": "0",
     "colIndex": 0,
     "cornerType": "",
     "field": "test-a",
     "id": "test-a",
+    "isLeaf": false,
     "level": 0,
     "rowIndex": 0,
     "spreadsheet": Object {

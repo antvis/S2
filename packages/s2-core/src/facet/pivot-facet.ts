@@ -254,7 +254,7 @@ export class PivotFacet extends FrozenFacet {
           colsHierarchy,
         );
 
-        currentNode.y = preLevelSample?.y! + preLevelSample?.height! ?? 0;
+        currentNode.y = preLevelSample?.y! + preLevelSample?.height! || 0;
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715

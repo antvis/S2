@@ -8,6 +8,13 @@ tag: Updated
 
 基于 `@antv/s2` 封装的 `React` 版开箱即用的组件 `<SheetComponent />`
 
+```tsx | pure
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/s2-react.min.css';
+
+<SheetComponent sheetType="pivot" />
+```
+
 ### SpreadsheetProps
 
 功能描述： React SheetComponent 组件的 props 参数
@@ -20,7 +27,6 @@ tag: Updated
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean \| { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
-| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (current:number, pageSize: number) => void,<br>onChange?: (current:number, pageSize: number) => void <br>} | `false` |  |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
@@ -81,8 +87,9 @@ tag: Updated
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
 | onMounted | 组件层表格挂载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
-| onUpdate | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| onUpdate | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) \| void |  |  |
 | onUpdateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
+| onLoading | 组件层加载状态变更事件 | (loading: boolean) => void |  |  |
 | onDestroy | 表格销毁事件 | () => void; |  |  |
 | onLayoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -113,21 +120,17 @@ tag: Updated
 
 :::warning{title="注意"}
 
-`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同
+`@antv/s2-react` 组件的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
 
+- 类型由 `S2Options` 变更为 `SheetComponentOptions`.
 - tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素。
-- 分页配置从 S2 的分页配置 **变为了 `antd` 的分页配置**，即支持对 `antd` 分页组件 的 api 透传。
 
 :::
 
 ```ts
-import type { Pagination, S2Options } from '@antv/s2';
-import type { PaginationProps as AntdPaginationProps } from 'antd';
+import type { S2Options } from '@antv/s2';
 
-type SheetComponentOptions = S2Options<
-  React.ReactNode,
-  Pagination & AntdPaginationProps
->;
+type SheetComponentOptions = S2Options<React.ReactNode>
 ```
 
 <br/>
@@ -212,7 +215,7 @@ type SheetComponentOptions = S2Options<
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
 | afterRender | render 完成的事件 | () => void; |  |  |
 | mounted | 表格加载完成事件，可拿到表实例 [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
-| update | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) |  |  |
+| update | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时触发，可手动控制更新时的 [渲染模式](#s2renderoptions) | (renderOptions: [S2RenderOptions](#s2renderoptions)) => [S2RenderOptions](#s2renderoptions) \| void |  |  |
 | updateAfterRender | 组件层表格更新事件，当 `数据 (S2DataConfig)` 或 `配置 (S2Options)` 更新时，并且在重渲染 `s2.render()` 完成后触发 | (renderOptions: [S2RenderOptions](#s2renderoptions)) => void |  |  |
 | destroy | 表格销毁事件 | () => void; |  |  |
 | layoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -244,9 +247,10 @@ type SheetComponentOptions = S2Options<
 
 :::warning{title="注意"}
 
-`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有一点不同
+`@antv/s2-vue` 组件 的 `options` 继承于 [S2Options](/docs/api/general/S2Options) , 有两点不同：
 
-- 分页配置从 S2 的分页配置 **变为了 `antd-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
+- 类型由 `S2Options` 变更为 `SheetComponentOptions`.
+- 分页配置从 S2 的分页配置 **变为了 `antd-design-vue` 的分页配置**，即支持对 `antd-vue` 分页组件 的 api 透传。
 
 :::
 

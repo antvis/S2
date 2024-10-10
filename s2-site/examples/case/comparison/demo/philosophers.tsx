@@ -6,9 +6,10 @@ import {
   SheetComponentOptions,
   type SheetComponentProps,
 } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import insertCSS from 'insert-css';
 import { max, min, replace } from 'lodash';
+import { meta } from 'eslint-plugin-prettier';
 
 const PALETTE_COLORS = [
   '#B8E1FF',

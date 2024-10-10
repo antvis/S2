@@ -3,7 +3,7 @@
 import React from 'react';
 import { NODE_ID_SEPARATOR, S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import { InputNumber, Select, Space } from 'antd';
+import { InputNumber, Pagination, Select, Space } from 'antd';
 import insertCSS from 'insert-css';
 import { every, filter, isNil, last, map, omit } from 'lodash';
 
@@ -265,8 +265,16 @@ const Sheet = ({ data }) => {
         sheetType={'pivot'}
         dataCfg={{ ...dataConfig, data: dataSource }}
         options={s2Options}
-        showPagination={true}
-      />
+      >
+        {({ pagination }) => (
+          <Pagination
+            showQuickJumper
+            showSizeChanger
+            showTotal={(total) => `共计 ${total} 条`}
+            {...pagination}
+          />
+        )}
+      </SheetComponent>
     </div>
   );
 };
