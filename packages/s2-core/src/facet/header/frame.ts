@@ -20,11 +20,11 @@ export class Frame extends Group {
   }
 
   public layout() {
-    // corner底部的横线条
+    // corner 底部的横线条
     this.addCornerBottomBorder();
-    // corner右边的竖线条
+    // corner 右边的竖线条
     this.addCornerRightBorder();
-    // 一级纵向分割线两侧的shadow
+    // 一级纵向分割线两侧的 shadow
     this.addSplitLineShadow();
   }
 
@@ -43,7 +43,6 @@ export class Frame extends Group {
   }
 
   public static getVerticalBorderWidth(spreadsheet: SpreadSheet): number {
-    // 交叉表一条竖线拉通即可
     const { splitLine, cornerCell, colCell, dataCell } = spreadsheet.theme;
 
     if (spreadsheet.isPivotMode()) {
@@ -89,7 +88,6 @@ export class Frame extends Group {
   }
 
   private addCornerRightBorder() {
-    // 交叉表一条竖线拉通即可
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
     const {
@@ -101,7 +99,8 @@ export class Frame extends Group {
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
-    // 明细表需要区分头部的边框和明细格子的边框
+    // 表头和表身的单元格背景色不同, 分割线不能一条线拉通, 不然视觉不协调.
+    // 分两条线绘制, 默认和分割线所在区域对应的单元格边框颜色保持一致
     const {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
@@ -196,7 +195,6 @@ export class Frame extends Group {
       return;
     }
 
-    // do render...
     this.addSplitLineLeftShadow();
     this.addSplitLineRightShadow();
   }
