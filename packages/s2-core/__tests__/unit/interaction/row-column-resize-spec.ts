@@ -834,6 +834,9 @@ describe('Interaction Row Column Resize Tests', () => {
     });
 
     jest
+      .spyOn(s2.interaction, 'getActiveColCells')
+      .mockImplementationOnce(() => createCells());
+    jest
       .spyOn(s2.interaction, 'isSelectedState')
       .mockImplementationOnce(() => true);
 
@@ -853,6 +856,9 @@ describe('Interaction Row Column Resize Tests', () => {
       },
     });
 
+    jest
+      .spyOn(s2.interaction, 'getActiveRowCells')
+      .mockImplementationOnce(() => createCells());
     jest
       .spyOn(s2.interaction, 'isSelectedState')
       .mockImplementationOnce(() => true);
