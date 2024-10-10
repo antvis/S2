@@ -1162,7 +1162,7 @@ antd 的 `Input.TextArea` 组件替换为 原生的 `textarea`.
 
 ##### Tooltip 操作项菜单组件移除
 
-1. 配置调整
+1. 配置和 API 参数调整
 
 菜单项调整到 `menu` 下
 
@@ -1170,13 +1170,14 @@ antd 的 `Input.TextArea` 组件替换为 原生的 `textarea`.
 const s2Options = {
   tooltip: {
     operation: {
--     onClick: (info, cell) => {},
+-     onClick: (cell) => {},
 -     menus: [
 -       {
 -         key: 'custom-a',
 -         text: '操作 1',
 -         icon: 'Trend',
--         onClick: (info, cell) => {},
+-         onClick: (cell) => {},
+-         visible: (cell) => true,
 -         children: [],
 -       }
 -     ],
@@ -1189,6 +1190,7 @@ const s2Options = {
 +           label: '操作 1',
 +           icon: 'Trend',
 +           onClick: (info, cell) => {},
++           visible: (info, cell) => true,
 +           children: [],
 +         }
 +       ],
@@ -1215,7 +1217,7 @@ s2.showTooltip({
 });
 ```
 
-2. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
+1. 内部**排序菜单**和**操作项**依赖的 antd [Menu 组件](https://ant-design.antgroup.com/components/menu-cn#api) 移除，现在需要通过 `render` 显式声明 UI 组件，最终效果相同，默认提供菜单配置 (props) , 可以根据项目中实际使用的 `antd@v4` 或 `antd@v5` 不同版本，对使用方式进行调整。
 
 ```tsx | pure
 import { Menu } from 'antd'
