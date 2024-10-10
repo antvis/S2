@@ -41,7 +41,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ## 透视表
 
-支持将行头 `rows`, 列头 `columns`, 数值 `values` 标记为链接样式。
+支持将行头 `rows`, 列头 `columns`, 数值 `values` 标记为链接样式。[查看示例](/examples/interaction/advanced/#pivot-link-jump)
 
 ```ts | pure
 import { S2Event } from '@antv/s2'
@@ -93,7 +93,7 @@ const s2Options = {
 
 ## 明细表
 
-支持将列头 `columns` 和对应的数值标记为链接样式。
+支持将列头 `columns` 和对应的数值标记为链接样式。[查看示例](/examples/interaction/advanced/#table-link-jump)
 
 :::warning{title="注意"}
 由于明细表单列头的特殊性，为和透视表保持一致，同时兼容多列头的场景，明细表的标记会对列头和数值**同时生效**.
@@ -134,20 +134,30 @@ await s2.render();
 
 ## 自定义标记
 
-除了配置行头/列头/数值字段外，支持根据单元格信息自定义标记，满足更多使用场景。
+除了配置 `行头/列头/数值` 字段外，支持根据单元格信息自定义标记，满足更多使用场景。[查看示例](/examples/interaction/advanced/#custom-link-jump)
+
+:::warning{title="注意"}
+数值和表头的单元格数据结构不同，请注意区分，`meta` 对应关系如下：
+
+1. 数值单元格对应 [ViewMeta](/api/general/s2-options#viewmeta)
+2. 表头单元格对应 [Node](/api/basic-class/node)
+
+:::
 
 ```ts
+import { Node } from '@antv/s2'
+
 const s2Options = {
   width: 600,
   height: 600,
   interaction: {
     linkFields: (meta) => {
       // 不标记列头
-      if (meta?.belongsCell?.cellType === 'colCell') {
+      if (meta instanceof Node) {
         return false;
       }
 
-      // 根据指标值动态标记
+      // 根据数值动态标记
       return meta?.fieldValue === '浙江' || meta?.fieldValue >= 10;
     }
   }
