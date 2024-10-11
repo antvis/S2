@@ -5,7 +5,6 @@ import type {
 } from '@antv/g';
 import {
   find,
-  findLast,
   first,
   forEach,
   get,
@@ -42,6 +41,7 @@ import {
   getActionIconConfig,
   groupIconsByPosition,
 } from '../utils/cell/header-cell';
+import { findFieldCondition } from '../utils/condition/condition';
 import { renderIcon } from '../utils/g-renders';
 import { getSortTypeIcon } from '../utils/sort-action';
 
@@ -502,14 +502,10 @@ export abstract class HeaderCell<
     return condition.mapping(value, this.meta, this);
   }
 
-  public findFieldCondition<Con extends Condition>(
-    conditions: Con[] = [],
-  ): Con | undefined {
-    return findLast(conditions, (item) =>
-      item.field instanceof RegExp
-        ? item.field.test(this.meta.field)
-        : item.field === this.meta.field,
-    );
+  public findFieldCondition<T extends Condition>(
+    conditions: T[] = [],
+  ): T | undefined {
+    return findFieldCondition(conditions, this.meta.field);
   }
 
   public getTreeIcon() {

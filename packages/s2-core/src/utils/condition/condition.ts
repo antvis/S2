@@ -56,13 +56,13 @@ export const getIntervalScale = (minValue = 0, maxValue = 0) => {
   };
 };
 
-export const findFieldCondition = <T>(
-  conditions: Condition<T>[],
-  valueField: string,
-) => {
+export const findFieldCondition = <T extends Condition>(
+  conditions: T[] = [],
+  field: string,
+): T | undefined => {
   return findLast(conditions, (item) => {
     return item.field instanceof RegExp
-      ? item.field.test(valueField)
-      : item.field === valueField;
+      ? item.field.test(field)
+      : item.field === field;
   });
 };
