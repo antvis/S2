@@ -1,3 +1,10 @@
+# [@antv/s2-react-components-v1.0.1-next.1](https://github.com/antvis/S2/compare/@antv/s2-react-components-v1.0.0...@antv/s2-react-components-v1.0.1-next.1) (2024-10-12)
+
+
+### Bug Fixes
+
+* 调整分割线的颜色绘制逻辑, 优化和单元格边框颜色不一致的问题 ([#2919](https://github.com/antvis/S2/issues/2919)) ([3f766d0](https://github.com/antvis/S2/commit/3f766d02b14bf6d6ebac34b302a0232a58afe500))
+
 # @antv/s2-react-components-v1.0.0-next.1 (2024-09-18)
 
 
