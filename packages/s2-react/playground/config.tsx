@@ -390,8 +390,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: 'all',
-      colResizeType: 'all',
+      rowResizeType: 'current',
+      colResizeType: 'current',
     },
   },
   // totals: {

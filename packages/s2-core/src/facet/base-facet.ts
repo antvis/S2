@@ -40,6 +40,7 @@ import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   CellType,
   DEFAULT_STYLE,
+  EXTRA_FIELD,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
   KEY_GROUP_BACK_GROUND,
@@ -341,17 +342,23 @@ export abstract class BaseFacet {
   protected getColCellDraggedWidth(node: Node): number | undefined {
     const { colCell } = this.spreadsheet.options.style!;
 
+    // 指标的 field 是 $$extra$$, 对用户来说其实是 s2DataConfig.fields.values 里面的 field
+    // 此时应该按 $$extra$$ 对应的 value field 匹配
     return (
-      colCell?.widthByField?.[node?.id] ?? colCell?.widthByField?.[node?.field]
+      colCell?.widthByField?.[node?.id] ??
+      colCell?.widthByField?.[node?.field] ??
+      colCell?.widthByField?.[node?.query?.[EXTRA_FIELD]]
     );
   }
 
   protected getColCellDraggedHeight(node: Node): number | undefined {
     const { colCell } = this.spreadsheet.options.style!;
 
+    // 高度同理
     return (
       colCell?.heightByField?.[node?.id] ??
-      colCell?.heightByField?.[node?.field]
+      colCell?.heightByField?.[node?.field] ??
+      colCell?.heightByField?.[node?.query?.[EXTRA_FIELD]]
     );
   }
 
