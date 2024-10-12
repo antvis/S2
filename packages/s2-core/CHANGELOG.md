@@ -1,3 +1,13 @@
+# [@antv/s2-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.28...@antv/s2-v2.0.0-next.29) (2024-10-12)
+
+
+### Bug Fixes
+
+* 修复存在字段标记的 icon 时, 紧凑模式列宽计算错误出现省略号的问题 ([#2920](https://github.com/antvis/S2/issues/2920)) ([75acbfe](https://github.com/antvis/S2/commit/75acbfe4540bf8dc702a3a068c214c9217239261))
+* 修复拖拽列宽后, 默认的自定义列宽失效 close [#2910](https://github.com/antvis/S2/issues/2910) ([#2915](https://github.com/antvis/S2/issues/2915)) ([8302fe4](https://github.com/antvis/S2/commit/8302fe40bc475baecf72ba463ac948d33a391a3f))
+* 修复自定义列宽对虚拟数值列不生效 ([#2921](https://github.com/antvis/S2/issues/2921)) ([c53cea4](https://github.com/antvis/S2/commit/c53cea4a2fa2d7b18939abfb984629a94eab936d))
+* 调整分割线的颜色绘制逻辑, 优化和单元格边框颜色不一致的问题 ([#2919](https://github.com/antvis/S2/issues/2919)) ([3f766d0](https://github.com/antvis/S2/commit/3f766d02b14bf6d6ebac34b302a0232a58afe500))
+
 # [@antv/s2-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.27...@antv/s2-v2.0.0-next.28) (2024-09-18)
 
 
