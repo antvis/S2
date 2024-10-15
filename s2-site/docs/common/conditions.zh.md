@@ -32,7 +32,7 @@ order: 2
 export type ConditionMapping<T = unknown> = (
   fieldValue: number | string,
   data: RawData,
-  cell?: DataCell | HeaderCell,
+  cell: S2CellType,
 ) => ConditionMappingResult<T>;
 
 ```

@@ -499,7 +499,7 @@ export abstract class HeaderCell<
   ): ConditionMappingResult<Result> {
     const value = this.getMeta().value;
 
-    return condition.mapping(value, this.meta, this);
+    return condition.mapping?.(value, this.meta, this);
   }
 
   public findFieldCondition<T extends Condition>(
