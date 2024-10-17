@@ -1323,7 +1323,7 @@ export abstract class BaseFacet {
       event?.preventDefault?.();
     }
 
-    // 移动端的 prevent 存在于 originalEvent上
+    // 移动端的 prevent 存在于 originalEvent 上
     const mobileEvent = (event as unknown as GraphEvent)?.originalEvent;
 
     if (mobileEvent?.cancelable) {

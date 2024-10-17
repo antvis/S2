@@ -545,7 +545,11 @@ export class EventController {
     }
 
     // 双击的 detail 是 2
-    if (event.detail === 2) {
+    if (
+      event.detail === 2 ||
+      event.nativeEvent?.detail === 2 ||
+      event.originalEvent?.detail === 2
+    ) {
       this.onCanvasDoubleClick(event);
     }
   };

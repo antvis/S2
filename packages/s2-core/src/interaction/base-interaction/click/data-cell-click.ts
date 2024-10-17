@@ -55,7 +55,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       if (interaction.isSelectedCell(cell)) {
         // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail 属性来判断是否是双击，双击时不触发选择态 reset
-        if ((event.originalEvent as UIEvent)?.detail === 1) {
+        if (
+          event.detail === 1 ||
+          event.nativeEvent?.detail === 1 ||
+          event.originalEvent?.detail === 1
+        ) {
           interaction.reset();
 
           // https://github.com/antvis/S2/issues/2447
