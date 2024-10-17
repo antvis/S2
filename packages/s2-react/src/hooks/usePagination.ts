@@ -1,53 +1,46 @@
-import { S2Event, SpreadSheet, type Pagination } from '@antv/s2';
-import type { LayoutPaginationParams } from '@antv/s2-shared';
+import {
+  S2Event,
+  type LayoutPaginationParams,
+  type Pagination,
+  type SpreadSheet,
+} from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
-import type { PaginationProps as AntdPaginationProps } from 'antd';
-import { get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import React from 'react';
-import type { SheetComponentProps } from '../components';
+import type { SheetComponentOptions } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
+/**
+ * s2-react 内部不消费, 提供给外部的自行实现的分页便捷组合使用
+ */
 export const usePagination = (
   s2: SpreadSheet,
-  props: SheetComponentProps,
-): {
-  showPagination: boolean;
-  pagination: Pagination;
-  onShowSizeChange: AntdPaginationProps['onShowSizeChange'];
-  onChange: AntdPaginationProps['onChange'];
+  options: SheetComponentOptions,
+): Pagination & {
+  onShowSizeChange: (current: number, pageSize: number) => void;
+  onChange: (current: number, pageSize: number) => void;
 } => {
-  const { options, showPagination } = props;
-
-  const paginationCfg = options?.pagination;
+  const defaultPagination = options?.pagination;
   const [pagination, setPagination] = React.useState({
-    total: 0,
-    current: paginationCfg?.current || DEFAULT_PAGE_NUMBER,
-    pageSize: paginationCfg?.pageSize || DEFAULT_PAGE_SIZE,
+    total: s2?.facet?.viewCellHeights.getTotalLength() || 0,
+    current: defaultPagination?.current || DEFAULT_PAGE_NUMBER,
+    pageSize: defaultPagination?.pageSize || DEFAULT_PAGE_SIZE,
   });
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    const outerOnShowSizeChange =
-      get(showPagination, 'onShowSizeChange') ??
-      paginationCfg?.onShowSizeChange;
-
-    outerOnShowSizeChange?.(current, pageSize);
+    setPagination({ ...pagination, current, pageSize });
   };
 
   const onChange = (current: number, pageSize: number) => {
     setPagination({ ...pagination, current, pageSize });
-
-    const outerOnChange =
-      get(showPagination, 'onChange') ?? paginationCfg?.onChange;
-
-    outerOnChange?.(current, pageSize);
   };
 
   // sync state.pagination -> s2.pagination
   useUpdateEffect(() => {
     const render = async () => {
-      if (!s2 || isEmpty(paginationCfg)) {
+      if (!s2 || isEmpty(defaultPagination)) {
         return;
       }
 
@@ -65,15 +58,15 @@ export const usePagination = (
   // sync props.pagination -> state.pagination
   useUpdateEffect(() => {
     setPagination({
-      total: s2?.facet?.viewCellHeights.getTotalLength() ?? 0,
-      current: paginationCfg?.current || DEFAULT_PAGE_NUMBER,
-      pageSize: paginationCfg?.pageSize || DEFAULT_PAGE_SIZE,
+      total: s2?.facet?.viewCellHeights.getTotalLength() || 0,
+      current: defaultPagination?.current || DEFAULT_PAGE_NUMBER,
+      pageSize: defaultPagination?.pageSize || DEFAULT_PAGE_SIZE,
     });
-  }, [paginationCfg, s2]);
+  }, [defaultPagination, s2]);
 
   // sync layout result total -> state.total
   useUpdateEffect(() => {
-    if (!s2 || isEmpty(paginationCfg)) {
+    if (!s2 || isEmpty(defaultPagination)) {
       return;
     }
 
@@ -88,11 +81,11 @@ export const usePagination = (
     return () => {
       s2.off(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
     };
-  }, [paginationCfg, s2]);
+  }, [defaultPagination, s2]);
 
   return {
-    showPagination: Boolean(showPagination),
-    pagination: { ...paginationCfg, ...pagination },
+    ...defaultPagination,
+    ...pagination,
     onShowSizeChange,
     onChange,
   };

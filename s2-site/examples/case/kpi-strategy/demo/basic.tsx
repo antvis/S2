@@ -4,7 +4,7 @@ import React from 'react';
 import { Line, Rect } from '@antv/g';
 import { DataCell, S2DataConfig, S2Theme } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 // 进度条
 const PROGRESS_BAR = {

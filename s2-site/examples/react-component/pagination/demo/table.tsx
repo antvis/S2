@@ -1,22 +1,43 @@
 /* eslint-disable no-console */
 // organize-imports-ignore
-import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import { Pagination } from 'antd';
+import React from 'react';
+import '@antv/s2-react/dist/s2-react.min.css';
+
+const s2Options: SheetComponentOptions = {
+  width: 600,
+  height: 480,
+  pagination: {
+    current: 1,
+    pageSize: 5,
+  },
+};
+
+function App({ dataCfg }) {
+  return (
+    <>
+      <SheetComponent dataCfg={dataCfg} options={s2Options} sheetType="table">
+        {({ pagination }) => (
+          // 结合任意分页器使用: 如 antd 的 Pagination 组件
+          <Pagination
+            size="small"
+            defaultCurrent={1}
+            showSizeChanger
+            showQuickJumper
+            showTotal={(total) => `共计 ${total} 条`}
+            {...pagination}
+          />
+        )}
+      </SheetComponent>
+    </>
+  );
+}
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    const s2Options: SheetComponentOptions = {
-      width: 600,
-      height: 480,
-      pagination: {
-        pageSize: 5,
-        current: 2,
-      },
-    };
-
     const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
@@ -46,19 +67,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data: res,
     };
 
-    reactDOMClient.createRoot(document.getElementById('container')).render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        sheetType="table"
-        showPagination={{
-          onChange: (current, pageSize) => {
-            console.log(current, pageSize);
-          },
-          onShowSizeChange: (current, pageSize) => {
-            console.log(current, pageSize);
-          },
-        }}
-      />,
-    );
+    reactDOMClient
+      .createRoot(document.getElementById('container'))
+      .render(<App dataCfg={s2DataConfig} />);
   });

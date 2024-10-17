@@ -1,11 +1,6 @@
-@import '@antv/s2-shared/src/styles/variables.less';
+@import '@antv/s2/esm/styles/variables.less';
 
 .@{s2-cls-prefix} {
-  &-spin.ant-spin-nested-loading,
-  &-spin > .ant-spin-container {
-    height: 100%;
-  }
-
   &-wrapper {
     padding: 0;
     margin: 0;
@@ -17,22 +12,5 @@
   &-container {
     overflow: auto;
     flex: 1 1 auto;
-
-    canvas {
-      display: block;
-    }
-  }
-
-  &-pagination {
-    display: flex;
-    align-items: center;
-    z-index: 1024;
-
-    &-count {
-      margin-left: 12px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 64px;
-    }
   }
 }

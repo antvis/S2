@@ -14,16 +14,17 @@ import type {
 import type { Node } from '../../facet/layout/node';
 
 const normalizeIcons = (
-  icons: HeaderActionName[],
+  icons: HeaderActionName[] = [],
   position: IconPosition = 'right',
-) =>
-  icons.map((icon) => {
+) => {
+  return icons.map((icon) => {
     if (typeof icon === 'string') {
       return { name: icon, position };
     }
 
     return icon;
   });
+};
 
 const normalizeActionIconCfg = (actionIconList: HeaderActionIcon[] = []) =>
   actionIconList.map(

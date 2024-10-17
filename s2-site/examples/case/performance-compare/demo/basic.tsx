@@ -2,7 +2,7 @@
 import React from 'react';
 import { S2DataConfig } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 import { compact } from 'lodash';
 
 const disableColor = '#d3d7d4';

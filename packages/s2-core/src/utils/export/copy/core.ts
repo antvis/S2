@@ -27,16 +27,6 @@ import {
   processSelectedTableByHeader,
 } from './table-copy';
 
-export const getHeaderNodeFromMeta = (
-  meta: CellMeta,
-  spreadsheet: SpreadSheet,
-) => {
-  const { rowIndex, colIndex } = meta;
-  const { facet } = spreadsheet;
-
-  return [facet.getRowNodeByIndex(rowIndex), facet.getColNodeByIndex(colIndex)];
-};
-
 /**
  * 返回选中数据单元格生成的二维数组（ CellMeta[][]）
  * @param { CellMeta[] } cells
@@ -221,4 +211,51 @@ export const asyncProcessAllSelected = (
   }
 
   return asyncProcessSelectedAllTable(params);
+};
+
+/**
+ * 异步获取文本数据 (text/plain)
+ * @example
+    const data = await asyncGetAllPlainData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
+ */
+export const asyncGetAllPlainData = async (params: CopyAllDataParams) => {
+  const result = await asyncProcessAllSelected(params);
+
+  return result[0].content;
+};
+
+/**
+ * 异步获取富文本数据 (text/html)
+ * @example
+    const data = await asyncGetAllHtmlData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
+ */
+export const asyncGetAllHtmlData = async (params: CopyAllDataParams) => {
+  const result = await asyncProcessAllSelected(params);
+
+  return result[1].content;
+};
+
+/**
+ * 异步获取数据
+ * - 文本 (text/plain)
+ * - 富文本 (text/html)
+ * @example
+    const data = await asyncGetAllData({
+      sheetInstance: s2,
+      split: '\t',
+      formatOptions: true,
+    });
+ */
+export const asyncGetAllData = async (params: CopyAllDataParams) => {
+  const result = await asyncProcessAllSelected(params);
+
+  return result;
 };

@@ -4,6 +4,10 @@ order: 2
 tag: Updated
 ---
 
+:::warning{title="注意"}
+阅读本章前，请确保已经阅读过 [基础交互](/manual/advanced/interaction/basic)，[Tooltip 注意事项](/manual/basic/tooltip#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9) 等章节。
+:::
+
 当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头。
 
 <Playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>

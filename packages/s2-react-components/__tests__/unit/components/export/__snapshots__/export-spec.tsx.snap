@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Export Component Tests should render component for strategy export 1`] = `
+<DocumentFragment>
+  <button
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-text ant-dropdown-trigger antv-s2-export"
+    type="button"
+  >
+    <span
+      aria-label="more"
+      class="anticon anticon-more"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Export Component Tests should render custom children 1`] = `
+<DocumentFragment>
+  <div
+    class="ant-dropdown-trigger ant-dropdown-open antv-s2-export"
+  >
+    入口
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Export Component Tests should render default component 1`] = `
+<DocumentFragment>
+  <button
+    class="ant-btn css-dev-only-do-not-override-3rel02 ant-btn-text ant-dropdown-trigger antv-s2-export test"
+    type="button"
+  >
+    <span
+      aria-label="more"
+      class="anticon anticon-more"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </button>
+</DocumentFragment>
+`;

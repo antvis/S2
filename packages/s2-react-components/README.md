@@ -24,9 +24,9 @@ S2 多维分析表格配置套的 React 分析/配置组件库。
 ## 📦 安装
 
 ```bash
-$ pnpm add @antv/s2-react-components
-# npm install @antv/s2-react-components --save
-# yarn add @antv/s2-react-components
+$ pnpm add @antv/s2-react-components@next
+# npm install @antv/s2-react-components@next --save
+# yarn add @antv/s2-react-components@next
 ```
 
 ## 🔨 使用
@@ -34,7 +34,7 @@ $ pnpm add @antv/s2-react-components
 ```tsx
 import React from 'React'
 import { ThemePanel, TextAlignPanel, FrozenPanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/style.min.css'
+import '@antv/s2-react-components/dist/s2-react-components.min.css'
 
 const App = () => {
   return (
@@ -84,7 +84,7 @@ const App = () => {
 ```tsx
 import React from 'React'
 import { ThemePanel } from '@antv/s2-react-components'
-import '@antv/s2-components/dist/style.min.css'
+import '@antv/s2-react-components/dist/s2-react-components.min.css'
 
 const App = () => {
   const s2Ref = React.useRef<SpreadSheet>();
