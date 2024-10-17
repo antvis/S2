@@ -9,6 +9,14 @@ describe('DrillDown Component Tests', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
+  test('should render extra content', () => {
+    const { asFragment } = render(
+      <DrillDown dataSet={[]} extra={<div>Extra</div>} />,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   test('should render custom config', () => {
     const { asFragment, container } = render(
       <DrillDown
