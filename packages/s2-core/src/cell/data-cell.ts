@@ -514,7 +514,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         })
       : CellData.getFieldValue(this.meta.data as ViewMetaData);
 
-    return condition.mapping(value, rowDataInfo as RawData, this);
+    return condition.mapping?.(value, rowDataInfo as RawData, this);
   }
 
   public updateByState(stateName: `${InteractionStateName}`) {
