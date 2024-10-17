@@ -394,8 +394,8 @@ export const s2Options: SheetComponentOptions = {
       rowCell: true,
     },
     resize: {
-      rowResizeType: 'all',
-      colResizeType: 'all',
+      rowResizeType: 'current',
+      colResizeType: 'current',
     },
   },
   // totals: {
@@ -446,7 +446,7 @@ export const sliderOptions: SliderSingleProps = {
 };
 
 export const s2ThemeConfig: ThemeCfg = {
-  name: 'default',
+  name: 'colorful',
   theme: {},
 };
 

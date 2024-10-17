@@ -99,7 +99,7 @@ describe('Compare Layout Tests', () => {
     expect(colLeafNodeWidthList).toEqual([182]);
   });
 
-  test.skip.each([
+  test.each([
     { showDefaultHeaderActionIcon: true },
     { showDefaultHeaderActionIcon: false },
   ])(
@@ -137,11 +137,11 @@ describe('Compare Layout Tests', () => {
 
       expect(dataCellWidthList).toEqual(
         options.showDefaultHeaderActionIcon
-          ? [197, 197, 197, 197, 116, 116, 116, 116, 81, 81, 81, 81]
-          : [197, 197, 197, 197, 116, 116, 116, 116, 62, 62, 62, 62],
+          ? [207, 207, 207, 207, 108, 108, 108, 108, 83, 83, 83, 83]
+          : [207, 207, 207, 207, 108, 108, 108, 108, 67, 67, 67, 67],
       );
       expect(colLeafNodeWidthList).toEqual(
-        options.showDefaultHeaderActionIcon ? [197, 116, 81] : [197, 116, 62],
+        options.showDefaultHeaderActionIcon ? [207, 108, 83] : [207, 108, 67],
       );
     },
   );

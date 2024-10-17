@@ -34,7 +34,7 @@ export const partDrillDown: PartDrillDown = {
         type: 'text',
       },
     ],
-    extra: <div>test</div>,
+    extra: <div style={{ margin: '4px 16px' }}>test</div>,
   },
   // drillItemsNum: 1,
   fetchData: (meta, drillFields) =>

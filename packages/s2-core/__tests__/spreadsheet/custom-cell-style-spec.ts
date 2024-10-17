@@ -156,6 +156,30 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
       });
 
+      test('should get custom row cell style by extra field', async () => {
+        s2.setDataCfg({
+          fields: {
+            valueInCols: false,
+          },
+        });
+
+        s2.setOptions({
+          style: {
+            rowCell: {
+              widthByField: {
+                [EXTRA_FIELD]: 50,
+              },
+              heightByField: {
+                [EXTRA_FIELD]: 300,
+              },
+            },
+          },
+        });
+        await s2.render();
+
+        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
+      });
+
       test('should not get custom row cell style if not leaf node by field', async () => {
         const width = 100;
         const height = 200;
@@ -306,7 +330,27 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
         await s2.render();
 
-        expect(mapNodeSize(s2.facet.getRowNodes())).toMatchSnapshot();
+        expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
+      });
+
+      test('should get custom col cell style by value field', async () => {
+        const priceValueField = `price`;
+
+        s2.setOptions({
+          style: {
+            colCell: {
+              widthByField: {
+                [priceValueField]: 50,
+              },
+              heightByField: {
+                [priceValueField]: 300,
+              },
+            },
+          },
+        });
+        await s2.render();
+
+        expect(mapNodeSize(s2.facet.getColNodes())).toMatchSnapshot();
       });
 
       test('should not get custom col cell style if not leaf node by field', async () => {

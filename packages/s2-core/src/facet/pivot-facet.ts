@@ -31,10 +31,12 @@ import type {
   LayoutResult,
   SimpleData,
 } from '../common/interface';
+import type { Query } from '../data-set/interface';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { getValidFrozenOptionsForPivot, safeJsonParse } from '../utils';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
+import { findFieldCondition } from '../utils/condition/condition';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -101,6 +103,30 @@ export class PivotFacet extends FrozenFacet {
     };
   }
 
+  private getDataQueryInfo(rowQuery: Query, colQuery: Query) {
+    const { options, dataSet } = this.spreadsheet;
+    const hideMeasure = options.style?.colCell?.hideValue ?? false;
+
+    /**
+     * 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
+     * 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
+     * 因此默认只会去 第一个度量拼接query
+     */
+    const measureInfo = hideMeasure
+      ? {
+          [EXTRA_FIELD]: dataSet.fields.values?.[0],
+        }
+      : {};
+
+    const dataQuery = merge({}, rowQuery, colQuery, measureInfo) as Query;
+    const valueField = dataQuery[EXTRA_FIELD]!;
+
+    return {
+      dataQuery,
+      valueField,
+    };
+  }
+
   /**
    * 根据行列索引获取单元格元数据
    */
@@ -120,19 +146,10 @@ export class PivotFacet extends FrozenFacet {
       row.isTotals || row.isTotalMeasure || col.isTotals || col.isTotalMeasure;
 
     const totalStatus = getHeaderTotalStatus(row, col);
-    const hideMeasure = options.style?.colCell?.hideValue ?? false;
-
-    /*
-     * 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
-     * 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
-     * 因此默认只会去 第一个度量拼接query
-     */
-    const measureInfo = hideMeasure
-      ? {
-          [EXTRA_FIELD]: dataSet.fields.values?.[0],
-        }
-      : {};
-    const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
+    const { dataQuery, valueField } = this.getDataQueryInfo(
+      rowQuery!,
+      colQuery!,
+    );
     const data = dataSet.getCellData({
       query: dataQuery,
       rowNode: row,
@@ -140,7 +157,6 @@ export class PivotFacet extends FrozenFacet {
       totalStatus,
     });
 
-    const valueField = dataQuery[EXTRA_FIELD]!;
     const fieldValue = get(data, VALUE_FIELD, null);
 
     const cellMeta: ViewMeta = {
@@ -887,7 +903,8 @@ export class PivotFacet extends FrozenFacet {
       cell: colCellStyle,
       icon: colIconStyle,
     } = this.spreadsheet.theme.colCell!;
-    const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
+    const { text: dataCellTextStyle, icon: dataCellIconStyle } =
+      this.spreadsheet.theme.dataCell;
 
     // leaf node width
     const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
@@ -907,6 +924,7 @@ export class PivotFacet extends FrozenFacet {
     // 采样 50 个 label，逐个计算找出最长的 label
     let maxDataLabel = '';
     let maxDataLabelWidth = 0;
+    let iconWidthOfMaxDataLabel = 0;
 
     for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
       const rowNode = rowLeafNodes[index];
@@ -932,6 +950,20 @@ export class PivotFacet extends FrozenFacet {
               valueData,
             ) ?? valueData;
           const cellLabel = formattedValue;
+          // 考虑字段标记 icon 的宽度: https://github.com/antvis/S2/pull/2673
+          const { valueField } = this.getDataQueryInfo(
+            rowNode.query!,
+            colNode.query!,
+          );
+          const hasIcon = findFieldCondition(
+            this.spreadsheet.options.conditions?.icon,
+            valueField!,
+          );
+          const dataCellIconWidth = hasIcon
+            ? dataCellIconStyle?.size +
+              dataCellIconStyle?.margin?.left +
+              dataCellIconStyle?.margin?.right
+            : 0;
           const cellLabelWidth = this.spreadsheet.measureTextWidth(
             cellLabel as string,
             dataCellTextStyle,
@@ -940,24 +972,27 @@ export class PivotFacet extends FrozenFacet {
           if (cellLabelWidth > maxDataLabelWidth) {
             maxDataLabel = cellLabel as string;
             maxDataLabelWidth = cellLabelWidth;
+            iconWidthOfMaxDataLabel = dataCellIconWidth;
           }
         }
       }
     }
 
-    // compare result
     const isLeafNodeWidthLonger = leafNodeWidth > maxDataLabelWidth;
     const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
-    const appendedWidth = isLeafNodeWidthLonger ? colIconWidth : 0;
+    const appendedWidth = isLeafNodeWidthLonger
+      ? colIconWidth
+      : iconWidthOfMaxDataLabel;
 
     DebuggerUtil.getInstance().logger(
       'Max Label In Col:',
       colNode.field,
       maxLabel,
       maxDataLabelWidth,
+      iconWidthOfMaxDataLabel,
     );
 
-    // 取列头/数值字体最大的文本宽度 https://github.com/antvis/S2/issues/2385
+    // 取列头/数值字体最大的文本宽度: https://github.com/antvis/S2/issues/2385
     const maxTextWidth = this.spreadsheet.measureTextWidth(maxLabel, {
       ...colCellTextStyle,
       fontSize: Math.max(dataCellTextStyle.fontSize, colCellTextStyle.fontSize),

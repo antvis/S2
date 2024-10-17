@@ -154,7 +154,7 @@ export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
         },
       ],
       belongsCell: 'rowCell',
-      defaultHide: false,
+      defaultHide: true,
       displayCondition:
         partDrillDown?.displayCondition || defaultPartDrillDownDisplayCondition,
     };

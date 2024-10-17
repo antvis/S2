@@ -1,7 +1,6 @@
 import type { PointLike } from '@antv/g';
 import {
   find,
-  findLast,
   first,
   get,
   isEmpty,
@@ -48,7 +47,10 @@ import {
   updateBySelectedCellsHighlight,
 } from '../utils/cell/data-cell';
 import { groupIconsByPosition } from '../utils/cell/header-cell';
-import { getIconPosition } from '../utils/condition/condition';
+import {
+  findFieldCondition,
+  getIconPosition,
+} from '../utils/condition/condition';
 import { drawInterval } from '../utils/g-mini-charts';
 import { updateShapeAttr } from '../utils/g-renders';
 import type { RawData } from './../common/interface/s2DataConfig';
@@ -491,14 +493,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  public findFieldCondition<Con extends Condition>(
-    conditions: Con[] = [],
-  ): Con | undefined {
-    return findLast(conditions, (item) =>
-      item.field instanceof RegExp
-        ? item.field.test(this.meta.valueField)
-        : item.field === this.meta.valueField,
-    );
+  public findFieldCondition<T extends Condition>(
+    conditions: T[] = [],
+  ): T | undefined {
+    return findFieldCondition(conditions, this.meta.valueField);
   }
 
   /**
@@ -516,7 +514,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         })
       : CellData.getFieldValue(this.meta.data as ViewMetaData);
 
-    return condition.mapping(value, rowDataInfo as RawData, this);
+    return condition.mapping?.(value, rowDataInfo as RawData, this);
   }
 
   public updateByState(stateName: `${InteractionStateName}`) {
