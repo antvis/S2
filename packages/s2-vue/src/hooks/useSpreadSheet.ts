@@ -45,7 +45,7 @@ export function useSpreadSheet(
       return customSpreadSheet(container, rawDataCfg, s2Options);
     }
 
-    if (sheetType === 'table') {
+    if (sheetType === 'table' || sheetType === 'editable') {
       return new TableSheet(container, rawDataCfg, s2Options);
     }
 
