@@ -233,16 +233,14 @@ describe('SheetComponent Tooltip Tests', () => {
   test('should rerender when update operator menus reference', async () => {
     await sleep(1000);
 
-    const items: TooltipOperatorMenuOptions['items'] = [
-      {
-        key: 'menu-a',
-        label: <div className="menu-a-text">menu-a-text</div>,
-      },
-    ];
-
     const operator: TooltipOperatorOptions<TooltipOperatorMenuOptions> = {
       menu: {
-        items,
+        items: [
+          {
+            key: 'menu-a',
+            label: <div className="menu-a-text">menu-a-text</div>,
+          },
+        ],
       },
     };
 
@@ -256,7 +254,7 @@ describe('SheetComponent Tooltip Tests', () => {
     await sleep(1000);
 
     operator.menu!.items = [
-      ...items,
+      ...operator.menu!.items!,
       {
         key: 'menu-b',
         label: <div className="menu-b-text">menu-b-text</div>,
