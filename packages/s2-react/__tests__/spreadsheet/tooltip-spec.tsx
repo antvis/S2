@@ -2,7 +2,13 @@ import { SheetComponent } from '@/components/sheets';
 import type { SheetComponentOptions } from '@/components/sheets/interface';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 import { StarOutlined } from '@ant-design/icons';
-import { BaseTooltip, GEvent, S2Event, SpreadSheet } from '@antv/s2';
+import {
+  BaseTooltip,
+  GEvent,
+  S2Event,
+  SpreadSheet,
+  type TooltipOperatorOptions,
+} from '@antv/s2';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
@@ -222,6 +228,53 @@ describe('SheetComponent Tooltip Tests', () => {
     expect(customMenuTextNode).toBeTruthy();
     expect(customMenuTextNode?.innerHTML).toEqual('text');
     expect(container?.querySelector('.menu-icon')).toBeTruthy();
+  });
+
+  test('should rerender when update operator menus reference', async () => {
+    await sleep(1000);
+
+    const items: TooltipOperatorMenuOptions['items'] = [
+      {
+        key: 'menu-a',
+        label: <div className="menu-a-text">menu-a-text</div>,
+      },
+    ];
+
+    const operator: TooltipOperatorOptions<TooltipOperatorMenuOptions> = {
+      menu: {
+        items,
+      },
+    };
+
+    await s2.showTooltip<React.ReactNode, TooltipOperatorMenuOptions>({
+      position: { x: 0, y: 0 },
+      options: {
+        operator,
+      },
+    });
+
+    await sleep(1000);
+
+    operator.menu!.items = [
+      ...items,
+      {
+        key: 'menu-b',
+        label: <div className="menu-b-text">menu-b-text</div>,
+      },
+    ];
+
+    await s2.showTooltip<React.ReactNode, TooltipOperatorMenuOptions>({
+      position: { x: 0, y: 0 },
+      options: {
+        operator,
+      },
+    });
+
+    const { container } = s2.tooltip;
+    const customMenuTextNode = container?.querySelector('.menu-b-text');
+
+    expect(customMenuTextNode).toBeTruthy();
+    expect(customMenuTextNode?.innerHTML).toEqual('menu-b-text');
   });
 
   test('should get tooltip container after async rendered', async () => {
