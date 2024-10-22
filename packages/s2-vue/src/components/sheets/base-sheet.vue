@@ -76,7 +76,7 @@ export default defineComponent({
 </template>
 
 <style lang="less">
-@import '@antv/s2-shared/src/styles/variables.less';
+@import '@antv/s2/esm/shared/styles/variables.less';
 
 .@{s2-cls-prefix} {
   &-spin.ant-spin-nested-loading,

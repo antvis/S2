@@ -19,7 +19,6 @@ Function description: The props parameter of the React SheetComponent component
 | options | pivot table property configuration item | [SheetComponentOptions](#sheetcomponentoptions) | | ✓ |
 | partDrillDown | Attributes related to dimension drilldown | [PartDrillDown](/docs/api/components/drill-down) | | |
 | adaptive | Whether to adapt to the window size | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
-| showPagination | Whether to display the default pagination<br> (only if the `pagination` attribute is configured in `options`) | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,< br>onChange?: (current: number) => void <br>} | `false` | |
 | themeCfg | Custom pivot table theme styles | [ThemeCfg](/docs/api/general/S2Theme) | | |
 | loading | Controls the loading state of the table | `boolean` | | |
 | header | header configuration items | [HeaderCfgProps](/docs/api/components/header) | | |

@@ -200,7 +200,7 @@ const containerId = 'containerId';
 还可以自定义自适应的容器：
 
 ```tsx
-<script setup>
+<script lang="ts">
 const adaptive = {
   width: true,
   height: true,

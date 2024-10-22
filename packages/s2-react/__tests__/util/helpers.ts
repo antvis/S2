@@ -39,12 +39,6 @@ export const sleep = async (timeout = 0) => {
   });
 };
 
-export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
-  const instance = Object.create(Sheet.prototype);
-
-  return instance as unknown as SpreadSheet;
-}
-
 export const createMockCellInfo = (
   cellId: string,
   { colIndex = 0, rowIndex = 0, extra = {} } = {},
@@ -116,3 +110,9 @@ export const renderComponent = (
     });
   };
 };
+
+export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
+  const instance = Object.create(Sheet.prototype);
+
+  return instance as unknown as SpreadSheet;
+}

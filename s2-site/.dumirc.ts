@@ -171,6 +171,14 @@ export default defineConfig({
         order: 6,
       },
       {
+        slug: 'manual/advanced/sheet',
+        title: {
+          zh: '表格组件',
+          en: 'Sheet Component',
+        },
+        order: 7,
+      },
+      {
         slug: 'manual/basic/sort',
         title: {
           zh: '排序',

@@ -1,6 +1,4 @@
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { Menu, type GetProp, type MenuProps } from 'antd';
-import cls from 'classnames';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import type {
@@ -10,7 +8,7 @@ import type {
 } from '../interface';
 import { TooltipIcon } from './icon';
 
-import '@antv/s2-shared/src/styles/tooltip/operator.less';
+import '@antv/s2/esm/shared/styles/tooltip/operator.less';
 
 export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
   React.memo((props) => {
@@ -18,10 +16,10 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
       onlyShowOperator,
       cell,
       menu: {
-        className,
         items: menus = [],
         onClick,
         selectedKeys,
+        render,
         ...otherMenuProps
       },
     } = props;
@@ -36,9 +34,12 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
 
     const renderMenu = (
       menu: TooltipOperatorMenuItem,
-    ): GetProp<MenuProps, 'items'>[number] => {
+    ): TooltipOperatorMenuItem => {
       const { key, label, children, onClick: onTitleClick } = menu;
-      const subMenus = map(children, renderMenu);
+      const subMenus = map(
+        children,
+        renderMenu,
+      ) as unknown as TooltipOperatorMenuItem[];
 
       return {
         key,
@@ -50,8 +51,8 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
           />
         ),
         popupClassName: `${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`,
-        onTitleClick: (info) => {
-          onTitleClick?.(info as any, cell);
+        onTitleClick: (info: any) => {
+          onTitleClick?.(info, cell);
           onMenuClick?.(info);
         },
         children: subMenus,
@@ -61,17 +62,14 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
     const renderMenus = () => {
       const items = map(menus, renderMenu);
 
-      return (
-        <Menu
-          mode={onlyShowOperator ? 'vertical' : 'horizontal'}
-          className={cls(`${TOOLTIP_PREFIX_CLS}-operator-menus`, className)}
-          onClick={onMenuClick}
-          selectedKeys={selectedKeys}
-          items={items}
-          selectable={onlyShowOperator}
-          {...otherMenuProps}
-        />
-      );
+      return render?.({
+        mode: onlyShowOperator ? 'vertical' : 'horizontal',
+        selectable: onlyShowOperator,
+        onClick: onMenuClick,
+        items,
+        selectedKeys,
+        ...otherMenuProps,
+      });
     };
 
     return (

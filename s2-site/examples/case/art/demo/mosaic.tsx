@@ -2,7 +2,7 @@
 import React from 'react';
 import { LayoutWidthType, ThemeCfg } from '@antv/s2';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
-import '@antv/s2-react/dist/style.min.css';
+import '@antv/s2-react/dist/s2-react.min.css';
 
 // 了解更多: https://observablehq.com/@pearmini/mosaic-antv-s2
 fetch(
