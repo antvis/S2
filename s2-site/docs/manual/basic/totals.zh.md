@@ -227,7 +227,7 @@ const s2Options = {
 import { QueryDataType } from '@antv/s2';
 
 const calcFunc = (query, data, spreadsheet) => {
-  const allData = spreadsheet.dataSet.getMultiData({
+  const allData = spreadsheet.dataSet.getCellMultiData({
     query,
     queryType: QueryDataType.All,
   });
