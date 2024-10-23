@@ -78,7 +78,6 @@ export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
 enum CustomType {
   Row = 'row',
   Col = 'col',
-  All = 'all',
 }
 
 type CustomGridProps = Partial<SheetComponentProps>;
@@ -122,9 +121,6 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
           >
             <Radio.Button value={CustomType.Row}>自定义行头</Radio.Button>
             <Radio.Button value={CustomType.Col}>自定义列头</Radio.Button>
-            <Radio.Button value={CustomType.All} disabled>
-              TODO: 自定义行头和列头
-            </Radio.Button>
           </Radio.Group>
           <Switch
             checkedChildren="树状模式"

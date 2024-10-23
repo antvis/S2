@@ -9,7 +9,10 @@ tag: Updated
 `组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`省份` 的排序方式不会更改，只会更改每个 `省份` 内部 `城市` 的顺序。
 
 :::warning{title="注意"}
-`行头/列头` 只存在单一状态，当前状态会覆盖前一状态，如上图所示，当对 `笔` 进行排序时，`纸张` 的排序状态消失，`行头 + 列头` 可同时存在自身状态。
+
+1. `行头/列头` 只存在单一状态，当前状态会**覆盖前一状态**，如上图所示，当对 `笔` 进行排序时，`纸张` 的排序状态消失，`行头 + 列头` 可同时存在自身状态。
+2. 在开启 [自定义行列头时](/manual/advanced/custom/custom-header) 组内排序无效。
+
 :::
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PuoGS7DQdV8AAAAAAAAAAAAADmJ7AQ/original" width="600" alt="group-sort" />
