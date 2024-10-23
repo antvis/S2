@@ -22,6 +22,7 @@ import {
 import { DebuggerUtil } from '../common/debug';
 import type {
   CellCallbackParams,
+  Data,
   DataItem,
   FilterParam,
   LayoutResult,
@@ -376,7 +377,7 @@ export class TableFacet extends FrozenFacet {
     if (options.seriesNumber?.enable && colNode.field === SERIES_NUMBER_FIELD) {
       data = rowIndex + 1;
     } else {
-      data = dataSet.getCellData({
+      data = (dataSet as TableDataSet).getCellData({
         query: {
           field: colNode.field,
           rowIndex,
@@ -397,7 +398,7 @@ export class TableFacet extends FrozenFacet {
       height: cellHeight,
       data: {
         [colNode.field]: data,
-      } as unknown as SimpleData,
+      } as unknown as Data,
       rowIndex,
       colIndex,
       isTotals: false,

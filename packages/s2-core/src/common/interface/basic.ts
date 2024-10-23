@@ -442,7 +442,7 @@ export interface ViewMeta {
   height: number;
 
   /** 单元格数据 */
-  data: ViewMetaData | SimpleData | undefined;
+  data: ViewMetaData | undefined;
 
   /** 行索引 */
   rowIndex: number;

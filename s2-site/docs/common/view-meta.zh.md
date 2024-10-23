@@ -15,7 +15,7 @@ order: 6
 | y | `number` |  |   | 单元格 y 坐标 |
 | width | `number` |   |  | 单元格宽度 |
 | height | `number` |    |  | 单元格高度 |
-| data | [ViewMetaData](#viewmetadata) \| [SimpleData](#simpledata) |    |  | 单元格原始数据度量 |
+| data | [ViewMetaData](#viewmetadata) |    |  | 单元格数据 |
 | rowIndex | `number` |  |  |   单元格在行叶子节点中的索引 |
 | colIndex | `number` |  |  |   单元格在列叶子节点中的索引 |
 | valueField | `string` |  |    | 度量 id |
