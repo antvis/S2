@@ -5,6 +5,7 @@ import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import {
+  Aggregation,
   PivotSheet,
   asyncGetAllPlainData,
   type DataItem,
@@ -49,19 +50,20 @@ describe('PivotSheet Export Test', () => {
     );
 
     await s2.render();
-    const data = await asyncGetAllPlainData({
+    const syncData = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: TAB_SEPARATOR,
       formatOptions: true,
+      async: true,
     });
 
-    expect(data).toMatchSnapshot();
+    expect(syncData).toMatchSnapshot();
 
     const asyncData = await asyncGetAllPlainData({
       sheetInstance: s2,
       split: TAB_SEPARATOR,
       formatOptions: true,
-      async: true,
+      async: false,
     });
 
     expect(asyncData).toMatchSnapshot();
@@ -601,6 +603,42 @@ describe('PivotSheet Export Test', () => {
         },
       },
       assembleOptions(),
+    );
+
+    await expectMatchSnapshot(sheet);
+  });
+
+  // https://github.com/antvis/S2/issues/2928
+  it('should export correct data in grid mode by custom calc grand totals', async () => {
+    const sheet = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          rows: ['province', 'city'],
+          columns: [],
+          values: ['number'],
+          valueInCols: true,
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseGrandTotalsLayout: true,
+            calcGrandTotals: {
+              aggregation: Aggregation.SUM,
+            },
+          },
+          row: {
+            showGrandTotals: true,
+            calcGrandTotals: {
+              aggregation: Aggregation.AVG,
+            },
+          },
+        },
+      }),
     );
 
     await expectMatchSnapshot(sheet);
