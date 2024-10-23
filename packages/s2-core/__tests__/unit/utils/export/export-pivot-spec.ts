@@ -54,7 +54,7 @@ describe('PivotSheet Export Test', () => {
       sheetInstance: s2,
       split: TAB_SEPARATOR,
       formatOptions: true,
-      async: true,
+      async: false,
     });
 
     expect(syncData).toMatchSnapshot();
@@ -63,7 +63,7 @@ describe('PivotSheet Export Test', () => {
       sheetInstance: s2,
       split: TAB_SEPARATOR,
       formatOptions: true,
-      async: false,
+      async: true,
     });
 
     expect(asyncData).toMatchSnapshot();
