@@ -20,7 +20,7 @@ Object {
   "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "width": null,
+  "width": undefined,
   "widthByField": Object {
     "testFieldId": 5,
   },
@@ -34,7 +34,7 @@ Object {
   "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "width": null,
+  "width": undefined,
   "widthByField": Object {
     "testField": 5,
   },
@@ -48,9 +48,10 @@ Object {
   "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "width": null,
+  "width": undefined,
   "widthByField": Object {
-    "testFieldId": 5,
+    "test-cell-a": 5,
+    "test-cell-b": 5,
   },
   "wordWrap": true,
 }
@@ -62,7 +63,7 @@ Object {
   "heightByField": null,
   "maxLines": 1,
   "textOverflow": "ellipsis",
-  "width": null,
+  "width": undefined,
   "widthByField": Object {
     "test-cell-a": 5,
     "test-cell-b": 5,
@@ -73,7 +74,7 @@ Object {
 
 exports[`Interaction Row Column Resize Tests should get multiple vertical filed resize style by field for selected resize type 1`] = `
 Object {
-  "height": null,
+  "height": undefined,
   "heightByField": Object {
     "test-cell-a": 2,
     "test-cell-b": 2,
@@ -123,7 +124,7 @@ Object {
 
 exports[`Interaction Row Column Resize Tests should get vertical filed resize style by field for current resize type 1`] = `
 Object {
-  "height": null,
+  "height": undefined,
   "heightByField": Object {
     "testFieldId": 2,
   },
@@ -137,9 +138,10 @@ Object {
 
 exports[`Interaction Row Column Resize Tests should get vertical filed resize style by field for selected resize type 1`] = `
 Object {
-  "height": null,
+  "height": undefined,
   "heightByField": Object {
-    "testFieldId": 2,
+    "test-cell-a": 2,
+    "test-cell-b": 2,
   },
   "maxLines": 1,
   "showTreeLeafNodeAlignDot": false,
@@ -159,6 +161,20 @@ Object {
   "showTreeLeafNodeAlignDot": false,
   "textOverflow": "ellipsis",
   "widthByField": null,
+  "wordWrap": true,
+}
+`;
+
+exports[`Interaction Row Column Resize Tests should not effect default resize style by field for selected resize type 1`] = `
+Object {
+  "height": 30,
+  "heightByField": null,
+  "maxLines": 1,
+  "textOverflow": "ellipsis",
+  "width": 50,
+  "widthByField": Object {
+    "testFieldId": 5,
+  },
   "wordWrap": true,
 }
 `;

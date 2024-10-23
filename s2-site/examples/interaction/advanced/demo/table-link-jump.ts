@@ -37,6 +37,10 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       width: 600,
       height: 480,
       interaction: {
+        /**
+         * 由于明细表单列头的特殊性，为和透视表保持一致，同时兼容多列头的场景，明细表的标记会对列头和数值**同时生效**.
+         * 如希望标记只对数值生效，可以参考自定义标记示例: https://s2.antv.antgroup.com/examples/interaction/advanced/#custom-link-jump
+         */
         linkFields: ['type', 'province', 'price'],
       },
     };

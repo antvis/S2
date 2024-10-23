@@ -1,3 +1,11 @@
+# [@antv/s2-react-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.27...@antv/s2-react-v2.0.0-next.28) (2024-10-12)
+
+
+### Bug Fixes
+
+* 修复自定义列宽对虚拟数值列不生效 ([#2921](https://github.com/antvis/S2/issues/2921)) ([c53cea4](https://github.com/antvis/S2/commit/c53cea4a2fa2d7b18939abfb984629a94eab936d))
+* 调整分割线的颜色绘制逻辑, 优化和单元格边框颜色不一致的问题 ([#2919](https://github.com/antvis/S2/issues/2919)) ([3f766d0](https://github.com/antvis/S2/commit/3f766d02b14bf6d6ebac34b302a0232a58afe500))
+
 # [@antv/s2-react-v2.0.0-next.27](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.26...@antv/s2-react-v2.0.0-next.27) (2024-09-18)
 
 

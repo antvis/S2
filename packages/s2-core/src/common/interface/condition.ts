@@ -1,4 +1,4 @@
-import type { DataCell, HeaderCell } from '../../cell';
+import type { S2CellType } from './interaction';
 import type { RawData } from './s2DataConfig';
 import type { TextTheme } from './theme';
 
@@ -40,7 +40,7 @@ export type ConditionMappingResult<T = unknown> = T | undefined | null;
 export type ConditionMapping<T = unknown> = (
   fieldValue: number | string,
   data: RawData,
-  cell?: DataCell | HeaderCell,
+  cell: S2CellType,
 ) => ConditionMappingResult<T>;
 
 /**

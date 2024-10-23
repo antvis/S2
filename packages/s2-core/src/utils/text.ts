@@ -162,6 +162,7 @@ const getCurrentTextStyle = ({
   data,
   textStyle,
   textCondition,
+  cell,
 }: {
   rowIndex: number;
   colIndex: number;
@@ -169,12 +170,17 @@ const getCurrentTextStyle = ({
   data: string | number;
   textStyle?: TextTheme;
   textCondition?: TextCondition;
+  cell: S2CellType;
 }): TextTheme => {
-  const style = textCondition?.mapping?.(data, {
-    rowIndex,
-    colIndex,
-    meta,
-  });
+  const style = textCondition?.mapping?.(
+    data,
+    {
+      rowIndex,
+      colIndex,
+      meta,
+    },
+    cell,
+  );
 
   return { ...textStyle, ...style };
 };
@@ -340,6 +346,7 @@ export const drawCustomContent = (
             data: curText,
             textStyle,
             textCondition,
+            cell,
           })
         : textStyle!;
 
@@ -391,11 +398,15 @@ export const drawCustomContent = (
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
-        const attrs = iconCondition?.mapping?.(curText, {
-          rowIndex: i,
-          colIndex: j,
-          meta: cell?.getMeta(),
-        });
+        const attrs = iconCondition?.mapping?.(
+          curText,
+          {
+            rowIndex: i,
+            colIndex: j,
+            meta: cell?.getMeta(),
+          },
+          cell,
+        );
 
         const iconX = iconCfg?.position === 'left' ? leftIconX : rightIconX;
         const iconY = getVerticalIconPosition(

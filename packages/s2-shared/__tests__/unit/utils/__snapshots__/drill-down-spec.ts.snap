@@ -11,7 +11,7 @@ Object {
   "headerActionIcons": Array [
     Object {
       "belongsCell": "rowCell",
-      "defaultHide": false,
+      "defaultHide": true,
       "displayCondition": [Function],
       "icons": Array [
         Object {

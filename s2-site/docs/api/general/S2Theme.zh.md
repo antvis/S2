@@ -114,13 +114,13 @@ s2.setTheme({
 | 参数                         | 说明                                                      | 类型                                   | 默认值                                                   | 必选 |
 | ---------------------------- | --------------------------------------------------------- | -------------------------------------- | -------------------------------------------------------- | ---- |
 | horizontalBorderColor        | 水平分割线颜色                                            | `string`                               | -                                                        |      |
-| horizontalBorderColorOpacity | 水平分割线颜色透明度                                      | `number`                               | 0.2                                                      |      |
+| horizontalBorderColorOpacity | 水平分割线颜色透明度                                      | `number`                               |  -                                                      |      |
 | horizontalBorderWidth        | 水平分割线宽度                                            | `number`                               | 2                                                        |      |
 | verticalBorderColor          | 垂直分割线颜色                                            | `string`                               | -                                                        |      |
-| verticalBorderColorOpacity   | 垂直分割线颜色透明度                                      | `number`                               | 0.25                                                     |      |
+| verticalBorderColorOpacity   | 垂直分割线颜色透明度                                      | `number`                               | -                                                    |      |
 | verticalBorderWidth          | 垂直分割线宽度                                            | `number`                               | 2                                                        |      |
 | showShadow                   | 分割线是否显示外阴影（行列冻结情况下）                    | `boolean`                              | `true`                                                   |      |
-| shadowWidth                  | 阴影宽度                                                  | `number`                               | 10                                                       |      |
+| shadowWidth                  | 阴影宽度                                                  | `number`                               | 8                                                       |      |
 | shadowColors                 | `left` : 线性变化左侧颜色 <br> `right` : 线性变化右侧颜色 | `{left: string,` <br> `right: string}` | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` |      |
 | borderDash                 | 分割线虚线 | `number \| string \| (string \| number)[]` | `[]` |      |
 
