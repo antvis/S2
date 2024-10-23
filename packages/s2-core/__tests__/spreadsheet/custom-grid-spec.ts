@@ -254,6 +254,19 @@ describe('SpreadSheet Custom Grid Tests', () => {
         s2.facet.getRowNodes().every((node) => node.isCollapsed),
       ).toBeTruthy();
     });
+
+    // https://github.com/antvis/S2/issues/2898
+    test('should not render sort action icon for custom row header', async () => {
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+      });
+
+      await s2.render(false);
+
+      s2.facet.getRowCells().forEach((cell) => {
+        expect(cell.getActionIcons()).toHaveLength(0);
+      });
+    });
   });
 
   describe('Custom Col Grid Tests', () => {
@@ -276,7 +289,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should enable valueInCols', () => {
@@ -537,6 +550,43 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(
         s2.facet.getColNodes().some((node) => node.isCollapsed),
       ).toBeFalsy();
+    });
+
+    // https://github.com/antvis/S2/issues/2893
+    test.each(['tree', 'grid'])(
+      'should not render total node for %s mode',
+      async (hierarchyType) => {
+        s2.setOptions({
+          hierarchyType,
+          totals: {
+            col: {
+              showGrandTotals: true,
+              reverseGrandTotalsLayout: true,
+            },
+            row: {
+              showGrandTotals: true,
+              reverseGrandTotalsLayout: true,
+            },
+          },
+        });
+
+        await s2.render(false);
+
+        expect(s2.facet.getColGrandTotalsNodes()).toHaveLength(0);
+        expect(s2.facet.getRowGrandTotalsNodes()).toHaveLength(0);
+      },
+    );
+
+    test('should not render sort action icon for custom col header', async () => {
+      s2.setOptions({
+        showDefaultHeaderActionIcon: true,
+      });
+
+      await s2.render(false);
+
+      s2.facet.getColCells().forEach((cell) => {
+        expect(cell.getActionIcons()).toHaveLength(0);
+      });
     });
   });
 });

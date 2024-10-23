@@ -6,7 +6,17 @@ tag: New
 
 `S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种**行头**单元格布局方式。
 
-默认通过**分组之后得到的数据生成层级结构**, 如果都不满足的话，可以通过自定义行列头，来定制你的目录结构，同样兼容平铺和树状这两种布局方式。
+默认通过**分组之后得到的数据生成层级结构**, 如果都不满足，还可以通过自定义行列头，来定制你的目录结构，同样兼容平铺和树状这两种布局方式。
+
+## 一些限制
+
+:::warning{title="注意"}
+
+1. 默认的排序 icon `showDefaultHeaderActionIcon` 无效。
+2. 不支持 [组内排序](/manual/basic/sort/group), 相关 API 无效。
+3. 不支持 [小计总计](/manual/basic/totals), 且 [自定义汇总](/manual/basic/totals#2-%E6%95%B0%E6%8D%AE) 中无法获取到明细数据。
+
+:::
 
 ## 数据结构
 

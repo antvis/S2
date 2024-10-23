@@ -114,14 +114,16 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     }
   }
 
-  // add totals if needed
-  addTotals({
-    currentField,
-    lastField: fields[index - 1],
-    isFirstField: index === 0,
-    fieldValues,
-    spreadsheet,
-  });
+  // https://github.com/antvis/S2/issues/2893
+  if (!spreadsheet.isCustomHeaderFields()) {
+    addTotals({
+      currentField,
+      lastField: fields[index - 1],
+      isFirstField: index === 0,
+      fieldValues,
+      spreadsheet,
+    });
+  }
 
   const displayFieldValues = filterOutDetail(fieldValues as string[]);
 
