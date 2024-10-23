@@ -42,6 +42,19 @@ province	city	number	number	number	number
 四川省	乐山市	2330	2445	2458	352"
 `;
 
+exports[`PivotSheet Export Test should export correct data in grid mode by custom calc grand totals 1`] = `
+"省份	城市	总计	数量
+浙江省	杭州市	15420	15420
+浙江省	绍兴市	5657	5657
+浙江省	宁波市	13779	13779
+浙江省	舟山市	8242	8242
+四川省	成都市	10513	10513
+四川省	绵阳市	7388	7388
+四川省	南充市	10284	10284
+四川省	乐山市	7585	7585
+总计		78868	78868"
+`;
+
 exports[`PivotSheet Export Test should export correct data in grid mode with totals in col 1`] = `
 "	类别	家具	家具	家具	办公用品	办公用品	办公用品	总计
 	子类别	桌子	沙发	小计	笔	纸张	小计	
