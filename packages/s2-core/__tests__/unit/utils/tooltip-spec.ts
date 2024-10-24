@@ -636,6 +636,30 @@ describe('Tooltip Utils Tests', () => {
       expect(tooltipData).toEqual(defaultTooltipData);
     });
 
+    test('should get correctly data cell details', () => {
+      s2 = createPivotSheet();
+
+      const cell = createMockCellInfo('test-a');
+      const tooltipData = getTooltipData({
+        cellInfos: [
+          getCellData(7789, false, {
+            sub_type: '桌子',
+            type: '家具',
+          }),
+        ],
+        options: {
+          enableFormat: true,
+          isTotals: false,
+          hideSummary: true,
+          onlyShowCellText: false,
+        },
+        targetCell: cell.mockCell,
+        spreadsheet: s2,
+      });
+
+      expect(tooltipData).toMatchSnapshot();
+    });
+
     test.each([
       { count: 1, isTotalCell: true, name: '单选' },
       { count: 4, isTotalCell: false, name: '多选' },

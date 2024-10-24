@@ -191,9 +191,11 @@ export const getListItem = (
     targetCell?: S2CellType;
   },
 ): TooltipDetailListItem => {
-  const name =
-    spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
-    spreadsheet?.dataSet?.getFieldName(field);
+  const defaultFieldName = spreadsheet?.dataSet?.getFieldName(field);
+  const name = spreadsheet.isCustomRowFields()
+    ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
+      defaultFieldName
+    : defaultFieldName;
 
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
