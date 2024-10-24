@@ -4,8 +4,14 @@ const s2Options: S2Options = {
   width: 600,
   height: 480,
   seriesNumber: {
-    enable: true
-  }  
+    enable: true,
+  },
+  // 提高滚动性能
+  transformCanvasConfig(renderer) {
+    renderer.setConfig({
+      enableCulling: true,
+    });
+  },
 };
 
 export function generateRawData(
