@@ -54,7 +54,7 @@ export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
           onTitleClick?.(info as any, cell);
           onMenuClick?.(info);
         },
-        children: subMenus,
+        children: !isEmpty(subMenus) ? subMenus : undefined,
       };
     };
 

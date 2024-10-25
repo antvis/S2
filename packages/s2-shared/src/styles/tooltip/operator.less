@@ -14,6 +14,10 @@
   border: 0;
   cursor: pointer;
 
+  .ant-menu {
+    font-size: @tooltip-menu-font-size;
+  }
+
   .ant-menu-horizontal:not(.ant-menu-dark) {
     background: transparent;
     line-height: @tooltip-menu-item-height;
@@ -29,7 +33,6 @@
     color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
     border: 0;
     user-select: none;
-    padding: 4px;
     width: 100%;
 
     .ant-menu-item {
@@ -119,54 +122,6 @@
       width: @tooltip-menu-font-size;
       height: @tooltip-menu-font-size;
       fill: var(~'@{css-var-prefix}-font');
-    }
-  }
-}
-
-// mobile style
-@media only screen and (max-device-width: 480px) {
-  .@{tooltip-operator-cls-prefix} {
-    &-menus.ant-menu-vertical.ant-menu {
-      font-size: @tooltip-menu-font-size;
-
-      .ant-menu-item {
-        height: @tooltip-menu-item-height;
-      }
-    }
-
-    &-menus.ant-dropdown-menu-vertical,
-    &-menus.ant-menu-vertical {
-      .ant-dropdown-menu-item,
-      .ant-menu-item {
-        line-height: @tooltip-menu-item-height;
-      }
-
-      .ant-dropdown-menu-submenu,
-      .ant-dropdown-menu-submenu-vertical,
-      .ant-menu-submenu,
-      .ant-menu-submenu-vertical {
-        .ant-menu-submenu-title {
-          .with-menu-item-color();
-
-          font-size: @tooltip-menu-font-size;
-        }
-      }
-    }
-
-    &-submenu-popup {
-      .ant-dropdown-menu-item,
-      .ant-menu-item {
-        .with-menu-item-color();
-
-        font-size: @tooltip-menu-font-size;
-      }
-    }
-
-    &-icon {
-      svg {
-        width: @tooltip-menu-font-size;
-        height: @tooltip-menu-font-size;
-      }
     }
   }
 }
