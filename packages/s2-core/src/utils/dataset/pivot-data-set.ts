@@ -8,10 +8,11 @@ import {
   isArray,
   isEmpty,
   isNull,
+  isString,
   last,
   set,
 } from 'lodash';
-import type { RawData } from '../../common';
+import type { CustomHeaderFields, RawData } from '../../common';
 import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_FIELD,
@@ -37,7 +38,7 @@ import type {
 import type { Node } from '../../facet/layout/node';
 import { generateNillString } from '../layout/generate-id';
 
-export function filterExtraDimension(dimensions: string[] = []) {
+export function filterExtraDimension(dimensions: CustomHeaderFields = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
 }
 
@@ -89,7 +90,7 @@ export function getExistValues(data: RawData, values: string[]) {
   return result;
 }
 
-export function transformDimensionsValuesWithExtraFields(
+function transformDimensionsValuesWithExtraFields(
   record: RawData = {},
   dimensions: string[] = [],
   values: string[] | null,
@@ -294,12 +295,19 @@ export interface TransformResult {
 }
 
 /**
+ * 获取用于数据 transform 中定位的 string 的字段，自定义布局中，自定义字段是 object 类型，这些类型不应该参与到数据处理的流程中
+ */
+export function getIndexFields(fields: CustomHeaderFields = []) {
+  return fields.filter(isString);
+}
+
+/**
  * 转换原始数据为二维数组数据
  */
 export function transformIndexesData(params: Param): TransformResult {
   const {
-    rows,
-    columns,
+    rows = [],
+    columns = [],
     values,
     valueInCols,
     data = [],
@@ -337,7 +345,7 @@ export function transformIndexesData(params: Param): TransformResult {
     ).push(dimensionPath);
   };
 
-  const prefix = getDataPathPrefix(rows, columns as string[]);
+  const prefix = getDataPathPrefix(rows, columns);
 
   data.forEach((item: RawData) => {
     // 空数据没有意义，直接跳过

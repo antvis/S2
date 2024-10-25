@@ -5,6 +5,7 @@ import type { Meta, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   getDataPathPrefix,
+  getIndexFields,
   transformDimensionsValues,
 } from '../utils/dataset/pivot-data-set';
 import { CellData } from './cell-data';
@@ -15,22 +16,20 @@ export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: GetCellDataParams) {
     const { query = {} } = params || {};
     const { columns, rows } = this.fields;
-    const rowDimensionValues = transformDimensionsValues(
-      query,
-      rows as string[],
-    );
-    const colDimensionValues = transformDimensionsValues(
-      query,
-      columns as string[],
-    );
+
+    const indexRows = getIndexFields(rows);
+    const indexColumns = getIndexFields(columns);
+
+    const rowDimensionValues = transformDimensionsValues(query, indexRows);
+    const colDimensionValues = transformDimensionsValues(query, indexColumns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
-      rowFields: rows as string[],
-      colFields: columns as string[],
-      prefix: getDataPathPrefix(rows as string[], columns as string[]),
+      rowFields: indexRows,
+      colFields: indexColumns,
+      prefix: getDataPathPrefix(indexRows, indexColumns),
     });
 
     const rawData = get(this.indexesData, path as PropertyPath);
