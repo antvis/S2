@@ -45,7 +45,7 @@ describe('Tooltip Component Tests', () => {
       expect(screen.getByText('不排序')).toBeDefined();
 
       const selectedMenu = Array.from(
-        document.querySelectorAll('.ant-menu-submenu-selected'),
+        document.querySelectorAll('.ant-menu-item-selected'),
       );
 
       expect(selectedMenu).toHaveLength(1);

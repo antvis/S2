@@ -10,71 +10,72 @@ import { TooltipIcon } from './icon';
 
 import '@antv/s2/esm/shared/styles/tooltip/operator.less';
 
-export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> =
-  React.memo((props) => {
-    const {
-      onlyShowOperator,
-      cell,
-      menu: {
-        items: menus = [],
-        onClick,
-        selectedKeys,
-        render,
-        ...otherMenuProps
+export const TooltipOperator: React.FC<Required<TooltipOperatorProps>> = (
+  props,
+) => {
+  const {
+    onlyShowOperator,
+    cell,
+    menu: {
+      items: menus = [],
+      onClick,
+      selectedKeys,
+      render,
+      ...otherMenuProps
+    },
+  } = props;
+
+  if (isEmpty(menus)) {
+    return null;
+  }
+
+  const onMenuClick = (info: TooltipOperatorMenuInfo) => {
+    onClick?.(info, cell);
+  };
+
+  const renderMenu = (
+    menu: TooltipOperatorMenuItem,
+  ): TooltipOperatorMenuItem => {
+    const { key, label, children, onClick: onTitleClick } = menu;
+    const subMenus = map(
+      children,
+      renderMenu,
+    ) as unknown as TooltipOperatorMenuItem[];
+
+    return {
+      key,
+      label,
+      icon: (
+        <TooltipIcon
+          icon={menu.icon!}
+          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
+        />
+      ),
+      popupClassName: `${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`,
+      onTitleClick: (info: any) => {
+        onTitleClick?.(info, cell);
+        onMenuClick?.(info);
       },
-    } = props;
-
-    if (isEmpty(menus)) {
-      return null;
-    }
-
-    const onMenuClick = (info: TooltipOperatorMenuInfo) => {
-      onClick?.(info, cell);
+      children: !isEmpty(subMenus) ? subMenus : undefined,
     };
+  };
 
-    const renderMenu = (
-      menu: TooltipOperatorMenuItem,
-    ): TooltipOperatorMenuItem => {
-      const { key, label, children, onClick: onTitleClick } = menu;
-      const subMenus = map(
-        children,
-        renderMenu,
-      ) as unknown as TooltipOperatorMenuItem[];
+  const renderMenus = () => {
+    const items = map(menus, renderMenu);
 
-      return {
-        key,
-        label,
-        icon: (
-          <TooltipIcon
-            icon={menu.icon!}
-            className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
-          />
-        ),
-        popupClassName: `${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`,
-        onTitleClick: (info: any) => {
-          onTitleClick?.(info, cell);
-          onMenuClick?.(info);
-        },
-        children: subMenus,
-      };
-    };
+    return render?.({
+      mode: onlyShowOperator ? 'vertical' : 'horizontal',
+      selectable: onlyShowOperator,
+      onClick: onMenuClick,
+      items,
+      selectedKeys,
+      ...otherMenuProps,
+    });
+  };
 
-    const renderMenus = () => {
-      const items = map(menus, renderMenu);
-
-      return render?.({
-        mode: onlyShowOperator ? 'vertical' : 'horizontal',
-        selectable: onlyShowOperator,
-        onClick: onMenuClick,
-        items,
-        selectedKeys,
-        ...otherMenuProps,
-      });
-    };
-
-    return (
-      <div className={`${TOOLTIP_PREFIX_CLS}-operator`}>{renderMenus()}</div>
-    );
-  });
+  return (
+    <div className={`${TOOLTIP_PREFIX_CLS}-operator`}>{renderMenus()}</div>
+  );
+};
 
 TooltipOperator.displayName = 'TooltipOperator';

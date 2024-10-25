@@ -276,8 +276,19 @@ import { Plugin as PluginA11y } from '@antv/g-plugin-a11y';
 
 const s2Options = {
   transformCanvasConfig(renderer) {
+    // 修改配置
+    renderer.setConfig({
+      enableCulling: true,
+      enableDirtyCheck: true,
+    });
+    // 注册插件
+    renderer.registerPlugin(
+      new PluginA11y({
+        enableExtractingText: true,
+      }),
+    );
+
     console.log('当前已注册插件：', renderer.getPlugins(), renderer.getConfig());
-    renderer.registerPlugin(new PluginA11y({ enableExtractingText: true }));
 
     // 透传 G 的初始化参数：https://g.antv.antgroup.com/api/canvas/options
     return {

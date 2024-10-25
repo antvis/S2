@@ -593,7 +593,7 @@ export interface LayoutResult {
 }
 ```
 
-5. 原 `s2.getContentHeight()` 废弃，移动到 `s2.facet.getContentHeight()` 中
+5. 原 `s2.getContentHeight()` 废弃，移动到 `s2.facet.getContentHeight()` 中。
 
 ```diff
 - s2.getContentHeight()
@@ -601,7 +601,21 @@ export interface LayoutResult {
 + s2.facet.getContentWidth()
 ```
 
-具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 相关文档。
+6. 获取布局节点相关 API，移动至 `s2.facet` 命名空间下。并新增丰富的 [语法糖](/api/basic-class/base-facet).
+
+```diff
+- s2.getRowNodes()
+- s2.getRowLeafNodes()
+- s2.getColumnLeafNodes()
+- s2.getColumnNodes()
+
++ s2.facet.getRowNodes()
++ s2.facet.getRowLeafNodes()
++ s2.facet.getColLeafNodes()
++ s2.facet.getColNodes()
+```
+
+具体请查看 [获取单元格数据](/manual/advanced/get-cell-data) 和 [BaseFacet](/api/basic-class/base-facet) 相关文档。
 
 #### 渲染参数变更
 

@@ -245,6 +245,11 @@ export class EventController {
         return false;
       }
 
+      // 开启 CSS transform 时, 降级处理, 不做 canvas 内的空白检测: https://github.com/antvis/S2/issues/2879
+      if (this.spreadsheet.container.getConfig().supportsCSSTransform) {
+        return canvas.contains(event.target as HTMLElement);
+      }
+
       return this.isMatchElement(event) && this.isMatchPoint(event);
     }
 
@@ -545,7 +550,11 @@ export class EventController {
     }
 
     // 双击的 detail 是 2
-    if (event.detail === 2) {
+    if (
+      event.detail === 2 ||
+      event.nativeEvent?.detail === 2 ||
+      event.originalEvent?.detail === 2
+    ) {
       this.onCanvasDoubleClick(event);
     }
   };

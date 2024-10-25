@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "2.0.0-next.29",
+  "version": "2.0.0-next.30",
   "private": false,
   "description": "effective spreadsheet render core lib",
   "keywords": [
@@ -63,9 +63,9 @@
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3",
-    "@antv/g": "^6.0.12",
-    "@antv/g-canvas": "^2.0.10",
-    "@antv/g-lite": "^2.0.8",
+    "@antv/g": "^6.1.2",
+    "@antv/g-canvas": "^2.0.18",
+    "@antv/g-lite": "^2.1.2",
     "d3-ease": "^3.0.1",
     "d3-interpolate": "^1.3.2",
     "d3-timer": "^1.0.9",

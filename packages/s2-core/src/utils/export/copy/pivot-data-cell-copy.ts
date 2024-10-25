@@ -24,9 +24,10 @@ import type {
   MeasureQuery,
   SheetCopyConstructorParams,
 } from '../../../common/interface/export';
-import type { CellData } from '../../../data-set';
+import type { CellData, Query } from '../../../data-set';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
+import { getHeaderTotalStatus } from '../../dataset/pivot-data-set';
 import {
   convertString,
   getColNodeFieldFromNode,
@@ -213,18 +214,22 @@ export class PivotDataCellCopy extends BaseDataCellCopy {
     };
   }): DataItem => {
     const { measureQuery } = config;
+    const query: Query = {
+      ...rowNode.query,
+      ...colNode.query,
+      ...measureQuery,
+    };
+    const isTotals =
+      rowNode.isTotals ||
+      rowNode.isTotalMeasure ||
+      colNode.isTotals ||
+      colNode.isTotalMeasure;
+
     const cellData = this.spreadsheet.dataSet.getCellData({
-      query: {
-        ...rowNode.query,
-        ...colNode.query,
-        ...measureQuery,
-      },
+      query,
       rowNode,
-      isTotals:
-        rowNode.isTotals ||
-        rowNode.isTotalMeasure ||
-        colNode.isTotals ||
-        colNode.isTotalMeasure,
+      isTotals,
+      totalStatus: getHeaderTotalStatus(rowNode, colNode),
     });
 
     const formatNode = this.spreadsheet.isValueInCols() ? colNode : rowNode;

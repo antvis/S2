@@ -350,7 +350,8 @@ export const s2Options: SheetComponentOptions = {
   },
   transformCanvasConfig() {
     return {
-      supportsCSSTransform: true,
+      supportsCSSTransform: false,
+      supportsPointerEvents: false,
       // dblClickSpeed: 500,
       // devicePixelRatio: 3,
       // cursor: 'crosshair',
