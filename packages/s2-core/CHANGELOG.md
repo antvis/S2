@@ -1,3 +1,20 @@
+# [@antv/s2-v2.0.0-next.30](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.29...@antv/s2-v2.0.0-next.30) (2024-10-25)
+
+
+### Bug Fixes
+
+* **type:** 修复 g renderer 的错误类型定义 ([#2939](https://github.com/antvis/S2/issues/2939)) ([523b2cc](https://github.com/antvis/S2/commit/523b2ccb8884933060000854f28d9a6d8b2806f5))
+* 修复字段标记 mapping 函数部分场景缺失第三个参数 & 调整参数类型 ([#2927](https://github.com/antvis/S2/issues/2927)) ([676c1f6](https://github.com/antvis/S2/commit/676c1f68101a9191b48d23ce1ec15f852bcebc5d))
+* 修复数值单元格 tooltip 内的指标名展示错误 ([#2941](https://github.com/antvis/S2/issues/2941)) ([a426a46](https://github.com/antvis/S2/commit/a426a468d8cc1fe7ec0fd1db0e04938884ec0f46))
+* 修复父容器存在 transform 时, 在 canvas 内点击也会重置交互的问题 close [#2879](https://github.com/antvis/S2/issues/2879) ([#2942](https://github.com/antvis/S2/issues/2942)) ([010ed05](https://github.com/antvis/S2/commit/010ed050214568ea1902e4a426d6638afd3ae2f9))
+* 修复自定义计算总计时, 复制的数据不正确 close [#2928](https://github.com/antvis/S2/issues/2928) ([#2937](https://github.com/antvis/S2/issues/2937)) ([f82de36](https://github.com/antvis/S2/commit/f82de36d6bb92a2ae51577dbc40e16ced0b1792c))
+* 增加单元格单双击的判断范围 ([#2924](https://github.com/antvis/S2/issues/2924)) ([c40bbf9](https://github.com/antvis/S2/commit/c40bbf9a4bf29459a0cb6ac32e3a7c52068c4eb1))
+
+
+### Features
+
+* 优化 ViewMeta 类型定义和相关文档 ([#2935](https://github.com/antvis/S2/issues/2935)) ([55b6f55](https://github.com/antvis/S2/commit/55b6f551148672c1edd6442632ff9ffddc83aa72))
+
 # [@antv/s2-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.28...@antv/s2-v2.0.0-next.29) (2024-10-12)
 
 
