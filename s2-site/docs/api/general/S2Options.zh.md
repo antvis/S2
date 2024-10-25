@@ -70,6 +70,8 @@ const s2Options = {
 
 <embed src="@/docs/common/style.zh.md"></embed>
 
+<embed src="@/docs/common/view-meta.zh.md"></embed>
+
 ## DataCellCallback
 
 ```js | pure
@@ -77,8 +79,6 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
 功能描述：自定义数值单元格。[查看示例](/examples/custom/custom-cell#data-cell)
-
-<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CellCallback
 
@@ -101,8 +101,6 @@ DataCellCallback = (s2: Spreadsheet, cells: S2CellType[], viewMeta: ViewMeta) =>
 ```
 
 功能描述：自定义合并单元格。[查看示例](/examples/custom/custom-cell/#custom-merged-cell)
-
-<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CornerHeaderCallback
 
@@ -141,70 +139,6 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | event    | 当前点击事件信息       | Event  | false  | ✓    |
 
 <embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
-
-## DataItem
-
-功能描述：基本数据格式
-
-```ts
-export enum MiniChartType {
-  Line = 'line',
-  Bar = 'bar',
-  Bullet = 'bullet',
-}
-
-export interface MultiData {
-  label?: string;
-  values: SimpleData[][];
-  originalValues?: SimpleData[][]
-}
-
-export type SimpleData = string | number;
-
-export interface BaseChartData {
-  type: MiniChartType;
-  data: RawData[];
-  encode?: {
-    x: keyof RawData;
-    y: keyof RawData;
-  };
-  [key: string]: unknown;
-}
-
-export interface BulletValue {
-  type: MiniChartType.Bullet;
-  measure: number | string;
-  target: number | string;
-  [key: string]: unknown;
-}
-
-export type MiniChartData = BaseChartData | BulletValue;
-
-export interface MultiData<T = SimpleData[][] | MiniChartData> {
-  values: T;
-  originalValues?: T;
-  label?: string;
-  [key: string]: unknown;
-}
-
-export type SimpleData = string | number | null;
-
-export type DataItem =
-  | SimpleData
-  | MultiData
-  | Record<string, unknown>
-  | undefined
-  | null;
-
-export type RawData = Record<string, DataItem>;
-
-export type ExtraData = {
-  [EXTRA_FIELD]: string;
-  [VALUE_FIELD]: string | DataItem;
-};
-
-export type Data = RawData & ExtraData;
-```
 
 ## LayoutResult
 
