@@ -309,15 +309,28 @@ describe('TableSheet Custom Tests', () => {
     expect(resizeAreaList.length).toEqual(8);
   });
 
-  test('should only render sort action icon in value cell for custom col header', async () => {
-    s2.setOptions({
-      showDefaultHeaderActionIcon: true,
-    });
+  test.each([
+    { showDefaultHeaderActionIcon: false },
+    { showDefaultHeaderActionIcon: true },
+  ])(
+    'should render correctly sort action icon in value cell for custom col header with %o',
+    async (options) => {
+      s2.setOptions(options);
 
-    await s2.render(false);
+      await s2.render(false);
 
-    s2.facet.getColCells().forEach((cell) => {
-      expect(cell.getActionIcons()).toHaveLength(1);
-    });
-  });
+      const fields = s2.facet
+        .getColCells()
+        .filter((cell) => {
+          return cell.getActionIcons().length >= 1;
+        })
+        .map((cell) => cell.getMeta().field);
+
+      expect(fields).toEqual(
+        options.showDefaultHeaderActionIcon
+          ? ['province', 'city', 'type', 'price', 'number']
+          : [],
+      );
+    },
+  );
 });
