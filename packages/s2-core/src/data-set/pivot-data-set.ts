@@ -41,6 +41,7 @@ import type {
   S2DataConfig,
   SimpleData,
   ViewMeta,
+  ViewMetaData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import { resolveNillString } from '../utils';
@@ -439,7 +440,7 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  public getCellData(params: GetCellDataParams) {
+  public getCellData(params: GetCellDataParams): ViewMetaData | undefined {
     const { query = {}, rowNode, isTotals = false, totalStatus } = params || {};
 
     const { rows: originRows, columns } = this.fields;

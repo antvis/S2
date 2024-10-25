@@ -87,6 +87,32 @@ Object {
 }
 `;
 
+exports[`Tooltip Utils Tests Tooltip Get Data Tests should get correctly data cell details 1`] = `
+Object {
+  "description": undefined,
+  "details": Array [
+    Object {
+      "name": "number",
+      "value": 7789,
+    },
+  ],
+  "headInfo": Object {
+    "cols": Array [],
+    "rows": Array [
+      Object {
+        "name": undefined,
+        "value": "-",
+      },
+    ],
+  },
+  "infos": undefined,
+  "interpretation": undefined,
+  "name": null,
+  "summaries": Array [],
+  "tips": undefined,
+}
+`;
+
 exports[`Tooltip Utils Tests Tooltip Get Data Tests should get custom tree row cell summary data 1`] = `
 Object {
   "description": "指标1描述",

@@ -40,18 +40,18 @@ s2.dataSet.getFieldName('type')
 ### Formatter
 
 ```ts
- type Formatter = (
-  v: unknown,
-  data?: SimpleData | ViewMetaData | ViewMetaData[],
-  meta?: Node | ViewMeta,
-) => string;
+type Formatter = (
+  value: DataItem,
+  data?: DataItem | ViewMetaData | ViewMetaData[],
+  meta?: Node | ViewMeta | null | undefined,
+) => SimpleData;
 ```
 
 ### FormatResult
 
 ```ts
- interface FormatResult {
-  formattedValue: string;
+interface FormatResult {
+  formattedValue: SimpleData;
   value: DataItem;
 }
 ```
