@@ -182,6 +182,14 @@ export abstract class HeaderCell<
     const { options, dataCfg } = this.spreadsheet;
     const isEmptyValues = isEmpty(dataCfg.fields.values);
 
+    /**
+     * TODO: 自定义行列头支持组内排序
+     * https://github.com/antvis/S2/issues/2898
+     */
+    if (this.meta.extra?.isCustomNode) {
+      return false;
+    }
+
     if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
       const { sortParam } = this.getHeaderConfig();
       const query = this.meta.query;
@@ -335,11 +343,6 @@ export abstract class HeaderCell<
   }
 
   protected isSortCell() {
-    // https://github.com/antvis/S2/issues/2898
-    if (this.meta.extra?.isCustomNode) {
-      return false;
-    }
-
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
     const isValueInCols = this.spreadsheet?.isValueInCols?.();
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
