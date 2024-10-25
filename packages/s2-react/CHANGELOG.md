@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.48.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.47.0...@antv/s2-react-v1.48.0) (2024-10-25)
+
+
+### Features
+
+* **i18n:** add formatter support of the russian language ([#2862](https://github.com/antvis/S2/issues/2862)) ([e5b16c5](https://github.com/antvis/S2/commit/e5b16c55b0a090560673f2723659d74a063662df))
+
 # [@antv/s2-react-v1.47.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.4...@antv/s2-react-v1.47.0) (2024-04-12)
 
 
