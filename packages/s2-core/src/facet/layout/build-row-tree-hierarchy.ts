@@ -61,7 +61,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     fieldValues = fieldValues.slice(0, drillItemsNum);
   }
 
-  if (level === 0 && !spreadsheet.isCustomHeaderFields()) {
+  if (level === 0) {
     addTotals(spreadsheet, currentField, fieldValues);
   }
 

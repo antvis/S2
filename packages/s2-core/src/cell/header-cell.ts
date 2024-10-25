@@ -182,14 +182,6 @@ export abstract class HeaderCell<
     const { options, dataCfg } = this.spreadsheet;
     const isEmptyValues = isEmpty(dataCfg.fields.values);
 
-    /**
-     * TODO: 自定义行列头支持组内排序
-     * https://github.com/antvis/S2/issues/2898
-     */
-    if (this.meta.extra?.isCustomNode) {
-      return false;
-    }
-
     if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
       const { sortParam } = this.getHeaderConfig();
       const query = this.meta.query;
