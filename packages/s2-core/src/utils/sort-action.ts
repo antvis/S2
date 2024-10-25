@@ -345,7 +345,7 @@ export const getSortByMeasureValues = (
       return false;
     }
 
-    if (dataItemKeys.has(fieldAfterSortField)) {
+    if (dataItemKeys.has(fieldAfterSortField as string)) {
       /*
        * 若排序数据包含`排序字段`的后一个维度字段，则过滤
        * 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
@@ -359,7 +359,7 @@ export const getSortByMeasureValues = (
      * 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
      */
     const allMissed = missedOppositeFields.every(
-      (missedField) => !dataItemKeys.has(missedField),
+      (missedField) => !dataItemKeys.has(missedField as string),
     );
 
     // 返回符合要求的汇总数据
