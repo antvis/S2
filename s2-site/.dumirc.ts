@@ -454,8 +454,8 @@ export default defineConfig({
   styles: ['/site.css'],
   links: [],
   scripts: [],
-  monorepoRedirect: {
-    peerDeps: true,
-    srcDir: ['src', 'esm', 'lib'],
-  },
+  // monorepoRedirect: {
+  //   peerDeps: true,
+  //   srcDir: ['src', 'esm', 'lib'],
+  // },
 });

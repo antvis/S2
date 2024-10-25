@@ -91,7 +91,7 @@ enum InterceptType {
 
 ### S2CellType
 
-```ts
+```ts | pure
 type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
   | HeaderCell
@@ -104,7 +104,7 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
 
 ### SelectHeaderCellInfo
 
-```ts
+```ts | pure
 interface SelectHeaderCellInfo {
   cell: S2CellType<ViewMeta>; // 目标单元格
   isMultiSelection?: boolean; // 是否是多选

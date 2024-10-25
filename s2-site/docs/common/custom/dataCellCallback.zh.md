@@ -5,7 +5,7 @@ order: 2
 
 ## DataCellCallback
 
-```js
+```js | pure
 DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
@@ -17,7 +17,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 ## CornerHeaderCallback
 
-```js
+```js | pure
 CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => void;
 ```
 

@@ -23,7 +23,7 @@ Form parameter configuration
 
 ## DataCellCallback
 
-```js
+```js | pure
 DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
