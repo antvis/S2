@@ -1,3 +1,15 @@
+# [@antv/s2-react-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.28...@antv/s2-react-v2.0.0-next.29) (2024-10-25)
+
+
+### Bug Fixes
+
+* **type:** 修复 g renderer 的错误类型定义 ([#2939](https://github.com/antvis/S2/issues/2939)) ([523b2cc](https://github.com/antvis/S2/commit/523b2ccb8884933060000854f28d9a6d8b2806f5))
+* 修复下钻 icon 不应该默认全部展示和标题样式问题 ([#2925](https://github.com/antvis/S2/issues/2925)) ([55f1a40](https://github.com/antvis/S2/commit/55f1a40b85a5b8c03182f08accb856f56defc82c))
+* 修复排序菜单没有子节点时图标展示错误 & 调整默认样式 ([#2932](https://github.com/antvis/S2/issues/2932)) ([da5ebfb](https://github.com/antvis/S2/commit/da5ebfb9049eb33180dbc9c556480cd105acbe60))
+* 修复父容器存在 transform 时, 在 canvas 内点击也会重置交互的问题 close [#2879](https://github.com/antvis/S2/issues/2879) ([#2942](https://github.com/antvis/S2/issues/2942)) ([010ed05](https://github.com/antvis/S2/commit/010ed050214568ea1902e4a426d6638afd3ae2f9))
+* 修复通过修改引用的方式修改菜单配置时, tooltip 未重新渲染 ([#2933](https://github.com/antvis/S2/issues/2933)) ([82c1500](https://github.com/antvis/S2/commit/82c15002bd12b5c21cfae581711abf51553d8000))
+* 增加单元格单双击的判断范围 ([#2924](https://github.com/antvis/S2/issues/2924)) ([c40bbf9](https://github.com/antvis/S2/commit/c40bbf9a4bf29459a0cb6ac32e3a7c52068c4eb1))
+
 # [@antv/s2-react-v2.0.0-next.28](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.27...@antv/s2-react-v2.0.0-next.28) (2024-10-12)
 
 
