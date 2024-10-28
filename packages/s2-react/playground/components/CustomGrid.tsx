@@ -1,5 +1,10 @@
 /* eslint-disable no-console */
-import type { S2DataConfig, SpreadSheet, ThemeCfg } from '@antv/s2';
+import {
+  Aggregation,
+  type S2DataConfig,
+  type SpreadSheet,
+  type ThemeCfg,
+} from '@antv/s2';
 import {
   customColGridFields,
   customRowGridFields,
@@ -152,6 +157,57 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
             disabled={customType !== CustomType.Col}
             onChange={(checked) => {
               setSheetType(checked ? 'pivot' : 'table');
+            }}
+          />
+
+          <Switch
+            checkedChildren="显示行小计/总计"
+            unCheckedChildren="隐藏行小计/总计"
+            disabled={customType === CustomType.Row}
+            defaultChecked={options.totals?.row?.showSubTotals as boolean}
+            onChange={(checked) => {
+              setOptions({
+                totals: {
+                  row: {
+                    showGrandTotals: checked,
+                    showSubTotals: checked,
+                    reverseGrandTotalsLayout: true,
+                    reverseSubTotalsLayout: true,
+                    subTotalsDimensions: ['province'],
+                    calcGrandTotals: {
+                      aggregation: Aggregation.SUM,
+                    },
+                    calcSubTotals: {
+                      aggregation: Aggregation.SUM,
+                    },
+                  },
+                },
+              });
+            }}
+          />
+          <Switch
+            checkedChildren="显示列小计/总计"
+            unCheckedChildren="隐藏列小计/总计"
+            disabled={customType === CustomType.Col}
+            defaultChecked={options.totals?.col?.showSubTotals as boolean}
+            onChange={(checked) => {
+              setOptions({
+                totals: {
+                  col: {
+                    showGrandTotals: checked,
+                    showSubTotals: checked,
+                    reverseGrandTotalsLayout: true,
+                    reverseSubTotalsLayout: true,
+                    subTotalsDimensions: ['type'],
+                    calcGrandTotals: {
+                      aggregation: Aggregation.SUM,
+                    },
+                    calcSubTotals: {
+                      aggregation: Aggregation.SUM,
+                    },
+                  },
+                },
+              });
             }}
           />
         </Space>

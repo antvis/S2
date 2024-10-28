@@ -1,44 +1,9 @@
-import { get, type PropertyPath } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
 import { i18n } from '../common/i18n';
 import type { Meta, S2DataConfig } from '../common/interface';
-import {
-  getDataPath,
-  getDataPathPrefix,
-  getIndexFields,
-  transformDimensionsValues,
-} from '../utils/dataset/pivot-data-set';
-import { CellData } from './cell-data';
-import type { GetCellDataParams } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  getCellData(params: GetCellDataParams) {
-    const { query = {} } = params || {};
-    const { columns, rows } = this.fields;
-
-    const indexRows = getIndexFields(rows);
-    const indexColumns = getIndexFields(columns);
-
-    const rowDimensionValues = transformDimensionsValues(query, indexRows);
-    const colDimensionValues = transformDimensionsValues(query, indexColumns);
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta: this.rowPivotMeta,
-      colPivotMeta: this.colPivotMeta,
-      rowFields: indexRows,
-      colFields: indexColumns,
-      prefix: getDataPathPrefix(indexRows, indexColumns),
-    });
-
-    const rawData = get(this.indexesData, path as PropertyPath);
-
-    if (rawData) {
-      return CellData.getCellData(rawData, query[EXTRA_FIELD]);
-    }
-  }
-
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     /**
      * 自定义行头有如下几个特点
