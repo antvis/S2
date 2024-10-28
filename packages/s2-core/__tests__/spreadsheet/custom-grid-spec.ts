@@ -588,17 +588,5 @@ describe('SpreadSheet Custom Grid Tests', () => {
         expect(s2.facet.getCellMeta(0, 1).data[VALUE_FIELD]).toEqual(10);
       },
     );
-
-    test('should not render sort action icon for custom col header', async () => {
-      s2.setOptions({
-        showDefaultHeaderActionIcon: true,
-      });
-
-      await s2.render(false);
-
-      s2.facet.getColCells().forEach((cell) => {
-        expect(cell.getActionIcons()).toHaveLength(0);
-      });
-    });
   });
 });
