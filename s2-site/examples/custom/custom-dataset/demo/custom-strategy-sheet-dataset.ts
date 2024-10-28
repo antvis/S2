@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable max-classes-per-file */
 import {
-  CustomTreePivotDataSet,
+  CustomGridPivotDataSet,
   DataCell,
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   EXTRA_COLUMN_FIELD,
@@ -18,7 +18,7 @@ import {
 } from '@antv/s2';
 import { isEmpty, isObject, keys, size } from 'lodash';
 
-class CustomDataSet extends CustomTreePivotDataSet {
+class CustomDataSet extends CustomGridPivotDataSet {
   // 自定义单个数据查询逻辑
   getCellData(params: GetCellDataParams) {
     console.log('getCellData:', params);

@@ -3,11 +3,12 @@
  */
 import { EXTRA_FIELD, ORIGIN_FIELD } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
-import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
+import { CustomGridPivotDataSet } from '@/data-set/custom-grid-pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 import { get } from 'lodash';
 import { customTreeNodes } from 'tests/data/custom-tree-nodes';
 import { CustomTreeData } from 'tests/data/data-custom-tree';
+import { Store } from '../../../src';
 
 jest.mock('@/sheet-type');
 
@@ -15,7 +16,7 @@ jest.mock('@/interaction/root');
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 
-describe('Custom Tree Dataset Test', () => {
+describe('Custom Grid Dataset Test', () => {
   const values = [
     'measure-a',
     'measure-b',
@@ -35,14 +36,21 @@ describe('Custom Tree Dataset Test', () => {
     },
   };
 
-  const mockSheet = new MockPivotSheet();
-  const dataSet = new CustomTreePivotDataSet(mockSheet);
+  let dataSet: CustomGridPivotDataSet;
 
-  dataSet.setDataCfg(dataCfg);
+  beforeEach(() => {
+    const mockSheet = new MockPivotSheet();
+
+    mockSheet.isCustomRowFields = () => true;
+    mockSheet.store = new Store();
+
+    dataSet = new CustomGridPivotDataSet(mockSheet);
+    dataSet.setDataCfg(dataCfg);
+  });
 
   describe('test base dataset structure', () => {
     test('should get correct field data', () => {
-      expect(dataSet.fields.rows).toEqual([EXTRA_FIELD]);
+      expect(dataSet.fields.rows).toEqual([...customTreeNodes, EXTRA_FIELD]);
       expect(dataSet.fields.columns).toEqual(['type', 'sub_type']);
       expect(dataSet.fields.values).toEqual(values);
     });
