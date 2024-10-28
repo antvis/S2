@@ -13,7 +13,7 @@ tag: New
 :::warning{title="注意"}
 
 1. 默认的排序 icon `showDefaultHeaderActionIcon` 无效。
-2. 不支持自定义所在 header 的[小计总计](/manual/basic/totals)。
+2. 自定义行头时，不支持配置行头[小计总计](/manual/basic/totals)；自定义列头时，不支持配置列头[小计总计](/manual/basic/totals)。
 
 :::
 
