@@ -247,7 +247,7 @@ export class EventController {
 
       // 开启 CSS transform 时, 降级处理, 不做 canvas 内的空白检测: https://github.com/antvis/S2/issues/2879
       if (this.spreadsheet.container.getConfig().supportsCSSTransform) {
-        return canvas.contains(event.target as HTMLElement);
+        return this.isMatchElement(event);
       }
 
       return this.isMatchElement(event) && this.isMatchPoint(event);
