@@ -114,7 +114,6 @@ const buildNormalGridHierarchy = (params: GridHeaderParams) => {
     }
   }
 
-  // add totals if needed
   addTotals({
     currentField,
     lastField: fields[index - 1],

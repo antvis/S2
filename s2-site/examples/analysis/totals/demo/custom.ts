@@ -39,7 +39,8 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
     };
 
     const calcFunc: CalcTotals['calcFunc'] = (query, data, spreadsheet) => {
-      const allData = spreadsheet.dataSet.getMultiData(query, {
+      const allData = spreadsheet.dataSet.getCellMultiData({
+        query,
         queryType: QueryDataType.All,
       });
 

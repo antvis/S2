@@ -124,7 +124,6 @@ export function useSpreadSheet(props: SheetComponentProps) {
 
       if (!Object.is(prevOptions, options)) {
         if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
-          // 自定义树目录需要重新构建 CustomTreePivotDataSet
           rebuildDataSet = true;
           reloadData = true;
           s2Ref.current?.setDataCfg(dataCfg);

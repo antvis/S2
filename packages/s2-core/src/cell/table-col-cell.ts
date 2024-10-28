@@ -116,7 +116,16 @@ export class TableColCell extends ColCell {
   }
 
   protected showSortIcon() {
-    return this.spreadsheet.options.showDefaultHeaderActionIcon;
+    const { extra } = this.meta;
+    const { options } = this.spreadsheet;
+    const { showDefaultHeaderActionIcon } = options;
+
+    if (!extra?.isCustomNode) {
+      return showDefaultHeaderActionIcon;
+    }
+
+    // 自定义列头时, 只在叶子节点展示
+    return showDefaultHeaderActionIcon && this.meta.isLeaf;
   }
 
   protected getTextStyle() {
