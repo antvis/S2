@@ -9,8 +9,8 @@ order: 3
 
 | 参数 | 说明   | 类型                                          | 必选  | 默认值 |
 | ---- | ------ | --------------------------------------------- | ---- | ------ |
-| row  | 列总计（在 [自定义行列头时](/manual/advanced/custom/custom-header) 无效） | [Total](#total) |  -     |      |
-| col  | 行总计（在 [自定义行列头时](/manual/advanced/custom/custom-header) 无效） | [Total](#total) | -     |      |
+| row  | 行总计配置（在 [自定义行头时](/manual/advanced/custom/custom-header#11-自定义行头) 无效） | [Total](#total) |  -     |      |
+| col  | 列总计配置（在 [自定义列头时](/manual/advanced/custom/custom-header#12-自定义列头) 无效） | [Total](#total) | -     |      |
 
 ## Total
 

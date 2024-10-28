@@ -5,7 +5,7 @@ order: 5
 
 ## 简介
 
-小计总计属于表的透视功能，可以给行头和列头分别配置汇总能力，展示小计总计，开启 [自定义行列头](/manual/advanced/custom/custom-header) 时，汇总能力无效。
+小计总计属于表的透视功能，可以给行头和列头分别配置汇总能力，展示小计总计，开启 [自定义行列头](/manual/advanced/custom/custom-header) 时，对应行列头的汇总能力无效。
 
 ### 小计
 

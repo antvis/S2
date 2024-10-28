@@ -13,8 +13,7 @@ tag: New
 :::warning{title="注意"}
 
 1. 默认的排序 icon `showDefaultHeaderActionIcon` 无效。
-2. 不支持 [组内排序](/manual/basic/sort/group), 相关 API 无效。
-3. 不支持 [小计总计](/manual/basic/totals), 且 [自定义汇总](/manual/basic/totals#2-%E6%95%B0%E6%8D%AE) 中无法获取到明细数据。
+2. 不支持自定义所在 header 的[小计总计](/manual/basic/totals)。
 
 :::
 
