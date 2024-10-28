@@ -270,7 +270,7 @@ export class PivotFacet extends FrozenFacet {
           colsHierarchy,
         );
 
-        currentNode.y = preLevelSample?.y! + preLevelSample?.height! ?? 0;
+        currentNode.y = preLevelSample?.y! + preLevelSample?.height! || 0;
       }
 
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
@@ -388,7 +388,7 @@ export class PivotFacet extends FrozenFacet {
           (childNode) => childNode.width,
         );
         // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
-        const parentNodeX = firstVisibleChildNode?.x ?? 0;
+        const parentNodeX = firstVisibleChildNode?.x || 0;
         // 父节点宽度 = 所有子节点宽度之和
         const parentNodeWidth = sumBy(parentNode.children, 'width');
 
@@ -495,7 +495,7 @@ export class PivotFacet extends FrozenFacet {
         cellType,
       );
 
-      iconCount = customIcons?.icons.length ?? 0;
+      iconCount = customIcons?.icons.length || 0;
     }
 
     // calc width
