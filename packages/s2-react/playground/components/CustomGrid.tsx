@@ -173,7 +173,7 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
                     showSubTotals: checked,
                     reverseGrandTotalsLayout: true,
                     reverseSubTotalsLayout: true,
-                    subTotalsDimensions: ['province'],
+                    subTotalsDimensions: ['type'],
                     calcGrandTotals: {
                       aggregation: Aggregation.SUM,
                     },
