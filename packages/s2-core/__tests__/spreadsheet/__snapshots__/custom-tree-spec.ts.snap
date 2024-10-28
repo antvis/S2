@@ -1,0 +1,259 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Custom Tree Tests should calc correctly row index of leaf nodes 1`] = `
+Array [
+  Object {
+    "rowIndex": 0,
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "rowIndex": 1,
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "rowIndex": 2,
+    "value": "指标1",
+  },
+  Object {
+    "rowIndex": 3,
+    "value": "指标2",
+  },
+  Object {
+    "rowIndex": 4,
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "rowIndex": 5,
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed 1`] = `
+Array [
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]measure-e",
+    "isCollapsed": true,
+    "value": "指标E",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed field 1`] = `
+Array [
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]a-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]a-1[&]a-1-1",
+    "isCollapsed": true,
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed fields id 1`] = `
+Array [
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]a-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]a-1[&]a-1-1",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-1[&]measure-1",
+    "isCollapsed": false,
+    "value": "指标1",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-1[&]measure-2",
+    "isCollapsed": false,
+    "value": "指标2",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-1[&]a-1-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]a-2",
+    "isCollapsed": false,
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should collapse node by user collapseFields first 1`] = `
+Array [
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]measure-e",
+    "isCollapsed": true,
+    "value": "指标E",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should get correctly dataset fields 1`] = `
+Object {
+  "columns": Array [
+    "type",
+    "sub_type",
+  ],
+  "rows": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "description": "指标1描述",
+              "field": "measure-1",
+              "title": "指标1",
+            },
+            Object {
+              "children": Array [],
+              "description": "指标2描述",
+              "field": "measure-2",
+              "title": "指标2",
+            },
+          ],
+          "description": "a-1-1 描述",
+          "field": "a-1-1",
+          "title": "自定义节点 a-1-1",
+        },
+        Object {
+          "children": Array [],
+          "description": "a-1-2 描述",
+          "field": "a-1-2",
+          "title": "自定义节点 a-1-2",
+        },
+      ],
+      "description": "a-1 描述",
+      "field": "a-1",
+      "title": "自定义节点 a-1",
+    },
+    Object {
+      "children": Array [],
+      "description": "a-2 描述",
+      "field": "a-2",
+      "title": "自定义节点 a-2",
+    },
+    "$$extra$$",
+  ],
+  "valueInCols": false,
+  "values": Array [
+    "measure-1",
+    "measure-2",
+  ],
+}
+`;
+
+exports[`SpreadSheet Custom Tree Tests should only collapse first node by node id 1`] = `
+Array [
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]custom-node-1",
+    "isCollapsed": true,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": "Minus",
+    "id": "root[&]measure-e",
+    "isCollapsed": false,
+    "value": "自定义节点A",
+  },
+  Object {
+    "iconName": undefined,
+    "id": "root[&]measure-e[&]custom-node-3",
+    "isCollapsed": false,
+    "value": "自定义节点C",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]measure-e[&]custom-node-4",
+    "isCollapsed": true,
+    "value": "自定义节点D",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should render custom layout row nodes 1`] = `
+Array [
+  Object {
+    "description": "a-1 描述",
+    "height": 30,
+    "value": "自定义节点 a-1",
+    "width": 400,
+  },
+  Object {
+    "description": "a-1-1 描述",
+    "height": 30,
+    "value": "自定义节点 a-1-1",
+    "width": 400,
+  },
+  Object {
+    "description": "指标1描述",
+    "height": 30,
+    "value": "指标1",
+    "width": 400,
+  },
+  Object {
+    "description": "指标2描述",
+    "height": 30,
+    "value": "指标2",
+    "width": 400,
+  },
+  Object {
+    "description": "a-1-2 描述",
+    "height": 30,
+    "value": "自定义节点 a-1-2",
+    "width": 400,
+  },
+  Object {
+    "description": "a-2 描述",
+    "height": 30,
+    "value": "自定义节点 a-2",
+    "width": 400,
+  },
+]
+`;
