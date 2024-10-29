@@ -83,6 +83,10 @@ export class TableFacet extends FrozenFacet {
   }
 
   public render() {
+    if (isEmpty(this.spreadsheet.dataCfg?.fields?.columns)) {
+      return;
+    }
+
     super.render();
     this.renderEmptyPlaceholder();
   }

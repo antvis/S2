@@ -35,8 +35,8 @@ const s2DataConfig = {
 | 配置项名称       | 说明                                                                                                                                   | 类型                                              | 默认值 | 必选 |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------ | ---- |
 | rows             | 行维度 （可自定义行头，[查看示例](/examples/layout/custom-header-group/#custom-pivot-row-header))                                      | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
-| columns          | 列维度 （可自定义列头，[查看示例](/examples/layout/custom-header-group/#custom-pivot-col-header))                                      | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
-| values           | 指标维度                                                                                                                               | `string[]`                                        | `[]`   |      |
+| columns          | 列维度 （可自定义列头，[查看示例](/examples/layout/custom-header-group/#custom-pivot-col-header))                                      | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |  **明细模式**下不允许为空    |
+| values           | 指标维度                                                                                                                               | `string[]`                                        | `[]`   |   **透视模式**下不允许为空   |
 | valueInCols      | 指标维度是否在列头                                                                                                                     | `boolean`                                         |
 | customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始） [查看示例](/examples/custom/custom-layout/#custom-value-order) | `number`                                          | -      |      |
 

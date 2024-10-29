@@ -603,9 +603,6 @@ export abstract class BaseFacet {
     this.emitPaginationEvent();
   };
 
-  /**
-   * Start render, call from outside
-   */
   public render() {
     if (areAllFieldsEmpty(this.spreadsheet.dataCfg.fields)) {
       return;

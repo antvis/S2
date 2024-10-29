@@ -62,6 +62,14 @@ export class PivotFacet extends FrozenFacet {
     return this.spreadsheet.options.colCell?.(...args) || new ColCell(...args);
   }
 
+  public render() {
+    if (isEmpty(this.spreadsheet.dataCfg?.fields?.values)) {
+      return;
+    }
+
+    super.render();
+  }
+
   protected doLayout(): LayoutResult {
     const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
       this.buildAllHeaderHierarchy();
