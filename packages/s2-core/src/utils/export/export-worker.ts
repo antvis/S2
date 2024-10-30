@@ -1,13 +1,17 @@
+import { replaceEmptyFieldValue } from '../../facet/utils';
+
 export function getCsvString(v: any): string {
   if (!v) {
     return v;
   }
 
-  if (typeof v === 'string') {
-    const out = v;
+  const value = replaceEmptyFieldValue(v);
+
+  if (typeof value === 'string') {
+    const out = value;
     // 需要替换", https://en.wikipedia.org/wiki/Comma-separated_values#Example
     return `"${out.replace(/"/g, '""')}"`;
   }
 
-  return `"${v}"`;
+  return `"${value}"`;
 }

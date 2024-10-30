@@ -1,10 +1,14 @@
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/field';
+import { EXTRA_FIELD, VALUE_FIELD, CellTypes } from '@/common';
 import type {
   FilterDataItemCallback,
   MappingDataItemCallback,
 } from '@/common/interface/basic';
 import type { Data, MultiData } from '@/common/interface/s2DataConfig';
-import { handleDataItem } from '@/utils/cell/data-cell';
+import {
+  handleDataItem,
+  getDataCellId,
+  isDataCell,
+} from '@/utils/cell/data-cell';
 
 describe('Display Data Item Callback Test', () => {
   test('should return origin data value when there is no callback', () => {
@@ -67,5 +71,31 @@ describe('Display Data Item Callback Test', () => {
       'price-ac': 0.2,
       'price-rc': -0.3,
     });
+  });
+
+  test('#getDataCellId()', () => {
+    expect(getDataCellId('', '')).toEqual('-');
+    expect(getDataCellId('rowId', 'colId')).toEqual('rowId-colId');
+    expect(getDataCellId('rowId', '')).toEqual('rowId-');
+    expect(getDataCellId('', 'colId')).toEqual('-colId');
+  });
+
+  test('#isDataCell()', () => {
+    expect(
+      isDataCell({
+        id: '',
+        rowIndex: 0,
+        colIndex: 0,
+        type: CellTypes.DATA_CELL,
+      }),
+    ).toBeTruthy();
+    expect(
+      isDataCell({
+        id: '',
+        rowIndex: 0,
+        colIndex: 0,
+        type: CellTypes.COL_CELL,
+      }),
+    ).toBeFalsy();
   });
 });

@@ -40,7 +40,7 @@ import { getIndexRangeWithOffsets } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
 import { getHeaderTotalStatus } from '../utils/dataset/pivot-data-set';
 import { getRowsForGrid } from '../utils/grid';
-import { renderLine } from '..';
+import { getDataCellIconStyle, renderLine } from '..';
 import { FrozenFacet } from './frozen-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -199,18 +199,7 @@ export class PivotFacet extends FrozenFacet {
         row.isTotalMeasure ||
         col.isTotals ||
         col.isTotalMeasure;
-      const { hierarchyType } = spreadsheet.options;
-      const hideMeasure =
-        get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
-      // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
-      // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
-      // 因此默认只会去 第一个度量拼接query
-      const measureInfo =
-        hideMeasure && hierarchyType !== 'customTree'
-          ? {
-              [EXTRA_FIELD]: dataSet.fields.values?.[0],
-            }
-          : {};
+      const measureInfo = this.getMeasureInfo();
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
       const totalStatus = getHeaderTotalStatus(row, col);
       const data = dataSet.getCellData({
@@ -255,6 +244,22 @@ export class PivotFacet extends FrozenFacet {
     };
 
     return layoutDataPosition(this.cfg, layoutResult);
+  }
+
+  protected getMeasureInfo() {
+    const { dataSet, spreadsheet } = this.cfg;
+    const { hierarchyType } = spreadsheet.options;
+    const hideMeasure =
+      get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
+
+    // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
+    // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
+    // 因此默认只会去 第一个度量拼接query
+    return hideMeasure && hierarchyType !== 'customTree'
+      ? {
+          [EXTRA_FIELD]: dataSet.fields.values?.[0],
+        }
+      : {};
   }
 
   private calculateNodesCoordinate(
@@ -405,26 +410,27 @@ export class PivotFacet extends FrozenFacet {
       } = this.spreadsheet.theme.colCell;
       const { text: dataCellTextStyle } = this.spreadsheet.theme.dataCell;
 
-      // leaf node rough width
+      // leaf node width
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
         col.field,
       );
       const leafNodeLabel = cellFormatter?.(col.value) ?? col.label;
-      const iconWidth = this.getExpectedCellIconWidth(
+      const colIconWidth = this.getExpectedCellIconWidth(
         CellTypes.COL_CELL,
         this.spreadsheet.isValueInCols() &&
           this.spreadsheet.options.showDefaultHeaderActionIcon,
         colIconStyle,
       );
-      const leafNodeRoughWidth =
-        this.spreadsheet.measureTextWidthRoughly(
-          leafNodeLabel,
-          colCellTextStyle,
-        ) + iconWidth;
+      const leafNodeWidth =
+        this.spreadsheet.measureTextWidth(leafNodeLabel, colCellTextStyle) +
+        colIconWidth;
+
+      const measureInfo = this.getMeasureInfo();
 
       // 采样 50 个 label，逐个计算找出最长的 label
       let maxDataLabel: string;
       let maxDataLabelWidth = 0;
+      let iconWidthOfMaxDataLabel = 0;
       for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
         const rowNode = rowLeafNodes[index];
         if (rowNode) {
@@ -447,22 +453,35 @@ export class PivotFacet extends FrozenFacet {
                 cellData[EXTRA_FIELD],
               )?.(valueData) ?? valueData;
             const cellLabel = `${formattedValue}`;
-            const cellLabelWidth = this.spreadsheet.measureTextWidthRoughly(
-              cellLabel,
-              dataCellTextStyle,
+            const dataQuery = merge({}, rowNode.query, col.query, measureInfo);
+            const valueField = dataQuery[EXTRA_FIELD];
+            const {
+              size,
+              margin: { left, right },
+            } = getDataCellIconStyle(
+              this.spreadsheet.options.conditions,
+              this.spreadsheet.theme.dataCell.icon,
+              valueField,
             );
+            const dataCellIconWidth = size + left + right;
+            const cellLabelWidth =
+              this.spreadsheet.measureTextWidth(cellLabel, dataCellTextStyle) +
+              dataCellIconWidth;
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
               maxDataLabelWidth = cellLabelWidth;
+              iconWidthOfMaxDataLabel = dataCellIconWidth;
             }
           }
         }
       }
 
-      const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
+      const isLeafNodeWidthLonger = leafNodeWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
-      const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
+      const appendedWidth = isLeafNodeWidthLonger
+        ? colIconWidth
+        : iconWidthOfMaxDataLabel;
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
@@ -675,10 +694,12 @@ export class PivotFacet extends FrozenFacet {
     const { rows, columns } = dataSet.fields;
     const fields = isRowHeader ? rows : columns;
     const totalConfig = isRowHeader ? totals.row : totals.col;
-    const dimensionGroup = isSubTotal
+    const defaultDimensionGroup = isSubTotal
       ? totalConfig.subTotalsGroupDimensions || []
       : totalConfig.totalsGroupDimensions || [];
+    const dimensionGroup = !dataSet.isEmpty() ? defaultDimensionGroup : [];
     const multipleMap: number[] = Array.from({ length: maxLevel + 1 }, () => 1);
+
     for (let level = maxLevel; level > 0; level--) {
       const currentField = fields[level] as string;
       // 若不符合【分组维度包含此维度】或【者指标维度下非单指标维度】，此表头单元格为空，将宽高合并到上级单元格
@@ -716,9 +737,10 @@ export class PivotFacet extends FrozenFacet {
       }
       let res = 0;
       for (let i = 0; i < multiple; i++) {
-        res += hierarchy.sampleNodesForAllLevels.find(
-          (sampleNode) => sampleNode.level === node.level + i,
-        )[key];
+        res +=
+          hierarchy.sampleNodesForAllLevels.find(
+            (sampleNode) => sampleNode.level === node.level + i,
+          )?.[key] || 0;
       }
       node[key] = res;
     });
@@ -977,18 +999,15 @@ export class PivotFacet extends FrozenFacet {
 
     return {
       getTotalHeight: () => {
-        return last(heights);
+        return last(heights) || 0;
       },
-
       getCellOffsetY: (index: number) => {
-        return heights[index];
+        return heights[index] || 0;
       },
-
       getTotalLength: () => {
         // 多了一个数据 [0]
         return heights.length - 1;
       },
-
       getIndexRange: (minHeight: number, maxHeight: number) => {
         return getIndexRangeWithOffsets(heights, minHeight, maxHeight);
       },

@@ -377,6 +377,13 @@ export class BaseRowCell extends HeaderCell {
   }
 
   protected getIconPosition() {
+    if (!this.textShape) {
+      return {
+        x: 0,
+        y: 0,
+      };
+    }
+
     // 不同 textAlign 下，对应的文字绘制点 x 不同
     const { x, y, textAlign } = this.textShape.cfg.attrs;
     const iconMarginLeft = this.getStyle().icon.margin.left;

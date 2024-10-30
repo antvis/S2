@@ -5,9 +5,14 @@ describe('I18n Test', () => {
     expect(getLang()).toEqual('zh_CN');
   });
 
-  test('should set custom lang', () => {
+  test('should set english lang', () => {
     setLang('en_US');
     expect(getLang()).toEqual('en_US');
+  });
+
+  test('should set russian lang', () => {
+    setLang('ru');
+    expect(getLang()).toEqual('ru');
   });
 
   test('should get default chinese lang if receive a empty lang type', () => {
@@ -26,6 +31,21 @@ describe('I18n Test', () => {
     expect(i18n('度量')).toEqual('Measure');
     expect(i18n('数值')).toEqual('Measure');
     expect(i18n('共计')).toEqual('Total');
+    expect(i18n('条')).toEqual('');
+    expect(i18n('，')).toEqual(', ');
+  });
+
+  test('should show russian text when set lang to ru_RU', () => {
+    setLang('ru_RU');
+    expect(i18n('小计')).toEqual('Промежуточный итог');
+    expect(i18n('总计')).toEqual('Общий итог');
+    expect(i18n('总和')).toEqual('(СУММА)');
+    expect(i18n('项')).toEqual('элемент(-а/-ов)');
+    expect(i18n('已选择')).toEqual('выбрано');
+    expect(i18n('序号')).toEqual('Индекс');
+    expect(i18n('度量')).toEqual('Мера');
+    expect(i18n('数值')).toEqual('Численная величина');
+    expect(i18n('共计')).toEqual('Общее количество');
     expect(i18n('条')).toEqual('');
     expect(i18n('，')).toEqual(', ');
   });

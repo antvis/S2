@@ -213,13 +213,9 @@ pnpm lint
 pnpm site:start
 ```
 
-## 📧 联系我们
+## 📧 反馈问题
 
-<p>
-  <a>
-    <img width="300" height="auto" alt="DingTalk" src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*2VvTSZmI4vYAAAAAAAAAAAAADmJ7AQ/original">
-  </a>
-</p>
+有任何问题请严格按照模版 [提交 Issue](https://github.com/antvis/S2/issues/new/choose) 或在 [Discussions](https://github.com/antvis/S2/discussions) 提问。
 
 ## 👬 Contributors
 

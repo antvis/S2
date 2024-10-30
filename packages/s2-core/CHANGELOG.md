@@ -1,3 +1,103 @@
+# [@antv/s2-v1.56.0](https://github.com/antvis/S2/compare/@antv/s2-v1.55.8...@antv/s2-v1.56.0) (2024-10-25)
+
+
+### Bug Fixes
+
+* 修复父容器存在 transform 时, 在 canvas 内点击也会重置交互的问题 close [#2879](https://github.com/antvis/S2/issues/2879) ([#2942](https://github.com/antvis/S2/issues/2942)) ([cfc45b7](https://github.com/antvis/S2/commit/cfc45b7b94b7c6ac5a436a57ad6c694b7c184bcf))
+
+
+### Features
+
+* **i18n:** add formatter support of the russian language ([#2862](https://github.com/antvis/S2/issues/2862)) ([e5b16c5](https://github.com/antvis/S2/commit/e5b16c55b0a090560673f2723659d74a063662df))
+* **i18n:** add support of the russian language ([#2853](https://github.com/antvis/S2/issues/2853)) ([21f4226](https://github.com/antvis/S2/commit/21f4226095fe55e0b23bb6a0a0598dc56ac8b5ce))
+
+# [@antv/s2-v1.55.8](https://github.com/antvis/S2/compare/@antv/s2-v1.55.7...@antv/s2-v1.55.8) (2024-07-26)
+
+
+### Bug Fixes
+
+* 修复在维值缺失场景下导出数据占位符未解析的问题 ([#2829](https://github.com/antvis/S2/issues/2829)) ([077e823](https://github.com/antvis/S2/commit/077e82305806894df4d5dcd908f5e7dc913cd6fc))
+
+# [@antv/s2-v1.55.7](https://github.com/antvis/S2/compare/@antv/s2-v1.55.6...@antv/s2-v1.55.7) (2024-07-05)
+
+
+### Bug Fixes
+
+* 修复树状模式当一组数据只有一条数据时, 叶子节点判断错误, 也渲染了展开/收起图标 close [#2804](https://github.com/antvis/S2/issues/2804) ([#2806](https://github.com/antvis/S2/issues/2806)) ([fa5bb9b](https://github.com/antvis/S2/commit/fa5bb9b4f5f7c661993670a86d9135781adb946e))
+* 自定义计算汇总 calcFunc 回调函数增加 s2 实例, 修复无法获取汇总数据的问题 close [#2795](https://github.com/antvis/S2/issues/2795) ([#2805](https://github.com/antvis/S2/issues/2805)) ([2c28e84](https://github.com/antvis/S2/commit/2c28e841752ab94829b3c38f41becc536a5e8328))
+
+# [@antv/s2-v1.55.6](https://github.com/antvis/S2/compare/@antv/s2-v1.55.5...@antv/s2-v1.55.6) (2024-05-31)
+
+
+### Bug Fixes
+
+* 修复字段标记背景色透明度优先级低于主题背景色透明度的问题 ([#2744](https://github.com/antvis/S2/issues/2744)) ([63806ab](https://github.com/antvis/S2/commit/63806ab6074ad6c19f40bf78c53b599d31c15011))
+
+# [@antv/s2-v1.55.5](https://github.com/antvis/S2/compare/@antv/s2-v1.55.4...@antv/s2-v1.55.5) (2024-05-23)
+
+
+### Bug Fixes
+
+* 在 resize 时加上 preventDefault 事件，兼容 chrome 125 事件更新的处理 ([#2739](https://github.com/antvis/S2/issues/2739)) ([827462b](https://github.com/antvis/S2/commit/827462b2b1af8c0650734d6c74ac73087e56c7f8))
+
+# [@antv/s2-v1.55.4](https://github.com/antvis/S2/compare/@antv/s2-v1.55.3...@antv/s2-v1.55.4) (2024-05-11)
+
+
+### Bug Fixes
+
+* 修复无汇总数据时前端计算汇总值缺少聚合方式导致排序失效的问题 ([#2711](https://github.com/antvis/S2/issues/2711)) ([ab53003](https://github.com/antvis/S2/commit/ab53003456cdaca5935cea2bac4b3b78c1bce855))
+* 修复明细表含有空数据占位符时排序错误 close [#2707](https://github.com/antvis/S2/issues/2707) ([#2708](https://github.com/antvis/S2/issues/2708)) ([8174c38](https://github.com/antvis/S2/commit/8174c38c6a6b10d6e6564eef2365d0f39a5da909))
+
+# [@antv/s2-v1.55.3](https://github.com/antvis/S2/compare/@antv/s2-v1.55.2...@antv/s2-v1.55.3) (2024-04-30)
+
+
+### Bug Fixes
+
+* 修复维值带有 '-' 时刷选复制无法复制表头 close [#2684](https://github.com/antvis/S2/issues/2684) ([#2691](https://github.com/antvis/S2/issues/2691)) ([0c0e888](https://github.com/antvis/S2/commit/0c0e8881d1d88ad7596fa29aeecdf7bc86381b1c))
+* 修复计算列宽时计算的文字宽度和判断文本是否溢出隐藏的文字宽度不一致的问题 ([#2689](https://github.com/antvis/S2/issues/2689)) ([49aa4cf](https://github.com/antvis/S2/commit/49aa4cfbf44ad73631c007fe3a9f480dbdfeaed6))
+* 修复非滚动引起的渲染也会触发滚动事件的问题 ([#2692](https://github.com/antvis/S2/issues/2692)) ([7bfe0f5](https://github.com/antvis/S2/commit/7bfe0f5f1536e6193abd30f216a2ea302ea01cd9))
+
+# [@antv/s2-v1.55.2](https://github.com/antvis/S2/compare/@antv/s2-v1.55.1...@antv/s2-v1.55.2) (2024-04-26)
+
+
+### Bug Fixes
+
+* 修复紧凑模式下单元格宽度计算忽略了icon宽度的问题 ([#2673](https://github.com/antvis/S2/issues/2673)) ([dd053c3](https://github.com/antvis/S2/commit/dd053c3c54ef084255f07a97f5dfef42e0b50d79))
+
+# [@antv/s2-v1.55.1](https://github.com/antvis/S2/compare/@antv/s2-v1.55.0...@antv/s2-v1.55.1) (2024-04-19)
+
+
+### Bug Fixes
+
+* **layout:** 修复空数据的情况开启汇总分组渲染报错 close [#2661](https://github.com/antvis/S2/issues/2661) ([#2662](https://github.com/antvis/S2/issues/2662)) ([ab0d0e7](https://github.com/antvis/S2/commit/ab0d0e768cf627249b38205b8c77d95a20b3a901))
+* 修复紧凑模式下数值单元格maxWidth计算错误的问题 ([#2668](https://github.com/antvis/S2/issues/2668)) ([c6bc0b8](https://github.com/antvis/S2/commit/c6bc0b845e2ff4434db4770ea62e351b866c3a6f))
+
+
+### Reverts
+
+* Revert "fix: 修复紧凑模式下数值单元格maxWidth计算错误的问题 (#2668)" (#2671) ([3737da3](https://github.com/antvis/S2/commit/3737da3a6f6a2f358fcc5bb44a375b668e801e0f)), closes [#2668](https://github.com/antvis/S2/issues/2668) [#2671](https://github.com/antvis/S2/issues/2671)
+
+# [@antv/s2-v1.55.0](https://github.com/antvis/S2/compare/@antv/s2-v1.54.8...@antv/s2-v1.55.0) (2024-04-12)
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ac8e133](https://github.com/antvis/S2/commit/ac8e13397b8d5f40fb1de9fc9b49aedbe47e86c0))
+
+# [@antv/s2-v1.54.8](https://github.com/antvis/S2/compare/@antv/s2-v1.54.7...@antv/s2-v1.54.8) (2024-03-29)
+
+
+### Performance Improvements
+
+* 优化 getDimensionValues 在大量 flatten 情况下的性能 ([#2640](https://github.com/antvis/S2/issues/2640)) ([37aecc8](https://github.com/antvis/S2/commit/37aecc8cb94630147882c5bc15dbe14f70d40516))
+
+# [@antv/s2-v1.54.7](https://github.com/antvis/S2/compare/@antv/s2-v1.54.6...@antv/s2-v1.54.7) (2024-03-15)
+
+
+### Bug Fixes
+
+* 修复树状模式下开启分页, 行头展开收起后表格渲染异常 close [#2582](https://github.com/antvis/S2/issues/2582) ([#2590](https://github.com/antvis/S2/issues/2590)) ([dd210db](https://github.com/antvis/S2/commit/dd210dbbe65207219fad6522e6027fc17b5962f8))
+
 # [@antv/s2-v1.54.6](https://github.com/antvis/S2/compare/@antv/s2-v1.54.5...@antv/s2-v1.54.6) (2024-03-01)
 
 

@@ -1,5 +1,4 @@
 import type { SimpleBBox } from '@antv/g-canvas';
-import { merge } from 'lodash';
 import type {
   AreaRange,
   CellTheme,
@@ -10,6 +9,7 @@ import type {
   TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
+import { normalizeIconCfg } from '../../utils/layout';
 
 /**
  * -----------------------------
@@ -42,20 +42,6 @@ export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
  *       1. text 和 icon 同为 left 或者 right 时，icon bbox 只需要简单放置在 left 或者 right 即可
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
  */
-
-const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
-  return merge(
-    {
-      size: 0,
-      position: 'right',
-      margin: {
-        left: 0,
-        right: 0,
-      },
-    },
-    iconCfg,
-  );
-};
 
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
@@ -93,7 +79,7 @@ export const getTextAndFollowingIconPosition = (
   iconCount = 1,
 ) => {
   const { x, width } = contentBox;
-  const { textAlign, textBaseline } = textCfg;
+  const { textAlign, textBaseline } = textCfg || {};
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
   const iconSpace =

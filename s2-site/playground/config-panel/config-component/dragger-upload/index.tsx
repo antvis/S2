@@ -101,7 +101,7 @@ export class DraggerUpload extends PureComponent<Props> {
           ；可选参数有总计/小计数据{' '}
           <a
             href="https://s2.antv.antgroup.com/api/general/s2dataconfig#data"
-            target="_black"
+            target="_blank"
             rel="noopener noreferrer"
           >
             totalData
@@ -109,7 +109,7 @@ export class DraggerUpload extends PureComponent<Props> {
           、字段元数据{' '}
           <a
             href="https://s2.antv.antgroup.com/api/general/s2dataconfig#meta"
-            target="_black"
+            target="_blank"
             rel="noopener noreferrer"
           >
             meta
@@ -117,7 +117,7 @@ export class DraggerUpload extends PureComponent<Props> {
           、排序参数配置{' '}
           <a
             href="https://s2.antv.antgroup.com/api/general/s2dataconfig#sortparam"
-            target="_black"
+            target="_blank"
             rel="noopener noreferrer"
           >
             sortParams
@@ -125,7 +125,7 @@ export class DraggerUpload extends PureComponent<Props> {
           。参考数据格式见：
           <a
             href="https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json"
-            target="_black"
+            target="_blank"
             rel="noopener noreferrer"
           >
             标准透视表数据

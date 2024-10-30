@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`drawInterval Test should get right condition interval when only set fill 1`] = `
+exports[`#drawInterval() Tests should get right condition interval when only set fill 1`] = `
 Array [
   100,
   28.128313891834573,

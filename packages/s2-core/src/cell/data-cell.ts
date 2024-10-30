@@ -15,7 +15,6 @@ import type {
   Condition,
   FormatResult,
   IconCfg,
-  IconCondition,
   MappingResult,
   TextTheme,
   ViewMeta,
@@ -27,7 +26,10 @@ import {
   shouldUpdateBySelectedCellsHighlight,
   updateBySelectedCellsHighlight,
 } from '../utils/cell/data-cell';
-import { getIconPositionCfg } from '../utils/condition/condition';
+import {
+  getIconPositionCfg,
+  findFieldCondition,
+} from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
@@ -35,7 +37,9 @@ import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import { shouldReverseFontColor } from '../utils/color';
+import { shouldReverseFontColor, isReadableText } from '../utils/color';
+import { LayoutWidthTypes } from '../common/constant/options';
+import { getDataCellIconStyle } from '../utils/layout';
 
 /**
  * DataCell for panelGroup area
@@ -217,10 +221,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
-    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    // 当背景亮度过低时，且背景色与文字颜色对比度过低时，开启反色
     if (
       shouldReverseFontColor(backgroundColor) &&
-      textStyle.fill === DEFAULT_FONT_COLOR &&
+      (textFill === DEFAULT_FONT_COLOR ||
+        !isReadableText(backgroundColor, textFill)) &&
       intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
@@ -244,18 +249,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getIconStyle(): IconCfg | undefined {
-    const { size, margin } = this.theme.dataCell.icon;
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
+    return getDataCellIconStyle(
+      this.conditions,
+      this.theme.dataCell.icon,
+      this.meta.valueField,
     );
-
-    const iconCfg: IconCfg = iconCondition &&
-      iconCondition.mapping && {
-        size,
-        margin,
-        position: getIconPositionCfg(iconCondition),
-      };
-    return iconCfg;
   }
 
   protected drawConditionIntervalShape() {
@@ -312,7 +310,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    return getMaxTextWidth(width, this.getIconStyle());
+    const iconCfg = this.getIconStyle();
+
+    return getMaxTextWidth(width, iconCfg);
   }
 
   protected getTextPosition(): Point {
@@ -324,8 +324,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.meta.rowIndex,
     );
     let backgroundColor = backgroundColorByCross.backgroundColor;
-    const backgroundColorOpacity =
-      backgroundColorByCross.backgroundColorOpacity;
+    let backgroundColorOpacity = backgroundColorByCross.backgroundColorOpacity;
 
     if (this.shouldHideRowSubtotalData()) {
       return { backgroundColor, backgroundColorOpacity };
@@ -339,6 +338,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (attrs) {
         backgroundColor = attrs.fill;
         intelligentReverseTextColor = attrs.intelligentReverseTextColor;
+        backgroundColorOpacity = 1;
       }
     }
     return {
@@ -455,11 +455,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   public findFieldCondition(conditions: Condition[]): Condition {
-    return findLast(conditions, (item) => {
-      return item.field instanceof RegExp
-        ? item.field.test(this.meta.valueField)
-        : item.field === this.meta.valueField;
-    });
+    return findFieldCondition(conditions, this.meta.valueField);
   }
 
   /**

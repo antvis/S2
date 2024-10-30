@@ -1,0 +1,313 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Theme Utils Tests should get correctly palette 1`] = `
+Object {
+  "basicColorRelations": Array [
+    Object {
+      "basicColorIndex": 1,
+      "standardColorIndex": 0,
+    },
+    Object {
+      "basicColorIndex": 2,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 3,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 4,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 5,
+      "standardColorIndex": 7,
+    },
+    Object {
+      "basicColorIndex": 6,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 7,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 9,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 10,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 11,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 12,
+      "standardColorIndex": 5,
+    },
+  ],
+  "basicColors": Array [
+    "#000000",
+    "#F5F8FE",
+    "#E0E9FD",
+    "#E0E9FD",
+    "#CCDBFC",
+    "#234DAB",
+    "#326EF4",
+    "#326EF4",
+    "#FFFFFF",
+    "#E0E9FD",
+    "#CCDBFC",
+    "#326EF4",
+    "#326EF4",
+    "#000000",
+    "#000000",
+  ],
+  "brandColor": "#326EF4",
+  "others": Object {
+    "highlight": "#87B5FF",
+    "results": "#F0F7FF",
+  },
+  "semanticColors": Object {
+    "green": "#29A294",
+    "red": "#FF4D4F",
+    "yellow": "#FAAD14",
+  },
+}
+`;
+
+exports[`Theme Utils Tests should get correctly palette 2`] = `
+Object {
+  "basicColorRelations": Array [
+    Object {
+      "basicColorIndex": 1,
+      "standardColorIndex": 0,
+    },
+    Object {
+      "basicColorIndex": 2,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 3,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 4,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 5,
+      "standardColorIndex": 7,
+    },
+    Object {
+      "basicColorIndex": 6,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 7,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 9,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 10,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 11,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 12,
+      "standardColorIndex": 5,
+    },
+  ],
+  "basicColors": Array [
+    "#000000",
+    "#F5F8FE",
+    "#E0E9FD",
+    "#E0E9FD",
+    "#CCDBFC",
+    "#234DAB",
+    "#326EF4",
+    "#326EF4",
+    "#FFFFFF",
+    "#E0E9FD",
+    "#CCDBFC",
+    "#326EF4",
+    "#326EF4",
+    "#000000",
+    "#000000",
+  ],
+  "brandColor": "#326EF4",
+  "others": Object {
+    "highlight": "#87B5FF",
+    "results": "#F0F7FF",
+  },
+  "semanticColors": Object {
+    "green": "#29A294",
+    "red": "#FF4D4F",
+    "yellow": "#FAAD14",
+  },
+}
+`;
+
+exports[`Theme Utils Tests should get correctly palette 3`] = `
+Object {
+  "basicColorRelations": Array [
+    Object {
+      "basicColorIndex": 1,
+      "standardColorIndex": 0,
+    },
+    Object {
+      "basicColorIndex": 2,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 3,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 4,
+      "standardColorIndex": 6,
+    },
+    Object {
+      "basicColorIndex": 5,
+      "standardColorIndex": 6,
+    },
+    Object {
+      "basicColorIndex": 6,
+      "standardColorIndex": 6,
+    },
+    Object {
+      "basicColorIndex": 7,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 9,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 10,
+      "standardColorIndex": 4,
+    },
+    Object {
+      "basicColorIndex": 11,
+      "standardColorIndex": 4,
+    },
+    Object {
+      "basicColorIndex": 12,
+      "standardColorIndex": 5,
+    },
+  ],
+  "basicColors": Array [
+    "#FFFFFF",
+    "#F5F8FF",
+    "#E1EAFE",
+    "#3471F9",
+    "#2C60D4",
+    "#2C60D4",
+    "#2C60D4",
+    "#3471F9",
+    "#FFFFFF",
+    "#E1EAFE",
+    "#5286FA",
+    "#5286FA",
+    "#3471F9",
+    "#000000",
+    "#000000",
+  ],
+  "brandColor": "#3471F9",
+  "others": Object {
+    "highlight": "#87B5FF",
+    "results": "#F0F7FF",
+  },
+  "semanticColors": Object {
+    "green": "#29A294",
+    "red": "#FF4D4F",
+    "yellow": "#FAAD14",
+  },
+}
+`;
+
+exports[`Theme Utils Tests should get correctly palette 4`] = `
+Object {
+  "basicColorRelations": Array [
+    Object {
+      "basicColorIndex": 1,
+      "standardColorIndex": 0,
+    },
+    Object {
+      "basicColorIndex": 2,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 3,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 4,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 5,
+      "standardColorIndex": 7,
+    },
+    Object {
+      "basicColorIndex": 6,
+      "standardColorIndex": 8,
+    },
+    Object {
+      "basicColorIndex": 7,
+      "standardColorIndex": 5,
+    },
+    Object {
+      "basicColorIndex": 9,
+      "standardColorIndex": 1,
+    },
+    Object {
+      "basicColorIndex": 10,
+      "standardColorIndex": 2,
+    },
+    Object {
+      "basicColorIndex": 11,
+      "standardColorIndex": 3,
+    },
+    Object {
+      "basicColorIndex": 12,
+      "standardColorIndex": 3,
+    },
+  ],
+  "basicColors": Array [
+    "#000000",
+    "#FAFBFB",
+    "#F0F2F4",
+    "#F0F2F4",
+    "#E7E9ED",
+    "#6E757F",
+    "#565C64",
+    "#9DA7B6",
+    "#FFFFFF",
+    "#F0F2F4",
+    "#E7E9ED",
+    "#BAC1CC",
+    "#BAC1CC",
+    "#000000",
+    "#000000",
+  ],
+  "brandColor": "#9DA7B6",
+  "others": Object {
+    "highlight": "#87B5FF",
+    "results": "#F0F7FF",
+  },
+  "semanticColors": Object {
+    "green": "#29A294",
+    "red": "#FF4D4F",
+    "yellow": "#FAAD14",
+  },
+}
+`;

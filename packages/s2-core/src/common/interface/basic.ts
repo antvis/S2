@@ -124,7 +124,11 @@ export enum Aggregation {
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
-  calcFunc?: (query: Query, arr: DataType[]) => number;
+  calcFunc?: (
+    query: Query,
+    data: DataType[],
+    spreadsheet: SpreadSheet,
+  ) => number;
 }
 
 export interface Total {

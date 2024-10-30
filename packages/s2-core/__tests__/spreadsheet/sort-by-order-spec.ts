@@ -1,12 +1,13 @@
+/* eslint-disable jest/expect-expect */
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common';
+import { S2DataConfig, S2Options, TOTAL_VALUE, EXTRA_FIELD } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,
   height: 400,
   hierarchyType: 'grid',
-  hdAdapter: true,
+  hdAdapter: false,
 };
 
 describe('Manual Sort Tests', () => {
@@ -103,5 +104,161 @@ describe('Manual Sort Tests', () => {
         type1: '支付宝访问',
       }),
     ).toEqual(['整体访问', '小程序访问', '支付宝访问']);
+  });
+});
+
+describe('Fallback Calc Sub Totals Sort Tests', () => {
+  let s2: PivotSheet;
+
+  const expectSortSnapshot = (sortMethod: string) => {
+    const sortParams: S2DataConfig['sortParams'] = [
+      {
+        sortFieldId: '2799920880364640bd8f935abd18c5c6',
+        sortByMeasure: TOTAL_VALUE,
+        sortMethod,
+        query: {
+          [EXTRA_FIELD]: 'b0aa459e944f4fa2a15aa676675b4fba',
+        },
+      },
+    ];
+
+    const mockDataCfg: S2DataConfig = {
+      sortParams,
+      fields: {
+        rows: [
+          '2799920880364640bd8f935abd18c5c6',
+          '1cf18bb67da1441b859cda64c725930c',
+        ],
+        columns: [],
+        values: ['b0aa459e944f4fa2a15aa676675b4fba'],
+        valueInCols: true,
+      },
+      data: [
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 29984.65,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-08',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 660145.79,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-08',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 22266165.73,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-08',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 32351.67,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-07',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 686584.77,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-07',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 22568182.05,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-07',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 30943.21,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-06',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 695686.31,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-06',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 24852159.93,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-06',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 31209.15,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-05',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 664105.94,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-05',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 25240997.54,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-05',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 31292.9,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-04',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 656579.43,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-04',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 25452767.81,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-04',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 30225.71,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-03',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 701728.79,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-03',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 26281050.94,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-03',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '办公用品',
+          b0aa459e944f4fa2a15aa676675b4fba: 28321.87,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-02',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '家具',
+          b0aa459e944f4fa2a15aa676675b4fba: 663961.98,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-02',
+        },
+        {
+          '1cf18bb67da1441b859cda64c725930c': '设备',
+          b0aa459e944f4fa2a15aa676675b4fba: 26853739.68,
+          '2799920880364640bd8f935abd18c5c6': '2024-05-02',
+        },
+      ],
+    };
+
+    const container = getContainer();
+    s2 = new PivotSheet(container, mockDataCfg, s2Options);
+    s2.render();
+
+    const rowNodes = s2
+      .getRowNodes()
+      .filter((node) => !node.isLeaf)
+      .map((node) => node.value);
+
+    expect(rowNodes).toMatchSnapshot();
+  };
+
+  test('should sort by DESC sort method', () => {
+    expectSortSnapshot('DESC');
+  });
+
+  test('should sort by ASC sort method', () => {
+    expectSortSnapshot('ASC');
   });
 });

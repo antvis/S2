@@ -5,7 +5,7 @@ order: 3
 
 ## LayoutDataPosition
 
-```js
+```js | pure
 LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
 ```
 
@@ -16,6 +16,6 @@ Function description: custom data
 | spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
 | getCellData | [GetCellMeta](#viewmeta)                            |     ✓    |          | Get information such as cell data and position                       |
 
-```ts
+```ts | pure
 type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
 ```

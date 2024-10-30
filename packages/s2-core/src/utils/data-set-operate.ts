@@ -3,7 +3,7 @@ import {
   EMPTY_EXTRA_FIELD_PLACEHOLDER,
   TOTAL_VALUE,
 } from '../common/constant/field';
-import type { Totals, TotalsStatus } from '../common/interface';
+import type { CalcTotals, Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (
   list: string[],
@@ -36,6 +36,7 @@ export const filterOutDetail = (values: string[] = []) => {
     (v) => v !== TOTAL_VALUE && v !== EMPTY_EXTRA_FIELD_PLACEHOLDER,
   );
 };
+
 export const customFlattenDeep = (
   data: Record<any, any>[] | Record<any, any>,
 ) => {
@@ -43,22 +44,6 @@ export const customFlattenDeep = (
     return [data];
   }
   return flattenDeep(data);
-};
-
-export const getFieldKeysByDimensionValues = (
-  dimensionValues: string[] | undefined[],
-  dimensions: string[] | undefined[],
-) => {
-  const result = [];
-  dimensionValues?.forEach((item, index) => {
-    if (item === undefined) {
-      if (dimensions[index]) {
-        result.push(dimensions[index]);
-      }
-    }
-  });
-
-  return result;
 };
 
 /**
@@ -83,11 +68,9 @@ export function getAggregationAndCalcFuncByQuery(
     calcTotals: colCalcTotals = {},
     calcSubTotals: colCalcSubTotals = {},
   } = col || {};
-  const getCalcTotals = (dimensionTotals, totalType) => {
-    if (
-      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
-      totalType
-    ) {
+
+  const getCalcTotals = (dimensionTotals: CalcTotals, isTotal: boolean) => {
+    if ((dimensionTotals.aggregation || dimensionTotals.calcFunc) && isTotal) {
       return {
         aggregation: dimensionTotals.aggregation,
         calcFunc: dimensionTotals.calcFunc,

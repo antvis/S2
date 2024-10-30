@@ -1,4 +1,4 @@
-import { PivotSheet, EXTRA_FIELD } from '@antv/s2';
+import { PivotSheet, EXTRA_FIELD, QueryDataType } from '@antv/s2';
 
 fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
   .then((res) => res.json())
@@ -31,7 +31,14 @@ fetch('https://render.alipay.com/p/yuyan/180020010001215413/s2/basic.json')
       data,
     };
 
-    const calcFunc = (query, data) => {
+    const calcFunc = (query, data, spreadsheet) => {
+      const allData = spreadsheet.dataSet.getMultiData(query, {
+        queryType: QueryDataType.All,
+      });
+
+      console.log('data (明细数据):', data);
+      console.log('data (全部数据, 含汇总):', allData);
+
       const sum = data.reduce((pre, next) => {
         return pre + next[next[EXTRA_FIELD]];
       }, 0);

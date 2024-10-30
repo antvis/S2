@@ -21,6 +21,7 @@ import {
   unset,
 } from 'lodash';
 import {
+  Aggregation,
   MULTI_VALUE,
   QueryDataType,
   type CellMeta,
@@ -78,6 +79,8 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
+  private dimensionValuesCache: Map<string, string[]>;
+
   getExistValuesByDataItem(data: DataType, values: string[]) {
     return getExistValues(data, values);
   }
@@ -95,6 +98,7 @@ export class PivotDataSet extends BaseDataSet {
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    this.dimensionValuesCache = new Map();
     this.transformIndexesData(this.originData.concat(this.totalData), rows);
     this.handleDimensionValuesSort();
   }
@@ -337,6 +341,13 @@ export class PivotDataSet extends BaseDataSet {
       return [];
     }
 
+    const isGetAllDimensionValues = isEmpty(query);
+
+    // 暂时先对获取某一个维度所有的 labels 这样的场景做缓存处理，因为内部 flatten 逻辑比较耗时
+    if (this.dimensionValuesCache.has(field) && isGetAllDimensionValues) {
+      return this.dimensionValuesCache.get(field);
+    }
+
     const dimensionValues = transformDimensionsValues(
       query,
       dimensions,
@@ -352,18 +363,27 @@ export class PivotDataSet extends BaseDataSet {
       sortedDimensionValues: this.sortedDimensionValues,
     });
 
-    return uniq(values.map((v) => v.value));
+    const result = uniq(values.map((v) => v.value));
+
+    if (isGetAllDimensionValues) {
+      this.dimensionValuesCache.set(field, result);
+    }
+    return result;
   }
 
   getTotalValue(query: Query, totalStatus?: TotalStatus) {
+    const { options } = this.spreadsheet;
     const effectiveStatus = some(totalStatus);
     const status = effectiveStatus ? totalStatus : this.getTotalStatus(query);
     const { aggregation, calcFunc } =
-      getAggregationAndCalcFuncByQuery(
-        status,
-        this.spreadsheet.options?.totals,
-      ) || {};
-    const calcAction = calcActionByType[aggregation];
+      getAggregationAndCalcFuncByQuery(status, options?.totals) || {};
+
+    // 聚合方式从用户配置的 s2Options.totals 取, 在触发前端兜底计算汇总逻辑时, 如果没有汇总的配置, 默认按 [求和] 计算,避免排序失效.
+    const defaultAggregation =
+      isEmpty(options?.totals) && !this.spreadsheet.isHierarchyTreeType()
+        ? Aggregation.SUM
+        : '';
+    const calcAction = calcActionByType[aggregation || defaultAggregation];
 
     // 前端计算汇总值
     if (calcAction || calcFunc) {
@@ -372,7 +392,7 @@ export class PivotDataSet extends BaseDataSet {
       });
       let totalValue: number;
       if (calcFunc) {
-        totalValue = calcFunc(query, data);
+        totalValue = calcFunc(query, data, this.spreadsheet);
       } else if (calcAction) {
         totalValue = calcAction(data, VALUE_FIELD);
       }

@@ -1,9 +1,9 @@
-import { getContainer } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
-import { TableSheet } from '@/sheet-type';
+import { getContainer } from 'tests/util/helpers';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
+import { TableSheet } from '@/sheet-type';
 
 describe('TableSheet Tests', () => {
   let s2: TableSheet;
@@ -161,7 +161,7 @@ describe('TableSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1421
-    test.each(['zh_CN', 'en_US'])(
+    test.each(['zh_CN', 'en_US', 'ru_RU'])(
       'should render group sort menu',
       (lang: LangType) => {
         setLang(lang);
@@ -180,9 +180,23 @@ describe('TableSheet Tests', () => {
         sheet.handleGroupSort(event, null);
 
         const isEnUS = lang === 'en_US';
-        const groupAscText = isEnUS ? 'ASC' : '升序';
-        const groupDescText = isEnUS ? 'DESC' : '降序';
-        const groupNoneText = isEnUS ? 'No order' : '不排序';
+        const isRu = lang === 'ru_RU';
+
+        let groupAscText = '升序';
+        let groupDescText = '降序';
+        let groupNoneText = '不排序';
+
+        if (isEnUS) {
+          groupAscText = 'ASC';
+          groupDescText = 'DESC';
+          groupNoneText = 'No order';
+        }
+
+        if (isRu) {
+          groupAscText = 'По возрастанию';
+          groupDescText = 'По убыванию';
+          groupNoneText = 'Не отсортировано';
+        }
 
         expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
           expect.anything(),
@@ -217,5 +231,14 @@ describe('TableSheet Tests', () => {
 
   test('should get content height', () => {
     expect(s2.getContentHeight()).toEqual(120);
+  });
+
+  test('get sheetInstance from canvas', () => {
+    const canvas = s2.getCanvasElement();
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toEqual(s2);
+    s2.destroy();
+    // eslint-disable-next-line no-underscore-dangle
+    expect((canvas as any).__s2_instance__).toBe(undefined);
   });
 });

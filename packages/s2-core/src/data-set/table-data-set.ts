@@ -1,5 +1,5 @@
 import { each, filter, hasIn, isFunction, isObject, orderBy } from 'lodash';
-import { isAscSort, isDescSort } from '..';
+import { getEmptyPlaceholder, isAscSort, isDescSort } from '..';
 import type { CellMeta } from '../common';
 import type { S2DataConfig } from '../common/interface';
 import type { RowData } from '../common/interface/basic';
@@ -124,10 +124,23 @@ export class TableDataSet extends BaseDataSet {
           return idxB - idxA;
         });
       } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
-        const func = isFunction(sortBy) ? sortBy : null;
+        const placeholder = getEmptyPlaceholder(
+          this.spreadsheet,
+          this.spreadsheet.options?.placeholder,
+        );
+        const customSortBy = isFunction(sortBy) ? sortBy : null;
+        const customSort = (record: DataType) => {
+          // 空值占位符按最小值处理 https://github.com/antvis/S2/issues/2707
+          if (record[sortFieldId] === placeholder) {
+            return Number.MIN_VALUE;
+          }
+
+          return record[sortFieldId];
+        };
+
         sortedData = orderBy(
           data,
-          [func || sortFieldId],
+          [customSortBy || customSort],
           [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         );
       }

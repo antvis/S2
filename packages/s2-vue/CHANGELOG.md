@@ -1,3 +1,17 @@
+# [@antv/s2-vue-v1.7.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.7.0...@antv/s2-vue-v1.7.1) (2024-04-19)
+
+
+### Bug Fixes
+
+* 修复分页配置无法透传 ([#2666](https://github.com/antvis/S2/issues/2666)) ([2d5aaa4](https://github.com/antvis/S2/commit/2d5aaa4c5e70f48d007e4fb0f3c75871cc4148f1))
+
+# [@antv/s2-vue-v1.7.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.6.1...@antv/s2-vue-v1.7.0) (2024-04-12)
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ac8e133](https://github.com/antvis/S2/commit/ac8e13397b8d5f40fb1de9fc9b49aedbe47e86c0))
+
 # [@antv/s2-vue-v1.6.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.6.0...@antv/s2-vue-v1.6.1) (2024-01-26)
 
 

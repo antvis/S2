@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scrollbar Tests should render horizontal scrollbar shape 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 0,
+  "x2": 200,
+  "y1": 2,
+  "y2": 2,
+}
+`;
+
+exports[`Scrollbar Tests should render horizontal scrollbar shape 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 0,
+  "x2": 46,
+  "y1": 2,
+  "y2": 2,
+}
+`;
+
+exports[`Scrollbar Tests should render horizontal scrollbar shape by custom theme 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 10,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "stroke": "red",
+  "strokeOpacity": 1,
+  "x1": 0,
+  "x2": 200,
+  "y1": 5,
+  "y2": 5,
+}
+`;
+
+exports[`Scrollbar Tests should render horizontal scrollbar shape by custom theme 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 10,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "stroke": "yellow",
+  "strokeOpacity": 1,
+  "x1": 0,
+  "x2": 40,
+  "y1": 5,
+  "y2": 5,
+}
+`;
+
+exports[`Scrollbar Tests should render vertical scrollbar shape 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 0,
+  "y2": 200,
+}
+`;
+
+exports[`Scrollbar Tests should render vertical scrollbar shape 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 2,
+  "y2": 48,
+}
+`;
+
+exports[`Scrollbar Tests should render vertical scrollbar shape by custom theme 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 2,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "stroke": "#396",
+  "strokeOpacity": 1,
+  "x1": 1,
+  "x2": 1,
+  "y1": 0,
+  "y2": 200,
+}
+`;
+
+exports[`Scrollbar Tests should render vertical scrollbar shape by custom theme 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 2,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "stroke": "rgba(0,0,0,.2)",
+  "strokeOpacity": 1,
+  "x1": 1,
+  "x2": 1,
+  "y1": 1,
+  "y2": 49,
+}
+`;
+
+exports[`Scrollbar Tests should update thumb length 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 0,
+  "y2": 200,
+}
+`;
+
+exports[`Scrollbar Tests should update thumb length 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 2,
+  "y2": 48,
+}
+`;
+
+exports[`Scrollbar Tests should update thumb offset 1`] = `
+Object {
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 0,
+  "y2": 200,
+}
+`;
+
+exports[`Scrollbar Tests should update thumb offset 2`] = `
+Object {
+  "cursor": "default",
+  "endArrow": false,
+  "fillOpacity": 1,
+  "lineAppendWidth": 0,
+  "lineCap": "round",
+  "lineWidth": 4,
+  "matrix": null,
+  "opacity": 1,
+  "startArrow": false,
+  "strokeOpacity": 1,
+  "x1": 2,
+  "x2": 2,
+  "y1": 2,
+  "y2": 48,
+}
+`;

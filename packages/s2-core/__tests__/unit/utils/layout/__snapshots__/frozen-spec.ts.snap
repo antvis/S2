@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`frozen test should get valid frozen options 1`] = `
+Object {
+  "frozenColCount": 0,
+  "frozenRowCount": 0,
+  "frozenTrailingColCount": 0,
+  "frozenTrailingRowCount": 0,
+}
+`;
+
+exports[`frozen test should get valid frozen options 2`] = `
+Object {
+  "frozenColCount": 1,
+  "frozenRowCount": 2,
+  "frozenTrailingColCount": 3,
+  "frozenTrailingRowCount": 4,
+}
+`;
+
+exports[`frozen test should get valid frozen options 3`] = `
+Object {
+  "frozenColCount": 10,
+  "frozenRowCount": 10,
+  "frozenTrailingColCount": 0,
+  "frozenTrailingRowCount": 0,
+}
+`;

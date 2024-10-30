@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fallback Calc Sub Totals Sort Tests should sort by ASC sort method 1`] = `
+Array [
+  "2024-05-08",
+  "2024-05-07",
+  "2024-05-06",
+  "2024-05-05",
+  "2024-05-04",
+  "2024-05-03",
+  "2024-05-02",
+]
+`;
+
+exports[`Fallback Calc Sub Totals Sort Tests should sort by DESC sort method 1`] = `
+Array [
+  "2024-05-02",
+  "2024-05-03",
+  "2024-05-04",
+  "2024-05-05",
+  "2024-05-06",
+  "2024-05-07",
+  "2024-05-08",
+]
+`;

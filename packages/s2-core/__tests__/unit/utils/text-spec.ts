@@ -1,4 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   getEllipsisText,
@@ -9,7 +10,11 @@ import {
   getContentAreaForMultiData,
   isZeroOrEmptyValue,
   isUnchangedValue,
+  safeJsonParse,
+  drawObjectText,
 } from '@/utils/text';
+
+jest.mock('@/utils/g-mini-charts');
 
 const isHD = window.devicePixelRatio >= 2;
 
@@ -36,6 +41,7 @@ describe('Text Utils Tests', () => {
         text: '12',
         maxWidth: 200,
         placeholder: '--',
+        getCellWidth,
       });
 
       expect(text).toEqual('12');
@@ -106,8 +112,12 @@ describe('Text Utils Tests', () => {
     });
 
     test('should get correct ellipsis text inner', () => {
-      const text = getEllipsisTextInner(measureTextWidth, 'test', 15, font);
-      expect(text).toEqual('t...');
+      expect(getEllipsisTextInner(measureTextWidth, 'test', 15, font)).toEqual(
+        't...',
+      );
+      expect(getEllipsisTextInner(measureTextWidth, 'test', 50, font)).toEqual(
+        'test',
+      );
     });
   });
 
@@ -273,6 +283,20 @@ describe('Text Utils Tests', () => {
       ],
     ]);
   });
+
+  test('should get cell width', () => {
+    expect(getCellWidth({ width: 30 })).toEqual(30);
+    expect(getCellWidth({ width: 30 }, 2)).toEqual(60);
+  });
+
+  test('should safe parse json', () => {
+    const value = {
+      a: [1],
+    };
+    expect(safeJsonParse()).toEqual(null);
+    expect(safeJsonParse('')).toEqual(null);
+    expect(safeJsonParse(JSON.stringify(value))).toEqual(value);
+  });
 });
 
 describe('isZeroOrEmptyValue', () => {
@@ -339,5 +363,61 @@ describe('isUnchangedValue', () => {
 
   test('should return false for negative values', () => {
     expect(isUnchangedValue(-123, 123)).toBeFalsy();
+  });
+
+  test('should draw custom content', () => {
+    const addTextShape = jest.fn();
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.getContentArea = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+    cell.addTextShape = addTextShape;
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    function render() {
+      drawObjectText(cell, { values: ['test'] });
+    }
+
+    expect(render).not.toThrowError();
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(addTextShape).toHaveBeenCalledTimes(4);
+  });
+
+  test('should draw custom mini chart', () => {
+    const s2 = createFakeSpreadSheet({
+      style: {
+        cellCfg: {},
+      },
+    });
+    const cell = createMockCellInfo('test').mockCell;
+
+    cell.getContentArea = () => ({
+      width: 200,
+      height: 200,
+    });
+    cell.getMeta = () => ({
+      spreadsheet: s2,
+    });
+    cell.getStyle = () => ({});
+
+    function render() {
+      drawObjectText(cell, { values: { data: 'test' } });
+    }
+
+    expect(render).not.toThrowError();
   });
 });

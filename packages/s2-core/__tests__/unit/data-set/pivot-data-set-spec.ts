@@ -439,6 +439,10 @@ describe('Pivot Dataset Test', () => {
     });
 
     test('clearDrillDownData function with totalData', () => {
+      jest
+        .spyOn(dataSet.spreadsheet, 'isHierarchyTreeType')
+        .mockImplementationOnce(() => true);
+
       dataSet.transformDrillDownData(
         'district',
         [...drillDownData, ...drillDownTotalData],

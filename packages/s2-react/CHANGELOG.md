@@ -1,3 +1,24 @@
+# [@antv/s2-react-v1.48.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.47.0...@antv/s2-react-v1.48.0) (2024-10-25)
+
+
+### Features
+
+* **i18n:** add formatter support of the russian language ([#2862](https://github.com/antvis/S2/issues/2862)) ([e5b16c5](https://github.com/antvis/S2/commit/e5b16c55b0a090560673f2723659d74a063662df))
+
+# [@antv/s2-react-v1.47.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.4...@antv/s2-react-v1.47.0) (2024-04-12)
+
+
+### Features
+
+* canvas 支持挂载 s2 实例 ([#2645](https://github.com/antvis/S2/issues/2645)) ([ac8e133](https://github.com/antvis/S2/commit/ac8e13397b8d5f40fb1de9fc9b49aedbe47e86c0))
+
+# [@antv/s2-react-v1.46.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.3...@antv/s2-react-v1.46.4) (2024-03-15)
+
+
+### Bug Fixes
+
+* 修复树状模式下开启分页, 行头展开收起后表格渲染异常 close [#2582](https://github.com/antvis/S2/issues/2582) ([#2590](https://github.com/antvis/S2/issues/2590)) ([dd210db](https://github.com/antvis/S2/commit/dd210dbbe65207219fad6522e6027fc17b5962f8))
+
 # [@antv/s2-react-v1.46.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.46.2...@antv/s2-react-v1.46.3) (2024-02-23)
 
 

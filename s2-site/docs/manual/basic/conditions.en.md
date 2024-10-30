@@ -20,9 +20,9 @@ The `S2` field marking feature is configured by configuring
 the [`Conditions`](/docs/api/general/S2Options#conditions) attribute in `s2Options` .
 
 ```js
- // 构建options 
+ // 构建 options 
 const s2Options = {
-  width: 600, height: 600, // 通过配置conditions 实现字段标记
+  width: 600, height: 600, // 通过配置 conditions 实现字段标记
   conditions: {
     text: [ {
       field: "price", mapping(fieldValue, data) {
@@ -137,7 +137,7 @@ color:<Playground data-mdast="html" path="analysis/conditions/demo/gradient-inte
 ### Turn on text intelligent inversion
 
 By displaying the return value of the `mapping` function in the specified `background` field tag
-the `intelligentReverseTextColor` attribute value is `true` . When the marker background color is darker, the text color
+the `intelligentReverseTextColor` attribute value is `true` . When the mark background color is dark and the text color and background color combination does not meet the Level [AA](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html) standards of the WCAG2.0 guidelines, the text color
 will change to white. When the marker background color is bright, the text color defaults to black.
 Priority: `intelligentReverseTextColor` of `background condition` < `fill` of `text condition`
 

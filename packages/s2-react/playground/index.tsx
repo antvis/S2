@@ -72,6 +72,7 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
 class ResetTooltip extends BaseTooltip {
   renderContent() {
     ReactDOM.render(<>Reset Tooltip</>, this.container);
@@ -147,7 +148,7 @@ const onSheetMounted = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
-  window.g_instances = [s2.container];
+  window.__g_instances__ = [s2.container];
 };
 
 const CustomTooltip = () => (

@@ -108,9 +108,9 @@ export class ColCell extends HeaderCell {
 
     const textStyle = this.getTextStyle();
     const position = this.textPosition;
-    const textX = position.x;
+    const textX = position?.x;
 
-    const y = position.y - iconStyle.size / 2;
+    const y = position?.y - iconStyle.size / 2;
 
     if (textStyle.textAlign === 'left') {
       /**

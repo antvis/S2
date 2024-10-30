@@ -507,7 +507,7 @@ const onRowCellHover = ({ event, viewMeta }) => {
   <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({

@@ -1,7 +1,16 @@
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { forEach, map } from 'lodash';
+import { forEach, last, map } from 'lodash';
+import { IElement } from '@antv/g-canvas';
 import type { RangeColors } from '../../../src/common/interface/theme';
+import {
+  drawBar,
+  drawBullet,
+  drawLine,
+  S2Options,
+  SpreadSheet,
+} from '../../../src';
+import { createPivotSheet } from '../../util/helpers';
 import { PivotSheet } from '@/sheet-type';
 import { CellTypes, MiniChartTypes, type S2CellType } from '@/common';
 import {
@@ -11,6 +20,24 @@ import {
   drawInterval,
 } from '@/utils/g-mini-charts';
 import type { DataCell } from '@/cell';
+
+const getChartData = (type: MiniChartTypes) => {
+  return {
+    type,
+    data: [
+      { year: '2017', value: -368 },
+      { year: '2018', value: 368 },
+      { year: '2019', value: 368 },
+      { year: '2020', value: 368 },
+      { year: '2021', value: 368 },
+      { year: '2022', value: 368 },
+    ],
+    encode: {
+      x: 'year',
+      y: 'value',
+    },
+  };
+};
 
 describe('MiniCharts Utils Tests', () => {
   const padding = {
@@ -309,7 +336,52 @@ describe('MiniCharts Utils Tests', () => {
   });
 });
 
-describe('drawInterval Test', () => {
+describe('Render Chart Shape Tests', () => {
+  const s2Options: S2Options = {
+    width: 600,
+    height: 400,
+  };
+
+  let s2: SpreadSheet;
+  let cell: DataCell;
+  beforeEach(() => {
+    s2 = createPivotSheet(s2Options);
+    s2.render();
+    cell = s2.interaction.getPanelGroupAllDataCells()[0];
+  });
+
+  test('should render line shape', () => {
+    drawLine(getChartData(MiniChartTypes.Line), cell);
+
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'polyline'),
+    ).toHaveLength(1);
+  });
+
+  test('should render bar shape', () => {
+    drawBar(getChartData(MiniChartTypes.Bar), cell);
+
+    expect(
+      cell.getChildren().filter((shape) => shape.get('type') === 'rect'),
+    ).toHaveLength(9);
+  });
+
+  test('should render bullet shape', () => {
+    drawBullet(
+      {
+        ...getChartData(MiniChartTypes.Bullet),
+        measure: 0.1,
+        target: 0.5,
+      },
+      cell,
+    );
+
+    const text = last(cell.getChildren()) as IElement;
+    expect(text.attr('text')).toEqual('10.00%');
+  });
+});
+
+describe('#drawInterval() Tests', () => {
   const dataCfg = assembleDataCfg({
     meta: [],
     fields: {

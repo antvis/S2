@@ -1,28 +1,28 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
-import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep, get, last } from 'lodash';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
+import type { CornerCell } from '@/cell/corner-cell';
 import {
   CellTypes,
-  type CustomSVGIcon,
-  getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
+  S2Event,
+  TOOLTIP_CONTAINER_CLS,
+  getIcon,
+  setLang,
+  type CustomSVGIcon,
+  type LangType,
   type RowCellCollapseTreeRowsType,
   type S2DataConfig,
-  S2Event,
   type S2Options,
   type TooltipShowOptions,
-  TOOLTIP_CONTAINER_CLS,
-  setLang,
-  type LangType,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { customMerge, getSafetyDataConfig } from '@/utils';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
-import type { CornerCell } from '@/cell/corner-cell';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/utils/hide-columns');
 
@@ -888,7 +888,7 @@ describe('PivotSheet Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1421
-  test.each(['zh_CN', 'en_US'])(
+  test.each(['zh_CN', 'en_US', 'ru_RU'])(
     'should render group sort menu',
     (lang: LangType) => {
       setLang(lang);
@@ -906,9 +906,23 @@ describe('PivotSheet Tests', () => {
       sheet.handleGroupSort(event, null);
 
       const isEnUS = lang === 'en_US';
-      const groupAscText = isEnUS ? 'Group ASC' : '组内升序';
-      const groupDescText = isEnUS ? 'Group DESC' : '组内降序';
-      const groupNoneText = isEnUS ? 'No order' : '不排序';
+      const isRu = lang === 'ru_RU';
+
+      let groupAscText = '组内升序';
+      let groupDescText = '组内降序';
+      let groupNoneText = '不排序';
+
+      if (isEnUS) {
+        groupAscText = 'Group ASC';
+        groupDescText = 'Group DESC';
+        groupNoneText = 'No order';
+      }
+
+      if (isRu) {
+        groupAscText = 'Группировать по возрастанию';
+        groupDescText = 'Группировать по убыванию';
+        groupNoneText = 'Не отсортировано';
+      }
 
       expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
         expect.anything(),
@@ -1217,5 +1231,14 @@ describe('PivotSheet Tests', () => {
     s2.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
+  });
+
+  test('get sheetInstance from canvas', () => {
+    const canvas = s2.getCanvasElement();
+    // eslint-disable-next-line no-underscore-dangle
+    expect(canvas.__s2_instance__).toEqual(s2);
+    s2.destroy();
+    // eslint-disable-next-line no-underscore-dangle
+    expect(canvas.__s2_instance__).toBe(undefined);
   });
 });

@@ -155,6 +155,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
+      event?.preventDefault?.();
+
       const shape = event.target as IGroup;
       const originalEvent = event.originalEvent as MouseEvent;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
