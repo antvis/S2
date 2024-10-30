@@ -29,6 +29,7 @@ import {
   BaseEvent,
   BaseTooltipOperatorMenuOptions,
   CornerCell,
+  EMPTY_VALUE_FIELD_PLACEHOLDER,
   HeaderCell,
   TooltipOptions,
 } from '../../../src';
@@ -1215,6 +1216,16 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('Test Layout by dataCfg fields', () => {
+    const mapCells = (s2: SpreadSheet) =>
+      s2.facet.getCells().map((cell) => {
+        const meta = cell.getMeta();
+
+        return {
+          id: meta.id,
+          value: meta.value || meta.fieldValue,
+        };
+      });
+
     beforeEach(() => {
       s2.destroy();
     });
@@ -1294,34 +1305,84 @@ describe('PivotSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/777
-    it('should cannot render row leaf nodes if values is empty', async () => {
-      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
-        fields: {
-          values: [],
-          valueInCols: true,
-        },
-      } as unknown as S2DataConfig);
-      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+    it('should add empty value placeholder field if values is empty', async () => {
+      const sheet = new PivotSheet(
+        getContainer(),
+        customMerge<S2DataConfig>(originalDataCfg, {
+          fields: {
+            values: [],
+            valueInCols: true,
+          },
+        }),
+        s2Options,
+      );
 
       await sheet.render();
 
-      const layoutResult = sheet.facet.getLayoutResult();
+      expect(mapCells(sheet)).toMatchSnapshot();
+      expect(sheet.dataSet.fields.values).toEqual([
+        EMPTY_VALUE_FIELD_PLACEHOLDER,
+      ]);
+      expect(
+        sheet.dataSet.meta.find(
+          ({ field }) => field === EMPTY_VALUE_FIELD_PLACEHOLDER,
+        ).name,
+      ).toEqual('-');
+      expect(sheet.dataSet.fields.valueInCols).toBeTruthy();
+    });
 
-      // if value empty, not render value cell in row leaf nodes
-      expect(layoutResult.rowLeafNodes).toHaveLength(0);
-      expect(layoutResult.colNodes).toHaveLength(
-        originalDataCfg.fields.columns.length,
+    it('should render correctly layout if only contains row fields', async () => {
+      const sheet = new PivotSheet(
+        getContainer(),
+        customMerge<S2DataConfig>(originalDataCfg, {
+          fields: {
+            columns: [],
+            values: [],
+            valueInCols: true,
+          },
+        }),
+        s2Options,
       );
-      expect(layoutResult.colLeafNodes).toHaveLength(
-        originalDataCfg.fields.columns.length,
-      );
-      expect(layoutResult.colNodes[0].field).toEqual(
-        originalDataCfg.fields.columns[0],
-      );
-      // modify valueInCols config
-      expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
 
-      sheet.destroy();
+      await sheet.render();
+
+      expect(mapCells(sheet)).toMatchSnapshot();
+    });
+
+    it('should render correctly layout if only contains columns fields', async () => {
+      const sheet = new PivotSheet(
+        getContainer(),
+        customMerge<S2DataConfig>(originalDataCfg, {
+          fields: {
+            rows: [],
+            values: [],
+            valueInCols: true,
+          },
+        }),
+        s2Options,
+      );
+
+      await sheet.render();
+
+      expect(mapCells(sheet)).toMatchSnapshot();
+    });
+
+    it('should not render layout if all fields is empty', async () => {
+      const sheet = new PivotSheet(
+        getContainer(),
+        customMerge<S2DataConfig>(originalDataCfg, {
+          fields: {
+            rows: [],
+            columns: [],
+            values: [],
+          },
+        }),
+        s2Options,
+      );
+
+      await sheet.render();
+
+      expect(mapCells(sheet)).toMatchSnapshot();
     });
 
     // https://github.com/antvis/S2/issues/1514

@@ -63,7 +63,13 @@ export class PivotFacet extends FrozenFacet {
   }
 
   public render() {
-    if (isEmpty(this.spreadsheet.dataCfg?.fields?.values)) {
+    const { dataSet } = this.spreadsheet;
+
+    console.log(dataSet.fields.rows);
+    if (
+      dataSet.fields.rows?.length === 1 &&
+      dataSet.fields.rows[0] === EXTRA_FIELD
+    ) {
       return;
     }
 

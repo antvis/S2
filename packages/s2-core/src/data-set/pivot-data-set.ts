@@ -23,6 +23,7 @@ import {
 } from 'lodash';
 import {
   Aggregation,
+  EMPTY_VALUE_FIELD_PLACEHOLDER,
   MULTI_VALUE,
   QueryDataType,
   type CellMeta,
@@ -311,7 +312,7 @@ export class PivotDataSet extends BaseDataSet {
     const {
       columns = [],
       rows = [],
-      values,
+      values = [],
       valueInCols,
       customValueOrder,
     } = fields;
@@ -330,6 +331,12 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     const newMeta: Meta[] = this.processMeta(meta, i18n('数值'));
+    const isInvalidValues =
+      (!isEmpty(rows) || !isEmpty(columns)) && isEmpty(values);
+    // 数值为空时, 增加占位字段, 保证表格结构正常
+    const newValues = isInvalidValues
+      ? [EMPTY_VALUE_FIELD_PLACEHOLDER]
+      : values;
 
     return {
       data,
@@ -338,7 +345,7 @@ export class PivotDataSet extends BaseDataSet {
         ...fields,
         rows: newRows,
         columns: newColumns,
-        values,
+        values: newValues,
       },
       sortParams,
     };

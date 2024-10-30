@@ -10,3 +10,5 @@ export const EMPTY_FIELD_VALUE = '$$empty_field_value$$';
 export const EMPTY_EXTRA_FIELD_PLACEHOLDER = '$$empty_extra_placeholder$$';
 export const NULL_SYMBOL_ID = '$$null$$';
 export const UNDEFINED_SYMBOL_ID = '$$undefined$$';
+export const EMPTY_VALUE_FIELD_PLACEHOLDER =
+  '$$empty_value_field_placeholder$$';

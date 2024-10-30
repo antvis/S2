@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PivotSheet Tests Test Layout by dataCfg fields should add empty value placeholder field if values is empty 1`] = `
+Array [
+  Object {
+    "id": "province",
+    "value": "province",
+  },
+  Object {
+    "id": "city",
+    "value": "city",
+  },
+  Object {
+    "id": "$$extra$$",
+    "value": "数值",
+  },
+  Object {
+    "id": "root[&]浙江",
+    "value": "浙江",
+  },
+  Object {
+    "id": "root[&]浙江[&]义乌",
+    "value": "义乌",
+  },
+  Object {
+    "id": "root[&]浙江[&]杭州",
+    "value": "杭州",
+  },
+  Object {
+    "id": "root[&]笔",
+    "value": "笔",
+  },
+  Object {
+    "id": "root[&]浙江[&]义乌[&]$$empty_value_field_placeholder$$-root[&]笔",
+    "value": null,
+  },
+  Object {
+    "id": "root[&]浙江[&]杭州[&]$$empty_value_field_placeholder$$-root[&]笔",
+    "value": null,
+  },
+]
+`;
+
+exports[`PivotSheet Tests Test Layout by dataCfg fields should not render layout if all fields is empty 1`] = `Array []`;
+
+exports[`PivotSheet Tests Test Layout by dataCfg fields should render correctly layout if only contains columns fields 1`] = `
+Array [
+  Object {
+    "id": "$$extra$$",
+    "value": "数值",
+  },
+  Object {
+    "id": "root[&]$$empty_value_field_placeholder$$",
+    "value": "$$empty_value_field_placeholder$$",
+  },
+  Object {
+    "id": "root[&]笔",
+    "value": "笔",
+  },
+  Object {
+    "id": "root[&]$$empty_value_field_placeholder$$-root[&]笔",
+    "value": null,
+  },
+]
+`;
+
+exports[`PivotSheet Tests Test Layout by dataCfg fields should render correctly layout if only contains row fields 1`] = `
+Array [
+  Object {
+    "id": "province",
+    "value": "province",
+  },
+  Object {
+    "id": "city",
+    "value": "city",
+  },
+  Object {
+    "id": "$$extra$$",
+    "value": "数值",
+  },
+  Object {
+    "id": "root[&]浙江",
+    "value": "浙江",
+  },
+  Object {
+    "id": "root[&]浙江[&]义乌",
+    "value": "义乌",
+  },
+  Object {
+    "id": "root[&]浙江[&]义乌[&]$$empty_value_field_placeholder$$",
+    "value": "$$empty_value_field_placeholder$$",
+  },
+  Object {
+    "id": "root[&]浙江[&]杭州",
+    "value": "杭州",
+  },
+  Object {
+    "id": "root[&]浙江[&]杭州[&]$$empty_value_field_placeholder$$",
+    "value": "$$empty_value_field_placeholder$$",
+  },
+]
+`;

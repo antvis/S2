@@ -15,7 +15,12 @@ import {
   min,
 } from 'lodash';
 import type { CellMeta, CustomHeaderField, ViewMeta } from '../common';
-import { CellType, SERIES_NUMBER_FIELD } from '../common';
+import {
+  CellType,
+  EMPTY_PLACEHOLDER,
+  EMPTY_VALUE_FIELD_PLACEHOLDER,
+  SERIES_NUMBER_FIELD,
+} from '../common';
 import type {
   Fields,
   FilterParam,
@@ -269,6 +274,10 @@ export abstract class BaseDataSet {
   public processMeta(meta: Meta[] = [], defaultExtraFieldText: string): Meta[] {
     const newMeta: Meta[] = [
       ...meta,
+      {
+        field: EMPTY_VALUE_FIELD_PLACEHOLDER,
+        name: EMPTY_PLACEHOLDER,
+      },
       generateExtraFieldMeta(
         meta,
         this.spreadsheet?.options?.cornerExtraFieldText,

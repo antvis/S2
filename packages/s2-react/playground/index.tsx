@@ -238,8 +238,10 @@ function MainLayout() {
     const selectedSheetType = e.target.value;
 
     setSheetType(selectedSheetType);
+  };
 
-    switch (selectedSheetType) {
+  useUpdateEffect(() => {
+    switch (sheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);
         updateOptions(defaultOptions);
@@ -249,8 +251,8 @@ function MainLayout() {
         updateOptions(defaultOptions);
         break;
     }
-    setColumnOptions(getColumnOptions(selectedSheetType));
-  };
+    setColumnOptions(getColumnOptions(sheetType));
+  }, [sheetType]);
 
   //  ================== Hooks ========================
 

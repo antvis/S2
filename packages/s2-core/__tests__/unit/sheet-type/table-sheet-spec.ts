@@ -313,4 +313,31 @@ describe('TableSheet Tests', () => {
     // eslint-disable-next-line no-underscore-dangle
     expect((canvas as any).__s2_instance__).toBe(undefined);
   });
+
+  test('should not render layout if column fields is empty', async () => {
+    s2.setDataCfg({
+      fields: {
+        columns: [],
+      },
+    });
+
+    await s2.render();
+
+    expect(s2.facet.getCells()).toHaveLength(0);
+  });
+
+  test('should not add empty value placeholder field if values is empty', async () => {
+    s2.setDataCfg({
+      fields: {
+        columns: [],
+        values: [],
+      },
+    });
+
+    await s2.render();
+
+    // 明细表只消费 columns , 防止明细表也增加 values 占位符
+    expect(s2.dataCfg.fields.values).toHaveLength(0);
+    expect(s2.dataSet.fields.values).toHaveLength(0);
+  });
 });
