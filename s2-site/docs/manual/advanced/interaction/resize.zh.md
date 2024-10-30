@@ -194,7 +194,7 @@ const s2Options = {
   interaction: {
     resize: {
       // 单元格可拖拽最小宽度
-      minCellWidth: 20,
+      minCellWidth: 40,
       // 单元格可拖拽最小高度
       minCellHeight: 20
     }
