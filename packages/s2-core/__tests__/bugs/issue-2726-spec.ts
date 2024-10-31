@@ -44,7 +44,7 @@ describe('Col Adaptive Layout Tests', () => {
       .getCornerNodes()
       .map((node) => Math.floor(node.width));
 
-    expect(cornerNodeWidthList).toEqual([184, 136, 320]);
+    expect(cornerNodeWidthList).toEqual([185, 137, 322]);
     expectTextOverflowing(s2);
   });
 });

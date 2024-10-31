@@ -10,7 +10,7 @@ import {
   set,
 } from 'lodash';
 import { TableColCell, TableDataCell, TableSeriesNumberCell } from '../cell';
-import { i18n, LAYOUT_SAMPLE_COUNT } from '../common';
+import { LAYOUT_SAMPLE_COUNT, i18n } from '../common';
 import {
   EMPTY_PLACEHOLDER_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_EMPTY_PLACEHOLDER,
