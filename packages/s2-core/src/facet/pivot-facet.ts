@@ -64,7 +64,7 @@ export class PivotFacet extends FrozenFacet {
 
   public render() {
     // 避免数据集切换时的无效渲染
-    const { fields } = this.spreadsheet.dataSet;
+    const { fields } = this.spreadsheet.dataSet || {};
 
     if (fields?.rows?.length === 1 && fields?.rows?.[0] === EXTRA_FIELD) {
       return;
