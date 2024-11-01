@@ -1,3 +1,17 @@
+# [@antv/s2-react-v2.0.0-next.30](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.29...@antv/s2-react-v2.0.0-next.30) (2024-11-01)
+
+
+### Bug Fixes
+
+* 修复自定义菜单项不触发 click 事件的问题 ([#2946](https://github.com/antvis/S2/issues/2946)) ([82dbb61](https://github.com/antvis/S2/commit/82dbb617440ba3d81e7ade96ee98747a7a5ecf5a))
+
+
+### Features
+
+* 优化紧凑模式下的单元格宽度计算方式 ([#2953](https://github.com/antvis/S2/issues/2953)) ([68ed225](https://github.com/antvis/S2/commit/68ed2258305eca6f92be7c238cd29c21407bcdd7))
+* 增加不同类型单元格的选中事件 & 支持识别事件来源 ([#2956](https://github.com/antvis/S2/issues/2956)) ([69f6479](https://github.com/antvis/S2/commit/69f6479b43055c12d0295a7c77709b990a069ee3))
+* 增加对自定义行列头总计、小计节点和组内排序的支持，修复明细表自定义列头 icon 问题 icon closes [#2898](https://github.com/antvis/S2/issues/2898) [#2893](https://github.com/antvis/S2/issues/2893) ([#2934](https://github.com/antvis/S2/issues/2934)) ([a4ae432](https://github.com/antvis/S2/commit/a4ae432d2ddff8a3b44fdfb7abd96d6a2369c81b))
+
 # [@antv/s2-react-v2.0.0-next.29](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.28...@antv/s2-react-v2.0.0-next.29) (2024-10-25)
 
 
