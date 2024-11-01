@@ -2,7 +2,7 @@ import type {
   FederatedPointerEvent as CanvasEvent,
   DisplayObject,
 } from '@antv/g';
-import type { CellAppendInfo } from '../common';
+import { type CellAppendInfo } from '../common';
 import type { SpreadSheet } from '../sheet-type';
 import { getAppendInfo } from '../utils/interaction/common';
 

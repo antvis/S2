@@ -4,6 +4,7 @@ import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
+  InteractionName,
   InteractionStateName,
   ScrollDirection,
 } from '../../common/constant/interaction';
@@ -110,6 +111,10 @@ export class RowCellBrushSelection extends BaseBrushSelection {
     this.emitBrushSelectionEvent(
       S2Event.ROW_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
+      {
+        targetCell: scrollBrushRangeCells[0],
+        interactionName: InteractionName.ROW_CELL_BRUSH_SELECTION,
+      },
     );
   }
 

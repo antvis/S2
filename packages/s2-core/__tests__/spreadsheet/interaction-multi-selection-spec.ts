@@ -8,7 +8,12 @@ import {
   getContainer,
   sleep,
 } from 'tests/util/helpers';
-import { CellType, InteractionStateName, RootInteraction } from '../../src';
+import {
+  CellType,
+  InteractionStateName,
+  RootInteraction,
+  S2Event,
+} from '../../src';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
@@ -349,4 +354,37 @@ describe('Interaction Multi Selection Tests', () => {
       expect(interactedCells).toHaveLength(2);
     },
   );
+
+  test('should emit select event', async () => {
+    const onSelected = jest.fn();
+    const onColCellSelected = jest.fn();
+
+    s2.setOptions({
+      hierarchyType: 'grid',
+    });
+
+    s2.on(S2Event.GLOBAL_SELECTED, onSelected);
+    s2.on(S2Event.COL_CELL_SELECTED, onColCellSelected);
+
+    await s2.render(false);
+
+    const colRootCell = s2.facet.getColCells()[0];
+
+    // 选中
+    s2.interaction.changeCell({
+      cell: colRootCell,
+    });
+
+    expect(onSelected).toHaveBeenCalledTimes(1);
+    expect(onColCellSelected).toHaveBeenCalledTimes(1);
+
+    // 取消选中
+    s2.interaction.changeCell({
+      cell: colRootCell,
+    });
+
+    expect(s2.interaction.getActiveCells()).toHaveLength(0);
+    expect(onSelected).toHaveBeenCalledTimes(2);
+    expect(onColCellSelected).toHaveBeenCalledTimes(2);
+  });
 });

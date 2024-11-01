@@ -14,12 +14,15 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
+import { CellType } from '../../../../../src';
 
 jest.mock('@/interaction/event-controller');
 
 describe('Interaction Data Cell Click Tests', () => {
   let s2: SpreadSheet;
-  const mockCellInfo = createMockCellInfo('testId');
+  const mockCellInfo = createMockCellInfo('testId', {
+    cellType: CellType.DATA_CELL,
+  });
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
@@ -86,7 +89,10 @@ describe('Interaction Data Cell Click Tests', () => {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell]);
+    expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell], {
+      interactionName: 'dataCellClick',
+      targetCell: s2.getCell(),
+    });
   });
 
   // https://github.com/antvis/S2/issues/2447
@@ -106,7 +112,10 @@ describe('Interaction Data Cell Click Tests', () => {
       },
     } as unknown as GEvent);
 
-    expect(selected).toHaveBeenCalledWith([]);
+    expect(selected).toHaveBeenCalledWith([], {
+      interactionName: 'dataCellClick',
+      targetCell: s2.getCell(),
+    });
   });
 
   test('should emit link field jump event when link field text click and not show tooltip', () => {

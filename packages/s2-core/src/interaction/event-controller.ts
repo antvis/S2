@@ -6,7 +6,7 @@ import {
   type PointLike,
 } from '@antv/g';
 import { each, get, hasIn, isEmpty, isFunction, isNil } from 'lodash';
-import { GuiIcon } from '../common';
+import { GuiIcon, InteractionName } from '../common';
 import {
   CellType,
   InteractionKeyboardKey,
@@ -199,6 +199,10 @@ export class EventController {
     this.spreadsheet.emit(
       S2Event.GLOBAL_SELECTED,
       interaction.getActiveCells(),
+      {
+        targetCell: null,
+        interactionName: InteractionName.GLOBAL_RESET,
+      },
     );
   }
 

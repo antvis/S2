@@ -1,6 +1,7 @@
 import type {
   BaseTooltipOperatorMenuOptions,
   CellScrollPosition,
+  CellSelectedHandler,
   ColCell,
   CopyableList,
   CornerCell,
@@ -15,6 +16,7 @@ import type {
   RawData,
   ResizeInfo,
   ResizeParams,
+  RowCell,
   RowCellCollapsedParams,
   S2CellType,
   S2DataConfig,
@@ -107,7 +109,8 @@ export interface BaseSheetComponentProps<
   onRowCellCollapsed?: (params: RowCellCollapsedParams) => void;
   onRowCellAllCollapsed?: (isCollapsed: boolean) => void;
   onRowCellScroll?: (position: CellScrollPosition) => void;
-  onRowCellRender?: (cell: ColCell) => void;
+  onRowCellRender?: (cell: RowCell) => void;
+  onRowCellSelected?: CellSelectedHandler;
 
   // ============== Col Cell ====================
   onColCellHover?: (data: TargetCellInfo) => void;
@@ -123,6 +126,7 @@ export interface BaseSheetComponentProps<
     hiddenColumnsDetail: HiddenColumnsInfo[];
   }) => void;
   onColCellRender?: (cell: ColCell) => void;
+  onColCellSelected?: CellSelectedHandler;
 
   // ============== Data Cell ====================
   onDataCellHover?: (data: TargetCellInfo) => void;
@@ -137,6 +141,7 @@ export interface BaseSheetComponentProps<
   onDataCellRender?: (cell: DataCell) => void;
   onDataCellEditStart?: (meta: ViewMeta, cell: TableDataCell) => void;
   onDataCellEditEnd?: (meta: ViewMeta, cell: TableDataCell) => void;
+  onDataCellSelected?: CellSelectedHandler;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -147,6 +152,7 @@ export interface BaseSheetComponentProps<
   onCornerCellMouseUp?: (data: TargetCellInfo) => void;
   onCornerCellMouseMove?: (data: TargetCellInfo) => void;
   onCornerCellRender?: (cell: CornerCell) => void;
+  onCornerCellSelected?: CellSelectedHandler;
 
   // ============== Merged Cells ====================
   onMergedCellsHover?: (data: TargetCellInfo) => void;
@@ -219,7 +225,7 @@ export interface BaseSheetComponentProps<
   onMouseUp?: (event: MouseEvent) => void;
   onMouseDown?: (event: MouseEvent) => void;
   onMouseMove?: (event: MouseEvent) => void;
-  onSelected?: (cells: S2CellType[]) => void;
+  onSelected?: CellSelectedHandler;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { field: string; record: RawData }) => void;
   onScroll?: (position: CellScrollPosition) => void;

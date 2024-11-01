@@ -190,6 +190,10 @@ const cellEventCases = [
     event: S2Event.ROW_CELL_RENDER,
     name: 'onRowCellRender',
   },
+  {
+    event: S2Event.ROW_CELL_SELECTED,
+    name: 'onRowCellSelected',
+  },
 
   // ============== Col Cell ====================
   {
@@ -227,6 +231,10 @@ const cellEventCases = [
   {
     event: S2Event.COL_CELL_RENDER,
     name: 'onColCellRender',
+  },
+  {
+    event: S2Event.COL_CELL_SELECTED,
+    name: 'onColCellSelected',
   },
 
   // ============== Data Cell ====================
@@ -266,6 +274,10 @@ const cellEventCases = [
     event: S2Event.DATA_CELL_RENDER,
     name: 'onDataCellRender',
   },
+  {
+    event: S2Event.DATA_CELL_SELECTED,
+    name: 'onDataCellSelected',
+  },
 
   // ============== Corner Cell ====================
   {
@@ -295,6 +307,10 @@ const cellEventCases = [
   {
     event: S2Event.CORNER_CELL_RENDER,
     name: 'onCornerCellRender',
+  },
+  {
+    event: S2Event.CORNER_CELL_SELECTED,
+    name: 'onCornerCellSelected',
   },
 
   // ============== Merged Cells ====================

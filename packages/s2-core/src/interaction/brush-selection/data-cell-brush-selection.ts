@@ -5,6 +5,7 @@ import { S2Event } from '../../common/constant';
 import {
   CellType,
   InteractionBrushSelectionStage,
+  InteractionName,
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
@@ -115,6 +116,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     this.emitBrushSelectionEvent(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
+      {
+        targetCell: scrollBrushRangeCells[0],
+        interactionName: InteractionName.DATA_CELL_BRUSH_SELECTION,
+      },
     );
   }
 

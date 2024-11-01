@@ -166,20 +166,6 @@ export abstract class BaseEvent {
 }
 ```
 
-### InterceptType
-
-```ts
-enum InterceptType {
-  HOVER = 'hover',
-  CLICK = 'click',
-  DATA_CELL_BRUSH_SELECTION = 'dataCellBrushSelection',
-  ROW_CELL_BRUSH_SELECTION = 'rowCellBrushSelection',
-  COL_CELL_BRUSH_SELECTION = 'colCellBrushSelection',
-  MULTI_SELECTION = 'multiSelection',
-  RESIZE = 'resize',
-}
-```
-
 ### S2CellType
 
 ```ts
@@ -217,6 +203,11 @@ interface ChangeCellOptions {
   stateName?: InteractionStateName;
 
   /**
+   * 交互名
+   */
+  interactionName?: `${InteractionName}`;
+
+  /**
    * 如果单元格不在可视范围，是否自动滚动
    */
   scrollIntoView?: boolean;
@@ -233,19 +224,6 @@ interface MergedCellInfo {
 }
 ```
 
-### CellType
-
-```ts
-enum CellType {
-  DATA_CELL = 'dataCell',
-  ROW_CELL = 'rowCell',
-  COL_CELL = 'colCell',
-  SERIES_NUMBER_CELL = 'seriesNumberCell',
-  CORNER_CELL = 'cornerCell',
-  MERGED_CELL = 'mergedCell',
-}
-```
-
 ### CellMeta
 
 ```ts
@@ -256,24 +234,6 @@ interface CellMeta {
   type: CellType;
   rowQuery?: Record<string, any>;
   [key: string]: unknown;
-}
-```
-
-### InteractionStateName
-
-```ts
-enum InteractionStateName {
-  ALL_SELECTED = 'allSelected',
-  SELECTED = 'selected',
-  ROW_CELL_BRUSH_SELECTED = 'rowCellBrushSelected',
-  COL_CELL_BRUSH_SELECTED = 'colCellBrushSelected',
-  DATA_CELL_BRUSH_SELECTED = 'dataCellBrushSelected',
-  UNSELECTED = 'unselected',
-  HOVER = 'hover',
-  HOVER_FOCUS = 'hoverFocus',
-  HIGHLIGHT = 'highlight',
-  SEARCH_RESULT = 'searchResult',
-  PREPARE_SELECT = 'prepareSelect',
 }
 ```
 
