@@ -1,5 +1,6 @@
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import {
+  CellType,
   CornerNodeType,
   DEFAULT_STYLE,
   EXTRA_FIELD,
@@ -251,6 +252,7 @@ describe('PivotSheet Corner Tests', () => {
 
       const getCellSpy = jest.spyOn(s2, 'getCell').mockImplementation(() => {
         return {
+          cellType: CellType.CORNER_CELL,
           getMeta: () => ({
             ...node,
             cornerType: CornerNodeType.Row,
@@ -258,6 +260,7 @@ describe('PivotSheet Corner Tests', () => {
           updateByState: jest.fn(),
         } as unknown as S2CellType;
       });
+
       const selected = jest.fn();
 
       s2.on(S2Event.GLOBAL_SELECTED, selected);
@@ -269,7 +272,10 @@ describe('PivotSheet Corner Tests', () => {
       expect(s2.interaction.getCells().map((meta) => meta.id)).toEqual(
         selectedIds,
       );
-      expect(selected).toHaveBeenCalledWith(s2.interaction.getActiveCells());
+      expect(selected).toHaveBeenCalledWith(s2.interaction.getActiveCells(), {
+        interactionName: 'cornerCellClick',
+        targetCell: expect.anything(),
+      });
 
       // 取消选中
       s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
@@ -277,7 +283,10 @@ describe('PivotSheet Corner Tests', () => {
       expect(s2.tooltip.visible).toBeFalsy();
       expect(s2.interaction.isSelectedState()).toBeFalsy();
       expect(s2.interaction.getCells()).toEqual([]);
-      expect(selected).toHaveBeenCalledWith([]);
+      expect(selected).toHaveBeenCalledWith([], {
+        interactionName: 'cornerCellClick',
+        targetCell: expect.anything(),
+      });
 
       getCellSpy.mockClear();
     },

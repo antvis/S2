@@ -40,6 +40,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 滚动         | `S2Event.ROW_CELL_SCROLL`            | 行头单元格滚动         |
 | 行头刷选     | `S2Event.ROW_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）    |
 | 单元格渲染                 | `S2Event.ROW_CELL_RENDER`       | 行头单元格布局渲染完成事件                  |
+| 单元格选中                 | `S2Event.ROW_CELL_SELECTED`       | 行头单元格选中，可以获取到选中的单元格，交互名，和触发单元格等信息                  |
 
 ### 列头单元格 (ColCell)
 
@@ -54,6 +55,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
 | 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） |
 | 单元格渲染                 | `S2Event.COL_CELL_RENDER`       | 列头单元格布局渲染完成事件                  |
+| 单元格选中                 | `S2Event.COL_CELL_SELECTED`       | 列头单元格选中，可以获取到选中的单元格，交互名，和触发单元格等信息                  |
 
 ### 数值单元格 (DataCell)
 
@@ -69,6 +71,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
 | 键盘方向键移动           | `S2Event.DATA_CELL_SELECT_MOVE`  | 数值单元格键盘方向键移动                          |
 | 单元格渲染                 | `S2Event.DATA_CELL_RENDER`       | 数值单元格布局渲染完成事件                  |
+| 单元格选中                 | `S2Event.DATA_CELL_SELECTED`       | 数值单元格选中，可以获取到选中的单元格，交互名，和触发单元格等信息                  |
 
 ### 角头单元格 (CornerCell)
 
@@ -82,6 +85,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 角头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 角头单元格鼠标松开 |
 | 单元格渲染                 | `S2Event.CORNER_CELL_RENDER`       | 角头单元格布局渲染完成事件                  |
+| 单元格选中                 | `S2Event.CORNER_CELL_SELECTED`       | 角头单元格选中，可以获取到选中的单元格，交互名，和触发单元格等信息                  |
 
 ### 合并单元格 (MergedCells)
 
@@ -141,7 +145,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                             |
 | 点击      | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                 |
 | 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键 ([禁用右键菜单不生效？](/manual/faq#%E7%A6%81%E7%94%A8%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E4%B8%8D%E7%94%9F%E6%95%88))                          |
-| 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
+| 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选 （可以获取到选中的单元格，交互名，和触发单元格等信息）          |
 | 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
 | 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |
 | 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击（行头/列头/数值）为链接字段的文本时           |

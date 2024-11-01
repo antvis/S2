@@ -9,6 +9,7 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import {
+  CellType,
   CornerNodeType,
   InteractionStateName,
   type Node,
@@ -20,6 +21,7 @@ describe('Interaction Corner Cell Click Tests', () => {
   let s2: SpreadSheet;
   const mockCellInfo = createMockCellInfo('testId', {
     cornerType: CornerNodeType.Row,
+    cellType: CellType.CORNER_CELL,
   });
   let cornerCellClick: CornerCellClick;
 

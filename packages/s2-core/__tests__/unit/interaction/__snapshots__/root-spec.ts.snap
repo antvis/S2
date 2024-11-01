@@ -23,6 +23,8 @@ Object {
 }
 `;
 
+exports[`RootInteraction Tests should register default interaction 1`] = `Object {}`;
+
 exports[`RootInteraction Tests should selected header cell 1`] = `
 Object {
   "cells": Array [
